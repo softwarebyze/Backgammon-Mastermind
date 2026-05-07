@@ -1,45 +1,61 @@
-# [Project name]
+# Backgammon
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A fully playable backgammon mobile app with AI opponent and local 2-player mode.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `pnpm --filter @workspace/mobile run dev` — run the Expo app (mobile dev server)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000, not required for this app)
+- Scan the QR code shown in the Expo workflow to play on a physical device via Expo Go
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Mobile: Expo (React Native) with expo-router
+- State: React context (no backend needed — pure client-side game)
+- Fonts: Inter (@expo-google-fonts/inter)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/mobile/game/` — pure game engine (types, board, move generation, AI)
+  - `types.ts` — all shared TypeScript types
+  - `constants.ts` — initial board setup, state factory
+  - `moves.ts` — legal move generation, move application, dice rolling
+  - `ai.ts` — heuristic AI with recursive best-sequence search
+  - `index.ts` — barrel re-export
+- `artifacts/mobile/context/GameContext.tsx` — React context; manages state, AI automation via useEffect timers
+- `artifacts/mobile/components/board/` — board rendering components
+  - `BoardView.tsx` — root board layout (flex-based, bar spans full height)
+  - `PointColumn.tsx` — individual triangle point with checker stack
+  - `CheckerToken.tsx` — single checker with inner ring highlight
+  - `BarArea.tsx` — center bar showing hit checkers
+  - `BearOffArea.tsx` — borne-off checker column
+  - `DiceDisplay.tsx` — animated dice showing used/unused state
+- `artifacts/mobile/app/(tabs)/index.tsx` — home/menu screen
+- `artifacts/mobile/app/game.tsx` — game screen (Stack screen, no header)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Game engine is pure TypeScript with no React dependencies — can be unit-tested in isolation or reused for a web client.
+- AI uses greedy recursive search (depth = remaining dice count) with a composite board evaluation function covering pip count, blots, made points, primes, and bar/home counts.
+- Dice deduplication: when equal dice values appear (e.g. `[3,3]`), legal move generation only produces one move per unique (from, to) pair to avoid duplicate UI options.
+- AI turn automation runs entirely through `useEffect` in GameContext — no separate game loop or setTimeout pollution in the UI layer.
+- Board layout uses a flex row with `flex: 6` side sections so the center bar and bear-off column span the full board height without absolute positioning hacks.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Home screen: choose "vs Computer" (AI plays as Black) or "2 Players" (pass-and-play)
+- Board: standard backgammon layout — White moves 24→1, Black moves 1→24
+- Game flow: tap "Roll Dice" → tap your checker → tap highlighted destination → repeat
+- Bar entry is enforced before other moves; bearing-off activates automatically when all checkers are home
+- AI rolls and moves automatically with natural delays for readability
+
+## Gotchas
+
+- `getLegalMoves` returns bar-only moves when the current player has bar checkers — this is enforced in the game rules
+- PointColumn triangles use the React Native CSS border trick (0×0 view with large border) — works on web + native
+- `boardHeight` must be passed to BarArea/BearOffArea so they fill the exact board height in the flex row
 
 ## User preferences
 
 _Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details

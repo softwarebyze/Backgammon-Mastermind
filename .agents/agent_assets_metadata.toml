@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "OIDBPdPZSMZPN8cY115TR"
+uri = "file://artifacts/mobile/assets/images/icon.png"
+type = "image"
+title = "backgammon board icon"
