@@ -1,0 +1,100 @@
+# Publishes an EAS Update on every PR and comments with a QR code.
+# First-time reviewers install the dev client once (see sticky PR comment + dev-client.yml).
+# Docs: https://docs.expo.dev/eas-update/github-actions/
+
+name: EAS Update Preview (PR)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  EAS_PROJECT_ID: 7ec6600a-8b02-4714-acc1-08385effa4c9
+
+jobs:
+  update:
+    name: EAS Update Preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Create preview
+        id: preview
+        uses: expo/expo-github-action/preview@v8
+        with:
+          command: eas update --auto --environment preview
+
+      - name: Post dev client setup guide
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- dev-client-guide -->';
+            const buildsUrl = `https://expo.dev/projects/${process.env.EAS_PROJECT_ID}/builds?profile=development`;
+            const body = `${marker}
+            ## How to preview this PR
+
+            ### Already have the dev client installed?
+            Scan the **EAS Update QR** in the Expo comment above — it loads this PR's JavaScript into your existing development build.
+
+            ### First time on this device?
+
+            #### iPhone / iPad
+            1. **Register your device** (one-time): [\`eas device:create\`](https://docs.expo.dev/build/internal-distribution/#registering-devices) or [Expo dashboard → Devices](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices).
+            2. **Install the iOS dev client**: [Latest **development** builds on EAS](${buildsUrl}) → open the **iOS** build → install via the link on your phone (Safari).
+            3. Open the app once, then **scan the EAS Update QR** above.
+
+            #### Android
+            1. **Install the dev client**: [Latest **development** builds on EAS](${buildsUrl}) → download the **Android** APK.
+            2. Open the app once, then **scan the EAS Update QR** above.
+
+            ### When do I reinstall the dev client?
+            Only when **native** things change (new Expo SDK, native modules, icon/splash, \`app.config.ts\`, \`env.ts\` schemes/bundle IDs). CI rebuilds Android + iOS via [\`dev-client.yml\`](.github/workflows/dev-client.yml). JS-only PRs never need a reinstall.
+
+            ### No dev client?
+            Full preview builds: \`pnpm build:preview:ios\` / \`pnpm build:preview:android\`. See [\`docs/obytes-template-playbook.md\`](docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern).
+            `;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+
+            const existing = comments.find(c => c.body?.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            }
+            else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body,
+              });
+            }

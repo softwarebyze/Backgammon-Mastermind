@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "skills": {
+    "Expo UI Jetpack Compose": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-ui-jetpack-compose/SKILL.md",
+      "computedHash": "52db319a6e4b0a5c6fe4d4add7ee32ede16abffab2143a1d81da48cd610a5b1b"
+    },
+    "Expo UI SwiftUI": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-ui-swift-ui/SKILL.md",
+      "computedHash": "409d466e43888f62987ceaf5c8be34aa76a49328528ebe290bab866f6d07e958"
+    },
+    "argent-android-emulator-setup": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "2e7edc2c85093d10dbb1e7f4b08db3ec64a85d42cdaac8838209cb0d7cbb6361"
+    },
+    "argent-create-flow": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "9a2737aadf00e73af99bf22711d33fb0d85435a8044d3e3b527a759241bc7c7c"
+    },
+    "argent-device-interact": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "53064d866faf34cad5d1f9b28d3f4bfecd264443c58fa18655ea814f7905d9e9"
+    },
+    "argent-ios-simulator-setup": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "0b17edd8badb600e02e43ecacc07d2bb991e31d7ab2ca8cb5d02aef7d276c743"
+    },
+    "argent-metro-debugger": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "e5faa1950ddbe6bd90de9d358367b563f0ca4d22c117e3acade543d96161870d"
+    },
+    "argent-native-profiler": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "a6230e85a2a61112e3aaa593ec33fc63e4206593ef5cabaaa289d086945e6be7"
+    },
+    "argent-react-native-app-workflow": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "4635f2e67a590940a2e054b18fac0cf620456223fbeb23a60373db87f0cdfee7"
+    },
+    "argent-react-native-optimization": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "96aaa7bbb28df0b33ce4332ab1e866fb765c8f54015d4f0205a77d4f07c11162"
+    },
+    "argent-react-native-profiler": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "553945dae8b923dc37bff5e7251e615f5191dcf8c668663ddf4b10e18754f734"
+    },
+    "argent-test-ui-flow": {
+      "source": "/Users/zackebenfeld/.npm/_npx/f520494047e84823/node_modules/@swmansion/argent/skills",
+      "sourceType": "local",
+      "computedHash": "5a18f567f25a25924dc3856c4ef4158671d373a575d6e7ca235fe2ffa0205c9c"
+    },
+    "building-native-ui": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/building-native-ui/SKILL.md",
+      "computedHash": "342df93f481a0dba919f372d6c7b40d2b4bf5b51dd24363aea2e5d0bae27a6fa"
+    },
+    "eas-update-insights": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/eas-update-insights/SKILL.md",
+      "computedHash": "1e75ed22734fb37993f0ae0c57eceeaf37661ab452d7c7f55c740b1e41c2a0c1"
+    },
+    "expo-api-routes": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-api-routes/SKILL.md",
+      "computedHash": "015c6b849507fda73fcc32d2448f033aaaaa21f5229085342b8421727a90cafb"
+    },
+    "expo-brownfield": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-brownfield/SKILL.md",
+      "computedHash": "f9d9de737c100a6fc0358af5ada83a2f17bcf8b179a298f81159e26bf278678e"
+    },
+    "expo-cicd-workflows": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-cicd-workflows/SKILL.md",
+      "computedHash": "700b20b575fcbe75ad238b41a0bd57938abe495e62dc53e05400712ab01ee7c0"
+    },
+    "expo-deployment": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-deployment/SKILL.md",
+      "computedHash": "9ea9f16374765c1b16764a51bd43a64098921b33f48e94d9c5c1cce24b335c10"
+    },
+    "expo-dev-client": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-dev-client/SKILL.md",
+      "computedHash": "234e2633b7fbcef2d479f8fe8ab20d53d08ed3e4beec7c965da4aff5b43affe7"
+    },
+    "expo-module": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-module/SKILL.md",
+      "computedHash": "439263df82d935eb35fa3074b7cc176b1cbc26cd95c619ba8c1f9331242016ec"
+    },
+    "expo-tailwind-setup": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-tailwind-setup/SKILL.md",
+      "computedHash": "d39e806942fe880347f161056729b588a3cb0f1796270eebf52633fe11cfdce1"
+    },
+    "native-data-fetching": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/native-data-fetching/SKILL.md",
+      "computedHash": "3cd0ba91f359f9f84cd40f36f356287994a0e952520fac6e03ef7952d0397879"
+    },
+    "upgrading-expo": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/upgrading-expo/SKILL.md",
+      "computedHash": "2c65483a035341da654b92b130fd5b45690b139b624613dc94c414bae1067f6c"
+    },
+    "use-dom": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/use-dom/SKILL.md",
+      "computedHash": "8eca0e229f16e3499e5dbf791a79f5a5cba1e98b4af88ca495c903930d7f1ba0"
+    }
+  }
+}

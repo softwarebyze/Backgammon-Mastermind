@@ -1,0 +1,62 @@
+# Maestro Cloud E2E — backgammon smoke on labeled PRs or manual dispatch.
+# Label: android-test-maestro-cloud | Secret: MAESTRO_CLOUD_API_KEY
+
+name: E2E Tests Android (Maestro Cloud)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, master]
+    types: [opened, synchronize, reopened, labeled]
+
+concurrency:
+  group: e2e-maestro-cloud-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate-and-test-apk:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')
+    name: Maestro Cloud smoke (backgammon)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for MAESTRO_CLOUD_API_KEY
+        run: |
+          if [ -z "${{ secrets.MAESTRO_CLOUD_API_KEY }}" ]; then
+            echo "Add MAESTRO_CLOUD_API_KEY to Settings → Secrets → Actions"
+            echo "https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Set Up JDK + Generate Test APK
+        uses: ./.github/actions/setup-jdk-generate-apk
+        with:
+          APP_ENV: preview
+
+      - name: Upload Test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-apk
+          path: ./android-test.apk
+
+      - name: Run backgammon smoke on Maestro Cloud
+        id: maestro
+        uses: mobile-dev-inc/action-maestro-cloud@v1.4.1
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: ./android-test.apk
+          include-tags: smoke
+          env: |
+            APP_ID=com.backgammonmastermind.preview
+
+      - name: Maestro Cloud console
+        if: always() && steps.maestro.outputs.MAESTRO_CLOUD_CONSOLE_URL != ''
+        run: echo "Results → ${{ steps.maestro.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"

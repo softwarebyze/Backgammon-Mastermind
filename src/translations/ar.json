@@ -1,0 +1,29 @@
+{
+  "settings": {
+    "about": "حول التطبيق ",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "عربي",
+    "english": "إنجليزي",
+    "generale": "عام",
+    "github": "GitHub",
+    "language": "لغة",
+    "links": "الروابط",
+    "more": "أكثر",
+    "privacy": "سياسة الخصوصية",
+    "rate": "تقييم",
+    "share": "شارك",
+    "support": "الدعم",
+    "support_us": "ادعمنا",
+    "terms": "شروط الخدمة",
+    "theme": {
+      "dark": "مظلم",
+      "light": "خفيفة",
+      "system": "System",
+      "title": "سمة"
+    },
+    "title": "إعدادات",
+    "version": "إصدار",
+    "website": "موقع الكتروني"
+  },
+  "welcome": "مرحبًا بك في Backgammon Mastermind"
+}

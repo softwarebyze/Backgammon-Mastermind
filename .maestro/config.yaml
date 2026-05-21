@@ -1,0 +1,5 @@
+flows:
+  - app/backgammon-smoke.yaml
+
+excludeTags:
+  - util

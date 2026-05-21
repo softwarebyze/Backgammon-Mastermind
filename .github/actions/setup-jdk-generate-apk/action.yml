@@ -1,0 +1,55 @@
+# Generates a debug APK for Maestro E2E (faster than release; no signing overhead).
+# Output: ./android-test.apk (also at android/app/build/outputs/apk/debug/app-debug.apk)
+
+name: 'Setup JDK + GRADLE + Generate APK'
+description: Prebuild native project and assemble a debug APK for E2E
+inputs:
+  APP_ENV:
+    description: 'APP_ENV (one of): development, preview, production'
+    required: true
+    default: preview
+
+runs:
+  using: composite
+  steps:
+    - name: Set Up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: zulu
+        java-version: '17'
+
+    - name: Generate brand assets
+      run: pnpm brand:generate
+      shell: bash
+
+    - name: Prebuild native project
+      run: pnpm prebuild:${{ inputs.APP_ENV }}
+      shell: bash
+      env:
+        EXPO_NO_DOTENV: '1'
+        APP_ENV: ${{ inputs.APP_ENV }}
+        CI: 'true'
+
+    - name: Tune Gradle for CI
+      run: |
+        cat >> android/gradle.properties <<'EOF'
+        org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m -XX:+UseParallelGC -Dfile.encoding=UTF-8
+        org.gradle.daemon=false
+        org.gradle.parallel=true
+        org.gradle.caching=true
+        EOF
+      shell: bash
+
+    - name: Setup Gradle cache
+      uses: gradle/gradle-build-action@v2
+      with:
+        build-root-directory: android
+
+    - name: Build debug test APK
+      run: |
+        cd android
+        chmod +x ./gradlew
+        ./gradlew assembleDebug --no-daemon --build-cache
+        cd ..
+        cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
+      shell: bash

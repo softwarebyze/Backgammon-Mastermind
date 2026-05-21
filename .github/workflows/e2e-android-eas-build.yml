@@ -1,0 +1,105 @@
+# Run Maestro smoke against an APK built on EAS (paste download URL).
+# Actions → E2E Tests EAS Build Android → Run workflow
+
+name: E2E Tests EAS Build Android (Maestro + Github Action)
+
+on:
+  workflow_dispatch:
+    inputs:
+      apk-url:
+        type: string
+        description: EAS APK URL
+        required: true
+        default: ''
+
+concurrency:
+  group: e2e-eas-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  download-eas-apk:
+    if: github.event_name != 'pull_request' && github.event.inputs.apk-url != ''
+    name: Download Test APK From EAS Url (wget)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download EAS APK
+        run: wget ${{ github.event.inputs.apk-url }} -O ./android-test.apk
+
+      - name: Upload Test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-apk
+          path: ./android-test.apk
+
+  test-android:
+    name: Run backgammon smoke (emulator)
+    needs: download-eas-apk
+    runs-on: macOS-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Maestro
+        run: npm run install-maestro
+
+      - name: Download Test APK
+        uses: actions/download-artifact@v4
+        with:
+          name: test-apk
+          path: ${{ github.workspace }}
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-cache-${{ runner.os }}
+
+      - name: Create AVD snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          cores: 2
+          ram-size: 4096M
+          profile: Nexus 6
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: Run backgammon smoke with Maestro
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          cores: 2
+          ram-size: 4096M
+          profile: Nexus 6
+          script: |
+            adb install "${{ github.workspace }}/android-test.apk"
+            $HOME/.maestro/bin/maestro test .maestro/app/backgammon-smoke.yaml \
+              --env=APP_ID=com.backgammonmastermind.preview \
+              --format junit
+
+      - name: Upload Maestro logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-logs
+          path: ~/.maestro/tests/**/*
+
+      - name: Upload JUnit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e_android_report
+          path: report.xml
