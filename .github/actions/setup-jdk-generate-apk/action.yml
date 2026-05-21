@@ -18,6 +18,10 @@ runs:
         distribution: zulu
         java-version: '17'
 
+    - name: Generate brand assets
+      run: pnpm brand:generate
+      shell: bash
+
     - name: Prebuild native project
       run: pnpm prebuild:${{ inputs.APP_ENV }}
       shell: bash

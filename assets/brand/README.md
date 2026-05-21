@@ -30,7 +30,11 @@ pnpm build:development:android:local
 pnpm build:development:ios:local
 ```
 
-`app.config.ts` references the **generated** files (`icon.png`, `splash-icon.png`, etc.).
+## Why not vanilla Obytes?
+
+Obytes ships four PNGs you replace by hand. Expo actually requires **different** assets for launcher vs splash (splash must be transparent). `brand:generate` only handles that native split — it does not affect your React UI except `display-logo.png` for the home header.
+
+**Minimum workflow:** edit `icon-source.png` → `pnpm brand:generate` → rebuild dev client for store icon/splash only.
 
 ## Testing splash (easy to get wrong)
 
