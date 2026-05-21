@@ -28,9 +28,9 @@ export function HomeScreen() {
       <FocusAwareStatusBar />
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../../assets/brand/icon.png')}
+          source={require('../../../assets/brand/home-logo.png')}
           style={styles.logo}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
 

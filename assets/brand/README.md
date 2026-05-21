@@ -13,6 +13,7 @@ Design template: [Figma splash + icon template](https://www.figma.com/community/
 | `icon.png` | Home screen / App Store icon | Opaque, fills 1024×1024 square |
 | `splash-icon.png` | Splash **logo layer** | **Transparent** PNG — background comes from `splashBackgroundColor` |
 | `adaptive-foreground.png` | Android adaptive icon layer | Transparent PNG, content in center safe zone |
+| `home-logo.png` | In-app home screen logo | Square **cover** crop — separate from launcher icon |
 | `favicon.png` | Web | Generated 48×48 |
 
 **Do not** point splash at `icon-source.png` or a photo on a white rectangle — you get a white box on a dark splash.

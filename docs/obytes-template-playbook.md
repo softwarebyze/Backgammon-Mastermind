@@ -124,11 +124,22 @@ PR EAS Update QR works on **both** iOS and Android dev clients. Each physical iP
 
 **Important:** A new iOS dev client build must include your device's UDID. If you register *after* the last build, trigger a rebuild (`dev-client.yml` or `pnpm build:development:ios`).
 
+### iOS credentials for CI / cloud builds (one-time)
+
+CI **cannot** create Apple credentials in non-interactive mode. First iOS cloud build must be **local and interactive**:
+
+```bash
+pnpm build:development:ios
+# NOT --local, NOT --non-interactive — answer EAS prompts to set up certificates
+```
+
+That stores credentials on Expo's servers. After that, **Actions → Dev Client → Run workflow → ios** works.
+
+Until then, `dev-client.yml` on push builds **Android only** (iOS is manual workflow dispatch).
+
+Docs: [Expo app credentials](https://docs.expo.dev/app-signing/app-credentials/) · [Internal distribution](https://docs.expo.dev/build/internal-distribution/)
+
 **Android reviewers:** download APK from same EAS page — no device registration.
-
-**This fork:** `dev-client.yml` builds **Android + iOS** on native changes (cloud — for team sharing).
-
-Local: `pnpm build:development:ios:local` (Mac + Xcode required).
 
 ### Monorepo / Replit migration
 

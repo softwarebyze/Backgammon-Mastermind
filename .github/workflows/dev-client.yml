@@ -1,6 +1,6 @@
-# Rebuild development clients (Android + iOS) when native deps or branding change.
-# Reviewers install once; PR previews use EAS Update QR after that.
-# Docs: https://docs.expo.dev/develop/development-builds/development-workflows/#pr-previews
+# Rebuild development clients when native deps or branding change.
+# Push: Android only (no Apple credentials required in CI).
+# iOS: run workflow manually after one-time local credential setup — see assets/brand/README.md
 
 name: Dev Client (native changes)
 
@@ -16,21 +16,21 @@ on:
       - assets/**
       - .github/workflows/dev-client.yml
   workflow_dispatch:
+    inputs:
+      platform:
+        description: Platform to build on EAS
+        type: choice
+        options:
+          - android
+          - ios
+          - all
+        default: android
 
 jobs:
-  build:
-    name: Build development client (${{ matrix.platform }})
+  build-android:
+    name: Build development client (android)
+    if: github.event_name == 'push' || github.event.inputs.platform == 'android' || github.event.inputs.platform == 'all'
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: android
-            android: 'true'
-            ios: 'false'
-          - platform: ios
-            android: 'false'
-            ios: 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,12 +38,44 @@ jobs:
       - name: Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
 
-      - name: EAS Build (development, ${{ matrix.platform }})
+      - name: EAS Build (development, android)
         uses: ./.github/actions/eas-build
         with:
           APP_ENV: development
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           VERSION: ${{ github.sha }}
-          ANDROID: ${{ matrix.android }}
-          IOS: ${{ matrix.ios }}
+          ANDROID: 'true'
+          IOS: 'false'
+          AUTO_SUBMIT: 'false'
+
+  build-ios:
+    name: Build development client (ios)
+    if: github.event_name == 'workflow_dispatch' && (github.event.inputs.platform == 'ios' || github.event.inputs.platform == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: iOS credential reminder
+        run: |
+          cat <<'EOF'
+          iOS cloud builds need Apple credentials stored on Expo (one-time, interactive).
+          If this job fails with "credentials suitable for internal distribution":
+            pnpm build:development:ios
+          (no --non-interactive — log in and let EAS create/select certificates)
+          Then re-run this workflow.
+          Docs: https://docs.expo.dev/app-signing/app-credentials/
+          EOF
+
+      - name: EAS Build (development, ios)
+        uses: ./.github/actions/eas-build
+        with:
+          APP_ENV: development
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          VERSION: ${{ github.sha }}
+          ANDROID: 'false'
+          IOS: 'true'
           AUTO_SUBMIT: 'false'
