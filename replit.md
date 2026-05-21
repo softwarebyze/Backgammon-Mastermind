@@ -5,7 +5,6 @@ A fully playable backgammon mobile app with AI opponent and local 2-player mode.
 ## Run & Operate
 
 - `pnpm --filter @workspace/mobile run dev` — run the Expo app (mobile dev server)
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000, not required for this app)
 - Scan the QR code shown in the Expo workflow to play on a physical device via Expo Go
 
 ## Stack
