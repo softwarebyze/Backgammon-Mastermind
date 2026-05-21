@@ -1,8 +1,9 @@
 <h1 align="center">
   <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
-Mobile App </h1>
+Backgammon Mastermind
+</h1>
 
-> This Project is based on [Obytes starter](https://starter.obytes.com)
+> Built on the [Obytes starter](https://starter.obytes.com)
 
 ## Requirements
 
@@ -15,23 +16,25 @@ Mobile App </h1>
 
 ## 👋 Quick start
 
-Clone the repo to your machine and install deps :
+Clone the repo, copy env vars, and install deps:
 
 ```sh
-git clone https://github.com/user/repo-name
+git clone https://github.com/softwarebyze/Backgammon-Mastermind.git
 
-cd ./repo-name
+cd Backgammon-Mastermind
+
+cp .env.example .env
 
 pnpm install
 ```
 
-To run the app on ios
+To run the app on iOS:
 
 ```sh
 pnpm ios
 ```
 
-To run the app on Android
+To run the app on Android:
 
 ```sh
 pnpm android
