@@ -22,17 +22,22 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
 
-  // Format on save via ESLint (not Prettier / built-in TS formatter)
+  // Auto-fix on save: format + all fixable ESLint rules (perfectionist, stylistic, etc.)
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
+    "source.fixAll.eslint": "always",
     "source.organizeImports": "never"
   },
 
-  // Silence stylistic rules in IDE while still auto-fixing them
+  // Use workspace TypeScript for JSX-aware checking in src/
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // Keep stylistic/perfectionist fixable on save without drowning the Problems panel
   "eslint.rules.customizations": [
     { "rule": "style/*", "severity": "off", "fixable": true },
     { "rule": "format/*", "severity": "off", "fixable": true },
+    { "rule": "perfectionist/*", "severity": "off", "fixable": true },
     { "rule": "*-indent", "severity": "off", "fixable": true },
     { "rule": "*-spacing", "severity": "off", "fixable": true },
     { "rule": "*-spaces", "severity": "off", "fixable": true },
@@ -43,7 +48,6 @@
     { "rule": "*semi", "severity": "off", "fixable": true }
   ],
 
-  // Enable ESLint for various file types
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -67,11 +71,10 @@
     "postcss"
   ],
 
-  "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": ["Flashlist", "Lato"],
   "i18n-ally.localesPaths": ["src/translations/"],
   "i18n-ally.keystyle": "nested",
-  "i18n-ally.disabled": false, // make sure to disable i18n-ally in your global setting and only enable it for such projects
+  "i18n-ally.disabled": false,
   "tailwindCSS.experimental.classRegex": [
     ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ]
