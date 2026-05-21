@@ -1,5 +1,5 @@
 # GitHub-hosted emulator E2E — label android-test-github or manual dispatch.
-# No Maestro Cloud account required (slower: macOS runner + emulator boot).
+# No Maestro Cloud account required (slower: emulator boot + Gradle APK build).
 
 name: E2E Tests Android (Maestro + Github Action)
 
@@ -43,7 +43,7 @@ jobs:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
     name: Run backgammon smoke (emulator)
     needs: generate-test-apk
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -60,38 +60,18 @@ jobs:
           name: test-apk
           path: ${{ github.workspace }}
 
-      - name: AVD cache
-        uses: actions/cache@v4
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-cache-${{ runner.os }}
-
-      - name: Create AVD snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
+      - name: Run backgammon smoke with Maestro
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
-          force-avd-creation: false
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          emulator-boot-timeout: 600
+          force-avd-creation: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           cores: 2
           ram-size: 4096M
-          profile: Nexus 6
-          script: echo "Generated AVD snapshot for caching."
-
-      - name: Run backgammon smoke with Maestro
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          cores: 2
-          ram-size: 4096M
-          profile: Nexus 6
           script: |
             adb install "${{ github.workspace }}/android-test.apk"
             $HOME/.maestro/bin/maestro test .maestro/app/backgammon-smoke.yaml \
