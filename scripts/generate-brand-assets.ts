@@ -36,10 +36,65 @@ function hexToRgb(hex: string) {
   };
 }
 
+function isMarginPixel(r: number, g: number, b: number) {
+  const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+  const sat = Math.max(r, g, b) - Math.min(r, g, b);
+  // White studio backdrop + light gray compression artifacts on the right edge
+  return lum > 200 && sat < 35;
+}
+
+/** Square crop centered on the board, excluding white/gray studio margins. */
+async function centeredBoardCrop(source: string) {
+  const { data, info } = await sharp(source)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = info;
+
+  let minX = width;
+  let maxX = 0;
+  let minY = height;
+  let maxY = 0;
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = (y * width + x) * channels;
+      if (!isMarginPixel(data[i], data[i + 1], data[i + 2])) {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+
+  const boardW = maxX - minX + 1;
+  const boardH = maxY - minY + 1;
+  const side = Math.max(boardW, boardH);
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+  const left = Math.round(Math.max(0, Math.min(width - side, cx - side / 2)));
+  const top = Math.round(Math.max(0, Math.min(height - side, cy - side / 2)));
+
+  return sharp(source)
+    .extract({ left, top, width: side, height: side })
+    .png()
+    .toBuffer();
+}
+
 async function trimmedBoard(source: string) {
-  return sharp(source).trim({
-    threshold: 30,
-    background: { r: 255, g: 255, b: 255, alpha: 1 },
+  const cropped = await centeredBoardCrop(source);
+  const meta = await sharp(cropped).metadata();
+  const side = meta.width ?? 0;
+  // Source photo has uneven studio lighting — bright neutral strip on the right frame edge
+  const insetY = Math.round(side * 0.035);
+  const insetLeft = Math.round(side * 0.02);
+  const insetRight = Math.round(side * 0.065);
+  return sharp(cropped).extract({
+    left: insetLeft,
+    top: insetY,
+    width: side - insetLeft - insetRight,
+    height: side - insetY * 2,
   });
 }
 

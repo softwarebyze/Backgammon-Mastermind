@@ -47,8 +47,40 @@ jobs:
           name: test-apk
           path: ./android-test.apk
 
-      - name: Run backgammon smoke on Maestro Cloud
-        id: maestro
+      - name: Run backgammon smoke on Maestro Cloud (try 1)
+        id: maestro_try1
+        uses: mobile-dev-inc/action-maestro-cloud@v1.4.1
+        continue-on-error: true
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: ./android-test.apk
+          include-tags: smoke
+          env: |
+            APP_ID=com.backgammonmastermind.preview
+
+      - name: Wait before Maestro retry
+        if: steps.maestro_try1.outcome == 'failure'
+        run: sleep 90
+
+      - name: Run backgammon smoke on Maestro Cloud (try 2)
+        id: maestro_try2
+        if: steps.maestro_try1.outcome == 'failure'
+        uses: mobile-dev-inc/action-maestro-cloud@v1.4.1
+        continue-on-error: true
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: ./android-test.apk
+          include-tags: smoke
+          env: |
+            APP_ID=com.backgammonmastermind.preview
+
+      - name: Wait before final Maestro retry
+        if: steps.maestro_try1.outcome == 'failure' && steps.maestro_try2.outcome == 'failure'
+        run: sleep 90
+
+      - name: Run backgammon smoke on Maestro Cloud (try 3)
+        id: maestro_try3
+        if: steps.maestro_try1.outcome == 'failure' && steps.maestro_try2.outcome == 'failure'
         uses: mobile-dev-inc/action-maestro-cloud@v1.4.1
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
@@ -57,6 +89,16 @@ jobs:
           env: |
             APP_ID=com.backgammonmastermind.preview
 
+      - name: Require Maestro Cloud success
+        if: |
+          steps.maestro_try1.outcome == 'failure' &&
+          (steps.maestro_try2.outcome == 'failure' || steps.maestro_try2.outcome == 'skipped') &&
+          steps.maestro_try3.outcome == 'failure'
+        run: exit 1
+
       - name: Maestro Cloud console
-        if: always() && steps.maestro.outputs.MAESTRO_CLOUD_CONSOLE_URL != ''
-        run: echo "Results → ${{ steps.maestro.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"
+        if: always()
+        run: |
+          echo "Try 1 → ${{ steps.maestro_try1.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"
+          echo "Try 2 → ${{ steps.maestro_try2.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"
+          echo "Try 3 → ${{ steps.maestro_try3.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"
