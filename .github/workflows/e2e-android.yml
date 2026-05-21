@@ -1,5 +1,5 @@
-# Local GitHub Actions emulator E2E — label `android-test-github` or manual dispatch.
-# Slower (macOS + emulator) but no Maestro Cloud account required.
+# GitHub-hosted emulator E2E — label android-test-github or manual dispatch.
+# No Maestro Cloud account required (slower: macOS runner + emulator boot).
 
 name: E2E Tests Android (Maestro + Github Action)
 
@@ -8,6 +8,10 @@ on:
   pull_request:
     branches: [main, master]
     types: [opened, synchronize, reopened, labeled]
+
+concurrency:
+  group: e2e-github-emulator-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   generate-test-apk:
@@ -33,9 +37,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-apk
-          path: ./android/app/build/outputs/apk/release/app-release.apk
+          path: ./android-test.apk
 
   test-android:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
     name: Run backgammon smoke (emulator)
     needs: generate-test-apk
     runs-on: macOS-latest
@@ -55,9 +60,6 @@ jobs:
           name: test-apk
           path: ${{ github.workspace }}
 
-      - name: Gradle cache
-        uses: gradle/gradle-build-action@v2
-
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -65,7 +67,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-cache
+          key: avd-cache-${{ runner.os }}
 
       - name: Create AVD snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -74,7 +76,7 @@ jobs:
           api-level: 29
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
+          disable-animations: true
           cores: 2
           ram-size: 4096M
           profile: Nexus 6
@@ -86,12 +88,12 @@ jobs:
           api-level: 29
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
+          disable-animations: true
           cores: 2
           ram-size: 4096M
           profile: Nexus 6
           script: |
-            adb install "${{ github.workspace }}/app-release.apk"
+            adb install "${{ github.workspace }}/android-test.apk"
             $HOME/.maestro/bin/maestro test .maestro/app/backgammon-smoke.yaml \
               --env=APP_ID=com.backgammonmastermind.preview \
               --format junit
@@ -104,6 +106,7 @@ jobs:
           path: ~/.maestro/tests/**/*
 
       - name: Upload JUnit report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e_android_report

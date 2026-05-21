@@ -1,14 +1,5 @@
-# 🔗 Links:
-# Source file: https://github.com/obytes/react-native-template-obytes/blob/master/.github/workflows/e2e-android-eas-build.yml
-# End-to-end testing: https://starter.obytes.com/testing/end-to-end-testing/
-
-# ✍️ Description:
-# This workflow is used to run end-to-end tests for EAS build on Android.
-# It uses Maestro Cloud to run tests on Android emulator.
-# It downloads the APK from EAS build and triggers the tests on Maestro Cloud with the downloaded APK.
-
-# 🚨 GITHUB SECRETS REQUIRED:
-# MAESTRO_CLOUD_API_KEY: API key for Maestro Cloud. You can get it from https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret
+# Run Maestro smoke against an APK built on EAS (paste download URL).
+# Actions → E2E Tests EAS Build Android → Run workflow
 
 name: E2E Tests EAS Build Android (Maestro + Github Action)
 
@@ -21,44 +12,45 @@ on:
         required: true
         default: ''
 
+concurrency:
+  group: e2e-eas-apk-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   download-eas-apk:
-    if: github.event_name != 'pull_request'  && github.event.inputs.apk-url != ''
+    if: github.event_name != 'pull_request' && github.event.inputs.apk-url != ''
     name: Download Test APK From EAS Url (wget)
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📦 Download EAS APK
-        run: wget ${{ github.event.inputs.apk-url }} -O ./app-release.apk
+      - name: Download EAS APK
+        run: wget ${{ github.event.inputs.apk-url }} -O ./android-test.apk
 
       - name: Upload Test APK
         uses: actions/upload-artifact@v4
         with:
           name: test-apk
-          path: ./app-release.apk
+          path: ./android-test.apk
 
   test-android:
-    name: E2E Tests EAS Build Android (Maestro + Github Action)
+    name: Run backgammon smoke (emulator)
     needs: download-eas-apk
     runs-on: macOS-latest
 
     steps:
-      - name: 📦 Checkout project repo
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 📦 Install Maestro
-        run: npm run install-maestro # # We use npm because we don't need to install deps again
+      - name: Install Maestro
+        run: npm run install-maestro
 
       - name: Download Test APK
         uses: actions/download-artifact@v4
         with:
           name: test-apk
           path: ${{ github.workspace }}
-
-      - name: Gradle cache
-        uses: gradle/gradle-build-action@v2
 
       - name: AVD cache
         uses: actions/cache@v4
@@ -67,47 +59,47 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-cache
+          key: avd-cache-${{ runner.os }}
 
-      - name: create AVD and generate snapshot for caching
+      - name: Create AVD snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
+          disable-animations: true
           cores: 2
           ram-size: 4096M
           profile: Nexus 6
           script: echo "Generated AVD snapshot for caching."
 
-      - name: Run tests with Maestro
+      - name: Run backgammon smoke with Maestro
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
+          disable-animations: true
           cores: 2
           ram-size: 4096M
           profile: Nexus 6
           script: |
-            adb install "${{ github.workspace }}/app-release.apk"
+            adb install "${{ github.workspace }}/android-test.apk"
             $HOME/.maestro/bin/maestro test .maestro/app/backgammon-smoke.yaml \
               --env=APP_ID=com.backgammonmastermind.preview \
               --format junit
 
-      - name: Upload artifacts
+      - name: Upload Maestro logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e-test-logs
           path: ~/.maestro/tests/**/*
 
-      - name: Store tests result
+      - name: Upload JUnit report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e_android_report
-          path: |
-            report.xml
+          path: report.xml

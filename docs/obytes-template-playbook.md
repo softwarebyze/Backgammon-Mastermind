@@ -300,6 +300,10 @@ Bundle IDs — replace template `com.obytes.*` in:
 
 Also add `MAESTRO_CLOUD_API_KEY` to GitHub Actions secrets before enabling Maestro Cloud workflows — see [GitHub Actions secrets](#github-actions-secrets-required-for-ci).
 
+**CI APK build timing:** first run is slow (~10–15 min): `expo prebuild` + cold Gradle with no cache. That is normal. The **25+ min hang + `OutOfMemoryError: Metaspace`** is not — stock Obytes runs `assembleRelease` with default JVM limits on a 7 GB runner. This fork uses **`assembleDebug`** (faster, no release signing) and sets `org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m`. Gradle cache is wired **after** prebuild so subsequent runs are typically ~5–8 min.
+
+**Concurrency:** each E2E workflow cancels in-progress runs on the same PR so label + manual dispatch do not fight each other.
+
 ---
 
 ## 4. Dev client vs Expo Go
@@ -563,7 +567,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | QR scans but app empty                  | No dev client on device                                  | Install development build from [EAS builds](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) — see [dev client workflow](#dev-client--pr-preview-workflow-recommended-fork-pattern) |
 | `eas.json is not valid: "update" is not allowed` | Invalid top-level `update` key in eas-cli 19+     | Remove `update` block; channels live on build profiles (`channel` in each profile)                                |
 | EAS Update manifest: scheme must match `^[a-z]...` | **Stock Obytes `SCHEMES` use PascalCase** (`obytesApp`) | Lowercase schemes + zod regex in `env.ts`; rebuild dev client — [details & screenshot](#url-scheme-casing-template-bug--breaks-eas-update) |
-| `pnpm prebuild:staging` fails           | Template staging/preview mismatch                        | Use `preview`                                                                                                     |
+| Gradle Metaspace OOM in E2E CI          | Default JVM limits + `assembleRelease` on 7 GB runner   | Use debug APK + `-XX:MaxMetaspaceSize=512m` in `setup-jdk-generate-apk` |
 | Metro shows `exp+obytesapp://`          | Old dev client slug                                      | Rebuild dev client after slug change                                                                              |
 | agent-device empty snapshot             | Missing a11y labels                                      | Add `accessibilityLabel` to buttons                                                                               |
 | `tsc` fails in node_modules             | Broad `include` glob                                     | Narrow to `src/`**                                                                                                |
