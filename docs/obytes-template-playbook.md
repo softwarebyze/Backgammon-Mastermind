@@ -70,20 +70,29 @@ Add this checklist to every new fork’s README or `.env.example` comment block 
 
 ### App branding (icon & splash) — fork improvement
 
-**Stock Obytes:** ships template React/Obytes logos in four PNGs. [Getting started](https://starter.obytes.com/getting-started/create-new-app) says to replace assets but does **not** document splash plugin colors, adaptive icon background, rebuild timing, or a single source file — easy to ship with Obytes branding by accident.
+**Stock Obytes:** ships template React/Obytes logos in four PNGs. [Getting started](https://starter.obytes.com/getting-started/create-new-app) says to replace assets but **does not** link [Expo’s icon/splash guide](https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/) — easy to use one photo for everything and get a white box on a dark splash.
 
-**This fork:** Expo reads branding **directly** — no copy script, no sync drift.
+**Expo requirements (from official docs + project `.agents/skills/expo-deployment`):**
 
+| Asset | Requirement |
+| ----- | ----------- |
+| App icon | 1024×1024, **opaque**, fills square |
+| Splash `image` | 1024×1024, **transparent background** — color is `backgroundColor` only |
+| Adaptive foreground | Transparent PNG, logo in center ~66% safe zone |
+| Testing splash | **Not** dev client / Expo Go — use preview or production build |
+
+**This fork workflow:**
 
 | Step | What |
 | ---- | ---- |
-| 1 | Replace `assets/brand/icon-source.png` (**1024×1024**) |
-| 2 | Edit `assets/brand/brand.config.json` (splash + adaptive icon background) |
-| 3 | Rebuild dev client — icon/splash are native |
+| 1 | Drop master art in `assets/brand/icon-source.png` |
+| 2 | Tune `assets/brand/brand.config.json` (colors + scales) |
+| 3 | `pnpm brand:generate` → `icon.png`, `splash-icon.png`, `adaptive-foreground.png` |
+| 4 | Rebuild dev client for launcher icon; preview build to verify splash |
 
-`app.config.ts` points at `assets/brand/icon-source.png` and loads colors from `brand.config.json`.
+See `assets/brand/README.md` and [Figma template](https://www.figma.com/community/file/1637141012732584189).
 
-**EAS Update QR does not change icon/splash** — only native rebuilds do.
+**Common mistake:** using the same file for icon and splash — splash must be transparent PNG.
 
 ### Local vs cloud EAS builds
 
@@ -371,7 +380,7 @@ Obytes includes `expo-dev-client` and native modules (MMKV, etc.). **Expo Go is 
 | Cloud dev client | `pnpm build:development:android` / `pnpm build:development:ios` |
 | PR JS preview    | EAS Update QR (needs dev client on device)  |
 | Test build       | `pnpm build:preview:android` / `pnpm build:preview:ios` |
-| App icon/splash  | Edit `assets/brand/` → rebuild dev client (`:local` or cloud) |
+| App icon/splash  | Edit `assets/brand/icon-source.png` → `pnpm brand:generate` → rebuild dev client |
 
 
 After changing `slug` or native config, rebuild the dev client.
@@ -645,7 +654,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 - Obytes demo (auth, feed, API, onboarding) **removed** — offline game needs none of it
 - EAS project: `@zackebenfeld/backgammon-mastermind`
 - Bundle IDs: `com.backgammonmastermind.{development,preview,production}`
-- App icon / splash: `assets/brand/icon-source.png` + `brand.config.json` — see [App branding](#app-branding-icon--splash--fork-improvement)
+- App icon / splash: `pnpm brand:generate` from `assets/brand/icon-source.png` — see [App branding](#app-branding-icon--splash--fork-improvement)
 
 ---
 

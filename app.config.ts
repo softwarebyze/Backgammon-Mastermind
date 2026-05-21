@@ -19,6 +19,10 @@ const brand = JSON.parse(
   splashImageWidth: number;
 };
 
+const brandIcon = './assets/brand/icon.png';
+const brandSplash = './assets/brand/splash-icon.png';
+const brandAdaptiveForeground = './assets/brand/adaptive-foreground.png';
+
 const EXPO_ACCOUNT_OWNER = 'zackebenfeld';
 const EAS_PROJECT_ID = '7ec6600a-8b02-4714-acc1-08385effa4c9';
 
@@ -47,7 +51,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'backgammon-mastermind',
   version: Env.EXPO_PUBLIC_VERSION.toString(),
   orientation: 'portrait',
-  icon: './assets/brand/icon-source.png',
+  icon: brandIcon,
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   runtimeVersion: {
@@ -70,13 +74,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/brand/icon-source.png',
+      foregroundImage: brandAdaptiveForeground,
       backgroundColor: brand.adaptiveIconBackgroundColor,
     },
     package: Env.EXPO_PUBLIC_PACKAGE,
   },
   web: {
-    favicon: './assets/brand/icon-source.png',
+    favicon: './assets/brand/favicon.png',
     bundler: 'metro',
   },
   plugins: [
@@ -84,7 +88,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'expo-splash-screen',
       {
         backgroundColor: brand.splashBackgroundColor,
-        image: './assets/brand/icon-source.png',
+        image: brandSplash,
         imageWidth: brand.splashImageWidth,
       },
     ],

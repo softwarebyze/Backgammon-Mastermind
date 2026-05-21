@@ -28,7 +28,7 @@ cp .env.example .env
 pnpm install
 ```
 
-Branding: replace `assets/brand/icon-source.png` and edit `assets/brand/brand.config.json` — see [assets/brand/README.md](./assets/brand/README.md).
+Branding: replace `assets/brand/icon-source.png`, run `pnpm brand:generate` — see [assets/brand/README.md](./assets/brand/README.md) and [Expo icon/splash docs](https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/).
 
 **Dev client (first time on device):**
 

@@ -38,7 +38,7 @@
     "build:preview:android:local": "eas build --profile preview --platform android --local",
     "build:production:ios": "eas build --profile production --platform ios",
     "build:production:android": "eas build --profile production --platform android",
-    "app-release": "cross-env SKIP_BRANCH_PROTECTION=true np --no-publish --no-cleanup --no-release-draft",
+    "brand:generate": "tsx scripts/generate-brand-assets.ts",
     "lint": "eslint src app.config.ts env.ts .maestro",
     "lint:fix": "eslint src app.config.ts env.ts .maestro --fix",
     "format": "pnpm lint:fix",
@@ -137,6 +137,7 @@
     "jest-junit": "^16.0.0",
     "lint-staged": "^16.2.7",
     "np": "^10.3.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "4.1.18",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
