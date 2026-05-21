@@ -1,7 +1,11 @@
 {
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
+  "files.exclude": {
+    ".pnpm-store": true
+  },
   "search.exclude": {
+    ".pnpm-store": true,
     "yarn.lock": true
   },
 
