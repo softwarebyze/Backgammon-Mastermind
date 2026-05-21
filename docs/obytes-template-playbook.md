@@ -16,7 +16,7 @@ After `eas init --id <your-project-id>`:
 | File            | What to change                                 | Upstream?                                    |
 | --------------- | ---------------------------------------------- | -------------------------------------------- |
 | `app.config.ts` | `EXPO_ACCOUNT_OWNER`, `EAS_PROJECT_ID`, `slug` | **App-specific** (never commit template IDs) |
-| `env.ts`        | `NAME`, bundle IDs, schemes per environment    | **App-specific**                             |
+| `env.ts`        | `NAME`, bundle IDs, **lowercase** schemes per environment | **App-specific** — but see [URL scheme casing](#url-scheme-casing-template-bug--breaks-eas-update) |
 | `package.json`  | `name`, `repository.url`                       | **App-specific**                             |
 | `README.md`     | Clone URL, app name                            | **App-specific**                             |
 
@@ -193,6 +193,60 @@ Stock `eas-build-qa.yml` and `eas-build` composite action use `APP_ENV: staging`
 - `.github/workflows/eas-build-qa.yml`
 - `.github/actions/eas-build/action.yml`
 
+#### URL scheme casing (template bug — breaks EAS Update)
+
+**Priority upstream fix.** Stock Obytes `env.ts` ships PascalCase schemes that **pass local dev** but **fail EAS Update publish** once you add PR preview CI:
+
+```ts
+// Stock template (invalid for EAS Update manifest)
+const SCHEMES = {
+  development: 'obytesApp',        // uppercase "A" fails validation
+  preview: 'obytesApp.preview',
+  production: 'obytesApp',
+} as const;
+```
+
+Expo's update manifest requires `scheme` to match `^[a-z][a-z0-9+.-]*$` (all lowercase). The bundle exports successfully; the failure happens at **Publishing…** after upload:
+
+![EAS Update fails at publish with Manifest Validation Error on scheme](./assets/eas-update-scheme-validation-error.png)
+
+Typical CI output:
+
+```
+✖ Failed to publish updates
+Manifest Validation Error:
+scheme:'scheme' must match pattern "^[a-z][a-z0-9+.-]*$"
+scheme:must be array
+scheme:must match exactly one schema in oneOf
+This is likely a problem with your app.json, or app.config.js
+Error: Could not create a new EAS Update
+```
+
+This is easy to miss: `expo start`, native builds, and even `eas build` may work while **`eas update` / PR preview QR silently breaks** until you fix schemes.
+
+**Fix for every fork (do before enabling `preview.yml`):**
+
+```ts
+// env.ts — display name can stay PascalCase; URL scheme cannot
+const SCHEMES = {
+  development: 'myapp.dev',
+  preview: 'myapp.preview',
+  production: 'myapp',
+} as const;
+
+// Catch mistakes at scaffold time, not in CI
+EXPO_PUBLIC_SCHEME: z.string().regex(/^[a-z][a-z0-9+.-]*$/),
+```
+
+**Upstream PR for [obytes/react-native-template-obytes](https://github.com/obytes/react-native-template-obytes):**
+
+1. Lowercase default `SCHEMES` (e.g. `obytesapp`, `obytesapp.preview`)
+2. Add the zod regex on `EXPO_PUBLIC_SCHEME`
+3. Comment in `env.ts` that `NAME` (display) and `SCHEME` (deep link) follow different rules
+4. If adding stock `preview.yml`, document this in template README so first PR preview doesn't fail
+
+After changing schemes, **rebuild the dev client** — native builds embed the scheme at compile time.
+
 #### Maestro E2E app IDs
 
 Template defaults use `com.obytes.`*. Replace with your `env.ts` bundle IDs in:
@@ -318,6 +372,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 
 | Change                                                          | Why                                           |
 | --------------------------------------------------------------- | --------------------------------------------- |
+| **`env.ts`: lowercase `SCHEMES` + zod regex on scheme**         | **Stock template breaks EAS Update / PR QR** — see [URL scheme casing](#url-scheme-casing-template-bug--breaks-eas-update) |
 | `.env` gitignored + `.env.example`                              | Security baseline                             |
 | `preview.yml` PR workflow                                       | Expected modern DX                            |
 | README / playbook: `EXPO_TOKEN` + `MAESTRO_CLOUD_API_KEY` setup | CI fails silently without them                |
@@ -364,7 +419,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | Maestro Cloud E2E fails auth            | Missing `MAESTRO_CLOUD_API_KEY`                          | Add secret from [Maestro CI docs](https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret) |
 | QR scans but app empty                  | No dev client on device                                  | Install development build first                                                                                   |
 | `eas.json is not valid: "update" is not allowed` | Invalid top-level `update` key in eas-cli 19+     | Remove `update` block; channels live on build profiles (`channel` in each profile)                                |
-| EAS Update manifest: scheme must match `^[a-z]...` | Uppercase scheme in `env.ts` `SCHEMES`            | Use lowercase schemes only (e.g. `backgammonmastermind.preview`)                                                  |
+| EAS Update manifest: scheme must match `^[a-z]...` | **Stock Obytes `SCHEMES` use PascalCase** (`obytesApp`) | Lowercase schemes + zod regex in `env.ts`; rebuild dev client — [details & screenshot](#url-scheme-casing-template-bug--breaks-eas-update) |
 | `pnpm prebuild:staging` fails           | Template staging/preview mismatch                        | Use `preview`                                                                                                     |
 | Metro shows `exp+obytesapp://`          | Old dev client slug                                      | Rebuild dev client after slug change                                                                              |
 | agent-device empty snapshot             | Missing a11y labels                                      | Add `accessibilityLabel` to buttons                                                                               |
