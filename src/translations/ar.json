@@ -1,17 +1,13 @@
 {
-  "onboarding": {
-    "message": "مرحبًا بك في Backgammon Mastermind"
-  },
   "settings": {
     "about": "حول التطبيق ",
     "app_name": "Backgammon Mastermind",
     "arabic": "عربي",
     "english": "إنجليزي",
     "generale": "عام",
-    "github": "جيثب",
+    "github": "GitHub",
     "language": "لغة",
     "links": "الروابط",
-    "logout": "تسجيل خروج",
     "more": "أكثر",
     "privacy": "سياسة الخصوصية",
     "rate": "تقييم",

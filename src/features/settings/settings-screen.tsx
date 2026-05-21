@@ -9,7 +9,6 @@ import {
   View,
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
-import { useAuthStore as useAuth } from '@/features/auth/use-auth-store';
 import { translate } from '@/lib/i18n';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
@@ -17,7 +16,6 @@ import { SettingsItem } from './components/settings-item';
 import { ThemeItem } from './components/theme-item';
 
 export function SettingsScreen() {
-  const signOut = useAuth.use.signOut();
   const { theme } = useUniwind();
   const iconColor
     = theme === 'dark' ? colors.neutral[400] : colors.neutral[500];
@@ -78,12 +76,6 @@ export function SettingsScreen() {
               onPress={() => {}}
             />
           </SettingsContainer>
-
-          <View className="my-8">
-            <SettingsContainer>
-              <SettingsItem text="settings.logout" onPress={signOut} />
-            </SettingsContainer>
-          </View>
         </View>
       </ScrollView>
     </>

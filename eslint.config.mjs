@@ -38,7 +38,6 @@ export default antfu(
       '.vscode',
       'docs/',
       'cli/',
-      'replit/**',
       '.agents/**',
       'expo-env.d.ts',
       'migration/*',

@@ -458,9 +458,8 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 
 - Game/product code under `src/features/`
 - Branding (`assets/`, translations, `env.ts` name/IDs)
-- Removing demo routes (feed, login, onboarding) when not needed
+- Removing Obytes demo code (auth, feed, onboarding, `lib/api`) when building an offline/single-purpose app
 - Custom Maestro flows for your product
-- `replit/` archive folder
 
 ---
 
@@ -499,8 +498,8 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | Feature folder structure (`src/features/`)      | Good separation                                       |
 | MMKV, React Query, TanStack Form                | Template defaults                                     |
 | Uniwind / Nativewind setup                      | Template styling system                               |
-| Demo auth/feed screens (until product replaces) | Removed only from routing, not deleted—easy reference |
-| `APIProvider` wrapper                           | Harmless for offline games; remove when sure no API   |
+| Demo auth/feed screens (until product replaces) | Delete once product routes exist — don't leave dead code |
+| `APIProvider` / React Query stack                 | Remove with feed/auth if app has no API                  |
 
 
 ---
@@ -532,9 +531,10 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 
 ## 10. Backgammon Mastermind–specific notes
 
-- Original Replit app preserved in `replit/` for reference
 - Game engine: `src/lib/game/` (pure TS)
 - UI + state: `src/features/game/`
+- Replit source was migrated then **removed** — recover from git history if needed
+- Obytes demo (auth, feed, API, onboarding) **removed** — offline game needs none of it
 - EAS project: `@zackebenfeld/backgammon-mastermind`
 - Bundle IDs: `com.backgammonmastermind.{development,preview,production}`
 

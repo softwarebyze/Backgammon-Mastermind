@@ -1,7 +1,4 @@
 {
-  "onboarding": {
-    "message": "Welcome to Backgammon Mastermind"
-  },
   "settings": {
     "about": "About",
     "app_name": "Backgammon Mastermind",
@@ -11,7 +8,6 @@
     "github": "Github",
     "language": "Language",
     "links": "Links",
-    "logout": "Logout",
     "more": "More",
     "privacy": "Privacy Policy",
     "rate": "Rate",

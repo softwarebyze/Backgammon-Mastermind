@@ -4,8 +4,12 @@
     "baseUrl": ".",
     "jsx": "react-native",
     "paths": {
-      "@/*": ["./src/*"],
-      "@env": ["env.ts"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@env": [
+        "env.ts"
+      ]
     },
     "checkJs": true,
     "strict": true,
@@ -30,7 +34,6 @@
     "cli",
     "android",
     "ios",
-    "replit",
     ".agents",
     "lint-staged.config.js"
   ]
