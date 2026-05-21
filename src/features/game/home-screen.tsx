@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { FocusAwareStatusBar } from '@/components/ui';
 import { useGame } from '@/features/game/game-context';
 
+const HOME_BG = '#1E0C02';
+
 export function HomeScreen() {
-  const insets = useSafeAreaInsets();
   const { startGame } = useGame();
 
   const handleStart = (mode: 'vs-computer' | 'vs-human') => {
@@ -21,11 +23,9 @@ export function HomeScreen() {
     router.push('/game');
   };
 
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const bottomPad = Platform.OS === 'web' ? 34 : insets.bottom;
-
   return (
-    <View style={[styles.root, { paddingTop: topPad + 16, paddingBottom: bottomPad + 16 }]}>
+    <SafeAreaView style={[styles.root, webSafeArea]} edges={['top', 'bottom']}>
+      <FocusAwareStatusBar />
       <View style={styles.logoContainer}>
         <Image
           source={require('../../../assets/backgammon-icon.png')}
@@ -80,14 +80,18 @@ export function HomeScreen() {
         <Text style={styles.rulesText}>• Bear off all 15 checkers to win!</Text>
         <Text style={styles.rulesText}>• White moves from high → low, Black moves from low → high</Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
+
+const webSafeArea = Platform.OS === 'web'
+  ? { paddingTop: 16, paddingBottom: 16 }
+  : null;
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#1E0C02',
+    backgroundColor: HOME_BG,
     alignItems: 'center',
     paddingHorizontal: 24,
   },

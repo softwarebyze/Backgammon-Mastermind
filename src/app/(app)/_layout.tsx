@@ -8,7 +8,12 @@ export default function AppLayout() {
   }, []);
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: '#1E0C02' },
+      }}
+    >
       <Stack.Screen name="index" />
       <Stack.Screen name="settings" />
     </Stack>
