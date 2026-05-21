@@ -263,7 +263,8 @@ Upstream v9 currently generates `export type UniwindConfig` (passes). Older uniw
 **Fix for fork (recommended):**
 
 1. **`.gitignore`**: add `uniwind-types.d.ts` (same pattern as `expo-env.d.ts`)
-2. **`git rm --cached uniwind-types.d.ts`** — optional locally; `tsc` works without it
+2. **Commit `uniwind-env.d.ts`** with `/// <reference types="uniwind/types" />` + static `UniwindConfig` — CI needs this for `className` on RN components (replacing broken `nativewind-env.d.ts`)
+3. **`git rm --cached uniwind-types.d.ts`** — optional locally; generator may recreate gitignored copy
 3. **`eslint.config.mjs` ignores**: `uniwind-types.d.ts`, `nativewind-env.d.ts`
 4. **`.github/workflows/lint-ts.yml`**: align reviewdog with your lint script:
 
@@ -511,7 +512,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | Explicit `jsx` in tsconfig + archive exclude                    | Fixes IDE JSX errors                          |
 | `pnpm format` script                                            | One command to apply all autofixes            |
 | `.gitignore`: `.pnpm-store/` + VS Code exclude                  | Agent/sandbox installs; not in stock template |
-| `.gitignore`: `uniwind-types.d.ts` + eslint ignore              | Generated file; template commits it but ESLint flags `interface` — [details](#uniwind-typesdts--pr-lint-ci-mismatch-template-bug) |
+| `.gitignore`: `uniwind-types.d.ts` + committed `uniwind-env.d.ts` | Generated types gitignored; CI needs `/// <reference types="uniwind/types" />` stub |
 | `lint-ts.yml` reviewdog scope = `package.json` lint script      | Stock CI runs `eslint .`; scoped forks get false PR annotations |
 
 
@@ -553,7 +554,8 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | `Cannot use JSX unless --jsx flag`      | File outside tsconfig `include`                          | Exclude archive dirs; add explicit `"jsx": "react-native"`                                                        |
 | `perfectionist/sort-exports` on save    | Not in ESLint fix-on-save                                | `source.fixAll.eslint: "always"` + perfectionist fixable                                                          |
 | `.pnpm-store/` in project root          | Sandbox/agent `pnpm install` (global store not writable) | `rm -rf .pnpm-store`; gitignore + IDE exclude; not Obytes/Replit config                                           |
-| reviewdog: `uniwind-types.d.ts` interface/type | **Template commits generated uniwind types** + CI runs `eslint .` | Gitignore file; eslint ignore; align `lint-ts.yml` with scoped lint — [details](#uniwind-typesdts--pr-lint-ci-mismatch-template-bug) |
+| reviewdog: `uniwind-types.d.ts` interface/type | **Template commits generated uniwind types** + CI runs `eslint .` | Gitignore generated file; commit `uniwind-env.d.ts` stub — [details](#uniwind-typesdts--pr-lint-ci-mismatch-template-bug) |
+| `className` does not exist on `View` in CI tsc   | Removed `uniwind-types.d.ts` without committed `/// <reference types="uniwind/types" />` | Add `uniwind-env.d.ts` to repo + tsconfig `include` |
 
 
 ---
