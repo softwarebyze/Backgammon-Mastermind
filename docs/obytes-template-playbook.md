@@ -274,11 +274,28 @@ eslint_flags: 'src app.config.ts env.ts .maestro --ext .js,.jsx,.ts,.tsx'
 
 **Upstream PR for Obytes:** gitignore generated uniwind types + make `lint-ts.yml` use `pnpm run lint` (or same scoped paths) so PR CI matches local DX.
 
-#### Maestro E2E app IDs
+#### Maestro E2E (backgammon smoke)
 
-Template defaults use `com.obytes.`*. Replace with your `env.ts` bundle IDs in:
+Single flow: `.maestro/app/backgammon-smoke.yaml` (home → vs computer → assert board).
 
-- `package.json` → `e2e-test` script
+| Trigger | Label / command | Secret |
+| ------- | ---------------- | ------ |
+| Maestro Cloud (fast, recommended) | `android-test-maestro-cloud` on PR, or **Actions → E2E Tests Android (Maestro Cloud) → Run workflow** | `MAESTRO_CLOUD_API_KEY` |
+| GitHub emulator (no cloud account) | `android-test-github` on PR, or manual dispatch | — |
+| EAS-built APK | **Actions → E2E Tests EAS Build Android** + paste APK URL | — |
+
+CI uses `APP_ENV=preview` → `com.backgammonmastermind.preview`. Local dev client:
+
+```bash
+pnpm install-maestro   # once
+pnpm e2e-smoke         # or pnpm e2e-test (same flow)
+```
+
+`.maestro/config.yaml` lists only `app/backgammon-smoke.yaml` (demo auth/onboarding flows removed).
+
+Bundle IDs — replace template `com.obytes.*` in:
+
+- `package.json` → `e2e-test` / `e2e-smoke`
 - `.github/workflows/e2e-android*.yml`
 
 Also add `MAESTRO_CLOUD_API_KEY` to GitHub Actions secrets before enabling Maestro Cloud workflows — see [GitHub Actions secrets](#github-actions-secrets-required-for-ci).

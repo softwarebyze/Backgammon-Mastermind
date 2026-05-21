@@ -1,4 +1,7 @@
 appId: ${APP_ID}
+tags:
+  - smoke
+  - pull-request
 ---
 - launchApp
 - runFlow:
