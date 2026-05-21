@@ -28,9 +28,9 @@ export function HomeScreen() {
       <FocusAwareStatusBar />
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../../assets/brand/home-logo.png')}
+          source={require('../../../assets/brand/display-logo.png')}
           style={styles.logo}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
 
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 3,
     borderColor: '#D4A843',
+    backgroundColor: HOME_BG,
     marginBottom: 20,
     shadowColor: '#D4A843',
     shadowOffset: { width: 0, height: 4 },

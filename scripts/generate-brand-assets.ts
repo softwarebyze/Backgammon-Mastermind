@@ -118,18 +118,14 @@ async function main() {
     .png()
     .toFile(join(brandDir, 'favicon.png'));
 
-  // In-app home logo: square cover crop (fills rounded UI container — not letterboxed)
-  await board
-    .clone()
-    .resize(size, size, { fit: 'cover', position: 'centre' })
-    .png()
-    .toFile(join(brandDir, 'home-logo.png'));
+  // In-app logo: trimmed board at natural aspect (use contain in UI — not square cover crop)
+  await board.clone().png().toFile(join(brandDir, 'display-logo.png'));
 
   console.log('Generated Expo brand assets in assets/brand/:');
   console.log('  icon.png              — app icon (opaque, full bleed)');
   console.log('  splash-icon.png       — splash logo (transparent PNG)');
   console.log('  adaptive-foreground.png — Android adaptive layer');
-  console.log('  home-logo.png         — in-app home screen (cover crop)');
+  console.log('  display-logo.png      — in-app home screen (natural aspect)');
   console.log('  favicon.png           — web');
   console.log('\nRebuild dev client to see icon/splash on device.');
   console.log('Note: dev-client splash ≠ production splash — use preview build to verify.');
