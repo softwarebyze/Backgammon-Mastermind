@@ -30,7 +30,7 @@ export function HomeScreen() {
         <Image
           source={require('../../../assets/brand/display-logo.png')}
           style={styles.logo}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
 
