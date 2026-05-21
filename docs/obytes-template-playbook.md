@@ -589,6 +589,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 - Obytes demo (auth, feed, API, onboarding) **removed** — offline game needs none of it
 - EAS project: `@zackebenfeld/backgammon-mastermind`
 - Bundle IDs: `com.backgammonmastermind.{development,preview,production}`
+- App icon / splash / favicon: sourced from `assets/backgammon-icon.png` (replaces Obytes React logo). Splash + adaptive icon background: `#1E0C02`. Rebuild dev client after icon changes.
 
 ---
 
