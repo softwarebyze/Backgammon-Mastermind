@@ -43,9 +43,19 @@ jobs:
           ignorePaths: 'node_modules/**,ios/**,android/**,assets/brand/**'
       - name: Create Pull Request
         if: steps.calibre.outputs.markdown != ''
+        id: create_pr
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v7
         with:
           title: Auto Compress Images
           branch-suffix: timestamp
           commit-message: Compress Images
           body: ${{ steps.calibre.outputs.markdown }}
+
+      - name: Compression result
+        if: steps.calibre.outputs.markdown != ''
+        run: |
+          echo "Images compressed in CI."
+          if [ "${{ steps.create_pr.outcome }}" = "failure" ]; then
+            echo "::notice::Auto-PR skipped — enable Actions PR creation in repo Settings → Actions → General if you want compression PRs."
+          fi
