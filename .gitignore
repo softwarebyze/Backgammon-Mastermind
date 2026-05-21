@@ -3,6 +3,7 @@ node_modules/
 dist/
 .env
 .env*.local
+.pnpm-store/
 npm-debug.*
 *.jks
 *.p8
