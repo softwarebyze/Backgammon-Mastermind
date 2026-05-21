@@ -36,6 +36,8 @@ Obytes ships four PNGs you replace by hand. Expo actually requires **different**
 
 **Minimum workflow:** edit `icon-source.png` → `pnpm brand:generate` → rebuild dev client for store icon/splash only.
 
+`icon-source.png` may include white studio padding and a drop shadow (often on the right). `brand:generate` crops to the board frame only — shadow and padding are stripped from `display-logo.png` and the native icon assets.
+
 ## Testing splash (easy to get wrong)
 
 | Build type | What you see on launch |

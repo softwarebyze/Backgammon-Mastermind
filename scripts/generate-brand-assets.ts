@@ -36,14 +36,19 @@ function hexToRgb(hex: string) {
   };
 }
 
-function isMarginPixel(r: number, g: number, b: number) {
+/** White studio padding and the soft drop shadow cast on the right in icon-source. */
+function isBackdropOrShadow(r: number, g: number, b: number) {
   const lum = 0.299 * r + 0.587 * g + 0.114 * b;
   const sat = Math.max(r, g, b) - Math.min(r, g, b);
-  // White studio backdrop + light gray compression artifacts on the right edge
-  return lum > 200 && sat < 35;
+  if (lum > 235 && sat < 25)
+    return true;
+  // Neutral gray shadow/highlight (no wood grain color)
+  if (lum > 100 && sat < 25)
+    return true;
+  return false;
 }
 
-/** Square crop centered on the board, excluding white/gray studio margins. */
+/** Square crop centered on the board frame, excluding white padding and drop shadow. */
 async function centeredBoardCrop(source: string) {
   const { data, info } = await sharp(source)
     .ensureAlpha()
@@ -59,7 +64,7 @@ async function centeredBoardCrop(source: string) {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const i = (y * width + x) * channels;
-      if (!isMarginPixel(data[i], data[i + 1], data[i + 2])) {
+      if (!isBackdropOrShadow(data[i], data[i + 1], data[i + 2])) {
         minX = Math.min(minX, x);
         maxX = Math.max(maxX, x);
         minY = Math.min(minY, y);
@@ -83,19 +88,7 @@ async function centeredBoardCrop(source: string) {
 }
 
 async function trimmedBoard(source: string) {
-  const cropped = await centeredBoardCrop(source);
-  const meta = await sharp(cropped).metadata();
-  const side = meta.width ?? 0;
-  // Source photo has uneven studio lighting — bright neutral strip on the right frame edge
-  const insetY = Math.round(side * 0.035);
-  const insetLeft = Math.round(side * 0.02);
-  const insetRight = Math.round(side * 0.065);
-  return sharp(cropped).extract({
-    left: insetLeft,
-    top: insetY,
-    width: side - insetLeft - insetRight,
-    height: side - insetY * 2,
-  });
+  return sharp(await centeredBoardCrop(source));
 }
 
 async function main() {
