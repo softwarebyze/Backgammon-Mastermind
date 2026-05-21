@@ -44,7 +44,9 @@
     "test:watch": "pnpm run test --watch",
     "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
     "e2e-test": "maestro test .maestro/ -e APP_ID=com.backgammonmastermind.development",
-    "skills:update": "skills update"
+    "skills:update": "skills update",
+    "device:open": "agent-device --session android open com.backgammonmastermind.development --platform android",
+    "device:snapshot": "agent-device --session android snapshot -i"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
