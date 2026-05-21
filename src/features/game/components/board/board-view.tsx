@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
-import { Dimensions, View } from 'react-native';
 import type { GameState } from '@/lib/game/types';
-import { PointColumn } from './PointColumn';
-import { BarArea } from './BarArea';
-import { BearOffArea } from './BearOffArea';
+import * as React from 'react';
+import { useMemo } from 'react';
+import { Dimensions, View } from 'react-native';
+import { BarArea } from './bar-area';
+import { BearOffArea } from './bear-off-area';
+import { PointColumn } from './point-column';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -19,26 +20,44 @@ export const POINT_HEIGHT = 138;
 export const BOARD_HEIGHT = POINT_HEIGHT * 2 + MIDDLE_HEIGHT;
 
 // Point ordering visible on screen
-// Top row (triangles point down, black home on right)
-const TOP_LEFT  = [13, 14, 15, 16, 17, 18];
+const TOP_LEFT = [13, 14, 15, 16, 17, 18];
 const TOP_RIGHT = [19, 20, 21, 22, 23, 24];
-// Bottom row (triangles point up, white home on right)
-const BOT_LEFT  = [12, 11, 10, 9, 8, 7];
+const BOT_LEFT = [12, 11, 10, 9, 8, 7];
 const BOT_RIGHT = [6, 5, 4, 3, 2, 1];
 
-interface Props {
+type SideSectionProps = {
+  topIndices: number[];
+  botIndices: number[];
+  renderColumn: (idx: number, isTop: boolean) => React.ReactNode;
+};
+
+function SideSection({ topIndices, botIndices, renderColumn }: SideSectionProps) {
+  return (
+    <View style={{ flex: 6, height: BOARD_HEIGHT, flexDirection: 'column' }}>
+      <View style={{ height: POINT_HEIGHT, flexDirection: 'row' }}>
+        {topIndices.map(i => renderColumn(i, true))}
+      </View>
+      <View style={{ height: MIDDLE_HEIGHT, backgroundColor: '#3A1005' }} />
+      <View style={{ height: POINT_HEIGHT, flexDirection: 'row' }}>
+        {botIndices.map(i => renderColumn(i, false))}
+      </View>
+    </View>
+  );
+}
+
+type Props = {
   state: GameState;
   onPointPress: (index: number) => void;
   onBarPress: () => void;
-}
+};
 
 export function BoardView({ state, onPointPress, onBarPress }: Props) {
   const legalTargets = useMemo(
     () => new Set(state.legalMovesForSelected.map(m => m.to)),
-    [state.legalMovesForSelected]
+    [state.legalMovesForSelected],
   );
 
-  const makeColumn = (idx: number, isTop: boolean) => (
+  const renderColumn = (idx: number, isTop: boolean) => (
     <PointColumn
       key={idx}
       pointIndex={idx}
@@ -51,22 +70,6 @@ export function BoardView({ state, onPointPress, onBarPress }: Props) {
       pointHeight={POINT_HEIGHT}
       checkerSize={CHECKER_SIZE}
     />
-  );
-
-  // Each side section is a column divided into top half, middle gap, bottom half
-  const SideSection = ({ topIndices, botIndices }: { topIndices: number[]; botIndices: number[] }) => (
-    <View style={{ flex: 6, height: BOARD_HEIGHT, flexDirection: 'column' }}>
-      {/* Top half */}
-      <View style={{ height: POINT_HEIGHT, flexDirection: 'row' }}>
-        {topIndices.map(i => makeColumn(i, true))}
-      </View>
-      {/* Middle gap */}
-      <View style={{ height: MIDDLE_HEIGHT, backgroundColor: '#3A1005' }} />
-      {/* Bottom half */}
-      <View style={{ height: POINT_HEIGHT, flexDirection: 'row' }}>
-        {botIndices.map(i => makeColumn(i, false))}
-      </View>
-    </View>
   );
 
   return (
@@ -82,10 +85,12 @@ export function BoardView({ state, onPointPress, onBarPress }: Props) {
         overflow: 'hidden',
       }}
     >
-      {/* Left quadrant: 13-18 top / 12-7 bottom */}
-      <SideSection topIndices={TOP_LEFT} botIndices={BOT_LEFT} />
+      <SideSection
+        topIndices={TOP_LEFT}
+        botIndices={BOT_LEFT}
+        renderColumn={renderColumn}
+      />
 
-      {/* Bar – spans full board height naturally in this flex row */}
       <BarArea
         whiteCount={state.bar.white}
         blackCount={state.bar.black}
@@ -98,10 +103,12 @@ export function BoardView({ state, onPointPress, onBarPress }: Props) {
         checkerSize={CHECKER_SIZE}
       />
 
-      {/* Right quadrant: 19-24 top / 6-1 bottom */}
-      <SideSection topIndices={TOP_RIGHT} botIndices={BOT_RIGHT} />
+      <SideSection
+        topIndices={TOP_RIGHT}
+        botIndices={BOT_RIGHT}
+        renderColumn={renderColumn}
+      />
 
-      {/* Bear-off column – also spans full height naturally */}
       <BearOffArea
         whiteBorneOff={state.borneOff.white}
         blackBorneOff={state.borneOff.black}

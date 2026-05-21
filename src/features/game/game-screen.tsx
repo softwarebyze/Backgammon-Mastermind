@@ -2,7 +2,7 @@ import type { GameState } from '@/lib/game';
 import { Platform, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BoardView } from '@/features/game/components/board/BoardView';
+import { BoardView } from '@/features/game/components/board/board-view';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { GameScreenHeader } from '@/features/game/game-screen-header';
 

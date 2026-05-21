@@ -1,15 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, View } from 'react-native';
-import { CheckerToken } from './CheckerToken';
+import { CheckerToken } from './checker-token';
 
-interface Props {
+type Props = {
   whiteBorneOff: number;
   blackBorneOff: number;
   width: number;
   boardHeight: number;
   middleHeight: number;
   checkerSize: number;
-}
+};
 
 export function BearOffArea({
   whiteBorneOff,
@@ -41,7 +41,10 @@ export function BearOffArea({
           <CheckerToken key={i} player={player} size={small} />
         ))}
         {count > visible && (
-          <Text style={{ color: '#D4A843', fontSize: 8, fontWeight: '700' }}>+{count - visible}</Text>
+          <Text style={{ color: '#D4A843', fontSize: 8, fontWeight: '700' }}>
+            +
+            {count - visible}
+          </Text>
         )}
         {count === 0 && (
           <View

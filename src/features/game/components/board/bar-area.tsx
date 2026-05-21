@@ -1,6 +1,6 @@
 import type { Player } from '@/lib/game/types';
 import { TouchableOpacity, View } from 'react-native';
-import { CheckerToken } from './CheckerToken';
+import { CheckerToken } from './checker-token';
 
 type Props = {
   whiteCount: number;

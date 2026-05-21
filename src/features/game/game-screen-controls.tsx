@@ -1,7 +1,7 @@
 import type { GameState } from '@/lib/game';
 
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { DiceDisplay } from '@/features/game/components/board/DiceDisplay';
+import { DiceDisplay } from '@/features/game/components/board/dice-display';
 
 type Props = {
   state: GameState;

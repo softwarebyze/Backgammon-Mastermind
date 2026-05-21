@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import * as React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-interface Props {
+type Props = {
   dice: [number, number];
   remainingDice: number[];
   playerColor: 'white' | 'black';
-}
+};
 
 function DieFace({ value, used, playerColor }: { value: number; used: boolean; playerColor: 'white' | 'black' }) {
   const isWhite = playerColor === 'white';
@@ -17,13 +17,13 @@ function DieFace({ value, used, playerColor }: { value: number; used: boolean; p
           backgroundColor: used
             ? 'rgba(100,80,60,0.4)'
             : isWhite
-            ? '#F2EAD3'
-            : '#1E1E30',
+              ? '#F2EAD3'
+              : '#1E1E30',
           borderColor: used
             ? '#5A4030'
             : isWhite
-            ? '#BBA070'
-            : '#5050A0',
+              ? '#BBA070'
+              : '#5050A0',
           opacity: used ? 0.4 : 1,
         },
       ]}
@@ -43,11 +43,12 @@ function DieFace({ value, used, playerColor }: { value: number; used: boolean; p
 }
 
 export function DiceDisplay({ dice, remainingDice, playerColor }: Props) {
-  if (dice[0] === 0 && dice[1] === 0) return null;
+  if (dice[0] === 0 && dice[1] === 0)
+    return null;
 
   // Mark which dice values have been used
   const remaining = [...remainingDice];
-  const diceStates = dice.map(v => {
+  const diceStates = dice.map((v) => {
     const idx = remaining.indexOf(v);
     if (idx !== -1) {
       remaining.splice(idx, 1);
@@ -62,17 +63,19 @@ export function DiceDisplay({ dice, remainingDice, playerColor }: Props) {
 
   return (
     <View style={styles.container}>
-      {isDoubles ? (
-        <>
-          {[0, 1, 2, 3].map(i => (
-            <DieFace key={i} value={dice[0]} used={i >= totalRemaining} playerColor={playerColor} />
-          ))}
-        </>
-      ) : (
-        diceStates.map((d, i) => (
-          <DieFace key={i} value={d.value} used={d.used} playerColor={playerColor} />
-        ))
-      )}
+      {isDoubles
+        ? (
+            <>
+              {[0, 1, 2, 3].map(i => (
+                <DieFace key={i} value={dice[0]} used={i >= totalRemaining} playerColor={playerColor} />
+              ))}
+            </>
+          )
+        : (
+            diceStates.map((d, i) => (
+              <DieFace key={i} value={d.value} used={d.used} playerColor={playerColor} />
+            ))
+          )}
     </View>
   );
 }
