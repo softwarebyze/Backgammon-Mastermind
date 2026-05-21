@@ -22,7 +22,6 @@
     "app.config.ts",
     "env.ts",
     "nativewind-env.d.ts",
-    "uniwind-types.d.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ],
