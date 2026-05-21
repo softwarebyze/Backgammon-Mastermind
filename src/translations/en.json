@@ -1,10 +1,10 @@
 {
   "onboarding": {
-    "message": "Welcome to obytes app site"
+    "message": "Welcome to Backgammon Mastermind"
   },
   "settings": {
     "about": "About",
-    "app_name": "App Name",
+    "app_name": "Backgammon Mastermind",
     "arabic": "Arabic",
     "english": "English",
     "generale": "General",
@@ -29,5 +29,5 @@
     "version": "Version",
     "website": "Website"
   },
-  "welcome": "Welcome to obytes app site"
+  "welcome": "Welcome to Backgammon Mastermind"
 }

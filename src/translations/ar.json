@@ -1,10 +1,10 @@
 {
   "onboarding": {
-    "message": "مرحبا بكم في موقع تطبيق obytes"
+    "message": "مرحبًا بك في Backgammon Mastermind"
   },
   "settings": {
     "about": "حول التطبيق ",
-    "app_name": "اسم التطبيق",
+    "app_name": "Backgammon Mastermind",
     "arabic": "عربي",
     "english": "إنجليزي",
     "generale": "عام",
@@ -29,5 +29,5 @@
     "version": "إصدار",
     "website": "موقع الكتروني"
   },
-  "welcome": "test arabic"
+  "welcome": "مرحبًا بك في Backgammon Mastermind"
 }
