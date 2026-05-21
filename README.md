@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="logo" src="./assets/icon.png" width="124px" style="border-radius:10px"/><br/>
+  <img alt="logo" src="./assets/brand/icon-source.png" width="124px" style="border-radius:10px"/><br/>
 Backgammon Mastermind
 </h1>
 
@@ -26,24 +26,28 @@ cd Backgammon-Mastermind
 cp .env.example .env
 
 pnpm install
-
-# Replace Obytes placeholder branding (icon + splash)
-pnpm brand:apply
 ```
 
-To run the app on iOS:
+Branding: replace `assets/brand/icon-source.png` and edit `assets/brand/brand.config.json` — see [assets/brand/README.md](./assets/brand/README.md).
+
+**Dev client (first time on device):**
 
 ```sh
-pnpm ios
+# Saves EAS minutes — builds on your machine:
+pnpm build:development:android:local
+pnpm build:development:ios:local      # Mac + Xcode
+
+# Or cloud (for sharing APK/IPA with teammates):
+pnpm build:development:android
+pnpm build:development:ios
 ```
 
-To run the app on Android:
+To run in simulator / USB device without EAS:
 
 ```sh
-pnpm android
+pnpm ios      # iOS simulator
+pnpm android  # Android emulator
 ```
-
-Branding: edit `assets/brand/icon-source.png` and `assets/brand/brand.config.json`, then `pnpm brand:apply`. See [assets/brand/README.md](./assets/brand/README.md).
 
 ## CI secrets (GitHub Actions)
 

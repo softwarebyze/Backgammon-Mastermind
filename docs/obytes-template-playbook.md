@@ -70,47 +70,56 @@ Add this checklist to every new fork’s README or `.env.example` comment block 
 
 ### App branding (icon & splash) — fork improvement
 
-**Stock Obytes:** ships template React/Obytes logos in `assets/icon.png`, `adaptive-icon.png`, `splash-icon.png`, `favicon.png`. Docs mention swapping files but not a single workflow — easy to miss `app.config.ts` splash colors, adaptive icon background, and **rebuild dev client** after changes.
+**Stock Obytes:** ships template React/Obytes logos in four PNGs. [Getting started](https://starter.obytes.com/getting-started/create-new-app) says to replace assets but does **not** document splash plugin colors, adaptive icon background, rebuild timing, or a single source file — easy to ship with Obytes branding by accident.
 
-**This fork (Ignite-inspired):** one source file + one config + one command.
+**This fork:** Expo reads branding **directly** — no copy script, no sync drift.
 
 
 | Step | What |
 | ---- | ---- |
-| 1 | Replace `assets/brand/icon-source.png` with your **1024×1024** master icon |
-| 2 | Edit `assets/brand/brand.config.json` (splash + adaptive icon background colors) |
-| 3 | Run `pnpm brand:apply` → copies into Expo asset paths |
-| 4 | Rebuild dev client (`pnpm build:development:ios` / `:android`, or CI `dev-client.yml`) |
+| 1 | Replace `assets/brand/icon-source.png` (**1024×1024**) |
+| 2 | Edit `assets/brand/brand.config.json` (splash + adaptive icon background) |
+| 3 | Rebuild dev client — icon/splash are native |
 
-Colors in `brand.config.json` are loaded by `app.config.ts` — no hunting for `#2E3C4B` in plugins.
-
-**Compare:**
-
-| | Obytes template | Infinite Red Ignite | This fork |
-| --- | --- | --- | --- |
-| Icon source | 4 separate PNGs | `app-icon.png` + generators | `assets/brand/icon-source.png` |
-| Splash colors | Hardcoded in `app.config.ts` plugin | Config-driven | `brand.config.json` |
-| Apply command | Manual copy | `ignite` generators | `pnpm brand:apply` |
-| Remove demo | Manual / docs | `npx ignite-cli remove-demo` | Demo already removed; see git history |
-
-**Expo also has** [`create-expo-app` templates](https://docs.expo.dev/get-started/create-a-project/) with placeholder assets — same gap: branding is step one after clone, rarely automated in boilerplates.
+`app.config.ts` points at `assets/brand/icon-source.png` and loads colors from `brand.config.json`.
 
 **EAS Update QR does not change icon/splash** — only native rebuilds do.
 
-### iOS dev client (physical device)
+### Local vs cloud EAS builds
 
-PR preview QR is **platform-agnostic** (same update for iOS + Android dev clients). Stock Obytes CI only built **Android** dev clients (`dev-client.yml` with `IOS: false`).
+**Default locally:** use `--local` to save EAS build minutes. CI uses cloud builds (sharing artifacts, no Mac runner for iOS locally in GHA).
 
-**This fork:** `dev-client.yml` matrix builds **Android + iOS** on native changes.
 
-**One-time iPhone setup:**
+| Use case | Command |
+| -------- | ------- |
+| Dev client on your machine | `pnpm build:development:android:local` / `:ios:local` |
+| Share dev client with team | `pnpm build:development:android` / `:ios` (cloud) or CI `dev-client.yml` |
+| Extra flags | `pnpm build:development:android -- --local` also works |
 
-1. Apple Developer account linked to EAS (`eas credentials` or Expo dashboard)
-2. Register device: `eas device:create` or [Expo → Devices](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices)
-3. Install from [EAS builds → development → iOS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) (internal distribution link in Safari)
-4. Scan PR EAS Update QR
+Local Android output: `build-<timestamp>.apk` in project root (gitignored).
 
-Local: `pnpm build:development:ios` or `pnpm build:development` (both platforms).
+### iOS dev client — device registration (share this with reviewers)
+
+**Obytes does not document this.** Expo does: [Internal distribution → Registering devices](https://docs.expo.dev/build/internal-distribution/#registering-devices).
+
+PR EAS Update QR works on **both** iOS and Android dev clients. Each physical iPhone needs a **one-time** device registration **per Apple Developer team** (if you've registered for other Expo projects on the same team, you're already set).
+
+**Reviewer checklist (iPhone):**
+
+1. **Apple Developer account** linked to the EAS project (project owner sets up credentials once in [Expo dashboard → Credentials](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/credentials))
+2. **Register device UDID** (one-time per device):
+   - CLI: `eas device:create` (opens registration page / installs profile)
+   - Or: [Expo → project → Devices](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices) → register
+3. **Install dev client:** [EAS builds → development → iOS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) → open install link in **Safari**
+4. **Scan PR QR** (Expo bot comment) to load branch JS
+
+**Important:** A new iOS dev client build must include your device's UDID. If you register *after* the last build, trigger a rebuild (`dev-client.yml` or `pnpm build:development:ios`).
+
+**Android reviewers:** download APK from same EAS page — no device registration.
+
+**This fork:** `dev-client.yml` builds **Android + iOS** on native changes (cloud — for team sharing).
+
+Local: `pnpm build:development:ios:local` (Mac + Xcode required).
 
 ### Monorepo / Replit migration
 
@@ -362,7 +371,7 @@ Obytes includes `expo-dev-client` and native modules (MMKV, etc.). **Expo Go is 
 | Cloud dev client | `pnpm build:development:android` / `pnpm build:development:ios` |
 | PR JS preview    | EAS Update QR (needs dev client on device)  |
 | Test build       | `pnpm build:preview:android` / `pnpm build:preview:ios` |
-| App icon/splash  | Edit `assets/brand/` → `pnpm brand:apply` → rebuild dev client |
+| App icon/splash  | Edit `assets/brand/` → rebuild dev client (`:local` or cloud) |
 
 
 After changing `slug` or native config, rebuild the dev client.
@@ -636,7 +645,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 - Obytes demo (auth, feed, API, onboarding) **removed** — offline game needs none of it
 - EAS project: `@zackebenfeld/backgammon-mastermind`
 - Bundle IDs: `com.backgammonmastermind.{development,preview,production}`
-- App icon / splash: `assets/brand/icon-source.png` + `pnpm brand:apply` — see [App branding](#app-branding-icon--splash--fork-improvement). Rebuild dev client after changes.
+- App icon / splash: `assets/brand/icon-source.png` + `brand.config.json` — see [App branding](#app-branding-icon--splash--fork-improvement)
 
 ---
 

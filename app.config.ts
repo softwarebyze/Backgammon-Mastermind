@@ -47,7 +47,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: 'backgammon-mastermind',
   version: Env.EXPO_PUBLIC_VERSION.toString(),
   orientation: 'portrait',
-  icon: './assets/icon.png',
+  icon: './assets/brand/icon-source.png',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   runtimeVersion: {
@@ -70,13 +70,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
+      foregroundImage: './assets/brand/icon-source.png',
       backgroundColor: brand.adaptiveIconBackgroundColor,
     },
     package: Env.EXPO_PUBLIC_PACKAGE,
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './assets/brand/icon-source.png',
     bundler: 'metro',
   },
   plugins: [
@@ -84,7 +84,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'expo-splash-screen',
       {
         backgroundColor: brand.splashBackgroundColor,
-        image: './assets/splash-icon.png',
+        image: './assets/brand/icon-source.png',
         imageWidth: brand.splashImageWidth,
       },
     ],

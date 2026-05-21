@@ -12,6 +12,9 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+build-*.apk
+build-*.ipa
+build-*.tar.gz
 yarn-error.log
 /coverage
 # macOS
