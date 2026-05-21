@@ -6,6 +6,11 @@ import { Alert } from 'react-native';
 import { useGame } from '@/features/game/game-context';
 import { getLegalMoves } from '@/lib/game';
 
+/** Haptics throw on Android emulators and some devices — never block gameplay. */
+function triggerHaptic(fn: () => Promise<void>) {
+  void fn().catch(() => {});
+}
+
 export function useGameInput() {
   const { state, doRollDice, selectPoint, doMove, resetGame } = useGame();
 
@@ -19,13 +24,13 @@ export function useGameInput() {
       if (state.selectedPoint !== null) {
         const move = state.legalMovesForSelected.find(m => m.to === pointIndex);
         if (move) {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
           doMove(move);
           return;
         }
       }
 
-      Haptics.selectionAsync();
+      triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
     [state, doMove, selectPoint],
@@ -48,7 +53,7 @@ export function useGameInput() {
     if (barMoves.length === 0)
       return;
 
-    Haptics.selectionAsync();
+    triggerHaptic(() => Haptics.selectionAsync());
     selectPoint(0);
   }, [state, selectPoint]);
 
@@ -59,7 +64,7 @@ export function useGameInput() {
   }, [state, selectPoint]);
 
   const handleRoll = useCallback(() => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
     doRollDice();
   }, [doRollDice]);
 
@@ -70,7 +75,7 @@ export function useGameInput() {
         text: 'New Game',
         style: 'destructive',
         onPress: () => {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+          triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
           resetGame();
         },
       },
