@@ -44,6 +44,7 @@
     "test:watch": "pnpm run test --watch",
     "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
     "e2e-test": "maestro test .maestro/ -e APP_ID=com.backgammonmastermind.development",
+    "e2e-smoke": "PATH=\"$HOME/.maestro/bin:$PATH\" maestro test .maestro/app/backgammon-smoke.yaml -e APP_ID=com.backgammonmastermind.development",
     "skills:update": "skills update",
     "device:open": "agent-device --session android open com.backgammonmastermind.development --platform android",
     "device:snapshot": "agent-device --session android snapshot -i"

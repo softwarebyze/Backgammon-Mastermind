@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+---
+- launchApp
+# Dev client: pick the Metro server entry if launcher is shown
+- runFlow:
+    when:
+      visible: "BackgammonMastermind"
+    commands:
+      - tapOn: "BackgammonMastermind"
+- extendedWaitUntil:
+    visible: "Play against the computer"
+    timeout: 30000
+- tapOn: "Play against the computer"
+- extendedWaitUntil:
+    visible: "Roll dice"
+    timeout: 15000
+- assertVisible: "Roll dice"
+- assertVisible: "Point 1"
