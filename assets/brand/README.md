@@ -8,7 +8,7 @@ Design template: [Figma splash + icon template](https://www.figma.com/community/
 
 | File | Role | Expo requirement |
 | ---- | ---- | ---------------- |
-| `icon-source.png` | **Your master** (drop in a 1024×1024 PNG) | Starting point only |
+| `icon-source.png` | **Master board image** (generated) | Standard [2-5-3-5 setup](https://backgammon.com/learn/board-setup-explained) — same as in-game |
 | `brand.config.json` | Colors + scale tuning | Read by `app.config.ts` + generator |
 | `icon.png` | Home screen / App Store icon | Opaque, fills 1024×1024 square |
 | `splash-icon.png` | Splash **logo layer** | **Transparent** PNG — background comes from `splashBackgroundColor` |
@@ -21,9 +21,13 @@ Design template: [Figma splash + icon template](https://www.figma.com/community/
 ## Workflow
 
 ```bash
-# 1. Replace master artwork
-# 2. Tune colors/scales in brand.config.json if needed
+# 1. Regenerate board art (2-5-3-5) + Expo icon/splash assets
 pnpm brand:generate
+
+# Optional: only regenerate icon-source.png
+pnpm brand:icon-source
+
+# 2. Tune colors/scales in brand.config.json if needed, then re-run brand:generate
 
 # 3. Rebuild native app (icon/splash are baked in)
 pnpm build:development:android:local
@@ -34,9 +38,9 @@ pnpm build:development:ios:local
 
 Obytes ships four PNGs you replace by hand. Expo actually requires **different** assets for launcher vs splash (splash must be transparent). `brand:generate` only handles that native split — it does not affect your React UI except `display-logo.png` for the home header.
 
-**Minimum workflow:** edit `icon-source.png` → `pnpm brand:generate` → rebuild dev client for store icon/splash only.
+**Minimum workflow:** `pnpm brand:generate` → rebuild dev client for store icon/splash.
 
-`icon-source.png` may include white studio padding and a drop shadow (often on the right). `brand:generate` crops to the board frame only — shadow and padding are stripped from `display-logo.png` and the native icon assets.
+`icon-source.png` is **generated** from the same starting position as the game engine (`createInitialPoints`). To use custom photography instead, replace `icon-source.png` manually — `brand:generate` will crop white padding and drop shadows if present.
 
 ## Testing splash (easy to get wrong)
 
