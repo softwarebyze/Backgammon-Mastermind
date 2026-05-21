@@ -1,5 +1,5 @@
-# Rebuild the development client when native deps or config change.
-# Reviewers install this once; PR previews use EAS Update QR after that.
+# Rebuild development clients (Android + iOS) when native deps or branding change.
+# Reviewers install once; PR previews use EAS Update QR after that.
 # Docs: https://docs.expo.dev/develop/development-builds/development-workflows/#pr-previews
 
 name: Dev Client (native changes)
@@ -13,13 +13,24 @@ on:
       - app.config.ts
       - eas.json
       - env.ts
+      - assets/**
       - .github/workflows/dev-client.yml
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build development client
+    name: Build development client (${{ matrix.platform }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: android
+            android: 'true'
+            ios: 'false'
+          - platform: ios
+            android: 'false'
+            ios: 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,12 +38,12 @@ jobs:
       - name: Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
 
-      - name: EAS Build (development)
+      - name: EAS Build (development, ${{ matrix.platform }})
         uses: ./.github/actions/eas-build
         with:
           APP_ENV: development
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           VERSION: ${{ github.sha }}
-          ANDROID: 'true'
-          IOS: 'false'
+          ANDROID: ${{ matrix.android }}
+          IOS: ${{ matrix.ios }}
           AUTO_SUBMIT: 'false'

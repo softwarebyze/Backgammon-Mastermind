@@ -2,7 +2,7 @@
 # Output: ./android-test.apk (also at android/app/build/outputs/apk/debug/app-debug.apk)
 
 name: 'Setup JDK + GRADLE + Generate APK'
-description: 'Prebuild native project and assemble a debug APK for E2E'
+description: Prebuild native project and assemble a debug APK for E2E
 inputs:
   APP_ENV:
     description: 'APP_ENV (one of): development, preview, production'

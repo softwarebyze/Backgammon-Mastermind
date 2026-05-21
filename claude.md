@@ -37,6 +37,7 @@ Root: env.ts, app.config.ts, docs/obytes-template-playbook.md
 - ✅ Keep game engine free of React/RN dependencies
 - ✅ Use MMKV via `src/lib/storage.tsx` for persisted prefs
 - ✅ Use EAS Build for native builds; EAS Update for PR JS previews
+- ✅ Branding: `assets/brand/` → `pnpm brand:apply` → rebuild dev client
 - ❌ Do not modify `android/` or `ios/` directly — use Expo config plugins
 
 See [Obytes Template Playbook](./docs/obytes-template-playbook.md) for CI, EAS, and fork upstream notes.

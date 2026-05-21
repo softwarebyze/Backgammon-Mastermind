@@ -26,6 +26,9 @@ cd Backgammon-Mastermind
 cp .env.example .env
 
 pnpm install
+
+# Replace Obytes placeholder branding (icon + splash)
+pnpm brand:apply
 ```
 
 To run the app on iOS:
@@ -39,6 +42,8 @@ To run the app on Android:
 ```sh
 pnpm android
 ```
+
+Branding: edit `assets/brand/icon-source.png` and `assets/brand/brand.config.json`, then `pnpm brand:apply`. See [assets/brand/README.md](./assets/brand/README.md).
 
 ## CI secrets (GitHub Actions)
 
@@ -57,10 +62,18 @@ Full walkthrough: [Obytes Template Playbook → GitHub Actions secrets](./docs/o
 
 Standard **dev client + EAS Update** flow (see [playbook](./docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern)):
 
-1. **First time:** install the [development build from EAS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) (Android APK).
-2. **Every PR:** scan the **EAS Update QR** in the Expo bot comment on the PR.
+### iPhone / iPad
 
-CI rebuilds the dev client when native deps change (`.github/workflows/dev-client.yml`). JS-only PRs only need the QR.
+1. **One-time:** register your device — `eas device:create` or [Expo → Devices](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices)
+2. **One-time:** install the [iOS development build from EAS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) (open install link in Safari)
+3. **Every PR:** scan the **EAS Update QR** in the Expo bot comment on the PR
+
+### Android
+
+1. **One-time:** install the [Android development build from EAS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) (APK)
+2. **Every PR:** scan the **EAS Update QR**
+
+CI rebuilds **both** dev clients when native deps or branding change (`.github/workflows/dev-client.yml`). JS-only PRs only need the QR.
 
 ## ✍️ Documentation
 

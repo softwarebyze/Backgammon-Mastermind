@@ -57,15 +57,21 @@ jobs:
             Scan the **EAS Update QR** in the Expo comment above — it loads this PR's JavaScript into your existing development build.
 
             ### First time on this device?
-            1. **Install the dev client** (one-time): [Latest development builds on EAS](${buildsUrl}) → download the Android APK (or iOS build via TestFlight if configured).
-            2. Open the app once. Optional: log in under **Extensions** to browse updates without scanning.
-            3. Come back to this PR and **scan the EAS Update QR** above.
+
+            #### iPhone / iPad
+            1. **Register your device** (one-time): [\`eas device:create\`](https://docs.expo.dev/build/internal-distribution/#registering-devices) or [Expo dashboard → Devices](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices).
+            2. **Install the iOS dev client**: [Latest **development** builds on EAS](${buildsUrl}) → open the **iOS** build → install via the link on your phone (Safari).
+            3. Open the app once, then **scan the EAS Update QR** above.
+
+            #### Android
+            1. **Install the dev client**: [Latest **development** builds on EAS](${buildsUrl}) → download the **Android** APK.
+            2. Open the app once, then **scan the EAS Update QR** above.
 
             ### When do I reinstall the dev client?
-            Only when **native** things change (new Expo SDK, native modules, \`app.config.ts\`, \`env.ts\` schemes/bundle IDs). CI rebuilds it automatically on merge to \`main\` / \`obytes\` via [\`dev-client.yml\`](.github/workflows/dev-client.yml). JS-only PRs never need a reinstall.
+            Only when **native** things change (new Expo SDK, native modules, icon/splash, \`app.config.ts\`, \`env.ts\` schemes/bundle IDs). CI rebuilds Android + iOS via [\`dev-client.yml\`](.github/workflows/dev-client.yml). JS-only PRs never need a reinstall.
 
             ### No dev client?
-            Use a full preview APK instead (\`pnpm build:preview:android\`) — slower, but works without setup. See [\`docs/obytes-template-playbook.md\`](docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern).
+            Full preview builds: \`pnpm build:preview:ios\` / \`pnpm build:preview:android\`. See [\`docs/obytes-template-playbook.md\`](docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern).
             `;
 
             const { data: comments } = await github.rest.issues.listComments({

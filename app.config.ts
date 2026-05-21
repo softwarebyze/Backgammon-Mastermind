@@ -2,11 +2,22 @@ import type { ConfigContext, ExpoConfig } from '@expo/config';
 
 import type { AppIconBadgeConfig } from 'app-icon-badge/types';
 
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import 'tsx/cjs';
 
 // adding lint exception as we need to import tsx/cjs before env.ts is imported
 // eslint-disable-next-line perfectionist/sort-imports
 import Env from './env';
+
+const brand = JSON.parse(
+  readFileSync(join(__dirname, 'assets/brand/brand.config.json'), 'utf8'),
+) as {
+  splashBackgroundColor: string;
+  adaptiveIconBackgroundColor: string;
+  splashImageWidth: number;
+};
 
 const EXPO_ACCOUNT_OWNER = 'zackebenfeld';
 const EAS_PROJECT_ID = '7ec6600a-8b02-4714-acc1-08385effa4c9';
@@ -60,7 +71,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   android: {
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#1E0C02',
+      backgroundColor: brand.adaptiveIconBackgroundColor,
     },
     package: Env.EXPO_PUBLIC_PACKAGE,
   },
@@ -72,9 +83,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-splash-screen',
       {
-        backgroundColor: '#1E0C02',
+        backgroundColor: brand.splashBackgroundColor,
         image: './assets/splash-icon.png',
-        imageWidth: 220,
+        imageWidth: brand.splashImageWidth,
       },
     ],
     [
