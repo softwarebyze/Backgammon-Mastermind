@@ -274,6 +274,103 @@ Obytes includes `expo-dev-client` and native modules (MMKV, etc.). **Expo Go is 
 
 After changing `slug` or native config, rebuild the dev client.
 
+### Dev client + PR preview workflow (recommended fork pattern)
+
+This is the **standard Expo team workflow** — not something Obytes ships end-to-end, but it's the intended pairing once you add `expo-updates` + `preview.yml`. Official reference: [Development workflows → PR previews](https://docs.expo.dev/develop/development-builds/development-workflows/#pr-previews) and [EAS Update GitHub Action](https://docs.expo.dev/eas-update/github-actions/).
+
+#### Two layers (don't conflate them)
+
+| Layer | What it is | How often | CI workflow |
+| ----- | ---------- | --------- | ----------- |
+| **Dev client** | Native shell with `expo-dev-client` + `expo-updates` baked in | Reinstall when native deps/config change | `dev-client.yml` (path-filtered push to `main`) |
+| **EAS Update** | JS/assets bundle for a branch/PR | Every PR push | `preview.yml` (`eas update --auto`) |
+
+The PR QR code is an **EAS Update**, not a new APK. It deep-links into an **already installed** dev client (`qr-target: dev-build` in the GitHub Action). That's why reviewers see a QR but nothing happens without the dev client — expected, not broken.
+
+#### Reviewer experience (what to automate + document)
+
+On every PR, reviewers should see **two comments**:
+
+1. **Expo bot** — QR for *this PR's* update (auto from `expo/expo-github-action/preview@v8`)
+2. **Sticky setup guide** — "first time? install dev client here → then scan QR above" (second step in `preview.yml`)
+
+First-time flow:
+
+1. Install dev client from [EAS builds → development profile](https://expo.dev/projects/YOUR_PROJECT_ID/builds?profile=development) (Android: download APK; iOS: TestFlight/internal)
+2. Open app once
+3. Scan PR QR → loads PR branch JS
+
+Returning reviewer: scan QR only.
+
+#### Keep the dev client fresh (CI)
+
+Stock Obytes only has **manual** `pnpm build:development:android`. Add **`.github/workflows/dev-client.yml`** to rebuild on native-affecting merges:
+
+```yaml
+on:
+  push:
+    branches: [main]
+    paths:
+      - package.json
+      - pnpm-lock.yaml
+      - app.config.ts
+      - eas.json
+      - env.ts
+  workflow_dispatch:  # manual "refresh dev client" button
+```
+
+Uses the existing Obytes `eas-build` composite action with `APP_ENV: development`. Link the EAS builds page in README and the PR sticky comment — no need to paste APK URLs into docs (they rotate).
+
+**When dev client rebuild is required:** SDK upgrade, new native module, `runtimeVersion` bump, scheme/bundle ID change, `app.config.ts` plugin changes.
+
+**When it is NOT required:** React screens, game logic, translations, anything JS-only (EAS Update handles it).
+
+#### Channel alignment
+
+Add `"channel": "preview"` to the **`development`** build profile in `eas.json` so the dev client and PR updates share the same EAS Update channel:
+
+```json
+"development": {
+  "developmentClient": true,
+  "channel": "preview",
+  ...
+}
+```
+
+PR workflow uses `eas update --auto --environment preview`. Matching channel lets the Extensions tab list recent PR updates without scanning.
+
+#### Fork checklist (upstream to personal Obytes template)
+
+| Add to fork | Why |
+| ----------- | --- |
+| `preview.yml` with `qr-target: dev-build` | Correct QR type when `expo-dev-client` is installed |
+| Sticky PR comment with dev client install link | Closes the "QR does nothing" confusion for new reviewers |
+| `dev-client.yml` on path-filtered push | Dev client stays current without manual `eas build` |
+| `development.channel: preview` in `eas.json` | Dev client ↔ PR updates share channel |
+| README "Previewing PRs" blurb | Points to EAS builds + PR flow |
+| Lowercase URL schemes in `env.ts` | Required for EAS Update publish — [see bug section](#url-scheme-casing-template-bug--breaks-eas-update) |
+
+#### Fallback: preview APK (no dev client)
+
+For PMs/designers who won't install a dev client, Obytes already supports **`pnpm build:preview:android`** (full APK, `preview` profile). Tradeoffs:
+
+| Approach | Setup | PR feedback speed | Best for |
+| -------- | ----- | ----------------- | -------- |
+| Dev client + EAS Update | One-time install | ~2 min per PR push | Engineering, daily QA |
+| Preview APK per PR | None | ~15–30 min + EAS minutes | Occasional stakeholders |
+
+Some teams add a **label-gated** `eas build --profile preview` job (`preview-apk` label) — optional, costs build minutes.
+
+#### What Obytes gives you vs what you add
+
+| Stock Obytes | You add for full PR preview DX |
+| ------------ | ------------------------------ |
+| `expo-dev-client` dep | `expo-updates` + `app.config.ts` updates config |
+| `eas build` scripts + composite action | `preview.yml` |
+| Manual dev client build | `dev-client.yml` auto-rebuild |
+| Nothing | PR sticky comment + README |
+| PascalCase schemes (bug) | Lowercase schemes + zod validation |
+
 ---
 
 ## 5. Agent tooling (recommended fork additions)
@@ -373,6 +470,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | Change                                                          | Why                                           |
 | --------------------------------------------------------------- | --------------------------------------------- |
 | **`env.ts`: lowercase `SCHEMES` + zod regex on scheme**         | **Stock template breaks EAS Update / PR QR** — see [URL scheme casing](#url-scheme-casing-template-bug--breaks-eas-update) |
+| `dev-client.yml` + PR sticky comment + `development.channel`    | Always-fresh dev client + "first time?" reviewer UX — [Dev client workflow](#dev-client--pr-preview-workflow-recommended-fork-pattern) |
 | `.env` gitignored + `.env.example`                              | Security baseline                             |
 | `preview.yml` PR workflow                                       | Expected modern DX                            |
 | README / playbook: `EXPO_TOKEN` + `MAESTRO_CLOUD_API_KEY` setup | CI fails silently without them                |
@@ -417,7 +515,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | expo-doctor fails on expo-haptics major | Manual add used wrong version                            | `pnpm expo install expo-haptics`                                                                                  |
 | PR has no QR comment                    | No `preview.yml` or missing `EXPO_TOKEN`                 | Add workflow + secret in Settings → Secrets → Actions                                                             |
 | Maestro Cloud E2E fails auth            | Missing `MAESTRO_CLOUD_API_KEY`                          | Add secret from [Maestro CI docs](https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret) |
-| QR scans but app empty                  | No dev client on device                                  | Install development build first                                                                                   |
+| QR scans but app empty                  | No dev client on device                                  | Install development build from [EAS builds](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) — see [dev client workflow](#dev-client--pr-preview-workflow-recommended-fork-pattern) |
 | `eas.json is not valid: "update" is not allowed` | Invalid top-level `update` key in eas-cli 19+     | Remove `update` block; channels live on build profiles (`channel` in each profile)                                |
 | EAS Update manifest: scheme must match `^[a-z]...` | **Stock Obytes `SCHEMES` use PascalCase** (`obytesApp`) | Lowercase schemes + zod regex in `env.ts`; rebuild dev client — [details & screenshot](#url-scheme-casing-template-bug--breaks-eas-update) |
 | `pnpm prebuild:staging` fails           | Template staging/preview mismatch                        | Use `preview`                                                                                                     |

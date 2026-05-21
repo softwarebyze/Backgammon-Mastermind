@@ -53,6 +53,15 @@ Before EAS preview/build or Maestro Cloud E2E workflows will run, add these **re
 
 Full walkthrough: [Obytes Template Playbook → GitHub Actions secrets](./docs/obytes-template-playbook.md#github-actions-secrets-required-for-ci)
 
+## Previewing pull requests
+
+Standard **dev client + EAS Update** flow (see [playbook](./docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern)):
+
+1. **First time:** install the [development build from EAS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) (Android APK).
+2. **Every PR:** scan the **EAS Update QR** in the Expo bot comment on the PR.
+
+CI rebuilds the dev client when native deps change (`.github/workflows/dev-client.yml`). JS-only PRs only need the QR.
+
 ## ✍️ Documentation
 
 - [Obytes Template Playbook](./docs/obytes-template-playbook.md) — generic setup, CI, EAS, agent tooling
