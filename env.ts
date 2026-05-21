@@ -6,7 +6,7 @@ import packageJSON from './package.json';
 const envSchema = z.object({
   EXPO_PUBLIC_APP_ENV: z.enum(['development', 'preview', 'production']),
   EXPO_PUBLIC_NAME: z.string(),
-  EXPO_PUBLIC_SCHEME: z.string(),
+  EXPO_PUBLIC_SCHEME: z.string().regex(/^[a-z][a-z0-9+.-]*$/),
   EXPO_PUBLIC_BUNDLE_ID: z.string(),
   EXPO_PUBLIC_PACKAGE: z.string(),
   EXPO_PUBLIC_VERSION: z.string(),
@@ -36,9 +36,9 @@ const PACKAGES = {
 } as const;
 
 const SCHEMES = {
-  development: 'BackgammonMastermind',
-  preview: 'BackgammonMastermind.preview',
-  production: 'BackgammonMastermind',
+  development: 'backgammonmastermind.dev',
+  preview: 'backgammonmastermind.preview',
+  production: 'backgammonmastermind',
 } as const;
 
 const NAME = 'BackgammonMastermind';
