@@ -41,7 +41,12 @@ export function GameScreenControls({
 function ActionButton({ state, isHumanTurn, isComputerTurn, onRoll, onReset }: Props) {
   if (state.phase === 'game-over') {
     return (
-      <TouchableOpacity style={styles.rollBtn} onPress={onReset}>
+      <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel="Play again"
+        style={styles.rollBtn}
+        onPress={onReset}
+      >
         <Text style={styles.rollBtnText}>Play Again</Text>
       </TouchableOpacity>
     );
@@ -50,7 +55,12 @@ function ActionButton({ state, isHumanTurn, isComputerTurn, onRoll, onReset }: P
   if (state.phase === 'rolling') {
     if (isHumanTurn) {
       return (
-        <TouchableOpacity style={styles.rollBtn} onPress={onRoll}>
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Roll dice"
+          style={styles.rollBtn}
+          onPress={onRoll}
+        >
           <Text style={styles.rollBtnText}>Roll Dice</Text>
         </TouchableOpacity>
       );

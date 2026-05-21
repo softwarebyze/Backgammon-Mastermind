@@ -14,7 +14,13 @@ export function GameScreenHeader({ state, playerLabel, onBack, onReset }: Props)
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} style={styles.iconBtn} hitSlop={12}>
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Go back"
+          onPress={onBack}
+          style={styles.iconBtn}
+          hitSlop={12}
+        >
           <Feather name="arrow-left" size={22} color="#D4A843" />
         </TouchableOpacity>
 
@@ -31,7 +37,13 @@ export function GameScreenHeader({ state, playerLabel, onBack, onReset }: Props)
           )}
         </View>
 
-        <TouchableOpacity onPress={onReset} style={styles.iconBtn} hitSlop={12}>
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Start new game"
+          onPress={onReset}
+          style={styles.iconBtn}
+          hitSlop={12}
+        >
           <Feather name="refresh-cw" size={20} color="#D4A843" />
         </TouchableOpacity>
       </View>

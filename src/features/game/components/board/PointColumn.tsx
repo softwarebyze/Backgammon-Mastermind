@@ -1,15 +1,15 @@
-import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
 import type { BoardPoint } from '@/lib/game/types';
+import * as React from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import { CheckerToken } from './CheckerToken';
 
 const MAX_VISIBLE = 5;
 const POINT_COLORS = {
-  dark: '#8B1A1A',   // deep red triangles
-  light: '#D4A843',  // amber/gold triangles
+  dark: '#8B1A1A', // deep red triangles
+  light: '#D4A843', // amber/gold triangles
 };
 
-interface Props {
+type Props = {
   pointIndex: number;
   point: BoardPoint;
   isTop: boolean;
@@ -19,8 +19,9 @@ interface Props {
   colWidth: number;
   pointHeight: number;
   checkerSize: number;
-}
+};
 
+// eslint-disable-next-line max-lines-per-function -- triangle + checker layout is one visual unit
 export function PointColumn({
   pointIndex,
   point,
@@ -37,8 +38,8 @@ export function PointColumn({
   const triangleColor = isSelected
     ? '#FFD700'
     : isLegalTarget
-    ? '#4CAF50'
-    : baseColor;
+      ? '#4CAF50'
+      : baseColor;
 
   // How far apart checkers stack from the base of the triangle
   const stackStep = Math.min(checkerSize - 2, (pointHeight - checkerSize) / (MAX_VISIBLE - 1));
@@ -47,62 +48,66 @@ export function PointColumn({
 
   return (
     <TouchableOpacity
+      accessibilityRole="button"
+      accessibilityLabel={`Point ${pointIndex}${isSelected ? ', selected' : ''}${isLegalTarget ? ', legal move target' : ''}`}
       onPress={onPress}
       activeOpacity={0.75}
       style={{ width: colWidth, height: pointHeight, position: 'relative' }}
     >
       {/* Triangle */}
-      {isTop ? (
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            alignItems: 'center',
-          }}
-        >
-          <View
-            style={{
-              width: 0,
-              height: 0,
-              borderLeftWidth: colWidth / 2,
-              borderRightWidth: colWidth / 2,
-              borderTopWidth: pointHeight,
-              borderLeftColor: 'transparent',
-              borderRightColor: 'transparent',
-              borderTopColor: triangleColor,
-            }}
-          />
-        </View>
-      ) : (
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            alignItems: 'center',
-          }}
-        >
-          <View
-            style={{
-              width: 0,
-              height: 0,
-              borderLeftWidth: colWidth / 2,
-              borderRightWidth: colWidth / 2,
-              borderBottomWidth: pointHeight,
-              borderLeftColor: 'transparent',
-              borderRightColor: 'transparent',
-              borderBottomColor: triangleColor,
-            }}
-          />
-        </View>
-      )}
+      {isTop
+        ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeftWidth: colWidth / 2,
+                  borderRightWidth: colWidth / 2,
+                  borderTopWidth: pointHeight,
+                  borderLeftColor: 'transparent',
+                  borderRightColor: 'transparent',
+                  borderTopColor: triangleColor,
+                }}
+              />
+            </View>
+          )
+        : (
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderLeftWidth: colWidth / 2,
+                  borderRightWidth: colWidth / 2,
+                  borderBottomWidth: pointHeight,
+                  borderLeftColor: 'transparent',
+                  borderRightColor: 'transparent',
+                  borderBottomColor: triangleColor,
+                }}
+              />
+            </View>
+          )}
 
       {/* Checkers */}
-      {point.count > 0 &&
-        Array.from({ length: visibleCount }, (_, i) => {
+      {point.count > 0
+        && Array.from({ length: visibleCount }, (_, i) => {
           const offset = i * stackStep;
           const isTopChecker = i === visibleCount - 1;
           return (

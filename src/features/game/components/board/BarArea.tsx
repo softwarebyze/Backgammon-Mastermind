@@ -1,8 +1,8 @@
-import { TouchableOpacity, View } from "react-native";
-import type { Player } from "@/lib/game/types";
-import { CheckerToken } from "./CheckerToken";
+import type { Player } from '@/lib/game/types';
+import { TouchableOpacity, View } from 'react-native';
+import { CheckerToken } from './CheckerToken';
 
-interface Props {
+type Props = {
   whiteCount: number;
   blackCount: number;
   currentPlayer: Player;
@@ -12,12 +12,12 @@ interface Props {
   boardHeight: number;
   middleHeight: number;
   checkerSize: number;
-}
+};
 
 export function BarArea({
   whiteCount,
   blackCount,
-  currentPlayer,
+  currentPlayer: _currentPlayer,
   selectedPoint,
   onPressBar,
   barWidth,
@@ -32,12 +32,12 @@ export function BarArea({
   const renderStack = (
     count: number,
     player: Player,
-    justify: "flex-start" | "flex-end",
+    justify: 'flex-start' | 'flex-end',
   ) => (
     <View
       style={{
         height: halfHeight,
-        alignItems: "center",
+        alignItems: 'center',
         justifyContent: justify,
         paddingVertical: 6,
         gap: 2,
@@ -51,33 +51,35 @@ export function BarArea({
 
   return (
     <TouchableOpacity
+      accessibilityRole="button"
+      accessibilityLabel="Bar"
       onPress={onPressBar}
       activeOpacity={0.8}
       style={{
         width: barWidth,
         height: boardHeight,
-        backgroundColor: "#2E1204",
+        backgroundColor: '#2E1204',
         borderLeftWidth: 1,
         borderRightWidth: 1,
         borderWidth: isBarSelected ? 2 : 0,
-        borderColor: isBarSelected ? "#FFD700" : "#6B3A1F",
-        alignItems: "center",
+        borderColor: isBarSelected ? '#FFD700' : '#6B3A1F',
+        alignItems: 'center',
       }}
     >
       {/* Black checkers on bar (top half) */}
-      {renderStack(blackCount, "black", "flex-start")}
+      {renderStack(blackCount, 'black', 'flex-start')}
 
       {/* Middle strip */}
       <View
         style={{
           height: middleHeight,
-          backgroundColor: "#2E1204",
+          backgroundColor: '#2E1204',
           width: barWidth,
         }}
       />
 
       {/* White checkers on bar (bottom half) */}
-      {renderStack(whiteCount, "white", "flex-end")}
+      {renderStack(whiteCount, 'white', 'flex-end')}
     </TouchableOpacity>
   );
 }

@@ -34,7 +34,7 @@ export function HomeScreen() {
         />
       </View>
 
-      <Text style={styles.title}>BACKGAMMON</Text>
+      <Text accessibilityRole="header" style={styles.title}>BACKGAMMON</Text>
       <Text style={styles.subtitle}>The classic strategy game</Text>
 
       <View style={styles.dividerRow}>
@@ -45,6 +45,8 @@ export function HomeScreen() {
 
       <View style={styles.buttons}>
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Play against the computer"
           style={[styles.modeBtn, styles.primaryBtn]}
           onPress={() => handleStart('vs-computer')}
           activeOpacity={0.8}
@@ -57,6 +59,8 @@ export function HomeScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Play with two players locally"
           style={[styles.modeBtn, styles.secondaryBtn]}
           onPress={() => handleStart('vs-human')}
           activeOpacity={0.8}
