@@ -5,11 +5,25 @@
     "yarn.lock": true
   },
 
-  // Disable Prettier completely
+  // ESLint is the single source of truth for formatting (matches pre-commit lint-staged)
   "prettier.enable": false,
-  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "eslint.format.enable": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
 
-  // Enable ESLint auto-fix on save
+  // Format on save via ESLint (not Prettier / built-in TS formatter)
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"
