@@ -1,15 +1,17 @@
 import type { GameState } from '@/lib/game';
-import { Platform, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { GameScreenHeader } from '@/features/game/game-screen-header';
 
 import { useGameInput } from '@/features/game/use-game-input';
 
+const GAME_BG = '#1E0C02';
+
 export function GameScreen() {
-  const insets = useSafeAreaInsets();
   const {
     state,
     handlePointPress,
@@ -22,9 +24,10 @@ export function GameScreen() {
 
   if (!state) {
     return (
-      <View style={[styles.center, { backgroundColor: '#1E0C02' }]}>
+      <SafeAreaView style={[styles.root, styles.center]}>
+        <FocusAwareStatusBar />
         <Text style={{ color: '#D4A843' }}>Loading…</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -32,12 +35,10 @@ export function GameScreen() {
     = state.mode === 'vs-computer' && state.currentPlayer === 'black';
   const isHumanTurn = !isComputerTurn;
   const playerLabel = getPlayerLabel(state);
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const bottomPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
   return (
-    <View style={[styles.root, { paddingTop: topPad, paddingBottom: bottomPad }]}>
-      <StatusBar barStyle="light-content" />
+    <SafeAreaView style={[styles.root, webSafeArea]} edges={['top', 'bottom']}>
+      <FocusAwareStatusBar />
       <GameScreenHeader
         state={state}
         playerLabel={playerLabel}
@@ -58,7 +59,7 @@ export function GameScreen() {
         onRoll={handleRoll}
         onReset={handleReset}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -69,14 +70,17 @@ function getPlayerLabel(state: GameState) {
   return state.mode === 'vs-computer' ? 'Computer' : 'Black';
 }
 
+const webSafeArea = Platform.OS === 'web'
+  ? { paddingTop: 67, paddingBottom: 34 }
+  : null;
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#1E0C02',
+    backgroundColor: GAME_BG,
     alignItems: 'center',
   },
   center: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
