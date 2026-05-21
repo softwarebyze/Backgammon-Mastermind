@@ -37,6 +37,7 @@
     },
     "development": {
       "developmentClient": true,
+      "channel": "preview",
       "distribution": "internal",
       "environment": "development",
       "ios": {
