@@ -7,6 +7,8 @@ type Props = {
   playerColor: 'white' | 'black';
 };
 
+const DOUBLE_DIE_SLOTS = ['slot-a', 'slot-b', 'slot-c', 'slot-d'] as const;
+
 function DieFace({ value, used, playerColor }: { value: number; used: boolean; playerColor: 'white' | 'black' }) {
   const isWhite = playerColor === 'white';
   return (
@@ -66,15 +68,20 @@ export function DiceDisplay({ dice, remainingDice, playerColor }: Props) {
       {isDoubles
         ? (
             <>
-              {[0, 1, 2, 3].map(i => (
-                <DieFace key={i} value={dice[0]} used={i >= totalRemaining} playerColor={playerColor} />
+              {DOUBLE_DIE_SLOTS.map((slot, slotIndex) => (
+                <DieFace key={slot} value={dice[0]} used={slotIndex >= totalRemaining} playerColor={playerColor} />
               ))}
             </>
           )
         : (
-            diceStates.map((d, i) => (
-              <DieFace key={i} value={d.value} used={d.used} playerColor={playerColor} />
-            ))
+            <>
+              {diceStates[0] && (
+                <DieFace key="die-left" value={diceStates[0].value} used={diceStates[0].used} playerColor={playerColor} />
+              )}
+              {diceStates[1] && (
+                <DieFace key="die-right" value={diceStates[1].value} used={diceStates[1].used} playerColor={playerColor} />
+              )}
+            </>
           )}
     </View>
   );

@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FocusAwareStatusBar } from '@/components/ui';
-import { useGame } from '@/features/game/game-context';
+import { useGame } from '@/features/game/use-game';
 
 const HOME_BG = '#1E0C02';
 

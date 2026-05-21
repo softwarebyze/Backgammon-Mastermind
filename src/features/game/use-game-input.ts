@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { useCallback } from 'react';
 import { Alert } from 'react-native';
 
-import { useGame } from '@/features/game/game-context';
+import { useGame } from '@/features/game/use-game';
 import { getLegalMoves } from '@/lib/game';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */

@@ -1,11 +1,7 @@
 import type * as React from 'react';
 import type { GameMode, GameState, Move } from '@/lib/game';
-import {
-  createContext,
-  use,
-  useCallback,
-  useState,
-} from 'react';
+import { useCallback, useState } from 'react';
+import { GameContext } from '@/features/game/game-context';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 
 import {
@@ -15,17 +11,6 @@ import {
   getLegalMoves,
   rollDice,
 } from '@/lib/game';
-
-type GameContextType = {
-  state: GameState | null;
-  startGame: (mode: GameMode) => void;
-  resetGame: () => void;
-  doRollDice: () => void;
-  selectPoint: (point: number | null) => void;
-  doMove: (move: Move) => void;
-};
-
-const GameContext = createContext<GameContextType | null>(null);
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState | null>(null);
@@ -92,11 +77,4 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       {children}
     </GameContext>
   );
-}
-
-export function useGame(): GameContextType {
-  const ctx = use(GameContext);
-  if (!ctx)
-    throw new Error('useGame must be used within GameProvider');
-  return ctx;
 }
