@@ -39,7 +39,11 @@ export default function RootLayout() {
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen
           name="game"
-          options={{ headerShown: false, animation: 'slide_from_bottom' }}
+          options={{
+            headerShown: false,
+            animation: 'slide_from_bottom',
+            contentStyle: { backgroundColor: '#1E0C02' },
+          }}
         />
       </Stack>
     </Providers>
