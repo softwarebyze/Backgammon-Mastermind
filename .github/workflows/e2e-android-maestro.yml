@@ -58,6 +58,10 @@ jobs:
           env: |
             APP_ID=com.backgammonmastermind.preview
 
+      - name: Wait before Maestro retry
+        if: steps.maestro_try1.outcome == 'failure'
+        run: sleep 90
+
       - name: Run backgammon smoke on Maestro Cloud (try 2)
         id: maestro_try2
         if: steps.maestro_try1.outcome == 'failure'
@@ -69,6 +73,10 @@ jobs:
           include-tags: smoke
           env: |
             APP_ID=com.backgammonmastermind.preview
+
+      - name: Wait before final Maestro retry
+        if: steps.maestro_try1.outcome == 'failure' && steps.maestro_try2.outcome == 'failure'
+        run: sleep 90
 
       - name: Run backgammon smoke on Maestro Cloud (try 3)
         id: maestro_try3
