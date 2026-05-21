@@ -23,12 +23,13 @@ export function isInHomeBoard(player: Player, point: number): boolean {
 
 /** True when all of this player's checkers (including bar) are inside their home board. */
 export function allCheckersInHome(state: GameState, player: Player): boolean {
-  if (state.bar[player] > 0) return false;
+  if (state.bar[player] > 0)
+    return false;
   for (let p = 1; p <= 24; p++) {
     if (
-      !isInHomeBoard(player, p) &&
-      state.points[p].player === player &&
-      state.points[p].count > 0
+      !isInHomeBoard(player, p)
+      && state.points[p].player === player
+      && state.points[p].count > 0
     ) {
       return false;
     }
@@ -38,10 +39,13 @@ export function allCheckersInHome(state: GameState, player: Player): boolean {
 
 /** Whether a player's checker can land on a given point. */
 export function canLandOn(state: GameState, player: Player, point: number): boolean {
-  if (point < 1 || point > 24) return false;
+  if (point < 1 || point > 24)
+    return false;
   const pt = state.points[point];
-  if (pt.count === 0 || pt.player === null) return true;
-  if (pt.player === player) return true;
+  if (pt.count === 0 || pt.player === null)
+    return true;
+  if (pt.player === player)
+    return true;
   return pt.count === 1; // blot – can hit
 }
 
@@ -54,12 +58,15 @@ export function canLandOn(state: GameState, player: Player, point: number): bool
 function canUseLargerDieToBearOff(state: GameState, player: Player, fromPoint: number): boolean {
   if (player === 'white') {
     for (let p = fromPoint + 1; p <= 6; p++) {
-      if (state.points[p].player === 'white' && state.points[p].count > 0) return false;
+      if (state.points[p].player === 'white' && state.points[p].count > 0)
+        return false;
     }
     return true;
-  } else {
+  }
+  else {
     for (let p = 19; p < fromPoint; p++) {
-      if (state.points[p].player === 'black' && state.points[p].count > 0) return false;
+      if (state.points[p].player === 'black' && state.points[p].count > 0)
+        return false;
     }
     return true;
   }
@@ -75,7 +82,8 @@ function canUseLargerDieToBearOff(state: GameState, player: Player, fromPoint: n
  */
 export function getLegalMoves(state: GameState): Move[] {
   const { remainingDice, currentPlayer: player, bar } = state;
-  if (remainingDice.length === 0) return [];
+  if (remainingDice.length === 0)
+    return [];
 
   // Deduplicate die values so identical dice don't produce duplicate moves.
   const uniqueDice: Array<{ value: number; index: number }> = [];
@@ -107,7 +115,8 @@ export function getLegalMoves(state: GameState): Move[] {
 
   for (let fromPoint = 1; fromPoint <= 24; fromPoint++) {
     const pt = state.points[fromPoint];
-    if (pt.player !== player || pt.count === 0) continue;
+    if (pt.player !== player || pt.count === 0)
+      continue;
 
     for (const { value: die, index: dieIndex } of uniqueDice) {
       const to = fromPoint + dir * die;
@@ -116,16 +125,18 @@ export function getLegalMoves(state: GameState): Move[] {
         if (canLandOn(state, player, to)) {
           moves.push({ from: fromPoint, to, dieIndex });
         }
-      } else if (inHome && isInHomeBoard(player, fromPoint)) {
+      }
+      else if (inHome && isInHomeBoard(player, fromPoint)) {
         // Potential bear-off
-        const exactExit =
-          player === 'white' ? fromPoint - die === 0 : fromPoint + die === 25;
-        const overshot =
-          player === 'white' ? fromPoint - die < 0 : fromPoint + die > 25;
+        const exactExit
+          = player === 'white' ? fromPoint - die === 0 : fromPoint + die === 25;
+        const overshot
+          = player === 'white' ? fromPoint - die < 0 : fromPoint + die > 25;
 
         if (exactExit) {
           moves.push({ from: fromPoint, to: BEAR_OFF, dieIndex });
-        } else if (overshot && canUseLargerDieToBearOff(state, player, fromPoint)) {
+        }
+        else if (overshot && canUseLargerDieToBearOff(state, player, fromPoint)) {
           moves.push({ from: fromPoint, to: BEAR_OFF, dieIndex });
         }
       }
@@ -167,7 +178,8 @@ export function applyMove(state: GameState, move: Move): GameState {
   // Remove from source
   if (move.from === BAR_POINT) {
     next.bar[player]--;
-  } else {
+  }
+  else {
     next.points[move.from].count--;
     if (next.points[move.from].count === 0) {
       next.points[move.from].player = null;
@@ -177,13 +189,15 @@ export function applyMove(state: GameState, move: Move): GameState {
   // Place at destination
   if (move.to === BEAR_OFF) {
     next.borneOff[player]++;
-  } else {
+  }
+  else {
     const dest = next.points[move.to];
     if (dest.player === opp && dest.count === 1) {
       // Hit a blot
       next.bar[opp]++;
       next.points[move.to] = { player, count: 1 };
-    } else {
+    }
+    else {
       next.points[move.to] = { player, count: dest.count + 1 };
     }
   }
@@ -225,8 +239,8 @@ export function rollDice(): [number, number] {
  * If no legal move exists, the turn is automatically passed.
  */
 export function applyDiceRoll(state: GameState, dice: [number, number]): GameState {
-  const remaining: number[] =
-    dice[0] === dice[1]
+  const remaining: number[]
+    = dice[0] === dice[1]
       ? [dice[0], dice[0], dice[0], dice[0]]
       : [dice[0], dice[1]];
 

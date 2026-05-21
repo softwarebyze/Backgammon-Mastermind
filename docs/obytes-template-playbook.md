@@ -222,6 +222,46 @@ Install globally or as devDependency; pin version in fork docs.
 
 ---
 
+## 5b. ESLint formatting & IDE auto-fix (upstream recommended)
+
+Obytes uses **ESLint Stylistic** as the formatter—not Prettier. Without explicit IDE setup, "Format Document" may invoke Prettier (double quotes) or the built-in TS formatter, causing **drift on committed files**. Opening archived folders (e.g. `replit/`) outside `tsconfig` `include` triggers **"Cannot use JSX unless the --jsx flag is provided"** in the IDE.
+
+### Recommended fork changes
+
+| Change | Why |
+|--------|-----|
+| `.vscode/settings.json`: ESLint as `defaultFormatter`, `formatOnSave`, `source.fixAll.eslint: "always"` | Auto-fix perfectionist/stylistic on save |
+| `.prettierignore` with `*` | Block Prettier if the extension is installed globally |
+| `eslint.rules.customizations`: include `perfectionist/*` as fixable | Sort exports/imports fix on save without noise |
+| `tsconfig.json`: explicit `"jsx": "react-native"`, exclude `replit/` + `.agents/` | IDE TypeScript matches Expo |
+| `replit/tsconfig.json` (if keeping archive) | JSX works when browsing old code |
+| `eslint.config.mjs`: ignore `replit/**`, `.agents/**` | `pnpm lint` doesn't lint archived/generated trees |
+| `package.json`: `"lint": "eslint src app.config.ts env.ts"`, `"format": "pnpm lint:fix"` | Lint scope = app code only |
+
+### `.vscode/settings.json` essentials
+
+```json
+{
+  "prettier.enable": false,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "eslint.format.enable": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "never"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "eslint.rules.customizations": [
+    { "rule": "perfectionist/*", "severity": "off", "fixable": true }
+  ]
+}
+```
+
+Reload the window after changing settings. Run **`pnpm format`** before committing if you bulk-edited files outside the IDE.
+
+---
+
 ## 6. Changes safe to keep app-specific (do not upstream)
 
 - Game/product code under `src/features/`
@@ -246,6 +286,10 @@ Install globally or as devDependency; pin version in fork docs.
 | `skills:update` script + docs for Expo Skills | Agent-ready scaffold |
 | Optional Argent / agent-device setup docs | Agent-ready scaffold |
 | `expo-updates` pre-installed + configured | Enables PR previews out of box |
+| ESLint-as-formatter VS Code settings + `.prettierignore` | No format drift; auto-fix on save |
+| `eslint` ignore `replit/**` + `.agents/**` | Lint scope = app only |
+| Explicit `jsx` in tsconfig + archive exclude | Fixes IDE JSX errors |
+| `pnpm format` script | One command to apply all autofixes |
 
 ---
 
@@ -276,6 +320,9 @@ Install globally or as devDependency; pin version in fork docs.
 | Metro shows `exp+obytesapp://` | Old dev client slug | Rebuild dev client after slug change |
 | agent-device empty snapshot | Missing a11y labels | Add `accessibilityLabel` to buttons |
 | `tsc` fails in node_modules | Broad `include` glob | Narrow to `src/**` |
+| Format changes committed files | Prettier or wrong formatter | ESLint defaultFormatter + `.prettierignore` |
+| `Cannot use JSX unless --jsx flag` | File outside tsconfig `include` | Exclude archive dirs; add explicit `"jsx": "react-native"` |
+| `perfectionist/sort-exports` on save | Not in ESLint fix-on-save | `source.fixAll.eslint: "always"` + perfectionist fixable |
 
 ---
 

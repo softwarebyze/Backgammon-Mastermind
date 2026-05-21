@@ -2,10 +2,10 @@ export type Player = 'white' | 'black';
 export type GameMode = 'vs-computer' | 'vs-human';
 export type GamePhase = 'rolling' | 'moving' | 'game-over';
 
-export interface BoardPoint {
+export type BoardPoint = {
   player: Player | null;
   count: number;
-}
+};
 
 /**
  * Represents a single checker move.
@@ -13,13 +13,13 @@ export interface BoardPoint {
  * to:   25 = bear off, 1-24 = point index
  * dieIndex: which index in remainingDice was consumed
  */
-export interface Move {
+export type Move = {
   from: number;
   to: number;
   dieIndex: number;
-}
+};
 
-export interface GameState {
+export type GameState = {
   /** Index 0 is unused; indices 1-24 are the 24 board points. */
   points: BoardPoint[];
   bar: Record<Player, number>;
@@ -33,4 +33,4 @@ export interface GameState {
   /** null = nothing selected, 0 = bar selected, 1-24 = point selected */
   selectedPoint: number | null;
   legalMovesForSelected: Move[];
-}
+};

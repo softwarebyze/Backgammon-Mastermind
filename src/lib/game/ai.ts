@@ -15,7 +15,7 @@
  */
 
 import type { GameState, Move, Player } from './types';
-import { getLegalMoves, applyMove, calculatePipCount, opponent } from './moves';
+import { applyMove, calculatePipCount, getLegalMoves, opponent } from './moves';
 
 // ---------------------------------------------------------------------------
 // Board evaluation
@@ -24,7 +24,8 @@ import { getLegalMoves, applyMove, calculatePipCount, opponent } from './moves';
 function countBlots(state: GameState, player: Player): number {
   let n = 0;
   for (let p = 1; p <= 24; p++) {
-    if (state.points[p].player === player && state.points[p].count === 1) n++;
+    if (state.points[p].player === player && state.points[p].count === 1)
+      n++;
   }
   return n;
 }
@@ -32,7 +33,8 @@ function countBlots(state: GameState, player: Player): number {
 function countMadePoints(state: GameState, player: Player): number {
   let n = 0;
   for (let p = 1; p <= 24; p++) {
-    if (state.points[p].player === player && state.points[p].count >= 2) n++;
+    if (state.points[p].player === player && state.points[p].count >= 2)
+      n++;
   }
   return n;
 }
@@ -44,7 +46,8 @@ function longestPrime(state: GameState, player: Player): number {
     if (state.points[p].player === player && state.points[p].count >= 2) {
       run++;
       best = Math.max(best, run);
-    } else {
+    }
+    else {
       run = 0;
     }
   }
@@ -83,25 +86,29 @@ function evaluateBoard(state: GameState, aiPlayer: Player): number {
 const MAX_DEPTH = 4; // maximum move depth to search
 
 function bestScore(state: GameState, aiPlayer: Player, depth: number): number {
-  if (depth === 0) return evaluateBoard(state, aiPlayer);
+  if (depth === 0)
+    return evaluateBoard(state, aiPlayer);
   if (state.currentPlayer !== aiPlayer || state.phase !== 'moving') {
     return evaluateBoard(state, aiPlayer);
   }
 
   const moves = getLegalMoves(state);
-  if (moves.length === 0) return evaluateBoard(state, aiPlayer);
+  if (moves.length === 0)
+    return evaluateBoard(state, aiPlayer);
 
   let best = -Infinity;
   const seen = new Set<string>();
 
   for (const move of moves) {
     const key = `${move.from}:${move.to}`;
-    if (seen.has(key)) continue;
+    if (seen.has(key))
+      continue;
     seen.add(key);
 
     const next = applyMove(state, move);
     const score = bestScore(next, aiPlayer, depth - 1);
-    if (score > best) best = score;
+    if (score > best)
+      best = score;
   }
 
   return best;
@@ -117,7 +124,8 @@ function bestScore(state: GameState, aiPlayer: Player, depth: number): number {
  */
 export function getAIMove(state: GameState): Move | null {
   const moves = getLegalMoves(state);
-  if (moves.length === 0) return null;
+  if (moves.length === 0)
+    return null;
 
   const aiPlayer = state.currentPlayer;
   let bestMoveScore = -Infinity;
@@ -126,7 +134,8 @@ export function getAIMove(state: GameState): Move | null {
 
   for (const move of moves) {
     const key = `${move.from}:${move.to}`;
-    if (seen.has(key)) continue;
+    if (seen.has(key))
+      continue;
     seen.add(key);
 
     const next = applyMove(state, move);

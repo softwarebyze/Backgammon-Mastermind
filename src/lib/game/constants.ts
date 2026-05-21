@@ -18,11 +18,11 @@ export function createInitialPoints(): BoardPoint[] {
   // White
   points[24] = { player: 'white', count: 2 };
   points[13] = { player: 'white', count: 5 };
-  points[8]  = { player: 'white', count: 3 };
-  points[6]  = { player: 'white', count: 5 };
+  points[8] = { player: 'white', count: 3 };
+  points[6] = { player: 'white', count: 5 };
 
   // Black
-  points[1]  = { player: 'black', count: 2 };
+  points[1] = { player: 'black', count: 2 };
   points[12] = { player: 'black', count: 5 };
   points[17] = { player: 'black', count: 3 };
   points[19] = { player: 'black', count: 5 };
