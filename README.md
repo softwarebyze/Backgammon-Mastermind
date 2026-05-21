@@ -40,8 +40,22 @@ To run the app on Android:
 pnpm android
 ```
 
+## CI secrets (GitHub Actions)
+
+Before EAS preview/build or Maestro Cloud E2E workflows will run, add these **repository secrets**:
+
+| Secret | Where to get it |
+|--------|-----------------|
+| `EXPO_TOKEN` | [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens) |
+| `MAESTRO_CLOUD_API_KEY` | [Maestro Cloud CI integration](https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret) |
+
+**GitHub:** repo **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+
+Full walkthrough: [Obytes Template Playbook → GitHub Actions secrets](./docs/obytes-template-playbook.md#github-actions-secrets-required-for-ci)
+
 ## ✍️ Documentation
 
+- [Obytes Template Playbook](./docs/obytes-template-playbook.md) — generic setup, CI, EAS, agent tooling
 - [Rules and Conventions](https://starter.obytes.com/getting-started/rules-and-conventions/)
 - [Project structure](https://starter.obytes.com/getting-started/project-structure)
 - [Environment vars and config](https://starter.obytes.com/getting-started/environment-vars-config)
