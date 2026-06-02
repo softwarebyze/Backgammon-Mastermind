@@ -657,7 +657,28 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 
 ---
 
-## 10. Backgammon Mastermind–specific notes
+## 10. Production-grade fork toolkit (recommended for every app)
+
+Add these to your **personal Obytes fork** so every new app ships with the same quality bar:
+
+| Capability | Tool / pattern | CI |
+|------------|----------------|-----|
+| Unused exports | [Knip](https://knip.dev) | `knip.yml` on PR |
+| Bundle size delta | `@expo/bundle-analyzer` or `size-limit` | Comment on PR |
+| Screenshot regression | Argent verify / Percy | Tablet + web + phone matrix |
+| E2E + screen recordings | Maestro Cloud | Label `android-test-maestro-cloud` |
+| Perf regression | Flashlight + Sentry Performance | Baseline on main routes |
+| Product analytics | PostHog (`EXPO_PUBLIC_POSTHOG_KEY`) | Schema in `src/lib/analytics/` |
+| Store metadata | `eas metadata` | Sync on release |
+| Launch videos | [Remotion](https://remotion.dev) + GHA render | `remotion/` per app |
+| Social / growth assets | Remotion templates + optional GHA → Buffer | Manual gate |
+| Dead code | Knip | Fail PR on new orphans |
+
+**Release milestone checklist:** Jest + Maestro green → screenshot diff → knip clean → bundle delta under threshold → perf within baseline → EAS Update or store build → Remotion clip + metadata push.
+
+---
+
+## 11. Backgammon Mastermind–specific notes
 
 - Game engine: `src/lib/game/` (pure TS)
 - UI + state: `src/features/game/`
@@ -669,7 +690,9 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 
 ---
 
-## 11. Maintenance commands
+- Product roadmap: `docs/roadmap.md` (milestones M0–M6)
+
+## 12. Maintenance commands
 
 ```bash
 pnpm install
