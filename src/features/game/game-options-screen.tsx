@@ -1,10 +1,14 @@
-import { Link } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import { router } from 'expo-router';
+import * as React from 'react';
+import { StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Pressable, ScrollView, Text, View } from '@/components/ui';
 import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { SettingsChevron } from '@/features/settings/components/settings-chevron';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { hapticLight } from '@/lib/haptics';
 import { SETTINGS_ROW_PADDING_H } from '@/lib/ui/settings-layout';
 
 export function GameOptionsScreen() {
@@ -16,6 +20,14 @@ export function GameOptionsScreen() {
     setDiceDisplayStyle,
   } = useGamePreferences();
 
+  const openSettings = React.useCallback(() => {
+    hapticLight();
+    // Dismiss the formSheet before navigating, otherwise Settings renders behind
+    // the sheet and feels "stuck" in the stack.
+    router.back();
+    requestAnimationFrame(() => router.push('/settings'));
+  }, []);
+
   return (
     <ScrollView
       style={styles.root}
@@ -26,6 +38,8 @@ export function GameOptionsScreen() {
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
+      <Text className="text-lg font-bold" style={styles.title} tx="game.options.title" />
+
       <GamePreferencesPanel
         preferences={preferences}
         onShowMoveHintsChange={setShowMoveHints}
@@ -34,11 +48,13 @@ export function GameOptionsScreen() {
         showHints
       />
 
-      <Link href="/settings" asChild>
-        <Pressable style={styles.fullSettings} accessibilityRole="link">
-          <Text style={styles.fullSettingsText}>Language, theme & more</Text>
-        </Pressable>
-      </Link>
+      <Pressable accessibilityRole="link" style={styles.row} onPress={openSettings}>
+        <View style={styles.rowBody}>
+          <Text className="text-base font-semibold" style={styles.rowText} tx="game.options.open_settings" />
+          <Text className="mt-1 text-sm" style={styles.rowHint} tx="game.options.open_settings_hint" />
+        </View>
+        <SettingsChevron />
+      </Pressable>
     </ScrollView>
   );
 }
@@ -54,13 +70,27 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     gap: 16,
   },
-  fullSettings: {
-    paddingVertical: SETTINGS_ROW_PADDING_H,
-    alignItems: 'center',
+  title: {
+    color: GAME_PALETTE.text,
   },
-  fullSettingsText: {
-    color: GAME_PALETTE.accent,
-    fontSize: 15,
-    fontWeight: '600',
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.surfaceBorder,
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    gap: 12,
+  },
+  rowBody: {
+    flex: 1,
+  },
+  rowText: {
+    color: GAME_PALETTE.text,
+  },
+  rowHint: {
+    color: GAME_PALETTE.textMuted,
   },
 });

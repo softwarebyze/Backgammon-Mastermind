@@ -26,10 +26,11 @@ import { memo } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import Reanimated from 'react-native-reanimated';
 
-// Gorhom scrollable factory expects a class component; KeyboardAwareScrollView is forwardRef.
+// `KeyboardAwareScrollView` is a forwardRef component; Reanimated's type expects a class-like component.
+// Cast keeps runtime behavior while unblocking typecheck.
 const AnimatedScrollView = Reanimated.createAnimatedComponent(
-  KeyboardAwareScrollView as ComponentType<KeyboardAwareScrollViewProps>,
-);
+  KeyboardAwareScrollView as any,
+) as unknown as ComponentType<KeyboardAwareScrollViewProps>;
 const BottomSheetScrollViewComponent = createBottomSheetScrollableComponent<
   BottomSheetScrollViewMethods,
   BottomSheetScrollViewProps

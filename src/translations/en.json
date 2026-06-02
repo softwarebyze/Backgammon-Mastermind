@@ -1,4 +1,11 @@
 {
+  "game": {
+    "options": {
+      "open_settings": "Language, theme & more",
+      "open_settings_hint": "Open Settings",
+      "title": "Game options"
+    }
+  },
   "settings": {
     "about": "About",
     "app_name": "Backgammon Mastermind",

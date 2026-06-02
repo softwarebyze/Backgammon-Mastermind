@@ -82,6 +82,7 @@ CI rebuilds **both** dev clients when native deps or branding change (`.github/w
 ## ✍️ Documentation
 
 - [Obytes Template Playbook](./docs/obytes-template-playbook.md) — generic setup, CI, EAS, agent tooling
+- [Production Readiness Checklist](./docs/production-checklist.md) — CI policy, store submission steps
 - [Rules and Conventions](https://starter.obytes.com/getting-started/rules-and-conventions/)
 - [Project structure](https://starter.obytes.com/getting-started/project-structure)
 - [Environment vars and config](https://starter.obytes.com/getting-started/environment-vars-config)

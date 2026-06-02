@@ -119,7 +119,7 @@ export function Modal({
             )}
       </>
     ),
-    [handleTitle, modal.dismiss, headerTheme, handleIndicatorStyle, titleInContent],
+    [handleTitle, modal.dismiss, headerTheme, handleIndicatorStyle],
   );
 
   return (

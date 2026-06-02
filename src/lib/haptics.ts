@@ -1,13 +1,14 @@
 import * as Haptics from 'expo-haptics';
 
-export function hapticLight(): void {
-  if (process.env.EXPO_OS === 'ios') {
-    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  }
+/** Haptics can throw on some Android emulators/devices — never block UI. */
+function safeHaptic(fn: () => Promise<void>) {
+  void fn().catch(() => {});
 }
 
-export function hapticSelection(): void {
-  if (process.env.EXPO_OS === 'ios') {
-    void Haptics.selectionAsync();
-  }
+export function hapticLight() {
+  safeHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+}
+
+export function hapticSelection() {
+  safeHaptic(() => Haptics.selectionAsync());
 }
