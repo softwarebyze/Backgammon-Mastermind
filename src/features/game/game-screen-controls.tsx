@@ -1,7 +1,11 @@
 import type { GameState } from '@/lib/game';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
+import { GAME_PALETTE } from '@/features/game/game-palette';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { hapticLight } from '@/lib/haptics';
+import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
@@ -11,6 +15,8 @@ type Props = {
   onReset: () => void;
 };
 
+const ACTION_SLOT_HEIGHT = 52;
+
 export function GameScreenControls({
   state,
   isHumanTurn,
@@ -18,6 +24,9 @@ export function GameScreenControls({
   onRoll,
   onReset,
 }: Props) {
+  const { preferences } = useGamePreferences();
+  const caption = getCaption(state, isHumanTurn, isComputerTurn);
+
   return (
     <View style={styles.controls}>
       <View style={styles.diceRow}>
@@ -25,118 +34,164 @@ export function GameScreenControls({
           dice={state.dice}
           remainingDice={state.remainingDice}
           playerColor={state.currentPlayer}
+          displayStyle={preferences.diceDisplayStyle}
         />
       </View>
-      <ActionButton
-        state={state}
-        isHumanTurn={isHumanTurn}
-        isComputerTurn={isComputerTurn}
-        onRoll={onRoll}
-        onReset={onReset}
-      />
+      <View style={styles.actionSlot}>
+        <ActionControl
+          state={state}
+          isHumanTurn={isHumanTurn}
+          isComputerTurn={isComputerTurn}
+          onRoll={() => {
+            hapticLight();
+            onRoll();
+          }}
+          onReset={() => {
+            hapticLight();
+            onReset();
+          }}
+        />
+      </View>
+      <Text style={styles.caption} numberOfLines={2}>
+        {caption || ' '}
+      </Text>
     </View>
   );
 }
 
-function ActionButton({ state, isHumanTurn, isComputerTurn, onRoll, onReset }: Props) {
-  if (state.phase === 'game-over') {
-    return (
-      <TouchableOpacity
-        accessibilityRole="button"
-        accessibilityLabel="Play again"
-        style={styles.rollBtn}
-        onPress={onReset}
-      >
-        <Text style={styles.rollBtnText}>Play Again</Text>
-      </TouchableOpacity>
-    );
+function getCaption(state: GameState, isHumanTurn: boolean, isComputerTurn: boolean) {
+  if (state.phase === 'rolling' && isHumanTurn) {
+    return 'Roll dice to begin your turn';
   }
-
-  if (state.phase === 'rolling') {
-    if (isHumanTurn) {
-      return (
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel="Roll dice"
-          style={styles.rollBtn}
-          onPress={onRoll}
-        >
-          <Text style={styles.rollBtnText}>Roll Dice</Text>
-        </TouchableOpacity>
-      );
+  if (state.phase === 'rolling' && isComputerTurn) {
+    return 'Opponent is rolling…';
+  }
+  if (state.phase === 'moving' && isComputerTurn) {
+    return 'Opponent is moving…';
+  }
+  if (state.phase === 'moving' && isHumanTurn) {
+    if (state.selectedPoint !== null) {
+      return 'Tap a highlighted point';
     }
-    return <StatusButton text="Computer Rolling…" />;
+    return 'Tap one of your checkers';
   }
-
-  if (state.phase === 'moving') {
-    if (isComputerTurn) {
-      return <StatusButton text="Computer Moving…" />;
-    }
-    return (
-      <View style={[styles.rollBtn, styles.hintBtn]}>
-        <Text style={[styles.rollBtnText, styles.hintText]}>
-          {state.selectedPoint !== null
-            ? 'Tap a highlighted point to move'
-            : 'Select a checker to move'}
-        </Text>
-      </View>
-    );
-  }
-
-  return null;
+  return ' ';
 }
 
-function StatusButton({ text }: { text: string }) {
+function ActionControl({
+  state,
+  isHumanTurn,
+  isComputerTurn,
+  onRoll,
+  onReset,
+}: Props) {
+  if (state.phase === 'game-over') {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Play again"
+        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        onPress={onReset}
+      >
+        <Text style={styles.primaryBtnText}>Play Again</Text>
+      </Pressable>
+    );
+  }
+
+  if (state.phase === 'rolling' && isHumanTurn) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Roll dice"
+        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        onPress={onRoll}
+      >
+        <Text style={styles.primaryBtnText}>Roll Dice</Text>
+      </Pressable>
+    );
+  }
+
+  if (state.phase === 'rolling' && isComputerTurn) {
+    return <StatusPlaceholder text="Rolling…" />;
+  }
+
+  if (state.phase === 'moving' && isComputerTurn) {
+    return <StatusPlaceholder text="Moving…" />;
+  }
+
+  return <View style={styles.actionSpacer} />;
+}
+
+function StatusPlaceholder({ text }: { text: string }) {
   return (
-    <View style={[styles.rollBtn, styles.mutedBtn]}>
-      <Text style={[styles.rollBtnText, styles.mutedText]}>{text}</Text>
+    <View style={styles.statusSlot}>
+      <Text style={styles.statusText}>{text}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   controls: {
-    flex: 1,
+    width: '100%',
+    maxWidth: 420,
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 16,
-    paddingVertical: 16,
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingHorizontal: 20,
   },
   diceRow: {
     flexDirection: 'row',
-    gap: 10,
     alignItems: 'center',
-    minHeight: 50,
+    justifyContent: 'center',
+    minHeight: 44,
+    marginBottom: 8,
   },
-  rollBtn: {
-    backgroundColor: '#8B1A1A',
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#C83030',
-    paddingHorizontal: 32,
+  actionSlot: {
+    height: ACTION_SLOT_HEIGHT,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionSpacer: {
+    height: ACTION_SLOT_HEIGHT,
+    width: '100%',
+  },
+  primaryBtn: {
+    backgroundColor: GAME_PALETTE.control,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.controlBorder,
+    paddingHorizontal: 40,
     paddingVertical: 14,
     minWidth: 200,
     alignItems: 'center',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+    ...continuousRadius(12),
   },
-  rollBtnText: {
-    color: '#F2EAD3',
+  pressed: {
+    opacity: 0.9,
+  },
+  primaryBtnText: {
+    color: GAME_PALETTE.text,
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '600',
     fontFamily: 'Inter_700Bold',
+  },
+  statusSlot: {
+    height: ACTION_SLOT_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statusText: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 15,
+    fontFamily: 'Inter_400Regular',
+  },
+  caption: {
+    marginTop: 6,
+    minHeight: 18,
+    color: GAME_PALETTE.textMuted,
+    fontSize: 13,
     textAlign: 'center',
-  },
-  mutedBtn: {
-    backgroundColor: '#3A2010',
-    borderColor: '#5A3020',
-  },
-  mutedText: {
-    color: '#8A6040',
-  },
-  hintBtn: {
-    backgroundColor: '#2A3A20',
-    borderColor: '#4A6A30',
-  },
-  hintText: {
-    color: '#A0D080',
+    fontFamily: 'Inter_400Regular',
   },
 });

@@ -1,57 +1,90 @@
 import type { GameState } from '@/lib/game';
-import { Platform, Pressable, StyleSheet, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { useNavigation } from 'expo-router/react-navigation';
+import { useCallback, useLayoutEffect } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { GameHeaderActions } from '@/components/navigation/game-header-actions';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
+import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
+import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { GameScreenHeader } from '@/features/game/game-screen-header';
-
+import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGameInput } from '@/features/game/use-game-input';
-
-const GAME_BG = '#1E0C02';
+import { hapticLight } from '@/lib/haptics';
 
 export function GameScreen() {
+  const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
+  const dimensions = useBoardDimensions();
   const {
     state,
+    previewTarget,
     handlePointPress,
+    handlePointPressIn,
+    handlePointPressOut,
+    handleBearOffPress,
     handleBarPress,
     handleBoardPress,
     handleRoll,
     handleReset,
-    handleBack,
   } = useGameInput();
+
+  const openOptions = useCallback(() => {
+    hapticLight();
+    router.push('/game/options');
+  }, []);
+
+  const playerLabel = state ? getPlayerLabel(state) : '';
+
+  useLayoutEffect(() => {
+    if (!state) {
+      return;
+    }
+    navigation.setOptions({
+      title: playerLabel,
+      headerRight: () => (
+        <GameHeaderActions onOptions={openOptions} onReset={handleReset} />
+      ),
+    });
+  }, [navigation, state, playerLabel, handleReset, openOptions]);
 
   if (!state) {
     return (
-      <SafeAreaView style={[styles.root, styles.center]}>
+      <View style={[styles.root, styles.center]}>
         <FocusAwareStatusBar />
-        <Text style={{ color: '#D4A843' }}>Loading…</Text>
-      </SafeAreaView>
+        <Text style={{ color: GAME_PALETTE.accent }}>Loading…</Text>
+      </View>
     );
   }
 
   const isComputerTurn
     = state.mode === 'vs-computer' && state.currentPlayer === 'black';
   const isHumanTurn = !isComputerTurn;
-  const playerLabel = getPlayerLabel(state);
 
   return (
-    <SafeAreaView style={[styles.root, webSafeArea]} edges={['top', 'bottom']}>
+    <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <FocusAwareStatusBar />
-      <GameScreenHeader
-        state={state}
-        playerLabel={playerLabel}
-        onBack={handleBack}
-        onReset={handleReset}
-      />
-      <Pressable onPress={handleBoardPress} style={styles.boardContainer}>
-        <BoardView
-          state={state}
-          onPointPress={handlePointPress}
-          onBarPress={handleBarPress}
-        />
-      </Pressable>
+      <GamePipStatusBar state={state} />
+      <View style={styles.boardWrap}>
+        <Pressable
+          onPress={handleBoardPress}
+          style={[styles.boardContainer, { maxWidth: dimensions.boardWidth }]}
+        >
+          <BoardView
+            state={state}
+            dimensions={dimensions}
+            previewTarget={previewTarget}
+            onPointPress={handlePointPress}
+            onPointPressIn={handlePointPressIn}
+            onPointPressOut={handlePointPressOut}
+            onBarPress={handleBarPress}
+            onBearOffPress={handleBearOffPress}
+          />
+        </Pressable>
+      </View>
       <GameScreenControls
         state={state}
         isHumanTurn={isHumanTurn}
@@ -59,7 +92,7 @@ export function GameScreen() {
         onRoll={handleRoll}
         onReset={handleReset}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -70,21 +103,25 @@ function getPlayerLabel(state: GameState) {
   return state.mode === 'vs-computer' ? 'Computer' : 'Black';
 }
 
-const webSafeArea = Platform.OS === 'web'
-  ? { paddingTop: 67, paddingBottom: 34 }
-  : null;
-
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: GAME_BG,
+    backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
   },
   center: {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  boardWrap: {
+    flex: 1,
+    justifyContent: 'center',
+    width: '100%',
+    alignItems: 'center',
+  },
   boardContainer: {
     paddingHorizontal: 4,
+    width: '100%',
+    alignItems: 'center',
   },
 });

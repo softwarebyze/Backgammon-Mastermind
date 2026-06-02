@@ -4,6 +4,7 @@ import { createContext } from 'react';
 export type GameContextType = {
   state: GameState | null;
   startGame: (mode: GameMode) => void;
+  resumeGame: () => boolean;
   resetGame: () => void;
   doRollDice: () => void;
   selectPoint: (point: number | null) => void;

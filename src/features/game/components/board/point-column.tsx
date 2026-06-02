@@ -1,56 +1,10 @@
 import type { BoardPoint, Player } from '@/lib/game/types';
-import { TouchableOpacity, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
+import { PointTriangle } from './point-triangle';
 
 const MAX_VISIBLE = 5;
-const POINT_COLORS = {
-  dark: '#8B1A1A',
-  light: '#D4A843',
-};
-
-type TriangleProps = {
-  isTop: boolean;
-  colWidth: number;
-  pointHeight: number;
-  color: string;
-};
-
-function PointTriangle({ isTop, colWidth, pointHeight, color }: TriangleProps) {
-  const halfWidth = colWidth / 2;
-  const borderStyle = isTop
-    ? {
-        borderTopWidth: pointHeight,
-        borderTopColor: color,
-      }
-    : {
-        borderBottomWidth: pointHeight,
-        borderBottomColor: color,
-      };
-
-  return (
-    <View
-      style={{
-        position: 'absolute',
-        [isTop ? 'top' : 'bottom']: 0,
-        left: 0,
-        right: 0,
-        alignItems: 'center',
-      }}
-    >
-      <View
-        style={{
-          width: 0,
-          height: 0,
-          borderLeftWidth: halfWidth,
-          borderRightWidth: halfWidth,
-          borderLeftColor: 'transparent',
-          borderRightColor: 'transparent',
-          ...borderStyle,
-        }}
-      />
-    </View>
-  );
-}
 
 type CheckersProps = {
   point: BoardPoint;
@@ -59,6 +13,9 @@ type CheckersProps = {
   checkerSize: number;
   stackStep: number;
   visibleCount: number;
+  showGhost: boolean;
+  ghostPlayer: Player | null;
+  hintTopChecker: boolean;
 };
 
 function PointCheckers({
@@ -68,6 +25,9 @@ function PointCheckers({
   checkerSize,
   stackStep,
   visibleCount,
+  showGhost,
+  ghostPlayer,
+  hintTopChecker,
 }: CheckersProps) {
   if (point.count === 0) {
     return null;
@@ -84,6 +44,7 @@ function PointCheckers({
             player={point.player as Player}
             size={checkerSize}
             showCount={isTopChecker && point.count > MAX_VISIBLE ? point.count : undefined}
+            showMoveHint={hintTopChecker && isTopChecker}
             style={{
               position: 'absolute',
               [isTop ? 'top' : 'bottom']: offset,
@@ -93,6 +54,19 @@ function PointCheckers({
           />
         );
       })}
+      {showGhost && ghostPlayer && (
+        <CheckerToken
+          player={ghostPlayer}
+          size={checkerSize}
+          style={{
+            position: 'absolute',
+            [isTop ? 'top' : 'bottom']: visibleCount * stackStep,
+            left: (colWidth - checkerSize) / 2,
+            zIndex: 20,
+            opacity: 0.35,
+          }}
+        />
+      )}
     </>
   );
 }
@@ -103,7 +77,12 @@ type Props = {
   isTop: boolean;
   isSelected: boolean;
   isLegalTarget: boolean;
+  isMovableSource: boolean;
+  showGhost: boolean;
+  ghostPlayer: Player | null;
   onPress: () => void;
+  onPressIn?: () => void;
+  onPressOut?: () => void;
   colWidth: number;
   pointHeight: number;
   checkerSize: number;
@@ -115,35 +94,42 @@ export function PointColumn({
   isTop,
   isSelected,
   isLegalTarget,
+  isMovableSource,
+  showGhost,
+  ghostPlayer,
   onPress,
+  onPressIn,
+  onPressOut,
   colWidth,
   pointHeight,
   checkerSize,
 }: Props) {
-  const isDark = pointIndex % 2 === 0;
-  const baseColor = isDark ? POINT_COLORS.dark : POINT_COLORS.light;
-  const triangleColor = isSelected
-    ? '#FFD700'
-    : isLegalTarget
-      ? '#4CAF50'
-      : baseColor;
+  let pointState: 'default' | 'selected' | 'legal' = 'default';
+  if (isSelected) {
+    pointState = 'selected';
+  }
+  else if (isLegalTarget) {
+    pointState = 'legal';
+  }
+  const palette = getPointPalette(pointIndex, pointState);
 
   const stackStep = Math.min(checkerSize - 2, (pointHeight - checkerSize) / (MAX_VISIBLE - 1));
   const visibleCount = Math.min(point.count, MAX_VISIBLE);
 
   return (
-    <TouchableOpacity
+    <Pressable
       accessibilityRole="button"
       accessibilityLabel={`Point ${pointIndex}${isSelected ? ', selected' : ''}${isLegalTarget ? ', legal move target' : ''}`}
       onPress={onPress}
-      activeOpacity={0.75}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       style={{ width: colWidth, height: pointHeight, position: 'relative' }}
     >
       <PointTriangle
         isTop={isTop}
-        colWidth={colWidth}
-        pointHeight={pointHeight}
-        color={triangleColor}
+        width={colWidth}
+        height={pointHeight}
+        palette={palette}
       />
 
       <PointCheckers
@@ -153,6 +139,9 @@ export function PointColumn({
         checkerSize={checkerSize}
         stackStep={stackStep}
         visibleCount={visibleCount}
+        showGhost={showGhost}
+        ghostPlayer={ghostPlayer}
+        hintTopChecker={isMovableSource}
       />
 
       {isLegalTarget && point.count === 0 && (
@@ -161,18 +150,18 @@ export function PointColumn({
             position: 'absolute',
             top: '50%',
             left: '50%',
-            marginLeft: -12,
-            marginTop: -12,
-            width: 24,
-            height: 24,
-            borderRadius: 12,
-            backgroundColor: 'rgba(76, 175, 80, 0.5)',
-            borderWidth: 2,
-            borderColor: '#4CAF50',
+            marginLeft: -8,
+            marginTop: -8,
+            width: 16,
+            height: 16,
+            borderRadius: 8,
+            backgroundColor: 'rgba(76, 175, 80, 0.35)',
+            borderWidth: 1.5,
+            borderColor: 'rgba(76, 175, 80, 0.7)',
             zIndex: 10,
           }}
         />
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 }

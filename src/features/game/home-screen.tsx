@@ -1,114 +1,150 @@
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useCallback } from 'react';
 import {
   Image,
-  Platform,
+  Pressable,
+  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FocusAwareStatusBar } from '@/components/ui';
+import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
-
-const HOME_BG = '#1E0C02';
+import { hasSavedGame } from '@/lib/game/persistence';
+import { hapticLight } from '@/lib/haptics';
+import { continuousRadius } from '@/lib/ui/native-styles';
 
 export function HomeScreen() {
-  const { startGame } = useGame();
+  const { startGame, resumeGame } = useGame();
+  const canResume = hasSavedGame();
 
-  const handleStart = (mode: 'vs-computer' | 'vs-human') => {
+  const handleStart = useCallback((mode: 'vs-computer' | 'vs-human') => {
+    hapticLight();
     startGame(mode);
     router.push('/game');
-  };
+  }, [startGame]);
+
+  const handleResume = useCallback(() => {
+    hapticLight();
+    if (resumeGame()) {
+      router.push('/game');
+    }
+  }, [resumeGame]);
 
   return (
-    <SafeAreaView style={[styles.root, webSafeArea]} edges={['top', 'bottom']}>
+    <>
       <FocusAwareStatusBar />
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../../../assets/brand/display-logo.png')}
-          style={styles.logo}
-          resizeMode="cover"
-        />
-      </View>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scroll}
+        contentInsetAdjustmentBehavior="automatic"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../../../assets/brand/display-logo.png')}
+            style={styles.logo}
+            resizeMode="cover"
+          />
+        </View>
 
-      <Text accessibilityRole="header" style={styles.title}>BACKGAMMON</Text>
-      <Text style={styles.subtitle}>The classic strategy game</Text>
+        <Text accessibilityRole="header" style={styles.title}>BACKGAMMON</Text>
+        <Text style={styles.subtitle}>Master the board — one move at a time</Text>
 
-      <View style={styles.dividerRow}>
-        <View style={styles.dividerLine} />
-        <View style={styles.dividerDiamond} />
-        <View style={styles.dividerLine} />
-      </View>
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <View style={styles.dividerDiamond} />
+          <View style={styles.dividerLine} />
+        </View>
 
-      <View style={styles.buttons}>
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel="Play against the computer"
-          style={[styles.modeBtn, styles.primaryBtn]}
-          onPress={() => handleStart('vs-computer')}
-          activeOpacity={0.8}
-        >
-          <Feather name="cpu" size={24} color="#1E0C02" style={styles.btnIcon} />
-          <View>
-            <Text style={[styles.btnLabel, { color: '#1E0C02' }]}>vs Computer</Text>
-            <Text style={[styles.btnSub, { color: '#4A2A10' }]}>Play against AI</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.buttons}>
+          {canResume && (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Resume saved game"
+              style={({ pressed }) => [styles.modeBtn, styles.resumeBtn, pressed && styles.pressed]}
+              onPress={handleResume}
+            >
+              <View style={styles.btnIconSlot}>
+                <Feather name="play-circle" size={24} color="#A0D080" />
+              </View>
+              <View style={styles.btnTextCol}>
+                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>Resume Game</Text>
+                <Text style={[styles.btnSub, { color: '#6A9A50' }]}>Continue where you left off</Text>
+              </View>
+            </Pressable>
+          )}
 
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel="Play with two players locally"
-          style={[styles.modeBtn, styles.secondaryBtn]}
-          onPress={() => handleStart('vs-human')}
-          activeOpacity={0.8}
-        >
-          <Feather name="users" size={24} color="#D4A843" style={styles.btnIcon} />
-          <View>
-            <Text style={[styles.btnLabel, { color: '#D4A843' }]}>2 Players</Text>
-            <Text style={[styles.btnSub, { color: '#A08060' }]}>Pass & play locally</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Play against the computer"
+            style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
+            onPress={() => handleStart('vs-computer')}
+          >
+            <View style={styles.btnIconSlot}>
+              <Feather name="cpu" size={24} color={GAME_PALETTE.bg} />
+            </View>
+            <View style={styles.btnTextCol}>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>vs Computer</Text>
+              <Text style={[styles.btnSub, { color: '#4A2A10' }]}>Play against AI</Text>
+            </View>
+          </Pressable>
 
-      <View style={styles.rulesCard}>
-        <Text style={styles.rulesTitle}>How to Play</Text>
-        <Text style={styles.rulesText}>• Roll dice, then move your checkers toward your home board</Text>
-        <Text style={styles.rulesText}>• Land on a lone opponent checker to send it to the bar</Text>
-        <Text style={styles.rulesText}>• Bear off all 15 checkers to win!</Text>
-        <Text style={styles.rulesText}>• White moves from high → low, Black moves from low → high</Text>
-      </View>
-    </SafeAreaView>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Play with two players locally"
+            style={({ pressed }) => [styles.modeBtn, styles.secondaryBtn, pressed && styles.pressed]}
+            onPress={() => handleStart('vs-human')}
+          >
+            <View style={styles.btnIconSlot}>
+              <Feather name="users" size={24} color={GAME_PALETTE.accent} />
+            </View>
+            <View style={styles.btnTextCol}>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>2 Players</Text>
+              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>Pass & play locally</Text>
+            </View>
+          </Pressable>
+        </View>
+
+        <View style={styles.rulesCard}>
+          <Text style={styles.rulesTitle}>New here?</Text>
+          <Text style={styles.rulesText}>
+            During a game, tap the sliders icon for hints and options.
+          </Text>
+          <Text style={styles.rulesText}>• Roll dice, then tap one of your checkers</Text>
+          <Text style={styles.rulesText}>• Hit lone blots to send them to the bar</Text>
+          <Text style={styles.rulesText}>• Bear off all 15 checkers to win</Text>
+        </View>
+      </ScrollView>
+    </>
   );
 }
 
-const webSafeArea = Platform.OS === 'web'
-  ? { paddingTop: 16, paddingBottom: 16 }
-  : null;
-
 const styles = StyleSheet.create({
-  root: {
+  scrollView: {
     flex: 1,
-    backgroundColor: HOME_BG,
+    backgroundColor: GAME_PALETTE.bg,
+  },
+  scroll: {
+    flexGrow: 1,
     alignItems: 'center',
     paddingHorizontal: 24,
+    paddingBottom: 32,
   },
   logoContainer: {
     width: 110,
     height: 110,
-    borderRadius: 28,
     overflow: 'hidden',
     borderWidth: 3,
-    borderColor: '#D4A843',
-    backgroundColor: HOME_BG,
+    borderColor: GAME_PALETTE.accent,
+    backgroundColor: GAME_PALETTE.bg,
     marginBottom: 20,
-    shadowColor: '#D4A843',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
+    marginTop: 8,
+    boxShadow: '0 4px 16px rgba(212, 168, 67, 0.35)',
+    ...continuousRadius(28),
   },
   logo: {
     width: '100%',
@@ -117,59 +153,75 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#D4A843',
-    letterSpacing: 6,
+    color: GAME_PALETTE.accent,
+    letterSpacing: 4,
     fontFamily: 'Inter_700Bold',
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 13,
-    color: '#A08060',
+    color: GAME_PALETTE.accentDim,
     marginTop: 4,
-    letterSpacing: 2,
+    letterSpacing: 1,
     fontFamily: 'Inter_400Regular',
+    textAlign: 'center',
   },
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '60%',
-    marginVertical: 28,
+    marginVertical: 24,
     gap: 8,
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: '#5A3A1A',
+    backgroundColor: GAME_PALETTE.surfaceBorder,
   },
   dividerDiamond: {
     width: 8,
     height: 8,
-    backgroundColor: '#D4A843',
+    backgroundColor: GAME_PALETTE.accent,
     transform: [{ rotate: '45deg' }],
   },
   buttons: {
     width: '100%',
+    maxWidth: 420,
     gap: 14,
-    marginBottom: 28,
+    marginBottom: 24,
   },
   modeBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 16,
     paddingVertical: 18,
     paddingHorizontal: 24,
     borderWidth: 2,
     gap: 16,
+    ...continuousRadius(16),
+  },
+  pressed: {
+    opacity: 0.88,
+  },
+  resumeBtn: {
+    backgroundColor: '#1A2A14',
+    borderColor: '#4A6A30',
   },
   primaryBtn: {
-    backgroundColor: '#D4A843',
+    backgroundColor: GAME_PALETTE.accent,
     borderColor: '#F0C060',
   },
   secondaryBtn: {
-    backgroundColor: '#2A1206',
-    borderColor: '#8B5E3C',
+    backgroundColor: GAME_PALETTE.surface,
+    borderColor: GAME_PALETTE.accentDim,
   },
-  btnIcon: {
-    width: 28,
+  btnIconSlot: {
+    width: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  btnTextCol: {
+    flex: 1,
+    justifyContent: 'center',
   },
   btnLabel: {
     fontSize: 17,
@@ -183,15 +235,16 @@ const styles = StyleSheet.create({
   },
   rulesCard: {
     width: '100%',
-    backgroundColor: '#2A1206',
-    borderRadius: 14,
+    maxWidth: 420,
+    backgroundColor: GAME_PALETTE.surface,
     borderWidth: 1,
-    borderColor: '#5A3A1A',
+    borderColor: GAME_PALETTE.surfaceBorder,
     padding: 16,
     gap: 6,
+    ...continuousRadius(14),
   },
   rulesTitle: {
-    color: '#D4A843',
+    color: GAME_PALETTE.accent,
     fontSize: 13,
     fontWeight: '700',
     fontFamily: 'Inter_700Bold',
@@ -199,7 +252,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   rulesText: {
-    color: '#A08060',
+    color: GAME_PALETTE.accentDim,
     fontSize: 12,
     fontFamily: 'Inter_400Regular',
     lineHeight: 18,
