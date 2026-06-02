@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "node",
+      "jest"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "docs",
+    "cli",
+    "android",
+    "ios",
+    ".agents",
+    "lint-staged.config.js"
+  ],
+  "include": [
+    "src/**/*.d.ts",
+    "uniwind-env.d.ts",
+    "expo-env.d.ts",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ]
+}

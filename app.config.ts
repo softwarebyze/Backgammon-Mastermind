@@ -53,7 +53,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: brandIcon,
   userInterfaceStyle: 'automatic',
-  newArchEnabled: true,
   runtimeVersion: {
     policy: 'appVersion',
   },
@@ -71,6 +70,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   experiments: {
     typedRoutes: true,
+    reactCompiler: true,
   },
   android: {
     adaptiveIcon: {
@@ -130,8 +130,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         },
       },
     ],
+    'expo-image',
     'expo-localization',
     'expo-router',
+    'expo-status-bar',
     'expo-updates',
     ['app-icon-badge', appIconBadgeConfig],
     ['react-native-edge-to-edge'],
