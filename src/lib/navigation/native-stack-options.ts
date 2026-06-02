@@ -36,32 +36,36 @@ export const gamePlayScreenOptions: NativeStackNavigationOptions = {
   contentStyle: { backgroundColor: GAME_PALETTE.bg },
 };
 
-export const gameFormSheetOptions: NativeStackNavigationOptions = {
-  presentation: 'formSheet',
-  sheetGrabberVisible: true,
-  sheetAllowedDetents: [0.68],
-  sheetCornerRadius: 16,
-  sheetExpandsWhenScrolledToEdge: true,
-  title: 'Game options',
-  headerShown: true,
-  headerShadowVisible: false,
-  headerBackButtonDisplayMode: 'minimal',
-  headerStyle: gameHeaderStyle,
-  headerTintColor: GAME_PALETTE.accent,
-  headerTitleStyle: gameHeaderTitleStyle,
-  contentStyle: { backgroundColor: GAME_PALETTE.surface },
-};
+export function gameFormSheetOptions(): NativeStackNavigationOptions {
+  return {
+    presentation: 'formSheet',
+    sheetGrabberVisible: true,
+    sheetAllowedDetents: [0.68],
+    sheetCornerRadius: 16,
+    sheetExpandsWhenScrolledToEdge: true,
+    title: translate('game.options.title'),
+    headerShown: true,
+    headerShadowVisible: false,
+    headerBackButtonDisplayMode: 'minimal',
+    headerStyle: gameHeaderStyle,
+    headerTintColor: GAME_PALETTE.accent,
+    headerTitleStyle: gameHeaderTitleStyle,
+    contentStyle: { backgroundColor: GAME_PALETTE.surface },
+  };
+}
 
-export const settingsStackOptions: NativeStackNavigationOptions = {
-  title: translate('settings.title'),
-  headerShown: true,
-  headerShadowVisible: false,
-  headerBackButtonDisplayMode: 'minimal',
-  headerStyle: { backgroundColor: GAME_PALETTE.bg },
-  headerTintColor: GAME_PALETTE.accent,
-  headerTitleStyle: gameHeaderTitleStyle,
-  contentStyle: { backgroundColor: GAME_PALETTE.bg },
-};
+export function settingsStackOptions(): NativeStackNavigationOptions {
+  return {
+    title: translate('settings.title'),
+    headerShown: true,
+    headerShadowVisible: false,
+    headerBackButtonDisplayMode: 'minimal',
+    headerStyle: { backgroundColor: GAME_PALETTE.bg },
+    headerTintColor: GAME_PALETTE.accent,
+    headerTitleStyle: gameHeaderTitleStyle,
+    contentStyle: { backgroundColor: GAME_PALETTE.bg },
+  };
+}
 
 export function pickerFormSheetOptions(title: string): NativeStackNavigationOptions {
   return {

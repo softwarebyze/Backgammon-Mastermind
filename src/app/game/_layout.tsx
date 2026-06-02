@@ -9,7 +9,7 @@ export default function GameLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={gamePlayScreenOptions} />
-      <Stack.Screen name="options" options={gameFormSheetOptions} />
+      <Stack.Screen name="options" options={gameFormSheetOptions()} />
     </Stack>
   );
 }

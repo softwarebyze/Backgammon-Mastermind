@@ -36,7 +36,7 @@ export default function AppLayout() {
       <Stack.Screen
         name="settings"
         options={{
-          ...settingsStackOptions,
+          ...settingsStackOptions(),
           headerLeft: () => (
             <HeaderButton
               accessibilityLabel="Back"

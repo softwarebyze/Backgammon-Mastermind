@@ -4,14 +4,13 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { translate } from '@/lib/i18n';
 
 export function GameOptionsScreen() {
   const insets = useSafeAreaInsets();
 
   return (
     <View style={[styles.root, { paddingBottom: Math.max(insets.bottom, 16) }]}>
-      <Text style={styles.title}>Game options</Text>
-
       <Pressable
         accessibilityRole="link"
         style={styles.row}
@@ -22,8 +21,8 @@ export function GameOptionsScreen() {
           requestAnimationFrame(() => router.push('/settings'));
         }}
       >
-        <Text style={styles.rowText}>Language, theme & more</Text>
-        <Text style={styles.rowHint}>Open Settings</Text>
+        <Text style={styles.rowText}>{translate('game.options.open_settings')}</Text>
+        <Text style={styles.rowHint}>{translate('game.options.open_settings_hint')}</Text>
       </Pressable>
     </View>
   );
@@ -35,14 +34,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
     backgroundColor: GAME_PALETTE.surface,
-  },
-  title: {
-    color: GAME_PALETTE.textMuted,
-    fontSize: 13,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
-    marginBottom: 12,
   },
   row: {
     borderWidth: 1,
