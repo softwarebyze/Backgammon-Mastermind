@@ -62,7 +62,6 @@
     "@expo/metro-runtime": "^56.0.13",
     "@expo/vector-icons": "^15.1.1",
     "@gorhom/bottom-sheet": "^5.2.8",
-    "@react-navigation/native": "^7.2.5",
     "@shopify/flash-list": "2.0.2",
     "app-icon-badge": "^0.1.2",
     "expo": "~56.0.8",
