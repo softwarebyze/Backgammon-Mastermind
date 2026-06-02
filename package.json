@@ -55,9 +55,7 @@
     "skills:update": "skills update",
     "device:open": "agent-device --session android open com.backgammonmastermind.development --platform android --relaunch",
     "device:snapshot": "agent-device --session android snapshot -i",
-    "device:logs": "adb logcat -d -t 300 | grep -iE 'ReactNativeJS|ReferenceError|TypeError|Invariant' || true",
-    "remotion:dev": "pnpm --dir remotion dev",
-    "remotion:render": "pnpm --dir remotion render:all"
+    "device:logs": "adb logcat -d -t 300 | grep -iE 'ReactNativeJS|ReferenceError|TypeError|Invariant' || true"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
