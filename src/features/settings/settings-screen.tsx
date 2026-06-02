@@ -18,7 +18,6 @@ import {
   shareApp,
 } from '@/lib/app-links';
 import { translate } from '@/lib/i18n';
-import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
@@ -47,8 +46,6 @@ export function SettingsScreen() {
           <Text className="text-xl font-bold">
             {translate('settings.title')}
           </Text>
-
-          <GameSettingsSection />
 
           <SettingsContainer title="settings.generale">
             <LanguageItem />
