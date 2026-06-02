@@ -26,7 +26,8 @@ export const homeScreenOptions: NativeStackNavigationOptions = {
 
 /** Active game board */
 export const gamePlayScreenOptions: NativeStackNavigationOptions = {
-  headerShown: true,
+  // The in-game UI renders its own header; avoid a second native header.
+  headerShown: false,
   headerShadowVisible: false,
   headerBackButtonDisplayMode: 'minimal',
   headerStyle: gameHeaderStyle,
