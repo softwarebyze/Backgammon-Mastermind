@@ -2,22 +2,42 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": [
     "src/app/**/*.{tsx,ts}",
-    "app.config.ts",
+    "src/components/ui/index.tsx",
+    "src/components/ui/icons/index.tsx",
+    "src/lib/game/index.ts",
+    "src/lib/i18n/index.tsx",
+    "src/lib/storage.tsx",
     "env.ts"
   ],
   "project": ["src/**/*.{ts,tsx}"],
   "ignore": [
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "jest-setup.ts",
-    "scripts/**"
+    "src/components/ui/form-utils.ts",
+    "src/components/ui/modal-keyboard-aware-scroll-view.tsx",
+    "src/lib/hooks/index.tsx",
+    "src/lib/utils.ts"
+  ],
+  "ignoreBinaries": [
+    "app-release",
+    "adb",
+    "xed",
+    "only-allow",
+    "eas",
+    "maestro",
+    "skills"
   ],
   "ignoreDependencies": [
-    "@commitlint/cli",
-    "@commitlint/config-conventional",
     "husky",
-    "lint-staged",
-    "jest-junit",
-    "np"
+    "np",
+    "babel-preset-expo",
+    "@expo-google-fonts/inter",
+    "expo-crypto",
+    "react-native-url-polyfill",
+    "react-error-boundary",
+    "@tailwindcss/cli",
+    "@types/i18n-js",
+    "@types/invariant",
+    "dotenv",
+    "eslint-plugin-unicorn",
+    "zustand"
   ]
 }
