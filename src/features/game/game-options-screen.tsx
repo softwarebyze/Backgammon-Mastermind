@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { router } from 'expo-router';
 import * as React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,12 +12,19 @@ export function GameOptionsScreen() {
     <View style={[styles.root, { paddingBottom: Math.max(insets.bottom, 16) }]}>
       <Text style={styles.title}>Game options</Text>
 
-      <Link href="/settings" asChild>
-        <Pressable style={styles.row}>
-          <Text style={styles.rowText}>Language, theme & more</Text>
-          <Text style={styles.rowHint}>Open Settings</Text>
-        </Pressable>
-      </Link>
+      <Pressable
+        accessibilityRole="link"
+        style={styles.row}
+        onPress={() => {
+          // Ensure the formSheet is dismissed before navigating, otherwise Settings
+          // renders behind the sheet and feels "stuck" in the stack.
+          router.back();
+          requestAnimationFrame(() => router.push('/settings'));
+        }}
+      >
+        <Text style={styles.rowText}>Language, theme & more</Text>
+        <Text style={styles.rowHint}>Open Settings</Text>
+      </Pressable>
     </View>
   );
 }
