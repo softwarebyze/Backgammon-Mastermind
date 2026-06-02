@@ -1,7 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
-import { Stack } from 'expo-router';
-import { ThemeProvider } from 'expo-router/react-navigation';
+import { Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
@@ -40,6 +39,7 @@ export default function RootLayout() {
           options={{
             headerShown: false,
             animation: 'slide_from_bottom',
+            contentStyle: { backgroundColor: '#1E0C02' },
           }}
         />
       </Stack>
