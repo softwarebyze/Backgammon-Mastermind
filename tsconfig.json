@@ -1,6 +1,10 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "types": [
+      "node"
+    ],
     "baseUrl": ".",
     "jsx": "react-native",
     "paths": {
@@ -19,6 +23,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
+    "src/**/*.d.ts",
     "app.config.ts",
     "env.ts",
     "uniwind-env.d.ts",
@@ -34,6 +39,8 @@
     "android",
     "ios",
     ".agents",
-    "lint-staged.config.js"
+    "lint-staged.config.js",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ]
 }

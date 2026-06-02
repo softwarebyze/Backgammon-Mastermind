@@ -45,7 +45,7 @@ export function CheckerToken({ player, size, showCount, style }: Props) {
       {showCount !== undefined && showCount > 0 && (
         <Text
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             {
               color: isWhite ? '#3A2A10' : '#E0E0FF',
               fontSize: size * 0.35,
