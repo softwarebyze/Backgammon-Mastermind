@@ -6,6 +6,7 @@ import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
 import { SettingToggleRow } from '@/features/game/components/settings-ui/setting-toggle-row';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { translate } from '@/lib/i18n';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { SETTINGS_ROW_PADDING_H } from '@/lib/ui/settings-layout';
 
@@ -29,8 +30,8 @@ export function GamePreferencesPanel({
       <View style={styles.card}>
         <SettingToggleRow
           icon={<MoveHintIcon size={32} />}
-          label="Move hints"
-          hint={showHints ? 'Gold ring on checkers you can move' : undefined}
+          label={translate('game.preferences.move_hints')}
+          hint={showHints ? translate('game.preferences.move_hints_hint') : undefined}
           value={preferences.showMoveHints}
           onChange={onShowMoveHintsChange}
         />
@@ -46,8 +47,8 @@ export function GamePreferencesPanel({
               }
             />
           )}
-          label="Direction overlay"
-          hint={showHints ? 'Horseshoe path on the board' : undefined}
+          label={translate('game.preferences.direction_overlay')}
+          hint={showHints ? translate('game.preferences.direction_overlay_hint') : undefined}
           value={preferences.showDirectionOverlay}
           onChange={onShowDirectionOverlayChange}
         />

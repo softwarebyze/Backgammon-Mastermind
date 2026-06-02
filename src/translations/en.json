@@ -4,6 +4,15 @@
       "open_settings": "Language, theme & more",
       "open_settings_hint": "Open Settings",
       "title": "Game options"
+    },
+    "preferences": {
+      "dice_display": "Dice display",
+      "dice_dots": "Dots",
+      "dice_numbers": "Numbers",
+      "direction_overlay": "Direction overlay",
+      "direction_overlay_hint": "Horseshoe path on the board",
+      "move_hints": "Move hints",
+      "move_hints_hint": "Gold ring on checkers you can move"
     }
   },
   "settings": {

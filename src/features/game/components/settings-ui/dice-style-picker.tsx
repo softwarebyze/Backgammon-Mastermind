@@ -1,9 +1,11 @@
 import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
+import type { TxKeyPath } from '@/lib/i18n';
 import * as React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticSelection } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { DieFacePreview } from './die-face-preview';
 
@@ -12,41 +14,44 @@ type Props = {
   onChange: (style: DiceDisplayStyle) => void;
 };
 
-const OPTIONS: Array<{ id: DiceDisplayStyle; label: string }> = [
-  { id: 'numbers', label: 'Numbers' },
-  { id: 'dots', label: 'Dots' },
+const OPTIONS: Array<{ id: DiceDisplayStyle; labelKey: TxKeyPath }> = [
+  { id: 'numbers', labelKey: 'game.preferences.dice_numbers' },
+  { id: 'dots', labelKey: 'game.preferences.dice_dots' },
 ];
 
 export function DiceStylePicker({ value, onChange }: Props) {
   return (
     <View style={styles.wrap}>
-      <Text style={styles.sectionLabel}>Dice display</Text>
+      <Text style={styles.sectionLabel}>{translate('game.preferences.dice_display')}</Text>
       <View style={styles.row}>
-        {OPTIONS.map(opt => (
-          <Pressable
-            key={opt.id}
-            accessibilityRole="radio"
-            accessibilityState={{ checked: value === opt.id }}
-            accessibilityLabel={`${opt.label}, show dice as ${opt.id}`}
-            onPress={() => {
-              hapticSelection();
-              onChange(opt.id);
-            }}
-            style={[styles.card, value === opt.id && styles.cardSelected]}
-          >
-            <View style={styles.cardHeader}>
-              <View style={[styles.radio, value === opt.id && styles.radioSelected]}>
-                {value === opt.id && <View style={styles.radioDot} />}
+        {OPTIONS.map((opt) => {
+          const label = translate(opt.labelKey);
+          return (
+            <Pressable
+              key={opt.id}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: value === opt.id }}
+              accessibilityLabel={label}
+              onPress={() => {
+                hapticSelection();
+                onChange(opt.id);
+              }}
+              style={[styles.card, value === opt.id && styles.cardSelected]}
+            >
+              <View style={styles.cardHeader}>
+                <View style={[styles.radio, value === opt.id && styles.radioSelected]}>
+                  {value === opt.id && <View style={styles.radioDot} />}
+                </View>
+                <Text style={[styles.cardLabel, value === opt.id && styles.cardLabelSelected]}>
+                  {label}
+                </Text>
               </View>
-              <Text style={[styles.cardLabel, value === opt.id && styles.cardLabelSelected]}>
-                {opt.label}
-              </Text>
-            </View>
-            <View style={styles.dicePreview}>
-              <DieFacePreview style={opt.id} pair={[5, 5]} size={34} />
-            </View>
-          </Pressable>
-        ))}
+              <View style={styles.dicePreview}>
+                <DieFacePreview style={opt.id} pair={[5, 5]} size={34} />
+              </View>
+            </Pressable>
+          );
+        })}
       </View>
     </View>
   );
