@@ -1,7 +1,18 @@
-import type { NativeStackNavigationOptions } from 'expo-router/build/react-navigation/native-stack/types';
+import type { Stack } from 'expo-router';
+import type { ComponentProps } from 'react';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
+
+/**
+ * Screen options accepted by `<Stack.Screen options={...} />`, derived from
+ * expo-router's public API. We avoid importing from
+ * `@react-navigation/native-stack` (not a direct dependency in SDK 56) and from
+ * expo-router's internal build paths.
+ */
+type NativeStackNavigationOptions = NonNullable<
+  ComponentProps<typeof Stack.Screen>['options']
+>;
 
 const gameHeaderTitleStyle = {
   color: GAME_PALETTE.accent,
@@ -40,16 +51,11 @@ export function gameFormSheetOptions(): NativeStackNavigationOptions {
   return {
     presentation: 'formSheet',
     sheetGrabberVisible: true,
-    sheetAllowedDetents: [0.68],
+    // One option row + title — avoid a mostly empty 68% sheet.
+    sheetAllowedDetents: [0.36],
     sheetCornerRadius: 16,
-    sheetExpandsWhenScrolledToEdge: true,
-    title: translate('game.options.title'),
-    headerShown: true,
-    headerShadowVisible: false,
-    headerBackButtonDisplayMode: 'minimal',
-    headerStyle: gameHeaderStyle,
-    headerTintColor: GAME_PALETTE.accent,
-    headerTitleStyle: gameHeaderTitleStyle,
+    sheetExpandsWhenScrolledToEdge: false,
+    headerShown: false,
     contentStyle: { backgroundColor: GAME_PALETTE.surface },
   };
 }
