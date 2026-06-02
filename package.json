@@ -43,7 +43,7 @@
     "lint": "eslint src app.config.ts env.ts .maestro",
     "lint:fix": "eslint src app.config.ts env.ts .maestro --fix",
     "format": "pnpm lint:fix",
-    "type-check": "tsc --noemit",
+    "type-check": "tsc --noemit -p tsconfig.json && tsc --noemit -p tsconfig.test.json",
     "lint:translations": "eslint ./src/translations/ --fix --ext .json",
     "test": "jest",
     "check-all": "pnpm run lint && pnpm run type-check && pnpm run lint:translations && pnpm run test",
