@@ -2,6 +2,14 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
+import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
+import { translate } from '@/lib/i18n';
+import {
+  homeScreenOptions,
+  pickerFormSheetOptions,
+  settingsStackOptions,
+} from '@/lib/navigation/native-stack-options';
+
 export default function AppLayout() {
   useEffect(() => {
     SplashScreen.hideAsync();
@@ -14,8 +22,22 @@ export default function AppLayout() {
         contentStyle: { backgroundColor: '#1E0C02' },
       }}
     >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="settings" />
+      <Stack.Screen
+        name="index"
+        options={{
+          ...homeScreenOptions,
+          headerRight: () => <SettingsHeaderButton />,
+        }}
+      />
+      <Stack.Screen name="settings" options={settingsStackOptions} />
+      <Stack.Screen
+        name="language"
+        options={pickerFormSheetOptions(translate('settings.language'))}
+      />
+      <Stack.Screen
+        name="theme"
+        options={pickerFormSheetOptions(translate('settings.theme.title'))}
+      />
     </Stack>
   );
 }

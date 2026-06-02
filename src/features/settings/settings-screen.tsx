@@ -1,83 +1,125 @@
+import type { ReactNode } from 'react';
 import Env from 'env';
-import { useUniwind } from 'uniwind';
+import { StyleSheet } from 'react-native';
 
-import {
-  colors,
-  FocusAwareStatusBar,
-  ScrollView,
-  Text,
-  View,
-} from '@/components/ui';
+import { FocusAwareStatusBar, ScrollView, Text, View } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
+import {
+  openGithub,
+  openPrivacy,
+  openSupport,
+  openTerms,
+  openWebsite,
+  rateApp,
+  shareApp,
+} from '@/lib/settings/settings-actions';
+import { continuousRadius } from '@/lib/ui/native-styles';
+import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
-import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
 import { ThemeItem } from './components/theme-item';
 
 export function SettingsScreen() {
-  const { theme } = useUniwind();
-  const iconColor
-    = theme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+  const iconColor = GAME_PALETTE.textMuted;
+
   return (
-    <>
+    <View style={styles.root}>
       <FocusAwareStatusBar />
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        contentInsetAdjustmentBehavior="automatic"
+      >
+        <GameSettingsSection />
 
-      <ScrollView>
-        <View className="flex-1 px-4 pt-16">
-          <Text className="text-xl font-bold">
-            {translate('settings.title')}
-          </Text>
-          <SettingsContainer title="settings.generale">
-            <LanguageItem />
-            <ThemeItem />
-          </SettingsContainer>
+        <Section title={translate('settings.generale')}>
+          <LanguageItem />
+          <ThemeItem />
+        </Section>
 
-          <SettingsContainer title="settings.about">
-            <SettingsItem
-              text="settings.app_name"
-              value={Env.EXPO_PUBLIC_NAME}
-            />
-            <SettingsItem
-              text="settings.version"
-              value={Env.EXPO_PUBLIC_VERSION}
-            />
-          </SettingsContainer>
+        <Section title={translate('settings.about')}>
+          <SettingsItem text="settings.app_name" value={Env.EXPO_PUBLIC_NAME} />
+          <SettingsItem
+            text="settings.version"
+            value={Env.EXPO_PUBLIC_VERSION}
+            showDivider={false}
+          />
+        </Section>
 
-          <SettingsContainer title="settings.support_us">
-            <SettingsItem
-              text="settings.share"
-              icon={<Share color={iconColor} />}
-              onPress={() => {}}
-            />
-            <SettingsItem
-              text="settings.rate"
-              icon={<Rate color={iconColor} />}
-              onPress={() => {}}
-            />
-            <SettingsItem
-              text="settings.support"
-              icon={<Support color={iconColor} />}
-              onPress={() => {}}
-            />
-          </SettingsContainer>
+        <Section title={translate('settings.support_us')}>
+          <SettingsItem
+            text="settings.share"
+            icon={<Share color={iconColor} />}
+            onPress={() => void shareApp()}
+          />
+          <SettingsItem
+            text="settings.rate"
+            icon={<Rate color={iconColor} />}
+            onPress={() => void rateApp()}
+          />
+          <SettingsItem
+            text="settings.support"
+            icon={<Support color={iconColor} />}
+            onPress={() => void openSupport()}
+            showDivider={false}
+          />
+        </Section>
 
-          <SettingsContainer title="settings.links">
-            <SettingsItem text="settings.privacy" onPress={() => {}} />
-            <SettingsItem text="settings.terms" onPress={() => {}} />
-            <SettingsItem
-              text="settings.github"
-              icon={<Github color={iconColor} />}
-              onPress={() => {}}
-            />
-            <SettingsItem
-              text="settings.website"
-              icon={<Website color={iconColor} />}
-              onPress={() => {}}
-            />
-          </SettingsContainer>
-        </View>
+        <Section title={translate('settings.links')}>
+          <SettingsItem text="settings.privacy" onPress={() => void openPrivacy()} />
+          <SettingsItem text="settings.terms" onPress={() => void openTerms()} />
+          <SettingsItem
+            text="settings.github"
+            icon={<Github color={iconColor} />}
+            onPress={() => void openGithub()}
+          />
+          <SettingsItem
+            text="settings.website"
+            icon={<Website color={iconColor} />}
+            onPress={() => void openWebsite()}
+            showDivider={false}
+          />
+        </Section>
       </ScrollView>
-    </>
+    </View>
   );
 }
+
+function Section({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      <View style={styles.card}>{children}</View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: GAME_PALETTE.bg,
+  },
+  scroll: {
+    paddingHorizontal: 16,
+    paddingBottom: 32,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: GAME_PALETTE.textMuted,
+    marginBottom: 8,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+  },
+  card: {
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.surfaceBorder,
+    backgroundColor: GAME_PALETTE.surface,
+    overflow: 'hidden',
+    ...continuousRadius(12),
+  },
+});
