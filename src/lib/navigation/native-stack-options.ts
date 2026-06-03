@@ -1,18 +1,7 @@
-import type { Stack } from 'expo-router';
-import type { ComponentProps } from 'react';
+import type { NativeStackNavigationOptions } from 'expo-router';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
-
-/**
- * Screen options accepted by `<Stack.Screen options={...} />`, derived from
- * expo-router's public API. We avoid importing from
- * `@react-navigation/native-stack` (not a direct dependency in SDK 56) and from
- * expo-router's internal build paths.
- */
-type NativeStackNavigationOptions = NonNullable<
-  ComponentProps<typeof Stack.Screen>['options']
->;
 
 const gameHeaderTitleStyle = {
   color: GAME_PALETTE.accent,
