@@ -11,6 +11,7 @@
 name: Expo Doctor (expo)
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -18,10 +19,16 @@ on:
     paths:
       - package.json
       - pnpm-lock.yaml
+      - app.config.ts
+      - .github/workflows/expo-doctor.yml
+      - assets/brand/**
   pull_request:
     paths:
       - package.json
       - pnpm-lock.yaml
+      - app.config.ts
+      - .github/workflows/expo-doctor.yml
+      - assets/brand/**
 
 permissions:
   contents: read
