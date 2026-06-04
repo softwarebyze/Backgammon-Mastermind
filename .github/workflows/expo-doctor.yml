@@ -45,7 +45,18 @@ jobs:
         uses: ./.github/actions/setup-node-pnpm-install
 
       - name: Run prebuild
-        run: pnpm run prebuild
+        run: |
+          # app-icon-badge + Android icon generation can intermittently fail with
+          # "Could not find MIME for Buffer <null>" on a cold CI checkout.
+          for attempt in 1 2 3; do
+            rm -rf ios android
+            if pnpm run prebuild; then
+              exit 0
+            fi
+            echo "::warning::prebuild attempt ${attempt} failed; retrying..."
+            sleep 5
+          done
+          exit 1
 
       - name: 🚑 Run Doctor Checks
         run: |
