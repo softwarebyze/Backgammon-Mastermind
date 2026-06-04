@@ -28,3 +28,6 @@ yarn-error.log
 expo-env.d.ts
 uniwind-types.d.ts
 # @end expo-cli
+
+# QA video artifacts (keep untracked)
+artifacts/qa-videos/

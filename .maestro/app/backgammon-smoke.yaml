@@ -17,4 +17,8 @@ tags:
     visible: Roll dice
     timeout: 15000
 - assertVisible: Roll dice
+- tapOn: Roll dice
+- extendedWaitUntil:
+    visible: Tap one of your checkers
+    timeout: 10000
 - assertVisible: Point 1
