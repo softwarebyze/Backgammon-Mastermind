@@ -1,27 +1,15 @@
 import type { NativeStackNavigationOptions } from 'expo-router';
 
+import { Platform } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
-
-const gameHeaderTitleStyle = {
-  color: GAME_PALETTE.accent,
-  fontFamily: 'Inter_700Bold',
-  fontSize: 17,
-} as const;
-
-const gameHeaderStyle = {
-  backgroundColor: GAME_PALETTE.surface,
-} as const;
 
 /** Home — native header with settings in the top bar */
 export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
   headerShown: true,
   headerShadowVisible: false,
-  headerStyle: { backgroundColor: GAME_PALETTE.bg },
-  headerTintColor: GAME_PALETTE.accent,
-  headerTitleStyle: gameHeaderTitleStyle,
-  contentStyle: { backgroundColor: GAME_PALETTE.bg },
+  headerTransparent: true,
 };
 
 /** Active game board */
@@ -30,10 +18,6 @@ export const gamePlayScreenOptions: NativeStackNavigationOptions = {
   headerShown: false,
   headerShadowVisible: false,
   headerBackButtonDisplayMode: 'minimal',
-  headerStyle: gameHeaderStyle,
-  headerTintColor: GAME_PALETTE.accent,
-  headerTitleStyle: gameHeaderTitleStyle,
-  contentStyle: { backgroundColor: GAME_PALETTE.bg },
 };
 
 export function gameFormSheetOptions(): NativeStackNavigationOptions {
@@ -53,12 +37,16 @@ export function settingsStackOptions(): NativeStackNavigationOptions {
   return {
     title: translate('settings.title'),
     headerShown: true,
-    headerShadowVisible: false,
-    headerBackButtonDisplayMode: 'minimal',
     headerStyle: { backgroundColor: GAME_PALETTE.bg },
     headerTintColor: GAME_PALETTE.accent,
-    headerTitleStyle: gameHeaderTitleStyle,
-    contentStyle: { backgroundColor: GAME_PALETTE.bg },
+    // on android, true causes header to cover up underlying content
+    headerTransparent: Platform.OS === 'ios',
+    headerShadowVisible: false,
+    headerLargeTitleShadowVisible: false,
+    headerLargeStyle: { backgroundColor: 'transparent' },
+    headerLargeTitle: true,
+    headerBlurEffect: 'none',
+    headerBackButtonDisplayMode: 'minimal',
   };
 }
 
@@ -72,9 +60,5 @@ export function pickerFormSheetOptions(title: string): NativeStackNavigationOpti
     headerShown: true,
     headerShadowVisible: false,
     headerBackButtonDisplayMode: 'minimal',
-    headerStyle: gameHeaderStyle,
-    headerTintColor: GAME_PALETTE.accent,
-    headerTitleStyle: gameHeaderTitleStyle,
-    contentStyle: { backgroundColor: GAME_PALETTE.surface },
   };
 }

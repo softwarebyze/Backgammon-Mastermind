@@ -53,7 +53,7 @@ function Providers({ children }: { children: React.ReactNode }) {
     <GestureHandlerRootView
       style={styles.container}
       // eslint-disable-next-line better-tailwindcss/no-unknown-classes
-      className={theme.dark ? `dark` : undefined}
+      className="dark"
     >
       <KeyboardProvider>
         <ThemeProvider value={theme}>

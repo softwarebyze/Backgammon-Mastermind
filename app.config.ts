@@ -52,7 +52,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   version: Env.EXPO_PUBLIC_VERSION.toString(),
   orientation: 'portrait',
   icon: brandIcon,
-  userInterfaceStyle: 'automatic',
+  userInterfaceStyle: 'dark',
   runtimeVersion: {
     policy: 'appVersion',
   },
