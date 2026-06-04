@@ -5,6 +5,23 @@ tags:
 ---
 - launchApp:
     clearState: true
+- runFlow:
+    when:
+      visible: Development Build
+    commands:
+      - tapOn: BackgammonMastermind
+- runFlow:
+    when:
+      visible:
+        text: "http.*"
+    commands:
+      - tapOn:
+          text: "http.*"
+- runFlow:
+    when:
+      visible: Continue
+    commands:
+      - tapOn: Continue
 - extendedWaitUntil:
     visible: vs Computer
     timeout: 90000

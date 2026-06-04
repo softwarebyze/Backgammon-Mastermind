@@ -1,5 +1,5 @@
-# Generates a release APK for Maestro E2E (embedded JS bundle; skips dev-client launcher).
-# Output: ./android-test.apk (from android/app/build/outputs/apk/release/app-release.apk)
+# Generates a debug APK for Maestro E2E (embedded JS bundle via debuggableVariants=[]).
+# Output: ./android-test.apk (from android/app/build/outputs/apk/debug/app-debug.apk)
 
 name: 'Setup JDK + GRADLE + Generate APK'
 description: Prebuild native project and assemble a debug APK for E2E
@@ -53,13 +53,13 @@ runs:
         gradle-version: wrapper
         cache-read-only: false
 
-    - name: Build release test APK (embedded bundle, no dev-client launcher)
+    - name: Build debug test APK (embedded JS bundle)
       working-directory: android
       run: |
         chmod +x ./gradlew
-        ./gradlew assembleRelease --no-daemon --build-cache --stacktrace
+        ./gradlew assembleDebug --no-daemon --build-cache --stacktrace
       shell: bash
 
     - name: Copy test APK to workspace root
-      run: cp android/app/build/outputs/apk/release/app-release.apk ./android-test.apk
+      run: cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
       shell: bash
