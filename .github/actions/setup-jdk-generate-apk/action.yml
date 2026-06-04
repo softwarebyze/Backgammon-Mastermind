@@ -35,11 +35,15 @@ runs:
       run: bash .github/scripts/tune-android-gradle-for-ci.sh android/gradle.properties
       shell: bash
 
-    - name: Pin react-native path for native module Gradle scripts
+    - name: Patch app Gradle for CI (RN path + embedded JS bundle)
       run: |
         APP_GRADLE=android/app/build.gradle
         if ! grep -q 'REACT_NATIVE_NODE_MODULES_DIR' "$APP_GRADLE"; then
           sed -i '/^react {/i ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native")\n' "$APP_GRADLE"
+        fi
+        # Embed the JS bundle in debug APK so Maestro can run without Metro (expo-dev-client).
+        if ! grep -q 'debuggableVariants = \[\]' "$APP_GRADLE"; then
+          sed -i '/bundleCommand = "export:embed"/a\    debuggableVariants = []' "$APP_GRADLE"
         fi
       shell: bash
 

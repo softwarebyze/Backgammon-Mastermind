@@ -10,15 +10,15 @@ tags:
     commands:
       - tapOn: BackgammonMastermind
 - extendedWaitUntil:
-    visible: Play against the computer
-    timeout: 30000
-- tapOn: Play against the computer
+    visible: vs Computer
+    timeout: 60000
+- tapOn:
+    text: vs Computer
 - extendedWaitUntil:
-    visible: Roll dice
-    timeout: 15000
-- assertVisible: Roll dice
-- tapOn: Roll dice
+    visible: Roll Dice
+    timeout: 30000
+- tapOn: Roll Dice
 - extendedWaitUntil:
     visible: Tap one of your checkers
-    timeout: 10000
+    timeout: 15000
 - assertVisible: Point 1
