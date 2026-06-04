@@ -7,7 +7,6 @@ import {
   colors,
   FocusAwareStatusBar,
   ScrollView,
-  Text,
   View,
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
@@ -17,11 +16,10 @@ import {
   openStoreListing,
   shareApp,
 } from '@/lib/app-links';
-import { translate } from '@/lib/i18n';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
-import { ThemeItem } from './components/theme-item';
+// import { ThemeItem } from './components/theme-item';
 
 export function SettingsScreen() {
   const { theme } = useUniwind();
@@ -41,14 +39,11 @@ export function SettingsScreen() {
     <>
       <FocusAwareStatusBar />
 
-      <ScrollView>
-        <View className="flex-1 px-4 pt-16">
-          <Text className="text-xl font-bold">
-            {translate('settings.title')}
-          </Text>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View className="flex-1 px-4 pb-8">
           <SettingsContainer title="settings.generale">
             <LanguageItem />
-            <ThemeItem />
+            {/* <ThemeItem /> */}
           </SettingsContainer>
 
           <SettingsContainer title="settings.about">

@@ -1,6 +1,7 @@
 import type { GameState } from '@/lib/game';
 import { Feather } from '@expo/vector-icons';
 
+import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Props = {
@@ -37,15 +38,26 @@ export function GameScreenHeader({ state, playerLabel, onBack, onReset }: Props)
           )}
         </View>
 
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel="Start new game"
-          onPress={onReset}
-          style={styles.iconBtn}
-          hitSlop={12}
-        >
-          <Feather name="refresh-cw" size={20} color="#D4A843" />
-        </TouchableOpacity>
+        <View style={styles.rightButtons}>
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Game options"
+            onPress={() => router.push('/game/options')}
+            style={styles.iconBtn}
+            hitSlop={12}
+          >
+            <Feather name="sliders" size={22} color="#D4A843" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Start new game"
+            onPress={onReset}
+            style={styles.iconBtn}
+            hitSlop={12}
+          >
+            <Feather name="refresh-cw" size={20} color="#D4A843" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.pipRow}>
@@ -111,6 +123,10 @@ const styles = StyleSheet.create({
   },
   iconBtn: {
     padding: 8,
+  },
+  rightButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   pipRow: {
     flexDirection: 'row',

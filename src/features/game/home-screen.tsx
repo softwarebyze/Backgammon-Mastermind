@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: HOME_BG,
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 24,
   },
   logoContainer: {
