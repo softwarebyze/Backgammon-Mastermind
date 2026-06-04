@@ -13,9 +13,6 @@ concurrency:
   group: e2e-maestro-cloud-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   maestro-cloud-configured:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')

@@ -377,6 +377,21 @@ Also add `MAESTRO_CLOUD_API_KEY` to GitHub Actions secrets before enabling Maest
 
 **Concurrency:** each E2E workflow cancels in-progress runs on the same PR so label + manual dispatch do not fight each other.
 
+#### Visual E2E reporting (GitHub emulator)
+
+You do **not** need to unzip `e2e-test-logs` to see what happened:
+
+| Where | What you get |
+| ----- | ------------ |
+| **PR comment** (sticky `maestro-e2e-visual`) | Pass/fail + link to workflow **Summary** |
+| **Workflow run → Summary tab** | Inline screenshot previews (base64) + recording note |
+| **Checks tab** | `Maestro Backgammon Smoke` JUnit breakdown (`dorny/test-reporter`) |
+| **Artifact `maestro-visual-report`** | `index.html` gallery, `e2e-recording.mp4`, PNGs, `report.xml`, logs |
+
+The smoke flow uses `takeScreenshot` at home, board, after roll, and completion. CI runs `adb screenrecord` for a full MP4.
+
+**Node.js annotations:** do not set `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` on E2E workflows — it forces Node 24 on actions that still declare Node 20 and produces deprecation noise. App tooling stays on Node 22 via `setup-node-pnpm-install`.
+
 ---
 
 ## 4. Dev client vs Expo Go

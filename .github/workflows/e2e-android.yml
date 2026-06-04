@@ -1,5 +1,6 @@
 # GitHub-hosted emulator E2E — label android-test-github or manual dispatch.
 # No Maestro Cloud account required (slower: emulator boot + Gradle APK build).
+# Visual report: workflow run Summary (inline screenshots) + PR comment + maestro-visual-report artifact.
 
 name: E2E Tests Android (Maestro + Github Action)
 
@@ -13,8 +14,10 @@ concurrency:
   group: e2e-github-emulator-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
 
 jobs:
   generate-test-apk:
@@ -76,6 +79,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Run backgammon smoke with Maestro
+        id: maestro_emulator
         uses: reactivecircus/android-emulator-runner@v2.37.0
         env:
           MAESTRO_CLI_NO_ANALYTICS: '1'
@@ -91,20 +95,52 @@ jobs:
           cores: 2
           ram-size: 4096M
           script: |
+            set -euo pipefail
+            MAESTRO_OUT="${{ github.workspace }}/.maestro-ci-output"
+            mkdir -p "$MAESTRO_OUT"
+
             adb wait-for-device
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
             adb install -r "${{ github.workspace }}/android-test.apk"
-            maestro test .maestro/app/backgammon-smoke.yaml -e APP_ID=com.backgammonmastermind.preview --format junit
 
-      - name: Upload Maestro logs
+            adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
+            RECORD_PID=$!
+
+            MAESTRO_EXIT=0
+            maestro test .maestro/app/backgammon-smoke.yaml \
+              -e APP_ID=com.backgammonmastermind.preview \
+              --format junit \
+              --output "${{ github.workspace }}/report.xml" \
+              --test-output-dir "$MAESTRO_OUT" \
+              --debug-output "$MAESTRO_OUT" \
+              --flatten-debug-output \
+              || MAESTRO_EXIT=$?
+
+            adb shell pkill -2 screenrecord 2>/dev/null || true
+            sleep 2
+            adb pull /sdcard/e2e-recording.mp4 "${{ github.workspace }}/e2e-recording.mp4" 2>/dev/null || true
+
+            exit "$MAESTRO_EXIT"
+
+      - name: Publish visual Maestro report
+        if: always()
+        uses: ./.github/actions/maestro-e2e-report
+        with:
+          maestro-output-dir: ${{ github.workspace }}/.maestro-ci-output
+          junit-report: ${{ github.workspace }}/report.xml
+
+      - name: Upload Maestro logs (legacy path)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e-test-logs
-          path: ~/.maestro/tests/**/*
+          path: |
+            .maestro-ci-output/**
+            ~/.maestro/tests/**/*
           if-no-files-found: ignore
+          retention-days: 14
 
       - name: Upload JUnit report
         if: always()
@@ -113,3 +149,4 @@ jobs:
           name: e2e_android_report
           path: report.xml
           if-no-files-found: ignore
+          retention-days: 14
