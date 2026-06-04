@@ -23,8 +23,11 @@ runs:
       run: pnpm brand:generate
       shell: bash
 
-    - name: Prebuild native project
-      run: pnpm prebuild:${{ inputs.APP_ENV }}
+    - name: Prebuild native project (E2E — no expo-dev-client)
+      run: |
+        # Dev client shows a launcher that blocks Maestro without Metro; omit it for CI APKs.
+        pnpm remove expo-dev-client
+        pnpm prebuild:${{ inputs.APP_ENV }}
       shell: bash
       env:
         EXPO_NO_DOTENV: '1'
