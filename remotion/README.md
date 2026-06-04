@@ -19,6 +19,10 @@ pnpm dev          # Remotion Studio preview
 pnpm render:all   # Render all videos to out/
 ```
 
+## Board & layout
+
+The marketing board mirrors the app (`board-view`, `board-theme`, starting position). Sizing uses `fitBoardWidth()` so each composition scales the board to the frame.
+
 ## Assets
 
 Brand assets are copied from `../assets/brand/` into `public/`:
