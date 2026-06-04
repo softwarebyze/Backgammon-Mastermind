@@ -18,20 +18,14 @@ env:
 
 jobs:
   generate-and-test-apk:
-    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')
+    if: |
+      (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')) &&
+      secrets.MAESTRO_CLOUD_API_KEY != ''
     name: Maestro Cloud smoke (backgammon)
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
     steps:
-      - name: Check for MAESTRO_CLOUD_API_KEY
-        run: |
-          if [ -z "${{ secrets.MAESTRO_CLOUD_API_KEY }}" ]; then
-            echo "Add MAESTRO_CLOUD_API_KEY to Settings → Secrets → Actions"
-            echo "https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret"
-            exit 1
-          fi
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
