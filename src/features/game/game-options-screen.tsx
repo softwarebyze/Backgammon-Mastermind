@@ -2,61 +2,73 @@ import { router } from 'expo-router';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Pressable, Text, View } from '@/components/ui';
+
+import { Pressable, ScrollView, Text, View } from '@/components/ui';
+import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { SettingsChevron } from '@/features/settings/components/settings-chevron';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
+import { SETTINGS_ROW_PADDING_H } from '@/lib/ui/settings-layout';
 
 export function GameOptionsScreen() {
   const insets = useSafeAreaInsets();
+  const {
+    preferences,
+    setShowMoveHints,
+    setShowDirectionOverlay,
+    setDiceDisplayStyle,
+  } = useGamePreferences();
+
+  const openSettings = React.useCallback(() => {
+    hapticLight();
+    // Dismiss the formSheet before navigating, otherwise Settings renders behind
+    // the sheet and feels "stuck" in the stack.
+    router.back();
+    requestAnimationFrame(() => router.push('/settings'));
+  }, []);
 
   return (
-    <View
-      style={[
-        styles.root,
-        { paddingBottom: Math.max(insets.bottom, 16) },
+    <ScrollView
+      style={styles.root}
+      contentContainerStyle={[
+        styles.scroll,
+        { paddingBottom: Math.max(insets.bottom, 20) + 8 },
       ]}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
     >
-      <Text
-        className="mb-4 text-lg font-bold"
-        style={styles.title}
-        tx="game.options.title"
+      <Text className="text-lg font-bold" style={styles.title} tx="game.options.title" />
+
+      <GamePreferencesPanel
+        preferences={preferences}
+        onShowMoveHintsChange={setShowMoveHints}
+        onShowDirectionOverlayChange={setShowDirectionOverlay}
+        onDiceDisplayStyleChange={setDiceDisplayStyle}
+        showHints
       />
 
-      <Pressable
-        accessibilityRole="link"
-        style={styles.row}
-        onPress={() => {
-          hapticLight();
-          // Ensure the formSheet is dismissed before navigating, otherwise Settings
-          // renders behind the sheet and feels "stuck" in the stack.
-          router.back();
-          requestAnimationFrame(() => router.push('/settings'));
-        }}
-      >
+      <Pressable accessibilityRole="link" style={styles.row} onPress={openSettings}>
         <View style={styles.rowBody}>
-          <Text
-            className="text-base font-semibold"
-            style={styles.rowText}
-            tx="game.options.open_settings"
-          />
-          <Text
-            className="mt-1 text-sm"
-            style={styles.rowHint}
-            tx="game.options.open_settings_hint"
-          />
+          <Text className="text-base font-semibold" style={styles.rowText} tx="game.options.open_settings" />
+          <Text className="mt-1 text-sm" style={styles.rowHint} tx="game.options.open_settings_hint" />
         </View>
         <SettingsChevron />
       </Pressable>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   root: {
-    paddingHorizontal: 16,
-    paddingTop: 8,
+    flex: 1,
     backgroundColor: GAME_PALETTE.surface,
+  },
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: SETTINGS_ROW_PADDING_H,
+    paddingTop: 12,
+    gap: 16,
   },
   title: {
     color: GAME_PALETTE.text,

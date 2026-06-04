@@ -1,3 +1,4 @@
+import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -5,50 +6,95 @@ type Props = {
   dice: [number, number];
   remainingDice: number[];
   playerColor: 'white' | 'black';
+  displayStyle?: DiceDisplayStyle;
 };
 
 const DOUBLE_DIE_SLOTS = ['slot-a', 'slot-b', 'slot-c', 'slot-d'] as const;
 
-function DieFace({ value, used, playerColor }: { value: number; used: boolean; playerColor: 'white' | 'black' }) {
+const DOT_LAYOUTS: Record<number, Array<[number, number]>> = {
+  1: [[0.5, 0.5]],
+  2: [[0.28, 0.28], [0.72, 0.72]],
+  3: [[0.28, 0.28], [0.5, 0.5], [0.72, 0.72]],
+  4: [[0.28, 0.28], [0.72, 0.28], [0.28, 0.72], [0.72, 0.72]],
+  5: [[0.28, 0.28], [0.72, 0.28], [0.5, 0.5], [0.28, 0.72], [0.72, 0.72]],
+  6: [[0.28, 0.28], [0.72, 0.28], [0.28, 0.5], [0.72, 0.5], [0.28, 0.72], [0.72, 0.72]],
+};
+
+function DieDots({ value, dotColor }: { value: number; dotColor: string }) {
+  const layout = DOT_LAYOUTS[value] ?? DOT_LAYOUTS[1]!;
+  return (
+    <View style={StyleSheet.absoluteFill}>
+      {layout.map(([x, y]) => (
+        <View
+          key={`${x}-${y}`}
+          style={{
+            position: 'absolute',
+            left: `${x * 100}%`,
+            top: `${y * 100}%`,
+            width: 7,
+            height: 7,
+            marginLeft: -3.5,
+            marginTop: -3.5,
+            borderRadius: 4,
+            backgroundColor: dotColor,
+          }}
+        />
+      ))}
+    </View>
+  );
+}
+
+function DieFace({
+  value,
+  used,
+  playerColor,
+  displayStyle,
+}: {
+  value: number;
+  used: boolean;
+  playerColor: 'white' | 'black';
+  displayStyle: DiceDisplayStyle;
+}) {
   const isWhite = playerColor === 'white';
+  const bg = used
+    ? 'rgba(100,80,60,0.4)'
+    : isWhite
+      ? '#F2EAD3'
+      : '#1E1E30';
+  const border = used
+    ? '#5A4030'
+    : isWhite
+      ? '#BBA070'
+      : '#5050A0';
+  const fg = used ? '#7A6050' : isWhite ? '#2A1A08' : '#E0E0FF';
+
   return (
     <View
       style={[
         styles.die,
         {
-          backgroundColor: used
-            ? 'rgba(100,80,60,0.4)'
-            : isWhite
-              ? '#F2EAD3'
-              : '#1E1E30',
-          borderColor: used
-            ? '#5A4030'
-            : isWhite
-              ? '#BBA070'
-              : '#5050A0',
+          backgroundColor: bg,
+          borderColor: border,
           opacity: used ? 0.4 : 1,
         },
       ]}
     >
-      <Text
-        style={[
-          styles.dieText,
-          {
-            color: used ? '#7A6050' : isWhite ? '#2A1A08' : '#E0E0FF',
-          },
-        ]}
-      >
-        {value}
-      </Text>
+      {displayStyle === 'dots'
+        ? <DieDots value={value} dotColor={fg} />
+        : (
+            <Text style={[styles.dieText, { color: fg }]}>
+              {value}
+            </Text>
+          )}
     </View>
   );
 }
 
-export function DiceDisplay({ dice, remainingDice, playerColor }: Props) {
-  if (dice[0] === 0 && dice[1] === 0)
+export function DiceDisplay({ dice, remainingDice, playerColor, displayStyle = 'numbers' }: Props) {
+  if (dice[0] === 0 && dice[1] === 0) {
     return null;
+  }
 
-  // Mark which dice values have been used
   const remaining = [...remainingDice];
   const diceStates = dice.map((v) => {
     const idx = remaining.indexOf(v);
@@ -59,7 +105,6 @@ export function DiceDisplay({ dice, remainingDice, playerColor }: Props) {
     return { value: v, used: true };
   });
 
-  // For doubles, show all 4
   const isDoubles = dice[0] === dice[1];
   const totalRemaining = remainingDice.filter(v => v === dice[0]).length;
 
@@ -67,19 +112,35 @@ export function DiceDisplay({ dice, remainingDice, playerColor }: Props) {
     <View style={styles.container}>
       {isDoubles
         ? (
-            <>
-              {DOUBLE_DIE_SLOTS.map((slot, slotIndex) => (
-                <DieFace key={slot} value={dice[0]} used={slotIndex >= totalRemaining} playerColor={playerColor} />
-              ))}
-            </>
+            DOUBLE_DIE_SLOTS.map((slot, slotIndex) => (
+              <DieFace
+                key={slot}
+                value={dice[0]}
+                used={slotIndex >= totalRemaining}
+                playerColor={playerColor}
+                displayStyle={displayStyle}
+              />
+            ))
           )
         : (
             <>
               {diceStates[0] && (
-                <DieFace key="die-left" value={diceStates[0].value} used={diceStates[0].used} playerColor={playerColor} />
+                <DieFace
+                  key="die-left"
+                  value={diceStates[0].value}
+                  used={diceStates[0].used}
+                  playerColor={playerColor}
+                  displayStyle={displayStyle}
+                />
               )}
               {diceStates[1] && (
-                <DieFace key="die-right" value={diceStates[1].value} used={diceStates[1].used} playerColor={playerColor} />
+                <DieFace
+                  key="die-right"
+                  value={diceStates[1].value}
+                  used={diceStates[1].used}
+                  playerColor={playerColor}
+                  displayStyle={displayStyle}
+                />
               )}
             </>
           )}

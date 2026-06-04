@@ -4,6 +4,16 @@ import { Platform } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 
+const gameHeaderTitleStyle = {
+  color: GAME_PALETTE.accent,
+  fontFamily: 'Inter_700Bold',
+  fontSize: 17,
+} as const;
+
+const gameHeaderStyle = {
+  backgroundColor: GAME_PALETTE.surface,
+} as const;
+
 /** Home — native header with settings in the top bar */
 export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
@@ -12,22 +22,26 @@ export const homeScreenOptions: NativeStackNavigationOptions = {
   headerTransparent: true,
 };
 
-/** Active game board */
+/** Active game board — native header hosts the player label + options/reset actions. */
 export const gamePlayScreenOptions: NativeStackNavigationOptions = {
-  // The in-game UI renders its own header; avoid a second native header.
-  headerShown: false,
+  headerShown: true,
   headerShadowVisible: false,
   headerBackButtonDisplayMode: 'minimal',
+  headerStyle: gameHeaderStyle,
+  headerTintColor: GAME_PALETTE.accent,
+  headerTitleStyle: gameHeaderTitleStyle,
+  contentStyle: { backgroundColor: GAME_PALETTE.bg },
 };
 
 export function gameFormSheetOptions(): NativeStackNavigationOptions {
   return {
     presentation: 'formSheet',
     sheetGrabberVisible: true,
-    // One option row + title — avoid a mostly empty 68% sheet.
-    sheetAllowedDetents: [0.36],
+    // Holds the scrollable game-preferences panel; let it grow when scrolled.
+    sheetAllowedDetents: [0.7],
     sheetCornerRadius: 16,
-    sheetExpandsWhenScrolledToEdge: false,
+    sheetExpandsWhenScrolledToEdge: true,
+    // Title is rendered in-content (see GameOptionsScreen) rather than a native header.
     headerShown: false,
     contentStyle: { backgroundColor: GAME_PALETTE.surface },
   };
@@ -60,5 +74,9 @@ export function pickerFormSheetOptions(title: string): NativeStackNavigationOpti
     headerShown: true,
     headerShadowVisible: false,
     headerBackButtonDisplayMode: 'minimal',
+    headerStyle: gameHeaderStyle,
+    headerTintColor: GAME_PALETTE.accent,
+    headerTitleStyle: gameHeaderTitleStyle,
+    contentStyle: { backgroundColor: GAME_PALETTE.surface },
   };
 }

@@ -15,4 +15,8 @@ export const GAME_PALETTE = {
   // Accents used for header icons, links, etc.
   accent: colors.primary[400],
   accentDim: colors.primary[200],
+
+  // Primary action controls (roll dice, confirm move)
+  control: '#8B1A1A',
+  controlBorder: '#6B2820',
 } as const;
