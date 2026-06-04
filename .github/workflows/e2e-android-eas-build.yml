@@ -93,9 +93,7 @@ jobs:
           script: |
             adb wait-for-device
             adb install -r "${{ github.workspace }}/android-test.apk"
-            maestro test .maestro/app/backgammon-smoke.yaml \
-              -e APP_ID=com.backgammonmastermind.preview \
-              --format junit
+            maestro test .maestro/app/backgammon-smoke.yaml -e APP_ID=com.backgammonmastermind.preview --format junit
 
       - name: Upload Maestro logs
         if: always()

@@ -77,7 +77,10 @@ jobs:
 
       - name: Run backgammon smoke with Maestro
         uses: reactivecircus/android-emulator-runner@v2.37.0
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: '1'
         with:
+          working-directory: ${{ github.workspace }}
           api-level: 34
           target: google_apis
           arch: x86_64
@@ -93,9 +96,7 @@ jobs:
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
             adb install -r "${{ github.workspace }}/android-test.apk"
-            maestro test .maestro/app/backgammon-smoke.yaml \
-              -e APP_ID=com.backgammonmastermind.preview \
-              --format junit
+            maestro test .maestro/app/backgammon-smoke.yaml -e APP_ID=com.backgammonmastermind.preview --format junit
 
       - name: Upload Maestro logs
         if: always()
