@@ -17,10 +17,24 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  maestro-cloud-configured:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - id: check
+        run: |
+          if [ -n "${{ secrets.MAESTRO_CLOUD_API_KEY }}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::MAESTRO_CLOUD_API_KEY is not set — skipping Maestro Cloud (use the GitHub emulator workflow instead)."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
   generate-and-test-apk:
-    if: |
-      (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')) &&
-      secrets.MAESTRO_CLOUD_API_KEY != ''
+    needs: maestro-cloud-configured
+    if: needs.maestro-cloud-configured.outputs.enabled == 'true'
     name: Maestro Cloud smoke (backgammon)
     runs-on: ubuntu-latest
     timeout-minutes: 60
