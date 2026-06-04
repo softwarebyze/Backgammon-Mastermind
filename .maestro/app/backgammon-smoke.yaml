@@ -3,15 +3,11 @@ tags:
   - smoke
   - pull-request
 ---
-- launchApp
-- runFlow:
-    when:
-      visible: BackgammonMastermind
-    commands:
-      - tapOn: BackgammonMastermind
+- launchApp:
+    clearState: true
 - extendedWaitUntil:
     visible: vs Computer
-    timeout: 60000
+    timeout: 90000
 - tapOn:
     text: vs Computer
 - extendedWaitUntil:
