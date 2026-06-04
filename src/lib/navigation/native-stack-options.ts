@@ -1,5 +1,6 @@
 import type { NativeStackNavigationOptions } from 'expo-router';
 
+import { Platform } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 
@@ -18,10 +19,7 @@ export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
   headerShown: true,
   headerShadowVisible: false,
-  headerStyle: { backgroundColor: GAME_PALETTE.bg },
-  headerTintColor: GAME_PALETTE.accent,
-  headerTitleStyle: gameHeaderTitleStyle,
-  contentStyle: { backgroundColor: GAME_PALETTE.bg },
+  headerTransparent: true,
 };
 
 /** Active game board — native header hosts the player label + options/reset actions. */
@@ -53,12 +51,16 @@ export function settingsStackOptions(): NativeStackNavigationOptions {
   return {
     title: translate('settings.title'),
     headerShown: true,
-    headerShadowVisible: false,
-    headerBackButtonDisplayMode: 'minimal',
     headerStyle: { backgroundColor: GAME_PALETTE.bg },
     headerTintColor: GAME_PALETTE.accent,
-    headerTitleStyle: gameHeaderTitleStyle,
-    contentStyle: { backgroundColor: GAME_PALETTE.bg },
+    // on android, true causes header to cover up underlying content
+    headerTransparent: Platform.OS === 'ios',
+    headerShadowVisible: false,
+    headerLargeTitleShadowVisible: false,
+    headerLargeStyle: { backgroundColor: 'transparent' },
+    headerLargeTitle: true,
+    headerBlurEffect: 'none',
+    headerBackButtonDisplayMode: 'minimal',
   };
 }
 
