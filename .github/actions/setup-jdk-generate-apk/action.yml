@@ -40,6 +40,14 @@ runs:
         EOF
       shell: bash
 
+    - name: Pin react-native path for native module Gradle scripts
+      run: |
+        APP_GRADLE=android/app/build.gradle
+        if ! grep -q 'REACT_NATIVE_NODE_MODULES_DIR' "$APP_GRADLE"; then
+          sed -i '/^react {/i ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native")\n' "$APP_GRADLE"
+        fi
+      shell: bash
+
     - name: Setup Gradle cache
       uses: gradle/gradle-build-action@v2
       with:
@@ -49,7 +57,7 @@ runs:
       run: |
         cd android
         chmod +x ./gradlew
-        ./gradlew assembleDebug --no-daemon --build-cache
+        ./gradlew assembleDebug --no-daemon --build-cache --stacktrace
         cd ..
         cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
       shell: bash

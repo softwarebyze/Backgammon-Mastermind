@@ -54,6 +54,9 @@ jobs:
       - name: Install Maestro
         run: npm run install-maestro
 
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
       - name: Download Test APK
         uses: actions/download-artifact@v4
         with:
@@ -73,9 +76,13 @@ jobs:
           cores: 2
           ram-size: 4096M
           script: |
-            adb install "${{ github.workspace }}/android-test.apk"
-            $HOME/.maestro/bin/maestro test .maestro/app/backgammon-smoke.yaml \
-              --env=APP_ID=com.backgammonmastermind.preview \
+            adb wait-for-device
+            adb shell settings put global window_animation_scale 0
+            adb shell settings put global transition_animation_scale 0
+            adb shell settings put global animator_duration_scale 0
+            adb install -r "${{ github.workspace }}/android-test.apk"
+            maestro test .maestro/app/backgammon-smoke.yaml \
+              -e APP_ID=com.backgammonmastermind.preview \
               --format junit
 
       - name: Upload Maestro logs

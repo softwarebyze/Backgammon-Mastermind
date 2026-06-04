@@ -3,4 +3,3 @@ export const SETTINGS_ROW_PADDING_H = 16;
 export const SETTINGS_ROW_PADDING_V = 14;
 export const SETTINGS_ROW_MIN_HEIGHT = 52;
 export const SETTINGS_ICON_SLOT = 36;
-export const SETTINGS_SECTION_GAP = 24;
