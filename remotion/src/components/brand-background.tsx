@@ -9,8 +9,8 @@ type Props = {
 export const BrandBackground: React.FC<Props> = ({ pulse = true }) => {
   const frame = useCurrentFrame();
   const glow = pulse
-    ? interpolate(Math.sin(frame / 20), [-1, 1], [0.15, 0.35])
-    : 0.25;
+    ? interpolate(Math.sin(frame / 24), [-1, 1], [0.12, 0.28])
+    : 0.2;
 
   return (
     <AbsoluteFill style={{ backgroundColor: BRAND.bg }}>
@@ -18,23 +18,23 @@ export const BrandBackground: React.FC<Props> = ({ pulse = true }) => {
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(ellipse 80% 60% at 50% 20%, rgba(212, 168, 67, ${glow}) 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse 70% 50% at 50% 15%, rgba(212, 168, 67, ${glow}) 0%, transparent 65%)`,
         }}
       />
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(ellipse 60% 40% at 80% 90%, rgba(139, 30, 30, 0.12) 0%, transparent 60%)`,
+          background: `radial-gradient(ellipse 50% 35% at 15% 85%, rgba(122, 24, 24, 0.1) 0%, transparent 55%)`,
         }}
       />
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          opacity: 0.04,
+          opacity: 0.03,
           backgroundImage:
-            'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(212,168,67,0.3) 2px, rgba(212,168,67,0.3) 3px)',
+            'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(212,168,67,0.25) 3px, rgba(212,168,67,0.25) 4px)',
         }}
       />
     </AbsoluteFill>

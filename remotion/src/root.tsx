@@ -2,16 +2,16 @@ import { Composition, Folder } from 'remotion';
 import {
   APP_STORE_PREVIEW_DURATION,
   AppStorePreview,
-} from './compositions/AppStorePreview';
+} from './compositions/app-store-preview';
 
 import {
   FEATURE_SPOTLIGHT_DURATION,
   FeatureSpotlight,
-} from './compositions/FeatureSpotlight';
+} from './compositions/feature-spotlight';
 import {
   LAUNCH_HERO_DURATION,
   LaunchHero,
-} from './compositions/LaunchHero';
+} from './compositions/launch-hero';
 import './index.css';
 
 export const RemotionRoot: React.FC = () => {
