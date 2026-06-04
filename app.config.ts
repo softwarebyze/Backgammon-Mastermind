@@ -42,6 +42,72 @@ const appIconBadgeConfig: AppIconBadgeConfig = {
   ],
 };
 
+const appPlugins: ExpoConfig['plugins'] = [
+  [
+    'expo-splash-screen',
+    {
+      backgroundColor: brand.splashBackgroundColor,
+      image: brandSplash,
+      imageWidth: brand.splashImageWidth,
+    },
+  ],
+  [
+    'expo-font',
+    {
+      ios: {
+        fonts: [
+          'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf',
+          'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
+          'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
+          'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
+        ],
+      },
+      android: {
+        fonts: [
+          {
+            fontFamily: 'Inter',
+            fontDefinitions: [
+              {
+                path: 'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf',
+                weight: 400,
+              },
+              {
+                path: 'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
+                weight: 500,
+              },
+              {
+                path: 'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
+                weight: 600,
+              },
+              {
+                path: 'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
+                weight: 700,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+  'expo-image',
+  'expo-localization',
+  'expo-router',
+  'expo-status-bar',
+  'expo-updates',
+  ['app-icon-badge', appIconBadgeConfig],
+  [
+    'expo-build-properties',
+    {
+      android: {
+        compileSdkVersion: 35,
+        targetSdkVersion: 35,
+        buildToolsVersion: '35.0.0',
+      },
+    },
+  ],
+  ['react-native-edge-to-edge'],
+];
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: Env.EXPO_PUBLIC_NAME,
@@ -83,61 +149,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/brand/favicon.png',
     bundler: 'metro',
   },
-  plugins: [
-    [
-      'expo-splash-screen',
-      {
-        backgroundColor: brand.splashBackgroundColor,
-        image: brandSplash,
-        imageWidth: brand.splashImageWidth,
-      },
-    ],
-    [
-      'expo-font',
-      {
-        ios: {
-          fonts: [
-            'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf',
-            'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
-            'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
-            'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
-          ],
-        },
-        android: {
-          fonts: [
-            {
-              fontFamily: 'Inter',
-              fontDefinitions: [
-                {
-                  path: 'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf',
-                  weight: 400,
-                },
-                {
-                  path: 'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
-                  weight: 500,
-                },
-                {
-                  path: 'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
-                  weight: 600,
-                },
-                {
-                  path: 'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
-                  weight: 700,
-                },
-              ],
-            },
-          ],
-        },
-      },
-    ],
-    'expo-image',
-    'expo-localization',
-    'expo-router',
-    'expo-status-bar',
-    'expo-updates',
-    ['app-icon-badge', appIconBadgeConfig],
-    ['react-native-edge-to-edge'],
-  ],
+  plugins: appPlugins,
   extra: {
     eas: {
       projectId: EAS_PROJECT_ID,

@@ -15,8 +15,9 @@ runs:
     - name: Set Up JDK
       uses: actions/setup-java@v4
       with:
-        distribution: zulu
+        distribution: temurin
         java-version: '17'
+        cache: gradle
 
     - name: Generate brand assets
       run: pnpm brand:generate
@@ -31,16 +32,7 @@ runs:
         CI: 'true'
 
     - name: Tune Gradle for CI
-      run: |
-        GRADLE_PROPS=android/gradle.properties
-        # Prebuild may write the last line without a trailing newline; ensure append is safe.
-        printf '\n' >> "$GRADLE_PROPS"
-        cat >> "$GRADLE_PROPS" <<'EOF'
-        org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m -XX:+UseParallelGC -Dfile.encoding=UTF-8
-        org.gradle.daemon=false
-        org.gradle.parallel=true
-        org.gradle.caching=true
-        EOF
+      run: bash .github/scripts/tune-android-gradle-for-ci.sh android/gradle.properties
       shell: bash
 
     - name: Pin react-native path for native module Gradle scripts
@@ -51,16 +43,19 @@ runs:
         fi
       shell: bash
 
-    - name: Setup Gradle cache
-      uses: gradle/gradle-build-action@v2
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
       with:
-        build-root-directory: android
+        gradle-version: wrapper
+        cache-read-only: false
 
     - name: Build debug test APK
+      working-directory: android
       run: |
-        cd android
         chmod +x ./gradlew
         ./gradlew assembleDebug --no-daemon --build-cache --stacktrace
-        cd ..
-        cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
+      shell: bash
+
+    - name: Copy test APK to workspace root
+      run: cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
       shell: bash
