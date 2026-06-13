@@ -27,7 +27,17 @@ runs:
       run: |
         # Dev client shows a launcher that blocks Maestro without Metro; omit it for CI APKs.
         pnpm remove expo-dev-client
-        pnpm prebuild:${{ inputs.APP_ENV }}
+        # app-icon-badge + Android icon generation can intermittently fail with
+        # "Could not find MIME for Buffer <null>" on a cold CI checkout.
+        for attempt in 1 2 3; do
+          rm -rf ios android
+          if pnpm prebuild:${{ inputs.APP_ENV }}; then
+            exit 0
+          fi
+          echo "::warning::prebuild attempt ${attempt} failed; retrying..."
+          sleep 5
+        done
+        exit 1
       shell: bash
       env:
         EXPO_NO_DOTENV: '1'
