@@ -95,7 +95,8 @@ jobs:
           cores: 2
           ram-size: 4096M
           script: |
-            set -euo pipefail
+            # android-emulator-runner invokes this with /bin/sh (dash) — no pipefail.
+            set -eu
             MAESTRO_OUT="${{ github.workspace }}/.maestro-ci-output"
             mkdir -p "$MAESTRO_OUT"
 
