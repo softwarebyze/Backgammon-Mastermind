@@ -4,6 +4,9 @@ import { Linking, Platform, Share } from 'react-native';
 const REPOSITORY_URL = 'https://github.com/softwarebyze/Backgammon-Mastermind';
 const SUPPORT_EMAIL = 'support@softwarebyze.com';
 
+/** Set EXPO_PUBLIC_APP_STORE_ID in production env once App Store Connect record exists. */
+const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
+
 /** Replace with real URLs before App Store / Play Store submission. */
 export const APP_LINKS = {
   github: REPOSITORY_URL,
@@ -32,7 +35,9 @@ export async function shareApp(): Promise<void> {
 export async function openStoreListing(): Promise<void> {
   const packageName = Env.EXPO_PUBLIC_PACKAGE;
   const url = Platform.select({
-    ios: 'https://apps.apple.com/app/id0000000000',
+    ios: APP_STORE_ID
+      ? `https://apps.apple.com/app/id${APP_STORE_ID}`
+      : REPOSITORY_URL,
     android: `market://details?id=${packageName}`,
     default: REPOSITORY_URL,
   });
