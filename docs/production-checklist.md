@@ -2,7 +2,7 @@
 
 Use this before the first App Store / Play Store submission.
 
-**Last updated:** after PR #23 merge (turn indicator + Maestro caption fix on `main`).
+**Last updated:** v0.1.0 release — iOS submitted, metadata synced (2026-06-14).
 
 ## CI: what runs on every PR?
 
@@ -29,24 +29,25 @@ Use this before the first App Store / Play Store submission.
 - [x] Turn indicator — clear white/black whose-turn UI (PR #23)
 - [x] App Store listing draft in `store.config.json` (EAS Metadata)
 - [x] Review phone: `+1 954 593 1670` in `store.config.json`
-- [ ] Set `EXPO_PUBLIC_APP_STORE_ID` in production env when App Store record exists
+- [x] Set `EXPO_PUBLIC_APP_STORE_ID` in production EAS env (`6780139011`)
 - [x] Contact email: `zackebenfeld@gmail.com` in app + legal docs
 
 ## Versioning & builds
 
 | Step | Status | Action |
 | ---- | ------ | ------ |
-| 1. Version bump | Done | **v0.1.0** on `main` |
-| 2. iOS dev client | Done | [Latest dev build](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/79a79243-8e7f-4a44-9c79-af626e9e059f) — PR #23 JS loads via EAS Update / Metro |
-| 3. Device QA | **Next (you)** | Install dev IPA → playtest → fix anything found |
-| 4. Preview build (TestFlight) | **Next** | `pnpm build:preview:ios` (+ Android if desired) |
-| 5. Submit to stores | Pending | `pnpm submit:preview:ios` then `pnpm metadata:push` |
+| 1. Version bump | Done | **v0.1.0** tag + [GitHub Release](https://github.com/softwarebyze/Backgammon-Mastermind/releases/tag/v0.1.0) |
+| 2. iOS dev client | Done | [Dev build](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/79a79243-8e7f-4a44-9c79-af626e9e059f) |
+| 3. Device QA | Done | Playtesting complete |
+| 4. Preview build (TestFlight) | Done | [iOS preview `2f5c68b0`](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/2f5c68b0-301e-4c5a-b5cc-7488a88318dd) · [Android preview `aee7ba16`](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/aee7ba16-f971-436c-9269-040ff718536a) |
+| 5. Submit to stores | iOS done · Android pending | iOS [submitted](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/submissions/90031a40-253a-40de-9e4b-70925391f8cf) · `pnpm metadata:push` ✅ · Play first upload manual |
 | 6. Production build | Pending | Actions → **EAS Production Build** after TestFlight QA |
 
 ## Store listing requirements
 
 - [x] App Store listing copy — `store.config.json`
-- [ ] **App Store Connect API key** — required for `pnpm metadata:push` (create in ASC → Users and Access → Integrations)
+- [x] **App Store Connect API key** — via EAS credentials (`M7LGZ9S6S2`)
+- [x] `pnpm metadata:push` — listing synced for **0.1.0** ([ASC app](https://appstoreconnect.apple.com/apps/6780139011/appstore))
 - [ ] App Store screenshots (device captures or `docs/remotion/after/`)
 - [ ] Google Play Console app record + screenshots + description
 - [x] Privacy policy — `docs/privacy-policy.md` (GitHub URL in `store.config.json`)
@@ -59,7 +60,7 @@ Use this before the first App Store / Play Store submission.
 | Secret | Required for | Configured? |
 | ------ | ------------ | ----------- |
 | `EXPO_TOKEN` | EAS preview, QA, production | ✅ |
-| App Store Connect API key | `metadata:push` / `metadata:pull` | ❌ **You** — see `docs/ios-testing-and-store.md` |
+| App Store Connect API key | `metadata:push` / `metadata:pull` | ✅ (EAS credentials) |
 | `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E only | Optional |
 | `GH_TOKEN` | New App Version workflow | Optional |
 
@@ -67,7 +68,7 @@ Use this before the first App Store / Play Store submission.
 
 - [ ] **New GitHub Release** workflow after production build is validated
 - [ ] Monitor EAS Update channels (`preview`, `production`)
-- [ ] Set `EXPO_PUBLIC_APP_STORE_ID` and verify Rate opens App Store listing on iOS
+- [x] Set `EXPO_PUBLIC_APP_STORE_ID` (`6780139011` in EAS production env)
 
 ## Current status summary
 
@@ -79,9 +80,10 @@ Use this before the first App Store / Play Store submission.
 | Unit tests | Done (59) |
 | Maestro E2E + PR screenshot publish | Done |
 | Store metadata draft + contact info | Done |
-| **iPhone playtest** | **Next — you** |
-| **TestFlight preview build + submit** | **Next — after playtest** |
-| Production EAS build + GitHub release | Not started |
+| **iOS submit + metadata push** | Done (TestFlight processing) |
+| **App Store screenshots** | **Next — you** |
+| **Google Play first upload** | **Next — you** (manual; see below) |
+| Production EAS build + App Store review | Not started |
 
 ## Automation vs one-time setup
 
@@ -118,17 +120,20 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 | **Register iPhone** (`eas device:create`) | Device UDID for ad-hoc dev IPA |
 | **Screenshots** | Upload in ASC / Play (or script later from `docs/remotion/after/`) |
 | **Content rating questionnaires** | Store consoles |
-| **`EXPO_PUBLIC_APP_STORE_ID`** | Exists only after the app record is created |
+| **`EXPO_PUBLIC_APP_STORE_ID`** | ✅ Set in EAS production (`6780139011`) |
 
 After the ASC API key is configured, **metadata push** and **submit** can move into CI like everything else above.
 
 ## Suggested order from here
 
-1. **Install dev client** on iPhone ([build link](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/79a79243-8e7f-4a44-9c79-af626e9e059f)) — open in Safari → Install
-2. **Playtest** — full games, settings, turn clarity; `pnpm start` for live JS if needed
-3. **`pnpm build:preview:ios`** — TestFlight binary
-4. **First time:** Create ASC API key → then `pnpm submit:preview:ios` + `pnpm metadata:push` (or add a GHA workflow)
-5. **Upload screenshots** in App Store Connect
-6. **Internal TestFlight** → fix issues → **EAS Production Build** → submit
+1. **TestFlight** — wait for Apple processing, then enable internal testers: [ASC TestFlight](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios)
+2. **Screenshots** — upload in App Store Connect (use `docs/remotion/after/` or device captures)
+3. **Content rating** — complete questionnaires in ASC if not already done via metadata push
+4. **Google Play (first time only)** — create app in [Play Console](https://play.google.com/console), then upload first AAB manually:
+   ```sh
+   pnpm build:production:android   # app-bundle, not preview APK
+   ```
+   Download the `.aab` from EAS and upload under **Release → Testing → Internal testing**. After that, `pnpm submit:preview:android` / production submit works.
+5. **Internal TestFlight QA** → fix issues → **EAS Production Build** → App Store review submit
 
 See also: `docs/ios-testing-and-store.md`
