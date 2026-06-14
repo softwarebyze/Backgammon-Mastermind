@@ -16,7 +16,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { hasSavedGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
-import { FONT_BOLD, FONT_REGULAR } from '@/lib/ui/fonts';
+import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
@@ -158,10 +158,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: '800',
     color: GAME_PALETTE.accent,
     letterSpacing: 4,
-    fontFamily: FONT_BOLD,
+    ...interFont('extrabold'),
     textAlign: 'center',
   },
   subtitle: {
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.accentDim,
     marginTop: 4,
     letterSpacing: 1,
-    fontFamily: FONT_REGULAR,
+    ...interFont('regular'),
     textAlign: 'center',
   },
   dividerRow: {
@@ -231,13 +230,12 @@ const styles = StyleSheet.create({
   },
   btnLabel: {
     fontSize: 17,
-    fontWeight: '700',
-    fontFamily: FONT_BOLD,
+    ...interFont('bold'),
   },
   btnSub: {
     fontSize: 12,
     marginTop: 2,
-    fontFamily: FONT_REGULAR,
+    ...interFont('regular'),
   },
   rulesCard: {
     width: '100%',
@@ -252,15 +250,14 @@ const styles = StyleSheet.create({
   rulesTitle: {
     color: GAME_PALETTE.accent,
     fontSize: 13,
-    fontWeight: '700',
-    fontFamily: FONT_BOLD,
+    ...interFont('bold'),
     marginBottom: 4,
     letterSpacing: 1,
   },
   rulesText: {
     color: GAME_PALETTE.accentDim,
     fontSize: 12,
-    fontFamily: FONT_REGULAR,
+    ...interFont('regular'),
     lineHeight: 18,
   },
 });

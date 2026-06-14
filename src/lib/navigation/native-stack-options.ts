@@ -3,13 +3,12 @@ import type { NativeStackNavigationOptions } from 'expo-router';
 import { Platform } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
-import { FONT_BOLD } from '@/lib/ui/fonts';
+import { interFont } from '@/lib/ui/fonts';
 
 const gameHeaderTitleStyle = {
   color: GAME_PALETTE.accent,
-  fontFamily: FONT_BOLD,
+  ...interFont('bold'),
   fontSize: 17,
-  fontWeight: Platform.select({ ios: undefined, default: '700' as const }),
 } as const;
 
 const gameHeaderStyle = {
