@@ -47,14 +47,6 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
   };
 }
 
-export function getHeaderTurnLabel(state: GameState): string {
-  const { colorLabel, headline } = getTurnDisplay(state);
-  if (state.phase === 'game-over') {
-    return headline;
-  }
-  return `${colorLabel} · ${headline}`;
-}
-
 function humanHeadline(mode: GameMode, player: Player): string {
   if (mode === 'vs-computer') {
     return 'Your turn';

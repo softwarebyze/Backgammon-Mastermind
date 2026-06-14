@@ -11,64 +11,47 @@ const CHECKER_SIZE = 22;
 
 type Props = {
   state: GameState;
-  /** Compact strip for the native header */
-  variant?: 'banner' | 'header';
 };
 
-export function TurnIndicatorBanner({ state, variant = 'banner' }: Props) {
+export function TurnIndicatorBanner({ state }: Props) {
   if (state.phase === 'game-over') {
     return null;
   }
 
   const turn = getTurnDisplay(state);
-  const isHeader = variant === 'header';
   const isActive = turn.isHumanTurn;
 
   return (
     <View
       style={[
-        isHeader ? styles.headerShell : styles.bannerShell,
+        styles.bannerShell,
         isActive ? styles.activeShell : styles.waitingShell,
-        isHeader && styles.headerPadding,
       ]}
       accessibilityRole="text"
       accessibilityLabel={`${turn.colorLabel}. ${turn.headline}`}
     >
-      <CheckerToken player={turn.player} size={isHeader ? 18 : CHECKER_SIZE} />
+      <CheckerToken player={turn.player} size={CHECKER_SIZE} />
       <View style={styles.copy}>
         <Text
           style={[
-            isHeader ? styles.headerColor : styles.bannerColor,
+            styles.bannerColor,
             isActive ? styles.activeColor : styles.waitingColor,
           ]}
           numberOfLines={1}
         >
           {turn.colorLabel.toUpperCase()}
         </Text>
-        {!isHeader && (
-          <Text
-            style={[
-              styles.bannerHeadline,
-              isActive ? styles.activeHeadline : styles.waitingHeadline,
-            ]}
-            numberOfLines={1}
-          >
-            {turn.headline}
-          </Text>
-        )}
-        {isHeader && (
-          <Text
-            style={[
-              styles.headerHeadline,
-              isActive ? styles.activeHeadline : styles.waitingHeadline,
-            ]}
-            numberOfLines={1}
-          >
-            {turn.headline}
-          </Text>
-        )}
+        <Text
+          style={[
+            styles.bannerHeadline,
+            isActive ? styles.activeHeadline : styles.waitingHeadline,
+          ]}
+          numberOfLines={1}
+        >
+          {turn.headline}
+        </Text>
       </View>
-      {isActive && !isHeader ? <View style={styles.activeDot} /> : null}
+      {isActive ? <View style={styles.activeDot} /> : null}
     </View>
   );
 }
@@ -84,15 +67,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderWidth: 1,
     ...continuousRadius(14),
-  },
-  headerShell: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    maxWidth: 240,
-  },
-  headerPadding: {
-    paddingVertical: 2,
   },
   activeShell: {
     backgroundColor: 'rgba(232, 200, 96, 0.1)',
@@ -113,11 +87,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1.4,
     ...interFont('bold'),
   },
-  headerColor: {
-    fontSize: 10,
-    letterSpacing: 1.2,
-    ...interFont('bold'),
-  },
   activeColor: {
     color: '#F0D070',
   },
@@ -128,10 +97,6 @@ const styles = StyleSheet.create({
     marginTop: 1,
     fontSize: 17,
     ...interFont('bold'),
-  },
-  headerHeadline: {
-    fontSize: 15,
-    ...interFont('semibold'),
   },
   activeHeadline: {
     color: GAME_PALETTE.text,

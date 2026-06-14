@@ -37,24 +37,17 @@ export function GameScreen() {
     router.push('/game/options');
   }, []);
 
-  const renderHeaderTitle = useCallback(() => {
-    if (!state || state.phase === 'game-over') {
-      return null;
-    }
-    return <TurnIndicatorBanner state={state} variant="header" />;
-  }, [state]);
-
   useLayoutEffect(() => {
     if (!state) {
       return;
     }
     navigation.setOptions({
-      headerTitle: renderHeaderTitle,
+      title: '',
       headerRight: () => (
         <GameHeaderActions onOptions={openOptions} onReset={handleReset} />
       ),
     });
-  }, [navigation, state, renderHeaderTitle, handleReset, openOptions]);
+  }, [navigation, state, handleReset, openOptions]);
 
   if (!state) {
     return (
