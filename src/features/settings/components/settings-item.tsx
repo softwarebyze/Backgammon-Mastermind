@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
+import { FONT_REGULAR } from '@/lib/ui/fonts';
 import {
   SETTINGS_ROW_MIN_HEIGHT,
   SETTINGS_ROW_PADDING_H,
@@ -77,9 +78,11 @@ const styles = StyleSheet.create({
   label: {
     color: GAME_PALETTE.text,
     fontSize: 16,
+    fontFamily: FONT_REGULAR,
   },
   value: {
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
+    fontFamily: FONT_REGULAR,
   },
 });

@@ -2,6 +2,7 @@ import type { GameState } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { FONT_REGULAR } from '@/lib/ui/fonts';
 
 type Props = {
   state: GameState;
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
   pipText: {
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: FONT_REGULAR,
     fontVariant: ['tabular-nums'],
   },
   winnerBadge: {

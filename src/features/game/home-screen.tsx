@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { useCallback } from 'react';
 import {
   Image,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -15,7 +16,9 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { hasSavedGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
+import { FONT_BOLD, FONT_REGULAR } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
+import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
 export function HomeScreen() {
   const { startGame, resumeGame } = useGame();
@@ -131,9 +134,11 @@ const styles = StyleSheet.create({
   scroll: {
     flexGrow: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
     paddingHorizontal: 24,
+    paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
     paddingBottom: 32,
+    ...(Platform.OS === 'web' ? { minHeight: '100%' as const } : null),
   },
   logoContainer: {
     width: 110,
@@ -156,7 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: GAME_PALETTE.accent,
     letterSpacing: 4,
-    fontFamily: 'Inter_700Bold',
+    fontFamily: FONT_BOLD,
     textAlign: 'center',
   },
   subtitle: {
@@ -164,7 +169,7 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.accentDim,
     marginTop: 4,
     letterSpacing: 1,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: FONT_REGULAR,
     textAlign: 'center',
   },
   dividerRow: {
@@ -227,12 +232,12 @@ const styles = StyleSheet.create({
   btnLabel: {
     fontSize: 17,
     fontWeight: '700',
-    fontFamily: 'Inter_700Bold',
+    fontFamily: FONT_BOLD,
   },
   btnSub: {
     fontSize: 12,
     marginTop: 2,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: FONT_REGULAR,
   },
   rulesCard: {
     width: '100%',
@@ -248,14 +253,14 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.accent,
     fontSize: 13,
     fontWeight: '700',
-    fontFamily: 'Inter_700Bold',
+    fontFamily: FONT_BOLD,
     marginBottom: 4,
     letterSpacing: 1,
   },
   rulesText: {
     color: GAME_PALETTE.accentDim,
     fontSize: 12,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: FONT_REGULAR,
     lineHeight: 18,
   },
 });

@@ -3,11 +3,13 @@ import type { NativeStackNavigationOptions } from 'expo-router';
 import { Platform } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
+import { FONT_BOLD } from '@/lib/ui/fonts';
 
 const gameHeaderTitleStyle = {
   color: GAME_PALETTE.accent,
-  fontFamily: 'Inter_700Bold',
+  fontFamily: FONT_BOLD,
   fontSize: 17,
+  fontWeight: Platform.select({ ios: undefined, default: '700' as const }),
 } as const;
 
 const gameHeaderStyle = {
@@ -58,7 +60,7 @@ export function settingsStackOptions(): NativeStackNavigationOptions {
     headerShadowVisible: false,
     headerLargeTitleShadowVisible: false,
     headerLargeStyle: { backgroundColor: 'transparent' },
-    headerLargeTitle: true,
+    headerLargeTitle: Platform.OS === 'ios',
     headerBlurEffect: 'none',
     headerBackButtonDisplayMode: 'minimal',
   };

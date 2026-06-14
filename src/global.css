@@ -6,6 +6,7 @@
 @theme {
   /* Font families */
   --font-family-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-family-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   /* Base colors */
   --color-white: #ffffff;
@@ -124,5 +125,36 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Web shell — applies in dev (global.css) and production static export (+html.tsx) */
+@layer base {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    background-color: #1e0c02;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    width: 100%;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #1e0c02;
+  }
+
+  @media (min-width: 768px) {
+    #root {
+      max-width: 768px;
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.45);
+    }
   }
 }

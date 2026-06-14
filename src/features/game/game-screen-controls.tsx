@@ -5,6 +5,7 @@ import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
+import { FONT_BOLD, FONT_REGULAR } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.text,
     fontSize: 16,
     fontWeight: '600',
-    fontFamily: 'Inter_700Bold',
+    fontFamily: FONT_BOLD,
   },
   statusSlot: {
     height: ACTION_SLOT_HEIGHT,
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   statusText: {
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: FONT_REGULAR,
   },
   caption: {
     marginTop: 6,
@@ -192,6 +193,6 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
     textAlign: 'center',
-    fontFamily: 'Inter_400Regular',
+    fontFamily: FONT_REGULAR,
   },
 });
