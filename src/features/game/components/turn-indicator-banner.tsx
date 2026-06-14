@@ -23,10 +23,7 @@ export function TurnIndicatorBanner({ state }: Props) {
 
   return (
     <View
-      style={[
-        styles.bannerShell,
-        isActive ? styles.activeShell : styles.waitingShell,
-      ]}
+      style={styles.bannerShell}
       accessibilityRole="text"
       accessibilityLabel={`${turn.colorLabel}. ${turn.headline}`}
     >
@@ -51,7 +48,6 @@ export function TurnIndicatorBanner({ state }: Props) {
           {turn.headline}
         </Text>
       </View>
-      {isActive ? <View style={styles.activeDot} /> : null}
     </View>
   );
 }
@@ -63,20 +59,12 @@ const styles = StyleSheet.create({
     gap: 10,
     width: '100%',
     maxWidth: 420,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: GAME_PALETTE.surface,
     borderWidth: 1,
-    ...continuousRadius(14),
-  },
-  activeShell: {
-    backgroundColor: 'rgba(232, 200, 96, 0.1)',
-    borderColor: 'rgba(232, 200, 96, 0.45)',
-    borderLeftWidth: 3,
-    borderLeftColor: '#E8C860',
-  },
-  waitingShell: {
-    backgroundColor: 'rgba(42, 20, 8, 0.65)',
     borderColor: GAME_PALETTE.surfaceBorder,
+    ...continuousRadius(12),
   },
   copy: {
     flex: 1,
@@ -84,31 +72,24 @@ const styles = StyleSheet.create({
   },
   bannerColor: {
     fontSize: 11,
-    letterSpacing: 1.4,
-    ...interFont('bold'),
+    letterSpacing: 1.2,
+    ...interFont('semibold'),
   },
   activeColor: {
-    color: '#F0D070',
+    color: GAME_PALETTE.accentDim,
   },
   waitingColor: {
     color: GAME_PALETTE.textMuted,
   },
   bannerHeadline: {
     marginTop: 1,
-    fontSize: 17,
-    ...interFont('bold'),
+    fontSize: 16,
+    ...interFont('semibold'),
   },
   activeHeadline: {
     color: GAME_PALETTE.text,
   },
   waitingHeadline: {
     color: GAME_PALETTE.textMuted,
-  },
-  activeDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#E8C860',
-    boxShadow: '0 0 10px rgba(232, 200, 96, 0.8)',
   },
 });

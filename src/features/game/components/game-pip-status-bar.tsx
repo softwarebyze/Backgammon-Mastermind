@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { interFont } from '@/lib/ui/fonts';
-import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
@@ -48,8 +47,8 @@ function PipCount({
   isActive: boolean;
 }) {
   return (
-    <View style={[styles.pipItem, isActive && styles.pipItemActive]}>
-      <View style={[styles.pipDot, { backgroundColor: dotColor }, isActive && styles.pipDotActive]} />
+    <View style={styles.pipItem}>
+      <View style={[styles.pipDot, { backgroundColor: dotColor }]} />
       <Text style={[styles.pipText, isActive && styles.pipTextActive]} selectable>
         {label}
         :
@@ -82,14 +81,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    ...continuousRadius(10),
-  },
-  pipItemActive: {
-    backgroundColor: 'rgba(232, 200, 96, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(232, 200, 96, 0.35)',
   },
   pipDot: {
     width: 10,
@@ -97,10 +88,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#BBA070',
-  },
-  pipDotActive: {
-    borderColor: '#E8C860',
-    borderWidth: 1.5,
   },
   pipText: {
     color: GAME_PALETTE.textMuted,
