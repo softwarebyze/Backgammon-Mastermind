@@ -1,4 +1,3 @@
-import type { GameState } from '@/lib/game';
 import { router } from 'expo-router';
 import { useNavigation } from 'expo-router/react-navigation';
 import { useCallback, useLayoutEffect } from 'react';
@@ -9,6 +8,7 @@ import { GameHeaderActions } from '@/components/navigation/game-header-actions';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
+import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
@@ -37,19 +37,17 @@ export function GameScreen() {
     router.push('/game/options');
   }, []);
 
-  const playerLabel = state ? getPlayerLabel(state) : '';
-
   useLayoutEffect(() => {
     if (!state) {
       return;
     }
     navigation.setOptions({
-      title: playerLabel,
+      title: '',
       headerRight: () => (
         <GameHeaderActions onOptions={openOptions} onReset={handleReset} />
       ),
     });
-  }, [navigation, state, playerLabel, handleReset, openOptions]);
+  }, [navigation, state, handleReset, openOptions]);
 
   if (!state) {
     return (
@@ -68,6 +66,9 @@ export function GameScreen() {
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <FocusAwareStatusBar />
       <GamePipStatusBar state={state} />
+      <View style={styles.turnBannerWrap}>
+        <TurnIndicatorBanner state={state} />
+      </View>
       <View style={styles.boardWrap}>
         <Pressable
           onPress={handleBoardPress}
@@ -96,13 +97,6 @@ export function GameScreen() {
   );
 }
 
-function getPlayerLabel(state: GameState) {
-  if (state.currentPlayer === 'white') {
-    return state.mode === 'vs-computer' ? 'Your Turn' : 'White';
-  }
-  return state.mode === 'vs-computer' ? 'Computer' : 'Black';
-}
-
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -112,6 +106,12 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  turnBannerWrap: {
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    marginBottom: 4,
   },
   boardWrap: {
     flex: 1,

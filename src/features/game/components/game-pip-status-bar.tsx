@@ -3,16 +3,30 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { interFont } from '@/lib/ui/fonts';
+import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
 };
 
 export function GamePipStatusBar({ state }: Props) {
+  const activePlayer
+    = state.phase === 'game-over' ? null : state.currentPlayer;
+
   return (
     <View style={styles.pipRow}>
-      <PipCount label="White" count={state.borneOff.white} dotColor="#F2EAD3" />
-      <PipCount label="Black" count={state.borneOff.black} dotColor="#1E1E30" />
+      <PipCount
+        label="White"
+        count={state.borneOff.white}
+        dotColor="#F2EAD3"
+        isActive={activePlayer === 'white'}
+      />
+      <PipCount
+        label="Black"
+        count={state.borneOff.black}
+        dotColor="#1E1E30"
+        isActive={activePlayer === 'black'}
+      />
       {state.phase === 'game-over'
         ? (
             <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
@@ -22,11 +36,21 @@ export function GamePipStatusBar({ state }: Props) {
   );
 }
 
-function PipCount({ label, count, dotColor }: { label: string; count: number; dotColor: string }) {
+function PipCount({
+  label,
+  count,
+  dotColor,
+  isActive,
+}: {
+  label: string;
+  count: number;
+  dotColor: string;
+  isActive: boolean;
+}) {
   return (
-    <View style={styles.pipItem}>
-      <View style={[styles.pipDot, { backgroundColor: dotColor }]} />
-      <Text style={styles.pipText} selectable>
+    <View style={[styles.pipItem, isActive && styles.pipItemActive]}>
+      <View style={[styles.pipDot, { backgroundColor: dotColor }, isActive && styles.pipDotActive]} />
+      <Text style={[styles.pipText, isActive && styles.pipTextActive]} selectable>
         {label}
         :
         {count}
@@ -47,8 +71,8 @@ const styles = StyleSheet.create({
   pipRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 16,
-    marginBottom: 8,
+    gap: 12,
+    marginBottom: 4,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
@@ -58,6 +82,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    ...continuousRadius(10),
+  },
+  pipItemActive: {
+    backgroundColor: 'rgba(232, 200, 96, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(232, 200, 96, 0.35)',
   },
   pipDot: {
     width: 10,
@@ -66,11 +98,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#BBA070',
   },
+  pipDotActive: {
+    borderColor: '#E8C860',
+    borderWidth: 1.5,
+  },
   pipText: {
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
     ...interFont('regular'),
     fontVariant: ['tabular-nums'],
+  },
+  pipTextActive: {
+    color: GAME_PALETTE.text,
+    ...interFont('semibold'),
   },
   winnerBadge: {
     color: '#E8C860',
