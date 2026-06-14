@@ -19,7 +19,6 @@ export function LanguageItem() {
       text="settings.language"
       value={label}
       onPress={() => router.push('/language')}
-      showDivider={false}
     />
   );
 }

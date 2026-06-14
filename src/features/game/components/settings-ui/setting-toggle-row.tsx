@@ -3,6 +3,7 @@ import { StyleSheet, Switch, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticSelection } from '@/lib/haptics';
+import { interFont } from '@/lib/ui/fonts';
 import {
   SETTINGS_ICON_SLOT,
   SETTINGS_ROW_MIN_HEIGHT,
@@ -62,11 +63,12 @@ const styles = StyleSheet.create({
   label: {
     color: GAME_PALETTE.text,
     fontSize: 16,
-    fontWeight: '600',
+    ...interFont('semibold'),
   },
   hint: {
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
     marginTop: 2,
+    ...interFont('regular'),
   },
 });

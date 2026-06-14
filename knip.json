@@ -29,7 +29,6 @@
     "husky",
     "np",
     "babel-preset-expo",
-    "@expo-google-fonts/inter",
     "expo-crypto",
     "react-native-url-polyfill",
     "react-error-boundary",

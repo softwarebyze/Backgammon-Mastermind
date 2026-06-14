@@ -39,6 +39,8 @@ import { Platform, Pressable, Text as RNText, StyleSheet, View } from 'react-nat
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Path, Svg } from 'react-native-svg';
 
+import { interFont } from '@/lib/ui/fonts';
+
 import { Text } from './text';
 
 type ModalProps = BottomSheetModalProps & {
@@ -260,9 +262,8 @@ const gameHandleStyles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontSize: Platform.select({ ios: 17, android: 18, default: 17 }),
-    fontWeight: Platform.select({ ios: '600', android: '700', default: '600' }),
     color: '#F2EAD3',
-    fontFamily: 'Inter_700Bold',
+    ...interFont(Platform.OS === 'android' ? 'bold' : 'semibold'),
   },
 });
 

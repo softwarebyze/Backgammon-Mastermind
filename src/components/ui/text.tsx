@@ -1,4 +1,3 @@
-/* eslint-disable better-tailwindcss/no-unknown-classes */
 import type { TextProps, TextStyle } from 'react-native';
 import type { TxKeyPath } from '@/lib/i18n';
 import * as React from 'react';
@@ -6,6 +5,7 @@ import { I18nManager, Text as NNText, StyleSheet } from 'react-native';
 
 import { twMerge } from 'tailwind-merge';
 import { translate } from '@/lib/i18n';
+import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
   className?: string;
@@ -22,7 +22,7 @@ export function Text({
   const textStyle = React.useMemo(
     () =>
       twMerge(
-        'font-inter text-base font-normal text-white',
+        'text-base font-normal text-white',
         className,
       ),
     [className],
@@ -33,6 +33,7 @@ export function Text({
       StyleSheet.flatten([
         {
           writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',
+          ...interFont('regular'),
         },
         style,
       ]) as TextStyle,

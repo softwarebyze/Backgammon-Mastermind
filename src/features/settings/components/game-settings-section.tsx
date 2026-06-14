@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/ui';
 import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -16,7 +17,7 @@ export function GameSettingsSection() {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Game</Text>
+      <Text className="pb-2 text-lg" style={styles.title} tx="settings.game" />
       <GamePreferencesPanel
         preferences={preferences}
         onShowMoveHintsChange={setShowMoveHints}
@@ -31,12 +32,7 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: SETTINGS_SECTION_GAP,
   },
-  sectionTitle: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: GAME_PALETTE.textMuted,
-    marginBottom: 8,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+  title: {
+    color: GAME_PALETTE.text,
   },
 });
