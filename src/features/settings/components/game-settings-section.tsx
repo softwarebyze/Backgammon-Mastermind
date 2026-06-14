@@ -1,10 +1,16 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
+import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
+import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
+import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
+import { SettingToggleRow } from '@/features/game/components/settings-ui/setting-toggle-row';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { SETTINGS_SECTION_GAP } from '@/lib/ui/settings-layout';
+import { translate } from '@/lib/i18n';
+import { SETTINGS_ROW_PADDING_H } from '@/lib/ui/settings-layout';
+
+import { SettingsContainer } from './settings-container';
 
 export function GameSettingsSection() {
   const {
@@ -15,28 +21,52 @@ export function GameSettingsSection() {
   } = useGamePreferences();
 
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Game</Text>
-      <GamePreferencesPanel
-        preferences={preferences}
-        onShowMoveHintsChange={setShowMoveHints}
-        onShowDirectionOverlayChange={setShowDirectionOverlay}
-        onDiceDisplayStyleChange={setDiceDisplayStyle}
-      />
-    </View>
+    <>
+      <SettingsContainer title="settings.game">
+        <SettingToggleRow
+          icon={<MoveHintIcon size={32} />}
+          label={translate('game.preferences.move_hints')}
+          value={preferences.showMoveHints}
+          onChange={setShowMoveHints}
+        />
+        <View style={styles.divider} />
+        <SettingToggleRow
+          icon={(
+            <HorseshoeIcon
+              size={32}
+              color={
+                preferences.showDirectionOverlay
+                  ? GAME_PALETTE.accent
+                  : GAME_PALETTE.textMuted
+              }
+            />
+          )}
+          label={translate('game.preferences.direction_overlay')}
+          value={preferences.showDirectionOverlay}
+          onChange={setShowDirectionOverlay}
+        />
+      </SettingsContainer>
+
+      <SettingsContainer>
+        <View style={styles.diceWrap}>
+          <DiceStylePicker
+            value={preferences.diceDisplayStyle}
+            onChange={setDiceDisplayStyle}
+          />
+        </View>
+      </SettingsContainer>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  section: {
-    marginBottom: SETTINGS_SECTION_GAP,
+  divider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: GAME_PALETTE.surfaceBorder,
+    marginHorizontal: SETTINGS_ROW_PADDING_H,
   },
-  sectionTitle: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: GAME_PALETTE.textMuted,
-    marginBottom: 8,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+  diceWrap: {
+    paddingHorizontal: SETTINGS_ROW_PADDING_H,
+    paddingVertical: SETTINGS_ROW_PADDING_H,
   },
 });
