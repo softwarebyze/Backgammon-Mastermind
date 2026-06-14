@@ -1,6 +1,6 @@
 # GitHub-hosted emulator E2E — label android-test-github or manual dispatch.
 # No Maestro Cloud account required (slower: emulator boot + Gradle APK build).
-# Visual report: workflow run Summary (inline screenshots) + PR comment + maestro-visual-report artifact.
+# Visual report: inline screenshots on the PR comment + workflow Summary tab (raw.githubusercontent.com URLs).
 
 name: E2E Tests Android (Maestro + Github Action)
 
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
   checks: write
   pull-requests: write
 

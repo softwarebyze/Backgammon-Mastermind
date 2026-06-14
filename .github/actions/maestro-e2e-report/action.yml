@@ -19,6 +19,8 @@ runs:
       env:
         MAESTRO_OUTPUT_DIR: ${{ inputs.maestro-output-dir }}
         MAESTRO_JUNIT_REPORT: ${{ inputs.junit-report }}
+        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
       run: bash .github/scripts/maestro-post-e2e-report.sh
 
     - name: Publish JUnit to PR checks
