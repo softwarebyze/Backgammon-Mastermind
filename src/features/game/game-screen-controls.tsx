@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
@@ -26,7 +27,8 @@ export function GameScreenControls({
   onReset,
 }: Props) {
   const { preferences } = useGamePreferences();
-  const caption = getCaption(state, isHumanTurn, isComputerTurn);
+  const turn = getTurnDisplay(state);
+  const caption = getActionCaption(state, turn);
 
   return (
     <View style={styles.controls}>
@@ -58,25 +60,6 @@ export function GameScreenControls({
       </Text>
     </View>
   );
-}
-
-function getCaption(state: GameState, isHumanTurn: boolean, isComputerTurn: boolean) {
-  if (state.phase === 'rolling' && isHumanTurn) {
-    return 'Roll dice to begin your turn';
-  }
-  if (state.phase === 'rolling' && isComputerTurn) {
-    return 'Opponent is rolling…';
-  }
-  if (state.phase === 'moving' && isComputerTurn) {
-    return 'Opponent is moving…';
-  }
-  if (state.phase === 'moving' && isHumanTurn) {
-    if (state.selectedPoint !== null) {
-      return 'Tap a highlighted point';
-    }
-    return 'Tap one of your checkers';
-  }
-  return ' ';
 }
 
 function ActionControl({
