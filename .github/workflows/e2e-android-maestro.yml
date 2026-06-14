@@ -16,7 +16,7 @@ concurrency:
 jobs:
   maestro-cloud-configured:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     outputs:
       enabled: ${{ steps.check.outputs.enabled }}
     steps:
@@ -33,7 +33,7 @@ jobs:
     needs: maestro-cloud-configured
     if: needs.maestro-cloud-configured.outputs.enabled == 'true'
     name: Maestro Cloud smoke (backgammon)
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 60
 
     steps:

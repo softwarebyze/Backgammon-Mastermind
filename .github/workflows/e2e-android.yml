@@ -23,7 +23,7 @@ jobs:
   generate-test-apk:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
     name: Generate Test APK (Gradle)
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 60
 
     steps:
@@ -51,7 +51,7 @@ jobs:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
     name: Run backgammon smoke (emulator)
     needs: generate-test-apk
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 45
 
     steps:

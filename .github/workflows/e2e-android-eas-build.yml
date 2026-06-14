@@ -20,7 +20,7 @@ jobs:
   download-eas-apk:
     if: github.event_name != 'pull_request' && github.event.inputs.apk-url != ''
     name: Download Test APK From EAS Url (wget)
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - name: Download EAS APK
@@ -35,7 +35,7 @@ jobs:
   test-android:
     name: Run backgammon smoke (emulator)
     needs: download-eas-apk
-    runs-on: macOS-latest
+    runs-on: blacksmith-6vcpu-macos-15
 
     steps:
       - name: Checkout repository

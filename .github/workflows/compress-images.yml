@@ -28,7 +28,7 @@ permissions:
 jobs:
   build:
     name: calibreapp/image-actions
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v4

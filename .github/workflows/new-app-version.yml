@@ -37,7 +37,7 @@ on:
 jobs:
   release:
     name: Create New Version and push new tag
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     permissions:
       contents: write
     steps:
