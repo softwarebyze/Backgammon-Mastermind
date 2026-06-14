@@ -24,7 +24,6 @@ export function ThemeItem() {
       text="settings.theme.title"
       value={themeLabel}
       onPress={() => router.push('/theme')}
-      showDivider={false}
     />
   );
 }

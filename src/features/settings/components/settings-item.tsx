@@ -20,10 +20,9 @@ type ItemProps = {
   value?: string;
   onPress?: () => void;
   icon?: React.ReactNode;
-  showDivider?: boolean;
 };
 
-export function SettingsItem({ text, value, icon, onPress, showDivider = true }: ItemProps) {
+export function SettingsItem({ text, value, icon, onPress }: ItemProps) {
   const isPressable = onPress !== undefined;
   return (
     <Pressable
@@ -34,7 +33,7 @@ export function SettingsItem({ text, value, icon, onPress, showDivider = true }:
           }
         : undefined}
       disabled={!isPressable}
-      style={[styles.row, !showDivider && styles.rowLast]}
+      style={styles.row}
     >
       <View style={styles.left}>
         {icon && <View style={styles.icon}>{icon}</View>}
@@ -56,11 +55,6 @@ const styles = StyleSheet.create({
     minHeight: SETTINGS_ROW_MIN_HEIGHT,
     paddingHorizontal: SETTINGS_ROW_PADDING_H,
     paddingVertical: SETTINGS_ROW_PADDING_V,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: GAME_PALETTE.surfaceBorder,
-  },
-  rowLast: {
-    borderBottomWidth: 0,
   },
   left: {
     flexDirection: 'row',

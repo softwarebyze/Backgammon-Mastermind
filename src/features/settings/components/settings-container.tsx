@@ -6,7 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { continuousRadius } from '@/lib/ui/native-styles';
-import { SETTINGS_SECTION_GAP } from '@/lib/ui/settings-layout';
+import { SETTINGS_ROW_PADDING_H, SETTINGS_SECTION_GAP } from '@/lib/ui/settings-layout';
 
 type Props = {
   children: React.ReactNode;
@@ -14,10 +14,19 @@ type Props = {
 };
 
 export function SettingsContainer({ children, title }: Props) {
+  const items = React.Children.toArray(children).filter(Boolean);
+
   return (
     <View style={styles.section}>
       {title ? <Text className="pb-2 text-lg" style={styles.title} tx={title} /> : null}
-      <View style={styles.card}>{children}</View>
+      <View style={styles.card}>
+        {items.map((child, index) => (
+          <React.Fragment key={index}>
+            {index > 0 ? <View style={styles.divider} /> : null}
+            {child}
+          </React.Fragment>
+        ))}
+      </View>
     </View>
   );
 }
@@ -35,5 +44,10 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.surfaceBorder,
     paddingVertical: 4,
     ...continuousRadius(12),
+  },
+  divider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: GAME_PALETTE.surfaceBorder,
+    marginHorizontal: SETTINGS_ROW_PADDING_H,
   },
 });
