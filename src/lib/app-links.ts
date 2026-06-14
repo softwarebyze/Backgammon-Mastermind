@@ -2,7 +2,7 @@ import Env from 'env';
 import { Linking, Platform, Share } from 'react-native';
 
 const REPOSITORY_URL = 'https://github.com/softwarebyze/Backgammon-Mastermind';
-const SUPPORT_EMAIL = 'support@softwarebyze.com';
+const SUPPORT_EMAIL = 'zackebenfeld@gmail.com';
 
 /** Set EXPO_PUBLIC_APP_STORE_ID in production env once App Store Connect record exists. */
 const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
