@@ -12,7 +12,10 @@ BUNDLE_DIR="$WORKSPACE/maestro-visual-bundle"
 SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-/dev/null}"
 PR_COMMENT_FILE="$WORKSPACE/maestro-pr-comment.md"
 RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+SCREENSHOT_BASE_URL=""
+PR_SCREENSHOT_BASE_URL=""
 
+rm -rf "$BUNDLE_DIR"
 mkdir -p "$BUNDLE_DIR"
 
 status_emoji="✅"
@@ -48,6 +51,18 @@ fi
 [[ -f "$RECORDING" ]] && cp "$RECORDING" "$BUNDLE_DIR/e2e-recording.mp4"
 
 mapfile -t screenshots < <(find "$BUNDLE_DIR" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
+
+# Publish screenshots for raw.githubusercontent.com URLs (data: URIs are blocked in summaries).
+if ((${#screenshots[@]} > 0)) && [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  bash "$WORKSPACE/.github/scripts/maestro-publish-screenshots.sh" "$BUNDLE_DIR"
+  URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
+  if [[ -f "$URL_FILE" ]]; then
+    # shellcheck disable=SC1090
+    source "$URL_FILE"
+    SCREENSHOT_BASE_URL="${MAESTRO_SCREENSHOT_BASE_URL:-}"
+    PR_SCREENSHOT_BASE_URL="${MAESTRO_PR_SCREENSHOT_BASE_URL:-}"
+  fi
+fi
 
 # --- HTML bundle (open locally after downloading one artifact zip) ---
 html_path="$BUNDLE_DIR/index.html"
@@ -87,6 +102,10 @@ html_path="$BUNDLE_DIR/index.html"
   if ((${#screenshots[@]} > 0)); then
     echo "### Screenshots"
     echo ""
+    if [[ -z "$SCREENSHOT_BASE_URL" ]]; then
+      echo "_Inline preview unavailable (screenshot publish failed). Download \`maestro-visual-report\` artifact or open \`index.html\`._"
+      echo ""
+    fi
     count=0
     for img in "${screenshots[@]}"; do
       ((count++)) || true
@@ -95,9 +114,12 @@ html_path="$BUNDLE_DIR/index.html"
         break
       fi
       base=$(basename "$img")
-      b64=$(base64 -w 0 "$img" 2>/dev/null || base64 "$img" | tr -d '\n')
       echo "<details open><summary>${base}</summary>"
-      echo "<img src=\"data:image/png;base64,${b64}\" alt=\"${base}\" width=\"360\"/>"
+      if [[ -n "$SCREENSHOT_BASE_URL" ]]; then
+        echo ""
+        echo "![${base}](${SCREENSHOT_BASE_URL}/${base})"
+        echo ""
+      fi
       echo "</details>"
       echo ""
     done
@@ -110,21 +132,34 @@ html_path="$BUNDLE_DIR/index.html"
   echo "- \`e2e_android_report\` — JUnit XML"
 } >>"$SUMMARY_FILE"
 
-# --- PR sticky comment (points to summary + artifacts) ---
+# --- PR sticky comment (inline screenshots + links) ---
 {
   echo "${status_emoji} **Maestro E2E (GitHub emulator)** — ${status_text}"
   echo ""
-  echo "Visual report (screenshots inline): [workflow run summary](${RUN_URL})"
+  echo "[Workflow run](${RUN_URL}) · [Summary tab](${RUN_URL}) · Artifact: \`maestro-visual-report\`"
   echo ""
   if ((${#screenshots[@]} > 0)); then
-    echo "**${#screenshots[@]} screenshot(s)** captured — open the run **Summary** tab to preview without downloading."
+    comment_base="$PR_SCREENSHOT_BASE_URL"
+    if [[ -z "$comment_base" ]]; then
+      comment_base="$SCREENSHOT_BASE_URL"
+    fi
+    if [[ -n "$comment_base" ]]; then
+      echo "### Screenshots"
+      echo ""
+      for img in "${screenshots[@]}"; do
+        base=$(basename "$img")
+        echo "**${base}**"
+        echo ""
+        echo "![${base}](${comment_base}/${base})"
+        echo ""
+      done
+    else
+      echo "**${#screenshots[@]} screenshot(s)** in the \`maestro-visual-report\` artifact (\`index.html\`)."
+    fi
   fi
   if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
-    echo ""
-    echo "Screen recording included in the \`maestro-visual-report\` artifact (\`e2e-recording.mp4\` / \`index.html\`)."
+    echo "Screen recording: \`e2e-recording.mp4\` in \`maestro-visual-report\`."
   fi
-  echo ""
-  echo "Download bundle: Actions → this run → Artifacts → **maestro-visual-report**"
 } >"$PR_COMMENT_FILE"
 
 echo "Wrote $PR_COMMENT_FILE and updated job summary (${#screenshots[@]} screenshots)."

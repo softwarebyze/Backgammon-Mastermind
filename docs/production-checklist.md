@@ -14,7 +14,7 @@ Use this before the first App Store / Play Store submission.
 | **EAS Update Preview** | Yes | ✅ (`EXPO_TOKEN` configured) |
 | **Expo Doctor** | When deps / native config change | ✅ |
 | **Dev Client rebuild** | Native / branding path changes | ✅ |
-| **E2E (Maestro)** | Label `android-test-github` only | ✅ Validated on PR #15 |
+| **E2E (Maestro)** | Auto on `src/**` / `.maestro/**` changes + every push to `main` | ✅ |
 
 **Recommended:** GitHub branch protection on `main` — require **Lint TS**, **Type Check**, **Tests (jest)**.
 
@@ -26,7 +26,7 @@ Use this before the first App Store / Play Store submission.
 - [ ] Manual playtest on **QA build** — vs Computer and 2-player, full game to win
 - [x] Settings links wired (GitHub, privacy, terms, share, rate)
 - [x] App Store listing draft in `store.config.json` (EAS Metadata)
-- [ ] Set real phone in `store.config.json` → `apple.review.phone` before metadata push
+- [x] Set real phone in `store.config.json` → `apple.review.phone` (`+1 954 593 1670`)
 - [ ] Set `EXPO_PUBLIC_APP_STORE_ID` in production env when App Store record exists
 - [x] Contact email: `zackebenfeld@gmail.com` in app + legal docs
 

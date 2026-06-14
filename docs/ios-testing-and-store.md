@@ -4,7 +4,7 @@
 
 Store listings, privacy policy, and in-app Support use **zackebenfeld@gmail.com** (personal account).
 
-Before `eas metadata:push`, update `store.config.json` → `apple.review.phone` with your real phone number (Apple requires it for review contact).
+Before `eas metadata:push`, confirm `store.config.json` → `apple.review.phone` is correct (currently **+1 954 593 1670**).
 
 ## iOS testing paths
 
@@ -47,7 +47,7 @@ EAS builds use team **Zachary Ebenfeld (Individual)** — `75M38Z9JBF` (set in `
 
 ## Checklist before first TestFlight
 
-- [ ] Replace `apple.review.phone` in `store.config.json`
+- [x] Replace `apple.review.phone` in `store.config.json`
 - [ ] iOS preview build finished on EAS
 - [ ] `eas submit --platform ios --profile preview --latest`
 - [ ] `pnpm metadata:push` (after binary is processed)

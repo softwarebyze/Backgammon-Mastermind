@@ -1,11 +1,13 @@
-# GitHub-hosted emulator E2E — label android-test-github or manual dispatch.
-# No Maestro Cloud account required (slower: emulator boot + Gradle APK build).
-# Visual report: workflow run Summary (inline screenshots) + PR comment + maestro-visual-report artifact.
+# GitHub-hosted emulator E2E — auto-runs when app code changes (no label required).
+# Optional label android-test-github forces a run on any PR. Manual dispatch always works.
+# Visual report: inline screenshots on PR comment + Summary (raw.githubusercontent.com URLs).
 
 name: E2E Tests Android (Maestro + Github Action)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main, master]
   pull_request:
     branches: [main, master]
     types: [opened, synchronize, reopened, labeled]
@@ -15,13 +17,41 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
   checks: write
   pull-requests: write
 
 jobs:
+  changes:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      e2e: ${{ steps.filter.outputs.e2e }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            e2e:
+              - 'src/**'
+              - '.maestro/**'
+              - 'app.config.ts'
+              - 'env.ts'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - '.github/actions/setup-jdk-generate-apk/**'
+              - '.github/scripts/run-maestro-e2e-emulator.sh'
+              - '.github/scripts/maestro-post-e2e-report.sh'
+              - '.github/scripts/maestro-publish-screenshots.sh'
+
   generate-test-apk:
-    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
+    needs: changes
+    if: |
+      always() &&
+      (github.event_name == 'workflow_dispatch' ||
+        (needs.changes.result == 'success' && needs.changes.outputs.e2e == 'true') ||
+        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'android-test-github')))
     name: Generate Test APK (Gradle)
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -48,9 +78,14 @@ jobs:
           if-no-files-found: error
 
   test-android:
-    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
+    needs: [changes, generate-test-apk]
+    if: |
+      always() &&
+      needs.generate-test-apk.result == 'success' &&
+      (github.event_name == 'workflow_dispatch' ||
+        (needs.changes.result == 'success' && needs.changes.outputs.e2e == 'true') ||
+        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'android-test-github')))
     name: Run backgammon smoke (emulator)
-    needs: generate-test-apk
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
