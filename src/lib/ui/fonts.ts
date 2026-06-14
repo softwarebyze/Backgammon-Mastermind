@@ -1,27 +1,6 @@
 import type { TextStyle } from 'react-native';
 import { Platform } from 'react-native';
 
-/** Inter regular — postscript name on iOS/web; family + weight on Android. */
-export const FONT_REGULAR = Platform.select({
-  ios: 'Inter_400Regular',
-  android: 'Inter',
-  default: 'Inter_400Regular',
-}) as string;
-
-/** Inter bold — postscript name on iOS/web; family + weight on Android. */
-export const FONT_BOLD = Platform.select({
-  ios: 'Inter_700Bold',
-  android: 'Inter',
-  default: 'Inter_700Bold',
-}) as string;
-
-/** Inter extra-bold — postscript name on iOS/web; family + weight on Android. */
-export const FONT_EXTRA_BOLD = Platform.select({
-  ios: 'Inter_700Bold',
-  android: 'Inter',
-  default: 'Inter_800ExtraBold',
-}) as string;
-
 type InterWeight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold';
 
 const INTER_POSTSCRIPT: Record<InterWeight, string> = {
