@@ -41,3 +41,4 @@ jobs:
         with:
           APP_ENV: production
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          IOS: true

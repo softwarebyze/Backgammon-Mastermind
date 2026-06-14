@@ -28,4 +28,4 @@ We may update this policy before store releases. The latest version lives in thi
 
 ## Contact
 
-Questions: [support@softwarebyze.com](mailto:support@softwarebyze.com)
+Questions: [zackebenfeld@gmail.com](mailto:zackebenfeld@gmail.com)

@@ -25,22 +25,25 @@ Use this before the first App Store / Play Store submission.
 - [x] Maestro smoke E2E passes (GitHub emulator, label `android-test-github`)
 - [ ] Manual playtest on **QA build** — vs Computer and 2-player, full game to win
 - [x] Settings links wired (GitHub, privacy, terms, share, rate)
+- [x] App Store listing draft in `store.config.json` (EAS Metadata)
+- [ ] Set real phone in `store.config.json` → `apple.review.phone` before metadata push
 - [ ] Set `EXPO_PUBLIC_APP_STORE_ID` in production env when App Store record exists
-- [ ] Confirm support email (`support@softwarebyze.com`) and legal doc URLs for store forms
+- [x] Contact email: `zackebenfeld@gmail.com` in app + legal docs
 
 ## Versioning & builds
 
 | Step | Status | Action |
 | ---- | ------ | ------ |
-| 1. Version bump | **Next** | `0.0.1` → `0.1.0` (this branch) or Actions → **New App Version** |
-| 2. QA build | **Next** | Actions → **EAS QA Build** (Android; iOS gated in workflow) |
-| 3. Device QA | Pending | Install QA APK on real Android; TestFlight when iOS enabled |
+| 1. Version bump | Done | **v0.1.0** on `main` |
+| 2. QA build | **Next** | Actions → **EAS QA Build** (Android + iOS) |
+| 3. Device QA | **Next (iOS)** | Install iOS dev client — `docs/ios-testing-and-store.md` |
 | 4. Production build | Pending | Actions → **EAS Production Build** |
 | 5. Submit | Pending | `eas submit` or Expo dashboard |
 
 ## Store listing requirements (manual — you)
 
-- [ ] App Store Connect app record + screenshots + description
+- [x] App Store listing copy draft — `store.config.json` (+ `pnpm metadata:push` after first binary)
+- [ ] App Store screenshots (use `docs/remotion/after/` or device captures)
 - [ ] Google Play Console app record + screenshots + description
 - [ ] Privacy policy URL — `docs/privacy-policy.md` (or hosted copy)
 - [ ] Terms of service URL — `docs/terms-of-service.md`

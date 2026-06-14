@@ -1,0 +1,60 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "copyright": "2026 Zachary Ebenfeld",
+    "categories": [["GAMES", "GAMES_BOARD", "GAMES_STRATEGY"], "ENTERTAINMENT"],
+    "advisory": {
+      "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+      "contests": "NONE",
+      "gambling": false,
+      "gamblingSimulated": "NONE",
+      "horrorOrFearThemes": "NONE",
+      "matureOrSuggestiveThemes": "NONE",
+      "medicalOrTreatmentInformation": "NONE",
+      "profanityOrCrudeHumor": "NONE",
+      "sexualContentGraphicAndNudity": "NONE",
+      "sexualContentOrNudity": "NONE",
+      "unrestrictedWebAccess": false,
+      "violenceCartoonOrFantasy": "NONE",
+      "violenceRealistic": "NONE",
+      "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+      "kidsAgeBand": null,
+      "ageRatingOverride": "NONE",
+      "koreaAgeRatingOverride": "NONE"
+    },
+    "info": {
+      "en-US": {
+        "title": "Backgammon Mastermind",
+        "subtitle": "Classic board game, refined",
+        "promoText": "Play backgammon vs AI or pass-and-play. No account required.",
+        "description": "Backgammon Mastermind is a polished take on the classic strategy board game.\n\nPlay against a computer opponent or share the board with a friend in pass-and-play mode. Roll dice, move your checkers, hit blots, and bear off all fifteen to win.\n\nFeatures:\n• vs Computer with heuristic AI\n• Local 2-player mode\n• Direction overlay and game preferences\n• Dark theme and English / Arabic support\n• No account, no ads, no data collection — gameplay stays on your device\n\nPerfect for quick matches and sharpening your backgammon skills.",
+        "keywords": [
+          "backgammon",
+          "board game",
+          "strategy",
+          "dice",
+          "checkers",
+          "two player",
+          "AI",
+          "classic"
+        ],
+        "releaseNotes": "Initial TestFlight release of Backgammon Mastermind.",
+        "marketingUrl": "https://github.com/softwarebyze/Backgammon-Mastermind",
+        "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
+        "privacyPolicyUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/blob/main/docs/privacy-policy.md"
+      }
+    },
+    "release": {
+      "automaticRelease": false,
+      "phasedRelease": false
+    },
+    "review": {
+      "firstName": "Zachary",
+      "lastName": "Ebenfeld",
+      "email": "zackebenfeld@gmail.com",
+      "phone": "+1 000 000 0000",
+      "demoRequired": false,
+      "notes": "Backgammon Mastermind is a single-player / local multiplayer board game. No login is required. Open the app, tap \"vs Computer\" or \"2 Players\", then roll dice and move checkers. All game logic runs locally on device."
+    }
+  }
+}

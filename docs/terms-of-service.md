@@ -20,4 +20,4 @@ We may ship updates through the app stores or Expo Updates. Continued use after 
 
 ## Contact
 
-Questions: [support@softwarebyze.com](mailto:support@softwarebyze.com)
+Questions: [zackebenfeld@gmail.com](mailto:zackebenfeld@gmail.com)

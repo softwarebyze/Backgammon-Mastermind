@@ -65,7 +65,19 @@
     }
   },
   "submit": {
-    "preview": {},
-    "production": {}
+    "preview": {
+      "ios": {
+        "appleTeamId": "75M38Z9JBF",
+        "metadataPath": "./store.config.json"
+      },
+      "android": {}
+    },
+    "production": {
+      "ios": {
+        "appleTeamId": "75M38Z9JBF",
+        "metadataPath": "./store.config.json"
+      },
+      "android": {}
+    }
   }
 }

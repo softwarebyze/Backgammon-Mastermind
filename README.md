@@ -83,6 +83,7 @@ CI rebuilds **both** dev clients when native deps or branding change (`.github/w
 
 - [Obytes Template Playbook](./docs/obytes-template-playbook.md) — generic setup, CI, EAS, agent tooling
 - [Production Readiness Checklist](./docs/production-checklist.md) — CI policy, store submission steps
+- [iOS testing & EAS Metadata](./docs/ios-testing-and-store.md) — dev client, TestFlight, `store.config.json`
 - [Rules and Conventions](https://starter.obytes.com/getting-started/rules-and-conventions/)
 - [Project structure](https://starter.obytes.com/getting-started/project-structure)
 - [Environment vars and config](https://starter.obytes.com/getting-started/environment-vars-config)
