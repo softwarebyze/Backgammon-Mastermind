@@ -2,72 +2,74 @@
 
 Use this before the first App Store / Play Store submission.
 
+**Last updated:** after PR #15 merge (Maestro E2E + Expo Doctor green on `main`).
+
 ## CI: what runs on every PR?
 
-| Workflow | Every PR? | Recommendation |
-| -------- | --------- | -------------- |
-| **Lint TS** | Yes | Keep required |
-| **Type Check (tsc)** | Yes | Keep required |
-| **Tests (Jest)** | Yes | Keep required |
-| **EAS Update Preview** | Yes | Keep (needs `EXPO_TOKEN`) |
-| **Expo Doctor** | Only when `package.json` / lockfile changes | Keep as-is (prebuild is slow) |
-| **Dev Client rebuild** | Only on native/branding path changes | Keep as-is |
-| **E2E (Maestro)** | **No** — label-gated or manual | **Do not** run on every PR (30+ min, emulator cost) |
+| Workflow | Every PR? | Status |
+| -------- | --------- | ------ |
+| **Lint TS** | Yes | ✅ Required |
+| **Type Check (tsc)** | Yes | ✅ Required |
+| **Tests (Jest)** | Yes | ✅ Required |
+| **EAS Update Preview** | Yes | ✅ (`EXPO_TOKEN` configured) |
+| **Expo Doctor** | When deps / native config change | ✅ |
+| **Dev Client rebuild** | Native / branding path changes | ✅ |
+| **E2E (Maestro)** | Label `android-test-github` only | ✅ Validated on PR #15 |
 
-**Recommended GitHub branch protection** on `main`: require **Lint TS**, **Type Check**, and **Tests (jest)** to pass before merge. Optionally require **Expo Doctor** when you change dependencies often.
-
-To run E2E before a release, add label `android-test-github` (free GitHub emulator) or `android-test-maestro-cloud` (Maestro Cloud, needs `MAESTRO_CLOUD_API_KEY`) on the release PR.
+**Recommended:** GitHub branch protection on `main` — require **Lint TS**, **Type Check**, **Tests (jest)**.
 
 ## Pre-release engineering
 
-- [ ] `pnpm check-all` passes locally
-- [ ] Game engine tests pass (`src/lib/game/moves.test.ts`)
-- [ ] Maestro smoke E2E passes (label a PR or `pnpm e2e-smoke` on device/emulator)
-- [ ] Manual playtest: vs Computer and 2-player, full game to win
-- [ ] Settings links open (GitHub, privacy, terms, share, rate)
-- [ ] Replace placeholder App Store ID in `src/lib/app-links.ts` (`openStoreListing`)
-- [ ] Confirm support email in `src/lib/app-links.ts` and legal docs
+- [x] `pnpm check-all` passes locally
+- [x] Game engine tests pass (`src/lib/game/moves.test.ts`)
+- [x] Maestro smoke E2E passes (GitHub emulator, label `android-test-github`)
+- [ ] Manual playtest on **QA build** — vs Computer and 2-player, full game to win
+- [x] Settings links wired (GitHub, privacy, terms, share, rate)
+- [ ] Set `EXPO_PUBLIC_APP_STORE_ID` in production env when App Store record exists
+- [ ] Confirm support email (`support@softwarebyze.com`) and legal doc URLs for store forms
 
 ## Versioning & builds
 
-1. **Bump version** — Actions → **New App Version** → `patch` / `minor` / `major` (needs `GH_TOKEN` or default `GITHUB_TOKEN` with write access)
-2. **QA build** — Actions → **EAS QA Build** (preview profile, APK/AAB + iOS) — needs `EXPO_TOKEN`
-3. **Install QA build** on real iOS + Android devices; verify splash, icon, gameplay, settings
-4. **Production build** — Actions → **EAS Production Build** — needs `EXPO_TOKEN`
-5. **Submit** — `eas submit` or EAS Submit from Expo dashboard (`eas.json` submit profiles exist)
+| Step | Status | Action |
+| ---- | ------ | ------ |
+| 1. Version bump | **Next** | `0.0.1` → `0.1.0` (this branch) or Actions → **New App Version** |
+| 2. QA build | **Next** | Actions → **EAS QA Build** (Android; iOS gated in workflow) |
+| 3. Device QA | Pending | Install QA APK on real Android; TestFlight when iOS enabled |
+| 4. Production build | Pending | Actions → **EAS Production Build** |
+| 5. Submit | Pending | `eas submit` or Expo dashboard |
 
-## Store listing requirements
+## Store listing requirements (manual — you)
 
 - [ ] App Store Connect app record + screenshots + description
 - [ ] Google Play Console app record + screenshots + description
-- [ ] Privacy policy URL (hosted or GitHub raw link — see `docs/privacy-policy.md`)
-- [ ] Terms of service URL (see `docs/terms-of-service.md`)
+- [ ] Privacy policy URL — `docs/privacy-policy.md` (or hosted copy)
+- [ ] Terms of service URL — `docs/terms-of-service.md`
 - [ ] Content rating questionnaires (both stores)
-- [ ] Export compliance — `ITSAppUsesNonExemptEncryption: false` already set in `app.config.ts`
+- [x] Export compliance — `ITSAppUsesNonExemptEncryption: false` in `app.config.ts`
 
 ## Secrets checklist
 
-| Secret | Required for |
-| ------ | ------------ |
-| `EXPO_TOKEN` | EAS preview, QA, production builds |
-| `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E only |
-| `GH_TOKEN` | New App Version workflow (optional if default token has contents: write) |
+| Secret | Required for | Configured? |
+| ------ | ------------ | ----------- |
+| `EXPO_TOKEN` | EAS preview, QA, production | ✅ (previews work) |
+| `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E only | Optional |
+| `GH_TOKEN` | New App Version workflow | Optional (default token may suffice) |
 
 ## Post-launch
 
 - [ ] **New GitHub Release** workflow after production build is validated
-- [ ] Monitor EAS Update channels (`preview`, `production`) if shipping OTA fixes
-- [ ] Update `openStoreListing()` with real Apple App Store ID
+- [ ] Monitor EAS Update channels (`preview`, `production`)
+- [ ] Set `EXPO_PUBLIC_APP_STORE_ID` and verify Rate opens App Store listing on iOS
 
-## Current gaps (as of v0.0.1)
+## Current status summary
 
 | Item | Status |
 | ---- | ------ |
-| Core gameplay | Done |
+| Core gameplay + prefs UI | Done |
 | Branding / dev client | Done |
-| Unit tests (UI kit) | Done |
-| Unit tests (game engine) | Added in production-readiness PR |
-| E2E smoke (Maestro) | Defined, not run on recent PRs |
-| QA / production EAS builds | Workflows exist, never triggered |
+| Unit tests (UI + game engine) | Done (53 tests) |
+| Maestro E2E (GitHub emulator) | Done |
+| Expo SDK 56 deps aligned | Done |
+| QA / production EAS builds | **Next — trigger QA build** |
 | Store submission | Not started |
 | GitHub release / tag | None yet |
