@@ -31,11 +31,23 @@ Before `eas metadata:push`, confirm `store.config.json` → `apple.review.phone`
 
 Listing copy lives in **`store.config.json`** at the repo root. EAS Metadata is **Apple App Store only** (beta).
 
+Set `apple.version` in `store.config.json` to match the editable App Store Connect version (e.g. `"0.1.0"`). Without it, EAS defaults to `1.0` and `metadata:push` fails with a missing `versionString` error.
+
 ```sh
 # After first binary is in App Store Connect:
 pnpm metadata:pull    # optional — import existing ASC listing
 pnpm metadata:push    # push store.config.json to App Store Connect
 ```
+
+If `metadata:push` fails on version info, create version **0.1.0** in App Store Connect (App → iOS App → **+** Version) so it matches your binary and `store.config.json`.
+
+**Submit the right build:** `pnpm submit:preview:ios` uses `--latest`, which may pick a **development** build (`com.backgammonmastermind.development`). For TestFlight/store listing, build with `pnpm build:preview:ios` first, or submit a specific build:
+
+```sh
+eas submit --platform ios --profile preview --id <preview-build-id>
+```
+
+ASC App ID **6780139011** is wired in `eas.json` (`ascAppId`) for this development-bundle app.
 
 `eas.json` wires `metadataPath` for `preview` and `production` submit profiles.
 
