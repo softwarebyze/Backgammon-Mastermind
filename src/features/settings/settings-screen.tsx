@@ -16,10 +16,11 @@ import {
   openStoreListing,
   shareApp,
 } from '@/lib/app-links';
+import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
-// import { ThemeItem } from './components/theme-item';
+import { ThemeItem } from './components/theme-item';
 
 export function SettingsScreen() {
   const { theme } = useUniwind();
@@ -43,8 +44,10 @@ export function SettingsScreen() {
         <View className="flex-1 px-4 pb-8">
           <SettingsContainer title="settings.generale">
             <LanguageItem />
-            {/* <ThemeItem /> */}
+            <ThemeItem />
           </SettingsContainer>
+
+          <GameSettingsSection />
 
           <SettingsContainer title="settings.about">
             <SettingsItem

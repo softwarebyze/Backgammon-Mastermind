@@ -46,6 +46,9 @@ jobs:
       - name: Install Maestro
         run: npm run install-maestro
 
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
       - name: Download Test APK
         uses: actions/download-artifact@v4
         with:
@@ -63,9 +66,9 @@ jobs:
 
       - name: Create AVD snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
-          api-level: 29
+          api-level: 34
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
@@ -75,9 +78,9 @@ jobs:
           script: echo "Generated AVD snapshot for caching."
 
       - name: Run backgammon smoke with Maestro
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
-          api-level: 29
+          api-level: 34
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
@@ -85,10 +88,9 @@ jobs:
           ram-size: 4096M
           profile: Nexus 6
           script: |
-            adb install "${{ github.workspace }}/android-test.apk"
-            $HOME/.maestro/bin/maestro test .maestro/app/backgammon-smoke.yaml \
-              --env=APP_ID=com.backgammonmastermind.preview \
-              --format junit
+            adb wait-for-device
+            adb install -r "${{ github.workspace }}/android-test.apk"
+            maestro test .maestro/app/backgammon-smoke.yaml -e APP_ID=com.backgammonmastermind.preview --format junit
 
       - name: Upload Maestro logs
         if: always()

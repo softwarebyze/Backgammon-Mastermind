@@ -11,6 +11,7 @@
 name: Expo Doctor (expo)
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -18,10 +19,16 @@ on:
     paths:
       - package.json
       - pnpm-lock.yaml
+      - app.config.ts
+      - .github/workflows/expo-doctor.yml
+      - assets/brand/**
   pull_request:
     paths:
       - package.json
       - pnpm-lock.yaml
+      - app.config.ts
+      - .github/workflows/expo-doctor.yml
+      - assets/brand/**
 
 permissions:
   contents: read
@@ -45,7 +52,18 @@ jobs:
         uses: ./.github/actions/setup-node-pnpm-install
 
       - name: Run prebuild
-        run: pnpm run prebuild
+        run: |
+          # app-icon-badge + Android icon generation can intermittently fail with
+          # "Could not find MIME for Buffer <null>" on a cold CI checkout.
+          for attempt in 1 2 3; do
+            rm -rf ios android
+            if pnpm run prebuild; then
+              exit 0
+            fi
+            echo "::warning::prebuild attempt ${attempt} failed; retrying..."
+            sleep 5
+          done
+          exit 1
 
       - name: 🚑 Run Doctor Checks
         run: |

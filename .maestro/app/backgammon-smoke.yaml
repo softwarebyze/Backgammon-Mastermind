@@ -3,22 +3,22 @@ tags:
   - smoke
   - pull-request
 ---
-- launchApp
-- runFlow:
-    when:
-      visible: BackgammonMastermind
-    commands:
-      - tapOn: BackgammonMastermind
+- launchApp:
+    clearState: true
 - extendedWaitUntil:
-    visible: Play against the computer
+    visible: vs Computer
+    timeout: 90000
+- takeScreenshot: 01-home-loaded
+- tapOn:
+    text: vs Computer
+- extendedWaitUntil:
+    visible: Roll Dice
     timeout: 30000
-- tapOn: Play against the computer
-- extendedWaitUntil:
-    visible: Roll dice
-    timeout: 15000
-- assertVisible: Roll dice
-- tapOn: Roll dice
+- takeScreenshot: 02-game-board
+- tapOn: Roll Dice
 - extendedWaitUntil:
     visible: Tap one of your checkers
-    timeout: 10000
+    timeout: 15000
+- takeScreenshot: 03-after-roll-dice
 - assertVisible: Point 1
+- takeScreenshot: 04-smoke-complete

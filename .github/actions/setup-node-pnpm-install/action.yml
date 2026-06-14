@@ -21,8 +21,12 @@ runs:
         run_install: false
     - uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: 22
         cache: pnpm
+
+    - name: Ensure .env exists for tooling
+      run: test -f .env || cp .env.example .env
+      shell: bash
 
     - name: 📦 Install Project Dependencies
       run: pnpm install --frozen-lockfile

@@ -1,5 +1,5 @@
-# Generates a debug APK for Maestro E2E (faster than release; no signing overhead).
-# Output: ./android-test.apk (also at android/app/build/outputs/apk/debug/app-debug.apk)
+# Generates a debug APK for Maestro E2E (embedded JS bundle via debuggableVariants=[]).
+# Output: ./android-test.apk (from android/app/build/outputs/apk/debug/app-debug.apk)
 
 name: 'Setup JDK + GRADLE + Generate APK'
 description: Prebuild native project and assemble a debug APK for E2E
@@ -15,15 +15,29 @@ runs:
     - name: Set Up JDK
       uses: actions/setup-java@v4
       with:
-        distribution: zulu
+        distribution: temurin
         java-version: '17'
+        cache: gradle
 
     - name: Generate brand assets
       run: pnpm brand:generate
       shell: bash
 
-    - name: Prebuild native project
-      run: pnpm prebuild:${{ inputs.APP_ENV }}
+    - name: Prebuild native project (E2E — no expo-dev-client)
+      run: |
+        # Dev client shows a launcher that blocks Maestro without Metro; omit it for CI APKs.
+        pnpm remove expo-dev-client
+        # app-icon-badge + Android icon generation can intermittently fail with
+        # "Could not find MIME for Buffer <null>" on a cold CI checkout.
+        for attempt in 1 2 3; do
+          rm -rf ios android
+          if pnpm prebuild:${{ inputs.APP_ENV }}; then
+            exit 0
+          fi
+          echo "::warning::prebuild attempt ${attempt} failed; retrying..."
+          sleep 5
+        done
+        exit 1
       shell: bash
       env:
         EXPO_NO_DOTENV: '1'
@@ -31,25 +45,34 @@ runs:
         CI: 'true'
 
     - name: Tune Gradle for CI
-      run: |
-        cat >> android/gradle.properties <<'EOF'
-        org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=512m -XX:+UseParallelGC -Dfile.encoding=UTF-8
-        org.gradle.daemon=false
-        org.gradle.parallel=true
-        org.gradle.caching=true
-        EOF
+      run: bash .github/scripts/tune-android-gradle-for-ci.sh android/gradle.properties
       shell: bash
 
-    - name: Setup Gradle cache
-      uses: gradle/gradle-build-action@v2
-      with:
-        build-root-directory: android
-
-    - name: Build debug test APK
+    - name: Patch app Gradle for CI (RN path + embedded JS bundle)
       run: |
-        cd android
+        APP_GRADLE=android/app/build.gradle
+        if ! grep -q 'REACT_NATIVE_NODE_MODULES_DIR' "$APP_GRADLE"; then
+          sed -i '/^react {/i ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native")\n' "$APP_GRADLE"
+        fi
+        # Embed the JS bundle in debug APK so Maestro can run without Metro (expo-dev-client).
+        if ! grep -q 'debuggableVariants = \[\]' "$APP_GRADLE"; then
+          sed -i '/bundleCommand = "export:embed"/a\    debuggableVariants = []' "$APP_GRADLE"
+        fi
+      shell: bash
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: wrapper
+        cache-read-only: false
+
+    - name: Build debug test APK (embedded JS bundle)
+      working-directory: android
+      run: |
         chmod +x ./gradlew
-        ./gradlew assembleDebug --no-daemon --build-cache
-        cd ..
-        cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
+        ./gradlew assembleDebug --no-daemon --build-cache --stacktrace
+      shell: bash
+
+    - name: Copy test APK to workspace root
+      run: cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
       shell: bash

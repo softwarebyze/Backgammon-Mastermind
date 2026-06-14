@@ -14,20 +14,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  generate-and-test-apk:
+  maestro-cloud-configured:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')
-    name: Maestro Cloud smoke (backgammon)
     runs-on: ubuntu-latest
-
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
     steps:
-      - name: Check for MAESTRO_CLOUD_API_KEY
+      - id: check
         run: |
-          if [ -z "${{ secrets.MAESTRO_CLOUD_API_KEY }}" ]; then
-            echo "Add MAESTRO_CLOUD_API_KEY to Settings → Secrets → Actions"
-            echo "https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret"
-            exit 1
+          if [ -n "${{ secrets.MAESTRO_CLOUD_API_KEY }}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::MAESTRO_CLOUD_API_KEY is not set — skipping Maestro Cloud (use the GitHub emulator workflow instead)."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
           fi
 
+  generate-and-test-apk:
+    needs: maestro-cloud-configured
+    if: needs.maestro-cloud-configured.outputs.enabled == 'true'
+    name: Maestro Cloud smoke (backgammon)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -54,6 +63,7 @@ jobs:
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           app-file: ./android-test.apk
+          workspace: .maestro
           include-tags: smoke
           env: |
             APP_ID=com.backgammonmastermind.preview
@@ -70,6 +80,7 @@ jobs:
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           app-file: ./android-test.apk
+          workspace: .maestro
           include-tags: smoke
           env: |
             APP_ID=com.backgammonmastermind.preview
@@ -85,6 +96,7 @@ jobs:
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           app-file: ./android-test.apk
+          workspace: .maestro
           include-tags: smoke
           env: |
             APP_ID=com.backgammonmastermind.preview

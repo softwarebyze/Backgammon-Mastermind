@@ -1,0 +1,47 @@
+name: Maestro E2E visual report
+description: Publish JUnit results, job summary screenshots, PR comment, and visual artifact bundle
+
+inputs:
+  maestro-output-dir:
+    description: Directory passed to maestro --test-output-dir
+    required: false
+    default: ${{ github.workspace }}/.maestro-ci-output
+  junit-report:
+    description: Path to JUnit XML from maestro --output
+    required: false
+    default: ${{ github.workspace }}/report.xml
+
+runs:
+  using: composite
+  steps:
+    - name: Build visual report (summary + PR comment + bundle)
+      shell: bash
+      env:
+        MAESTRO_OUTPUT_DIR: ${{ inputs.maestro-output-dir }}
+        MAESTRO_JUNIT_REPORT: ${{ inputs.junit-report }}
+      run: bash .github/scripts/maestro-post-e2e-report.sh
+
+    - name: Publish JUnit to PR checks
+      if: always() && inputs.junit-report != ''
+      uses: dorny/test-reporter@v1
+      with:
+        name: Maestro Backgammon Smoke
+        path: ${{ inputs.junit-report }}
+        reporter: java-junit
+        fail-on-error: 'false'
+
+    - name: Upload visual report bundle
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: maestro-visual-report
+        path: maestro-visual-bundle/**
+        if-no-files-found: warn
+        retention-days: 14
+
+    - name: Comment on PR with visual report link
+      if: always() && github.event_name == 'pull_request'
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        header: maestro-e2e-visual
+        path: maestro-pr-comment.md

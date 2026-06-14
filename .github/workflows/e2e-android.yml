@@ -1,5 +1,6 @@
 # GitHub-hosted emulator E2E — label android-test-github or manual dispatch.
 # No Maestro Cloud account required (slower: emulator boot + Gradle APK build).
+# Visual report: workflow run Summary (inline screenshots) + PR comment + maestro-visual-report artifact.
 
 name: E2E Tests Android (Maestro + Github Action)
 
@@ -13,11 +14,17 @@ concurrency:
   group: e2e-github-emulator-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   generate-test-apk:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
     name: Generate Test APK (Gradle)
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -38,12 +45,14 @@ jobs:
         with:
           name: test-apk
           path: ./android-test.apk
+          if-no-files-found: error
 
   test-android:
     if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-github')
     name: Run backgammon smoke (emulator)
     needs: generate-test-apk
     runs-on: ubuntu-latest
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -54,16 +63,29 @@ jobs:
       - name: Install Maestro
         run: npm run install-maestro
 
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
       - name: Download Test APK
         uses: actions/download-artifact@v4
         with:
           name: test-apk
           path: ${{ github.workspace }}
 
+      - name: Enable KVM (hardware emulator acceleration)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Run backgammon smoke with Maestro
-        uses: reactivecircus/android-emulator-runner@v2
+        id: maestro_emulator
+        uses: reactivecircus/android-emulator-runner@v2.37.0
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: '1'
         with:
-          api-level: 30
+          working-directory: ${{ github.workspace }}
+          api-level: 34
           target: google_apis
           arch: x86_64
           emulator-boot-timeout: 600
@@ -72,18 +94,25 @@ jobs:
           disable-animations: true
           cores: 2
           ram-size: 4096M
-          script: |
-            adb install "${{ github.workspace }}/android-test.apk"
-            $HOME/.maestro/bin/maestro test .maestro/app/backgammon-smoke.yaml \
-              --env=APP_ID=com.backgammonmastermind.preview \
-              --format junit
+          script: bash .github/scripts/run-maestro-e2e-emulator.sh "${{ github.workspace }}" com.backgammonmastermind.preview
 
-      - name: Upload Maestro logs
+      - name: Publish visual Maestro report
+        if: always()
+        uses: ./.github/actions/maestro-e2e-report
+        with:
+          maestro-output-dir: ${{ github.workspace }}/.maestro-ci-output
+          junit-report: ${{ github.workspace }}/report.xml
+
+      - name: Upload Maestro logs (legacy path)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: e2e-test-logs
-          path: ~/.maestro/tests/**/*
+          path: |
+            .maestro-ci-output/**
+            ~/.maestro/tests/**/*
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Upload JUnit report
         if: always()
@@ -91,3 +120,5 @@ jobs:
         with:
           name: e2e_android_report
           path: report.xml
+          if-no-files-found: ignore
+          retention-days: 14
