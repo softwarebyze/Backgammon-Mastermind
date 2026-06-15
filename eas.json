@@ -67,7 +67,7 @@
   "submit": {
     "preview": {
       "ios": {
-        "ascAppId": "6780139011",
+        "bundleIdentifier": "com.backgammonmastermind.preview",
         "appleTeamId": "75M38Z9JBF",
         "metadataPath": "./store.config.json"
       },
@@ -75,7 +75,7 @@
     },
     "production": {
       "ios": {
-        "ascAppId": "6780139011",
+        "bundleIdentifier": "com.backgammonmastermind",
         "appleTeamId": "75M38Z9JBF",
         "metadataPath": "./store.config.json"
       },

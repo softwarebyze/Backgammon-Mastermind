@@ -41,13 +41,15 @@ pnpm metadata:push    # push store.config.json to App Store Connect
 
 If `metadata:push` fails on version info, create version **0.1.0** in App Store Connect (App → iOS App → **+** Version) so it matches your binary and `store.config.json`.
 
-**Submit the right build:** `pnpm submit:preview:ios` uses `--latest`, which may pick a **development** build (`com.backgammonmastermind.development`). For TestFlight/store listing, build with `pnpm build:preview:ios` first, or submit a specific build:
+**Submit the right build to the right ASC app:** Preview IPAs use `com.backgammonmastermind.preview`. The development ASC app (`6780139011`, bundle `com.backgammonmastermind.development`) will **never** show a preview build — check bundle ID if the Build section is empty.
+
+`eas submit` reads bundle ID from **local** env by default (`.env` → `development`). Always pass preview env when submitting preview builds:
 
 ```sh
-eas submit --platform ios --profile preview --id <preview-build-id>
+EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --id <preview-build-id>
 ```
 
-ASC App ID **6780139011** is wired in `eas.json` (`ascAppId`) for this development-bundle app.
+`eas.json` submit profiles set `bundleIdentifier` per profile so EAS targets the correct App Store Connect app.
 
 `eas.json` wires `metadataPath` for `preview` and `production` submit profiles.
 
