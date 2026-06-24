@@ -11,16 +11,26 @@ import {
   getLegalMoves,
   rollDice,
 } from '@/lib/game';
-import { clearActiveGame, loadActiveGame, saveActiveGame } from '@/lib/game/persistence';
+import {
+  clearActiveGame,
+  isResumableGame,
+  loadActiveGame,
+  saveActiveGame,
+} from '@/lib/game/persistence';
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState | null>(null);
   const clearAITimeout = useComputerOpponent(state, setState);
 
   useEffect(() => {
-    if (state) {
-      saveActiveGame(state);
+    if (!state) {
+      return;
     }
+    if (!isResumableGame(state)) {
+      clearActiveGame();
+      return;
+    }
+    saveActiveGame(state);
   }, [state]);
 
   const startGame = useCallback((mode: GameMode) => {
@@ -31,7 +41,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const resumeGame = useCallback(() => {
     const saved = loadActiveGame();
-    if (!saved || saved.phase === 'game-over') {
+    if (!isResumableGame(saved)) {
       return false;
     }
     clearAITimeout();
