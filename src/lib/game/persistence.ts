@@ -22,3 +22,9 @@ export function clearActiveGame(): void {
 export function hasSavedGame(): boolean {
   return isResumableGame(loadActiveGame());
 }
+
+/** In-progress save from MMKV, or null. Used on cold launch and Resume. */
+export function loadRestorableGame(): GameState | null {
+  const saved = loadActiveGame();
+  return isResumableGame(saved) ? saved : null;
+}
