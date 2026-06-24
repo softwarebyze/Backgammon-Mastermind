@@ -17,8 +17,8 @@ tags:
 - takeScreenshot: 02-game-board
 - tapOn: Roll Dice
 - extendedWaitUntil:
-    visible: Move your white checkers
-    timeout: 15000
-- takeScreenshot: 03-after-roll-dice
+    notVisible: Roll Dice
+    timeout: 20000
+- takeScreenshot: 03-after-opening
 - assertVisible: Point 1
 - takeScreenshot: 04-smoke-complete

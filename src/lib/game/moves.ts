@@ -233,6 +233,48 @@ export function rollDice(): [number, number] {
   ];
 }
 
+export function rollOpeningDie(): number {
+  return Math.floor(Math.random() * 6) + 1;
+}
+
+/**
+ * Record one opening die. When both players have rolled, higher die wins first turn
+ * using both values; equal dice re-roll (opening never starts with doubles).
+ */
+export function applyOpeningDieRoll(state: GameState, die: number): GameState {
+  const player = state.currentPlayer;
+  const openingRolls = { ...state.openingRolls, [player]: die };
+  const other = opponent(player);
+
+  if (openingRolls[other] === null) {
+    return {
+      ...cloneState(state),
+      openingRolls,
+      currentPlayer: other,
+    };
+  }
+
+  const whiteDie = openingRolls.white!;
+  const blackDie = openingRolls.black!;
+  if (whiteDie === blackDie) {
+    return {
+      ...cloneState(state),
+      openingRolls: { white: null, black: null },
+      currentPlayer: 'white',
+      phase: 'opening-roll',
+    };
+  }
+
+  const winner: Player = whiteDie > blackDie ? 'white' : 'black';
+  const next = {
+    ...cloneState(state),
+    currentPlayer: winner,
+    openingRolls: { white: null, black: null },
+    phase: 'rolling' as const,
+  };
+  return applyDiceRoll(next, [whiteDie, blackDie]);
+}
+
 /**
  * Apply a dice roll to the state.
  * Doubles grant 4 moves with that value.
