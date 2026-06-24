@@ -4,8 +4,10 @@ import { useEffect, useRef } from 'react';
 import {
   applyDiceRoll,
   applyMove,
+  applyOpeningDieRoll,
   getAIMove,
   rollDice,
+  rollOpeningDie,
 } from '@/lib/game';
 
 export function useComputerOpponent(
@@ -31,7 +33,7 @@ export function useComputerOpponent(
     if (state.phase === 'game-over')
       return clearAITimeout;
 
-    const delay = state.phase === 'rolling' ? 1200 : state.phase === 'moving' ? 700 : 0;
+    const delay = state.phase === 'opening-roll' || state.phase === 'rolling' ? 1200 : state.phase === 'moving' ? 700 : 0;
     if (delay === 0)
       return clearAITimeout;
 
@@ -40,7 +42,10 @@ export function useComputerOpponent(
         if (!prev || prev.currentPlayer !== 'black')
           return prev;
 
-        if (prev.phase === 'rolling') {
+        if (prev.phase === 'opening-roll' || prev.phase === 'rolling') {
+          if (prev.phase === 'opening-roll') {
+            return applyOpeningDieRoll(prev, rollOpeningDie());
+          }
           const dice = rollDice();
           return applyDiceRoll(prev, dice);
         }

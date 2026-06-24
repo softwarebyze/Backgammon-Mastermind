@@ -7,11 +7,41 @@ import {
   allCheckersInHome,
   applyDiceRoll,
   applyMove,
+  applyOpeningDieRoll,
   calculatePipCount,
   getLegalMoves,
   hasAnyLegalMove,
   rollDice,
 } from './moves';
+
+describe('applyOpeningDieRoll', () => {
+  it('passes the opening die to the opponent', () => {
+    let state = createInitialState('vs-computer');
+    state = applyOpeningDieRoll(state, 4);
+    expect(state.phase).toBe('opening-roll');
+    expect(state.currentPlayer).toBe('black');
+    expect(state.openingRolls).toEqual({ white: 4, black: null });
+  });
+
+  it('starts the first turn with both opening dice (TestFlight #2)', () => {
+    let state = createInitialState('vs-computer');
+    state = applyOpeningDieRoll(state, 5);
+    state = applyOpeningDieRoll(state, 3);
+    expect(state.phase).toBe('moving');
+    expect(state.currentPlayer).toBe('white');
+    expect(state.dice).toEqual([5, 3]);
+    expect(state.remainingDice).toEqual([5, 3]);
+  });
+
+  it('re-rolls when opening dice tie — never opens on doubles', () => {
+    let state = createInitialState('vs-human');
+    state = applyOpeningDieRoll(state, 4);
+    state = applyOpeningDieRoll(state, 4);
+    expect(state.phase).toBe('opening-roll');
+    expect(state.openingRolls).toEqual({ white: null, black: null });
+    expect(state.currentPlayer).toBe('white');
+  });
+});
 
 describe('createInitialPoints', () => {
   it('sets the standard 2-5-3-5 starting layout', () => {

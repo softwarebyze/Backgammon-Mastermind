@@ -9,11 +9,12 @@ describe('turn-display', () => {
     expect(turn.colorLabel).toBe('White');
     expect(turn.headline).toBe('Your turn');
     expect(turn.isHumanTurn).toBe(true);
-    expect(getActionCaption(state, turn)).toMatch(/WHITE/);
+    expect(getActionCaption(state, turn)).toMatch(/Roll for opening/);
   });
 
   it('labels computer turn as black waiting state', () => {
     const state = createInitialState('vs-computer');
+    state.phase = 'rolling';
     state.currentPlayer = 'black';
     const turn = getTurnDisplay(state);
     expect(turn.colorLabel).toBe('Black');

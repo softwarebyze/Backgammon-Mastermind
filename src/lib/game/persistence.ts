@@ -12,7 +12,15 @@ export function saveActiveGame(state: GameState): void {
 }
 
 export function loadActiveGame(): GameState | null {
-  return getItem<GameState>(ACTIVE_GAME_KEY);
+  const saved = getItem<GameState>(ACTIVE_GAME_KEY);
+  if (!saved) {
+    return null;
+  }
+  if (saved.openingRolls) {
+    return saved;
+  }
+  // ponytail: legacy saves before opening-roll field shipped
+  return { ...saved, openingRolls: { white: null, black: null } };
 }
 
 export function clearActiveGame(): void {

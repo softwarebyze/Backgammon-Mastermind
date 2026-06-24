@@ -28,6 +28,19 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
     };
   }
 
+  if (state.phase === 'opening-roll') {
+    const isComputerTurn
+      = state.mode === 'vs-computer' && state.currentPlayer === 'black';
+    const isHumanTurn = !isComputerTurn;
+    return {
+      player: state.currentPlayer,
+      colorLabel,
+      headline: isHumanTurn ? humanHeadline(state.mode, state.currentPlayer) : opponentHeadline(state.mode),
+      isHumanTurn,
+      isWaiting: !isHumanTurn,
+    };
+  }
+
   if (isComputerTurn) {
     return {
       player: 'black',
@@ -62,6 +75,14 @@ export function getActionCaption(
   state: GameState,
   turn: TurnDisplay,
 ): string {
+  if (state.phase === 'opening-roll' && turn.isHumanTurn) {
+    return `Roll for opening — you play ${turn.colorLabel.toUpperCase()}`;
+  }
+  if (state.phase === 'opening-roll' && turn.isWaiting) {
+    return turn.player === 'black'
+      ? 'Black is rolling for opening…'
+      : 'Opponent is rolling for opening…';
+  }
   if (state.phase === 'rolling' && turn.isHumanTurn) {
     return `Roll dice — you play ${turn.colorLabel.toUpperCase()}`;
   }

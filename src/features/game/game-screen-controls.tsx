@@ -82,6 +82,23 @@ function ActionControl({
     );
   }
 
+  if (state.phase === 'opening-roll' && isHumanTurn) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Roll for opening"
+        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        onPress={onRoll}
+      >
+        <Text style={styles.primaryBtnText}>Roll Dice</Text>
+      </Pressable>
+    );
+  }
+
+  if (state.phase === 'opening-roll' && isComputerTurn) {
+    return <StatusPlaceholder text="Rolling for opening…" />;
+  }
+
   if (state.phase === 'rolling' && isHumanTurn) {
     return (
       <Pressable
