@@ -1,7 +1,10 @@
+import type { GameMode, GameState } from '@/lib/game';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useCallback } from 'react';
+
 import {
+  Alert,
   Image,
   Platform,
   Pressable,
@@ -10,32 +13,68 @@ import {
   Text,
   View,
 } from 'react-native';
-
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
-import { hasSavedGame } from '@/lib/game/persistence';
+import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
-export function HomeScreen() {
-  const { startGame, resumeGame } = useGame();
-  const canResume = hasSavedGame();
+function startGameFromHome(
+  mode: GameMode,
+  state: GameState | null,
+  startGame: (mode: GameMode) => void,
+) {
+  hapticLight();
+  if (isResumableGame(state)) {
+    Alert.alert(
+      'Game in progress',
+      'Continue your current game or start a new one?',
+      [
+        { text: 'Continue', onPress: () => router.push('/game') },
+        {
+          text: 'New game',
+          style: 'destructive',
+          onPress: () => {
+            startGame(mode);
+            router.push('/game');
+          },
+        },
+        { text: 'Cancel', style: 'cancel' },
+      ],
+    );
+    return;
+  }
+  startGame(mode);
+  router.push('/game');
+}
 
-  const handleStart = useCallback((mode: 'vs-computer' | 'vs-human') => {
-    hapticLight();
-    startGame(mode);
+function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) {
+  hapticLight();
+  if (isResumableGame(state)) {
     router.push('/game');
-  }, [startGame]);
+    return;
+  }
+  if (resumeGame()) {
+    router.push('/game');
+  }
+}
 
-  const handleResume = useCallback(() => {
-    hapticLight();
-    if (resumeGame()) {
-      router.push('/game');
-    }
-  }, [resumeGame]);
+export function HomeScreen() {
+  const { state, startGame, resumeGame } = useGame();
+  const canResume = canContinueSavedGame(state);
+
+  const handleStart = useCallback(
+    (mode: GameMode) => startGameFromHome(mode, state, startGame),
+    [startGame, state],
+  );
+
+  const handleResume = useCallback(
+    () => resumeGameFromHome(state, resumeGame),
+    [resumeGame, state],
+  );
 
   return (
     <>
