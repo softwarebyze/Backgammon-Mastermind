@@ -33,7 +33,7 @@ export function useComputerOpponent(
     if (state.phase === 'game-over')
       return clearAITimeout;
 
-    const delay = state.phase === 'opening-roll' || state.phase === 'rolling' ? 1200 : state.phase === 'moving' ? 700 : 0;
+    const delay = state.phase === 'opening-roll' || state.phase === 'rolling' ? 1200 : state.phase === 'moving' ? 1800 : 0;
     if (delay === 0)
       return clearAITimeout;
 

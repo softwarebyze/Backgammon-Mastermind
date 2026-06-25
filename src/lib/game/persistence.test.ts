@@ -1,7 +1,7 @@
 import { getItem } from '@/lib/storage';
 import { createInitialState } from './constants';
 import { applyDiceRoll } from './moves';
-import { canContinueSavedGame, isResumableGame, loadRestorableGame } from './persistence';
+import { canContinueSavedGame, hasSavedGame, isResumableGame, loadRestorableGame } from './persistence';
 
 jest.mock('@/lib/storage', () => ({
   getItem: jest.fn(),
@@ -27,6 +27,21 @@ describe('isResumableGame', () => {
       winner: 'white' as const,
     };
     expect(isResumableGame(finished)).toBe(false);
+  });
+});
+
+describe('hasSavedGame', () => {
+  beforeEach(() => {
+    mockedGetItem.mockReset();
+  });
+
+  it('returns false when MMKV only has a finished game (TestFlight #1)', () => {
+    mockedGetItem.mockReturnValue({
+      ...createInitialState('vs-computer'),
+      phase: 'game-over',
+      winner: 'white',
+    });
+    expect(hasSavedGame()).toBe(false);
   });
 });
 
