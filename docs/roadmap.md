@@ -47,7 +47,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | **Opening roll** — correct first player | #37 | Done |
 | **Back navigation** — game state preserved | #36 | Done |
 | **Game logic unit tests** (`moves.ts`, pip count, bear-off, animation layout) | various | Done |
-| **Dice roll shuffle animation** | #40 | In review (v0.1.2 candidate) |
+| **Dice roll shuffle animation** | #40 | Done |
 | **Landscape** layout pass + screenshot | Planned | |
 
 ---
