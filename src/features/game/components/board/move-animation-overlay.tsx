@@ -1,5 +1,6 @@
 /**
  * Floating-proxy checker slide (Reanimated `withTiming` + completion callback).
+ * State commits when the slide finishes — no end fade (that caused a visible flicker).
  * @see https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/customizing-animation
  * @see https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/glossary#animation-callback
  */
@@ -7,20 +8,17 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import { useLayoutEffect, useRef } from 'react';
 import Animated, {
+  cancelAnimation,
   Easing,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { getCheckerAnchor } from '@/features/game/board-point-layout';
 
+import { getCheckerAnchor } from '@/features/game/board-point-layout';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
-import {
-  CHECKER_MOVE_FADE_MS,
-  CHECKER_MOVE_SLIDE_MS,
-  overlayTokenSize,
-} from '@/features/game/move-animation';
+import { CHECKER_MOVE_DURATION_MS, overlayTokenSize } from '@/features/game/move-animation';
 
 type Props = {
   animation: MoveAnimationFrame;
@@ -29,7 +27,6 @@ type Props = {
 
 export function MoveAnimationOverlay({ animation, dimensions }: Props) {
   const progress = useSharedValue(0);
-  const opacity = useSharedValue(1);
   const onFinishRef = useRef(animation.onFinish);
   onFinishRef.current = animation.onFinish;
 
@@ -52,32 +49,29 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
   const animationKey = `${animation.from}-${animation.to}-${animation.player}`;
 
   useLayoutEffect(() => {
-    opacity.value = 1;
     progress.value = 0;
     progress.value = withTiming(
       1,
       {
-        duration: CHECKER_MOVE_SLIDE_MS,
+        duration: CHECKER_MOVE_DURATION_MS,
         easing: Easing.out(Easing.cubic),
       },
       (finished) => {
-        if (!finished) {
-          return;
+        if (finished) {
+          runOnJS(onFinishRef.current)();
         }
-        opacity.value = withTiming(0, { duration: CHECKER_MOVE_FADE_MS }, (done) => {
-          if (done) {
-            runOnJS(onFinishRef.current)();
-          }
-        });
       },
     );
-  }, [animationKey, opacity, progress]);
+
+    return () => {
+      cancelAnimation(progress);
+    };
+  }, [animationKey, progress]);
 
   const style = useAnimatedStyle(() => ({
     position: 'absolute' as const,
     left: from.x - half + (to.x - from.x) * progress.value,
     top: from.y - half + (to.y - from.y) * progress.value,
-    opacity: opacity.value,
     zIndex: 100,
     elevation: 100,
   }));

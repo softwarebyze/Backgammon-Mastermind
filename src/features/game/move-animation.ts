@@ -2,10 +2,8 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import type { BoardPoint, GameState, Move, Player } from '@/lib/game/types';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
-/** Slide duration before the overlay fades out at the destination. */
-export const CHECKER_MOVE_SLIDE_MS = 340;
-/** Short fade so the committed board checker replaces the proxy without a double-image. */
-export const CHECKER_MOVE_FADE_MS = 50;
+/** Duration of the checker slide animation. */
+export const CHECKER_MOVE_DURATION_MS = 360;
 
 export type MoveAnimationFrame = {
   from: number;
