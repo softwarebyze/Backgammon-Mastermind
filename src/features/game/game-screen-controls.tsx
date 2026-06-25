@@ -87,6 +87,7 @@ function ActionControl({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Roll for opening"
+        testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
       >
@@ -104,6 +105,7 @@ function ActionControl({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Roll dice"
+        testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
       >

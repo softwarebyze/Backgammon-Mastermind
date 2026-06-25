@@ -2,11 +2,11 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import type { Player } from '@/lib/game/types';
 
 /** Matches BearOffArea token sizing — keep in sync with animation end scale. */
-export const BEAR_OFF_TOKEN_SCALE = 0.78;
+const BEAR_OFF_TOKEN_SCALE = 0.78;
 export const BEAR_OFF_PADDING = 4;
 export const BEAR_OFF_LABEL_HEIGHT = 10;
 /** Minimum vertical step between borne-off checkers (allows overlap). */
-export const BEAR_OFF_MIN_STEP = 4;
+const BEAR_OFF_MIN_STEP = 4;
 
 export function bearOffTokenSize(checkerSize: number): number {
   return Math.round(checkerSize * BEAR_OFF_TOKEN_SCALE);
@@ -34,7 +34,7 @@ export function maxBearOffVisibleSlots(halfHeight: number, tokenSize: number): n
 }
 
 /** 0 = bottom of tray, higher indices stack toward the center groove. */
-export function bearOffSlotIndex(stackCount: number, halfHeight: number, tokenSize: number): number {
+function bearOffSlotIndex(stackCount: number, halfHeight: number, tokenSize: number): number {
   const visible = Math.min(stackCount, maxBearOffVisibleSlots(halfHeight, tokenSize));
   return visible - 1;
 }
