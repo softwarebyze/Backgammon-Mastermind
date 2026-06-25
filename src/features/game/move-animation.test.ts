@@ -45,6 +45,39 @@ describe('buildMoveAnimationFrame', () => {
 
     expect(frame.sourceDisplayCount).toBe(1);
     expect(displayBarCountDuringAnimation('white', 2, frame)).toBe(1);
+    expect(frame.capture).toBeUndefined();
+  });
+
+  it('adds a parallel capture slide when a blot is hit', () => {
+    const state = createInitialState('vs-human');
+    const hitPoint = 5;
+    const snapshot = {
+      ...state,
+      phase: 'moving' as const,
+      currentPlayer: 'white' as const,
+      points: state.points.map((point, index) =>
+        index === hitPoint ? { player: 'black' as const, count: 1 } : point,
+      ),
+      bar: { white: 0, black: 0 },
+    };
+
+    const frame = buildMoveAnimationFrame(
+      snapshot,
+      { from: 8, to: hitPoint, dieIndex: 0 },
+      () => {},
+    );
+
+    expect(frame.capture).toEqual({
+      from: hitPoint,
+      to: BAR_POINT,
+      player: 'black',
+      sourceStackCount: 1,
+      destStackCount: 1,
+    });
+    expect(displayPointDuringAnimation(hitPoint, snapshot.points[hitPoint], frame)).toEqual({
+      player: null,
+      count: 0,
+    });
   });
 });
 

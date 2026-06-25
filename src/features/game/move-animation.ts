@@ -1,9 +1,18 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { BoardPoint, GameState, Move, Player } from '@/lib/game/types';
+import { opponent } from '@/lib/game';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
 /** Duration of the checker slide animation. */
 export const CHECKER_MOVE_DURATION_MS = 360;
+
+export type CheckerSlide = {
+  from: number;
+  to: number;
+  player: Player;
+  sourceStackCount: number;
+  destStackCount: number;
+};
 
 export type MoveAnimationFrame = {
   from: number;
@@ -15,6 +24,8 @@ export type MoveAnimationFrame = {
   sourceDisplayCount: number;
   /** Stack height at destination when the overlay lands. */
   destStackCount: number;
+  /** Opponent blot sent to the bar on a hit — animates in parallel with the mover. */
+  capture?: CheckerSlide;
   onFinish: () => void;
 };
 
@@ -45,6 +56,29 @@ export function destStackCount(snapshot: GameState, to: number, player: Player):
   return 1;
 }
 
+export function isBlotHit(snapshot: GameState, move: Move): boolean {
+  if (move.to < 1 || move.to > 24) {
+    return false;
+  }
+  const opp = opponent(snapshot.currentPlayer);
+  const dest = snapshot.points[move.to];
+  return dest.player === opp && dest.count === 1;
+}
+
+function buildCaptureSlide(snapshot: GameState, move: Move): CheckerSlide | undefined {
+  if (!isBlotHit(snapshot, move)) {
+    return undefined;
+  }
+  const opp = opponent(snapshot.currentPlayer);
+  return {
+    from: move.to,
+    to: BAR_POINT,
+    player: opp,
+    sourceStackCount: 1,
+    destStackCount: snapshot.bar[opp] + 1,
+  };
+}
+
 export function buildMoveAnimationFrame(
   snapshot: GameState,
   move: Move,
@@ -59,6 +93,7 @@ export function buildMoveAnimationFrame(
     sourceStackCount: fromCount,
     sourceDisplayCount: Math.max(0, fromCount - 1),
     destStackCount: destStackCount(snapshot, move.to, snapshot.currentPlayer),
+    capture: buildCaptureSlide(snapshot, move),
     onFinish,
   };
 }
@@ -69,14 +104,18 @@ export function displayPointDuringAnimation(
   point: BoardPoint,
   animation: MoveAnimationFrame | null,
 ): BoardPoint {
-  if (!animation || animation.from !== pointIndex) {
-    return point;
+  if (animation?.capture?.from === pointIndex) {
+    return { player: null, count: 0 };
   }
 
-  return {
-    player: animation.sourceDisplayCount > 0 ? animation.player : null,
-    count: animation.sourceDisplayCount,
-  };
+  if (animation?.from === pointIndex) {
+    return {
+      player: animation.sourceDisplayCount > 0 ? animation.player : null,
+      count: animation.sourceDisplayCount,
+    };
+  }
+
+  return point;
 }
 
 export function displayBarCountDuringAnimation(
@@ -98,4 +137,9 @@ export function isBoardHighlightActive(animation: MoveAnimationFrame | null): bo
 /** Token size for the sliding proxy — matches BarArea / BearOffArea sizing. */
 export function overlayTokenSize(dims: BoardDimensions, fromPoint: number): number {
   return checkerRenderSize(dims.checkerSize, fromPoint);
+}
+
+export function animationKey(frame: MoveAnimationFrame): string {
+  const capture = frame.capture ? `-cap-${frame.capture.player}` : '';
+  return `${frame.from}-${frame.to}-${frame.player}${capture}`;
 }

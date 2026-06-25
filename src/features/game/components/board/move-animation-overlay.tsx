@@ -1,3 +1,4 @@
+import type { SharedValue } from 'react-native-reanimated';
 /**
  * Floating-proxy checker slide (Reanimated `withTiming` + completion callback).
  * State commits when the slide finishes — no end fade (that caused a visible flicker).
@@ -5,7 +6,7 @@
  * @see https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/glossary#animation-callback
  */
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
-import type { MoveAnimationFrame } from '@/features/game/move-animation';
+import type { CheckerSlide, MoveAnimationFrame } from '@/features/game/move-animation';
 import { useLayoutEffect, useRef } from 'react';
 import Animated, {
   cancelAnimation,
@@ -18,7 +19,50 @@ import Animated, {
 
 import { getCheckerAnchor } from '@/features/game/board-point-layout';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
-import { CHECKER_MOVE_DURATION_MS, overlayTokenSize } from '@/features/game/move-animation';
+import {
+  animationKey,
+  CHECKER_MOVE_DURATION_MS,
+  overlayTokenSize,
+} from '@/features/game/move-animation';
+
+type SlideLayerProps = {
+  slide: CheckerSlide;
+  progress: SharedValue<number>;
+  dimensions: BoardDimensions;
+  zIndex: number;
+};
+
+function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerProps) {
+  const tokenSize = overlayTokenSize(dimensions, slide.from);
+  const half = tokenSize / 2;
+
+  const from = getCheckerAnchor({
+    pointIndex: slide.from,
+    dims: dimensions,
+    stackCount: slide.sourceStackCount,
+    player: slide.player,
+  });
+  const to = getCheckerAnchor({
+    pointIndex: slide.to,
+    dims: dimensions,
+    stackCount: slide.destStackCount,
+    player: slide.player,
+  });
+
+  const style = useAnimatedStyle(() => ({
+    position: 'absolute' as const,
+    left: from.x - half + (to.x - from.x) * progress.value,
+    top: from.y - half + (to.y - from.y) * progress.value,
+    zIndex,
+    elevation: zIndex,
+  }));
+
+  return (
+    <Animated.View style={style} pointerEvents="none">
+      <CheckerToken flat player={slide.player} size={tokenSize} />
+    </Animated.View>
+  );
+}
 
 type Props = {
   animation: MoveAnimationFrame;
@@ -30,23 +74,15 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
   const onFinishRef = useRef(animation.onFinish);
   onFinishRef.current = animation.onFinish;
 
-  const tokenSize = overlayTokenSize(dimensions, animation.from);
-  const half = tokenSize / 2;
-
-  const from = getCheckerAnchor({
-    pointIndex: animation.from,
-    dims: dimensions,
-    stackCount: animation.sourceStackCount,
+  const moverSlide: CheckerSlide = {
+    from: animation.from,
+    to: animation.to,
     player: animation.player,
-  });
-  const to = getCheckerAnchor({
-    pointIndex: animation.to,
-    dims: dimensions,
-    stackCount: animation.destStackCount,
-    player: animation.player,
-  });
+    sourceStackCount: animation.sourceStackCount,
+    destStackCount: animation.destStackCount,
+  };
 
-  const animationKey = `${animation.from}-${animation.to}-${animation.player}`;
+  const key = animationKey(animation);
 
   useLayoutEffect(() => {
     progress.value = 0;
@@ -66,19 +102,24 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
     return () => {
       cancelAnimation(progress);
     };
-  }, [animationKey, progress]);
-
-  const style = useAnimatedStyle(() => ({
-    position: 'absolute' as const,
-    left: from.x - half + (to.x - from.x) * progress.value,
-    top: from.y - half + (to.y - from.y) * progress.value,
-    zIndex: 100,
-    elevation: 100,
-  }));
+  }, [key, progress]);
 
   return (
-    <Animated.View style={style} pointerEvents="none">
-      <CheckerToken flat player={animation.player} size={tokenSize} />
-    </Animated.View>
+    <>
+      <CheckerSlideLayer
+        slide={moverSlide}
+        progress={progress}
+        dimensions={dimensions}
+        zIndex={100}
+      />
+      {animation.capture && (
+        <CheckerSlideLayer
+          slide={animation.capture}
+          progress={progress}
+          dimensions={dimensions}
+          zIndex={101}
+        />
+      )}
+    </>
   );
 }
