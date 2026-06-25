@@ -1,4 +1,4 @@
-import type { MoveAnimationFrame } from '@/features/game/use-animated-moves';
+import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameMode, GameState, Move } from '@/lib/game';
 import { createContext } from 'react';
 

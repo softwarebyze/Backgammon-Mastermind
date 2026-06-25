@@ -1,10 +1,13 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
+import { checkerRenderSize } from '@/features/game/move-animation';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
 export type PointAnchor = { x: number; y: number };
 
 const MAX_VISIBLE = 5;
+const BAR_PADDING = 6;
+const BAR_GAP = 2;
 
 function stackStep(dims: BoardDimensions): number {
   return Math.min(dims.checkerSize - 2, (dims.pointHeight - dims.checkerSize) / (MAX_VISIBLE - 1));
@@ -33,6 +36,21 @@ export type CheckerAnchorOptions = {
   player?: Player;
 };
 
+function barCheckerCenterY(
+  dims: BoardDimensions,
+  player: Player,
+  stackIndex: number,
+): number {
+  const tokenSize = checkerRenderSize(dims.checkerSize, BAR_POINT);
+
+  if (player === 'black') {
+    return BAR_PADDING + tokenSize / 2 + stackIndex * (tokenSize + BAR_GAP);
+  }
+
+  const stackBottom = dims.boardHeight - BAR_PADDING;
+  return stackBottom - tokenSize / 2 - stackIndex * (tokenSize + BAR_GAP);
+}
+
 /** Pixel center for the top checker in a stack (board-local coordinates). */
 export function getCheckerAnchor({
   pointIndex,
@@ -46,22 +64,25 @@ export function getCheckerAnchor({
 
   if (pointIndex === BAR_POINT) {
     const x = 6 * colWidth + barWidth / 2;
-    const y = player === 'black'
-      ? checkerSize / 2 + 6
-      : boardHeight - checkerSize / 2 - 6;
-    return { x, y: player === 'black' ? y : y - topOffset * 2 };
+    const y = barCheckerCenterY(dims, player ?? 'white', topOffset);
+    return { x, y };
   }
 
   if (pointIndex === BEAR_OFF) {
+    const halfHeight = (boardHeight - middleHeight) / 2;
+    const y = player === 'black'
+      ? halfHeight / 2
+      : halfHeight + middleHeight + halfHeight / 2;
+
     return {
       x: 12 * colWidth + barWidth + bearOffWidth / 2,
-      y: boardHeight / 2,
+      y,
     };
   }
 
   const mapped = columnForPoint(pointIndex);
   if (!mapped) {
-    return { x: boardWidthCenter(dims), y: boardHeight / 2 };
+    return { x: dims.boardWidth / 2, y: boardHeight / 2 };
   }
 
   const x = mapped.col * colWidth + colWidth / 2 + (mapped.col >= 6 ? barWidth : 0);
@@ -70,8 +91,4 @@ export function getCheckerAnchor({
     : pointHeight + middleHeight + pointHeight - checkerSize / 2 - topOffset * step;
 
   return { x, y };
-}
-
-function boardWidthCenter(dims: BoardDimensions): number {
-  return dims.boardWidth / 2;
 }

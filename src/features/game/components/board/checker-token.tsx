@@ -12,10 +12,12 @@ type Props = {
   showCount?: number;
   /** Subtle ring when move hints are on — top checker only */
   showMoveHint?: boolean;
+  /** Skip drop shadow — used by the move overlay to avoid double-shadow ghosting. */
+  flat?: boolean;
   style?: object;
 };
 
-export function CheckerToken({ player, size, showCount, showMoveHint, style }: Props) {
+export function CheckerToken({ player, size, showCount, showMoveHint, flat, style }: Props) {
   const uid = useId().replace(/:/g, '');
   const bodyId = `checker-body-${uid}`;
   const isWhite = player === 'white';
@@ -29,7 +31,7 @@ export function CheckerToken({ player, size, showCount, showMoveHint, style }: P
     <View
       style={[
         { width: size, height: size },
-        isWhite && {
+        isWhite && !flat && {
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.45,

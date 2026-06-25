@@ -7,7 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GameHeaderActions } from '@/components/navigation/game-header-actions';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
-import { MoveAnimationOverlay } from '@/features/game/components/board/move-animation-overlay';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -75,25 +74,19 @@ export function GameScreen() {
       <View style={styles.boardWrap}>
         <Pressable
           onPress={handleBoardPress}
-          style={[styles.boardContainer, { maxWidth: dimensions.boardWidth }]}
+          style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
         >
-          <View style={{ position: 'relative', width: dimensions.boardWidth, height: dimensions.boardHeight }}>
-            <BoardView
-              state={state}
-              dimensions={dimensions}
-              previewTarget={previewTarget}
-              animatingFrom={moveAnimation?.from ?? null}
-              animatingPlayer={moveAnimation?.player ?? null}
-              onPointPress={handlePointPress}
-              onPointPressIn={handlePointPressIn}
-              onPointPressOut={handlePointPressOut}
-              onBarPress={handleBarPress}
-              onBearOffPress={handleBearOffPress}
-            />
-            {moveAnimation && (
-              <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
-            )}
-          </View>
+          <BoardView
+            state={state}
+            dimensions={dimensions}
+            previewTarget={previewTarget}
+            moveAnimation={moveAnimation}
+            onPointPress={handlePointPress}
+            onPointPressIn={handlePointPressIn}
+            onPointPressOut={handlePointPressOut}
+            onBarPress={handleBarPress}
+            onBearOffPress={handleBearOffPress}
+          />
         </Pressable>
       </View>
       <GameScreenControls

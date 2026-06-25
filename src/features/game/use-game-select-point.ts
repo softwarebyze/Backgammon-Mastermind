@@ -1,6 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { GameState } from '@/lib/game';
-
 import { useCallback } from 'react';
 import { getLegalMoves } from '@/lib/game';
 
