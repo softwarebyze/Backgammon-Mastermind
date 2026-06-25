@@ -19,10 +19,10 @@ const BEAT = 3 * FPS;
 const TRANSITION = 10;
 
 const FEATURES = [
-  { emoji: '🎯', title: 'Move Hints', body: 'Legal moves glow on the board', showBoard: true },
-  { emoji: '🧭', title: 'Direction Guide', body: 'See the path from start to home', showBoard: false },
-  { emoji: '💾', title: 'Auto-Save', body: 'Resume your game anytime', showBoard: false },
-  { emoji: '🎲', title: 'Roll & Play', body: 'Smooth dice, instant feedback', showDice: true },
+  { emoji: '💾', title: 'Resume Anytime', body: 'Games auto-save — pick up where you left off', showBoard: false },
+  { emoji: '✨', title: 'Smooth Moves', body: 'Checkers slide, captures fly to the bar', showBoard: true },
+  { emoji: '🎯', title: 'One-Tap Doubles', body: 'Use both dice in a single move when you can', showBoard: true },
+  { emoji: '🎲', title: 'Dice Roll', body: 'Shuffle animation when new dice land', showDice: true },
 ] as const;
 
 function FeatureBeat({
