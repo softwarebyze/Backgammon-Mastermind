@@ -7,11 +7,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GameHeaderActions } from '@/components/navigation/game-header-actions';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
+import { MoveAnimationOverlay } from '@/features/game/components/board/move-animation-overlay';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
 import { hapticLight } from '@/lib/haptics';
 
@@ -31,6 +33,7 @@ export function GameScreen() {
     handleRoll,
     handleReset,
   } = useGameInput();
+  const { moveAnimation } = useGame();
 
   const openOptions = useCallback(() => {
     hapticLight();
@@ -74,16 +77,23 @@ export function GameScreen() {
           onPress={handleBoardPress}
           style={[styles.boardContainer, { maxWidth: dimensions.boardWidth }]}
         >
-          <BoardView
-            state={state}
-            dimensions={dimensions}
-            previewTarget={previewTarget}
-            onPointPress={handlePointPress}
-            onPointPressIn={handlePointPressIn}
-            onPointPressOut={handlePointPressOut}
-            onBarPress={handleBarPress}
-            onBearOffPress={handleBearOffPress}
-          />
+          <View style={{ position: 'relative', width: dimensions.boardWidth, height: dimensions.boardHeight }}>
+            <BoardView
+              state={state}
+              dimensions={dimensions}
+              previewTarget={previewTarget}
+              animatingFrom={moveAnimation?.from ?? null}
+              animatingPlayer={moveAnimation?.player ?? null}
+              onPointPress={handlePointPress}
+              onPointPressIn={handlePointPressIn}
+              onPointPressOut={handlePointPressOut}
+              onBarPress={handleBarPress}
+              onBearOffPress={handleBearOffPress}
+            />
+            {moveAnimation && (
+              <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
+            )}
+          </View>
         </Pressable>
       </View>
       <GameScreenControls

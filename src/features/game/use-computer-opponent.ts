@@ -1,20 +1,25 @@
 import type { Dispatch, SetStateAction } from 'react';
-import type { GameState, Player } from '@/lib/game';
+import type { GameState, Move, Player } from '@/lib/game';
 import { useEffect, useRef } from 'react';
-import {
-  applyDiceRoll,
-  applyMove,
-  applyOpeningDieRoll,
-  getAIMove,
-  rollDice,
-  rollOpeningDie,
-} from '@/lib/game';
 
-export function useComputerOpponent(
-  state: GameState | null,
-  setState: Dispatch<SetStateAction<GameState | null>>,
-) {
+import { applyDiceRoll, applyOpeningDieRoll, getAIMove, rollDice, rollOpeningDie } from '@/lib/game';
+
+type ComputerOpponentOptions = {
+  state: GameState | null;
+  setState: Dispatch<SetStateAction<GameState | null>>;
+  playMove: (snapshot: GameState, move: Move) => void;
+  isAnimating: boolean;
+};
+
+export function useComputerOpponent({
+  state,
+  setState,
+  playMove,
+  isAnimating,
+}: ComputerOpponentOptions) {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   useEffect(() => {
     const clearAITimeout = () => {
@@ -32,48 +37,63 @@ export function useComputerOpponent(
       return clearAITimeout;
     if (state.phase === 'game-over')
       return clearAITimeout;
-
-    const delay = state.phase === 'opening-roll' || state.phase === 'rolling' ? 1200 : state.phase === 'moving' ? 1800 : 0;
-    if (delay === 0)
+    if (isAnimating)
       return clearAITimeout;
 
-    aiTimeoutRef.current = setTimeout(() => {
-      setState((prev) => {
-        if (!prev || prev.currentPlayer !== 'black')
-          return prev;
+    const delay = state.phase === 'opening-roll' || state.phase === 'rolling' ? 1200 : 0;
+    if (delay === 0 && state.phase !== 'moving') {
+      return clearAITimeout;
+    }
 
-        if (prev.phase === 'opening-roll' || prev.phase === 'rolling') {
-          if (prev.phase === 'opening-roll') {
-            return applyOpeningDieRoll(prev, rollOpeningDie());
+    const runAI = () => {
+      const prev = stateRef.current;
+      if (!prev || prev.currentPlayer !== 'black')
+        return;
+
+      if (prev.phase === 'opening-roll' || prev.phase === 'rolling') {
+        setState((current) => {
+          if (!current || current.currentPlayer !== 'black')
+            return current;
+          if (current.phase === 'opening-roll') {
+            return applyOpeningDieRoll(current, rollOpeningDie());
           }
           const dice = rollDice();
-          return applyDiceRoll(prev, dice);
-        }
+          return applyDiceRoll(current, dice);
+        });
+        return;
+      }
 
-        if (prev.phase === 'moving') {
-          const move = getAIMove(prev);
-          if (!move) {
-            return {
-              ...prev,
-              currentPlayer: 'white' as Player,
-              dice: [0, 0] as [number, number],
-              remainingDice: [],
-              phase: 'rolling' as const,
-              selectedPoint: null,
-              legalMovesForSelected: [],
-            };
-          }
-          return applyMove(prev, move);
+      if (prev.phase === 'moving') {
+        const move = getAIMove(prev);
+        if (!move) {
+          setState({
+            ...prev,
+            currentPlayer: 'white' as Player,
+            dice: [0, 0] as [number, number],
+            remainingDice: [],
+            phase: 'rolling' as const,
+            selectedPoint: null,
+            legalMovesForSelected: [],
+          });
+          return;
         }
+        playMove(prev, move);
+      }
+    };
 
-        return prev;
-      });
-    }, delay);
+    if (delay === 0) {
+      runAI();
+      return clearAITimeout;
+    }
+
+    aiTimeoutRef.current = setTimeout(runAI, delay);
 
     return clearAITimeout;
   }, [
     state,
     setState,
+    playMove,
+    isAnimating,
   ]);
 
   return () => {

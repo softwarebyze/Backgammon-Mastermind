@@ -45,6 +45,8 @@ type Props = {
   state: GameState;
   dimensions: BoardDimensions;
   previewTarget: number | null;
+  animatingFrom: number | null;
+  animatingPlayer: Player | null;
   onPointPress: (index: number) => void;
   onPointPressIn: (index: number) => void;
   onPointPressOut: () => void;
@@ -57,6 +59,8 @@ export function BoardView({
   state,
   dimensions,
   previewTarget,
+  animatingFrom,
+  animatingPlayer,
   onPointPress,
   onPointPressIn,
   onPointPressOut,
@@ -95,25 +99,45 @@ export function BoardView({
   const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
   const showDirection = preferences.showDirectionOverlay && state.phase !== 'game-over';
 
-  const renderColumn = (idx: number, isTop: boolean) => (
-    <PointColumn
-      key={idx}
-      pointIndex={idx}
-      point={state.points[idx]}
-      isTop={isTop}
-      isSelected={state.selectedPoint === idx}
-      isLegalTarget={legalTargets.has(idx)}
-      isMovableSource={movableSources.has(idx)}
-      showGhost={previewTarget === idx}
-      ghostPlayer={state.currentPlayer}
-      onPress={() => onPointPress(idx)}
-      onPressIn={() => onPointPressIn(idx)}
-      onPressOut={onPointPressOut}
-      colWidth={colWidth}
-      pointHeight={pointHeight}
-      checkerSize={checkerSize}
-    />
-  );
+  const renderColumn = (idx: number, isTop: boolean) => {
+    const point = state.points[idx];
+    const displayPoint
+      = animatingFrom === idx && point.count > 0
+        ? {
+            player: point.count > 1 ? point.player : null,
+            count: point.count - 1,
+          }
+        : point;
+
+    return (
+      <PointColumn
+        key={idx}
+        pointIndex={idx}
+        point={displayPoint}
+        isTop={isTop}
+        isSelected={state.selectedPoint === idx}
+        isLegalTarget={legalTargets.has(idx)}
+        isMovableSource={movableSources.has(idx)}
+        showGhost={previewTarget === idx}
+        ghostPlayer={state.currentPlayer}
+        onPress={() => onPointPress(idx)}
+        onPressIn={() => onPointPressIn(idx)}
+        onPressOut={onPointPressOut}
+        colWidth={colWidth}
+        pointHeight={pointHeight}
+        checkerSize={checkerSize}
+      />
+    );
+  };
+
+  const barWhite
+    = animatingFrom === 0 && animatingPlayer === 'white' && state.bar.white > 0
+      ? state.bar.white - 1
+      : state.bar.white;
+  const barBlack
+    = animatingFrom === 0 && animatingPlayer === 'black' && state.bar.black > 0
+      ? state.bar.black - 1
+      : state.bar.black;
 
   return (
     <View
@@ -142,8 +166,8 @@ export function BoardView({
       />
 
       <BarArea
-        whiteCount={state.bar.white}
-        blackCount={state.bar.black}
+        whiteCount={barWhite}
+        blackCount={barBlack}
         currentPlayer={state.currentPlayer}
         selectedPoint={state.selectedPoint}
         onPressBar={onBarPress}

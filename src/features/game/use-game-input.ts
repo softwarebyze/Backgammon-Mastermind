@@ -13,12 +13,12 @@ function triggerHaptic(fn: () => Promise<void>) {
 
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */
 export function useGameInput() {
-  const { state, doRollDice, selectPoint, doMove, resetGame } = useGame();
+  const { state, doRollDice, selectPoint, doMove, resetGame, isAnimating } = useGame();
   const [previewTarget, setPreviewTarget] = useState<number | null>(null);
 
   const handlePointPress = useCallback(
     (pointIndex: number) => {
-      if (!state || state.phase !== 'moving') {
+      if (!state || state.phase !== 'moving' || isAnimating) {
         return;
       }
       if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
@@ -39,12 +39,12 @@ export function useGameInput() {
       triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
-    [state, doMove, selectPoint],
+    [state, doMove, selectPoint, isAnimating],
   );
 
   const handlePointPressIn = useCallback(
     (pointIndex: number) => {
-      if (!state || state.phase !== 'moving' || state.selectedPoint === null) {
+      if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
         return;
       }
       const isLegal = state.legalMovesForSelected.some(m => m.to === pointIndex);
@@ -52,7 +52,7 @@ export function useGameInput() {
         setPreviewTarget(pointIndex);
       }
     },
-    [state],
+    [state, isAnimating],
   );
 
   const handlePointPressOut = useCallback(() => {
@@ -60,7 +60,7 @@ export function useGameInput() {
   }, []);
 
   const handleBearOffPress = useCallback(() => {
-    if (!state || state.phase !== 'moving' || state.selectedPoint === null) {
+    if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
       return;
     }
     const move = state.legalMovesForSelected.find(m => m.to === BEAR_OFF);
@@ -68,10 +68,10 @@ export function useGameInput() {
       triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
       doMove(move);
     }
-  }, [state, doMove]);
+  }, [state, doMove, isAnimating]);
 
   const handleBarPress = useCallback(() => {
-    if (!state || state.phase !== 'moving') {
+    if (!state || state.phase !== 'moving' || isAnimating) {
       return;
     }
     if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
@@ -93,15 +93,15 @@ export function useGameInput() {
 
     triggerHaptic(() => Haptics.selectionAsync());
     selectPoint(0);
-  }, [state, selectPoint]);
+  }, [state, selectPoint, isAnimating]);
 
   const handleBoardPress = useCallback(() => {
-    if (!state || state.phase !== 'moving') {
+    if (!state || state.phase !== 'moving' || isAnimating) {
       return;
     }
     setPreviewTarget(null);
     selectPoint(null);
-  }, [state, selectPoint]);
+  }, [state, selectPoint, isAnimating]);
 
   const handleRoll = useCallback(() => {
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
