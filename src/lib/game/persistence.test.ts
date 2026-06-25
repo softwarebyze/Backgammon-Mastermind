@@ -1,7 +1,13 @@
 import { getItem } from '@/lib/storage';
 
 import { createInitialState } from './constants';
-import { hasSavedGame, isResumableGame, loadRestorableGame } from './persistence';
+import { applyDiceRoll } from './moves';
+import {
+  canContinueSavedGame,
+  hasSavedGame,
+  isResumableGame,
+  loadRestorableGame,
+} from './persistence';
 
 jest.mock('@/lib/storage', () => ({
   getItem: jest.fn(),
@@ -63,5 +69,23 @@ describe('loadRestorableGame', () => {
       winner: 'white',
     });
     expect(loadRestorableGame()).toBeNull();
+  });
+});
+
+describe('canContinueSavedGame', () => {
+  beforeEach(() => {
+    mockedGetItem.mockReset();
+  });
+
+  it('true when live context holds a rolled game (TestFlight #9: back nav)', () => {
+    const rolled = applyDiceRoll(createInitialState('vs-computer'), [3, 5]);
+    mockedGetItem.mockReturnValue(null);
+    expect(canContinueSavedGame(rolled)).toBe(true);
+  });
+
+  it('true when MMKV has save but context is null', () => {
+    const saved = createInitialState('vs-computer');
+    mockedGetItem.mockReturnValue(saved);
+    expect(canContinueSavedGame(null)).toBe(true);
   });
 });

@@ -28,3 +28,8 @@ export function loadRestorableGame(): GameState | null {
   const saved = loadActiveGame();
   return isResumableGame(saved) ? saved : null;
 }
+
+/** MMKV save or in-memory state (home may not re-render after back nav). */
+export function canContinueSavedGame(liveState: GameState | null | undefined): boolean {
+  return isResumableGame(liveState) || hasSavedGame();
+}
