@@ -97,8 +97,11 @@ export function getActionCaption(
       : 'Opponent is moving…';
   }
   if (state.phase === 'moving' && turn.isHumanTurn) {
+    if (state.bar[state.currentPlayer] > 0) {
+      return 'Enter from the bar before moving other checkers';
+    }
     if (state.selectedPoint !== null) {
-      return `Move your ${turn.colorLabel.toLowerCase()} checker — tap a highlight`;
+      return `Selected — tap a highlight or tap the board to cancel`;
     }
     return `Move your ${turn.colorLabel.toLowerCase()} checkers`;
   }
