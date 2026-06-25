@@ -30,17 +30,18 @@ export function createInitialPoints(): BoardPoint[] {
   return points;
 }
 
-export function createInitialState(mode: GameMode, firstPlayer: 'white' | 'black' = 'white'): GameState {
+export function createInitialState(mode: GameMode): GameState {
   return {
     points: createInitialPoints(),
     bar: { white: 0, black: 0 },
     borneOff: { white: 0, black: 0 },
-    currentPlayer: firstPlayer,
+    currentPlayer: 'white',
     dice: [0, 0],
     remainingDice: [],
-    phase: 'rolling',
+    phase: 'opening-roll',
     winner: null,
     mode,
+    openingRolls: { white: null, black: null },
     selectedPoint: null,
     legalMovesForSelected: [],
   };

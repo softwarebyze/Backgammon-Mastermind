@@ -1,6 +1,6 @@
 export type Player = 'white' | 'black';
 export type GameMode = 'vs-computer' | 'vs-human';
-export type GamePhase = 'rolling' | 'moving' | 'game-over';
+export type GamePhase = 'opening-roll' | 'rolling' | 'moving' | 'game-over';
 
 export type BoardPoint = {
   player: Player | null;
@@ -30,6 +30,8 @@ export type GameState = {
   phase: GamePhase;
   winner: Player | null;
   mode: GameMode;
+  /** One die per player; both set → higher die wins first turn with both values. */
+  openingRolls: { white: number | null; black: number | null };
   /** null = nothing selected, 0 = bar selected, 1-24 = point selected */
   selectedPoint: number | null;
   legalMovesForSelected: Move[];

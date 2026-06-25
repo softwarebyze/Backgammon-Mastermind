@@ -7,9 +7,11 @@ import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 import {
   applyDiceRoll,
   applyMove,
+  applyOpeningDieRoll,
   createInitialState,
   getLegalMoves,
   rollDice,
+  rollOpeningDie,
 } from '@/lib/game';
 import {
   clearActiveGame,
@@ -63,10 +65,16 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const doRollDice = useCallback(() => {
     setState((prev) => {
-      if (!prev || prev.phase !== 'rolling') {
+      if (!prev) {
         return prev;
       }
       if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
+        return prev;
+      }
+      if (prev.phase === 'opening-roll') {
+        return applyOpeningDieRoll(prev, rollOpeningDie());
+      }
+      if (prev.phase !== 'rolling') {
         return prev;
       }
       const dice = rollDice();
