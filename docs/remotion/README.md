@@ -6,6 +6,8 @@ Pre-polish renders (wrong board layout, sizing issues) are in [`before/`](./befo
 
 Polished renders are in [`after/`](./after/) (also written to `remotion/out/` when you run `pnpm render:all`).
 
+**v0.1.1 spotlight** highlights: resume, checker animations, compound moves, dice shuffle — see `remotion/src/compositions/feature-spotlight.tsx`.
+
 ## Compositions
 
 | ID | Output | Format |

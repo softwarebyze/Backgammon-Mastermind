@@ -2,6 +2,8 @@
 
 Use this before the first App Store / Play Store submission.
 
+**Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
+
 **Last updated:** v0.1.0 release — iOS submitted, metadata synced (2026-06-14).
 
 ## CI: what runs on every PR?
