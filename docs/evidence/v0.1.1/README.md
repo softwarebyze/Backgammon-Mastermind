@@ -8,6 +8,17 @@ Reproduced on **Expo web** comparing **main** (`localhost:8082`) vs **fix stack*
 | Cold launch | [#26](https://github.com/softwarebyze/Backgammon-Mastermind/issues/26) | [stuck Loading…](./26-cold-launch/before/) | [board restored](./26-cold-launch/after/) |
 | Back nav | [#28](https://github.com/softwarebyze/Backgammon-Mastermind/issues/28) | [roll wiped on new game](./28-back-nav/before/) | [Resume keeps roll](./28-back-nav/after/) |
 | Opening roll | [#30](https://github.com/softwarebyze/Backgammon-Mastermind/issues/30) | [4 dice doubles at start](./30-opening-roll/before/) | [one die each → two dice](./30-opening-roll/after/) |
+| Compound moves + Maestro smoke | [#39](https://github.com/softwarebyze/Backgammon-Mastermind/pull/39) | — | [iOS smoke recording](./compound-moves-smoke.mp4), [web after opening roll](./web-smoke-after-opening-roll.png) |
+
+## Verification (2026-06-25)
+
+| Layer | Result |
+|-------|--------|
+| Unit tests (`pnpm test`) | 86 passed (includes `moves.test.ts` compound sequences) |
+| Web smoke (browser) | Home → vs Computer → opening roll → board |
+| iOS simulator (`agent-device`) | New game → opening roll → roll dice; [recording](./compound-moves-smoke.mp4) |
+| Maestro CI | `.maestro/app/backgammon-smoke.yaml` uses `testID: roll-dice-button` (Android E2E pending queue) |
+| Argent MCP | Unavailable this session (server errored in Cursor) |
 
 ## How to re-run
 
