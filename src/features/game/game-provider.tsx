@@ -14,12 +14,12 @@ import {
 import {
   clearActiveGame,
   isResumableGame,
-  loadActiveGame,
+  loadRestorableGame,
   saveActiveGame,
 } from '@/lib/game/persistence';
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<GameState | null>(null);
+  const [state, setState] = useState<GameState | null>(() => loadRestorableGame());
   const clearAITimeout = useComputerOpponent(state, setState);
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [clearAITimeout]);
 
   const resumeGame = useCallback(() => {
-    const saved = loadActiveGame();
-    if (!isResumableGame(saved)) {
+    const saved = loadRestorableGame();
+    if (!saved) {
       return false;
     }
     clearAITimeout();

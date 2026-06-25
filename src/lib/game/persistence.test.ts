@@ -1,7 +1,7 @@
 import { getItem } from '@/lib/storage';
 
 import { createInitialState } from './constants';
-import { hasSavedGame, isResumableGame } from './persistence';
+import { hasSavedGame, isResumableGame, loadRestorableGame } from './persistence';
 
 jest.mock('@/lib/storage', () => ({
   getItem: jest.fn(),
@@ -42,5 +42,26 @@ describe('hasSavedGame', () => {
       winner: 'white',
     });
     expect(hasSavedGame()).toBe(false);
+  });
+});
+
+describe('loadRestorableGame', () => {
+  beforeEach(() => {
+    mockedGetItem.mockReset();
+  });
+
+  it('returns in-progress save for cold launch (TestFlight #5)', () => {
+    const saved = createInitialState('vs-computer');
+    mockedGetItem.mockReturnValue(saved);
+    expect(loadRestorableGame()).toEqual(saved);
+  });
+
+  it('returns null when only a finished save exists', () => {
+    mockedGetItem.mockReturnValue({
+      ...createInitialState('vs-computer'),
+      phase: 'game-over',
+      winner: 'white',
+    });
+    expect(loadRestorableGame()).toBeNull();
   });
 });
