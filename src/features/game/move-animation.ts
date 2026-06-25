@@ -1,5 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { BoardPoint, GameState, Move, Player } from '@/lib/game/types';
+import { bearOffTokenSize } from '@/features/game/bear-off-layout';
 import { opponent } from '@/lib/game';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
@@ -31,7 +32,7 @@ export type MoveAnimationFrame = {
 
 export function checkerRenderSize(checkerSize: number, pointIndex: number): number {
   if (pointIndex === BEAR_OFF) {
-    return checkerSize * 0.72;
+    return bearOffTokenSize(checkerSize);
   }
   if (pointIndex === BAR_POINT) {
     return checkerSize * 0.88;
@@ -50,6 +51,9 @@ export function countAtPoint(snapshot: GameState, pointIndex: number, player: Pl
 }
 
 export function destStackCount(snapshot: GameState, to: number, player: Player): number {
+  if (to === BEAR_OFF) {
+    return snapshot.borneOff[player] + 1;
+  }
   if (to >= 1 && to <= 24) {
     return snapshot.points[to].player === player ? snapshot.points[to].count + 1 : 1;
   }

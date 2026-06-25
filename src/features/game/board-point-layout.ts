@@ -1,5 +1,9 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
+import {
+  bearOffCheckerCenterX,
+  bearOffCheckerCenterY,
+} from '@/features/game/bear-off-layout';
 import { checkerRenderSize } from '@/features/game/move-animation';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
@@ -58,7 +62,7 @@ export function getCheckerAnchor({
   stackCount = 1,
   player,
 }: CheckerAnchorOptions): PointAnchor {
-  const { colWidth, pointHeight, middleHeight, barWidth, bearOffWidth, checkerSize, boardHeight } = dims;
+  const { colWidth, pointHeight, middleHeight, barWidth, checkerSize, boardHeight } = dims;
   const step = stackStep(dims);
   const topOffset = Math.min(stackCount, MAX_VISIBLE) - 1;
 
@@ -69,14 +73,9 @@ export function getCheckerAnchor({
   }
 
   if (pointIndex === BEAR_OFF) {
-    const halfHeight = (boardHeight - middleHeight) / 2;
-    const y = player === 'black'
-      ? halfHeight / 2
-      : halfHeight + middleHeight + halfHeight / 2;
-
     return {
-      x: 12 * colWidth + barWidth + bearOffWidth / 2,
-      y,
+      x: bearOffCheckerCenterX(dims),
+      y: bearOffCheckerCenterY(dims, player ?? 'white', stackCount),
     };
   }
 

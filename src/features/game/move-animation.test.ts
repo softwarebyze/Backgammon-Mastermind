@@ -111,7 +111,7 @@ describe('displayPointDuringAnimation', () => {
 describe('checkerRenderSize', () => {
   it('matches bar and bear-off token sizing', () => {
     expect(checkerRenderSize(32, BAR_POINT)).toBeCloseTo(28.16);
-    expect(checkerRenderSize(32, 25)).toBeCloseTo(23.04);
+    expect(checkerRenderSize(32, 25)).toBe(Math.round(32 * 0.78));
     expect(checkerRenderSize(32, 8)).toBe(32);
   });
 });

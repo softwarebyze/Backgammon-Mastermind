@@ -22,7 +22,7 @@ import { CheckerToken } from '@/features/game/components/board/checker-token';
 import {
   animationKey,
   CHECKER_MOVE_DURATION_MS,
-  overlayTokenSize,
+  checkerRenderSize,
 } from '@/features/game/move-animation';
 
 type SlideLayerProps = {
@@ -33,8 +33,8 @@ type SlideLayerProps = {
 };
 
 function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerProps) {
-  const tokenSize = overlayTokenSize(dimensions, slide.from);
-  const half = tokenSize / 2;
+  const fromSize = checkerRenderSize(dimensions.checkerSize, slide.from);
+  const toSize = checkerRenderSize(dimensions.checkerSize, slide.to);
 
   const from = getCheckerAnchor({
     pointIndex: slide.from,
@@ -49,17 +49,27 @@ function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerPr
     player: slide.player,
   });
 
-  const style = useAnimatedStyle(() => ({
-    position: 'absolute' as const,
-    left: from.x - half + (to.x - from.x) * progress.value,
-    top: from.y - half + (to.y - from.y) * progress.value,
-    zIndex,
-    elevation: zIndex,
-  }));
+  const style = useAnimatedStyle(() => {
+    const t = progress.value;
+    const size = fromSize + (toSize - fromSize) * t;
+    const cx = from.x + (to.x - from.x) * t;
+    const cy = from.y + (to.y - from.y) * t;
+
+    return {
+      position: 'absolute' as const,
+      left: cx - fromSize / 2,
+      top: cy - fromSize / 2,
+      width: fromSize,
+      height: fromSize,
+      transform: [{ scale: size / fromSize }],
+      zIndex,
+      elevation: zIndex,
+    };
+  });
 
   return (
     <Animated.View style={style} pointerEvents="none">
-      <CheckerToken flat player={slide.player} size={tokenSize} />
+      <CheckerToken flat player={slide.player} size={fromSize} />
     </Animated.View>
   );
 }
