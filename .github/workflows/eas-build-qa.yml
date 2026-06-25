@@ -5,7 +5,7 @@
 # ✍️ Description:
 # This workflow is used to trigger a build on EAS for the QA environment.
 # It will run on every GitHub release published on the repo or can be triggered manually from the actions tab.
-# This workflow will use ./actions/eas-build action to trigger the build on EAS with staging env.
+# Preview iOS builds use --auto-submit → TestFlight (see eas.json submit.preview).
 
 # 🚨 GITHUB SECRETS REQUIRED:
 #         - EXPO_TOKEN: Expo token to authenticate with EAS
@@ -37,10 +37,48 @@ jobs:
       - name: 📦 Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
 
+      - name: 🏷️ Resolve build version label
+        id: version
+        run: |
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            echo "label=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "label=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: ⏱️ EAS Build
         uses: ./.github/actions/eas-build
         with:
           APP_ENV: preview
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          VERSION: ${{ github.event.release.tag_name }}
+          VERSION: ${{ steps.version.outputs.label }}
+          AUTO_SUBMIT: 'true'
           IOS: true
+
+  Metadata:
+    name: Push App Store metadata
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            exit 1
+          fi
+
+      - name: 📦 Checkout project repo
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: 📦 Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📝 Push metadata
+        run: pnpm metadata:push
+        env:
+          EXPO_PUBLIC_APP_ENV: preview
