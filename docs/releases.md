@@ -11,9 +11,9 @@ How we ship **TestFlight**, **App Store**, and **GitHub** releases for Backgammo
 | Goal | Command / action |
 |------|------------------|
 | Verify locally | `pnpm check-all` |
-| iOS TestFlight binary | `pnpm build:preview:ios` (or Actions → **EAS QA Build**) |
-| Submit to TestFlight | `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
-| Push App Store listing | `pnpm metadata:push` (after ASC version exists) |
+| iOS TestFlight binary + submit | Actions → **EAS QA Build** (auto `--auto-submit` on iOS preview) |
+| Submit to TestFlight (manual) | `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
+| Push App Store listing | Actions → **EAS Metadata Push** or `pnpm metadata:push` |
 | Marketing renders | `cd remotion && pnpm render:all` → copy to `docs/remotion/after/` |
 | Tag + GitHub Release | Actions → **New App Version** (patch) or manual tag |
 
