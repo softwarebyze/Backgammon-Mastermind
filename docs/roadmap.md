@@ -27,7 +27,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 
 **Goal:** Never lose a game; core UX feels intentional; beginners aren’t lost.
 
-**v0.1.1 (shipped / merging)** — persistence, resume, opening roll, back-nav, checker slide animations, compound moves (#39), Maestro smoke with `roll-dice-button` testID. Evidence: `docs/evidence/v0.1.1/`.
+**v0.1.1 (shipped)** — persistence, resume, opening roll, back-nav, checker slide animations, compound moves (#39), Maestro smoke with `roll-dice-button` testID. Evidence: `docs/evidence/v0.1.1/`.
 
 | Item | PR | Status |
 |------|-----|--------|
@@ -43,7 +43,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | **Responsive board** — `useWindowDimensions`, iPad max width | #38 | Done |
 | **Settings** from home + game prefs section | #38 | Done |
 | **Checker slide animation** (single + capture + bear-off) | #38 | Done |
-| **Compound dice moves** — one tap uses both dice | #39 | 🟡 In review |
+| **Compound dice moves** — one tap uses both dice | #39 | Done |
 | **Opening roll** — correct first player | #37 | Done |
 | **Back navigation** — game state preserved | #36 | Done |
 | **Game logic unit tests** (`moves.ts`, pip count, bear-off, animation layout) | various | Done |
