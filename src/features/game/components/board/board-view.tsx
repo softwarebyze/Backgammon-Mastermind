@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { View } from 'react-native';
 
-import { displayBarCountDuringAnimation, displayPointDuringAnimation } from '@/features/game/move-animation';
+import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
 import { canBearOff, getMovableSources } from '@/lib/game/move-hints';
@@ -84,21 +84,29 @@ export function BoardView({
     middleHeight,
   } = dimensions;
 
-  const legalTargets = useMemo(
-    () => new Set(state.legalMovesForSelected.map(m => m.to)),
-    [state.legalMovesForSelected],
-  );
+  const showHighlights = isBoardHighlightActive(moveAnimation);
+  const selectedPoint = showHighlights ? state.selectedPoint : null;
+
+  const legalTargets = useMemo(() => {
+    if (!showHighlights) {
+      return new Set<number>();
+    }
+    return new Set(state.legalMovesForSelected.map(m => m.to));
+  }, [showHighlights, state.legalMovesForSelected]);
 
   const movableSources = useMemo(() => {
-    if (!preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
+    if (!showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
       return new Set<number>();
     }
     return getMovableSources(state);
-  }, [preferences.showMoveHints, state]);
+  }, [showHighlights, preferences.showMoveHints, state]);
 
   const bearOffLegal = useMemo(
-    () => state.selectedPoint !== null && canBearOff(state) && state.legalMovesForSelected.some(m => m.to === 25),
-    [state],
+    () => showHighlights
+      && state.selectedPoint !== null
+      && canBearOff(state)
+      && state.legalMovesForSelected.some(m => m.to === 25),
+    [showHighlights, state],
   );
 
   const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
@@ -113,10 +121,10 @@ export function BoardView({
         pointIndex={idx}
         point={point}
         isTop={isTop}
-        isSelected={state.selectedPoint === idx}
+        isSelected={selectedPoint === idx}
         isLegalTarget={legalTargets.has(idx)}
         isMovableSource={movableSources.has(idx)}
-        showGhost={previewTarget === idx}
+        showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
         onPress={() => onPointPress(idx)}
         onPressIn={() => onPointPressIn(idx)}
@@ -169,7 +177,7 @@ export function BoardView({
           whiteCount={barWhite}
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
-          selectedPoint={state.selectedPoint}
+          selectedPoint={selectedPoint}
           onPressBar={onBarPress}
           barWidth={barWidth}
           boardHeight={boardHeight}

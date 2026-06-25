@@ -5,6 +5,7 @@ import {
   destStackCount,
   displayBarCountDuringAnimation,
   displayPointDuringAnimation,
+  isBoardHighlightActive,
 } from '@/features/game/move-animation';
 import { applyDiceRoll, createInitialState } from '@/lib/game';
 
@@ -79,6 +80,19 @@ describe('checkerRenderSize', () => {
     expect(checkerRenderSize(32, BAR_POINT)).toBeCloseTo(28.16);
     expect(checkerRenderSize(32, 25)).toBeCloseTo(23.04);
     expect(checkerRenderSize(32, 8)).toBe(32);
+  });
+});
+
+describe('isBoardHighlightActive', () => {
+  it('hides selection tints while a checker is animating', () => {
+    const frame = buildMoveAnimationFrame(
+      createInitialState('vs-human'),
+      { from: 8, to: 4, dieIndex: 0 },
+      () => {},
+    );
+
+    expect(isBoardHighlightActive(null)).toBe(true);
+    expect(isBoardHighlightActive(frame)).toBe(false);
   });
 });
 

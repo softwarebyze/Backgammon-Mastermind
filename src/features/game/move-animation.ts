@@ -90,6 +90,11 @@ export function displayBarCountDuringAnimation(
   return count;
 }
 
+/** Selection/legal tints are hidden while a checker slides to avoid a color snap at landing. */
+export function isBoardHighlightActive(animation: MoveAnimationFrame | null): boolean {
+  return animation === null;
+}
+
 /** Token size for the sliding proxy — matches BarArea / BearOffArea sizing. */
 export function overlayTokenSize(dims: BoardDimensions, fromPoint: number): number {
   return checkerRenderSize(dims.checkerSize, fromPoint);
