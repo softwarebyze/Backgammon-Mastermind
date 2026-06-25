@@ -41,13 +41,23 @@ describe('turn-display', () => {
     expect(turn.isHumanTurn).toBe(false);
   });
 
-  it('prompts to tap a highlight when a checker is selected', () => {
+  it('prompts to cancel when a checker is selected (TestFlight #6)', () => {
     let state = createInitialState('vs-computer');
     state = applyDiceRoll(state, [3, 2]);
     state.selectedPoint = 1;
     const turn = getTurnDisplay(state);
     expect(getActionCaption(state, turn)).toBe(
-      'Move your white checker — tap a highlight',
+      'Selected — tap a highlight or tap the board to cancel',
+    );
+  });
+
+  it('prompts to enter from the bar first (TestFlight #8)', () => {
+    let state = createInitialState('vs-computer');
+    state = applyDiceRoll(state, [4, 1]);
+    state.bar.white = 1;
+    const turn = getTurnDisplay(state);
+    expect(getActionCaption(state, turn)).toBe(
+      'Enter from the bar before moving other checkers',
     );
   });
 

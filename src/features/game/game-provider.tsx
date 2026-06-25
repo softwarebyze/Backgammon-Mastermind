@@ -1,15 +1,15 @@
 import type * as React from 'react';
-import type { GameMode, GameState, Move } from '@/lib/game';
+import type { GameMode, GameState } from '@/lib/game';
 import { useCallback, useEffect, useState } from 'react';
 import { GameContext } from '@/features/game/game-context';
+import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
+import { useGameSelectPoint } from '@/features/game/use-game-select-point';
 
 import {
   applyDiceRoll,
-  applyMove,
   applyOpeningDieRoll,
   createInitialState,
-  getLegalMoves,
   rollDice,
   rollOpeningDie,
 } from '@/lib/game';
@@ -22,7 +22,9 @@ import {
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState | null>(() => loadRestorableGame());
-  const clearAITimeout = useComputerOpponent(state, setState);
+  const { moveAnimation, isAnimating, doMove, playMove } = useAnimatedMoves(state, setState);
+  const selectPoint = useGameSelectPoint(setState, isAnimating);
+  const clearAITimeout = useComputerOpponent({ state, setState, playMove, isAnimating });
 
   useEffect(() => {
     if (!state) {
@@ -64,6 +66,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [clearAITimeout]);
 
   const doRollDice = useCallback(() => {
+    if (isAnimating) {
+      return;
+    }
     setState((prev) => {
       if (!prev) {
         return prev;
@@ -80,46 +85,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const dice = rollDice();
       return applyDiceRoll(prev, dice);
     });
-  }, []);
-
-  const selectPoint = useCallback((point: number | null) => {
-    setState((prev) => {
-      if (!prev || prev.phase !== 'moving') {
-        return prev;
-      }
-      if (point === null) {
-        return { ...prev, selectedPoint: null, legalMovesForSelected: [] };
-      }
-      const isBar = point === 0 && prev.bar[prev.currentPlayer] > 0;
-      const isOwnPoint
-        = point > 0
-          && prev.points[point].player === prev.currentPlayer
-          && prev.points[point].count > 0;
-      if (!isBar && !isOwnPoint) {
-        return { ...prev, selectedPoint: null, legalMovesForSelected: [] };
-      }
-      const legal = getLegalMoves({ ...prev, selectedPoint: point }).filter(
-        m => m.from === point,
-      );
-      if (legal.length === 0) {
-        return prev;
-      }
-      return { ...prev, selectedPoint: point, legalMovesForSelected: legal };
-    });
-  }, []);
-
-  const doMove = useCallback((move: Move) => {
-    setState((prev) => {
-      if (!prev || prev.phase !== 'moving') {
-        return prev;
-      }
-      return applyMove(prev, move);
-    });
-  }, []);
+  }, [isAnimating]);
 
   return (
     <GameContext
-      value={{ state, startGame, resumeGame, resetGame, doRollDice, selectPoint, doMove }}
+      value={{
+        state,
+        startGame,
+        resumeGame,
+        resetGame,
+        doRollDice,
+        selectPoint,
+        doMove,
+        isAnimating,
+        moveAnimation,
+      }}
     >
       {children}
     </GameContext>

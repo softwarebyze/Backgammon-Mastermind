@@ -12,6 +12,7 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
 import { hapticLight } from '@/lib/haptics';
 
@@ -31,6 +32,7 @@ export function GameScreen() {
     handleRoll,
     handleReset,
   } = useGameInput();
+  const { moveAnimation } = useGame();
 
   const openOptions = useCallback(() => {
     hapticLight();
@@ -72,12 +74,13 @@ export function GameScreen() {
       <View style={styles.boardWrap}>
         <Pressable
           onPress={handleBoardPress}
-          style={[styles.boardContainer, { maxWidth: dimensions.boardWidth }]}
+          style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
         >
           <BoardView
             state={state}
             dimensions={dimensions}
             previewTarget={previewTarget}
+            moveAnimation={moveAnimation}
             onPointPress={handlePointPress}
             onPointPressIn={handlePointPressIn}
             onPointPressOut={handlePointPressOut}

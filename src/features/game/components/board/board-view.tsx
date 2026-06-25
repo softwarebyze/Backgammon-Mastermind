@@ -1,9 +1,11 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo } from 'react';
-
 import { View } from 'react-native';
+
+import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
 import { canBearOff, getMovableSources } from '@/lib/game/move-hints';
@@ -11,6 +13,7 @@ import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
+import { MoveAnimationOverlay } from './move-animation-overlay';
 import { PointColumn } from './point-column';
 import { WoodSurface } from './wood-surface';
 
@@ -23,17 +26,18 @@ type SideSectionProps = {
   topIndices: number[];
   botIndices: number[];
   pointHeight: number;
+  middleHeight: number;
   renderColumn: (idx: number, isTop: boolean) => React.ReactNode;
 };
 
-function SideSection({ topIndices, botIndices, pointHeight, renderColumn }: SideSectionProps) {
-  const boardHeight = pointHeight * 2 + 12;
+function SideSection({ topIndices, botIndices, pointHeight, middleHeight, renderColumn }: SideSectionProps) {
+  const boardHeight = pointHeight * 2 + middleHeight;
   return (
     <View style={{ flex: 6, height: boardHeight, flexDirection: 'column' }}>
       <View style={{ height: pointHeight, flexDirection: 'row' }}>
         {topIndices.map(i => renderColumn(i, true))}
       </View>
-      <View style={{ height: 12, backgroundColor: BOARD_THEME.bar.groove }} />
+      <View style={{ height: middleHeight, backgroundColor: BOARD_THEME.bar.groove }} />
       <View style={{ height: pointHeight, flexDirection: 'row' }}>
         {botIndices.map(i => renderColumn(i, false))}
       </View>
@@ -45,6 +49,7 @@ type Props = {
   state: GameState;
   dimensions: BoardDimensions;
   previewTarget: number | null;
+  moveAnimation: MoveAnimationFrame | null;
   onPointPress: (index: number) => void;
   onPointPressIn: (index: number) => void;
   onPointPressOut: () => void;
@@ -57,6 +62,7 @@ export function BoardView({
   state,
   dimensions,
   previewTarget,
+  moveAnimation,
   onPointPress,
   onPointPressIn,
   onPointPressOut,
@@ -67,6 +73,9 @@ export function BoardView({
   const {
     boardWidth,
     boardHeight,
+    boardFrameWidth,
+    boardOuterWidth,
+    boardOuterHeight,
     colWidth,
     checkerSize,
     pointHeight,
@@ -75,53 +84,68 @@ export function BoardView({
     middleHeight,
   } = dimensions;
 
-  const legalTargets = useMemo(
-    () => new Set(state.legalMovesForSelected.map(m => m.to)),
-    [state.legalMovesForSelected],
-  );
+  const showHighlights = isBoardHighlightActive(moveAnimation);
+  const selectedPoint = showHighlights ? state.selectedPoint : null;
+
+  const legalTargets = useMemo(() => {
+    if (!showHighlights) {
+      return new Set<number>();
+    }
+    return new Set(state.legalMovesForSelected.map(m => m.to));
+  }, [showHighlights, state.legalMovesForSelected]);
 
   const movableSources = useMemo(() => {
-    if (!preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
+    if (!showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
       return new Set<number>();
     }
     return getMovableSources(state);
-  }, [preferences.showMoveHints, state]);
+  }, [showHighlights, preferences.showMoveHints, state]);
 
   const bearOffLegal = useMemo(
-    () => state.selectedPoint !== null && canBearOff(state) && state.legalMovesForSelected.some(m => m.to === 25),
-    [state],
+    () => showHighlights
+      && state.selectedPoint !== null
+      && canBearOff(state)
+      && state.legalMovesForSelected.some(m => m.to === 25),
+    [showHighlights, state],
   );
 
   const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
   const showDirection = preferences.showDirectionOverlay && state.phase !== 'game-over';
 
-  const renderColumn = (idx: number, isTop: boolean) => (
-    <PointColumn
-      key={idx}
-      pointIndex={idx}
-      point={state.points[idx]}
-      isTop={isTop}
-      isSelected={state.selectedPoint === idx}
-      isLegalTarget={legalTargets.has(idx)}
-      isMovableSource={movableSources.has(idx)}
-      showGhost={previewTarget === idx}
-      ghostPlayer={state.currentPlayer}
-      onPress={() => onPointPress(idx)}
-      onPressIn={() => onPointPressIn(idx)}
-      onPressOut={onPointPressOut}
-      colWidth={colWidth}
-      pointHeight={pointHeight}
-      checkerSize={checkerSize}
-    />
-  );
+  const renderColumn = (idx: number, isTop: boolean) => {
+    const point = displayPointDuringAnimation(idx, state.points[idx], moveAnimation);
+
+    return (
+      <PointColumn
+        key={idx}
+        pointIndex={idx}
+        point={point}
+        isTop={isTop}
+        isSelected={selectedPoint === idx}
+        isLegalTarget={legalTargets.has(idx)}
+        isMovableSource={movableSources.has(idx)}
+        showGhost={showHighlights && previewTarget === idx}
+        ghostPlayer={state.currentPlayer}
+        onPress={() => onPointPress(idx)}
+        onPressIn={() => onPointPressIn(idx)}
+        onPressOut={onPointPressOut}
+        colWidth={colWidth}
+        pointHeight={pointHeight}
+        checkerSize={checkerSize}
+      />
+    );
+  };
+
+  const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
+  const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
 
   return (
     <View
       style={{
-        width: boardWidth,
-        height: boardHeight,
+        width: boardOuterWidth,
+        height: boardOuterHeight,
         borderRadius: 10,
-        borderWidth: 4,
+        borderWidth: boardFrameWidth,
         borderColor: BOARD_THEME.frame.rim,
         backgroundColor: BOARD_THEME.frame.outer,
         shadowColor: '#000',
@@ -129,56 +153,70 @@ export function BoardView({
         shadowOpacity: 0.45,
         shadowRadius: 10,
         elevation: 8,
-        flexDirection: 'row',
-        overflow: 'hidden',
       }}
     >
-      <WoodSurface width={boardWidth} height={boardHeight} />
-      <SideSection
-        topIndices={TOP_LEFT}
-        botIndices={BOT_LEFT}
-        pointHeight={pointHeight}
-        renderColumn={renderColumn}
-      />
-
-      <BarArea
-        whiteCount={state.bar.white}
-        blackCount={state.bar.black}
-        currentPlayer={state.currentPlayer}
-        selectedPoint={state.selectedPoint}
-        onPressBar={onBarPress}
-        barWidth={barWidth}
-        boardHeight={boardHeight}
-        middleHeight={middleHeight}
-        checkerSize={checkerSize}
-      />
-
-      <SideSection
-        topIndices={TOP_RIGHT}
-        botIndices={BOT_RIGHT}
-        pointHeight={pointHeight}
-        renderColumn={renderColumn}
-      />
-
-      <BearOffArea
-        whiteBorneOff={state.borneOff.white}
-        blackBorneOff={state.borneOff.black}
-        isLegalTarget={bearOffLegal}
-        currentPlayer={state.currentPlayer}
-        onPress={onBearOffPress}
-        width={bearOffWidth}
-        boardHeight={boardHeight}
-        middleHeight={middleHeight}
-        checkerSize={checkerSize}
-      />
-
-      {showDirection && (
-        <DirectionOverlay
-          width={boardWidth}
-          height={boardHeight}
-          player={humanPlayer}
+      <View
+        style={{
+          width: boardWidth,
+          height: boardHeight,
+          flexDirection: 'row',
+          overflow: 'hidden',
+          borderRadius: 6,
+        }}
+      >
+        <WoodSurface width={boardWidth} height={boardHeight} />
+        <SideSection
+          topIndices={TOP_LEFT}
+          botIndices={BOT_LEFT}
+          pointHeight={pointHeight}
+          middleHeight={middleHeight}
+          renderColumn={renderColumn}
         />
-      )}
+
+        <BarArea
+          whiteCount={barWhite}
+          blackCount={barBlack}
+          currentPlayer={state.currentPlayer}
+          selectedPoint={selectedPoint}
+          onPressBar={onBarPress}
+          barWidth={barWidth}
+          boardHeight={boardHeight}
+          middleHeight={middleHeight}
+          checkerSize={checkerSize}
+        />
+
+        <SideSection
+          topIndices={TOP_RIGHT}
+          botIndices={BOT_RIGHT}
+          pointHeight={pointHeight}
+          middleHeight={middleHeight}
+          renderColumn={renderColumn}
+        />
+
+        <BearOffArea
+          whiteBorneOff={state.borneOff.white}
+          blackBorneOff={state.borneOff.black}
+          isLegalTarget={bearOffLegal}
+          currentPlayer={state.currentPlayer}
+          onPress={onBearOffPress}
+          width={bearOffWidth}
+          boardHeight={boardHeight}
+          middleHeight={middleHeight}
+          checkerSize={checkerSize}
+        />
+
+        {showDirection && (
+          <DirectionOverlay
+            width={boardWidth}
+            height={boardHeight}
+            player={humanPlayer}
+          />
+        )}
+
+        {moveAnimation && (
+          <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
+        )}
+      </View>
     </View>
   );
 }
