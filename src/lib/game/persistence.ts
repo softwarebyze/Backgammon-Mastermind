@@ -3,6 +3,10 @@ import { getItem, removeItem, setItem } from '@/lib/storage';
 
 const ACTIVE_GAME_KEY = 'ACTIVE_GAME_STATE';
 
+export function isResumableGame(state: GameState | null | undefined): boolean {
+  return state != null && state.phase !== 'game-over';
+}
+
 export function saveActiveGame(state: GameState): void {
   void setItem(ACTIVE_GAME_KEY, state);
 }
@@ -16,5 +20,5 @@ export function clearActiveGame(): void {
 }
 
 export function hasSavedGame(): boolean {
-  return loadActiveGame() !== null;
+  return isResumableGame(loadActiveGame());
 }
