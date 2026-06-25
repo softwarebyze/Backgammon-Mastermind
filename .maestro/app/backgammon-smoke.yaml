@@ -12,13 +12,16 @@ tags:
 - tapOn:
     text: vs Computer
 - extendedWaitUntil:
-    visible: Roll Dice
-    timeout: 30000
+    visible:
+      id: roll-dice-button
+    timeout: 45000
 - takeScreenshot: 02-game-board
-- tapOn: Roll Dice
+- tapOn:
+    id: roll-dice-button
 - extendedWaitUntil:
-    notVisible: Roll Dice
-    timeout: 20000
+    notVisible:
+      id: roll-dice-button
+    timeout: 30000
 - takeScreenshot: 03-after-opening
 - assertVisible: Point 1
 - takeScreenshot: 04-smoke-complete

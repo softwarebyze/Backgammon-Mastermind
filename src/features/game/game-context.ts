@@ -10,6 +10,7 @@ export type GameContextType = {
   doRollDice: () => void;
   selectPoint: (point: number | null) => void;
   doMove: (move: Move) => void;
+  doMoveSequence: (moves: Move[]) => void;
   isAnimating: boolean;
   moveAnimation: MoveAnimationFrame | null;
 };

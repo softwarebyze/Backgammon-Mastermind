@@ -22,7 +22,13 @@ import {
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState | null>(() => loadRestorableGame());
-  const { moveAnimation, isAnimating, doMove, playMove } = useAnimatedMoves(state, setState);
+  const {
+    moveAnimation,
+    isAnimating,
+    doMove,
+    doMoveSequence,
+    playMove,
+  } = useAnimatedMoves(state, setState);
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const clearAITimeout = useComputerOpponent({ state, setState, playMove, isAnimating });
 
@@ -97,6 +103,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         doRollDice,
         selectPoint,
         doMove,
+        doMoveSequence,
         isAnimating,
         moveAnimation,
       }}

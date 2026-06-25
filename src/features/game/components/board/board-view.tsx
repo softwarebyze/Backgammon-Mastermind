@@ -8,7 +8,8 @@ import { View } from 'react-native';
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
-import { canBearOff, getMovableSources } from '@/lib/game/move-hints';
+import { getMovableSources } from '@/lib/game/move-hints';
+import { getReachableDestinations } from '@/lib/game/moves';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
 import { BOARD_THEME } from './board-theme';
@@ -88,11 +89,11 @@ export function BoardView({
   const selectedPoint = showHighlights ? state.selectedPoint : null;
 
   const legalTargets = useMemo(() => {
-    if (!showHighlights) {
+    if (!showHighlights || state.selectedPoint === null) {
       return new Set<number>();
     }
-    return new Set(state.legalMovesForSelected.map(m => m.to));
-  }, [showHighlights, state.legalMovesForSelected]);
+    return new Set(getReachableDestinations(state, state.selectedPoint).keys());
+  }, [showHighlights, state]);
 
   const movableSources = useMemo(() => {
     if (!showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
@@ -104,8 +105,7 @@ export function BoardView({
   const bearOffLegal = useMemo(
     () => showHighlights
       && state.selectedPoint !== null
-      && canBearOff(state)
-      && state.legalMovesForSelected.some(m => m.to === 25),
+      && getReachableDestinations(state, state.selectedPoint).has(25),
     [showHighlights, state],
   );
 

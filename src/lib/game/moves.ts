@@ -150,6 +150,105 @@ export function hasAnyLegalMove(state: GameState): boolean {
   return getLegalMoves(state).length > 0;
 }
 
+function moveSequenceKey(at: number, remainingDice: number[]): string {
+  return `${at}:${remainingDice.join(',')}`;
+}
+
+/**
+ * Find a sequence of legal single-die moves from `from` to `to`.
+ * Returns null when no sequence exists (including single-die moves — use getLegalMoves).
+ */
+export function findMoveSequence(
+  state: GameState,
+  from: number,
+  to: number,
+): Move[] | null {
+  if (from === to || state.phase !== 'moving') {
+    return null;
+  }
+
+  type QueueNode = { at: number; state: GameState; moves: Move[] };
+  const queue: QueueNode[] = [{ at: from, state, moves: [] }];
+  const visited = new Set<string>([moveSequenceKey(from, state.remainingDice)]);
+
+  while (queue.length > 0) {
+    const node = queue.shift()!;
+    if (node.state.phase !== 'moving' || node.state.remainingDice.length === 0) {
+      continue;
+    }
+
+    for (const move of getLegalMoves(node.state).filter(m => m.from === node.at)) {
+      const nextState = applyMove(node.state, move);
+
+      if (move.to === to) {
+        return [...node.moves, move];
+      }
+
+      if (nextState.phase !== 'moving' || nextState.remainingDice.length === 0) {
+        continue;
+      }
+
+      const key = moveSequenceKey(move.to, nextState.remainingDice);
+      if (visited.has(key)) {
+        continue;
+      }
+      visited.add(key);
+      queue.push({ at: move.to, state: nextState, moves: [...node.moves, move] });
+    }
+  }
+
+  return null;
+}
+
+/** All destinations reachable from `from`, mapped to a move sequence (shortest first). */
+export function getReachableDestinations(
+  state: GameState,
+  from: number,
+): Map<number, Move[]> {
+  const result = new Map<number, Move[]>();
+  if (state.phase !== 'moving') {
+    return result;
+  }
+
+  type QueueNode = { at: number; state: GameState; moves: Move[] };
+  const queue: QueueNode[] = [{ at: from, state, moves: [] }];
+  const visited = new Set<string>([moveSequenceKey(from, state.remainingDice)]);
+
+  while (queue.length > 0) {
+    const node = queue.shift()!;
+    if (node.state.phase !== 'moving' || node.state.remainingDice.length === 0) {
+      continue;
+    }
+
+    for (const move of getLegalMoves(node.state).filter(m => m.from === node.at)) {
+      const nextState = applyMove(node.state, move);
+      const sequence = [...node.moves, move];
+
+      if (!result.has(move.to)) {
+        result.set(move.to, sequence);
+      }
+
+      if (nextState.phase !== 'moving' || nextState.remainingDice.length === 0) {
+        continue;
+      }
+
+      const key = moveSequenceKey(move.to, nextState.remainingDice);
+      if (visited.has(key)) {
+        continue;
+      }
+      visited.add(key);
+      queue.push({ at: move.to, state: nextState, moves: sequence });
+    }
+  }
+
+  return result;
+}
+
+/** Apply several moves in order (e.g. compound tap consuming multiple dice). */
+export function applyMoveSequence(state: GameState, moves: Move[]): GameState {
+  return moves.reduce((next, move) => applyMove(next, move), state);
+}
+
 // ---------------------------------------------------------------------------
 // State mutation
 // ---------------------------------------------------------------------------

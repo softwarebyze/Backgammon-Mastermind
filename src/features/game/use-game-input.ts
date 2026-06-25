@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 
 import { useGame } from '@/features/game/use-game';
-import { BEAR_OFF, getLegalMoves } from '@/lib/game';
+import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
 function triggerHaptic(fn: () => Promise<void>) {
@@ -13,7 +13,7 @@ function triggerHaptic(fn: () => Promise<void>) {
 
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */
 export function useGameInput() {
-  const { state, doRollDice, selectPoint, doMove, resetGame, isAnimating } = useGame();
+  const { state, doRollDice, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
   const [previewTarget, setPreviewTarget] = useState<number | null>(null);
 
   const handlePointPress = useCallback(
@@ -34,12 +34,18 @@ export function useGameInput() {
           doMove(move);
           return;
         }
+        const sequence = findMoveSequence(state, state.selectedPoint, pointIndex);
+        if (sequence) {
+          triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+          doMoveSequence(sequence);
+          return;
+        }
       }
 
       triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
-    [state, doMove, selectPoint, isAnimating],
+    [state, doMove, doMoveSequence, selectPoint, isAnimating],
   );
 
   const handlePointPressIn = useCallback(
@@ -47,8 +53,9 @@ export function useGameInput() {
       if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
         return;
       }
-      const isLegal = state.legalMovesForSelected.some(m => m.to === pointIndex);
-      if (isLegal) {
+      const isSingle = state.legalMovesForSelected.some(m => m.to === pointIndex);
+      const isCompound = findMoveSequence(state, state.selectedPoint, pointIndex) !== null;
+      if (isSingle || isCompound) {
         setPreviewTarget(pointIndex);
       }
     },
@@ -67,8 +74,14 @@ export function useGameInput() {
     if (move) {
       triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
       doMove(move);
+      return;
     }
-  }, [state, doMove, isAnimating]);
+    const sequence = findMoveSequence(state, state.selectedPoint, BEAR_OFF);
+    if (sequence) {
+      triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+      doMoveSequence(sequence);
+    }
+  }, [state, doMove, doMoveSequence, isAnimating]);
 
   const handleBarPress = useCallback(() => {
     if (!state || state.phase !== 'moving' || isAnimating) {

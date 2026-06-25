@@ -12,10 +12,10 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 
 | Item | PR scope | Status |
 |------|----------|--------|
-| Knip unused-export CI | `.github/workflows/knip.yml` + `knip.json` | 🟡 In progress |
+| Knip unused-export CI | `.github/workflows/knip.yml` + `knip.json` | Done |
 | Bundle size delta on PR | `size-limit` or `@expo/bundle-analyzer` workflow | Planned |
 | Screenshot diff CI (iPad, web, phone) | Argent / Percy + tablet landscape | Planned |
-| Maestro recordings per release | `.maestro/app/` flows + artifact upload | Planned |
+| Maestro recordings per release | `.maestro/app/` flows + artifact upload | 🟡 In progress |
 | Perf regression (Flashlight / Sentry Performance) | Baseline on game screen | Planned |
 | PostHog events schema | `src/lib/analytics/` | Planned |
 | EAS metadata + Remotion launch videos | `eas metadata` + `remotion/` + GHA | Planned |
@@ -27,20 +27,27 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 
 **Goal:** Never lose a game; core UX feels intentional; beginners aren’t lost.
 
+**v0.1.1 (shipped / merging)** — persistence, resume, opening roll, back-nav, checker slide animations, compound moves (#39), Maestro smoke with `roll-dice-button` testID. Evidence: `docs/evidence/v0.1.1/`.
+
 | Item | PR | Status |
 |------|-----|--------|
-| **Game state persistence** (MMKV, resume on launch) | `feat/game-persistence` | 🟡 In progress |
-| **Bear-off tappable** | same PR | 🟡 In progress |
-| **Roll phase UX** — board doesn’t steal focus; pulsing Roll CTA | `feat/roll-phase-ux` | 🟡 In progress |
-| **Move hints toggle** — glow on stacks with legal moves | `feat/move-hints` | 🟡 In progress |
-| **Single-movable pulse** — only one stack can move | `feat/move-hints` | 🟡 In progress |
-| **Stack join preview** — ghost checker on press-in to legal stack | `feat/stack-preview` | 🟡 In progress |
-| **Direction overlay** — horseshoe path (like backgammon.com) | `feat/direction-overlay` | 🟡 In progress |
-| **Tips banner** — rotating tips while waiting / rolling | `feat/tips` | 🟡 In progress |
-| **Dice: numbers vs dots** setting | `feat/dice-style` | 🟡 In progress |
-| **Responsive board** — `useWindowDimensions`, iPad max width | `feat/responsive-board` | 🟡 In progress |
-| **Settings** from home + game prefs section | `feat/game-settings` | 🟡 In progress |
-| **Game logic unit tests** (`moves.ts`, pip count, bear-off) | `test/game-logic` | 🟡 In progress |
+| **Game state persistence** (MMKV, resume on launch) | #34–#35 | Done |
+| **Bear-off tappable** | #34 | Done |
+| **Roll phase UX** — board doesn’t steal focus; pulsing Roll CTA | #38 | Done |
+| **Move hints toggle** — glow on stacks with legal moves | #38 | Done |
+| **Single-movable pulse** — only one stack can move | #38 | Done |
+| **Stack join preview** — ghost checker on press-in to legal stack | #38 | Done |
+| **Direction overlay** — horseshoe path (like backgammon.com) | #38 | Done |
+| **Tips banner** — rotating tips while waiting / rolling | #38 | Done |
+| **Dice: numbers vs dots** setting | #38 | Done |
+| **Responsive board** — `useWindowDimensions`, iPad max width | #38 | Done |
+| **Settings** from home + game prefs section | #38 | Done |
+| **Checker slide animation** (single + capture + bear-off) | #38 | Done |
+| **Compound dice moves** — one tap uses both dice | #39 | 🟡 In review |
+| **Opening roll** — correct first player | #37 | Done |
+| **Back navigation** — game state preserved | #36 | Done |
+| **Game logic unit tests** (`moves.ts`, pip count, bear-off, animation layout) | various | Done |
+| **Dice roll shuffle animation** | #40 | In review (v0.1.2 candidate) |
 | **Landscape** layout pass + screenshot | Planned | |
 
 ---

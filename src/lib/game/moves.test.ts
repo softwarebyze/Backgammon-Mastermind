@@ -7,9 +7,12 @@ import {
   allCheckersInHome,
   applyDiceRoll,
   applyMove,
+  applyMoveSequence,
   applyOpeningDieRoll,
   calculatePipCount,
+  findMoveSequence,
   getLegalMoves,
+  getReachableDestinations,
   hasAnyLegalMove,
   rollDice,
 } from './moves';
@@ -113,6 +116,61 @@ describe('getLegalMoves', () => {
     };
     const moves = getLegalMoves(state);
     expect(moves.every(m => m.from === 0)).toBe(true);
+  });
+});
+
+describe('compound moves', () => {
+  it('findMoveSequence uses both dice in one tap (TestFlight #4)', () => {
+    let state = createInitialState('vs-human');
+    state = {
+      ...state,
+      phase: 'moving',
+      currentPlayer: 'white',
+      dice: [1, 2],
+      remainingDice: [1, 2],
+      points: state.points.map((p, i) => {
+        if (i === 10) {
+          return { player: 'white', count: 1 };
+        }
+        if (i === 9 || i === 7) {
+          return { player: null, count: 0 };
+        }
+        return { player: null, count: 0 };
+      }),
+      bar: { white: 0, black: 0 },
+      borneOff: { white: 0, black: 0 },
+    };
+
+    const sequence = findMoveSequence(state, 10, 7);
+    expect(sequence).toHaveLength(2);
+    expect(sequence!.map(m => m.to)).toEqual([9, 7]);
+
+    const next = applyMoveSequence(state, sequence!);
+    expect(next.points[7]).toEqual({ player: 'white', count: 1 });
+    expect(next.remainingDice).toEqual([]);
+    expect(next.phase).toBe('rolling');
+  });
+
+  it('getReachableDestinations includes compound targets beyond single-die moves', () => {
+    let state = createInitialState('vs-human');
+    state = {
+      ...state,
+      phase: 'moving',
+      currentPlayer: 'white',
+      dice: [1, 2],
+      remainingDice: [1, 2],
+      points: state.points.map((p, i) =>
+        i === 10 ? { player: 'white', count: 1 } : { player: null, count: 0 },
+      ),
+      bar: { white: 0, black: 0 },
+      borneOff: { white: 0, black: 0 },
+    };
+
+    const reachable = getReachableDestinations(state, 10);
+    expect(reachable.has(9)).toBe(true);
+    expect(reachable.has(8)).toBe(true);
+    expect(reachable.has(7)).toBe(true);
+    expect(reachable.get(7)).toHaveLength(2);
   });
 });
 
