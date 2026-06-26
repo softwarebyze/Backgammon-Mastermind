@@ -34,14 +34,26 @@ Listing copy lives in **`store.config.json`** at the repo root. EAS Metadata is 
 Set `apple.version` in `store.config.json` to match the editable App Store Connect version (e.g. `"0.1.0"`). Without it, EAS defaults to `1.0` and `metadata:push` fails with a missing `versionString` error.
 
 ```sh
-# After first binary is in App Store Connect:
+# After first binary is in App Store Connect (preview app 6781121420):
 pnpm metadata:pull    # optional — import existing ASC listing
-pnpm metadata:push    # push store.config.json to App Store Connect
+pnpm metadata:push    # push store.config.json to preview ASC app
 ```
 
 If `metadata:push` fails on version info, create version **0.1.0** in App Store Connect (App → iOS App → **+** Version) so it matches your binary and `store.config.json`.
 
-**Submit the right build to the right ASC app:** Preview IPAs use `com.backgammonmastermind.preview`. The development ASC app (`6780139011`, bundle `com.backgammonmastermind.development`) will **never** show a preview build — check bundle ID if the Build section is empty.
+If `metadata:push` fails with *app name already used*, the development ASC app (`6780139011`) already owns **Backgammon Mastermind**. Preview metadata still updates version, categories, age rating, and review notes — only the localized **title** sync fails until you rename one of the ASC apps or ship production.
+
+**Submit the right build to the right ASC app:** Three separate App Store Connect records — do not mix them up.
+
+| EAS env | Bundle ID | ASC app name | Apple ID (`ascAppId`) | TestFlight builds |
+|---------|-----------|--------------|----------------------|-------------------|
+| `development` | `com.backgammonmastermind.development` | Backgammon Mastermind | `6780139011` | Dev-client internal builds only |
+| `preview` | `com.backgammonmastermind.preview` | BackgammonMastermind (d8480c) | **`6781121420`** | **QA / TestFlight** (`pnpm build:preview:ios`) |
+| `production` | `com.backgammonmastermind` | *(not created yet)* | — | App Store release (future) |
+
+Preview IPAs must go to **`6781121420`**. Sending them to the development app (`6780139011`) fails with error **90055** (*bundle identifier cannot be changed*).
+
+`eas.json` submit profiles pin `ascAppId` for preview; production omits it until a production ASC record exists.
 
 `eas submit` reads bundle ID from **local** env by default (`.env` → `development`). Always pass preview env when submitting preview builds:
 

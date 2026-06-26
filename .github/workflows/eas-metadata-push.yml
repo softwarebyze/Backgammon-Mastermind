@@ -32,5 +32,3 @@ jobs:
 
       - name: 📝 Push metadata (preview listing)
         run: pnpm metadata:push
-        env:
-          EXPO_PUBLIC_APP_ENV: preview
