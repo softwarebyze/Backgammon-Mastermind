@@ -18,6 +18,8 @@ export function GameOptionsScreen() {
     setShowMoveHints,
     setShowDirectionOverlay,
     setDiceDisplayStyle,
+    setAutoRoll,
+    setAutoMoveWhenForced,
   } = useGamePreferences();
 
   const openSettings = React.useCallback(() => {
@@ -45,6 +47,8 @@ export function GameOptionsScreen() {
         onShowMoveHintsChange={setShowMoveHints}
         onShowDirectionOverlayChange={setShowDirectionOverlay}
         onDiceDisplayStyleChange={setDiceDisplayStyle}
+        onAutoRollChange={setAutoRoll}
+        onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
         showHints
       />
 
