@@ -48,6 +48,7 @@ export default function RootLayout() {
           options={{
             headerShown: false,
             animation: 'slide_from_bottom',
+            gestureEnabled: false,
             contentStyle: { backgroundColor: '#1E0C02' },
           }}
         />

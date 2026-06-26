@@ -28,6 +28,7 @@ export const gamePlayScreenOptions: NativeStackNavigationOptions = {
   headerShown: true,
   headerShadowVisible: false,
   headerBackButtonDisplayMode: 'minimal',
+  gestureEnabled: false,
   headerStyle: gameHeaderStyle,
   headerTintColor: GAME_PALETTE.accent,
   headerTitleStyle: gameHeaderTitleStyle,
