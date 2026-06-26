@@ -1,6 +1,6 @@
 export type Player = 'white' | 'black';
 export type GameMode = 'vs-computer' | 'vs-human';
-export type GamePhase = 'opening-roll' | 'rolling' | 'moving' | 'game-over';
+export type GamePhase = 'opening-roll' | 'rolling' | 'moving' | 'no-move' | 'game-over';
 
 export type BoardPoint = {
   player: Player | null;

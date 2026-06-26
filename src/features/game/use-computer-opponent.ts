@@ -1,8 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
-import type { GameState, Move, Player } from '@/lib/game';
+import type { GameState, Move } from '@/lib/game';
 import { useEffect, useRef } from 'react';
 
-import { applyDiceRoll, applyOpeningDieRoll, getAIMove, rollDice, rollOpeningDie } from '@/lib/game';
+import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 
 type ComputerOpponentOptions = {
   state: GameState | null;
@@ -40,7 +40,12 @@ export function useComputerOpponent({
     if (isAnimating)
       return clearAITimeout;
 
-    const delay = state.phase === 'opening-roll' || state.phase === 'rolling' ? 1200 : 0;
+    const delay
+      = state.phase === 'opening-roll' || state.phase === 'rolling'
+        ? 1200
+        : state.phase === 'no-move'
+          ? 1500
+          : 0;
     if (delay === 0 && state.phase !== 'moving') {
       return clearAITimeout;
     }
@@ -63,18 +68,15 @@ export function useComputerOpponent({
         return;
       }
 
+      if (prev.phase === 'no-move') {
+        setState(passTurn(prev));
+        return;
+      }
+
       if (prev.phase === 'moving') {
         const move = getAIMove(prev);
         if (!move) {
-          setState({
-            ...prev,
-            currentPlayer: 'white' as Player,
-            dice: [0, 0] as [number, number],
-            remainingDice: [],
-            phase: 'rolling' as const,
-            selectedPoint: null,
-            legalMovesForSelected: [],
-          });
+          setState(passTurn(prev));
           return;
         }
         playMove(prev, move);

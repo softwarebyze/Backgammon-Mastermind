@@ -14,6 +14,7 @@ import {
   getLegalMoves,
   getReachableDestinations,
   hasAnyLegalMove,
+  passTurn,
   rollDice,
 } from './moves';
 
@@ -79,7 +80,7 @@ describe('applyDiceRoll', () => {
     expect(next.remainingDice).toEqual([4, 4, 4, 4]);
   });
 
-  it('passes the turn when no legal move exists', () => {
+  it('enters no-move phase when no legal move exists after roll', () => {
     const state = createInitialState('vs-human');
     state.bar.white = 1;
     state.points[24].count = 1;
@@ -87,8 +88,21 @@ describe('applyDiceRoll', () => {
 
     const next = applyDiceRoll(state, [6, 6]);
 
+    expect(next.currentPlayer).toBe('white');
+    expect(next.phase).toBe('no-move');
+    expect(next.dice).toEqual([6, 6]);
+    expect(next.remainingDice).toEqual([6, 6, 6, 6]);
+  });
+
+  it('passTurn clears dice and hands play to the opponent', () => {
+    const state = createInitialState('vs-human');
+    state.bar.white = 1;
+    const blocked = applyDiceRoll(state, [6, 6]);
+    const next = passTurn(blocked);
+
     expect(next.currentPlayer).toBe('black');
     expect(next.phase).toBe('rolling');
+    expect(next.dice).toEqual([0, 0]);
     expect(next.remainingDice).toEqual([]);
   });
 });

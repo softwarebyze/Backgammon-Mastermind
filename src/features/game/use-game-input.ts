@@ -13,7 +13,7 @@ function triggerHaptic(fn: () => Promise<void>) {
 
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */
 export function useGameInput() {
-  const { state, doRollDice, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
+  const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
   const [previewTarget, setPreviewTarget] = useState<number | null>(null);
 
   const handlePointPress = useCallback(
@@ -116,6 +116,11 @@ export function useGameInput() {
     selectPoint(null);
   }, [state, selectPoint, isAnimating]);
 
+  const handlePassTurn = useCallback(() => {
+    triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+    doPassTurn();
+  }, [doPassTurn]);
+
   const handleRoll = useCallback(() => {
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
     doRollDice();
@@ -149,6 +154,7 @@ export function useGameInput() {
     handleBarPress,
     handleBoardPress,
     handleRoll,
+    handlePassTurn,
     handleReset,
     handleBack,
   };

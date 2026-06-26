@@ -14,6 +14,7 @@ type Props = {
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   onRoll: () => void;
+  onPassTurn: () => void;
   onReset: () => void;
 };
 
@@ -24,6 +25,7 @@ export function GameScreenControls({
   isHumanTurn,
   isComputerTurn,
   onRoll,
+  onPassTurn,
   onReset,
 }: Props) {
   const { preferences } = useGamePreferences();
@@ -49,6 +51,10 @@ export function GameScreenControls({
             hapticLight();
             onRoll();
           }}
+          onPassTurn={() => {
+            hapticLight();
+            onPassTurn();
+          }}
           onReset={() => {
             hapticLight();
             onReset();
@@ -67,6 +73,7 @@ function ActionControl({
   isHumanTurn,
   isComputerTurn,
   onRoll,
+  onPassTurn,
   onReset,
 }: Props) {
   if (state.phase === 'game-over') {
@@ -120,6 +127,24 @@ function ActionControl({
 
   if (state.phase === 'moving' && isComputerTurn) {
     return <StatusPlaceholder text="Moving…" />;
+  }
+
+  if (state.phase === 'no-move' && isHumanTurn) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="End turn"
+        testID="end-turn-button"
+        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        onPress={onPassTurn}
+      >
+        <Text style={styles.primaryBtnText}>End Turn</Text>
+      </Pressable>
+    );
+  }
+
+  if (state.phase === 'no-move' && isComputerTurn) {
+    return <StatusPlaceholder text="No legal moves…" />;
   }
 
   return <View style={styles.actionSpacer} />;

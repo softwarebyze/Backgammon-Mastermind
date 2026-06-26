@@ -16,12 +16,27 @@ tags:
       id: roll-dice-button
     timeout: 45000
 - takeScreenshot: 02-game-board
-- tapOn:
-    id: roll-dice-button
+# Opening roll + ties + no-move: tap while roll/end-turn visible, then wait for board
+- repeat:
+    times: 6
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: roll-dice-button
+          commands:
+            - tapOn:
+                id: roll-dice-button
+      - runFlow:
+          when:
+            visible:
+              id: end-turn-button
+          commands:
+            - tapOn:
+                id: end-turn-button
 - extendedWaitUntil:
-    notVisible:
-      id: roll-dice-button
-    timeout: 30000
+    visible: Point 1
+    timeout: 90000
 - takeScreenshot: 03-after-opening
 - assertVisible: Point 1
 - takeScreenshot: 04-smoke-complete

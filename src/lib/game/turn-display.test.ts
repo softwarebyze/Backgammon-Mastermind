@@ -68,4 +68,18 @@ describe('turn-display', () => {
     const turn = getTurnDisplay(state);
     expect(getActionCaption(state, turn)).toBe('Move your white checkers');
   });
+
+  it('explains blocked bar entry with rolled dice visible (#43)', () => {
+    const state = createInitialState('vs-computer');
+    state.bar.white = 1;
+    state.points[24].count = 1;
+    state.points[13].count = 0;
+    const blocked = applyDiceRoll(state, [6, 6]);
+    const turn = getTurnDisplay(blocked);
+    expect(blocked.phase).toBe('no-move');
+    expect(blocked.dice).toEqual([6, 6]);
+    expect(getActionCaption(blocked, turn)).toBe(
+      'Can\'t enter from the bar with 6 and 6 — end your turn',
+    );
+  });
 });

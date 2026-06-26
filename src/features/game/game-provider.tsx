@@ -10,6 +10,7 @@ import {
   applyDiceRoll,
   applyOpeningDieRoll,
   createInitialState,
+  passTurn,
   rollDice,
   rollOpeningDie,
 } from '@/lib/game';
@@ -71,6 +72,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, [clearAITimeout]);
 
+  const doPassTurn = useCallback(() => {
+    if (isAnimating) {
+      return;
+    }
+    setState((prev) => {
+      if (!prev || prev.phase !== 'no-move') {
+        return prev;
+      }
+      if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
+        return prev;
+      }
+      return passTurn(prev);
+    });
+  }, [isAnimating]);
+
   const doRollDice = useCallback(() => {
     if (isAnimating) {
       return;
@@ -101,6 +117,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         resumeGame,
         resetGame,
         doRollDice,
+        doPassTurn,
         selectPoint,
         doMove,
         doMoveSequence,
