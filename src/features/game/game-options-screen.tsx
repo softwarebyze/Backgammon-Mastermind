@@ -5,7 +5,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Pressable, ScrollView, Text, View } from '@/components/ui';
 import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
+import { MoveHistoryList } from '@/features/game/components/move-history-list';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { useGame } from '@/features/game/use-game';
 import { SettingsChevron } from '@/features/settings/components/settings-chevron';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
@@ -21,6 +23,7 @@ export function GameOptionsScreen() {
     setAutoRoll,
     setAutoMoveWhenForced,
   } = useGamePreferences();
+  const { moveLog } = useGame();
 
   const openSettings = React.useCallback(() => {
     hapticLight();
@@ -52,6 +55,9 @@ export function GameOptionsScreen() {
         showHints
       />
 
+      <Text className="text-base font-semibold" style={styles.sectionTitle}>Move history</Text>
+      <MoveHistoryList entries={moveLog} />
+
       <Pressable accessibilityRole="link" style={styles.row} onPress={openSettings}>
         <View style={styles.rowBody}>
           <Text className="text-base font-semibold" style={styles.rowText} tx="game.options.open_settings" />
@@ -76,6 +82,10 @@ const styles = StyleSheet.create({
   },
   title: {
     color: GAME_PALETTE.text,
+  },
+  sectionTitle: {
+    color: GAME_PALETTE.text,
+    marginTop: 4,
   },
   row: {
     flexDirection: 'row',

@@ -1,7 +1,9 @@
+import type { MoveLogEntry } from './move-log';
 import type { GameState } from './types';
 import { getItem, removeItem, setItem } from '@/lib/storage';
 
 const ACTIVE_GAME_KEY = 'ACTIVE_GAME_STATE';
+const MOVE_LOG_KEY = 'ACTIVE_GAME_MOVE_LOG';
 
 export function isResumableGame(state: GameState | null | undefined): boolean {
   return state != null && state.phase !== 'game-over';
@@ -25,6 +27,15 @@ export function loadActiveGame(): GameState | null {
 
 export function clearActiveGame(): void {
   removeItem(ACTIVE_GAME_KEY);
+  removeItem(MOVE_LOG_KEY);
+}
+
+export function saveMoveLog(log: MoveLogEntry[]): void {
+  void setItem(MOVE_LOG_KEY, log);
+}
+
+export function loadMoveLog(): MoveLogEntry[] {
+  return getItem<MoveLogEntry[]>(MOVE_LOG_KEY) ?? [];
 }
 
 export function hasSavedGame(): boolean {
