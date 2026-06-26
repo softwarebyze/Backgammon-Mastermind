@@ -1,10 +1,10 @@
-import { router } from 'expo-router';
-import { useNavigation } from 'expo-router/react-navigation';
-import { useCallback, useLayoutEffect } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { router, useNavigation } from 'expo-router';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
+import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GameHeaderActions } from '@/components/navigation/game-header-actions';
+import { GameHomeButton } from '@/components/navigation/game-home-button';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
@@ -14,6 +14,7 @@ import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
+import { useLeaveGame } from '@/features/game/use-leave-game';
 import { hapticLight } from '@/lib/haptics';
 
 export function GameScreen() {
@@ -34,6 +35,7 @@ export function GameScreen() {
     handleReset,
   } = useGameInput();
   const { moveAnimation } = useGame();
+  const { confirmLeaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
 
   const openOptions = useCallback(() => {
     hapticLight();
@@ -46,11 +48,30 @@ export function GameScreen() {
     }
     navigation.setOptions({
       title: '',
+      headerLeft: () => <GameHomeButton onPress={confirmLeaveGame} />,
       headerRight: () => (
         <GameHeaderActions onOptions={openOptions} onReset={handleReset} />
       ),
     });
-  }, [navigation, state, handleReset, openOptions]);
+  }, [navigation, state, handleReset, openOptions, confirmLeaveGame]);
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    return () => subscription.remove();
+  }, [handleBackPress]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (event) => {
+      if (allowLeaveRef.current) {
+        return;
+      }
+      if (event.data.action.type === 'GO_BACK' || event.data.action.type === 'POP') {
+        event.preventDefault();
+        confirmLeaveGame();
+      }
+    });
+    return unsubscribe;
+  }, [navigation, confirmLeaveGame, allowLeaveRef]);
 
   if (!state) {
     return (
