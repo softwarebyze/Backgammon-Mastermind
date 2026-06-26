@@ -1,19 +1,15 @@
 import type * as React from 'react';
-import type { GameMode, GameState } from '@/lib/game';
+import type { GameMode } from '@/lib/game';
 import { useCallback, useEffect, useState } from 'react';
 import { GameContext } from '@/features/game/game-context';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
+import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
 import { useGameSelectPoint } from '@/features/game/use-game-select-point';
 import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
-
+import { useMoveLog } from '@/features/game/use-move-log';
 import {
-  applyDiceRoll,
-  applyOpeningDieRoll,
   createInitialState,
-  passTurn,
-  rollDice,
-  rollOpeningDie,
 } from '@/lib/game';
 import {
   clearActiveGame,
@@ -23,16 +19,25 @@ import {
 } from '@/lib/game/persistence';
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<GameState | null>(() => loadRestorableGame());
+  const [state, setState] = useState(() => loadRestorableGame());
+  const {
+    moveLog,
+    recordMove,
+    resetMoveLog,
+    reloadMoveLog,
+    persistMoveLog,
+  } = useMoveLog();
+
   const {
     moveAnimation,
     isAnimating,
     doMove,
     doMoveSequence,
     playMove,
-  } = useAnimatedMoves(state, setState);
+  } = useAnimatedMoves(state, setState, recordMove);
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const clearAITimeout = useComputerOpponent({ state, setState, playMove, isAnimating });
+  const { doPassTurn, doRollDice } = useGameDiceActions(setState, isAnimating);
 
   useEffect(() => {
     if (!state) {
@@ -43,13 +48,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     saveActiveGame(state);
-  }, [state]);
+    persistMoveLog(moveLog);
+  }, [state, moveLog, persistMoveLog]);
 
   const startGame = useCallback((mode: GameMode) => {
     clearAITimeout();
     clearActiveGame();
+    resetMoveLog();
     setState(createInitialState(mode));
-  }, [clearAITimeout]);
+  }, [clearAITimeout, resetMoveLog]);
 
   const resumeGame = useCallback(() => {
     const saved = loadRestorableGame();
@@ -57,12 +64,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
     clearAITimeout();
+    reloadMoveLog();
     setState(saved);
     return true;
-  }, [clearAITimeout]);
+  }, [clearAITimeout, reloadMoveLog]);
 
   const resetGame = useCallback(() => {
     clearAITimeout();
+    resetMoveLog();
     setState((prev) => {
       if (!prev) {
         return null;
@@ -71,44 +80,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       saveActiveGame(next);
       return next;
     });
-  }, [clearAITimeout]);
-
-  const doPassTurn = useCallback(() => {
-    if (isAnimating) {
-      return;
-    }
-    setState((prev) => {
-      if (!prev || prev.phase !== 'no-move') {
-        return prev;
-      }
-      if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
-        return prev;
-      }
-      return passTurn(prev);
-    });
-  }, [isAnimating]);
-
-  const doRollDice = useCallback(() => {
-    if (isAnimating) {
-      return;
-    }
-    setState((prev) => {
-      if (!prev) {
-        return prev;
-      }
-      if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
-        return prev;
-      }
-      if (prev.phase === 'opening-roll') {
-        return applyOpeningDieRoll(prev, rollOpeningDie());
-      }
-      if (prev.phase !== 'rolling') {
-        return prev;
-      }
-      const dice = rollDice();
-      return applyDiceRoll(prev, dice);
-    });
-  }, [isAnimating]);
+  }, [clearAITimeout, resetMoveLog]);
 
   useGameplayHelpers({ state, isAnimating, doRollDice, doMove });
 
@@ -116,6 +88,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     <GameContext
       value={{
         state,
+        moveLog,
         startGame,
         resumeGame,
         resetGame,

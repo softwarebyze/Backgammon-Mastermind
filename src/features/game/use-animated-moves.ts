@@ -12,6 +12,7 @@ export type { MoveAnimationFrame } from '@/features/game/move-animation';
 export function useAnimatedMoves(
   state: GameState | null,
   setState: Dispatch<SetStateAction<GameState | null>>,
+  onMoveApplied?: (snapshot: GameState, move: Move) => void,
 ) {
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -29,11 +30,12 @@ export function useAnimatedMoves(
   ) => {
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, () => {
       const next = applyMove(snapshot, move);
+      onMoveApplied?.(snapshot, move);
       setState(next);
       setMoveAnimation(null);
       onComplete?.(next);
     }));
-  }, [setState]);
+  }, [setState, onMoveApplied]);
 
   const playMoveSequence = useCallback((snapshot: GameState, moves: Move[]) => {
     if (moves.length === 0 || isAnimatingRef.current) {
