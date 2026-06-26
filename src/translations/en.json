@@ -6,6 +6,10 @@
       "title": "Game options"
     },
     "preferences": {
+      "auto_move": "Auto-move when forced",
+      "auto_move_hint": "Play the only legal move automatically",
+      "auto_roll": "Auto-roll dice",
+      "auto_roll_hint": "Roll automatically on your turn",
       "dice_display": "Dice display",
       "dice_dots": "Dots",
       "dice_numbers": "Numbers",

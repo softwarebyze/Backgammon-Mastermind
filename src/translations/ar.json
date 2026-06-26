@@ -6,6 +6,10 @@
       "title": "خيارات اللعبة"
     },
     "preferences": {
+      "auto_move": "حركة تلقائية عند الإجبار",
+      "auto_move_hint": "تنفيذ الحركة الوحيدة المتاحة تلقائياً",
+      "auto_roll": "رمي تلقائي للنرد",
+      "auto_roll_hint": "رمي النرد تلقائياً في دورك",
       "dice_display": "عرض النرد",
       "dice_dots": "نقاط",
       "dice_numbers": "أرقام",

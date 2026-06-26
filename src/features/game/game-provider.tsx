@@ -5,6 +5,7 @@ import { GameContext } from '@/features/game/game-context';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 import { useGameSelectPoint } from '@/features/game/use-game-select-point';
+import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 
 import {
   applyDiceRoll,
@@ -108,6 +109,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       return applyDiceRoll(prev, dice);
     });
   }, [isAnimating]);
+
+  useGameplayHelpers({ state, isAnimating, doRollDice, doMove });
 
   return (
     <GameContext

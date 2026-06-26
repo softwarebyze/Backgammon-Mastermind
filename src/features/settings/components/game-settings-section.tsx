@@ -13,6 +13,8 @@ export function GameSettingsSection() {
     setShowMoveHints,
     setShowDirectionOverlay,
     setDiceDisplayStyle,
+    setAutoRoll,
+    setAutoMoveWhenForced,
   } = useGamePreferences();
 
   return (
@@ -23,6 +25,8 @@ export function GameSettingsSection() {
         onShowMoveHintsChange={setShowMoveHints}
         onShowDirectionOverlayChange={setShowDirectionOverlay}
         onDiceDisplayStyleChange={setDiceDisplayStyle}
+        onAutoRollChange={setAutoRoll}
+        onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
       />
     </View>
   );

@@ -42,10 +42,20 @@ export function useGamePreferences() {
     updatePreferences({ diceDisplayStyle });
   }, []);
 
+  const setAutoRoll = useCallback((autoRoll: boolean) => {
+    updatePreferences({ autoRoll });
+  }, []);
+
+  const setAutoMoveWhenForced = useCallback((autoMoveWhenForced: boolean) => {
+    updatePreferences({ autoMoveWhenForced });
+  }, []);
+
   return {
     preferences,
     setShowMoveHints,
     setShowDirectionOverlay,
     setDiceDisplayStyle,
+    setAutoRoll,
+    setAutoMoveWhenForced,
   };
 }

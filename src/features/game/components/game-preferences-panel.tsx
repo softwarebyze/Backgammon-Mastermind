@@ -15,6 +15,8 @@ type Props = {
   onShowMoveHintsChange: (value: boolean) => void;
   onShowDirectionOverlayChange: (value: boolean) => void;
   onDiceDisplayStyleChange: (style: GamePreferences['diceDisplayStyle']) => void;
+  onAutoRollChange: (value: boolean) => void;
+  onAutoMoveWhenForcedChange: (value: boolean) => void;
   showHints?: boolean;
 };
 
@@ -23,6 +25,8 @@ export function GamePreferencesPanel({
   onShowMoveHintsChange,
   onShowDirectionOverlayChange,
   onDiceDisplayStyleChange,
+  onAutoRollChange,
+  onAutoMoveWhenForcedChange,
   showHints = false,
 }: Props) {
   return (
@@ -51,6 +55,24 @@ export function GamePreferencesPanel({
           hint={showHints ? translate('game.preferences.direction_overlay_hint') : undefined}
           value={preferences.showDirectionOverlay}
           onChange={onShowDirectionOverlayChange}
+        />
+      </View>
+
+      <View style={styles.card}>
+        <SettingToggleRow
+          icon={<MoveHintIcon size={32} />}
+          label={translate('game.preferences.auto_roll')}
+          hint={showHints ? translate('game.preferences.auto_roll_hint') : undefined}
+          value={preferences.autoRoll}
+          onChange={onAutoRollChange}
+        />
+        <View style={styles.divider} />
+        <SettingToggleRow
+          icon={<MoveHintIcon size={32} />}
+          label={translate('game.preferences.auto_move')}
+          hint={showHints ? translate('game.preferences.auto_move_hint') : undefined}
+          value={preferences.autoMoveWhenForced}
+          onChange={onAutoMoveWhenForcedChange}
         />
       </View>
 
