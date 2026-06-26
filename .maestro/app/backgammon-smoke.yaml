@@ -16,11 +16,33 @@ tags:
       id: roll-dice-button
     timeout: 45000
 - takeScreenshot: 02-game-board
+# Opening roll (white + AI black); ties re-show roll-dice-button — tap up to 3 times
 - tapOn:
     id: roll-dice-button
 - extendedWaitUntil:
     notVisible:
       id: roll-dice-button
+    timeout: 45000
+- tapOn:
+    id: roll-dice-button
+    optional: true
+- extendedWaitUntil:
+    notVisible:
+      id: roll-dice-button
+    timeout: 45000
+- tapOn:
+    id: roll-dice-button
+    optional: true
+- extendedWaitUntil:
+    notVisible:
+      id: roll-dice-button
+    timeout: 45000
+# no-move phase (e.g. blocked bar): end turn so board is playable
+- tapOn:
+    id: end-turn-button
+    optional: true
+- extendedWaitUntil:
+    visible: Point 1
     timeout: 30000
 - takeScreenshot: 03-after-opening
 - assertVisible: Point 1
