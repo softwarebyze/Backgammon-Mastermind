@@ -31,7 +31,7 @@ Use this before the first App Store / Play Store submission.
 - [x] Turn indicator — clear white/black whose-turn UI (PR #23)
 - [x] App Store listing draft in `store.config.json` (EAS Metadata)
 - [x] Review phone: `+1 954 593 1670` in `store.config.json`
-- [x] Set `EXPO_PUBLIC_APP_STORE_ID` in production EAS env (`6780139011`)
+- [x] Set `EXPO_PUBLIC_APP_STORE_ID` in production EAS env — **currently `6780139011` (development ASC app; update when production record exists)**
 - [x] Contact email: `zackebenfeld@gmail.com` in app + legal docs
 
 ## Versioning & builds
@@ -42,7 +42,7 @@ Use this before the first App Store / Play Store submission.
 | 2. iOS dev client | Done | [Dev build](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/79a79243-8e7f-4a44-9c79-af626e9e059f) |
 | 3. Device QA | Done | Playtesting complete |
 | 4. Preview build (TestFlight) | Done | [iOS preview `2f5c68b0`](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/2f5c68b0-301e-4c5a-b5cc-7488a88318dd) · [Android preview `aee7ba16`](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/aee7ba16-f971-436c-9269-040ff718536a) |
-| 5. Submit to stores | iOS done · Android pending | iOS [submitted](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/submissions/90031a40-253a-40de-9e4b-70925391f8cf) · `pnpm metadata:push` ✅ · Play first upload manual |
+| 5. Submit to stores | iOS preview → **`6781121420`** · Android pending | Preview TestFlight: [6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) · Dev app: [6780139011](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios) |
 | 6. Production build | Pending | Actions → **EAS Production Build** after TestFlight QA |
 
 ## Store listing requirements

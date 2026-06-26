@@ -13,7 +13,7 @@ How we ship **TestFlight**, **App Store**, and **GitHub** releases for Backgammo
 | Verify locally | `pnpm check-all` |
 | iOS TestFlight binary + submit | Actions → **EAS QA Build** (auto `--auto-submit` on iOS preview) |
 | Submit to TestFlight (manual) | `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
-| Push App Store listing | Actions → **EAS Metadata Push** or `pnpm metadata:push` |
+| Push App Store listing | Actions → **EAS Metadata Push** or `pnpm metadata:push` (targets **preview** ASC app) |
 | Marketing renders | `cd remotion && pnpm render:all` → copy to `docs/remotion/after/` |
 | Tag + GitHub Release | Actions → **New App Version** (patch) or manual tag |
 
@@ -79,7 +79,7 @@ See [ios-testing-and-store.md](./ios-testing-and-store.md) if the build does not
 
 ```bash
 # After binary is processed in ASC — create version 0.1.1 in ASC if needed
-pnpm metadata:push
+pnpm metadata:push   # uses preview submit profile → ASC app 6781121420
 ```
 
 - App Store screenshots: device captures or `docs/remotion/after/` + `docs/marketing/v0.1.1/`
@@ -87,9 +87,11 @@ pnpm metadata:push
 
 ### 6. TestFlight QA
 
-1. [App Store Connect → TestFlight](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios)
+1. [App Store Connect → TestFlight (preview app)](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) — **BackgammonMastermind (d8480c)**, bundle `com.backgammonmastermind.preview`
 2. Enable **internal testing** group
 3. Smoke test on device: new game, roll (dice animation), compound move, resume, back to home
+
+> **Do not** look for preview builds under [6780139011](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios) — that is the **development** ASC app (`com.backgammonmastermind.development`). Preview uploads sent there fail with error **90055**.
 
 ### 7. GitHub Release
 
