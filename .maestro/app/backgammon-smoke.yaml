@@ -16,34 +16,27 @@ tags:
       id: roll-dice-button
     timeout: 45000
 - takeScreenshot: 02-game-board
-# Opening roll (white + AI black); ties re-show roll-dice-button — tap up to 3 times
-- tapOn:
-    id: roll-dice-button
-- extendedWaitUntil:
-    notVisible:
-      id: roll-dice-button
-    timeout: 45000
-- tapOn:
-    id: roll-dice-button
-    optional: true
-- extendedWaitUntil:
-    notVisible:
-      id: roll-dice-button
-    timeout: 45000
-- tapOn:
-    id: roll-dice-button
-    optional: true
-- extendedWaitUntil:
-    notVisible:
-      id: roll-dice-button
-    timeout: 45000
-# no-move phase (e.g. blocked bar): end turn so board is playable
-- tapOn:
-    id: end-turn-button
-    optional: true
+# Opening roll + ties + no-move: tap while roll/end-turn visible, then wait for board
+- repeat:
+    times: 6
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: roll-dice-button
+          commands:
+            - tapOn:
+                id: roll-dice-button
+      - runFlow:
+          when:
+            visible:
+              id: end-turn-button
+          commands:
+            - tapOn:
+                id: end-turn-button
 - extendedWaitUntil:
     visible: Point 1
-    timeout: 30000
+    timeout: 90000
 - takeScreenshot: 03-after-opening
 - assertVisible: Point 1
 - takeScreenshot: 04-smoke-complete
