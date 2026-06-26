@@ -30,6 +30,7 @@ export function GameScreen() {
     handleBarPress,
     handleBoardPress,
     handleRoll,
+    handlePassTurn,
     handleReset,
   } = useGameInput();
   const { moveAnimation } = useGame();
@@ -94,6 +95,7 @@ export function GameScreen() {
         isHumanTurn={isHumanTurn}
         isComputerTurn={isComputerTurn}
         onRoll={handleRoll}
+        onPassTurn={handlePassTurn}
         onReset={handleReset}
       />
     </View>

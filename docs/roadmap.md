@@ -6,6 +6,24 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 
 ---
 
+## Active sprint — Epic #50: Game review & automation
+
+**Tracking issue:** [#50 Epic: Game review & automation](https://github.com/softwarebyze/Backgammon-Mastermind/issues/50)
+
+| Order | Issue | PR scope | Status |
+|-------|-------|----------|--------|
+| 1 | [#43](https://github.com/softwarebyze/Backgammon-Mastermind/issues/43) Show rolled dice when bar entry blocked | `no-move` phase + End Turn UX | 🟡 In progress |
+| 2 | [#49](https://github.com/softwarebyze/Backgammon-Mastermind/issues/49) Replace swipe-back with intentional exit | Header back / confirm dialog | Backlog |
+| 3 | [#47](https://github.com/softwarebyze/Backgammon-Mastermind/issues/47) Auto-roll dice (settings) | Gameplay helpers prefs | Backlog |
+| 4 | [#48](https://github.com/softwarebyze/Backgammon-Mastermind/issues/48) Auto-move when one legal move | Shared with #47 | Backlog |
+| 5 | [#45](https://github.com/softwarebyze/Backgammon-Mastermind/issues/45) Full move history log | `src/lib/game/history.ts` + UI panel | Backlog |
+| 6 | [#44](https://github.com/softwarebyze/Backgammon-Mastermind/issues/44) Undo / redo moves | Snapshot stack (shares infra with #45) | Backlog |
+| 7 | [#46](https://github.com/softwarebyze/Backgammon-Mastermind/issues/46) Replay scrubber | Builds on snapshots + log | Backlog |
+
+**Dependency note:** #45 → #44 → #46 share a move-snapshot model. #47/#48 share settings UI. #43 and #49 are independent polish.
+
+---
+
 ## Milestone 0 — Ship quality bar (template fork + CI)
 
 **Goal:** Every PR gets the same guardrails; fork notes live in `docs/obytes-template-playbook.md`.
@@ -13,6 +31,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Item | PR scope | Status |
 |------|----------|--------|
 | Knip unused-export CI | `.github/workflows/knip.yml` + `knip.json` | Done |
+| React Doctor advisory CI | `.github/workflows/react-doctor.yml` (#41) | Done |
 | Bundle size delta on PR | `size-limit` or `@expo/bundle-analyzer` workflow | Planned |
 | Screenshot diff CI (iPad, web, phone) | Argent / Percy + tablet landscape | Planned |
 | Maestro recordings per release | `.maestro/app/` flows + artifact upload | 🟡 In progress |
@@ -25,7 +44,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 
 ## Milestone 1 — Playable & trustworthy (MVP+)
 
-**Goal:** Never lose a game; core UX feels intentional; beginners aren’t lost.
+**Goal:** Never lose a game; core UX feels intentional; beginners aren't lost.
 
 **v0.1.1 (shipped)** — persistence, resume, opening roll, back-nav, checker slide animations, compound moves (#39), Maestro smoke with `roll-dice-button` testID. Evidence: `docs/evidence/v0.1.1/`.
 
@@ -33,7 +52,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 |------|-----|--------|
 | **Game state persistence** (MMKV, resume on launch) | #34–#35 | Done |
 | **Bear-off tappable** | #34 | Done |
-| **Roll phase UX** — board doesn’t steal focus; pulsing Roll CTA | #38 | Done |
+| **Roll phase UX** — board doesn't steal focus; pulsing Roll CTA | #38 | Done |
 | **Move hints toggle** — glow on stacks with legal moves | #38 | Done |
 | **Single-movable pulse** — only one stack can move | #38 | Done |
 | **Stack join preview** — ghost checker on press-in to legal stack | #38 | Done |
@@ -48,6 +67,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | **Back navigation** — game state preserved | #36 | Done |
 | **Game logic unit tests** (`moves.ts`, pip count, bear-off, animation layout) | various | Done |
 | **Dice roll shuffle animation** | #40 | Done |
+| **Blocked bar dice visibility** | #43 | 🟡 In progress |
 | **Landscape** layout pass + screenshot | Planned | |
 
 ---
@@ -57,9 +77,9 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Item | Notes |
 |------|-------|
 | Lesson modules | Board setup, direction, hitting, bearing off, doubling |
-| Interactive “Try it” boards | Like [bearing off tutorial](https://backgammon.com/learn/) |
+| Interactive "Try it" boards | Like [bearing off tutorial](https://backgammon.com/learn/) |
 | Quizzes | Multiple choice at end of lessons |
-| **Puzzles** | “Find the best move” — local positions |
+| **Puzzles** | "Find the best move" — local positions |
 | Full-screen **movement compass** | Color, home board, START→HOME |
 | Animations | Hit → bar, bear-off, game start/end (Fruit Ninja energy) |
 | Tips as loading states | Queue from `src/lib/game/tips.ts` |
@@ -70,7 +90,8 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 
 | Item | Notes |
 |------|-------|
-| Move history + **save/replay** (local) | JSON in MMKV |
+| Move history + **save/replay** (local) | JSON in MMKV — issues #45, #46 |
+| **Undo / redo** | Linear stack — issue #44 |
 | Post-game **blunder summary** | Compare to AI top move |
 | Session **statistics** | Win rate, gammons, cube decisions |
 | Advanced stats dashboard | Pip equity trends, doubling mistakes |
@@ -117,6 +138,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 2. **Tests required** — Jest for logic; Maestro for flows; screenshots for visual.
 3. **Feature flags / settings** — risky UX (hints, overlays) default **on** for beginners, off for speed-run testing via settings.
 4. **No scope creep** — if a PR grows past ~400 lines, split.
+5. **Verification in PR body** — include test output table + Maestro screenshots when UI changes.
 
 ---
 

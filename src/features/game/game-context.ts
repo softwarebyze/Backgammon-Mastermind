@@ -8,6 +8,7 @@ export type GameContextType = {
   resumeGame: () => boolean;
   resetGame: () => void;
   doRollDice: () => void;
+  doPassTurn: () => void;
   selectPoint: (point: number | null) => void;
   doMove: (move: Move) => void;
   doMoveSequence: (moves: Move[]) => void;

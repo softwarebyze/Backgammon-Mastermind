@@ -150,6 +150,34 @@ export function hasAnyLegalMove(state: GameState): boolean {
   return getLegalMoves(state).length > 0;
 }
 
+/** End the current turn and hand dice to the opponent. */
+export function passTurn(state: GameState): GameState {
+  return {
+    ...cloneState(state),
+    currentPlayer: opponent(state.currentPlayer),
+    dice: [0, 0],
+    remainingDice: [],
+    phase: 'rolling',
+    selectedPoint: null,
+    legalMovesForSelected: [],
+  };
+}
+
+function finishMovingTurn(state: GameState): GameState {
+  if (state.remainingDice.length === 0) {
+    return passTurn(state);
+  }
+  if (!hasAnyLegalMove(state)) {
+    return {
+      ...state,
+      phase: 'no-move',
+      selectedPoint: null,
+      legalMovesForSelected: [],
+    };
+  }
+  return state;
+}
+
 function moveSequenceKey(at: number, remainingDice: number[]): string {
   return `${at}:${remainingDice.join(',')}`;
 }
@@ -313,14 +341,11 @@ export function applyMove(state: GameState, move: Move): GameState {
   }
 
   // Switch turn when dice are exhausted or no moves remain
+  next.selectedPoint = null;
   if (next.remainingDice.length === 0 || !hasAnyLegalMove(next)) {
-    next.currentPlayer = opp;
-    next.dice = [0, 0];
-    next.remainingDice = [];
-    next.phase = 'rolling';
+    return finishMovingTurn(next);
   }
 
-  next.selectedPoint = null;
   return next;
 }
 
@@ -397,10 +422,7 @@ export function applyDiceRoll(state: GameState, dice: [number, number]): GameSta
   if (!hasAnyLegalMove(next)) {
     return {
       ...next,
-      currentPlayer: opponent(state.currentPlayer),
-      dice: [0, 0],
-      remainingDice: [],
-      phase: 'rolling',
+      phase: 'no-move',
     };
   }
 

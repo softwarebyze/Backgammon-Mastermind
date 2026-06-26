@@ -105,5 +105,12 @@ export function getActionCaption(
     }
     return `Move your ${turn.colorLabel.toLowerCase()} checkers`;
   }
+  if (state.phase === 'no-move' && turn.isHumanTurn) {
+    const [d1, d2] = state.dice;
+    if (state.bar[state.currentPlayer] > 0) {
+      return `Can't enter from the bar with ${d1} and ${d2} — end your turn`;
+    }
+    return `No legal moves with ${d1} and ${d2} — end your turn`;
+  }
   return ' ';
 }
