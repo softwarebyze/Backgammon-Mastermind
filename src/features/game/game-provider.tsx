@@ -60,14 +60,22 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [clearAITimeout, resetMoveLog]);
 
   const resumeGame = useCallback(() => {
-    const saved = loadRestorableGame();
-    if (!saved) {
-      return false;
-    }
     clearAITimeout();
-    reloadMoveLog();
-    setState(saved);
-    return true;
+    let canResume = false;
+    setState((current) => {
+      if (isResumableGame(current)) {
+        canResume = true;
+        return current;
+      }
+      const saved = loadRestorableGame();
+      if (!saved) {
+        return current;
+      }
+      reloadMoveLog();
+      canResume = true;
+      return saved;
+    });
+    return canResume;
   }, [clearAITimeout, reloadMoveLog]);
 
   const resetGame = useCallback(() => {

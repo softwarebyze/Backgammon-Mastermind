@@ -1,12 +1,14 @@
-import { getItem } from '@/lib/storage';
+import type { GameState } from './types';
+import { getItem, setItem } from '@/lib/storage';
 
-import { createInitialState } from './constants';
-import { applyDiceRoll } from './moves';
+import { createInitialPoints, createInitialState } from './constants';
+import { applyDiceRoll, applyMove, findMoveSequence } from './moves';
 import {
   canContinueSavedGame,
   hasSavedGame,
   isResumableGame,
   loadRestorableGame,
+  saveActiveGame,
 } from './persistence';
 
 jest.mock('@/lib/storage', () => ({
@@ -16,6 +18,16 @@ jest.mock('@/lib/storage', () => ({
 }));
 
 const mockedGetItem = getItem as jest.MockedFunction<typeof getItem>;
+const mockedSetItem = setItem as jest.MockedFunction<typeof setItem>;
+
+const memoryStore: Record<string, unknown> = {};
+
+function syncStorageMock() {
+  mockedSetItem.mockImplementation(async (key, value) => {
+    memoryStore[key] = value;
+  });
+  mockedGetItem.mockImplementation(key => (memoryStore[key] as ReturnType<typeof getItem>) ?? null);
+}
 
 describe('isResumableGame', () => {
   it('returns false for null', () => {
@@ -87,5 +99,41 @@ describe('canContinueSavedGame', () => {
     const saved = createInitialState('vs-computer');
     mockedGetItem.mockReturnValue(saved);
     expect(canContinueSavedGame(null)).toBe(true);
+  });
+});
+
+describe('saveActiveGame round-trip', () => {
+  beforeEach(() => {
+    Object.keys(memoryStore).forEach(key => delete memoryStore[key]);
+    syncStorageMock();
+  });
+
+  it('restores partial doubles turn after save and load (leave/resume)', () => {
+    const points = createInitialPoints().map(() => ({ player: null as 'white' | 'black' | null, count: 0 }));
+    points[24] = { player: 'white', count: 1 };
+    points[23] = { player: 'white', count: 1 };
+    points[22] = { player: 'white', count: 1 };
+
+    let state: GameState = {
+      ...createInitialState('vs-computer'),
+      phase: 'moving',
+      currentPlayer: 'white',
+      dice: [1, 1],
+      remainingDice: [1, 1, 1, 1],
+      points,
+      bar: { white: 0, black: 0 },
+      borneOff: { white: 0, black: 0 },
+    };
+
+    for (let i = 0; i < 3; i++) {
+      const move = findMoveSequence(state, 24 - i, 23 - i)!;
+      state = applyMove(state, move[0]);
+    }
+
+    saveActiveGame(state);
+    const loaded = loadRestorableGame();
+    expect(loaded?.remainingDice).toEqual([1]);
+    expect(loaded?.currentPlayer).toBe('white');
+    expect(loaded?.phase).toBe('moving');
   });
 });
