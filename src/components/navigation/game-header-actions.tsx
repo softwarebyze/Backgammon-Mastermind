@@ -6,13 +6,54 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
 
 type Props = {
+  canUndo: boolean;
+  canRedo: boolean;
+  onUndo: () => void;
+  onRedo: () => void;
   onOptions: () => void;
   onReset: () => void;
 };
 
-export function GameHeaderActions({ onOptions, onReset }: Props) {
+export function GameHeaderActions({
+  canUndo,
+  canRedo,
+  onUndo,
+  onRedo,
+  onOptions,
+  onReset,
+}: Props) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <HeaderButton
+        accessibilityLabel="Undo move"
+        testID="undo-move-button"
+        disabled={!canUndo}
+        onPress={() => {
+          hapticLight();
+          onUndo();
+        }}
+      >
+        <Feather
+          name="corner-up-left"
+          size={20}
+          color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.textMuted}
+        />
+      </HeaderButton>
+      <HeaderButton
+        accessibilityLabel="Redo move"
+        testID="redo-move-button"
+        disabled={!canRedo}
+        onPress={() => {
+          hapticLight();
+          onRedo();
+        }}
+      >
+        <Feather
+          name="corner-up-right"
+          size={20}
+          color={canRedo ? GAME_PALETTE.accent : GAME_PALETTE.textMuted}
+        />
+      </HeaderButton>
       <HeaderButton
         accessibilityLabel="Game options"
         onPress={() => {

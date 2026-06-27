@@ -1,10 +1,8 @@
-import { router, useFocusEffect, useNavigation } from 'expo-router';
-import { useCallback, useEffect, useLayoutEffect } from 'react';
+import { router, useNavigation } from 'expo-router';
+import { useCallback, useEffect } from 'react';
 import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { GameHeaderActions } from '@/components/navigation/game-header-actions';
-import { GameHomeButton } from '@/components/navigation/game-home-button';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
@@ -14,7 +12,9 @@ import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
+import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
+import { useResetAnimationOnBlur } from '@/features/game/use-reset-animation-on-blur';
 import { hapticLight } from '@/lib/haptics';
 
 export function GameScreen() {
@@ -33,28 +33,26 @@ export function GameScreen() {
     handleRoll,
     handleReset,
   } = useGameInput();
-  const { moveAnimation, resetAnimation } = useGame();
+  const { moveAnimation, canUndo, canRedo, doUndo, doRedo } = useGame();
   const { confirmLeaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
-
-  useFocusEffect(useCallback(() => () => resetAnimation(), [resetAnimation]));
+  useResetAnimationOnBlur();
 
   const openOptions = useCallback(() => {
     hapticLight();
     router.push('/game/options');
   }, []);
 
-  useLayoutEffect(() => {
-    if (!state) {
-      return;
-    }
-    navigation.setOptions({
-      title: '',
-      headerLeft: () => <GameHomeButton onPress={confirmLeaveGame} />,
-      headerRight: () => (
-        <GameHeaderActions onOptions={openOptions} onReset={handleReset} />
-      ),
-    });
-  }, [navigation, state, handleReset, openOptions, confirmLeaveGame]);
+  useGameScreenHeader({
+    navigation,
+    state,
+    canUndo,
+    canRedo,
+    doUndo,
+    doRedo,
+    openOptions,
+    handleReset,
+    confirmLeaveGame,
+  });
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', handleBackPress);

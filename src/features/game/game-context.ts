@@ -14,6 +14,10 @@ export type GameContextType = {
   selectPoint: (point: number | null) => void;
   doMove: (move: Move) => void;
   doMoveSequence: (moves: Move[]) => void;
+  doUndo: () => void;
+  doRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
   isAnimating: boolean;
   moveAnimation: MoveAnimationFrame | null;
   resetAnimation: () => void;

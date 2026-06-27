@@ -1,16 +1,16 @@
 import type * as React from 'react';
-import type { GameMode } from '@/lib/game';
+import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useState } from 'react';
 import { GameContext } from '@/features/game/game-context';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
+import { useGameLifecycle } from '@/features/game/use-game-lifecycle';
 import { useGameSelectPoint } from '@/features/game/use-game-select-point';
+import { useGameTimeline } from '@/features/game/use-game-timeline';
+import { useGameUndoRedo } from '@/features/game/use-game-undo-redo';
 import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 import { useMoveLog } from '@/features/game/use-move-log';
-import {
-  createInitialState,
-} from '@/lib/game';
 import {
   clearActiveGame,
   isResumableGame,
@@ -27,6 +27,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     reloadMoveLog,
     persistMoveLog,
   } = useMoveLog();
+  const {
+    timeline,
+    setTimeline,
+    canUndo,
+    canRedo,
+    resetTimeline,
+    clearTimeline,
+    recordTimelineMove,
+  } = useGameTimeline();
+
+  const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
+    recordMove(snapshot, move);
+    recordTimelineMove(next);
+  }, [recordMove, recordTimelineMove]);
 
   const {
     moveAnimation,
@@ -35,7 +49,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     doMoveSequence,
     playMove,
     resetAnimation,
-  } = useAnimatedMoves(state, setState, recordMove);
+  } = useAnimatedMoves(state, setState, handleMoveRecorded);
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const clearAITimeout = useComputerOpponent({ state, setState, playMove, isAnimating });
   const { doPassTurn, doRollDice } = useGameDiceActions(setState, isAnimating);
@@ -52,44 +66,28 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     persistMoveLog(moveLog);
   }, [state, moveLog, persistMoveLog]);
 
-  const startGame = useCallback((mode: GameMode) => {
-    clearAITimeout();
-    clearActiveGame();
-    resetMoveLog();
-    setState(createInitialState(mode));
-  }, [clearAITimeout, resetMoveLog]);
+  const { startGame, resumeGame, resetGame } = useGameLifecycle({
+    clearAITimeout,
+    resetMoveLog,
+    reloadMoveLog,
+    resetTimeline,
+    clearTimeline,
+    setState,
+  });
 
-  const resumeGame = useCallback(() => {
-    clearAITimeout();
-    let canResume = false;
-    setState((current) => {
-      if (isResumableGame(current)) {
-        canResume = true;
-        return current;
-      }
-      const saved = loadRestorableGame();
-      if (!saved) {
-        return current;
-      }
-      reloadMoveLog();
-      canResume = true;
-      return saved;
-    });
-    return canResume;
-  }, [clearAITimeout, reloadMoveLog]);
+  const { doUndo, doRedo } = useGameUndoRedo({
+    timeline,
+    setTimeline,
+    setState,
+    isAnimating,
+    resetAnimation,
+  });
 
-  const resetGame = useCallback(() => {
-    clearAITimeout();
-    resetMoveLog();
-    setState((prev) => {
-      if (!prev) {
-        return null;
-      }
-      const next = createInitialState(prev.mode);
-      saveActiveGame(next);
-      return next;
-    });
-  }, [clearAITimeout, resetMoveLog]);
+  useEffect(() => {
+    if (state && timeline === null && isResumableGame(state)) {
+      resetTimeline(state);
+    }
+  }, [state, timeline, resetTimeline]);
 
   useGameplayHelpers({ state, isAnimating, doRollDice, doMove, doPassTurn });
 
@@ -106,6 +104,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         selectPoint,
         doMove,
         doMoveSequence,
+        doUndo,
+        doRedo,
+        canUndo,
+        canRedo,
         isAnimating,
         moveAnimation,
         resetAnimation,
