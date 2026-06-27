@@ -16,6 +16,7 @@ export type GameContextType = {
   doMoveSequence: (moves: Move[]) => void;
   isAnimating: boolean;
   moveAnimation: MoveAnimationFrame | null;
+  resetAnimation: () => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

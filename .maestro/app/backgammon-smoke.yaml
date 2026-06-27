@@ -16,7 +16,7 @@ tags:
       id: roll-dice-button
     timeout: 45000
 - takeScreenshot: 02-game-board
-# Opening roll + ties + no-move: tap while roll/end-turn visible, then wait for board
+# Opening roll + ties + no-move auto-pass: tap while roll visible, then wait for board
 - repeat:
     times: 6
     commands:
@@ -29,11 +29,11 @@ tags:
                 id: roll-dice-button
       - runFlow:
           when:
-            visible:
-              id: end-turn-button
+            visible: No legal moves
           commands:
-            - tapOn:
-                id: end-turn-button
+            - extendedWaitUntil:
+                notVisible: No legal moves
+                timeout: 5000
 - extendedWaitUntil:
     visible: Point 1
     timeout: 90000

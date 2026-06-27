@@ -34,6 +34,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     doMove,
     doMoveSequence,
     playMove,
+    resetAnimation,
   } = useAnimatedMoves(state, setState, recordMove);
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const clearAITimeout = useComputerOpponent({ state, setState, playMove, isAnimating });
@@ -82,7 +83,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, [clearAITimeout, resetMoveLog]);
 
-  useGameplayHelpers({ state, isAnimating, doRollDice, doMove });
+  useGameplayHelpers({ state, isAnimating, doRollDice, doMove, doPassTurn });
 
   return (
     <GameContext
@@ -99,6 +100,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         doMoveSequence,
         isAnimating,
         moveAnimation,
+        resetAnimation,
       }}
     >
       {children}

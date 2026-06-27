@@ -33,13 +33,13 @@ function startGameFromHome(
       'Game in progress',
       'Continue your current game or start a new one?',
       [
-        { text: 'Continue', onPress: () => router.push('/game') },
+        { text: 'Continue', onPress: () => router.replace('/game') },
         {
           text: 'New game',
           style: 'destructive',
           onPress: () => {
             startGame(mode);
-            router.push('/game');
+            router.replace('/game');
           },
         },
         { text: 'Cancel', style: 'cancel' },
@@ -48,17 +48,17 @@ function startGameFromHome(
     return;
   }
   startGame(mode);
-  router.push('/game');
+  router.replace('/game');
 }
 
 function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) {
   hapticLight();
   if (isResumableGame(state)) {
-    router.push('/game');
+    router.replace('/game');
     return;
   }
   if (resumeGame()) {
-    router.push('/game');
+    router.replace('/game');
   }
 }
 

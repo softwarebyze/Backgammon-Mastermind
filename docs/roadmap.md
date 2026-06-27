@@ -12,12 +12,12 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 
 | Order | Issue | PR scope | Status |
 |-------|-------|----------|--------|
-| 1 | [#43](https://github.com/softwarebyze/Backgammon-Mastermind/issues/43) Show rolled dice when bar entry blocked | `no-move` phase + End Turn UX | 🟡 In progress |
-| 2 | [#49](https://github.com/softwarebyze/Backgammon-Mastermind/issues/49) Replace swipe-back with intentional exit | Header back / confirm dialog | Backlog |
-| 3 | [#47](https://github.com/softwarebyze/Backgammon-Mastermind/issues/47) Auto-roll dice (settings) | Gameplay helpers prefs | Backlog |
-| 4 | [#48](https://github.com/softwarebyze/Backgammon-Mastermind/issues/48) Auto-move when one legal move | Shared with #47 | Backlog |
-| 5 | [#45](https://github.com/softwarebyze/Backgammon-Mastermind/issues/45) Full move history log | `src/lib/game/history.ts` + UI panel | Backlog |
-| 6 | [#44](https://github.com/softwarebyze/Backgammon-Mastermind/issues/44) Undo / redo moves | Snapshot stack (shares infra with #45) | Backlog |
+| 1 | [#43](https://github.com/softwarebyze/Backgammon-Mastermind/issues/43) Show rolled dice when bar entry blocked | `no-move` phase + End Turn UX | Done (#56) |
+| 2 | [#49](https://github.com/softwarebyze/Backgammon-Mastermind/issues/49) Replace swipe-back with intentional exit | Header back / confirm dialog | Done (#58) |
+| 3 | [#47](https://github.com/softwarebyze/Backgammon-Mastermind/issues/47) Auto-roll dice (settings) | Gameplay helpers prefs | Done (#59) |
+| 4 | [#48](https://github.com/softwarebyze/Backgammon-Mastermind/issues/48) Auto-move when one legal move | Shared with #47 | Done (#59) |
+| 5 | [#45](https://github.com/softwarebyze/Backgammon-Mastermind/issues/45) Full move history log | `move-log.ts` + options panel | Done (#60) |
+| 6 | [#44](https://github.com/softwarebyze/Backgammon-Mastermind/issues/44) Undo / redo moves | Snapshot stack (shares infra with #45) | In progress |
 | 7 | [#46](https://github.com/softwarebyze/Backgammon-Mastermind/issues/46) Replay scrubber | Builds on snapshots + log | Backlog |
 
 **Dependency note:** #45 → #44 → #46 share a move-snapshot model. #47/#48 share settings UI. #43 and #49 are independent polish.
@@ -67,7 +67,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | **Back navigation** — game state preserved | #36 | Done |
 | **Game logic unit tests** (`moves.ts`, pip count, bear-off, animation layout) | various | Done |
 | **Dice roll shuffle animation** | #40 | Done |
-| **Blocked bar dice visibility** | #43 | 🟡 In progress |
+| **Blocked bar dice visibility** | #43 | Done (#56) |
 | **Landscape** layout pass + screenshot | Planned | |
 
 ---

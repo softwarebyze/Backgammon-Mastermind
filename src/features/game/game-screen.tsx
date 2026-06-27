@@ -1,4 +1,4 @@
-import { router, useNavigation } from 'expo-router';
+import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -31,11 +31,12 @@ export function GameScreen() {
     handleBarPress,
     handleBoardPress,
     handleRoll,
-    handlePassTurn,
     handleReset,
   } = useGameInput();
-  const { moveAnimation } = useGame();
+  const { moveAnimation, resetAnimation } = useGame();
   const { confirmLeaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
+
+  useFocusEffect(useCallback(() => () => resetAnimation(), [resetAnimation]));
 
   const openOptions = useCallback(() => {
     hapticLight();
@@ -116,7 +117,6 @@ export function GameScreen() {
         isHumanTurn={isHumanTurn}
         isComputerTurn={isComputerTurn}
         onRoll={handleRoll}
-        onPassTurn={handlePassTurn}
         onReset={handleReset}
       />
     </View>
