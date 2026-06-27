@@ -34,6 +34,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     doMove,
     doMoveSequence,
     playMove,
+    resetAnimation,
   } = useAnimatedMoves(state, setState, recordMove);
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const clearAITimeout = useComputerOpponent({ state, setState, playMove, isAnimating });
@@ -59,14 +60,22 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [clearAITimeout, resetMoveLog]);
 
   const resumeGame = useCallback(() => {
-    const saved = loadRestorableGame();
-    if (!saved) {
-      return false;
-    }
     clearAITimeout();
-    reloadMoveLog();
-    setState(saved);
-    return true;
+    let canResume = false;
+    setState((current) => {
+      if (isResumableGame(current)) {
+        canResume = true;
+        return current;
+      }
+      const saved = loadRestorableGame();
+      if (!saved) {
+        return current;
+      }
+      reloadMoveLog();
+      canResume = true;
+      return saved;
+    });
+    return canResume;
   }, [clearAITimeout, reloadMoveLog]);
 
   const resetGame = useCallback(() => {
@@ -82,7 +91,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, [clearAITimeout, resetMoveLog]);
 
-  useGameplayHelpers({ state, isAnimating, doRollDice, doMove });
+  useGameplayHelpers({ state, isAnimating, doRollDice, doMove, doPassTurn });
 
   return (
     <GameContext
@@ -99,6 +108,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         doMoveSequence,
         isAnimating,
         moveAnimation,
+        resetAnimation,
       }}
     >
       {children}

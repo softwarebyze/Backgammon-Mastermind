@@ -3,18 +3,22 @@ import { useCallback, useRef } from 'react';
 import { Alert, Platform } from 'react-native';
 
 import { useGame } from '@/features/game/use-game';
-import { isResumableGame } from '@/lib/game/persistence';
+import { isResumableGame, saveActiveGame, saveMoveLog } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 
 export function useLeaveGame() {
-  const { state } = useGame();
+  const { state, moveLog } = useGame();
   const allowLeaveRef = useRef(false);
 
   const leaveGame = useCallback(() => {
+    if (state && isResumableGame(state)) {
+      saveActiveGame(state);
+      saveMoveLog(moveLog);
+    }
     allowLeaveRef.current = true;
     hapticLight();
     router.replace('/');
-  }, []);
+  }, [state, moveLog]);
 
   const confirmLeaveGame = useCallback(() => {
     if (!state || !isResumableGame(state)) {

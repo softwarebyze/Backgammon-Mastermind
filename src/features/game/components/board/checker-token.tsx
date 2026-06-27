@@ -1,7 +1,7 @@
 import type { Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useId } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 
 import { BOARD_THEME } from './board-theme';
@@ -31,7 +31,7 @@ export function CheckerToken({ player, size, showCount, showMoveHint, flat, styl
     <View
       style={[
         { width: size, height: size },
-        isWhite && !flat && {
+        isWhite && !flat && Platform.OS !== 'web' && {
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.45,

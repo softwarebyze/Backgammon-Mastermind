@@ -6,6 +6,7 @@ import { getForcedLegalMove } from '@/lib/game/single-move';
 
 const AUTO_ROLL_DELAY_MS = 400;
 const AUTO_MOVE_DELAY_MS = 300;
+const AUTO_PASS_DELAY_MS = 500;
 
 function isHumanTurn(state: GameState): boolean {
   return state.mode !== 'vs-computer' || state.currentPlayer === 'white';
@@ -16,6 +17,7 @@ type Options = {
   isAnimating: boolean;
   doRollDice: () => void;
   doMove: (move: Move) => void;
+  doPassTurn: () => void;
 };
 
 export function useGameplayHelpers({
@@ -23,6 +25,7 @@ export function useGameplayHelpers({
   isAnimating,
   doRollDice,
   doMove,
+  doPassTurn,
 }: Options) {
   const { preferences } = useGamePreferences();
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -55,6 +58,13 @@ export function useGameplayHelpers({
       return clear;
     }
 
+    if (state.phase === 'no-move') {
+      timeoutRef.current = setTimeout(() => {
+        doPassTurn();
+      }, AUTO_PASS_DELAY_MS);
+      return clear;
+    }
+
     if (preferences.autoMoveWhenForced && state.phase === 'moving') {
       const move = getForcedLegalMove(state);
       if (move) {
@@ -72,5 +82,6 @@ export function useGameplayHelpers({
     preferences.autoMoveWhenForced,
     doRollDice,
     doMove,
+    doPassTurn,
   ]);
 }

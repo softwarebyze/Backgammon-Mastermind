@@ -182,6 +182,37 @@ function moveSequenceKey(at: number, remainingDice: number[]): string {
   return `${at}:${remainingDice.join(',')}`;
 }
 
+function isHitMove(state: GameState, move: Move): boolean {
+  if (move.to < 1 || move.to > 24) {
+    return false;
+  }
+  const player = state.currentPlayer;
+  const dest = state.points[move.to];
+  return dest.player === opponent(player) && dest.count === 1;
+}
+
+/** True when any step in a compound path hits a blot (needs stepped animation). */
+export function moveSequenceInvolvesHit(state: GameState, moves: Move[]): boolean {
+  let snap = state;
+  for (const move of moves) {
+    if (isHitMove(snap, move)) {
+      return true;
+    }
+    snap = applyMove(snap, move);
+  }
+  return false;
+}
+
+/** Prefer capture steps when BFS finds multiple equal-length compound paths. */
+function isBetterSequence(
+  candidate: { moves: Move[]; captures: number },
+  bestLength: number,
+  bestCaptures: number,
+): boolean {
+  const len = candidate.moves.length;
+  return len < bestLength || (len === bestLength && candidate.captures > bestCaptures);
+}
+
 /**
  * Find a sequence of legal single-die moves from `from` to `to`.
  * Returns null when no sequence exists (including single-die moves — use getLegalMoves).
@@ -195,21 +226,39 @@ export function findMoveSequence(
     return null;
   }
 
-  type QueueNode = { at: number; state: GameState; moves: Move[] };
-  const queue: QueueNode[] = [{ at: from, state, moves: [] }];
+  type QueueNode = { at: number; state: GameState; moves: Move[]; captures: number };
+  const queue: QueueNode[] = [{ at: from, state, moves: [], captures: 0 }];
   const visited = new Set<string>([moveSequenceKey(from, state.remainingDice)]);
+
+  let best: Move[] | null = null;
+  let bestCaptures = -1;
+  let bestLength = Infinity;
 
   while (queue.length > 0) {
     const node = queue.shift()!;
+    if (node.moves.length > bestLength) {
+      continue;
+    }
     if (node.state.phase !== 'moving' || node.state.remainingDice.length === 0) {
       continue;
     }
 
-    for (const move of getLegalMoves(node.state).filter(m => m.from === node.at)) {
+    const legalFrom = getLegalMoves(node.state)
+      .filter(m => m.from === node.at)
+      .sort((a, b) => Number(isHitMove(node.state, b)) - Number(isHitMove(node.state, a)));
+
+    for (const move of legalFrom) {
       const nextState = applyMove(node.state, move);
+      const captures = node.captures + (isHitMove(node.state, move) ? 1 : 0);
+      const sequence = [...node.moves, move];
 
       if (move.to === to) {
-        return [...node.moves, move];
+        if (isBetterSequence({ moves: sequence, captures }, bestLength, bestCaptures)) {
+          best = sequence;
+          bestCaptures = captures;
+          bestLength = sequence.length;
+        }
+        continue;
       }
 
       if (nextState.phase !== 'moving' || nextState.remainingDice.length === 0) {
@@ -221,11 +270,11 @@ export function findMoveSequence(
         continue;
       }
       visited.add(key);
-      queue.push({ at: move.to, state: nextState, moves: [...node.moves, move] });
+      queue.push({ at: move.to, state: nextState, moves: sequence, captures });
     }
   }
 
-  return null;
+  return best;
 }
 
 /** All destinations reachable from `from`, mapped to a move sequence (shortest first). */
@@ -238,9 +287,10 @@ export function getReachableDestinations(
     return result;
   }
 
-  type QueueNode = { at: number; state: GameState; moves: Move[] };
-  const queue: QueueNode[] = [{ at: from, state, moves: [] }];
+  type QueueNode = { at: number; state: GameState; moves: Move[]; captures: number };
+  const queue: QueueNode[] = [{ at: from, state, moves: [], captures: 0 }];
   const visited = new Set<string>([moveSequenceKey(from, state.remainingDice)]);
+  const captureCountByDest = new Map<number, number>();
 
   while (queue.length > 0) {
     const node = queue.shift()!;
@@ -248,12 +298,27 @@ export function getReachableDestinations(
       continue;
     }
 
-    for (const move of getLegalMoves(node.state).filter(m => m.from === node.at)) {
+    const legalFrom = getLegalMoves(node.state)
+      .filter(m => m.from === node.at)
+      .sort((a, b) => Number(isHitMove(node.state, b)) - Number(isHitMove(node.state, a)));
+
+    for (const move of legalFrom) {
       const nextState = applyMove(node.state, move);
       const sequence = [...node.moves, move];
+      const captures = node.captures + (isHitMove(node.state, move) ? 1 : 0);
 
-      if (!result.has(move.to)) {
+      const existing = result.get(move.to);
+      const existingCaptures = captureCountByDest.get(move.to) ?? -1;
+      if (
+        !existing
+        || isBetterSequence(
+          { moves: sequence, captures },
+          existing.length,
+          existingCaptures,
+        )
+      ) {
         result.set(move.to, sequence);
+        captureCountByDest.set(move.to, captures);
       }
 
       if (nextState.phase !== 'moving' || nextState.remainingDice.length === 0) {
@@ -265,7 +330,7 @@ export function getReachableDestinations(
         continue;
       }
       visited.add(key);
-      queue.push({ at: move.to, state: nextState, moves: sequence });
+      queue.push({ at: move.to, state: nextState, moves: sequence, captures });
     }
   }
 
