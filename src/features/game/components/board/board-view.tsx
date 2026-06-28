@@ -15,6 +15,7 @@ import { BearOffArea } from './bear-off-area';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { MoveAnimationOverlay } from './move-animation-overlay';
+import { MoveHintOverlay } from './move-hint-overlay';
 import { PointColumn } from './point-column';
 import { WoodSurface } from './wood-surface';
 
@@ -56,6 +57,7 @@ type Props = {
   onPointPressOut: () => void;
   onBarPress: () => void;
   onBearOffPress: () => void;
+  interactionEnabled?: boolean;
 };
 
 /* eslint-disable max-lines-per-function -- board layout composition */
@@ -69,6 +71,7 @@ export function BoardView({
   onPointPressOut,
   onBarPress,
   onBearOffPress,
+  interactionEnabled = true,
 }: Props) {
   const { preferences } = useGamePreferences();
   const {
@@ -96,11 +99,11 @@ export function BoardView({
   }, [showHighlights, state]);
 
   const movableSources = useMemo(() => {
-    if (!showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
+    if (!interactionEnabled || !showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
       return new Set<number>();
     }
     return getMovableSources(state);
-  }, [showHighlights, preferences.showMoveHints, state]);
+  }, [interactionEnabled, showHighlights, preferences.showMoveHints, state]);
 
   const bearOffLegal = useMemo(
     () => showHighlights
@@ -126,9 +129,21 @@ export function BoardView({
         isMovableSource={movableSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
-        onPress={() => onPointPress(idx)}
-        onPressIn={() => onPointPressIn(idx)}
-        onPressOut={onPointPressOut}
+        onPress={() => {
+          if (interactionEnabled) {
+            onPointPress(idx);
+          }
+        }}
+        onPressIn={() => {
+          if (interactionEnabled) {
+            onPointPressIn(idx);
+          }
+        }}
+        onPressOut={() => {
+          if (interactionEnabled) {
+            onPointPressOut();
+          }
+        }}
         colWidth={colWidth}
         pointHeight={pointHeight}
         checkerSize={checkerSize}
@@ -210,6 +225,14 @@ export function BoardView({
             width={boardWidth}
             height={boardHeight}
             player={humanPlayer}
+          />
+        )}
+
+        {interactionEnabled && movableSources.size > 0 && (
+          <MoveHintOverlay
+            state={state}
+            sources={movableSources}
+            dimensions={dimensions}
           />
         )}
 

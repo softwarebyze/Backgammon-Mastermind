@@ -14,7 +14,7 @@ export function GameHeaderActions({ onOptions, onReset }: Props) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <HeaderButton
-        accessibilityLabel="Game options"
+        accessibilityLabel="Preferences"
         onPress={() => {
           hapticLight();
           onOptions();

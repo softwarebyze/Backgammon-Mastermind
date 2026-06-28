@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useCallback, useRef } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import { useGame } from '@/features/game/use-game';
 import { isResumableGame, saveActiveGame, saveMoveLog } from '@/lib/game/persistence';
@@ -20,33 +20,14 @@ export function useLeaveGame() {
     router.replace('/');
   }, [state, moveLog]);
 
-  const confirmLeaveGame = useCallback(() => {
-    if (!state || !isResumableGame(state)) {
-      leaveGame();
-      return;
-    }
-
-    Alert.alert(
-      'Leave game?',
-      'Your game is saved — you can resume from home.',
-      [
-        { text: 'Keep playing', style: 'cancel' },
-        {
-          text: 'Save & exit',
-          onPress: leaveGame,
-        },
-      ],
-    );
-  }, [leaveGame, state]);
-
   const handleBackPress = useCallback(() => {
-    confirmLeaveGame();
+    leaveGame();
     return true;
-  }, [confirmLeaveGame]);
+  }, [leaveGame]);
 
   return {
     allowLeaveRef,
-    confirmLeaveGame,
+    leaveGame,
     handleBackPress,
     supportsHardwareBack: Platform.OS === 'android',
   };

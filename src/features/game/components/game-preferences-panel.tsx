@@ -1,6 +1,8 @@
 import type { GamePreferences } from '@/lib/game-preferences/types';
 
 import { StyleSheet, View } from 'react-native';
+import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
+import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
@@ -41,16 +43,7 @@ export function GamePreferencesPanel({
         />
         <View style={styles.divider} />
         <SettingToggleRow
-          icon={(
-            <HorseshoeIcon
-              size={32}
-              color={
-                preferences.showDirectionOverlay
-                  ? GAME_PALETTE.accent
-                  : GAME_PALETTE.textMuted
-              }
-            />
-          )}
+          icon={<HorseshoeIcon size={32} />}
           label={translate('game.preferences.direction_overlay')}
           hint={showHints ? translate('game.preferences.direction_overlay_hint') : undefined}
           value={preferences.showDirectionOverlay}
@@ -60,7 +53,7 @@ export function GamePreferencesPanel({
 
       <View style={styles.card}>
         <SettingToggleRow
-          icon={<MoveHintIcon size={32} />}
+          icon={<AutoRollIcon size={32} />}
           label={translate('game.preferences.auto_roll')}
           hint={showHints ? translate('game.preferences.auto_roll_hint') : undefined}
           value={preferences.autoRoll}
@@ -68,7 +61,7 @@ export function GamePreferencesPanel({
         />
         <View style={styles.divider} />
         <SettingToggleRow
-          icon={<MoveHintIcon size={32} />}
+          icon={<AutoMoveIcon size={32} />}
           label={translate('game.preferences.auto_move')}
           hint={showHints ? translate('game.preferences.auto_move_hint') : undefined}
           value={preferences.autoMoveWhenForced}

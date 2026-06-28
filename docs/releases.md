@@ -2,7 +2,7 @@
 
 How we ship **TestFlight**, **App Store**, and **GitHub** releases for Backgammon Mastermind.
 
-**Current line:** `0.1.x` — see [production checklist](./production-checklist.md) for first-time store setup.
+**Current line:** `0.1.x` — **next ship: v0.1.2** ([#63](https://github.com/softwarebyze/Backgammon-Mastermind/issues/63)) — stability fixes from #61 + device QA. See [production checklist](./production-checklist.md) for first-time store setup.
 
 ---
 

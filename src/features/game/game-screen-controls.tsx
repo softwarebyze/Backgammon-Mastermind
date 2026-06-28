@@ -13,6 +13,7 @@ type Props = {
   state: GameState;
   isHumanTurn: boolean;
   isComputerTurn: boolean;
+  isReviewing?: boolean;
   onRoll: () => void;
   onReset: () => void;
 };
@@ -23,12 +24,13 @@ export function GameScreenControls({
   state,
   isHumanTurn,
   isComputerTurn,
+  isReviewing = false,
   onRoll,
   onReset,
 }: Props) {
   const { preferences } = useGamePreferences();
   const turn = getTurnDisplay(state);
-  const caption = getActionCaption(state, turn);
+  const caption = isReviewing ? ' ' : getActionCaption(state, turn);
 
   return (
     <View style={styles.controls}>
@@ -38,6 +40,7 @@ export function GameScreenControls({
           remainingDice={state.remainingDice}
           playerColor={state.currentPlayer}
           displayStyle={preferences.diceDisplayStyle}
+          animateRoll={!isReviewing}
         />
       </View>
       <View style={styles.actionSlot}>
@@ -45,6 +48,7 @@ export function GameScreenControls({
           state={state}
           isHumanTurn={isHumanTurn}
           isComputerTurn={isComputerTurn}
+          isReviewing={isReviewing}
           onRoll={() => {
             hapticLight();
             onRoll();
@@ -66,9 +70,14 @@ function ActionControl({
   state,
   isHumanTurn,
   isComputerTurn,
+  isReviewing,
   onRoll,
   onReset,
 }: Props) {
+  if (isReviewing) {
+    return <StatusPlaceholder text="Review mode" />;
+  }
+
   if (state.phase === 'game-over') {
     return (
       <Pressable

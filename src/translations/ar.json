@@ -16,7 +16,16 @@
       "direction_overlay": "تراكب الاتجاه",
       "direction_overlay_hint": "مسار حدوة الحصان على اللوحة",
       "move_hints": "تلميحات الحركة",
-      "move_hints_hint": "حلقة ذهبية على القطع التي يمكنك تحريكها"
+      "move_hints_hint": "نقطة ذهبية بجانب النقاط التي يمكنك التحرك منها",
+      "section_automation": "أتمتة",
+      "section_board": "اللوحة",
+      "section_dice": "النرد"
+    },
+    "review": {
+      "move_position": "حركة {{current}} من {{total}} · {{player}}",
+      "opening": "موضع البداية",
+      "player_black": "أسود",
+      "player_white": "أبيض"
     }
   },
   "settings": {

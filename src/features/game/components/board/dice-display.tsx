@@ -1,6 +1,6 @@
 import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -14,13 +14,11 @@ type Props = {
   remainingDice: number[];
   playerColor: 'white' | 'black';
   displayStyle?: DiceDisplayStyle;
+  /** When false, dice values update instantly (review scrub, etc.). */
+  animateRoll?: boolean;
 };
 
 const DOUBLE_DIE_SLOTS = ['slot-a', 'slot-b', 'slot-c', 'slot-d'] as const;
-const EMPTY_DICE_KEY = '0,0';
-const ROLL_FRAMES = 10;
-const ROLL_FRAME_MS = 65;
-const SHAKE_PX = 8;
 
 const DOT_LAYOUTS: Record<number, Array<[number, number]>> = {
   1: [[0.5, 0.5]],
@@ -31,10 +29,6 @@ const DOT_LAYOUTS: Record<number, Array<[number, number]>> = {
   6: [[0.28, 0.28], [0.72, 0.28], [0.28, 0.5], [0.72, 0.5], [0.28, 0.72], [0.72, 0.72]],
 };
 
-function randomDie(): number {
-  return Math.floor(Math.random() * 6) + 1;
-}
-
 function diceKey(dice: [number, number]): string {
   return `${dice[0]},${dice[1]}`;
 }
@@ -43,99 +37,33 @@ function hasRolledDice(dice: [number, number]): boolean {
   return dice[0] !== 0 || dice[1] !== 0;
 }
 
-function useDiceRollAnimation(dice: [number, number]) {
-  const [shuffleDice, setShuffleDice] = useState<[number, number] | null>(null);
+/** Gentle settle pulse on a new roll — no flashing random values. */
+function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
   const lastKey = useRef<string | null>(null);
-  const shake = useSharedValue(0);
   const dieScale = useSharedValue(1);
-  const isRolling = shuffleDice !== null;
-  const displayDice = isRolling ? shuffleDice : dice;
 
   useEffect(() => {
     const key = diceKey(dice);
-
     if (lastKey.current === null) {
       lastKey.current = key;
       return;
     }
-
-    if (key === lastKey.current) {
+    if (key === lastKey.current || !animateRoll || !hasRolledDice(dice)) {
+      lastKey.current = key;
       return;
     }
-
-    const previousKey = lastKey.current;
     lastKey.current = key;
-
-    if (!hasRolledDice(dice)) {
-      dieScale.value = 1;
-      const resetTimer = setTimeout(() => setShuffleDice(null), 0);
-      return () => clearTimeout(resetTimer);
-    }
-
-    if (previousKey !== EMPTY_DICE_KEY && previousKey === key) {
-      return;
-    }
-
-    let frame = 0;
-    let cancelled = false;
-    let interval: ReturnType<typeof setInterval> | undefined;
-
-    const finish = () => {
-      if (cancelled) {
-        return;
-      }
-      setShuffleDice(null);
-      dieScale.value = withTiming(1, { duration: 120 });
-    };
-
-    const start = () => {
-      if (cancelled) {
-        return;
-      }
-      setShuffleDice([randomDie(), randomDie()]);
-      dieScale.value = withSequence(
-        withTiming(1.12, { duration: 80 }),
-        withTiming(1.06, { duration: ROLL_FRAMES * ROLL_FRAME_MS }),
-      );
-      shake.value = withSequence(
-        withTiming(SHAKE_PX, { duration: 50 }),
-        withTiming(-SHAKE_PX, { duration: 50 }),
-        withTiming(SHAKE_PX * 0.6, { duration: 50 }),
-        withTiming(-SHAKE_PX * 0.6, { duration: 50 }),
-        withTiming(0, { duration: 80 }),
-      );
-      interval = setInterval(() => {
-        frame += 1;
-        if (frame >= ROLL_FRAMES) {
-          if (interval) {
-            clearInterval(interval);
-          }
-          finish();
-          return;
-        }
-        setShuffleDice([randomDie(), randomDie()]);
-      }, ROLL_FRAME_MS);
-    };
-
-    const startTimer = setTimeout(start, 0);
-
-    return () => {
-      cancelled = true;
-      clearTimeout(startTimer);
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [dice, shake, dieScale]);
+    dieScale.value = withSequence(
+      withTiming(1.08, { duration: 160 }),
+      withTiming(1, { duration: 220 }),
+    );
+  }, [dice, animateRoll, dieScale]);
 
   const containerStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: shake.value },
-      { scale: dieScale.value },
-    ],
+    transform: [{ scale: dieScale.value }],
   }));
 
-  return { displayDice, isRolling, containerStyle, showDice: hasRolledDice(dice) || isRolling };
+  return { containerStyle, showDice: hasRolledDice(dice) };
 }
 
 function DieDots({ value, dotColor }: { value: number; dotColor: string }) {
@@ -167,13 +95,11 @@ function DieFace({
   used,
   playerColor,
   displayStyle,
-  isRolling,
 }: {
   value: number;
   used: boolean;
   playerColor: 'white' | 'black';
   displayStyle: DiceDisplayStyle;
-  isRolling: boolean;
 }) {
   const isWhite = playerColor === 'white';
   const bg = used
@@ -195,7 +121,7 @@ function DieFace({
         {
           backgroundColor: bg,
           borderColor: border,
-          opacity: used ? 0.4 : isRolling ? 0.95 : 1,
+          opacity: used ? 0.4 : 1,
         },
       ]}
     >
@@ -219,8 +145,9 @@ function DiceDisplayAnimated({
   remainingDice,
   playerColor,
   displayStyle = 'numbers',
+  animateRoll = true,
 }: Props) {
-  const { displayDice, isRolling, containerStyle, showDice } = useDiceRollAnimation(dice);
+  const { containerStyle, showDice } = useDiceRollAnimation(dice, animateRoll);
 
   if (!showDice) {
     return (
@@ -232,7 +159,7 @@ function DiceDisplayAnimated({
   }
 
   const remaining = [...remainingDice];
-  const diceStates = displayDice.map((v) => {
+  const diceStates = dice.map((v) => {
     const idx = remaining.indexOf(v);
     if (idx !== -1) {
       remaining.splice(idx, 1);
@@ -241,7 +168,7 @@ function DiceDisplayAnimated({
     return { value: v, used: true };
   });
 
-  const isDoubles = displayDice[0] === displayDice[1];
+  const isDoubles = dice[0] === dice[1];
   const totalRemaining = remainingDice.filter(v => v === dice[0]).length;
 
   return (
@@ -251,11 +178,10 @@ function DiceDisplayAnimated({
             DOUBLE_DIE_SLOTS.map((slot, slotIndex) => (
               <DieFace
                 key={slot}
-                value={displayDice[0]}
+                value={dice[0]}
                 used={slotIndex >= totalRemaining}
                 playerColor={playerColor}
                 displayStyle={displayStyle}
-                isRolling={isRolling}
               />
             ))
           )
@@ -268,7 +194,6 @@ function DiceDisplayAnimated({
                   used={diceStates[0].used}
                   playerColor={playerColor}
                   displayStyle={displayStyle}
-                  isRolling={isRolling}
                 />
               )}
               {diceStates[1] && (
@@ -278,7 +203,6 @@ function DiceDisplayAnimated({
                   used={diceStates[1].used}
                   playerColor={playerColor}
                   displayStyle={displayStyle}
-                  isRolling={isRolling}
                 />
               )}
             </>
@@ -287,13 +211,20 @@ function DiceDisplayAnimated({
   );
 }
 
-export function DiceDisplay({ dice, remainingDice, playerColor, displayStyle = 'numbers' }: Props) {
+export function DiceDisplay({
+  dice,
+  remainingDice,
+  playerColor,
+  displayStyle = 'numbers',
+  animateRoll = true,
+}: Props) {
   return (
     <DiceDisplayAnimated
       dice={dice}
       remainingDice={remainingDice}
       playerColor={playerColor}
       displayStyle={displayStyle}
+      animateRoll={animateRoll}
     />
   );
 }

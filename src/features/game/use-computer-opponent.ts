@@ -79,11 +79,21 @@ export function useComputerOpponent({
           setState(passTurn(prev));
           return;
         }
-        playMove(prev, move);
+        aiTimeoutRef.current = setTimeout(() => {
+          const latest = stateRef.current;
+          if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
+            return;
+          }
+          playMove(latest, move);
+        }, 750);
       }
     };
 
     if (delay === 0) {
+      if (state.phase === 'moving') {
+        runAI();
+        return clearAITimeout;
+      }
       runAI();
       return clearAITimeout;
     }

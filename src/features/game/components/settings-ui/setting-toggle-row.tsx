@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Switch, Text, View } from 'react-native';
+import { Platform, StyleSheet, Switch, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticSelection } from '@/lib/haptics';
@@ -18,6 +18,17 @@ type Props = {
   onChange: (v: boolean) => void;
 };
 
+function iconForToggle(icon: React.ReactNode, active: boolean): React.ReactNode {
+  if (!React.isValidElement(icon)) {
+    return icon;
+  }
+  return React.cloneElement(icon as React.ReactElement<{ active?: boolean }>, { active });
+}
+
+const TRACK_OFF = '#4A3020';
+const TRACK_ON = '#6B4A28';
+const THUMB_OFF = '#C8B8A0';
+
 export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) {
   const handleChange = React.useCallback(
     (next: boolean) => {
@@ -29,7 +40,7 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
 
   return (
     <View style={styles.row}>
-      <View style={styles.iconWrap}>{icon}</View>
+      <View style={styles.iconWrap}>{iconForToggle(icon, value)}</View>
       <View style={styles.text}>
         <Text style={styles.label}>{label}</Text>
         {hint ? <Text style={styles.hint}>{hint}</Text> : null}
@@ -37,8 +48,15 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
       <Switch
         value={value}
         onValueChange={handleChange}
-        trackColor={{ false: '#4A3020', true: '#6B4A28' }}
-        thumbColor={value ? GAME_PALETTE.accent : '#C8B8A0'}
+        trackColor={{ false: TRACK_OFF, true: TRACK_ON }}
+        thumbColor={value ? GAME_PALETTE.accent : THUMB_OFF}
+        ios_backgroundColor={TRACK_OFF}
+        {...Platform.select({
+          web: {
+            activeThumbColor: GAME_PALETTE.accent,
+            activeTrackColor: TRACK_ON,
+          },
+        })}
       />
     </View>
   );

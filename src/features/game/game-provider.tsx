@@ -22,11 +22,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState(() => loadRestorableGame());
   const {
     moveLog,
+    replayBaseline,
     recordMove,
     resetMoveLog,
     reloadMoveLog,
     persistMoveLog,
-  } = useMoveLog();
+  } = useMoveLog(state);
 
   const {
     moveAnimation,
@@ -98,6 +99,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       value={{
         state,
         moveLog,
+        replayBaseline,
         startGame,
         resumeGame,
         resetGame,

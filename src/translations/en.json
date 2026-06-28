@@ -16,7 +16,16 @@
       "direction_overlay": "Direction overlay",
       "direction_overlay_hint": "Horseshoe path on the board",
       "move_hints": "Move hints",
-      "move_hints_hint": "Gold ring on checkers you can move"
+      "move_hints_hint": "Gold dot beside points you can move from",
+      "section_automation": "Automation",
+      "section_board": "Board",
+      "section_dice": "Dice"
+    },
+    "review": {
+      "move_position": "Move {{current}} of {{total}} · {{player}}",
+      "opening": "Opening position",
+      "player_black": "Black",
+      "player_white": "White"
     }
   },
   "settings": {

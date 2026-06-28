@@ -12,7 +12,7 @@ export type { MoveAnimationFrame } from '@/features/game/move-animation';
 function applyResolvedSequence(
   snapshot: GameState,
   moves: Move[],
-  onMoveApplied: ((snapshot: GameState, move: Move) => void) | undefined,
+  onMoveApplied: ((before: GameState, move: Move, after: GameState) => void) | undefined,
 ): GameState {
   let snap = snapshot;
   for (const planned of moves) {
@@ -20,8 +20,9 @@ function applyResolvedSequence(
     if (!legal) {
       break;
     }
-    onMoveApplied?.(snap, legal);
-    snap = applyMove(snap, legal);
+    const next = applyMove(snap, legal);
+    onMoveApplied?.(snap, legal, next);
+    snap = next;
   }
   return snap;
 }
@@ -29,7 +30,7 @@ function applyResolvedSequence(
 export function useAnimatedMoves(
   state: GameState | null,
   setState: Dispatch<SetStateAction<GameState | null>>,
-  onMoveApplied?: (snapshot: GameState, move: Move) => void,
+  onMoveApplied?: (before: GameState, move: Move, after: GameState) => void,
 ) {
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -53,7 +54,7 @@ export function useAnimatedMoves(
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, () => {
       const legal = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to) ?? move;
       const next = applyMove(snapshot, legal);
-      onMoveApplied?.(snapshot, legal);
+      onMoveApplied?.(snapshot, legal, next);
       setState(next);
       setMoveAnimation(null);
       onComplete?.(next);

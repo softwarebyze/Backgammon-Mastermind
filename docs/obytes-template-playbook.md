@@ -719,3 +719,24 @@ eas project:info        # verify EAS linkage
 ```
 
 After dependency changes: commit `pnpm-lock.yaml`. CI uses `--frozen-lockfile`.
+
+---
+
+## 13. Fork delta & upstream candidates (2026-06)
+
+| Area | This fork | Upstream PR? |
+|------|-----------|--------------|
+| Branding | `pnpm brand:generate` | Yes — docs + script |
+| Game prefs | MMKV panel in game + settings | App-specific |
+| Pure TS engine + replay | `src/lib/game/` | App-specific |
+| Silent leave (auto-save) | No exit alert | Pattern doc |
+| CI React Doctor + knip | Custom workflows | Partial |
+| Web host | **Vercel** when EAS web quota capped | Doc only |
+
+**Web on Vercel:** set `EXPO_PUBLIC_APP_ENV` in Vercel; use preview URLs for JS-only QA until EAS web minutes reset (~July 1).
+
+**Visual regression:** #87 — Playwright (web) + preflight/Maestro (native).
+
+**Scrub / second apps:** copy multi-env `env.ts` bundle IDs so dev + preview builds coexist on one device.
+
+See also: `docs/UX-AUDIT.md`, `docs/issue-board.md`, epic **#85**.

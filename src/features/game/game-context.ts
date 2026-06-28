@@ -6,6 +6,7 @@ import { createContext } from 'react';
 export type GameContextType = {
   state: GameState | null;
   moveLog: MoveLogEntry[];
+  replayBaseline: GameState | null;
   startGame: (mode: GameMode) => void;
   resumeGame: () => boolean;
   resetGame: () => void;

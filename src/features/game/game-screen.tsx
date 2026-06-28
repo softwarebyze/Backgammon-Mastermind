@@ -1,60 +1,48 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { useCallback, useEffect, useLayoutEffect } from 'react';
-import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GameHeaderActions } from '@/components/navigation/game-header-actions';
 import { GameHomeButton } from '@/components/navigation/game-home-button';
 import { FocusAwareStatusBar } from '@/components/ui';
-import { BoardView } from '@/features/game/components/board/board-view';
+import { GameBoardSection } from '@/features/game/components/game-board-section';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
+import { MoveReviewBar } from '@/features/game/components/move-review-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
 import { useLeaveGame } from '@/features/game/use-leave-game';
-import { hapticLight } from '@/lib/haptics';
+import { useMoveReview } from '@/features/game/use-move-review';
 
 export function GameScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const dimensions = useBoardDimensions();
-  const {
-    state,
-    previewTarget,
-    handlePointPress,
-    handlePointPressIn,
-    handlePointPressOut,
-    handleBearOffPress,
-    handleBarPress,
-    handleBoardPress,
-    handleRoll,
-    handleReset,
-  } = useGameInput();
-  const { moveAnimation, resetAnimation } = useGame();
-  const { confirmLeaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
+  const input = useGameInput();
+  const { moveAnimation, resetAnimation, moveLog, replayBaseline } = useGame();
+  const { leaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
+  const review = useMoveReview({ liveState: input.state, moveLog, replayBaseline });
 
   useFocusEffect(useCallback(() => () => resetAnimation(), [resetAnimation]));
 
   const openOptions = useCallback(() => {
-    hapticLight();
     router.push('/game/options');
   }, []);
 
   useLayoutEffect(() => {
-    if (!state) {
+    if (!input.state) {
       return;
     }
     navigation.setOptions({
       title: '',
-      headerLeft: () => <GameHomeButton onPress={confirmLeaveGame} />,
+      headerLeft: () => <GameHomeButton onPress={leaveGame} />,
       headerRight: () => (
-        <GameHeaderActions onOptions={openOptions} onReset={handleReset} />
+        <GameHeaderActions onOptions={openOptions} onReset={input.handleReset} />
       ),
     });
-  }, [navigation, state, handleReset, openOptions, confirmLeaveGame]);
+  }, [navigation, input.state, input.handleReset, openOptions, leaveGame]);
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
@@ -68,13 +56,13 @@ export function GameScreen() {
       }
       if (event.data.action.type === 'GO_BACK' || event.data.action.type === 'POP') {
         event.preventDefault();
-        confirmLeaveGame();
+        leaveGame();
       }
     });
     return unsubscribe;
-  }, [navigation, confirmLeaveGame, allowLeaveRef]);
+  }, [navigation, leaveGame, allowLeaveRef]);
 
-  if (!state) {
+  if (!input.state || !review.displayState) {
     return (
       <View style={[styles.root, styles.center]}>
         <FocusAwareStatusBar />
@@ -83,41 +71,50 @@ export function GameScreen() {
     );
   }
 
-  const isComputerTurn
-    = state.mode === 'vs-computer' && state.currentPlayer === 'black';
-  const isHumanTurn = !isComputerTurn;
+  const boardState = review.displayState;
+  const boardAnimation = review.reviewAnimation ?? moveAnimation;
+  const interactionEnabled = !review.isReviewing && !boardAnimation;
+  const isComputerTurn = boardState.mode === 'vs-computer' && boardState.currentPlayer === 'black';
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <FocusAwareStatusBar />
-      <GamePipStatusBar state={state} />
+      <GamePipStatusBar state={boardState} />
       <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} />
+        <TurnIndicatorBanner state={boardState} />
       </View>
-      <View style={styles.boardWrap}>
-        <Pressable
-          onPress={handleBoardPress}
-          style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
-        >
-          <BoardView
-            state={state}
-            dimensions={dimensions}
-            previewTarget={previewTarget}
-            moveAnimation={moveAnimation}
-            onPointPress={handlePointPress}
-            onPointPressIn={handlePointPressIn}
-            onPointPressOut={handlePointPressOut}
-            onBarPress={handleBarPress}
-            onBearOffPress={handleBearOffPress}
-          />
-        </Pressable>
+      <GameBoardSection
+        boardState={boardState}
+        boardAnimation={boardAnimation}
+        interactionEnabled={interactionEnabled}
+        previewTarget={input.previewTarget}
+        reviewEntry={review.isReviewing ? review.activeEntry : null}
+        reviewBeforeState={review.isReviewing ? review.reviewBeforeState : null}
+        input={input}
+      />
+      <View style={styles.reviewSlot}>
+        <MoveReviewBar
+          viewIndex={review.viewIndex}
+          liveIndex={review.liveIndex}
+          isReviewing={review.isReviewing}
+          moveLog={moveLog}
+          focusedPly={review.focusedPly}
+          positionLabel={review.positionLabel}
+          canStepBack={review.canStepBack}
+          canStepForward={review.canStepForward}
+          onStepBack={review.stepBack}
+          onStepForward={review.stepForward}
+          onJumpToPly={review.jumpToPly}
+          onGoLive={review.goLive}
+        />
       </View>
       <GameScreenControls
-        state={state}
-        isHumanTurn={isHumanTurn}
+        state={boardState}
+        isHumanTurn={!isComputerTurn && interactionEnabled}
         isComputerTurn={isComputerTurn}
-        onRoll={handleRoll}
-        onReset={handleReset}
+        isReviewing={review.isReviewing}
+        onRoll={input.handleRoll}
+        onReset={input.handleReset}
       />
     </View>
   );
@@ -139,15 +136,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginBottom: 4,
   },
-  boardWrap: {
-    flex: 1,
-    justifyContent: 'center',
+  reviewSlot: {
     width: '100%',
     alignItems: 'center',
-  },
-  boardContainer: {
-    paddingHorizontal: 4,
-    width: '100%',
-    alignItems: 'center',
+    minHeight: 68,
   },
 });

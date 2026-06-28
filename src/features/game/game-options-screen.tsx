@@ -1,13 +1,11 @@
 import { router } from 'expo-router';
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Pressable, ScrollView, Text, View } from '@/components/ui';
+import { Pressable, Text } from '@/components/ui';
 import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
-import { MoveHistoryList } from '@/features/game/components/move-history-list';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { useGame } from '@/features/game/use-game';
 import { SettingsChevron } from '@/features/settings/components/settings-chevron';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
@@ -23,28 +21,20 @@ export function GameOptionsScreen() {
     setAutoRoll,
     setAutoMoveWhenForced,
   } = useGamePreferences();
-  const { moveLog } = useGame();
 
   const openSettings = React.useCallback(() => {
     hapticLight();
-    // Dismiss the formSheet before navigating, otherwise Settings renders behind
-    // the sheet and feels "stuck" in the stack.
     router.back();
     requestAnimationFrame(() => router.push('/settings'));
   }, []);
 
   return (
-    <ScrollView
-      style={styles.root}
-      contentContainerStyle={[
-        styles.scroll,
+    <View
+      style={[
+        styles.root,
         { paddingBottom: Math.max(insets.bottom, 20) + 8 },
       ]}
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
     >
-      <Text className="text-lg font-bold" style={styles.title} tx="game.options.title" />
-
       <GamePreferencesPanel
         preferences={preferences}
         onShowMoveHintsChange={setShowMoveHints}
@@ -55,9 +45,6 @@ export function GameOptionsScreen() {
         showHints
       />
 
-      <Text className="text-base font-semibold" style={styles.sectionTitle}>Move history</Text>
-      <MoveHistoryList entries={moveLog} />
-
       <Pressable accessibilityRole="link" style={styles.row} onPress={openSettings}>
         <View style={styles.rowBody}>
           <Text className="text-base font-semibold" style={styles.rowText} tx="game.options.open_settings" />
@@ -65,7 +52,7 @@ export function GameOptionsScreen() {
         </View>
         <SettingsChevron />
       </Pressable>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -73,19 +60,9 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: GAME_PALETTE.surface,
-  },
-  scroll: {
-    flexGrow: 1,
     paddingHorizontal: SETTINGS_ROW_PADDING_H,
-    paddingTop: 12,
+    paddingTop: 16,
     gap: 16,
-  },
-  title: {
-    color: GAME_PALETTE.text,
-  },
-  sectionTitle: {
-    color: GAME_PALETTE.text,
-    marginTop: 4,
   },
   row: {
     flexDirection: 'row',

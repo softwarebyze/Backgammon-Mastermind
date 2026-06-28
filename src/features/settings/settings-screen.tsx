@@ -53,13 +53,9 @@ export function SettingsScreen() {
             <ThemeItem />
           </SettingsContainer>
 
-          <GameSettingsSection />
+          <GameSettingsSection showHints />
 
           <SettingsContainer title="settings.about">
-            <SettingsItem
-              text="settings.app_name"
-              value={Env.EXPO_PUBLIC_NAME}
-            />
             <SettingsItem
               text="settings.version"
               value={Env.EXPO_PUBLIC_VERSION}
