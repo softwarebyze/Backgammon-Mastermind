@@ -38,6 +38,10 @@ export function useGamePreferences() {
     updatePreferences({ showDirectionOverlay });
   }, []);
 
+  const setShowPointNumbers = useCallback((showPointNumbers: boolean) => {
+    updatePreferences({ showPointNumbers });
+  }, []);
+
   const setDiceDisplayStyle = useCallback((diceDisplayStyle: DiceDisplayStyle) => {
     updatePreferences({ diceDisplayStyle });
   }, []);
@@ -54,6 +58,7 @@ export function useGamePreferences() {
     preferences,
     setShowMoveHints,
     setShowDirectionOverlay,
+    setShowPointNumbers,
     setDiceDisplayStyle,
     setAutoRoll,
     setAutoMoveWhenForced,

@@ -179,5 +179,3 @@ export function backfillMoveLogSnapshots(
     };
   });
 }
-
-export const reconstructStateAtPly = stateAtPly;

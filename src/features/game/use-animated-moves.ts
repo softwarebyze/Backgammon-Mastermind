@@ -27,6 +27,59 @@ function applyResolvedSequence(
   return snap;
 }
 
+function runMoveSequence(
+  snapshot: GameState,
+  moves: Move[],
+  ctx: {
+    isAnimating: boolean;
+    playMove: (snap: GameState, move: Move, onComplete?: (next: GameState) => void) => void;
+    onMoveApplied?: (before: GameState, move: Move, after: GameState) => void;
+    setState: Dispatch<SetStateAction<GameState | null>>;
+    setMoveAnimation: Dispatch<SetStateAction<MoveAnimationFrame | null>>;
+    setSequenceActive: Dispatch<SetStateAction<boolean>>;
+  },
+): void {
+  if (moves.length === 0 || ctx.isAnimating) {
+    return;
+  }
+  if (moves.length === 1) {
+    ctx.playMove(snapshot, moves[0]!);
+    return;
+  }
+  ctx.setSequenceActive(true);
+  if (!moveSequenceInvolvesHit(snapshot, moves)) {
+    const glideMove: Move = {
+      from: moves[0]!.from,
+      to: moves[moves.length - 1]!.to,
+      dieIndex: 0,
+    };
+    ctx.setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, () => {
+      const next = applyResolvedSequence(snapshot, moves, ctx.onMoveApplied);
+      ctx.setState(next);
+      ctx.setMoveAnimation(null);
+      ctx.setSequenceActive(false);
+    }));
+    return;
+  }
+  const playFromIndex = (snap: GameState, index: number) => {
+    const planned = moves[index]!;
+    const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
+    if (!legal) {
+      ctx.setSequenceActive(false);
+      return;
+    }
+    ctx.playMove(snap, legal, (next) => {
+      if (index + 1 < moves.length) {
+        playFromIndex(next, index + 1);
+      }
+      else {
+        ctx.setSequenceActive(false);
+      }
+    });
+  };
+  playFromIndex(snapshot, 0);
+}
+
 export function useAnimatedMoves(
   state: GameState | null,
   setState: Dispatch<SetStateAction<GameState | null>>,
@@ -52,7 +105,12 @@ export function useAnimatedMoves(
     onComplete?: (next: GameState) => void,
   ) => {
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, () => {
-      const legal = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to) ?? move;
+      const legal = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
+      if (!legal) {
+        setMoveAnimation(null);
+        onComplete?.(snapshot);
+        return;
+      }
       const next = applyMove(snapshot, legal);
       onMoveApplied?.(snapshot, legal, next);
       setState(next);
@@ -62,50 +120,14 @@ export function useAnimatedMoves(
   }, [setState, onMoveApplied]);
 
   const playMoveSequence = useCallback((snapshot: GameState, moves: Move[]) => {
-    if (moves.length === 0 || isAnimatingRef.current) {
-      return;
-    }
-
-    if (moves.length === 1) {
-      playMove(snapshot, moves[0]);
-      return;
-    }
-
-    setSequenceActive(true);
-
-    if (!moveSequenceInvolvesHit(snapshot, moves)) {
-      const glideMove: Move = {
-        from: moves[0].from,
-        to: moves[moves.length - 1].to,
-        dieIndex: 0,
-      };
-      setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, () => {
-        const next = applyResolvedSequence(snapshot, moves, onMoveApplied);
-        setState(next);
-        setMoveAnimation(null);
-        setSequenceActive(false);
-      }));
-      return;
-    }
-
-    const playFromIndex = (snap: GameState, index: number) => {
-      const planned = moves[index];
-      const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
-      if (!legal) {
-        setSequenceActive(false);
-        return;
-      }
-      playMove(snap, legal, (next) => {
-        if (index + 1 < moves.length) {
-          playFromIndex(next, index + 1);
-        }
-        else {
-          setSequenceActive(false);
-        }
-      });
-    };
-
-    playFromIndex(snapshot, 0);
+    runMoveSequence(snapshot, moves, {
+      isAnimating: isAnimatingRef.current,
+      playMove,
+      onMoveApplied,
+      setState,
+      setMoveAnimation,
+      setSequenceActive,
+    });
   }, [playMove, onMoveApplied, setState]);
 
   const doMove = useCallback((move: Move) => {

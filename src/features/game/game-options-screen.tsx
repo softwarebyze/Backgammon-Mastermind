@@ -17,6 +17,7 @@ export function GameOptionsScreen() {
     preferences,
     setShowMoveHints,
     setShowDirectionOverlay,
+    setShowPointNumbers,
     setDiceDisplayStyle,
     setAutoRoll,
     setAutoMoveWhenForced,
@@ -39,6 +40,7 @@ export function GameOptionsScreen() {
         preferences={preferences}
         onShowMoveHintsChange={setShowMoveHints}
         onShowDirectionOverlayChange={setShowDirectionOverlay}
+        onShowPointNumbersChange={setShowPointNumbers}
         onDiceDisplayStyleChange={setDiceDisplayStyle}
         onAutoRollChange={setAutoRoll}
         onAutoMoveWhenForcedChange={setAutoMoveWhenForced}

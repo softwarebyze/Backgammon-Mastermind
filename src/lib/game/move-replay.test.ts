@@ -4,8 +4,8 @@ import { appendMoveLogEntry } from './move-log';
 import {
   backfillMoveLogSnapshots,
   deriveReplayBaseline,
-  reconstructStateAtPly,
   resolveMoveFromLogEntry,
+  stateAtPly,
 } from './move-replay';
 import { applyMove, getLegalMoves } from './moves';
 
@@ -32,9 +32,9 @@ describe('move-replay', () => {
       after: next,
     });
 
-    expect(reconstructStateAtPly(baseline, log, 0).points[move.from].count)
+    expect(stateAtPly(baseline, log, 0).points[move.from].count)
       .toBe(baseline.points[move.from].count);
-    expect(reconstructStateAtPly(baseline, log, 1).points[move.to].player)
+    expect(stateAtPly(baseline, log, 1).points[move.to].player)
       .toBe(next.points[move.to].player);
   });
 
@@ -80,7 +80,7 @@ describe('move-replay', () => {
 
     const backfilled = backfillMoveLogSnapshots(baseline, legacyLog);
     expect(backfilled[0]?.after?.points[move.to].player).toBe(after.points[move.to].player);
-    expect(reconstructStateAtPly(baseline, backfilled, 1).points[move.to].player)
+    expect(stateAtPly(baseline, backfilled, 1).points[move.to].player)
       .toBe(after.points[move.to].player);
   });
 });

@@ -1,8 +1,9 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { getCheckerAnchor } from '@/features/game/board-point-layout';
 import { movePathAnchors } from '@/features/game/components/board/move-path-anchors';
+import { clampPathAnchor } from '@/features/game/components/board/move-path-bounds';
 import { formatReviewPositionLabel } from '@/features/game/review-helpers';
-import { createInitialState } from '@/lib/game/constants';
+import { BAR_POINT, createInitialState } from '@/lib/game/constants';
 import { applyMove, getLegalMoves } from '@/lib/game/moves';
 
 function mockDims(): BoardDimensions {
@@ -51,6 +52,37 @@ describe('move-path-overlay', () => {
     expect(from.y).not.toEqual(shallowFrom.y);
     expect(to.x).toBeGreaterThan(0);
     expect(applyMove(before, move).points[move.to].count).toBeGreaterThan(0);
+  });
+
+  it('clamps bar anchors inside the board overlay', () => {
+    const dims = mockDims();
+    const before = {
+      ...createInitialState('vs-human'),
+      phase: 'moving' as const,
+      currentPlayer: 'white' as const,
+      dice: [4, 2] as [number, number],
+      remainingDice: [4, 2],
+      bar: { white: 1, black: 0 },
+    };
+    const raw = getCheckerAnchor({
+      pointIndex: BAR_POINT,
+      dims,
+      stackCount: 1,
+      player: 'white',
+    });
+    expect(raw.y).toBeGreaterThanOrEqual(dims.boardHeight - 20);
+
+    const entry = {
+      ply: 1,
+      player: 'white' as const,
+      dice: before.dice,
+      from: BAR_POINT,
+      to: 4,
+    };
+    const { from } = movePathAnchors(entry, before, dims);
+    expect(from.y).toBeLessThanOrEqual(dims.boardHeight - 4);
+    expect(from.y).toBeGreaterThanOrEqual(4);
+    expect(from.y).toBeLessThanOrEqual(clampPathAnchor(raw, dims).y + 0.01);
   });
 });
 

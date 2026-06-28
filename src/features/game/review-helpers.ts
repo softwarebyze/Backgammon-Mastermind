@@ -1,12 +1,16 @@
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
+import type { ReviewAnimDirection } from '@/features/game/review-navigation';
 import type { GameState, Move } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
-import { buildMoveAnimationFrame } from '@/features/game/move-animation';
+import { buildMoveAnimationFrame, countAtPoint } from '@/features/game/move-animation';
+import { opponent } from '@/lib/game';
+import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
+import { groupMoveLogByTurn } from '@/lib/game/move-log';
 import { resolveMoveFromLogEntry, stateAtPly } from '@/lib/game/move-replay';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 
-export function moveFromLogEntry(before: GameState, entry: MoveLogEntry): Move {
+function moveFromLogEntry(before: GameState, entry: MoveLogEntry): Move {
   return resolveMoveFromLogEntry(before, entry) ?? {
     from: entry.from,
     to: entry.to,
@@ -29,45 +33,74 @@ export function formatReviewPositionLabel(
   const playerKey = entry.player === 'white'
     ? 'game.review.player_white'
     : 'game.review.player_black';
-  return translate('game.review.move_position', {
-    current: viewIndex,
-    total: liveIndex,
+  const turns = groupMoveLogByTurn(moveLog);
+  const turn = turns.find(
+    t => viewIndex >= t.endPly - t.moves.length + 1 && viewIndex <= t.endPly,
+  );
+  if (!turn) {
+    return translate('game.review.move_position', {
+      current: viewIndex,
+      total: liveIndex,
+      player: translate(playerKey),
+    });
+  }
+  const moveInTurn = turn.moves.findIndex(m => m.ply === viewIndex) + 1;
+  return translate('game.review.turn_position', {
+    turn: turn.turnIndex,
+    totalTurns: turns.length,
+    moveInTurn,
+    movesInTurn: turn.moves.length,
     player: translate(playerKey),
   });
 }
 
 type JumpCtx = {
   ply: number;
-  viewIndex: number;
+  effectivePly: number;
   liveIndex: number;
-  isAnimating: boolean;
-  playStepAnimation: (targetPly: number, onComplete: () => void) => void;
+  playStepAnimation: (targetPly: number, direction: 'forward' | 'backward', onComplete: () => void) => void;
   setManualIndex: (v: number | null) => void;
-  clearAnimation: () => void;
+  setPendingAnimTarget: (v: number | null) => void;
+  setPendingAnimDirection: (v: ReviewAnimDirection | null) => void;
+  cancelAnimation: () => void;
 };
 
 export function performReviewJump(ctx: JumpCtx): void {
-  const { ply, viewIndex, liveIndex, isAnimating, playStepAnimation, setManualIndex, clearAnimation } = ctx;
-  if (isAnimating) {
-    return;
-  }
+  const {
+    ply,
+    effectivePly,
+    liveIndex,
+    playStepAnimation,
+    setManualIndex,
+    setPendingAnimTarget,
+    setPendingAnimDirection,
+    cancelAnimation,
+  } = ctx;
   hapticLight();
+  cancelAnimation();
+  setPendingAnimTarget(null);
   if (ply >= liveIndex) {
     setManualIndex(null);
-    clearAnimation();
     return;
   }
-  if (ply <= viewIndex) {
-    clearAnimation();
-    setManualIndex(ply);
+  if (ply === effectivePly) {
     return;
   }
-  if (ply > viewIndex + 1) {
-    clearAnimation();
-    setManualIndex(ply);
+  if (ply === effectivePly + 1) {
+    setManualIndex(effectivePly);
+    setPendingAnimTarget(ply);
+    setPendingAnimDirection('forward');
+    playStepAnimation(ply, 'forward', () => setManualIndex(ply >= liveIndex ? null : ply));
     return;
   }
-  playStepAnimation(ply, () => setManualIndex(ply));
+  if (ply === effectivePly - 1) {
+    setManualIndex(effectivePly);
+    setPendingAnimTarget(ply);
+    setPendingAnimDirection('backward');
+    playStepAnimation(ply, 'backward', () => setManualIndex(ply >= liveIndex ? null : ply));
+    return;
+  }
+  setManualIndex(ply);
 }
 
 export function buildReviewStepAnimation(ctx: {
@@ -83,5 +116,67 @@ export function buildReviewStepAnimation(ctx: {
   const before = stateAtPly(replayBaseline, moveLog, targetPly - 1);
   const entry = moveLog[targetPly - 1]!;
   const move = moveFromLogEntry(before, entry);
-  return buildMoveAnimationFrame(before, move, onFinish);
+  return buildMoveAnimationFrame({ ...before, currentPlayer: entry.player }, move, onFinish);
+}
+
+function wasBlotHit(before: GameState, to: number, player: MoveLogEntry['player']): boolean {
+  if (to < 1 || to > 24) {
+    return false;
+  }
+  const opp = opponent(player);
+  const dest = before.points[to];
+  return dest.player === opp && dest.count === 1;
+}
+
+/** Undo animation: slide the mover's checker back; restore hit blots from the bar when needed. */
+export function buildReviewStepBackAnimation(ctx: {
+  replayBaseline: GameState;
+  moveLog: MoveLogEntry[];
+  targetPly: number;
+  onFinish: () => void;
+}): MoveAnimationFrame | null {
+  const { replayBaseline, moveLog, targetPly, onFinish } = ctx;
+  const undoPly = targetPly + 1;
+  if (undoPly <= 0 || undoPly > moveLog.length) {
+    return null;
+  }
+
+  const entry = moveLog[undoPly - 1]!;
+  const player = entry.player;
+  const before = stateAtPly(replayBaseline, moveLog, undoPly - 1);
+  const after = stateAtPly(replayBaseline, moveLog, undoPly);
+  const from = entry.to;
+  const to = entry.from;
+
+  const sourceStackCount = from === BEAR_OFF
+    ? after.borneOff[player]
+    : countAtPoint(after, from, player);
+  const destStackCount = to === BEAR_OFF
+    ? before.borneOff[player] + 1
+    : countAtPoint(before, to, player);
+
+  const frame: MoveAnimationFrame = {
+    from,
+    to,
+    player,
+    sourceStackCount,
+    sourceDisplayCount: Math.max(0, sourceStackCount - 1),
+    destStackCount,
+    onFinish,
+  };
+
+  if (wasBlotHit(before, entry.to, player)) {
+    const opp = opponent(player);
+    if (after.bar[opp] > before.bar[opp]) {
+      frame.capture = {
+        from: BAR_POINT,
+        to: entry.to,
+        player: opp,
+        sourceStackCount: after.bar[opp],
+        destStackCount: 1,
+      };
+    }
+  }
+
+  return frame;
 }

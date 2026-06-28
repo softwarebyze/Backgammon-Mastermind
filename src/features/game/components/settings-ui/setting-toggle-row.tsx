@@ -22,12 +22,13 @@ function iconForToggle(icon: React.ReactNode, active: boolean): React.ReactNode 
   if (!React.isValidElement(icon)) {
     return icon;
   }
-  return React.cloneElement(icon as React.ReactElement<{ active?: boolean }>, { active });
+  const el = icon as React.ReactElement<{ active?: boolean }>;
+  return React.createElement(el.type, { ...el.props, active });
 }
 
 const TRACK_OFF = '#4A3020';
-const TRACK_ON = '#6B4A28';
-const THUMB_OFF = '#C8B8A0';
+const TRACK_ON = GAME_PALETTE.accentDim;
+const ANDROID_THUMB = '#F5F0E8';
 
 export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) {
   const handleChange = React.useCallback(
@@ -49,11 +50,11 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
         value={value}
         onValueChange={handleChange}
         trackColor={{ false: TRACK_OFF, true: TRACK_ON }}
-        thumbColor={value ? GAME_PALETTE.accent : THUMB_OFF}
+        thumbColor={Platform.OS === 'android' ? ANDROID_THUMB : undefined}
         ios_backgroundColor={TRACK_OFF}
         {...Platform.select({
           web: {
-            activeThumbColor: GAME_PALETTE.accent,
+            activeThumbColor: ANDROID_THUMB,
             activeTrackColor: TRACK_ON,
           },
         })}

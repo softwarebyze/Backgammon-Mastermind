@@ -72,7 +72,7 @@ export function GameScreen() {
   }
 
   const boardState = review.displayState;
-  const boardAnimation = review.reviewAnimation ?? moveAnimation;
+  const boardAnimation = review.isReviewing ? review.reviewAnimation : moveAnimation;
   const interactionEnabled = !review.isReviewing && !boardAnimation;
   const isComputerTurn = boardState.mode === 'vs-computer' && boardState.currentPlayer === 'black';
 
@@ -87,6 +87,7 @@ export function GameScreen() {
         boardState={boardState}
         boardAnimation={boardAnimation}
         interactionEnabled={interactionEnabled}
+        isReviewing={review.isReviewing}
         previewTarget={input.previewTarget}
         reviewEntry={review.isReviewing ? review.activeEntry : null}
         reviewBeforeState={review.isReviewing ? review.reviewBeforeState : null}
@@ -115,6 +116,7 @@ export function GameScreen() {
         isReviewing={review.isReviewing}
         onRoll={input.handleRoll}
         onReset={input.handleReset}
+        onGoLive={review.goLive}
       />
     </View>
   );

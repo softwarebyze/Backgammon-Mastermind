@@ -5,6 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import Svg, { Line, Polygon } from 'react-native-svg';
 
 import { movePathAnchors } from '@/features/game/components/board/move-path-anchors';
+import { insetPathSegment } from '@/features/game/components/board/move-path-bounds';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 
 type Props = {
@@ -18,7 +19,8 @@ const ARROW_COLOR = GAME_PALETTE.accent;
 
 /** Dashed path from moving checker center to landing stack top (website-style). */
 export function MovePathOverlay({ entry, beforeState, dimensions }: Props) {
-  const { from, to } = movePathAnchors(entry, beforeState, dimensions);
+  const raw = movePathAnchors(entry, beforeState, dimensions);
+  const { from, to } = insetPathSegment(raw.from, raw.to);
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const len = Math.hypot(dx, dy) || 1;

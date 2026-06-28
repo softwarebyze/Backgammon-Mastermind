@@ -9,9 +9,11 @@ describe('buildHorseshoePath', () => {
     expect(path.split('L ').length).toBeGreaterThanOrEqual(2);
   });
 
-  it('mirrors start/end for black', () => {
+  it('mirrors start/end for black with a full bottom-to-top path', () => {
     const white = buildHorseshoePath(100, 100, 'white');
     const black = buildHorseshoePath(100, 100, 'black');
     expect(white).not.toEqual(black);
+    expect(black.split('L ').length).toBeGreaterThanOrEqual(2);
+    expect(black).toContain('Q ');
   });
 });

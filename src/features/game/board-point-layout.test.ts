@@ -1,6 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 
-import { getCheckerAnchor } from '@/features/game/board-point-layout';
+import { getCheckerAnchor, POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 
 const TEST_DIMS: BoardDimensions = {
   boardWidth: 400,
@@ -57,5 +57,11 @@ describe('getCheckerAnchor', () => {
     });
 
     expect(second.y).toBeLessThan(first.y);
+  });
+});
+
+describe('pOINT_NUMBER_RAIL', () => {
+  it('reserves enough height for labels outside the playing surface', () => {
+    expect(POINT_NUMBER_RAIL).toBeGreaterThanOrEqual(16);
   });
 });

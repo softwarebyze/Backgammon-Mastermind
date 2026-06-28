@@ -55,24 +55,8 @@ function barCheckerCenterY(
   return stackBottom - tokenSize / 2 - stackIndex * (tokenSize + BAR_GAP);
 }
 
-/** Pixel center for a move-hint dot — offset outside the stack toward the board edge. */
-export function getMoveHintDotAnchor({
-  pointIndex,
-  dims,
-  stackCount = 1,
-  player,
-}: CheckerAnchorOptions): PointAnchor {
-  const center = getCheckerAnchor({ pointIndex, dims, stackCount, player });
-  const mapped = columnForPoint(pointIndex);
-  if (!mapped) {
-    return center;
-  }
-  const bump = dims.checkerSize * 0.55 + 8;
-  return {
-    x: center.x,
-    y: mapped.isTop ? center.y - bump : center.y + bump,
-  };
-}
+/** Vertical gutter for 1–24 labels outside the playing surface. */
+export const POINT_NUMBER_RAIL = 18;
 
 /** Pixel center for the top checker in a stack (board-local coordinates). */
 export function getCheckerAnchor({

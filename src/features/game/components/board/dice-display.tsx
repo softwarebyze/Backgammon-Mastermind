@@ -44,6 +44,11 @@ function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
 
   useEffect(() => {
     const key = diceKey(dice);
+    if (!hasRolledDice(dice)) {
+      lastKey.current = null;
+      dieScale.value = 1;
+      return;
+    }
     if (lastKey.current === null) {
       lastKey.current = key;
       return;

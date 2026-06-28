@@ -27,7 +27,7 @@ function PointCheckers({
   visibleCount,
   showGhost,
   ghostPlayer,
-  hintTopChecker: _hintTopChecker,
+  hintTopChecker,
 }: CheckersProps) {
   if (point.count === 0) {
     return null;
@@ -44,7 +44,7 @@ function PointCheckers({
             player={point.player as Player}
             size={checkerSize}
             showCount={isTopChecker && point.count > MAX_VISIBLE ? point.count : undefined}
-            showMoveHint={false}
+            showMoveHint={isTopChecker && hintTopChecker}
             style={{
               position: 'absolute',
               [isTop ? 'top' : 'bottom']: offset,

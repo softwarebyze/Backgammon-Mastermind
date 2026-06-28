@@ -6,6 +6,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -16,6 +17,7 @@ type Props = {
   isReviewing?: boolean;
   onRoll: () => void;
   onReset: () => void;
+  onGoLive?: () => void;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
@@ -27,6 +29,7 @@ export function GameScreenControls({
   isReviewing = false,
   onRoll,
   onReset,
+  onGoLive,
 }: Props) {
   const { preferences } = useGamePreferences();
   const turn = getTurnDisplay(state);
@@ -57,6 +60,10 @@ export function GameScreenControls({
             hapticLight();
             onReset();
           }}
+          onGoLive={() => {
+            hapticLight();
+            onGoLive?.();
+          }}
         />
       </View>
       <Text style={styles.caption} numberOfLines={2}>
@@ -73,9 +80,19 @@ function ActionControl({
   isReviewing,
   onRoll,
   onReset,
+  onGoLive,
 }: Props) {
   if (isReviewing) {
-    return <StatusPlaceholder text="Review mode" />;
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={translate('game.review.back_to_live')}
+        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        onPress={onGoLive}
+      >
+        <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
+      </Pressable>
+    );
   }
 
   if (state.phase === 'game-over') {

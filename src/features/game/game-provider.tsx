@@ -55,10 +55,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const startGame = useCallback((mode: GameMode) => {
     clearAITimeout();
+    resetAnimation();
     clearActiveGame();
     resetMoveLog();
     setState(createInitialState(mode));
-  }, [clearAITimeout, resetMoveLog]);
+  }, [clearAITimeout, resetAnimation, resetMoveLog]);
 
   const resumeGame = useCallback(() => {
     clearAITimeout();
@@ -81,6 +82,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const resetGame = useCallback(() => {
     clearAITimeout();
+    resetAnimation();
     resetMoveLog();
     setState((prev) => {
       if (!prev) {
@@ -90,7 +92,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       saveActiveGame(next);
       return next;
     });
-  }, [clearAITimeout, resetMoveLog]);
+  }, [clearAITimeout, resetAnimation, resetMoveLog]);
 
   useGameplayHelpers({ state, isAnimating, doRollDice, doMove, doPassTurn });
 

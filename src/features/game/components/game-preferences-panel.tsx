@@ -6,6 +6,7 @@ import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-i
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
+import { PointNumbersIcon } from '@/features/game/components/settings-ui/point-numbers-icon';
 import { SettingToggleRow } from '@/features/game/components/settings-ui/setting-toggle-row';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
@@ -16,6 +17,7 @@ type Props = {
   preferences: GamePreferences;
   onShowMoveHintsChange: (value: boolean) => void;
   onShowDirectionOverlayChange: (value: boolean) => void;
+  onShowPointNumbersChange: (value: boolean) => void;
   onDiceDisplayStyleChange: (style: GamePreferences['diceDisplayStyle']) => void;
   onAutoRollChange: (value: boolean) => void;
   onAutoMoveWhenForcedChange: (value: boolean) => void;
@@ -26,6 +28,7 @@ export function GamePreferencesPanel({
   preferences,
   onShowMoveHintsChange,
   onShowDirectionOverlayChange,
+  onShowPointNumbersChange,
   onDiceDisplayStyleChange,
   onAutoRollChange,
   onAutoMoveWhenForcedChange,
@@ -48,6 +51,14 @@ export function GamePreferencesPanel({
           hint={showHints ? translate('game.preferences.direction_overlay_hint') : undefined}
           value={preferences.showDirectionOverlay}
           onChange={onShowDirectionOverlayChange}
+        />
+        <View style={styles.divider} />
+        <SettingToggleRow
+          icon={<PointNumbersIcon size={32} />}
+          label={translate('game.preferences.point_numbers')}
+          hint={showHints ? translate('game.preferences.point_numbers_hint') : undefined}
+          value={preferences.showPointNumbers}
+          onChange={onShowPointNumbersChange}
         />
       </View>
 
@@ -93,8 +104,6 @@ const styles = StyleSheet.create({
   },
   diceCard: {
     backgroundColor: GAME_PALETTE.bg,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.surfaceBorder,
     paddingHorizontal: SETTINGS_ROW_PADDING_H,
     paddingVertical: SETTINGS_ROW_PADDING_H,
     ...continuousRadius(12),

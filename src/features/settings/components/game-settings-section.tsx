@@ -16,6 +16,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
     preferences,
     setShowMoveHints,
     setShowDirectionOverlay,
+    setShowPointNumbers,
     setDiceDisplayStyle,
     setAutoRoll,
     setAutoMoveWhenForced,
@@ -28,6 +29,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
         preferences={preferences}
         onShowMoveHintsChange={setShowMoveHints}
         onShowDirectionOverlayChange={setShowDirectionOverlay}
+        onShowPointNumbersChange={setShowPointNumbers}
         onDiceDisplayStyleChange={setDiceDisplayStyle}
         onAutoRollChange={setAutoRoll}
         onAutoMoveWhenForcedChange={setAutoMoveWhenForced}

@@ -25,16 +25,9 @@ type Props = {
 
 const DOT = 7;
 const CHECKER = 12;
+const SLOT = CHECKER + 4;
+const GAP = 6;
 const BAR_HEIGHT = 68;
-
-function isNewTurn(entries: MoveLogEntry[], index: number): boolean {
-  if (index === 0) {
-    return false;
-  }
-  const prev = entries[index - 1]!;
-  const entry = entries[index]!;
-  return prev.player !== entry.player || prev.dice[0] !== entry.dice[0] || prev.dice[1] !== entry.dice[1];
-}
 
 /** Fixed-height scrubber with per-move dots and position label. */
 export function MoveReviewBar({
@@ -87,7 +80,7 @@ export function MoveReviewBar({
               hapticLight();
               onJumpToPly(0);
             }}
-            style={[styles.dotWrap, styles.turnGap]}
+            style={styles.slot}
           >
             <View style={[styles.dot, focusedPly === 0 && styles.dotFocused, viewIndex > 0 && styles.dotPast]} />
           </Pressable>
@@ -106,7 +99,7 @@ export function MoveReviewBar({
                   hapticLight();
                   onJumpToPly(ply);
                 }}
-                style={[styles.dotWrap, isNewTurn(moveLog, index) && styles.turnGap]}
+                style={styles.slot}
               >
                 {isFocused
                   ? (
@@ -130,7 +123,7 @@ export function MoveReviewBar({
             accessibilityState={{ selected: !isReviewing }}
             disabled={!isReviewing}
             onPress={isReviewing ? onGoLive : undefined}
-            style={[styles.dotWrap, styles.turnGap]}
+            style={styles.slotLast}
           >
             <View style={[styles.liveDot, !isReviewing && styles.liveDotActive]} />
           </Pressable>
@@ -228,18 +221,21 @@ const styles = StyleSheet.create({
   timeline: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
     paddingHorizontal: 4,
     minHeight: 40,
   },
-  dotWrap: {
+  slot: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: CHECKER + 4,
-    height: CHECKER + 4,
+    width: SLOT,
+    height: SLOT,
+    marginRight: GAP,
   },
-  turnGap: {
-    marginLeft: 4,
+  slotLast: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: SLOT,
+    height: SLOT,
   },
   dot: {
     width: DOT,

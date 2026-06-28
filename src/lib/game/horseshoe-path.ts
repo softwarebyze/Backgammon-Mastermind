@@ -1,4 +1,4 @@
-/** Backgammon bear-off path: across top, curve down the left side, home along the bottom. */
+/** Backgammon bear-off path: across outer edge, curve around the side, home along the opposite outer edge. */
 export function buildHorseshoePath(
   width: number,
   height: number,
@@ -10,16 +10,20 @@ export function buildHorseshoePath(
   const leftX = pad + width * 0.08;
   const rightX = width - pad - width * 0.14;
 
-  const isWhite = player === 'white';
-  const startX = isWhite ? rightX : leftX;
-  const endX = isWhite ? rightX : leftX;
-  const startY = isWhite ? topY : botY;
-  const endY = isWhite ? botY : topY;
+  if (player === 'white') {
+    return [
+      `M ${rightX} ${topY}`,
+      `L ${leftX} ${topY}`,
+      `Q ${pad} ${height / 2} ${leftX} ${botY}`,
+      `L ${rightX} ${botY}`,
+    ].join(' ');
+  }
 
+  // Black: bottom-right → bottom-left → up the left side → home top-right
   return [
-    `M ${startX} ${startY}`,
-    `L ${leftX} ${startY}`,
-    `Q ${pad} ${height / 2} ${leftX} ${botY}`,
-    `L ${endX} ${endY}`,
+    `M ${rightX} ${botY}`,
+    `L ${leftX} ${botY}`,
+    `Q ${pad} ${height / 2} ${leftX} ${topY}`,
+    `L ${rightX} ${topY}`,
   ].join(' ');
 }

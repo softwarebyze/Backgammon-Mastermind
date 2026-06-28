@@ -194,11 +194,15 @@ function isHitMove(state: GameState, move: Move): boolean {
 /** True when any step in a compound path hits a blot (needs stepped animation). */
 export function moveSequenceInvolvesHit(state: GameState, moves: Move[]): boolean {
   let snap = state;
-  for (const move of moves) {
-    if (isHitMove(snap, move)) {
+  for (const planned of moves) {
+    const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
+    if (!legal) {
+      break;
+    }
+    if (isHitMove(snap, legal)) {
       return true;
     }
-    snap = applyMove(snap, move);
+    snap = applyMove(snap, legal);
   }
   return false;
 }
@@ -339,7 +343,15 @@ export function getReachableDestinations(
 
 /** Apply several moves in order (e.g. compound tap consuming multiple dice). */
 export function applyMoveSequence(state: GameState, moves: Move[]): GameState {
-  return moves.reduce((next, move) => applyMove(next, move), state);
+  let snap = state;
+  for (const planned of moves) {
+    const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
+    if (!legal) {
+      break;
+    }
+    snap = applyMove(snap, legal);
+  }
+  return snap;
 }
 
 // ---------------------------------------------------------------------------

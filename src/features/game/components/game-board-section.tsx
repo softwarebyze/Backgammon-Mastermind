@@ -14,6 +14,7 @@ type Props = {
   boardState: GameState;
   boardAnimation: MoveAnimationFrame | null;
   interactionEnabled: boolean;
+  isReviewing: boolean;
   previewTarget: number | null;
   reviewEntry: MoveLogEntry | null;
   reviewBeforeState: GameState | null;
@@ -24,6 +25,7 @@ export function GameBoardSection({
   boardState,
   boardAnimation,
   interactionEnabled,
+  isReviewing,
   previewTarget,
   reviewEntry,
   reviewBeforeState,
@@ -44,13 +46,14 @@ export function GameBoardSection({
             previewTarget={interactionEnabled ? previewTarget : null}
             moveAnimation={boardAnimation}
             interactionEnabled={interactionEnabled}
+            isReviewing={isReviewing}
             onPointPress={input.handlePointPress}
             onPointPressIn={input.handlePointPressIn}
             onPointPressOut={input.handlePointPressOut}
             onBarPress={input.handleBarPress}
             onBearOffPress={input.handleBearOffPress}
           />
-          {reviewEntry && reviewBeforeState
+          {reviewEntry && reviewBeforeState && isReviewing
             ? (
                 <View
                   style={{

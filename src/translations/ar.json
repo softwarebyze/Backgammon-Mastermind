@@ -1,7 +1,7 @@
 {
   "game": {
     "options": {
-      "open_settings": "اللغة والسمة والمزيد",
+      "open_settings": "اللغة والمزيد",
       "open_settings_hint": "فتح الإعدادات",
       "title": "خيارات اللعبة"
     },
@@ -17,15 +17,19 @@
       "direction_overlay_hint": "مسار حدوة الحصان على اللوحة",
       "move_hints": "تلميحات الحركة",
       "move_hints_hint": "نقطة ذهبية بجانب النقاط التي يمكنك التحرك منها",
+      "point_numbers": "أرقام النقاط",
+      "point_numbers_hint": "عرض تسميات 1–24 على اللوحة",
       "section_automation": "أتمتة",
       "section_board": "اللوحة",
       "section_dice": "النرد"
     },
     "review": {
+      "back_to_live": "العودة للعب المباشر",
       "move_position": "حركة {{current}} من {{total}} · {{player}}",
       "opening": "موضع البداية",
       "player_black": "أسود",
-      "player_white": "أبيض"
+      "player_white": "أبيض",
+      "turn_position": "دور {{turn}}/{{totalTurns}} · حركة {{moveInTurn}}/{{movesInTurn}} · {{player}}"
     }
   },
   "settings": {
@@ -45,12 +49,6 @@
     "support": "الدعم",
     "support_us": "ادعمنا",
     "terms": "شروط الخدمة",
-    "theme": {
-      "dark": "مظلم",
-      "light": "خفيفة",
-      "system": "System",
-      "title": "سمة"
-    },
     "title": "إعدادات",
     "version": "إصدار",
     "website": "موقع الكتروني"

@@ -22,7 +22,7 @@ export type MoveLogEntry = {
   after?: ReplaySnapshot;
 };
 
-export function captureReplaySnapshot(state: GameState): ReplaySnapshot {
+function captureReplaySnapshot(state: GameState): ReplaySnapshot {
   return {
     points: state.points.map(p => ({ ...p })),
     bar: { ...state.bar },
@@ -106,7 +106,7 @@ export function groupMoveLogByTurn(entries: MoveLogEntry[]): MoveLogTurn[] {
   return turns;
 }
 
-export function formatPointShort(point: number): string {
+function formatPointShort(point: number): string {
   if (point === BAR_POINT) {
     return 'bar';
   }
@@ -120,21 +120,6 @@ export function formatTurnMoveSummary(moves: MoveLogEntry[]): string {
   return moves
     .map(entry => `${formatPointShort(entry.from)}→${formatPointShort(entry.to)}`)
     .join(' · ');
-}
-
-/** Which turn (1-based) contains this ply index. */
-export function turnIndexForPly(entries: MoveLogEntry[], ply: number): number {
-  if (ply <= 0) {
-    return 0;
-  }
-  const turns = groupMoveLogByTurn(entries);
-  for (const turn of turns) {
-    const startPly = turn.endPly - turn.moves.length + 1;
-    if (ply >= startPly && ply <= turn.endPly) {
-      return turn.turnIndex;
-    }
-  }
-  return turns.length;
 }
 
 export function mergeSnapshotIntoState(base: GameState, snapshot: ReplaySnapshot): GameState {

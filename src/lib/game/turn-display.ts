@@ -76,7 +76,7 @@ export function getActionCaption(
   turn: TurnDisplay,
 ): string {
   if (state.phase === 'opening-roll' && turn.isHumanTurn) {
-    return `Roll for opening — you play ${turn.colorLabel.toUpperCase()}`;
+    return `Roll for opening — die shows on the ${turn.colorLabel.toLowerCase()} side`;
   }
   if (state.phase === 'opening-roll' && turn.isWaiting) {
     return turn.player === 'black'
