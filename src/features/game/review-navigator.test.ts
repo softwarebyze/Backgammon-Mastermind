@@ -1,24 +1,16 @@
 import { planReviewNavigation, reviewScrubberPly } from '@/features/game/review-navigator';
 
 describe('review-navigator', () => {
-  it('plans adjacent step forward', () => {
-    expect(planReviewNavigation(1, 2, 5)).toEqual({
-      mode: 'step',
-      ply: 2,
-      direction: 'forward',
-    });
+  it('jumps adjacent plies instantly (consistent scrubbing)', () => {
+    expect(planReviewNavigation(1, 2, 5)).toEqual({ mode: 'jump', ply: 2 });
   });
 
   it('plans instant jump for multi-ply jumps', () => {
     expect(planReviewNavigation(4, 1, 6)).toEqual({ mode: 'jump', ply: 1 });
   });
 
-  it('animates forward to the live ply instead of snapping', () => {
-    expect(planReviewNavigation(1, 2, 2)).toEqual({
-      mode: 'step',
-      ply: 2,
-      direction: 'forward',
-    });
+  it('jumps forward to the live ply', () => {
+    expect(planReviewNavigation(1, 2, 2)).toEqual({ mode: 'jump', ply: 2 });
   });
 
   it('noops when already parked at the target ply', () => {

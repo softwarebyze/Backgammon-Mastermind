@@ -113,15 +113,11 @@ describe('review animation generation guard', () => {
 });
 
 describe('planReviewNavigation (jump)', () => {
-  it('plans backward step when target is adjacent', () => {
-    expect(planReviewNavigation(2, 1, 4)).toEqual({
-      mode: 'step',
-      ply: 1,
-      direction: 'backward',
-    });
+  it('plans instant jump when target is adjacent', () => {
+    expect(planReviewNavigation(2, 1, 4)).toEqual({ mode: 'jump', ply: 1 });
   });
 
-  it('plans fade when jumping more than one ply away', () => {
+  it('plans jump when more than one ply away', () => {
     expect(planReviewNavigation(4, 1, 6)).toEqual({ mode: 'jump', ply: 1 });
   });
 });

@@ -18,15 +18,7 @@ export function planReviewNavigation(
   if (targetPly === currentPly) {
     return { mode: 'noop' };
   }
-  const diff = targetPly - currentPly;
-  if (Math.abs(diff) === 1) {
-    return {
-      mode: 'step',
-      ply: targetPly,
-      direction: diff > 0 ? 'forward' : 'backward',
-    };
-  }
-  // Instant settle — fading the whole board felt like a flicker.
+  // Always jump — mixed step/jump felt inconsistent when scrubbing quickly.
   return { mode: 'jump', ply: targetPly };
 }
 

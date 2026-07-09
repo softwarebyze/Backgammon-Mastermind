@@ -5,7 +5,7 @@ import { buildMoveAnimationFrame, countAtPoint } from '@/features/game/move-anim
 import { REVIEW_CHECKER_MOVE_DURATION_MS } from '@/features/game/review-navigator';
 import { opponent } from '@/lib/game';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
-import { groupMoveLogByTurn } from '@/lib/game/move-log';
+import { groupMoveLogByTurn, isNoMoveLogEntry } from '@/lib/game/move-log';
 import { resolveMoveFromLogEntry, stateAtPly } from '@/lib/game/move-replay';
 import { translate } from '@/lib/i18n';
 
@@ -60,8 +60,11 @@ export function buildReviewStepAnimation(ctx: {
   if (targetPly <= 0 || targetPly > moveLog.length) {
     return null;
   }
-  const before = stateAtPly(replayBaseline, moveLog, targetPly - 1);
   const entry = moveLog[targetPly - 1]!;
+  if (isNoMoveLogEntry(entry)) {
+    return null;
+  }
+  const before = stateAtPly(replayBaseline, moveLog, targetPly - 1);
   const move = moveFromLogEntry(before, entry);
   const frame = buildMoveAnimationFrame({ ...before, currentPlayer: entry.player }, move, onFinish);
   return frame ? { ...frame, durationMs: REVIEW_CHECKER_MOVE_DURATION_MS } : null;

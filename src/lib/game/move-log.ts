@@ -1,6 +1,10 @@
 import type { BoardPoint, GamePhase, GameState, Move, Player } from './types';
 import { BAR_POINT, BEAR_OFF } from './constants';
 
+/** Sentinel points for a logged roll with zero legal moves. */
+export const NO_MOVE_FROM = -1;
+export const NO_MOVE_TO = -1;
+
 /** Compact post-move state for reliable replay (no re-simulating dice/turns). */
 export type ReplaySnapshot = {
   points: BoardPoint[];
@@ -21,6 +25,10 @@ export type MoveLogEntry = {
   /** Present on new entries; legacy logs backfilled on load. */
   after?: ReplaySnapshot;
 };
+
+export function isNoMoveLogEntry(entry: MoveLogEntry): boolean {
+  return entry.from === NO_MOVE_FROM && entry.to === NO_MOVE_TO;
+}
 
 function captureReplaySnapshot(state: GameState): ReplaySnapshot {
   return {
@@ -46,6 +54,9 @@ function pointLabel(point: number): string {
 
 export function formatMoveLogEntry(entry: MoveLogEntry): string {
   const who = entry.player === 'white' ? 'White' : 'Black';
+  if (isNoMoveLogEntry(entry)) {
+    return `${who}: no move (${entry.dice[0]}, ${entry.dice[1]})`;
+  }
   return `${who}: ${pointLabel(entry.from)} → ${pointLabel(entry.to)} (${entry.dice[0]}, ${entry.dice[1]})`;
 }
 
@@ -64,6 +75,39 @@ export function appendMoveLogEntry(
       after: captureReplaySnapshot(ctx.after),
     },
   ];
+}
+
+/** Log a roll that had zero legal moves so history still shows the dice. */
+export function appendNoMoveLogEntry(
+  log: MoveLogEntry[],
+  ctx: { player: Player; dice: [number, number]; after: GameState },
+): MoveLogEntry[] {
+  // Skip if this roll already has log entries (partial play, or already recorded).
+  if (turnAlreadyLogged(log, ctx.player, ctx.dice)) {
+    return log;
+  }
+  return [
+    ...log,
+    {
+      ply: log.length + 1,
+      player: ctx.player,
+      dice: [...ctx.dice] as [number, number],
+      from: NO_MOVE_FROM,
+      to: NO_MOVE_TO,
+      after: captureReplaySnapshot(ctx.after),
+    },
+  ];
+}
+
+function turnAlreadyLogged(
+  log: MoveLogEntry[],
+  player: Player,
+  dice: [number, number],
+): boolean {
+  const last = log[log.length - 1];
+  return !!last
+    && last.player === player
+    && diceTupleKey(last.dice) === diceTupleKey(dice);
 }
 
 export type MoveLogTurn = {
@@ -117,9 +161,20 @@ function formatPointShort(point: number): string {
 }
 
 export function formatTurnMoveSummary(moves: MoveLogEntry[]): string {
+  if (moves.length === 1 && moves[0] && isNoMoveLogEntry(moves[0])) {
+    return 'no move';
+  }
   return moves
+    .filter(entry => !isNoMoveLogEntry(entry))
     .map(entry => `${formatPointShort(entry.from)}→${formatPointShort(entry.to)}`)
     .join(' · ');
+}
+
+/** How many dice from the roll were left unused (partial or full no-move). */
+export function unusedDiceInTurn(turn: MoveLogTurn): number {
+  const rolled = turn.dice[0] === turn.dice[1] ? 4 : 2;
+  const played = turn.moves.filter(m => !isNoMoveLogEntry(m)).length;
+  return Math.max(0, rolled - played);
 }
 
 export function mergeSnapshotIntoState(base: GameState, snapshot: ReplaySnapshot): GameState {

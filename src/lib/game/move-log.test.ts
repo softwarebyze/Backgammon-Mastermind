@@ -1,6 +1,7 @@
 import { BAR_POINT, BEAR_OFF, createInitialState } from './constants';
 import {
   appendMoveLogEntry,
+  appendNoMoveLogEntry,
   formatMoveLogEntry,
   formatTurnMoveSummary,
   groupMoveLogByTurn,
@@ -50,6 +51,25 @@ describe('move-log', () => {
       from: 1,
       to: BEAR_OFF,
     })).toBe('White: 1 → off (1, 1)');
+  });
+
+  it('formats and groups a no-move roll', () => {
+    const before = {
+      ...createInitialState('vs-human'),
+      phase: 'no-move' as const,
+      currentPlayer: 'white' as const,
+      dice: [2, 5] as [number, number],
+      remainingDice: [2, 5],
+    };
+    const log = appendNoMoveLogEntry([], {
+      player: 'white',
+      dice: [2, 5],
+      after: before,
+    });
+    expect(formatMoveLogEntry(log[0]!)).toBe('White: no move (2, 5)');
+    const turns = groupMoveLogByTurn(log);
+    expect(turns).toHaveLength(1);
+    expect(formatTurnMoveSummary(turns[0]!.moves)).toBe('no move');
   });
 
   it('appends entries in ply order', () => {

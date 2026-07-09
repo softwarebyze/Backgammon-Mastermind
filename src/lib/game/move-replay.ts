@@ -1,7 +1,7 @@
 import type { MoveLogEntry } from './move-log';
 import type { GameState, Player } from './types';
 import { BAR_POINT, BEAR_OFF } from './constants';
-import { mergeSnapshotIntoState } from './move-log';
+import { isNoMoveLogEntry, mergeSnapshotIntoState } from './move-log';
 import { applyMove, getLegalMoves, opponent } from './moves';
 
 function cloneBoard(state: GameState): GameState {
@@ -40,6 +40,9 @@ function removeChecker(state: GameState, point: number, player: Player): void {
 }
 
 function unapplyLogEntry(state: GameState, entry: MoveLogEntry): GameState {
+  if (isNoMoveLogEntry(entry)) {
+    return cloneBoard(state);
+  }
   const player = entry.player;
   const opp = opponent(player);
   const next = cloneBoard(state);
@@ -96,6 +99,9 @@ export function deriveReplayBaseline(
 }
 
 export function resolveMoveFromLogEntry(state: GameState, entry: MoveLogEntry) {
+  if (isNoMoveLogEntry(entry)) {
+    return null;
+  }
   return getLegalMoves(state).find(m => m.from === entry.from && m.to === entry.to) ?? null;
 }
 
@@ -131,6 +137,9 @@ function reconstructStateAtPlyLegacy(
 
   for (let i = 0; i < limit; i++) {
     const entry = entries[i]!;
+    if (isNoMoveLogEntry(entry)) {
+      continue;
+    }
     const move = resolveMoveFromLogEntry(state, entry);
     if (!move) {
       break;
@@ -158,6 +167,9 @@ export function backfillMoveLogSnapshots(
   return entries.map((entry) => {
     if (entry.after) {
       state = mergeSnapshotIntoState(baseline, entry.after);
+      return entry;
+    }
+    if (isNoMoveLogEntry(entry)) {
       return entry;
     }
     const move = resolveMoveFromLogEntry(state, entry);

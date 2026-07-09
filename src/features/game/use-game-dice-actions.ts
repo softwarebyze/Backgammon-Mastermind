@@ -10,9 +10,12 @@ import {
   rollOpeningDie,
 } from '@/lib/game';
 
+type RecordNoMove = (before: GameState, after: GameState) => void;
+
 export function useGameDiceActions(
   setState: Dispatch<SetStateAction<GameState | null>>,
   isAnimating: boolean,
+  recordNoMove: RecordNoMove,
 ) {
   const doPassTurn = useCallback(() => {
     if (isAnimating) {
@@ -25,9 +28,11 @@ export function useGameDiceActions(
       if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
         return prev;
       }
+      // Snapshot before pass so history keeps the blocked roll.
+      recordNoMove(prev, prev);
       return passTurn(prev);
     });
-  }, [isAnimating, setState]);
+  }, [isAnimating, recordNoMove, setState]);
 
   const doRollDice = useCallback(() => {
     if (isAnimating) {

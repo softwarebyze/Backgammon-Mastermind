@@ -2,7 +2,7 @@ import type { GameState, Move } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { appendMoveLogEntry } from '@/lib/game/move-log';
+import { appendMoveLogEntry, appendNoMoveLogEntry } from '@/lib/game/move-log';
 import { backfillMoveLogSnapshots, deriveReplayBaseline } from '@/lib/game/move-replay';
 import {
   loadMoveLog,
@@ -45,18 +45,31 @@ export function useMoveLog(liveState: GameState | null) {
     return backfillMoveLogSnapshots(replayBaseline, moveLog);
   }, [moveLog, replayBaseline]);
 
-  const recordMove = useCallback((before: GameState, move: Move, after: GameState) => {
+  const ensureBaseline = useCallback((before: GameState) => {
     if (logRef.current.length === 0) {
       saveReplayBaseline(before);
       setStoredBaseline(before);
     }
+  }, []);
+
+  const recordMove = useCallback((before: GameState, move: Move, after: GameState) => {
+    ensureBaseline(before);
     commitLog(appendMoveLogEntry(logRef.current, {
       player: before.currentPlayer,
       dice: before.dice,
       move,
       after,
     }));
-  }, [commitLog]);
+  }, [commitLog, ensureBaseline]);
+
+  const recordNoMove = useCallback((before: GameState, after: GameState) => {
+    ensureBaseline(before);
+    commitLog(appendNoMoveLogEntry(logRef.current, {
+      player: before.currentPlayer,
+      dice: before.dice,
+      after,
+    }));
+  }, [commitLog, ensureBaseline]);
 
   const resetMoveLog = useCallback(() => {
     commitLog([]);
@@ -96,6 +109,7 @@ export function useMoveLog(liveState: GameState | null) {
     moveLog: resolvedLog,
     replayBaseline,
     recordMove,
+    recordNoMove,
     resetMoveLog,
     reloadMoveLog,
     persistMoveLog,

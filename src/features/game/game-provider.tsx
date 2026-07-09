@@ -21,6 +21,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     moveLog,
     replayBaseline,
     recordMove,
+    recordNoMove,
     resetMoveLog,
     reloadMoveLog,
     persistMoveLog,
@@ -50,8 +51,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     playMove,
     isAnimating,
     moveCount: moveLog.length,
+    recordNoMove,
   });
-  const { doPassTurn, doRollDice } = useGameDiceActions(setState, isAnimating);
+  const { doPassTurn, doRollDice } = useGameDiceActions(setState, isAnimating, recordNoMove);
 
   const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     timeline,
@@ -92,7 +94,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setTimeline,
   });
 
-  useGameplayHelpers({ state, isAnimating, doRollDice, doMove, doPassTurn });
+  useGameplayHelpers({ state, isAnimating, doRollDice, doMove, doMoveSequence, doPassTurn });
 
   return (
     <GameContext

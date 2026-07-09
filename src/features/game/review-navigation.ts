@@ -2,6 +2,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { buildReviewStepAnimation, buildReviewStepBackAnimation } from '@/features/game/review-helpers';
+import { isNoMoveLogEntry } from '@/lib/game/move-log';
 import { stateAtPly } from '@/lib/game/move-replay';
 
 export type ReviewAnimDirection = 'forward' | 'backward';
@@ -55,7 +56,7 @@ export function reviewBeforeStateForHighlight(
   return stateAtPly(replayBaseline, moveLog, highlightMovePly - 1);
 }
 
-/** Dice for review UI — always show the full roll lit (no "used" die greying). */
+/** Dice for review UI — dim unused dice so partial / no-move turns are clear. */
 export function reviewDiceForPly(
   moveLog: MoveLogEntry[],
   ply: number,
@@ -69,9 +70,14 @@ export function reviewDiceForPly(
     return { dice: snap.dice, remainingDice: [...snap.remainingDice] };
   }
   const dice = [...entry.dice] as [number, number];
-  // Review shows the whole turn's roll — both dice stay fully colored.
-  const remainingDice = dice[0] === dice[1] ? [dice[0], dice[0], dice[0], dice[0]] : [dice[0], dice[1]];
-  return { dice, remainingDice };
+  if (isNoMoveLogEntry(entry)) {
+    return { dice, remainingDice: [] };
+  }
+  // Prefer the snapshot's remaining dice (unused after the turn / ply).
+  if (entry.after) {
+    return { dice, remainingDice: [...entry.after.remainingDice] };
+  }
+  return { dice, remainingDice: [...snap.remainingDice] };
 }
 
 /** Overlay dice, active player, and phase so review matches the move being viewed. */

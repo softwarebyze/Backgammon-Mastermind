@@ -58,10 +58,12 @@ export function buildTurnPathSegments(
   moveLog: MoveLogEntry[],
   turn: MoveLogTurn,
 ): ReviewPathSegment[] {
-  return turn.moves.map((entry) => {
-    const beforeState = stateAtPly(replayBaseline, moveLog, entry.ply - 1);
-    return { entry, beforeState };
-  });
+  return turn.moves
+    .filter(entry => entry.from >= 0 && entry.to >= 0)
+    .map((entry) => {
+      const beforeState = stateAtPly(replayBaseline, moveLog, entry.ply - 1);
+      return { entry, beforeState };
+    });
 }
 
 /**

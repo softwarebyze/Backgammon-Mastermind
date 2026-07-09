@@ -2,7 +2,7 @@ import type { GameState, Move } from '@/lib/game';
 import { useEffect, useRef } from 'react';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { getForcedLegalMove } from '@/lib/game/single-move';
+import { getForcedLegalMove, getForcedTurnSequence } from '@/lib/game/single-move';
 
 const AUTO_ROLL_DELAY_MS = 400;
 const AUTO_MOVE_DELAY_MS = 300;
@@ -17,6 +17,7 @@ type Options = {
   isAnimating: boolean;
   doRollDice: () => void;
   doMove: (move: Move) => void;
+  doMoveSequence: (moves: Move[]) => void;
   doPassTurn: () => void;
 };
 
@@ -25,6 +26,7 @@ export function useGameplayHelpers({
   isAnimating,
   doRollDice,
   doMove,
+  doMoveSequence,
   doPassTurn,
 }: Options) {
   const { preferences } = useGamePreferences();
@@ -66,6 +68,13 @@ export function useGameplayHelpers({
     }
 
     if (preferences.autoMoveWhenForced && state.phase === 'moving') {
+      const sequence = getForcedTurnSequence(state);
+      if (sequence) {
+        timeoutRef.current = setTimeout(() => {
+          doMoveSequence(sequence);
+        }, AUTO_MOVE_DELAY_MS);
+        return clear;
+      }
       const move = getForcedLegalMove(state);
       if (move) {
         timeoutRef.current = setTimeout(() => {
@@ -82,6 +91,7 @@ export function useGameplayHelpers({
     preferences.autoMoveWhenForced,
     doRollDice,
     doMove,
+    doMoveSequence,
     doPassTurn,
   ]);
 }

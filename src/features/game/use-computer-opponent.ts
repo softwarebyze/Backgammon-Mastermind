@@ -17,14 +17,17 @@ type ComputerOpponentOptions = {
   isAnimating: boolean;
   /** Moves played so far — 0 means the opening ceremony may still be on screen. */
   moveCount: number;
+  recordNoMove: (before: GameState, after: GameState) => void;
 };
 
+/* eslint-disable max-lines-per-function -- AI turn orchestration */
 export function useComputerOpponent({
   state,
   setState,
   playMove,
   isAnimating,
   moveCount,
+  recordNoMove,
 }: ComputerOpponentOptions) {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
@@ -78,6 +81,7 @@ export function useComputerOpponent({
       }
 
       if (prev.phase === 'no-move') {
+        recordNoMove(prev, prev);
         setState(passTurn(prev));
         return;
       }
@@ -85,6 +89,7 @@ export function useComputerOpponent({
       if (prev.phase === 'moving') {
         const move = getAIMove(prev);
         if (!move) {
+          recordNoMove(prev, prev);
           setState(passTurn(prev));
           return;
         }
@@ -117,6 +122,7 @@ export function useComputerOpponent({
     playMove,
     isAnimating,
     moveCount,
+    recordNoMove,
   ]);
 
   return () => {

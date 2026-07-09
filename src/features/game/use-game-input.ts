@@ -14,7 +14,16 @@ function triggerHaptic(fn: () => Promise<void>) {
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */
 export function useGameInput() {
   const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
-  const [previewTarget, setPreviewTarget] = useState<number | null>(null);
+  // Keyed preview — auto-invalidates when turn/dice/animation changes (no effect).
+  const turnKey = `${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}|${isAnimating}`;
+  const [preview, setPreview] = useState<{ key: string; target: number | null }>({
+    key: turnKey,
+    target: null,
+  });
+  const previewTarget = preview.key === turnKey ? preview.target : null;
+  const setPreviewTarget = useCallback((target: number | null) => {
+    setPreview({ key: turnKey, target });
+  }, [turnKey]);
 
   const handlePointPress = useCallback(
     (pointIndex: number) => {
@@ -45,7 +54,7 @@ export function useGameInput() {
       triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
-    [state, doMove, doMoveSequence, selectPoint, isAnimating],
+    [state, doMove, doMoveSequence, selectPoint, isAnimating, setPreviewTarget],
   );
 
   const handlePointPressIn = useCallback(
@@ -59,12 +68,12 @@ export function useGameInput() {
         setPreviewTarget(pointIndex);
       }
     },
-    [state, isAnimating],
+    [state, isAnimating, setPreviewTarget],
   );
 
   const handlePointPressOut = useCallback(() => {
     setPreviewTarget(null);
-  }, []);
+  }, [setPreviewTarget]);
 
   const handleBearOffPress = useCallback(() => {
     if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
@@ -114,7 +123,7 @@ export function useGameInput() {
     }
     setPreviewTarget(null);
     selectPoint(null);
-  }, [state, selectPoint, isAnimating]);
+  }, [state, selectPoint, isAnimating, setPreviewTarget]);
 
   const handlePassTurn = useCallback(() => {
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));

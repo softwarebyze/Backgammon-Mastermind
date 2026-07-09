@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { groupMoveLogByTurn } from '@/lib/game/move-log';
+import { groupMoveLogByTurn, isNoMoveLogEntry, unusedDiceInTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
@@ -17,10 +17,7 @@ type Props = {
   isReviewing: boolean;
   moveLog: MoveLogEntry[];
   focusedPly: number;
-  /**
-   * While live mid-turn, hide only the *current player's* incomplete turn chip.
-   * Completed opponent turns stay visible.
-   */
+  /** While live mid-turn, style the current player's chip as in-progress (dashed). */
   liveCurrentPlayer?: MoveLogEntry['player'] | null;
   onJumpToPly: (ply: number) => void;
   onGoLive: () => void;
@@ -33,22 +30,30 @@ function turnStartPly(turn: MoveLogTurn): number {
 function TurnChip({
   turn,
   focused,
+  inProgress,
   onPress,
 }: {
   turn: MoveLogTurn;
   focused: boolean;
+  inProgress: boolean;
   onPress: () => void;
 }) {
   const playerLabel = turn.player === 'white'
     ? translate('game.review.player_white')
     : translate('game.review.player_black');
+  const unused = unusedDiceInTurn(turn);
+  const noMove = turn.moves.length === 1 && turn.moves[0] && isNoMoveLogEntry(turn.moves[0]);
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={translate('game.review.turn_a11y', { turn: turn.turnIndex, player: playerLabel })}
       accessibilityState={{ selected: focused }}
       onPress={onPress}
-      style={[styles.chip, focused && styles.chipFocused]}
+      style={[
+        styles.chip,
+        focused && styles.chipFocused,
+        inProgress && styles.chipInProgress,
+      ]}
     >
       <View
         style={[
@@ -56,9 +61,12 @@ function TurnChip({
           turn.player === 'white' ? styles.playerDotWhite : styles.playerDotBlack,
         ]}
       />
-      <Text style={[styles.chipText, focused && styles.chipTextFocused]}>
+      <Text style={[styles.chipText, focused && styles.chipTextFocused, noMove && styles.chipTextMuted]}>
         {`${turn.dice[0]}·${turn.dice[1]}`}
       </Text>
+      {(noMove || unused > 0) && (
+        <Text style={styles.unusedMark}>{noMove ? '×' : `-${unused}`}</Text>
+      )}
     </Pressable>
   );
 }
@@ -73,12 +81,12 @@ export function MoveReviewTurnStrip({
   onJumpToPly,
   onGoLive,
 }: Props) {
-  const allTurns = groupMoveLogByTurn(moveLog);
-  const last = allTurns[allTurns.length - 1];
-  // Only peel the in-progress turn (same player still to move) — never hide a finished turn.
-  const turns = !isReviewing && liveCurrentPlayer && last?.player === liveCurrentPlayer
-    ? allTurns.slice(0, -1)
-    : allTurns;
+  const turns = groupMoveLogByTurn(moveLog);
+  const last = turns[turns.length - 1];
+  const inProgressTurnIndex
+    = !isReviewing && liveCurrentPlayer && last?.player === liveCurrentPlayer
+      ? last.turnIndex
+      : null;
   const scrollRef = useRef<ScrollView>(null);
   const focusedTurnIdx = turns.findIndex(
     t => focusedPly >= turnStartPly(t) && focusedPly <= t.endPly,
@@ -121,6 +129,7 @@ export function MoveReviewTurnStrip({
           key={turn.turnIndex}
           turn={turn}
           focused={isReviewing && focusedTurnIdx === turn.turnIndex - 1}
+          inProgress={inProgressTurnIndex === turn.turnIndex}
           onPress={() => {
             hapticLight();
             onJumpToPly(turn.endPly);
@@ -168,11 +177,14 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.surfaceBorder,
     backgroundColor: GAME_PALETTE.surface,
   },
-  // Dark fill + gold border — readable, never light-orange-on-white.
   chipFocused: {
     borderColor: GAME_PALETTE.accent,
     backgroundColor: '#3A1C0A',
     borderWidth: 2,
+  },
+  chipInProgress: {
+    borderStyle: 'dashed',
+    borderColor: GAME_PALETTE.accent,
   },
   chipText: {
     color: GAME_PALETTE.text,
@@ -181,6 +193,12 @@ const styles = StyleSheet.create({
     ...interFont('semibold'),
   },
   chipTextFocused: { color: GAME_PALETTE.accent },
+  chipTextMuted: { color: GAME_PALETTE.textMuted },
+  unusedMark: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 11,
+    ...interFont('semibold'),
+  },
   playerDot: {
     width: 10,
     height: 10,

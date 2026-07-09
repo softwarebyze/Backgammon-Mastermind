@@ -12,6 +12,7 @@ import {
   turnContainingPly,
   useReviewTurnLoop,
 } from '@/features/game/use-review-turn-loop';
+import { groupMoveLogByTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
 
 type Options = {
@@ -20,6 +21,23 @@ type Options = {
   replayBaseline: GameState | null;
 };
 
+function lastCompletedTurnPly(
+  moveLog: MoveLogEntry[],
+  liveState: GameState | null,
+  liveIndex: number,
+): number {
+  const turns = groupMoveLogByTurn(moveLog);
+  const last = turns[turns.length - 1];
+  const midTurn = !!liveState
+    && liveState.phase === 'moving'
+    && last?.player === liveState.currentPlayer;
+  if (midTurn && turns.length >= 2) {
+    return turns[turns.length - 2]!.endPly;
+  }
+  return last?.endPly ?? liveIndex;
+}
+
+/* eslint-disable max-lines-per-function -- review orchestration */
 export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
   const liveIndex = moveLog.length;
   const [manualIndex, setManualIndex] = useState<number | null>(null);
@@ -88,6 +106,7 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
     effectivePly,
     isReviewing: plies.isReviewing,
     liveIndex,
+    liveState,
     moveLog,
     setManualIndex,
     setLooping,
@@ -136,11 +155,21 @@ function useReviewTurnNav(args: {
   effectivePly: number;
   isReviewing: boolean;
   liveIndex: number;
+  liveState: GameState | null;
   moveLog: MoveLogEntry[];
   setManualIndex: (v: number | null) => void;
   setLooping: (v: boolean) => void;
 }) {
-  const { animation, effectivePly, isReviewing, liveIndex, moveLog, setManualIndex, setLooping } = args;
+  const {
+    animation,
+    effectivePly,
+    isReviewing,
+    liveIndex,
+    liveState,
+    moveLog,
+    setManualIndex,
+    setLooping,
+  } = args;
 
   const navigate = useCallback((ply: number) => {
     hapticLight();
@@ -165,16 +194,15 @@ function useReviewTurnNav(args: {
       return;
     }
     if (!isReviewing) {
-      // Enter review parked on the last completed turn — static, not looping.
       if (liveIndex > 0) {
-        enterReviewAt(liveIndex);
+        enterReviewAt(lastCompletedTurnPly(moveLog, liveState, liveIndex));
       }
       return;
     }
     if (effectivePly > 0) {
       navigate(previousTurnEndPly(moveLog, effectivePly));
     }
-  }, [animation.isFading, effectivePly, enterReviewAt, isReviewing, liveIndex, moveLog, navigate]);
+  }, [animation.isFading, effectivePly, enterReviewAt, isReviewing, liveIndex, liveState, moveLog, navigate]);
 
   const stepForward = useCallback(() => {
     if (!isReviewing || animation.isFading) {
