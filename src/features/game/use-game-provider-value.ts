@@ -65,7 +65,12 @@ export function useGameProviderValue(): GameContextType {
     hasRedo: canRedo,
     recordNoMove,
   });
-  const { doPassTurn, doRollDice } = useGameDiceActions(setState, isAnimating, recordNoMove);
+  const { doPassTurn, doRollDice } = useGameDiceActions({
+    state,
+    setState,
+    isAnimating,
+    recordNoMove,
+  });
   const resetAllAnimation = useCallback(() => {
     resetAnimation();
     clearHistoryPath();
