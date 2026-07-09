@@ -8,6 +8,7 @@ import {
   Image,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -78,96 +79,99 @@ export function HomeScreen() {
   return (
     <>
       <FocusAwareStatusBar />
-      <View style={styles.page}>
-        <View style={styles.content}>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../../../assets/brand/display-logo.png')}
-              style={styles.logo}
-              resizeMode="cover"
-            />
-          </View>
-
-          <Text accessibilityRole="header" style={styles.title}>BACKGAMMON</Text>
-          <Text style={styles.subtitle}>Master the board — one move at a time</Text>
-
-          <View style={styles.dividerRow}>
-            <View style={styles.dividerLine} />
-            <View style={styles.dividerDiamond} />
-            <View style={styles.dividerLine} />
-          </View>
-
-          <View style={styles.buttons}>
-            {canResume && (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel="Resume saved game"
-                style={({ pressed }) => [styles.modeBtn, styles.resumeBtn, pressed && styles.pressed]}
-                onPress={handleResume}
-              >
-                <View style={styles.btnIconSlot}>
-                  <Feather name="play-circle" size={24} color="#A0D080" />
-                </View>
-                <View style={styles.btnTextCol}>
-                  <Text style={[styles.btnLabel, { color: '#A0D080' }]}>Resume Game</Text>
-                  <Text style={[styles.btnSub, { color: '#6A9A50' }]}>Continue where you left off</Text>
-                </View>
-              </Pressable>
-            )}
-
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Play against the computer"
-              style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
-              onPress={() => handleStart('vs-computer')}
-            >
-              <View style={styles.btnIconSlot}>
-                <Feather name="cpu" size={24} color={GAME_PALETTE.bg} />
-              </View>
-              <View style={styles.btnTextCol}>
-                <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>vs Computer</Text>
-                <Text style={[styles.btnSub, { color: '#4A2A10' }]}>Play against AI</Text>
-              </View>
-            </Pressable>
-
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Play with two players locally"
-              style={({ pressed }) => [styles.modeBtn, styles.secondaryBtn, pressed && styles.pressed]}
-              onPress={() => handleStart('vs-human')}
-            >
-              <View style={styles.btnIconSlot}>
-                <Feather name="users" size={24} color={GAME_PALETTE.accent} />
-              </View>
-              <View style={styles.btnTextCol}>
-                <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>2 Players</Text>
-                <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>Pass & play locally</Text>
-              </View>
-            </Pressable>
-          </View>
-
-          <View style={styles.rulesCard}>
-            <Text style={styles.rulesTitle}>New here?</Text>
-            <Text style={styles.rulesText}>
-              During a game, tap the sliders icon for hints and options.
-            </Text>
-            <Text style={styles.rulesText}>• Roll dice, then tap one of your checkers</Text>
-            <Text style={styles.rulesText}>• Hit lone blots to send them to the bar</Text>
-            <Text style={styles.rulesText}>• Bear off all 15 checkers to win</Text>
-          </View>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scroll}
+        contentInsetAdjustmentBehavior="automatic"
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../../../assets/brand/display-logo.png')}
+            style={styles.logo}
+            resizeMode="cover"
+          />
         </View>
-      </View>
+
+        <Text accessibilityRole="header" style={styles.title}>BACKGAMMON</Text>
+        <Text style={styles.subtitle}>Master the board — one move at a time</Text>
+
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <View style={styles.dividerDiamond} />
+          <View style={styles.dividerLine} />
+        </View>
+
+        <View style={styles.buttons}>
+          {canResume && (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Resume saved game"
+              style={({ pressed }) => [styles.modeBtn, styles.resumeBtn, pressed && styles.pressed]}
+              onPress={handleResume}
+            >
+              <View style={styles.btnIconSlot}>
+                <Feather name="play-circle" size={24} color="#A0D080" />
+              </View>
+              <View style={styles.btnTextCol}>
+                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>Resume Game</Text>
+                <Text style={[styles.btnSub, { color: '#6A9A50' }]}>Continue where you left off</Text>
+              </View>
+            </Pressable>
+          )}
+
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Play against the computer"
+            style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
+            onPress={() => handleStart('vs-computer')}
+          >
+            <View style={styles.btnIconSlot}>
+              <Feather name="cpu" size={24} color={GAME_PALETTE.bg} />
+            </View>
+            <View style={styles.btnTextCol}>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>vs Computer</Text>
+              <Text style={[styles.btnSub, { color: '#4A2A10' }]}>Play against AI</Text>
+            </View>
+          </Pressable>
+
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Play with two players locally"
+            style={({ pressed }) => [styles.modeBtn, styles.secondaryBtn, pressed && styles.pressed]}
+            onPress={() => handleStart('vs-human')}
+          >
+            <View style={styles.btnIconSlot}>
+              <Feather name="users" size={24} color={GAME_PALETTE.accent} />
+            </View>
+            <View style={styles.btnTextCol}>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>2 Players</Text>
+              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>Pass & play locally</Text>
+            </View>
+          </Pressable>
+        </View>
+
+        <View style={styles.rulesCard}>
+          <Text style={styles.rulesTitle}>New here?</Text>
+          <Text style={styles.rulesText}>
+            During a game, tap the sliders icon for hints and options.
+          </Text>
+          <Text style={styles.rulesText}>• Roll dice, then tap one of your checkers</Text>
+          <Text style={styles.rulesText}>• Hit lone blots to send them to the bar</Text>
+          <Text style={styles.rulesText}>• Bear off all 15 checkers to win</Text>
+        </View>
+      </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  page: {
+  scrollView: {
     flex: 1,
     backgroundColor: GAME_PALETTE.bg,
   },
-  content: {
-    flex: 1,
+  scroll: {
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
     paddingHorizontal: 24,

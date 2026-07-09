@@ -2,7 +2,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { ReviewAnimDirection } from '@/features/game/review-navigation';
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Animated } from 'react-native';
 
 import {
@@ -35,20 +35,20 @@ export function useReviewStepAnimation({
   const boardOpacity = useRef(new Animated.Value(1)).current;
   const executeNavigationRef = useRef<(current: number, target: number) => void>(() => {});
 
-  const refs = {
+  const refs = useMemo(() => ({
     animGenerationRef,
     pendingDestinationRef,
     isBusyRef,
     executeNavigationRef,
-  };
-  const setters = {
+  }), []);
+  const setters = useMemo(() => ({
     setManualIndex,
     setPendingAnimTarget,
     setPendingAnimDirection,
     setReviewAnimation,
     setPathMovePly,
     setIsFading,
-  };
+  }), [setManualIndex]);
 
   const runNavigation = useCallback((currentPly: number, targetPly: number) => {
     executeReviewNavigation({
@@ -61,7 +61,7 @@ export function useReviewStepAnimation({
       refs,
       setters,
     });
-  }, [boardOpacity, liveIndex, moveLog, replayBaseline]);
+  }, [boardOpacity, liveIndex, moveLog, refs, replayBaseline, setters]);
 
   executeNavigationRef.current = runNavigation;
 
@@ -83,7 +83,7 @@ export function useReviewStepAnimation({
     setManualIndex(null);
     boardOpacity.setValue(1);
     setIsFading(false);
-  }, [boardOpacity, setManualIndex]);
+  }, [boardOpacity, refs, setManualIndex, setters]);
 
   return {
     pendingAnimTarget,
