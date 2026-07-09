@@ -3,13 +3,13 @@ import { applyDiceRoll } from '@/lib/game/moves';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 
 describe('turn-display', () => {
-  it('labels vs-computer human turn with white checker context', () => {
+  it('keeps opening-roll banner quiet (ceremony owns the copy)', () => {
     const state = createInitialState('vs-computer');
     const turn = getTurnDisplay(state);
     expect(turn.colorLabel).toBe('White');
-    expect(turn.headline).toBe('Your turn');
+    expect(turn.headline).toBe('Opening roll');
     expect(turn.isHumanTurn).toBe(true);
-    expect(getActionCaption(state, turn)).toMatch(/Roll for opening/);
+    expect(getActionCaption(state, turn)).toBe(' ');
   });
 
   it('labels computer turn as black waiting state', () => {
@@ -23,8 +23,9 @@ describe('turn-display', () => {
     expect(getActionCaption(state, turn)).toBe('Black is rolling…');
   });
 
-  it('labels local two-player black turn', () => {
+  it('labels local two-player black turn once play has started', () => {
     const state = createInitialState('vs-human');
+    state.phase = 'rolling';
     state.currentPlayer = 'black';
     const turn = getTurnDisplay(state);
     expect(turn.headline).toBe('Black\'s turn');

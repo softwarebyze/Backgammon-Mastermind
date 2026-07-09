@@ -1,5 +1,14 @@
 {
   "game": {
+    "opening": {
+      "compare": "{{winner}} {{high}} يتفوق على {{low}}",
+      "goes_first": "{{player}} يبدأ!",
+      "roll": "ارمِ",
+      "rolls_for_opening": "{{player}} يرمي نرد الافتتاح",
+      "waiting_roll": "{{player}} يرمي…",
+      "who_goes_first": "من يبدأ؟",
+      "your_roll": "اضغط في أي مكان للرمي"
+    },
     "options": {
       "open_settings": "اللغة والمزيد",
       "open_settings_hint": "فتح الإعدادات",
@@ -25,11 +34,23 @@
     },
     "review": {
       "back_to_live": "العودة للعب المباشر",
+      "live": "اللعب المباشر",
+      "live_short": "مباشر",
+      "move_a11y": "حركة {{ply}}، {{player}}",
       "move_position": "حركة {{current}} من {{total}} · {{player}}",
+      "next": "الدور التالي",
       "opening": "موضع البداية",
+      "pause_replay": "إيقاف",
       "player_black": "أسود",
       "player_white": "أبيض",
-      "turn_position": "دور {{turn}}/{{totalTurns}} · حركة {{moveInTurn}}/{{movesInTurn}} · {{player}}"
+      "previous": "الدور السابق",
+      "replay": "إعادة",
+      "scrubber_hint": "اضغط على دور للمراجعة",
+      "start": "البداية",
+      "turn_a11y": "دور {{turn}}، {{player}}",
+      "turn_label": "دور {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "دور {{turn}}/{{totalTurns}} · حركة {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "مراجعة — اضغط مباشر أو العودة للعب للمتابعة"
     }
   },
   "settings": {

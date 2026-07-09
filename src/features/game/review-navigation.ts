@@ -55,24 +55,23 @@ export function reviewBeforeStateForHighlight(
   return stateAtPly(replayBaseline, moveLog, highlightMovePly - 1);
 }
 
-function hasRolledDice(dice: [number, number]): boolean {
-  return dice[0] !== 0 || dice[1] !== 0;
-}
-
-/** Dice for review UI — turn-end snapshots zero dice; show the rolled values instead. */
+/** Dice for review UI — always show the full roll lit (no "used" die greying). */
 export function reviewDiceForPly(
   moveLog: MoveLogEntry[],
   ply: number,
   snap: GameState,
 ): { dice: [number, number]; remainingDice: number[] } {
-  if (hasRolledDice(snap.dice)) {
-    return { dice: snap.dice, remainingDice: [...snap.remainingDice] };
-  }
   if (ply <= 0) {
     return { dice: snap.dice, remainingDice: [...snap.remainingDice] };
   }
-  const entry = moveLog[ply - 1]!;
-  return { dice: [...entry.dice] as [number, number], remainingDice: [] };
+  const entry = moveLog[ply - 1];
+  if (!entry) {
+    return { dice: snap.dice, remainingDice: [...snap.remainingDice] };
+  }
+  const dice = [...entry.dice] as [number, number];
+  // Review shows the whole turn's roll — both dice stay fully colored.
+  const remainingDice = dice[0] === dice[1] ? [dice[0], dice[0], dice[0], dice[0]] : [dice[0], dice[1]];
+  return { dice, remainingDice };
 }
 
 /** Overlay dice, active player, and phase so review matches the move being viewed. */

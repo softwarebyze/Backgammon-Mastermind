@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
@@ -32,19 +33,40 @@ export function GameScreenControls({
   onGoLive,
 }: Props) {
   const { preferences } = useGamePreferences();
+  const ceremonyVisible = useOpeningCeremonyVisible();
   const turn = getTurnDisplay(state);
-  const caption = isReviewing ? ' ' : getActionCaption(state, turn);
+  const caption = isReviewing
+    ? translate('game.review.viewing_hint')
+    : ceremonyVisible
+      ? ' '
+      : getActionCaption(state, turn);
 
   return (
     <View style={styles.controls}>
-      <View style={styles.diceRow}>
-        <DiceDisplay
-          dice={state.dice}
-          remainingDice={state.remainingDice}
-          playerColor={state.currentPlayer}
-          displayStyle={preferences.diceDisplayStyle}
-          animateRoll={!isReviewing}
-        />
+      <View style={[styles.diceRow, ceremonyVisible && styles.diceRowHidden]}>
+        {/* Invisible placeholders during ceremony so fly-in can measure tray slots. */}
+        {ceremonyVisible
+          ? (
+              <DiceDisplay
+                dice={[0, 0]}
+                remainingDice={[]}
+                playerColor={state.currentPlayer}
+                displayStyle={preferences.diceDisplayStyle}
+                animateRoll={false}
+                reportTraySlots
+              />
+            )
+          : state.phase === 'opening-roll'
+            ? <View style={styles.dicePlaceholder} />
+            : (
+                <DiceDisplay
+                  dice={state.dice}
+                  remainingDice={state.remainingDice}
+                  playerColor={state.currentPlayer}
+                  displayStyle={preferences.diceDisplayStyle}
+                  animateRoll={!isReviewing}
+                />
+              )}
       </View>
       <View style={styles.actionSlot}>
         <ActionControl
@@ -108,11 +130,12 @@ function ActionControl({
     );
   }
 
+  // Opening: keep the Roll Dice button (tap-anywhere on the ceremony still works).
   if (state.phase === 'opening-roll' && isHumanTurn) {
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Roll for opening"
+        accessibilityLabel="Roll dice"
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
@@ -123,7 +146,7 @@ function ActionControl({
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling for opening…" />;
+    return <StatusPlaceholder text="Rolling…" />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
@@ -182,6 +205,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 44,
     marginBottom: 8,
+  },
+  dicePlaceholder: {
+    minHeight: 44,
+  },
+  diceRowHidden: {
+    opacity: 0,
   },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,

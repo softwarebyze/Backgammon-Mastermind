@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
+import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getMovableSources } from '@/lib/game/move-hints';
@@ -15,7 +16,6 @@ import { BearOffArea } from './bear-off-area';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { MoveAnimationOverlay } from './move-animation-overlay';
-import { OpeningRollOverlay } from './opening-roll-overlay';
 import { PointColumn } from './point-column';
 import { PointNumberRail } from './point-number-rail';
 import { WoodSurface } from './wood-surface';
@@ -77,6 +77,7 @@ export function BoardView({
   isReviewing = false,
 }: Props) {
   const { preferences } = useGamePreferences();
+  const ceremonyVisible = useOpeningCeremonyVisible();
   const {
     boardWidth,
     boardHeight,
@@ -116,7 +117,11 @@ export function BoardView({
   );
 
   const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
-  const showDirection = preferences.showDirectionOverlay && !isReviewing && state.phase !== 'game-over';
+  const showDirection = preferences.showDirectionOverlay
+    && !isReviewing
+    && !ceremonyVisible
+    && state.phase !== 'game-over'
+    && state.phase !== 'opening-roll';
 
   const renderColumn = (idx: number, isTop: boolean) => {
     const point = displayPointDuringAnimation(idx, state.points[idx], moveAnimation);
@@ -235,8 +240,6 @@ export function BoardView({
             player={humanPlayer}
           />
         )}
-
-        <OpeningRollOverlay state={state} dimensions={dimensions} />
 
         {moveAnimation && (
           <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />

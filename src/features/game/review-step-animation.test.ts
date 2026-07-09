@@ -4,9 +4,11 @@ import {
   buildReviewStepAnimation,
   buildReviewStepBackAnimation,
 } from '@/features/game/review-helpers';
+import { reviewHighlightMovePly } from '@/features/game/review-navigation';
 import { createInitialState } from '@/lib/game/constants';
 import { appendMoveLogEntry } from '@/lib/game/move-log';
 import { deriveReplayBaseline, stateAtPly } from '@/lib/game/move-replay';
+
 import { applyMove, getLegalMoves } from '@/lib/game/moves';
 
 function movingWhiteState(): GameState {
@@ -43,6 +45,18 @@ function buildTwoMoveLog(): { baseline: GameState; log: MoveLogEntry[] } {
   return { baseline: deriveReplayBaseline(after2, log), log };
 }
 
+describe('review path move ply', () => {
+  it('uses the in-flight target during forward animation, not stale viewIndex', () => {
+    // viewIndex still at fromPly while animating forward to ply 2
+    expect(reviewHighlightMovePly(1, 2, 'forward')).toBe(2);
+    expect(reviewHighlightMovePly(1, null, null)).toBe(1);
+  });
+
+  it('uses the undone move during backward animation', () => {
+    expect(reviewHighlightMovePly(3, 2, 'backward')).toBe(3);
+  });
+});
+
 describe('review step animations', () => {
   const { baseline, log } = buildTwoMoveLog();
 
@@ -74,5 +88,13 @@ describe('review step animations', () => {
     expect(frame?.player).toBe(entry.player);
     expect(frame?.from).toBe(entry.to);
     expect(frame?.to).toBe(entry.from);
+  });
+
+  it('backward highlight ply matches the move being undone', () => {
+    const { reviewHighlightMovePly } = jest.requireActual('@/features/game/review-navigation');
+    const entry = log[1]!;
+    const highlightPly = reviewHighlightMovePly(2, 1, 'backward');
+    expect(highlightPly).toBe(2);
+    expect(log[highlightPly! - 1]).toEqual(entry);
   });
 });

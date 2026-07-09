@@ -4,11 +4,19 @@ import { useEffect, useRef } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 
+/**
+ * Keeps the AI's first move from starting under the opening-roll ceremony
+ * overlay (2400ms hold + 520ms fly in opening-roll-ceremony.tsx).
+ */
+const OPENING_CEREMONY_GRACE_MS = 3200;
+
 type ComputerOpponentOptions = {
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
   playMove: (snapshot: GameState, move: Move) => void;
   isAnimating: boolean;
+  /** Moves played so far — 0 means the opening ceremony may still be on screen. */
+  moveCount: number;
 };
 
 export function useComputerOpponent({
@@ -16,6 +24,7 @@ export function useComputerOpponent({
   setState,
   playMove,
   isAnimating,
+  moveCount,
 }: ComputerOpponentOptions) {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
@@ -79,13 +88,14 @@ export function useComputerOpponent({
           setState(passTurn(prev));
           return;
         }
+        const moveDelay = moveCount === 0 ? OPENING_CEREMONY_GRACE_MS : 750;
         aiTimeoutRef.current = setTimeout(() => {
           const latest = stateRef.current;
           if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
           playMove(latest, move);
-        }, 750);
+        }, moveDelay);
       }
     };
 
@@ -106,6 +116,7 @@ export function useComputerOpponent({
     setState,
     playMove,
     isAnimating,
+    moveCount,
   ]);
 
   return () => {

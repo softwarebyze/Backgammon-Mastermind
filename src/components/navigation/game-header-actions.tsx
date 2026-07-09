@@ -6,13 +6,61 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
 
 type Props = {
+  canUndo?: boolean;
+  canRedo?: boolean;
+  onUndo?: () => void;
+  onRedo?: () => void;
   onOptions: () => void;
   onReset: () => void;
 };
 
-export function GameHeaderActions({ onOptions, onReset }: Props) {
+/** Always reserve undo+redo slots so the header never layout-shifts. */
+export function GameHeaderActions({
+  canUndo = false,
+  canRedo = false,
+  onUndo,
+  onRedo,
+  onOptions,
+  onReset,
+}: Props) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <HeaderButton
+        accessibilityLabel="Undo move"
+        disabled={!canUndo || !onUndo}
+        onPress={() => {
+          if (!canUndo || !onUndo) {
+            return;
+          }
+          hapticLight();
+          onUndo();
+        }}
+      >
+        <Feather
+          name="corner-up-left"
+          size={20}
+          color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
+          style={{ opacity: canUndo ? 1 : 0.35 }}
+        />
+      </HeaderButton>
+      <HeaderButton
+        accessibilityLabel="Redo move"
+        disabled={!canRedo || !onRedo}
+        onPress={() => {
+          if (!canRedo || !onRedo) {
+            return;
+          }
+          hapticLight();
+          onRedo();
+        }}
+      >
+        <Feather
+          name="corner-up-right"
+          size={20}
+          color={canRedo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
+          style={{ opacity: canRedo ? 1 : 0.35 }}
+        />
+      </HeaderButton>
       <HeaderButton
         accessibilityLabel="Preferences"
         onPress={() => {
@@ -20,7 +68,7 @@ export function GameHeaderActions({ onOptions, onReset }: Props) {
           onOptions();
         }}
       >
-        <Feather name="sliders" size={22} color={GAME_PALETTE.accent} />
+        <Feather name="sliders" size={20} color={GAME_PALETTE.accent} />
       </HeaderButton>
       <HeaderButton
         accessibilityLabel="Start new game"

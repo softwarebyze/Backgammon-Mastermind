@@ -99,7 +99,7 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
     progress.value = withTiming(
       1,
       {
-        duration: CHECKER_MOVE_DURATION_MS,
+        duration: animation.durationMs ?? CHECKER_MOVE_DURATION_MS,
         easing: Easing.out(Easing.cubic),
       },
       (finished) => {
@@ -112,7 +112,7 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
     return () => {
       cancelAnimation(progress);
     };
-  }, [key, progress]);
+  }, [animation.durationMs, key, progress]);
 
   return (
     <>

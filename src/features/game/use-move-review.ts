@@ -1,17 +1,17 @@
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { formatReviewPositionLabel, performReviewJump } from '@/features/game/review-helpers';
-import {
-  applyReviewPresenterOverlay,
-  reviewBeforeStateForHighlight,
-  reviewDisplayPly,
-  reviewEffectivePly,
-  reviewHighlightMovePly,
-  reviewMoveEntry,
-} from '@/features/game/review-navigation';
+import { formatReviewPositionLabel } from '@/features/game/review-helpers';
+import { reviewEffectivePly } from '@/features/game/review-navigation';
+import { reviewPathSegments } from '@/features/game/review-path-segments';
+import { computeReviewPlies, useReviewDisplayState } from '@/features/game/use-review-display';
 import { useReviewStepAnimation } from '@/features/game/use-review-step-animation';
-import { stateAtPly } from '@/lib/game/move-replay';
+import {
+  nextTurnEndPly,
+  previousTurnEndPly,
+  turnContainingPly,
+  useReviewTurnLoop,
+} from '@/features/game/use-review-turn-loop';
 import { hapticLight } from '@/lib/haptics';
 
 type Options = {
@@ -20,21 +20,10 @@ type Options = {
   replayBaseline: GameState | null;
 };
 
-function useReviewResetOnLogClear(
-  liveIndex: number,
-  manualIndex: number | null,
-  goLive: () => void,
-) {
-  useEffect(() => {
-    if (liveIndex === 0 || (manualIndex !== null && manualIndex > liveIndex)) {
-      goLive();
-    }
-  }, [goLive, liveIndex, manualIndex]);
-}
-
 export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
   const liveIndex = moveLog.length;
   const [manualIndex, setManualIndex] = useState<number | null>(null);
+  const [looping, setLooping] = useState(false);
   const animation = useReviewStepAnimation({
     replayBaseline,
     moveLog,
@@ -44,101 +33,173 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
 
   const viewIndex = manualIndex ?? liveIndex;
   const effectivePly = reviewEffectivePly(viewIndex, animation.pendingAnimTarget);
-  const isReviewing = manualIndex !== null || animation.pendingAnimTarget !== null;
-  const canStepBack = effectivePly > 0;
-  const canStepForward = isReviewing;
-
-  const highlightMovePly = reviewHighlightMovePly(
+  const plies = computeReviewPlies({
     viewIndex,
-    animation.pendingAnimTarget,
-    animation.pendingAnimDirection,
-  );
-  const displayPly = isReviewing
-    ? reviewDisplayPly(viewIndex, animation.pendingAnimTarget, animation.pendingAnimDirection)
-    : liveIndex;
+    liveIndex,
+    manualIndex,
+    pendingAnimTarget: animation.pendingAnimTarget,
+    pendingAnimDirection: animation.pendingAnimDirection,
+    isFading: animation.isFading,
+  });
 
-  const displayState = useMemo(() => {
-    if (!liveState) {
-      return null;
-    }
-    if (!isReviewing || !replayBaseline) {
-      return liveState;
-    }
-    const snap = stateAtPly(replayBaseline, moveLog, displayPly);
-    return applyReviewPresenterOverlay(moveLog, displayPly, snap);
-  }, [displayPly, isReviewing, replayBaseline, moveLog, liveState]);
-
-  const activeEntry = useMemo(
-    () => (isReviewing ? reviewMoveEntry(moveLog, highlightMovePly) : null),
-    [highlightMovePly, isReviewing, moveLog],
+  const focusedTurn = useMemo(
+    () => (plies.isReviewing ? turnContainingPly(moveLog, plies.scrubberPly) : null),
+    [moveLog, plies.isReviewing, plies.scrubberPly],
   );
 
-  const reviewBeforeState = useMemo(
-    () => (isReviewing ? reviewBeforeStateForHighlight(replayBaseline, moveLog, highlightMovePly) : null),
-    [highlightMovePly, isReviewing, moveLog, replayBaseline],
+  const loop = useReviewTurnLoop({
+    enabled: plies.isReviewing && !animation.isNavigating,
+    looping,
+    replayBaseline,
+    moveLog,
+    focusedPly: plies.scrubberPly,
+    isNavigating: animation.isNavigating,
+  });
+
+  const { displayState } = useReviewDisplayState({
+    liveState,
+    replayBaseline,
+    moveLog,
+    isReviewing: plies.isReviewing,
+    displayPly: loop.loopDisplayPly ?? plies.displayPly,
+    highlightMovePly: focusedTurn?.endPly ?? (animation.pathMovePly ?? plies.highlightMovePly),
+    presenterPly: focusedTurn?.endPly ?? undefined,
+  });
+
+  const pathSegments = useMemo(
+    () => reviewPathSegments({
+      isReviewing: plies.isReviewing,
+      replayBaseline,
+      moveLog,
+      focusedTurn,
+      loopDisplayPly: loop.loopDisplayPly,
+      hasLoopAnimation: loop.loopAnimation !== null,
+    }),
+    [focusedTurn, loop.loopAnimation, loop.loopDisplayPly, moveLog, plies.isReviewing, replayBaseline],
   );
 
   const positionLabel = useMemo(
-    () => (isReviewing ? formatReviewPositionLabel(highlightMovePly ?? viewIndex, liveIndex, moveLog) : null),
-    [highlightMovePly, isReviewing, viewIndex, liveIndex, moveLog],
+    () => (plies.isReviewing ? formatReviewPositionLabel(plies.scrubberPly, liveIndex, moveLog) : null),
+    [plies.isReviewing, plies.scrubberPly, liveIndex, moveLog],
   );
 
-  const stepBack = useCallback(() => {
-    if (!canStepBack) {
-      return;
-    }
+  const nav = useReviewTurnNav({
+    animation,
+    effectivePly,
+    isReviewing: plies.isReviewing,
+    liveIndex,
+    moveLog,
+    setManualIndex,
+    setLooping,
+  });
+
+  const toggleReplay = useCallback(() => {
     hapticLight();
-    animation.stepBack(effectivePly);
-  }, [animation, canStepBack, effectivePly]);
+    setLooping((on) => {
+      if (on) {
+        return false;
+      }
+      loop.restartLoop();
+      return true;
+    });
+  }, [loop]);
+
+  useEffect(() => {
+    if (liveIndex === 0 || (manualIndex !== null && manualIndex > liveIndex)) {
+      animation.goLive();
+    }
+  }, [animation, liveIndex, manualIndex]);
+
+  return {
+    viewIndex,
+    liveIndex,
+    isReviewing: plies.isReviewing,
+    canStepBack: (plies.isReviewing ? effectivePly > 0 : liveIndex > 0) && !animation.isFading,
+    canStepForward: plies.isReviewing && !animation.isFading,
+    displayState,
+    reviewAnimation: loop.loopAnimation ?? animation.reviewAnimation,
+    boardOpacity: animation.boardOpacity,
+    isNavigating: animation.isNavigating,
+    pathSegments,
+    positionLabel,
+    effectivePly,
+    focusedPly: plies.scrubberPly,
+    ...nav,
+    isLooping: looping,
+    toggleReplay,
+    canReplay: loop.canReplay,
+  };
+}
+
+function useReviewTurnNav(args: {
+  animation: ReturnType<typeof useReviewStepAnimation>;
+  effectivePly: number;
+  isReviewing: boolean;
+  liveIndex: number;
+  moveLog: MoveLogEntry[];
+  setManualIndex: (v: number | null) => void;
+  setLooping: (v: boolean) => void;
+}) {
+  const { animation, effectivePly, isReviewing, liveIndex, moveLog, setManualIndex, setLooping } = args;
+
+  const navigate = useCallback((ply: number) => {
+    hapticLight();
+    setLooping(false);
+    animation.navigateToPly(effectivePly, ply);
+  }, [animation, effectivePly, setLooping]);
 
   const goLive = useCallback(() => {
     hapticLight();
+    setLooping(false);
     animation.goLive();
-  }, [animation]);
+  }, [animation, setLooping]);
+
+  const enterReviewAt = useCallback((ply: number) => {
+    hapticLight();
+    setLooping(false);
+    setManualIndex(ply);
+  }, [setLooping, setManualIndex]);
+
+  const stepBack = useCallback(() => {
+    if (animation.isFading) {
+      return;
+    }
+    if (!isReviewing) {
+      // Enter review parked on the last completed turn — static, not looping.
+      if (liveIndex > 0) {
+        enterReviewAt(liveIndex);
+      }
+      return;
+    }
+    if (effectivePly > 0) {
+      navigate(previousTurnEndPly(moveLog, effectivePly));
+    }
+  }, [animation.isFading, effectivePly, enterReviewAt, isReviewing, liveIndex, moveLog, navigate]);
 
   const stepForward = useCallback(() => {
-    if (!isReviewing) {
+    if (!isReviewing || animation.isFading) {
       return;
     }
     if (effectivePly >= liveIndex) {
       goLive();
       return;
     }
-    hapticLight();
-    animation.stepForward(effectivePly);
-  }, [animation, effectivePly, goLive, isReviewing, liveIndex]);
+    navigate(nextTurnEndPly(moveLog, effectivePly, liveIndex));
+  }, [animation.isFading, effectivePly, goLive, isReviewing, liveIndex, moveLog, navigate]);
 
   const jumpToPly = useCallback((ply: number) => {
-    performReviewJump({
-      ply,
-      effectivePly: reviewEffectivePly(viewIndex, animation.pendingAnimTarget),
-      liveIndex,
-      playStepAnimation: animation.playStepAnimation,
-      setManualIndex,
-      setPendingAnimTarget: animation.setPendingAnimTarget,
-      setPendingAnimDirection: animation.setPendingAnimDirection,
-      cancelAnimation: animation.cancelAnimation,
-    });
-  }, [animation, liveIndex, viewIndex]);
+    if (ply > liveIndex) {
+      goLive();
+      return;
+    }
+    if (ply === liveIndex) {
+      if (!isReviewing || effectivePly !== liveIndex) {
+        enterReviewAt(liveIndex);
+      }
+      return;
+    }
+    navigate(ply);
+  }, [effectivePly, enterReviewAt, goLive, isReviewing, liveIndex, navigate]);
 
-  useReviewResetOnLogClear(liveIndex, manualIndex, animation.goLive);
-
-  return {
-    viewIndex,
-    liveIndex,
-    isReviewing,
-    canStepBack,
-    canStepForward,
-    displayState,
-    reviewAnimation: animation.reviewAnimation,
-    activeEntry,
-    reviewBeforeState,
-    positionLabel,
-    effectivePly,
-    focusedPly: animation.pendingAnimTarget ?? viewIndex,
-    stepBack,
-    stepForward,
-    jumpToPly,
-    goLive,
-  };
+  return { stepBack, stepForward, jumpToPly, goLive };
 }

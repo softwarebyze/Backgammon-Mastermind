@@ -1,6 +1,5 @@
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
-import { performReviewJump } from '@/features/game/review-helpers';
 import {
   applyReviewPresenterOverlay,
   reviewBeforeStateForHighlight,
@@ -11,6 +10,7 @@ import {
   reviewMoveEntry,
   shouldAcceptReviewAnimationFinish,
 } from '@/features/game/review-navigation';
+import { planReviewNavigation } from '@/features/game/review-navigator';
 import { createInitialState } from '@/lib/game/constants';
 import { appendMoveLogEntry } from '@/lib/game/move-log';
 import { deriveReplayBaseline, stateAtPly } from '@/lib/game/move-replay';
@@ -112,34 +112,16 @@ describe('review animation generation guard', () => {
   });
 });
 
-describe('performReviewJump', () => {
-  it('animates one step back when target is adjacent', () => {
-    let animated: string | null = null;
-    performReviewJump({
+describe('planReviewNavigation (jump)', () => {
+  it('plans backward step when target is adjacent', () => {
+    expect(planReviewNavigation(2, 1, 4)).toEqual({
+      mode: 'step',
       ply: 1,
-      effectivePly: 2,
-      liveIndex: 4,
-      playStepAnimation: (target, direction) => { animated = `${direction}:${target}`; },
-      setManualIndex: () => {},
-      setPendingAnimTarget: () => {},
-      setPendingAnimDirection: () => {},
-      cancelAnimation: () => {},
+      direction: 'backward',
     });
-    expect(animated).toBe('backward:1');
   });
 
-  it('snaps instantly when jumping more than one ply away', () => {
-    let manual: number | null = -1;
-    performReviewJump({
-      ply: 1,
-      effectivePly: 4,
-      liveIndex: 6,
-      playStepAnimation: () => {},
-      setManualIndex: (v) => { manual = v; },
-      setPendingAnimTarget: () => {},
-      setPendingAnimDirection: () => {},
-      cancelAnimation: () => {},
-    });
-    expect(manual).toBe(1);
+  it('plans fade when jumping more than one ply away', () => {
+    expect(planReviewNavigation(4, 1, 6)).toEqual({ mode: 'jump', ply: 1 });
   });
 });

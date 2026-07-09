@@ -1,22 +1,19 @@
 import type * as React from 'react';
-import type { GameMode } from '@/lib/game';
-import { useCallback, useEffect, useState } from 'react';
+import type { GameState, Move } from '@/lib/game';
+import { useCallback, useState } from 'react';
 import { GameContext } from '@/features/game/game-context';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
+import { useGameLifecycle } from '@/features/game/use-game-lifecycle';
 import { useGameSelectPoint } from '@/features/game/use-game-select-point';
+import { useGameTimeline } from '@/features/game/use-game-timeline';
+import { useGameUndoRedo } from '@/features/game/use-game-undo-redo';
 import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 import { useMoveLog } from '@/features/game/use-move-log';
-import {
-  createInitialState,
-} from '@/lib/game';
-import {
-  clearActiveGame,
-  isResumableGame,
-  loadRestorableGame,
-  saveActiveGame,
-} from '@/lib/game/persistence';
+import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
+import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
+import { loadRestorableGame } from '@/lib/game/persistence';
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState(() => loadRestorableGame());
@@ -27,7 +24,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     resetMoveLog,
     reloadMoveLog,
     persistMoveLog,
+    popLastMove,
+    restoreMove,
   } = useMoveLog(state);
+  const { timeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
+
+  const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
+    recordMove(snapshot, move, next);
+    recordTimelineMove(snapshot, next);
+  }, [recordMove, recordTimelineMove]);
 
   const {
     moveAnimation,
@@ -36,63 +41,56 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     doMoveSequence,
     playMove,
     resetAnimation,
-  } = useAnimatedMoves(state, setState, recordMove);
+    setMoveAnimation,
+  } = useAnimatedMoves(state, setState, handleMoveRecorded);
   const selectPoint = useGameSelectPoint(setState, isAnimating);
-  const clearAITimeout = useComputerOpponent({ state, setState, playMove, isAnimating });
+  const clearAITimeout = useComputerOpponent({
+    state,
+    setState,
+    playMove,
+    isAnimating,
+    moveCount: moveLog.length,
+  });
   const { doPassTurn, doRollDice } = useGameDiceActions(setState, isAnimating);
 
-  useEffect(() => {
-    if (!state) {
-      return;
-    }
-    if (!isResumableGame(state)) {
-      clearActiveGame();
-      return;
-    }
-    saveActiveGame(state);
-    persistMoveLog(moveLog);
-  }, [state, moveLog, persistMoveLog]);
+  const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
+    timeline,
+    setTimeline,
+    setState,
+    replayBaseline,
+    moveLog,
+    isAnimating,
+    setMoveAnimation,
+    popLastMove,
+    restoreMove,
+    gameMode: state?.mode,
+  });
 
-  const startGame = useCallback((mode: GameMode) => {
-    clearAITimeout();
+  const resetAllAnimation = useCallback(() => {
     resetAnimation();
-    clearActiveGame();
-    resetMoveLog();
-    setState(createInitialState(mode));
-  }, [clearAITimeout, resetAnimation, resetMoveLog]);
+    clearHistoryPath();
+  }, [resetAnimation, clearHistoryPath]);
 
-  const resumeGame = useCallback(() => {
-    clearAITimeout();
-    let canResume = false;
-    setState((current) => {
-      if (isResumableGame(current)) {
-        canResume = true;
-        return current;
-      }
-      const saved = loadRestorableGame();
-      if (!saved) {
-        return current;
-      }
-      reloadMoveLog();
-      canResume = true;
-      return saved;
-    });
-    return canResume;
-  }, [clearAITimeout, reloadMoveLog]);
+  usePersistActiveGame(state, moveLog, persistMoveLog);
 
-  const resetGame = useCallback(() => {
-    clearAITimeout();
-    resetAnimation();
-    resetMoveLog();
-    setState((prev) => {
-      if (!prev) {
-        return null;
-      }
-      const next = createInitialState(prev.mode);
-      saveActiveGame(next);
-      return next;
-    });
-  }, [clearAITimeout, resetAnimation, resetMoveLog]);
+  const { startGame, resumeGame, resetGame, ceremonyKey } = useGameLifecycle({
+    clearAITimeout,
+    resetAnimation: resetAllAnimation,
+    resetMoveLog,
+    reloadMoveLog,
+    resetTimeline,
+    clearTimeline,
+    setState,
+  });
+
+  useRestoreGameTimeline({
+    state,
+    timeline,
+    moveLog,
+    replayBaseline,
+    resetTimeline,
+    setTimeline,
+  });
 
   useGameplayHelpers({ state, isAnimating, doRollDice, doMove, doPassTurn });
 
@@ -105,14 +103,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         startGame,
         resumeGame,
         resetGame,
+        ceremonyKey,
         doRollDice,
         doPassTurn,
         selectPoint,
         doMove,
         doMoveSequence,
+        doUndo,
+        doRedo,
+        canUndo,
+        canRedo,
         isAnimating,
         moveAnimation,
-        resetAnimation,
+        historyPath,
+        resetAnimation: resetAllAnimation,
       }}
     >
       {children}

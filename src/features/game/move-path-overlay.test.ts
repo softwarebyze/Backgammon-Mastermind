@@ -1,6 +1,7 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import { getCheckerAnchor } from '@/features/game/board-point-layout';
-import { movePathAnchors } from '@/features/game/components/board/move-path-anchors';
+import { movePathAnchors, resolvePathAnchors } from '@/features/game/components/board/move-path-anchors';
 import { clampPathAnchor } from '@/features/game/components/board/move-path-bounds';
 import { formatReviewPositionLabel } from '@/features/game/review-helpers';
 import { BAR_POINT, createInitialState } from '@/lib/game/constants';
@@ -84,6 +85,50 @@ describe('move-path-overlay', () => {
     expect(from.y).toBeGreaterThanOrEqual(4);
     expect(from.y).toBeLessThanOrEqual(clampPathAnchor(raw, dims).y + 0.01);
   });
+
+  it('keeps arrow in played direction during a backward (undo) animation', () => {
+    const dims = mockDims();
+    const before = {
+      ...createInitialState('vs-human'),
+      phase: 'moving' as const,
+      currentPlayer: 'white' as const,
+      dice: [4, 2] as [number, number],
+      remainingDice: [4, 2],
+    };
+    const move = getLegalMoves(before).find(m => m.from === 8)!;
+    const entry = {
+      ply: 1,
+      player: 'white' as const,
+      dice: before.dice,
+      from: move.from,
+      to: move.to,
+    };
+    const forwardFrame: MoveAnimationFrame = {
+      from: entry.from,
+      to: entry.to,
+      player: 'white',
+      sourceStackCount: 3,
+      sourceDisplayCount: 2,
+      destStackCount: 1,
+      onFinish: () => {},
+    };
+    const backwardFrame: MoveAnimationFrame = {
+      ...forwardFrame,
+      from: entry.to,
+      to: entry.from,
+      sourceStackCount: 1,
+      destStackCount: 3,
+    };
+
+    const forward = resolvePathAnchors({ entry, beforeState: before, dims, animation: forwardFrame });
+    const backward = resolvePathAnchors({ entry, beforeState: before, dims, animation: backwardFrame });
+
+    // The arrow always points from the move's origin toward its destination.
+    expect(Math.sign(backward.to.x - backward.from.x))
+      .toBe(Math.sign(forward.to.x - forward.from.x));
+    expect(backward.from.x).toBeCloseTo(forward.from.x, 0);
+    expect(backward.to.x).toBeCloseTo(forward.to.x, 0);
+  });
 });
 
 describe('formatReviewPositionLabel', () => {
@@ -101,6 +146,6 @@ describe('formatReviewPositionLabel', () => {
       dice: [3, 5],
       from: 6,
       to: 1,
-    }])).toContain('2');
+    }])).toContain('Turn');
   });
 });

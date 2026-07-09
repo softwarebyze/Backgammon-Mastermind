@@ -1,59 +1,124 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import type { GameState } from '@/lib/game/types';
-import { StyleSheet, View } from 'react-native';
+import { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import Svg, { Line, Polygon } from 'react-native-svg';
 
-import { movePathAnchors } from '@/features/game/components/board/move-path-anchors';
-import { insetPathSegment } from '@/features/game/components/board/move-path-bounds';
+import { resolvePathAnchors } from '@/features/game/components/board/move-path-anchors';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { buildArrowhead, unitVector } from '@/lib/ui/arrow-geometry';
+
+export type PathSegment = {
+  entry: MoveLogEntry;
+  beforeState: GameState;
+  /** Dim inactive segments while one move is mid-flight. */
+  active?: boolean;
+};
 
 type Props = {
-  entry: MoveLogEntry;
-  /** Board state immediately before this move (for checker stack positions). */
-  beforeState: GameState;
+  /** One or more move paths (whole-turn review shows all). */
+  segments: PathSegment[];
   dimensions: BoardDimensions;
+  /** When set, the matching segment follows the in-flight animation. */
+  animation?: MoveAnimationFrame | null;
+  /** Softly fade the whole overlay out (undo/redo hold). */
+  fadeOutMs?: number;
 };
 
 const ARROW_COLOR = GAME_PALETTE.accent;
 
-/** Dashed path from moving checker center to landing stack top (website-style). */
-export function MovePathOverlay({ entry, beforeState, dimensions }: Props) {
-  const raw = movePathAnchors(entry, beforeState, dimensions);
-  const { from, to } = insetPathSegment(raw.from, raw.to);
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const len = Math.hypot(dx, dy) || 1;
-  const ux = dx / len;
-  const uy = dy / len;
-  const tipX = to.x;
-  const tipY = to.y;
-  const baseX = tipX - ux * 14;
-  const baseY = tipY - uy * 14;
-  const px = -uy;
-  const py = ux;
-  const arrowPoints = [
-    `${tipX},${tipY}`,
-    `${baseX + px * 7},${baseY + py * 7}`,
-    `${baseX - px * 7},${baseY - py * 7}`,
-  ].join(' ');
+function PathArrow({
+  entry,
+  beforeState,
+  dimensions,
+  animation,
+  opacity,
+}: {
+  entry: MoveLogEntry;
+  beforeState: GameState;
+  dimensions: BoardDimensions;
+  animation?: MoveAnimationFrame | null;
+  opacity: number;
+}) {
+  // Tip/tail on checker centers (openings-website style) — no extra inset trim.
+  const { from, to } = resolvePathAnchors({ entry, beforeState, dims: dimensions, animation });
+  const { x: ux, y: uy } = unitVector(from, to);
+  const { lineEnd, polygonPoints } = buildArrowhead(to, { x: ux, y: uy }, {
+    length: 12,
+    halfWidth: 6.5,
+  });
 
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="none">
-      <Svg width="100%" height="100%" style={StyleSheet.absoluteFill}>
-        <Line
-          x1={from.x}
-          y1={from.y}
-          x2={to.x}
-          y2={to.y}
-          stroke={ARROW_COLOR}
-          strokeWidth={3}
-          strokeDasharray="10 8"
-          strokeLinecap="round"
-          opacity={0.9}
-        />
-        <Polygon points={arrowPoints} fill={ARROW_COLOR} opacity={0.95} />
-      </Svg>
-    </View>
+    <>
+      <Line
+        x1={from.x}
+        y1={from.y}
+        x2={lineEnd.x}
+        y2={lineEnd.y}
+        stroke={ARROW_COLOR}
+        strokeWidth={3}
+        strokeDasharray="10 8"
+        strokeLinecap="round"
+        opacity={opacity}
+      />
+      <Polygon points={polygonPoints} fill={ARROW_COLOR} opacity={opacity} />
+    </>
   );
+}
+
+/** Dashed path(s) from checker origin to landing — website-style, supports whole turns. */
+export function MovePathOverlay({ segments, dimensions, animation, fadeOutMs }: Props) {
+  const fade = useSharedValue(1);
+
+  useEffect(() => {
+    if (fadeOutMs && fadeOutMs > 0) {
+      fade.value = 1;
+      fade.value = withTiming(0, { duration: fadeOutMs });
+      return;
+    }
+    fade.value = 1;
+  }, [fade, fadeOutMs, segments.length]);
+
+  const fadeStyle = useAnimatedStyle(() => ({ opacity: fade.value }));
+
+  if (segments.length === 0) {
+    return null;
+  }
+
+  return (
+    <Animated.View style={[StyleSheet.absoluteFill, fadeStyle]} pointerEvents="none">
+      <Svg width="100%" height="100%" style={StyleSheet.absoluteFill}>
+        {segments.map((seg) => {
+          const matchesAnim = animation
+            && ((animation.from === seg.entry.from && animation.to === seg.entry.to)
+              || (animation.from === seg.entry.to && animation.to === seg.entry.from));
+          const opacity = seg.active === false ? 0.35 : matchesAnim ? 0.95 : 0.75;
+          return (
+            <PathArrow
+              key={seg.entry.ply}
+              entry={seg.entry}
+              beforeState={seg.beforeState}
+              dimensions={dimensions}
+              animation={matchesAnim ? animation : null}
+              opacity={opacity}
+            />
+          );
+        })}
+      </Svg>
+    </Animated.View>
+  );
+}
+
+/** Back-compat helper for single-entry callers (undo path, etc.). */
+export function singlePathSegments(
+  entry: MoveLogEntry | null,
+  beforeState: GameState | null,
+): PathSegment[] {
+  if (!entry || !beforeState) {
+    return [];
+  }
+  return [{ entry, beforeState, active: true }];
 }

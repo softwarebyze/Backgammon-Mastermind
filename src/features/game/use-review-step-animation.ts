@@ -3,10 +3,13 @@ import type { ReviewAnimDirection } from '@/features/game/review-navigation';
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useRef, useState } from 'react';
+import { Animated } from 'react-native';
+
 import {
-  shouldAcceptReviewAnimationFinish,
-  startReviewStepAnimation,
-} from '@/features/game/review-navigation';
+  cancelReviewAnimation,
+  clearReviewPendingAnim,
+  executeReviewNavigation,
+} from '@/features/game/review-step-navigation';
 
 type Options = {
   replayBaseline: GameState | null;
@@ -24,92 +27,76 @@ export function useReviewStepAnimation({
   const [pendingAnimTarget, setPendingAnimTarget] = useState<number | null>(null);
   const [pendingAnimDirection, setPendingAnimDirection] = useState<ReviewAnimDirection | null>(null);
   const [reviewAnimation, setReviewAnimation] = useState<MoveAnimationFrame | null>(null);
+  const [pathMovePly, setPathMovePly] = useState<number | null>(null);
+  const [isFading, setIsFading] = useState(false);
   const animGenerationRef = useRef(0);
+  const pendingDestinationRef = useRef<number | null>(null);
+  const isBusyRef = useRef(false);
+  const boardOpacity = useRef(new Animated.Value(1)).current;
+  const executeNavigationRef = useRef<(current: number, target: number) => void>(() => {});
 
-  const cancelAnimation = useCallback(() => {
-    animGenerationRef.current += 1;
-    setReviewAnimation(null);
-    setPendingAnimDirection(null);
-  }, []);
+  const refs = {
+    animGenerationRef,
+    pendingDestinationRef,
+    isBusyRef,
+    executeNavigationRef,
+  };
+  const setters = {
+    setManualIndex,
+    setPendingAnimTarget,
+    setPendingAnimDirection,
+    setReviewAnimation,
+    setPathMovePly,
+    setIsFading,
+  };
 
-  const playStepAnimation = useCallback((
-    targetPly: number,
-    direction: ReviewAnimDirection,
-    onComplete: () => void,
-  ) => {
-    if (!replayBaseline) {
-      cancelAnimation();
-      onComplete();
-      return;
-    }
-    const generation = animGenerationRef.current;
-    const frame = startReviewStepAnimation({
+  const runNavigation = useCallback((currentPly: number, targetPly: number) => {
+    executeReviewNavigation({
+      currentPly,
+      targetPly,
+      liveIndex,
       replayBaseline,
       moveLog,
-      targetPly,
-      direction,
-      generation,
-      animGenerationRef,
-      onFinish: (finishedGeneration) => {
-        if (!shouldAcceptReviewAnimationFinish(finishedGeneration, animGenerationRef)) {
-          return;
-        }
-        setReviewAnimation(null);
-        setPendingAnimTarget(null);
-        setPendingAnimDirection(null);
-        onComplete();
-      },
+      boardOpacity,
+      refs,
+      setters,
     });
-    if (!frame) {
-      cancelAnimation();
-      setPendingAnimTarget(null);
-      onComplete();
+  }, [boardOpacity, liveIndex, moveLog, replayBaseline]);
+
+  executeNavigationRef.current = runNavigation;
+
+  const navigateToPly = useCallback((currentPly: number, targetPly: number) => {
+    pendingDestinationRef.current = targetPly;
+    if (isBusyRef.current) {
       return;
     }
-    setReviewAnimation(frame);
-  }, [cancelAnimation, moveLog, replayBaseline]);
-
-  const stepForward = useCallback((effectivePly: number) => {
-    cancelAnimation();
-    const targetPly = effectivePly + 1;
-    setManualIndex(effectivePly);
-    setPendingAnimTarget(targetPly);
-    setPendingAnimDirection('forward');
-    playStepAnimation(targetPly, 'forward', () => {
-      setManualIndex(targetPly >= liveIndex ? null : targetPly);
-    });
-  }, [cancelAnimation, liveIndex, playStepAnimation, setManualIndex]);
-
-  const stepBack = useCallback((effectivePly: number) => {
-    if (effectivePly <= 0) {
-      return;
-    }
-    cancelAnimation();
-    const targetPly = effectivePly - 1;
-    setManualIndex(effectivePly);
-    setPendingAnimTarget(targetPly);
-    setPendingAnimDirection('backward');
-    playStepAnimation(targetPly, 'backward', () => {
-      setManualIndex(targetPly >= liveIndex ? null : targetPly);
-    });
-  }, [cancelAnimation, liveIndex, playStepAnimation, setManualIndex]);
+    isBusyRef.current = true;
+    runNavigation(currentPly, targetPly);
+  }, [runNavigation]);
 
   const goLive = useCallback(() => {
-    cancelAnimation();
-    setPendingAnimTarget(null);
+    pendingDestinationRef.current = null;
+    isBusyRef.current = false;
+    cancelReviewAnimation(refs, setters);
+    clearReviewPendingAnim(setters);
+    setPathMovePly(null);
     setManualIndex(null);
-  }, [cancelAnimation, setManualIndex]);
+    boardOpacity.setValue(1);
+    setIsFading(false);
+  }, [boardOpacity, setManualIndex]);
 
   return {
     pendingAnimTarget,
     pendingAnimDirection,
     reviewAnimation,
-    cancelAnimation,
-    playStepAnimation,
+    pathMovePly,
+    boardOpacity,
+    isFading,
+    isNavigating: isFading || reviewAnimation !== null,
+    navigateToPly,
+    goLive,
+    cancelAnimation: () => cancelReviewAnimation(refs, setters),
     setPendingAnimTarget,
     setPendingAnimDirection,
-    stepForward,
-    stepBack,
-    goLive,
   };
 }

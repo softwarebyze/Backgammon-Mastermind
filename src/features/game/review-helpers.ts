@@ -1,13 +1,12 @@
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
-import type { ReviewAnimDirection } from '@/features/game/review-navigation';
 import type { GameState, Move } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { buildMoveAnimationFrame, countAtPoint } from '@/features/game/move-animation';
+import { REVIEW_CHECKER_MOVE_DURATION_MS } from '@/features/game/review-navigator';
 import { opponent } from '@/lib/game';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 import { groupMoveLogByTurn } from '@/lib/game/move-log';
 import { resolveMoveFromLogEntry, stateAtPly } from '@/lib/game/move-replay';
-import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 
 function moveFromLogEntry(before: GameState, entry: MoveLogEntry): Move {
@@ -44,63 +43,11 @@ export function formatReviewPositionLabel(
       player: translate(playerKey),
     });
   }
-  const moveInTurn = turn.moves.findIndex(m => m.ply === viewIndex) + 1;
-  return translate('game.review.turn_position', {
+  return translate('game.review.turn_label', {
     turn: turn.turnIndex,
     totalTurns: turns.length,
-    moveInTurn,
-    movesInTurn: turn.moves.length,
     player: translate(playerKey),
   });
-}
-
-type JumpCtx = {
-  ply: number;
-  effectivePly: number;
-  liveIndex: number;
-  playStepAnimation: (targetPly: number, direction: 'forward' | 'backward', onComplete: () => void) => void;
-  setManualIndex: (v: number | null) => void;
-  setPendingAnimTarget: (v: number | null) => void;
-  setPendingAnimDirection: (v: ReviewAnimDirection | null) => void;
-  cancelAnimation: () => void;
-};
-
-export function performReviewJump(ctx: JumpCtx): void {
-  const {
-    ply,
-    effectivePly,
-    liveIndex,
-    playStepAnimation,
-    setManualIndex,
-    setPendingAnimTarget,
-    setPendingAnimDirection,
-    cancelAnimation,
-  } = ctx;
-  hapticLight();
-  cancelAnimation();
-  setPendingAnimTarget(null);
-  if (ply >= liveIndex) {
-    setManualIndex(null);
-    return;
-  }
-  if (ply === effectivePly) {
-    return;
-  }
-  if (ply === effectivePly + 1) {
-    setManualIndex(effectivePly);
-    setPendingAnimTarget(ply);
-    setPendingAnimDirection('forward');
-    playStepAnimation(ply, 'forward', () => setManualIndex(ply >= liveIndex ? null : ply));
-    return;
-  }
-  if (ply === effectivePly - 1) {
-    setManualIndex(effectivePly);
-    setPendingAnimTarget(ply);
-    setPendingAnimDirection('backward');
-    playStepAnimation(ply, 'backward', () => setManualIndex(ply >= liveIndex ? null : ply));
-    return;
-  }
-  setManualIndex(ply);
 }
 
 export function buildReviewStepAnimation(ctx: {
@@ -116,7 +63,8 @@ export function buildReviewStepAnimation(ctx: {
   const before = stateAtPly(replayBaseline, moveLog, targetPly - 1);
   const entry = moveLog[targetPly - 1]!;
   const move = moveFromLogEntry(before, entry);
-  return buildMoveAnimationFrame({ ...before, currentPlayer: entry.player }, move, onFinish);
+  const frame = buildMoveAnimationFrame({ ...before, currentPlayer: entry.player }, move, onFinish);
+  return frame ? { ...frame, durationMs: REVIEW_CHECKER_MOVE_DURATION_MS } : null;
 }
 
 function wasBlotHit(before: GameState, to: number, player: MoveLogEntry['player']): boolean {
@@ -178,5 +126,5 @@ export function buildReviewStepBackAnimation(ctx: {
     }
   }
 
-  return frame;
+  return { ...frame, durationMs: REVIEW_CHECKER_MOVE_DURATION_MS };
 }

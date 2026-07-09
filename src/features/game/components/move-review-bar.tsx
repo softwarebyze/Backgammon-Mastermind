@@ -1,10 +1,10 @@
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { Feather } from '@expo/vector-icons';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { CheckerToken } from '@/features/game/components/board/checker-token';
+import { MoveReviewTurnStrip } from '@/features/game/components/move-review-turn-strip';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -12,128 +12,107 @@ type Props = {
   viewIndex: number;
   liveIndex: number;
   isReviewing: boolean;
+  isNavigating?: boolean;
   moveLog: MoveLogEntry[];
   focusedPly: number;
   positionLabel: string | null;
   canStepBack: boolean;
   canStepForward: boolean;
+  canReplay?: boolean;
+  isLooping?: boolean;
+  /** Live mid-turn: hide only the current player's unfinished turn chip. */
+  liveCurrentPlayer?: 'white' | 'black' | null;
   onStepBack: () => void;
   onStepForward: () => void;
   onJumpToPly: (ply: number) => void;
   onGoLive: () => void;
+  onToggleReplay?: () => void;
 };
 
-const DOT = 7;
-const CHECKER = 12;
-const SLOT = CHECKER + 4;
-const GAP = 6;
 const BAR_HEIGHT = 68;
 
-/** Fixed-height scrubber with per-move dots and position label. */
 export function MoveReviewBar({
   viewIndex,
   liveIndex,
   isReviewing,
+  isNavigating = false,
   moveLog,
   focusedPly,
   positionLabel,
   canStepBack,
   canStepForward,
+  canReplay = false,
+  isLooping = false,
+  liveCurrentPlayer = null,
   onStepBack,
   onStepForward,
   onJumpToPly,
   onGoLive,
+  onToggleReplay,
 }: Props) {
   if (liveIndex === 0) {
     return <View style={styles.placeholder} />;
   }
 
   return (
-    <View style={styles.wrap}>
-      {isReviewing && positionLabel
-        ? (
-            <Text style={styles.positionLabel} numberOfLines={1}>
-              {positionLabel}
-            </Text>
-          )
-        : null}
+    <View style={[styles.wrap, isNavigating && styles.wrapBusy]}>
+      <View style={styles.labelRow}>
+        <Text style={isReviewing ? styles.positionLabel : styles.scrubberHint} numberOfLines={1}>
+          {isReviewing && positionLabel
+            ? positionLabel
+            : translate('game.review.scrubber_hint')}
+        </Text>
+        {isReviewing && canReplay && onToggleReplay
+          ? (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={isLooping
+                  ? translate('game.review.pause_replay')
+                  : translate('game.review.replay')}
+                onPress={onToggleReplay}
+                style={({ pressed }) => [
+                  styles.replayBtn,
+                  isLooping && styles.replayBtnActive,
+                  pressed && styles.navBtnPressed,
+                ]}
+                hitSlop={8}
+              >
+                <Feather
+                  name={isLooping ? 'pause' : 'rotate-cw'}
+                  size={14}
+                  color={isLooping ? '#2A1A08' : GAME_PALETTE.accent}
+                />
+                <Text style={[styles.replayText, isLooping && styles.replayTextActive]}>
+                  {isLooping
+                    ? translate('game.review.pause_replay')
+                    : translate('game.review.replay')}
+                </Text>
+              </Pressable>
+            )
+          : null}
+      </View>
 
       <View style={styles.row}>
         <NavButton
           icon="chevron-left"
           disabled={!canStepBack}
           onPress={onStepBack}
-          label="Previous move"
+          label={translate('game.review.previous')}
         />
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.timeline}
-          style={styles.timelineScroll}
-        >
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Opening position"
-            accessibilityState={{ selected: focusedPly === 0 }}
-            onPress={() => {
-              hapticLight();
-              onJumpToPly(0);
-            }}
-            style={styles.slot}
-          >
-            <View style={[styles.dot, focusedPly === 0 && styles.dotFocused, viewIndex > 0 && styles.dotPast]} />
-          </Pressable>
-
-          {moveLog.map((entry, index) => {
-            const ply = index + 1;
-            const isFocused = focusedPly === ply;
-            const isPast = ply < viewIndex;
-            return (
-              <Pressable
-                key={entry.ply}
-                accessibilityRole="button"
-                accessibilityLabel={`Move ${ply}, ${entry.player}`}
-                accessibilityState={{ selected: isFocused }}
-                onPress={() => {
-                  hapticLight();
-                  onJumpToPly(ply);
-                }}
-                style={styles.slot}
-              >
-                {isFocused
-                  ? (
-                      <CheckerToken player={entry.player} size={CHECKER} flat />
-                    )
-                  : (
-                      <View
-                        style={[
-                          styles.dot,
-                          isPast && styles.dotPast,
-                        ]}
-                      />
-                    )}
-              </Pressable>
-            );
-          })}
-
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={isReviewing ? 'Back to live game' : 'Live game'}
-            accessibilityState={{ selected: !isReviewing }}
-            disabled={!isReviewing}
-            onPress={isReviewing ? onGoLive : undefined}
-            style={styles.slotLast}
-          >
-            <View style={[styles.liveDot, !isReviewing && styles.liveDotActive]} />
-          </Pressable>
-        </ScrollView>
-
+        <MoveReviewTurnStrip
+          viewIndex={viewIndex}
+          isReviewing={isReviewing}
+          moveLog={moveLog}
+          focusedPly={focusedPly}
+          liveCurrentPlayer={liveCurrentPlayer}
+          onJumpToPly={onJumpToPly}
+          onGoLive={onGoLive}
+        />
         <NavButton
           icon="chevron-right"
           disabled={!canStepForward}
           onPress={onStepForward}
-          label="Next move"
+          label={translate('game.review.next')}
         />
       </View>
     </View>
@@ -165,7 +144,7 @@ function NavButton({
     >
       <Feather
         name={icon}
-        size={28}
+        size={26}
         color={disabled ? GAME_PALETTE.textMuted : GAME_PALETTE.accent}
       />
     </Pressable>
@@ -182,9 +161,19 @@ const styles = StyleSheet.create({
     minHeight: BAR_HEIGHT,
     width: '100%',
     maxWidth: 420,
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     gap: 4,
     justifyContent: 'center',
+  },
+  wrapBusy: {
+    opacity: 0.92,
+  },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    minHeight: 20,
   },
   positionLabel: {
     textAlign: 'center',
@@ -193,15 +182,42 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
     ...interFont('semibold'),
   },
+  scrubberHint: {
+    textAlign: 'center',
+    color: GAME_PALETTE.textMuted,
+    fontSize: 12,
+    ...interFont('regular'),
+  },
+  replayBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.accent,
+  },
+  replayBtnActive: {
+    backgroundColor: GAME_PALETTE.accent,
+  },
+  replayText: {
+    color: GAME_PALETTE.accent,
+    fontSize: 11,
+    ...interFont('semibold'),
+  },
+  replayTextActive: {
+    color: '#2A1A08',
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    minHeight: 44,
+    gap: 4,
+    minHeight: 40,
   },
   navBtn: {
-    width: 40,
-    height: 40,
+    width: 36,
+    height: 36,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: GAME_PALETTE.surface,
@@ -209,60 +225,6 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.surfaceBorder,
     ...continuousRadius(10),
   },
-  navBtnDisabled: {
-    opacity: 0.4,
-  },
-  navBtnPressed: {
-    opacity: 0.88,
-  },
-  timelineScroll: {
-    flex: 1,
-  },
-  timeline: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 4,
-    minHeight: 40,
-  },
-  slot: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: SLOT,
-    height: SLOT,
-    marginRight: GAP,
-  },
-  slotLast: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: SLOT,
-    height: SLOT,
-  },
-  dot: {
-    width: DOT,
-    height: DOT,
-    borderRadius: DOT / 2,
-    backgroundColor: GAME_PALETTE.surfaceBorder,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.textMuted,
-  },
-  dotPast: {
-    backgroundColor: GAME_PALETTE.accentDim,
-    borderColor: GAME_PALETTE.accent,
-  },
-  dotFocused: {
-    backgroundColor: GAME_PALETTE.accent,
-    borderColor: GAME_PALETTE.accent,
-  },
-  liveDot: {
-    width: DOT + 2,
-    height: DOT + 2,
-    borderRadius: (DOT + 2) / 2,
-    borderWidth: 2,
-    borderColor: GAME_PALETTE.textMuted,
-    backgroundColor: 'transparent',
-  },
-  liveDotActive: {
-    borderColor: GAME_PALETTE.accent,
-    backgroundColor: GAME_PALETTE.accent,
-  },
+  navBtnDisabled: { opacity: 0.4 },
+  navBtnPressed: { opacity: 0.88 },
 });

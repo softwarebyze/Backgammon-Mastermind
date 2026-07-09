@@ -150,6 +150,7 @@ export function useAnimatedMoves(
     moveAnimation,
     isAnimating: moveAnimation !== null || sequenceActive,
     resetAnimation,
+    setMoveAnimation,
     doMove,
     doMoveSequence,
     playMove,
