@@ -111,14 +111,3 @@ export function MovePathOverlay({ segments, dimensions, animation, fadeOutMs }: 
     </Animated.View>
   );
 }
-
-/** Back-compat helper for single-entry callers (undo path, etc.). */
-export function singlePathSegments(
-  entry: MoveLogEntry | null,
-  beforeState: GameState | null,
-): PathSegment[] {
-  if (!entry || !beforeState) {
-    return [];
-  }
-  return [{ entry, beforeState, active: true }];
-}

@@ -16,17 +16,14 @@
     "src/lib/utils.ts"
   ],
   "ignoreBinaries": [
-    "app-release",
     "adb",
     "xed",
-    "only-allow",
     "eas",
     "maestro",
     "skills"
   ],
   "ignoreDependencies": [
     "husky",
-    "np",
     "babel-preset-expo",
     "expo-crypto",
     "react-native-url-polyfill",

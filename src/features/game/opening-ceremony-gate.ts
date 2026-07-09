@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 
-export type Point2 = { x: number; y: number };
+type Point2 = { x: number; y: number };
 
 export type TraySlotCenters = {
   left: Point2;

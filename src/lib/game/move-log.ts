@@ -2,8 +2,8 @@ import type { BoardPoint, GamePhase, GameState, Move, Player } from './types';
 import { BAR_POINT, BEAR_OFF } from './constants';
 
 /** Sentinel points for a logged roll with zero legal moves. */
-export const NO_MOVE_FROM = -1;
-export const NO_MOVE_TO = -1;
+const NO_MOVE_FROM = -1;
+const NO_MOVE_TO = -1;
 
 /** Compact post-move state for reliable replay (no re-simulating dice/turns). */
 export type ReplaySnapshot = {

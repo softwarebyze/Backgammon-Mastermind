@@ -28,7 +28,7 @@ export type ReviewNavSetters = {
 };
 
 /** Commit review navigation after a step animation — order matters for arrow/path sync. */
-export function finishReviewStepAnimation(
+function finishReviewStepAnimation(
   liveIndex: number,
   targetPly: number,
   setters: Pick<ReviewNavSetters, 'setManualIndex' | 'setPendingAnimTarget' | 'setPendingAnimDirection' | 'setReviewAnimation' | 'setPathMovePly'>,
@@ -42,7 +42,7 @@ export function finishReviewStepAnimation(
   });
 }
 
-export function settleReviewIndex(liveIndex: number, ply: number, setManualIndex: ReviewNavSetters['setManualIndex']) {
+function settleReviewIndex(liveIndex: number, ply: number, setManualIndex: ReviewNavSetters['setManualIndex']) {
   // ply === liveIndex is valid: reviewing the final turn while parked at live.
   setManualIndex(ply > liveIndex ? null : ply);
 }
@@ -62,7 +62,7 @@ export function clearReviewPendingAnim(setters: Pick<ReviewNavSetters, 'setPendi
   setters.setPendingAnimDirection(null);
 }
 
-export function finishReviewNavigation(
+function finishReviewNavigation(
   landedPly: number,
   refs: ReviewNavRefs,
 ) {
@@ -76,7 +76,7 @@ export function finishReviewNavigation(
 }
 
 /** Instant multi-ply jump — no board fade (fade looked like a flicker). */
-export function jumpReviewInstant(args: {
+function jumpReviewInstant(args: {
   targetPly: number;
   liveIndex: number;
   boardOpacity: Animated.Value;
@@ -94,7 +94,7 @@ export function jumpReviewInstant(args: {
   onComplete();
 }
 
-export function playReviewStep(args: {
+function playReviewStep(args: {
   replayBaseline: GameState;
   moveLog: MoveLogEntry[];
   fromPly: number;

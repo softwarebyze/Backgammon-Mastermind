@@ -7,7 +7,7 @@ import { getCheckerAnchor } from '@/features/game/board-point-layout';
 import { countAtPoint, destStackCount } from '@/features/game/move-animation';
 import { resolveMoveFromLogEntry } from '@/lib/game/move-replay';
 
-export function movePathAnchorsFromFrame(frame: MoveAnimationFrame, dims: BoardDimensions) {
+function movePathAnchorsFromFrame(frame: MoveAnimationFrame, dims: BoardDimensions) {
   const from = getCheckerAnchor({
     pointIndex: frame.from,
     dims,

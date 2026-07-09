@@ -46,10 +46,6 @@ export function canRedoTimeline(timeline: GameTimeline): boolean {
   return timeline.redo.length > 0;
 }
 
-export function timelineLivePly(timeline: GameTimeline): number {
-  return timeline.snapshots.length - 1;
-}
-
 export function pushTimelineSnapshot(
   timeline: GameTimeline,
   before: GameState,
