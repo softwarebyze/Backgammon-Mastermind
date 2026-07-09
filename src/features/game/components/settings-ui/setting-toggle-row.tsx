@@ -28,7 +28,8 @@ function iconForToggle(icon: React.ReactNode, active: boolean): React.ReactNode 
 
 const TRACK_OFF = '#4A3020';
 const TRACK_ON = GAME_PALETTE.accentDim;
-const ANDROID_THUMB = '#F5F0E8';
+const ANDROID_THUMB_ON = '#F5F0E8';
+const ANDROID_THUMB_OFF = '#C8B8A8';
 
 export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) {
   const handleChange = React.useCallback(
@@ -50,11 +51,13 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
         value={value}
         onValueChange={handleChange}
         trackColor={{ false: TRACK_OFF, true: TRACK_ON }}
-        thumbColor={Platform.OS === 'android' ? ANDROID_THUMB : undefined}
+        thumbColor={Platform.OS === 'android'
+          ? (value ? ANDROID_THUMB_ON : ANDROID_THUMB_OFF)
+          : undefined}
         ios_backgroundColor={TRACK_OFF}
         {...Platform.select({
           web: {
-            activeThumbColor: ANDROID_THUMB,
+            activeThumbColor: ANDROID_THUMB_ON,
             activeTrackColor: TRACK_ON,
           },
         })}

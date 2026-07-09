@@ -4,6 +4,7 @@ import { View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 
 type Props = {
   canUndo?: boolean;
@@ -62,7 +63,7 @@ export function GameHeaderActions({
         />
       </HeaderButton>
       <HeaderButton
-        accessibilityLabel="Preferences"
+        accessibilityLabel={translate('game.options.title')}
         onPress={() => {
           hapticLight();
           onOptions();

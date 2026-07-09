@@ -31,6 +31,8 @@ type HistoryAnimCtx = {
   setMoveAnimation: Dispatch<SetStateAction<MoveAnimationFrame | null>>;
   setHistoryPath: Dispatch<SetStateAction<{ entry: MoveLogEntry; beforeState: GameState } | null>>;
   finishHistoryAnim: () => void;
+  /** Shared with playMove so interrupted undo/redo still commits. */
+  armAnimationFinish: (onFinish: () => void) => () => void;
 };
 
 export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
@@ -79,26 +81,28 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
+  const commitUndo = () => {
+    const undoneMove = popLastMove();
+    if (!undoneMove) {
+      finishHistoryAnim();
+      return;
+    }
+    setTimeline((t) => {
+      if (!t) {
+        return t;
+      }
+      const next = undoTimeline(t, undoneMove);
+      setState(currentTimelineState(next));
+      return next;
+    });
+    finishHistoryAnim();
+  };
+
   const step = buildUndoHistoryStep({
     replayBaseline,
     moveLog,
     undoPly: timeline.cursor,
-    onFinish: () => {
-      const undoneMove = popLastMove();
-      if (!undoneMove) {
-        finishHistoryAnim();
-        return;
-      }
-      setTimeline((t) => {
-        if (!t) {
-          return t;
-        }
-        const next = undoTimeline(t, undoneMove);
-        setState(currentTimelineState(next));
-        return next;
-      });
-      finishHistoryAnim();
-    },
+    onFinish: commitUndo,
   });
 
   if (!step?.frame) {
@@ -110,8 +114,9 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
+  const settle = ctx.armAnimationFinish(commitUndo);
   ctx.setHistoryPath(step.path);
-  ctx.setMoveAnimation(step.frame);
+  ctx.setMoveAnimation({ ...step.frame, onFinish: settle });
   return true;
 }
 
@@ -131,27 +136,29 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
+  const commitRedo = () => {
+    setTimeline((t) => {
+      if (!t || !canRedoTimeline(t)) {
+        return t;
+      }
+      const entry = peekRedoMove(t);
+      if (!entry) {
+        return t;
+      }
+      restoreMove(entry);
+      const next = redoTimeline(t);
+      setState(currentTimelineState(next));
+      return next;
+    });
+    finishHistoryAnim();
+  };
+
   const step = buildRedoHistoryStep({
     replayBaseline,
     moveLog,
     moveEntry,
     cursor: timeline.cursor,
-    onFinish: () => {
-      setTimeline((t) => {
-        if (!t || !canRedoTimeline(t)) {
-          return t;
-        }
-        const entry = peekRedoMove(t);
-        if (!entry) {
-          return t;
-        }
-        restoreMove(entry);
-        const next = redoTimeline(t);
-        setState(currentTimelineState(next));
-        return next;
-      });
-      finishHistoryAnim();
-    },
+    onFinish: commitRedo,
   });
 
   if (!step.frame) {
@@ -163,8 +170,9 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
+  const settle = ctx.armAnimationFinish(commitRedo);
   ctx.setHistoryPath(step.path);
-  ctx.setMoveAnimation(step.frame);
+  ctx.setMoveAnimation({ ...step.frame, onFinish: settle });
   return true;
 }
 

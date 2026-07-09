@@ -4,7 +4,7 @@ import type { HistoryPathOverlay } from '@/features/game/timeline-history-action
 import type { GameState } from '@/lib/game';
 import type { GameTimeline } from '@/lib/game/game-timeline';
 import type { MoveLogEntry } from '@/lib/game/move-log';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { hasUndoableHumanMove, isHumanHistoryStep } from '@/features/game/timeline-history-actions';
 import {
@@ -25,6 +25,8 @@ type Options = {
   moveLog: MoveLogEntry[];
   isAnimating: boolean;
   setMoveAnimation: Dispatch<SetStateAction<MoveAnimationFrame | null>>;
+  /** Wire history onFinish into the shared animation watchdog. */
+  armAnimationFinish: (onFinish: () => void) => () => void;
   popLastMove: () => MoveLogEntry | null;
   restoreMove: (entry: MoveLogEntry) => void;
   gameMode: GameState['mode'] | undefined;
@@ -40,6 +42,7 @@ export function useGameUndoRedo(options: Options) {
     moveLog,
     isAnimating,
     setMoveAnimation,
+    armAnimationFinish,
     popLastMove,
     restoreMove,
     gameMode,
@@ -57,14 +60,33 @@ export function useGameUndoRedo(options: Options) {
   timelineRef.current = timeline;
   const moveLogRef = useRef(moveLog);
   moveLogRef.current = moveLog;
+  const pathClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const finishHistoryAnim = useCallback(() => {
     setMoveAnimation(null);
     // Hold then clear — avoids an arrow flicker the instant the checker lands.
-    setTimeout(() => setHistoryPath(null), 700);
+    if (pathClearTimerRef.current !== null) {
+      clearTimeout(pathClearTimerRef.current);
+    }
+    pathClearTimerRef.current = setTimeout(() => {
+      pathClearTimerRef.current = null;
+      setHistoryPath(null);
+    }, 700);
   }, [setMoveAnimation]);
 
-  const clearHistoryPath = useCallback(() => setHistoryPath(null), []);
+  const clearHistoryPath = useCallback(() => {
+    if (pathClearTimerRef.current !== null) {
+      clearTimeout(pathClearTimerRef.current);
+      pathClearTimerRef.current = null;
+    }
+    setHistoryPath(null);
+  }, []);
+
+  useEffect(() => () => {
+    if (pathClearTimerRef.current !== null) {
+      clearTimeout(pathClearTimerRef.current);
+    }
+  }, []);
 
   const animCtx = useCallback(() => ({
     timeline: timelineRef.current!,
@@ -78,7 +100,18 @@ export function useGameUndoRedo(options: Options) {
     setMoveAnimation,
     setHistoryPath,
     finishHistoryAnim,
-  }), [finishHistoryAnim, gameMode, popLastMove, replayBaseline, restoreMove, setMoveAnimation, setState, setTimeline]);
+    armAnimationFinish,
+  }), [
+    armAnimationFinish,
+    finishHistoryAnim,
+    gameMode,
+    popLastMove,
+    replayBaseline,
+    restoreMove,
+    setMoveAnimation,
+    setState,
+    setTimeline,
+  ]);
 
   const doUndo = useCallback(() => {
     if (!canUndo || !canRunUndo(timelineRef.current, isAnimating)) {

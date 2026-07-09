@@ -5,6 +5,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { appendMoveLogEntry, appendNoMoveLogEntry } from '@/lib/game/move-log';
 import { backfillMoveLogSnapshots, deriveReplayBaseline } from '@/lib/game/move-replay';
 import {
+  clearMoveLogAndBaseline,
   loadMoveLog,
   loadReplayBaseline,
   saveMoveLog,
@@ -58,6 +59,7 @@ export function useMoveLog(liveState: GameState | null) {
       player: before.currentPlayer,
       dice: before.dice,
       move,
+      before,
       after,
     }));
   }, [commitLog, ensureBaseline]);
@@ -74,6 +76,8 @@ export function useMoveLog(liveState: GameState | null) {
   const resetMoveLog = useCallback(() => {
     commitLog([]);
     setStoredBaseline(null);
+    // Sync clear so a kill mid-reset cannot reload the previous review log.
+    clearMoveLogAndBaseline();
   }, [commitLog]);
 
   const reloadMoveLog = useCallback(() => {

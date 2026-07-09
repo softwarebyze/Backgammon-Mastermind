@@ -206,7 +206,11 @@ export function BoardView({
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
           selectedPoint={selectedPoint}
-          onPressBar={onBarPress}
+          onPressBar={() => {
+            if (interactionEnabled) {
+              onBarPress();
+            }
+          }}
           barWidth={barWidth}
           boardHeight={boardHeight}
           middleHeight={middleHeight}
@@ -224,9 +228,13 @@ export function BoardView({
         <BearOffArea
           whiteBorneOff={state.borneOff.white}
           blackBorneOff={state.borneOff.black}
-          isLegalTarget={bearOffLegal}
+          isLegalTarget={bearOffLegal && interactionEnabled}
           currentPlayer={state.currentPlayer}
-          onPress={onBearOffPress}
+          onPress={() => {
+            if (interactionEnabled) {
+              onBearOffPress();
+            }
+          }}
           width={bearOffWidth}
           boardHeight={boardHeight}
           middleHeight={middleHeight}

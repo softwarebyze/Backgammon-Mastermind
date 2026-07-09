@@ -51,6 +51,11 @@ export function saveMoveLog(log: MoveLogEntry[]): void {
   void setItem(MOVE_LOG_KEY, log);
 }
 
+export function clearMoveLogAndBaseline(): void {
+  removeItem(MOVE_LOG_KEY);
+  removeItem(REPLAY_BASELINE_KEY);
+}
+
 export function loadMoveLog(): MoveLogEntry[] {
   return getItem<MoveLogEntry[]>(MOVE_LOG_KEY) ?? [];
 }

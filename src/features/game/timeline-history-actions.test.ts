@@ -144,11 +144,53 @@ describe('vs-computer history gating', () => {
       setMoveAnimation: () => {},
       setHistoryPath: () => {},
       finishHistoryAnim: () => {},
+      armAnimationFinish: onFinish => onFinish,
     });
 
     // Both AI moves and the human move are undone; cursor back at the start.
     expect(logState).toHaveLength(0);
     expect(committed.timeline?.cursor).toBe(0);
     expect(committed.timeline?.redoMoves.map(m => m.player)).toEqual(['white', 'black', 'black']);
+  });
+
+  it('animated undo arms the shared finish watchdog', () => {
+    const baseline = movingWhiteState();
+    const move = getLegalMoves(baseline)[0]!;
+    const after = applyMove(baseline, move);
+    const log = appendMoveLogEntry([], {
+      player: baseline.currentPlayer,
+      dice: baseline.dice,
+      move,
+      after,
+    });
+    const replayBaseline = deriveReplayBaseline(after, log);
+    let timeline = createTimeline(baseline);
+    timeline = pushTimelineSnapshot(timeline, baseline, after);
+
+    let armed = false;
+    let frameOnFinish: (() => void) | null = null;
+    runAnimatedUndo({
+      timeline,
+      moveLog: log,
+      replayBaseline,
+      gameMode: 'vs-human',
+      popLastMove: () => log[0] ?? null,
+      restoreMove: () => {},
+      setTimeline: () => {},
+      setState: () => {},
+      setMoveAnimation: (frame) => {
+        const next = typeof frame === 'function' ? frame(null) : frame;
+        frameOnFinish = next?.onFinish ?? null;
+      },
+      setHistoryPath: () => {},
+      finishHistoryAnim: () => {},
+      armAnimationFinish: (onFinish) => {
+        armed = true;
+        return onFinish;
+      },
+    });
+
+    expect(armed).toBe(true);
+    expect(frameOnFinish).toEqual(expect.any(Function));
   });
 });

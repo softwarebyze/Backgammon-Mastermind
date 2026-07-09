@@ -129,6 +129,13 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
     }
   }, [animation, liveIndex, manualIndex]);
 
+  // New game / reset: leave review immediately so opening ceremony sees live phase.
+  useEffect(() => {
+    if (liveState?.phase === 'opening-roll' && plies.isReviewing) {
+      animation.goLive();
+    }
+  }, [animation, liveState?.phase, plies.isReviewing]);
+
   return {
     viewIndex,
     liveIndex,

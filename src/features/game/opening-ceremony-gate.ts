@@ -7,7 +7,11 @@ export type TraySlotCenters = {
   right: Point2;
 };
 
+/** Ceremony → tray handoff: tray fades in under flying dice, then ceremony exits. */
+export type CeremonyHandoff = 'hidden' | 'measure' | 'reveal';
+
 let visible = false;
+let handoff: CeremonyHandoff = 'hidden';
 let traySlots: TraySlotCenters | null = null;
 const listeners = new Set<() => void>();
 
@@ -20,6 +24,17 @@ export function setOpeningCeremonyVisible(next: boolean) {
     return;
   }
   visible = next;
+  if (!next) {
+    handoff = 'hidden';
+  }
+  emit();
+}
+
+export function setOpeningCeremonyHandoff(next: CeremonyHandoff) {
+  if (handoff === next) {
+    return;
+  }
+  handoff = next;
   emit();
 }
 
@@ -37,28 +52,21 @@ export function setOpeningTraySlots(next: TraySlotCenters | null) {
   emit();
 }
 
+function subscribe(onStoreChange: () => void) {
+  listeners.add(onStoreChange);
+  return () => {
+    listeners.delete(onStoreChange);
+  };
+}
+
 export function useOpeningCeremonyVisible(): boolean {
-  return useSyncExternalStore(
-    (onStoreChange) => {
-      listeners.add(onStoreChange);
-      return () => {
-        listeners.delete(onStoreChange);
-      };
-    },
-    () => visible,
-    () => false,
-  );
+  return useSyncExternalStore(subscribe, () => visible, () => false);
+}
+
+export function useOpeningCeremonyHandoff(): CeremonyHandoff {
+  return useSyncExternalStore(subscribe, () => handoff, () => 'hidden' as const);
 }
 
 export function useOpeningTraySlots(): TraySlotCenters | null {
-  return useSyncExternalStore(
-    (onStoreChange) => {
-      listeners.add(onStoreChange);
-      return () => {
-        listeners.delete(onStoreChange);
-      };
-    },
-    () => traySlots,
-    () => null,
-  );
+  return useSyncExternalStore(subscribe, () => traySlots, () => null);
 }

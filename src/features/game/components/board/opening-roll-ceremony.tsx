@@ -10,12 +10,14 @@ import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
+  withSequence,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import {
+  setOpeningCeremonyHandoff,
   setOpeningCeremonyVisible,
   setOpeningTraySlots,
   useOpeningTraySlots,
@@ -141,6 +143,8 @@ function WaitingSlot({ size }: { size: number }) {
 
 const REVEAL_HOLD_MS = 2400;
 const FLY_MS = 620;
+/** Hold after fly so tray can fade in under ceremony dice (no hard cut). */
+const HANDOFF_MS = 320;
 
 type Stage = 'rolling' | 'reveal' | 'fly' | 'exit';
 
@@ -153,9 +157,13 @@ export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false
   const [stage, setStage] = useState<Stage>('rolling');
   const [revealDice, setRevealDice] = useState<{ white: number; black: number } | null>(null);
   const prevPhase = useRef(state.phase);
+  const prevOpeningKey = useRef(
+    `${state.openingRolls.white ?? '-'},${state.openingRolls.black ?? '-'}`,
+  );
 
   // Sync phase→reveal during render so we never paint a blank frame (the flicker).
   const phase = state.phase;
+  const openingKey = `${state.openingRolls.white ?? '-'},${state.openingRolls.black ?? '-'}`;
   if (prevPhase.current === 'opening-roll' && phase !== 'opening-roll' && state.dice[0] > 0 && state.dice[1] > 0) {
     if (stage === 'rolling' && revealDice === null) {
       const dice = { white: state.dice[0], black: state.dice[1] };
@@ -167,18 +175,39 @@ export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false
     setStage('rolling');
     setRevealDice(null);
   }
+  // Tie re-roll clears openingRolls while staying in opening-roll — reset ceremony.
+  else if (
+    phase === 'opening-roll'
+    && openingKey === '-,-'
+    && prevOpeningKey.current !== '-,-'
+    && stage !== 'rolling'
+  ) {
+    setStage('rolling');
+    setRevealDice(null);
+  }
   prevPhase.current = phase;
+  prevOpeningKey.current = openingKey;
 
   const showing = stage !== 'exit'
     && (phase === 'opening-roll' || stage === 'reveal' || stage === 'fly');
 
   useEffect(() => {
     setOpeningCeremonyVisible(showing);
+    if (!showing) {
+      setOpeningCeremonyHandoff('hidden');
+    }
+    else if (stage === 'fly') {
+      setOpeningCeremonyHandoff('reveal');
+    }
+    else {
+      setOpeningCeremonyHandoff('measure');
+    }
     return () => {
       setOpeningCeremonyVisible(false);
+      setOpeningCeremonyHandoff('hidden');
       setOpeningTraySlots(null);
     };
-  }, [showing]);
+  }, [showing, stage]);
 
   // Reveal → fly → exit. Timers are keyed only on revealDice so entering `fly`
   // does not clear the exit timer (that bug left the gate stuck and hid tray dice).
@@ -187,7 +216,10 @@ export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false
       return;
     }
     const flyTimer = setTimeout(() => setStage('fly'), REVEAL_HOLD_MS);
-    const exitTimer = setTimeout(() => setStage('exit'), REVEAL_HOLD_MS + FLY_MS + 80);
+    const exitTimer = setTimeout(
+      () => setStage('exit'),
+      REVEAL_HOLD_MS + FLY_MS + HANDOFF_MS,
+    );
     return () => {
       clearTimeout(flyTimer);
       clearTimeout(exitTimer);
@@ -360,7 +392,11 @@ function useCeremonyFly(stage: Stage, dieSize: number, dieRefs: DieRefs) {
       anim.tx.value = withTiming(target.x - from.x, { duration: FLY_MS, easing: ease });
       anim.ty.value = withTiming(target.y - from.y, { duration: FLY_MS, easing: ease });
       anim.scale.value = withTiming(targetScale, { duration: FLY_MS, easing: ease });
-      anim.opacity.value = 1;
+      // Stay solid through the fly, then dissolve into the tray faces underneath.
+      anim.opacity.value = withSequence(
+        withTiming(1, { duration: FLY_MS * 0.7 }),
+        withTiming(0, { duration: HANDOFF_MS }),
+      );
     };
 
     const tryFly = () => {

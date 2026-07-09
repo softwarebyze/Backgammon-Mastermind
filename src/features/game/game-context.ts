@@ -26,6 +26,7 @@ export type GameContextType = {
   moveAnimation: MoveAnimationFrame | null;
   historyPath: HistoryPathOverlay | null;
   resetAnimation: () => void;
+  clearAITimeout: () => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

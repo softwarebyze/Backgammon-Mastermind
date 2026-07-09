@@ -53,11 +53,7 @@ function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
       dieScale.value = 1;
       return;
     }
-    if (lastKey.current === null) {
-      lastKey.current = key;
-      return;
-    }
-    if (key === lastKey.current || !animateRoll || !hasRolledDice(dice)) {
+    if (key === lastKey.current || !animateRoll) {
       lastKey.current = key;
       return;
     }

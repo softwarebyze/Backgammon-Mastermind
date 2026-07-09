@@ -95,7 +95,10 @@ export function useReviewStepAnimation({
     isNavigating: isFading || reviewAnimation !== null,
     navigateToPly,
     goLive,
-    cancelAnimation: () => cancelReviewAnimation(refs, setters),
+    cancelAnimation: () => {
+      cancelReviewAnimation(refs, setters);
+      clearReviewPendingAnim(setters);
+    },
     setPendingAnimTarget,
     setPendingAnimDirection,
   };

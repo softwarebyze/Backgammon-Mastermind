@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
 import { useCallback, useState } from 'react';
 
-import { setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
+import { setOpeningCeremonyHandoff, setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 import { createInitialState } from '@/lib/game';
 import {
   clearActiveGame,
@@ -35,6 +35,7 @@ export function useGameLifecycle({
 
   const bumpCeremony = useCallback(() => {
     setOpeningCeremonyVisible(false);
+    setOpeningCeremonyHandoff('hidden');
     setCeremonyKey(k => k + 1);
   }, []);
 

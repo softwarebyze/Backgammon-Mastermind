@@ -39,7 +39,33 @@ function removeChecker(state: GameState, point: number, player: Player): void {
   }
 }
 
-function unapplyLogEntry(state: GameState, entry: MoveLogEntry): GameState {
+function wasHitMove(
+  postMove: GameState,
+  entry: MoveLogEntry,
+  beforeBarOpp: number | undefined,
+): boolean {
+  if (entry.hit !== undefined) {
+    return entry.hit;
+  }
+  const player = entry.player;
+  const opp = opponent(player);
+  const dest = postMove.points[entry.to];
+  if (dest.player !== player || dest.count !== 1) {
+    return false;
+  }
+  // Legacy fallback: prefer bar delta vs prior snapshot — bar[opp] > 0 alone
+  // fabricates hits whenever the opponent already had a checker on the bar.
+  if (beforeBarOpp !== undefined) {
+    return postMove.bar[opp] > beforeBarOpp;
+  }
+  return postMove.bar[opp] > 0;
+}
+
+function unapplyLogEntry(
+  state: GameState,
+  entry: MoveLogEntry,
+  beforeBarOpp?: number,
+): GameState {
   if (isNoMoveLogEntry(entry)) {
     return cloneBoard(state);
   }
@@ -52,14 +78,9 @@ function unapplyLogEntry(state: GameState, entry: MoveLogEntry): GameState {
     addChecker(next, entry.from, player);
   }
   else {
-    const dest = next.points[entry.to];
-    const likelyHit = dest.player === player
-      && dest.count === 1
-      && next.bar[opp] > 0;
-
+    const hit = wasHitMove(next, entry, beforeBarOpp);
     removeChecker(next, entry.to, player);
-
-    if (likelyHit) {
+    if (hit) {
       next.points[entry.to] = { player: opp, count: 1 };
       next.bar[opp]--;
     }
@@ -83,7 +104,14 @@ export function deriveReplayBaseline(
 ): GameState {
   let state = cloneBoard(current);
   for (let i = entries.length - 1; i >= 0; i--) {
-    state = unapplyLogEntry(state, entries[i]!);
+    const entry = entries[i]!;
+    const opp = opponent(entry.player);
+    const prevAfter = entries[i - 1]?.after;
+    // Opening bar is always empty; prefer prior snapshot bar when available.
+    const beforeBarOpp = prevAfter
+      ? prevAfter.bar[opp]
+      : (i === 0 ? 0 : undefined);
+    state = unapplyLogEntry(state, entry, beforeBarOpp);
   }
   const first = entries[0];
   return {
@@ -176,9 +204,16 @@ export function backfillMoveLogSnapshots(
     if (!move) {
       return entry;
     }
+    const before = state;
+    const opp = opponent(entry.player);
+    const dest = before.points[entry.to];
+    const hit = entry.to >= 1 && entry.to <= 24
+      ? dest.player === opp && dest.count === 1
+      : false;
     state = applyMove(state, move);
     return {
       ...entry,
+      hit: entry.hit ?? hit,
       after: {
         points: state.points.map(p => ({ ...p })),
         bar: { ...state.bar },

@@ -39,7 +39,7 @@
           "AI",
           "classic"
         ],
-        "releaseNotes": "Initial TestFlight release of Backgammon Mastermind.",
+        "releaseNotes": "v0.1.2: Turn-level move review timeline, opening-roll ceremony, undo/redo polish, and board UX refinements.",
         "marketingUrl": "https://github.com/softwarebyze/Backgammon-Mastermind",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/blob/main/docs/privacy-policy.md"

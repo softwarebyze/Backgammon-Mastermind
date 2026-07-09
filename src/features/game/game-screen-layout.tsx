@@ -42,7 +42,8 @@ export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn
   const insets = useSafeAreaInsets();
   const dimensions = useBoardDimensions();
   const state = board.boardState;
-  const canOpeningRoll = !review.isReviewing && !isComputerTurn && state.phase === 'opening-roll';
+  const live = input.state!;
+  const canOpeningRoll = !review.isReviewing && !isComputerTurn && live.phase === 'opening-roll';
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
@@ -91,7 +92,8 @@ export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn
       <View style={styles.ceremonyLayer} pointerEvents="box-none">
         <OpeningRollCeremony
           key={ceremonyKey}
-          state={state}
+          // Live state only — review scrub must not drive the opening ceremony.
+          state={input.state!}
           dimensions={dimensions}
           canRoll={canOpeningRoll}
           onRoll={() => {
@@ -104,6 +106,7 @@ export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn
       <View style={styles.controlsLayer} pointerEvents="box-none">
         <GameScreenControls
           state={state}
+          liveDiceState={input.state!}
           isHumanTurn={!isComputerTurn && board.interactionEnabled}
           isComputerTurn={isComputerTurn}
           isReviewing={review.isReviewing}

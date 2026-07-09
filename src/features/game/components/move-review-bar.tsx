@@ -20,7 +20,7 @@ type Props = {
   canStepForward: boolean;
   canReplay?: boolean;
   isLooping?: boolean;
-  /** Live mid-turn: hide only the current player's unfinished turn chip. */
+  /** Live mid-turn: hide this player's unfinished turn from the strip. */
   liveCurrentPlayer?: 'white' | 'black' | null;
   onStepBack: () => void;
   onStepForward: () => void;

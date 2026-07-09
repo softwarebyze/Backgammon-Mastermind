@@ -93,6 +93,9 @@ export function buildReviewStepBackAnimation(ctx: {
   }
 
   const entry = moveLog[undoPly - 1]!;
+  if (isNoMoveLogEntry(entry)) {
+    return null;
+  }
   const player = entry.player;
   const before = stateAtPly(replayBaseline, moveLog, undoPly - 1);
   const after = stateAtPly(replayBaseline, moveLog, undoPly);

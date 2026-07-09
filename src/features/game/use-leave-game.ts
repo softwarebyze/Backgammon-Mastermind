@@ -7,10 +7,11 @@ import { isResumableGame, saveActiveGame, saveMoveLog } from '@/lib/game/persist
 import { hapticLight } from '@/lib/haptics';
 
 export function useLeaveGame() {
-  const { state, moveLog } = useGame();
+  const { state, moveLog, clearAITimeout } = useGame();
   const allowLeaveRef = useRef(false);
 
   const leaveGame = useCallback(() => {
+    clearAITimeout();
     if (state && isResumableGame(state)) {
       saveActiveGame(state);
       saveMoveLog(moveLog);
@@ -18,7 +19,7 @@ export function useLeaveGame() {
     allowLeaveRef.current = true;
     hapticLight();
     router.replace('/');
-  }, [state, moveLog]);
+  }, [clearAITimeout, state, moveLog]);
 
   const handleBackPress = useCallback(() => {
     leaveGame();

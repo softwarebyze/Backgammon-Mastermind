@@ -22,6 +22,8 @@ export type MoveLogEntry = {
   dice: [number, number];
   from: number;
   to: number;
+  /** True when this move hit a blot. Present on new entries. */
+  hit?: boolean;
   /** Present on new entries; legacy logs backfilled on load. */
   after?: ReplaySnapshot;
 };
@@ -62,8 +64,22 @@ export function formatMoveLogEntry(entry: MoveLogEntry): string {
 
 export function appendMoveLogEntry(
   log: MoveLogEntry[],
-  ctx: { player: Player; dice: [number, number]; move: Move; after: GameState },
+  ctx: {
+    player: Player;
+    dice: [number, number];
+    move: Move;
+    after: GameState;
+    /** Pre-move board — used to record whether this ply hit a blot. */
+    before?: GameState;
+  },
 ): MoveLogEntry[] {
+  const opp = ctx.player === 'white' ? 'black' : 'white';
+  const dest = ctx.before && ctx.move.to >= 1 && ctx.move.to <= 24
+    ? ctx.before.points[ctx.move.to]
+    : null;
+  const hit = dest
+    ? dest.player === opp && dest.count === 1
+    : undefined;
   return [
     ...log,
     {
@@ -72,6 +88,7 @@ export function appendMoveLogEntry(
       dice: [...ctx.dice] as [number, number],
       from: ctx.move.from,
       to: ctx.move.to,
+      ...(hit !== undefined ? { hit } : {}),
       after: captureReplaySnapshot(ctx.after),
     },
   ];
@@ -128,10 +145,16 @@ export function groupMoveLogByTurn(entries: MoveLogEntry[]): MoveLogTurn[] {
 
   for (const entry of entries) {
     const last = turns[turns.length - 1];
+    const previous = last?.moves[last.moves.length - 1];
+    // Snapshot-aware: same player+dice after a no-move handoff is a new turn.
+    const continuesTurn = previous?.after
+      ? previous.after.currentPlayer === entry.player
+      : true;
     if (
       last
       && last.player === entry.player
       && diceTupleKey(last.dice) === diceTupleKey(entry.dice)
+      && continuesTurn
     ) {
       last.moves.push(entry);
       last.endPly = entry.ply;
@@ -147,6 +170,33 @@ export function groupMoveLogByTurn(entries: MoveLogEntry[]): MoveLogTurn[] {
     });
   }
 
+  return turns;
+}
+
+/**
+ * Live mid-turn: omit the current player's unfinished turn so the strip only
+ * shows completed history (Live owns the in-progress dice).
+ */
+export function turnsForReviewStrip(
+  entries: MoveLogEntry[],
+  opts: { hideInProgressFor?: Player | null } = {},
+): MoveLogTurn[] {
+  const turns = groupMoveLogByTurn(entries);
+  const hideFor = opts.hideInProgressFor;
+  if (!hideFor || turns.length === 0) {
+    return turns;
+  }
+  const last = turns[turns.length - 1]!;
+  if (last.player !== hideFor) {
+    return turns;
+  }
+  // No-move rolls are finished turns (show ×), not in-progress.
+  if (last.moves.length === 1 && last.moves[0] && isNoMoveLogEntry(last.moves[0])) {
+    return turns;
+  }
+  if (unusedDiceInTurn(last) > 0) {
+    return turns.slice(0, -1);
+  }
   return turns;
 }
 

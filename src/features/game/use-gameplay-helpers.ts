@@ -15,6 +15,8 @@ function isHumanTurn(state: GameState): boolean {
 type Options = {
   state: GameState | null;
   isAnimating: boolean;
+  /** Undo left a redo stack — don't auto-play or a forced move wipes redo. */
+  hasRedo: boolean;
   doRollDice: () => void;
   doMove: (move: Move) => void;
   doMoveSequence: (moves: Move[]) => void;
@@ -24,6 +26,7 @@ type Options = {
 export function useGameplayHelpers({
   state,
   isAnimating,
+  hasRedo,
   doRollDice,
   doMove,
   doMoveSequence,
@@ -42,7 +45,7 @@ export function useGameplayHelpers({
 
     clear();
 
-    if (!state || isAnimating || state.phase === 'game-over') {
+    if (!state || isAnimating || hasRedo || state.phase === 'game-over') {
       return clear;
     }
 
@@ -87,6 +90,7 @@ export function useGameplayHelpers({
   }, [
     state,
     isAnimating,
+    hasRedo,
     preferences.autoRoll,
     preferences.autoMoveWhenForced,
     doRollDice,

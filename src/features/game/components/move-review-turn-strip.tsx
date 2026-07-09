@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { groupMoveLogByTurn, isNoMoveLogEntry, unusedDiceInTurn } from '@/lib/game/move-log';
+import { isNoMoveLogEntry, turnsForReviewStrip, unusedDiceInTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
@@ -17,7 +17,7 @@ type Props = {
   isReviewing: boolean;
   moveLog: MoveLogEntry[];
   focusedPly: number;
-  /** While live mid-turn, style the current player's chip as in-progress (dashed). */
+  /** While live mid-turn, hide this player's unfinished turn chip (Live owns it). */
   liveCurrentPlayer?: MoveLogEntry['player'] | null;
   onJumpToPly: (ply: number) => void;
   onGoLive: () => void;
@@ -30,12 +30,10 @@ function turnStartPly(turn: MoveLogTurn): number {
 function TurnChip({
   turn,
   focused,
-  inProgress,
   onPress,
 }: {
   turn: MoveLogTurn;
   focused: boolean;
-  inProgress: boolean;
   onPress: () => void;
 }) {
   const playerLabel = turn.player === 'white'
@@ -52,7 +50,6 @@ function TurnChip({
       style={[
         styles.chip,
         focused && styles.chipFocused,
-        inProgress && styles.chipInProgress,
       ]}
     >
       <View
@@ -81,12 +78,10 @@ export function MoveReviewTurnStrip({
   onJumpToPly,
   onGoLive,
 }: Props) {
-  const turns = groupMoveLogByTurn(moveLog);
-  const last = turns[turns.length - 1];
-  const inProgressTurnIndex
-    = !isReviewing && liveCurrentPlayer && last?.player === liveCurrentPlayer
-      ? last.turnIndex
-      : null;
+  // Live: hide unfinished current turn. Review: show all so scrubbing still works.
+  const turns = turnsForReviewStrip(moveLog, {
+    hideInProgressFor: isReviewing ? null : liveCurrentPlayer,
+  });
   const scrollRef = useRef<ScrollView>(null);
   const focusedTurnIdx = turns.findIndex(
     t => focusedPly >= turnStartPly(t) && focusedPly <= t.endPly,
@@ -124,12 +119,11 @@ export function MoveReviewTurnStrip({
         </Text>
       </Pressable>
 
-      {turns.map(turn => (
+      {turns.map((turn, idx) => (
         <TurnChip
           key={turn.turnIndex}
           turn={turn}
-          focused={isReviewing && focusedTurnIdx === turn.turnIndex - 1}
-          inProgress={inProgressTurnIndex === turn.turnIndex}
+          focused={isReviewing && focusedTurnIdx === idx}
           onPress={() => {
             hapticLight();
             onJumpToPly(turn.endPly);
@@ -181,10 +175,6 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.accent,
     backgroundColor: '#3A1C0A',
     borderWidth: 2,
-  },
-  chipInProgress: {
-    borderStyle: 'dashed',
-    borderColor: GAME_PALETTE.accent,
   },
   chipText: {
     color: GAME_PALETTE.text,

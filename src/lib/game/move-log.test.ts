@@ -5,6 +5,7 @@ import {
   formatMoveLogEntry,
   formatTurnMoveSummary,
   groupMoveLogByTurn,
+  turnsForReviewStrip,
 } from './move-log';
 import { applyMove } from './moves';
 
@@ -120,5 +121,84 @@ describe('move-log', () => {
     expect(turns[0]?.moves).toHaveLength(2);
     expect(turns[1]?.player).toBe('black');
     expect(formatTurnMoveSummary(turns[0]!.moves)).toBe('8→3 · 6→1');
+  });
+});
+
+describe('move-log review strip', () => {
+  it('hides the live mid-turn chip until the roll is finished', () => {
+    const move1 = { from: 13, to: 8, dieIndex: 0 };
+    let log = appendMoveLogEntry([], {
+      player: 'white',
+      dice: [5, 2],
+      move: move1,
+      after: afterMove(move1, 'white', [5, 2]),
+    });
+    // One die spent — strip must not show this as a prior turn.
+    expect(turnsForReviewStrip(log, { hideInProgressFor: 'white' })).toHaveLength(0);
+    expect(turnsForReviewStrip(log, { hideInProgressFor: null })).toHaveLength(1);
+
+    const move2 = { from: 8, to: 6, dieIndex: 1 };
+    log = appendMoveLogEntry(log, {
+      player: 'white',
+      dice: [5, 2],
+      move: move2,
+      after: afterMove(move2, 'white', [5, 2]),
+    });
+    // Both dice spent — chip is a completed turn.
+    expect(turnsForReviewStrip(log, { hideInProgressFor: 'white' })).toHaveLength(1);
+  });
+
+  it('keeps no-move turns visible on the live strip', () => {
+    const before = {
+      ...createInitialState('vs-human'),
+      phase: 'no-move' as const,
+      currentPlayer: 'white' as const,
+      dice: [2, 5] as [number, number],
+      remainingDice: [2, 5],
+    };
+    const log = appendNoMoveLogEntry([], {
+      player: 'white',
+      dice: [2, 5],
+      after: before,
+    });
+    expect(turnsForReviewStrip(log, { hideInProgressFor: 'white' })).toHaveLength(1);
+  });
+
+  it('does not merge same dice across a no-move handoff', () => {
+    const whiteMove = { from: 13, to: 8, dieIndex: 0 };
+    const whiteAfter = {
+      ...afterMove(whiteMove, 'white', [3, 5]),
+      currentPlayer: 'black' as const,
+      remainingDice: [] as number[],
+      phase: 'rolling' as const,
+    };
+    let log = appendMoveLogEntry([], {
+      player: 'white',
+      dice: [3, 5],
+      move: whiteMove,
+      after: whiteAfter,
+    });
+    const noMoveAfter = {
+      ...whiteAfter,
+      currentPlayer: 'white' as const,
+      dice: [3, 5] as [number, number],
+      remainingDice: [3, 5],
+      phase: 'rolling' as const,
+    };
+    log = appendNoMoveLogEntry(log, {
+      player: 'black',
+      dice: [3, 5],
+      after: noMoveAfter,
+    });
+    const whiteAgain = { from: 8, to: 3, dieIndex: 0 };
+    log = appendMoveLogEntry(log, {
+      player: 'white',
+      dice: [3, 5],
+      move: whiteAgain,
+      after: afterMove(whiteAgain, 'white', [3, 5]),
+    });
+    const turns = groupMoveLogByTurn(log);
+    expect(turns).toHaveLength(3);
+    expect(turns.map(t => t.player)).toEqual(['white', 'black', 'white']);
   });
 });

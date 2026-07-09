@@ -17,6 +17,8 @@ type ComputerOpponentOptions = {
   isAnimating: boolean;
   /** Moves played so far — 0 means the opening ceremony may still be on screen. */
   moveCount: number;
+  /** Undo left a redo stack — don't auto-play or the AI wipes redo. */
+  hasRedo: boolean;
   recordNoMove: (before: GameState, after: GameState) => void;
 };
 
@@ -27,6 +29,7 @@ export function useComputerOpponent({
   playMove,
   isAnimating,
   moveCount,
+  hasRedo,
   recordNoMove,
 }: ComputerOpponentOptions) {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,6 +53,9 @@ export function useComputerOpponent({
     if (state.phase === 'game-over')
       return clearAITimeout;
     if (isAnimating)
+      return clearAITimeout;
+    // User undid into a redoable history — wait for redo or a fresh human move.
+    if (hasRedo)
       return clearAITimeout;
 
     const delay
@@ -122,6 +128,7 @@ export function useComputerOpponent({
     playMove,
     isAnimating,
     moveCount,
+    hasRedo,
     recordNoMove,
   ]);
 
