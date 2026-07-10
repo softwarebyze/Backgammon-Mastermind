@@ -83,6 +83,7 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
   const progress = useSharedValue(0);
   const onFinishRef = useRef(animation.onFinish);
   onFinishRef.current = animation.onFinish;
+  const finishedRef = useRef(false);
 
   const moverSlide: CheckerSlide = {
     from: animation.from,
@@ -95,24 +96,39 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
   const key = animationKey(animation);
 
   useLayoutEffect(() => {
+    finishedRef.current = false;
+    const finish = () => {
+      if (finishedRef.current) {
+        return;
+      }
+      finishedRef.current = true;
+      onFinishRef.current();
+    };
+
+    const duration = animation.durationMs ?? CHECKER_MOVE_DURATION_MS;
+    // Reanimated can cancel without calling the callback (remount, interrupt).
+    // A backup commit prevents empty-bar / stuck-undo half-states.
+    const backup = setTimeout(finish, duration + 120);
+
     progress.value = 0;
     progress.value = withTiming(
       1,
       {
-        duration: CHECKER_MOVE_DURATION_MS,
+        duration,
         easing: Easing.out(Easing.cubic),
       },
-      (finished) => {
-        if (finished) {
-          runOnJS(onFinishRef.current)();
+      (didFinish) => {
+        if (didFinish) {
+          runOnJS(finish)();
         }
       },
     );
 
     return () => {
+      clearTimeout(backup);
       cancelAnimation(progress);
     };
-  }, [key, progress]);
+  }, [animation.durationMs, key, progress]);
 
   return (
     <>

@@ -54,10 +54,6 @@ export default function AppLayout() {
         name="language"
         options={pickerFormSheetOptions(translate('settings.language'))}
       />
-      <Stack.Screen
-        name="theme"
-        options={pickerFormSheetOptions(translate('settings.theme.title'))}
-      />
     </Stack>
   );
 }

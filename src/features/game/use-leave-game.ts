@@ -1,16 +1,17 @@
 import { router } from 'expo-router';
 import { useCallback, useRef } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import { useGame } from '@/features/game/use-game';
 import { isResumableGame, saveActiveGame, saveMoveLog } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 
 export function useLeaveGame() {
-  const { state, moveLog } = useGame();
+  const { state, moveLog, clearAITimeout } = useGame();
   const allowLeaveRef = useRef(false);
 
   const leaveGame = useCallback(() => {
+    clearAITimeout();
     if (state && isResumableGame(state)) {
       saveActiveGame(state);
       saveMoveLog(moveLog);
@@ -18,35 +19,16 @@ export function useLeaveGame() {
     allowLeaveRef.current = true;
     hapticLight();
     router.replace('/');
-  }, [state, moveLog]);
-
-  const confirmLeaveGame = useCallback(() => {
-    if (!state || !isResumableGame(state)) {
-      leaveGame();
-      return;
-    }
-
-    Alert.alert(
-      'Leave game?',
-      'Your game is saved — you can resume from home.',
-      [
-        { text: 'Keep playing', style: 'cancel' },
-        {
-          text: 'Save & exit',
-          onPress: leaveGame,
-        },
-      ],
-    );
-  }, [leaveGame, state]);
+  }, [clearAITimeout, state, moveLog]);
 
   const handleBackPress = useCallback(() => {
-    confirmLeaveGame();
+    leaveGame();
     return true;
-  }, [confirmLeaveGame]);
+  }, [leaveGame]);
 
   return {
     allowLeaveRef,
-    confirmLeaveGame,
+    leaveGame,
     handleBackPress,
     supportsHardwareBack: Platform.OS === 'android',
   };

@@ -2,15 +2,19 @@ import * as React from 'react';
 import { View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
+import { GAME_PALETTE } from '@/features/game/game-palette';
+
 type Props = {
   size?: number;
+  active?: boolean;
 };
 
-/** Checker with subtle ring — move hints setting */
-export function MoveHintIcon({ size = 28 }: Props) {
+/** Checker with highlight ring — move hints setting */
+export function MoveHintIcon({ size = 28, active = false }: Props) {
   const r = size * 0.36;
   const cx = size / 2;
   const cy = size / 2;
+  const ring = active ? GAME_PALETTE.accent : GAME_PALETTE.textMuted;
   return (
     <View style={{ width: size, height: size }}>
       <Svg width={size} height={size}>
@@ -27,7 +31,7 @@ export function MoveHintIcon({ size = 28 }: Props) {
           cy={cy}
           r={r + 3}
           fill="none"
-          stroke="rgba(212, 168, 67, 0.85)"
+          stroke={ring}
           strokeWidth={2}
         />
       </Svg>

@@ -1,60 +1,45 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
-import { useCallback, useEffect, useLayoutEffect } from 'react';
-import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useCallback, useEffect } from 'react';
+import { BackHandler, StyleSheet, Text, View } from 'react-native';
 
-import { GameHeaderActions } from '@/components/navigation/game-header-actions';
-import { GameHomeButton } from '@/components/navigation/game-home-button';
 import { FocusAwareStatusBar } from '@/components/ui';
-import { BoardView } from '@/features/game/components/board/board-view';
-import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
-import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
+import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { GameScreenLayout } from '@/features/game/game-screen-layout';
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
+import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
-import { hapticLight } from '@/lib/haptics';
+import { useMoveReview } from '@/features/game/use-move-review';
 
 export function GameScreen() {
   const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
-  const dimensions = useBoardDimensions();
-  const {
-    state,
-    previewTarget,
-    handlePointPress,
-    handlePointPressIn,
-    handlePointPressOut,
-    handleBearOffPress,
-    handleBarPress,
-    handleBoardPress,
-    handleRoll,
-    handleReset,
-  } = useGameInput();
-  const { moveAnimation, resetAnimation } = useGame();
-  const { confirmLeaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
+  const input = useGameInput();
+  const { moveAnimation, resetAnimation, moveLog, replayBaseline, canUndo, canRedo, doUndo, doRedo, historyPath, ceremonyKey } = useGame();
+  const { leaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
+  const review = useMoveReview({
+    liveState: input.state,
+    moveLog,
+    replayBaseline,
+  });
 
   useFocusEffect(useCallback(() => () => resetAnimation(), [resetAnimation]));
 
   const openOptions = useCallback(() => {
-    hapticLight();
     router.push('/game/options');
   }, []);
 
-  useLayoutEffect(() => {
-    if (!state) {
-      return;
-    }
-    navigation.setOptions({
-      title: '',
-      headerLeft: () => <GameHomeButton onPress={confirmLeaveGame} />,
-      headerRight: () => (
-        <GameHeaderActions onOptions={openOptions} onReset={handleReset} />
-      ),
-    });
-  }, [navigation, state, handleReset, openOptions, confirmLeaveGame]);
+  useGameScreenHeader({
+    navigation,
+    state: input.state,
+    canUndo: !review.isReviewing && canUndo,
+    canRedo: !review.isReviewing && canRedo,
+    doUndo,
+    doRedo,
+    openOptions,
+    handleReset: input.handleReset,
+    confirmLeaveGame: leaveGame,
+  });
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
@@ -68,13 +53,13 @@ export function GameScreen() {
       }
       if (event.data.action.type === 'GO_BACK' || event.data.action.type === 'POP') {
         event.preventDefault();
-        confirmLeaveGame();
+        leaveGame();
       }
     });
     return unsubscribe;
-  }, [navigation, confirmLeaveGame, allowLeaveRef]);
+  }, [navigation, leaveGame, allowLeaveRef]);
 
-  if (!state) {
+  if (!input.state || !review.displayState) {
     return (
       <View style={[styles.root, styles.center]}>
         <FocusAwareStatusBar />
@@ -83,43 +68,19 @@ export function GameScreen() {
     );
   }
 
-  const isComputerTurn
-    = state.mode === 'vs-computer' && state.currentPlayer === 'black';
-  const isHumanTurn = !isComputerTurn;
+  const board = deriveGameBoardPresentation(review, moveAnimation, historyPath);
+  const state = board.boardState!;
+  const isComputerTurn = state.mode === 'vs-computer' && state.currentPlayer === 'black';
 
   return (
-    <View style={[styles.root, { paddingBottom: insets.bottom }]}>
-      <FocusAwareStatusBar />
-      <GamePipStatusBar state={state} />
-      <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} />
-      </View>
-      <View style={styles.boardWrap}>
-        <Pressable
-          onPress={handleBoardPress}
-          style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
-        >
-          <BoardView
-            state={state}
-            dimensions={dimensions}
-            previewTarget={previewTarget}
-            moveAnimation={moveAnimation}
-            onPointPress={handlePointPress}
-            onPointPressIn={handlePointPressIn}
-            onPointPressOut={handlePointPressOut}
-            onBarPress={handleBarPress}
-            onBearOffPress={handleBearOffPress}
-          />
-        </Pressable>
-      </View>
-      <GameScreenControls
-        state={state}
-        isHumanTurn={isHumanTurn}
-        isComputerTurn={isComputerTurn}
-        onRoll={handleRoll}
-        onReset={handleReset}
-      />
-    </View>
+    <GameScreenLayout
+      board={{ ...board, boardState: state }}
+      review={review}
+      input={input}
+      moveLog={moveLog}
+      isComputerTurn={isComputerTurn}
+      ceremonyKey={ceremonyKey}
+    />
   );
 }
 
@@ -132,22 +93,5 @@ const styles = StyleSheet.create({
   center: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  turnBannerWrap: {
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    marginBottom: 4,
-  },
-  boardWrap: {
-    flex: 1,
-    justifyContent: 'center',
-    width: '100%',
-    alignItems: 'center',
-  },
-  boardContainer: {
-    paddingHorizontal: 4,
-    width: '100%',
-    alignItems: 'center',
   },
 });

@@ -92,7 +92,7 @@ describe('compound move regressions (user-reported)', () => {
 
     for (let i = 0; i < 3; i++) {
       const move = findMoveSequence(state, 24 - i, 23 - i)!;
-      state = applyMove(state, move[0]);
+      state = applyMove(state, move[0]!);
     }
 
     expect(state.remainingDice).toEqual([1]);

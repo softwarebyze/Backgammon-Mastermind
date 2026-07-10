@@ -4,18 +4,33 @@ import { useEffect, useRef } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 
+/**
+ * Keeps the AI's first move from starting under the opening-roll ceremony
+ * overlay (2400ms hold + 520ms fly in opening-roll-ceremony.tsx).
+ */
+const OPENING_CEREMONY_GRACE_MS = 3200;
+
 type ComputerOpponentOptions = {
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
   playMove: (snapshot: GameState, move: Move) => void;
   isAnimating: boolean;
+  /** Moves played so far — 0 means the opening ceremony may still be on screen. */
+  moveCount: number;
+  /** Undo left a redo stack — don't auto-play or the AI wipes redo. */
+  hasRedo: boolean;
+  recordNoMove: (before: GameState, after: GameState) => void;
 };
 
+/* eslint-disable max-lines-per-function -- AI turn orchestration */
 export function useComputerOpponent({
   state,
   setState,
   playMove,
   isAnimating,
+  moveCount,
+  hasRedo,
+  recordNoMove,
 }: ComputerOpponentOptions) {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
@@ -38,6 +53,9 @@ export function useComputerOpponent({
     if (state.phase === 'game-over')
       return clearAITimeout;
     if (isAnimating)
+      return clearAITimeout;
+    // User undid into a redoable history — wait for redo or a fresh human move.
+    if (hasRedo)
       return clearAITimeout;
 
     const delay
@@ -69,6 +87,7 @@ export function useComputerOpponent({
       }
 
       if (prev.phase === 'no-move') {
+        recordNoMove(prev, prev);
         setState(passTurn(prev));
         return;
       }
@@ -76,14 +95,26 @@ export function useComputerOpponent({
       if (prev.phase === 'moving') {
         const move = getAIMove(prev);
         if (!move) {
+          recordNoMove(prev, prev);
           setState(passTurn(prev));
           return;
         }
-        playMove(prev, move);
+        const moveDelay = moveCount === 0 ? OPENING_CEREMONY_GRACE_MS : 750;
+        aiTimeoutRef.current = setTimeout(() => {
+          const latest = stateRef.current;
+          if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
+            return;
+          }
+          playMove(latest, move);
+        }, moveDelay);
       }
     };
 
     if (delay === 0) {
+      if (state.phase === 'moving') {
+        runAI();
+        return clearAITimeout;
+      }
       runAI();
       return clearAITimeout;
     }
@@ -96,6 +127,9 @@ export function useComputerOpponent({
     setState,
     playMove,
     isAnimating,
+    moveCount,
+    hasRedo,
+    recordNoMove,
   ]);
 
   return () => {

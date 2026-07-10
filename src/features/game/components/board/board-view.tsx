@@ -6,8 +6,9 @@ import { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
-import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations } from '@/lib/game/moves';
 import { BarArea } from './bar-area';
@@ -16,6 +17,7 @@ import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { MoveAnimationOverlay } from './move-animation-overlay';
 import { PointColumn } from './point-column';
+import { PointNumberRail } from './point-number-rail';
 import { WoodSurface } from './wood-surface';
 
 const TOP_LEFT = [13, 14, 15, 16, 17, 18];
@@ -56,6 +58,8 @@ type Props = {
   onPointPressOut: () => void;
   onBarPress: () => void;
   onBearOffPress: () => void;
+  interactionEnabled?: boolean;
+  isReviewing?: boolean;
 };
 
 /* eslint-disable max-lines-per-function -- board layout composition */
@@ -69,14 +73,16 @@ export function BoardView({
   onPointPressOut,
   onBarPress,
   onBearOffPress,
+  interactionEnabled = true,
+  isReviewing = false,
 }: Props) {
   const { preferences } = useGamePreferences();
+  const ceremonyVisible = useOpeningCeremonyVisible();
   const {
     boardWidth,
     boardHeight,
     boardFrameWidth,
     boardOuterWidth,
-    boardOuterHeight,
     colWidth,
     checkerSize,
     pointHeight,
@@ -87,6 +93,7 @@ export function BoardView({
 
   const showHighlights = isBoardHighlightActive(moveAnimation);
   const selectedPoint = showHighlights ? state.selectedPoint : null;
+  const showLiveHints = interactionEnabled && !isReviewing;
 
   const legalTargets = useMemo(() => {
     if (!showHighlights || state.selectedPoint === null) {
@@ -96,11 +103,11 @@ export function BoardView({
   }, [showHighlights, state]);
 
   const movableSources = useMemo(() => {
-    if (!showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
+    if (!showLiveHints || !showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
       return new Set<number>();
     }
     return getMovableSources(state);
-  }, [showHighlights, preferences.showMoveHints, state]);
+  }, [showLiveHints, showHighlights, preferences.showMoveHints, state]);
 
   const bearOffLegal = useMemo(
     () => showHighlights
@@ -110,7 +117,11 @@ export function BoardView({
   );
 
   const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
-  const showDirection = preferences.showDirectionOverlay && state.phase !== 'game-over';
+  const showDirection = preferences.showDirectionOverlay
+    && !isReviewing
+    && !ceremonyVisible
+    && state.phase !== 'game-over'
+    && state.phase !== 'opening-roll';
 
   const renderColumn = (idx: number, isTop: boolean) => {
     const point = displayPointDuringAnimation(idx, state.points[idx], moveAnimation);
@@ -126,9 +137,21 @@ export function BoardView({
         isMovableSource={movableSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
-        onPress={() => onPointPress(idx)}
-        onPressIn={() => onPointPressIn(idx)}
-        onPressOut={onPointPressOut}
+        onPress={() => {
+          if (interactionEnabled) {
+            onPointPress(idx);
+          }
+        }}
+        onPressIn={() => {
+          if (interactionEnabled) {
+            onPointPressIn(idx);
+          }
+        }}
+        onPressOut={() => {
+          if (interactionEnabled) {
+            onPointPressOut();
+          }
+        }}
         colWidth={colWidth}
         pointHeight={pointHeight}
         checkerSize={checkerSize}
@@ -143,7 +166,6 @@ export function BoardView({
     <View
       style={{
         width: boardOuterWidth,
-        height: boardOuterHeight,
         borderRadius: 10,
         borderWidth: boardFrameWidth,
         borderColor: BOARD_THEME.frame.rim,
@@ -153,12 +175,18 @@ export function BoardView({
         shadowOpacity: 0.45,
         shadowRadius: 10,
         elevation: 8,
+        overflow: 'hidden',
       }}
     >
+      {preferences.showPointNumbers && (
+        <PointNumberRail side="top" dimensions={dimensions} />
+      )}
+
       <View
         style={{
           width: boardWidth,
           height: boardHeight,
+          alignSelf: 'center',
           flexDirection: 'row',
           overflow: 'hidden',
           borderRadius: 6,
@@ -178,7 +206,11 @@ export function BoardView({
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
           selectedPoint={selectedPoint}
-          onPressBar={onBarPress}
+          onPressBar={() => {
+            if (interactionEnabled) {
+              onBarPress();
+            }
+          }}
           barWidth={barWidth}
           boardHeight={boardHeight}
           middleHeight={middleHeight}
@@ -196,9 +228,13 @@ export function BoardView({
         <BearOffArea
           whiteBorneOff={state.borneOff.white}
           blackBorneOff={state.borneOff.black}
-          isLegalTarget={bearOffLegal}
+          isLegalTarget={bearOffLegal && interactionEnabled}
           currentPlayer={state.currentPlayer}
-          onPress={onBearOffPress}
+          onPress={() => {
+            if (interactionEnabled) {
+              onBearOffPress();
+            }
+          }}
           width={bearOffWidth}
           boardHeight={boardHeight}
           middleHeight={middleHeight}
@@ -217,6 +253,10 @@ export function BoardView({
           <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
         )}
       </View>
+
+      {preferences.showPointNumbers && (
+        <PointNumberRail side="bottom" dimensions={dimensions} />
+      )}
     </View>
   );
 }

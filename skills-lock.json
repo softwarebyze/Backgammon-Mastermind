@@ -14,54 +14,81 @@
       "computedHash": "409d466e43888f62987ceaf5c8be34aa76a49328528ebe290bab866f6d07e958"
     },
     "argent-android-emulator-setup": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-android-emulator-setup/SKILL.md",
       "computedHash": "2e7edc2c85093d10dbb1e7f4b08db3ec64a85d42cdaac8838209cb0d7cbb6361"
     },
     "argent-create-flow": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-create-flow/SKILL.md",
       "computedHash": "6dad6e7938c46d50fdf98ceadffcd94988a3d6c7571b5be1990665971eb3c646"
     },
     "argent-device-interact": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
-      "computedHash": "aecff8920a357b1565e8b94d92b291887812756b2c747909672698af09031c90"
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-device-interact/SKILL.md",
+      "computedHash": "3649aba45b7ba5242d96e78aa0ed5d064de1b579a8cbb2b1a393ea9045b4a666"
     },
     "argent-ios-simulator-setup": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-ios-simulator-setup/SKILL.md",
       "computedHash": "7a7ff28c1be09600ca2c5a14794003d5544eaf4ea5e5348504d4fd0c79e562c5"
     },
     "argent-metro-debugger": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-metro-debugger/SKILL.md",
       "computedHash": "dde9dd9d275053f7b627512fa2a0ba2e9020a0585e3fef02b5061dd2bde5fb6b"
     },
     "argent-native-profiler": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-native-profiler/SKILL.md",
       "computedHash": "a6230e85a2a61112e3aaa593ec33fc63e4206593ef5cabaaa289d086945e6be7"
     },
     "argent-react-native-app-workflow": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
-      "computedHash": "c5076f3fe579c3d266138b0e0dc934dcb70ef00da3b7e018e3c8c124c9bfdb7c"
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-react-native-app-workflow/SKILL.md",
+      "computedHash": "3bf1f291ebba37bf9b37c71099128e2bd4a549a969916ccd6e392bbb222b6eae"
     },
     "argent-react-native-optimization": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-react-native-optimization/SKILL.md",
       "computedHash": "fc04dda9d52c5add1ddb226c6bcc2a984bbd066bda44461f48311de9c2524049"
     },
     "argent-react-native-profiler": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-react-native-profiler/SKILL.md",
       "computedHash": "553945dae8b923dc37bff5e7251e615f5191dcf8c668663ddf4b10e18754f734"
     },
+    "argent-screenshot-diff": {
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-screenshot-diff/SKILL.md",
+      "computedHash": "0bef30b83e9c0d84510e13ef4a05e049d9fe5177d8bde699ce3e4b0c366d09f8"
+    },
     "argent-test-ui-flow": {
-      "source": "/opt/homebrew/lib/node_modules/@swmansion/argent/skills",
-      "sourceType": "local",
-      "computedHash": "89232a3463fb88bdbf22a0e61e77f42056da26358e99aa5612bfae0f28eabaaa"
+      "source": "software-mansion/argent",
+      "ref": "v0.9.0",
+      "sourceType": "github",
+      "skillPath": "packages/skills/skills/argent-test-ui-flow/SKILL.md",
+      "computedHash": "4fdfddb7c5286694b5094950352e6d14140d9fb72da154bb076f97c7d5bee0b2"
     },
     "building-native-ui": {
       "source": "expo/skills",

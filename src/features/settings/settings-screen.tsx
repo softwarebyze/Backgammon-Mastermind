@@ -1,7 +1,6 @@
 import Env from 'env';
 import { useCallback } from 'react';
 import { Alert, Platform } from 'react-native';
-import { useUniwind } from 'uniwind';
 
 import {
   colors,
@@ -21,12 +20,9 @@ import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
-import { ThemeItem } from './components/theme-item';
 
 export function SettingsScreen() {
-  const { theme } = useUniwind();
-  const iconColor
-    = theme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+  const iconColor = colors.neutral[400];
 
   const runExternalAction = useCallback(async (action: () => Promise<void>) => {
     try {
@@ -50,16 +46,11 @@ export function SettingsScreen() {
         <View className="flex-1 px-4 pb-8">
           <SettingsContainer title="settings.generale">
             <LanguageItem />
-            <ThemeItem />
           </SettingsContainer>
 
-          <GameSettingsSection />
+          <GameSettingsSection showHints />
 
           <SettingsContainer title="settings.about">
-            <SettingsItem
-              text="settings.app_name"
-              value={Env.EXPO_PUBLIC_NAME}
-            />
             <SettingsItem
               text="settings.version"
               value={Env.EXPO_PUBLIC_VERSION}

@@ -7,11 +7,16 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { SETTINGS_SECTION_GAP } from '@/lib/ui/settings-layout';
 
-export function GameSettingsSection() {
+type Props = {
+  showHints?: boolean;
+};
+
+export function GameSettingsSection({ showHints = false }: Props) {
   const {
     preferences,
     setShowMoveHints,
     setShowDirectionOverlay,
+    setShowPointNumbers,
     setDiceDisplayStyle,
     setAutoRoll,
     setAutoMoveWhenForced,
@@ -24,9 +29,11 @@ export function GameSettingsSection() {
         preferences={preferences}
         onShowMoveHintsChange={setShowMoveHints}
         onShowDirectionOverlayChange={setShowDirectionOverlay}
+        onShowPointNumbersChange={setShowPointNumbers}
         onDiceDisplayStyleChange={setDiceDisplayStyle}
         onAutoRollChange={setAutoRoll}
         onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
+        showHints={showHints}
       />
     </View>
   );

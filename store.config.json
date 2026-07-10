@@ -1,7 +1,7 @@
 {
   "configVersion": 0,
   "apple": {
-    "version": "0.1.1",
+    "version": "0.1.2",
     "copyright": "2026 Zachary Ebenfeld",
     "categories": [["GAMES", "GAMES_BOARD", "GAMES_STRATEGY"], "ENTERTAINMENT"],
     "advisory": {
@@ -39,7 +39,7 @@
           "AI",
           "classic"
         ],
-        "releaseNotes": "Initial TestFlight release of Backgammon Mastermind.",
+        "releaseNotes": "v0.1.2: Turn-level move review timeline, opening-roll ceremony, undo/redo polish, and board UX refinements.",
         "marketingUrl": "https://github.com/softwarebyze/Backgammon-Mastermind",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/blob/main/docs/privacy-policy.md"

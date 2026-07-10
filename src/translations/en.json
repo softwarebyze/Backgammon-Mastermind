@@ -1,7 +1,16 @@
 {
   "game": {
+    "opening": {
+      "compare": "{{winner}} {{high}} beats {{low}}",
+      "goes_first": "{{player}} goes first!",
+      "roll": "Roll",
+      "rolls_for_opening": "{{player}} rolls for opening",
+      "waiting_roll": "{{player}} is rolling…",
+      "who_goes_first": "Who goes first?",
+      "your_roll": "Tap anywhere to roll"
+    },
     "options": {
-      "open_settings": "Language, theme & more",
+      "open_settings": "Language & more",
       "open_settings_hint": "Open Settings",
       "title": "Game options"
     },
@@ -16,7 +25,32 @@
       "direction_overlay": "Direction overlay",
       "direction_overlay_hint": "Horseshoe path on the board",
       "move_hints": "Move hints",
-      "move_hints_hint": "Gold ring on checkers you can move"
+      "move_hints_hint": "Gold dot beside points you can move from",
+      "point_numbers": "Point numbers",
+      "point_numbers_hint": "Show 1–24 labels on the board",
+      "section_automation": "Automation",
+      "section_board": "Board",
+      "section_dice": "Dice"
+    },
+    "review": {
+      "back_to_live": "Back to live game",
+      "live": "Live game",
+      "live_short": "Live",
+      "move_a11y": "Move {{ply}}, {{player}}",
+      "move_position": "Move {{current}} of {{total}} · {{player}}",
+      "next": "Next turn",
+      "opening": "Opening position",
+      "pause_replay": "Pause",
+      "player_black": "Black",
+      "player_white": "White",
+      "previous": "Previous turn",
+      "replay": "Replay",
+      "scrubber_hint": "Tap a turn to review",
+      "start": "Start",
+      "turn_a11y": "Turn {{turn}}, {{player}}",
+      "turn_label": "Turn {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Turn {{turn}}/{{totalTurns}} · move {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
     }
   },
   "settings": {
@@ -36,12 +70,6 @@
     "support": "Support",
     "support_us": "Support Us",
     "terms": "Terms of Service",
-    "theme": {
-      "dark": "Dark",
-      "light": "Light",
-      "system": "System",
-      "title": "Theme"
-    },
     "title": "Settings",
     "version": "Version",
     "website": "Website"

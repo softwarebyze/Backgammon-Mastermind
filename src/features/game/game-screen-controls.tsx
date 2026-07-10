@@ -1,63 +1,113 @@
 import type { GameState } from '@/lib/game';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import {
+  useOpeningCeremonyHandoff,
+  useOpeningCeremonyVisible,
+} from '@/features/game/opening-ceremony-gate';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
+  /** Live dice/phase for tray + ceremony handoff (ignore review scrub). */
+  liveDiceState: GameState;
   isHumanTurn: boolean;
   isComputerTurn: boolean;
+  isReviewing?: boolean;
   onRoll: () => void;
   onReset: () => void;
+  onGoLive?: () => void;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
+const TRAY_FADE_MS = 280;
 
 export function GameScreenControls({
   state,
+  liveDiceState,
   isHumanTurn,
   isComputerTurn,
+  isReviewing = false,
   onRoll,
   onReset,
+  onGoLive,
 }: Props) {
   const { preferences } = useGamePreferences();
+  const ceremonyVisible = useOpeningCeremonyVisible();
+  const handoff = useOpeningCeremonyHandoff();
   const turn = getTurnDisplay(state);
-  const caption = getActionCaption(state, turn);
+  const caption = isReviewing
+    ? translate('game.review.viewing_hint')
+    : ceremonyVisible
+      ? ' '
+      : getActionCaption(state, turn);
+
+  const showTray = !ceremonyVisible || handoff === 'reveal' || handoff === 'measure';
+  const trayOpacity = useSharedValue(ceremonyVisible ? 0 : 1);
+
+  useEffect(() => {
+    if (!ceremonyVisible) {
+      trayOpacity.value = 1;
+      return;
+    }
+    if (handoff === 'reveal') {
+      trayOpacity.value = withTiming(1, { duration: TRAY_FADE_MS });
+      return;
+    }
+    trayOpacity.value = 0;
+  }, [ceremonyVisible, handoff, trayOpacity]);
+
+  const trayStyle = useAnimatedStyle(() => ({
+    opacity: trayOpacity.value,
+  }));
+
+  const diceForTray = isReviewing ? state : liveDiceState;
+  const measuring = ceremonyVisible && (handoff === 'measure' || handoff === 'hidden');
 
   return (
     <View style={styles.controls}>
       <View style={styles.diceRow}>
-        <DiceDisplay
-          dice={state.dice}
-          remainingDice={state.remainingDice}
-          playerColor={state.currentPlayer}
-          displayStyle={preferences.diceDisplayStyle}
-        />
+        {showTray
+          ? (
+              <Animated.View style={trayStyle} pointerEvents="none">
+                <DiceDisplay
+                  dice={measuring ? [0, 0] : diceForTray.dice}
+                  remainingDice={measuring ? [] : diceForTray.remainingDice}
+                  playerColor={diceForTray.currentPlayer}
+                  displayStyle={preferences.diceDisplayStyle}
+                  animateRoll={!isReviewing && !ceremonyVisible}
+                  reportTraySlots={ceremonyVisible}
+                />
+              </Animated.View>
+            )
+          : liveDiceState.phase === 'opening-roll'
+            ? <View style={styles.dicePlaceholder} />
+            : null}
       </View>
       <View style={styles.actionSlot}>
         <ActionControl
           state={state}
           isHumanTurn={isHumanTurn}
           isComputerTurn={isComputerTurn}
+          isReviewing={isReviewing}
           onRoll={() => {
             hapticLight();
             onRoll();
           }}
-          onReset={() => {
-            hapticLight();
-            onReset();
-          }}
+          onReset={onReset}
+          onGoLive={onGoLive}
         />
       </View>
-      <Text style={styles.caption} numberOfLines={2}>
-        {caption || ' '}
-      </Text>
+      <Text style={styles.caption}>{caption}</Text>
     </View>
   );
 }
@@ -66,9 +116,32 @@ function ActionControl({
   state,
   isHumanTurn,
   isComputerTurn,
+  isReviewing,
   onRoll,
   onReset,
-}: Props) {
+  onGoLive,
+}: {
+  state: GameState;
+  isHumanTurn: boolean;
+  isComputerTurn: boolean;
+  isReviewing: boolean;
+  onRoll: () => void;
+  onReset: () => void;
+  onGoLive?: () => void;
+}) {
+  if (isReviewing) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={translate('game.review.back_to_live')}
+        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        onPress={onGoLive}
+      >
+        <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
+      </Pressable>
+    );
+  }
+
   if (state.phase === 'game-over') {
     return (
       <Pressable
@@ -82,11 +155,12 @@ function ActionControl({
     );
   }
 
+  // Opening: keep the Roll Dice button (tap-anywhere on the ceremony still works).
   if (state.phase === 'opening-roll' && isHumanTurn) {
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Roll for opening"
+        accessibilityLabel="Roll dice"
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
@@ -97,7 +171,7 @@ function ActionControl({
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling for opening…" />;
+    return <StatusPlaceholder text="Rolling…" />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
@@ -156,6 +230,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 44,
     marginBottom: 8,
+  },
+  dicePlaceholder: {
+    minHeight: 44,
   },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,

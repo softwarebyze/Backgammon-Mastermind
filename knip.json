@@ -13,21 +13,17 @@
   "ignore": [
     "src/components/ui/form-utils.ts",
     "src/components/ui/modal-keyboard-aware-scroll-view.tsx",
-    "src/lib/hooks/index.tsx",
     "src/lib/utils.ts"
   ],
   "ignoreBinaries": [
-    "app-release",
     "adb",
     "xed",
-    "only-allow",
     "eas",
     "maestro",
     "skills"
   ],
   "ignoreDependencies": [
     "husky",
-    "np",
     "babel-preset-expo",
     "expo-crypto",
     "react-native-url-polyfill",

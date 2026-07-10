@@ -4,6 +4,7 @@ import { getItem, removeItem, setItem } from '@/lib/storage';
 
 const ACTIVE_GAME_KEY = 'ACTIVE_GAME_STATE';
 const MOVE_LOG_KEY = 'ACTIVE_GAME_MOVE_LOG';
+const REPLAY_BASELINE_KEY = 'ACTIVE_GAME_REPLAY_BASELINE';
 
 export function isResumableGame(state: GameState | null | undefined): boolean {
   return state != null && state.phase !== 'game-over';
@@ -28,10 +29,31 @@ export function loadActiveGame(): GameState | null {
 export function clearActiveGame(): void {
   removeItem(ACTIVE_GAME_KEY);
   removeItem(MOVE_LOG_KEY);
+  removeItem(REPLAY_BASELINE_KEY);
+}
+
+export function saveReplayBaseline(state: GameState): void {
+  void setItem(REPLAY_BASELINE_KEY, state);
+}
+
+export function loadReplayBaseline(): GameState | null {
+  const saved = getItem<GameState>(REPLAY_BASELINE_KEY);
+  if (!saved) {
+    return null;
+  }
+  if (saved.openingRolls) {
+    return saved;
+  }
+  return { ...saved, openingRolls: { white: null, black: null } };
 }
 
 export function saveMoveLog(log: MoveLogEntry[]): void {
   void setItem(MOVE_LOG_KEY, log);
+}
+
+export function clearMoveLogAndBaseline(): void {
+  removeItem(MOVE_LOG_KEY);
+  removeItem(REPLAY_BASELINE_KEY);
 }
 
 export function loadMoveLog(): MoveLogEntry[] {

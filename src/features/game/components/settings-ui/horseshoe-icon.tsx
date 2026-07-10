@@ -1,41 +1,34 @@
 import * as React from 'react';
-import Svg, { Defs, Marker, Path, Polygon } from 'react-native-svg';
+import Svg, { Path, Polygon } from 'react-native-svg';
 
+import { GAME_PALETTE } from '@/features/game/game-palette';
 import { buildHorseshoePath } from '@/lib/game/horseshoe-path';
+import { horseshoeArrowhead } from '@/lib/ui/arrow-geometry';
 
 type Props = {
   size?: number;
-  color?: string;
+  active?: boolean;
 };
 
-/** Compact bear-off horseshoe — same geometry as the board direction overlay */
-export function HorseshoeIcon({ size = 28, color = '#D4A843' }: Props) {
-  const d = buildHorseshoePath(32, 32, 'white');
-  const markerId = React.useId().replace(/:/g, '');
+const VIEW = 32;
+
+/** Compact bear-off horseshoe — inline arrowhead (no SVG markers; stable on web). */
+export function HorseshoeIcon({ size = 28, active = false }: Props) {
+  const stroke = active ? GAME_PALETTE.accent : GAME_PALETTE.textMuted;
+  const d = buildHorseshoePath(VIEW, VIEW, 'white');
+  const { polygonPoints } = horseshoeArrowhead(VIEW, VIEW, 'white');
 
   return (
-    <Svg width={size} height={size} viewBox="0 0 32 32">
-      <Defs>
-        <Marker
-          id={`horseshoe-arrow-${markerId}`}
-          markerWidth="6"
-          markerHeight="6"
-          refX="5"
-          refY="3"
-          orient="auto"
-        >
-          <Polygon points="0 0, 6 3, 0 6" fill={color} />
-        </Marker>
-      </Defs>
+    <Svg width={size} height={size} viewBox={`0 0 ${VIEW} ${VIEW}`}>
       <Path
         d={d}
-        stroke={color}
+        stroke={stroke}
         strokeWidth={2.4}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
-        markerEnd={`url(#horseshoe-arrow-${markerId})`}
       />
+      <Polygon points={polygonPoints} fill={stroke} />
     </Svg>
   );
 }

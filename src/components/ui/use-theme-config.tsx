@@ -1,11 +1,8 @@
-import { DarkTheme as _DarkTheme, DefaultTheme } from 'expo-router';
-import { useUniwind } from 'uniwind';
+import { DarkTheme as _DarkTheme } from 'expo-router';
 
 import colors from '@/components/ui/colors';
 
-type Theme = typeof DefaultTheme;
-
-const DarkTheme: Theme = {
+const DarkTheme = {
   ..._DarkTheme,
   colors: {
     ..._DarkTheme.colors,
@@ -17,20 +14,6 @@ const DarkTheme: Theme = {
   },
 };
 
-const LightTheme: Theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: colors.primary[400],
-    background: colors.white,
-  },
-};
-
-export function useThemeConfig() {
-  const { theme } = useUniwind();
-
-  if (theme === 'dark')
-    return DarkTheme;
-
-  return LightTheme;
+export function getThemeConfig() {
+  return DarkTheme;
 }

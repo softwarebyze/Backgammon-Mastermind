@@ -2,7 +2,7 @@ import type { GameState, Move } from '@/lib/game';
 import { useEffect, useRef } from 'react';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { getForcedLegalMove } from '@/lib/game/single-move';
+import { getForcedLegalMove, getForcedTurnSequence } from '@/lib/game/single-move';
 
 const AUTO_ROLL_DELAY_MS = 400;
 const AUTO_MOVE_DELAY_MS = 300;
@@ -15,16 +15,21 @@ function isHumanTurn(state: GameState): boolean {
 type Options = {
   state: GameState | null;
   isAnimating: boolean;
+  /** Undo left a redo stack — don't auto-play or a forced move wipes redo. */
+  hasRedo: boolean;
   doRollDice: () => void;
   doMove: (move: Move) => void;
+  doMoveSequence: (moves: Move[]) => void;
   doPassTurn: () => void;
 };
 
 export function useGameplayHelpers({
   state,
   isAnimating,
+  hasRedo,
   doRollDice,
   doMove,
+  doMoveSequence,
   doPassTurn,
 }: Options) {
   const { preferences } = useGamePreferences();
@@ -40,7 +45,7 @@ export function useGameplayHelpers({
 
     clear();
 
-    if (!state || isAnimating || state.phase === 'game-over') {
+    if (!state || isAnimating || hasRedo || state.phase === 'game-over') {
       return clear;
     }
 
@@ -66,6 +71,13 @@ export function useGameplayHelpers({
     }
 
     if (preferences.autoMoveWhenForced && state.phase === 'moving') {
+      const sequence = getForcedTurnSequence(state);
+      if (sequence) {
+        timeoutRef.current = setTimeout(() => {
+          doMoveSequence(sequence);
+        }, AUTO_MOVE_DELAY_MS);
+        return clear;
+      }
       const move = getForcedLegalMove(state);
       if (move) {
         timeoutRef.current = setTimeout(() => {
@@ -78,10 +90,12 @@ export function useGameplayHelpers({
   }, [
     state,
     isAnimating,
+    hasRedo,
     preferences.autoRoll,
     preferences.autoMoveWhenForced,
     doRollDice,
     doMove,
+    doMoveSequence,
     doPassTurn,
   ]);
 }

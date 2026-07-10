@@ -10,24 +10,30 @@ import {
   rollOpeningDie,
 } from '@/lib/game';
 
-export function useGameDiceActions(
-  setState: Dispatch<SetStateAction<GameState | null>>,
-  isAnimating: boolean,
-) {
+type DiceActionsArgs = {
+  state: GameState | null;
+  setState: Dispatch<SetStateAction<GameState | null>>;
+  isAnimating: boolean;
+  recordNoMove: (before: GameState, after: GameState) => void;
+};
+
+export function useGameDiceActions({
+  state,
+  setState,
+  isAnimating,
+  recordNoMove,
+}: DiceActionsArgs) {
   const doPassTurn = useCallback(() => {
-    if (isAnimating) {
+    if (isAnimating || !state || state.phase !== 'no-move') {
       return;
     }
-    setState((prev) => {
-      if (!prev || prev.phase !== 'no-move') {
-        return prev;
-      }
-      if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
-        return prev;
-      }
-      return passTurn(prev);
-    });
-  }, [isAnimating, setState]);
+    if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
+      return;
+    }
+    // Snapshot before pass so history keeps the blocked roll.
+    recordNoMove(state, state);
+    setState(passTurn(state));
+  }, [isAnimating, recordNoMove, setState, state]);
 
   const doRollDice = useCallback(() => {
     if (isAnimating) {

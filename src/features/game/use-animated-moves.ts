@@ -3,109 +3,87 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 
 import { useCallback, useRef, useState } from 'react';
-import { buildMoveAnimationFrame } from '@/features/game/move-animation';
-
-import { applyMove, getLegalMoves, moveSequenceInvolvesHit } from '@/lib/game';
+import { createPlayMove } from '@/features/game/create-play-move';
+import { playValidatedMoveSequence } from '@/features/game/play-validated-move-sequence';
+import { useAnimationWatchdogs } from '@/features/game/use-animation-watchdogs';
 
 export type { MoveAnimationFrame } from '@/features/game/move-animation';
-
-function applyResolvedSequence(
-  snapshot: GameState,
-  moves: Move[],
-  onMoveApplied: ((snapshot: GameState, move: Move) => void) | undefined,
-): GameState {
-  let snap = snapshot;
-  for (const planned of moves) {
-    const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
-    if (!legal) {
-      break;
-    }
-    onMoveApplied?.(snap, legal);
-    snap = applyMove(snap, legal);
-  }
-  return snap;
-}
 
 export function useAnimatedMoves(
   state: GameState | null,
   setState: Dispatch<SetStateAction<GameState | null>>,
-  onMoveApplied?: (snapshot: GameState, move: Move) => void,
+  onMoveApplied?: (before: GameState, move: Move, after: GameState) => void,
 ) {
   const stateRef = useRef(state);
   stateRef.current = state;
-
   const [moveAnimation, setMoveAnimation] = useState<MoveAnimationFrame | null>(null);
   const [sequenceActive, setSequenceActive] = useState(false);
-
+  const generationRef = useRef(0);
+  const commitGenRef = useRef(0);
+  const finishOnceRef = useRef<(() => void) | null>(null);
   const isAnimatingRef = useRef(false);
   isAnimatingRef.current = moveAnimation !== null || sequenceActive;
+  const isCommitLive = useCallback(() => commitGenRef.current === generationRef.current, []);
 
   const resetAnimation = useCallback(() => {
+    generationRef.current += 1;
+    commitGenRef.current = generationRef.current;
+    finishOnceRef.current = null;
     setMoveAnimation(null);
     setSequenceActive(false);
   }, []);
+
+  const armAnimationFinish = useCallback((onFinish: () => void) => {
+    const gen = generationRef.current;
+    commitGenRef.current = gen;
+    let settled = false;
+    const settle = () => {
+      if (settled || generationRef.current !== gen) {
+        return;
+      }
+      settled = true;
+      finishOnceRef.current = null;
+      onFinish();
+    };
+    finishOnceRef.current = settle;
+    return settle;
+  }, []);
+
+  useAnimationWatchdogs({ moveAnimation, sequenceActive, finishOnceRef, setSequenceActive });
 
   const playMove = useCallback((
     snapshot: GameState,
     move: Move,
     onComplete?: (next: GameState) => void,
   ) => {
-    setMoveAnimation(buildMoveAnimationFrame(snapshot, move, () => {
-      const legal = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to) ?? move;
-      const next = applyMove(snapshot, legal);
-      onMoveApplied?.(snapshot, legal);
-      setState(next);
-      setMoveAnimation(null);
-      onComplete?.(next);
-    }));
+    createPlayMove({
+      generationRef,
+      commitGenRef,
+      finishOnceRef,
+      setState,
+      setMoveAnimation,
+      onMoveApplied,
+    })(snapshot, move, onComplete);
   }, [setState, onMoveApplied]);
 
   const playMoveSequence = useCallback((snapshot: GameState, moves: Move[]) => {
-    if (moves.length === 0 || isAnimatingRef.current) {
-      return;
-    }
-
-    if (moves.length === 1) {
-      playMove(snapshot, moves[0]);
-      return;
-    }
-
-    setSequenceActive(true);
-
-    if (!moveSequenceInvolvesHit(snapshot, moves)) {
-      const glideMove: Move = {
-        from: moves[0].from,
-        to: moves[moves.length - 1].to,
-        dieIndex: 0,
-      };
-      setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, () => {
-        const next = applyResolvedSequence(snapshot, moves, onMoveApplied);
-        setState(next);
-        setMoveAnimation(null);
-        setSequenceActive(false);
-      }));
-      return;
-    }
-
-    const playFromIndex = (snap: GameState, index: number) => {
-      const planned = moves[index];
-      const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
-      if (!legal) {
-        setSequenceActive(false);
-        return;
-      }
-      playMove(snap, legal, (next) => {
-        if (index + 1 < moves.length) {
-          playFromIndex(next, index + 1);
-        }
-        else {
-          setSequenceActive(false);
-        }
-      });
-    };
-
-    playFromIndex(snapshot, 0);
-  }, [playMove, onMoveApplied, setState]);
+    const gen = generationRef.current;
+    commitGenRef.current = gen;
+    playValidatedMoveSequence({
+      snapshot,
+      moves,
+      gen,
+      generationRef,
+      finishOnceRef,
+      isAnimating: isAnimatingRef.current,
+      playMove,
+      onMoveApplied,
+      setState,
+      setMoveAnimation,
+      setSequenceActive,
+      isCommitLive,
+    });
+  }, [isCommitLive, playMove, onMoveApplied, setState]);
 
   const doMove = useCallback((move: Move) => {
     const snapshot = stateRef.current;
@@ -127,6 +105,8 @@ export function useAnimatedMoves(
     moveAnimation,
     isAnimating: moveAnimation !== null || sequenceActive,
     resetAnimation,
+    armAnimationFinish,
+    setMoveAnimation,
     doMove,
     doMoveSequence,
     playMove,

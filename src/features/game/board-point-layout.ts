@@ -55,6 +55,9 @@ function barCheckerCenterY(
   return stackBottom - tokenSize / 2 - stackIndex * (tokenSize + BAR_GAP);
 }
 
+/** Vertical gutter for 1–24 labels outside the playing surface. */
+export const POINT_NUMBER_RAIL = 18;
+
 /** Pixel center for the top checker in a stack (board-local coordinates). */
 export function getCheckerAnchor({
   pointIndex,

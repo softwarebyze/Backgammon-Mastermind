@@ -39,11 +39,9 @@ export function gameFormSheetOptions(): NativeStackNavigationOptions {
   return {
     presentation: 'formSheet',
     sheetGrabberVisible: true,
-    // Holds the scrollable game-preferences panel; let it grow when scrolled.
-    sheetAllowedDetents: [0.7],
+    sheetAllowedDetents: [0.58, 0.92],
     sheetCornerRadius: 16,
-    sheetExpandsWhenScrolledToEdge: true,
-    // Title is rendered in-content (see GameOptionsScreen) rather than a native header.
+    sheetExpandsWhenScrolledToEdge: false,
     headerShown: false,
     contentStyle: { backgroundColor: GAME_PALETTE.surface },
   };

@@ -26,6 +26,8 @@ export type MoveAnimationFrame = {
   destStackCount: number;
   /** Opponent blot sent to the bar on a hit — animates in parallel with the mover. */
   capture?: CheckerSlide;
+  /** Override slide duration (e.g. faster review scrub). */
+  durationMs?: number;
   onFinish: () => void;
 };
 
@@ -44,7 +46,8 @@ export function countAtPoint(snapshot: GameState, pointIndex: number, player: Pl
     return snapshot.bar[player];
   }
   if (pointIndex >= 1 && pointIndex <= 24) {
-    return snapshot.points[pointIndex].count;
+    const point = snapshot.points[pointIndex];
+    return point.player === player ? point.count : 0;
   }
   return 0;
 }
@@ -128,6 +131,9 @@ export function displayBarCountDuringAnimation(
 ): number {
   if (animation?.from === BAR_POINT && animation.player === player) {
     return animation.sourceDisplayCount;
+  }
+  if (animation?.capture?.from === BAR_POINT && animation.capture.player === player) {
+    return Math.max(0, count - 1);
   }
   return count;
 }
