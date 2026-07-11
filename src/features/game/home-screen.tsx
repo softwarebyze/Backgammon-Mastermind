@@ -101,6 +101,7 @@ export function HomeScreen() {
         contentContainerStyle={styles.scroll}
         contentInsetAdjustmentBehavior="automatic"
         showsVerticalScrollIndicator={false}
+        alwaysBounceVertical={false}
       >
         <View style={styles.logoContainer}>
           <Image
