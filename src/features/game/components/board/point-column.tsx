@@ -303,7 +303,17 @@ export function PointColumn({
   if (dragEnabled && columnGesture) {
     return (
       <GestureDetector gesture={columnGesture}>
-        <View style={columnStyle} accessibilityRole="button" accessibilityLabel={a11yLabel}>
+        <View
+          style={columnStyle}
+          accessibilityRole="button"
+          accessibilityLabel={a11yLabel}
+          accessibilityActions={[{ name: 'activate' }]}
+          onAccessibilityAction={(event) => {
+            if (event.nativeEvent.actionName === 'activate') {
+              onPress();
+            }
+          }}
+        >
           {columnContent}
         </View>
       </GestureDetector>
