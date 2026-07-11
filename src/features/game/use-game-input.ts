@@ -9,6 +9,7 @@ import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
+import { BAR_POINT } from '@/lib/game/constants';
 import { translate } from '@/lib/i18n';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
@@ -161,9 +162,16 @@ export function useGameInput() {
     if (!canInteract) {
       return;
     }
-    const point = state.points[from];
-    if (!point || point.player !== state.currentPlayer || point.count === 0) {
-      return;
+    if (from === BAR_POINT) {
+      if (state.bar[state.currentPlayer] === 0) {
+        return;
+      }
+    }
+    else {
+      const point = state.points[from];
+      if (!point || point.player !== state.currentPlayer || point.count === 0) {
+        return;
+      }
     }
     const legal = getLegalMoves({ ...state, selectedPoint: from }).filter(m => m.from === from);
     if (legal.length === 0) {
