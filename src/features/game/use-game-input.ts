@@ -1,9 +1,9 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
 
 import { useGame } from '@/features/game/use-game';
+import { confirmAction } from '@/lib/confirm';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
@@ -37,6 +37,10 @@ export function useGameInput() {
       setPreviewTarget(null);
 
       if (state.selectedPoint !== null) {
+        if (state.selectedPoint === pointIndex) {
+          selectPoint(null);
+          return;
+        }
         const move = state.legalMovesForSelected.find(m => m.to === pointIndex);
         if (move) {
           triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
@@ -136,17 +140,16 @@ export function useGameInput() {
   }, [doRollDice]);
 
   const handleReset = useCallback(() => {
-    Alert.alert('New Game', 'Start a new game?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'New Game',
-        style: 'destructive',
-        onPress: () => {
-          triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
-          resetGame();
-        },
+    confirmAction({
+      title: 'New Game',
+      message: 'Start a new game?',
+      confirmLabel: 'New Game',
+      destructive: true,
+      onConfirm: () => {
+        triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+        resetGame();
       },
-    ]);
+    });
   }, [resetGame]);
 
   const handleBack = useCallback(() => {

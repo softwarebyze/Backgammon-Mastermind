@@ -231,7 +231,7 @@ function DiceDisplayAnimated({
   dice,
   remainingDice,
   playerColor,
-  displayStyle = 'numbers',
+  displayStyle = 'dots',
   animateRoll = true,
   reportTraySlots = false,
 }: Props) {
@@ -297,7 +297,7 @@ export function DiceDisplay({
   dice,
   remainingDice,
   playerColor,
-  displayStyle = 'numbers',
+  displayStyle = 'dots',
   animateRoll = true,
   reportTraySlots = false,
 }: Props) {

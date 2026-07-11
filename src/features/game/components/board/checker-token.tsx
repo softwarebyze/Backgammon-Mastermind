@@ -17,6 +17,39 @@ type Props = {
   style?: object;
 };
 
+function StackCountBadge({ count, size, isWhite }: { count: number; size: number; isWhite: boolean }) {
+  return (
+    <View
+      pointerEvents="none"
+      style={[StyleSheet.absoluteFill, styles.badgeWrap]}
+    >
+      <View
+        style={[
+          styles.badge,
+          {
+            minWidth: size * 0.55,
+            height: size * 0.55,
+            borderRadius: size * 0.275,
+            backgroundColor: isWhite ? 'rgba(245,240,232,0.95)' : 'rgba(40,40,55,0.92)',
+            borderColor: isWhite ? 'rgba(58,42,16,0.35)' : 'rgba(224,224,255,0.35)',
+          },
+        ]}
+      >
+        <Text
+          style={{
+            color: isWhite ? '#3A2A10' : '#E0E0FF',
+            fontSize: size * 0.32,
+            fontWeight: '700',
+            textAlign: 'center',
+          }}
+        >
+          {count}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
 export function CheckerToken({ player, size, showCount, showMoveHint, flat, style }: Props) {
   const uid = useId().replace(/:/g, '');
   const bodyId = `checker-body-${uid}`;
@@ -60,12 +93,7 @@ export function CheckerToken({ player, size, showCount, showMoveHint, flat, styl
             <Stop offset="100%" stopColor={colors.shadow} />
           </RadialGradient>
         </Defs>
-        <Circle
-          cx={cx}
-          cy={cy + 1.5}
-          r={radius}
-          fill="rgba(0,0,0,0.35)"
-        />
+        <Circle cx={cx} cy={cy + 1.5} r={radius} fill="rgba(0,0,0,0.35)" />
         <Circle
           cx={cx}
           cy={cy}
@@ -90,21 +118,22 @@ export function CheckerToken({ player, size, showCount, showMoveHint, flat, styl
         />
       </Svg>
       {showCount !== undefined && showCount > 0 && (
-        <Text
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              color: isWhite ? '#3A2A10' : '#E0E0FF',
-              fontSize: size * 0.35,
-              fontWeight: '700',
-              textAlign: 'center',
-              lineHeight: size,
-            },
-          ]}
-        >
-          {showCount}
-        </Text>
+        <StackCountBadge count={showCount} size={size} isWhite={isWhite} />
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  badgeWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 3,
+  },
+  badge: {
+    paddingHorizontal: 4,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

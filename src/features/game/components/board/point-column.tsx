@@ -123,7 +123,7 @@ export function PointColumn({
       onPress={onPress}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
-      style={{ width: colWidth, height: pointHeight, position: 'relative' }}
+      style={{ width: colWidth, height: pointHeight, position: 'relative', overflow: 'visible' }}
     >
       <PointTriangle
         isTop={isTop}

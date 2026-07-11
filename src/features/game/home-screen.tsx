@@ -16,6 +16,7 @@ import {
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
+import { confirmAction } from '@/lib/confirm';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
@@ -28,27 +29,43 @@ function startGameFromHome(
   startGame: (mode: GameMode) => void,
 ) {
   hapticLight();
-  if (isResumableGame(state)) {
-    Alert.alert(
-      'Game in progress',
-      'Continue your current game or start a new one?',
-      [
-        { text: 'Continue', onPress: () => router.replace('/game') },
-        {
-          text: 'New game',
-          style: 'destructive',
-          onPress: () => {
-            startGame(mode);
-            router.replace('/game');
-          },
-        },
-        { text: 'Cancel', style: 'cancel' },
-      ],
-    );
+  if (!isResumableGame(state)) {
+    startGame(mode);
+    router.replace('/game');
     return;
   }
-  startGame(mode);
-  router.replace('/game');
+
+  if (Platform.OS === 'web') {
+    // ponytail: window.confirm is binary — OK = new game; Resume on home continues
+    confirmAction({
+      title: 'Game in progress',
+      message: 'Start a new game? (Use Resume on the home screen to continue the current one.)',
+      confirmLabel: 'New game',
+      destructive: true,
+      onConfirm: () => {
+        startGame(mode);
+        router.replace('/game');
+      },
+    });
+    return;
+  }
+
+  Alert.alert(
+    'Game in progress',
+    'Continue your current game or start a new one?',
+    [
+      { text: 'Continue', onPress: () => router.replace('/game') },
+      {
+        text: 'New game',
+        style: 'destructive',
+        onPress: () => {
+          startGame(mode);
+          router.replace('/game');
+        },
+      },
+      { text: 'Cancel', style: 'cancel' },
+    ],
+  );
 }
 
 function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) {

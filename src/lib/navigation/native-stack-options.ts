@@ -36,6 +36,20 @@ export const gamePlayScreenOptions: NativeStackNavigationOptions = {
 };
 
 export function gameFormSheetOptions(): NativeStackNavigationOptions {
+  // Web has no formSheet chrome — show a modal with a header so players can dismiss.
+  if (Platform.OS === 'web') {
+    return {
+      presentation: 'modal',
+      headerShown: true,
+      title: translate('game.options.title'),
+      headerShadowVisible: false,
+      headerStyle: gameHeaderStyle,
+      headerTintColor: GAME_PALETTE.accent,
+      headerTitleStyle: gameHeaderTitleStyle,
+      contentStyle: { backgroundColor: GAME_PALETTE.surface },
+    };
+  }
+
   return {
     presentation: 'formSheet',
     sheetGrabberVisible: true,

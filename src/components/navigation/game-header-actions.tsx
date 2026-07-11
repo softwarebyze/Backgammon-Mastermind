@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { HeaderButton } from 'expo-router/react-navigation';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
@@ -15,6 +15,9 @@ type Props = {
   onReset: () => void;
 };
 
+const ICON = Platform.OS === 'web' ? 22 : 20;
+const GAP = Platform.OS === 'web' ? 4 : 0;
+
 /** Always reserve undo+redo slots so the header never layout-shifts. */
 export function GameHeaderActions({
   canUndo = false,
@@ -25,7 +28,7 @@ export function GameHeaderActions({
   onReset,
 }: Props) {
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: GAP }}>
       <HeaderButton
         accessibilityLabel="Undo move"
         disabled={!canUndo || !onUndo}
@@ -39,7 +42,7 @@ export function GameHeaderActions({
       >
         <Feather
           name="corner-up-left"
-          size={20}
+          size={ICON}
           color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
           style={{ opacity: canUndo ? 1 : 0.35 }}
         />
@@ -57,7 +60,7 @@ export function GameHeaderActions({
       >
         <Feather
           name="corner-up-right"
-          size={20}
+          size={ICON}
           color={canRedo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
           style={{ opacity: canRedo ? 1 : 0.35 }}
         />
@@ -69,7 +72,7 @@ export function GameHeaderActions({
           onOptions();
         }}
       >
-        <Feather name="sliders" size={20} color={GAME_PALETTE.accent} />
+        <Feather name="sliders" size={ICON} color={GAME_PALETTE.accent} />
       </HeaderButton>
       <HeaderButton
         accessibilityLabel="Start new game"
@@ -78,7 +81,7 @@ export function GameHeaderActions({
           onReset();
         }}
       >
-        <Feather name="refresh-cw" size={20} color={GAME_PALETTE.accentDim} />
+        <Feather name="refresh-cw" size={ICON} color={GAME_PALETTE.accentDim} />
       </HeaderButton>
     </View>
   );
