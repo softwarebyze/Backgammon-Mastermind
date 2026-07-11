@@ -1,3 +1,4 @@
+import type { Insets } from 'react-native';
 import type { BoardPoint, Player } from '@/lib/game/types';
 import { Pressable, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
@@ -9,6 +10,15 @@ import { PointTriangle } from './point-triangle';
 import { useCheckerPan } from './use-checker-pan';
 
 const MAX_VISIBLE = 5;
+
+/** Extra grab margin — biased toward the open end of the point (above/below the stack). */
+function stackDragHitSlop(checkerSize: number, isTop: boolean): Insets {
+  const side = Math.round(checkerSize * 0.22);
+  const open = Math.round(checkerSize * 0.5);
+  return isTop
+    ? { top: open, bottom: side, left: side, right: side }
+    : { top: side, bottom: open, left: side, right: side };
+}
 
 type DragHandlers = {
   onDragAttempt?: (pointIndex: number) => void;
@@ -112,6 +122,7 @@ function PointCheckers({
     onDragMove,
     onDragEnd,
     onDragCancel,
+    hitSlop: stackDragHitSlop(checkerSize, isTop),
   });
   // Only the piece leaving the stack fades — rest of the stack stays solid.
   const topDragStyle = useAnimatedStyle(() => ({
