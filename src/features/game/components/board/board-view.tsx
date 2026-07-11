@@ -1,6 +1,5 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
-import type { DragVisual } from '@/features/game/use-game-input';
 import type { GameState, Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useCallback, useMemo, useRef } from 'react';
@@ -21,6 +20,7 @@ import { DragCheckerOverlay } from './drag-checker-overlay';
 import { MoveAnimationOverlay } from './move-animation-overlay';
 import { PointColumn } from './point-column';
 import { PointNumberRail } from './point-number-rail';
+import { useBoardDragOverlay } from './use-board-drag-overlay';
 import { WoodSurface } from './wood-surface';
 
 const TOP_LEFT = [13, 14, 15, 16, 17, 18];
@@ -56,7 +56,7 @@ type Props = {
   dimensions: BoardDimensions;
   previewTarget: number | null;
   moveAnimation: MoveAnimationFrame | null;
-  dragVisual?: DragVisual | null;
+  dragFrom?: number | null;
   onPointPress: (index: number) => void;
   onPointPressIn: (index: number) => void;
   onPointPressOut: () => void;
@@ -77,7 +77,7 @@ export function BoardView({
   dimensions,
   previewTarget,
   moveAnimation,
-  dragVisual = null,
+  dragFrom = null,
   onPointPress,
   onPointPressIn,
   onPointPressOut,
@@ -94,7 +94,23 @@ export function BoardView({
   const { preferences } = useGamePreferences();
   const ceremonyVisible = useOpeningCeremonyVisible();
   const surfaceRef = useRef<View>(null);
-  const surfaceOrigin = useRef({ left: 0, top: 0 });
+  const {
+    overlay: dragOverlay,
+    measureSurface,
+    handleDragStartAbs,
+    handleDragMoveAbs,
+    handleDragEndAbs,
+    handleDragCancel: handleDragCancelLocal,
+  } = useBoardDragOverlay(surfaceRef, {
+    onDragStart,
+    onDragMove,
+    onDragEnd,
+    onDragCancel,
+  });
+
+  const showHighlights = isBoardHighlightActive(moveAnimation);
+  const selectedPoint = showHighlights ? state.selectedPoint : null;
+  const showLiveHints = interactionEnabled && !isReviewing;
 
   const {
     boardWidth,
@@ -108,34 +124,6 @@ export function BoardView({
     bearOffWidth,
     middleHeight,
   } = dimensions;
-
-  const measureSurface = useCallback(() => {
-    surfaceRef.current?.measureInWindow((left, top) => {
-      surfaceOrigin.current = { left, top };
-    });
-  }, []);
-
-  const handleDragStartAbs = useCallback((from: number, absoluteX: number, absoluteY: number) => {
-    surfaceRef.current?.measureInWindow((left, top) => {
-      surfaceOrigin.current = { left, top };
-      onDragStart?.(from, absoluteX - left, absoluteY - top);
-    });
-  }, [onDragStart]);
-
-  const handleDragMoveAbs = useCallback((absoluteX: number, absoluteY: number) => {
-    const { left, top } = surfaceOrigin.current;
-    onDragMove?.(absoluteX - left, absoluteY - top);
-  }, [onDragMove]);
-
-  const handleDragEndAbs = useCallback((absoluteX: number, absoluteY: number) => {
-    const { left, top } = surfaceOrigin.current;
-    onDragEnd?.(absoluteX - left, absoluteY - top);
-  }, [onDragEnd]);
-
-  const showHighlights = isBoardHighlightActive(moveAnimation);
-  const selectedPoint = showHighlights ? state.selectedPoint : null;
-  const showLiveHints = interactionEnabled && !isReviewing;
-  const dragFrom = dragVisual?.from ?? null;
 
   const legalTargets = useMemo(() => {
     if (!showHighlights || state.selectedPoint === null) {
@@ -204,11 +192,12 @@ export function BoardView({
         }}
         dragEnabled={canDrag && ownMovable}
         isDragging={dragFrom === idx}
+        dragOverlay={dragOverlay}
         onDragAttempt={onDragAttempt}
         onDragStart={handleDragStartAbs}
         onDragMove={handleDragMoveAbs}
         onDragEnd={handleDragEndAbs}
-        onDragCancel={onDragCancel}
+        onDragCancel={handleDragCancelLocal}
         colWidth={colWidth}
         pointHeight={pointHeight}
         checkerSize={checkerSize}
@@ -273,11 +262,12 @@ export function BoardView({
           }}
           dragEnabled={canDrag && barMovable}
           isDragging={dragFrom === BAR_POINT}
+          dragOverlay={dragOverlay}
           onDragAttempt={onDragAttempt}
           onDragStart={handleDragStartAbs}
           onDragMove={handleDragMoveAbs}
           onDragEnd={handleDragEndAbs}
-          onDragCancel={onDragCancel}
+          onDragCancel={handleDragCancelLocal}
           barWidth={barWidth}
           boardHeight={boardHeight}
           middleHeight={middleHeight}
@@ -320,14 +310,15 @@ export function BoardView({
           <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
         )}
 
-        {dragVisual && (
-          <DragCheckerOverlay
-            player={state.currentPlayer}
-            boardX={dragVisual.boardX}
-            boardY={dragVisual.boardY}
-            checkerSize={checkerSize}
-          />
-        )}
+        {dragFrom !== null
+          ? (
+              <DragCheckerOverlay
+                player={state.currentPlayer}
+                checkerSize={checkerSize}
+                overlay={dragOverlay}
+              />
+            )
+          : null}
       </View>
 
       {preferences.showPointNumbers && (

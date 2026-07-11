@@ -1,11 +1,12 @@
+import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useId } from 'react';
 import { Pressable, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { BAR_POINT } from '@/lib/game/constants';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
@@ -31,6 +32,7 @@ type Props = {
   checkerSize: number;
   dragEnabled?: boolean;
   isDragging?: boolean;
+  dragOverlay?: DragOverlayRefs;
 } & DragHandlers;
 
 function BarHinge({ width, height }: { width: number; height: number }) {
@@ -61,6 +63,7 @@ type StackProps = {
   checkerSize: number;
   dragEnabled: boolean;
   isDragging: boolean;
+  dragOverlay?: DragOverlayRefs;
 } & DragHandlers;
 
 function BarStack({
@@ -71,6 +74,7 @@ function BarStack({
   checkerSize,
   dragEnabled,
   isDragging,
+  dragOverlay,
   onDragAttempt,
   onDragStart,
   onDragMove,
@@ -85,7 +89,7 @@ function BarStack({
     onDragMove,
     onDragEnd,
     onDragCancel,
-    hitSlop: Math.round(checkerSize * 0.25),
+    overlay: dragOverlay,
   });
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
@@ -143,6 +147,7 @@ export function BarArea({
   checkerSize,
   dragEnabled = false,
   isDragging = false,
+  dragOverlay,
   onDragAttempt,
   onDragStart,
   onDragMove,
@@ -151,7 +156,7 @@ export function BarArea({
 }: Props) {
   const isBarSelected = selectedPoint === 0;
   const halfHeight = (boardHeight - middleHeight) / 2;
-  const dragHandlers = { onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel };
+  const dragHandlers = { onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel, dragOverlay };
 
   return (
     <Pressable
