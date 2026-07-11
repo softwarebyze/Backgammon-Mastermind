@@ -19,6 +19,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { getThemeConfig } from '@/components/ui/use-theme-config';
 import { GameProvider } from '@/features/game/game-provider';
 import { initAppTheme } from '@/lib/init-app-theme';
+import '@/lib/ignore-known-logs';
 // Import  global CSS file
 import '../global.css';
 
