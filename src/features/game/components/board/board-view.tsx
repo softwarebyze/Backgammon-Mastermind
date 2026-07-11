@@ -2,9 +2,10 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Player } from '@/lib/game/types';
 import * as React from 'react';
-import { useCallback, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { View } from 'react-native';
 
+import { canDragFromBar, canDragFromColumn } from '@/features/game/drag-input';
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
 import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 
@@ -160,9 +161,17 @@ export function BoardView({
       || state.phase === 'rolling'
       || state.phase === 'opening-roll');
 
+  const barCountForPlayer = state.bar[state.currentPlayer];
+
   const renderColumn = (idx: number, isTop: boolean) => {
     const point = displayPointDuringAnimation(idx, state.points[idx], moveAnimation);
-    const ownMovable = point.player === state.currentPlayer && point.count > 0;
+    const columnDragEnabled = canDragFromColumn({
+      dragInteractionEnabled: canDrag,
+      phase: state.phase,
+      point,
+      currentPlayer: state.currentPlayer,
+      barCountForPlayer,
+    });
 
     return (
       <PointColumn
@@ -190,7 +199,7 @@ export function BoardView({
             onPointPressOut();
           }
         }}
-        dragEnabled={canDrag && ownMovable}
+        dragEnabled={columnDragEnabled}
         isDragging={dragFrom === idx}
         dragOverlay={dragOverlay}
         onDragAttempt={onDragAttempt}
@@ -207,7 +216,10 @@ export function BoardView({
 
   const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
   const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
-  const barMovable = state.bar[state.currentPlayer] > 0;
+  const barDragEnabled = canDragFromBar({
+    dragInteractionEnabled: canDrag,
+    barCountForPlayer,
+  });
 
   return (
     <View
@@ -260,7 +272,7 @@ export function BoardView({
               onBarPress();
             }
           }}
-          dragEnabled={canDrag && barMovable}
+          dragEnabled={barDragEnabled}
           isDragging={dragFrom === BAR_POINT}
           dragOverlay={dragOverlay}
           onDragAttempt={onDragAttempt}
