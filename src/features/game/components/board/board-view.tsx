@@ -1,8 +1,9 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
+import type { DragVisual } from '@/features/game/use-game-input';
 import type { GameState, Player } from '@/lib/game/types';
 import * as React from 'react';
-import { useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { View } from 'react-native';
 
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
@@ -15,6 +16,7 @@ import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
+import { DragCheckerOverlay } from './drag-checker-overlay';
 import { MoveAnimationOverlay } from './move-animation-overlay';
 import { PointColumn } from './point-column';
 import { PointNumberRail } from './point-number-rail';
@@ -53,9 +55,14 @@ type Props = {
   dimensions: BoardDimensions;
   previewTarget: number | null;
   moveAnimation: MoveAnimationFrame | null;
+  dragVisual?: DragVisual | null;
   onPointPress: (index: number) => void;
   onPointPressIn: (index: number) => void;
   onPointPressOut: () => void;
+  onDragStart?: (from: number, boardX: number, boardY: number) => void;
+  onDragMove?: (boardX: number, boardY: number) => void;
+  onDragEnd?: (boardX: number, boardY: number) => void;
+  onDragCancel?: () => void;
   onBarPress: () => void;
   onBearOffPress: () => void;
   interactionEnabled?: boolean;
@@ -68,9 +75,14 @@ export function BoardView({
   dimensions,
   previewTarget,
   moveAnimation,
+  dragVisual = null,
   onPointPress,
   onPointPressIn,
   onPointPressOut,
+  onDragStart,
+  onDragMove,
+  onDragEnd,
+  onDragCancel,
   onBarPress,
   onBearOffPress,
   interactionEnabled = true,
@@ -78,6 +90,9 @@ export function BoardView({
 }: Props) {
   const { preferences } = useGamePreferences();
   const ceremonyVisible = useOpeningCeremonyVisible();
+  const surfaceRef = useRef<View>(null);
+  const surfaceOrigin = useRef({ left: 0, top: 0 });
+
   const {
     boardWidth,
     boardHeight,
@@ -91,9 +106,33 @@ export function BoardView({
     middleHeight,
   } = dimensions;
 
+  const measureSurface = useCallback(() => {
+    surfaceRef.current?.measureInWindow((left, top) => {
+      surfaceOrigin.current = { left, top };
+    });
+  }, []);
+
+  const handleDragStartAbs = useCallback((from: number, absoluteX: number, absoluteY: number) => {
+    surfaceRef.current?.measureInWindow((left, top) => {
+      surfaceOrigin.current = { left, top };
+      onDragStart?.(from, absoluteX - left, absoluteY - top);
+    });
+  }, [onDragStart]);
+
+  const handleDragMoveAbs = useCallback((absoluteX: number, absoluteY: number) => {
+    const { left, top } = surfaceOrigin.current;
+    onDragMove?.(absoluteX - left, absoluteY - top);
+  }, [onDragMove]);
+
+  const handleDragEndAbs = useCallback((absoluteX: number, absoluteY: number) => {
+    const { left, top } = surfaceOrigin.current;
+    onDragEnd?.(absoluteX - left, absoluteY - top);
+  }, [onDragEnd]);
+
   const showHighlights = isBoardHighlightActive(moveAnimation);
   const selectedPoint = showHighlights ? state.selectedPoint : null;
   const showLiveHints = interactionEnabled && !isReviewing;
+  const dragFrom = dragVisual?.from ?? null;
 
   const legalTargets = useMemo(() => {
     if (!showHighlights || state.selectedPoint === null) {
@@ -123,8 +162,11 @@ export function BoardView({
     && state.phase !== 'game-over'
     && state.phase !== 'opening-roll';
 
+  const canDrag = interactionEnabled && state.phase === 'moving' && !!onDragStart;
+
   const renderColumn = (idx: number, isTop: boolean) => {
     const point = displayPointDuringAnimation(idx, state.points[idx], moveAnimation);
+    const ownMovable = point.player === state.currentPlayer && point.count > 0;
 
     return (
       <PointColumn
@@ -152,6 +194,12 @@ export function BoardView({
             onPointPressOut();
           }
         }}
+        dragEnabled={canDrag && ownMovable}
+        isDragging={dragFrom === idx}
+        onDragStart={handleDragStartAbs}
+        onDragMove={handleDragMoveAbs}
+        onDragEnd={handleDragEndAbs}
+        onDragCancel={onDragCancel}
         colWidth={colWidth}
         pointHeight={pointHeight}
         checkerSize={checkerSize}
@@ -183,6 +231,8 @@ export function BoardView({
       )}
 
       <View
+        ref={surfaceRef}
+        onLayout={measureSurface}
         style={{
           width: boardWidth,
           height: boardHeight,
@@ -251,6 +301,15 @@ export function BoardView({
 
         {moveAnimation && (
           <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
+        )}
+
+        {dragVisual && (
+          <DragCheckerOverlay
+            player={state.currentPlayer}
+            boardX={dragVisual.boardX}
+            boardY={dragVisual.boardY}
+            checkerSize={checkerSize}
+          />
         )}
       </View>
 

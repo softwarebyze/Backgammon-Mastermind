@@ -66,11 +66,16 @@ export function GameBoardSection({
             dimensions={dimensions}
             previewTarget={interactionEnabled ? previewTarget : null}
             moveAnimation={boardAnimation}
+            dragVisual={interactionEnabled ? input.dragVisual : null}
             interactionEnabled={interactionEnabled}
             isReviewing={isReviewing}
             onPointPress={input.handlePointPress}
             onPointPressIn={input.handlePointPressIn}
             onPointPressOut={input.handlePointPressOut}
+            onDragStart={input.handleDragStart}
+            onDragMove={(x, y) => input.handleDragMove(x, y, dimensions)}
+            onDragEnd={(x, y) => input.handleDragEnd(x, y, dimensions)}
+            onDragCancel={input.handleDragCancel}
             onBarPress={input.handleBarPress}
             onBearOffPress={input.handleBearOffPress}
           />
