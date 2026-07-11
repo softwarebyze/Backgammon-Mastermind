@@ -1,8 +1,8 @@
-import type { useSharedValue } from 'react-native-reanimated';
+import type { SharedValue } from 'react-native-reanimated';
 
 export type DragOverlayRefs = {
-  x: ReturnType<typeof useSharedValue<number>>;
-  y: ReturnType<typeof useSharedValue<number>>;
-  originLeft: ReturnType<typeof useSharedValue<number>>;
-  originTop: ReturnType<typeof useSharedValue<number>>;
+  x: SharedValue<number>;
+  y: SharedValue<number>;
+  originLeft: SharedValue<number>;
+  originTop: SharedValue<number>;
 };

@@ -15,11 +15,8 @@ export function resolveDragMove(
   if (single) {
     return { kind: 'single', move: single };
   }
-  const sequence = findMoveSequence(
-    { ...withSelection, legalMovesForSelected: legal },
-    from,
-    to,
-  );
+  // findMoveSequence recomputes legal moves from state; selectedPoint is enough.
+  const sequence = findMoveSequence(withSelection, from, to);
   if (sequence) {
     return { kind: 'sequence', moves: sequence };
   }
