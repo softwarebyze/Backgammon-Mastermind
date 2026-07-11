@@ -5,11 +5,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
 import { resolveDropTarget } from '@/features/game/board-point-layout';
+import { validateDragStart } from '@/features/game/drag-input';
 import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
-import { BAR_POINT } from '@/lib/game/constants';
 import { translate } from '@/lib/i18n';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
@@ -181,20 +181,11 @@ export function useGameInput() {
     if (!canInteract) {
       return;
     }
-    if (from === BAR_POINT) {
-      if (s.bar[s.currentPlayer] === 0) {
-        return;
+    const validation = validateDragStart(s, from);
+    if (validation !== 'ok') {
+      if (validation === 'no-legal-moves') {
+        triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
       }
-    }
-    else {
-      const point = s.points[from];
-      if (!point || point.player !== s.currentPlayer || point.count === 0) {
-        return;
-      }
-    }
-    const legal = getLegalMoves({ ...s, selectedPoint: from }).filter(m => m.from === from);
-    if (legal.length === 0) {
-      triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
       return;
     }
     dragFromRef.current = from;
