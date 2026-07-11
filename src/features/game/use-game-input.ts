@@ -1,7 +1,10 @@
+import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
+import { resolveDropTarget } from '@/features/game/board-point-layout';
+import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
@@ -11,10 +14,15 @@ function triggerHaptic(fn: () => Promise<void>) {
   void fn().catch(() => {});
 }
 
+export type DragVisual = {
+  from: number;
+  boardX: number;
+  boardY: number;
+};
+
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */
 export function useGameInput() {
   const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
-  // Keyed preview — auto-invalidates when turn/dice/animation changes (no effect).
   const turnKey = `${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}|${isAnimating}`;
   const [preview, setPreview] = useState<{ key: string; target: number | null }>({
     key: turnKey,
@@ -25,12 +33,17 @@ export function useGameInput() {
     setPreview({ key: turnKey, target });
   }, [turnKey]);
 
+  const dragFromRef = useRef<number | null>(null);
+  const [dragVisual, setDragVisual] = useState<DragVisual | null>(null);
+
+  const canInteract = !!state
+    && state.phase === 'moving'
+    && !isAnimating
+    && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
+
   const handlePointPress = useCallback(
     (pointIndex: number) => {
-      if (!state || state.phase !== 'moving' || isAnimating) {
-        return;
-      }
-      if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
+      if (!state || !canInteract) {
         return;
       }
 
@@ -58,7 +71,7 @@ export function useGameInput() {
       triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
-    [state, doMove, doMoveSequence, selectPoint, isAnimating, setPreviewTarget],
+    [state, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget],
   );
 
   const handlePointPressIn = useCallback(
@@ -76,6 +89,67 @@ export function useGameInput() {
   );
 
   const handlePointPressOut = useCallback(() => {
+    setPreviewTarget(null);
+  }, [setPreviewTarget]);
+
+  const handleDragStart = useCallback((from: number, boardX: number, boardY: number) => {
+    if (!state || !canInteract) {
+      return;
+    }
+    const point = state.points[from];
+    if (!point || point.player !== state.currentPlayer || point.count === 0) {
+      return;
+    }
+    const legal = getLegalMoves({ ...state, selectedPoint: from }).filter(m => m.from === from);
+    if (legal.length === 0) {
+      return;
+    }
+    dragFromRef.current = from;
+    selectPoint(from);
+    setDragVisual({ from, boardX, boardY });
+    triggerHaptic(() => Haptics.selectionAsync());
+  }, [state, canInteract, selectPoint]);
+
+  const handleDragMove = useCallback((boardX: number, boardY: number, dims: BoardDimensions) => {
+    const from = dragFromRef.current;
+    if (!state || from === null) {
+      return;
+    }
+    setDragVisual({ from, boardX, boardY });
+    setPreviewTarget(previewFromDrag({ state, from, boardX, boardY, dims }));
+  }, [state, setPreviewTarget]);
+
+  const handleDragEnd = useCallback((boardX: number, boardY: number, dims: BoardDimensions) => {
+    const from = dragFromRef.current;
+    dragFromRef.current = null;
+    setDragVisual(null);
+    setPreviewTarget(null);
+    if (!state || from === null || !canInteract) {
+      return;
+    }
+    const target = resolveDropTarget(boardX, boardY, dims);
+    if (target === null || target === from) {
+      selectPoint(null);
+      return;
+    }
+    const resolved = resolveDragMove(state, from, target);
+    if (!resolved) {
+      triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+      selectPoint(null);
+      return;
+    }
+    triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+    if (resolved.kind === 'single') {
+      doMove(resolved.move);
+    }
+    else {
+      doMoveSequence(resolved.moves);
+    }
+  }, [state, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget]);
+
+  const handleDragCancel = useCallback(() => {
+    dragFromRef.current = null;
+    setDragVisual(null);
     setPreviewTarget(null);
   }, [setPreviewTarget]);
 
@@ -97,10 +171,7 @@ export function useGameInput() {
   }, [state, doMove, doMoveSequence, isAnimating]);
 
   const handleBarPress = useCallback(() => {
-    if (!state || state.phase !== 'moving' || isAnimating) {
-      return;
-    }
-    if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
+    if (!state || !canInteract) {
       return;
     }
     if (state.bar[state.currentPlayer] === 0) {
@@ -119,7 +190,7 @@ export function useGameInput() {
 
     triggerHaptic(() => Haptics.selectionAsync());
     selectPoint(0);
-  }, [state, selectPoint, isAnimating]);
+  }, [state, canInteract, selectPoint]);
 
   const handleBoardPress = useCallback(() => {
     if (!state || state.phase !== 'moving' || isAnimating) {
@@ -159,9 +230,14 @@ export function useGameInput() {
   return {
     state,
     previewTarget,
+    dragVisual,
     handlePointPress,
     handlePointPressIn,
     handlePointPressOut,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
+    handleDragCancel,
     handleBearOffPress,
     handleBarPress,
     handleBoardPress,

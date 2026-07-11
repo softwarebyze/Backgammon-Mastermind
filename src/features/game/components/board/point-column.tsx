@@ -1,13 +1,50 @@
 import type { BoardPoint, Player } from '@/lib/game/types';
+import { useMemo } from 'react';
 import { Pressable, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { runOnJS, useAnimatedStyle } from 'react-native-reanimated';
+
 import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
 import { PointTriangle } from './point-triangle';
 
 const MAX_VISIBLE = 5;
 
+type DragHandlers = {
+  onDragStart?: (pointIndex: number, absoluteX: number, absoluteY: number) => void;
+  onDragMove?: (absoluteX: number, absoluteY: number) => void;
+  onDragEnd?: (absoluteX: number, absoluteY: number) => void;
+  onDragCancel?: () => void;
+};
+
+function useTopCheckerPan(pointIndex: number, enabled: boolean, handlers: DragHandlers) {
+  const { onDragStart, onDragMove, onDragEnd, onDragCancel } = handlers;
+  return useMemo(() => {
+    if (!enabled || !onDragStart || !onDragMove || !onDragEnd) {
+      return Gesture.Pan().enabled(false);
+    }
+    return Gesture.Pan()
+      .minDistance(10)
+      .onStart((e) => {
+        runOnJS(onDragStart)(pointIndex, e.absoluteX, e.absoluteY);
+      })
+      .onUpdate((e) => {
+        runOnJS(onDragMove)(e.absoluteX, e.absoluteY);
+      })
+      .onEnd((e) => {
+        runOnJS(onDragEnd)(e.absoluteX, e.absoluteY);
+      })
+      .onFinalize((_e, success) => {
+        if (!success && onDragCancel) {
+          runOnJS(onDragCancel)();
+        }
+      });
+  }, [enabled, onDragStart, onDragMove, onDragEnd, onDragCancel, pointIndex]);
+}
+
 type CheckersProps = {
   point: BoardPoint;
+  pointIndex: number;
   isTop: boolean;
   colWidth: number;
   checkerSize: number;
@@ -16,10 +53,31 @@ type CheckersProps = {
   showGhost: boolean;
   ghostPlayer: Player | null;
   hintTopChecker: boolean;
-};
+  dragEnabled: boolean;
+  isDragging: boolean;
+} & DragHandlers;
+
+function stackStyle(opts: {
+  isTop: boolean;
+  offset: number;
+  colWidth: number;
+  checkerSize: number;
+  zIndex: number;
+}) {
+  const { isTop, offset, colWidth, checkerSize, zIndex } = opts;
+  return {
+    position: 'absolute' as const,
+    [isTop ? 'top' : 'bottom']: offset,
+    left: (colWidth - checkerSize) / 2,
+    zIndex,
+    width: checkerSize,
+    height: checkerSize,
+  };
+}
 
 function PointCheckers({
   point,
+  pointIndex,
   isTop,
   colWidth,
   checkerSize,
@@ -28,7 +86,23 @@ function PointCheckers({
   showGhost,
   ghostPlayer,
   hintTopChecker,
+  dragEnabled,
+  isDragging,
+  onDragStart,
+  onDragMove,
+  onDragEnd,
+  onDragCancel,
 }: CheckersProps) {
+  const pan = useTopCheckerPan(pointIndex, dragEnabled, {
+    onDragStart,
+    onDragMove,
+    onDragEnd,
+    onDragCancel,
+  });
+  const topStyle = useAnimatedStyle(() => ({
+    opacity: isDragging ? 0.25 : 1,
+  }));
+
   if (point.count === 0) {
     return null;
   }
@@ -38,20 +112,24 @@ function PointCheckers({
       {Array.from({ length: visibleCount }, (_, i) => {
         const offset = i * stackStep;
         const isTopChecker = i === visibleCount - 1;
-        return (
+        const token = (
           <CheckerToken
-            key={i}
             player={point.player as Player}
             size={checkerSize}
             showCount={isTopChecker && point.count > MAX_VISIBLE ? point.count : undefined}
-            showMoveHint={isTopChecker && hintTopChecker}
-            style={{
-              position: 'absolute',
-              [isTop ? 'top' : 'bottom']: offset,
-              left: (colWidth - checkerSize) / 2,
-              zIndex: i + 1,
-            }}
+            showMoveHint={isTopChecker && hintTopChecker && !isDragging}
           />
+        );
+        const style = stackStyle({ isTop, offset, colWidth, checkerSize, zIndex: i + 1 });
+
+        if (!isTopChecker) {
+          return <View key={i} style={style}>{token}</View>;
+        }
+
+        return (
+          <GestureDetector key={i} gesture={pan}>
+            <Animated.View style={[style, topStyle]}>{token}</Animated.View>
+          </GestureDetector>
         );
       })}
       {showGhost && ghostPlayer && (
@@ -59,10 +137,13 @@ function PointCheckers({
           player={ghostPlayer}
           size={checkerSize}
           style={{
-            position: 'absolute',
-            [isTop ? 'top' : 'bottom']: visibleCount * stackStep,
-            left: (colWidth - checkerSize) / 2,
-            zIndex: 20,
+            ...stackStyle({
+              isTop,
+              offset: visibleCount * stackStep,
+              colWidth,
+              checkerSize,
+              zIndex: 20,
+            }),
             opacity: 0.35,
           }}
         />
@@ -83,6 +164,12 @@ type Props = {
   onPress: () => void;
   onPressIn?: () => void;
   onPressOut?: () => void;
+  dragEnabled?: boolean;
+  isDragging?: boolean;
+  onDragStart?: (pointIndex: number, absoluteX: number, absoluteY: number) => void;
+  onDragMove?: (absoluteX: number, absoluteY: number) => void;
+  onDragEnd?: (absoluteX: number, absoluteY: number) => void;
+  onDragCancel?: () => void;
   colWidth: number;
   pointHeight: number;
   checkerSize: number;
@@ -100,6 +187,12 @@ export function PointColumn({
   onPress,
   onPressIn,
   onPressOut,
+  dragEnabled = false,
+  isDragging = false,
+  onDragStart,
+  onDragMove,
+  onDragEnd,
+  onDragCancel,
   colWidth,
   pointHeight,
   checkerSize,
@@ -112,7 +205,6 @@ export function PointColumn({
     pointState = 'legal';
   }
   const palette = getPointPalette(pointIndex, pointState);
-
   const stackStep = Math.min(checkerSize - 2, (pointHeight - checkerSize) / (MAX_VISIBLE - 1));
   const visibleCount = Math.min(point.count, MAX_VISIBLE);
 
@@ -125,15 +217,10 @@ export function PointColumn({
       onPressOut={onPressOut}
       style={{ width: colWidth, height: pointHeight, position: 'relative', overflow: 'visible' }}
     >
-      <PointTriangle
-        isTop={isTop}
-        width={colWidth}
-        height={pointHeight}
-        palette={palette}
-      />
-
+      <PointTriangle isTop={isTop} width={colWidth} height={pointHeight} palette={palette} />
       <PointCheckers
         point={point}
+        pointIndex={pointIndex}
         isTop={isTop}
         colWidth={colWidth}
         checkerSize={checkerSize}
@@ -142,8 +229,13 @@ export function PointColumn({
         showGhost={showGhost}
         ghostPlayer={ghostPlayer}
         hintTopChecker={isMovableSource}
+        dragEnabled={dragEnabled}
+        isDragging={isDragging}
+        onDragStart={onDragStart}
+        onDragMove={onDragMove}
+        onDragEnd={onDragEnd}
+        onDragCancel={onDragCancel}
       />
-
       {isLegalTarget && point.count === 0 && (
         <View
           style={{
