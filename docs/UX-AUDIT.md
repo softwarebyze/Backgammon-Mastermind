@@ -1,7 +1,6 @@
 # UX & Product Audit (2026-06-27)
 
-Master checklist for turning Backgammon Mastermind into a polished, share-ready app.  
-**Accept fixes selectively** — each row maps to a GitHub issue you can close or re-prioritize.
+Historical audit snapshot. **Live priorities:** [`docs/product-backlog.md`](./product-backlog.md).
 
 Legend: 🔴 ship-blocker · 🟠 high · 🟡 medium · 🟢 polish · ⚪ process
 
@@ -17,8 +16,8 @@ Legend: 🔴 ship-blocker · 🟠 high · 🟡 medium · 🟢 polish · ⚪ proc
 | 🟠 | — | AI moves too fast (vs-computer) | **Fix in branch** — 750ms pause before move |
 | 🟠 | #64/#65 | Compound moves / leave-resume | Needs device QA (#63) |
 | 🟡 | #68 | Bar groove, dice placement on board | Open |
-| 🟡 | #67 | Drag-and-drop checkers | Open (defer?) |
-| 🟡 | #84 | Board point numbers toggle | Open |
+| 🔴 | #67 | Drag-and-drop checkers | **v0.1.3 blocker** |
+| ✅ | #84 | Board point numbers toggle | Shipped |
 
 ---
 
@@ -85,7 +84,7 @@ Reference: website uses dashed SVG paths, checker glide, destination pulse — m
 
 | | Issue | Notes |
 |---|-------|-------|
-| 🔴 | #63 | v0.1.2 TestFlight after device QA |
+| ✅ | #63 | v0.1.2 shipped — next gate is v0.1.3 share-ready (see product-backlog) |
 | 🟡 | — | Web on **Vercel** until EAS web quota resets July 1 — document in playbook |
 | ⚪ | #83 | PR QA gate + CodeRabbit |
 | ⚪ | — | GitHub Projects — run `gh auth refresh -s read:project` then import `docs/issue-board.md` |
@@ -104,9 +103,10 @@ See `docs/obytes-template-playbook.md` § fork delta (updated 2026-06-27):
 
 ## Conversation backlog (not lost)
 
+Superseded by [`product-backlog.md`](./product-backlog.md). Historical:
+
 - [x] Move history v2 not in options sheet
 - [x] Settings sections Board / Dice / Automation  
-- [ ] Undo/redo PR #62 — defer post v0.1.2  
-- [ ] Consolidate timeline with #46  
-- [ ] Device verify #64–#65, #70, #72  
-- [ ] Sentry/PostHog #78 before public  
+- [x] Undo/redo + timeline (#88)
+- [x] #64–#65, #70, #72 fixes on main (#61) — close after spot-check
+- [ ] Sentry/PostHog #78 before *wide* public download  
