@@ -1,13 +1,15 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo } from 'react-native';
 
 import { resolveDropTarget } from '@/features/game/board-point-layout';
 import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
+import { translate } from '@/lib/i18n';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
 function triggerHaptic(fn: () => Promise<void>) {
@@ -19,6 +21,14 @@ export type DragVisual = {
   boardX: number;
   boardY: number;
 };
+
+export type InputNudge = 'roll' | null;
+
+const NUDGE_MS = 2200;
+
+function needsRollFirst(phase: string | undefined): boolean {
+  return phase === 'rolling' || phase === 'opening-roll';
+}
 
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */
 export function useGameInput() {
@@ -35,15 +45,53 @@ export function useGameInput() {
 
   const dragFromRef = useRef<number | null>(null);
   const [dragVisual, setDragVisual] = useState<DragVisual | null>(null);
+  const [inputNudge, setInputNudge] = useState<InputNudge>(null);
+  const nudgeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const isHumanTurn = !!state
+    && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
 
   const canInteract = !!state
     && state.phase === 'moving'
     && !isAnimating
-    && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
+    && isHumanTurn;
 
+  const nudgeRoll = useCallback(() => {
+    triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+    const message = translate('game.nudge.roll_first');
+    AccessibilityInfo.announceForAccessibility(message);
+    setInputNudge('roll');
+    if (nudgeTimerRef.current) {
+      clearTimeout(nudgeTimerRef.current);
+    }
+    nudgeTimerRef.current = setTimeout(() => {
+      setInputNudge(null);
+      nudgeTimerRef.current = null;
+    }, NUDGE_MS);
+  }, []);
+
+  useEffect(() => () => {
+    if (nudgeTimerRef.current) {
+      clearTimeout(nudgeTimerRef.current);
+    }
+  }, []);
+
+  // Don't show a stale roll nudge after dice are already rolled.
+  const activeNudge: InputNudge
+    = inputNudge === 'roll' && needsRollFirst(state?.phase) ? 'roll' : null;
   const handlePointPress = useCallback(
     (pointIndex: number) => {
-      if (!state || !canInteract) {
+      if (!state || isAnimating) {
+        return;
+      }
+      if (!isHumanTurn) {
+        return;
+      }
+      if (needsRollFirst(state.phase)) {
+        nudgeRoll();
+        return;
+      }
+      if (!canInteract) {
         return;
       }
 
@@ -71,7 +119,7 @@ export function useGameInput() {
       triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
-    [state, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget],
+    [state, isAnimating, isHumanTurn, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget, nudgeRoll],
   );
 
   const handlePointPressIn = useCallback(
@@ -92,8 +140,25 @@ export function useGameInput() {
     setPreviewTarget(null);
   }, [setPreviewTarget]);
 
+  /** Fires on touch-down — remind to roll before the drag travels. */
+  const handleDragAttempt = useCallback((_from: number) => {
+    if (!state || isAnimating || !isHumanTurn) {
+      return;
+    }
+    if (needsRollFirst(state.phase)) {
+      nudgeRoll();
+    }
+  }, [state, isAnimating, isHumanTurn, nudgeRoll]);
+
   const handleDragStart = useCallback((from: number, boardX: number, boardY: number) => {
-    if (!state || !canInteract) {
+    if (!state || isAnimating || !isHumanTurn) {
+      return;
+    }
+    // Already nudged on touch-down — don't lift a checker while waiting to roll.
+    if (needsRollFirst(state.phase)) {
+      return;
+    }
+    if (!canInteract) {
       return;
     }
     const point = state.points[from];
@@ -102,13 +167,14 @@ export function useGameInput() {
     }
     const legal = getLegalMoves({ ...state, selectedPoint: from }).filter(m => m.from === from);
     if (legal.length === 0) {
+      triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
       return;
     }
     dragFromRef.current = from;
     selectPoint(from);
     setDragVisual({ from, boardX, boardY });
     triggerHaptic(() => Haptics.selectionAsync());
-  }, [state, canInteract, selectPoint]);
+  }, [state, isAnimating, isHumanTurn, canInteract, selectPoint]);
 
   const handleDragMove = useCallback((boardX: number, boardY: number, dims: BoardDimensions) => {
     const from = dragFromRef.current;
@@ -171,7 +237,14 @@ export function useGameInput() {
   }, [state, doMove, doMoveSequence, isAnimating]);
 
   const handleBarPress = useCallback(() => {
-    if (!state || !canInteract) {
+    if (!state || isAnimating || !isHumanTurn) {
+      return;
+    }
+    if (needsRollFirst(state.phase)) {
+      nudgeRoll();
+      return;
+    }
+    if (!canInteract) {
       return;
     }
     if (state.bar[state.currentPlayer] === 0) {
@@ -190,7 +263,7 @@ export function useGameInput() {
 
     triggerHaptic(() => Haptics.selectionAsync());
     selectPoint(0);
-  }, [state, canInteract, selectPoint]);
+  }, [state, isAnimating, isHumanTurn, canInteract, selectPoint, nudgeRoll]);
 
   const handleBoardPress = useCallback(() => {
     if (!state || state.phase !== 'moving' || isAnimating) {
@@ -231,9 +304,11 @@ export function useGameInput() {
     state,
     previewTarget,
     dragVisual,
+    inputNudge: activeNudge,
     handlePointPress,
     handlePointPressIn,
     handlePointPressOut,
+    handleDragAttempt,
     handleDragStart,
     handleDragMove,
     handleDragEnd,
