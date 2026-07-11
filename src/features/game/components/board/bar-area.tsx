@@ -85,6 +85,7 @@ function BarStack({
     onDragMove,
     onDragEnd,
     onDragCancel,
+    hitSlop: Math.round(checkerSize * 0.25),
   });
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
