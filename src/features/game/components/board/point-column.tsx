@@ -11,20 +11,27 @@ import { PointTriangle } from './point-triangle';
 const MAX_VISIBLE = 5;
 
 type DragHandlers = {
+  onDragAttempt?: (pointIndex: number) => void;
   onDragStart?: (pointIndex: number, absoluteX: number, absoluteY: number) => void;
   onDragMove?: (absoluteX: number, absoluteY: number) => void;
   onDragEnd?: (absoluteX: number, absoluteY: number) => void;
   onDragCancel?: () => void;
 };
 
-function useTopCheckerPan(pointIndex: number, enabled: boolean, handlers: DragHandlers) {
-  const { onDragStart, onDragMove, onDragEnd, onDragCancel } = handlers;
+/** Pan from any checker in the stack — moves the top (legal) checker. */
+function useStackPan(pointIndex: number, enabled: boolean, handlers: DragHandlers) {
+  const { onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel } = handlers;
   return useMemo(() => {
     if (!enabled || !onDragStart || !onDragMove || !onDragEnd) {
       return Gesture.Pan().enabled(false);
     }
     return Gesture.Pan()
       .minDistance(10)
+      .onBegin(() => {
+        if (onDragAttempt) {
+          runOnJS(onDragAttempt)(pointIndex);
+        }
+      })
       .onStart((e) => {
         runOnJS(onDragStart)(pointIndex, e.absoluteX, e.absoluteY);
       })
@@ -39,7 +46,7 @@ function useTopCheckerPan(pointIndex: number, enabled: boolean, handlers: DragHa
           runOnJS(onDragCancel)();
         }
       });
-  }, [enabled, onDragStart, onDragMove, onDragEnd, onDragCancel, pointIndex]);
+  }, [enabled, onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel, pointIndex]);
 }
 
 type CheckersProps = {
@@ -88,18 +95,20 @@ function PointCheckers({
   hintTopChecker,
   dragEnabled,
   isDragging,
+  onDragAttempt,
   onDragStart,
   onDragMove,
   onDragEnd,
   onDragCancel,
 }: CheckersProps) {
-  const pan = useTopCheckerPan(pointIndex, dragEnabled, {
+  const pan = useStackPan(pointIndex, dragEnabled, {
+    onDragAttempt,
     onDragStart,
     onDragMove,
     onDragEnd,
     onDragCancel,
   });
-  const topStyle = useAnimatedStyle(() => ({
+  const stackStyleAnim = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
   }));
 
@@ -122,13 +131,9 @@ function PointCheckers({
         );
         const style = stackStyle({ isTop, offset, colWidth, checkerSize, zIndex: i + 1 });
 
-        if (!isTopChecker) {
-          return <View key={i} style={style}>{token}</View>;
-        }
-
         return (
           <GestureDetector key={i} gesture={pan}>
-            <Animated.View style={[style, topStyle]}>{token}</Animated.View>
+            <Animated.View style={[style, stackStyleAnim]}>{token}</Animated.View>
           </GestureDetector>
         );
       })}
@@ -166,6 +171,7 @@ type Props = {
   onPressOut?: () => void;
   dragEnabled?: boolean;
   isDragging?: boolean;
+  onDragAttempt?: (pointIndex: number) => void;
   onDragStart?: (pointIndex: number, absoluteX: number, absoluteY: number) => void;
   onDragMove?: (absoluteX: number, absoluteY: number) => void;
   onDragEnd?: (absoluteX: number, absoluteY: number) => void;
@@ -189,6 +195,7 @@ export function PointColumn({
   onPressOut,
   dragEnabled = false,
   isDragging = false,
+  onDragAttempt,
   onDragStart,
   onDragMove,
   onDragEnd,
@@ -231,6 +238,7 @@ export function PointColumn({
         hintTopChecker={isMovableSource}
         dragEnabled={dragEnabled}
         isDragging={isDragging}
+        onDragAttempt={onDragAttempt}
         onDragStart={onDragStart}
         onDragMove={onDragMove}
         onDragEnd={onDragEnd}

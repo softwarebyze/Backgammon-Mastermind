@@ -23,6 +23,8 @@ type Props = {
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing?: boolean;
+  /** Ephemeral caption override (e.g. "Roll the dice first"). */
+  captionOverride?: string | null;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
@@ -37,6 +39,7 @@ export function GameScreenControls({
   isHumanTurn,
   isComputerTurn,
   isReviewing = false,
+  captionOverride = null,
   onRoll,
   onReset,
   onGoLive,
@@ -45,11 +48,12 @@ export function GameScreenControls({
   const ceremonyVisible = useOpeningCeremonyVisible();
   const handoff = useOpeningCeremonyHandoff();
   const turn = getTurnDisplay(state);
-  const caption = isReviewing
-    ? translate('game.review.viewing_hint')
-    : ceremonyVisible
-      ? ' '
-      : getActionCaption(state, turn);
+  const caption = captionOverride
+    ?? (isReviewing
+      ? translate('game.review.viewing_hint')
+      : ceremonyVisible
+        ? ' '
+        : getActionCaption(state, turn));
 
   const showTray = !ceremonyVisible || handoff === 'reveal' || handoff === 'measure';
   const trayOpacity = useSharedValue(ceremonyVisible ? 0 : 1);

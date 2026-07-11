@@ -59,6 +59,7 @@ type Props = {
   onPointPress: (index: number) => void;
   onPointPressIn: (index: number) => void;
   onPointPressOut: () => void;
+  onDragAttempt?: (from: number) => void;
   onDragStart?: (from: number, boardX: number, boardY: number) => void;
   onDragMove?: (boardX: number, boardY: number) => void;
   onDragEnd?: (boardX: number, boardY: number) => void;
@@ -79,6 +80,7 @@ export function BoardView({
   onPointPress,
   onPointPressIn,
   onPointPressOut,
+  onDragAttempt,
   onDragStart,
   onDragMove,
   onDragEnd,
@@ -162,7 +164,12 @@ export function BoardView({
     && state.phase !== 'game-over'
     && state.phase !== 'opening-roll';
 
-  const canDrag = interactionEnabled && state.phase === 'moving' && !!onDragStart;
+  const canDrag = interactionEnabled
+    && !!onDragStart
+    && !(state.mode === 'vs-computer' && state.currentPlayer === 'black')
+    && (state.phase === 'moving'
+      || state.phase === 'rolling'
+      || state.phase === 'opening-roll');
 
   const renderColumn = (idx: number, isTop: boolean) => {
     const point = displayPointDuringAnimation(idx, state.points[idx], moveAnimation);
@@ -196,6 +203,7 @@ export function BoardView({
         }}
         dragEnabled={canDrag && ownMovable}
         isDragging={dragFrom === idx}
+        onDragAttempt={onDragAttempt}
         onDragStart={handleDragStartAbs}
         onDragMove={handleDragMoveAbs}
         onDragEnd={handleDragEndAbs}

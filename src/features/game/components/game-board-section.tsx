@@ -72,6 +72,7 @@ export function GameBoardSection({
             onPointPress={input.handlePointPress}
             onPointPressIn={input.handlePointPressIn}
             onPointPressOut={input.handlePointPressOut}
+            onDragAttempt={input.handleDragAttempt}
             onDragStart={input.handleDragStart}
             onDragMove={(x, y) => input.handleDragMove(x, y, dimensions)}
             onDragEnd={(x, y) => input.handleDragEnd(x, y, dimensions)}

@@ -1,5 +1,8 @@
 {
   "game": {
+    "nudge": {
+      "roll_first": "Roll the dice first"
+    },
     "opening": {
       "compare": "{{winner}} {{high}} beats {{low}}",
       "goes_first": "{{player}} goes first!",

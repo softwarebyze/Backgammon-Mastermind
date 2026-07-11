@@ -1,5 +1,8 @@
 {
   "game": {
+    "nudge": {
+      "roll_first": "ارمِ النرد أولاً"
+    },
     "opening": {
       "compare": "{{winner}} {{high}} يتفوق على {{low}}",
       "goes_first": "{{player}} يبدأ!",
