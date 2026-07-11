@@ -6,7 +6,9 @@ GitHub Projects need `read:project` scope (`gh auth refresh -s read:project`). U
 
 ## Now — v0.1.3 share-ready
 
-See backlog § “Next release”. Blockers: **#67 drag-and-drop**, web restart/options/dice default, web board fit.
+See backlog § “Next release”. Blockers: **#67 drag-and-drop**, web restart/options/dice default (#91–#93).
+
+High (same release if feasible): web board fit (#94), cancel-selection (#95).
 
 ## Process
 

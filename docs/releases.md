@@ -28,13 +28,13 @@ Update **all** of these for each store release:
 | `package.json` | `"version"` |
 | `store.config.json` | `apple.version` |
 | App Store Connect | **+ Version** matching `apple.version` |
-| Git tag | `v0.1.1` (matches `package.json`) |
+| Git tag | `v0.1.2` (matches `package.json`) |
 
 Expo native build numbers are managed by EAS (`eas.json` / remote version source).
 
 ---
 
-## Release checklist (TestFlight patch, e.g. v0.1.1)
+## Release checklist (TestFlight patch, e.g. v0.1.2)
 
 ### 1. Code ready
 
@@ -51,7 +51,7 @@ Expo native build numbers are managed by EAS (`eas.json` / remote version source
 
 # Option B — manual
 # Edit package.json + store.config.json → commit → tag
-git tag v0.1.1 && git push origin v0.1.1
+git tag v0.1.2 && git push origin v0.1.2
 ```
 
 ### 3. Build preview IPA
