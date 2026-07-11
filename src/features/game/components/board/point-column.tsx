@@ -1,4 +1,4 @@
-import type { Insets } from 'react-native';
+import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { BoardPoint, Player } from '@/lib/game/types';
 import { Pressable, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
@@ -10,15 +10,6 @@ import { PointTriangle } from './point-triangle';
 import { useCheckerPan } from './use-checker-pan';
 
 const MAX_VISIBLE = 5;
-
-/** Extra grab margin — biased toward the open end of the point (above/below the stack). */
-function stackDragHitSlop(checkerSize: number, isTop: boolean): Insets {
-  const side = Math.round(checkerSize * 0.22);
-  const open = Math.round(checkerSize * 0.5);
-  return isTop
-    ? { top: open, bottom: side, left: side, right: side }
-    : { top: side, bottom: open, left: side, right: side };
-}
 
 type DragHandlers = {
   onDragAttempt?: (pointIndex: number) => void;
@@ -41,6 +32,7 @@ type CheckersProps = {
   hintTopChecker: boolean;
   dragEnabled: boolean;
   isDragging: boolean;
+  dragOverlay?: DragOverlayRefs;
 } & DragHandlers;
 
 function stackStyle(opts: {
@@ -78,7 +70,7 @@ function checkerInStack(opts: {
   };
 }
 
-function stackBounds(opts: {
+function stackHitArea(opts: {
   isTop: boolean;
   colWidth: number;
   checkerSize: number;
@@ -86,14 +78,27 @@ function stackBounds(opts: {
   visibleCount: number;
 }) {
   const { isTop, colWidth, checkerSize, stackStep, visibleCount } = opts;
-  const height = checkerSize + Math.max(0, visibleCount - 1) * stackStep;
+  const stackHeight = checkerSize + Math.max(0, visibleCount - 1) * stackStep;
+  // Physical touch target — hitSlop is unreliable on web vs parent Pressables.
+  const padOpen = Math.round(checkerSize * 0.55);
+  const padSide = Math.round(checkerSize * 0.28);
   return {
-    position: 'absolute' as const,
-    [isTop ? 'top' : 'bottom']: 0,
-    left: (colWidth - checkerSize) / 2,
-    width: checkerSize,
-    height,
-    zIndex: visibleCount + 1,
+    outer: {
+      position: 'absolute' as const,
+      [isTop ? 'top' : 'bottom']: -padOpen,
+      left: (colWidth - checkerSize) / 2 - padSide,
+      width: checkerSize + padSide * 2,
+      height: stackHeight + padOpen,
+      zIndex: visibleCount + 10,
+    },
+    inner: {
+      width: checkerSize,
+      height: stackHeight,
+      marginTop: isTop ? padOpen : 0,
+      marginBottom: isTop ? 0 : padOpen,
+      marginLeft: padSide,
+      position: 'relative' as const,
+    },
   };
 }
 
@@ -110,6 +115,7 @@ function PointCheckers({
   hintTopChecker,
   dragEnabled,
   isDragging,
+  dragOverlay,
   onDragAttempt,
   onDragStart,
   onDragMove,
@@ -122,7 +128,7 @@ function PointCheckers({
     onDragMove,
     onDragEnd,
     onDragCancel,
-    hitSlop: stackDragHitSlop(checkerSize, isTop),
+    overlay: dragOverlay,
   });
   // Only the piece leaving the stack fades — rest of the stack stays solid.
   const topDragStyle = useAnimatedStyle(() => ({
@@ -162,18 +168,22 @@ function PointCheckers({
     </>
   );
 
-  const stackHitArea = stackBounds({ isTop, colWidth, checkerSize, stackStep, visibleCount });
+  const hitArea = stackHitArea({ isTop, colWidth, checkerSize, stackStep, visibleCount });
 
   return (
     <>
       {dragEnabled
         ? (
             <GestureDetector gesture={pan}>
-              <View style={stackHitArea}>{stackContent}</View>
+              <View style={hitArea.outer}>
+                <View style={hitArea.inner}>{stackContent}</View>
+              </View>
             </GestureDetector>
           )
         : (
-            <View style={stackHitArea}>{stackContent}</View>
+            <View style={hitArea.outer}>
+              <View style={hitArea.inner}>{stackContent}</View>
+            </View>
           )}
       {showGhost && ghostPlayer && (
         <CheckerToken
@@ -209,6 +219,7 @@ type Props = {
   onPressOut?: () => void;
   dragEnabled?: boolean;
   isDragging?: boolean;
+  dragOverlay?: DragOverlayRefs;
   onDragAttempt?: (pointIndex: number) => void;
   onDragStart?: (pointIndex: number, absoluteX: number, absoluteY: number) => void;
   onDragMove?: (absoluteX: number, absoluteY: number) => void;
@@ -233,6 +244,7 @@ export function PointColumn({
   onPressOut,
   dragEnabled = false,
   isDragging = false,
+  dragOverlay,
   onDragAttempt,
   onDragStart,
   onDragMove,
@@ -280,6 +292,7 @@ export function PointColumn({
         hintTopChecker={isMovableSource}
         dragEnabled={dragEnabled}
         isDragging={isDragging}
+        dragOverlay={dragOverlay}
         onDragAttempt={onDragAttempt}
         onDragStart={onDragStart}
         onDragMove={onDragMove}

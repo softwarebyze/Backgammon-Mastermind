@@ -2,6 +2,7 @@ import type { PathSegment } from '@/features/game/components/board/move-path-ove
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
 import type { GameState } from '@/lib/game';
+import { useEffect } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { BoardView } from '@/features/game/components/board/board-view';
@@ -48,6 +49,10 @@ export function GameBoardSection({
   const showPath = pathSegments.length > 0;
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
 
+  useEffect(() => {
+    input.setBoardDimensions(dimensions);
+  }, [dimensions, input]);
+
   return (
     <View style={styles.boardWrap}>
       <Pressable
@@ -66,7 +71,7 @@ export function GameBoardSection({
             dimensions={dimensions}
             previewTarget={interactionEnabled ? previewTarget : null}
             moveAnimation={boardAnimation}
-            dragVisual={interactionEnabled ? input.dragVisual : null}
+            dragFrom={interactionEnabled ? input.dragFrom : null}
             interactionEnabled={interactionEnabled}
             isReviewing={isReviewing}
             onPointPress={input.handlePointPress}
@@ -74,8 +79,8 @@ export function GameBoardSection({
             onPointPressOut={input.handlePointPressOut}
             onDragAttempt={input.handleDragAttempt}
             onDragStart={input.handleDragStart}
-            onDragMove={(x, y) => input.handleDragMove(x, y, dimensions)}
-            onDragEnd={(x, y) => input.handleDragEnd(x, y, dimensions)}
+            onDragMove={input.handleDragMove}
+            onDragEnd={input.handleDragEnd}
             onDragCancel={input.handleDragCancel}
             onBarPress={input.handleBarPress}
             onBearOffPress={input.handleBearOffPress}

@@ -1,5 +1,5 @@
-import type { Insets } from 'react-native';
-import { useMemo } from 'react';
+import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
+import { useMemo, useRef } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 
@@ -9,41 +9,46 @@ export type CheckerPanConfig = {
   onDragMove?: (absoluteX: number, absoluteY: number) => void;
   onDragEnd?: (absoluteX: number, absoluteY: number) => void;
   onDragCancel?: () => void;
-  /** Extra touch margin beyond the stack bounds (helps single-checker grabs). */
-  hitSlop?: number | Insets;
+  overlay?: DragOverlayRefs;
 };
 
 /** Pan a checker stack — one GestureDetector per hook instance (required on web). */
 export function useCheckerPan(from: number, enabled: boolean, config: CheckerPanConfig) {
-  const { onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel, hitSlop } = config;
+  const configRef = useRef(config);
+  configRef.current = config;
+  const overlay = config.overlay;
+
   return useMemo(() => {
-    if (!enabled || !onDragStart || !onDragMove || !onDragEnd) {
+    if (!enabled || !config.onDragStart || !config.onDragMove || !config.onDragEnd) {
       return Gesture.Pan().enabled(false);
     }
-    const pan = Gesture.Pan()
+    return Gesture.Pan()
       .minDistance(8)
       .onBegin(() => {
+        const { onDragAttempt } = configRef.current;
         if (onDragAttempt) {
           runOnJS(onDragAttempt)(from);
         }
       })
       .onStart((e) => {
-        runOnJS(onDragStart)(from, e.absoluteX, e.absoluteY);
+        runOnJS(configRef.current.onDragStart!)(from, e.absoluteX, e.absoluteY);
       })
       .onUpdate((e) => {
-        runOnJS(onDragMove)(e.absoluteX, e.absoluteY);
+        'worklet';
+        const o = configRef.current.overlay;
+        if (o) {
+          o.x.value = e.absoluteX - o.originLeft.value;
+          o.y.value = e.absoluteY - o.originTop.value;
+        }
+        runOnJS(configRef.current.onDragMove!)(e.absoluteX, e.absoluteY);
       })
       .onEnd((e) => {
-        runOnJS(onDragEnd)(e.absoluteX, e.absoluteY);
+        runOnJS(configRef.current.onDragEnd!)(e.absoluteX, e.absoluteY);
       })
       .onFinalize((_e, success) => {
-        if (!success && onDragCancel) {
-          runOnJS(onDragCancel)();
+        if (!success && configRef.current.onDragCancel) {
+          runOnJS(configRef.current.onDragCancel)();
         }
       });
-    if (hitSlop !== undefined) {
-      pan.hitSlop(hitSlop);
-    }
-    return pan;
-  }, [enabled, hitSlop, onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel, from]);
+  }, [enabled, from, overlay]);
 }

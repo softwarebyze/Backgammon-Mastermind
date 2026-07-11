@@ -17,12 +17,6 @@ function triggerHaptic(fn: () => Promise<void>) {
   void fn().catch(() => {});
 }
 
-export type DragVisual = {
-  from: number;
-  boardX: number;
-  boardY: number;
-};
-
 export type InputNudge = 'roll' | null;
 
 const NUDGE_MS = 2200;
@@ -45,7 +39,11 @@ export function useGameInput() {
   }, [turnKey]);
 
   const dragFromRef = useRef<number | null>(null);
-  const [dragVisual, setDragVisual] = useState<DragVisual | null>(null);
+  const [dragFrom, setDragFrom] = useState<number | null>(null);
+  const previewTargetRef = useRef<number | null>(null);
+  const stateRef = useRef(state);
+  stateRef.current = state;
+  const boardDimsRef = useRef<BoardDimensions | null>(null);
   const [inputNudge, setInputNudge] = useState<InputNudge>(null);
   const nudgeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -77,9 +75,29 @@ export function useGameInput() {
     }
   }, []);
 
+  const setPreviewTargetIfChanged = useCallback((target: number | null) => {
+    if (previewTargetRef.current === target) {
+      return;
+    }
+    previewTargetRef.current = target;
+    setPreviewTarget(target);
+  }, [setPreviewTarget]);
+
+  const setBoardDimensions = useCallback((dims: BoardDimensions) => {
+    boardDimsRef.current = dims;
+  }, []);
+
   // Don't show a stale roll nudge after dice are already rolled.
   const activeNudge: InputNudge
     = inputNudge === 'roll' && needsRollFirst(state?.phase) ? 'roll' : null;
+
+  const endDrag = useCallback(() => {
+    dragFromRef.current = null;
+    previewTargetRef.current = null;
+    setDragFrom(null);
+    setPreviewTarget(null);
+  }, [setPreviewTarget]);
+
   const handlePointPress = useCallback(
     (pointIndex: number) => {
       if (!state || isAnimating) {
@@ -138,6 +156,7 @@ export function useGameInput() {
   );
 
   const handlePointPressOut = useCallback(() => {
+    previewTargetRef.current = null;
     setPreviewTarget(null);
   }, [setPreviewTarget]);
 
@@ -151,54 +170,56 @@ export function useGameInput() {
     }
   }, [state, isAnimating, isHumanTurn, nudgeRoll]);
 
-  const handleDragStart = useCallback((from: number, boardX: number, boardY: number) => {
-    if (!state || isAnimating || !isHumanTurn) {
+  const handleDragStart = useCallback((from: number, _boardX: number, _boardY: number) => {
+    const s = stateRef.current;
+    if (!s || isAnimating || !isHumanTurn) {
       return;
     }
-    // Already nudged on touch-down — don't lift a checker while waiting to roll.
-    if (needsRollFirst(state.phase)) {
+    if (needsRollFirst(s.phase)) {
       return;
     }
     if (!canInteract) {
       return;
     }
     if (from === BAR_POINT) {
-      if (state.bar[state.currentPlayer] === 0) {
+      if (s.bar[s.currentPlayer] === 0) {
         return;
       }
     }
     else {
-      const point = state.points[from];
-      if (!point || point.player !== state.currentPlayer || point.count === 0) {
+      const point = s.points[from];
+      if (!point || point.player !== s.currentPlayer || point.count === 0) {
         return;
       }
     }
-    const legal = getLegalMoves({ ...state, selectedPoint: from }).filter(m => m.from === from);
+    const legal = getLegalMoves({ ...s, selectedPoint: from }).filter(m => m.from === from);
     if (legal.length === 0) {
       triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
       return;
     }
     dragFromRef.current = from;
+    previewTargetRef.current = null;
     selectPoint(from);
-    setDragVisual({ from, boardX, boardY });
+    setDragFrom(from);
     triggerHaptic(() => Haptics.selectionAsync());
-  }, [state, isAnimating, isHumanTurn, canInteract, selectPoint]);
+  }, [isAnimating, isHumanTurn, canInteract, selectPoint]);
 
-  const handleDragMove = useCallback((boardX: number, boardY: number, dims: BoardDimensions) => {
+  const handleDragMove = useCallback((boardX: number, boardY: number) => {
     const from = dragFromRef.current;
-    if (!state || from === null) {
+    const s = stateRef.current;
+    const dims = boardDimsRef.current;
+    if (!s || from === null || !dims) {
       return;
     }
-    setDragVisual({ from, boardX, boardY });
-    setPreviewTarget(previewFromDrag({ state, from, boardX, boardY, dims }));
-  }, [state, setPreviewTarget]);
+    setPreviewTargetIfChanged(previewFromDrag({ state: s, from, boardX, boardY, dims }));
+  }, [setPreviewTargetIfChanged]);
 
-  const handleDragEnd = useCallback((boardX: number, boardY: number, dims: BoardDimensions) => {
+  const handleDragEnd = useCallback((boardX: number, boardY: number) => {
     const from = dragFromRef.current;
-    dragFromRef.current = null;
-    setDragVisual(null);
-    setPreviewTarget(null);
-    if (!state || from === null || !canInteract) {
+    const s = stateRef.current;
+    const dims = boardDimsRef.current;
+    endDrag();
+    if (!s || from === null || !canInteract || !dims) {
       return;
     }
     const target = resolveDropTarget(boardX, boardY, dims);
@@ -206,7 +227,7 @@ export function useGameInput() {
       selectPoint(null);
       return;
     }
-    const resolved = resolveDragMove(state, from, target);
+    const resolved = resolveDragMove(s, from, target);
     if (!resolved) {
       triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
       selectPoint(null);
@@ -219,13 +240,11 @@ export function useGameInput() {
     else {
       doMoveSequence(resolved.moves);
     }
-  }, [state, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget]);
+  }, [canInteract, doMove, doMoveSequence, selectPoint, endDrag]);
 
   const handleDragCancel = useCallback(() => {
-    dragFromRef.current = null;
-    setDragVisual(null);
-    setPreviewTarget(null);
-  }, [setPreviewTarget]);
+    endDrag();
+  }, [endDrag]);
 
   const handleBearOffPress = useCallback(() => {
     if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
@@ -311,7 +330,8 @@ export function useGameInput() {
   return {
     state,
     previewTarget,
-    dragVisual,
+    dragFrom,
+    setBoardDimensions,
     inputNudge: activeNudge,
     handlePointPress,
     handlePointPressIn,
