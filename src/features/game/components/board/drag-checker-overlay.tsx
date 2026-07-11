@@ -2,6 +2,7 @@ import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-
 import type { Player } from '@/lib/game/types';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
+import { dragOverlayFingerLift } from '@/features/game/drag-overlay-offset';
 import { CheckerToken } from './checker-token';
 
 type Props = {
@@ -10,8 +11,11 @@ type Props = {
   overlay: Pick<DragOverlayRefs, 'x' | 'y'>;
 };
 
-/** Floating checker under the finger — position driven by Reanimated shared values. */
+/** Floating checker above the finger — position driven by Reanimated shared values. */
 export function DragCheckerOverlay({ player, checkerSize, overlay }: Props) {
+  const overlayX = overlay.x;
+  const overlayY = overlay.y;
+  const fingerLift = dragOverlayFingerLift(checkerSize);
   const style = useAnimatedStyle(() => ({
     position: 'absolute',
     left: 0,
@@ -21,8 +25,9 @@ export function DragCheckerOverlay({ player, checkerSize, overlay }: Props) {
     zIndex: 100,
     elevation: 100,
     transform: [
-      { translateX: overlay.x.value - checkerSize / 2 },
-      { translateY: overlay.y.value - checkerSize / 2 },
+      { translateX: overlayX.value - checkerSize / 2 },
+      // Visual only — drop targeting uses raw finger coords, not this lift.
+      { translateY: overlayY.value - checkerSize / 2 - fingerLift },
     ],
   }));
 
