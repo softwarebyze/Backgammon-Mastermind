@@ -10,6 +10,7 @@ import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHig
 import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { BAR_POINT } from '@/lib/game/constants';
 import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations } from '@/lib/game/moves';
 import { BarArea } from './bar-area';
@@ -217,6 +218,7 @@ export function BoardView({
 
   const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
   const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
+  const barMovable = state.bar[state.currentPlayer] > 0;
 
   return (
     <View
@@ -269,6 +271,13 @@ export function BoardView({
               onBarPress();
             }
           }}
+          dragEnabled={canDrag && barMovable}
+          isDragging={dragFrom === BAR_POINT}
+          onDragAttempt={onDragAttempt}
+          onDragStart={handleDragStartAbs}
+          onDragMove={handleDragMoveAbs}
+          onDragEnd={handleDragEndAbs}
+          onDragCancel={onDragCancel}
           barWidth={barWidth}
           boardHeight={boardHeight}
           middleHeight={middleHeight}
