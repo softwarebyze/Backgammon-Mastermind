@@ -16,6 +16,7 @@ export function WoodSurface({ width, height }: Props) {
 
   return (
     <View
+      pointerEvents="none"
       style={{
         position: 'absolute',
         top: 0,

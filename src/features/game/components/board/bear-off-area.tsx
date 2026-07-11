@@ -148,7 +148,10 @@ export function BearOffArea({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Bear off"
-      onPress={onPress}
+      onPress={(e) => {
+        e?.stopPropagation?.();
+        onPress();
+      }}
       style={{
         width,
         height: boardHeight,
