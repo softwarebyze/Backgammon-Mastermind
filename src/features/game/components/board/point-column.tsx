@@ -1,12 +1,12 @@
 import type { BoardPoint, Player } from '@/lib/game/types';
-import { useMemo } from 'react';
 import { Pressable, View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { runOnJS, useAnimatedStyle } from 'react-native-reanimated';
+import { GestureDetector } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
 import { PointTriangle } from './point-triangle';
+import { useCheckerPan } from './use-checker-pan';
 
 const MAX_VISIBLE = 5;
 
@@ -17,37 +17,6 @@ type DragHandlers = {
   onDragEnd?: (absoluteX: number, absoluteY: number) => void;
   onDragCancel?: () => void;
 };
-
-/** Pan from any checker in the stack — moves the top (legal) checker. */
-function useStackPan(pointIndex: number, enabled: boolean, handlers: DragHandlers) {
-  const { onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel } = handlers;
-  return useMemo(() => {
-    if (!enabled || !onDragStart || !onDragMove || !onDragEnd) {
-      return Gesture.Pan().enabled(false);
-    }
-    return Gesture.Pan()
-      .minDistance(10)
-      .onBegin(() => {
-        if (onDragAttempt) {
-          runOnJS(onDragAttempt)(pointIndex);
-        }
-      })
-      .onStart((e) => {
-        runOnJS(onDragStart)(pointIndex, e.absoluteX, e.absoluteY);
-      })
-      .onUpdate((e) => {
-        runOnJS(onDragMove)(e.absoluteX, e.absoluteY);
-      })
-      .onEnd((e) => {
-        runOnJS(onDragEnd)(e.absoluteX, e.absoluteY);
-      })
-      .onFinalize((_e, success) => {
-        if (!success && onDragCancel) {
-          runOnJS(onDragCancel)();
-        }
-      });
-  }, [enabled, onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel, pointIndex]);
-}
 
 type CheckersProps = {
   point: BoardPoint;
@@ -82,6 +51,42 @@ function stackStyle(opts: {
   };
 }
 
+function checkerInStack(opts: {
+  isTop: boolean;
+  offset: number;
+  checkerSize: number;
+  zIndex: number;
+}) {
+  const { isTop, offset, checkerSize, zIndex } = opts;
+  return {
+    position: 'absolute' as const,
+    [isTop ? 'top' : 'bottom']: offset,
+    left: 0,
+    zIndex,
+    width: checkerSize,
+    height: checkerSize,
+  };
+}
+
+function stackBounds(opts: {
+  isTop: boolean;
+  colWidth: number;
+  checkerSize: number;
+  stackStep: number;
+  visibleCount: number;
+}) {
+  const { isTop, colWidth, checkerSize, stackStep, visibleCount } = opts;
+  const height = checkerSize + Math.max(0, visibleCount - 1) * stackStep;
+  return {
+    position: 'absolute' as const,
+    [isTop ? 'top' : 'bottom']: 0,
+    left: (colWidth - checkerSize) / 2,
+    width: checkerSize,
+    height,
+    zIndex: visibleCount + 1,
+  };
+}
+
 function PointCheckers({
   point,
   pointIndex,
@@ -101,14 +106,15 @@ function PointCheckers({
   onDragEnd,
   onDragCancel,
 }: CheckersProps) {
-  const pan = useStackPan(pointIndex, dragEnabled, {
+  const pan = useCheckerPan(pointIndex, dragEnabled, {
     onDragAttempt,
     onDragStart,
     onDragMove,
     onDragEnd,
     onDragCancel,
   });
-  const stackStyleAnim = useAnimatedStyle(() => ({
+  // Only the piece leaving the stack fades — rest of the stack stays solid.
+  const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
   }));
 
@@ -116,7 +122,7 @@ function PointCheckers({
     return null;
   }
 
-  return (
+  const stackContent = (
     <>
       {Array.from({ length: visibleCount }, (_, i) => {
         const offset = i * stackStep;
@@ -129,14 +135,35 @@ function PointCheckers({
             showMoveHint={isTopChecker && hintTopChecker && !isDragging}
           />
         );
-        const style = stackStyle({ isTop, offset, colWidth, checkerSize, zIndex: i + 1 });
-
+        const CheckerWrap = isTopChecker ? Animated.View : View;
         return (
-          <GestureDetector key={i} gesture={pan}>
-            <Animated.View style={[style, stackStyleAnim]}>{token}</Animated.View>
-          </GestureDetector>
+          <CheckerWrap
+            key={i}
+            style={[
+              checkerInStack({ isTop, offset, checkerSize, zIndex: i + 1 }),
+              isTopChecker ? topDragStyle : undefined,
+            ]}
+          >
+            {token}
+          </CheckerWrap>
         );
       })}
+    </>
+  );
+
+  const stackHitArea = stackBounds({ isTop, colWidth, checkerSize, stackStep, visibleCount });
+
+  return (
+    <>
+      {dragEnabled
+        ? (
+            <GestureDetector gesture={pan}>
+              <View style={stackHitArea}>{stackContent}</View>
+            </GestureDetector>
+          )
+        : (
+            <View style={stackHitArea}>{stackContent}</View>
+          )}
       {showGhost && ghostPlayer && (
         <CheckerToken
           player={ghostPlayer}
@@ -219,7 +246,11 @@ export function PointColumn({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`Point ${pointIndex}${isSelected ? ', selected' : ''}${isLegalTarget ? ', legal move target' : ''}`}
-      onPress={onPress}
+      onPress={(e) => {
+        // Parent board Pressable clears selection; stop bubble on web.
+        e?.stopPropagation?.();
+        onPress();
+      }}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       style={{ width: colWidth, height: pointHeight, position: 'relative', overflow: 'visible' }}
