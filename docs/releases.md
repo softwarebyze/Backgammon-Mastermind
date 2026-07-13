@@ -14,7 +14,7 @@ How we ship **TestFlight**, **App Store**, and **GitHub** releases for Backgammo
 | iOS TestFlight binary + submit | Actions → **EAS QA Build** (auto `--auto-submit` on iOS preview) |
 | Submit to TestFlight (manual) | `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
 | Push App Store listing | Actions → **EAS Metadata Push** or `pnpm metadata:push` (targets **preview** ASC app) |
-| Marketing renders | `cd remotion && pnpm render:all` → copy to `docs/remotion/after/` |
+| Marketing renders | **Automatic** on GitHub Release (`Remotion Render (Release Assets)`). Manual: `cd remotion && pnpm render:all` |
 | Tag + GitHub Release | Actions → **New App Version** (patch) or manual tag |
 
 ---
@@ -114,15 +114,27 @@ pnpm metadata:push   # uses preview submit profile → ASC app 6781121420
 
 ## Marketing assets per release
 
+**Automatic (preferred):** publishing a GitHub Release (tag → [New GitHub Release](../.github/workflows/new-github-release.yml)) triggers [Remotion Render (Release Assets)](../.github/workflows/remotion-render-release.yml). That workflow:
+
+1. Renders `LaunchHero`, `AppStorePreview`, and `FeatureSpotlight` from `remotion/`
+2. Writes `docs/remotion/after/*.mp4` and `docs/marketing/v{version}/*.mp4` (+ README)
+3. Commits and pushes to `main`
+
+You can also run it manually: Actions → **Remotion Render (Release Assets)** → Run workflow (optional version input).
+
+**Manual (local):**
+
 ```bash
 # Remotion (hero, App Store preview, social square)
 cd remotion && pnpm install && pnpm render:all
-cp remotion/out/*.mp4 ../docs/remotion/after/
-cp remotion/out/*.mp4 ../docs/marketing/v0.1.1/   # after creating folder
+cp out/*.mp4 ../docs/remotion/after/
+mkdir -p ../docs/marketing/v0.1.3 && cp out/*.mp4 ../docs/marketing/v0.1.3/
 
 # Live app captures (web + iOS simulator)
 # See docs/marketing/v0.1.1/README.md
 ```
+
+> CI uses `--gl=swangle` (no GPU on GitHub runners). Local scripts keep `--gl=angle`. See [Remotion GL options](https://www.remotion.dev/docs/gl-options).
 
 ---
 
