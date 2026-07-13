@@ -1,0 +1,135 @@
+# Re-render Remotion marketing videos on every GitHub Release and commit
+# them to main under docs/remotion/after/ + docs/marketing/v{version}/.
+#
+# Manual: Actions → Remotion Render (Release Assets) → Run workflow
+# Local:  cd remotion && pnpm install && pnpm render:all
+#
+# Linux CI must use --gl=swangle (no GPU). Local scripts keep --gl=angle.
+# See https://www.remotion.dev/docs/gl-options
+
+name: Remotion Render (Release Assets)
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Marketing folder version without v (e.g. 0.1.3). Empty = package.json version.'
+        required: false
+        default: ''
+
+concurrency:
+  group: remotion-render-${{ github.event.release.tag_name || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  render-and-commit:
+    name: Render Remotion → commit to main
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout release / ref for render source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
+          fetch-depth: 0
+
+      - name: Resolve marketing version
+        id: ver
+        run: |
+          set -euo pipefail
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            V="${{ github.event.inputs.version }}"
+          elif [ -n "${{ github.event.release.tag_name }}" ]; then
+            V="${{ github.event.release.tag_name }}"
+            V="${V#v}"
+          else
+            V="$(node -p "require('./package.json').version")"
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "Marketing version: $V"
+
+      - name: Setup Node (remotion package)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable corepack / pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.12.3 --activate
+
+      - name: Install Remotion dependencies
+        working-directory: remotion
+        run: pnpm install --frozen-lockfile
+
+      - name: Ensure Chrome Headless Shell
+        working-directory: remotion
+        run: pnpm exec remotion browser ensure
+
+      - name: Render compositions (swangle for CPU runners)
+        working-directory: remotion
+        run: |
+          set -euo pipefail
+          pnpm exec remotion render LaunchHero out/launch-hero.mp4 --gl=swangle
+          pnpm exec remotion render AppStorePreview out/app-store-preview.mp4 --gl=swangle
+          pnpm exec remotion render FeatureSpotlight out/feature-spotlight.mp4 --gl=swangle
+          ls -lh out/*.mp4
+
+      - name: Stage outputs outside the git worktree switch
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/remotion-marketing-out
+          cp remotion/out/launch-hero.mp4 \
+             remotion/out/app-store-preview.mp4 \
+             remotion/out/feature-spotlight.mp4 \
+             /tmp/remotion-marketing-out/
+
+      - name: Checkout main for asset commit
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main-checkout
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+
+      - name: Copy assets, commit, push to main
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        working-directory: main-checkout
+        run: |
+          set -euo pipefail
+          DEST="docs/marketing/v${VERSION}"
+          mkdir -p "$DEST" docs/remotion/after
+          cp /tmp/remotion-marketing-out/*.mp4 "$DEST/"
+          cp /tmp/remotion-marketing-out/*.mp4 docs/remotion/after/
+          cat > "$DEST/README.md" <<EOF
+          # Marketing assets — v${VERSION}
+
+          Generated automatically by **Remotion Render (Release Assets)** on GitHub Release
+          (\`cd remotion && pnpm render:all\` locally; CI uses \`--gl=swangle\`).
+
+          | File | Use |
+          |------|-----|
+          | \`launch-hero.mp4\` | App Store / social vertical |
+          | \`app-store-preview.mp4\` | App Store preview video (landscape) |
+          | \`feature-spotlight.mp4\` | Square social |
+
+          Latest copies also live in [\`docs/remotion/after/\`](../../remotion/after/).
+          EOF
+          sed -i 's/^          //' "$DEST/README.md"
+
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add "$DEST" docs/remotion/after/*.mp4
+          if git diff --cached --quiet; then
+            echo "No marketing asset changes to commit."
+            exit 0
+          fi
+          git commit -m "chore(marketing): Remotion renders for v${VERSION}"
+          git push origin main
