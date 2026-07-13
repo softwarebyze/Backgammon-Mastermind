@@ -23,19 +23,13 @@ export function resolveDragMove(
   return null;
 }
 
-export function isLegalDragPreview(
+function isLegalDragPreview(
   state: GameState,
   from: number,
   to: number,
 ): boolean {
   return resolveDragMove(state, from, to) !== null;
 }
-
-export type DragSession = {
-  from: number;
-  boardX: number;
-  boardY: number;
-};
 
 export function previewFromDrag(opts: {
   state: GameState;
