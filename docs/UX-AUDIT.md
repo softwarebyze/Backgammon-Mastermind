@@ -1,7 +1,6 @@
 # UX & Product Audit (2026-06-27)
 
-Master checklist for turning Backgammon Mastermind into a polished, share-ready app.  
-**Accept fixes selectively** — each row maps to a GitHub issue you can close or re-prioritize.
+Frozen historical snapshot from **2026-06-27**. **Live priorities:** [`docs/product-backlog.md`](./product-backlog.md). Do not update status rows here — update the backlog instead.
 
 Legend: 🔴 ship-blocker · 🟠 high · 🟡 medium · 🟢 polish · ⚪ process
 

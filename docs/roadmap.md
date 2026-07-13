@@ -2,25 +2,35 @@
 
 Organized milestones for shipping incrementally without bloating the app. Each milestone maps to **one or more small PRs** with tests, Maestro flows, and (where UI changes) screenshot diffs.
 
+**Active priorities & ship gates:** [`docs/product-backlog.md`](./product-backlog.md) (single source of truth). This file stays the long-horizon map (M0–M6).
+
 Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-explained) — direction visuals, interactive lessons, quizzes — and the chess.com bar for post-game analysis.
 
 ---
 
-## Active sprint — Epic #50: Game review & automation
+## Active sprint — v0.1.3 share-ready
 
-**Tracking issue:** [#50 Epic: Game review & automation](https://github.com/softwarebyze/Backgammon-Mastermind/issues/50)
+**Gate:** drag-and-drop (#67) + critical web bugs. Details in [`product-backlog.md`](./product-backlog.md).
+
+| Order | Item | Status |
+|-------|------|--------|
+| — | Epic #50 game review & automation (#43–#49, #44–#46) | **Done** on `main` (v0.1.2 / #88) |
+| 1 | Drag-and-drop checkers (#67) | Next |
+| 2 | Web share blockers (restart, options dismiss, dice dots, board fit) | Next |
+
+---
+
+## Completed — Epic #50: Game review & automation
 
 | Order | Issue | PR scope | Status |
 |-------|-------|----------|--------|
 | 1 | [#43](https://github.com/softwarebyze/Backgammon-Mastermind/issues/43) Show rolled dice when bar entry blocked | `no-move` phase + End Turn UX | Done (#56) |
 | 2 | [#49](https://github.com/softwarebyze/Backgammon-Mastermind/issues/49) Replace swipe-back with intentional exit | Header back / confirm dialog | Done (#58) |
 | 3 | [#47](https://github.com/softwarebyze/Backgammon-Mastermind/issues/47) Auto-roll dice (settings) | Gameplay helpers prefs | Done (#59) |
-| 4 | [#48](https://github.com/softwarebyze/Backgammon-Mastermind/issues/48) Auto-move when one legal move | Shared with #47 | Done (#59) |
+| 4 | [#48](https://github.com/softwarebyze/Backgammon-Mastermind/issues/48) Auto-move when only one legal move | Shared with #47 | Done (#59) |
 | 5 | [#45](https://github.com/softwarebyze/Backgammon-Mastermind/issues/45) Full move history log | `move-log.ts` + options panel | Done (#60) |
-| 6 | [#44](https://github.com/softwarebyze/Backgammon-Mastermind/issues/44) Undo / redo moves | Snapshot stack (shares infra with #45) | In progress |
-| 7 | [#46](https://github.com/softwarebyze/Backgammon-Mastermind/issues/46) Replay scrubber | Builds on snapshots + log | Backlog |
-
-**Dependency note:** #45 → #44 → #46 share a move-snapshot model. #47/#48 share settings UI. #43 and #49 are independent polish.
+| 6 | [#44](https://github.com/softwarebyze/Backgammon-Mastermind/issues/44) Undo / redo moves | Snapshot stack | Done (#88) |
+| 7 | [#46](https://github.com/softwarebyze/Backgammon-Mastermind/issues/46) Replay scrubber | Timeline + path overlay | Done v1 (#88) |
 
 ---
 
