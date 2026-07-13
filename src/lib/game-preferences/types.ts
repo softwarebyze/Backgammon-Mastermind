@@ -13,7 +13,7 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   showMoveHints: false,
   showDirectionOverlay: false,
   showPointNumbers: false,
-  diceDisplayStyle: 'numbers',
+  diceDisplayStyle: 'dots',
   autoRoll: false,
   autoMoveWhenForced: false,
 };
