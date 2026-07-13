@@ -33,6 +33,62 @@ function columnForPoint(pointIndex: number): { col: number; isTop: boolean } | n
   return null;
 }
 
+/** Inverse of `columnForPoint` — board column 0–11 + top/bottom → point 1–24. */
+export function pointIndexFromColumn(col: number, isTop: boolean): number | null {
+  if (col < 0 || col > 11) {
+    return null;
+  }
+  if (isTop) {
+    return col < 6 ? 13 + col : 19 + (col - 6);
+  }
+  return col < 6 ? 12 - col : 6 - (col - 6);
+}
+
+/**
+ * Map board-local coordinates (0,0 = top-left of playing surface) to a drop target.
+ * Returns 1–24, BAR_POINT (0), BEAR_OFF (25), or null if outside a hit region.
+ */
+export function resolveDropTarget(
+  boardX: number,
+  boardY: number,
+  dims: BoardDimensions,
+): number | null {
+  const { colWidth, pointHeight, middleHeight, barWidth, bearOffWidth, boardWidth, boardHeight }
+    = dims;
+
+  if (boardX < 0 || boardY < 0 || boardX > boardWidth || boardY > boardHeight) {
+    return null;
+  }
+
+  const pointsWidth = 12 * colWidth + barWidth;
+  if (boardX >= pointsWidth && boardX <= pointsWidth + bearOffWidth) {
+    return BEAR_OFF;
+  }
+
+  if (boardX >= 6 * colWidth && boardX < 6 * colWidth + barWidth) {
+    return BAR_POINT;
+  }
+
+  // Middle groove — not a drop target
+  if (boardY >= pointHeight && boardY < pointHeight + middleHeight) {
+    return null;
+  }
+
+  const isTop = boardY < pointHeight;
+  let col: number;
+  if (boardX < 6 * colWidth) {
+    col = Math.floor(boardX / colWidth);
+  }
+  else if (boardX >= 6 * colWidth + barWidth) {
+    col = 6 + Math.floor((boardX - 6 * colWidth - barWidth) / colWidth);
+  }
+  else {
+    return BAR_POINT;
+  }
+
+  return pointIndexFromColumn(col, isTop);
+}
+
 export type CheckerAnchorOptions = {
   pointIndex: number;
   dims: BoardDimensions;

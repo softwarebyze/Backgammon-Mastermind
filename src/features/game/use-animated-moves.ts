@@ -1,4 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { PointAnchor } from '@/features/game/board-point-layout';
+import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 
@@ -8,6 +10,10 @@ import { playValidatedMoveSequence } from '@/features/game/play-validated-move-s
 import { useAnimationWatchdogs } from '@/features/game/use-animation-watchdogs';
 
 export type { MoveAnimationFrame } from '@/features/game/move-animation';
+
+export type AnimatedMoveOpts = {
+  fromAnchor?: PointAnchor;
+};
 
 export function useAnimatedMoves(
   state: GameState | null,
@@ -54,7 +60,7 @@ export function useAnimatedMoves(
   const playMove = useCallback((
     snapshot: GameState,
     move: Move,
-    onComplete?: (next: GameState) => void,
+    playOpts?: PlayMoveOpts,
   ) => {
     createPlayMove({
       generationRef,
@@ -63,10 +69,14 @@ export function useAnimatedMoves(
       setState,
       setMoveAnimation,
       onMoveApplied,
-    })(snapshot, move, onComplete);
+    })(snapshot, move, playOpts);
   }, [setState, onMoveApplied]);
 
-  const playMoveSequence = useCallback((snapshot: GameState, moves: Move[]) => {
+  const playMoveSequence = useCallback((
+    snapshot: GameState,
+    moves: Move[],
+    playOpts?: AnimatedMoveOpts,
+  ) => {
     const gen = generationRef.current;
     commitGenRef.current = gen;
     playValidatedMoveSequence({
@@ -82,23 +92,24 @@ export function useAnimatedMoves(
       setMoveAnimation,
       setSequenceActive,
       isCommitLive,
+      fromAnchor: playOpts?.fromAnchor,
     });
   }, [isCommitLive, playMove, onMoveApplied, setState]);
 
-  const doMove = useCallback((move: Move) => {
+  const doMove = useCallback((move: Move, playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;
     if (!snapshot || snapshot.phase !== 'moving' || isAnimatingRef.current) {
       return;
     }
-    playMove(snapshot, move);
+    playMove(snapshot, move, playOpts);
   }, [playMove]);
 
-  const doMoveSequence = useCallback((moves: Move[]) => {
+  const doMoveSequence = useCallback((moves: Move[], playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;
     if (!snapshot || snapshot.phase !== 'moving' || isAnimatingRef.current) {
       return;
     }
-    playMoveSequence(snapshot, moves);
+    playMoveSequence(snapshot, moves, playOpts);
   }, [playMoveSequence]);
 
   return {

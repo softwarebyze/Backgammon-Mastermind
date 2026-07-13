@@ -1,3 +1,4 @@
+import type { PointAnchor } from '@/features/game/board-point-layout';
 import type { BoardPoint, GameState, Move, Player } from '@/lib/game/types';
 import { bearOffTokenSize } from '@/features/game/bear-off-layout';
 import { opponent } from '@/lib/game';
@@ -12,6 +13,8 @@ export type CheckerSlide = {
   player: Player;
   sourceStackCount: number;
   destStackCount: number;
+  /** Optional board-local center override (e.g. finger release after a drag). */
+  fromAnchor?: PointAnchor;
 };
 
 export type MoveAnimationFrame = {
@@ -26,6 +29,8 @@ export type MoveAnimationFrame = {
   destStackCount: number;
   /** Opponent blot sent to the bar on a hit — animates in parallel with the mover. */
   capture?: CheckerSlide;
+  /** Start the mover slide from this board-local center instead of the source stack. */
+  fromAnchor?: PointAnchor;
   /** Override slide duration (e.g. faster review scrub). */
   durationMs?: number;
   onFinish: () => void;
@@ -85,10 +90,15 @@ function buildCaptureSlide(snapshot: GameState, move: Move): CheckerSlide | unde
   };
 }
 
+export type BuildMoveAnimationOpts = {
+  onFinish: () => void;
+  fromAnchor?: PointAnchor;
+};
+
 export function buildMoveAnimationFrame(
   snapshot: GameState,
   move: Move,
-  onFinish: () => void,
+  opts: BuildMoveAnimationOpts,
 ): MoveAnimationFrame {
   const fromCount = countAtPoint(snapshot, move.from, snapshot.currentPlayer);
 
@@ -100,7 +110,8 @@ export function buildMoveAnimationFrame(
     sourceDisplayCount: Math.max(0, fromCount - 1),
     destStackCount: destStackCount(snapshot, move.to, snapshot.currentPlayer),
     capture: buildCaptureSlide(snapshot, move),
-    onFinish,
+    fromAnchor: opts.fromAnchor,
+    onFinish: opts.onFinish,
   };
 }
 

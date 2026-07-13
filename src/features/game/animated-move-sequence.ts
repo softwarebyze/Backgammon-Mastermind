@@ -1,4 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { PointAnchor } from '@/features/game/board-point-layout';
+import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 
@@ -43,19 +45,20 @@ export function runMoveSequence(
   moves: Move[],
   ctx: {
     isAnimating: boolean;
-    playMove: (snap: GameState, move: Move, onComplete?: (next: GameState) => void) => void;
+    playMove: (snap: GameState, move: Move, playOpts?: PlayMoveOpts) => void;
     onMoveApplied?: (before: GameState, move: Move, after: GameState) => void;
     setState: Dispatch<SetStateAction<GameState | null>>;
     setMoveAnimation: Dispatch<SetStateAction<MoveAnimationFrame | null>>;
     setSequenceActive: Dispatch<SetStateAction<boolean>>;
     isCommitLive: () => boolean;
+    fromAnchor?: PointAnchor;
   },
 ): void {
   if (moves.length === 0 || ctx.isAnimating) {
     return;
   }
   if (moves.length === 1) {
-    ctx.playMove(snapshot, moves[0]!);
+    ctx.playMove(snapshot, moves[0]!, { fromAnchor: ctx.fromAnchor });
     return;
   }
   ctx.setSequenceActive(true);
@@ -65,14 +68,17 @@ export function runMoveSequence(
       to: moves[moves.length - 1]!.to,
       dieIndex: 0,
     };
-    ctx.setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, () => {
-      if (!ctx.isCommitLive()) {
-        return;
-      }
-      const next = applyResolvedSequence(snapshot, moves, ctx.onMoveApplied);
-      ctx.setState(next);
-      ctx.setMoveAnimation(null);
-      ctx.setSequenceActive(false);
+    ctx.setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, {
+      fromAnchor: ctx.fromAnchor,
+      onFinish: () => {
+        if (!ctx.isCommitLive()) {
+          return;
+        }
+        const next = applyResolvedSequence(snapshot, moves, ctx.onMoveApplied);
+        ctx.setState(next);
+        ctx.setMoveAnimation(null);
+        ctx.setSequenceActive(false);
+      },
     }));
     return;
   }
@@ -83,16 +89,19 @@ export function runMoveSequence(
       ctx.setSequenceActive(false);
       return;
     }
-    ctx.playMove(snap, legal, (next) => {
-      if (!ctx.isCommitLive()) {
-        return;
-      }
-      if (index + 1 < moves.length) {
-        playFromIndex(next, index + 1);
-      }
-      else {
-        ctx.setSequenceActive(false);
-      }
+    ctx.playMove(snap, legal, {
+      fromAnchor: index === 0 ? ctx.fromAnchor : undefined,
+      onComplete: (next) => {
+        if (!ctx.isCommitLive()) {
+          return;
+        }
+        if (index + 1 < moves.length) {
+          playFromIndex(next, index + 1);
+        }
+        else {
+          ctx.setSequenceActive(false);
+        }
+      },
     });
   };
   playFromIndex(snapshot, 0);

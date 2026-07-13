@@ -17,6 +17,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 
 type Review = ReturnType<typeof useMoveReview>;
 type Input = ReturnType<typeof useGameInput>;
@@ -110,6 +111,7 @@ export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn
           isHumanTurn={!isComputerTurn && board.interactionEnabled}
           isComputerTurn={isComputerTurn}
           isReviewing={review.isReviewing}
+          captionOverride={input.inputNudge === 'roll' ? translate('game.nudge.roll_first') : null}
           onRoll={input.handleRoll}
           onReset={input.handleReset}
           onGoLive={review.goLive}

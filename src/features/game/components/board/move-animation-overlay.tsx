@@ -36,7 +36,7 @@ function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerPr
   const fromSize = checkerRenderSize(dimensions.checkerSize, slide.from);
   const toSize = checkerRenderSize(dimensions.checkerSize, slide.to);
 
-  const from = getCheckerAnchor({
+  const from = slide.fromAnchor ?? getCheckerAnchor({
     pointIndex: slide.from,
     dims: dimensions,
     stackCount: slide.sourceStackCount,
@@ -91,6 +91,7 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
     player: animation.player,
     sourceStackCount: animation.sourceStackCount,
     destStackCount: animation.destStackCount,
+    fromAnchor: animation.fromAnchor,
   };
 
   const key = animationKey(animation);
