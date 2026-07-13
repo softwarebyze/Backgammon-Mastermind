@@ -1,12 +1,16 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import type { PendingDragDrop } from '@/features/game/pending-drag-drop';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { AccessibilityInfo } from 'react-native';
 
 import { resolveDropTarget } from '@/features/game/board-point-layout';
 import { validateDragStart } from '@/features/game/drag-input';
 import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
+import { dragReleaseAnchor } from '@/features/game/drag-overlay-offset';
+import { resolvePendingDragDrop } from '@/features/game/pending-drag-drop';
 import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
@@ -40,19 +44,34 @@ export function useGameInput() {
 
   const dragFromRef = useRef<number | null>(null);
   const [dragFrom, setDragFrom] = useState<number | null>(null);
+  /** Point newly selected on this touch-down — swallow the matching tap so it doesn't re-select. */
+  const touchSelectedFromRef = useRef<number | null>(null);
+  /**
+   * Column GestureDetector taps also hit the wrapping board Pressable on native.
+   * Skip one board-press clear after a real point/bar interaction.
+   */
+  const ignoreNextBoardPressRef = useRef(false);
   const previewTargetRef = useRef<number | null>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
   const boardDimsRef = useRef<BoardDimensions | null>(null);
+  const pendingDropRef = useRef<PendingDragDrop | null>(null);
+  const wasAnimatingRef = useRef(false);
   const [inputNudge, setInputNudge] = useState<InputNudge>(null);
   const nudgeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isHumanTurn = !!state
     && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
 
+  /** Tap / select — blocked while a move animation owns the board state. */
   const canInteract = !!state
     && state.phase === 'moving'
     && !isAnimating
+    && isHumanTurn;
+
+  /** Drag may start while another checker is still sliding; drop queues until settle. */
+  const canDrag = !!state
+    && state.phase === 'moving'
     && isHumanTurn;
 
   const nudgeRoll = useCallback(() => {
@@ -98,8 +117,46 @@ export function useGameInput() {
     setPreviewTarget(null);
   }, [setPreviewTarget]);
 
+  const playResolvedDrag = useCallback((
+    resolved: NonNullable<ReturnType<typeof resolveDragMove>>,
+    fromAnchor: PendingDragDrop['fromAnchor'],
+  ) => {
+    triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+    if (resolved.kind === 'single') {
+      doMove(resolved.move, { fromAnchor });
+    }
+    else {
+      doMoveSequence(resolved.moves, { fromAnchor });
+    }
+  }, [doMove, doMoveSequence]);
+
+  // After an in-flight move commits, play any drop that was queued during the slide.
+  useEffect(() => {
+    if (wasAnimatingRef.current && !isAnimating) {
+      const pending = pendingDropRef.current;
+      pendingDropRef.current = null;
+      const s = stateRef.current;
+      if (pending && s && s.phase === 'moving' && isHumanTurn) {
+        const resolved = resolvePendingDragDrop(s, pending);
+        if (resolved) {
+          playResolvedDrag(resolved, pending.fromAnchor);
+        }
+        else {
+          triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+        }
+      }
+    }
+    wasAnimatingRef.current = isAnimating;
+  }, [isAnimating, isHumanTurn, playResolvedDrag]);
+
   const handlePointPress = useCallback(
     (pointIndex: number) => {
+      // Touch-down already selected this source; stale `state` would select again and flicker.
+      if (touchSelectedFromRef.current === pointIndex) {
+        touchSelectedFromRef.current = null;
+        ignoreNextBoardPressRef.current = true;
+        return;
+      }
       if (!state || isAnimating) {
         return;
       }
@@ -115,6 +172,7 @@ export function useGameInput() {
       }
 
       setPreviewTarget(null);
+      ignoreNextBoardPressRef.current = true;
 
       if (state.selectedPoint !== null) {
         if (state.selectedPoint === pointIndex) {
@@ -160,26 +218,26 @@ export function useGameInput() {
     setPreviewTarget(null);
   }, [setPreviewTarget]);
 
-  /** Fires on touch-down — remind to roll before the drag travels. */
-  const handleDragAttempt = useCallback((_from: number) => {
-    if (!state || isAnimating || !isHumanTurn) {
-      return;
-    }
-    if (needsRollFirst(state.phase)) {
-      nudgeRoll();
-    }
-  }, [state, isAnimating, isHumanTurn, nudgeRoll]);
-
-  const handleDragStart = useCallback((from: number, _boardX: number, _boardY: number) => {
+  /** Touch-down: select so legal destinations show before the pan min-distance. */
+  const handleDragAttempt = useCallback((from: number) => {
     const s = stateRef.current;
-    if (!s || isAnimating || !isHumanTurn) {
+    if (!s || !isHumanTurn) {
       return;
     }
     if (needsRollFirst(s.phase)) {
+      nudgeRoll();
       return;
     }
-    if (!canInteract) {
+    if (!canDrag) {
       return;
+    }
+    // Own stack that's a legal target — leave selection alone so the tap can play the move.
+    if (s.selectedPoint !== null && s.selectedPoint !== from) {
+      const isMoveTarget = s.legalMovesForSelected.some(m => m.to === from)
+        || findMoveSequence(s, s.selectedPoint, from) !== null;
+      if (isMoveTarget) {
+        return;
+      }
     }
     const validation = validateDragStart(s, from);
     if (validation !== 'ok') {
@@ -188,12 +246,41 @@ export function useGameInput() {
       }
       return;
     }
+    if (s.selectedPoint === from) {
+      return;
+    }
+    touchSelectedFromRef.current = from;
+    ignoreNextBoardPressRef.current = true;
+    if (!isAnimating) {
+      selectPoint(from);
+    }
+    triggerHaptic(() => Haptics.selectionAsync());
+  }, [isAnimating, isHumanTurn, canDrag, selectPoint, nudgeRoll]);
+
+  /** Pan activated (past min-distance) — lift the checker overlay. */
+  const handleDragStart = useCallback((from: number, _boardX: number, _boardY: number) => {
+    const s = stateRef.current;
+    if (!s || !isHumanTurn) {
+      return;
+    }
+    if (needsRollFirst(s.phase)) {
+      return;
+    }
+    if (!canDrag) {
+      return;
+    }
+    const validation = validateDragStart(s, from);
+    if (validation !== 'ok') {
+      return;
+    }
+    touchSelectedFromRef.current = null;
     dragFromRef.current = from;
     previewTargetRef.current = null;
-    selectPoint(from);
+    if (!isAnimating && s.selectedPoint !== from) {
+      selectPoint(from);
+    }
     setDragFrom(from);
-    triggerHaptic(() => Haptics.selectionAsync());
-  }, [isAnimating, isHumanTurn, canInteract, selectPoint]);
+  }, [isAnimating, isHumanTurn, canDrag, selectPoint]);
 
   const handleDragMove = useCallback((boardX: number, boardY: number) => {
     const from = dragFromRef.current;
@@ -209,29 +296,34 @@ export function useGameInput() {
     const from = dragFromRef.current;
     const s = stateRef.current;
     const dims = boardDimsRef.current;
-    endDrag();
-    if (!s || from === null || !canInteract || !dims) {
+    if (!s || from === null || !canDrag || !dims) {
+      endDrag();
       return;
     }
     const target = resolveDropTarget(boardX, boardY, dims);
     if (target === null || target === from) {
-      selectPoint(null);
+      endDrag();
+      if (!isAnimating) {
+        selectPoint(null);
+      }
+      return;
+    }
+    const fromAnchor = dragReleaseAnchor(boardX, boardY, dims.checkerSize);
+    if (isAnimating) {
+      // State still has the in-flight die — re-resolve after settle.
+      pendingDropRef.current = { from, to: target, fromAnchor };
+      endDrag();
       return;
     }
     const resolved = resolveDragMove(s, from, target);
+    endDrag();
     if (!resolved) {
       triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
       selectPoint(null);
       return;
     }
-    triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
-    if (resolved.kind === 'single') {
-      doMove(resolved.move);
-    }
-    else {
-      doMoveSequence(resolved.moves);
-    }
-  }, [canInteract, doMove, doMoveSequence, selectPoint, endDrag]);
+    playResolvedDrag(resolved, fromAnchor);
+  }, [canDrag, isAnimating, playResolvedDrag, selectPoint, endDrag]);
 
   const handleDragCancel = useCallback(() => {
     endDrag();
@@ -269,7 +361,13 @@ export function useGameInput() {
       return;
     }
 
+    ignoreNextBoardPressRef.current = true;
+
     if (state.selectedPoint === 0) {
+      if (touchSelectedFromRef.current === 0) {
+        touchSelectedFromRef.current = null;
+        return;
+      }
       selectPoint(null);
       return;
     }
@@ -284,6 +382,10 @@ export function useGameInput() {
   }, [state, isAnimating, isHumanTurn, canInteract, selectPoint, nudgeRoll]);
 
   const handleBoardPress = useCallback(() => {
+    if (ignoreNextBoardPressRef.current) {
+      ignoreNextBoardPressRef.current = false;
+      return;
+    }
     if (!state || state.phase !== 'moving' || isAnimating) {
       return;
     }
@@ -308,6 +410,7 @@ export function useGameInput() {
       confirmLabel: 'New Game',
       destructive: true,
       onConfirm: () => {
+        pendingDropRef.current = null;
         triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
         resetGame();
       },

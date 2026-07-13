@@ -1,8 +1,14 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { PointAnchor } from '@/features/game/board-point-layout';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
+
+export type PlayMoveOpts = {
+  fromAnchor?: PointAnchor;
+  onComplete?: (next: GameState) => void;
+};
 
 export function createPlayMove(opts: {
   generationRef: { current: number };
@@ -24,7 +30,7 @@ export function createPlayMove(opts: {
   return (
     snapshot: GameState,
     move: Move,
-    onComplete?: (next: GameState) => void,
+    playOpts?: PlayMoveOpts,
   ) => {
     const gen = generationRef.current;
     commitGenRef.current = gen;
@@ -38,16 +44,19 @@ export function createPlayMove(opts: {
       const legal = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
       if (!legal) {
         setMoveAnimation(null);
-        onComplete?.(snapshot);
+        playOpts?.onComplete?.(snapshot);
         return;
       }
       const next = applyMove(snapshot, legal);
       onMoveApplied?.(snapshot, legal, next);
       setState(next);
       setMoveAnimation(null);
-      onComplete?.(next);
+      playOpts?.onComplete?.(next);
     };
     finishOnceRef.current = settle;
-    setMoveAnimation(buildMoveAnimationFrame(snapshot, move, settle));
+    setMoveAnimation(buildMoveAnimationFrame(snapshot, move, {
+      onFinish: settle,
+      fromAnchor: playOpts?.fromAnchor,
+    }));
   };
 }

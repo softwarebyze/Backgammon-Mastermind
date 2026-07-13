@@ -1,4 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { PointAnchor } from '@/features/game/board-point-layout';
+import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 
@@ -13,7 +15,7 @@ import { moveSequenceInvolvesHit } from '@/lib/game';
 type PlayMove = (
   snapshot: GameState,
   move: Move,
-  onComplete?: (next: GameState) => void,
+  playOpts?: PlayMoveOpts,
 ) => void;
 
 export function playValidatedMoveSequence(opts: {
@@ -29,6 +31,7 @@ export function playValidatedMoveSequence(opts: {
   setMoveAnimation: Dispatch<SetStateAction<MoveAnimationFrame | null>>;
   setSequenceActive: Dispatch<SetStateAction<boolean>>;
   isCommitLive: () => boolean;
+  fromAnchor?: PointAnchor;
 }): void {
   const {
     snapshot,
@@ -43,6 +46,7 @@ export function playValidatedMoveSequence(opts: {
     setMoveAnimation,
     setSequenceActive,
     isCommitLive,
+    fromAnchor,
   } = opts;
 
   if (
@@ -68,7 +72,7 @@ export function playValidatedMoveSequence(opts: {
     };
     setSequenceActive(true);
     finishOnceRef.current = settle;
-    setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, settle));
+    setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, { onFinish: settle, fromAnchor }));
     return;
   }
 
@@ -80,5 +84,6 @@ export function playValidatedMoveSequence(opts: {
     setMoveAnimation,
     setSequenceActive,
     isCommitLive,
+    fromAnchor,
   });
 }

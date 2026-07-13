@@ -1,4 +1,4 @@
-import { dragOverlayFingerLift } from '@/features/game/drag-overlay-offset';
+import { dragOverlayFingerLift, dragReleaseAnchor } from '@/features/game/drag-overlay-offset';
 
 describe('dragOverlayFingerLift', () => {
   it('lifts roughly one checker above the finger', () => {
@@ -8,5 +8,9 @@ describe('dragOverlayFingerLift', () => {
 
   it('stays below 1× checker size so the piece still reads as under the touch', () => {
     expect(dragOverlayFingerLift(28)).toBeLessThan(28);
+  });
+
+  it('release anchor matches the lifted overlay center', () => {
+    expect(dragReleaseAnchor(100, 200, 24)).toEqual({ x: 100, y: 178 });
   });
 });
