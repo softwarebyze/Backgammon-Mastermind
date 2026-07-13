@@ -17,7 +17,7 @@ export function deriveGameBoardPresentation(
 ) {
   const boardState = review.displayState;
   const boardAnimation = review.isReviewing ? review.reviewAnimation : moveAnimation;
-  const interactionEnabled = !review.isReviewing && !boardAnimation;
+  const interactionEnabled = !review.isReviewing;
 
   let pathSegments: PathSegment[] = [];
   let pathFadeOutMs: number | undefined;

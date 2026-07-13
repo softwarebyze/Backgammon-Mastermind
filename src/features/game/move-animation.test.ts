@@ -20,13 +20,26 @@ describe('buildMoveAnimationFrame', () => {
     const frame = buildMoveAnimationFrame(
       state,
       { from: 8, to: 4, dieIndex: 0 },
-      () => {},
+      { onFinish: () => {} },
     );
 
     expect(frame.sourceStackCount).toBe(state.points[8].count);
     expect(frame.sourceDisplayCount).toBe(state.points[8].count - 1);
     expect(frame.destStackCount).toBe(destStackCount(state, 4, state.currentPlayer));
     expect(frame.player).toBe('white');
+    expect(frame.fromAnchor).toBeUndefined();
+  });
+
+  it('keeps an optional release anchor for drag handoff', () => {
+    let state = createInitialState('vs-human');
+    state = applyDiceRoll(state, [4, 2]);
+    const fromAnchor = { x: 40, y: 80 };
+    const frame = buildMoveAnimationFrame(
+      state,
+      { from: 8, to: 4, dieIndex: 0 },
+      { onFinish: () => {}, fromAnchor },
+    );
+    expect(frame.fromAnchor).toEqual(fromAnchor);
   });
 
   it('hides the moving checker on the bar during animation', () => {
@@ -40,7 +53,7 @@ describe('buildMoveAnimationFrame', () => {
         selectedPoint: BAR_POINT,
       },
       { from: BAR_POINT, to: 19, dieIndex: 0 },
-      () => {},
+      { onFinish: () => {} },
     );
 
     expect(frame.sourceDisplayCount).toBe(1);
@@ -64,7 +77,7 @@ describe('buildMoveAnimationFrame', () => {
     const frame = buildMoveAnimationFrame(
       snapshot,
       { from: 8, to: hitPoint, dieIndex: 0 },
-      () => {},
+      { onFinish: () => {} },
     );
 
     expect(frame.capture).toEqual({
@@ -87,7 +100,7 @@ describe('displayPointDuringAnimation', () => {
     const frame = buildMoveAnimationFrame(
       createInitialState('vs-human'),
       { from: 8, to: 4, dieIndex: 0 },
-      () => {},
+      { onFinish: () => {} },
     );
 
     expect(displayPointDuringAnimation(6, point, frame)).toBe(point);
@@ -97,7 +110,7 @@ describe('displayPointDuringAnimation', () => {
     const frame = buildMoveAnimationFrame(
       createInitialState('vs-human'),
       { from: 8, to: 4, dieIndex: 0 },
-      () => {},
+      { onFinish: () => {} },
     );
     frame.sourceDisplayCount = 0;
 
@@ -121,7 +134,7 @@ describe('isBoardHighlightActive', () => {
     const frame = buildMoveAnimationFrame(
       createInitialState('vs-human'),
       { from: 8, to: 4, dieIndex: 0 },
-      () => {},
+      { onFinish: () => {} },
     );
 
     expect(isBoardHighlightActive(null)).toBe(true);

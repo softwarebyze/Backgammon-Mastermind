@@ -18,6 +18,9 @@ export function useGameSelectPoint(
       if (point === null) {
         return { ...prev, selectedPoint: null, legalMovesForSelected: [] };
       }
+      if (prev.selectedPoint === point) {
+        return prev;
+      }
       const isBar = point === 0 && prev.bar[prev.currentPlayer] > 0;
       const isOwnPoint
         = point > 0

@@ -66,7 +66,7 @@ export function buildReviewStepAnimation(ctx: {
   }
   const before = stateAtPly(replayBaseline, moveLog, targetPly - 1);
   const move = moveFromLogEntry(before, entry);
-  const frame = buildMoveAnimationFrame({ ...before, currentPlayer: entry.player }, move, onFinish);
+  const frame = buildMoveAnimationFrame({ ...before, currentPlayer: entry.player }, move, { onFinish });
   return frame ? { ...frame, durationMs: REVIEW_CHECKER_MOVE_DURATION_MS } : null;
 }
 
