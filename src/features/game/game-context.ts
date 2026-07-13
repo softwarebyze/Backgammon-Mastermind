@@ -28,6 +28,8 @@ export type GameContextType = {
   historyPath: HistoryPathOverlay | null;
   resetAnimation: () => void;
   clearAITimeout: () => void;
+  /** Re-arm AI timers after leave-home cancelled them without changing game state. */
+  resumeAIScheduling: () => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

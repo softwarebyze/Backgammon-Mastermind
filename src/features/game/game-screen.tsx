@@ -15,7 +15,19 @@ import { useMoveReview } from '@/features/game/use-move-review';
 export function GameScreen() {
   const navigation = useNavigation();
   const input = useGameInput();
-  const { moveAnimation, resetAnimation, moveLog, replayBaseline, canUndo, canRedo, doUndo, doRedo, historyPath, ceremonyKey } = useGame();
+  const {
+    moveAnimation,
+    resetAnimation,
+    moveLog,
+    replayBaseline,
+    canUndo,
+    canRedo,
+    doUndo,
+    doRedo,
+    historyPath,
+    ceremonyKey,
+    resumeAIScheduling,
+  } = useGame();
   const { leaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
   const review = useMoveReview({
     liveState: input.state,
@@ -23,7 +35,11 @@ export function GameScreen() {
     replayBaseline,
   });
 
-  useFocusEffect(useCallback(() => () => resetAnimation(), [resetAnimation]));
+  // Leave-home clears AI timers; same in-memory state won't re-trigger the effect — kick on focus.
+  useFocusEffect(useCallback(() => {
+    resumeAIScheduling();
+    return () => resetAnimation();
+  }, [resumeAIScheduling, resetAnimation]));
 
   const openOptions = useCallback(() => {
     router.push('/game/options');

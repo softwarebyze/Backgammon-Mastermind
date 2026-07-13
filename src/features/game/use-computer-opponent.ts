@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { GameState, Move } from '@/lib/game';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 
@@ -22,6 +22,12 @@ type ComputerOpponentOptions = {
   recordNoMove: (before: GameState, after: GameState) => void;
 };
 
+export type ComputerOpponentControls = {
+  clearAITimeout: () => void;
+  /** Re-arm AI timers after leave-home cancelled them (same state, no effect deps change). */
+  resumeAIScheduling: () => void;
+};
+
 /* eslint-disable max-lines-per-function -- AI turn orchestration */
 export function useComputerOpponent({
   state,
@@ -31,18 +37,26 @@ export function useComputerOpponent({
   moveCount,
   hasRedo,
   recordNoMove,
-}: ComputerOpponentOptions) {
+}: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
+  // Bumped when returning to the game screen so timers re-schedule without a state change.
+  const [scheduleGen, setScheduleGen] = useState(0);
+
+  const clearAITimeout = useCallback(() => {
+    if (aiTimeoutRef.current !== null) {
+      clearTimeout(aiTimeoutRef.current);
+      aiTimeoutRef.current = null;
+    }
+  }, []);
+
+  const resumeAIScheduling = useCallback(() => {
+    setScheduleGen(g => g + 1);
+  }, []);
 
   useEffect(() => {
-    const clearAITimeout = () => {
-      if (aiTimeoutRef.current !== null) {
-        clearTimeout(aiTimeoutRef.current);
-        aiTimeoutRef.current = null;
-      }
-    };
+    clearAITimeout();
 
     if (!state)
       return clearAITimeout;
@@ -111,10 +125,6 @@ export function useComputerOpponent({
     };
 
     if (delay === 0) {
-      if (state.phase === 'moving') {
-        runAI();
-        return clearAITimeout;
-      }
       runAI();
       return clearAITimeout;
     }
@@ -130,12 +140,9 @@ export function useComputerOpponent({
     moveCount,
     hasRedo,
     recordNoMove,
+    clearAITimeout,
+    scheduleGen,
   ]);
 
-  return () => {
-    if (aiTimeoutRef.current !== null) {
-      clearTimeout(aiTimeoutRef.current);
-      aiTimeoutRef.current = null;
-    }
-  };
+  return { clearAITimeout, resumeAIScheduling };
 }
