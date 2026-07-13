@@ -8,7 +8,6 @@ import {
   Image,
   Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -96,13 +95,7 @@ export function HomeScreen() {
   return (
     <>
       <FocusAwareStatusBar />
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scroll}
-        contentInsetAdjustmentBehavior="automatic"
-        showsVerticalScrollIndicator={false}
-        alwaysBounceVertical={false}
-      >
+      <View style={styles.root}>
         <View style={styles.logoContainer}>
           <Image
             source={require('../../../assets/brand/display-logo.png')}
@@ -178,24 +171,20 @@ export function HomeScreen() {
           <Text style={styles.rulesText}>• Hit lone blots to send them to the bar</Text>
           <Text style={styles.rulesText}>• Bear off all 15 checkers to win</Text>
         </View>
-      </ScrollView>
+      </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
+  root: {
     flex: 1,
     backgroundColor: GAME_PALETTE.bg,
-  },
-  scroll: {
-    flexGrow: 1,
     alignItems: 'center',
     justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
     paddingHorizontal: 24,
     paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
     paddingBottom: 32,
-    ...(Platform.OS === 'web' ? { minHeight: '100%' as const } : null),
   },
   logoContainer: {
     width: 110,
