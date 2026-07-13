@@ -42,6 +42,7 @@ jobs:
               - 'pnpm-lock.yaml'
               - '.github/actions/setup-jdk-generate-apk/**'
               - '.github/scripts/run-maestro-e2e-emulator.sh'
+              - '.github/scripts/install-android-system-image.sh'
               - '.github/scripts/maestro-post-e2e-report.sh'
               - '.github/scripts/maestro-publish-screenshots.sh'
 
@@ -113,9 +114,14 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      # Transient sdkmanager ZipFile corruptions ("unknown archive") — retry before the runner
+      # so its own install is a no-op against a warm, valid system image.
+      - name: Pre-install Android system image (retry)
+        run: bash .github/scripts/install-android-system-image.sh 34 google_apis x86_64
+
       - name: Run backgammon smoke with Maestro
         id: maestro_emulator
-        uses: reactivecircus/android-emulator-runner@v2.37.0
+        uses: reactivecircus/android-emulator-runner@v2.38.0
         env:
           MAESTRO_CLI_NO_ANALYTICS: '1'
         with:
