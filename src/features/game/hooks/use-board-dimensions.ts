@@ -1,14 +1,21 @@
 import { useMemo } from 'react';
 import { Platform, useWindowDimensions } from 'react-native';
 
+import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
 const BEAR_OFF_WIDTH = 38;
 const MIDDLE_HEIGHT = 12;
 const BOARD_FRAME_WIDTH = 4;
 const MAX_BOARD_WIDTH = 720;
-/** Chrome below/above the board on web (header, pip bar, controls, timeline). */
-const WEB_VERTICAL_CHROME = 280;
+/**
+ * Chrome above/below the board on web (stack header, pip bar, turn banner,
+ * review strip, controls). Tuned so common desktop viewports keep the board
+ * fully on-screen instead of overflowing.
+ */
+const WEB_VERTICAL_CHROME = 360;
 const NATIVE_VERTICAL_CHROME = 240;
 
 export type BoardDimensions = {
@@ -48,15 +55,19 @@ function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
   };
 }
 
-/** Shrink width until the board fits in the available viewport height. */
+/**
+ * Shrink width until the board (+ optional rails) fits in the available height.
+ * @param extraHeight — e.g. point-number rails rendered inside the board frame
+ */
 export function fitBoardToViewport(
   maxOuterWidth: number,
   maxOuterHeight: number,
+  extraHeight = 0,
 ): BoardDimensions {
   let width = maxOuterWidth;
   let dims = dimensionsForWidth(width);
   // ponytail: O(steps) shrink — ceiling ~40 iterations; upgrade to binary search if needed
-  while (dims.boardOuterHeight > maxOuterHeight && width > 200) {
+  while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
     width -= 8;
     dims = dimensionsForWidth(width);
   }
@@ -65,11 +76,14 @@ export function fitBoardToViewport(
 
 export function useBoardDimensions(): BoardDimensions {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const { preferences } = useGamePreferences();
+  const showPointNumbers = preferences.showPointNumbers;
 
   return useMemo(() => {
     const maxOuterWidth = Math.min(screenWidth - BOARD_PADDING * 2, MAX_BOARD_WIDTH);
     const chrome = Platform.OS === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME;
+    const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
     const maxOuterHeight = Math.max(220, screenHeight - chrome);
-    return fitBoardToViewport(maxOuterWidth, maxOuterHeight);
-  }, [screenWidth, screenHeight]);
+    return fitBoardToViewport(maxOuterWidth, maxOuterHeight, railHeight);
+  }, [screenWidth, screenHeight, showPointNumbers]);
 }
