@@ -13,9 +13,11 @@ import { GameBoardSection } from '@/features/game/components/game-board-section'
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { MoveReviewBar } from '@/features/game/components/move-review-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
+import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 
@@ -45,6 +47,7 @@ export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn
   const state = board.boardState;
   const live = input.state!;
   const canOpeningRoll = !review.isReviewing && !isComputerTurn && live.phase === 'opening-roll';
+  const winBurstKey = useWinCelebration(input.state, review.isReviewing);
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
@@ -89,6 +92,7 @@ export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn
           onToggleReplay={review.toggleReplay}
         />
       </View>
+      <WinConfettiOverlay burstKey={winBurstKey} />
       {/* Full-screen so the scrim covers board + review (no hard cut at board edge). */}
       <View style={styles.ceremonyLayer} pointerEvents="box-none">
         <OpeningRollCeremony
