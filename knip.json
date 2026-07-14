@@ -20,7 +20,8 @@
     "xed",
     "eas",
     "maestro",
-    "skills"
+    "skills",
+    "remotion"
   ],
   "ignoreDependencies": [
     "husky",

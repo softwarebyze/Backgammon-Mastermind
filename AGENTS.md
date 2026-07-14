@@ -34,6 +34,12 @@ The repo uses Husky with:
 
 - `pre-commit`: runs `pnpm type-check` and `pnpm lint-staged`
 - `commit-msg`: runs commitlint (conventional commits required)
-- Branch protection: direct commits to `main`/`master` are blocked unless `SKIP_BRANCH_PROTECTION` is set.
+- Local hook: direct commits to `main`/`master` are blocked unless `SKIP_BRANCH_PROTECTION` is set.
 
-Cloud Agents work on feature branches, so branch protection does not apply. Set `SKIP_BRANCH_PROTECTION=1` if needed.
+Cloud Agents work on feature branches, so that local hook does not apply. Set `SKIP_BRANCH_PROTECTION=1` if needed.
+
+### Merge / review policy (mandatory)
+
+- **Never** merge PRs (`gh pr merge`) or push to `main` unless the user explicitly asks to merge.
+- Open a PR, wait for CI + human review. Fix-CI branches are still PRs — do not land them unprompted.
+- GitHub ruleset on `main` blocks force-push and branch deletion; tighten further in repo Settings → Rules if needed.

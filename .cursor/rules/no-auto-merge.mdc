@@ -1,0 +1,11 @@
+---
+description: Never merge PRs or push straight to main without explicit user approval
+alwaysApply: true
+---
+
+# No auto-merge / no silent main
+
+- **Never** run `gh pr merge`, merge via API, or push commits directly to `main` / `master` unless the user explicitly says to merge (e.g. "merge it", "merge the PR").
+- Opening a PR, fixing CI on a branch, and asking for review is fine. Merging is not.
+- If CI is red on `main`, open a fix PR and wait — do not force-land fixes without asking.
+- Prefer small, reviewable PRs over batching many issues into one merge storm.
