@@ -54,6 +54,10 @@ export function useGamePreferences() {
     updatePreferences({ autoMoveWhenForced });
   }, []);
 
+  const setSoundEnabled = useCallback((soundEnabled: boolean) => {
+    updatePreferences({ soundEnabled });
+  }, []);
+
   return {
     preferences,
     setShowMoveHints,
@@ -62,5 +66,6 @@ export function useGamePreferences() {
     setDiceDisplayStyle,
     setAutoRoll,
     setAutoMoveWhenForced,
+    setSoundEnabled,
   };
 }

@@ -3,6 +3,7 @@ import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
+import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 
 /**
  * Keeps the AI's first move from starting under the opening-roll ceremony
@@ -92,10 +93,11 @@ export function useComputerOpponent({
           if (!current || current.currentPlayer !== 'black')
             return current;
           if (current.phase === 'opening-roll') {
+            playGameSfx('roll');
             return applyOpeningDieRoll(current, rollOpeningDie());
           }
-          const dice = rollDice();
-          return applyDiceRoll(current, dice);
+          playGameSfx('roll');
+          return applyDiceRoll(current, rollDice());
         });
         return;
       }

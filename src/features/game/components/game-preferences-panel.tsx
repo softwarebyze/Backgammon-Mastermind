@@ -1,5 +1,6 @@
 import type { GamePreferences } from '@/lib/game-preferences/types';
 
+import { Feather } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
@@ -21,6 +22,7 @@ type Props = {
   onDiceDisplayStyleChange: (style: GamePreferences['diceDisplayStyle']) => void;
   onAutoRollChange: (value: boolean) => void;
   onAutoMoveWhenForcedChange: (value: boolean) => void;
+  onSoundEnabledChange: (value: boolean) => void;
   showHints?: boolean;
 };
 
@@ -32,6 +34,7 @@ export function GamePreferencesPanel({
   onDiceDisplayStyleChange,
   onAutoRollChange,
   onAutoMoveWhenForcedChange,
+  onSoundEnabledChange,
   showHints = false,
 }: Props) {
   return (
@@ -78,6 +81,18 @@ export function GamePreferencesPanel({
           value={preferences.autoMoveWhenForced}
           onChange={onAutoMoveWhenForcedChange}
         />
+        <View style={styles.divider} />
+        <SettingToggleRow
+          icon={(
+            <View style={styles.soundIcon}>
+              <Feather name="volume-2" size={22} color={GAME_PALETTE.accent} />
+            </View>
+          )}
+          label={translate('game.preferences.sound')}
+          hint={showHints ? translate('game.preferences.sound_hint') : undefined}
+          value={preferences.soundEnabled}
+          onChange={onSoundEnabledChange}
+        />
       </View>
 
       <View style={styles.diceCard}>
@@ -111,5 +126,11 @@ const styles = StyleSheet.create({
   divider: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: GAME_PALETTE.surfaceBorder,
+  },
+  soundIcon: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

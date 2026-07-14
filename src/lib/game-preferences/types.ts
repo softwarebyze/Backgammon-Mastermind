@@ -7,6 +7,8 @@ export type GamePreferences = {
   diceDisplayStyle: DiceDisplayStyle;
   autoRoll: boolean;
   autoMoveWhenForced: boolean;
+  /** Soft game one-shots (dice, hits, win). Default on; respects silent switch. */
+  soundEnabled: boolean;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -16,4 +18,5 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   diceDisplayStyle: 'dots',
   autoRoll: false,
   autoMoveWhenForced: false,
+  soundEnabled: true,
 };

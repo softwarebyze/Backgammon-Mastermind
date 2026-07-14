@@ -33,7 +33,9 @@
       "point_numbers_hint": "Show 1–24 labels on the board",
       "section_automation": "Automation",
       "section_board": "Board",
-      "section_dice": "Dice"
+      "section_dice": "Dice",
+      "sound": "Game sounds",
+      "sound_hint": "Soft dice, hits, and win cues — respects silent mode"
     },
     "review": {
       "back_to_live": "Back to live game",

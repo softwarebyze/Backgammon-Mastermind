@@ -9,6 +9,7 @@ import {
   rollDice,
   rollOpeningDie,
 } from '@/lib/game';
+import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 
 type DiceActionsArgs = {
   state: GameState | null;
@@ -47,11 +48,13 @@ export function useGameDiceActions({
         return prev;
       }
       if (prev.phase === 'opening-roll') {
+        playGameSfx('roll');
         return applyOpeningDieRoll(prev, rollOpeningDie());
       }
       if (prev.phase !== 'rolling') {
         return prev;
       }
+      playGameSfx('roll');
       return applyDiceRoll(prev, rollDice());
     });
   }, [isAnimating, setState]);

@@ -21,6 +21,7 @@ export function GameOptionsScreen() {
     setDiceDisplayStyle,
     setAutoRoll,
     setAutoMoveWhenForced,
+    setSoundEnabled,
   } = useGamePreferences();
 
   const openSettings = React.useCallback(() => {
@@ -44,6 +45,7 @@ export function GameOptionsScreen() {
         onDiceDisplayStyleChange={setDiceDisplayStyle}
         onAutoRollChange={setAutoRoll}
         onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
+        onSoundEnabledChange={setSoundEnabled}
         showHints
       />
 
