@@ -1,5 +1,10 @@
-import { Stack } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
+import { router, Stack } from 'expo-router';
+import { HeaderButton } from 'expo-router/react-navigation';
+import { Platform } from 'react-native';
 
+import { GAME_PALETTE } from '@/features/game/game-palette';
+import { hapticLight } from '@/lib/haptics';
 import {
   gameFormSheetOptions,
   gamePlayScreenOptions,
@@ -9,7 +14,28 @@ export default function GameLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={gamePlayScreenOptions} />
-      <Stack.Screen name="options" options={gameFormSheetOptions()} />
+      <Stack.Screen
+        name="options"
+        options={{
+          ...gameFormSheetOptions(),
+          // Web modal header needs an explicit dismiss — native formSheet uses the grabber.
+          ...(Platform.OS === 'web'
+            ? {
+                headerLeft: () => (
+                  <HeaderButton
+                    accessibilityLabel="Close options"
+                    onPress={() => {
+                      hapticLight();
+                      router.back();
+                    }}
+                  >
+                    <Feather name="x" size={22} color={GAME_PALETTE.accent} />
+                  </HeaderButton>
+                ),
+              }
+            : null),
+        }}
+      />
     </Stack>
   );
 }
