@@ -33,7 +33,9 @@
       "point_numbers_hint": "عرض تسميات 1–24 على اللوحة",
       "section_automation": "أتمتة",
       "section_board": "اللوحة",
-      "section_dice": "النرد"
+      "section_dice": "النرد",
+      "sound": "أصوات اللعبة",
+      "sound_hint": "نرد وضربات وفرح هادئة — تحترم الوضع الصامت"
     },
     "review": {
       "back_to_live": "العودة للعب المباشر",

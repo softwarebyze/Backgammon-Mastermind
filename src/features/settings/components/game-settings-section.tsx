@@ -20,6 +20,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
     setDiceDisplayStyle,
     setAutoRoll,
     setAutoMoveWhenForced,
+    setSoundEnabled,
   } = useGamePreferences();
 
   return (
@@ -33,6 +34,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
         onDiceDisplayStyleChange={setDiceDisplayStyle}
         onAutoRollChange={setAutoRoll}
         onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
+        onSoundEnabledChange={setSoundEnabled}
         showHints={showHints}
       />
     </View>

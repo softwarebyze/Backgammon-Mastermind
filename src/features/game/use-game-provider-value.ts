@@ -12,6 +12,8 @@ import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 import { useMoveLog } from '@/features/game/use-move-log';
 import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
 import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
+import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
+import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
 import { loadRestorableGame } from '@/lib/game/persistence';
 
 export function useGameProviderValue(): GameContextType {
@@ -31,6 +33,7 @@ export function useGameProviderValue(): GameContextType {
   const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
     recordMove(snapshot, move, next);
     recordTimelineMove(snapshot, next);
+    playGameSfxSequence(sfxKindsForMove(snapshot, move, next));
   }, [recordMove, recordTimelineMove]);
   const {
     moveAnimation,
