@@ -1,10 +1,6 @@
 # UX & Product Audit (2026-06-27)
 
-**Frozen historical snapshot from 2026-06-27.** Do not update status rows or checklists in this file — they are intentionally stale.
-
-**Live priorities:** [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) + Project board ([setup](./github-project-setup.md)). Current release: [#112 v0.1.4](https://github.com/softwarebyze/Backgammon-Mastermind/issues/112).
-
-~~The conversation backlog checkbox “Undo/redo PR #62 — defer post v0.1.2” below is obsolete — undo/redo shipped (#44 / #88).~~
+**Frozen archive.** Do not update. What’s next: [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues).
 
 Legend (historical): 🔴 ship-blocker · 🟠 high · 🟡 medium · 🟢 polish · ⚪ process
 
@@ -91,7 +87,7 @@ Reference: website uses dashed SVG paths, checker glide, destination pulse — m
 | 🔴 | #63 | v0.1.2 TestFlight after device QA |
 | 🟡 | — | Web on **Vercel** until EAS web quota resets July 1 — document in playbook |
 | ⚪ | #83 | PR QA gate + CodeRabbit |
-| ⚪ | — | GitHub Projects — see [`github-project-setup.md`](./github-project-setup.md) (Issues + Project are SOT) |
+| ⚪ | — | GitHub Projects (optional board over Issues) |
 
 ---
 
