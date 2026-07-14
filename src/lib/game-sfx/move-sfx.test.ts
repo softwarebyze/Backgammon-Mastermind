@@ -17,6 +17,25 @@ describe('sfxKindsForMove', () => {
     expect(sfxKindsForMove(snapshot, { from: 6, to: 1, dieIndex: 0 }, next)).toEqual(['hit']);
   });
 
+  it('returns place for a normal point-to-point move', () => {
+    const snapshot = createInitialState('vs-computer');
+    snapshot.phase = 'moving';
+    snapshot.currentPlayer = 'white';
+    const next = {
+      ...snapshot,
+      points: snapshot.points.map((p, i) => {
+        if (i === 24) {
+          return { player: 'white' as const, count: 1 };
+        }
+        if (i === 18) {
+          return { player: 'white' as const, count: 1 };
+        }
+        return p;
+      }),
+    };
+    expect(sfxKindsForMove(snapshot, { from: 24, to: 18, dieIndex: 0 }, next)).toEqual(['place']);
+  });
+
   it('returns bearOff for bearing off', () => {
     const snapshot = createInitialState('vs-computer');
     snapshot.phase = 'moving';
