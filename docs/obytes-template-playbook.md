@@ -739,4 +739,4 @@ After dependency changes: commit `pnpm-lock.yaml`. CI uses `--frozen-lockfile`.
 
 **Scrub / second apps:** copy multi-env `env.ts` bundle IDs so dev + preview builds coexist on one device.
 
-See also: `docs/UX-AUDIT.md` (frozen snapshot), GitHub Issues / Project ([`docs/github-project-setup.md`](./github-project-setup.md)).
+See also: [`docs/README.md`](./README.md) (docs index), [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues).

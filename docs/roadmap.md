@@ -1,26 +1,12 @@
-# Backgammon Mastermind — Product Roadmap
+# Product roadmap (long horizon)
 
-Organized milestones for shipping incrementally without bloating the app. Each milestone maps to **one or more small PRs** with tests, Maestro flows, and (where UI changes) screenshot diffs.
+Vision map (M0–M6). **Not** the sprint board — that is [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (and [Releases](https://github.com/softwarebyze/Backgammon-Mastermind/releases) for what already shipped).
 
-**Active priorities & ship gates:** [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) + Project board ([setup](./github-project-setup.md)). This file stays the long-horizon map (M0–M6) — not the sprint board.
-
-Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-explained) — direction visuals, interactive lessons, quizzes — and the chess.com bar for post-game analysis.
+Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-explained) and the chess.com bar for post-game analysis.
 
 ---
 
-## Active release — v0.1.4
-
-**Epic:** [#112](https://github.com/softwarebyze/Backgammon-Mastermind/issues/112) · label `release-0.1.4`
-
-| Order | Item | Status |
-|-------|------|--------|
-| — | v0.1.3 (DnD #67/#102, web restart #91, follow-ups #104–#107) | **Shipped** |
-| 1 | Web options dismiss (#92) + board sizing (#94) | Now |
-| 2 | Dice default dots (#93), win confetti (#89), tasteful audio (#75) | Now |
-
----
-
-## Completed — Epic #50: Game review & automation
+## Shipped earlier — Epic #50: Game review & automation
 
 | Order | Issue | PR scope | Status |
 |-------|-------|----------|--------|
@@ -149,19 +135,6 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 3. **Feature flags / settings** — risky UX (hints, overlays) default **on** for beginners, off for speed-run testing via settings.
 4. **No scope creep** — if a PR grows past ~400 lines, split.
 5. **Verification in PR body** — include test output table + Maestro screenshots when UI changes.
-
----
-
-## GitHub Projects setup
-
-Create a project board with columns: **Backlog → Ready → In Progress → In Review → Done**.
-
-Suggested labels: `milestone-1` … `milestone-6`, `ux`, `learn`, `ci`, `perf`, `good-first-issue`.
-
-```bash
-# Example: create issues from this doc (run locally)
-gh issue create --title "M1: Game state persistence" --label milestone-1
-```
 
 ---
 

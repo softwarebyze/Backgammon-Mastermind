@@ -81,14 +81,10 @@ CI rebuilds **both** dev clients when native deps or branding change (`.github/w
 
 ## ✍️ Documentation
 
-- [Obytes Template Playbook](./docs/obytes-template-playbook.md) — generic setup, CI, EAS, agent tooling
-- [Production Readiness Checklist](./docs/production-checklist.md) — CI policy, store submission steps
-- [iOS testing & EAS Metadata](./docs/ios-testing-and-store.md) — dev client, TestFlight, `store.config.json`
-- [Rules and Conventions](https://starter.obytes.com/getting-started/rules-and-conventions/)
-- [Project structure](https://starter.obytes.com/getting-started/project-structure)
-- [Environment vars and config](https://starter.obytes.com/getting-started/environment-vars-config)
-- [UI and Theming](https://starter.obytes.com/ui-and-theme/ui-theming)
-- [Components](https://starter.obytes.com/ui-and-theme/components)
-- [Forms](https://starter.obytes.com/ui-and-theme/Forms)
-- [Data fetching](https://starter.obytes.com/guides/data-fetching)
-- [Contribute to starter](https://starter.obytes.com/how-to-contribute/)
+- [Docs index](./docs/README.md) — what lives in the repo vs GitHub Issues
+- [Releases](./docs/releases.md) — how to cut TestFlight / store / GitHub releases
+- [Obytes Template Playbook](./docs/obytes-template-playbook.md) — CI, EAS, agent tooling
+- [Production checklist](./docs/production-checklist.md) — first store submission
+- [iOS testing & EAS Metadata](./docs/ios-testing-and-store.md) — dev client, TestFlight
+- [Roadmap](./docs/roadmap.md) — long-horizon product vision
+- Starter docs: [rules](https://starter.obytes.com/getting-started/rules-and-conventions/), [structure](https://starter.obytes.com/getting-started/project-structure), [env](https://starter.obytes.com/getting-started/environment-vars-config), [UI](https://starter.obytes.com/ui-and-theme/ui-theming)

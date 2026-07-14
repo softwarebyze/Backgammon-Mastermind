@@ -1,8 +1,11 @@
 # Releases
 
-How we ship **TestFlight**, **App Store**, and **GitHub** releases for Backgammon Mastermind.
+How we ship **TestFlight**, **App Store**, and **GitHub** releases.
 
-**Current line:** `0.1.x` — **shipped: v0.1.3**. **Next: [v0.1.4](https://github.com/softwarebyze/Backgammon-Mastermind/issues/112)** — web polish + confetti + dice dots + tasteful audio. Priorities live in GitHub Issues / Project ([tracking pointer](./product-backlog.md)). See [production checklist](./production-checklist.md) for first-time store setup.
+What’s already shipped: [GitHub Releases](https://github.com/softwarebyze/Backgammon-Mastermind/releases).  
+What’s next: [open issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (look for a `Release: v…` epic if one exists).
+
+First-time store setup: [production-checklist.md](./production-checklist.md).
 
 ---
 
@@ -157,4 +160,5 @@ Full first-submission checklist: [production-checklist.md](./production-checklis
 - [production-checklist.md](./production-checklist.md) — first App Store / Play submission
 - [docs/evidence/](./evidence/) — before/after QA screenshots
 - [docs/remotion/README.md](./remotion/README.md) — video compositions
-- [docs/roadmap.md](./roadmap.md) — milestone status
+- [docs/roadmap.md](./roadmap.md) — long-horizon product vision
+- [docs/README.md](./README.md) — docs index
