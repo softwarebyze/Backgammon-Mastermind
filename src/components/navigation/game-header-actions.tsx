@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { HeaderButton } from 'expo-router/react-navigation';
-import { Platform, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
@@ -16,7 +17,12 @@ type Props = {
 };
 
 const ICON = Platform.OS === 'web' ? 22 : 20;
-const GAP = Platform.OS === 'web' ? 4 : 0;
+const GAP = Platform.OS === 'web' ? 8 : 0;
+const HIT = 44;
+
+function HeaderIconSlot({ children }: { children: ReactNode }) {
+  return <View style={styles.hit}>{children}</View>;
+}
 
 /** Always reserve undo+redo slots so the header never layout-shifts. */
 export function GameHeaderActions({
@@ -40,12 +46,14 @@ export function GameHeaderActions({
           onUndo();
         }}
       >
-        <Feather
-          name="corner-up-left"
-          size={ICON}
-          color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
-          style={{ opacity: canUndo ? 1 : 0.35 }}
-        />
+        <HeaderIconSlot>
+          <Feather
+            name="corner-up-left"
+            size={ICON}
+            color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
+            style={{ opacity: canUndo ? 1 : 0.35 }}
+          />
+        </HeaderIconSlot>
       </HeaderButton>
       <HeaderButton
         accessibilityLabel="Redo move"
@@ -58,12 +66,14 @@ export function GameHeaderActions({
           onRedo();
         }}
       >
-        <Feather
-          name="corner-up-right"
-          size={ICON}
-          color={canRedo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
-          style={{ opacity: canRedo ? 1 : 0.35 }}
-        />
+        <HeaderIconSlot>
+          <Feather
+            name="corner-up-right"
+            size={ICON}
+            color={canRedo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
+            style={{ opacity: canRedo ? 1 : 0.35 }}
+          />
+        </HeaderIconSlot>
       </HeaderButton>
       <HeaderButton
         accessibilityLabel={translate('game.options.title')}
@@ -72,7 +82,9 @@ export function GameHeaderActions({
           onOptions();
         }}
       >
-        <Feather name="sliders" size={ICON} color={GAME_PALETTE.accent} />
+        <HeaderIconSlot>
+          <Feather name="sliders" size={ICON} color={GAME_PALETTE.accent} />
+        </HeaderIconSlot>
       </HeaderButton>
       <HeaderButton
         accessibilityLabel="Start new game"
@@ -81,8 +93,19 @@ export function GameHeaderActions({
           onReset();
         }}
       >
-        <Feather name="refresh-cw" size={ICON} color={GAME_PALETTE.accentDim} />
+        <HeaderIconSlot>
+          <Feather name="refresh-cw" size={ICON} color={GAME_PALETTE.accentDim} />
+        </HeaderIconSlot>
       </HeaderButton>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  hit: {
+    minWidth: HIT,
+    minHeight: HIT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

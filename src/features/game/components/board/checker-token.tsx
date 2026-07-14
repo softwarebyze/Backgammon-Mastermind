@@ -18,6 +18,8 @@ type Props = {
 };
 
 function StackCountBadge({ count, size, isWhite }: { count: number; size: number; isWhite: boolean }) {
+  // Keep the disc readable under the count — especially on web where shadows are off.
+  const badgeSize = size * 0.42;
   return (
     <View
       pointerEvents="none"
@@ -27,18 +29,18 @@ function StackCountBadge({ count, size, isWhite }: { count: number; size: number
         style={[
           styles.badge,
           {
-            minWidth: size * 0.55,
-            height: size * 0.55,
-            borderRadius: size * 0.275,
-            backgroundColor: isWhite ? 'rgba(245,240,232,0.95)' : 'rgba(40,40,55,0.92)',
-            borderColor: isWhite ? 'rgba(58,42,16,0.35)' : 'rgba(224,224,255,0.35)',
+            minWidth: badgeSize,
+            height: badgeSize,
+            borderRadius: badgeSize / 2,
+            backgroundColor: isWhite ? 'rgba(245,240,232,0.72)' : 'rgba(40,40,55,0.7)',
+            borderColor: isWhite ? 'rgba(58,42,16,0.4)' : 'rgba(224,224,255,0.4)',
           },
         ]}
       >
         <Text
           style={{
             color: isWhite ? '#3A2A10' : '#E0E0FF',
-            fontSize: size * 0.32,
+            fontSize: size * 0.26,
             fontWeight: '700',
             textAlign: 'center',
           }}
