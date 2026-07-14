@@ -1,8 +1,12 @@
 # UX & Product Audit (2026-06-27)
 
-Frozen historical snapshot from **2026-06-27**. **Live priorities:** [`docs/product-backlog.md`](./product-backlog.md). Do not update status rows here — update the backlog instead.
+**Frozen historical snapshot from 2026-06-27.** Do not update status rows or checklists in this file — they are intentionally stale.
 
-Legend: 🔴 ship-blocker · 🟠 high · 🟡 medium · 🟢 polish · ⚪ process
+**Live priorities:** [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) + Project board ([setup](./github-project-setup.md)). Current release: [#112 v0.1.4](https://github.com/softwarebyze/Backgammon-Mastermind/issues/112).
+
+~~The conversation backlog checkbox “Undo/redo PR #62 — defer post v0.1.2” below is obsolete — undo/redo shipped (#44 / #88).~~
+
+Legend (historical): 🔴 ship-blocker · 🟠 high · 🟡 medium · 🟢 polish · ⚪ process
 
 ---
 
@@ -87,7 +91,7 @@ Reference: website uses dashed SVG paths, checker glide, destination pulse — m
 | 🔴 | #63 | v0.1.2 TestFlight after device QA |
 | 🟡 | — | Web on **Vercel** until EAS web quota resets July 1 — document in playbook |
 | ⚪ | #83 | PR QA gate + CodeRabbit |
-| ⚪ | — | GitHub Projects — run `gh auth refresh -s read:project` then import `docs/issue-board.md` |
+| ⚪ | — | GitHub Projects — see [`github-project-setup.md`](./github-project-setup.md) (Issues + Project are SOT) |
 
 ---
 
@@ -101,11 +105,13 @@ See `docs/obytes-template-playbook.md` § fork delta (updated 2026-06-27):
 
 ---
 
-## Conversation backlog (not lost)
+## Conversation backlog (historical — 2026-06-27)
+
+Do not treat unchecked boxes as open work. Status as of the docs cleanup (2026-07-13):
 
 - [x] Move history v2 not in options sheet
-- [x] Settings sections Board / Dice / Automation  
-- [ ] Undo/redo PR #62 — defer post v0.1.2  
-- [ ] Consolidate timeline with #46  
-- [ ] Device verify #64–#65, #70, #72  
-- [ ] Sentry/PostHog #78 before public  
+- [x] Settings sections Board / Dice / Automation
+- [x] Undo/redo — shipped (#44 / #88); old “defer PR #62” note was stale
+- [x] Timeline / scrubber v1 — shipped (#46 / #69 / #88)
+- [x] Device verify #64–#65, #70, #72 — closed on `main`
+- [ ] Sentry/PostHog #78 before wide public — still open (not v0.1.4)

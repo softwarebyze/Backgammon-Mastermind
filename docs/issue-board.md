@@ -1,21 +1,12 @@
-# Issue board (lightweight)
+# Issue board
 
-**Source of truth for priority:** [`docs/product-backlog.md`](./product-backlog.md)
+**Deprecated as a status board.** Use [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) + the Project board ([setup](./github-project-setup.md)).
 
-GitHub Projects need `read:project` scope (`gh auth refresh -s read:project`). Until then, use the backlog + [open issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues).
+Quick links:
 
-## Now — v0.1.3 share-ready
-
-See backlog § “Next release”. Blockers: **#67 drag-and-drop**, web restart/options/dice default (#91–#93).
-
-High (same release if feasible): web board fit (#94), cancel-selection (#95).
-
-## Process
-
-| Issue | Title |
-|-------|--------|
-| #83 | PR QA gate + CodeRabbit |
-
-## Releases
-
-See [releases.md](./releases.md). **Shipped:** v0.1.2. **Next:** v0.1.3 share-ready.
+| | |
+|--|--|
+| Current release | [#112 v0.1.4](https://github.com/softwarebyze/Backgammon-Mastermind/issues/112) |
+| Ship-gate filter | [`label:release-0.1.4`](https://github.com/softwarebyze/Backgammon-Mastermind/issues?q=is%3Aissue+label%3Arelease-0.1.4) |
+| Open issues | [All open](https://github.com/softwarebyze/Backgammon-Mastermind/issues?q=is%3Aissue+is%3Aopen) |
+| How we ship | [releases.md](./releases.md) |

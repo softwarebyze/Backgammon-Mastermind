@@ -2,21 +2,21 @@
 
 Organized milestones for shipping incrementally without bloating the app. Each milestone maps to **one or more small PRs** with tests, Maestro flows, and (where UI changes) screenshot diffs.
 
-**Active priorities & ship gates:** [`docs/product-backlog.md`](./product-backlog.md) (single source of truth). This file stays the long-horizon map (M0–M6).
+**Active priorities & ship gates:** [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) + Project board ([setup](./github-project-setup.md)). This file stays the long-horizon map (M0–M6) — not the sprint board.
 
 Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-explained) — direction visuals, interactive lessons, quizzes — and the chess.com bar for post-game analysis.
 
 ---
 
-## Active sprint — v0.1.3 share-ready
+## Active release — v0.1.4
 
-**Gate:** drag-and-drop (#67) + critical web bugs. Details in [`product-backlog.md`](./product-backlog.md).
+**Epic:** [#112](https://github.com/softwarebyze/Backgammon-Mastermind/issues/112) · label `release-0.1.4`
 
 | Order | Item | Status |
 |-------|------|--------|
-| — | Epic #50 game review & automation (#43–#49, #44–#46) | **Done** on `main` (v0.1.2 / #88) |
-| 1 | Drag-and-drop checkers (#67) | Next |
-| 2 | Web share blockers (restart, options dismiss, dice dots, board fit) | Next |
+| — | v0.1.3 (DnD #67/#102, web restart #91, follow-ups #104–#107) | **Shipped** |
+| 1 | Web options dismiss (#92) + board sizing (#94) | Now |
+| 2 | Dice default dots (#93), win confetti (#89), tasteful audio (#75) | Now |
 
 ---
 

@@ -2,7 +2,7 @@
 
 How we ship **TestFlight**, **App Store**, and **GitHub** releases for Backgammon Mastermind.
 
-**Current line:** `0.1.x` — **shipped: v0.1.2**. **Next: v0.1.3 share-ready** — drag-and-drop + web blockers ([`product-backlog.md`](./product-backlog.md)). See [production checklist](./production-checklist.md) for first-time store setup.
+**Current line:** `0.1.x` — **shipped: v0.1.3**. **Next: [v0.1.4](https://github.com/softwarebyze/Backgammon-Mastermind/issues/112)** — web polish + confetti + dice dots + tasteful audio. Priorities live in GitHub Issues / Project ([tracking pointer](./product-backlog.md)). See [production checklist](./production-checklist.md) for first-time store setup.
 
 ---
 
