@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, Switch, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticSelection } from '@/lib/haptics';
@@ -39,15 +39,20 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
     },
     [onChange],
   );
+  const switchRef = React.useRef<Switch>(null);
+  const onPressRow = React.useCallback(() => {
+    handleChange(!value);
+  }, [handleChange, value]);
 
   return (
-    <View style={styles.row}>
+    <Pressable style={styles.row} onPress={onPressRow}>
       <View style={styles.iconWrap}>{iconForToggle(icon, value)}</View>
       <View style={styles.text}>
         <Text style={styles.label}>{label}</Text>
         {hint ? <Text style={styles.hint}>{hint}</Text> : null}
       </View>
       <Switch
+        ref={switchRef}
         value={value}
         onValueChange={handleChange}
         trackColor={{ false: TRACK_OFF, true: TRACK_ON }}
@@ -62,7 +67,7 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
           },
         })}
       />
-    </View>
+    </Pressable>
   );
 }
 
