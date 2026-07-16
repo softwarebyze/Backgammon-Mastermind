@@ -22,7 +22,7 @@ export function loadActiveGame(): GameState | null {
   if (saved.openingRolls) {
     return saved;
   }
-  // ponytail: legacy saves before opening-roll field shipped
+  // legacy saves before opening-roll field shipped
   return { ...saved, openingRolls: { white: null, black: null } };
 }
 

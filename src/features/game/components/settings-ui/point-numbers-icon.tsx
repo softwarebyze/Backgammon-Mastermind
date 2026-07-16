@@ -25,7 +25,7 @@ export function PointNumbersIcon({ size = 28, active = false }: Props) {
         backgroundColor: 'rgba(255,255,255,0.04)',
       }}
     >
-      <Text style={{ color, fontSize: size * 0.38, ...interFont('bold') }}>24</Text>
+      <Text style={{ color, fontSize: size * 0.48, ...interFont('bold') }}>24</Text>
     </View>
   );
 }
