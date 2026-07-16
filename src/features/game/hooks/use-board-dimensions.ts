@@ -66,7 +66,7 @@ export function fitBoardToViewport(
 ): BoardDimensions {
   let width = maxOuterWidth;
   let dims = dimensionsForWidth(width);
-  // ponytail: O(steps) shrink — ceiling ~40 iterations; upgrade to binary search if needed
+  // linear shrink — ~40 iterations max; switch to binary search if this gets hot
   while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
     width -= 8;
     dims = dimensionsForWidth(width);

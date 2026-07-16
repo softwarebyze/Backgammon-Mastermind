@@ -35,7 +35,7 @@ function startGameFromHome(
   }
 
   if (Platform.OS === 'web') {
-    // ponytail: window.confirm is binary — OK = new game; Resume on home continues
+    // window.confirm is binary — OK = new game; Resume on home continues
     confirmAction({
       title: 'Game in progress',
       message: 'Start a new game? (Use Resume on the home screen to continue the current one.)',
