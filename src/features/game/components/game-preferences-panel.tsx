@@ -67,7 +67,7 @@ export function GamePreferencesPanel({
 
       <View style={styles.card}>
         <SettingToggleRow
-          icon={<AutoRollIcon size={32} />}
+          icon={<AutoRollIcon size={42} />}
           label={translate('game.preferences.auto_roll')}
           hint={showHints ? translate('game.preferences.auto_roll_hint') : undefined}
           value={preferences.autoRoll}
@@ -75,7 +75,7 @@ export function GamePreferencesPanel({
         />
         <View style={styles.divider} />
         <SettingToggleRow
-          icon={<AutoMoveIcon size={32} />}
+          icon={<AutoMoveIcon size={42} />}
           label={translate('game.preferences.auto_move')}
           hint={showHints ? translate('game.preferences.auto_move_hint') : undefined}
           value={preferences.autoMoveWhenForced}
@@ -85,7 +85,7 @@ export function GamePreferencesPanel({
         <SettingToggleRow
           icon={(
             <View style={styles.soundIcon}>
-              <Feather name="volume-2" size={22} color={GAME_PALETTE.accent} />
+              <Feather name="volume-2" size={28} color={GAME_PALETTE.accent} />
             </View>
           )}
           label={translate('game.preferences.sound')}

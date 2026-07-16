@@ -31,3 +31,6 @@ uniwind-types.d.ts
 
 # QA video artifacts (keep untracked)
 artifacts/qa-videos/
+
+# AI skills cache
+.cache

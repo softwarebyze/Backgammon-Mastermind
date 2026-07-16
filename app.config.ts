@@ -89,6 +89,7 @@ const appPlugins: ExpoConfig['plugins'] = [
       },
     },
   ],
+  'expo-asset',
   'expo-audio',
   'expo-image',
   'expo-localization',

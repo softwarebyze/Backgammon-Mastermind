@@ -1,3 +1,4 @@
+# Disabled: rename to pr-preview.yml to re-enable (uses EAS deploy quota on every PR).
 name: PR Preview
 
 on:

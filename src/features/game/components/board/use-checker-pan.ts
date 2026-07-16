@@ -46,7 +46,7 @@ export function useCheckerPan(from: number, enabled: boolean, config: CheckerPan
   const overlayY = config.overlay?.y;
   const overlayOriginLeft = config.overlay?.originLeft;
   const overlayOriginTop = config.overlay?.originTop;
-  // ponytail: never read *.current inside useMemo — refs in that closure get serialized to the UI thread.
+  // never read *.current inside useMemo — refs in that closure get serialized to the UI thread
   const panEnabled = enabled
     && !!config.onDragStart
     && !!config.onDragMove
