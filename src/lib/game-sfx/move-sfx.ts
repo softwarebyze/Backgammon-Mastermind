@@ -4,7 +4,7 @@ import { opponent } from '@/lib/game';
 
 import { BEAR_OFF } from '@/lib/game/constants';
 
-export type GameSfxKind = 'roll' | 'hit' | 'bearOff' | 'win';
+export type GameSfxKind = 'roll' | 'place' | 'hit' | 'bearOff' | 'win';
 
 /** Which one-shots to play for a completed move (order = play order). */
 export function sfxKindsForMove(
@@ -14,11 +14,16 @@ export function sfxKindsForMove(
 ): GameSfxKind[] {
   const kinds: GameSfxKind[] = [];
   const opp = opponent(snapshot.currentPlayer);
-  if (next.bar[opp] > snapshot.bar[opp]) {
+  const isHit = next.bar[opp] > snapshot.bar[opp];
+  const isBearOff = move.to === BEAR_OFF;
+  if (isHit) {
     kinds.push('hit');
   }
-  if (move.to === BEAR_OFF) {
+  else if (isBearOff) {
     kinds.push('bearOff');
+  }
+  else {
+    kinds.push('place');
   }
   if (
     shouldCelebrateWin({
