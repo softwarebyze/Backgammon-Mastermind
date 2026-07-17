@@ -2,6 +2,7 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import type { PendingDragDrop } from '@/features/game/pending-drag-drop';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
+import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AccessibilityInfo } from 'react-native';
@@ -31,6 +32,7 @@ function needsRollFirst(phase: string | undefined): boolean {
 
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */
 export function useGameInput() {
+  const posthog = usePostHog();
   const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
   const turnKey = `${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}|${isAnimating}`;
   const [preview, setPreview] = useState<{ key: string; target: number | null }>({
@@ -122,13 +124,14 @@ export function useGameInput() {
     fromAnchor: PendingDragDrop['fromAnchor'],
   ) => {
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+    posthog.capture('move_made', { input_type: 'drag', mode: stateRef.current?.mode ?? null });
     if (resolved.kind === 'single') {
       doMove(resolved.move, { fromAnchor });
     }
     else {
       doMoveSequence(resolved.moves, { fromAnchor });
     }
-  }, [doMove, doMoveSequence]);
+  }, [posthog, doMove, doMoveSequence]);
 
   // After an in-flight move commits, play any drop that was queued during the slide.
   useEffect(() => {
@@ -182,12 +185,14 @@ export function useGameInput() {
         const move = state.legalMovesForSelected.find(m => m.to === pointIndex);
         if (move) {
           triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+          posthog.capture('move_made', { input_type: 'tap', mode: state.mode });
           doMove(move);
           return;
         }
         const sequence = findMoveSequence(state, state.selectedPoint, pointIndex);
         if (sequence) {
           triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+          posthog.capture('move_made', { input_type: 'tap', mode: state.mode });
           doMoveSequence(sequence);
           return;
         }
@@ -196,7 +201,7 @@ export function useGameInput() {
       triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
-    [state, isAnimating, isHumanTurn, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget, nudgeRoll],
+    [posthog, state, isAnimating, isHumanTurn, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget, nudgeRoll],
   );
 
   const handlePointPressIn = useCallback(
@@ -336,15 +341,17 @@ export function useGameInput() {
     const move = state.legalMovesForSelected.find(m => m.to === BEAR_OFF);
     if (move) {
       triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+      posthog.capture('move_made', { input_type: 'bear_off', mode: state.mode });
       doMove(move);
       return;
     }
     const sequence = findMoveSequence(state, state.selectedPoint, BEAR_OFF);
     if (sequence) {
       triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+      posthog.capture('move_made', { input_type: 'bear_off', mode: state.mode });
       doMoveSequence(sequence);
     }
-  }, [state, doMove, doMoveSequence, isAnimating]);
+  }, [posthog, state, doMove, doMoveSequence, isAnimating]);
 
   const handleBarPress = useCallback(() => {
     if (!state || isAnimating || !isHumanTurn) {
@@ -400,8 +407,9 @@ export function useGameInput() {
 
   const handleRoll = useCallback(() => {
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
+    posthog.capture('dice_rolled', { mode: state?.mode ?? null, phase: state?.phase ?? null });
     doRollDice();
-  }, [doRollDice]);
+  }, [posthog, state?.mode, state?.phase, doRollDice]);
 
   const handleReset = useCallback(() => {
     confirmAction({
@@ -412,10 +420,14 @@ export function useGameInput() {
       onConfirm: () => {
         pendingDropRef.current = null;
         triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+        posthog.capture('game_reset', {
+          mode: state?.mode ?? null,
+          was_game_over: state?.phase === 'game-over',
+        });
         resetGame();
       },
     });
-  }, [resetGame]);
+  }, [posthog, state?.mode, state?.phase, resetGame]);
 
   const handleBack = useCallback(() => {
     router.back();

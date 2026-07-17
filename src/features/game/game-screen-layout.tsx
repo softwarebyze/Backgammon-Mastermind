@@ -4,6 +4,8 @@ import type { useGameInput } from '@/features/game/use-game-input';
 import type { useMoveReview } from '@/features/game/use-move-review';
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
+import { usePostHog } from 'posthog-react-native';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -42,12 +44,26 @@ type Props = {
 };
 
 export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn, ceremonyKey }: Props) {
+  const posthog = usePostHog();
   const insets = useSafeAreaInsets();
   const dimensions = useBoardDimensions();
   const state = board.boardState;
   const live = input.state!;
   const canOpeningRoll = !review.isReviewing && !isComputerTurn && live.phase === 'opening-roll';
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
+  const prevPhaseRef = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    const currentPhase = input.state?.phase;
+    if (currentPhase === 'game-over' && prevPhaseRef.current !== 'game-over') {
+      posthog.capture('game_completed', {
+        mode: input.state?.mode ?? null,
+        winner: input.state?.winner ?? null,
+        move_count: moveLog.length,
+      });
+    }
+    prevPhaseRef.current = currentPhase;
+  }, [posthog, input.state, moveLog.length]);
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>

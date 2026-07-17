@@ -1,4 +1,5 @@
 import Env from 'env';
+import { usePostHog } from 'posthog-react-native';
 import { useCallback } from 'react';
 import { Alert, Platform } from 'react-native';
 
@@ -22,6 +23,7 @@ import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
 
 export function SettingsScreen() {
+  const posthog = usePostHog();
   const iconColor = colors.neutral[400];
 
   const runExternalAction = useCallback(async (action: () => Promise<void>) => {
@@ -61,17 +63,26 @@ export function SettingsScreen() {
             <SettingsItem
               text="settings.share"
               icon={<Share color={iconColor} />}
-              onPress={() => runExternalAction(shareApp)}
+              onPress={() => {
+                posthog.capture('app_share_initiated');
+                runExternalAction(shareApp);
+              }}
             />
             <SettingsItem
               text="settings.rate"
               icon={<Rate color={iconColor} />}
-              onPress={() => runExternalAction(openStoreListing)}
+              onPress={() => {
+                posthog.capture('rate_app_initiated');
+                runExternalAction(openStoreListing);
+              }}
             />
             <SettingsItem
               text="settings.support"
               icon={<Support color={iconColor} />}
-              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.support))}
+              onPress={() => {
+                posthog.capture('support_opened');
+                runExternalAction(() => openExternalUrl(APP_LINKS.support));
+              }}
             />
           </SettingsContainer>
 
