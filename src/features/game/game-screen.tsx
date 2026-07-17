@@ -1,4 +1,5 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
+import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect } from 'react';
 import { BackHandler, StyleSheet, Text, View } from 'react-native';
 
@@ -13,6 +14,7 @@ import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
 
 export function GameScreen() {
+  const posthog = usePostHog();
   const navigation = useNavigation();
   const input = useGameInput();
   const {
@@ -42,8 +44,9 @@ export function GameScreen() {
   }, [resumeAIScheduling, resetAnimation]));
 
   const openOptions = useCallback(() => {
+    posthog.capture('game_options_opened', { mode: input.state?.mode ?? null });
     router.push('/game/options');
-  }, []);
+  }, [posthog, input.state?.mode]);
 
   useGameScreenHeader({
     navigation,

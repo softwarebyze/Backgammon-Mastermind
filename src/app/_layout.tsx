@@ -8,15 +8,17 @@ import {
 } from '@expo-google-fonts/inter';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
-import { Stack, ThemeProvider } from 'expo-router';
+import { Stack, ThemeProvider, useGlobalSearchParams, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { PostHogProvider } from 'posthog-react-native';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { getThemeConfig } from '@/components/ui/use-theme-config';
+import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
 import { initAppTheme } from '@/lib/init-app-theme';
 import '@/lib/ignore-known-logs';
@@ -40,21 +42,45 @@ SplashScreen.setOptions({
 });
 
 export default function RootLayout() {
+  const pathname = usePathname();
+  const params = useGlobalSearchParams();
+  const previousPathname = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (previousPathname.current !== pathname) {
+      posthog.screen(pathname, {
+        previous_screen: previousPathname.current ?? null,
+        ...params,
+      });
+      previousPathname.current = pathname;
+    }
+  }, [pathname, params]);
+
   return (
-    <Providers>
-      <Stack>
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="game"
-          options={{
-            headerShown: false,
-            animation: 'slide_from_bottom',
-            gestureEnabled: false,
-            contentStyle: { backgroundColor: '#1E0C02' },
-          }}
-        />
-      </Stack>
-    </Providers>
+    <PostHogProvider
+      client={posthog}
+      autocapture={{
+        captureScreens: false,
+        captureTouches: true,
+        propsToCapture: ['testID'],
+        maxElementsCaptured: 20,
+      }}
+    >
+      <Providers>
+        <Stack>
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="game"
+            options={{
+              headerShown: false,
+              animation: 'slide_from_bottom',
+              gestureEnabled: false,
+              contentStyle: { backgroundColor: '#1E0C02' },
+            }}
+          />
+        </Stack>
+      </Providers>
+    </PostHogProvider>
   );
 }
 

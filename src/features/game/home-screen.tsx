@@ -1,6 +1,7 @@
 import type { GameMode, GameState } from '@/lib/game';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { usePostHog } from 'posthog-react-native';
 import { useCallback } from 'react';
 
 import {
@@ -80,16 +81,23 @@ function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) 
 
 export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
+  const posthog = usePostHog();
   const canResume = canContinueSavedGame(state);
 
   const handleStart = useCallback(
-    (mode: GameMode) => startGameFromHome(mode, state, startGame),
-    [startGame, state],
+    (mode: GameMode) => {
+      posthog.capture('game_started', { mode, had_saved_game: isResumableGame(state) });
+      startGameFromHome(mode, state, startGame);
+    },
+    [posthog, startGame, state],
   );
 
   const handleResume = useCallback(
-    () => resumeGameFromHome(state, resumeGame),
-    [resumeGame, state],
+    () => {
+      posthog.capture('game_resumed');
+      resumeGameFromHome(state, resumeGame);
+    },
+    [posthog, resumeGame, state],
   );
 
   return (
