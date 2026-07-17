@@ -143,6 +143,7 @@ function LessonScreenBody({
             onPointPress={session.onPointPress}
             onPointPressIn={session.onPointPressIn}
             onPointPressOut={session.onPointPressOut}
+            onDragAttempt={session.canDrag ? session.handleDragAttempt : undefined}
             onDragStart={session.canDrag ? session.handleDragStart : undefined}
             onDragMove={session.canDrag ? session.handleDragMove : undefined}
             onDragEnd={session.canDrag ? session.handleDragEnd : undefined}

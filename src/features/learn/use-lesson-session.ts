@@ -56,6 +56,8 @@ export function useLessonSession(lesson: LessonDefinition) {
   const [previewTarget, setPreviewTarget] = useState<number | null>(null);
   const boardDimsRef = useRef<BoardDimensions | null>(null);
   const dragFromRef = useRef<number | null>(null);
+  /** Set when drag-attempt already selected this source — skip re-select on tap. */
+  const touchSelectedFromRef = useRef<number | null>(null);
 
   const step = lesson.steps[stepIndex]!;
   const totalSteps = lesson.steps.length;
@@ -75,6 +77,7 @@ export function useLessonSession(lesson: LessonDefinition) {
 
   const resetStep = useCallback((nextStep: LessonStep) => {
     endDrag();
+    touchSelectedFromRef.current = null;
     setState(buildState(nextStep));
     setCorrectMoves(0);
     setStepComplete(nextStep.kind === 'explain');
@@ -192,6 +195,11 @@ export function useLessonSession(lesson: LessonDefinition) {
   }, [completeInteractiveStep, correctMoves, state, step, stepComplete]);
 
   const onPointPress = useCallback((index: number) => {
+    // Touch-down already selected this source; don't toggle/flicker on the tap.
+    if (touchSelectedFromRef.current === index) {
+      touchSelectedFromRef.current = null;
+      return;
+    }
     if (stepComplete && step.kind !== 'explain') {
       return;
     }
@@ -215,6 +223,10 @@ export function useLessonSession(lesson: LessonDefinition) {
   }, [handleIdentifyTap, state, step, stepComplete, tryApplyDestination]);
 
   const onBarPress = useCallback(() => {
+    if (touchSelectedFromRef.current === 0) {
+      touchSelectedFromRef.current = null;
+      return;
+    }
     if (step.kind === 'identify') {
       handleIdentifyTap(0);
       return;
@@ -241,6 +253,28 @@ export function useLessonSession(lesson: LessonDefinition) {
   const canDrag
     = step.kind === 'tryMove' && !stepComplete && !lessonFinished;
 
+  /** Finger down: select early so destinations show before pan min-distance. */
+  const handleDragAttempt = useCallback((from: number) => {
+    if (!canDrag) {
+      return;
+    }
+    // Destination stack — let the tap complete the move.
+    if (state.selectedPoint !== null && state.selectedPoint !== from) {
+      const targets = getReachableDestinations(state, state.selectedPoint);
+      if (targets.has(from)) {
+        return;
+      }
+    }
+    if (validateDragStart(state, from) !== 'ok') {
+      return;
+    }
+    if (state.selectedPoint === from) {
+      return;
+    }
+    touchSelectedFromRef.current = from;
+    setState(prev => selectSource(prev, from));
+  }, [canDrag, state]);
+
   const handleDragStart = useCallback((from: number, _boardX: number, _boardY: number) => {
     if (!canDrag) {
       return;
@@ -248,11 +282,13 @@ export function useLessonSession(lesson: LessonDefinition) {
     if (validateDragStart(state, from) !== 'ok') {
       return;
     }
+    touchSelectedFromRef.current = null;
     dragFromRef.current = from;
     setDragFrom(from);
     setPreviewTarget(null);
-    setState(prev => selectSource(prev, from));
-    hapticLight();
+    if (state.selectedPoint !== from) {
+      setState(prev => selectSource(prev, from));
+    }
   }, [canDrag, state]);
 
   const handleDragMove = useCallback((boardX: number, boardY: number) => {
@@ -280,9 +316,9 @@ export function useLessonSession(lesson: LessonDefinition) {
     tryApplyDestination(from, target);
   }, [canDrag, endDrag, tryApplyDestination]);
 
+  /** Match game input: never clear selection here — pan finalize(false) runs on taps. */
   const handleDragCancel = useCallback(() => {
     endDrag();
-    setState(prev => ({ ...prev, selectedPoint: null, legalMovesForSelected: [] }));
   }, [endDrag]);
 
   return {
@@ -307,6 +343,7 @@ export function useLessonSession(lesson: LessonDefinition) {
     dragFrom,
     canDrag,
     setBoardDimensions,
+    handleDragAttempt,
     handleDragStart,
     handleDragMove,
     handleDragEnd,
