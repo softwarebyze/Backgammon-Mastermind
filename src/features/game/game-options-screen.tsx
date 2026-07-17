@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { usePostHog } from 'posthog-react-native';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,6 +13,7 @@ import { hapticLight } from '@/lib/haptics';
 import { SETTINGS_ROW_PADDING_H } from '@/lib/ui/settings-layout';
 
 export function GameOptionsScreen() {
+  const posthog = usePostHog();
   const insets = useSafeAreaInsets();
   const {
     preferences,
@@ -23,6 +25,42 @@ export function GameOptionsScreen() {
     setAutoMoveWhenForced,
     setSoundEnabled,
   } = useGamePreferences();
+
+  const trackPreference = React.useCallback(
+    (preference: string, value: boolean | string) => {
+      posthog.capture('game_preference_changed', { preference, value });
+    },
+    [posthog],
+  );
+
+  const onShowMoveHintsChange = React.useCallback((v: boolean) => {
+    trackPreference('move_hints', v);
+    setShowMoveHints(v);
+  }, [trackPreference, setShowMoveHints]);
+  const onShowDirectionOverlayChange = React.useCallback((v: boolean) => {
+    trackPreference('direction_overlay', v);
+    setShowDirectionOverlay(v);
+  }, [trackPreference, setShowDirectionOverlay]);
+  const onShowPointNumbersChange = React.useCallback((v: boolean) => {
+    trackPreference('point_numbers', v);
+    setShowPointNumbers(v);
+  }, [trackPreference, setShowPointNumbers]);
+  const onDiceDisplayStyleChange = React.useCallback((v: Parameters<typeof setDiceDisplayStyle>[0]) => {
+    trackPreference('dice_display_style', v);
+    setDiceDisplayStyle(v);
+  }, [trackPreference, setDiceDisplayStyle]);
+  const onAutoRollChange = React.useCallback((v: boolean) => {
+    trackPreference('auto_roll', v);
+    setAutoRoll(v);
+  }, [trackPreference, setAutoRoll]);
+  const onAutoMoveWhenForcedChange = React.useCallback((v: boolean) => {
+    trackPreference('auto_move', v);
+    setAutoMoveWhenForced(v);
+  }, [trackPreference, setAutoMoveWhenForced]);
+  const onSoundEnabledChange = React.useCallback((v: boolean) => {
+    trackPreference('sound', v);
+    setSoundEnabled(v);
+  }, [trackPreference, setSoundEnabled]);
 
   const openSettings = React.useCallback(() => {
     hapticLight();
@@ -39,13 +77,13 @@ export function GameOptionsScreen() {
     >
       <GamePreferencesPanel
         preferences={preferences}
-        onShowMoveHintsChange={setShowMoveHints}
-        onShowDirectionOverlayChange={setShowDirectionOverlay}
-        onShowPointNumbersChange={setShowPointNumbers}
-        onDiceDisplayStyleChange={setDiceDisplayStyle}
-        onAutoRollChange={setAutoRoll}
-        onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
-        onSoundEnabledChange={setSoundEnabled}
+        onShowMoveHintsChange={onShowMoveHintsChange}
+        onShowDirectionOverlayChange={onShowDirectionOverlayChange}
+        onShowPointNumbersChange={onShowPointNumbersChange}
+        onDiceDisplayStyleChange={onDiceDisplayStyleChange}
+        onAutoRollChange={onAutoRollChange}
+        onAutoMoveWhenForcedChange={onAutoMoveWhenForcedChange}
+        onSoundEnabledChange={onSoundEnabledChange}
         showHints
       />
 

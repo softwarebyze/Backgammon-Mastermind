@@ -101,6 +101,8 @@ function BarStack({
 
   const stackContent = (
     <View
+      // Keep pointer target on this view while dragging — see PointColumn.
+      pointerEvents={dragEnabled ? 'box-only' : 'auto'}
       style={{
         height: halfHeight,
         alignItems: 'center',

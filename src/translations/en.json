@@ -8,6 +8,8 @@
       "goes_first": "{{player}} goes first!",
       "roll": "Roll",
       "rolls_for_opening": "{{player}} rolls for opening",
+      "tie": "Tie!",
+      "tie_again": "Same number — roll again",
       "waiting_roll": "{{player}} is rolling…",
       "who_goes_first": "Who goes first?",
       "your_roll": "Tap anywhere to roll"
@@ -63,8 +65,9 @@
     "continue": "Continue",
     "feedback": {
       "hint_nudge": "Need a nudge? Look for the highlighted spots.",
-      "illegal": "Try a highlighted point — or tap Continue for a hint.",
-      "legal_but_wrong": "That’s legal in a real game — here, try the move that teaches this idea."
+      "illegal": "Try a highlighted point — or tap Hint.",
+      "legal_but_wrong": "That’s legal in a real game — here, try the move that teaches this idea.",
+      "move_progress": "Nice — {{done}} of {{needed}} moves done."
     },
     "graduation": {
       "body": "You know the goal, the board, how turns work, hitting, and bearing off. A quick check — then your first real game.",
@@ -76,22 +79,27 @@
       "recap_2": "Roll two dice; land on open points",
       "recap_3": "Hit blots → they sit on the bar",
       "recap_4": "Bear off only from your home board",
+      "recap_5": "Games start with one die each — higher goes first (ties re-roll)",
       "title": "You’re ready to play"
     },
+    "hint": "Hint",
     "home_cta": "Learn to play",
     "home_cta_progress": "{{done}} of {{total}} lessons done",
+    "home_cta_quiz": "Quick check left — then play",
     "home_cta_ready": "You’re ready — play a real game",
     "home_cta_sub": "Interactive lessons for beginners",
     "lesson_complete": "Lesson complete!",
     "lessons": {
       "bearing_off": {
         "steps": {
-          "explain": {
-            "body": "Once every checker is in your home board (1–6), you can bear off. Roll a number that matches a point — that checker comes off the board.",
-            "title": "All home, then off"
+          "overshoot": {
+            "body": "Nothing is on the 5-point, but you rolled a 5. Bear off from your highest occupied point (the 3) — a larger die still works.",
+            "hint": "Select point 3, then tap the bear-off tray.",
+            "praise": "That’s the overshoot rule — you’ll use it a lot when bearing off.",
+            "title": "Bigger die, still off"
           },
           "try": {
-            "body": "All your checkers are home. You rolled a 3 — bear off the checker on the 3-point (tap it, then the bear-off tray).",
+            "body": "All your checkers are in home (1–6), so you can bear off. You rolled a 3 — take the checker on the 3-point off the board.",
             "hint": "Select point 3, then tap the bear-off area on the right edge.",
             "praise": "Off the board! First to bear off all 15 wins.",
             "title": "Bear one off"
@@ -147,17 +155,14 @@
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "You’re on the bar with a 4. Enter on the matching point in the opponent’s home (point 21), then you can move normally again.",
-            "hint": "Tap the bar, then tap point 21.",
+            "body": "You’re on the bar — you must enter before anything else. Die N enters on point 25−N (a 4 → point 21).",
+            "hint": "Tap the bar, then point 21 (not 23 — that’s the 2).",
             "praise": "You’re back on the board — bar checkers always enter first.",
-            "title": "Enter from the bar"
-          },
-          "explain": {
-            "body": "A single checker on a point is a blot. If you land on it, that checker goes to the bar — and that player must re-enter before moving anything else.",
-            "title": "Blots are vulnerable"
+            "title": "Enter from the bar",
+            "wrong": "That’s the 2 (point 23). Use the 4 — enter on point 21 (25−4)."
           },
           "hit": {
-            "body": "You rolled a 3. Move from the 8-point onto the lone black checker on the 5-point.",
+            "body": "A single checker is a blot. Land on it and it goes to the bar. You rolled a 3 — hit the black blot on the 5-point.",
             "hint": "Tap your checker on 8, then tap point 5.",
             "praise": "Hit! That black checker is now on the bar.",
             "title": "Hit the blot"
@@ -168,14 +173,20 @@
       },
       "moving_dice": {
         "steps": {
+          "blocked": {
+            "body": "Two or more opponent checkers block a point — you can’t land there. Tap the blocked black stack on the 5-point.",
+            "hint": "The highlighted stack of two black checkers on point 5.",
+            "praise": "Right — a made point (2+) is closed. Empty, your own, or a blot (1) are open.",
+            "title": "Blocked points"
+          },
           "doubles": {
-            "body": "Doubles give you four moves of that number. You rolled 2-2. Move a checker from the 8-point to the 6-point — twice.",
-            "hint": "Tap the 8-point, then the 6-point. Repeat for the second checker.",
+            "body": "Doubles give you four moves of that number. You rolled 2-2 — that’s four 2s. Move from the 8-point to the 6-point four times.",
+            "hint": "Tap the 8-point, then the 6-point. Do this four times — once per die.",
             "praise": "Exactly — doubles mean four moves with that number.",
             "title": "Doubles = four moves"
           },
           "explain": {
-            "body": "Each turn you roll two dice and play both numbers. You can land on empty points, your own checkers, or a lone opponent (a blot). Two or more opponent checkers block a point — like the black stack highlighted here.",
+            "body": "Each turn you roll two dice and play both numbers when you can. You may land on empty points, your own checkers, or a lone opponent (a blot).",
             "title": "Two numbers, open points"
           },
           "two_dice": {
@@ -192,23 +203,23 @@
     "locked": "Complete the previous lesson first",
     "next_lesson": "Next lesson",
     "quiz": {
+      "bar": {
+        "a": "Move your farthest checker first",
+        "b": "Enter that checker before moving anything else",
+        "c": "Skip your turn",
+        "prompt": "While you have a checker on the bar, you must…"
+      },
       "bear": {
         "a": "Whenever you roll a 6",
-        "b": "When all 15 checkers are in your home board",
-        "c": "Only after you hit a blot",
+        "b": "Only after you hit a blot",
+        "c": "When all 15 checkers are in your home board",
         "prompt": "When can you bear off?"
       },
       "blot": {
-        "a": "A single checker on a point — it can be hit",
-        "b": "Any stack of three or more",
+        "a": "Any stack of three or more",
+        "b": "A single checker on a point — it can be hit",
         "c": "The doubling cube",
         "prompt": "What is a blot?"
-      },
-      "points": {
-        "a": "12",
-        "b": "24",
-        "c": "30",
-        "prompt": "How many points are on a backgammon board?"
       }
     },
     "replay": "Replay",

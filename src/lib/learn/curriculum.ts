@@ -162,10 +162,26 @@ export const LESSONS: LessonDefinition[] = [
           placements: [
             { point: 8, player: 'white', count: 1 },
             { point: 6, player: 'white', count: 1 },
+          ],
+          dice: [3, 1],
+        },
+      },
+      {
+        id: 'move-blocked',
+        kind: 'identify',
+        titleKey: 'learn.lessons.moving_dice.steps.blocked.title',
+        bodyKey: 'learn.lessons.moving_dice.steps.blocked.body',
+        hintKey: 'learn.lessons.moving_dice.steps.blocked.hint',
+        praiseKey: 'learn.lessons.moving_dice.steps.blocked.praise',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 8, player: 'white', count: 1 },
             { point: 5, player: 'black', count: 2 },
           ],
           dice: [3, 1],
         },
+        targets: [5],
         emphasisPoints: [5],
       },
       {
@@ -200,11 +216,11 @@ export const LESSONS: LessonDefinition[] = [
         legalButWrongKey: 'learn.feedback.legal_but_wrong',
         aids: { showPointNumbers: true, showMoveHints: true },
         position: {
-          placements: [{ point: 8, player: 'white', count: 2 }],
+          placements: [{ point: 8, player: 'white', count: 4 }],
           dice: [2, 2],
         },
         acceptedMoves: [{ from: 8, to: 6 }],
-        requiredMoveCount: 2,
+        requiredMoveCount: 4,
       },
     ],
   },
@@ -214,21 +230,6 @@ export const LESSONS: LessonDefinition[] = [
     titleKey: 'learn.lessons.hitting_bar.title',
     subtitleKey: 'learn.lessons.hitting_bar.subtitle',
     steps: [
-      {
-        id: 'hit-explain',
-        kind: 'explain',
-        titleKey: 'learn.lessons.hitting_bar.steps.explain.title',
-        bodyKey: 'learn.lessons.hitting_bar.steps.explain.body',
-        aids: { showPointNumbers: true, showMoveHints: true },
-        position: {
-          placements: [
-            { point: 8, player: 'white', count: 1 },
-            { point: 5, player: 'black', count: 1 },
-          ],
-          dice: [3, 1],
-        },
-        emphasisPoints: [5],
-      },
       {
         id: 'hit-blot',
         kind: 'tryMove',
@@ -246,6 +247,7 @@ export const LESSONS: LessonDefinition[] = [
           dice: [3, 1],
         },
         acceptedMoves: [{ from: 8, to: 5 }],
+        emphasisPoints: [5],
       },
       {
         id: 'hit-enter',
@@ -254,7 +256,7 @@ export const LESSONS: LessonDefinition[] = [
         bodyKey: 'learn.lessons.hitting_bar.steps.enter.body',
         hintKey: 'learn.lessons.hitting_bar.steps.enter.hint',
         praiseKey: 'learn.lessons.hitting_bar.steps.enter.praise',
-        legalButWrongKey: 'learn.feedback.legal_but_wrong',
+        legalButWrongKey: 'learn.lessons.hitting_bar.steps.enter.wrong',
         aids: { showPointNumbers: true, showMoveHints: true },
         position: {
           bar: { white: 1 },
@@ -262,6 +264,7 @@ export const LESSONS: LessonDefinition[] = [
         },
         acceptedMoves: [{ from: 0, to: 21 }],
         emphasisBar: true,
+        emphasisPoints: [21],
       },
     ],
   },
@@ -271,22 +274,6 @@ export const LESSONS: LessonDefinition[] = [
     titleKey: 'learn.lessons.bearing_off.title',
     subtitleKey: 'learn.lessons.bearing_off.subtitle',
     steps: [
-      {
-        id: 'bear-explain',
-        kind: 'explain',
-        titleKey: 'learn.lessons.bearing_off.steps.explain.title',
-        bodyKey: 'learn.lessons.bearing_off.steps.explain.body',
-        aids: { showPointNumbers: true },
-        position: {
-          placements: [
-            { point: 6, player: 'white', count: 2 },
-            { point: 3, player: 'white', count: 1 },
-          ],
-          borneOff: { white: 12 },
-          dice: [3, 1],
-        },
-        emphasisPoints: [...HOME_POINTS],
-      },
       {
         id: 'bear-off',
         kind: 'tryMove',
@@ -305,6 +292,27 @@ export const LESSONS: LessonDefinition[] = [
           dice: [3, 1],
         },
         acceptedMoves: [{ from: 3, to: BEAR_OFF }],
+        emphasisPoints: [...HOME_POINTS],
+      },
+      {
+        id: 'bear-overshoot',
+        kind: 'tryMove',
+        titleKey: 'learn.lessons.bearing_off.steps.overshoot.title',
+        bodyKey: 'learn.lessons.bearing_off.steps.overshoot.body',
+        hintKey: 'learn.lessons.bearing_off.steps.overshoot.hint',
+        praiseKey: 'learn.lessons.bearing_off.steps.overshoot.praise',
+        legalButWrongKey: 'learn.feedback.legal_but_wrong',
+        aids: { showPointNumbers: true, showMoveHints: true },
+        position: {
+          placements: [
+            { point: 3, player: 'white', count: 1 },
+            { point: 2, player: 'white', count: 1 },
+          ],
+          borneOff: { white: 13 },
+          dice: [5, 1],
+        },
+        acceptedMoves: [{ from: 3, to: BEAR_OFF }],
+        emphasisPoints: [3],
       },
     ],
   },
@@ -324,20 +332,20 @@ export type QuizQuestion = {
 
 export const GRADUATION_QUIZ: QuizQuestion[] = [
   {
-    id: 'points',
-    promptKey: 'learn.quiz.points.prompt',
+    id: 'bar',
+    promptKey: 'learn.quiz.bar.prompt',
     options: [
-      { id: 'a', labelKey: 'learn.quiz.points.a', correct: false },
-      { id: 'b', labelKey: 'learn.quiz.points.b', correct: true },
-      { id: 'c', labelKey: 'learn.quiz.points.c', correct: false },
+      { id: 'a', labelKey: 'learn.quiz.bar.a', correct: false },
+      { id: 'b', labelKey: 'learn.quiz.bar.b', correct: true },
+      { id: 'c', labelKey: 'learn.quiz.bar.c', correct: false },
     ],
   },
   {
     id: 'blot',
     promptKey: 'learn.quiz.blot.prompt',
     options: [
-      { id: 'a', labelKey: 'learn.quiz.blot.a', correct: true },
-      { id: 'b', labelKey: 'learn.quiz.blot.b', correct: false },
+      { id: 'a', labelKey: 'learn.quiz.blot.a', correct: false },
+      { id: 'b', labelKey: 'learn.quiz.blot.b', correct: true },
       { id: 'c', labelKey: 'learn.quiz.blot.c', correct: false },
     ],
   },
@@ -346,8 +354,8 @@ export const GRADUATION_QUIZ: QuizQuestion[] = [
     promptKey: 'learn.quiz.bear.prompt',
     options: [
       { id: 'a', labelKey: 'learn.quiz.bear.a', correct: false },
-      { id: 'b', labelKey: 'learn.quiz.bear.b', correct: true },
-      { id: 'c', labelKey: 'learn.quiz.bear.c', correct: false },
+      { id: 'b', labelKey: 'learn.quiz.bear.b', correct: false },
+      { id: 'c', labelKey: 'learn.quiz.bear.c', correct: true },
     ],
   },
 ];

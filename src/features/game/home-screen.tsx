@@ -1,6 +1,7 @@
 import type { GameMode, GameState } from '@/lib/game';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { usePostHog } from 'posthog-react-native';
 import { useCallback } from 'react';
 
 import {
@@ -22,6 +23,7 @@ import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { LESSON_IDS } from '@/lib/learn/curriculum';
 import {
+  allLessonsComplete,
   completedLessonCount,
   isReadyToPlay,
 } from '@/lib/learn/progress';
@@ -89,37 +91,51 @@ function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) 
 export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
   const { progress } = useLearnProgress();
+  const posthog = usePostHog();
   const canResume = canContinueSavedGame(state);
   const learnDone = completedLessonCount(progress);
   const learnReady = isReadyToPlay(progress);
+  const learnLessonsDone = allLessonsComplete(progress);
 
   const handleStart = useCallback(
-    (mode: GameMode) => startGameFromHome(mode, state, startGame),
-    [startGame, state],
+    (mode: GameMode) => {
+      posthog.capture('game_started', { mode, had_saved_game: isResumableGame(state) });
+      startGameFromHome(mode, state, startGame);
+    },
+    [posthog, startGame, state],
   );
 
   const handleResume = useCallback(
-    () => resumeGameFromHome(state, resumeGame),
-    [resumeGame, state],
+    () => {
+      posthog.capture('game_resumed');
+      resumeGameFromHome(state, resumeGame);
+    },
+    [posthog, resumeGame, state],
   );
 
   const handleLearn = useCallback(() => {
     hapticLight();
-    if (learnReady) {
+    posthog.capture('learn_opened', {
+      lessons_completed: learnDone,
+      quiz_passed: progress.quizPassed,
+    });
+    if (learnReady || learnLessonsDone) {
       router.push('/learn/graduation');
       return;
     }
     router.push('/learn');
-  }, [learnReady]);
+  }, [learnDone, learnLessonsDone, learnReady, posthog, progress.quizPassed]);
 
   const learnSub = learnReady
     ? translate('learn.home_cta_ready')
-    : learnDone > 0
-      ? translate('learn.home_cta_progress', {
-          done: learnDone,
-          total: LESSON_IDS.length,
-        })
-      : translate('learn.home_cta_sub');
+    : learnLessonsDone
+      ? translate('learn.home_cta_quiz')
+      : learnDone > 0
+        ? translate('learn.home_cta_progress', {
+            done: learnDone,
+            total: LESSON_IDS.length,
+          })
+        : translate('learn.home_cta_sub');
 
   return (
     <>

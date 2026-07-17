@@ -147,35 +147,43 @@ const FLY_MS = 620;
 const HANDOFF_MS = 320;
 
 type Stage = 'rolling' | 'reveal' | 'fly' | 'exit';
+type RevealDice = { white: number; black: number };
 
-/**
- * Opening roll ceremony — dice live inside the callout card, tap-anywhere to roll,
- * then dice fly down past the board into the tray (rendered above the clipped board).
- */
-export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false }: Props) {
-  const { preferences } = useGamePreferences();
+/** Sync opening-roll state into ceremony stages (win reveal, tie, dismiss). */
+function useOpeningCeremonyStage(state: GameState, onRoll?: () => void) {
   const [stage, setStage] = useState<Stage>('rolling');
-  const [revealDice, setRevealDice] = useState<{ white: number; black: number } | null>(null);
+  const [revealDice, setRevealDice] = useState<RevealDice | null>(null);
+  const onRollRef = useRef(onRoll);
+  onRollRef.current = onRoll;
   const prevPhase = useRef(state.phase);
   const prevOpeningKey = useRef(
     `${state.openingRolls.white ?? '-'},${state.openingRolls.black ?? '-'}`,
   );
 
-  // Sync phase→reveal during render so we never paint a blank frame (the flicker).
+  // Sync during render so we never paint a blank frame (the flicker).
   const phase = state.phase;
   const openingKey = `${state.openingRolls.white ?? '-'},${state.openingRolls.black ?? '-'}`;
+  const tiedOpening
+    = state.openingRolls.white !== null
+      && state.openingRolls.black !== null
+      && state.openingRolls.white === state.openingRolls.black;
   if (prevPhase.current === 'opening-roll' && phase !== 'opening-roll' && state.dice[0] > 0 && state.dice[1] > 0) {
     if (stage === 'rolling' && revealDice === null) {
-      const dice = { white: state.dice[0], black: state.dice[1] };
-      setRevealDice(dice);
+      setRevealDice({ white: state.dice[0], black: state.dice[1] });
       setStage('reveal');
     }
+  }
+  else if (phase === 'opening-roll' && tiedOpening && stage === 'rolling' && revealDice === null) {
+    setRevealDice({
+      white: state.openingRolls.white!,
+      black: state.openingRolls.black!,
+    });
+    setStage('reveal');
   }
   else if (prevPhase.current !== 'opening-roll' && phase === 'opening-roll' && stage !== 'rolling') {
     setStage('rolling');
     setRevealDice(null);
   }
-  // Tie re-roll clears openingRolls while staying in opening-roll — reset ceremony.
   else if (
     phase === 'opening-roll'
     && openingKey === '-,-'
@@ -209,11 +217,17 @@ export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false
     };
   }, [showing, stage]);
 
-  // Reveal → fly → exit. Timers are keyed only on revealDice so entering `fly`
-  // does not clear the exit timer (that bug left the gate stuck and hid tray dice).
   useEffect(() => {
     if (!revealDice) {
       return;
+    }
+    if (revealDice.white === revealDice.black) {
+      const dismissTimer = setTimeout(() => {
+        onRollRef.current?.();
+        setStage('rolling');
+        setRevealDice(null);
+      }, REVEAL_HOLD_MS);
+      return () => clearTimeout(dismissTimer);
     }
     const flyTimer = setTimeout(() => setStage('fly'), REVEAL_HOLD_MS);
     const exitTimer = setTimeout(
@@ -225,6 +239,17 @@ export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false
       clearTimeout(exitTimer);
     };
   }, [revealDice]);
+
+  return { stage, revealDice, showing, phase };
+}
+
+/**
+ * Opening roll ceremony — dice live inside the callout card, tap-anywhere to roll,
+ * then dice fly down past the board into the tray (rendered above the clipped board).
+ */
+export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false }: Props) {
+  const { preferences } = useGamePreferences();
+  const { stage, revealDice, showing, phase } = useOpeningCeremonyStage(state, onRoll);
 
   if (!showing) {
     return null;
@@ -294,6 +319,12 @@ function ceremonyCopy(
   winner: Player | null,
   revealDice: { white: number; black: number } | null,
 ) {
+  if (revealDice && revealDice.white === revealDice.black) {
+    return {
+      headline: translate('game.opening.tie'),
+      subhead: translate('game.opening.tie_again'),
+    };
+  }
   if (winner && revealDice) {
     return {
       headline: translate('game.opening.goes_first', { player: playerName(winner) }),
@@ -350,7 +381,7 @@ function windowCenter(node: View, onCenter: (c: { x: number; y: number } | null)
 /**
  * Fly each ceremony die into the measured tray slot.
  * Tray order is [whiteDie, blackDie] (see applyOpeningDieRoll → applyDiceRoll).
- * Ceremony layout is Black | White, so black → tray.right, white → tray.left.
+ * Ceremony layout is White | Black — each die flies straight down on its side.
  */
 function useCeremonyFly(stage: Stage, dieSize: number, dieRefs: DieRefs) {
   const tray = useOpeningTraySlots();
@@ -417,16 +448,6 @@ function useCeremonyFly(stage: Stage, dieSize: number, dieRefs: DieRefs) {
         }
       };
 
-      windowCenter(blackNode, (from) => {
-        if (!from) {
-          if (attempts++ < 8) {
-            requestAnimationFrame(tryFly);
-          }
-          return;
-        }
-        flyDie(from, tray.right, blackAnim);
-        done();
-      });
       windowCenter(whiteNode, (from) => {
         if (!from) {
           if (attempts++ < 8) {
@@ -435,6 +456,16 @@ function useCeremonyFly(stage: Stage, dieSize: number, dieRefs: DieRefs) {
           return;
         }
         flyDie(from, tray.left, whiteAnim);
+        done();
+      });
+      windowCenter(blackNode, (from) => {
+        if (!from) {
+          if (attempts++ < 8) {
+            requestAnimationFrame(tryFly);
+          }
+          return;
+        }
+        flyDie(from, tray.right, blackAnim);
         done();
       });
       cardOp.value = withTiming(0, { duration: FLY_MS * 0.35 });
@@ -476,7 +507,9 @@ function OpeningStage({
   const whiteValue = showReveal ? revealDice.white : state.openingRolls.white;
   const blackValue = showReveal ? revealDice.black : state.openingRolls.black;
   const winner: Player | null = showReveal
-    ? (revealDice.white > revealDice.black ? 'white' : 'black')
+    ? (revealDice.white === revealDice.black
+        ? null
+        : revealDice.white > revealDice.black ? 'white' : 'black')
     : null;
   const blackRef = useRef<View>(null);
   const whiteRef = useRef<View>(null);
@@ -500,17 +533,6 @@ function OpeningStage({
         </Animated.View>
         <View style={styles.pair}>
           <DieSide
-            value={blackValue}
-            player="black"
-            size={size}
-            diceStyle={diceStyle}
-            winner={winner}
-            dieRef={blackRef}
-            flyStyle={blackStyle}
-            hideLabel={hideLabels}
-          />
-          <Animated.Text style={[styles.vs, vsStyle]}>vs</Animated.Text>
-          <DieSide
             value={whiteValue}
             player="white"
             size={size}
@@ -518,6 +540,17 @@ function OpeningStage({
             winner={winner}
             dieRef={whiteRef}
             flyStyle={whiteStyle}
+            hideLabel={hideLabels}
+          />
+          <Animated.Text style={[styles.vs, vsStyle]}>vs</Animated.Text>
+          <DieSide
+            value={blackValue}
+            player="black"
+            size={size}
+            diceStyle={diceStyle}
+            winner={winner}
+            dieRef={blackRef}
+            flyStyle={blackStyle}
             hideLabel={hideLabels}
           />
         </View>

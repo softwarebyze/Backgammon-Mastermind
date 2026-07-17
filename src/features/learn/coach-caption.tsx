@@ -32,7 +32,7 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel }: Props) 
       {feedback
         ? (
             <Text style={[styles.feedback, { color: feedbackColor }]}>
-              {translate(feedback.messageKey)}
+              {translate(feedback.messageKey, feedback.messageOptions)}
             </Text>
           )
         : null}

@@ -11,10 +11,14 @@ import Animated, {
 
 import { setOpeningTraySlots } from '@/features/game/opening-ceremony-gate';
 
+type PlayerColor = 'white' | 'black';
+
 type Props = {
   dice: [number, number];
   remainingDice: number[];
-  playerColor: 'white' | 'black';
+  playerColor: PlayerColor;
+  /** Per-slot colors (opening handoff: white die left, black die right). */
+  slotColors?: readonly [PlayerColor, PlayerColor];
   displayStyle?: DiceDisplayStyle;
   /** When false, dice values update instantly (review scrub, etc.). */
   animateRoll?: boolean;
@@ -156,6 +160,7 @@ function DiceFaces({
   dice,
   remainingDice,
   playerColor,
+  slotColors,
   displayStyle,
   leftRef,
   rightRef,
@@ -163,7 +168,8 @@ function DiceFaces({
 }: {
   dice: [number, number];
   remainingDice: number[];
-  playerColor: 'white' | 'black';
+  playerColor: PlayerColor;
+  slotColors?: readonly [PlayerColor, PlayerColor];
   displayStyle: DiceDisplayStyle;
   leftRef: React.RefObject<View | null>;
   rightRef: React.RefObject<View | null>;
@@ -180,6 +186,8 @@ function DiceFaces({
   });
   const isDoubles = dice[0] === dice[1];
   const totalRemaining = remainingDice.filter(v => v === dice[0]).length;
+  const leftColor = slotColors?.[0] ?? playerColor;
+  const rightColor = slotColors?.[1] ?? playerColor;
 
   if (isDoubles) {
     return DOUBLE_DIE_SLOTS.map((slot, slotIndex) => (
@@ -192,7 +200,7 @@ function DiceFaces({
         <DieFace
           value={dice[0]}
           used={slotIndex >= totalRemaining}
-          playerColor={playerColor}
+          playerColor={slotIndex === 0 ? leftColor : rightColor}
           displayStyle={displayStyle}
         />
       </View>
@@ -207,7 +215,7 @@ function DiceFaces({
             key="die-left"
             value={diceStates[0].value}
             used={diceStates[0].used}
-            playerColor={playerColor}
+            playerColor={leftColor}
             displayStyle={displayStyle}
           />
         </View>
@@ -218,7 +226,7 @@ function DiceFaces({
             key="die-right"
             value={diceStates[1].value}
             used={diceStates[1].used}
-            playerColor={playerColor}
+            playerColor={rightColor}
             displayStyle={displayStyle}
           />
         </View>
@@ -231,6 +239,7 @@ function DiceDisplayAnimated({
   dice,
   remainingDice,
   playerColor,
+  slotColors,
   displayStyle = 'dots',
   animateRoll = true,
   reportTraySlots = false,
@@ -284,6 +293,7 @@ function DiceDisplayAnimated({
         dice={dice}
         remainingDice={remainingDice}
         playerColor={playerColor}
+        slotColors={slotColors}
         displayStyle={displayStyle}
         leftRef={leftRef}
         rightRef={rightRef}
@@ -297,6 +307,7 @@ export function DiceDisplay({
   dice,
   remainingDice,
   playerColor,
+  slotColors,
   displayStyle = 'dots',
   animateRoll = true,
   reportTraySlots = false,
@@ -306,6 +317,7 @@ export function DiceDisplay({
       dice={dice}
       remainingDice={remainingDice}
       playerColor={playerColor}
+      slotColors={slotColors}
       displayStyle={displayStyle}
       animateRoll={animateRoll}
       reportTraySlots={reportTraySlots}

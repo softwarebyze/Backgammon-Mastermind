@@ -1,12 +1,15 @@
 import { router } from 'expo-router';
+import { usePostHog } from 'posthog-react-native';
+import { useCallback, useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { useGame } from '@/features/game/use-game';
 import { LessonRow } from '@/features/learn/lesson-row';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { enableBeginnerGameAids } from '@/lib/game-preferences/beginner-aids';
-import { hapticLight } from '@/lib/haptics';
+import { hapticLight, hapticSelection } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import {
   isLessonUnlocked,
@@ -23,10 +26,27 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 
 export function LearnHubScreen() {
   const { progress, startLearning } = useLearnProgress();
+  const { startGame } = useGame();
+  const posthog = usePostHog();
   const done = completedLessonCount(progress);
   const total = LESSON_IDS.length;
   const ready = isReadyToPlay(progress);
   const lessonsDone = allLessonsComplete(progress);
+
+  useEffect(() => {
+    posthog.capture('learn_hub_opened', {
+      lessons_completed: done,
+      quiz_passed: progress.quizPassed,
+    });
+  }, [done, posthog, progress.quizPassed]);
+
+  const playFirstGame = useCallback((source: 'hub_cta' | 'hub_skip') => {
+    hapticSelection();
+    posthog.capture('learn_play_first_game', { source });
+    enableBeginnerGameAids();
+    startGame('vs-computer');
+    router.replace('/game');
+  }, [posthog, startGame]);
 
   return (
     <>
@@ -61,6 +81,10 @@ export function LearnHubScreen() {
                 onPress={() => {
                   hapticLight();
                   startLearning();
+                  posthog.capture('learn_lesson_opened', {
+                    lesson_id: lesson.id,
+                    completed,
+                  });
                   router.push(`/learn/${lesson.id}`);
                 }}
               />
@@ -74,7 +98,12 @@ export function LearnHubScreen() {
                 accessibilityRole="button"
                 style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
                 onPress={() => {
+                  if (ready) {
+                    playFirstGame('hub_cta');
+                    return;
+                  }
                   hapticLight();
+                  posthog.capture('learn_graduation_opened', { source: 'hub' });
                   router.push('/learn/graduation');
                 }}
               >
@@ -91,9 +120,8 @@ export function LearnHubScreen() {
           accessibilityRole="button"
           style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
           onPress={() => {
-            hapticLight();
-            enableBeginnerGameAids();
-            router.replace('/');
+            posthog.capture('learn_skipped_to_play');
+            playFirstGame('hub_skip');
           }}
         >
           <Text style={styles.secondaryLabel}>{translate('learn.skip_to_play')}</Text>

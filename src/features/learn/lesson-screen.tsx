@@ -1,7 +1,8 @@
 import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonId } from '@/lib/learn/curriculum';
 import { router, useNavigation } from 'expo-router';
-import { useCallback, useEffect, useLayoutEffect } from 'react';
+import { usePostHog } from 'posthog-react-native';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -22,6 +23,8 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 type Props = {
   lessonId: LessonId;
 };
+
+const AUTO_ADVANCE_MS = 1400;
 
 export function LessonScreen({ lessonId }: Props) {
   const lesson = getLesson(lessonId);
@@ -74,6 +77,7 @@ function LessonScreenBody({
   diceDisplayStyle: 'numbers' | 'dots';
 }) {
   const session = useLessonSession(lesson);
+  const posthog = usePostHog();
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
   const dimensions = useBoardDimensions({
     showPointNumbers,
@@ -85,17 +89,19 @@ function LessonScreenBody({
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
 
-  const onPrimary = useCallback(() => {
-    if (session.lessonFinished) {
-      return;
-    }
-    if (!session.stepComplete) {
-      session.showHint();
-      return;
+  const goNext = useCallback(() => {
+    if (session.step.kind === 'explain' && session.stepComplete) {
+      posthog.capture('learn_step_completed', {
+        lesson_id: lessonId,
+        step_id: session.step.id,
+        step_kind: session.step.kind,
+        step_index: session.stepIndex,
+      });
     }
     if (session.stepIndex >= session.totalSteps - 1) {
       hapticLight();
       completeLesson(lessonId);
+      posthog.capture('learn_lesson_completed', { lesson_id: lessonId });
       const next = getNextLessonId(lessonId);
       if (next === 'graduation') {
         router.replace('/learn/graduation');
@@ -109,11 +115,51 @@ function LessonScreenBody({
       return;
     }
     session.advance();
-  }, [completeLesson, lessonId, session]);
+  }, [completeLesson, lessonId, posthog, session]);
 
-  const primaryLabel = !session.stepComplete
-    ? translate('learn.continue')
-    : session.stepIndex >= session.totalSteps - 1
+  const goNextRef = useRef(goNext);
+  goNextRef.current = goNext;
+
+  // After a correct identify/try-move, advance without an extra Continue tap.
+  useEffect(() => {
+    if (!session.stepComplete || session.lessonFinished) {
+      return;
+    }
+    if (session.step.kind === 'explain') {
+      return;
+    }
+    if (session.stepIndex >= session.totalSteps - 1) {
+      return;
+    }
+    const timer = setTimeout(() => goNextRef.current(), AUTO_ADVANCE_MS);
+    return () => clearTimeout(timer);
+  }, [
+    session.lessonFinished,
+    session.step.kind,
+    session.stepComplete,
+    session.stepIndex,
+    session.totalSteps,
+  ]);
+
+  const awaitingBoardAction
+    = !session.stepComplete
+      && !session.lessonFinished
+      && session.step.kind !== 'explain';
+
+  const onPrimary = useCallback(() => {
+    if (session.lessonFinished) {
+      return;
+    }
+    if (awaitingBoardAction) {
+      session.showHint();
+      return;
+    }
+    goNext();
+  }, [awaitingBoardAction, goNext, session]);
+
+  const primaryLabel = awaitingBoardAction
+    ? translate('learn.hint')
+    : session.stepIndex >= session.totalSteps - 1 && session.stepComplete
       ? translate('learn.next_lesson')
       : translate('learn.continue');
 
@@ -134,27 +180,32 @@ function LessonScreenBody({
         />
 
         <View style={styles.boardWrap}>
-          <BoardView
-            state={session.state}
-            dimensions={dimensions}
-            previewTarget={session.previewTarget}
-            moveAnimation={null}
-            dragFrom={session.canDrag ? session.dragFrom : null}
-            onPointPress={session.onPointPress}
-            onPointPressIn={session.onPointPressIn}
-            onPointPressOut={session.onPointPressOut}
-            onDragAttempt={session.canDrag ? session.handleDragAttempt : undefined}
-            onDragStart={session.canDrag ? session.handleDragStart : undefined}
-            onDragMove={session.canDrag ? session.handleDragMove : undefined}
-            onDragEnd={session.canDrag ? session.handleDragEnd : undefined}
-            onDragCancel={session.canDrag ? session.handleDragCancel : undefined}
-            onBarPress={session.onBarPress}
-            onBearOffPress={session.onBearOffPress}
-            interactionEnabled={!session.lessonFinished}
-            aidsOverride={session.aids}
-            emphasisPoints={session.emphasisPoints}
-            emphasisBar={session.emphasisBar}
-          />
+          <Pressable
+            onPress={session.onBoardPress}
+            style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
+          >
+            <BoardView
+              state={session.state}
+              dimensions={dimensions}
+              previewTarget={session.previewTarget}
+              moveAnimation={null}
+              dragFrom={session.canDrag ? session.dragFrom : null}
+              onPointPress={session.onPointPress}
+              onPointPressIn={session.onPointPressIn}
+              onPointPressOut={session.onPointPressOut}
+              onDragAttempt={session.canDrag ? session.handleDragAttempt : undefined}
+              onDragStart={session.canDrag ? session.handleDragStart : undefined}
+              onDragMove={session.canDrag ? session.handleDragMove : undefined}
+              onDragEnd={session.canDrag ? session.handleDragEnd : undefined}
+              onDragCancel={session.canDrag ? session.handleDragCancel : undefined}
+              onBarPress={session.onBarPress}
+              onBearOffPress={session.onBearOffPress}
+              interactionEnabled={!session.lessonFinished}
+              aidsOverride={session.aids}
+              emphasisPoints={session.emphasisPoints}
+              emphasisBar={session.emphasisBar}
+            />
+          </Pressable>
         </View>
 
         {showDice
@@ -180,10 +231,15 @@ function LessonScreenBody({
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={primaryLabel}
-          style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+          style={({ pressed }) => [
+            awaitingBoardAction ? styles.hintBtn : styles.primaryBtn,
+            pressed && styles.pressed,
+          ]}
           onPress={onPrimary}
         >
-          <Text style={styles.primaryLabel}>{primaryLabel}</Text>
+          <Text style={awaitingBoardAction ? styles.hintLabel : styles.primaryLabel}>
+            {primaryLabel}
+          </Text>
         </Pressable>
       </View>
     </>
@@ -200,6 +256,10 @@ const styles = StyleSheet.create({
   boardWrap: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  boardContainer: {
+    width: '100%',
     alignItems: 'center',
   },
   diceRow: {
@@ -222,10 +282,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     ...continuousRadius(14),
   },
+  hintBtn: {
+    marginTop: 4,
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: 'rgba(232, 224, 208, 0.35)',
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    minWidth: 220,
+    alignItems: 'center',
+    ...continuousRadius(14),
+  },
   primaryLabel: {
     color: GAME_PALETTE.bg,
     fontSize: 17,
     ...interFont('bold'),
+  },
+  hintLabel: {
+    color: 'rgba(232, 224, 208, 0.75)',
+    fontSize: 16,
+    ...interFont('semibold'),
   },
   pressed: {
     opacity: 0.88,

@@ -87,6 +87,8 @@ export function GameScreenControls({
                   dice={measuring ? [0, 0] : diceForTray.dice}
                   remainingDice={measuring ? [] : diceForTray.remainingDice}
                   playerColor={diceForTray.currentPlayer}
+                  // Opening dice are [whiteDie, blackDie] — keep faces matched during fly-in.
+                  slotColors={ceremonyVisible ? ['white', 'black'] : undefined}
                   displayStyle={preferences.diceDisplayStyle}
                   animateRoll={!isReviewing && !ceremonyVisible}
                   reportTraySlots={ceremonyVisible}

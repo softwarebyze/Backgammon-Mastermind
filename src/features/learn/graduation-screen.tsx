@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { usePostHog } from 'posthog-react-native';
+import { useCallback, useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -15,21 +16,42 @@ import { allLessonsComplete, isReadyToPlay } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
+function LessonsIncompleteGate() {
+  return (
+    <View style={styles.root}>
+      <FocusAwareStatusBar />
+      <Text style={styles.title}>{translate('learn.title')}</Text>
+      <Pressable
+        style={styles.primaryBtn}
+        onPress={() => router.replace('/learn')}
+      >
+        <Text style={styles.primaryLabel}>{translate('learn.back_to_hub')}</Text>
+      </Pressable>
+    </View>
+  );
+}
+
 export function GraduationScreen() {
   const { progress, completeQuiz } = useLearnProgress();
   const { startGame } = useGame();
+  const posthog = usePostHog();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [softMessage, setSoftMessage] = useState<string | null>(null);
 
   const question = GRADUATION_QUIZ[questionIndex];
   const canPlay = isReadyToPlay(progress);
 
+  useEffect(() => {
+    posthog.capture('learn_graduation_opened', { source: 'screen' });
+  }, [posthog]);
+
   const playFirstGame = useCallback(() => {
     hapticSelection();
+    posthog.capture('learn_play_first_game', { source: 'graduation' });
     enableBeginnerGameAids();
     startGame('vs-computer');
     router.replace('/game');
-  }, [startGame]);
+  }, [posthog, startGame]);
 
   const onSelectOption = useCallback((optionId: string) => {
     if (!question || progress.quizPassed) {
@@ -39,6 +61,12 @@ export function GraduationScreen() {
     if (!option) {
       return;
     }
+    posthog.capture('learn_quiz_answered', {
+      question_id: question.id,
+      option_id: optionId,
+      correct: option.correct,
+      question_index: questionIndex,
+    });
     if (!option.correct) {
       hapticLight();
       setSoftMessage(translate('learn.graduation.quiz_wrong'));
@@ -48,25 +76,15 @@ export function GraduationScreen() {
     setSoftMessage(null);
     if (questionIndex >= GRADUATION_QUIZ.length - 1) {
       completeQuiz();
+      posthog.capture('learn_quiz_completed');
       setSoftMessage(translate('learn.graduation.quiz_done'));
       return;
     }
     setQuestionIndex(index => index + 1);
-  }, [completeQuiz, progress.quizPassed, question, questionIndex]);
+  }, [completeQuiz, posthog, progress.quizPassed, question, questionIndex]);
 
   if (!allLessonsComplete(progress)) {
-    return (
-      <View style={styles.root}>
-        <FocusAwareStatusBar />
-        <Text style={styles.title}>{translate('learn.title')}</Text>
-        <Pressable
-          style={styles.primaryBtn}
-          onPress={() => router.replace('/learn')}
-        >
-          <Text style={styles.primaryLabel}>{translate('learn.back_to_hub')}</Text>
-        </Pressable>
-      </View>
-    );
+    return <LessonsIncompleteGate />;
   }
 
   return (
@@ -76,7 +94,7 @@ export function GraduationScreen() {
         <Text style={styles.body}>{translate('learn.graduation.body')}</Text>
 
         <View style={styles.recap}>
-          {(['recap_1', 'recap_2', 'recap_3', 'recap_4'] as const).map(key => (
+          {(['recap_1', 'recap_2', 'recap_3', 'recap_4', 'recap_5'] as const).map(key => (
             <Text key={key} style={styles.recapItem}>
               •
               {' '}

@@ -48,6 +48,15 @@ export function useGameDiceActions({
         return prev;
       }
       if (prev.phase === 'opening-roll') {
+        const { white, black } = prev.openingRolls;
+        // Ceremony dismisses a shown tie by calling roll — clear without a new die.
+        if (white !== null && black !== null && white === black) {
+          return {
+            ...prev,
+            openingRolls: { white: null, black: null },
+            currentPlayer: 'white',
+          };
+        }
         playGameSfx('roll');
         return applyOpeningDieRoll(prev, rollOpeningDie());
       }

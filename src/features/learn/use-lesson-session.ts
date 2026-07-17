@@ -1,15 +1,14 @@
-import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
-import type { GameState } from '@/lib/game/types';
+import type { Dispatch, SetStateAction } from 'react';
+import type { GameState, Move } from '@/lib/game/types';
 import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonDefinition, LessonStep } from '@/lib/learn/curriculum';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { resolveDropTarget } from '@/features/game/board-point-layout';
-import { validateDragStart } from '@/features/game/drag-input';
-import { previewFromDrag } from '@/features/game/drag-move';
-import { BEAR_OFF } from '@/lib/game/constants';
+import { usePostHog } from 'posthog-react-native';
+import { useCallback, useMemo, useState } from 'react';
+import { useBoardPlayInput } from '@/features/game/use-board-play-input';
+import { useGameSelectPoint } from '@/features/game/use-game-select-point';
 import { createPositionState } from '@/lib/game/create-position';
-import { applyMove, getLegalMoves, getReachableDestinations } from '@/lib/game/moves';
+import { applyMove } from '@/lib/game/moves';
 import { hapticLight, hapticSelection } from '@/lib/haptics';
 import {
   resolveAcceptedMove,
@@ -20,30 +19,35 @@ import {
 export type LessonFeedback = {
   tone: 'hint' | 'praise' | 'soft';
   messageKey: TxKeyPath;
+  messageOptions?: Record<string, string | number>;
 };
 
 function buildState(step: LessonStep): GameState {
   return createPositionState(step.position);
 }
 
-function selectSource(state: GameState, point: number): GameState {
-  const isBar = point === 0 && state.bar[state.currentPlayer] > 0;
-  const isOwn
-    = point > 0
-      && state.points[point]?.player === state.currentPlayer
-      && state.points[point].count > 0;
-  if (!isBar && !isOwn) {
-    return { ...state, selectedPoint: null, legalMovesForSelected: [] };
+/** Keep the learner as white after a correct try-move lands. */
+function patchAfterLessonMove(state: GameState, nextState: GameState): GameState {
+  if (nextState.winner) {
+    return nextState;
   }
-  const legal = getLegalMoves(state).filter(move => move.from === point);
-  if (legal.length === 0) {
-    return state;
-  }
-  return { ...state, selectedPoint: point, legalMovesForSelected: legal };
+  return {
+    ...nextState,
+    currentPlayer: 'white',
+    phase: 'moving',
+    dice: nextState.dice[0] === 0 && nextState.dice[1] === 0 ? state.dice : nextState.dice,
+    remainingDice:
+      nextState.phase === 'rolling' || nextState.phase === 'no-move'
+        ? []
+        : nextState.remainingDice,
+    selectedPoint: null,
+    legalMovesForSelected: [],
+  };
 }
 
 /* eslint-disable max-lines-per-function -- lesson step orchestration */
 export function useLessonSession(lesson: LessonDefinition) {
+  const posthog = usePostHog();
   const [stepIndex, setStepIndex] = useState(0);
   const [state, setState] = useState<GameState>(() => buildState(lesson.steps[0]!));
   const [correctMoves, setCorrectMoves] = useState(0);
@@ -52,15 +56,17 @@ export function useLessonSession(lesson: LessonDefinition) {
   );
   const [feedback, setFeedback] = useState<LessonFeedback | null>(null);
   const [lessonFinished, setLessonFinished] = useState(false);
-  const [dragFrom, setDragFrom] = useState<number | null>(null);
-  const [previewTarget, setPreviewTarget] = useState<number | null>(null);
-  const boardDimsRef = useRef<BoardDimensions | null>(null);
-  const dragFromRef = useRef<number | null>(null);
-  /** Set when drag-attempt already selected this source — skip re-select on tap. */
-  const touchSelectedFromRef = useRef<number | null>(null);
 
   const step = lesson.steps[stepIndex]!;
   const totalSteps = lesson.steps.length;
+
+  const playEnabled
+    = step.kind === 'tryMove' && !stepComplete && !lessonFinished;
+
+  const selectPoint = useGameSelectPoint(
+    setState as Dispatch<SetStateAction<GameState | null>>,
+    false,
+  );
 
   const emphasisPoints = useMemo(() => {
     if (!step.emphasisPoints?.length) {
@@ -69,23 +75,11 @@ export function useLessonSession(lesson: LessonDefinition) {
     return new Set(step.emphasisPoints);
   }, [step]);
 
-  const endDrag = useCallback(() => {
-    dragFromRef.current = null;
-    setDragFrom(null);
-    setPreviewTarget(null);
-  }, []);
-
   const resetStep = useCallback((nextStep: LessonStep) => {
-    endDrag();
-    touchSelectedFromRef.current = null;
     setState(buildState(nextStep));
     setCorrectMoves(0);
     setStepComplete(nextStep.kind === 'explain');
     setFeedback(null);
-  }, [endDrag]);
-
-  const setBoardDimensions = useCallback((dims: BoardDimensions) => {
-    boardDimsRef.current = dims;
   }, []);
 
   const goToStep = useCallback((index: number) => {
@@ -110,14 +104,25 @@ export function useLessonSession(lesson: LessonDefinition) {
     if (step.kind === 'explain') {
       return;
     }
+    posthog.capture('learn_hint_shown', {
+      lesson_id: lesson.id,
+      step_id: step.id,
+      step_kind: step.kind,
+    });
     setFeedback({ tone: 'hint', messageKey: step.hintKey as TxKeyPath });
-  }, [step]);
+  }, [lesson.id, posthog, step]);
 
   const completeInteractiveStep = useCallback((praiseKey: string) => {
     hapticSelection();
     setStepComplete(true);
     setFeedback({ tone: 'praise', messageKey: praiseKey as TxKeyPath });
-  }, []);
+    posthog.capture('learn_step_completed', {
+      lesson_id: lesson.id,
+      step_id: step.id,
+      step_kind: step.kind,
+      step_index: stepIndex,
+    });
+  }, [lesson.id, posthog, step.id, step.kind, stepIndex]);
 
   const handleIdentifyTap = useCallback((point: number) => {
     if (step.kind !== 'identify' || stepComplete) {
@@ -144,17 +149,27 @@ export function useLessonSession(lesson: LessonDefinition) {
     });
     if (result.status === 'illegal') {
       hapticLight();
+      posthog.capture('learn_move_feedback', {
+        lesson_id: lesson.id,
+        step_id: step.id,
+        status: 'illegal',
+      });
       setFeedback({ tone: 'soft', messageKey: 'learn.feedback.illegal' });
-      setState(prev => ({ ...prev, selectedPoint: null, legalMovesForSelected: [] }));
+      selectPoint(null);
       return;
     }
     if (result.status === 'legalButWrong') {
       hapticLight();
+      posthog.capture('learn_move_feedback', {
+        lesson_id: lesson.id,
+        step_id: step.id,
+        status: 'legal_but_wrong',
+      });
       setFeedback({
         tone: 'soft',
         messageKey: (step.legalButWrongKey ?? 'learn.feedback.legal_but_wrong') as TxKeyPath,
       });
-      setState(prev => ({ ...prev, selectedPoint: null, legalMovesForSelected: [] }));
+      selectPoint(null);
       return;
     }
 
@@ -165,23 +180,7 @@ export function useLessonSession(lesson: LessonDefinition) {
     }
 
     const nextState = applyMove(state, move);
-    // Keep the learner as white; if the engine passed the turn, freeze the board for praise.
-    const patched: GameState = nextState.winner
-      ? nextState
-      : {
-          ...nextState,
-          currentPlayer: 'white',
-          phase: 'moving',
-          dice: nextState.dice[0] === 0 && nextState.dice[1] === 0 ? state.dice : nextState.dice,
-          remainingDice:
-            nextState.phase === 'rolling' || nextState.phase === 'no-move'
-              ? []
-              : nextState.remainingDice,
-          selectedPoint: null,
-          legalMovesForSelected: [],
-        };
-
-    setState(patched);
+    setState(patchAfterLessonMove(state, nextState));
     const needed = step.requiredMoveCount ?? 1;
     const nextCount = correctMoves + 1;
     setCorrectMoves(nextCount);
@@ -190,136 +189,70 @@ export function useLessonSession(lesson: LessonDefinition) {
     }
     else {
       hapticLight();
-      setFeedback(null);
+      setFeedback({
+        tone: 'praise',
+        messageKey: 'learn.feedback.move_progress',
+        messageOptions: { done: nextCount, needed },
+      });
     }
-  }, [completeInteractiveStep, correctMoves, state, step, stepComplete]);
+  }, [completeInteractiveStep, correctMoves, lesson.id, posthog, selectPoint, state, step, stepComplete]);
+
+  const doMove = useCallback((move: Move) => {
+    tryApplyDestination(move.from, move.to);
+  }, [tryApplyDestination]);
+
+  const doMoveSequence = useCallback((moves: Move[]) => {
+    const first = moves[0];
+    const last = moves[moves.length - 1];
+    if (!first || !last) {
+      return;
+    }
+    tryApplyDestination(first.from, last.to);
+  }, [tryApplyDestination]);
+
+  const actions = useMemo(
+    () => ({ selectPoint, doMove, doMoveSequence }),
+    [selectPoint, doMove, doMoveSequence],
+  );
+
+  const {
+    previewTarget,
+    dragFrom,
+    setBoardDimensions,
+    handlePointPress,
+    handlePointPressIn,
+    handlePointPressOut,
+    handleDragAttempt,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
+    handleDragCancel,
+    handleBearOffPress,
+    handleBarPress,
+    handleBoardPress,
+  } = useBoardPlayInput({
+    state,
+    isAnimating: false,
+    isHumanTurn: playEnabled,
+    enableRollNudge: false,
+    actions,
+  });
 
   const onPointPress = useCallback((index: number) => {
-    // Touch-down already selected this source; don't toggle/flicker on the tap.
-    if (touchSelectedFromRef.current === index) {
-      touchSelectedFromRef.current = null;
-      return;
-    }
-    if (stepComplete && step.kind !== 'explain') {
-      return;
-    }
-    if (step.kind === 'identify') {
+    if (step.kind === 'identify' && !stepComplete) {
       handleIdentifyTap(index);
       return;
     }
-    if (step.kind !== 'tryMove') {
-      return;
-    }
-
-    if (state.selectedPoint !== null) {
-      const targets = getReachableDestinations(state, state.selectedPoint);
-      if (targets.has(index)) {
-        tryApplyDestination(state.selectedPoint, index);
-        return;
-      }
-    }
-
-    setState(prev => selectSource(prev, index));
-  }, [handleIdentifyTap, state, step, stepComplete, tryApplyDestination]);
+    handlePointPress(index);
+  }, [handleIdentifyTap, handlePointPress, step.kind, stepComplete]);
 
   const onBarPress = useCallback(() => {
-    if (touchSelectedFromRef.current === 0) {
-      touchSelectedFromRef.current = null;
-      return;
-    }
-    if (step.kind === 'identify') {
+    if (step.kind === 'identify' && !stepComplete) {
       handleIdentifyTap(0);
       return;
     }
-    if (step.kind !== 'tryMove' || stepComplete) {
-      return;
-    }
-    setState(prev => selectSource(prev, 0));
-  }, [handleIdentifyTap, step, stepComplete]);
-
-  const onBearOffPress = useCallback(() => {
-    if (step.kind !== 'tryMove' || stepComplete || state.selectedPoint === null) {
-      return;
-    }
-    const targets = getReachableDestinations(state, state.selectedPoint);
-    if (targets.has(BEAR_OFF)) {
-      tryApplyDestination(state.selectedPoint, BEAR_OFF);
-    }
-  }, [state, step, stepComplete, tryApplyDestination]);
-
-  const onPointPressIn = useCallback((_index: number) => {}, []);
-  const onPointPressOut = useCallback(() => {}, []);
-
-  const canDrag
-    = step.kind === 'tryMove' && !stepComplete && !lessonFinished;
-
-  /** Finger down: select early so destinations show before pan min-distance. */
-  const handleDragAttempt = useCallback((from: number) => {
-    if (!canDrag) {
-      return;
-    }
-    // Destination stack — let the tap complete the move.
-    if (state.selectedPoint !== null && state.selectedPoint !== from) {
-      const targets = getReachableDestinations(state, state.selectedPoint);
-      if (targets.has(from)) {
-        return;
-      }
-    }
-    if (validateDragStart(state, from) !== 'ok') {
-      return;
-    }
-    if (state.selectedPoint === from) {
-      return;
-    }
-    touchSelectedFromRef.current = from;
-    setState(prev => selectSource(prev, from));
-  }, [canDrag, state]);
-
-  const handleDragStart = useCallback((from: number, _boardX: number, _boardY: number) => {
-    if (!canDrag) {
-      return;
-    }
-    if (validateDragStart(state, from) !== 'ok') {
-      return;
-    }
-    touchSelectedFromRef.current = null;
-    dragFromRef.current = from;
-    setDragFrom(from);
-    setPreviewTarget(null);
-    if (state.selectedPoint !== from) {
-      setState(prev => selectSource(prev, from));
-    }
-  }, [canDrag, state]);
-
-  const handleDragMove = useCallback((boardX: number, boardY: number) => {
-    const from = dragFromRef.current;
-    const dims = boardDimsRef.current;
-    if (from === null || !dims || !canDrag) {
-      return;
-    }
-    setPreviewTarget(previewFromDrag({ state, from, boardX, boardY, dims }));
-  }, [canDrag, state]);
-
-  const handleDragEnd = useCallback((boardX: number, boardY: number) => {
-    const from = dragFromRef.current;
-    const dims = boardDimsRef.current;
-    if (from === null || !dims || !canDrag) {
-      endDrag();
-      return;
-    }
-    const target = resolveDropTarget(boardX, boardY, dims);
-    endDrag();
-    if (target === null || target === from) {
-      setState(prev => ({ ...prev, selectedPoint: null, legalMovesForSelected: [] }));
-      return;
-    }
-    tryApplyDestination(from, target);
-  }, [canDrag, endDrag, tryApplyDestination]);
-
-  /** Match game input: never clear selection here — pan finalize(false) runs on taps. */
-  const handleDragCancel = useCallback(() => {
-    endDrag();
-  }, [endDrag]);
+    handleBarPress();
+  }, [handleBarPress, handleIdentifyTap, step.kind, stepComplete]);
 
   return {
     step,
@@ -334,15 +267,16 @@ export function useLessonSession(lesson: LessonDefinition) {
     aids: step.aids,
     advance,
     showHint,
-    onPointPress,
-    onPointPressIn,
-    onPointPressOut,
-    onBarPress,
-    onBearOffPress,
     previewTarget,
     dragFrom,
-    canDrag,
+    canDrag: playEnabled,
     setBoardDimensions,
+    onPointPress,
+    onPointPressIn: handlePointPressIn,
+    onPointPressOut: handlePointPressOut,
+    onBarPress,
+    onBearOffPress: handleBearOffPress,
+    onBoardPress: handleBoardPress,
     handleDragAttempt,
     handleDragStart,
     handleDragMove,

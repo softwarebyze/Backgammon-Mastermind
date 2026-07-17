@@ -458,9 +458,10 @@ export function applyOpeningDieRoll(state: GameState, die: number): GameState {
   const whiteDie = openingRolls.white!;
   const blackDie = openingRolls.black!;
   if (whiteDie === blackDie) {
+    // Keep both dice so the UI can show “tie — roll again” before clearing.
     return {
       ...cloneState(state),
-      openingRolls: { white: null, black: null },
+      openingRolls: { white: whiteDie, black: blackDie },
       currentPlayer: 'white',
       phase: 'opening-roll',
     };
