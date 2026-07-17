@@ -94,6 +94,9 @@ export function learnStackOptions(title: string): NativeStackNavigationOptions {
     headerTitleStyle: gameHeaderTitleStyle,
     headerBackButtonDisplayMode: 'minimal',
     contentStyle: { backgroundColor: GAME_PALETTE.bg },
+    // Board drags near the left edge must not trigger iOS interactive pop.
+    gestureEnabled: false,
+    fullScreenGestureEnabled: false,
   };
 }
 

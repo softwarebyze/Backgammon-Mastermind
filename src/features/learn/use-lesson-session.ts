@@ -1,8 +1,12 @@
+import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { GameState } from '@/lib/game/types';
 import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonDefinition, LessonStep } from '@/lib/learn/curriculum';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { resolveDropTarget } from '@/features/game/board-point-layout';
+import { validateDragStart } from '@/features/game/drag-input';
+import { previewFromDrag } from '@/features/game/drag-move';
 import { BEAR_OFF } from '@/lib/game/constants';
 import { createPositionState } from '@/lib/game/create-position';
 import { applyMove, getLegalMoves, getReachableDestinations } from '@/lib/game/moves';
@@ -48,6 +52,10 @@ export function useLessonSession(lesson: LessonDefinition) {
   );
   const [feedback, setFeedback] = useState<LessonFeedback | null>(null);
   const [lessonFinished, setLessonFinished] = useState(false);
+  const [dragFrom, setDragFrom] = useState<number | null>(null);
+  const [previewTarget, setPreviewTarget] = useState<number | null>(null);
+  const boardDimsRef = useRef<BoardDimensions | null>(null);
+  const dragFromRef = useRef<number | null>(null);
 
   const step = lesson.steps[stepIndex]!;
   const totalSteps = lesson.steps.length;
@@ -59,11 +67,22 @@ export function useLessonSession(lesson: LessonDefinition) {
     return new Set(step.emphasisPoints);
   }, [step]);
 
+  const endDrag = useCallback(() => {
+    dragFromRef.current = null;
+    setDragFrom(null);
+    setPreviewTarget(null);
+  }, []);
+
   const resetStep = useCallback((nextStep: LessonStep) => {
+    endDrag();
     setState(buildState(nextStep));
     setCorrectMoves(0);
     setStepComplete(nextStep.kind === 'explain');
     setFeedback(null);
+  }, [endDrag]);
+
+  const setBoardDimensions = useCallback((dims: BoardDimensions) => {
+    boardDimsRef.current = dims;
   }, []);
 
   const goToStep = useCallback((index: number) => {
@@ -219,6 +238,53 @@ export function useLessonSession(lesson: LessonDefinition) {
   const onPointPressIn = useCallback((_index: number) => {}, []);
   const onPointPressOut = useCallback(() => {}, []);
 
+  const canDrag
+    = step.kind === 'tryMove' && !stepComplete && !lessonFinished;
+
+  const handleDragStart = useCallback((from: number, _boardX: number, _boardY: number) => {
+    if (!canDrag) {
+      return;
+    }
+    if (validateDragStart(state, from) !== 'ok') {
+      return;
+    }
+    dragFromRef.current = from;
+    setDragFrom(from);
+    setPreviewTarget(null);
+    setState(prev => selectSource(prev, from));
+    hapticLight();
+  }, [canDrag, state]);
+
+  const handleDragMove = useCallback((boardX: number, boardY: number) => {
+    const from = dragFromRef.current;
+    const dims = boardDimsRef.current;
+    if (from === null || !dims || !canDrag) {
+      return;
+    }
+    setPreviewTarget(previewFromDrag({ state, from, boardX, boardY, dims }));
+  }, [canDrag, state]);
+
+  const handleDragEnd = useCallback((boardX: number, boardY: number) => {
+    const from = dragFromRef.current;
+    const dims = boardDimsRef.current;
+    if (from === null || !dims || !canDrag) {
+      endDrag();
+      return;
+    }
+    const target = resolveDropTarget(boardX, boardY, dims);
+    endDrag();
+    if (target === null || target === from) {
+      setState(prev => ({ ...prev, selectedPoint: null, legalMovesForSelected: [] }));
+      return;
+    }
+    tryApplyDestination(from, target);
+  }, [canDrag, endDrag, tryApplyDestination]);
+
+  const handleDragCancel = useCallback(() => {
+    endDrag();
+    setState(prev => ({ ...prev, selectedPoint: null, legalMovesForSelected: [] }));
+  }, [endDrag]);
+
   return {
     step,
     stepIndex,
@@ -237,6 +303,13 @@ export function useLessonSession(lesson: LessonDefinition) {
     onPointPressOut,
     onBarPress,
     onBearOffPress,
-    previewTarget: null as number | null,
+    previewTarget,
+    dragFrom,
+    canDrag,
+    setBoardDimensions,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
+    handleDragCancel,
   };
 }

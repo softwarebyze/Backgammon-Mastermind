@@ -80,6 +80,11 @@ function LessonScreenBody({
     extraChrome: 80,
   });
 
+  const { setBoardDimensions } = session;
+  useEffect(() => {
+    setBoardDimensions(dimensions);
+  }, [dimensions, setBoardDimensions]);
+
   const onPrimary = useCallback(() => {
     if (session.lessonFinished) {
       return;
@@ -134,9 +139,14 @@ function LessonScreenBody({
             dimensions={dimensions}
             previewTarget={session.previewTarget}
             moveAnimation={null}
+            dragFrom={session.canDrag ? session.dragFrom : null}
             onPointPress={session.onPointPress}
             onPointPressIn={session.onPointPressIn}
             onPointPressOut={session.onPointPressOut}
+            onDragStart={session.canDrag ? session.handleDragStart : undefined}
+            onDragMove={session.canDrag ? session.handleDragMove : undefined}
+            onDragEnd={session.canDrag ? session.handleDragEnd : undefined}
+            onDragCancel={session.canDrag ? session.handleDragCancel : undefined}
             onBarPress={session.onBarPress}
             onBearOffPress={session.onBearOffPress}
             interactionEnabled={!session.lessonFinished}
