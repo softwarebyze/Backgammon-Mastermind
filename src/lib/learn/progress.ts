@@ -35,7 +35,7 @@ export function loadLearnProgress(): LearnProgress {
   return sanitize(getItem<Partial<LearnProgress>>(STORAGE_KEY));
 }
 
-export function saveLearnProgress(progress: LearnProgress): void {
+function saveLearnProgress(progress: LearnProgress): void {
   void setItem(STORAGE_KEY, progress);
 }
 
