@@ -57,6 +57,8 @@ function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
 
 /**
  * Shrink width until the board (+ optional rails) fits in the available height.
+ * @param maxOuterWidth — max board outer width for the viewport
+ * @param maxOuterHeight — max board outer height for the viewport
  * @param extraHeight — e.g. point-number rails rendered inside the board frame
  */
 export function fitBoardToViewport(
@@ -74,16 +76,21 @@ export function fitBoardToViewport(
   return dims;
 }
 
-export function useBoardDimensions(): BoardDimensions {
+export function useBoardDimensions(options?: {
+  showPointNumbers?: boolean;
+  /** Extra vertical chrome beyond the default game screen estimate. */
+  extraChrome?: number;
+}): BoardDimensions {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const { preferences } = useGamePreferences();
-  const showPointNumbers = preferences.showPointNumbers;
+  const showPointNumbers = options?.showPointNumbers ?? preferences.showPointNumbers;
+  const extraChrome = options?.extraChrome ?? 0;
 
   return useMemo(() => {
     const maxOuterWidth = Math.min(screenWidth - BOARD_PADDING * 2, MAX_BOARD_WIDTH);
-    const chrome = Platform.OS === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME;
+    const chrome = (Platform.OS === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME) + extraChrome;
     const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
     const maxOuterHeight = Math.max(220, screenHeight - chrome);
     return fitBoardToViewport(maxOuterWidth, maxOuterHeight, railHeight);
-  }, [screenWidth, screenHeight, showPointNumbers]);
+  }, [screenWidth, screenHeight, showPointNumbers, extraChrome]);
 }
