@@ -49,7 +49,7 @@ If `metadata:push` fails with *app name already used*, the development ASC app (
 |---------|-----------|--------------|----------------------|-------------------|
 | `development` | `com.backgammonmastermind.development` | Backgammon Mastermind | `6780139011` | Dev-client internal builds only |
 | `preview` | `com.backgammonmastermind.preview` | BackgammonMastermind (d8480c) | **`6781121420`** | **QA / TestFlight** (`pnpm build:preview:ios`) |
-| `production` | `com.backgammonmastermind` | *(not created yet)* | — | App Store release (future) |
+| `production` | `com.backgammonmastermind` | BackgammonMastermind (23ea9f) → rename to **Backgammon Mastermind** | **`6792138473`** | App Store release (v1.0.0 binary submitted) |
 
 Preview IPAs must go to **`6781121420`**. Sending them to the development app (`6780139011`) fails with error **90055** (*bundle identifier cannot be changed*).
 
