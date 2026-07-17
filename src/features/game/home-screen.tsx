@@ -16,9 +16,17 @@ import {
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
+import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { confirmAction } from '@/lib/confirm';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
+import { LESSON_IDS } from '@/lib/learn/curriculum';
+import {
+  allLessonsComplete,
+  completedLessonCount,
+  isReadyToPlay,
+} from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
@@ -79,10 +87,15 @@ function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) 
   }
 }
 
+/* eslint-disable max-lines-per-function -- home mode menu composition */
 export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
+  const { progress } = useLearnProgress();
   const posthog = usePostHog();
   const canResume = canContinueSavedGame(state);
+  const learnDone = completedLessonCount(progress);
+  const learnReady = isReadyToPlay(progress);
+  const learnLessonsDone = allLessonsComplete(progress);
 
   const handleStart = useCallback(
     (mode: GameMode) => {
@@ -99,6 +112,30 @@ export function HomeScreen() {
     },
     [posthog, resumeGame, state],
   );
+
+  const handleLearn = useCallback(() => {
+    hapticLight();
+    posthog.capture('learn_opened', {
+      lessons_completed: learnDone,
+      quiz_passed: progress.quizPassed,
+    });
+    if (learnReady || learnLessonsDone) {
+      router.push('/learn/graduation');
+      return;
+    }
+    router.push('/learn');
+  }, [learnDone, learnLessonsDone, learnReady, posthog, progress.quizPassed]);
+
+  const learnSub = learnReady
+    ? translate('learn.home_cta_ready')
+    : learnLessonsDone
+      ? translate('learn.home_cta_quiz')
+      : learnDone > 0
+        ? translate('learn.home_cta_progress', {
+            done: learnDone,
+            total: LESSON_IDS.length,
+          })
+        : translate('learn.home_cta_sub');
 
   return (
     <>
@@ -141,6 +178,25 @@ export function HomeScreen() {
 
           <Pressable
             accessibilityRole="button"
+            accessibilityLabel={translate('learn.home_cta')}
+            style={({ pressed }) => [styles.modeBtn, styles.learnBtn, pressed && styles.pressed]}
+            onPress={handleLearn}
+          >
+            <View style={styles.btnIconSlot}>
+              <Feather name="book-open" size={24} color={GAME_PALETTE.accent} />
+            </View>
+            <View style={styles.btnTextCol}>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>
+                {translate('learn.home_cta')}
+              </Text>
+              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>
+                {learnSub}
+              </Text>
+            </View>
+          </Pressable>
+
+          <Pressable
+            accessibilityRole="button"
             accessibilityLabel="Play against the computer"
             style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
             onPress={() => handleStart('vs-computer')}
@@ -168,16 +224,6 @@ export function HomeScreen() {
               <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>Pass & play locally</Text>
             </View>
           </Pressable>
-        </View>
-
-        <View style={styles.rulesCard}>
-          <Text style={styles.rulesTitle}>New here?</Text>
-          <Text style={styles.rulesText}>
-            During a game, tap the sliders icon for hints and options.
-          </Text>
-          <Text style={styles.rulesText}>• Roll dice, then tap one of your checkers</Text>
-          <Text style={styles.rulesText}>• Hit lone blots to send them to the bar</Text>
-          <Text style={styles.rulesText}>• Bear off all 15 checkers to win</Text>
         </View>
       </View>
     </>
@@ -273,6 +319,10 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.surface,
     borderColor: GAME_PALETTE.accentDim,
   },
+  learnBtn: {
+    backgroundColor: GAME_PALETTE.surface,
+    borderColor: GAME_PALETTE.accent,
+  },
   btnIconSlot: {
     width: 32,
     alignItems: 'center',
@@ -290,28 +340,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
     ...interFont('regular'),
-  },
-  rulesCard: {
-    width: '100%',
-    maxWidth: 420,
-    backgroundColor: GAME_PALETTE.surface,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.surfaceBorder,
-    padding: 16,
-    gap: 6,
-    ...continuousRadius(14),
-  },
-  rulesTitle: {
-    color: GAME_PALETTE.accent,
-    fontSize: 13,
-    ...interFont('bold'),
-    marginBottom: 4,
-    letterSpacing: 1,
-  },
-  rulesText: {
-    color: GAME_PALETTE.accentDim,
-    fontSize: 12,
-    ...interFont('regular'),
-    lineHeight: 18,
   },
 });

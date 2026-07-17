@@ -52,6 +52,12 @@ function SideSection({ topIndices, botIndices, pointHeight, middleHeight, render
   );
 }
 
+type BoardAidsOverride = {
+  showMoveHints?: boolean;
+  showDirectionOverlay?: boolean;
+  showPointNumbers?: boolean;
+};
+
 type Props = {
   state: GameState;
   dimensions: BoardDimensions;
@@ -70,6 +76,11 @@ type Props = {
   onBearOffPress: () => void;
   interactionEnabled?: boolean;
   isReviewing?: boolean;
+  /** Optional overrides for learn mode (does not persist preferences). */
+  aidsOverride?: BoardAidsOverride;
+  /** Extra points to paint as targets (identify / coach emphasis). */
+  emphasisPoints?: ReadonlySet<number>;
+  emphasisBar?: boolean;
 };
 
 /* eslint-disable max-lines-per-function -- board layout composition */
@@ -91,8 +102,15 @@ export function BoardView({
   onBearOffPress,
   interactionEnabled = true,
   isReviewing = false,
+  aidsOverride,
+  emphasisPoints,
+  emphasisBar = false,
 }: Props) {
   const { preferences } = useGamePreferences();
+  const showMoveHints = aidsOverride?.showMoveHints ?? preferences.showMoveHints;
+  const showDirectionOverlay
+    = aidsOverride?.showDirectionOverlay ?? preferences.showDirectionOverlay;
+  const showPointNumbers = aidsOverride?.showPointNumbers ?? preferences.showPointNumbers;
   const ceremonyVisible = useOpeningCeremonyVisible();
   const surfaceRef = useRef<View>(null);
   const {
@@ -134,11 +152,11 @@ export function BoardView({
   }, [showHighlights, state]);
 
   const movableSources = useMemo(() => {
-    if (!showLiveHints || !showHighlights || !preferences.showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
+    if (!showLiveHints || !showHighlights || !showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
       return new Set<number>();
     }
     return getMovableSources(state);
-  }, [showLiveHints, showHighlights, preferences.showMoveHints, state]);
+  }, [showLiveHints, showHighlights, showMoveHints, state]);
 
   const bearOffLegal = useMemo(
     () => showHighlights
@@ -148,7 +166,7 @@ export function BoardView({
   );
 
   const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
-  const showDirection = preferences.showDirectionOverlay
+  const showDirection = showDirectionOverlay
     && !isReviewing
     && !ceremonyVisible
     && state.phase !== 'game-over'
@@ -180,7 +198,7 @@ export function BoardView({
         point={point}
         isTop={isTop}
         isSelected={selectedPoint === idx}
-        isLegalTarget={legalTargets.has(idx)}
+        isLegalTarget={legalTargets.has(idx) || (emphasisPoints?.has(idx) ?? false)}
         isMovableSource={movableSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
@@ -237,7 +255,7 @@ export function BoardView({
         overflow: 'hidden',
       }}
     >
-      {preferences.showPointNumbers && (
+      {showPointNumbers && (
         <PointNumberRail side="top" dimensions={dimensions} />
       )}
 
@@ -266,7 +284,7 @@ export function BoardView({
           whiteCount={barWhite}
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
-          selectedPoint={selectedPoint}
+          selectedPoint={emphasisBar && selectedPoint === null ? BAR_POINT : selectedPoint}
           onPressBar={() => {
             if (interactionEnabled) {
               onBarPress();
@@ -333,7 +351,7 @@ export function BoardView({
           : null}
       </View>
 
-      {preferences.showPointNumbers && (
+      {showPointNumbers && (
         <PointNumberRail side="bottom" dimensions={dimensions} />
       )}
     </View>

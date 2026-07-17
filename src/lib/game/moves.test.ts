@@ -37,13 +37,22 @@ describe('applyOpeningDieRoll', () => {
     expect(state.remainingDice).toEqual([5, 3]);
   });
 
-  it('re-rolls when opening dice tie — never opens on doubles', () => {
+  it('keeps tied opening dice for UI, then waits for a re-roll', () => {
     let state = createInitialState('vs-human');
     state = applyOpeningDieRoll(state, 4);
     state = applyOpeningDieRoll(state, 4);
     expect(state.phase).toBe('opening-roll');
-    expect(state.openingRolls).toEqual({ white: null, black: null });
+    expect(state.openingRolls).toEqual({ white: 4, black: 4 });
     expect(state.currentPlayer).toBe('white');
+  });
+
+  it('gives black the first turn when black rolls higher', () => {
+    let state = createInitialState('vs-computer');
+    state = applyOpeningDieRoll(state, 2);
+    state = applyOpeningDieRoll(state, 5);
+    expect(state.phase).toBe('moving');
+    expect(state.currentPlayer).toBe('black');
+    expect(state.dice).toEqual([2, 5]);
   });
 });
 

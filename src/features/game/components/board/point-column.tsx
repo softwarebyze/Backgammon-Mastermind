@@ -303,7 +303,9 @@ export function PointColumn({
   if (dragEnabled && columnGesture) {
     return (
       <GestureDetector gesture={columnGesture}>
+        {/* box-only: RNGH web captures event.target; nested checkers remount mid-drag and throw. */}
         <View
+          pointerEvents="box-only"
           style={columnStyle}
           accessibilityRole="button"
           accessibilityLabel={a11yLabel}
