@@ -1,6 +1,7 @@
+import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonId } from '@/lib/learn/curriculum';
-import { router } from 'expo-router';
-import { useCallback, useEffect } from 'react';
+import { router, useNavigation } from 'expo-router';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -24,12 +25,22 @@ type Props = {
 
 export function LessonScreen({ lessonId }: Props) {
   const lesson = getLesson(lessonId);
+  const navigation = useNavigation();
   const { completeLesson, startLearning } = useLearnProgress();
   const { preferences } = useGamePreferences();
 
   useEffect(() => {
     startLearning();
   }, [startLearning]);
+
+  useLayoutEffect(() => {
+    if (!lesson) {
+      return;
+    }
+    navigation.setOptions({
+      title: translate(lesson.titleKey as TxKeyPath),
+    });
+  }, [lesson, navigation]);
 
   if (!lesson) {
     return (

@@ -73,9 +73,6 @@ export function GraduationScreen() {
     <>
       <FocusAwareStatusBar />
       <ScrollView contentContainerStyle={styles.content} style={styles.scroll}>
-        <Text accessibilityRole="header" style={styles.title}>
-          {translate('learn.graduation.title')}
-        </Text>
         <Text style={styles.body}>{translate('learn.graduation.body')}</Text>
 
         <View style={styles.recap}>
@@ -125,7 +122,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 24,
-    paddingTop: 12,
+    paddingTop: 16,
     paddingBottom: 40,
     gap: 14,
   },
@@ -137,8 +134,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: GAME_PALETTE.accent,
-    fontSize: 28,
-    ...interFont('extrabold'),
+    fontSize: 22,
+    ...interFont('bold'),
   },
   body: {
     color: GAME_PALETTE.text,

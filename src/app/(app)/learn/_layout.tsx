@@ -5,7 +5,7 @@ import { HeaderButton } from 'expo-router/react-navigation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { settingsStackOptions } from '@/lib/navigation/native-stack-options';
+import { learnStackOptions } from '@/lib/navigation/native-stack-options';
 
 function LearnBackButton() {
   return (
@@ -23,25 +23,25 @@ function LearnBackButton() {
 
 export default function LearnLayout() {
   return (
-    <Stack screenOptions={settingsStackOptions()}>
+    <Stack>
       <Stack.Screen
         name="index"
         options={{
-          title: translate('learn.title'),
+          ...learnStackOptions(translate('learn.title')),
           headerLeft: () => <LearnBackButton />,
         }}
       />
       <Stack.Screen
         name="[lesson-id]"
         options={{
-          title: translate('learn.title'),
+          ...learnStackOptions(translate('learn.title')),
           headerLeft: () => <LearnBackButton />,
         }}
       />
       <Stack.Screen
         name="graduation"
         options={{
-          title: translate('learn.graduation.title'),
+          ...learnStackOptions(translate('learn.graduation.title')),
           headerLeft: () => <LearnBackButton />,
         }}
       />

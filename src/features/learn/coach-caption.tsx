@@ -45,8 +45,9 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 520,
     paddingHorizontal: 20,
-    paddingVertical: 12,
-    gap: 6,
+    paddingTop: 8,
+    paddingBottom: 4,
+    gap: 4,
   },
   stepLabel: {
     color: GAME_PALETTE.accentDim,
@@ -56,13 +57,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: GAME_PALETTE.accent,
-    fontSize: 20,
+    fontSize: 18,
     ...interFont('bold'),
   },
   body: {
     color: GAME_PALETTE.text,
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     ...interFont('regular'),
   },
   feedback: {

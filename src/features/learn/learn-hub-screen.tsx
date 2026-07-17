@@ -32,12 +32,12 @@ export function LearnHubScreen() {
     <>
       <FocusAwareStatusBar />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-        <Text accessibilityRole="header" style={styles.title}>
-          {translate('learn.title')}
-        </Text>
         <Text style={styles.subtitle}>{translate('learn.subtitle')}</Text>
 
         <View style={styles.progressRow}>
+          <Text style={styles.progressLabel}>
+            {translate('learn.home_cta_progress', { done, total })}
+          </Text>
           <View style={styles.progressTrack}>
             <View
               style={[
@@ -46,9 +46,6 @@ export function LearnHubScreen() {
               ]}
             />
           </View>
-          <Text style={styles.progressLabel}>
-            {translate('learn.home_cta_progress', { done, total })}
-          </Text>
         </View>
 
         <View style={styles.list}>
@@ -113,24 +110,18 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 24,
-    paddingTop: 12,
+    paddingTop: 16,
     paddingBottom: 40,
     gap: 12,
-  },
-  title: {
-    color: GAME_PALETTE.accent,
-    fontSize: 28,
-    ...interFont('extrabold'),
   },
   subtitle: {
     color: GAME_PALETTE.accentDim,
     fontSize: 14,
-    marginBottom: 8,
     ...interFont('regular'),
   },
   progressRow: {
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   progressTrack: {
     height: 8,

@@ -78,6 +78,25 @@ export function settingsStackOptions(): NativeStackNavigationOptions {
   };
 }
 
+/**
+ * Learn curriculum — opaque header, no large title.
+ * Settings-style transparent/large titles overlap learn screen content.
+ */
+export function learnStackOptions(title: string): NativeStackNavigationOptions {
+  return {
+    title,
+    headerShown: true,
+    headerTransparent: false,
+    headerLargeTitle: false,
+    headerShadowVisible: false,
+    headerStyle: { backgroundColor: GAME_PALETTE.bg },
+    headerTintColor: GAME_PALETTE.accent,
+    headerTitleStyle: gameHeaderTitleStyle,
+    headerBackButtonDisplayMode: 'minimal',
+    contentStyle: { backgroundColor: GAME_PALETTE.bg },
+  };
+}
+
 export function pickerFormSheetOptions(title: string): NativeStackNavigationOptions {
   return {
     presentation: 'formSheet',
