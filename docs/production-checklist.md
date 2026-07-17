@@ -4,7 +4,7 @@ Use this before the first App Store / Play Store submission.
 
 **Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
 
-**Last updated:** v0.1.0 release — iOS submitted, metadata synced (2026-06-14).
+**Last updated:** v1.0.0 first App Store production push (2026-07-17) — Learn to Play + PostHog.
 
 ## CI: what runs on every PR?
 
@@ -43,18 +43,22 @@ Use this before the first App Store / Play Store submission.
 | 3. Device QA | Done | Playtesting complete |
 | 4. Preview build (TestFlight) | Done | [iOS preview `2f5c68b0`](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/2f5c68b0-301e-4c5a-b5cc-7488a88318dd) · [Android preview `aee7ba16`](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/builds/aee7ba16-f971-436c-9269-040ff718536a) |
 | 5. Submit to stores | iOS preview → **`6781121420`** · Android pending | Preview TestFlight: [6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) · Dev app: [6780139011](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios) |
-| 6. Production build | Pending | Actions → **EAS Production Build** after TestFlight QA |
+| 6. Production build | In progress | iOS `aa0dceb8` + Android `ebe415c4` (EAS production, v1.0.0) |
 
 ## Store listing requirements
 
 - [x] App Store listing copy — `store.config.json`
 - [x] **App Store Connect API key** — via EAS credentials (`M7LGZ9S6S2`)
 - [x] `pnpm metadata:push` — listing synced for **0.1.0** ([ASC app](https://appstoreconnect.apple.com/apps/6780139011/appstore))
-- [ ] App Store screenshots (device captures or `docs/remotion/after/`)
+- [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
+- [ ] Upload screenshots in ASC (after production app record exists)
 - [ ] Google Play Console app record + screenshots + description
-- [x] Privacy policy — `docs/privacy-policy.md` (GitHub URL in `store.config.json`)
+- [x] Privacy policy — `docs/privacy-policy.md` (updated for PostHog; GitHub URL in `store.config.json`)
 - [x] Terms of service — `docs/terms-of-service.md`
+- [ ] Pricing — Paid Up Front **$4.99** USD, all territories (set in ASC)
+- [ ] Privacy nutrition labels — declare analytics (PostHog product interaction)
 - [ ] Content rating questionnaires (both stores)
+- [ ] Production ASC app record for `com.backgammonmastermind` (bundle ID registered; create listing + set `ascAppId`)
 - [x] Export compliance — `ITSAppUsesNonExemptEncryption: false` in `app.config.ts`
 
 ## Secrets checklist
