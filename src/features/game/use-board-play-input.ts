@@ -20,7 +20,7 @@ function triggerHaptic(fn: () => Promise<void>) {
   void fn().catch(() => {});
 }
 
-export type InputNudge = 'roll' | null;
+type InputNudge = 'roll' | null;
 
 const NUDGE_MS = 2200;
 
@@ -28,15 +28,15 @@ function needsRollFirst(phase: string | undefined): boolean {
   return phase === 'rolling' || phase === 'opening-roll';
 }
 
-export type BoardPlayActions = {
+type BoardPlayActions = {
   selectPoint: (point: number | null) => void;
   doMove: (move: Move, opts?: AnimatedMoveOpts) => void;
   doMoveSequence: (moves: Move[], opts?: AnimatedMoveOpts) => void;
 };
 
-export type BoardMoveInputType = 'tap' | 'drag' | 'bear_off';
+type BoardMoveInputType = 'tap' | 'drag' | 'bear_off';
 
-export type UseBoardPlayInputArgs = {
+type UseBoardPlayInputArgs = {
   state: GameState | null;
   isAnimating: boolean;
   isHumanTurn: boolean;

@@ -7,8 +7,6 @@ import { useBoardPlayInput } from '@/features/game/use-board-play-input';
 import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
 
-export type { InputNudge } from '@/features/game/use-board-play-input';
-
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
 function triggerHaptic(fn: () => Promise<void>) {
   void fn().catch(() => {});

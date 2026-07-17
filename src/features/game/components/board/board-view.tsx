@@ -52,7 +52,7 @@ function SideSection({ topIndices, botIndices, pointHeight, middleHeight, render
   );
 }
 
-export type BoardAidsOverride = {
+type BoardAidsOverride = {
   showMoveHints?: boolean;
   showDirectionOverlay?: boolean;
   showPointNumbers?: boolean;

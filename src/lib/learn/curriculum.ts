@@ -13,7 +13,7 @@ export const LESSON_IDS = [
 
 export type LessonId = (typeof LESSON_IDS)[number];
 
-export type LessonAids = {
+type LessonAids = {
   showMoveHints?: boolean;
   showDirectionOverlay?: boolean;
   showPointNumbers?: boolean;
@@ -30,11 +30,11 @@ type LessonStepBase = {
   emphasisBar?: boolean;
 };
 
-export type ExplainStep = LessonStepBase & {
+type ExplainStep = LessonStepBase & {
   kind: 'explain';
 };
 
-export type IdentifyStep = LessonStepBase & {
+type IdentifyStep = LessonStepBase & {
   kind: 'identify';
   hintKey: string;
   praiseKey: string;
@@ -42,7 +42,7 @@ export type IdentifyStep = LessonStepBase & {
   targets: number[];
 };
 
-export type TryMoveStep = LessonStepBase & {
+type TryMoveStep = LessonStepBase & {
   kind: 'tryMove';
   hintKey: string;
   praiseKey: string;
@@ -318,7 +318,7 @@ export const LESSONS: LessonDefinition[] = [
   },
 ];
 
-export type QuizOption = {
+type QuizOption = {
   id: string;
   labelKey: string;
   correct: boolean;

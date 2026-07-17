@@ -7,13 +7,13 @@ export type AcceptedMove = {
   to: number;
 };
 
-export type ValidateStatus = 'correct' | 'illegal' | 'legalButWrong';
+type ValidateStatus = 'correct' | 'illegal' | 'legalButWrong';
 
-export type ValidateResult = {
+type ValidateResult = {
   status: ValidateStatus;
 };
 
-export type TryMoveValidation = {
+type TryMoveValidation = {
   state: GameState;
   accepted: readonly AcceptedMove[];
   from: number;
