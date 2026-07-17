@@ -1,9 +1,16 @@
 {
   "configVersion": 0,
   "apple": {
-    "version": "0.1.3",
+    "version": "1.0.0",
     "copyright": "2026 Zachary Ebenfeld",
-    "categories": [["GAMES", "GAMES_BOARD", "GAMES_STRATEGY"], "ENTERTAINMENT"],
+    "categories": [
+      [
+        "GAMES",
+        "GAMES_BOARD",
+        "GAMES_STRATEGY"
+      ],
+      "ENTERTAINMENT"
+    ],
     "advisory": {
       "alcoholTobaccoOrDrugUseOrReferences": "NONE",
       "contests": "NONE",
@@ -28,7 +35,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Learn & play backgammon",
         "promoText": "Interactive Learn to Play, vs AI, or pass-and-play. No account required.",
-        "description": "Backgammon Mastermind is a polished take on the classic strategy board game — with an interactive Learn to Play path that teaches real rules on a live board.\n\nNew to backgammon? Work through short guided lessons: opening rolls, hits, the bar, doubles, and bearing off. Pass a quick graduation quiz, then play your first game with beginner aids on.\n\nAlready know the game? Jump straight into a match against the computer or share the board with a friend in pass-and-play mode. Roll dice, move your checkers, hit blots, and bear off all fifteen to win.\n\nFeatures:\n• Learn to Play — interactive lessons on a real board\n• vs Computer with heuristic AI\n• Local 2-player (pass-and-play)\n• Drag or tap to move; legal destinations highlighted\n• Direction overlay and game preferences\n• English and Arabic\n• No account and no ads — gameplay runs on your device\n\nOne purchase. Play offline after download. Perfect for learning the rules and sharpening your skills.",
+        "description": "Backgammon Mastermind is a polished take on the classic strategy board game \u2014 with an interactive Learn to Play path that teaches real rules on a live board.\n\nNew to backgammon? Work through short guided lessons: opening rolls, hits, the bar, doubles, and bearing off. Pass a quick graduation quiz, then play your first game with beginner aids on.\n\nAlready know the game? Jump straight into a match against the computer or share the board with a friend in pass-and-play mode. Roll dice, move your checkers, hit blots, and bear off all fifteen to win.\n\nFeatures:\n\u2022 Learn to Play \u2014 interactive lessons on a real board\n\u2022 vs Computer with heuristic AI\n\u2022 Local 2-player (pass-and-play)\n\u2022 Drag or tap to move; legal destinations highlighted\n\u2022 Direction overlay and game preferences\n\u2022 English and Arabic\n\u2022 No account and no ads \u2014 gameplay runs on your device\n\nOne purchase. Play offline after download. Perfect for learning the rules and sharpening your skills.",
         "keywords": [
           "backgammon",
           "learn backgammon",
@@ -40,7 +47,7 @@
           "AI",
           "classic"
         ],
-        "releaseNotes": "Learn to Play: interactive lessons, graduation quiz, and beginner aids for your first real game — plus PostHog analytics to improve the product.",
+        "releaseNotes": "First App Store release: interactive Learn to Play lessons, graduation quiz, vs Computer and pass-and-play, plus privacy-friendly analytics to improve the product.",
         "marketingUrl": "https://github.com/softwarebyze/Backgammon-Mastermind",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/blob/main/docs/privacy-policy.md"
