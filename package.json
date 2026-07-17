@@ -1,6 +1,6 @@
 {
   "name": "backgammonmastermind",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@10.12.3",
   "repository": {
