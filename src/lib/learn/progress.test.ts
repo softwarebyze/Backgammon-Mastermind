@@ -1,10 +1,9 @@
-import { LESSON_IDS } from './curriculum';
+import { CHALLENGE_IDS } from './challenges';
 import {
-  allLessonsComplete,
+  allChallengesComplete,
   EMPTY_LEARN_PROGRESS,
   isReadyToPlay,
-  markLessonComplete,
-  markQuizPassed,
+  markChallengeComplete,
 } from './progress';
 
 jest.mock('@/lib/storage', () => {
@@ -24,21 +23,32 @@ jest.mock('@/lib/storage', () => {
 });
 
 describe('learn progress', () => {
-  it('records completed lessons and quiz', () => {
+  it('records completed challenges', () => {
     let progress = { ...EMPTY_LEARN_PROGRESS };
-    for (const id of LESSON_IDS) {
-      progress = markLessonComplete(progress, id);
+    for (const id of CHALLENGE_IDS) {
+      progress = markChallengeComplete(progress, id, { xpEarned: 10, stars: 3 });
     }
-    expect(allLessonsComplete(progress)).toBe(true);
-    expect(isReadyToPlay(progress)).toBe(false);
-
-    progress = markQuizPassed(progress);
+    expect(allChallengesComplete(progress)).toBe(true);
     expect(isReadyToPlay(progress)).toBe(true);
   });
 
-  it('is idempotent when completing the same lesson twice', () => {
-    let progress = markLessonComplete(EMPTY_LEARN_PROGRESS, 'goal-board');
-    progress = markLessonComplete(progress, 'goal-board');
-    expect(progress.completedLessons).toEqual(['goal-board']);
+  it('is idempotent when completing the same challenge twice', () => {
+    let progress = markChallengeComplete(EMPTY_LEARN_PROGRESS, 'roll-move', { xpEarned: 10, stars: 3 });
+    progress = markChallengeComplete(progress, 'roll-move', { xpEarned: 10, stars: 3 });
+    expect(progress.completedChallenges).toEqual(['roll-move']);
+  });
+
+  it('keeps best star rating', () => {
+    let progress = markChallengeComplete(EMPTY_LEARN_PROGRESS, 'roll-move', { xpEarned: 10, stars: 1 });
+    expect(progress.starsByChallenge['roll-move']).toBe(1);
+    progress = markChallengeComplete(progress, 'roll-move', { xpEarned: 10, stars: 3 });
+    expect(progress.starsByChallenge['roll-move']).toBe(3);
+  });
+
+  it('accumulates XP', () => {
+    let progress = markChallengeComplete(EMPTY_LEARN_PROGRESS, 'roll-move', { xpEarned: 15, stars: 3 });
+    expect(progress.totalXp).toBe(15);
+    progress = markChallengeComplete(progress, 'find-home', { xpEarned: 10, stars: 2 });
+    expect(progress.totalXp).toBe(25);
   });
 });

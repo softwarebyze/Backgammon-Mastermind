@@ -38,13 +38,6 @@ export default function LearnLayout() {
           headerLeft: () => <LearnBackButton />,
         }}
       />
-      <Stack.Screen
-        name="graduation"
-        options={{
-          ...learnStackOptions(translate('learn.graduation.title')),
-          headerLeft: () => <LearnBackButton />,
-        }}
-      />
     </Stack>
   );
 }

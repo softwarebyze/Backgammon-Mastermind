@@ -1,13 +1,13 @@
 import { Redirect, useLocalSearchParams } from 'expo-router';
 
-import { LessonScreen } from '@/features/learn';
-import { isLessonId } from '@/lib/learn/curriculum';
+import { ChallengeScreen } from '@/features/learn';
+import { isChallengeId } from '@/lib/learn/challenges';
 
-export default function LessonRoute() {
+export default function ChallengeRoute() {
   const params = useLocalSearchParams<{ 'lesson-id': string }>();
-  const lessonId = params['lesson-id'];
-  if (!lessonId || !isLessonId(lessonId)) {
+  const challengeId = params['lesson-id'];
+  if (!challengeId || !isChallengeId(challengeId)) {
     return <Redirect href="/learn" />;
   }
-  return <LessonScreen lessonId={lessonId} />;
+  return <ChallengeScreen challengeId={challengeId} />;
 }

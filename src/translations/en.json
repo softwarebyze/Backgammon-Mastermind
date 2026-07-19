@@ -61,171 +61,137 @@
     }
   },
   "learn": {
-    "back_to_hub": "All lessons",
+    "back_to_hub": "All challenges",
+    "challenge": {
+      "next": "Next challenge",
+      "play_first_game": "Play your first game",
+      "try_it": "Try it"
+    },
+    "challenges": {
+      "bear_off": {
+        "hint": "Select point 3, then tap the bear-off area on the right edge.",
+        "praise": "Off the board! First to bear off all 15 wins.",
+        "show_body": "All your checkers are in your home (points 1–6). You can now remove them from the board. Roll a 3 — take the checker on the 3-point off.",
+        "show_title": "Time to bear off",
+        "subtitle": "Remove checkers to win",
+        "title": "Bearing off"
+      },
+      "blocked_points": {
+        "hint": "The highlighted stack of two black checkers on point 5.",
+        "praise": "Right — a made point (2+) is closed. Empty, your own, or a blot (1) are open.",
+        "show_body": "Two or more opponent checkers on a point block it. You can't land there. Find the blocked point.",
+        "show_title": "Blocked points",
+        "subtitle": "Know what you can't do",
+        "title": "Blocked points"
+      },
+      "doubles": {
+        "hint": "Tap the 8-point, then the 6-point. Do this four times — once per die.",
+        "praise": "Exactly — doubles mean four moves with that number.",
+        "show_body": "Rolling doubles gives you four moves instead of two. You rolled 2-2 — that's four 2s. Move from the 8-point to the 6-point, four times.",
+        "show_title": "Double trouble",
+        "subtitle": "Four moves, not two",
+        "title": "Doubles"
+      },
+      "enter_bar": {
+        "hint": "Tap the bar, then point 21 (not 23 — that's the 2).",
+        "praise": "You're back on the board — bar checkers always enter first.",
+        "show_body": "A checker on the bar must re-enter before you can move anything else. Die N enters on point 25−N. You rolled a 4 — enter on point 21.",
+        "show_title": "Enter from the bar",
+        "subtitle": "Bar checkers move first",
+        "title": "Enter from bar",
+        "wrong": "That's the 2 (point 23). Use the 4 — enter on point 21 (25−4)."
+      },
+      "find_home": {
+        "hint": "Home is the six points in the bottom-right quadrant — numbered 1 through 6.",
+        "praise": "That's your home — checkers leave the board from here.",
+        "show_body": "Your home board is points 1 through 6. This is where all your checkers need to end up before you can bear them off. Tap any home point.",
+        "show_title": "Your home board",
+        "subtitle": "Where checkers finish",
+        "title": "Find home"
+      },
+      "hit_blot": {
+        "hint": "Tap your checker on 8, then tap point 5.",
+        "praise": "Hit! That black checker is now on the bar.",
+        "show_body": "A single checker sitting alone is called a blot. Land on it and it gets sent to the bar. You rolled a 3 — hit the black blot on the 5-point.",
+        "show_title": "Hit the blot",
+        "subtitle": "Send them to the bar",
+        "title": "Hit a blot"
+      },
+      "opening_roll": {
+        "hint": "Every game starts with one die each — higher goes first.",
+        "praise": "Now you know how every game begins.",
+        "show_body": "Every game of backgammon starts with both players rolling one die. Higher roll goes first and uses both numbers for the opening move.",
+        "show_title": "How the game starts",
+        "subtitle": "The opening roll",
+        "title": "Opening roll"
+      },
+      "overshoot": {
+        "hint": "Select point 3, then tap the bear-off tray.",
+        "praise": "That's the overshoot rule — you'll use it a lot when bearing off.",
+        "show_body": "Nothing is on the 5-point, but you rolled a 5. When there's no checker on the number you rolled, bear off from your highest occupied point instead.",
+        "show_title": "Overshoot rule",
+        "subtitle": "Larger die still works",
+        "title": "Overshoot"
+      },
+      "play_both_dice": {
+        "hint": "Select a white checker, then tap point 5. Do this for both the 8-point and the 6-point.",
+        "praise": "Nice — both dice used. Same checker or two checkers, both numbers must be played when you can.",
+        "show_body": "Each turn you roll two dice and must play both when possible. You rolled 3 and 1 — move the 8-point checker three pips (to 5), and the 6-point checker one pip (to 5).",
+        "show_title": "Play both dice",
+        "subtitle": "Two dice, two moves",
+        "title": "Both dice"
+      },
+      "roll_move": {
+        "hint": "Tap the white checker on 8, then tap point 5.",
+        "praise": "You moved! That's the core of backgammon — roll dice, move checkers.",
+        "show_body": "Roll the dice, then move a checker that many points. You rolled a 3 — move the white checker from point 8 to point 5.",
+        "show_title": "Your first move",
+        "subtitle": "Roll and move",
+        "title": "Roll & move"
+      },
+      "the_bar": {
+        "hint": "Tap the vertical strip between the left and right halves of the board.",
+        "praise": "Right — hit checkers sit on the bar until they re-enter.",
+        "show_body": "The raised strip in the middle is called the bar. When your checker gets hit, it waits here until you re-enter. Tap the bar.",
+        "show_title": "The bar",
+        "subtitle": "Hit checkers wait here",
+        "title": "The bar"
+      },
+      "your_direction": {
+        "hint": "Tap the white checker on 8, then tap point 5.",
+        "praise": "You're moving the right way — from high to low, toward your home.",
+        "show_body": "Your checkers move in a horseshoe: from the far side, across, then into your home (points 1–6). You always move toward lower numbers. Move this checker in the correct direction.",
+        "show_title": "Your direction",
+        "subtitle": "Which way to move",
+        "title": "Direction"
+      }
+    },
     "continue": "Continue",
     "feedback": {
-      "hint_nudge": "Need a nudge? Look for the highlighted spots.",
       "illegal": "Try a highlighted point — or tap Hint.",
-      "legal_but_wrong": "That’s legal in a real game — here, try the move that teaches this idea.",
+      "legal_but_wrong": "That's legal in a real game — here, try the move that teaches this idea.",
       "move_progress": "Nice — {{done}} of {{needed}} moves done."
-    },
-    "graduation": {
-      "body": "You know the goal, the board, how turns work, hitting, and bearing off. A quick check — then your first real game.",
-      "play_cta": "Play your first game",
-      "quiz_done": "Nailed it. Time to play.",
-      "quiz_title": "Quick check",
-      "quiz_wrong": "Not quite — try another answer.",
-      "recap_1": "Race: bear off all 15 first",
-      "recap_2": "Roll two dice; land on open points",
-      "recap_3": "Hit blots → they sit on the bar",
-      "recap_4": "Bear off only from your home board",
-      "recap_5": "Games start with one die each — higher goes first (ties re-roll)",
-      "title": "You’re ready to play"
     },
     "hint": "Hint",
     "home_cta": "Learn to play",
-    "home_cta_progress": "{{done}} of {{total}} lessons done",
-    "home_cta_quiz": "Quick check left — then play",
-    "home_cta_ready": "You’re ready — play a real game",
-    "home_cta_sub": "Interactive lessons for beginners",
-    "lesson_complete": "Lesson complete!",
-    "lessons": {
-      "bearing_off": {
-        "steps": {
-          "overshoot": {
-            "body": "Nothing is on the 5-point, but you rolled a 5. Bear off from your highest occupied point (the 3) — a larger die still works.",
-            "hint": "Select point 3, then tap the bear-off tray.",
-            "praise": "That’s the overshoot rule — you’ll use it a lot when bearing off.",
-            "title": "Bigger die, still off"
-          },
-          "try": {
-            "body": "All your checkers are in home (1–6), so you can bear off. You rolled a 3 — take the checker on the 3-point off the board.",
-            "hint": "Select point 3, then tap the bear-off area on the right edge.",
-            "praise": "Off the board! First to bear off all 15 wins.",
-            "title": "Bear one off"
-          }
-        },
-        "subtitle": "How you win",
-        "title": "Bearing off"
-      },
-      "direction_setup": {
-        "steps": {
-          "explain": {
-            "body": "Your white checkers move in a horseshoe: from the far side, across, then into your home (points 1–6). Every game starts with the same 2-5-3-5 pattern.",
-            "title": "The horseshoe path"
-          },
-          "far": {
-            "body": "Tap the point where your two farthest white checkers start (the 24-point).",
-            "hint": "Look at the top-right — two white checkers on point 24.",
-            "praise": "Those start deep in the opponent’s home and have the longest journey.",
-            "title": "Your farthest checkers"
-          },
-          "home_stack": {
-            "body": "Tap the big stack of five white checkers already in your home (the 6-point).",
-            "hint": "Bottom-right: five white checkers on point 6.",
-            "praise": "That’s the 2-5-3-5 setup: 2 on 24, 5 on 13, 3 on 8, 5 on 6.",
-            "title": "Your home stack"
-          }
-        },
-        "subtitle": "Which way you move",
-        "title": "Direction & setup"
-      },
-      "goal_board": {
-        "steps": {
-          "bar": {
-            "body": "The raised strip in the middle is the bar. Hit checkers wait here. Tap the bar.",
-            "hint": "Tap the vertical strip between the left and right halves of the board.",
-            "praise": "Right — hit checkers sit on the bar until they re-enter.",
-            "title": "The bar"
-          },
-          "explain": {
-            "body": "You and your opponent each have 15 checkers. Move them around the board and off — first one finished wins.",
-            "title": "First to bear off wins"
-          },
-          "home": {
-            "body": "Your home is points 1–6 (bottom-right). Tap any point in your home board.",
-            "hint": "Home is the six points in the bottom-right quadrant — numbered 1 through 6.",
-            "praise": "That’s your home — checkers leave the board from here.",
-            "title": "Find your home board"
-          }
-        },
-        "subtitle": "What you’re racing for",
-        "title": "Goal & board"
-      },
-      "hitting_bar": {
-        "steps": {
-          "enter": {
-            "body": "You’re on the bar — you must enter before anything else. Die N enters on point 25−N (a 4 → point 21).",
-            "hint": "Tap the bar, then point 21 (not 23 — that’s the 2).",
-            "praise": "You’re back on the board — bar checkers always enter first.",
-            "title": "Enter from the bar",
-            "wrong": "That’s the 2 (point 23). Use the 4 — enter on point 21 (25−4)."
-          },
-          "hit": {
-            "body": "A single checker is a blot. Land on it and it goes to the bar. You rolled a 3 — hit the black blot on the 5-point.",
-            "hint": "Tap your checker on 8, then tap point 5.",
-            "praise": "Hit! That black checker is now on the bar.",
-            "title": "Hit the blot"
-          }
-        },
-        "subtitle": "Contact play",
-        "title": "Hitting & the bar"
-      },
-      "moving_dice": {
-        "steps": {
-          "blocked": {
-            "body": "Two or more opponent checkers block a point — you can’t land there. Tap the blocked black stack on the 5-point.",
-            "hint": "The highlighted stack of two black checkers on point 5.",
-            "praise": "Right — a made point (2+) is closed. Empty, your own, or a blot (1) are open.",
-            "title": "Blocked points"
-          },
-          "doubles": {
-            "body": "Doubles give you four moves of that number. You rolled 2-2 — that’s four 2s. Move from the 8-point to the 6-point four times.",
-            "hint": "Tap the 8-point, then the 6-point. Do this four times — once per die.",
-            "praise": "Exactly — doubles mean four moves with that number.",
-            "title": "Doubles = four moves"
-          },
-          "explain": {
-            "body": "Each turn you roll two dice and play both numbers when you can. You may land on empty points, your own checkers, or a lone opponent (a blot).",
-            "title": "Two numbers, open points"
-          },
-          "two_dice": {
-            "body": "You rolled 3 and 1. Move the checker on the 8-point three pips (to 5), and the one on the 6-point one pip (to 5).",
-            "hint": "Select a white checker, then tap point 5. Do this for both the 8-point and the 6-point.",
-            "praise": "Nice — both dice used. Same checker or two checkers, both numbers must be played when you can.",
-            "title": "Play both dice"
-          }
-        },
-        "subtitle": "How a turn works",
-        "title": "Moving with dice"
-      }
-    },
-    "locked": "Complete the previous lesson first",
-    "next_lesson": "Next lesson",
-    "quiz": {
-      "bar": {
-        "a": "Move your farthest checker first",
-        "b": "Enter that checker before moving anything else",
-        "c": "Skip your turn",
-        "prompt": "While you have a checker on the bar, you must…"
-      },
-      "bear": {
-        "a": "Whenever you roll a 6",
-        "b": "Only after you hit a blot",
-        "c": "When all 15 checkers are in your home board",
-        "prompt": "When can you bear off?"
-      },
-      "blot": {
-        "a": "Any stack of three or more",
-        "b": "A single checker on a point — it can be hit",
-        "c": "The doubling cube",
-        "prompt": "What is a blot?"
-      }
-    },
-    "replay": "Replay",
+    "home_cta_progress": "{{done}} of {{total}} challenges done",
+    "home_cta_ready": "You're ready — play a real game",
+    "home_cta_sub": "Quick challenges — learn by doing",
+    "locked": "Complete prerequisites first",
     "skip_to_play": "Skip to play",
-    "step_progress": "Step {{current}} of {{total}}",
-    "subtitle": "Five short lessons — then you’re ready",
+    "stats": {
+      "challenges": "Challenges",
+      "stars": "Stars",
+      "xp": "XP"
+    },
+    "subtitle": "12 challenges — learn by playing",
+    "tiers": {
+      "tier1": "Your First Move",
+      "tier2": "The Basics",
+      "tier3": "Contact Play",
+      "tier4": "Winning",
+      "tier5": "Ready to Play"
+    },
     "title": "Learn to play"
   },
   "settings": {

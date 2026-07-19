@@ -1,5 +1,5 @@
-import { LearnHubScreen } from '@/features/learn';
+import { SkillTreeScreen } from '@/features/learn';
 
 export default function LearnHubRoute() {
-  return <LearnHubScreen />;
+  return <SkillTreeScreen />;
 }

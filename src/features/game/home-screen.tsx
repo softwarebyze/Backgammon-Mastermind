@@ -21,10 +21,9 @@ import { confirmAction } from '@/lib/confirm';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { LESSON_IDS } from '@/lib/learn/curriculum';
+import { CHALLENGE_IDS } from '@/lib/learn/challenges';
 import {
-  allLessonsComplete,
-  completedLessonCount,
+  completedChallengeCount,
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
@@ -93,9 +92,8 @@ export function HomeScreen() {
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
   const canResume = canContinueSavedGame(state);
-  const learnDone = completedLessonCount(progress);
+  const learnDone = completedChallengeCount(progress);
   const learnReady = isReadyToPlay(progress);
-  const learnLessonsDone = allLessonsComplete(progress);
 
   const handleStart = useCallback(
     (mode: GameMode) => {
@@ -116,26 +114,19 @@ export function HomeScreen() {
   const handleLearn = useCallback(() => {
     hapticLight();
     posthog.capture('learn_opened', {
-      lessons_completed: learnDone,
-      quiz_passed: progress.quizPassed,
+      challenges_completed: learnDone,
     });
-    if (learnReady || learnLessonsDone) {
-      router.push('/learn/graduation');
-      return;
-    }
     router.push('/learn');
-  }, [learnDone, learnLessonsDone, learnReady, posthog, progress.quizPassed]);
+  }, [learnDone, posthog]);
 
   const learnSub = learnReady
     ? translate('learn.home_cta_ready')
-    : learnLessonsDone
-      ? translate('learn.home_cta_quiz')
-      : learnDone > 0
-        ? translate('learn.home_cta_progress', {
-            done: learnDone,
-            total: LESSON_IDS.length,
-          })
-        : translate('learn.home_cta_sub');
+    : learnDone > 0
+      ? translate('learn.home_cta_progress', {
+          done: learnDone,
+          total: CHALLENGE_IDS.length,
+        })
+      : translate('learn.home_cta_sub');
 
   return (
     <>

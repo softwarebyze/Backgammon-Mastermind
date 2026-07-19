@@ -1,12 +1,11 @@
-import type { LessonId } from '@/lib/learn/curriculum';
+import type { ChallengeId } from '@/lib/learn/challenges';
 import type { LearnProgress } from '@/lib/learn/progress';
 
 import { useCallback, useSyncExternalStore } from 'react';
 import {
   loadLearnProgress,
-  markLessonComplete,
-  markLessonStarted,
-  markQuizPassed,
+  markChallengeComplete,
+  markStarted,
 } from '@/lib/learn/progress';
 
 let cached = loadLearnProgress();
@@ -36,21 +35,19 @@ export function useLearnProgress() {
   const progress = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
   const startLearning = useCallback(() => {
-    setProgress(markLessonStarted(cached));
+    setProgress(markStarted(cached));
   }, []);
 
-  const completeLesson = useCallback((lessonId: LessonId) => {
-    setProgress(markLessonComplete(cached, lessonId));
-  }, []);
-
-  const completeQuiz = useCallback(() => {
-    setProgress(markQuizPassed(cached));
-  }, []);
+  const completeChallenge = useCallback(
+    (challengeId: ChallengeId, xpEarned: number, stars: 1 | 2 | 3) => {
+      setProgress(markChallengeComplete(cached, challengeId, { xpEarned, stars }));
+    },
+    [],
+  );
 
   return {
     progress,
     startLearning,
-    completeLesson,
-    completeQuiz,
+    completeChallenge,
   };
 }

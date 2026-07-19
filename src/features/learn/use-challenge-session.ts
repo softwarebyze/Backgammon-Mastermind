@@ -1,10 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { GameState, Move } from '@/lib/game/types';
 import type { TxKeyPath } from '@/lib/i18n';
-import type { LessonDefinition, LessonStep } from '@/lib/learn/curriculum';
+import type { Challenge, ChallengeStep } from '@/lib/learn/challenges';
 
 import { usePostHog } from 'posthog-react-native';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
 import { useGameSelectPoint } from '@/features/game/use-game-select-point';
 import { createPositionState } from '@/lib/game/create-position';
@@ -16,18 +16,19 @@ import {
   validateTryMove,
 } from '@/lib/learn/validate-step';
 
-export type LessonFeedback = {
+export type ChallengeFeedback = {
   tone: 'hint' | 'praise' | 'soft';
   messageKey: TxKeyPath;
   messageOptions?: Record<string, string | number>;
 };
 
-function buildState(step: LessonStep): GameState {
-  return createPositionState(step.position);
+export type ChallengePhase = 'show' | 'do' | 'celebrate';
+
+function buildState(step: ChallengeStep, challenge: Challenge): GameState {
+  return createPositionState(challenge.position);
 }
 
-/** Keep the learner as white after a correct try-move lands. */
-function patchAfterLessonMove(state: GameState, nextState: GameState): GameState {
+function patchAfterChallengeMove(state: GameState, nextState: GameState): GameState {
   if (nextState.winner) {
     return nextState;
   }
@@ -45,23 +46,21 @@ function patchAfterLessonMove(state: GameState, nextState: GameState): GameState
   };
 }
 
-/* eslint-disable max-lines-per-function -- lesson step orchestration */
-export function useLessonSession(lesson: LessonDefinition) {
+/* eslint-disable max-lines-per-function -- challenge session logic is inherently complex */
+export function useChallengeSession(challenge: Challenge) {
   const posthog = usePostHog();
-  const [stepIndex, setStepIndex] = useState(0);
-  const [state, setState] = useState<GameState>(() => buildState(lesson.steps[0]!));
-  const [correctMoves, setCorrectMoves] = useState(0);
-  const [stepComplete, setStepComplete] = useState(
-    () => lesson.steps[0]?.kind === 'explain',
+  const [phase, setPhase] = useState<ChallengePhase>('show');
+  const [state, setState] = useState<GameState>(() =>
+    buildState(challenge.step, challenge),
   );
-  const [feedback, setFeedback] = useState<LessonFeedback | null>(null);
-  const [lessonFinished, setLessonFinished] = useState(false);
+  const [correctMoves, setCorrectMoves] = useState(0);
+  const [stepComplete, setStepComplete] = useState(false);
+  const [feedback, setFeedback] = useState<ChallengeFeedback | null>(null);
+  const [attempts, setAttempts] = useState(0);
+  const [hintUsed, setHintUsed] = useState(false);
 
-  const step = lesson.steps[stepIndex]!;
-  const totalSteps = lesson.steps.length;
-
-  const playEnabled
-    = step.kind === 'tryMove' && !stepComplete && !lessonFinished;
+  const step = challenge.step;
+  const playEnabled = step.kind === 'tryMove' && phase === 'do' && !stepComplete;
 
   const selectPoint = useGameSelectPoint(
     setState as Dispatch<SetStateAction<GameState | null>>,
@@ -69,78 +68,57 @@ export function useLessonSession(lesson: LessonDefinition) {
   );
 
   const emphasisPoints = useMemo(() => {
-    if (!step.emphasisPoints?.length) {
+    if (!challenge.emphasisPoints?.length) {
       return undefined;
     }
-    return new Set(step.emphasisPoints);
-  }, [step]);
+    return new Set(challenge.emphasisPoints);
+  }, [challenge.emphasisPoints]);
 
-  const resetStep = useCallback((nextStep: LessonStep) => {
-    setState(buildState(nextStep));
-    setCorrectMoves(0);
-    setStepComplete(nextStep.kind === 'explain');
+  const startDoPhase = useCallback(() => {
+    setPhase('do');
     setFeedback(null);
   }, []);
 
-  const goToStep = useCallback((index: number) => {
-    const next = lesson.steps[index];
-    if (!next) {
-      return;
-    }
-    setStepIndex(index);
-    resetStep(next);
-  }, [lesson.steps, resetStep]);
-
-  const advance = useCallback(() => {
-    hapticLight();
-    if (stepIndex >= totalSteps - 1) {
-      setLessonFinished(true);
-      return;
-    }
-    goToStep(stepIndex + 1);
-  }, [goToStep, stepIndex, totalSteps]);
-
   const showHint = useCallback(() => {
-    if (step.kind === 'explain') {
-      return;
+    if (step.kind === 'identify' || step.kind === 'tryMove') {
+      setHintUsed(true);
+      posthog.capture('learn_hint_shown', {
+        challenge_id: challenge.id,
+        challenge_step_kind: step.kind,
+      });
+      setFeedback({ tone: 'hint', messageKey: step.hintKey as TxKeyPath });
     }
-    posthog.capture('learn_hint_shown', {
-      lesson_id: lesson.id,
-      step_id: step.id,
-      step_kind: step.kind,
-    });
-    setFeedback({ tone: 'hint', messageKey: step.hintKey as TxKeyPath });
-  }, [lesson.id, posthog, step]);
+  }, [challenge.id, posthog, step]);
 
-  const completeInteractiveStep = useCallback((praiseKey: string) => {
+  const completeStep = useCallback((praiseKey: string) => {
     hapticSelection();
     setStepComplete(true);
     setFeedback({ tone: 'praise', messageKey: praiseKey as TxKeyPath });
-    posthog.capture('learn_step_completed', {
-      lesson_id: lesson.id,
-      step_id: step.id,
-      step_kind: step.kind,
-      step_index: stepIndex,
+    posthog.capture('challenge_completed', {
+      challenge_id: challenge.id,
+      challenge_step_kind: step.kind,
     });
-  }, [lesson.id, posthog, step.id, step.kind, stepIndex]);
+  }, [challenge.id, posthog, step.kind]);
 
   const handleIdentifyTap = useCallback((point: number) => {
     if (step.kind !== 'identify' || stepComplete) {
       return;
     }
+    setAttempts(a => a + 1);
     const result = validateIdentify(step.targets, point);
     if (result.status === 'correct') {
-      completeInteractiveStep(step.praiseKey);
+      completeStep(step.praiseKey);
       return;
     }
     hapticLight();
     setFeedback({ tone: 'soft', messageKey: 'learn.feedback.illegal' });
-  }, [completeInteractiveStep, step, stepComplete]);
+  }, [completeStep, step, stepComplete]);
 
   const tryApplyDestination = useCallback((from: number, to: number) => {
     if (step.kind !== 'tryMove' || stepComplete) {
       return;
     }
+    setAttempts(a => a + 1);
     const result = validateTryMove({
       state,
       accepted: step.acceptedMoves,
@@ -150,8 +128,7 @@ export function useLessonSession(lesson: LessonDefinition) {
     if (result.status === 'illegal') {
       hapticLight();
       posthog.capture('learn_move_feedback', {
-        lesson_id: lesson.id,
-        step_id: step.id,
+        challenge_id: challenge.id,
         status: 'illegal',
       });
       setFeedback({ tone: 'soft', messageKey: 'learn.feedback.illegal' });
@@ -161,8 +138,7 @@ export function useLessonSession(lesson: LessonDefinition) {
     if (result.status === 'legalButWrong') {
       hapticLight();
       posthog.capture('learn_move_feedback', {
-        lesson_id: lesson.id,
-        step_id: step.id,
+        challenge_id: challenge.id,
         status: 'legal_but_wrong',
       });
       setFeedback({
@@ -180,12 +156,12 @@ export function useLessonSession(lesson: LessonDefinition) {
     }
 
     const nextState = applyMove(state, move);
-    setState(patchAfterLessonMove(state, nextState));
+    setState(patchAfterChallengeMove(state, nextState));
     const needed = step.requiredMoveCount ?? 1;
     const nextCount = correctMoves + 1;
     setCorrectMoves(nextCount);
     if (nextCount >= needed) {
-      completeInteractiveStep(step.praiseKey);
+      completeStep(step.praiseKey);
     }
     else {
       hapticLight();
@@ -195,7 +171,7 @@ export function useLessonSession(lesson: LessonDefinition) {
         messageOptions: { done: nextCount, needed },
       });
     }
-  }, [completeInteractiveStep, correctMoves, lesson.id, posthog, selectPoint, state, step, stepComplete]);
+  }, [challenge.id, completeStep, correctMoves, posthog, selectPoint, state, step, stepComplete]);
 
   const doMove = useCallback((move: Move) => {
     tryApplyDestination(move.from, move.to);
@@ -239,33 +215,36 @@ export function useLessonSession(lesson: LessonDefinition) {
   });
 
   const onPointPress = useCallback((index: number) => {
-    if (step.kind === 'identify' && !stepComplete) {
+    if (step.kind === 'identify' && phase === 'do' && !stepComplete) {
       handleIdentifyTap(index);
       return;
     }
     handlePointPress(index);
-  }, [handleIdentifyTap, handlePointPress, step.kind, stepComplete]);
+  }, [handleIdentifyTap, handlePointPress, phase, step.kind, stepComplete]);
 
   const onBarPress = useCallback(() => {
-    if (step.kind === 'identify' && !stepComplete) {
+    if (step.kind === 'identify' && phase === 'do' && !stepComplete) {
       handleIdentifyTap(0);
       return;
     }
     handleBarPress();
-  }, [handleBarPress, handleIdentifyTap, step.kind, stepComplete]);
+  }, [handleBarPress, handleIdentifyTap, phase, step.kind, stepComplete]);
+
+  const attemptsRef = useRef(attempts);
+  attemptsRef.current = attempts;
 
   return {
+    phase,
     step,
-    stepIndex,
-    totalSteps,
     state,
     stepComplete,
-    lessonFinished,
     feedback,
     emphasisPoints,
-    emphasisBar: Boolean(step.emphasisBar),
-    aids: step.aids,
-    advance,
+    emphasisBar: Boolean(challenge.emphasisBar),
+    aids: challenge.aids,
+    hintsUsed: hintUsed,
+    attempts: attemptsRef,
+    startDoPhase,
     showHint,
     previewTarget,
     dragFrom,
