@@ -16,7 +16,7 @@ const VIEW = 32;
 export function HorseshoeIcon({ size = 28, active = false }: Props) {
   const stroke = active ? GAME_PALETTE.accent : GAME_PALETTE.textMuted;
   const d = buildHorseshoePath(VIEW, VIEW, 'white');
-  const { polygonPoints } = horseshoeArrowhead(VIEW, VIEW, 'white');
+  const { polygonPoints } = horseshoeArrowhead(VIEW, VIEW, { player: 'white' });
 
   return (
     <Svg width={size} height={size} viewBox={`0 0 ${VIEW} ${VIEW}`}>

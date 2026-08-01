@@ -6,6 +6,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withDelay,
+  withSequence,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
@@ -30,14 +31,19 @@ function StarFill({ index, total }: { index: number; total: number }) {
 
   useEffect(() => {
     const filled = index < total;
-    const delay = 200 + index * 250;
+    const delay = 120 + index * 140;
     scale.value = withDelay(
       delay,
-      withSpring(filled ? 1 : 0.6, { damping: 8, stiffness: 150 }),
+      filled
+        ? withSequence(
+            withTiming(1.2, { duration: 100 }),
+            withSpring(1, { damping: 18, stiffness: 260 }),
+          )
+        : withTiming(0.7, { duration: 120 }),
     );
     opacity.value = withDelay(
       delay,
-      withTiming(filled ? 1 : 0.25, { duration: 200 }),
+      withTiming(filled ? 1 : 0.3, { duration: 90 }),
     );
   }, [index, opacity, scale, total]);
 
@@ -58,8 +64,8 @@ export function CelebrationOverlay({ stars, xpEarned, messageKey, onNext }: Prop
   const contentTranslateY = useSharedValue(30);
 
   useEffect(() => {
-    containerOpacity.value = withTiming(1, { duration: 250 });
-    contentTranslateY.value = withSpring(0, { damping: 12, stiffness: 120 });
+    containerOpacity.value = withTiming(1, { duration: 220 });
+    contentTranslateY.value = withSpring(0, { damping: 16, stiffness: 170 });
     hapticSelection();
   }, [containerOpacity, contentTranslateY]);
 

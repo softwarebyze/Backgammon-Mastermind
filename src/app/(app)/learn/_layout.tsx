@@ -27,7 +27,7 @@ export default function LearnLayout() {
       <Stack.Screen
         name="index"
         options={{
-          ...learnStackOptions(translate('learn.title')),
+          ...learnStackOptions(''),
           headerLeft: () => <LearnBackButton />,
         }}
       />

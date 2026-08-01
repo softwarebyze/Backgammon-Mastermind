@@ -74,7 +74,7 @@
       "bear_off": {
         "hint": "Select point 3, then tap the bear-off area on the right edge.",
         "praise": "Off the board! First to bear off all 15 wins.",
-        "show_body": "All your checkers are in your home (points 1–6). You can now bear them off — remove them from the board. First to remove all 15 wins. Roll a 3 — take the checker on the 3-point off.",
+        "show_body": "All your checkers are in your home (points 1–6). Roll a 3 — take the checker on the 3-point off.",
         "show_title": "Time to bear off",
         "subtitle": "Remove checkers to win",
         "title": "Bearing off"
@@ -82,7 +82,7 @@
       "blocked_points": {
         "hint": "The highlighted stack of two black checkers on point 5.",
         "praise": "Right — a made point (2+) is closed. Empty, your own, or a blot (1) are open.",
-        "show_body": "Two or more opponent checkers on a point block it. You can't land there. Find the blocked point.",
+        "show_body": "Two or more opponent checkers block a point — you can't land there. Find the blocked point.",
         "show_title": "Blocked points",
         "subtitle": "Know what you can't do",
         "title": "Blocked points"
@@ -90,7 +90,7 @@
       "doubles": {
         "hint": "Tap the 8-point, then the 6-point. Do this four times — once per die.",
         "praise": "Exactly — doubles mean four moves with that number.",
-        "show_body": "Rolling the same number on both dice is called doubles — it gives you four moves instead of two. You rolled 2-2: move from the 8-point to the 6-point, four times.",
+        "show_body": "Doubles means rolling the same number on both dice — you get four moves. You rolled 2-2: move from the 8-point to the 6-point, four times.",
         "show_title": "Double trouble",
         "subtitle": "Four moves, not two",
         "title": "Doubles"
@@ -98,7 +98,7 @@
       "enter_bar": {
         "hint": "Tap the bar, then point 21 (not 23 — that's the 2).",
         "praise": "You're back on the board — bar checkers always enter first.",
-        "show_body": "A checker on the bar must re-enter before you can move anything else. A die of N enters on point 25−N. You rolled a 4 — enter on point 21.",
+        "show_body": "A checker on the bar must re-enter before any other move. A die of N enters on point 25−N. You rolled a 4 — enter on point 21.",
         "show_title": "Enter from the bar",
         "subtitle": "Bar checkers move first",
         "title": "Enter from bar",
@@ -107,7 +107,7 @@
       "find_home": {
         "hint": "Home is the six points in the bottom-right corner — numbered 1 through 6.",
         "praise": "That's your home — checkers leave the board from here.",
-        "show_body": "Your home board is points 1 through 6 — the six points in the bottom-right corner. Every checker must finish here before it can leave the board. Tap any of the six home points.",
+        "show_body": "Your home is points 1–6, in the bottom-right corner. Every checker must finish here before leaving the board. Tap any of the six home points.",
         "show_title": "Your home board",
         "subtitle": "Where checkers finish",
         "title": "Find home"
@@ -115,7 +115,7 @@
       "hit_blot": {
         "hint": "Tap your checker on 8, then tap point 5.",
         "praise": "Hit! That black checker is now on the bar.",
-        "show_body": "A checker sitting alone is called a blot. Land on it and it's sent to the bar. You rolled a 3 — hit the black blot on the 5-point.",
+        "show_body": "A lone checker is a blot — land on it and it goes to the bar. You rolled a 3 — hit the black blot on the 5-point.",
         "show_title": "Hit the blot",
         "subtitle": "Send them to the bar",
         "title": "Hit a blot"
@@ -123,7 +123,7 @@
       "opening_roll": {
         "hint": "Every game starts with one die each — higher goes first.",
         "praise": "Now you know how every game begins.",
-        "show_body": "Every game of backgammon starts with both players rolling one die. The higher roll goes first and uses both numbers for the opening move.",
+        "show_body": "Every game starts with both players rolling one die. The higher roll goes first and uses both numbers for the opening move.",
         "show_title": "How the game starts",
         "subtitle": "The opening roll",
         "title": "Opening roll"
@@ -131,7 +131,7 @@
       "overshoot": {
         "hint": "Select point 3, then tap the bear-off tray.",
         "praise": "That's the overshoot rule — you'll use it a lot when bearing off.",
-        "show_body": "Nothing is on the 5-point, but you rolled a 5. When there's no checker on the number you rolled, you overshoot — bear off from your highest occupied point instead.",
+        "show_body": "There's no checker on the 5-point, but you rolled a 5. Overshoot — bear off from your highest occupied point instead.",
         "show_title": "Overshoot rule",
         "subtitle": "Larger die still works",
         "title": "Overshoot"
@@ -139,7 +139,7 @@
       "play_both_dice": {
         "hint": "Select a white checker, then tap point 5. Do this for both the 8-point and the 6-point.",
         "praise": "Nice — both dice used. Same checker or two checkers, both numbers must be played when you can.",
-        "show_body": "Each turn you roll two dice and must play both numbers when you can. You rolled 3 and 1 — move the 8-point checker three pips (to point 5), and the 6-point checker one pip (to point 5).",
+        "show_body": "You must play both dice when you can. You rolled 3 and 1 — move the 8-point checker to point 5, and the 6-point checker to point 5.",
         "show_title": "Play both dice",
         "subtitle": "Two dice, two moves",
         "title": "Both dice"
@@ -147,7 +147,7 @@
       "roll_move": {
         "hint": "Tap the white checker on 8, then tap point 5.",
         "praise": "You moved! That's the core of backgammon — roll dice, move checkers.",
-        "show_body": "Welcome to backgammon! Roll the dice, then move a checker that many points. You rolled a 3 — move the white checker from point 8 to point 5.",
+        "show_body": "Roll the dice, then move a checker that many points. You rolled a 3 — move the white checker from 8 to 5.",
         "show_title": "Your first move",
         "subtitle": "Roll and move",
         "title": "Roll & move"
@@ -155,7 +155,7 @@
       "the_bar": {
         "hint": "Tap the vertical strip between the left and right halves of the board.",
         "praise": "Right — hit checkers sit on the bar until they re-enter.",
-        "show_body": "The raised strip in the middle is called the bar. When your checker gets hit, it waits here until you re-enter. Tap the bar.",
+        "show_body": "The raised strip in the middle is the bar — hit checkers wait here until they re-enter. Tap the bar.",
         "show_title": "The bar",
         "subtitle": "Hit checkers wait here",
         "title": "The bar"
@@ -163,7 +163,7 @@
       "your_direction": {
         "hint": "Tap the white checker on 8, then tap point 5.",
         "praise": "You're moving the right way — from high to low, toward your home.",
-        "show_body": "Your checkers follow the golden horseshoe around the board — always toward lower numbers, into your home at the bottom-right. Follow the golden path and move the checker from point 8 to point 5.",
+        "show_body": "Your checkers follow the golden horseshoe around the board, toward lower numbers and your home at the bottom-right. Move the checker from 8 to 5.",
         "show_title": "Your direction",
         "subtitle": "Which way to move",
         "title": "Direction"
@@ -234,9 +234,7 @@
     "home_cta_progress": "{{done}} of {{total}} challenges done",
     "home_cta_ready": "You're ready — play a real game",
     "home_cta_sub": "Quick challenges — learn by doing",
-    "how_to_move": "How to move",
-    "how_to_move_steps": "1. Tap the checker you want to move. 2. Tap a highlighted point to land there.",
-    "locked": "Complete prerequisites first",
+  "locked": "Complete prerequisites first",
     "skip_to_play": "Skip to play",
     "stats": {
       "challenges": "Challenges",

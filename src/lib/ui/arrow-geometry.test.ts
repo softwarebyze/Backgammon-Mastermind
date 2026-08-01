@@ -18,7 +18,7 @@ describe('arrow-geometry', () => {
   });
 
   it('horseshoeArrowhead matches white path endpoint', () => {
-    const { polygonPoints } = horseshoeArrowhead(320, 400, 'white');
+    const { polygonPoints } = horseshoeArrowhead(320, 400, { player: 'white' });
     expect(polygonPoints.split(' ').length).toBeGreaterThanOrEqual(3);
   });
 });

@@ -177,30 +177,12 @@ function ChallengeScreenBody({
                 <Text style={styles.showBody}>
                   {translate(challenge.showBodyKey as TxKeyPath)}
                 </Text>
-                {challenge.step.kind === 'tryMove'
-                  ? (
-                      <View style={styles.howToCard}>
-                        <Text style={styles.howToTitle}>
-                          {translate('learn.how_to_move' as TxKeyPath)}
-                        </Text>
-                        <Text style={styles.howToBody}>
-                          {translate('learn.how_to_move_steps' as TxKeyPath)}
-                        </Text>
-                      </View>
-                    )
-                  : null}
               </View>
             )
           : (
               <>
                 <View style={styles.caption}>
-                  <Text accessibilityRole="header" style={styles.captionTitle}>
-                    {translate(challenge.titleKey as TxKeyPath)}
-                  </Text>
-                  <Text style={styles.captionBody}>
-                    {translate(challenge.showBodyKey as TxKeyPath)}
-                  </Text>
-                  {session.feedback
+                  {session.feedback && !stepComplete
                     ? (
                         <Text
                           style={[
@@ -350,29 +332,6 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     ...interFont('regular'),
   },
-  howToCard: {
-    width: '100%',
-    backgroundColor: 'rgba(232, 224, 208, 0.06)',
-    borderWidth: 1,
-    borderColor: 'rgba(232, 224, 208, 0.15)',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    gap: 4,
-  },
-  howToTitle: {
-    color: GAME_PALETTE.accent,
-    fontSize: 14,
-    textAlign: 'center',
-    ...interFont('bold'),
-  },
-  howToBody: {
-    color: GAME_PALETTE.text,
-    fontSize: 14,
-    lineHeight: 20,
-    textAlign: 'center',
-    ...interFont('regular'),
-  },
   showBody: {
     color: GAME_PALETTE.text,
     fontSize: 16,
@@ -386,18 +345,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 8,
     paddingBottom: 4,
-    gap: 4,
-  },
-  captionTitle: {
-    color: GAME_PALETTE.accent,
-    fontSize: 18,
-    ...interFont('bold'),
-  },
-  captionBody: {
-    color: GAME_PALETTE.text,
-    fontSize: 14,
-    lineHeight: 20,
-    ...interFont('regular'),
+    minHeight: 52,
+    justifyContent: 'center',
   },
   feedback: {
     marginTop: 4,
