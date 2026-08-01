@@ -65,7 +65,7 @@ export function horseshoeArrowhead(
   const rightX = width - pad - width * 0.14;
 
   if (player === 'white') {
-    return buildArrowhead({ x: rightX, y: botY }, { x: 1, y: 0 }, { length: 10, halfWidth: 5.5 });
+    return buildArrowhead({ x: rightX, y: botY }, { x: 1, y: 0 }, { length: 14, halfWidth: 7.5 });
   }
-  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, { length: 10, halfWidth: 5.5 });
+  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, { length: 14, halfWidth: 7.5 });
 }

@@ -19,6 +19,7 @@ import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { DragCheckerOverlay } from './drag-checker-overlay';
 import { MoveAnimationOverlay } from './move-animation-overlay';
+import { MoveGuideOverlay } from './move-guide-overlay';
 import { PointColumn } from './point-column';
 import { PointNumberRail } from './point-number-rail';
 import { useBoardDragOverlay } from './use-board-drag-overlay';
@@ -81,6 +82,8 @@ type Props = {
   /** Extra points to paint as targets (identify / coach emphasis). */
   emphasisPoints?: ReadonlySet<number>;
   emphasisBar?: boolean;
+  /** Teaching demo for learn challenges: pulsing source + ghost checker slide. */
+  moveGuide?: { from: number; to: number } | null;
 };
 
 /* eslint-disable max-lines-per-function -- board layout composition */
@@ -105,6 +108,7 @@ export function BoardView({
   aidsOverride,
   emphasisPoints,
   emphasisBar = false,
+  moveGuide = null,
 }: Props) {
   const { preferences } = useGamePreferences();
   const showMoveHints = aidsOverride?.showMoveHints ?? preferences.showMoveHints;
@@ -333,6 +337,15 @@ export function BoardView({
             width={boardWidth}
             height={boardHeight}
             player={humanPlayer}
+          />
+        )}
+
+        {moveGuide && state.phase === 'moving' && (
+          <MoveGuideOverlay
+            from={moveGuide.from}
+            to={moveGuide.to}
+            player={state.currentPlayer}
+            dimensions={dimensions}
           />
         )}
 

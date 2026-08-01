@@ -74,6 +74,18 @@ export function useChallengeSession(challenge: Challenge) {
     return new Set(challenge.emphasisPoints);
   }, [challenge.emphasisPoints]);
 
+  /** Teaching guide: a single accepted move to demo while the player has not tried yet. */
+  const moveGuide = useMemo(() => {
+    if (step.kind !== 'tryMove' || phase !== 'do' || stepComplete || attempts !== 0) {
+      return null;
+    }
+    const single = step.acceptedMoves.length === 1 ? step.acceptedMoves[0] : null;
+    if (!single) {
+      return null;
+    }
+    return { from: single.from, to: single.to };
+  }, [attempts, phase, step, stepComplete]);
+
   const startDoPhase = useCallback(() => {
     setPhase('do');
     setFeedback(null);
@@ -242,6 +254,7 @@ export function useChallengeSession(challenge: Challenge) {
     emphasisPoints,
     emphasisBar: Boolean(challenge.emphasisBar),
     aids: challenge.aids,
+    moveGuide,
     hintsUsed: hintUsed,
     attempts: attemptsRef,
     startDoPhase,

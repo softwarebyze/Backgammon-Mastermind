@@ -10,10 +10,10 @@ type Props = {
   player?: 'white' | 'black';
 };
 
-/** Subtle horseshoe path — teaching overlay, not garish */
+/** Teaching overlay showing the bear-off horseshoe path. */
 export function DirectionOverlay({ width, height, player = 'white' }: Props) {
   const d = buildHorseshoePath(width, height, player);
-  const stroke = 'rgba(212, 168, 67, 0.42)';
+  const stroke = 'rgba(212, 168, 67, 0.7)';
   const { polygonPoints } = horseshoeArrowhead(width, height, player);
 
   return (
@@ -25,7 +25,7 @@ export function DirectionOverlay({ width, height, player = 'white' }: Props) {
       <Path
         d={d}
         stroke={stroke}
-        strokeWidth={3}
+        strokeWidth={4.5}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"

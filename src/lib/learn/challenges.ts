@@ -34,6 +34,11 @@ type ChallengeAids = {
   showPointNumbers?: boolean;
 };
 
+type ChallengeConcept = {
+  termKey: string;
+  definitionKey: string;
+};
+
 type IdentifyStep = {
   kind: 'identify';
   targets: number[];
@@ -61,6 +66,8 @@ export type Challenge = {
   showTitleKey: string;
   showBodyKey: string;
   aids?: ChallengeAids;
+  /** Terms introduced by this challenge, shown as chips before the guide. */
+  concepts?: ChallengeConcept[];
   position: CreatePositionOptions;
   emphasisPoints?: number[];
   emphasisBar?: boolean;
@@ -82,6 +89,10 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.roll_move.show_title',
     showBodyKey: 'learn.challenges.roll_move.show_body',
     aids: { showPointNumbers: true },
+    concepts: [
+      { termKey: 'learn.concepts.point.term', definitionKey: 'learn.concepts.point.definition' },
+      { termKey: 'learn.concepts.checker.term', definitionKey: 'learn.concepts.checker.definition' },
+    ],
     position: {
       placements: [
         { point: 8, player: 'white', count: 1 },
@@ -106,6 +117,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.find_home.show_title',
     showBodyKey: 'learn.challenges.find_home.show_body',
     aids: { showPointNumbers: true },
+    concepts: [
+      { termKey: 'learn.concepts.home.term', definitionKey: 'learn.concepts.home.definition' },
+    ],
     position: { useStandardSetup: true },
     emphasisPoints: [...HOME_POINTS],
     step: {
@@ -126,6 +140,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.your_direction.show_title',
     showBodyKey: 'learn.challenges.your_direction.show_body',
     aids: { showDirectionOverlay: true, showPointNumbers: true },
+    concepts: [
+      { termKey: 'learn.concepts.horseshoe.term', definitionKey: 'learn.concepts.horseshoe.definition' },
+    ],
     position: {
       placements: [
         { point: 8, player: 'white', count: 1 },
@@ -152,6 +169,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.play_both_dice.show_title',
     showBodyKey: 'learn.challenges.play_both_dice.show_body',
     aids: { showPointNumbers: true, showMoveHints: true },
+    concepts: [
+      { termKey: 'learn.concepts.pip.term', definitionKey: 'learn.concepts.pip.definition' },
+    ],
     position: {
       placements: [
         { point: 8, player: 'white', count: 1 },
@@ -182,6 +202,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.blocked_points.show_title',
     showBodyKey: 'learn.challenges.blocked_points.show_body',
     aids: { showPointNumbers: true },
+    concepts: [
+      { termKey: 'learn.concepts.blocked_point.term', definitionKey: 'learn.concepts.blocked_point.definition' },
+    ],
     position: {
       placements: [
         { point: 8, player: 'white', count: 1 },
@@ -207,6 +230,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.doubles.show_title',
     showBodyKey: 'learn.challenges.doubles.show_body',
     aids: { showPointNumbers: true, showMoveHints: true },
+    concepts: [
+      { termKey: 'learn.concepts.doubles.term', definitionKey: 'learn.concepts.doubles.definition' },
+    ],
     position: {
       placements: [{ point: 8, player: 'white', count: 4 }],
       dice: [2, 2],
@@ -233,6 +259,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.hit_blot.show_title',
     showBodyKey: 'learn.challenges.hit_blot.show_body',
     aids: { showPointNumbers: true, showMoveHints: true },
+    concepts: [
+      { termKey: 'learn.concepts.blot.term', definitionKey: 'learn.concepts.blot.definition' },
+    ],
     position: {
       placements: [
         { point: 8, player: 'white', count: 1 },
@@ -260,6 +289,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.enter_bar.show_title',
     showBodyKey: 'learn.challenges.enter_bar.show_body',
     aids: { showPointNumbers: true, showMoveHints: true },
+    concepts: [
+      { termKey: 'learn.concepts.reenter.term', definitionKey: 'learn.concepts.reenter.definition' },
+    ],
     position: {
       bar: { white: 1 },
       dice: [4, 2],
@@ -285,6 +317,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.the_bar.show_title',
     showBodyKey: 'learn.challenges.the_bar.show_body',
     aids: { showPointNumbers: true },
+    concepts: [
+      { termKey: 'learn.concepts.bar.term', definitionKey: 'learn.concepts.bar.definition' },
+    ],
     position: { useStandardSetup: true },
     emphasisBar: true,
     step: {
@@ -307,6 +342,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.bear_off.show_title',
     showBodyKey: 'learn.challenges.bear_off.show_body',
     aids: { showPointNumbers: true, showMoveHints: true },
+    concepts: [
+      { termKey: 'learn.concepts.bear_off.term', definitionKey: 'learn.concepts.bear_off.definition' },
+    ],
     position: {
       placements: [
         { point: 6, player: 'white', count: 2 },
@@ -335,6 +373,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.overshoot.show_title',
     showBodyKey: 'learn.challenges.overshoot.show_body',
     aids: { showPointNumbers: true, showMoveHints: true },
+    concepts: [
+      { termKey: 'learn.concepts.overshoot.term', definitionKey: 'learn.concepts.overshoot.definition' },
+    ],
     position: {
       placements: [
         { point: 3, player: 'white', count: 1 },
@@ -365,6 +406,9 @@ export const CHALLENGES: Challenge[] = [
     showTitleKey: 'learn.challenges.opening_roll.show_title',
     showBodyKey: 'learn.challenges.opening_roll.show_body',
     aids: { showPointNumbers: true },
+    concepts: [
+      { termKey: 'learn.concepts.opening_roll.term', definitionKey: 'learn.concepts.opening_roll.definition' },
+    ],
     position: { useStandardSetup: true },
     step: {
       kind: 'identify',

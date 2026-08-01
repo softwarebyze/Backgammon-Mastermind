@@ -1,7 +1,7 @@
 import type { TxKeyPath } from '@/lib/i18n';
 import type { ChallengeId } from '@/lib/learn/challenges';
 import { router, useNavigation } from 'expo-router';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -84,8 +84,8 @@ function ChallengeScreenBody({
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
 
-  const [celebrationStars, setCelebrationStars] = useState<1 | 2 | 3>(1);
-  const [celebrationXp, setCelebrationXp] = useState(0);
+  const stepComplete = session.stepComplete;
+  const phase = session.phase;
 
   const goNext = useCallback(() => {
     const nextId = getNextChallengeId(challengeId);
@@ -97,28 +97,25 @@ function ChallengeScreenBody({
     }
   }, [challengeId]);
 
-  const goNextRef = useRef(goNext);
-  goNextRef.current = goNext;
+  const celebrationStars = stepComplete && phase === 'do'
+    ? calculateStars(session.attempts.current, session.hintsUsed)
+    : 1;
+  const celebrationXp = stepComplete && phase === 'do'
+    ? challenge.xpReward + (celebrationStars === 3 ? 5 : celebrationStars === 2 ? 3 : 0)
+    : 0;
 
   useEffect(() => {
-    if (!session.stepComplete || session.phase !== 'do') {
+    if (!stepComplete || phase !== 'do') {
       return;
     }
-    const stars = calculateStars(session.attempts.current, session.hintsUsed);
-    const xp = challenge.xpReward + (stars === 3 ? 5 : stars === 2 ? 3 : 0);
-    setCelebrationStars(stars);
-    setCelebrationXp(xp);
-    completeChallenge(challengeId, xp, stars);
-
-    const timer = setTimeout(() => {
-      session.startDoPhase();
-    }, 1600);
-    return () => clearTimeout(timer);
+    completeChallenge(challengeId, celebrationXp, celebrationStars);
   }, [
-    challenge.xpReward,
+    celebrationStars,
+    celebrationXp,
     challengeId,
     completeChallenge,
-    session,
+    phase,
+    stepComplete,
   ]);
 
   const awaitingBoardAction
@@ -161,9 +158,37 @@ function ChallengeScreenBody({
                 <Text style={styles.showTitle}>
                   {translate(challenge.showTitleKey as TxKeyPath)}
                 </Text>
+                {challenge.concepts?.length
+                  ? (
+                      <View style={styles.chipWrap}>
+                        {challenge.concepts.map(concept => (
+                          <View key={concept.termKey} style={styles.chip}>
+                            <Text style={styles.chipTerm}>
+                              {translate(concept.termKey as TxKeyPath)}
+                            </Text>
+                            <Text style={styles.chipDef}>
+                              {translate(concept.definitionKey as TxKeyPath)}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    )
+                  : null}
                 <Text style={styles.showBody}>
                   {translate(challenge.showBodyKey as TxKeyPath)}
                 </Text>
+                {challenge.step.kind === 'tryMove'
+                  ? (
+                      <View style={styles.howToCard}>
+                        <Text style={styles.howToTitle}>
+                          {translate('learn.how_to_move' as TxKeyPath)}
+                        </Text>
+                        <Text style={styles.howToBody}>
+                          {translate('learn.how_to_move_steps' as TxKeyPath)}
+                        </Text>
+                      </View>
+                    )
+                  : null}
               </View>
             )
           : (
@@ -224,6 +249,7 @@ function ChallengeScreenBody({
                       aidsOverride={session.aids}
                       emphasisPoints={session.emphasisPoints}
                       emphasisBar={session.emphasisBar}
+                      moveGuide={session.moveGuide}
                     />
                   </Pressable>
                 </View>
@@ -255,23 +281,19 @@ function ChallengeScreenBody({
             )
           : null}
 
-        {session.phase === 'show'
-          ? null
-          : (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={primaryLabel}
-                style={({ pressed }) => [
-                  awaitingBoardAction ? styles.hintBtn : styles.primaryBtn,
-                  pressed && styles.pressed,
-                ]}
-                onPress={onPrimary}
-              >
-                <Text style={awaitingBoardAction ? styles.hintLabel : styles.primaryLabel}>
-                  {primaryLabel}
-                </Text>
-              </Pressable>
-            )}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={primaryLabel}
+          style={({ pressed }) => [
+            awaitingBoardAction ? styles.hintBtn : styles.primaryBtn,
+            pressed && styles.pressed,
+          ]}
+          onPress={onPrimary}
+        >
+          <Text style={awaitingBoardAction ? styles.hintLabel : styles.primaryLabel}>
+            {primaryLabel}
+          </Text>
+        </Pressable>
       </View>
     </>
   );
@@ -289,14 +311,67 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
-    gap: 16,
+    gap: 14,
     maxWidth: 400,
+    width: '100%',
   },
   showTitle: {
     color: GAME_PALETTE.accent,
     fontSize: 24,
     textAlign: 'center',
     ...interFont('bold'),
+  },
+  chipWrap: {
+    alignItems: 'center',
+    gap: 8,
+    width: '100%',
+  },
+  chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: GAME_PALETTE.surface,
+    borderWidth: 1,
+    borderColor: 'rgba(212, 168, 67, 0.35)',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    maxWidth: '100%',
+  },
+  chipTerm: {
+    color: GAME_PALETTE.accent,
+    fontSize: 14,
+    ...interFont('bold'),
+  },
+  chipDef: {
+    color: GAME_PALETTE.text,
+    fontSize: 14,
+    lineHeight: 20,
+    flexShrink: 1,
+    ...interFont('regular'),
+  },
+  howToCard: {
+    width: '100%',
+    backgroundColor: 'rgba(232, 224, 208, 0.06)',
+    borderWidth: 1,
+    borderColor: 'rgba(232, 224, 208, 0.15)',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 4,
+  },
+  howToTitle: {
+    color: GAME_PALETTE.accent,
+    fontSize: 14,
+    textAlign: 'center',
+    ...interFont('bold'),
+  },
+  howToBody: {
+    color: GAME_PALETTE.text,
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+    ...interFont('regular'),
   },
   showBody: {
     color: GAME_PALETTE.text,
