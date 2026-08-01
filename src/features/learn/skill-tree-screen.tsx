@@ -134,18 +134,18 @@ export function SkillTreeScreen() {
                 </Text>
               </Pressable>
             )
-          : null}
-
-        <Pressable
-          accessibilityRole="button"
-          style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
-          onPress={() => {
-            posthog.capture('learn_skipped_to_play');
-            playFirstGame();
-          }}
-        >
-          <Text style={styles.secondaryLabel}>{translate('learn.skip_to_play')}</Text>
-        </Pressable>
+          : (
+              <Pressable
+                accessibilityRole="button"
+                style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
+                onPress={() => {
+                  posthog.capture('learn_skipped_to_play');
+                  playFirstGame();
+                }}
+              >
+                <Text style={styles.secondaryLabel}>{translate('learn.skip_to_play')}</Text>
+              </Pressable>
+            )}
       </ScrollView>
     </>
   );

@@ -44,7 +44,7 @@ export function SkillTreeNode({
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: !unlocked }}
-      accessibilityLabel={`${translate(challenge.titleKey as Parameters<typeof translate>[0])} — ${completed ? `${stars} stars` : unlocked ? 'available' : 'locked'}`}
+      accessibilityLabel={`${translate(challenge.titleKey as Parameters<typeof translate>[0])} — ${completed ? translate('learn.a11y_stars', { count: stars }) : unlocked ? translate('learn.a11y_available') : translate('learn.a11y_locked')}`}
       disabled={!unlocked}
       style={({ pressed }) => [
         styles.node,
