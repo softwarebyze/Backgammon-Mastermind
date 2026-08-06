@@ -32,15 +32,15 @@ Requires: Expo login or `EXPO_TOKEN`, plus App Store Connect API key in **EAS cr
 | Release strategy | `apple.release` |
 | Copyright | `apple.copyright` |
 
-## What it does **not** cover (ASC UI)
+## What it does **not** cover
 
-| Item | Where |
-|------|--------|
-| Paid app **price** / availability | ASC → Pricing and Availability |
-| App Privacy **nutrition labels** | ASC → App Privacy |
-| **Screenshots** / previews | ASC (assets also under `docs/marketing/`) |
+| Item | How agents should do it |
+|------|-------------------------|
+| Paid app **price** / availability | ASC Pricing UI (or ASC API later) |
+| App Privacy **nutrition labels** | ASC UI for now |
+| **Screenshots** / previews | **Fastlane** — [store-screenshots.md](./store-screenshots.md) (`pnpm screenshots:upload:ios`) |
 
-Do not invent one-off ASC API scripts for routine shipping when `metadata:push*` works.
+Do not invent one-off ASC JWT scripts for listing fields when `metadata:push*` works. Screenshots are the Fastlane path, not “wait for a human.”
 
 ## Which ASC app?
 

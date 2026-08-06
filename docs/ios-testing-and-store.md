@@ -48,7 +48,7 @@ EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --id <pr
 EXPO_PUBLIC_APP_ENV=production eas submit --platform ios --profile production --latest
 ```
 
-**Screenshots** are uploaded in App Store Connect (prepared under `docs/marketing/v1.0.0/`). Not in `store.config.json` yet — see [eas-metadata.md](./eas-metadata.md).
+**Screenshots:** Fastlane — [store-screenshots.md](./store-screenshots.md). Not in `store.config.json`.
 
 ## Apple team
 

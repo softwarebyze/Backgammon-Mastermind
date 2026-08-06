@@ -87,8 +87,11 @@ pnpm metadata:push              # preview ASC 6781121420
 pnpm metadata:push:production   # production ASC 6792138473 — prefer this over ad-hoc ASC API calls
 ```
 
-Prefer **`store.config.json` + `metadata:push*`** for listing fields. Full how-to: [eas-metadata.md](./eas-metadata.md). **Price** is not in EAS Metadata — set in ASC Pricing UI ($4.99). No one-off API scripts for routine updates.
-- App Store screenshots: device captures or `docs/remotion/after/` + `docs/marketing/v0.1.1/`
+Prefer **`store.config.json` + `metadata:push*`** for listing fields. Full how-to: [eas-metadata.md](./eas-metadata.md). Screenshots: [store-screenshots.md](./store-screenshots.md) (`pnpm screenshots:upload:ios`). **Price** is not in EAS Metadata — set in ASC Pricing UI ($4.99).
+
+```bash
+pnpm screenshots:upload:ios   # Fastlane deliver — agents OK
+```
 - TestFlight release notes: paste from GitHub Release or `docs/evidence/v0.1.1/README.md`
 
 ### 6. TestFlight QA

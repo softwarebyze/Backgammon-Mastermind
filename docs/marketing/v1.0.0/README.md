@@ -10,7 +10,7 @@
 4. Lesson + hint
 5. Settings links
 
-Upload in App Store Connect → version 1.0.0 → iPhone 6.9" display.
+Upload: `pnpm screenshots:upload:ios` (Fastlane — [store-screenshots.md](../../store-screenshots.md)). Do not wait for a human in ASC.
 
 ## Pricing
 

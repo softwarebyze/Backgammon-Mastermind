@@ -5,6 +5,7 @@
 | Doc | What it’s for |
 |-----|----------------|
 | [eas-metadata.md](./eas-metadata.md) | **EAS Metadata** — `store.config.json` → App Store Connect (`metadata:push*`) |
+| [store-screenshots.md](./store-screenshots.md) | **Fastlane** screenshot upload to ASC / Play (agents can run) |
 | [website.md](./website.md) | Vercel web app, privacy/terms URLs, marketing plan |
 | [releases.md](./releases.md) | **How** to cut TestFlight / store / GitHub releases |
 | [production-checklist.md](./production-checklist.md) | First-time App Store / Play submission |

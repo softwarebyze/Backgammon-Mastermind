@@ -52,9 +52,8 @@ Use this before the first App Store / Play Store submission.
 - [x] `pnpm metadata:push` — listing synced for preview TF app (`6781121420`)
 - [x] `pnpm metadata:push:production` — sync `store.config.json` → production ASC (`6792138473`)
 - [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
-- [ ] Upload screenshots in ASC (after production app record exists)
-- [ ] Google Play Console app record + screenshots + description
-- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in `store.config.json`)
+- [x] Upload screenshots — `pnpm screenshots:upload:ios` (Fastlane; 6× 1320×2868 → production 1.0.0)
+- [ ] Google Play Console app record + screenshots + description (`pnpm screenshots:upload:android` once Play JSON key exists)- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in `store.config.json`)
 - [x] Terms of service — `docs/terms-of-service.md` (+ hosted `/terms/`)
 - [x] Pricing — Paid Up Front **$4.99** USD (USA base in ASC Pricing UI; not via EAS Metadata)
 - [x] Marketing / privacy URLs — in `store.config.json`; sync with `pnpm metadata:push:production`
@@ -90,7 +89,7 @@ Use this before the first App Store / Play Store submission.
 | Maestro E2E + PR screenshot publish | Done |
 | Store metadata draft + contact info | Done |
 | **iOS submit + metadata push** | Done (TestFlight processing) |
-| **App Store screenshots** | **Next — you** |
+| **App Store screenshots** | Prepared — upload via Fastlane (`pnpm screenshots:upload:ios`) |
 | **Google Play first upload** | **Next — you** (manual; see below) |
 | Production EAS build + App Store review | Not started |
 
@@ -129,7 +128,7 @@ Full how-to: [eas-metadata.md](./eas-metadata.md).
 | Description, keywords, URLs, review notes, age advisory | Edit `store.config.json` → `pnpm metadata:push:production` (or GHA) |
 | Price / availability | ASC **Pricing and Availability** UI (EAS Metadata does not cover price) |
 | Privacy nutrition labels | ASC UI |
-| Screenshots | ASC UI (or extend metadata later) |
+| Screenshots | **Fastlane** — `pnpm screenshots:upload:ios` / `:android` ([store-screenshots.md](./store-screenshots.md)) |
 
 Avoid one-off App Store Connect API / JWT scripts for shipping. They bypass git history and aren’t re-runnable the way `metadata:push` is.
 
@@ -142,7 +141,7 @@ Avoid one-off App Store Connect API / JWT scripts for shipping. They bypass git 
 | **Paid app price ($4.99)** | Not in EAS Metadata schema — ASC Pricing UI |
 | **Google Play app record** | Play Console signup |
 | **Register iPhone** (`eas device:create`) | Device UDID for ad-hoc dev IPA |
-| **Screenshots** | Upload in ASC / Play (or script later from `docs/remotion/after/`) |
+| **Screenshots** | Upload via Fastlane ([store-screenshots.md](./store-screenshots.md)), not manually |
 | **Privacy nutrition labels** | ASC UI |
 | **`EXPO_PUBLIC_APP_STORE_ID`** | Set in EAS production env to production Apple ID when live |
 
@@ -150,7 +149,7 @@ After credentials exist, **metadata push** is already in CI (`EAS Metadata Push`
 ## Suggested order from here
 
 1. **TestFlight** — wait for Apple processing, then enable internal testers: [ASC TestFlight](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios)
-2. **Screenshots** — upload in App Store Connect (use `docs/remotion/after/` or device captures)
+2. **Screenshots** — `pnpm screenshots:upload:ios` (Fastlane; see [store-screenshots.md](./store-screenshots.md))
 3. **Content rating** — complete questionnaires in ASC if not already done via metadata push
 4. **Google Play (first time only)** — create app in [Play Console](https://play.google.com/console), then upload first AAB manually:
    ```sh

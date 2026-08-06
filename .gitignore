@@ -34,3 +34,12 @@ artifacts/qa-videos/
 
 # AI skills cache
 .cache
+
+# Fastlane — staged screenshots (source: docs/marketing/); local reports; ASC key export
+fastlane/screenshots/**/*.png
+fastlane/metadata/android/**/images/**/*.png
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/README.md
+.cache/asc-api-key.json
+*.asc-api-key.json
