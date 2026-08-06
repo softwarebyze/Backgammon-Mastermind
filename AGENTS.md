@@ -23,7 +23,7 @@ Tracked as [#128](https://github.com/softwarebyze/Backgammon-Mastermind/issues/1
 
 ### Store listing updates
 
-Prefer **`store.config.json` + `pnpm metadata:push` / `pnpm metadata:push:production`** (or Actions → **EAS Metadata Push**) over one-off App Store Connect API scripts. Price and privacy nutrition labels are ASC UI-only (not in EAS Metadata schema).
+Prefer **`store.config.json` + `pnpm metadata:push` / `pnpm metadata:push:production`** (or Actions → **EAS Metadata Push**) over one-off App Store Connect API scripts. How-to: [docs/eas-metadata.md](./docs/eas-metadata.md). Price and privacy nutrition labels are ASC UI-only.
 
 ### Overview
 

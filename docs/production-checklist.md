@@ -50,7 +50,8 @@ Use this before the first App Store / Play Store submission.
 - [x] App Store listing copy — `store.config.json` (source of truth; push via EAS Metadata)
 - [x] **App Store Connect API key** — via EAS credentials (`M7LGZ9S6S2`) for `eas metadata` / submit
 - [x] `pnpm metadata:push` — listing synced for preview TF app (`6781121420`)
-- [x] `pnpm metadata:push:production` — sync `store.config.json` → production ASC (`6792138473`)- [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
+- [x] `pnpm metadata:push:production` — sync `store.config.json` → production ASC (`6792138473`)
+- [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
 - [ ] Upload screenshots in ASC (after production app record exists)
 - [ ] Google Play Console app record + screenshots + description
 - [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in `store.config.json`)
@@ -120,6 +121,8 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 `eas-build` action already has an `AUTO_SUBMIT` input (not wired yet) — candidate for a follow-up **EAS Submit** workflow.
 
 ### Listing updates — preferred path
+
+Full how-to: [eas-metadata.md](./eas-metadata.md).
 
 | Change | How |
 | ------ | --- |
