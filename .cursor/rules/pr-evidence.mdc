@@ -1,0 +1,20 @@
+---
+description: How agents should document PRs with screenshots/recordings and close chat replies
+alwaysApply: true
+---
+
+# PR evidence convention
+
+When shipping a fix or feature via a pull request for this repo:
+
+1. Put visual proof in the **PR description**, one change per bullet:
+   - `Fixed …` / `Added …` followed by a screenshot and/or short recording
+2. Store media under `docs/pr-evidence/` when practical; link raw GitHub URLs so they render in the PR
+3. End the **user-facing chat reply** with:
+
+```
+Updated PR #<n>, preview <preview-url>.
+PR includes screenshots and recordings showing the fix/feature.
+```
+
+When mentioning a PR in the body of a reply (not only the closer), prefer linking the preview URL next to it when one exists. Skip the trailing block only if no PR was created or updated in that turn.

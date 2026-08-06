@@ -1,0 +1,91 @@
+# frozen_string_literal: true
+
+# App Store Connect / Play screenshot uploads for agents + humans.
+# Listing copy stays in store.config.json (EAS Metadata). Screenshots use Fastlane
+# because EAS Metadata does not upload screenshots yet.
+#
+# Auth (iOS): ASC_KEY_ID + ASC_ISSUER_ID + (ASC_KEY_PATH | ASC_KEY_CONTENT)
+#   or: pnpm screenshots:asc-key  → writes .cache/asc-api-key.json
+# Auth (Android): PLAY_JSON_KEY_PATH → Google Play service account JSON
+
+default_platform(:ios)
+
+def load_asc_api_key
+  key_path = ENV["ASC_API_KEY_PATH"] || File.expand_path("../.cache/asc-api-key.json", __dir__)
+  if File.file?(key_path) && key_path.end_with?(".json")
+    data = JSON.parse(File.read(key_path))
+    return app_store_connect_api_key(
+      key_id: data.fetch("key_id"),
+      issuer_id: data.fetch("issuer_id"),
+      key_content: data.fetch("key"),
+      duration: data["duration"] || 1200,
+      in_house: data["in_house"] || false
+    )
+  end
+
+  key_id = ENV.fetch("ASC_KEY_ID")
+  issuer_id = ENV.fetch("ASC_ISSUER_ID")
+  if ENV["ASC_KEY_CONTENT"] && !ENV["ASC_KEY_CONTENT"].empty?
+    return app_store_connect_api_key(
+      key_id: key_id,
+      issuer_id: issuer_id,
+      key_content: ENV["ASC_KEY_CONTENT"],
+      is_key_content_base64: ENV["ASC_KEY_CONTENT_BASE64"] == "true",
+      duration: 1200,
+      in_house: false
+    )
+  end
+
+  app_store_connect_api_key(
+    key_id: key_id,
+    issuer_id: issuer_id,
+    key_filepath: ENV.fetch("ASC_KEY_PATH"),
+    duration: 1200,
+    in_house: false
+  )
+end
+
+platform :ios do
+  desc "Upload App Store screenshots only (skip binary + listing metadata)"
+  lane :screenshots do
+    api_key = load_asc_api_key
+
+    deliver(
+      api_key: api_key,
+      app_identifier: ENV.fetch("ASC_BUNDLE_ID", "com.backgammonmastermind"),
+      app_version: ENV.fetch("ASC_APP_VERSION") {
+        store = JSON.parse(File.read(File.expand_path("../store.config.json", __dir__)))
+        store.dig("apple", "version") || UI.user_error!("Set ASC_APP_VERSION or apple.version in store.config.json")
+      },
+      screenshots_path: File.expand_path("screenshots", __dir__),
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_app_version_update: true,
+      overwrite_screenshots: true,
+      force: true,
+      submit_for_review: false,
+      run_precheck_before_submit: false,
+      precheck_include_in_app_purchases: false
+    )
+  end
+end
+
+platform :android do
+  desc "Upload Play Console phone screenshots only"
+  lane :screenshots do
+    json_key = ENV["PLAY_JSON_KEY_PATH"]
+    UI.user_error!("Set PLAY_JSON_KEY_PATH to a Play Console service-account JSON") if json_key.to_s.empty?
+
+    supply(
+      package_name: ENV.fetch("PLAY_PACKAGE_NAME", "com.backgammonmastermind"),
+      metadata_path: File.expand_path("metadata/android", __dir__),
+      json_key: json_key,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: false
+    )
+  end
+end

@@ -10,7 +10,7 @@
 4. Lesson + hint
 5. Settings links
 
-Upload in App Store Connect → version 1.0.0 → iPhone 6.9" display.
+Upload: `pnpm screenshots:upload:ios` (Fastlane — [store-screenshots.md](../../store-screenshots.md)). Do not wait for a human in ASC.
 
 ## Pricing
 
@@ -18,7 +18,7 @@ Paid Up Front **$4.99** USD, available in all territories (Apple equivalent tier
 
 ## Privacy nutrition labels (PostHog)
 
-Declare **Product Interaction** / **Analytics** data collected, not linked to identity, not used for tracking (ATT). Privacy policy URL already in store.config.json.
+Declare **Product Interaction** / **Analytics** data collected, not linked to identity, not used for tracking (ATT). Privacy policy URL is in `store.config.json` — push with `pnpm metadata:push:production` ([eas-metadata.md](../../eas-metadata.md)). Nutrition labels themselves are ASC UI-only.
 
 ## ASC app record
 

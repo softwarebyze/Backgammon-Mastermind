@@ -1,6 +1,30 @@
 # AGENTS.md
 
+## PR evidence (always)
+
+When the user asks for a fix/feature and you open or update a PR, **finish the chat reply** with this block (fill real numbers/links):
+
+```text
+Updated PR #<n>, preview <preview-url>.
+PR includes screenshots and recordings showing the fix/feature.
+```
+
+When you mention a PR mid-reply (not only in that closer), include the preview URL next to it when one exists — e.g. [PR #129](…) · [preview](…). Not required on every casual mention; do it when the user asked about that work or when the preview is useful.
+In the **PR body**, document each change with evidence — not a wall of text:
+
+- `Fixed <thing>` + screenshot (or image link)
+- `Fixed <thing>` + screen recording / video link
+- Same pattern for features: `Added <thing>` + media
+
+Prefer attaching evidence under `docs/pr-evidence/` (or the PR’s Files changed) and linking raw GitHub URLs so the PR renders media inline. Use Argent / simulator / web screenshots and short recordings when the change is visual.
+
+Tracked as [#128](https://github.com/softwarebyze/Backgammon-Mastermind/issues/128).
+
 ## Cursor Cloud specific instructions
+
+### Store listing updates
+
+Prefer **`store.config.json` + `pnpm metadata:push` / `pnpm metadata:push:production`** (or Actions → **EAS Metadata Push**) over one-off App Store Connect API scripts. How-to: [docs/eas-metadata.md](./docs/eas-metadata.md). Screenshots: Fastlane — [docs/store-screenshots.md](./docs/store-screenshots.md) (`pnpm screenshots:upload:ios`). Price and privacy nutrition labels are ASC UI-only for now.
 
 ### Overview
 

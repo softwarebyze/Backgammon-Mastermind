@@ -1,10 +1,12 @@
-# iOS testing & App Store (EAS Metadata)
+# iOS testing & App Store submit
 
 ## Contact email
 
 Store listings, privacy policy, and in-app Support use **zackebenfeld@gmail.com** (personal account).
 
-Before `eas metadata:push`, confirm `store.config.json` → `apple.review.phone` is correct (currently **+1 954 593 1670**).
+Before any metadata push, confirm `store.config.json` → `apple.review.phone` is correct (currently **+1 954 593 1670**).
+
+**App Store listing sync (EAS Metadata):** see **[eas-metadata.md](./eas-metadata.md)** — edit `store.config.json`, then `pnpm metadata:push` / `pnpm metadata:push:production`.
 
 ## iOS testing paths
 
@@ -24,58 +26,30 @@ Before `eas metadata:push`, confirm `store.config.json` → `apple.review.phone`
 ### TestFlight
 
 1. Build preview IPA: `pnpm build:preview:ios`
-2. Submit: `eas submit --platform ios --profile preview --latest`
-3. After Apple processes the build, enable TestFlight testers in App Store Connect
+2. Submit: `EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --latest` (or `pnpm submit:preview:ios`)
+3. After Apple processes the build, enable TestFlight testers in App Store Connect ([TF app](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios))
 
-## EAS Metadata (App Store listing)
+## Submit the right build to the right ASC app
 
-Listing copy lives in **`store.config.json`** at the repo root. EAS Metadata is **Apple App Store only** (beta).
+Three separate App Store Connect records — do not mix them up.
 
-Set `apple.version` in `store.config.json` to match the editable App Store Connect version (e.g. `"0.1.0"`). Without it, EAS defaults to `1.0` and `metadata:push` fails with a missing `versionString` error.
-
-```sh
-# After first binary is in App Store Connect (preview app 6781121420):
-pnpm metadata:pull    # optional — import existing ASC listing
-pnpm metadata:push    # push store.config.json to preview ASC app
-```
-
-If `metadata:push` fails on version info, create version **0.1.0** in App Store Connect (App → iOS App → **+** Version) so it matches your binary and `store.config.json`.
-
-If `metadata:push` fails with *app name already used*, the development ASC app (`6780139011`) already owns **Backgammon Mastermind**. Preview metadata still updates version, categories, age rating, and review notes — only the localized **title** sync fails until you rename one of the ASC apps or ship production.
-
-**Submit the right build to the right ASC app:** Three separate App Store Connect records — do not mix them up.
-
-| EAS env | Bundle ID | ASC app name | Apple ID (`ascAppId`) | TestFlight builds |
-|---------|-----------|--------------|----------------------|-------------------|
-| `development` | `com.backgammonmastermind.development` | Backgammon Mastermind | `6780139011` | Dev-client internal builds only |
-| `preview` | `com.backgammonmastermind.preview` | BackgammonMastermind (d8480c) | **`6781121420`** | **QA / TestFlight** (`pnpm build:preview:ios`) |
-| `production` | `com.backgammonmastermind` | BackgammonMastermind (23ea9f) → rename to **Backgammon Mastermind** | **`6792138473`** | App Store release (v1.0.0 binary submitted) |
+| EAS env | Bundle ID | ASC name | Apple ID (`ascAppId`) | Role |
+|---------|-----------|----------|----------------------|------|
+| `development` | `com.backgammonmastermind.development` | Backgammon Mastermind Dev | `6780139011` | Dev-client internal builds only |
+| `preview` | `com.backgammonmastermind.preview` | Backgammon Mastermind TF | **`6781121420`** | **QA / TestFlight** |
+| `production` | `com.backgammonmastermind` | Backgammon Mastermind | **`6792138473`** | App Store release |
 
 Preview IPAs must go to **`6781121420`**. Sending them to the development app (`6780139011`) fails with error **90055** (*bundle identifier cannot be changed*).
 
-`eas.json` submit profiles pin `ascAppId` for preview; production omits it until a production ASC record exists.
-
-`eas submit` reads bundle ID from **local** env by default (`.env` → `development`). Always pass preview env when submitting preview builds:
+`eas.json` submit profiles pin `ascAppId` + `bundleIdentifier` for both `preview` and `production`. `eas submit` still reads local `.env` by default — always pass the matching `EXPO_PUBLIC_APP_ENV` when submitting.
 
 ```sh
 EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --id <preview-build-id>
+EXPO_PUBLIC_APP_ENV=production eas submit --platform ios --profile production --latest
 ```
 
-`eas.json` submit profiles set `bundleIdentifier` per profile so EAS targets the correct App Store Connect app.
-
-`eas.json` wires `metadataPath` for `preview` and `production` submit profiles.
-
-**Screenshots** are not in `store.config.json` yet — upload via App Store Connect or add when EAS Metadata supports your screenshot set. Remotion exports in `docs/remotion/after/` can be used as a starting point.
+**Screenshots:** Fastlane — [store-screenshots.md](./store-screenshots.md). Not in `store.config.json`.
 
 ## Apple team
 
 EAS builds use team **Zachary Ebenfeld (Individual)** — `75M38Z9JBF` (set in `eas.json`).
-
-## Checklist before first TestFlight
-
-- [x] Replace `apple.review.phone` in `store.config.json`
-- [ ] iOS preview build finished on EAS
-- [ ] `eas submit --platform ios --profile preview --latest`
-- [ ] `pnpm metadata:push` (after binary is processed)
-- [ ] Add screenshots in App Store Connect
-- [ ] Add yourself as internal TestFlight tester
