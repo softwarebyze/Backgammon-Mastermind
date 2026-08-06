@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons';
-import { Link, Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -31,17 +31,16 @@ export default function NotFoundScreen() {
           <View style={styles.dividerLine} />
         </View>
 
-        <Link href="/" asChild>
-          <Pressable
-            accessibilityRole="link"
-            accessibilityLabel="Go to home"
-            style={({ pressed }) => [styles.homeBtn, pressed && styles.pressed]}
-            testID="not-found-home"
-          >
-            <Feather name="home" size={20} color={GAME_PALETTE.bg} />
-            <Text style={styles.homeLabel}>Back to home</Text>
-          </Pressable>
-        </Link>
+        <Pressable
+          accessibilityRole="link"
+          accessibilityLabel="Go to home"
+          onPress={() => router.replace('/')}
+          style={({ pressed }) => [styles.homeBtn, pressed && styles.pressed]}
+          testID="not-found-home"
+        >
+          <Feather name="home" size={20} color={GAME_PALETTE.bg} />
+          <Text style={styles.homeLabel}>Back to home</Text>
+        </Pressable>
       </View>
     </>
   );

@@ -5,7 +5,7 @@ const REPOSITORY_URL = 'https://github.com/softwarebyze/Backgammon-Mastermind';
 const SUPPORT_EMAIL = 'zackebenfeld@gmail.com';
 
 /** Canonical product website (Vercel). Privacy/terms must be publicly hosted for store review. */
-export const WEBSITE_URL = 'https://backgammon-mastermind.vercel.app';
+const WEBSITE_URL = 'https://backgammon-mastermind.vercel.app';
 
 /** Production ASC Apple ID (6792138473). Set via EAS production env — see docs/app-environments.md. */
 const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
