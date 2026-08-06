@@ -35,13 +35,14 @@ After `eas init --id <your-project-id>`:
 
 ### GitHub Actions secrets (required for CI)
 
-Stock Obytes workflows expect **two repository secrets**. Without them, EAS builds/previews and Maestro Cloud E2E will fail or be skipped.
+Stock Obytes workflows expect **two repository secrets**. This fork also expects PostHog CLI for source-map uploads on PR EAS Updates.
 
 
 | Secret                  | Used by                                                                       | Get the value                                                                                                                               |
 | ----------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | `EXPO_TOKEN`            | `preview.yml`, `eas-build-qa.yml`, `eas-build-prod.yml`, EAS composite action | [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens) — create a token for the Expo account that owns your EAS project |
 | `MAESTRO_CLOUD_API_KEY` | `e2e-android-maestro.yml`, `e2e-android-eas-build.yml`                        | [Maestro Cloud → CI integration → GitHub Actions](https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret)           |
+| `POSTHOG_CLI_API_KEY`   | `preview.yml` source-map upload; EAS Build via env                            | [PostHog personal API keys](https://us.posthog.com/settings/user-api-keys) → then `./scripts/posthog-set-cli-secrets.sh` — full guide [docs/posthog.md](./posthog.md) |
 
 
 **How to add them in GitHub**
@@ -52,6 +53,7 @@ Stock Obytes workflows expect **two repository secrets**. Without them, EAS buil
 4. Add each secret by exact name (case-sensitive):
   - Name: `EXPO_TOKEN` → paste your Expo access token → **Add secret**
   - Name: `MAESTRO_CLOUD_API_KEY` → paste your Maestro Cloud API key → **Add secret**
+  - Prefer `./scripts/posthog-set-cli-secrets.sh` for PostHog (sets EAS + GH + `.env` together)
 
 Direct link pattern: `https://github.com/<org>/<repo>/settings/secrets/actions`
 
@@ -62,9 +64,21 @@ Direct link pattern: `https://github.com/<org>/<repo>/settings/secrets/actions`
 | ------------------------------------------------------ | ----------------------- |
 | Lint, type-check, Jest, expo-doctor                    | No                      |
 | PR preview QR (`preview.yml`)                          | `EXPO_TOKEN`            |
+| PR preview PostHog source maps                         | `POSTHOG_CLI_API_KEY`   |
 | EAS QA / production builds                             | `EXPO_TOKEN`            |
 | Maestro Cloud E2E (label `android-test-maestro-cloud`) | `MAESTRO_CLOUD_API_KEY` |
 
+
+### PostHog (analytics + errors + replay) — fork standard
+
+Wire once per app; keep the skeleton identical across forks. See **[docs/posthog.md](./posthog.md)** (UI screenshot, script, dependency docs links).
+
+1. Create a PostHog project → `POSTHOG_PROJECT_TOKEN` / `POSTHOG_HOST` in `eas.json` + `.env`
+2. Enable project toggles (exception autocapture, session recording) — agents can do this via PostHog MCP
+3. **One human click:** personal API key with **Source map upload** preset → `./scripts/posthog-set-cli-secrets.sh`
+4. Rebuild a native binary so `@posthog/react-native-plugin` + Expo upload hooks are present
+
+Optional Expo path: [`eas integrations:posthog:connect`](https://docs.expo.dev/guides/using-posthog/).
 
 Add this checklist to every new fork’s README or `.env.example` comment block so CI setup is not forgotten after local dev works.
 
@@ -683,7 +697,7 @@ Add these to your **personal Obytes fork** so every new app ships with the same 
 | Screenshot regression | Argent verify / Percy | Tablet + web + phone matrix |
 | E2E + screen recordings | Maestro Cloud | Label `android-test-maestro-cloud` |
 | Perf regression | Flashlight + Sentry Performance | Baseline on main routes |
-| Product analytics | PostHog (`EXPO_PUBLIC_POSTHOG_KEY`) | Schema in `src/lib/analytics/` |
+| Product analytics + errors + replay | PostHog — see [docs/posthog.md](./posthog.md) | Metro + Expo plugin + `POSTHOG_CLI_*` |
 | Store metadata | `eas metadata` | Sync on release |
 | Launch videos | [Remotion](https://remotion.dev) + GHA render | `remotion/` per app |
 | Social / growth assets | Remotion templates + optional GHA → Buffer | Manual gate |

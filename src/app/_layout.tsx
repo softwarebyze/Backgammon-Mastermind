@@ -10,13 +10,14 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Stack, ThemeProvider, useGlobalSearchParams, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { PostHogProvider } from 'posthog-react-native';
+import { PostHogErrorBoundary, PostHogProvider } from 'posthog-react-native';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { PostHogErrorFallback } from '@/components/posthog-error-fallback';
 import { getThemeConfig } from '@/components/ui/use-theme-config';
 import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
@@ -66,20 +67,22 @@ export default function RootLayout() {
         maxElementsCaptured: 20,
       }}
     >
-      <Providers>
-        <Stack>
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="game"
-            options={{
-              headerShown: false,
-              animation: 'slide_from_bottom',
-              gestureEnabled: false,
-              contentStyle: { backgroundColor: '#1E0C02' },
-            }}
-          />
-        </Stack>
-      </Providers>
+      <PostHogErrorBoundary fallback={PostHogErrorFallback}>
+        <Providers>
+          <Stack>
+            <Stack.Screen name="(app)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="game"
+              options={{
+                headerShown: false,
+                animation: 'slide_from_bottom',
+                gestureEnabled: false,
+                contentStyle: { backgroundColor: '#1E0C02' },
+              }}
+            />
+          </Stack>
+        </Providers>
+      </PostHogErrorBoundary>
     </PostHogProvider>
   );
 }

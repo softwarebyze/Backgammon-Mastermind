@@ -21,3 +21,13 @@ _Does your code affect something downstream? Are there side effects people shoul
 <!---
 _How did you test your change? Document it here._
 -->
+
+## Legal / privacy gate
+
+Check this when the PR changes **what we collect**, **what we ask OS permission for**, or **how we describe the product**.
+
+- [ ] No new OS permission / Info.plist / Android permission / privacy-sensitive API
+- [ ] If there **is** a new permission or data practice → update `docs/privacy-policy.md` (and hosted `/privacy` if shipped) + bump “last updated”
+- [ ] If product promises or restrictions change → update `docs/terms-of-service.md` (+ hosted `/terms` if shipped)
+- [ ] App Store / Play privacy nutrition labels still accurate (analytics, crash data, session replay, etc.)
+- [ ] N/A — pure code / UI / docs with no data or permission impact

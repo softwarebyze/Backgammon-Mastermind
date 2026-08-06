@@ -1,9 +1,14 @@
 import Constants from 'expo-constants';
 import PostHog from 'posthog-react-native';
+import { Platform } from 'react-native';
 import { createMMKV } from 'react-native-mmkv';
 
 const projectToken = Constants.expoConfig?.extra?.posthogProjectToken as string | undefined;
 const host = (Constants.expoConfig?.extra?.posthogHost as string) || 'https://us.i.posthog.com';
+const appEnv
+  = (Constants.expoConfig?.extra?.appEnv as string | undefined)
+    || (process.env.EXPO_PUBLIC_APP_ENV as string | undefined)
+    || 'development';
 const isPostHogConfigured = projectToken && projectToken !== 'phc_your_project_token_here';
 
 if (!isPostHogConfigured && __DEV__) {
@@ -23,6 +28,8 @@ const customStorage = {
   },
 };
 
+const isNativeMobile = Platform.OS === 'ios' || Platform.OS === 'android';
+
 export const posthog = new PostHog(projectToken || 'placeholder_key', {
   host,
   disabled: !isPostHogConfigured,
@@ -37,4 +44,30 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
   requestTimeout: 10000,
   fetchRetryCount: 3,
   fetchRetryDelay: 3000,
+  // Session replay is native-only (dev client / store builds — not Expo Go or web).
+  enableSessionReplay: isNativeMobile,
+  sessionReplayConfig: {
+    maskAllTextInputs: true,
+    maskAllImages: false,
+    captureLog: true,
+    captureNetworkTelemetry: true,
+    throttleDelayMs: 1000,
+  },
+  // console: [] avoids duplicate reports when PostHogErrorBoundary is mounted
+  // (React also logs render errors to console).
+  errorTracking: {
+    autocapture: {
+      uncaughtExceptions: true,
+      unhandledRejections: true,
+      console: [],
+      nativeCrashes: isNativeMobile,
+    },
+  },
+});
+
+// Same PostHog project can still be sliced in insights by app_env
+// (development | preview | production). See docs/posthog.md § Environments.
+void posthog.register({
+  app_env: appEnv,
+  platform: Platform.OS,
 });

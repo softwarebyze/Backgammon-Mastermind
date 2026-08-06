@@ -108,6 +108,15 @@ const appPlugins: ExpoConfig['plugins'] = [
     },
   ],
   ['react-native-edge-to-edge'],
+  // Source maps + native dSYM/ProGuard upload during EAS Build (needs POSTHOG_CLI_* env).
+  [
+    'posthog-react-native/expo',
+    {
+      uploadNativeSymbols: true,
+      skipOnConflict: true,
+      dotenvFile: '.env',
+    },
+  ],
 ];
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -158,5 +167,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     posthogProjectToken: process.env.POSTHOG_PROJECT_TOKEN,
     posthogHost: process.env.POSTHOG_HOST || 'https://us.i.posthog.com',
+    appEnv: Env.EXPO_PUBLIC_APP_ENV,
   },
 });

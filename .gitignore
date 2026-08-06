@@ -43,3 +43,4 @@ fastlane/Preview.html
 fastlane/README.md
 .cache/asc-api-key.json
 *.asc-api-key.json
+.vercel

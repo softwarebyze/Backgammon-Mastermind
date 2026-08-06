@@ -42,7 +42,24 @@ jobs:
         id: preview
         uses: expo/expo-github-action/preview@v8
         with:
-          command: eas update --auto --environment preview
+          # Single native platform keeps Hermes source maps uploadable to PostHog.
+          command: eas update --auto --platform ios --environment preview
+
+      - name: Upload PostHog source maps (EAS Update)
+        env:
+          POSTHOG_CLI_API_KEY: ${{ secrets.POSTHOG_CLI_API_KEY }}
+          POSTHOG_CLI_PROJECT_ID: '507969'
+          POSTHOG_CLI_HOST: https://us.posthog.com
+        run: |
+          if [ -z "$POSTHOG_CLI_API_KEY" ]; then
+            echo "POSTHOG_CLI_API_KEY secret not set — skipping source map upload."
+            exit 0
+          fi
+          if [ -d dist ]; then
+            pnpm posthog:upload-sourcemaps
+          else
+            echo "No dist/ after eas update — skipping PostHog source map upload."
+          fi
 
       - name: Post dev client setup guide
         uses: actions/github-script@v7

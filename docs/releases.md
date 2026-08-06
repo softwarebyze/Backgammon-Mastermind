@@ -40,6 +40,13 @@ Expo native build numbers are managed by EAS (`eas.json` / remote version source
 
 ## Release checklist (TestFlight patch, e.g. v0.1.2)
 
+### 0. Legal / store privacy (skip only if nothing data-related shipped)
+
+- [ ] Diff since last store build: any new permissions, SDKs, analytics, crash reporting, session replay, or “we collect X” behavior?
+- [ ] If yes → `docs/privacy-policy.md` / `docs/terms-of-service.md` updated (and hosted copies if live) + “last updated” bumped
+- [ ] ASC / Play privacy nutrition labels still match (PostHog: product interaction, crash data, diagnostics)
+- [ ] `POSTHOG_CLI_API_KEY` still set on EAS (production + preview) so source maps upload on build — see [posthog.md](./posthog.md)
+
 ### 1. Code ready
 
 - [ ] `pnpm check-all` passes

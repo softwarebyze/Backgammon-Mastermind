@@ -1,0 +1,20 @@
+# Optional: publish an iOS EAS Update and upload Hermes source maps to PostHog.
+# Requires POSTHOG_CLI_API_KEY (+ PROJECT_ID / HOST) on the EAS environment.
+# Docs: docs/posthog.md · https://docs.expo.dev/guides/using-posthog/recipes/
+
+name: Update with PostHog source maps
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  publish_update_ios:
+    name: EAS Update + PostHog source maps (iOS)
+    environment: production
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - run: npx eas-cli@latest update --branch production --platform ios --auto --non-interactive --environment production
+      - uses: eas/posthog_upload_sourcemaps
+        with:
+          directory: dist

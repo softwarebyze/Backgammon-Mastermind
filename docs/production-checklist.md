@@ -70,8 +70,15 @@ Use this before the first App Store / Play Store submission.
 | ------ | ------------ | ----------- |
 | `EXPO_TOKEN` | EAS preview, QA, production | ✅ |
 | App Store Connect API key | `metadata:push` / `metadata:pull` | ✅ (EAS credentials) |
+| `POSTHOG_CLI_API_KEY` | Source maps + native symbols (EAS Build / PR update upload) | ✅ EAS + GitHub (see [docs/posthog.md](./posthog.md)) |
 | `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E only | Optional |
 | `GH_TOKEN` | New App Version workflow | Optional |
+
+## Legal / privacy (re-check each store ship)
+
+- [ ] Privacy + terms “last updated” matches current data practices (analytics, errors, session replay, optional gameplay diagnostics)
+- [ ] No undeclared OS permissions
+- [ ] Nutrition labels / Play Data safety form match PostHog usage
 
 ## Post-launch
 
