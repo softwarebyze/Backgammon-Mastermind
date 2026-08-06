@@ -1,5 +1,24 @@
 # AGENTS.md
 
+## PR evidence (always)
+
+When the user asks for a fix/feature and you open or update a PR, **finish the chat reply** with this block (fill real numbers/links):
+
+```
+Updated PR #<n>, preview <preview-url>.
+PR includes screenshots and recordings showing the fix/feature.
+```
+
+In the **PR body**, document each change with evidence — not a wall of text:
+
+- `Fixed <thing>` + screenshot (or image link)
+- `Fixed <thing>` + screen recording / video link
+- Same pattern for features: `Added <thing>` + media
+
+Prefer attaching evidence under `docs/pr-evidence/` (or the PR’s Files changed) and linking raw GitHub URLs so the PR renders media inline. Use Argent / simulator / web screenshots and short recordings when the change is visual.
+
+Tracked as [#128](https://github.com/softwarebyze/Backgammon-Mastermind/issues/128).
+
 ## Cursor Cloud specific instructions
 
 ### Overview

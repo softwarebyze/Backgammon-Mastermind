@@ -53,12 +53,14 @@ Use this before the first App Store / Play Store submission.
 - [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
 - [ ] Upload screenshots in ASC (after production app record exists)
 - [ ] Google Play Console app record + screenshots + description
-- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`)
-- [x] Terms of service — `docs/terms-of-service.md`
-- [ ] Pricing — Paid Up Front **$4.99** USD, all territories (set in ASC)
-- [ ] Privacy nutrition labels — declare analytics (PostHog product interaction)
-- [ ] Content rating questionnaires (both stores)
-- [ ] Production ASC app record for `com.backgammonmastermind` (bundle ID registered; create listing + set `ascAppId`)
+- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; ASC en-US URL set)
+- [x] Terms of service — `docs/terms-of-service.md` (+ hosted `/terms/`)
+- [x] Pricing — Paid Up Front **$4.99** USD (USA base in ASC; auto-prices other territories)
+- [x] Marketing URL — `https://backgammon-mastermind.vercel.app` (ASC en-US)
+- [ ] Privacy nutrition labels — declare analytics (PostHog product interaction) in ASC UI
+- [x] iOS age rating — 4+ already on production app info
+- [ ] Google Play content rating questionnaire
+- [x] Production ASC app — `com.backgammonmastermind` / Apple ID `6792138473`
 - [x] Export compliance — `ITSAppUsesNonExemptEncryption: false` in `app.config.ts`
 
 ## Secrets checklist
