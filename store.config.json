@@ -48,9 +48,9 @@
           "classic"
         ],
         "releaseNotes": "First App Store release: interactive Learn to Play lessons, graduation quiz, vs Computer and pass-and-play, plus privacy-friendly analytics to improve the product.",
-        "marketingUrl": "https://github.com/softwarebyze/Backgammon-Mastermind",
+        "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
-        "privacyPolicyUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/blob/main/docs/privacy-policy.md"
+        "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
       }
     },
     "release": {

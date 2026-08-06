@@ -4,6 +4,7 @@
 
 | Doc | What it’s for |
 |-----|----------------|
+| [website.md](./website.md) | Vercel web app, privacy/terms URLs, marketing plan |
 | [releases.md](./releases.md) | **How** to cut TestFlight / store / GitHub releases |
 | [production-checklist.md](./production-checklist.md) | First-time App Store / Play submission |
 | [ios-testing-and-store.md](./ios-testing-and-store.md) | Dev client, TestFlight, metadata quirks |

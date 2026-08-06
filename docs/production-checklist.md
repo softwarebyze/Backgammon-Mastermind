@@ -53,7 +53,7 @@ Use this before the first App Store / Play Store submission.
 - [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
 - [ ] Upload screenshots in ASC (after production app record exists)
 - [ ] Google Play Console app record + screenshots + description
-- [x] Privacy policy — `docs/privacy-policy.md` (updated for PostHog; GitHub URL in `store.config.json`)
+- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`)
 - [x] Terms of service — `docs/terms-of-service.md`
 - [ ] Pricing — Paid Up Front **$4.99** USD, all territories (set in ASC)
 - [ ] Privacy nutrition labels — declare analytics (PostHog product interaction)

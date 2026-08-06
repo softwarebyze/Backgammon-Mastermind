@@ -4,15 +4,17 @@ import { Linking, Platform, Share } from 'react-native';
 const REPOSITORY_URL = 'https://github.com/softwarebyze/Backgammon-Mastermind';
 const SUPPORT_EMAIL = 'zackebenfeld@gmail.com';
 
-/** Set EXPO_PUBLIC_APP_STORE_ID in production env once App Store Connect record exists. */
+/** Canonical product website (Vercel). Privacy/terms must be publicly hosted for store review. */
+export const WEBSITE_URL = 'https://backgammon-mastermind.vercel.app';
+
+/** Production ASC Apple ID (6792138473). Set via EAS production env — see docs/app-environments.md. */
 const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
 
-/** Replace with real URLs before App Store / Play Store submission. */
 export const APP_LINKS = {
   github: REPOSITORY_URL,
-  website: REPOSITORY_URL,
-  privacy: `${REPOSITORY_URL}/blob/main/docs/privacy-policy.md`,
-  terms: `${REPOSITORY_URL}/blob/main/docs/terms-of-service.md`,
+  website: WEBSITE_URL,
+  privacy: `${WEBSITE_URL}/privacy/`,
+  terms: `${WEBSITE_URL}/terms/`,
   support: `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${Env.EXPO_PUBLIC_NAME} support`)}`,
 } as const;
 
@@ -26,8 +28,8 @@ export async function openExternalUrl(url: string): Promise<void> {
 
 export async function shareApp(): Promise<void> {
   await Share.share({
-    message: `Play ${Env.EXPO_PUBLIC_NAME} — ${REPOSITORY_URL}`,
-    url: REPOSITORY_URL,
+    message: `Play ${Env.EXPO_PUBLIC_NAME} — ${WEBSITE_URL}`,
+    url: WEBSITE_URL,
     title: Env.EXPO_PUBLIC_NAME,
   });
 }
@@ -37,10 +39,14 @@ export async function openStoreListing(): Promise<void> {
   const url = Platform.select({
     ios: APP_STORE_ID
       ? `https://apps.apple.com/app/id${APP_STORE_ID}`
-      : REPOSITORY_URL,
-    android: `market://details?id=${packageName}`,
-    default: REPOSITORY_URL,
+      : WEBSITE_URL,
+    android: `https://play.google.com/store/apps/details?id=${packageName}`,
+    default: WEBSITE_URL,
   });
+
+  if (!url) {
+    throw new Error('No store URL available for this platform');
+  }
 
   await openExternalUrl(url);
 }

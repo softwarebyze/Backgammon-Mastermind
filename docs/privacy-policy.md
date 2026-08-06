@@ -35,7 +35,7 @@ The app is suitable for general audiences and does not knowingly collect informa
 
 ## Changes
 
-We may update this policy when the product changes. The latest version lives in this repository and is linked from the App Store listing.
+We may update this policy when the product changes. The latest hosted version is at [backgammon-mastermind.vercel.app/privacy](https://backgammon-mastermind.vercel.app/privacy/) and is linked from the App Store listing.
 
 ## Contact
 
