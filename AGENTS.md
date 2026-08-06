@@ -4,7 +4,7 @@
 
 When the user asks for a fix/feature and you open or update a PR, **finish the chat reply** with this block (fill real numbers/links):
 
-```
+```text
 Updated PR #<n>, preview <preview-url>.
 PR includes screenshots and recordings showing the fix/feature.
 ```

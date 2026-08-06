@@ -17,9 +17,13 @@ Capture more anytime (Argent / simulator / Maestro). Prefer 1320×2868 for iPhon
 ```sh
 pnpm screenshots:prepare          # copy marketing PNGs → fastlane folders
 pnpm screenshots:asc-key          # Expo session → .cache/asc-api-key.json (gitignored)
-pnpm screenshots:upload:ios       # prepare + key + fastlane deliver (screenshots only)
+pnpm screenshots:upload:ios       # prepare + key + bundle exec fastlane deliver (screenshots only)
 pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH (Play Console service account)
 ```
+
+Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.237.0**). First time: `bundle install`.
+
+iOS `app_version` defaults from `store.config.json` → `apple.version` (override with `ASC_APP_VERSION`).
 
 Or CI / agent with env:
 

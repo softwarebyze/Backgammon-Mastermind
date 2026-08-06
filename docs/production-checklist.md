@@ -117,7 +117,7 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 3. Release published → **EAS QA Build** runs automatically
 4. After QA on device → Actions → **EAS Production Build**
 5. Metadata: Actions → **EAS Metadata Push** (`preview` or `production`) — prefer over local ASC API scripts
-6. Submit production: `eas submit --platform ios --profile production --latest` (or wire AUTO_SUBMIT later)
+6. Submit production: `pnpm submit:production:ios` (sets `EXPO_PUBLIC_APP_ENV=production` — do not rely on a development `.env`)
 
 `eas-build` action already has an `AUTO_SUBMIT` input (not wired yet) — candidate for a follow-up **EAS Submit** workflow.
 

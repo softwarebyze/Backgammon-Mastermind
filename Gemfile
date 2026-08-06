@@ -2,5 +2,5 @@
 
 source "https://rubygems.org"
 
-# Pin for CI/agents. Local Homebrew fastlane also works if bundler isn't used.
-gem "fastlane", ">= 2.220"
+# Pin exact version + commit Gemfile.lock so CI/agents get a reproducible Fastlane.
+gem "fastlane", "2.237.0"
