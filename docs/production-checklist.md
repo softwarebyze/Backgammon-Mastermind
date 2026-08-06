@@ -47,18 +47,18 @@ Use this before the first App Store / Play Store submission.
 
 ## Store listing requirements
 
-- [x] App Store listing copy — `store.config.json`
-- [x] **App Store Connect API key** — via EAS credentials (`M7LGZ9S6S2`)
-- [x] `pnpm metadata:push` — listing synced for **0.1.0** ([ASC app](https://appstoreconnect.apple.com/apps/6780139011/appstore))
-- [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
+- [x] App Store listing copy — `store.config.json` (source of truth; push via EAS Metadata)
+- [x] **App Store Connect API key** — via EAS credentials (`M7LGZ9S6S2`) for `eas metadata` / submit
+- [x] `pnpm metadata:push` — listing synced for preview TF app (`6781121420`)
+- [x] `pnpm metadata:push:production` — sync `store.config.json` → production ASC (`6792138473`)- [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
 - [ ] Upload screenshots in ASC (after production app record exists)
 - [ ] Google Play Console app record + screenshots + description
-- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; ASC en-US URL set)
+- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in `store.config.json`)
 - [x] Terms of service — `docs/terms-of-service.md` (+ hosted `/terms/`)
-- [x] Pricing — Paid Up Front **$4.99** USD (USA base in ASC; auto-prices other territories)
-- [x] Marketing URL — `https://backgammon-mastermind.vercel.app` (ASC en-US)
+- [x] Pricing — Paid Up Front **$4.99** USD (USA base in ASC Pricing UI; not via EAS Metadata)
+- [x] Marketing / privacy URLs — in `store.config.json`; sync with `pnpm metadata:push:production`
 - [ ] Privacy nutrition labels — declare analytics (PostHog product interaction) in ASC UI
-- [x] iOS age rating — 4+ already on production app info
+- [x] iOS age rating — via `store.config.json` → `apple.advisory` + metadata push (4+ on production)
 - [ ] Google Play content rating questionnaire
 - [x] Production ASC app — `com.backgammonmastermind` / Apple ID `6792138473`
 - [x] Export compliance — `ITSAppUsesNonExemptEncryption: false` in `app.config.ts`
@@ -114,24 +114,36 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 2. That creates a tag → **New GitHub Release** runs
 3. Release published → **EAS QA Build** runs automatically
 4. After QA on device → Actions → **EAS Production Build**
-5. Submit + metadata: today `pnpm submit:preview:ios` + `pnpm metadata:push` locally, or add a workflow once ASC API key is in repo secrets
+5. Metadata: Actions → **EAS Metadata Push** (`preview` or `production`) — prefer over local ASC API scripts
+6. Submit production: `eas submit --platform ios --profile production --latest` (or wire AUTO_SUBMIT later)
 
-`eas-build` action already has an `AUTO_SUBMIT` input (not wired yet) — candidate for a follow-up **EAS Submit + Metadata** workflow.
+`eas-build` action already has an `AUTO_SUBMIT` input (not wired yet) — candidate for a follow-up **EAS Submit** workflow.
+
+### Listing updates — preferred path
+
+| Change | How |
+| ------ | --- |
+| Description, keywords, URLs, review notes, age advisory | Edit `store.config.json` → `pnpm metadata:push:production` (or GHA) |
+| Price / availability | ASC **Pricing and Availability** UI (EAS Metadata does not cover price) |
+| Privacy nutrition labels | ASC UI |
+| Screenshots | ASC UI (or extend metadata later) |
+
+Avoid one-off App Store Connect API / JWT scripts for shipping. They bypass git history and aren’t re-runnable the way `metadata:push` is.
 
 ### One-time only (you, first submission)
 
 | Item | Why manual |
 | ---- | ---------- |
 | **App Store Connect app record** | Apple account / bundle ID registration |
-| **ASC API key** → GitHub secret or EAS credentials | Apple issues the key once; then `metadata:push` can automate |
+| **ASC API key** → EAS credentials | Needed once so `eas metadata` / submit work |
+| **Paid app price ($4.99)** | Not in EAS Metadata schema — ASC Pricing UI |
 | **Google Play app record** | Play Console signup |
 | **Register iPhone** (`eas device:create`) | Device UDID for ad-hoc dev IPA |
 | **Screenshots** | Upload in ASC / Play (or script later from `docs/remotion/after/`) |
-| **Content rating questionnaires** | Store consoles |
-| **`EXPO_PUBLIC_APP_STORE_ID`** | ✅ Set in EAS production (`6780139011`) |
+| **Privacy nutrition labels** | ASC UI |
+| **`EXPO_PUBLIC_APP_STORE_ID`** | Set in EAS production env to production Apple ID when live |
 
-After the ASC API key is configured, **metadata push** and **submit** can move into CI like everything else above.
-
+After credentials exist, **metadata push** is already in CI (`EAS Metadata Push`); submit can follow.
 ## Suggested order from here
 
 1. **TestFlight** — wait for Apple processing, then enable internal testers: [ASC TestFlight](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios)

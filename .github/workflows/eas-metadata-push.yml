@@ -1,14 +1,24 @@
 # Push App Store listing from store.config.json (EAS Metadata).
-# Run after preview/production binary is in App Store Connect.
+# Prefer this over one-off App Store Connect API scripts.
+# Run after the target ASC app has an editable version + binary.
 
 name: EAS Metadata Push
 
 on:
   workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Submit profile (which ASC app)'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - preview
+          - production
 
 jobs:
   metadata:
-    name: Push store.config.json to App Store Connect
+    name: Push store.config.json (${{ inputs.profile }})
     runs-on: ubuntu-latest
     steps:
       - name: Check for EXPO_TOKEN
@@ -30,5 +40,10 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: 📝 Push metadata (preview listing)
-        run: pnpm metadata:push
+      - name: 📝 Push metadata
+        run: |
+          if [ "${{ inputs.profile }}" = "production" ]; then
+            pnpm metadata:push:production
+          else
+            pnpm metadata:push
+          fi

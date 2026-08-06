@@ -31,14 +31,27 @@ Before `eas metadata:push`, confirm `store.config.json` → `apple.review.phone`
 
 Listing copy lives in **`store.config.json`** at the repo root. EAS Metadata is **Apple App Store only** (beta).
 
-Set `apple.version` in `store.config.json` to match the editable App Store Connect version (e.g. `"0.1.0"`). Without it, EAS defaults to `1.0` and `metadata:push` fails with a missing `versionString` error.
+**Prefer this over one-off App Store Connect API scripts.** Edit `store.config.json`, then push. That keeps listing state in git and is re-runnable.
+
+| Profile | Script | ASC app |
+| ------- | ------ | ------- |
+| Preview (TestFlight) | `pnpm metadata:push` | `6781121420` |
+| Production (App Store) | `pnpm metadata:push:production` | `6792138473` |
+
+Also: Actions → **EAS Metadata Push** (pick profile).
+
+Set `apple.version` in `store.config.json` to match the editable App Store Connect version (e.g. `"1.0.0"`). Without it, EAS defaults to `1.0` and `metadata:push` fails with a missing `versionString` error.
 
 ```sh
-# After first binary is in App Store Connect (preview app 6781121420):
-pnpm metadata:pull    # optional — import existing ASC listing
-pnpm metadata:push    # push store.config.json to preview ASC app
+# After first binary is in App Store Connect:
+pnpm metadata:pull              # optional — import existing ASC listing (preview)
+pnpm metadata:push              # preview ASC
+pnpm metadata:push:production   # production ASC — privacy/marketing URLs, copy, advisory, review
 ```
 
+**Covered by EAS Metadata:** title, subtitle, description, keywords, URLs (privacy / marketing / support), age rating advisory, categories, review contact/notes, release strategy.
+
+**Not covered (ASC UI only):** paid app **price** / availability schedule, App Privacy nutrition labels, screenshot sets (until we wire them into metadata). Do those in App Store Connect — do not invent one-off JWT scripts for routine shipping.
 If `metadata:push` fails on version info, create version **0.1.0** in App Store Connect (App → iOS App → **+** Version) so it matches your binary and `store.config.json`.
 
 If `metadata:push` fails with *app name already used*, the development ASC app (`6780139011`) already owns **Backgammon Mastermind**. Preview metadata still updates version, categories, age rating, and review notes — only the localized **title** sync fails until you rename one of the ASC apps or ship production.

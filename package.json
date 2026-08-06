@@ -41,6 +41,8 @@
     "build:production:android": "eas build --profile production --platform android",
     "metadata:pull": "eas metadata:pull --profile preview",
     "metadata:push": "cross-env EXPO_PUBLIC_APP_ENV=preview eas metadata:push --profile preview",
+    "metadata:pull:production": "eas metadata:pull --profile production",
+    "metadata:push:production": "cross-env EXPO_PUBLIC_APP_ENV=production eas metadata:push --profile production",
     "submit:preview:ios": "cross-env EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --latest",
     "submit:preview:android": "eas submit --platform android --profile preview --latest",
     "brand:icon-source": "tsx scripts/generate-icon-source.ts",

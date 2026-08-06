@@ -16,7 +16,8 @@ First-time store setup: [production-checklist.md](./production-checklist.md).
 | Verify locally | `pnpm check-all` |
 | iOS TestFlight binary + submit | Actions → **EAS QA Build** (auto `--auto-submit` on iOS preview) |
 | Submit to TestFlight (manual) | `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
-| Push App Store listing | Actions → **EAS Metadata Push** or `pnpm metadata:push` (targets **preview** ASC app) |
+| Push App Store listing (preview TF app) | Actions → **EAS Metadata Push** (`preview`) or `pnpm metadata:push` |
+| Push App Store listing (production) | Actions → **EAS Metadata Push** (`production`) or `pnpm metadata:push:production` |
 | Marketing renders | **Automatic** on GitHub Release (`Remotion Render (Release Assets)`). Manual: `cd remotion && pnpm render:all` |
 | Tag + GitHub Release | Actions → **New App Version** (patch) or manual tag |
 
@@ -81,10 +82,12 @@ See [ios-testing-and-store.md](./ios-testing-and-store.md) if the build does not
 ### 5. Metadata & screenshots
 
 ```bash
-# After binary is processed in ASC — create version 0.1.1 in ASC if needed
-pnpm metadata:push   # uses preview submit profile → ASC app 6781121420
+# After binary is processed in ASC — create version matching apple.version if needed
+pnpm metadata:push              # preview ASC 6781121420
+pnpm metadata:push:production   # production ASC 6792138473 — prefer this over ad-hoc ASC API calls
 ```
 
+Prefer **`store.config.json` + `metadata:push*`** for listing fields (privacy/marketing URLs, copy, advisory, review). **Price** is not in EAS Metadata — set once in ASC Pricing UI ($4.99). No one-off API scripts for routine updates.
 - App Store screenshots: device captures or `docs/remotion/after/` + `docs/marketing/v0.1.1/`
 - TestFlight release notes: paste from GitHub Release or `docs/evidence/v0.1.1/README.md`
 
