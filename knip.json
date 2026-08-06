@@ -21,7 +21,8 @@
     "eas",
     "maestro",
     "remotion",
-    "skills"
+    "skills",
+    "fastlane"
   ],
   "ignoreDependencies": [
     "husky",
