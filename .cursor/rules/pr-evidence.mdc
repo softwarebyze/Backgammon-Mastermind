@@ -17,4 +17,4 @@ Updated PR #<n>, preview <preview-url>.
 PR includes screenshots and recordings showing the fix/feature.
 ```
 
-Skip the trailing block only if no PR was created or updated in that turn.
+When mentioning a PR in the body of a reply (not only the closer), prefer linking the preview URL next to it when one exists. Skip the trailing block only if no PR was created or updated in that turn.

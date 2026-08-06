@@ -53,7 +53,8 @@ Use this before the first App Store / Play Store submission.
 - [x] `pnpm metadata:push:production` — sync `store.config.json` → production ASC (`6792138473`)
 - [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
 - [x] Upload screenshots — `pnpm screenshots:upload:ios` (Fastlane; 6× 1320×2868 → production 1.0.0)
-- [ ] Google Play Console app record + screenshots + description (`pnpm screenshots:upload:android` once Play JSON key exists)- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in `store.config.json`)
+- [ ] Google Play Console app record + screenshots + description (`pnpm screenshots:upload:android` once Play JSON key exists)
+- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in `store.config.json`)
 - [x] Terms of service — `docs/terms-of-service.md` (+ hosted `/terms/`)
 - [x] Pricing — Paid Up Front **$4.99** USD (USA base in ASC Pricing UI; not via EAS Metadata)
 - [x] Marketing / privacy URLs — in `store.config.json`; sync with `pnpm metadata:push:production`
@@ -89,9 +90,10 @@ Use this before the first App Store / Play Store submission.
 | Maestro E2E + PR screenshot publish | Done |
 | Store metadata draft + contact info | Done |
 | **iOS submit + metadata push** | Done (TestFlight processing) |
-| **App Store screenshots** | Prepared — upload via Fastlane (`pnpm screenshots:upload:ios`) |
-| **Google Play first upload** | **Next — you** (manual; see below) |
-| Production EAS build + App Store review | Not started |
+| **App Store screenshots** | Done (Fastlane upload to production 1.0.0) |
+| **Google Play first upload** | **Next** — create Play app + service account |
+| Production listing + binary | Binary on ASC Prepare for Submission; listing mostly done |
+| Submit for App Review | Blocked on privacy nutrition labels (+ merge #129 for live privacy URL) |
 
 ## Automation vs one-time setup
 
@@ -148,14 +150,10 @@ Avoid one-off App Store Connect API / JWT scripts for shipping. They bypass git 
 After credentials exist, **metadata push** is already in CI (`EAS Metadata Push`); submit can follow.
 ## Suggested order from here
 
-1. **TestFlight** — wait for Apple processing, then enable internal testers: [ASC TestFlight](https://appstoreconnect.apple.com/apps/6780139011/testflight/ios)
-2. **Screenshots** — `pnpm screenshots:upload:ios` (Fastlane; see [store-screenshots.md](./store-screenshots.md))
-3. **Content rating** — complete questionnaires in ASC if not already done via metadata push
-4. **Google Play (first time only)** — create app in [Play Console](https://play.google.com/console), then upload first AAB manually:
-   ```sh
-   pnpm build:production:android   # app-bundle, not preview APK
-   ```
-   Download the `.aab` from EAS and upload under **Release → Testing → Internal testing**. After that, `pnpm submit:preview:android` / production submit works.
-5. **Internal TestFlight QA** → fix issues → **EAS Production Build** → App Store review submit
-
+1. **Merge [#129](https://github.com/softwarebyze/Backgammon-Mastermind/pull/129)** — Vercel SPA + hosted `/privacy/` `/terms/` + 404 (ASC privacy URL already points at production Vercel)
+2. **Privacy nutrition labels** in ASC (PostHog product interaction) — last App Store gate agents can’t fully automate yet
+3. **Submit for App Review** on production `6792138473` / v1.0.0
+4. **TestFlight** — [TF app 6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) once Apple finishes processing (don’t message friends until builds are Available)
+5. **Google Play** — create app in Play Console, then AAB + `pnpm screenshots:upload:android`
+6. Fix `EXPO_PUBLIC_APP_STORE_ID` in EAS production env → `6792138473` (still points at old development ASC id)
 See also: `docs/ios-testing-and-store.md`

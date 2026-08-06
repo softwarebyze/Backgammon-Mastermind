@@ -9,6 +9,7 @@ Updated PR #<n>, preview <preview-url>.
 PR includes screenshots and recordings showing the fix/feature.
 ```
 
+When you mention a PR mid-reply (not only in that closer), include the preview URL next to it when one exists — e.g. [PR #129](…) · [preview](…). Not required on every casual mention; do it when the user asked about that work or when the preview is useful.
 In the **PR body**, document each change with evidence — not a wall of text:
 
 - `Fixed <thing>` + screenshot (or image link)
