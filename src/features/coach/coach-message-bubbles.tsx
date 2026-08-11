@@ -8,9 +8,10 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 export function CoachMessageBubbles({ messages }: { messages: CoachMessage[] }) {
   return (
     <>
-      {messages.map(msg => (
+      {messages.map((msg, index) => (
         <View
           key={msg.id}
+          testID={msg.role === 'coach' ? `coach-msg-${index}` : `user-msg-${index}`}
           style={[
             styles.bubble,
             msg.role === 'user' ? styles.bubbleUser : styles.bubbleCoach,

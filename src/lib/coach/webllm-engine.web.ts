@@ -1,6 +1,6 @@
 /**
  * Browser WebLLM engine (Expo web).
- * Metro resolves this file as `webllm-engine.web.ts` on web builds.
+ * Runs in a Web Worker so the UI thread doesn't freeze/crash during load+generate.
  */
 
 import type { ChatCompletionMessageParam, MLCEngineInterface } from '@mlc-ai/web-llm';
@@ -10,19 +10,20 @@ export type WebLlmProgress = {
   progress: number;
 };
 
-/** Small instruct model — faster first download for the POC. */
-export const WEBLLM_MODEL_ID = 'Llama-3.2-1B-Instruct-q4f16_1-MLC';
+/**
+ * Small instruct model for the POC — lower VRAM than 1B/3B so phones/laptops
+ * are less likely to OOM after download.
+ */
+export const WEBLLM_MODEL_ID = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
 
 let enginePromise: Promise<MLCEngineInterface> | null = null;
 let gpuCheckPromise: Promise<boolean> | null = null;
 const progressListeners = new Set<(p: WebLlmProgress) => void>();
 
-/** Sync hint only — prefer `checkWebLlmSupported()` before loading. */
 export function isWebLlmSupported(): boolean {
   return typeof navigator !== 'undefined' && 'gpu' in navigator;
 }
 
-/** Confirms a WebGPU adapter exists (Chrome can expose `gpu` with no adapter). */
 export async function checkWebLlmSupported(): Promise<boolean> {
   if (!isWebLlmSupported()) {
     return false;
@@ -60,6 +61,11 @@ function emitProgress(p: WebLlmProgress) {
   }
 }
 
+function createCoachWorker(): Worker {
+  // Served from /public — keeps Metro out of worker bundling.
+  return new Worker('/webllm-worker.js', { type: 'module' });
+}
+
 export async function ensureWebLlmEngine(): Promise<MLCEngineInterface> {
   const ok = await checkWebLlmSupported();
   if (!ok) {
@@ -69,14 +75,33 @@ export async function ensureWebLlmEngine(): Promise<MLCEngineInterface> {
     enginePromise = (async () => {
       emitProgress({ text: 'Downloading local model…', progress: 0 });
       const webllm = await import('@mlc-ai/web-llm');
-      const engine = await webllm.CreateMLCEngine(WEBLLM_MODEL_ID, {
-        initProgressCallback: (report) => {
-          emitProgress({
-            text: report.text || 'Loading model…',
-            progress: report.progress ?? 0,
-          });
-        },
-      });
+      let engine: MLCEngineInterface;
+      try {
+        engine = await webllm.CreateWebWorkerMLCEngine(
+          createCoachWorker(),
+          WEBLLM_MODEL_ID,
+          {
+            initProgressCallback: (report) => {
+              emitProgress({
+                text: report.text || 'Loading model…',
+                progress: report.progress ?? 0,
+              });
+            },
+          },
+        );
+      }
+      catch (workerError) {
+        // Worker failed (CORS / module) — fall back to main-thread engine.
+        console.warn('[coach] WebWorker engine failed, using main thread', workerError);
+        engine = await webllm.CreateMLCEngine(WEBLLM_MODEL_ID, {
+          initProgressCallback: (report) => {
+            emitProgress({
+              text: report.text || 'Loading model…',
+              progress: report.progress ?? 0,
+            });
+          },
+        });
+      }
       emitProgress({ text: 'Model ready', progress: 1 });
       return engine;
     })().catch((error) => {
@@ -92,21 +117,28 @@ export async function webLlmChat(
   onDelta?: (text: string) => void,
 ): Promise<string> {
   const engine = await ensureWebLlmEngine();
-  const stream = await engine.chat.completions.create({
-    messages,
-    stream: true,
-    temperature: 0.7,
-    max_tokens: 420,
-  });
+  try {
+    const stream = await engine.chat.completions.create({
+      messages,
+      stream: true,
+      temperature: 0.6,
+      max_tokens: 280,
+    });
 
-  let full = '';
-  for await (const chunk of stream) {
-    const delta = chunk.choices[0]?.delta?.content ?? '';
-    if (!delta) {
-      continue;
+    let full = '';
+    for await (const chunk of stream) {
+      const delta = chunk.choices[0]?.delta?.content ?? '';
+      if (!delta) {
+        continue;
+      }
+      full += delta;
+      onDelta?.(full);
     }
-    full += delta;
-    onDelta?.(full);
+    return full.trim() || 'I could not generate a reply. Try asking again.';
   }
-  return full.trim() || 'I could not generate a reply. Try asking again.';
+  catch (error) {
+    // Device lost / OOM mid-generation — clear engine so next ask can retry.
+    enginePromise = null;
+    throw error;
+  }
 }

@@ -1,9 +1,11 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { BackHandler, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar, useModal } from '@/components/ui';
+import { CoachCrashFallback } from '@/features/coach/coach-crash-fallback';
 import { CoachSheet } from '@/features/coach/coach-sheet';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -110,7 +112,14 @@ export function GameScreen() {
         isComputerTurn={isComputerTurn}
         ceremonyKey={ceremonyKey}
       />
-      <CoachSheet sheetRef={coachSheetRef} state={input.state} />
+      <ErrorBoundary
+        FallbackComponent={CoachCrashFallback}
+        onError={(error) => {
+          console.warn('[coach] boundary caught', error);
+        }}
+      >
+        <CoachSheet sheetRef={coachSheetRef} state={input.state} />
+      </ErrorBoundary>
     </>
   );
 }

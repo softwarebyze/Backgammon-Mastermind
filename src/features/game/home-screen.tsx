@@ -198,6 +198,7 @@ export function HomeScreen() {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Play against the computer"
+            testID="home-vs-computer"
             style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
             onPress={() => handleStart('vs-computer')}
           >

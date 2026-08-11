@@ -62,8 +62,8 @@ export function CoachSheet({ sheetRef, state }: Props) {
       android_keyboardInputMode="adjustResize"
       enablePanDownToClose
     >
-      <View style={styles.body}>
-        <Text style={styles.subtitle}>
+      <View style={styles.body} testID="coach-sheet">
+        <Text style={styles.subtitle} testID="coach-subtitle">
           {useLlm ? 'WebLLM in your browser — free, no API fees' : 'Free on-device prototype — no API, no fees'}
         </Text>
         {loadProgress

@@ -35,6 +35,7 @@
     "@types/invariant",
     "dotenv",
     "eslint-plugin-unicorn",
-    "zustand"
+    "zustand",
+    "playwright"
   ]
 }
