@@ -1,4 +1,5 @@
 import { analyzePosition, formatMove, formatPoint } from '@/lib/coach/analyze-position';
+import { buildCoachSystemPrompt } from '@/lib/coach/build-context';
 import { matchCoachIntent } from '@/lib/coach/match-intent';
 import { coachRespond, coachWelcome } from '@/lib/coach/respond';
 import { createInitialState } from '@/lib/game/constants';
@@ -35,6 +36,21 @@ describe('analyzePosition', () => {
     expect(facts.phase).toBe('moving');
     expect(facts.uniqueMoveCount).toBeGreaterThan(0);
     expect(facts.suggestedMove).not.toBeNull();
+  });
+});
+
+describe('buildCoachSystemPrompt', () => {
+  it('includes engine suggestion and occupancy for a rolled position', () => {
+    let state = createPositionState({
+      useStandardSetup: true,
+      currentPlayer: 'white',
+      mode: 'vs-computer',
+    });
+    state = applyDiceRoll(state, [6, 5]);
+    const prompt = buildCoachSystemPrompt(state);
+    expect(prompt).toMatch(/backgammon coach/i);
+    expect(prompt).toMatch(/Engine teaching suggestion/);
+    expect(prompt).toMatch(/Occupancy/);
   });
 });
 

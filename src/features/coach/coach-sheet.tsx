@@ -3,6 +3,7 @@ import type { GameState } from '@/lib/game';
 import { BottomSheetScrollView, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useCallback, useState } from 'react';
 import {
+  ActivityIndicator,
   Keyboard,
   Platform,
   Pressable,
@@ -14,6 +15,7 @@ import {
 } from 'react-native';
 
 import { Modal } from '@/components/ui';
+import { CoachMessageBubbles } from '@/features/coach/coach-message-bubbles';
 import { useCoachChat } from '@/features/coach/use-coach-chat';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { COACH_SUGGESTED_PROMPTS } from '@/lib/coach';
@@ -21,7 +23,6 @@ import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
-/** gorhom scroll/input helpers crash on web dismiss — use RN primitives there. */
 const MessageScroll = Platform.OS === 'web' ? ScrollView : BottomSheetScrollView;
 const CoachInput = Platform.OS === 'web' ? TextInput : BottomSheetTextInput;
 
@@ -30,14 +31,14 @@ type Props = {
   state: GameState | null;
 };
 
-/** English-only POC coach sheet — not production i18n. */
+/** English-only POC — WebLLM on web, heuristic elsewhere. */
 export function CoachSheet({ sheetRef, state }: Props) {
-  const { messages, askIntent, askQuestion } = useCoachChat(state);
+  const { messages, askIntent, askQuestion, busy, loadProgress, error, useLlm } = useCoachChat(state);
   const [draft, setDraft] = useState('');
 
   const sendDraft = useCallback(() => {
     const text = draft.trim();
-    if (!text) {
+    if (!text || busy) {
       return;
     }
     hapticLight();
@@ -46,12 +47,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
     if (Platform.OS !== 'web') {
       Keyboard.dismiss();
     }
-  }, [askQuestion, draft]);
-
-  const onPrompt = useCallback((intent: (typeof COACH_SUGGESTED_PROMPTS)[number]['id'], label: string) => {
-    hapticLight();
-    askIntent(intent, label);
-  }, [askIntent]);
+  }, [askQuestion, busy, draft]);
 
   return (
     <Modal
@@ -67,26 +63,24 @@ export function CoachSheet({ sheetRef, state }: Props) {
       enablePanDownToClose
     >
       <View style={styles.body}>
-        <Text style={styles.subtitle}>Free on-device prototype — no API, no fees</Text>
+        <Text style={styles.subtitle}>
+          {useLlm ? 'WebLLM in your browser — free, no API fees' : 'Free on-device prototype — no API, no fees'}
+        </Text>
+        {loadProgress
+          ? (
+              <View style={styles.progressRow}>
+                <ActivityIndicator color={GAME_PALETTE.accent} />
+                <Text style={styles.progressText}>
+                  {loadProgress.text}
+                  {loadProgress.progress > 0 ? ` (${Math.round(loadProgress.progress * 100)}%)` : ''}
+                </Text>
+              </View>
+            )
+          : null}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-        <MessageScroll
-          style={styles.scroll}
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-        >
-          {messages.map(msg => (
-            <View
-              key={msg.id}
-              style={[
-                styles.bubble,
-                msg.role === 'user' ? styles.bubbleUser : styles.bubbleCoach,
-              ]}
-            >
-              <Text style={msg.role === 'user' ? styles.bubbleUserText : styles.bubbleCoachText}>
-                {msg.text}
-              </Text>
-            </View>
-          ))}
+        <MessageScroll style={styles.scroll} contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+          <CoachMessageBubbles messages={messages} />
         </MessageScroll>
 
         <View style={styles.prompts}>
@@ -94,8 +88,12 @@ export function CoachSheet({ sheetRef, state }: Props) {
             <Pressable
               key={prompt.id}
               accessibilityRole="button"
-              style={({ pressed }) => [styles.chip, pressed && styles.pressed]}
-              onPress={() => onPrompt(prompt.id, prompt.label)}
+              disabled={busy}
+              style={({ pressed }) => [styles.chip, busy && styles.sendDisabled, pressed && styles.pressed]}
+              onPress={() => {
+                hapticLight();
+                askIntent(prompt.id, prompt.label);
+              }}
             >
               <Text style={styles.chipText}>{prompt.label}</Text>
             </Pressable>
@@ -110,6 +108,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
             placeholderTextColor={GAME_PALETTE.textMuted}
             style={styles.input}
             returnKeyType="send"
+            editable={!busy}
             onSubmitEditing={sendDraft}
             testID="coach-input"
           />
@@ -118,14 +117,14 @@ export function CoachSheet({ sheetRef, state }: Props) {
             accessibilityLabel="Send"
             style={({ pressed }) => [
               styles.sendBtn,
-              (!draft.trim() || !state) && styles.sendDisabled,
+              (!draft.trim() || !state || busy) && styles.sendDisabled,
               pressed && styles.pressed,
             ]}
-            disabled={!draft.trim() || !state}
+            disabled={!draft.trim() || !state || busy}
             onPress={sendDraft}
             testID="coach-send"
           >
-            <Text style={styles.sendText}>Send</Text>
+            <Text style={styles.sendText}>{busy ? '…' : 'Send'}</Text>
           </Pressable>
         </View>
       </View>
@@ -134,12 +133,8 @@ export function CoachSheet({ sheetRef, state }: Props) {
 }
 
 const styles = StyleSheet.create({
-  sheetBg: {
-    backgroundColor: GAME_PALETTE.surface,
-  },
-  handle: {
-    backgroundColor: '#8B5E3C',
-  },
+  sheetBg: { backgroundColor: GAME_PALETTE.surface },
+  handle: { backgroundColor: '#8B5E3C' },
   body: {
     flex: 1,
     paddingHorizontal: 16,
@@ -150,43 +145,29 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
     ...interFont('medium'),
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  scroll: {
+  progressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+    paddingHorizontal: 4,
+  },
+  progressText: {
     flex: 1,
-  },
-  scrollContent: {
-    gap: 10,
-    paddingBottom: 12,
-  },
-  bubble: {
-    maxWidth: '92%',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    ...continuousRadius(14),
-  },
-  bubbleCoach: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(0,0,0,0.28)',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: GAME_PALETTE.surfaceBorder,
-  },
-  bubbleUser: {
-    alignSelf: 'flex-end',
-    backgroundColor: GAME_PALETTE.control,
-  },
-  bubbleCoachText: {
-    color: GAME_PALETTE.text,
-    fontSize: 14,
-    lineHeight: 20,
-    ...interFont('regular'),
-  },
-  bubbleUserText: {
-    color: '#FFF8EE',
-    fontSize: 14,
-    lineHeight: 20,
+    color: GAME_PALETTE.accent,
+    fontSize: 12,
     ...interFont('medium'),
   },
+  errorText: {
+    color: '#E8A0A0',
+    fontSize: 12,
+    marginBottom: 8,
+    ...interFont('regular'),
+  },
+  scroll: { flex: 1 },
+  scrollContent: { gap: 10, paddingBottom: 12 },
   prompts: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -236,15 +217,11 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: GAME_PALETTE.controlBorder,
   },
-  sendDisabled: {
-    opacity: 0.4,
-  },
+  sendDisabled: { opacity: 0.4 },
   sendText: {
     color: '#FFF8EE',
     fontSize: 14,
     ...interFont('semibold'),
   },
-  pressed: {
-    opacity: 0.85,
-  },
+  pressed: { opacity: 0.85 },
 });
