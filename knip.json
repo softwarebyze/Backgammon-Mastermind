@@ -13,7 +13,8 @@
   "ignore": [
     "src/components/ui/form-utils.ts",
     "src/components/ui/modal-keyboard-aware-scroll-view.tsx",
-    "src/lib/utils.ts"
+    "src/lib/utils.ts",
+    "src/lib/game/benchmark-positions.ts"
   ],
   "ignoreBinaries": [
     "adb",

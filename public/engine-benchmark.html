@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Engine Bench · Backgammon Mastermind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg0: #140c08;
+      --bg1: #24160f;
+      --bg2: #322015;
+      --ink: #f3e6d4;
+      --muted: #b9a28a;
+      --line: rgba(243, 230, 212, 0.12);
+      --gold: #d4b06a;
+      --good: #6fbf8a;
+      --warn: #e0a45a;
+      --bad: #c76b5e;
+      --panel: rgba(36, 22, 15, 0.72);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--ink);
+      font-family: "Manrope", system-ui, sans-serif;
+      background:
+        radial-gradient(1200px 700px at 12% -10%, rgba(212, 176, 106, 0.16), transparent 55%),
+        radial-gradient(900px 600px at 90% 8%, rgba(120, 40, 28, 0.28), transparent 50%),
+        linear-gradient(165deg, var(--bg0), var(--bg1) 45%, #1a100b);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.07;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0,
+          transparent 46px,
+          rgba(243, 230, 212, 0.35) 46px,
+          rgba(243, 230, 212, 0.35) 47px
+        );
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.55), transparent 70%);
+    }
+
+    .wrap {
+      width: min(1100px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2.5rem 0 4rem;
+      position: relative;
+    }
+
+    .hero {
+      min-height: min(72vh, 640px);
+      display: grid;
+      align-content: end;
+      gap: 1rem;
+      padding: 3rem 0 2.5rem;
+      animation: rise 0.8s ease both;
+    }
+
+    .brand {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(3rem, 9vw, 5.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .brand em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .lede {
+      max-width: 34rem;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.55;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .meta-row strong { color: var(--ink); font-weight: 600; }
+
+    section {
+      margin-top: 2.75rem;
+      animation: rise 0.7s ease both;
+    }
+
+    section:nth-of-type(2) { animation-delay: 0.08s; }
+    section:nth-of-type(3) { animation-delay: 0.14s; }
+    section:nth-of-type(4) { animation-delay: 0.2s; }
+    section:nth-of-type(5) { animation-delay: 0.26s; }
+
+    h2 {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 400;
+      margin: 0 0 0.4rem;
+    }
+
+    .section-copy {
+      margin: 0 0 1.25rem;
+      color: var(--muted);
+      max-width: 40rem;
+      line-height: 1.5;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9rem;
+    }
+
+    @media (max-width: 860px) {
+      .score-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .score {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      backdrop-filter: blur(8px);
+      padding: 1.1rem 1rem 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -40% auto;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,176,106,0.18), transparent 70%);
+      animation: pulse 4.5s ease-in-out infinite;
+    }
+
+    .score .k {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .score .v {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 2.5rem;
+      line-height: 1;
+      color: var(--gold);
+    }
+
+    .score .s {
+      margin-top: 0.45rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.85rem 0.7rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    tr:hover td { background: rgba(243, 230, 212, 0.03); }
+
+    .pill {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      border: 1px solid var(--line);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .ok { color: var(--good); }
+    .no { color: var(--bad); }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 0.35rem 0.4rem;
+      overflow-x: auto;
+    }
+
+    .notes {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .notes li { margin-bottom: 0.4rem; }
+
+    .err {
+      border: 1px solid rgba(199, 107, 94, 0.45);
+      background: rgba(199, 107, 94, 0.12);
+      padding: 1rem;
+      color: #f0c2ba;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1 class="brand">Engine <em>Bench</em></h1>
+      <p class="lede">
+        How strong is Backgammon Mastermind’s built-in bot — against baselines,
+        Magriel openings, and the engines players actually study with.
+      </p>
+      <div class="meta-row" id="meta-row">Loading results…</div>
+    </header>
+
+    <div id="content"></div>
+
+    <footer>
+      Regenerated by <code>pnpm benchmark:engine</code> · data file
+      <code>engine-benchmark-data.json</code>
+    </footer>
+  </div>
+
+  <script>
+    function pct(n) {
+      return `${Number(n).toFixed(1)}%`;
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+    }
+
+    function render(data) {
+      const m = data.meta;
+      const sp = data.selfPlay;
+      const ag = data.agreement;
+
+      document.getElementById("meta-row").innerHTML = `
+        <span><strong>${escapeHtml(m.engineName)}</strong></span>
+        <span>Depth <strong>${escapeHtml(m.searchDepth)}</strong></span>
+        <span>Generated <strong>${escapeHtml(new Date(m.generatedAt).toLocaleString())}</strong></span>
+      `;
+
+      const openingRows = ag.openings.cases.map((c) => `
+        <tr>
+          <td>${escapeHtml(c.label)}</td>
+          <td>${c.dice.join("-")}</td>
+          <td class="${c.matched ? "ok" : "no"}">${c.matched ? "Match" : "Miss"}</td>
+          <td>${escapeHtml(c.actual.join(", ") || "—")}</td>
+          <td>${escapeHtml(c.expected)}</td>
+          <td>${c.elapsedMs} ms</td>
+        </tr>
+      `).join("");
+
+      const tacticRows = ag.tactics.cases.map((c) => `
+        <tr>
+          <td>${escapeHtml(c.id)}</td>
+          <td class="${c.matched ? "ok" : "no"}">${c.matched ? "Match" : "Miss"}</td>
+          <td>${escapeHtml(c.actual.join(", ") || "—")}</td>
+          <td>${escapeHtml(c.expected)}</td>
+          <td>${escapeHtml(c.note || "")}</td>
+        </tr>
+      `).join("");
+
+      const compareRows = data.comparison.map((c) => `
+        <tr>
+          <td><strong>${escapeHtml(c.name)}</strong><div class="pill">${escapeHtml(c.tier)}</div></td>
+          <td>${escapeHtml(c.method)}</td>
+          <td>${escapeHtml(c.typicalStrength)}</td>
+          <td>${c.openSource ? "Yes" : "No"}</td>
+          <td>${escapeHtml(c.vsMastermind)}</td>
+        </tr>
+      `).join("");
+
+      const timingRows = data.timing.map((t) => `
+        <tr>
+          <td>${escapeHtml(t.label)}</td>
+          <td>${t.depth}</td>
+          <td>${t.legalMoves}</td>
+          <td>${t.elapsedMs} ms</td>
+        </tr>
+      `).join("");
+
+      document.getElementById("content").innerHTML = `
+        <section>
+          <h2>Headline scores</h2>
+          <p class="section-copy">Self-play and theory agreement from the live TypeScript engine.</p>
+          <div class="score-grid">
+            <article class="score">
+              <div class="k">vs Random</div>
+              <div class="v">${pct(sp.vsRandom.combinedWinRatePct)}</div>
+              <div class="s">${sp.vsRandom.asWhite.games + sp.vsRandom.asBlack.games} games, both colors</div>
+            </article>
+            <article class="score">
+              <div class="k">vs Greedy (1-ply)</div>
+              <div class="v">${pct(sp.vsGreedy.combinedWinRatePct)}</div>
+              <div class="s">${sp.vsGreedy.asWhite.games + sp.vsGreedy.asBlack.games} games, both colors</div>
+            </article>
+            <article class="score">
+              <div class="k">Opening theory</div>
+              <div class="v">${pct(ag.openings.ratePct)}</div>
+              <div class="s">${ag.openings.matched}/${ag.openings.total} Magriel-style rolls</div>
+            </article>
+            <article class="score">
+              <div class="k">Tactics</div>
+              <div class="v">${pct(ag.tactics.ratePct)}</div>
+              <div class="s">${ag.tactics.matched}/${ag.tactics.total} forced motifs</div>
+            </article>
+          </div>
+        </section>
+
+        <section>
+          <h2>Compared with top engines</h2>
+          <p class="section-copy">
+            Literature-based placement — this suite does not run live Elo matches against XG or GNU.
+            Use it to read Mastermind’s tier honestly.
+          </p>
+          <div class="panel">
+            <table>
+              <thead>
+                <tr>
+                  <th>Engine</th>
+                  <th>Method</th>
+                  <th>Typical strength</th>
+                  <th>OSS</th>
+                  <th>vs Mastermind</th>
+                </tr>
+              </thead>
+              <tbody>${compareRows}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h2>Opening agreement</h2>
+          <p class="section-copy">White to play from the standard setup. Match = full-turn sequence lands in accepted Magriel/teaching lines.</p>
+          <div class="panel">
+            <table>
+              <thead>
+                <tr>
+                  <th>Case</th>
+                  <th>Dice</th>
+                  <th>Result</th>
+                  <th>Engine play</th>
+                  <th>Accepted</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>${openingRows}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h2>Tactical motifs</h2>
+          <p class="section-copy">Positions where the first ply is essentially forced for a competent bot.</p>
+          <div class="panel">
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Result</th>
+                  <th>Engine</th>
+                  <th>Required first ply</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody>${tacticRows}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h2>Timing</h2>
+          <p class="section-copy">Wall-clock for a full turn search at production depth.</p>
+          <div class="panel">
+            <table>
+              <thead>
+                <tr>
+                  <th>Position</th>
+                  <th>Depth</th>
+                  <th>Legal moves</th>
+                  <th>Elapsed</th>
+                </tr>
+              </thead>
+              <tbody>${timingRows}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section>
+          <h2>Methodology</h2>
+          <ul class="notes">
+            ${(m.notes || []).map((n) => `<li>${escapeHtml(n)}</li>`).join("")}
+            <li>Evaluator: ${escapeHtml(m.evaluator)}</li>
+            <li>vs Random white ${sp.vsRandom.asWhite.whiteWins}-${sp.vsRandom.asWhite.blackWins} (draws ${sp.vsRandom.asWhite.draws}); black ${sp.vsRandom.asBlack.blackWins} wins as Black.</li>
+            <li>vs Greedy white ${sp.vsGreedy.asWhite.whiteWins}-${sp.vsGreedy.asWhite.blackWins}; black ${sp.vsGreedy.asBlack.blackWins} wins as Black.</li>
+          </ul>
+        </section>
+      `;
+    }
+
+    fetch("./engine-benchmark-data.json", { cache: "no-store" })
+      .then((r) => {
+        if (!r.ok) throw new Error(`Failed to load data (${r.status})`);
+        return r.json();
+      })
+      .then(render)
+      .catch((err) => {
+        document.getElementById("meta-row").textContent = "Data missing";
+        document.getElementById("content").innerHTML =
+          `<div class="err">Could not load <code>engine-benchmark-data.json</code>. Run <code>pnpm benchmark:engine</code> first.<br/><br/>${escapeHtml(err.message)}</div>`;
+      });
+  </script>
+</body>
+</html>

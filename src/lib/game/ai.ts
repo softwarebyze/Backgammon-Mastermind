@@ -85,6 +85,9 @@ function evaluateBoard(state: GameState, aiPlayer: Player): number {
 
 const MAX_DEPTH = 4; // maximum move depth to search
 
+/** Default search depth used by the in-game AI. */
+export const AI_DEFAULT_DEPTH = MAX_DEPTH;
+
 function bestScore(state: GameState, aiPlayer: Player, depth: number): number {
   if (depth === 0)
     return evaluateBoard(state, aiPlayer);
@@ -121,8 +124,11 @@ function bestScore(state: GameState, aiPlayer: Player, depth: number): number {
 /**
  * Choose the best single move for the AI player.
  * Returns null if no legal moves exist.
+ * @param state Current position (must be in `moving` phase with remaining dice).
+ * @param maxDepth Optional search-depth override (for benchmarks). Defaults to AI_DEFAULT_DEPTH.
  */
-export function getAIMove(state: GameState): Move | null {
+export function getAIMove(state: GameState, maxDepth: number = AI_DEFAULT_DEPTH): Move | null {
+  const depthCap = Math.max(1, Math.floor(maxDepth));
   const moves = getLegalMoves(state);
   if (moves.length === 0)
     return null;
@@ -139,7 +145,11 @@ export function getAIMove(state: GameState): Move | null {
     seen.add(key);
 
     const next = applyMove(state, move);
-    const score = bestScore(next, aiPlayer, Math.min(MAX_DEPTH - 1, next.remainingDice.length));
+    const score = bestScore(
+      next,
+      aiPlayer,
+      Math.min(depthCap - 1, next.remainingDice.length),
+    );
     if (score > bestMoveScore) {
       bestMoveScore = score;
       bestMove = move;

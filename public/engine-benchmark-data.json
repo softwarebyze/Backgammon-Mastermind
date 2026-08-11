@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-11T05:38:48.617Z",
+    "engineName": "Backgammon Mastermind",
+    "engineVersion": "heuristic-search",
+    "searchDepth": 4,
+    "evaluator": "pip + blot + made points + prime + bar + borne-off heuristics",
+    "notes": [
+      "Self-play uses the live TypeScript engine (no neural net, no Monte-Carlo equity rollouts).",
+      "Expert opening targets follow Magriel / standard theory for common rolls.",
+      "Comparisons to eXtreme Gammon / GNU Backgammon / BGBlitz are literature-based characterizations, not live Elo matches in this suite."
+    ]
+  },
+  "selfPlay": {
+    "vsRandom": {
+      "asWhite": {
+        "games": 36,
+        "whiteWins": 34,
+        "blackWins": 1,
+        "draws": 1,
+        "avgPlies": 132.1,
+        "elapsedMs": 188
+      },
+      "asBlack": {
+        "games": 36,
+        "whiteWins": 0,
+        "blackWins": 36,
+        "draws": 0,
+        "avgPlies": 143.3,
+        "elapsedMs": 129
+      },
+      "combinedWinRatePct": 97.2
+    },
+    "vsGreedy": {
+      "asWhite": {
+        "games": 20,
+        "whiteWins": 14,
+        "blackWins": 5,
+        "draws": 1,
+        "avgPlies": 141.3,
+        "elapsedMs": 102
+      },
+      "asBlack": {
+        "games": 20,
+        "whiteWins": 3,
+        "blackWins": 17,
+        "draws": 0,
+        "avgPlies": 140,
+        "elapsedMs": 85
+      },
+      "combinedWinRatePct": 77.5
+    }
+  },
+  "agreement": {
+    "openings": {
+      "matched": 4,
+      "total": 6,
+      "ratePct": 66.7,
+      "cases": [
+        {
+          "id": "3-1",
+          "label": "Opening 3-1",
+          "dice": [
+            3,
+            1
+          ],
+          "matched": true,
+          "expected": "8→5, 6→5 | 6→5, 8→5",
+          "actual": [
+            "6→5",
+            "8→5"
+          ],
+          "legalMoveCount": 7,
+          "elapsedMs": 0.22,
+          "note": "Make the 5-point — classic Magriel “best opening.”"
+        },
+        {
+          "id": "4-2",
+          "label": "Opening 4-2",
+          "dice": [
+            4,
+            2
+          ],
+          "matched": true,
+          "expected": "8→4, 6→4 | 6→4, 8→4",
+          "actual": [
+            "6→4",
+            "8→4"
+          ],
+          "legalMoveCount": 8,
+          "elapsedMs": 0.09,
+          "note": "Make the 4-point."
+        },
+        {
+          "id": "6-1",
+          "label": "Opening 6-1",
+          "dice": [
+            6,
+            1
+          ],
+          "matched": true,
+          "expected": "13→7, 8→7 | 8→7, 13→7",
+          "actual": [
+            "8→7",
+            "13→7"
+          ],
+          "legalMoveCount": 6,
+          "elapsedMs": 0.4,
+          "note": "Make the bar point (7)."
+        },
+        {
+          "id": "6-5",
+          "label": "Opening 6-5",
+          "dice": [
+            6,
+            5
+          ],
+          "matched": false,
+          "expected": "24→18, 18→13 | 24→13",
+          "actual": [
+            "8→2",
+            "13→8"
+          ],
+          "legalMoveCount": 5,
+          "elapsedMs": 0.05,
+          "note": "Running play 24/13."
+        },
+        {
+          "id": "5-3",
+          "label": "Opening 5-3",
+          "dice": [
+            5,
+            3
+          ],
+          "matched": true,
+          "expected": "8→3, 6→3 | 6→3, 8→3 | 24→16 | 13→8, 13→10 | 13→10, 13→8",
+          "actual": [
+            "6→3",
+            "8→3"
+          ],
+          "legalMoveCount": 6,
+          "elapsedMs": 0.06,
+          "note": "Often make 3-point or down from midpoint — contested."
+        },
+        {
+          "id": "2-1",
+          "label": "Opening 2-1",
+          "dice": [
+            2,
+            1
+          ],
+          "matched": false,
+          "expected": "13→11, 6→5 | 6→5, 13→11 | 24→23, 13→11 | 13→11, 24→23 | 24→23, 6→5 | 6→5, 24→23",
+          "actual": [
+            "6→4",
+            "4→3"
+          ],
+          "legalMoveCount": 7,
+          "elapsedMs": 0.12,
+          "note": "Slotting / splitting — several respectable plays."
+        }
+      ]
+    },
+    "tactics": {
+      "matched": 2,
+      "total": 2,
+      "ratePct": 100,
+      "cases": [
+        {
+          "id": "hit-blot-on-5",
+          "label": "hit-blot-on-5",
+          "dice": [
+            3,
+            1
+          ],
+          "matched": true,
+          "expected": "8→5 | 6→5",
+          "actual": [
+            "6→5",
+            "8→5"
+          ],
+          "legalMoveCount": 7,
+          "elapsedMs": 0.15,
+          "note": "Standard setup with a Black blot on the 5-point; White rolls 3-1 — hitting/making 5 is correct."
+        },
+        {
+          "id": "enter-from-bar",
+          "label": "enter-from-bar",
+          "dice": [
+            6,
+            1
+          ],
+          "matched": true,
+          "expected": "bar→19 | bar→24",
+          "actual": [
+            "bar→19",
+            "19→18"
+          ],
+          "legalMoveCount": 2,
+          "elapsedMs": 0.04,
+          "note": "White on the bar with 6-1; point 19 cleared — must enter (bar→19 or bar→24)."
+        }
+      ]
+    }
+  },
+  "timing": [
+    {
+      "label": "Opening 3-1",
+      "depth": 4,
+      "legalMoves": 7,
+      "elapsedMs": 0.07
+    },
+    {
+      "label": "Opening 6-5",
+      "depth": 4,
+      "legalMoves": 5,
+      "elapsedMs": 0.03
+    },
+    {
+      "label": "Tactic hit-blot",
+      "depth": 4,
+      "legalMoves": 7,
+      "elapsedMs": 0.07
+    }
+  ],
+  "comparison": [
+    {
+      "name": "eXtreme Gammon (XG)",
+      "tier": "World-class",
+      "method": "Neural net + multi-ply / rollouts",
+      "typicalStrength": "De-facto analysis reference; near top human+ level",
+      "openSource": false,
+      "vsMastermind": "Far stronger — equity rollouts and Magriel-grade openings vs shallow heuristics"
+    },
+    {
+      "name": "GNU Backgammon",
+      "tier": "Strong club / expert",
+      "method": "Neural net (0–2 ply) + rollouts",
+      "typicalStrength": "Long-standing free standard; beats most humans at 2-ply",
+      "openSource": true,
+      "vsMastermind": "Much stronger — trained contact/racing nets vs hand-tuned evaluator"
+    },
+    {
+      "name": "BGBlitz",
+      "tier": "Strong",
+      "method": "Neural net",
+      "typicalStrength": "Competitive bot lineage with learned evaluation",
+      "openSource": false,
+      "vsMastermind": "Stronger — learned evaluation dwarfs depth-limited search"
+    },
+    {
+      "name": "Backgammon Mastermind (this app)",
+      "tier": "Casual / intermediate teaching bot",
+      "method": "Heuristic sequence search, depth 4",
+      "typicalStrength": "Beats random & shallow greedy; imperfect on expert openings",
+      "openSource": true,
+      "vsMastermind": "Baseline under test"
+    },
+    {
+      "name": "Random legal mover",
+      "tier": "Baseline",
+      "method": "Uniform random among legal plays",
+      "typicalStrength": "Floor for any search bot",
+      "openSource": true,
+      "vsMastermind": "Mastermind dominates in the self-play suite"
+    }
+  ]
+}
