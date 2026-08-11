@@ -3,15 +3,13 @@ import type { GameState } from '@/lib/game';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { Platform } from 'react-native';
 
-import { buildCoachSystemPrompt } from '@/lib/coach/build-context';
-import { coachRespond, coachWelcome } from '@/lib/coach/respond';
+import { appendHeuristicReply, runWebLlmTurn } from '@/features/coach/coach-chat-actions';
+import { coachWelcome } from '@/lib/coach/respond';
 import {
   checkWebLlmSupported,
-  ensureWebLlmEngine,
   getWebLlmModelId,
   isWebLlmSupported,
   subscribeWebLlmProgress,
-  webLlmChat,
 } from '@/lib/coach/webllm-engine';
 
 let messageSeq = 0;
@@ -33,56 +31,10 @@ function webWelcomeText(llmReady: boolean | null): string {
   return `Local WebLLM coach (POC) — model ${getWebLlmModelId()}. First reply downloads the model in your browser (free, no API). Ask about this position or tap a chip.`;
 }
 
-async function runWebLlmTurn(opts: {
-  state: GameState;
-  userText: string;
-  prior: CoachMessage[];
-  coachId: string;
-  setMessages: React.Dispatch<React.SetStateAction<CoachMessage[]>>;
-  setError: (value: string | null) => void;
-}) {
-  const { state, userText, prior, coachId, setMessages, setError } = opts;
-  try {
-    await ensureWebLlmEngine();
-    const history = prior
-      .filter(m => m.intent !== 'welcome')
-      .slice(-8)
-      .map(m => ({
-        role: (m.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
-        content: m.text,
-      }));
-
-    const reply = await webLlmChat(
-      [
-        { role: 'system', content: buildCoachSystemPrompt(state) },
-        ...history,
-        { role: 'user', content: userText },
-      ],
-      (partial) => {
-        setMessages(prev => prev.map(m => (m.id === coachId ? { ...m, text: partial } : m)));
-      },
-    );
-    setMessages(prev => prev.map(m => (m.id === coachId ? { ...m, text: reply } : m)));
-  }
-  catch (e) {
-    const message = e instanceof Error ? e.message : 'WebLLM failed';
-    setError(message);
-    const fallback = coachRespond(state, { question: userText });
-    setMessages(prev => prev.map(m => (
-      m.id === coachId
-        ? { ...m, text: `${fallback.text}\n\n(WebLLM unavailable: ${message})`, intent: fallback.intent }
-        : m
-    )));
-  }
-}
-
 export function useCoachChat(state: GameState | null) {
   const instanceId = useId();
-  const [llmReady, setLlmReady] = useState<boolean | null>(
-    Platform.OS === 'web' ? null : false,
-  );
+  const [llmReady, setLlmReady] = useState<boolean | null>(Platform.OS === 'web' ? null : false);
   const useLlm = Platform.OS === 'web' && llmReady === true;
-
   const [messages, setMessages] = useState<CoachMessage[]>(() => [{
     id: `${instanceId}-welcome`,
     role: 'coach',
@@ -91,7 +43,6 @@ export function useCoachChat(state: GameState | null) {
   }]);
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
-
   const [busy, setBusy] = useState(false);
   const [loadProgress, setLoadProgress] = useState<{ text: string; progress: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -106,12 +57,11 @@ export function useCoachChat(state: GameState | null) {
         return;
       }
       setLlmReady(ok);
-      setMessages((prev) => {
-        if (prev.length === 1 && prev[0]?.intent === 'welcome') {
-          return [{ ...prev[0]!, text: webWelcomeText(ok) }];
-        }
-        return prev;
-      });
+      setMessages(prev => (
+        prev.length === 1 && prev[0]?.intent === 'welcome'
+          ? [{ ...prev[0]!, text: webWelcomeText(ok) }]
+          : prev
+      ));
     });
     return () => {
       cancelled = true;
@@ -157,12 +107,7 @@ export function useCoachChat(state: GameState | null) {
       void askWithLlm(userLabel);
       return;
     }
-    const reply = coachRespond(state, { intent });
-    setMessages(prev => [
-      ...prev,
-      { id: nextId('user'), role: 'user', text: userLabel },
-      { id: nextId('coach'), role: 'coach', text: reply.text, intent: reply.intent },
-    ]);
+    appendHeuristicReply(state, userLabel, intent, setMessages, nextId);
   }, [askWithLlm, state, useLlm]);
 
   const askQuestion = useCallback((question: string) => {
@@ -174,12 +119,7 @@ export function useCoachChat(state: GameState | null) {
       void askWithLlm(trimmed);
       return;
     }
-    const reply = coachRespond(state, { question: trimmed });
-    setMessages(prev => [
-      ...prev,
-      { id: nextId('user'), role: 'user', text: trimmed },
-      { id: nextId('coach'), role: 'coach', text: reply.text, intent: reply.intent },
-    ]);
+    appendHeuristicReply(state, trimmed, undefined, setMessages, nextId);
   }, [askWithLlm, state, useLlm]);
 
   const resetChat = useCallback(() => {
@@ -192,14 +132,5 @@ export function useCoachChat(state: GameState | null) {
     setError(null);
   }, [llmReady]);
 
-  return {
-    messages,
-    askIntent,
-    askQuestion,
-    resetChat,
-    busy,
-    loadProgress,
-    error,
-    useLlm,
-  };
+  return { messages, askIntent, askQuestion, resetChat, busy, loadProgress, error, useLlm };
 }
