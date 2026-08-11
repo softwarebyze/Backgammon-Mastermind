@@ -1,8 +1,6 @@
 import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import type { GameState } from '@/lib/game';
-import type { TxKeyPath } from '@/lib/i18n';
 import { BottomSheetScrollView, BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
 import {
   Keyboard,
@@ -20,7 +18,6 @@ import { useCoachChat } from '@/features/coach/use-coach-chat';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { COACH_SUGGESTED_PROMPTS } from '@/lib/coach';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -33,8 +30,8 @@ type Props = {
   state: GameState | null;
 };
 
+/** English-only POC coach sheet — not production i18n. */
 export function CoachSheet({ sheetRef, state }: Props) {
-  const posthog = usePostHog();
   const { messages, askIntent, askQuestion } = useCoachChat(state);
   const [draft, setDraft] = useState('');
 
@@ -44,25 +41,23 @@ export function CoachSheet({ sheetRef, state }: Props) {
       return;
     }
     hapticLight();
-    posthog.capture('coach_question_asked', { source: 'text' });
     askQuestion(text);
     setDraft('');
     if (Platform.OS !== 'web') {
       Keyboard.dismiss();
     }
-  }, [askQuestion, draft, posthog]);
+  }, [askQuestion, draft]);
 
-  const onPrompt = useCallback((intent: (typeof COACH_SUGGESTED_PROMPTS)[number]['id'], labelKey: TxKeyPath) => {
+  const onPrompt = useCallback((intent: (typeof COACH_SUGGESTED_PROMPTS)[number]['id'], label: string) => {
     hapticLight();
-    posthog.capture('coach_question_asked', { source: 'prompt', intent });
-    askIntent(intent, translate(labelKey));
-  }, [askIntent, posthog]);
+    askIntent(intent, label);
+  }, [askIntent]);
 
   return (
     <Modal
       ref={sheetRef}
       snapPoints={['78%']}
-      title={translate('coach.title')}
+      title="Coach (POC)"
       headerTheme="game"
       backgroundStyle={styles.sheetBg}
       handleIndicatorStyle={styles.handle}
@@ -72,10 +67,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
       enablePanDownToClose
     >
       <View style={styles.body}>
-        <Text style={styles.subtitle}>{translate('coach.subtitle')}</Text>
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{translate('coach.free_badge')}</Text>
-        </View>
+        <Text style={styles.subtitle}>Free on-device prototype — no API, no fees</Text>
 
         <MessageScroll
           style={styles.scroll}
@@ -103,11 +95,9 @@ export function CoachSheet({ sheetRef, state }: Props) {
               key={prompt.id}
               accessibilityRole="button"
               style={({ pressed }) => [styles.chip, pressed && styles.pressed]}
-              onPress={() => onPrompt(prompt.id, prompt.labelKey)}
+              onPress={() => onPrompt(prompt.id, prompt.label)}
             >
-              <Text style={styles.chipText}>
-                {translate(prompt.labelKey)}
-              </Text>
+              <Text style={styles.chipText}>{prompt.label}</Text>
             </Pressable>
           ))}
         </View>
@@ -116,7 +106,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
           <CoachInput
             value={draft}
             onChangeText={setDraft}
-            placeholder={translate('coach.placeholder')}
+            placeholder="Ask about this position…"
             placeholderTextColor={GAME_PALETTE.textMuted}
             style={styles.input}
             returnKeyType="send"
@@ -125,7 +115,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
           />
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={translate('coach.send')}
+            accessibilityLabel="Send"
             style={({ pressed }) => [
               styles.sendBtn,
               (!draft.trim() || !state) && styles.sendDisabled,
@@ -135,7 +125,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
             onPress={sendDraft}
             testID="coach-send"
           >
-            <Text style={styles.sendText}>{translate('coach.send')}</Text>
+            <Text style={styles.sendText}>Send</Text>
           </Pressable>
         </View>
       </View>
@@ -160,22 +150,7 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
     ...interFont('medium'),
-    marginBottom: 8,
-  },
-  badge: {
-    alignSelf: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    ...continuousRadius(12),
-    backgroundColor: 'rgba(255, 196, 153, 0.12)',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: GAME_PALETTE.surfaceBorder,
     marginBottom: 12,
-  },
-  badgeText: {
-    color: GAME_PALETTE.accent,
-    fontSize: 12,
-    ...interFont('semibold'),
   },
   scroll: {
     flex: 1,

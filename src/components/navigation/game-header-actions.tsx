@@ -80,7 +80,7 @@ export function GameHeaderActions({
       {onCoach
         ? (
             <HeaderButton
-              accessibilityLabel={translate('coach.a11y_open')}
+              accessibilityLabel="Ask the coach"
               onPress={() => {
                 hapticLight();
                 onCoach();

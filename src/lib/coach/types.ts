@@ -1,5 +1,4 @@
 import type { Move } from '@/lib/game';
-import type { TxKeyPath } from '@/lib/i18n';
 
 export type CoachIntent
   = | 'welcome'
@@ -17,7 +16,7 @@ export type CoachIntent
 
 export type CoachSuggestedPrompt = {
   id: Exclude<CoachIntent, 'welcome' | 'bar' | 'blots' | 'fallback'>;
-  labelKey: TxKeyPath;
+  label: string;
 };
 
 export type PositionFacts = {

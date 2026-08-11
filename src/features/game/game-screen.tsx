@@ -53,9 +53,8 @@ export function GameScreen() {
   }, [posthog, input.state?.mode]);
 
   const openCoach = useCallback(() => {
-    posthog.capture('coach_opened', { mode: input.state?.mode ?? null });
     presentCoach();
-  }, [posthog, input.state?.mode, presentCoach]);
+  }, [presentCoach]);
 
   useGameScreenHeader({
     navigation,
