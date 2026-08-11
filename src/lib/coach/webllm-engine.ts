@@ -1,9 +1,15 @@
+/** Native stub — WebLLM runs in the browser only. */
+
 export type WebLlmProgress = {
   text: string;
   progress: number;
 };
 
 export function isWebLlmSupported(): boolean {
+  return false;
+}
+
+export async function checkWebLlmSupported(): Promise<boolean> {
   return false;
 }
 

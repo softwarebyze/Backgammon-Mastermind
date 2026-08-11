@@ -10,6 +10,7 @@ export type {
   PositionFacts,
 } from './types';
 export {
+  checkWebLlmSupported,
   ensureWebLlmEngine,
   getWebLlmModelId,
   isWebLlmSupported,

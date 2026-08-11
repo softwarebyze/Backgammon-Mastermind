@@ -6,6 +6,7 @@ import { Platform } from 'react-native';
 import { buildCoachSystemPrompt } from '@/lib/coach/build-context';
 import { coachRespond, coachWelcome } from '@/lib/coach/respond';
 import {
+  checkWebLlmSupported,
   ensureWebLlmEngine,
   getWebLlmModelId,
   isWebLlmSupported,
@@ -19,12 +20,15 @@ function nextId(prefix: string): string {
   return `${prefix}-${messageSeq}`;
 }
 
-function webWelcomeText(): string {
+function webWelcomeText(llmReady: boolean | null): string {
   if (Platform.OS !== 'web') {
     return coachWelcome().text;
   }
-  if (!isWebLlmSupported()) {
-    return 'WebLLM needs WebGPU (Chrome/Edge desktop works best). Falling back to the simple rules coach for now.';
+  if (llmReady === false || (llmReady === null && !isWebLlmSupported())) {
+    return 'WebLLM needs WebGPU (Chrome/Edge with a GPU). Using the simple rules coach for now.';
+  }
+  if (llmReady === null) {
+    return 'Checking WebGPU for local WebLLM…';
   }
   return `Local WebLLM coach (POC) — model ${getWebLlmModelId()}. First reply downloads the model in your browser (free, no API). Ask about this position or tap a chip.`;
 }
@@ -74,11 +78,15 @@ async function runWebLlmTurn(opts: {
 
 export function useCoachChat(state: GameState | null) {
   const instanceId = useId();
-  const useLlm = Platform.OS === 'web' && isWebLlmSupported();
+  const [llmReady, setLlmReady] = useState<boolean | null>(
+    Platform.OS === 'web' ? null : false,
+  );
+  const useLlm = Platform.OS === 'web' && llmReady === true;
+
   const [messages, setMessages] = useState<CoachMessage[]>(() => [{
     id: `${instanceId}-welcome`,
     role: 'coach',
-    text: webWelcomeText(),
+    text: webWelcomeText(Platform.OS === 'web' ? null : false),
     intent: 'welcome',
   }]);
   const messagesRef = useRef(messages);
@@ -87,6 +95,28 @@ export function useCoachChat(state: GameState | null) {
   const [busy, setBusy] = useState(false);
   const [loadProgress, setLoadProgress] = useState<{ text: string; progress: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      return;
+    }
+    let cancelled = false;
+    void checkWebLlmSupported().then((ok) => {
+      if (cancelled) {
+        return;
+      }
+      setLlmReady(ok);
+      setMessages((prev) => {
+        if (prev.length === 1 && prev[0]?.intent === 'welcome') {
+          return [{ ...prev[0]!, text: webWelcomeText(ok) }];
+        }
+        return prev;
+      });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!useLlm) {
@@ -156,11 +186,11 @@ export function useCoachChat(state: GameState | null) {
     setMessages([{
       id: nextId('welcome'),
       role: 'coach',
-      text: webWelcomeText(),
+      text: webWelcomeText(llmReady),
       intent: 'welcome',
     }]);
     setError(null);
-  }, []);
+  }, [llmReady]);
 
   return {
     messages,

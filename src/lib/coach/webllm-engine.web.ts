@@ -14,10 +14,33 @@ export type WebLlmProgress = {
 export const WEBLLM_MODEL_ID = 'Llama-3.2-1B-Instruct-q4f16_1-MLC';
 
 let enginePromise: Promise<MLCEngineInterface> | null = null;
+let gpuCheckPromise: Promise<boolean> | null = null;
 const progressListeners = new Set<(p: WebLlmProgress) => void>();
 
+/** Sync hint only — prefer `checkWebLlmSupported()` before loading. */
 export function isWebLlmSupported(): boolean {
   return typeof navigator !== 'undefined' && 'gpu' in navigator;
+}
+
+/** Confirms a WebGPU adapter exists (Chrome can expose `gpu` with no adapter). */
+export async function checkWebLlmSupported(): Promise<boolean> {
+  if (!isWebLlmSupported()) {
+    return false;
+  }
+  if (!gpuCheckPromise) {
+    gpuCheckPromise = (async () => {
+      try {
+        const adapter = await (navigator as Navigator & {
+          gpu: { requestAdapter: () => Promise<unknown> };
+        }).gpu.requestAdapter();
+        return adapter != null;
+      }
+      catch {
+        return false;
+      }
+    })();
+  }
+  return gpuCheckPromise;
 }
 
 export function getWebLlmModelId(): string {
@@ -38,8 +61,9 @@ function emitProgress(p: WebLlmProgress) {
 }
 
 export async function ensureWebLlmEngine(): Promise<MLCEngineInterface> {
-  if (!isWebLlmSupported()) {
-    throw new Error('WebGPU is required for WebLLM. Try Chrome/Edge on desktop, or enable WebGPU.');
+  const ok = await checkWebLlmSupported();
+  if (!ok) {
+    throw new Error('WebGPU is required for WebLLM. Try Chrome/Edge on a machine with a GPU.');
   }
   if (!enginePromise) {
     enginePromise = (async () => {
