@@ -1,5 +1,9 @@
 import { analyzePosition, formatMove, formatPoint } from '@/lib/coach/analyze-position';
-import { buildCoachSystemPrompt } from '@/lib/coach/build-context';
+import {
+  buildCoachSystemPrompt,
+  buildConstrainedUserMessage,
+  isMoveAdviceQuestion,
+} from '@/lib/coach/build-context';
 import { matchCoachIntent } from '@/lib/coach/match-intent';
 import { coachRespond, coachWelcome } from '@/lib/coach/respond';
 import { createInitialState } from '@/lib/game/constants';
@@ -49,8 +53,30 @@ describe('buildCoachSystemPrompt', () => {
     state = applyDiceRoll(state, [6, 5]);
     const prompt = buildCoachSystemPrompt(state);
     expect(prompt).toMatch(/backgammon coach/i);
-    expect(prompt).toMatch(/Engine teaching suggestion/);
+    expect(prompt).toMatch(/Engine pick/);
+    expect(prompt).toMatch(/Legal landings ONLY/);
     expect(prompt).toMatch(/Occupancy/);
+  });
+});
+
+describe('buildConstrainedUserMessage', () => {
+  it('locks move advice onto the engine pick', () => {
+    let state = createPositionState({
+      useStandardSetup: true,
+      currentPlayer: 'white',
+      mode: 'vs-computer',
+    });
+    state = applyDiceRoll(state, [6, 5]);
+    const facts = analyzePosition(state);
+    const msg = buildConstrainedUserMessage(state, 'What\'s a good move here?');
+    expect(msg).toMatch(/HARD RULES/);
+    expect(facts.suggestedMove).not.toBeNull();
+    expect(msg).toContain(formatMove(facts.suggestedMove!));
+    expect(msg).toMatch(/Recommend ONLY this move/);
+  });
+
+  it('treats “I can\'t make point 4” as move advice needing the legal lock', () => {
+    expect(isMoveAdviceQuestion('i dont think i can make point 4?')).toBe(true);
   });
 });
 

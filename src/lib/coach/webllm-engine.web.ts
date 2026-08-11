@@ -11,10 +11,10 @@ export type WebLlmProgress = {
 };
 
 /**
- * Small instruct model for the POC — lower VRAM than 1B/3B so phones/laptops
- * are less likely to OOM after download.
+ * Prefer a 1B instruct model users may already have cached; hybrid prompting
+ * (engine pick + constrained explain) matters more than going tinier.
  */
-export const WEBLLM_MODEL_ID = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
+export const WEBLLM_MODEL_ID = 'Llama-3.2-1B-Instruct-q4f16_1-MLC';
 
 let enginePromise: Promise<MLCEngineInterface> | null = null;
 let gpuCheckPromise: Promise<boolean> | null = null;

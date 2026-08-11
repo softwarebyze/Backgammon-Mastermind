@@ -24,7 +24,7 @@ describe('coach suggestion quality gates', () => {
     expect(ok).toBe(true);
   });
 
-  it('system prompt includes the engine move and teaching instructions', () => {
+  it('system prompt includes the engine move and legal-only instructions', () => {
     let state = createPositionState({
       useStandardSetup: true,
       currentPlayer: 'white',
@@ -33,8 +33,8 @@ describe('coach suggestion quality gates', () => {
     state = applyDiceRoll(state, [3, 1]);
     const facts = analyzePosition(state);
     const prompt = buildCoachSystemPrompt(state);
-    expect(prompt).toMatch(/Prefer the engine teaching suggestion/);
-    expect(prompt).toMatch(/name the move/);
+    expect(prompt).toMatch(/ONLY discuss moves from the legal list/i);
+    expect(prompt).toMatch(/Engine pick/);
     if (facts.suggestedMove) {
       expect(prompt).toContain(formatMove(facts.suggestedMove));
     }

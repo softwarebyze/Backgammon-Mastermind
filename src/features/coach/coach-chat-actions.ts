@@ -1,7 +1,11 @@
 import type { CoachIntent, CoachMessage } from '@/lib/coach';
 import type { GameState } from '@/lib/game';
 
-import { buildCoachSystemPrompt } from '@/lib/coach/build-context';
+import {
+  buildCoachSystemPrompt,
+  buildConstrainedUserMessage,
+  isMoveAdviceQuestion,
+} from '@/lib/coach/build-context';
 import { coachRespond } from '@/lib/coach/respond';
 import { ensureWebLlmEngine, webLlmChat } from '@/lib/coach/webllm-engine';
 
@@ -16,19 +20,24 @@ export async function runWebLlmTurn(opts: {
   const { state, userText, prior, coachId, setMessages, setError } = opts;
   try {
     await ensureWebLlmEngine();
-    const history = prior
-      .filter(m => m.intent !== 'welcome')
-      .slice(-8)
-      .map(m => ({
-        role: (m.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
-        content: m.text,
-      }));
+
+    // Move advice: skip prior coach text so hallucinated “point 4” advice
+    // cannot reinforce itself across turns.
+    const history = isMoveAdviceQuestion(userText)
+      ? []
+      : prior
+          .filter(m => m.intent !== 'welcome')
+          .slice(-4)
+          .map(m => ({
+            role: (m.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
+            content: m.text,
+          }));
 
     const reply = await webLlmChat(
       [
         { role: 'system', content: buildCoachSystemPrompt(state) },
         ...history,
-        { role: 'user', content: userText },
+        { role: 'user', content: buildConstrainedUserMessage(state, userText) },
       ],
       (partial) => {
         setMessages(prev => prev.map(m => (m.id === coachId ? { ...m, text: partial } : m)));
