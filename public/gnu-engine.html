@@ -1,0 +1,114 @@
+/**
+ * Tiny status page proving the vendored GNU WASM loads in-browser.
+ * Open /gnu-engine.html while `pnpm web` is running.
+ */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GNU Engine · Backgammon Mastermind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=Libre+Franklin:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1a14;
+      --panel: #173024;
+      --ink: #e7f0e8;
+      --muted: #9bb5a4;
+      --accent: #c4a35a;
+      --ok: #6fbf8a;
+      --bad: #e08b7a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(900px 500px at 10% -10%, rgba(196,163,90,0.18), transparent 50%),
+        radial-gradient(700px 480px at 100% 0%, rgba(40,90,60,0.35), transparent 45%),
+        linear-gradient(160deg, #0b140f, #13251c 55%, #0f1a14);
+    }
+    main {
+      width: min(720px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3rem 0 4rem;
+    }
+    h1 {
+      font-family: "Libre Franklin", sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      margin: 0 0 0.4rem;
+      letter-spacing: -0.03em;
+    }
+    h1 span { color: var(--accent); }
+    .lede { color: var(--muted); max-width: 36rem; line-height: 1.5; }
+    .card {
+      margin-top: 2rem;
+      background: color-mix(in srgb, var(--panel) 88%, black);
+      border: 1px solid rgba(231,240,232,0.12);
+      padding: 1.25rem 1.2rem;
+    }
+    .status { font-size: 1.1rem; margin: 0 0 1rem; }
+    .ok { color: var(--ok); }
+    .bad { color: #e08b7a; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { text-align: left; padding: 0.55rem 0.35rem; border-bottom: 1px solid rgba(231,240,232,0.1); }
+    th { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    footer { margin-top: 2rem; color: var(--muted); font-size: 0.82rem; }
+    code { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>GNU <span>Engine</span></h1>
+    <p class="lede">
+      Live check that the vendored GNU Backgammon WASM evaluates Magriel openings.
+      In-game vs-computer on web uses this engine when ready.
+    </p>
+    <div class="card">
+      <p class="status" id="status">Loading WASM…</p>
+      <table>
+        <thead>
+          <tr><th>Roll</th><th>GNU play</th><th>Equity</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <footer>
+      Engine: <code>public/gnubg</code> (GPL-3.0-or-later, gnubg-core v1.0.2)
+    </footer>
+  </main>
+  <script type="module">
+    const openings = [
+      ['3-1', 'XGID=-b----E-C---eE---c-e----B-:0:0:1:31:0:0:0:0:10'],
+      ['4-2', 'XGID=-b----E-C---eE---c-e----B-:0:0:1:42:0:0:0:0:10'],
+      ['6-1', 'XGID=-b----E-C---eE---c-e----B-:0:0:1:61:0:0:0:0:10'],
+      ['6-5', 'XGID=-b----E-C---eE---c-e----B-:0:0:1:65:0:0:0:0:10'],
+    ];
+
+    const status = document.getElementById('status');
+    const rows = document.getElementById('rows');
+
+    try {
+      const { initGnubgCore } = await import('/gnubg/gnubg-core.js');
+      const gnu = await initGnubgCore();
+      status.textContent = 'GNU ready (1-ply)';
+      status.className = 'status ok';
+      for (const [id, xgid] of openings) {
+        const hint = gnu.hint(xgid, 1);
+        const best = hint?.data?.[0];
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${id}</td><td>${best?.move ?? '—'}</td><td>${best?.equity?.[0]?.toFixed?.(3) ?? '—'}</td>`;
+        rows.appendChild(tr);
+      }
+    } catch (err) {
+      status.textContent = 'Failed to load GNU: ' + err.message;
+      status.className = 'status bad';
+      console.error(err);
+    }
+  </script>
+</body>
+</html>

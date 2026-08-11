@@ -2,7 +2,16 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
+import {
+  applyDiceRoll,
+  applyOpeningDieRoll,
+  chooseComputerMove,
+  clearGnuMoveQueue,
+  passTurn,
+  preloadGnuEngine,
+  rollDice,
+  rollOpeningDie,
+} from '@/lib/game';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 
 /**
@@ -56,22 +65,38 @@ export function useComputerOpponent({
     setScheduleGen(g => g + 1);
   }, []);
 
+  // Warm the GNU WASM engine as soon as a vs-computer game is active.
+  useEffect(() => {
+    if (state?.mode === 'vs-computer')
+      void preloadGnuEngine();
+  }, [state?.mode]);
+
   useEffect(() => {
     clearAITimeout();
+    let cancelled = false;
+    const cleanup = () => {
+      cancelled = true;
+      if (aiTimeoutRef.current !== null) {
+        clearTimeout(aiTimeoutRef.current);
+        aiTimeoutRef.current = null;
+      }
+    };
 
     if (!state)
-      return clearAITimeout;
+      return cleanup;
     if (state.mode !== 'vs-computer')
-      return clearAITimeout;
+      return cleanup;
     if (state.currentPlayer !== 'black')
-      return clearAITimeout;
+      return cleanup;
     if (state.phase === 'game-over')
-      return clearAITimeout;
+      return cleanup;
     if (isAnimating)
-      return clearAITimeout;
+      return cleanup;
     // User undid into a redoable history — wait for redo or a fresh human move.
-    if (hasRedo)
-      return clearAITimeout;
+    if (hasRedo) {
+      clearGnuMoveQueue();
+      return cleanup;
+    }
 
     const delay
       = state.phase === 'opening-roll' || state.phase === 'rolling'
@@ -80,10 +105,12 @@ export function useComputerOpponent({
           ? 1500
           : 0;
     if (delay === 0 && state.phase !== 'moving') {
-      return clearAITimeout;
+      return cleanup;
     }
 
     const runAI = () => {
+      if (cancelled)
+        return;
       const prev = stateRef.current;
       if (!prev || prev.currentPlayer !== 'black')
         return;
@@ -109,31 +136,57 @@ export function useComputerOpponent({
       }
 
       if (prev.phase === 'moving') {
-        const move = getAIMove(prev);
-        if (!move) {
-          recordNoMove(prev, prev);
-          setState(passTurn(prev));
-          return;
-        }
+        const snapshot = prev;
         const moveDelay = moveCount === 0 ? OPENING_CEREMONY_GRACE_MS : 750;
         aiTimeoutRef.current = setTimeout(() => {
-          const latest = stateRef.current;
-          if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
-            return;
-          }
-          playMove(latest, move);
+          void (async () => {
+            if (cancelled)
+              return;
+            const latestBefore = stateRef.current;
+            if (
+              !latestBefore
+              || latestBefore.currentPlayer !== 'black'
+              || latestBefore.phase !== 'moving'
+            ) {
+              return;
+            }
+            if (
+              latestBefore.dice[0] !== snapshot.dice[0]
+              || latestBefore.dice[1] !== snapshot.dice[1]
+              || latestBefore.remainingDice.join() !== snapshot.remainingDice.join()
+            ) {
+              return;
+            }
+
+            const { move } = await chooseComputerMove(latestBefore);
+            if (cancelled)
+              return;
+            if (!move) {
+              const latest = stateRef.current;
+              if (!latest || latest.currentPlayer !== 'black')
+                return;
+              recordNoMove(latest, latest);
+              setState(passTurn(latest));
+              return;
+            }
+
+            const latest = stateRef.current;
+            if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving')
+              return;
+            playMove(latest, move);
+          })();
         }, moveDelay);
       }
     };
 
     if (delay === 0) {
       runAI();
-      return clearAITimeout;
+      return cleanup;
     }
 
     aiTimeoutRef.current = setTimeout(runAI, delay);
 
-    return clearAITimeout;
+    return cleanup;
   }, [
     state,
     setState,
