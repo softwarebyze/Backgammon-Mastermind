@@ -48,13 +48,14 @@ export async function runWebLlmTurn(opts: {
   }
 }
 
-export function appendHeuristicReply(
-  state: GameState,
-  userLabel: string,
-  intent: CoachIntent | undefined,
-  setMessages: React.Dispatch<React.SetStateAction<CoachMessage[]>>,
-  nextId: (prefix: string) => string,
-) {
+export function appendHeuristicReply(opts: {
+  state: GameState;
+  userLabel: string;
+  intent?: CoachIntent;
+  setMessages: React.Dispatch<React.SetStateAction<CoachMessage[]>>;
+  nextId: (prefix: string) => string;
+}) {
+  const { state, userLabel, intent, setMessages, nextId } = opts;
   const reply = intent
     ? coachRespond(state, { intent })
     : coachRespond(state, { question: userLabel });

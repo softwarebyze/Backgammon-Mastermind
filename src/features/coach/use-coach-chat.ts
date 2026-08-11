@@ -107,7 +107,7 @@ export function useCoachChat(state: GameState | null) {
       void askWithLlm(userLabel);
       return;
     }
-    appendHeuristicReply(state, userLabel, intent, setMessages, nextId);
+    appendHeuristicReply({ state, userLabel, intent, setMessages, nextId });
   }, [askWithLlm, state, useLlm]);
 
   const askQuestion = useCallback((question: string) => {
@@ -119,7 +119,7 @@ export function useCoachChat(state: GameState | null) {
       void askWithLlm(trimmed);
       return;
     }
-    appendHeuristicReply(state, trimmed, undefined, setMessages, nextId);
+    appendHeuristicReply({ state, userLabel: trimmed, setMessages, nextId });
   }, [askWithLlm, state, useLlm]);
 
   const resetChat = useCallback(() => {
