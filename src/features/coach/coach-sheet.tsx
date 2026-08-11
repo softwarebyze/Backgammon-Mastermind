@@ -4,15 +4,17 @@ import type { TxKeyPath } from '@/lib/i18n';
 import { BottomSheetScrollView, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
-
 import {
   Keyboard,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
+
 import { Modal } from '@/components/ui';
 import { useCoachChat } from '@/features/coach/use-coach-chat';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -21,6 +23,10 @@ import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
+
+/** gorhom scroll/input helpers crash on web dismiss — use RN primitives there. */
+const MessageScroll = Platform.OS === 'web' ? ScrollView : BottomSheetScrollView;
+const CoachInput = Platform.OS === 'web' ? TextInput : BottomSheetTextInput;
 
 type Props = {
   sheetRef: React.RefObject<BottomSheetModal | null>;
@@ -41,7 +47,9 @@ export function CoachSheet({ sheetRef, state }: Props) {
     posthog.capture('coach_question_asked', { source: 'text' });
     askQuestion(text);
     setDraft('');
-    Keyboard.dismiss();
+    if (Platform.OS !== 'web') {
+      Keyboard.dismiss();
+    }
   }, [askQuestion, draft, posthog]);
 
   const onPrompt = useCallback((intent: (typeof COACH_SUGGESTED_PROMPTS)[number]['id'], labelKey: TxKeyPath) => {
@@ -69,7 +77,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
           <Text style={styles.badgeText}>{translate('coach.free_badge')}</Text>
         </View>
 
-        <BottomSheetScrollView
+        <MessageScroll
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
@@ -87,7 +95,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
               </Text>
             </View>
           ))}
-        </BottomSheetScrollView>
+        </MessageScroll>
 
         <View style={styles.prompts}>
           {COACH_SUGGESTED_PROMPTS.map(prompt => (
@@ -105,7 +113,7 @@ export function CoachSheet({ sheetRef, state }: Props) {
         </View>
 
         <View style={styles.composer}>
-          <BottomSheetTextInput
+          <CoachInput
             value={draft}
             onChangeText={setDraft}
             placeholder={translate('coach.placeholder')}
