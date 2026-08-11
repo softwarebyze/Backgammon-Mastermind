@@ -12,6 +12,7 @@ type Props = {
   canRedo?: boolean;
   onUndo?: () => void;
   onRedo?: () => void;
+  onCoach?: () => void;
   onOptions: () => void;
   onReset: () => void;
 };
@@ -30,6 +31,7 @@ export function GameHeaderActions({
   canRedo = false,
   onUndo,
   onRedo,
+  onCoach,
   onOptions,
   onReset,
 }: Props) {
@@ -75,6 +77,21 @@ export function GameHeaderActions({
           />
         </HeaderIconSlot>
       </HeaderButton>
+      {onCoach
+        ? (
+            <HeaderButton
+              accessibilityLabel={translate('coach.a11y_open')}
+              onPress={() => {
+                hapticLight();
+                onCoach();
+              }}
+            >
+              <HeaderIconSlot>
+                <Feather name="message-circle" size={ICON} color={GAME_PALETTE.accent} />
+              </HeaderIconSlot>
+            </HeaderButton>
+          )
+        : null}
       <HeaderButton
         accessibilityLabel={translate('game.options.title')}
         onPress={() => {

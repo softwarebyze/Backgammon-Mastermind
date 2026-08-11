@@ -1,4 +1,58 @@
 {
+  "coach": {
+    "a11y_open": "Ask the coach",
+    "free_badge": "Free · on your device",
+    "placeholder": "Ask about this position…",
+    "players": {
+      "black": "Black",
+      "white": "White"
+    },
+    "prompts": {
+      "bearing_off": "How does bearing off work?",
+      "best_move": "What’s a good move here?",
+      "dice": "How do the dice work?",
+      "direction": "Which way do I move?",
+      "explain_position": "Explain this position",
+      "hitting": "What is hitting?",
+      "race": "Who’s ahead in the race?",
+      "tip": "Give me a tip"
+    },
+    "reply": {
+      "bar": "Bar: White {{white}}, Black {{black}}.\n\n{{mustEnter}}\n\nYou must re-enter from the bar (into the opponent’s home board) before moving any other checker.",
+      "bar_clear": "Nobody for the side to move is stuck on the bar right now.",
+      "bar_you_must": "You have checker(s) on the bar — enter them first.",
+      "bearing_off": "Bearing off: remove checkers from your home board once all 15 are there.\n\nBorne off so far — White {{whiteOff}}, Black {{blackOff}}.\n\n{{canNow}}\n\nA die larger than your highest occupied point can still bear that highest checker off.",
+      "bearing_off_not_yet": "The side to move cannot bear off with the current dice.",
+      "bearing_off_now": "At least one legal bear-off is available right now.",
+      "best_move": "The on-device engine likes {{move}} among {{options}} distinct options.\n\nIt’s a solid teaching suggestion — not a world-class bot. Look for making points, hitting blots safely, and reducing your own blots.",
+      "best_move_game_over": "The game is over — open a new game if you want fresh advice.",
+      "best_move_none": "With {{dice}}, there is no legal move. Pass the turn when you’re ready.",
+      "best_move_opening": "First roll to decide who starts — then I’ll suggest moves once dice are in play.",
+      "best_move_roll_first": "Roll the dice first — then ask again and I’ll suggest a move.",
+      "blot_summary": "Blots (lone checkers): you {{you}}, opponent {{them}}. Lone checkers can be hit.",
+      "blots": "Blots on the board: White {{white}}, Black {{black}}.\n\nA blot is a single checker on a point. Landing on an opponent’s blot hits it to the bar.",
+      "can_bear_off": "You can bear off with the current dice — look for the bear-off tray.",
+      "dice": "Each turn you roll two dice and play both numbers if you can (doubles = four moves of that number).\n\nYou may use either die first. If only one number is playable, you must play it — usually the larger when both are possible but not both together.",
+      "direction": "White moves 24 → 1 (toward the bottom-right home). Black moves 1 → 24 (toward the top-right home).\n\nThink of a horseshoe path around the board: opponent’s home → outer boards → your home.",
+      "engine_likes": "Engine suggestion: {{move}}.",
+      "explain_game_over": "Game over — {{winner}} won by bearing off all 15 checkers first.",
+      "explain_moving": "{{player}} to play with die values [{{dice}}]. About {{moves}} distinct legal landing(s).",
+      "explain_no_move": "{{player}} rolled {{dice}} but nothing is legal — the turn must be passed.",
+      "explain_opening": "Opening roll: each side rolls one die. Higher number goes first and plays both dice as the opening roll. Ties re-roll.",
+      "explain_rolling": "{{player}} should roll the dice to start this turn.",
+      "fallback": "I’m a free on-device coach — I explain the live board and rules, but I don’t browse the web.\n\nTry a suggestion chip, or ask about the race, hitting, bearing off, dice, or “what’s a good move?”",
+      "hitting": "Hitting: land on a point that holds exactly one opponent checker (a blot). That checker goes to the bar and must re-enter before its owner moves anything else.\n\nYou cannot land on a point with two or more enemy checkers — that’s a made point.",
+      "must_enter": "You have {{count}} on the bar — you must enter before other moves.",
+      "race_extra": "Checkers borne off: White {{whiteOff}}, Black {{blackOff}}. Pip count ignores borne-off checkers (they’re done).",
+      "race_lead": "{{leader}} leads the race by {{diff}} pip(s) ({{leaderPips}} vs {{trailerPips}}). Lower pips = closer to finishing.",
+      "race_tied": "The race is tied at {{pips}} pips each. Pip count is the total distance left to bear off.",
+      "tip": "{{tip}}",
+      "welcome": "Hi — I’m your free coach. I run entirely on your device (no account, no charges).\n\nAsk about this position, tap a suggestion, or request a tip. I use the same rules engine as the computer opponent."
+    },
+    "send": "Send",
+    "subtitle": "Learn while you play — no account, no fees",
+    "title": "Coach"
+  },
   "game": {
     "nudge": {
       "roll_first": "Roll the dice first"

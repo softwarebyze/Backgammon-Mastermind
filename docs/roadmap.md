@@ -91,7 +91,8 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Post-game **blunder summary** | Compare to AI top move |
 | Session **statistics** | Win rate, gammons, cube decisions |
 | Advanced stats dashboard | Pip equity trends, doubling mistakes |
-| AI chat after game | Optional, local-first |
+| **In-game coach chat** (local-first, free) | On-device Q&A + position explain — no API fees |
+| AI chat after game | Optional LLM upgrade later; local coach ships first |
 
 ---
 

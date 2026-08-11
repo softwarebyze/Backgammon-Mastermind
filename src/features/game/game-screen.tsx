@@ -3,7 +3,8 @@ import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect } from 'react';
 import { BackHandler, StyleSheet, Text, View } from 'react-native';
 
-import { FocusAwareStatusBar } from '@/components/ui';
+import { FocusAwareStatusBar, useModal } from '@/components/ui';
+import { CoachSheet } from '@/features/coach/coach-sheet';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
@@ -16,6 +17,9 @@ import { useMoveReview } from '@/features/game/use-move-review';
 export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
+  const coachModal = useModal();
+  const presentCoach = coachModal.present;
+  const coachSheetRef = coachModal.ref;
   const input = useGameInput();
   const {
     moveAnimation,
@@ -48,6 +52,11 @@ export function GameScreen() {
     router.push('/game/options');
   }, [posthog, input.state?.mode]);
 
+  const openCoach = useCallback(() => {
+    posthog.capture('coach_opened', { mode: input.state?.mode ?? null });
+    presentCoach();
+  }, [posthog, input.state?.mode, presentCoach]);
+
   useGameScreenHeader({
     navigation,
     state: input.state,
@@ -55,6 +64,7 @@ export function GameScreen() {
     canRedo: !review.isReviewing && canRedo,
     doUndo,
     doRedo,
+    openCoach,
     openOptions,
     handleReset: input.handleReset,
     confirmLeaveGame: leaveGame,
@@ -92,14 +102,17 @@ export function GameScreen() {
   const isComputerTurn = state.mode === 'vs-computer' && state.currentPlayer === 'black';
 
   return (
-    <GameScreenLayout
-      board={{ ...board, boardState: state }}
-      review={review}
-      input={input}
-      moveLog={moveLog}
-      isComputerTurn={isComputerTurn}
-      ceremonyKey={ceremonyKey}
-    />
+    <>
+      <GameScreenLayout
+        board={{ ...board, boardState: state }}
+        review={review}
+        input={input}
+        moveLog={moveLog}
+        isComputerTurn={isComputerTurn}
+        ceremonyKey={ceremonyKey}
+      />
+      <CoachSheet sheetRef={coachSheetRef} state={input.state} />
+    </>
   );
 }
 

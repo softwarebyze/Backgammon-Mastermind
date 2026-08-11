@@ -15,6 +15,7 @@ type Options = {
   canRedo: boolean;
   doUndo: () => void;
   doRedo: () => void;
+  openCoach: () => void;
   openOptions: () => void;
   handleReset: () => void;
   confirmLeaveGame: () => void;
@@ -27,6 +28,7 @@ export function useGameScreenHeader({
   canRedo,
   doUndo,
   doRedo,
+  openCoach,
   openOptions,
   handleReset,
   confirmLeaveGame,
@@ -44,6 +46,7 @@ export function useGameScreenHeader({
           canRedo={canRedo}
           onUndo={doUndo}
           onRedo={doRedo}
+          onCoach={openCoach}
           onOptions={openOptions}
           onReset={handleReset}
         />
@@ -56,6 +59,7 @@ export function useGameScreenHeader({
     canRedo,
     doUndo,
     doRedo,
+    openCoach,
     openOptions,
     handleReset,
     confirmLeaveGame,
