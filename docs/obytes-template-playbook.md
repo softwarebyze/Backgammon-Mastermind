@@ -426,10 +426,7 @@ The PR QR code is an **EAS Update**, not a new APK. It deep-links into an **alre
 
 #### Reviewer experience (what to automate + document)
 
-On every PR, reviewers should see **two comments**:
-
-1. **Expo bot** — QR for *this PR's* update (auto from `expo/expo-github-action/preview@v8`)
-2. **Sticky setup guide** — "first time? install dev client here → then scan QR above" (second step in `preview.yml`)
+On every PR, Expo's action posts **one comment** — the QR for *this PR's* update (`expo/expo-github-action/preview@v8`). That comment already links to more install info; no second sticky guide.
 
 First-time flow:
 
