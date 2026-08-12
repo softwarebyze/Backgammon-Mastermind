@@ -7,7 +7,7 @@ const SUPPORT_EMAIL = 'zackebenfeld@gmail.com';
 /** Canonical product website (Vercel). Privacy/terms must be publicly hosted for store review. */
 const WEBSITE_URL = 'https://backgammon-mastermind.vercel.app';
 
-/** Production ASC Apple ID (6792138473). Set via EAS production env — see docs/app-environments.md. */
+/** Production ASC Apple ID (6792138473). Set via EAS production env — see docs/ios-testing-and-store.md. */
 const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
 
 export const APP_LINKS = {
