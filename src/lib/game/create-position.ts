@@ -29,7 +29,7 @@ export function createEmptyPoints(): BoardPoint[] {
 }
 
 /**
- * Build a GameState from an arbitrary position — used by learn lessons and tests.
+ * Build a GameState from an arbitrary position — used by tests and custom setups.
  * Does not go through the opening-roll ceremony.
  */
 export function createPositionState(options: CreatePositionOptions = {}): GameState {

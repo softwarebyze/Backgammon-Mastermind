@@ -4,7 +4,7 @@ Use this before the first App Store / Play Store submission.
 
 **Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
 
-**Last updated:** v1.0.0 first App Store production push (2026-07-17) — Learn to Play + PostHog.
+**Last updated:** v1.0.0 first App Store production push (2026-07-17) — vs Computer, pass-and-play + PostHog.
 
 ## CI: what runs on every PR?
 

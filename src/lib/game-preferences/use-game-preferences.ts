@@ -27,7 +27,7 @@ function updatePreferences(patch: Partial<GamePreferences>) {
   emitChange();
 }
 
-/** Patch prefs outside of React (e.g. learn graduation → beginner aids). */
+/** Patch prefs outside of React. */
 export function patchGamePreferences(patch: Partial<GamePreferences>) {
   updatePreferences(patch);
 }

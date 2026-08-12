@@ -5,7 +5,7 @@ Canonical site: **https://backgammon-mastermind.vercel.app**
 | Path | What |
 |------|------|
 | `/` | Playable web app (current home) |
-| `/game`, `/settings`, `/learn`, … | App routes (SPA — needs Vercel rewrite) |
+| `/game`, `/settings`, … | App routes (SPA — needs Vercel rewrite) |
 | `/privacy/` | Hosted privacy policy (App Store URL) |
 | `/terms/` | Hosted terms |
 

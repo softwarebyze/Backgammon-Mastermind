@@ -43,12 +43,12 @@ type UseBoardPlayInputArgs = {
   /** When false, pre-roll taps are ignored (lessons lock dice). Default true. */
   enableRollNudge?: boolean;
   actions: BoardPlayActions;
-  /** Optional analytics hook — omitted in Learn (uses its own events). */
+  /** Optional analytics hook. */
   onMoveMade?: (inputType: BoardMoveInputType) => void;
 };
 
 /**
- * Shared tap + drag board interaction used by the live game and Learn try-move steps.
+ * Shared tap + drag board interaction for the live game board.
  * Callers supply state and move/select actions; chrome (roll/reset) stays elsewhere.
  */
 /* eslint-disable max-lines-per-function -- cohesive input orchestration */

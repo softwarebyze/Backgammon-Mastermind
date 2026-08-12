@@ -2,13 +2,12 @@
 
 ## Screenshots
 
-`app-store-screenshots/` — 1320×2868 (iPhone 6.9") from Learn e2e captures:
+`app-store-screenshots/` — 1320×2868 (iPhone 6.9"):
 
-1. Home
-2. Learn hub
-3. Bearing-off lesson
-4. Lesson + hint
-5. Settings links
+1. Settings links
+2. vs Computer
+
+Learn-based captures were removed with the Learn to Play feature (issue below). Re-capture a fresh set (home, vs Computer, 2-player, settings) before the next screenshot upload.
 
 Upload: `pnpm screenshots:upload:ios` (Fastlane — [store-screenshots.md](../../store-screenshots.md)). Do not wait for a human in ASC.
 

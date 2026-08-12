@@ -54,10 +54,6 @@ export default function AppLayout() {
         name="language"
         options={pickerFormSheetOptions(translate('settings.language'))}
       />
-      <Stack.Screen
-        name="learn"
-        options={{ headerShown: false }}
-      />
     </Stack>
   );
 }

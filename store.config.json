@@ -33,21 +33,22 @@
     "info": {
       "en-US": {
         "title": "Backgammon Mastermind",
-        "subtitle": "Learn & play backgammon",
-        "promoText": "Interactive Learn to Play, vs AI, or pass-and-play. No account required.",
-        "description": "Backgammon Mastermind is a polished take on the classic strategy board game \u2014 with an interactive Learn to Play path that teaches real rules on a live board.\n\nNew to backgammon? Work through short guided lessons: opening rolls, hits, the bar, doubles, and bearing off. Pass a quick graduation quiz, then play your first game with beginner aids on.\n\nAlready know the game? Jump straight into a match against the computer or share the board with a friend in pass-and-play mode. Roll dice, move your checkers, hit blots, and bear off all fifteen to win.\n\nFeatures:\n\u2022 Learn to Play \u2014 interactive lessons on a real board\n\u2022 vs Computer with heuristic AI\n\u2022 Local 2-player (pass-and-play)\n\u2022 Drag or tap to move; legal destinations highlighted\n\u2022 Direction overlay and game preferences\n\u2022 English and Arabic\n\u2022 No account and no ads \u2014 gameplay runs on your device\n\nOne purchase. Play offline after download. Perfect for learning the rules and sharpening your skills.",
+        "subtitle": "Classic backgammon, no ads",
+        "promoText": "Play backgammon vs the computer or pass-and-play with a friend. No account, no ads.",
+        "description": "Backgammon Mastermind is a polished take on the classic strategy board game.\n\nJump straight into a match against the computer or share the board with a friend in pass-and-play mode. Roll dice, move your checkers, hit blots, and bear off all fifteen to win.\n\nNew to backgammon? Turn on move hints, point numbers, and the direction overlay to see exactly where you can play \u2014 the board teaches you as you go.\n\nFeatures:\n\u2022 vs Computer with heuristic AI\n\u2022 Local 2-player (pass-and-play)\n\u2022 Drag or tap to move; legal destinations highlighted\n\u2022 Move hints, point numbers, and direction overlay for newer players\n\u2022 Replay and review any turn of your game\n\u2022 English and Arabic\n\u2022 No account and no ads \u2014 gameplay runs on your device\n\nOne purchase. Play offline after download. Perfect for sharpening your skills.",
         "keywords": [
           "backgammon",
-          "learn backgammon",
           "board game",
           "strategy",
           "dice",
-          "tutorial",
           "two player",
           "AI",
-          "classic"
+          "classic",
+          "offline",
+          "tavla",
+          "nard"
         ],
-        "releaseNotes": "First App Store release: interactive Learn to Play lessons, graduation quiz, vs Computer and pass-and-play, plus privacy-friendly analytics to improve the product.",
+        "releaseNotes": "First App Store release: play backgammon vs the computer or pass-and-play, with move hints, turn replay, and privacy-friendly analytics to improve the product.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -63,7 +64,7 @@
       "email": "zackebenfeld@gmail.com",
       "phone": "+1 954 593 1670",
       "demoRequired": false,
-      "notes": "Backgammon Mastermind is a paid board game (no IAP, no login). Open the app and tap Learn to Play for guided lessons, or tap vs Computer / 2 Players to start a match. Roll dice and move checkers by tap or drag. All game logic runs on device. Optional anonymous product analytics (PostHog) may be sent when online."
+      "notes": "Backgammon Mastermind is a paid board game (no IAP, no login). Open the app and tap vs Computer / 2 Players to start a match. Roll dice and move checkers by tap or drag. All game logic runs on device. Optional anonymous product analytics (PostHog) may be sent when online."
     }
   }
 }

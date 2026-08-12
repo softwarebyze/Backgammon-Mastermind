@@ -52,12 +52,6 @@ function SideSection({ topIndices, botIndices, pointHeight, middleHeight, render
   );
 }
 
-type BoardAidsOverride = {
-  showMoveHints?: boolean;
-  showDirectionOverlay?: boolean;
-  showPointNumbers?: boolean;
-};
-
 type Props = {
   state: GameState;
   dimensions: BoardDimensions;
@@ -76,11 +70,6 @@ type Props = {
   onBearOffPress: () => void;
   interactionEnabled?: boolean;
   isReviewing?: boolean;
-  /** Optional overrides for learn mode (does not persist preferences). */
-  aidsOverride?: BoardAidsOverride;
-  /** Extra points to paint as targets (identify / coach emphasis). */
-  emphasisPoints?: ReadonlySet<number>;
-  emphasisBar?: boolean;
 };
 
 /* eslint-disable max-lines-per-function -- board layout composition */
@@ -102,15 +91,11 @@ export function BoardView({
   onBearOffPress,
   interactionEnabled = true,
   isReviewing = false,
-  aidsOverride,
-  emphasisPoints,
-  emphasisBar = false,
 }: Props) {
   const { preferences } = useGamePreferences();
-  const showMoveHints = aidsOverride?.showMoveHints ?? preferences.showMoveHints;
-  const showDirectionOverlay
-    = aidsOverride?.showDirectionOverlay ?? preferences.showDirectionOverlay;
-  const showPointNumbers = aidsOverride?.showPointNumbers ?? preferences.showPointNumbers;
+  const showMoveHints = preferences.showMoveHints;
+  const showDirectionOverlay = preferences.showDirectionOverlay;
+  const showPointNumbers = preferences.showPointNumbers;
   const ceremonyVisible = useOpeningCeremonyVisible();
   const surfaceRef = useRef<View>(null);
   const {
@@ -198,7 +183,7 @@ export function BoardView({
         point={point}
         isTop={isTop}
         isSelected={selectedPoint === idx}
-        isLegalTarget={legalTargets.has(idx) || (emphasisPoints?.has(idx) ?? false)}
+        isLegalTarget={legalTargets.has(idx)}
         isMovableSource={movableSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
@@ -284,7 +269,7 @@ export function BoardView({
           whiteCount={barWhite}
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
-          selectedPoint={emphasisBar && selectedPoint === null ? BAR_POINT : selectedPoint}
+          selectedPoint={selectedPoint}
           onPressBar={() => {
             if (interactionEnabled) {
               onBarPress();
