@@ -1,3 +1,5 @@
+import type * as storage from './storage';
+
 const store: Record<string, string> = {};
 
 jest.mock('react-native-mmkv', () => ({
@@ -22,14 +24,14 @@ describe('storage.getItem', () => {
 
   it('returns null and clears the key when JSON is corrupt', () => {
     store.bad = '{not-json';
-    const { getItem } = require('./storage') as typeof import('./storage');
+    const { getItem } = require('./storage') as typeof storage;
     expect(getItem('bad')).toBeNull();
     expect(store.bad).toBeUndefined();
   });
 
   it('parses valid JSON', () => {
     store.ok = JSON.stringify({ a: 1 });
-    const { getItem } = require('./storage') as typeof import('./storage');
+    const { getItem } = require('./storage') as typeof storage;
     expect(getItem<{ a: number }>('ok')).toEqual({ a: 1 });
   });
 });
