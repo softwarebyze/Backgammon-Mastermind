@@ -20,7 +20,16 @@ export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
   headerShown: true,
   headerShadowVisible: false,
-  headerTransparent: true,
+  // Opaque: iOS 26 transparent headers rubber-band non-ScrollView screens.
+  headerTransparent: false,
+  headerStyle: { backgroundColor: GAME_PALETTE.bg },
+  contentStyle: { backgroundColor: GAME_PALETTE.bg },
+  scrollEdgeEffects: {
+    top: 'hidden',
+    bottom: 'hidden',
+    left: 'hidden',
+    right: 'hidden',
+  },
 };
 
 /** Active game board — native header hosts the player label + options/reset actions. */
