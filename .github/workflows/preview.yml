@@ -50,28 +50,23 @@ jobs:
           script: |
             const marker = '<!-- dev-client-guide -->';
             const buildsUrl = `https://expo.dev/projects/${process.env.EAS_PROJECT_ID}/builds?profile=development`;
+            const buildsQr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(buildsUrl)}`;
             const body = `${marker}
-            ## How to preview this PR
+            **Preview:** scan the **EAS Update QR** in the Expo comment above with a device that has the dev client installed.
 
-            ### Already have the dev client installed?
-            Scan the **EAS Update QR** in the Expo comment above — it loads this PR's JavaScript into your existing development build.
+            <details>
+            <summary>First time on this device? Install the dev client</summary>
 
-            ### First time on this device?
+            Scan to open the latest **development** builds, or use [this link](${buildsUrl}):
 
-            #### iPhone / iPad
-            1. **Register your device** (one-time): [\`eas device:create\`](https://docs.expo.dev/build/internal-distribution/#registering-devices) or [Expo dashboard → Devices](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices).
-            2. **Install the iOS dev client**: [Latest **development** builds on EAS](${buildsUrl}) → open the **iOS** build → install via the link on your phone (Safari).
-            3. Open the app once, then **scan the EAS Update QR** above.
+            <img src="${buildsQr}" width="180" alt="QR code to latest development builds" />
 
-            #### Android
-            1. **Install the dev client**: [Latest **development** builds on EAS](${buildsUrl}) → download the **Android** APK.
-            2. Open the app once, then **scan the EAS Update QR** above.
+            - **iPhone / iPad**: [register your device](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices) (one-time), open the latest **iOS** build in Safari and install, open the app once, then scan the EAS Update QR above.
+            - **Android**: download the latest **APK**, install, open the app once, then scan the EAS Update QR above.
+            - **Reinstall** only when native things change (Expo SDK, native modules, icon/splash, \`app.config.ts\`, \`env.ts\`) — CI rebuilds via [\`dev-client.yml\`](.github/workflows/dev-client.yml). JS-only PRs never need a reinstall.
+            - **No dev client at all?** \`pnpm build:preview:ios\` / \`pnpm build:preview:android\` — see [\`docs/obytes-template-playbook.md\`](docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern).
 
-            ### When do I reinstall the dev client?
-            Only when **native** things change (new Expo SDK, native modules, icon/splash, \`app.config.ts\`, \`env.ts\` schemes/bundle IDs). CI rebuilds Android + iOS via [\`dev-client.yml\`](.github/workflows/dev-client.yml). JS-only PRs never need a reinstall.
-
-            ### No dev client?
-            Full preview builds: \`pnpm build:preview:ios\` / \`pnpm build:preview:android\`. See [\`docs/obytes-template-playbook.md\`](docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern).
+            </details>
             `;
 
             const { data: comments } = await github.rest.issues.listComments({
