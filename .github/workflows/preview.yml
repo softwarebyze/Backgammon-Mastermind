@@ -38,14 +38,35 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Create preview
+      - name: Create preview (iOS)
         id: preview
         uses: expo/expo-github-action/preview@v8
         with:
-          # Single native platform keeps Hermes source maps uploadable to PostHog.
+          # One native platform per export — Hermes source-map upload rejects mixed trees.
           command: eas update --auto --platform ios --environment preview
 
-      - name: Upload PostHog source maps (EAS Update)
+      - name: Upload PostHog source maps (iOS)
+        env:
+          POSTHOG_CLI_API_KEY: ${{ secrets.POSTHOG_CLI_API_KEY }}
+          POSTHOG_CLI_PROJECT_ID: '507969'
+          POSTHOG_CLI_HOST: https://us.posthog.com
+        run: |
+          if [ -z "$POSTHOG_CLI_API_KEY" ]; then
+            echo "POSTHOG_CLI_API_KEY secret not set — skipping source map upload."
+            exit 0
+          fi
+          if [ -d dist ]; then
+            pnpm posthog:upload-sourcemaps
+          else
+            echo "No dist/ after eas update — skipping PostHog source map upload."
+          fi
+
+      # Same PR branch as the preview action (--auto). Separate export so Android
+      # QR/dev-client scans receive an Android bundle, then upload that platform's maps.
+      - name: Create preview (Android)
+        run: eas update --auto --platform android --environment preview --non-interactive
+
+      - name: Upload PostHog source maps (Android)
         env:
           POSTHOG_CLI_API_KEY: ${{ secrets.POSTHOG_CLI_API_KEY }}
           POSTHOG_CLI_PROJECT_ID: '507969'

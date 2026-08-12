@@ -32,7 +32,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Screenshot diff CI (iPad, web, phone) | Argent / Percy + tablet landscape | Planned |
 | Maestro recordings per release | `.maestro/app/` flows + artifact upload | 🟡 In progress |
 | Perf regression (Flashlight / Sentry Performance) | Baseline on game screen | Planned |
-| PostHog full setup | `docs/posthog.md` | Analytics + error tracking + replay + source maps |
+| PostHog full setup | `docs/posthog.md` — analytics + error tracking + replay + source maps | In progress |
 | EAS metadata + Remotion launch videos | `eas metadata` + `remotion/` + GHA | Planned |
 | `pnpm check-all` in PR template | Already partial | Done |
 

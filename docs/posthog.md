@@ -85,7 +85,7 @@ Set in `.env` locally and in `eas.json` `env` (or EAS Environment Variables) for
 
 | Var | Purpose |
 |-----|---------|
-| `POSTHOG_CLI_API_KEY` | Personal API key (`phx_…`) — **Sensitive** in EAS; GitHub Actions secret for PR uploads |
+| `POSTHOG_CLI_API_KEY` | Personal API key (`phx_…`) — **Sensitive** on EAS (via `./scripts/posthog-set-cli-secrets.sh`) + GitHub Actions secret. **Do not** commit it in `eas.json`; build profiles use `environment`, so EAS injects the remote secret at build time. |
 | `POSTHOG_CLI_PROJECT_ID` | Numeric project id (`507969`) |
 | `POSTHOG_CLI_HOST` | `https://us.posthog.com` (US Cloud **UI** host, not `i.posthog.com`) |
 
@@ -102,10 +102,10 @@ Open **[Personal API keys](https://us.posthog.com/settings/user-api-keys)** → 
 | Field | Value |
 |-------|--------|
 | Label | `<App name> source maps` (e.g. `Backgammon Mastermind source maps`) |
-| Organization & project access | Default **All access** is fine for a single-dev org; tighten later if needed |
-| Scopes preset | **Source map upload** |
+| Organization & project access | Prefer the **current project** (or org + this project only) — avoid **All access** |
+| Scopes preset | **Source map upload** (least privilege for CLI uploads) |
 
-After picking the preset, **scroll the resource list** and bump these if you want [Expo PostHog workflow recipes](https://docs.expo.dev/guides/using-posthog/recipes/) (flags / annotations / queries):
+After picking the preset, **scroll the resource list** and add only the extras you need for [Expo PostHog workflow recipes](https://docs.expo.dev/guides/using-posthog/recipes/) (flags / annotations / queries):
 
 | Resource | Suggested |
 |----------|-----------|
@@ -115,7 +115,7 @@ After picking the preset, **scroll the resource list** and bump these if you wan
 
 Then **Create key** and copy the `phx_…` value once (it won’t be shown again).
 
-### 2. Wire secrets (3 EAS calls, not 9)
+### 2. Wire secrets (5 EAS calls, not 15)
 
 ```bash
 ./scripts/posthog-set-cli-secrets.sh
@@ -123,7 +123,7 @@ Then **Create key** and copy the `phx_…` value once (it won’t be shown again
 ./scripts/posthog-set-cli-secrets.sh 'phx_…'
 ```
 
-The script attaches each variable to **production + preview + development in one `eas env:create`** (so you don’t sit through a slow per-env loop). It also sets the GitHub Actions secret and gitignored `.env` lines.
+The script attaches each variable to **production + preview + development in one `eas env:create`** (so you don’t sit through a slow per-env loop). It sets `POSTHOG_CLI_*` plus runtime `POSTHOG_PROJECT_TOKEN` / `POSTHOG_HOST` (needed for `eas update --environment`), the GitHub Actions secret, and gitignored `.env` lines.
 
 If you Ctrl-C mid-run after EAS already has the key:
 

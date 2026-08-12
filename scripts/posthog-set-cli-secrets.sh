@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Wire POSTHOG_CLI_* into EAS (all envs) + GitHub Actions + local .env
+# Wire POSTHOG_CLI_* + POSTHOG_PROJECT_TOKEN/HOST into EAS (all envs) + GitHub + local .env
 #
 # Usage:
 #   ./scripts/posthog-set-cli-secrets.sh              # paste phx_… when prompted
@@ -15,6 +15,9 @@ cd "$ROOT"
 
 PROJECT_ID="${POSTHOG_CLI_PROJECT_ID:-507969}"
 CLI_HOST="${POSTHOG_CLI_HOST:-https://us.posthog.com}"
+# Runtime token/host used by app.config.ts → extra.posthog* (eas update --environment).
+PROJECT_TOKEN="${POSTHOG_PROJECT_TOKEN:-phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu}"
+PROJECT_HOST="${POSTHOG_HOST:-https://us.i.posthog.com}"
 # One call can attach a var to every EAS environment (avoids the 6× slow loop).
 EAS_ENVS=(--environment production --environment preview --environment development)
 
@@ -116,7 +119,7 @@ if [[ ! "$KEY" =~ ^phx_ ]]; then
   exit 1
 fi
 
-echo "→ EAS: POSTHOG_CLI_API_KEY (sensitive) → production+preview+development [1/3]"
+echo "→ EAS: POSTHOG_CLI_API_KEY (sensitive) → production+preview+development [1/5]"
 eas_q env:create \
   --name POSTHOG_CLI_API_KEY \
   --value "$KEY" \
@@ -126,7 +129,7 @@ eas_q env:create \
   "${EAS_ENVS[@]}"
 echo "   ok"
 
-echo "→ EAS: POSTHOG_CLI_PROJECT_ID=$PROJECT_ID [2/3]"
+echo "→ EAS: POSTHOG_CLI_PROJECT_ID=$PROJECT_ID [2/5]"
 eas_q env:create \
   --name POSTHOG_CLI_PROJECT_ID \
   --value "$PROJECT_ID" \
@@ -136,10 +139,31 @@ eas_q env:create \
   "${EAS_ENVS[@]}"
 echo "   ok"
 
-echo "→ EAS: POSTHOG_CLI_HOST=$CLI_HOST [3/3]"
+echo "→ EAS: POSTHOG_CLI_HOST=$CLI_HOST [3/5]"
 eas_q env:create \
   --name POSTHOG_CLI_HOST \
   --value "$CLI_HOST" \
+  --visibility plaintext \
+  --force \
+  --non-interactive \
+  "${EAS_ENVS[@]}"
+echo "   ok"
+
+# eas update --environment reads remote EAS env vars (not eas.json build-profile env).
+echo "→ EAS: POSTHOG_PROJECT_TOKEN (runtime / OTA) [4/5]"
+eas_q env:create \
+  --name POSTHOG_PROJECT_TOKEN \
+  --value "$PROJECT_TOKEN" \
+  --visibility plaintext \
+  --force \
+  --non-interactive \
+  "${EAS_ENVS[@]}"
+echo "   ok"
+
+echo "→ EAS: POSTHOG_HOST=$PROJECT_HOST [5/5]"
+eas_q env:create \
+  --name POSTHOG_HOST \
+  --value "$PROJECT_HOST" \
   --visibility plaintext \
   --force \
   --non-interactive \

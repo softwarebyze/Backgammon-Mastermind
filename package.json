@@ -71,7 +71,7 @@
     "device:logs": "adb logcat -d -t 300 | grep -iE 'ReactNativeJS|ReferenceError|TypeError|Invariant' || true",
     "react-doctor": "pnpm dlx react-doctor@latest",
     "posthog:upload-sourcemaps": "npx --yes @posthog/cli@latest hermes upload --directory dist",
-    "posthog:upload-sourcemaps:web": "npx --yes @posthog/cli@latest sourcemaps upload --directory dist"
+    "posthog:upload-sourcemaps:web": "npx --yes @posthog/cli@latest sourcemap upload --directory dist"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
@@ -79,7 +79,7 @@
     "@expo/metro-runtime": "^56.0.18",
     "@expo/vector-icons": "^15.1.1",
     "@gorhom/bottom-sheet": "^5.2.8",
-    "@posthog/react-native-plugin": "^2.3.0",
+    "@posthog/react-native-plugin": "^2.3.1",
     "@shopify/flash-list": "2.0.2",
     "app-icon-badge": "^0.1.2",
     "expo": "~56.0.18",

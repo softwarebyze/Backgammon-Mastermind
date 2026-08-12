@@ -1,3 +1,4 @@
+import { reloadAppAsync } from 'expo';
 import * as Updates from 'expo-updates';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -13,9 +14,7 @@ export function PostHogErrorFallback({ error }: Props) {
   return (
     <View style={styles.root} accessibilityRole="alert">
       <Text style={styles.title}>Something went wrong</Text>
-      <Text style={styles.body}>
-        The error was reported so we can fix it. Restart the app to continue.
-      </Text>
+      <Text style={styles.body}>Restart the app to continue.</Text>
       {__DEV__ ? <Text style={styles.dev}>{message}</Text> : null}
       <Pressable
         accessibilityRole="button"
@@ -23,7 +22,9 @@ export function PostHogErrorFallback({ error }: Props) {
           void Updates.reloadAsync().catch(() => {
             if (typeof globalThis.location?.reload === 'function') {
               globalThis.location.reload();
+              return;
             }
+            void reloadAppAsync('PostHog error recovery');
           });
         }}
         style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
