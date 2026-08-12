@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "關閉選項",
+      "moving": "移動中…",
+      "new_game_message": "開始新對局？",
+      "new_game_title": "新對局",
+      "no_legal_moves": "沒有可走的棋…",
+      "play_again": "再來一局",
+      "play_again_a11y": "再來一局",
+      "roll_dice": "擲骰子",
+      "roll_dice_a11y": "擲骰子",
+      "rolling": "擲骰中…"
+    },
+    "nudge": {
+      "roll_first": "請先擲骰子"
+    },
+    "opening": {
+      "compare": "{{winner}}的{{high}}勝過{{low}}",
+      "goes_first": "{{player}}先行！",
+      "roll": "擲骰",
+      "rolls_for_opening": "{{player}}正在擲開局骰",
+      "tie": "平局！",
+      "tie_again": "點數相同——請重擲",
+      "waiting_roll": "{{player}}正在擲骰…",
+      "who_goes_first": "誰先走？",
+      "your_roll": "點按任意位置擲骰"
+    },
+    "options": {
+      "open_settings": "語言與更多",
+      "open_settings_hint": "打開設定",
+      "title": "對局選項"
+    },
+    "preferences": {
+      "auto_move": "唯一著法自動走",
+      "auto_move_hint": "自動走出唯一合法的一步",
+      "auto_roll": "自動擲骰",
+      "auto_roll_hint": "輪到你時自動擲骰",
+      "dice_display": "骰子顯示",
+      "dice_dots": "點數",
+      "dice_numbers": "數字",
+      "direction_overlay": "方向指引",
+      "direction_overlay_hint": "在棋盤上顯示馬蹄形路線",
+      "move_hints": "走子提示",
+      "move_hints_hint": "可移動的點位旁顯示金色圓點",
+      "point_numbers": "點位編號",
+      "point_numbers_hint": "在棋盤上顯示1–24編號",
+      "section_automation": "自動化",
+      "section_board": "棋盤",
+      "section_dice": "骰子",
+      "sound": "遊戲音效",
+      "sound_hint": "輕柔的骰子、擊子與獲勝音效——遵循靜音模式"
+    },
+    "review": {
+      "back_to_live": "返回目前對局",
+      "live": "目前對局",
+      "live_short": "對局",
+      "move_a11y": "第{{ply}}步，{{player}}",
+      "move_position": "第{{current}}步，共{{total}}步 · {{player}}",
+      "next": "下一回合",
+      "opening": "開局局面",
+      "pause_replay": "暫停",
+      "player_black": "黑方",
+      "player_white": "白方",
+      "previous": "上一回合",
+      "replay": "重播",
+      "scrubber_hint": "點按回合進行復盤",
+      "start": "開始",
+      "turn_a11y": "回合{{turn}}，{{player}}",
+      "turn_label": "回合{{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "回合{{turn}}/{{totalTurns}} · 第{{moveInTurn}}/{{movesInTurn}}步 · {{player}}",
+      "viewing_hint": "復盤中——點按「對局」或「返回」繼續遊戲"
+    },
+    "status": {
+      "black_wins": "黑方獲勝",
+      "computer_wins": "電腦獲勝",
+      "white_wins": "🏆 白方獲勝！",
+      "you_win": "🏆 你贏了！"
+    }
+  },
+  "home": {
+    "cancel": "取消",
+    "continue": "繼續",
+    "continue_or_new": "繼續目前對局，還是開始新對局？",
+    "game_in_progress": "有進行中的對局",
+    "new_game": "新對局",
+    "new_game_confirm_web": "開始新對局？（要繼續目前對局，請使用主畫面的「繼續對局」。）",
+    "resume": "繼續對局",
+    "resume_a11y": "繼續已儲存的對局",
+    "resume_sub": "從上次停下的地方繼續",
+    "subtitle": "步步為營，掌控棋盤",
+    "two_players": "雙人對戰",
+    "two_players_a11y": "在本裝置上雙人遊玩",
+    "two_players_sub": "同一裝置輪流遊玩",
+    "vs_computer": "人機對戰",
+    "vs_computer_a11y": "與電腦對戰",
+    "vs_computer_sub": "挑戰AI"
+  },
+  "not_found": {
+    "body": "該頁面不屬於Backgammon Mastermind。請返回主頁開始對局。",
+    "heading": "出界了",
+    "home_a11y": "前往主頁",
+    "home_cta": "返回主頁",
+    "title": "找不到"
+  },
+  "settings": {
+    "about": "關於",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "返回",
+    "game": "對局",
+    "generale": "一般",
+    "github": "GitHub",
+    "language": "語言",
+    "link_error_body": "請稍後再試。",
+    "link_error_title": "無法開啟連結",
+    "links": "連結",
+    "more": "更多",
+    "privacy": "隱私權政策",
+    "rate": "評分",
+    "share": "分享",
+    "support": "支援",
+    "support_us": "支持我們",
+    "terms": "服務條款",
+    "title": "設定",
+    "version": "版本",
+    "website": "網站"
+  }
+}

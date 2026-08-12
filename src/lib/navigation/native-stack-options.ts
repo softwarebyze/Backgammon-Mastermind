@@ -82,8 +82,8 @@ export function pickerFormSheetOptions(title: string): NativeStackNavigationOpti
   return {
     presentation: 'formSheet',
     sheetGrabberVisible: true,
-    // Tall enough for the 17-language picker; short lists still scroll fine.
-    sheetAllowedDetents: [0.55, 0.95],
+    // Tall enough for the full language picker; short lists still scroll fine.
+    sheetAllowedDetents: [0.7, 0.95],
     sheetCornerRadius: 16,
     title,
     headerShown: true,

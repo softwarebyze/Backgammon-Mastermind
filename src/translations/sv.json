@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Stäng alternativ",
+      "moving": "Flyttar…",
+      "new_game_message": "Starta ett nytt parti?",
+      "new_game_title": "Nytt parti",
+      "no_legal_moves": "Inga lagliga drag…",
+      "play_again": "Spela igen",
+      "play_again_a11y": "Spela igen",
+      "roll_dice": "Kasta tärningar",
+      "roll_dice_a11y": "Kasta tärningar",
+      "rolling": "Kastar…"
+    },
+    "nudge": {
+      "roll_first": "Kasta tärningarna först"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} slår {{low}}",
+      "goes_first": "{{player}} börjar!",
+      "roll": "Kasta",
+      "rolls_for_opening": "{{player}} kastar om öppningen",
+      "tie": "Oavgjort!",
+      "tie_again": "Samma siffra — kasta igen",
+      "waiting_roll": "{{player}} kastar…",
+      "who_goes_first": "Vem börjar?",
+      "your_roll": "Tryck var som helst för att kasta"
+    },
+    "options": {
+      "open_settings": "Språk och mer",
+      "open_settings_hint": "Öppna Inställningar",
+      "title": "Partialternativ"
+    },
+    "preferences": {
+      "auto_move": "Automatiskt drag vid tvång",
+      "auto_move_hint": "Spela det enda lagliga draget automatiskt",
+      "auto_roll": "Automatiskt tärningskast",
+      "auto_roll_hint": "Kasta automatiskt på din tur",
+      "dice_display": "Tärningsvisning",
+      "dice_dots": "Prickar",
+      "dice_numbers": "Siffror",
+      "direction_overlay": "Riktningsvisning",
+      "direction_overlay_hint": "Hästskoformad bana på brädet",
+      "move_hints": "Dragtips",
+      "move_hints_hint": "Guldpunkt bredvid punkter du kan flytta från",
+      "point_numbers": "Punktnummer",
+      "point_numbers_hint": "Visa etiketter 1–24 på brädet",
+      "section_automation": "Automatisering",
+      "section_board": "Bräde",
+      "section_dice": "Tärningar",
+      "sound": "Spelljud",
+      "sound_hint": "Mjuka tärnings-, slag- och segerljud — respekterar tyst läge"
+    },
+    "review": {
+      "back_to_live": "Tillbaka till pågående parti",
+      "live": "Pågående parti",
+      "live_short": "Live",
+      "move_a11y": "Drag {{ply}}, {{player}}",
+      "move_position": "Drag {{current}} av {{total}} · {{player}}",
+      "next": "Nästa tur",
+      "opening": "Startposition",
+      "pause_replay": "Paus",
+      "player_black": "Svart",
+      "player_white": "Vit",
+      "previous": "Föregående tur",
+      "replay": "Omspelning",
+      "scrubber_hint": "Tryck på en tur för att granska",
+      "start": "Start",
+      "turn_a11y": "Tur {{turn}}, {{player}}",
+      "turn_label": "Tur {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tur {{turn}}/{{totalTurns}} · drag {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Granskar — tryck på Live eller Tillbaka för att fortsätta"
+    },
+    "status": {
+      "black_wins": "Svart vinner",
+      "computer_wins": "Datorn vinner",
+      "white_wins": "🏆 Vit vinner!",
+      "you_win": "🏆 Du vinner!"
+    }
+  },
+  "home": {
+    "cancel": "Avbryt",
+    "continue": "Fortsätt",
+    "continue_or_new": "Fortsätta det aktuella partiet eller starta ett nytt?",
+    "game_in_progress": "Parti pågår",
+    "new_game": "Nytt parti",
+    "new_game_confirm_web": "Starta ett nytt parti? (Använd Fortsätt på startskärmen för att fortsätta det aktuella.)",
+    "resume": "Fortsätt parti",
+    "resume_a11y": "Fortsätt sparat parti",
+    "resume_sub": "Fortsätt där du slutade",
+    "subtitle": "Bemästra brädet — drag för drag",
+    "two_players": "2 spelare",
+    "two_players_a11y": "Spela med två spelare på den här enheten",
+    "two_players_sub": "Turvis på samma enhet",
+    "vs_computer": "Mot dator",
+    "vs_computer_a11y": "Spela mot datorn",
+    "vs_computer_sub": "Spela mot AI"
+  },
+  "not_found": {
+    "body": "Den sidan hör inte till Backgammon Mastermind. Gå hem för att starta ett parti.",
+    "heading": "Utanför brädet",
+    "home_a11y": "Gå till start",
+    "home_cta": "Tillbaka till start",
+    "title": "Hittades inte"
+  },
+  "settings": {
+    "about": "Om",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Tillbaka",
+    "game": "Spel",
+    "generale": "Allmänt",
+    "github": "GitHub",
+    "language": "Språk",
+    "link_error_body": "Försök igen senare.",
+    "link_error_title": "Kan inte öppna länken",
+    "links": "Länkar",
+    "more": "Mer",
+    "privacy": "Integritetspolicy",
+    "rate": "Betygsätt",
+    "share": "Dela",
+    "support": "Support",
+    "support_us": "Stöd oss",
+    "terms": "Användarvillkor",
+    "title": "Inställningar",
+    "version": "Version",
+    "website": "Webbplats"
+  }
+}

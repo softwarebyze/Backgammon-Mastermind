@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Tancar opcions",
+      "moving": "Movent…",
+      "new_game_message": "Vols començar una partida nova?",
+      "new_game_title": "Partida nova",
+      "no_legal_moves": "No hi ha moviments legals…",
+      "play_again": "Tornar a jugar",
+      "play_again_a11y": "Tornar a jugar",
+      "roll_dice": "Tirar els daus",
+      "roll_dice_a11y": "Tirar els daus",
+      "rolling": "Tirant…"
+    },
+    "nudge": {
+      "roll_first": "Primer tira els daus"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} guanya a {{low}}",
+      "goes_first": "Comença {{player}}!",
+      "roll": "Tirar",
+      "rolls_for_opening": "{{player}} tira per l’obertura",
+      "tie": "Empat!",
+      "tie_again": "Mateix número — torneu a tirar",
+      "waiting_roll": "{{player}} està tirant…",
+      "who_goes_first": "Qui comença?",
+      "your_roll": "Toca a qualsevol lloc per tirar"
+    },
+    "options": {
+      "open_settings": "Idioma i més",
+      "open_settings_hint": "Obrir Configuració",
+      "title": "Opcions de partida"
+    },
+    "preferences": {
+      "auto_move": "Moure automàticament si és forçat",
+      "auto_move_hint": "Jugar automàticament l’únic moviment legal",
+      "auto_roll": "Tirar els daus automàticament",
+      "auto_roll_hint": "Tirar automàticament en el teu torn",
+      "dice_display": "Aspecte dels daus",
+      "dice_dots": "Punts",
+      "dice_numbers": "Números",
+      "direction_overlay": "Guia de direcció",
+      "direction_overlay_hint": "Recorregut en herradura al tauler",
+      "move_hints": "Pistes de moviment",
+      "move_hints_hint": "Punt daurat al costat dels punts des d’on pots moure",
+      "point_numbers": "Números dels punts",
+      "point_numbers_hint": "Mostrar etiquetes 1–24 al tauler",
+      "section_automation": "Automatització",
+      "section_board": "Tauler",
+      "section_dice": "Daus",
+      "sound": "Sons del joc",
+      "sound_hint": "Sons suaus de daus, cops i victòria — respecta el mode silenci"
+    },
+    "review": {
+      "back_to_live": "Tornar a la partida en curs",
+      "live": "Partida en curs",
+      "live_short": "En viu",
+      "move_a11y": "Moviment {{ply}}, {{player}}",
+      "move_position": "Moviment {{current}} de {{total}} · {{player}}",
+      "next": "Torn següent",
+      "opening": "Posició inicial",
+      "pause_replay": "Pausa",
+      "player_black": "Negres",
+      "player_white": "Blanques",
+      "previous": "Torn anterior",
+      "replay": "Repetició",
+      "scrubber_hint": "Toca un torn per revisar-lo",
+      "start": "Inici",
+      "turn_a11y": "Torn {{turn}}, {{player}}",
+      "turn_label": "Torn {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Torn {{turn}}/{{totalTurns}} · moviment {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisant — toca En viu o Tornar per seguir jugant"
+    },
+    "status": {
+      "black_wins": "Guanyen les negres",
+      "computer_wins": "Guanya l’ordinador",
+      "white_wins": "🏆 Guanyen les blanques!",
+      "you_win": "🏆 Has guanyat!"
+    }
+  },
+  "home": {
+    "cancel": "Cancel·lar",
+    "continue": "Continuar",
+    "continue_or_new": "Continuar la partida actual o començar-ne una de nova?",
+    "game_in_progress": "Partida en curs",
+    "new_game": "Partida nova",
+    "new_game_confirm_web": "Vols començar una partida nova? (Fes servir Reprendre a la pantalla d’inici per continuar l’actual.)",
+    "resume": "Reprendre la partida",
+    "resume_a11y": "Reprendre la partida desada",
+    "resume_sub": "Continua on ho vas deixar",
+    "subtitle": "Domina el tauler — moviment a moviment",
+    "two_players": "2 jugadors",
+    "two_players_a11y": "Jugar amb dos jugadors en aquest dispositiu",
+    "two_players_sub": "Per torns al mateix dispositiu",
+    "vs_computer": "Contra l’ordinador",
+    "vs_computer_a11y": "Jugar contra l’ordinador",
+    "vs_computer_sub": "Juga contra la IA"
+  },
+  "not_found": {
+    "body": "Aquesta pàgina no forma part de Backgammon Mastermind. Torna a l’inici per començar una partida.",
+    "heading": "Fora del tauler",
+    "home_a11y": "Anar a l’inici",
+    "home_cta": "Tornar a l’inici",
+    "title": "No trobat"
+  },
+  "settings": {
+    "about": "Quant a",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Enrere",
+    "game": "Partida",
+    "generale": "General",
+    "github": "GitHub",
+    "language": "Idioma",
+    "link_error_body": "Torna-ho a provar més tard.",
+    "link_error_title": "No s’ha pogut obrir l’enllaç",
+    "links": "Enllaços",
+    "more": "Més",
+    "privacy": "Política de privadesa",
+    "rate": "Valorar",
+    "share": "Compartir",
+    "support": "Suport",
+    "support_us": "Dona’ns suport",
+    "terms": "Condicions del servei",
+    "title": "Configuració",
+    "version": "Versió",
+    "website": "Lloc web"
+  }
+}

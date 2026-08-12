@@ -1,0 +1,18 @@
+{
+  "subtitle": "Klasszikus tavla, nincs reklám",
+  "promoText": "Játssz backgammont a gép ellen vagy felváltva egy baráttal. Nincs fiók, nincs reklám.",
+  "description": "A Backgammon Mastermind a klasszikus stratégiai társasjáték letisztult változata.\n\nAzonnal kezdj partit a gép ellen, vagy oszd meg a táblát egy baráttal pass-and-play módban. Dobj, mozgasd a korongokat, üsd a blotokat, és vidd ki mind a tizenötöt a győzelemhez.\n\nÚj vagy a backgammonban? Kapcsold be a lépésjavaslatokat, a mezőszámokat és az irányjelző réteget, hogy pontosan lásd, hova léphetsz — a tábla menet közben tanít.\n\nFunkciók:\n• gép ellen heurisztikus MI-vel\n• helyi 2 játékos (pass-and-play)\n• húzd vagy koppints a mozgatáshoz; a szabályos célok kiemelve\n• lépésjavaslatok, mezőszámok és irányjelző réteg kezdőknek\n• bármely kör visszajátszása és áttekintése\n• teljesen lokalizált — minden App Store nyelv\n• nincs fiók és nincs reklám — a játék a készülékeden fut\n\nEgy vásárlás. Letöltés után offline is játszható. Tökéletes a készségek csiszolásához.",
+  "keywords": [
+    "backgammon",
+    "társasjáték",
+    "stratégia",
+    "kocka",
+    "két játékos",
+    "MI",
+    "klasszikus",
+    "offline",
+    "tavla",
+    "nard"
+  ],
+  "releaseNotes": "Első App Store megjelenés: backgammon gép ellen vagy felváltva, lépésjavaslatokkal, kör-visszajátszással és adatvédelembarát analitikával."
+}

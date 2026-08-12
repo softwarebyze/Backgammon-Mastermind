@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Închide opțiunile",
+      "moving": "Mută…",
+      "new_game_message": "Începi un joc nou?",
+      "new_game_title": "Joc nou",
+      "no_legal_moves": "Nicio mutare legală…",
+      "play_again": "Joacă din nou",
+      "play_again_a11y": "Joacă din nou",
+      "roll_dice": "Aruncă zarurile",
+      "roll_dice_a11y": "Aruncă zarurile",
+      "rolling": "Aruncă…"
+    },
+    "nudge": {
+      "roll_first": "Aruncă mai întâi zarurile"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bate {{low}}",
+      "goes_first": "{{player}} începe!",
+      "roll": "Aruncă",
+      "rolls_for_opening": "{{player}} aruncă pentru deschidere",
+      "tie": "Egalitate!",
+      "tie_again": "Același număr — aruncă din nou",
+      "waiting_roll": "{{player}} aruncă…",
+      "who_goes_first": "Cine începe?",
+      "your_roll": "Atinge oriunde pentru a arunca"
+    },
+    "options": {
+      "open_settings": "Limbă și altele",
+      "open_settings_hint": "Deschide Setările",
+      "title": "Opțiuni de joc"
+    },
+    "preferences": {
+      "auto_move": "Mutare automată când e forțată",
+      "auto_move_hint": "Joacă automat singura mutare legală",
+      "auto_roll": "Aruncare automată a zarurilor",
+      "auto_roll_hint": "Aruncă automat în tura ta",
+      "dice_display": "Afișarea zarurilor",
+      "dice_dots": "Puncte",
+      "dice_numbers": "Numere",
+      "direction_overlay": "Ghid de direcție",
+      "direction_overlay_hint": "Traseu în potcoavă pe tablă",
+      "move_hints": "Indicii de mutare",
+      "move_hints_hint": "Punct auriu lângă punctele de pe care poți muta",
+      "point_numbers": "Numerele punctelor",
+      "point_numbers_hint": "Afișează etichetele 1–24 pe tablă",
+      "section_automation": "Automatizare",
+      "section_board": "Tablă",
+      "section_dice": "Zaruri",
+      "sound": "Sunete de joc",
+      "sound_hint": "Sunete blânde de zaruri, lovituri și victorie — respectă modul silențios"
+    },
+    "review": {
+      "back_to_live": "Înapoi la jocul în curs",
+      "live": "Joc în curs",
+      "live_short": "Live",
+      "move_a11y": "Mutarea {{ply}}, {{player}}",
+      "move_position": "Mutarea {{current}} din {{total}} · {{player}}",
+      "next": "Tura următoare",
+      "opening": "Poziție de start",
+      "pause_replay": "Pauză",
+      "player_black": "Negru",
+      "player_white": "Alb",
+      "previous": "Tura anterioară",
+      "replay": "Reluare",
+      "scrubber_hint": "Atinge o tură pentru a o revizui",
+      "start": "Start",
+      "turn_a11y": "Tura {{turn}}, {{player}}",
+      "turn_label": "Tura {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tura {{turn}}/{{totalTurns}} · mutarea {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revizuire — atinge Live sau Înapoi pentru a continua"
+    },
+    "status": {
+      "black_wins": "Negru câștigă",
+      "computer_wins": "Computerul câștigă",
+      "white_wins": "🏆 Alb câștigă!",
+      "you_win": "🏆 Ai câștigat!"
+    }
+  },
+  "home": {
+    "cancel": "Anulează",
+    "continue": "Continuă",
+    "continue_or_new": "Continui jocul actual sau începi unul nou?",
+    "game_in_progress": "Joc în curs",
+    "new_game": "Joc nou",
+    "new_game_confirm_web": "Începi un joc nou? (Folosește Reluare pe ecranul principal pentru a continua pe cel actual.)",
+    "resume": "Reia jocul",
+    "resume_a11y": "Reia jocul salvat",
+    "resume_sub": "Continuă de unde ai rămas",
+    "subtitle": "Stăpânește tabla — mutare cu mutare",
+    "two_players": "2 jucători",
+    "two_players_a11y": "Joacă cu doi jucători pe acest dispozitiv",
+    "two_players_sub": "Pe rând pe același dispozitiv",
+    "vs_computer": "Contra computerului",
+    "vs_computer_a11y": "Joacă împotriva computerului",
+    "vs_computer_sub": "Joacă împotriva AI"
+  },
+  "not_found": {
+    "body": "Acea pagină nu face parte din Backgammon Mastermind. Mergi acasă pentru a începe un joc.",
+    "heading": "În afara tablei",
+    "home_a11y": "Mergi acasă",
+    "home_cta": "Înapoi acasă",
+    "title": "Negăsit"
+  },
+  "settings": {
+    "about": "Despre",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Înapoi",
+    "game": "Joc",
+    "generale": "General",
+    "github": "GitHub",
+    "language": "Limbă",
+    "link_error_body": "Încearcă din nou mai târziu.",
+    "link_error_title": "Nu se poate deschide linkul",
+    "links": "Linkuri",
+    "more": "Mai mult",
+    "privacy": "Politica de confidențialitate",
+    "rate": "Evaluează",
+    "share": "Distribuie",
+    "support": "Asistență",
+    "support_us": "Sprijină-ne",
+    "terms": "Termeni și condiții",
+    "title": "Setări",
+    "version": "Versiune",
+    "website": "Site web"
+  }
+}

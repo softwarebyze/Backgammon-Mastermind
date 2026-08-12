@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Beállítások bezárása",
+      "moving": "Lépés…",
+      "new_game_message": "Új játék indítása?",
+      "new_game_title": "Új játék",
+      "no_legal_moves": "Nincs szabályos lépés…",
+      "play_again": "Újra játszás",
+      "play_again_a11y": "Újra játszás",
+      "roll_dice": "Kockadobás",
+      "roll_dice_a11y": "Kockadobás",
+      "rolling": "Dobás…"
+    },
+    "nudge": {
+      "roll_first": "Először dobj a kockával"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} jobb, mint {{low}}",
+      "goes_first": "{{player}} kezd!",
+      "roll": "Dobás",
+      "rolls_for_opening": "{{player}} dob a kezdésért",
+      "tie": "Döntetlen!",
+      "tie_again": "Ugyanaz a szám — dobj újra",
+      "waiting_roll": "{{player}} dob…",
+      "who_goes_first": "Ki kezd?",
+      "your_roll": "Érintsd meg bárhol a dobáshoz"
+    },
+    "options": {
+      "open_settings": "Nyelv és egyebek",
+      "open_settings_hint": "Beállítások megnyitása",
+      "title": "Játékbeállítások"
+    },
+    "preferences": {
+      "auto_move": "Automatikus lépés kényszer esetén",
+      "auto_move_hint": "Az egyetlen szabályos lépés automatikus lejátszása",
+      "auto_roll": "Automatikus kockadobás",
+      "auto_roll_hint": "Automatikus dobás a te körödben",
+      "dice_display": "Kockamegjelenítés",
+      "dice_dots": "Pontok",
+      "dice_numbers": "Számok",
+      "direction_overlay": "Iránymutatás",
+      "direction_overlay_hint": "Patkó alakú útvonal a táblán",
+      "move_hints": "Lépéstippek",
+      "move_hints_hint": "Arany pont azoknál a mezőknél, ahonnan léphetsz",
+      "point_numbers": "Mezőszámok",
+      "point_numbers_hint": "1–24 címkék megjelenítése a táblán",
+      "section_automation": "Automatizálás",
+      "section_board": "Tábla",
+      "section_dice": "Kockák",
+      "sound": "Játékhangok",
+      "sound_hint": "Halk kocka-, ütés- és győzelemhangok — tiszteletben tartja a néma módot"
+    },
+    "review": {
+      "back_to_live": "Vissza az élő játékhoz",
+      "live": "Élő játék",
+      "live_short": "Élő",
+      "move_a11y": "{{ply}}. lépés, {{player}}",
+      "move_position": "{{current}}. / {{total}}. lépés · {{player}}",
+      "next": "Következő kör",
+      "opening": "Kezdőállás",
+      "pause_replay": "Szünet",
+      "player_black": "Fekete",
+      "player_white": "Fehér",
+      "previous": "Előző kör",
+      "replay": "Visszajátszás",
+      "scrubber_hint": "Érintsd meg a kört a visszanézéshez",
+      "start": "Kezdés",
+      "turn_a11y": "{{turn}}. kör, {{player}}",
+      "turn_label": "{{turn}}./{{totalTurns}}. kör · {{player}}",
+      "turn_position": "{{turn}}./{{totalTurns}}. kör · {{moveInTurn}}./{{movesInTurn}}. lépés · {{player}}",
+      "viewing_hint": "Visszanézés — érintsd meg az Élő vagy Vissza gombot a folytatáshoz"
+    },
+    "status": {
+      "black_wins": "Fekete nyer",
+      "computer_wins": "A számítógép nyer",
+      "white_wins": "🏆 Fehér nyer!",
+      "you_win": "🏆 Nyertél!"
+    }
+  },
+  "home": {
+    "cancel": "Mégse",
+    "continue": "Folytatás",
+    "continue_or_new": "Folytatod a jelenlegi játékot, vagy újat kezdesz?",
+    "game_in_progress": "Játék folyamatban",
+    "new_game": "Új játék",
+    "new_game_confirm_web": "Új játék indítása? (A jelenlegi folytatásához használd a Folytatás gombot a kezdőképernyőn.)",
+    "resume": "Játék folytatása",
+    "resume_a11y": "Mentett játék folytatása",
+    "resume_sub": "Folytasd ott, ahol abbahagytad",
+    "subtitle": "Urald a táblát — lépésről lépésre",
+    "two_players": "2 játékos",
+    "two_players_a11y": "Két játékossal játszás ezen az eszközön",
+    "two_players_sub": "Felváltva ugyanazon az eszközön",
+    "vs_computer": "Számítógép ellen",
+    "vs_computer_a11y": "Játék a számítógép ellen",
+    "vs_computer_sub": "Játék a MI ellen"
+  },
+  "not_found": {
+    "body": "Ez az oldal nem része a Backgammon Mastermindnak. Menj haza, és indíts egy játékot.",
+    "heading": "A táblán kívül",
+    "home_a11y": "Ugrás a kezdőlapra",
+    "home_cta": "Vissza a kezdőlapra",
+    "title": "Nem található"
+  },
+  "settings": {
+    "about": "Névjegy",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Vissza",
+    "game": "Játék",
+    "generale": "Általános",
+    "github": "GitHub",
+    "language": "Nyelv",
+    "link_error_body": "Próbáld meg később újra.",
+    "link_error_title": "A hivatkozás nem nyitható meg",
+    "links": "Hivatkozások",
+    "more": "Továbbiak",
+    "privacy": "Adatvédelmi irányelvek",
+    "rate": "Értékelés",
+    "share": "Megosztás",
+    "support": "Támogatás",
+    "support_us": "Támogass minket",
+    "terms": "Szolgáltatási feltételek",
+    "title": "Beállítások",
+    "version": "Verzió",
+    "website": "Weboldal"
+  }
+}

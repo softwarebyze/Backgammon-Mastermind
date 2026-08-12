@@ -29,8 +29,8 @@ Use this before the first App Store / Play Store submission.
 - [ ] **Manual playtest on iPhone** — vs Computer + 2-player, full game to win (turn indicator, settings)
 - [x] Settings links wired (GitHub, privacy, terms, share, rate)
 - [x] Turn indicator — clear white/black whose-turn UI (PR #23)
-- [x] App Store listing draft in `store.config.json` (EAS Metadata)
-- [x] Review phone: `+1 954 593 1670` in `store.config.json`
+- [x] App Store listing draft in ``store.config.js` + `store/locales/` (EAS Metadata)
+- [x] Review phone: `+1 954 593 1670` in ``store.config.js` + `store/locales/`
 - [x] Set `EXPO_PUBLIC_APP_STORE_ID` in production EAS env — **currently `6780139011` (development ASC app; update when production record exists)**
 - [x] Contact email: `zackebenfeld@gmail.com` in app + legal docs
 
@@ -47,19 +47,19 @@ Use this before the first App Store / Play Store submission.
 
 ## Store listing requirements
 
-- [x] App Store listing copy — `store.config.json` (source of truth; push via EAS Metadata)
+- [x] App Store listing copy — ``store.config.js` + `store/locales/` (source of truth; push via EAS Metadata)
 - [x] **App Store Connect API key** — via EAS credentials (`M7LGZ9S6S2`) for `eas metadata` / submit
 - [x] `pnpm metadata:push` — listing synced for preview TF app (`6781121420`)
-- [x] `pnpm metadata:push:production` — sync `store.config.json` → production ASC (`6792138473`)
+- [x] `pnpm metadata:push:production` — sync ``store.config.js` + `store/locales/` → production ASC (`6792138473`)
 - [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
 - [x] Upload screenshots — `pnpm screenshots:upload:ios` (Fastlane; 6× 1320×2868 → production 1.0.0)
 - [ ] Google Play Console app record + screenshots + description (`pnpm screenshots:upload:android` once Play JSON key exists)
-- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in `store.config.json`)
+- [x] Privacy policy — hosted at https://backgammon-mastermind.vercel.app/privacy/ (source: `docs/privacy-policy.md` + `public/privacy/`; URL in ``store.config.js` + `store/locales/`)
 - [x] Terms of service — `docs/terms-of-service.md` (+ hosted `/terms/`)
 - [x] Pricing — Paid Up Front **$4.99** USD (USA base in ASC Pricing UI; not via EAS Metadata)
-- [x] Marketing / privacy URLs — in `store.config.json`; sync with `pnpm metadata:push:production`
+- [x] Marketing / privacy URLs — in ``store.config.js` + `store/locales/`; sync with `pnpm metadata:push:production`
 - [ ] Privacy nutrition labels — declare analytics (PostHog product interaction) in ASC UI
-- [x] iOS age rating — via `store.config.json` → `apple.advisory` + metadata push (4+ on production)
+- [x] iOS age rating — via ``store.config.js` + `store/locales/` → `apple.advisory` + metadata push (4+ on production)
 - [ ] Google Play content rating questionnaire
 - [x] Production ASC app — `com.backgammonmastermind` / Apple ID `6792138473`
 - [x] Export compliance — `ITSAppUsesNonExemptEncryption: false` in `app.config.ts`
@@ -127,7 +127,7 @@ Full how-to: [eas-metadata.md](./eas-metadata.md).
 
 | Change | How |
 | ------ | --- |
-| Description, keywords, URLs, review notes, age advisory | Edit `store.config.json` → `pnpm metadata:push:production` (or GHA) |
+| Description, keywords, URLs, review notes, age advisory | Edit ``store.config.js` + `store/locales/` → `pnpm metadata:push:production` (or GHA) |
 | Price / availability | ASC **Pricing and Availability** UI (EAS Metadata does not cover price) |
 | Privacy nutrition labels | ASC UI |
 | Screenshots | **Fastlane** — `pnpm screenshots:upload:ios` / `:android` ([store-screenshots.md](./store-screenshots.md)) |

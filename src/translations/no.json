@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Lukk alternativer",
+      "moving": "Flytter…",
+      "new_game_message": "Starte et nytt spill?",
+      "new_game_title": "Nytt spill",
+      "no_legal_moves": "Ingen lovlige trekk…",
+      "play_again": "Spill igjen",
+      "play_again_a11y": "Spill igjen",
+      "roll_dice": "Kast terninger",
+      "roll_dice_a11y": "Kast terninger",
+      "rolling": "Kaster…"
+    },
+    "nudge": {
+      "roll_first": "Kast terningene først"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} slår {{low}}",
+      "goes_first": "{{player}} starter!",
+      "roll": "Kast",
+      "rolls_for_opening": "{{player}} kaster om åpningen",
+      "tie": "Uavgjort!",
+      "tie_again": "Samme tall — kast på nytt",
+      "waiting_roll": "{{player}} kaster…",
+      "who_goes_first": "Hvem starter?",
+      "your_roll": "Trykk hvor som helst for å kaste"
+    },
+    "options": {
+      "open_settings": "Språk og mer",
+      "open_settings_hint": "Åpne innstillinger",
+      "title": "Spillalternativer"
+    },
+    "preferences": {
+      "auto_move": "Automatisk trekk ved tvang",
+      "auto_move_hint": "Spill det eneste lovlige trekket automatisk",
+      "auto_roll": "Automatisk terningkast",
+      "auto_roll_hint": "Kast automatisk på din tur",
+      "dice_display": "Terningvisning",
+      "dice_dots": "Prikker",
+      "dice_numbers": "Tall",
+      "direction_overlay": "Retningsvisning",
+      "direction_overlay_hint": "Hestesko-sti på brettet",
+      "move_hints": "Trekkhint",
+      "move_hints_hint": "Gullprikk ved punkter du kan flytte fra",
+      "point_numbers": "Punktnumre",
+      "point_numbers_hint": "Vis etiketter 1–24 på brettet",
+      "section_automation": "Automatisering",
+      "section_board": "Brett",
+      "section_dice": "Terninger",
+      "sound": "Spilllyder",
+      "sound_hint": "Myke terning-, slag- og seierslyder — respekterer lydløs modus"
+    },
+    "review": {
+      "back_to_live": "Tilbake til pågående spill",
+      "live": "Pågående spill",
+      "live_short": "Live",
+      "move_a11y": "Trekk {{ply}}, {{player}}",
+      "move_position": "Trekk {{current}} av {{total}} · {{player}}",
+      "next": "Neste tur",
+      "opening": "Startposisjon",
+      "pause_replay": "Pause",
+      "player_black": "Svart",
+      "player_white": "Hvit",
+      "previous": "Forrige tur",
+      "replay": "Repetisjon",
+      "scrubber_hint": "Trykk på en tur for å se gjennom",
+      "start": "Start",
+      "turn_a11y": "Tur {{turn}}, {{player}}",
+      "turn_label": "Tur {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tur {{turn}}/{{totalTurns}} · trekk {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Gjennomgang — trykk på Live eller Tilbake for å fortsette"
+    },
+    "status": {
+      "black_wins": "Svart vinner",
+      "computer_wins": "Datamaskinen vinner",
+      "white_wins": "🏆 Hvit vinner!",
+      "you_win": "🏆 Du vinner!"
+    }
+  },
+  "home": {
+    "cancel": "Avbryt",
+    "continue": "Fortsett",
+    "continue_or_new": "Fortsette det nåværende spillet eller starte et nytt?",
+    "game_in_progress": "Spill pågår",
+    "new_game": "Nytt spill",
+    "new_game_confirm_web": "Starte et nytt spill? (Bruk Fortsett på startskjermen for å fortsette det nåværende.)",
+    "resume": "Fortsett spill",
+    "resume_a11y": "Fortsett lagret spill",
+    "resume_sub": "Fortsett der du slapp",
+    "subtitle": "Mestre brettet — trekk for trekk",
+    "two_players": "2 spillere",
+    "two_players_a11y": "Spill med to spillere på denne enheten",
+    "two_players_sub": "Turvis på samme enhet",
+    "vs_computer": "Mot datamaskin",
+    "vs_computer_a11y": "Spill mot datamaskinen",
+    "vs_computer_sub": "Spill mot AI"
+  },
+  "not_found": {
+    "body": "Den siden er ikke en del av Backgammon Mastermind. Gå hjem for å starte et spill.",
+    "heading": "Utenfor brettet",
+    "home_a11y": "Gå til start",
+    "home_cta": "Tilbake til start",
+    "title": "Ikke funnet"
+  },
+  "settings": {
+    "about": "Om",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Tilbake",
+    "game": "Spill",
+    "generale": "Generelt",
+    "github": "GitHub",
+    "language": "Språk",
+    "link_error_body": "Prøv igjen senere.",
+    "link_error_title": "Kan ikke åpne lenke",
+    "links": "Lenker",
+    "more": "Mer",
+    "privacy": "Personvernerklæring",
+    "rate": "Vurder",
+    "share": "Del",
+    "support": "Support",
+    "support_us": "Støtt oss",
+    "terms": "Vilkår for bruk",
+    "title": "Innstillinger",
+    "version": "Versjon",
+    "website": "Nettsted"
+  }
+}

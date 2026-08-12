@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Luk indstillinger",
+      "moving": "Flytter…",
+      "new_game_message": "Start et nyt spil?",
+      "new_game_title": "Nyt spil",
+      "no_legal_moves": "Ingen lovlige træk…",
+      "play_again": "Spil igen",
+      "play_again_a11y": "Spil igen",
+      "roll_dice": "Kast terninger",
+      "roll_dice_a11y": "Kast terninger",
+      "rolling": "Kaster…"
+    },
+    "nudge": {
+      "roll_first": "Kast terningerne først"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} slår {{low}}",
+      "goes_first": "{{player}} starter!",
+      "roll": "Kast",
+      "rolls_for_opening": "{{player}} kaster om åbningen",
+      "tie": "Uafgjort!",
+      "tie_again": "Samme tal — kast igen",
+      "waiting_roll": "{{player}} kaster…",
+      "who_goes_first": "Hvem starter?",
+      "your_roll": "Tryk hvor som helst for at kaste"
+    },
+    "options": {
+      "open_settings": "Sprog og mere",
+      "open_settings_hint": "Åbn indstillinger",
+      "title": "Spilindstillinger"
+    },
+    "preferences": {
+      "auto_move": "Automatisk træk ved tvang",
+      "auto_move_hint": "Spil det eneste lovlige træk automatisk",
+      "auto_roll": "Automatisk terningekast",
+      "auto_roll_hint": "Kast automatisk på din tur",
+      "dice_display": "Terningevisning",
+      "dice_dots": "Prikker",
+      "dice_numbers": "Tal",
+      "direction_overlay": "Retningsvisning",
+      "direction_overlay_hint": "Hestesko-sti på brættet",
+      "move_hints": "Trækhints",
+      "move_hints_hint": "Guldprik ved punkter, du kan flytte fra",
+      "point_numbers": "Punktnumre",
+      "point_numbers_hint": "Vis etiketter 1–24 på brættet",
+      "section_automation": "Automatisering",
+      "section_board": "Bræt",
+      "section_dice": "Terninger",
+      "sound": "Spillyde",
+      "sound_hint": "Bløde terninge-, hit- og sejrslyde — respekterer lydløs tilstand"
+    },
+    "review": {
+      "back_to_live": "Tilbage til det aktuelle spil",
+      "live": "Aktuelt spil",
+      "live_short": "Live",
+      "move_a11y": "Træk {{ply}}, {{player}}",
+      "move_position": "Træk {{current}} af {{total}} · {{player}}",
+      "next": "Næste tur",
+      "opening": "Startposition",
+      "pause_replay": "Pause",
+      "player_black": "Sort",
+      "player_white": "Hvid",
+      "previous": "Forrige tur",
+      "replay": "Genafspilning",
+      "scrubber_hint": "Tryk på en tur for at gennemgå",
+      "start": "Start",
+      "turn_a11y": "Tur {{turn}}, {{player}}",
+      "turn_label": "Tur {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tur {{turn}}/{{totalTurns}} · træk {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Gennemgang — tryk på Live eller Tilbage for at fortsætte"
+    },
+    "status": {
+      "black_wins": "Sort vinder",
+      "computer_wins": "Computeren vinder",
+      "white_wins": "🏆 Hvid vinder!",
+      "you_win": "🏆 Du vinder!"
+    }
+  },
+  "home": {
+    "cancel": "Annuller",
+    "continue": "Fortsæt",
+    "continue_or_new": "Fortsæt det aktuelle spil eller start et nyt?",
+    "game_in_progress": "Spil i gang",
+    "new_game": "Nyt spil",
+    "new_game_confirm_web": "Start et nyt spil? (Brug Genoptag på startskærmen for at fortsætte det aktuelle.)",
+    "resume": "Genoptag spil",
+    "resume_a11y": "Genoptag gemt spil",
+    "resume_sub": "Fortsæt hvor du slap",
+    "subtitle": "Mestr brættet — et træk ad gangen",
+    "two_players": "2 spillere",
+    "two_players_a11y": "Spil med to spillere på denne enhed",
+    "two_players_sub": "Skiftes på samme enhed",
+    "vs_computer": "Mod computer",
+    "vs_computer_a11y": "Spil mod computeren",
+    "vs_computer_sub": "Spil mod AI"
+  },
+  "not_found": {
+    "body": "Den side er ikke en del af Backgammon Mastermind. Gå hjem for at starte et spil.",
+    "heading": "Uden for brættet",
+    "home_a11y": "Gå til start",
+    "home_cta": "Tilbage til start",
+    "title": "Ikke fundet"
+  },
+  "settings": {
+    "about": "Om",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Tilbage",
+    "game": "Spil",
+    "generale": "Generelt",
+    "github": "GitHub",
+    "language": "Sprog",
+    "link_error_body": "Prøv igen senere.",
+    "link_error_title": "Kan ikke åbne link",
+    "links": "Links",
+    "more": "Mere",
+    "privacy": "Privatlivspolitik",
+    "rate": "Bedøm",
+    "share": "Del",
+    "support": "Support",
+    "support_us": "Støt os",
+    "terms": "Servicevilkår",
+    "title": "Indstillinger",
+    "version": "Version",
+    "website": "Hjemmeside"
+  }
+}

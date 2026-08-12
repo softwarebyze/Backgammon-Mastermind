@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Đóng tùy chọn",
+      "moving": "Đang đi…",
+      "new_game_message": "Bắt đầu ván mới?",
+      "new_game_title": "Ván mới",
+      "no_legal_moves": "Không có nước đi hợp lệ…",
+      "play_again": "Chơi lại",
+      "play_again_a11y": "Chơi lại",
+      "roll_dice": "Gieo xúc xắc",
+      "roll_dice_a11y": "Gieo xúc xắc",
+      "rolling": "Đang gieo…"
+    },
+    "nudge": {
+      "roll_first": "Gieo xúc xắc trước"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} thắng {{low}}",
+      "goes_first": "{{player}} đi trước!",
+      "roll": "Gieo",
+      "rolls_for_opening": "{{player}} gieo để mở ván",
+      "tie": "Hòa!",
+      "tie_again": "Cùng số — gieo lại",
+      "waiting_roll": "{{player}} đang gieo…",
+      "who_goes_first": "Ai đi trước?",
+      "your_roll": "Chạm bất kỳ đâu để gieo"
+    },
+    "options": {
+      "open_settings": "Ngôn ngữ & khác",
+      "open_settings_hint": "Mở Cài đặt",
+      "title": "Tùy chọn ván chơi"
+    },
+    "preferences": {
+      "auto_move": "Tự động đi khi bị buộc",
+      "auto_move_hint": "Tự động chơi nước đi hợp lệ duy nhất",
+      "auto_roll": "Tự động gieo xúc xắc",
+      "auto_roll_hint": "Tự động gieo trong lượt của bạn",
+      "dice_display": "Hiển thị xúc xắc",
+      "dice_dots": "Chấm",
+      "dice_numbers": "Số",
+      "direction_overlay": "Hướng dẫn hướng",
+      "direction_overlay_hint": "Đường hình móng ngựa trên bàn",
+      "move_hints": "Gợi ý nước đi",
+      "move_hints_hint": "Chấm vàng cạnh các điểm bạn có thể đi",
+      "point_numbers": "Số điểm",
+      "point_numbers_hint": "Hiện nhãn 1–24 trên bàn",
+      "section_automation": "Tự động hóa",
+      "section_board": "Bàn cờ",
+      "section_dice": "Xúc xắc",
+      "sound": "Âm thanh trò chơi",
+      "sound_hint": "Âm xúc xắc, ăn quân và chiến thắng nhẹ nhàng — tôn trọng chế độ im lặng"
+    },
+    "review": {
+      "back_to_live": "Quay lại ván đang chơi",
+      "live": "Ván đang chơi",
+      "live_short": "Trực tiếp",
+      "move_a11y": "Nước {{ply}}, {{player}}",
+      "move_position": "Nước {{current}} / {{total}} · {{player}}",
+      "next": "Lượt tiếp",
+      "opening": "Thế cờ mở đầu",
+      "pause_replay": "Tạm dừng",
+      "player_black": "Đen",
+      "player_white": "Trắng",
+      "previous": "Lượt trước",
+      "replay": "Phát lại",
+      "scrubber_hint": "Chạm một lượt để xem lại",
+      "start": "Bắt đầu",
+      "turn_a11y": "Lượt {{turn}}, {{player}}",
+      "turn_label": "Lượt {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Lượt {{turn}}/{{totalTurns}} · nước {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Đang xem lại — chạm Trực tiếp hoặc Quay lại để tiếp tục chơi"
+    },
+    "status": {
+      "black_wins": "Đen thắng",
+      "computer_wins": "Máy tính thắng",
+      "white_wins": "🏆 Trắng thắng!",
+      "you_win": "🏆 Bạn thắng!"
+    }
+  },
+  "home": {
+    "cancel": "Hủy",
+    "continue": "Tiếp tục",
+    "continue_or_new": "Tiếp tục ván hiện tại hay bắt đầu ván mới?",
+    "game_in_progress": "Đang có ván chơi",
+    "new_game": "Ván mới",
+    "new_game_confirm_web": "Bắt đầu ván mới? (Dùng Tiếp tục trên màn hình chính để chơi tiếp ván hiện tại.)",
+    "resume": "Tiếp tục ván",
+    "resume_a11y": "Tiếp tục ván đã lưu",
+    "resume_sub": "Tiếp tục từ chỗ bạn dừng",
+    "subtitle": "Làm chủ bàn cờ — từng nước một",
+    "two_players": "2 người chơi",
+    "two_players_a11y": "Chơi hai người trên thiết bị này",
+    "two_players_sub": "Luân phiên trên cùng thiết bị",
+    "vs_computer": "Đấu máy",
+    "vs_computer_a11y": "Chơi với máy tính",
+    "vs_computer_sub": "Chơi với AI"
+  },
+  "not_found": {
+    "body": "Trang đó không thuộc Backgammon Mastermind. Về trang chủ để bắt đầu một ván.",
+    "heading": "Ngoài bàn cờ",
+    "home_a11y": "Về trang chủ",
+    "home_cta": "Quay về trang chủ",
+    "title": "Không tìm thấy"
+  },
+  "settings": {
+    "about": "Giới thiệu",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Quay lại",
+    "game": "Trò chơi",
+    "generale": "Chung",
+    "github": "GitHub",
+    "language": "Ngôn ngữ",
+    "link_error_body": "Vui lòng thử lại sau.",
+    "link_error_title": "Không thể mở liên kết",
+    "links": "Liên kết",
+    "more": "Thêm",
+    "privacy": "Chính sách quyền riêng tư",
+    "rate": "Đánh giá",
+    "share": "Chia sẻ",
+    "support": "Hỗ trợ",
+    "support_us": "Ủng hộ chúng tôi",
+    "terms": "Điều khoản dịch vụ",
+    "title": "Cài đặt",
+    "version": "Phiên bản",
+    "website": "Trang web"
+  }
+}

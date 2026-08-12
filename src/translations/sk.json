@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Zavrieť možnosti",
+      "moving": "Ťahá…",
+      "new_game_message": "Začať novú hru?",
+      "new_game_title": "Nová hra",
+      "no_legal_moves": "Žiadne platné ťahy…",
+      "play_again": "Hrať znova",
+      "play_again_a11y": "Hrať znova",
+      "roll_dice": "Hodiť kockami",
+      "roll_dice_a11y": "Hodiť kockami",
+      "rolling": "Hádzanie…"
+    },
+    "nudge": {
+      "roll_first": "Najprv hoďte kockami"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} poráža {{low}}",
+      "goes_first": "{{player}} začína!",
+      "roll": "Hodiť",
+      "rolls_for_opening": "{{player}} hádže o začiatok",
+      "tie": "Remíza!",
+      "tie_again": "Rovnaké číslo — hoďte znova",
+      "waiting_roll": "{{player}} hádže…",
+      "who_goes_first": "Kto začína?",
+      "your_roll": "Klepnite kamkoľvek pre hod"
+    },
+    "options": {
+      "open_settings": "Jazyk a ďalšie",
+      "open_settings_hint": "Otvoriť nastavenia",
+      "title": "Možnosti hry"
+    },
+    "preferences": {
+      "auto_move": "Automatický ťah pri nútenom ťahu",
+      "auto_move_hint": "Automaticky zahrať jediný platný ťah",
+      "auto_roll": "Automatické hádzanie",
+      "auto_roll_hint": "Automaticky hodiť na vašom ťahu",
+      "dice_display": "Zobrazenie kociek",
+      "dice_dots": "Bodky",
+      "dice_numbers": "Čísla",
+      "direction_overlay": "Smerová nápoveda",
+      "direction_overlay_hint": "Podkovovitá dráha na doske",
+      "move_hints": "Nápovedy ťahov",
+      "move_hints_hint": "Zlatá bodka pri poliach, z ktorých môžete ťahať",
+      "point_numbers": "Čísla polí",
+      "point_numbers_hint": "Zobraziť označenia 1–24 na doske",
+      "section_automation": "Automatizácia",
+      "section_board": "Doska",
+      "section_dice": "Kocky",
+      "sound": "Herné zvuky",
+      "sound_hint": "Tiché zvuky kociek, zásahov a víťazstva — rešpektuje tichý režim"
+    },
+    "review": {
+      "back_to_live": "Späť k prebiehajúcej hre",
+      "live": "Prebiehajúca hra",
+      "live_short": "Naživo",
+      "move_a11y": "Ťah {{ply}}, {{player}}",
+      "move_position": "Ťah {{current}} z {{total}} · {{player}}",
+      "next": "Ďalší ťah",
+      "opening": "Úvodné postavenie",
+      "pause_replay": "Pauza",
+      "player_black": "Čierny",
+      "player_white": "Biely",
+      "previous": "Predchádzajúci ťah",
+      "replay": "Záznam",
+      "scrubber_hint": "Klepnite na ťah na prehliadanie",
+      "start": "Štart",
+      "turn_a11y": "Kolo {{turn}}, {{player}}",
+      "turn_label": "Kolo {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Kolo {{turn}}/{{totalTurns}} · ťah {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Prehliadanie — klepnite na Naživo alebo Späť a pokračujte v hre"
+    },
+    "status": {
+      "black_wins": "Čierny vyhráva",
+      "computer_wins": "Počítač vyhráva",
+      "white_wins": "🏆 Biely vyhráva!",
+      "you_win": "🏆 Vyhrali ste!"
+    }
+  },
+  "home": {
+    "cancel": "Zrušiť",
+    "continue": "Pokračovať",
+    "continue_or_new": "Pokračovať v aktuálnej hre alebo začať novú?",
+    "game_in_progress": "Hra prebieha",
+    "new_game": "Nová hra",
+    "new_game_confirm_web": "Začať novú hru? (Na pokračovanie aktuálnej použite Obnoviť na úvodnej obrazovke.)",
+    "resume": "Obnoviť hru",
+    "resume_a11y": "Obnoviť uloženú hru",
+    "resume_sub": "Pokračujte tam, kde ste skončili",
+    "subtitle": "Ovládnite dosku — ťah za ťahom",
+    "two_players": "2 hráči",
+    "two_players_a11y": "Hrať vo dvoch na tomto zariadení",
+    "two_players_sub": "Striedavo na rovnakom zariadení",
+    "vs_computer": "Proti počítaču",
+    "vs_computer_a11y": "Hrať proti počítaču",
+    "vs_computer_sub": "Hrať proti AI"
+  },
+  "not_found": {
+    "body": "Táto stránka nie je súčasťou Backgammon Mastermind. Vráťte sa domov a začnite hru.",
+    "heading": "Mimo dosky",
+    "home_a11y": "Prejsť na úvod",
+    "home_cta": "Späť na úvod",
+    "title": "Nenájdené"
+  },
+  "settings": {
+    "about": "O aplikácii",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Späť",
+    "game": "Hra",
+    "generale": "Všeobecné",
+    "github": "GitHub",
+    "language": "Jazyk",
+    "link_error_body": "Skúste to prosím neskôr.",
+    "link_error_title": "Odkaz sa nedá otvoriť",
+    "links": "Odkazy",
+    "more": "Ďalšie",
+    "privacy": "Zásady ochrany súkromia",
+    "rate": "Ohodnotiť",
+    "share": "Zdieľať",
+    "support": "Podpora",
+    "support_us": "Podporte nás",
+    "terms": "Podmienky služby",
+    "title": "Nastavenia",
+    "version": "Verzia",
+    "website": "Web"
+  }
+}

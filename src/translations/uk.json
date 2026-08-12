@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Закрити параметри",
+      "moving": "Хід…",
+      "new_game_message": "Почати нову гру?",
+      "new_game_title": "Нова гра",
+      "no_legal_moves": "Немає дозволених ходів…",
+      "play_again": "Грати знову",
+      "play_again_a11y": "Грати знову",
+      "roll_dice": "Кинути кубики",
+      "roll_dice_a11y": "Кинути кубики",
+      "rolling": "Кидання…"
+    },
+    "nudge": {
+      "roll_first": "Спочатку киньте кубики"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} перемагає {{low}}",
+      "goes_first": "{{player}} ходить першим!",
+      "roll": "Кинути",
+      "rolls_for_opening": "{{player}} кидає за право першого ходу",
+      "tie": "Нічия!",
+      "tie_again": "Однакові числа — киньте знову",
+      "waiting_roll": "{{player}} кидає…",
+      "who_goes_first": "Хто ходить першим?",
+      "your_roll": "Торкніться будь-де, щоб кинути"
+    },
+    "options": {
+      "open_settings": "Мова та інше",
+      "open_settings_hint": "Відкрити налаштування",
+      "title": "Параметри гри"
+    },
+    "preferences": {
+      "auto_move": "Автохід при вимушеному ході",
+      "auto_move_hint": "Автоматично робити єдиний дозволений хід",
+      "auto_roll": "Автокидання кубиків",
+      "auto_roll_hint": "Кидати автоматично у ваш хід",
+      "dice_display": "Відображення кубиків",
+      "dice_dots": "Крапки",
+      "dice_numbers": "Цифри",
+      "direction_overlay": "Підказка напрямку",
+      "direction_overlay_hint": "Шлях у формі підкови на дошці",
+      "move_hints": "Підказки ходів",
+      "move_hints_hint": "Золота крапка біля пунктів, з яких можна ходити",
+      "point_numbers": "Номери пунктів",
+      "point_numbers_hint": "Показувати мітки 1–24 на дошці",
+      "section_automation": "Автоматизація",
+      "section_board": "Дошка",
+      "section_dice": "Кубики",
+      "sound": "Звуки гри",
+      "sound_hint": "М’які звуки кубиків, ударів і перемоги — враховує беззвучний режим"
+    },
+    "review": {
+      "back_to_live": "Назад до поточної гри",
+      "live": "Поточна гра",
+      "live_short": "Зараз",
+      "move_a11y": "Хід {{ply}}, {{player}}",
+      "move_position": "Хід {{current}} з {{total}} · {{player}}",
+      "next": "Наступний хід",
+      "opening": "Початкова позиція",
+      "pause_replay": "Пауза",
+      "player_black": "Чорні",
+      "player_white": "Білі",
+      "previous": "Попередній хід",
+      "replay": "Повтор",
+      "scrubber_hint": "Торкніться ходу для перегляду",
+      "start": "Старт",
+      "turn_a11y": "Хід {{turn}}, {{player}}",
+      "turn_label": "Хід {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Хід {{turn}}/{{totalTurns}} · крок {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Перегляд — торкніться «Зараз» або «Назад», щоб продовжити гру"
+    },
+    "status": {
+      "black_wins": "Чорні перемагають",
+      "computer_wins": "Комп’ютер перемагає",
+      "white_wins": "🏆 Білі перемагають!",
+      "you_win": "🏆 Ви перемогли!"
+    }
+  },
+  "home": {
+    "cancel": "Скасувати",
+    "continue": "Продовжити",
+    "continue_or_new": "Продовжити поточну гру чи почати нову?",
+    "game_in_progress": "Гра триває",
+    "new_game": "Нова гра",
+    "new_game_confirm_web": "Почати нову гру? (Щоб продовжити поточну, скористайтеся «Продовжити» на головному екрані.)",
+    "resume": "Продовжити гру",
+    "resume_a11y": "Продовжити збережену гру",
+    "resume_sub": "Продовжіть з місця зупинки",
+    "subtitle": "Опануйте дошку — хід за ходом",
+    "two_players": "2 гравці",
+    "two_players_a11y": "Грати вдвох на цьому пристрої",
+    "two_players_sub": "По черзі на одному пристрої",
+    "vs_computer": "Проти комп’ютера",
+    "vs_computer_a11y": "Грати проти комп’ютера",
+    "vs_computer_sub": "Грати проти ШІ"
+  },
+  "not_found": {
+    "body": "Ця сторінка не є частиною Backgammon Mastermind. Поверніться на головну, щоб почати гру.",
+    "heading": "Поза дошкою",
+    "home_a11y": "На головну",
+    "home_cta": "Назад на головну",
+    "title": "Не знайдено"
+  },
+  "settings": {
+    "about": "Про застосунок",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Назад",
+    "game": "Гра",
+    "generale": "Загальні",
+    "github": "GitHub",
+    "language": "Мова",
+    "link_error_body": "Спробуйте пізніше.",
+    "link_error_title": "Не вдалося відкрити посилання",
+    "links": "Посилання",
+    "more": "Більше",
+    "privacy": "Політика конфіденційності",
+    "rate": "Оцінити",
+    "share": "Поділитися",
+    "support": "Підтримка",
+    "support_us": "Підтримайте нас",
+    "terms": "Умови використання",
+    "title": "Налаштування",
+    "version": "Версія",
+    "website": "Вебсайт"
+  }
+}

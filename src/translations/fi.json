@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Sulje asetukset",
+      "moving": "Siirretään…",
+      "new_game_message": "Aloitetaanko uusi peli?",
+      "new_game_title": "Uusi peli",
+      "no_legal_moves": "Ei laillisia siirtoja…",
+      "play_again": "Pelaa uudelleen",
+      "play_again_a11y": "Pelaa uudelleen",
+      "roll_dice": "Heitä noppaa",
+      "roll_dice_a11y": "Heitä noppaa",
+      "rolling": "Heitetään…"
+    },
+    "nudge": {
+      "roll_first": "Heitä ensin noppaa"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} voittaa {{low}}",
+      "goes_first": "{{player}} aloittaa!",
+      "roll": "Heitä",
+      "rolls_for_opening": "{{player}} heittää avauksesta",
+      "tie": "Tasapeli!",
+      "tie_again": "Sama silmäluku — heitä uudelleen",
+      "waiting_roll": "{{player}} heittää…",
+      "who_goes_first": "Kuka aloittaa?",
+      "your_roll": "Napauta mihin tahansa heittääksesi"
+    },
+    "options": {
+      "open_settings": "Kieli ja muuta",
+      "open_settings_hint": "Avaa asetukset",
+      "title": "Pelin asetukset"
+    },
+    "preferences": {
+      "auto_move": "Automaattinen siirto pakotettuna",
+      "auto_move_hint": "Pelaa ainoa laillinen siirto automaattisesti",
+      "auto_roll": "Automaattinen heitto",
+      "auto_roll_hint": "Heitä automaattisesti vuorollasi",
+      "dice_display": "Noppanäyttö",
+      "dice_dots": "Pisteet",
+      "dice_numbers": "Numerot",
+      "direction_overlay": "Suuntanäyttö",
+      "direction_overlay_hint": "Hevosenkenkäpolku laudalla",
+      "move_hints": "Siirtovihjeet",
+      "move_hints_hint": "Kultainen piste pisteillä, joista voit siirtää",
+      "point_numbers": "Pistenumerot",
+      "point_numbers_hint": "Näytä tunnisteet 1–24 laudalla",
+      "section_automation": "Automaatio",
+      "section_board": "Lauta",
+      "section_dice": "Nopat",
+      "sound": "Peliäänet",
+      "sound_hint": "Pehmeät nopan-, iskun- ja voittoäänet — kunnioittaa mykkätilaa"
+    },
+    "review": {
+      "back_to_live": "Takaisin käynnissä olevaan peliin",
+      "live": "Käynnissä oleva peli",
+      "live_short": "Live",
+      "move_a11y": "Siirto {{ply}}, {{player}}",
+      "move_position": "Siirto {{current}} / {{total}} · {{player}}",
+      "next": "Seuraava vuoro",
+      "opening": "Aloitusasema",
+      "pause_replay": "Tauko",
+      "player_black": "Musta",
+      "player_white": "Valkoinen",
+      "previous": "Edellinen vuoro",
+      "replay": "Toisto",
+      "scrubber_hint": "Napauta vuoroa tarkistaaksesi",
+      "start": "Alku",
+      "turn_a11y": "Vuoro {{turn}}, {{player}}",
+      "turn_label": "Vuoro {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Vuoro {{turn}}/{{totalTurns}} · siirto {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Tarkistus — napauta Live tai Takaisin jatkaaksesi"
+    },
+    "status": {
+      "black_wins": "Musta voittaa",
+      "computer_wins": "Tietokone voittaa",
+      "white_wins": "🏆 Valkoinen voittaa!",
+      "you_win": "🏆 Voitit!"
+    }
+  },
+  "home": {
+    "cancel": "Peruuta",
+    "continue": "Jatka",
+    "continue_or_new": "Jatketaanko nykyistä peliä vai aloitetaanko uusi?",
+    "game_in_progress": "Peli käynnissä",
+    "new_game": "Uusi peli",
+    "new_game_confirm_web": "Aloitetaanko uusi peli? (Jatka nykyistä aloitusnäytön Jatka-painikkeella.)",
+    "resume": "Jatka peliä",
+    "resume_a11y": "Jatka tallennettua peliä",
+    "resume_sub": "Jatka siitä, mihin jäit",
+    "subtitle": "Hallitse lautaa — siirto kerrallaan",
+    "two_players": "2 pelaajaa",
+    "two_players_a11y": "Pelaa kahden pelaajan kanssa tällä laitteella",
+    "two_players_sub": "Vuorotellen samalla laitteella",
+    "vs_computer": "Vastaan tietokone",
+    "vs_computer_a11y": "Pelaa tietokonetta vastaan",
+    "vs_computer_sub": "Pelaa tekoälyä vastaan"
+  },
+  "not_found": {
+    "body": "Tämä sivu ei kuulu Backgammon Mastermindiin. Palaa kotiin aloittaaksesi pelin.",
+    "heading": "Laudan ulkopuolella",
+    "home_a11y": "Siirry kotiin",
+    "home_cta": "Takaisin kotiin",
+    "title": "Ei löytynyt"
+  },
+  "settings": {
+    "about": "Tietoja",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Takaisin",
+    "game": "Peli",
+    "generale": "Yleiset",
+    "github": "GitHub",
+    "language": "Kieli",
+    "link_error_body": "Yritä myöhemmin uudelleen.",
+    "link_error_title": "Linkkiä ei voi avata",
+    "links": "Linkit",
+    "more": "Lisää",
+    "privacy": "Tietosuojakäytäntö",
+    "rate": "Arvostele",
+    "share": "Jaa",
+    "support": "Tuki",
+    "support_us": "Tue meitä",
+    "terms": "Käyttöehdot",
+    "title": "Asetukset",
+    "version": "Versio",
+    "website": "Verkkosivusto"
+  }
+}

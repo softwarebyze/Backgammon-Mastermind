@@ -4,18 +4,21 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
 
-import { isSupportedLanguage, resources } from './resources';
+import { resolveLanguage, resources } from './resources';
 import { getLanguage } from './utils';
 
 export * from './resources';
 export * from './utils';
 
-// Device locale tags like `pt-BR` normalize to our base locale (`pt`).
-const deviceLanguage = getLocales()[0]?.languageCode ?? undefined;
+// Prefer languageTag (zh-Hant-TW) then languageCode (pt) via resolveLanguage.
+const deviceLocale = getLocales()[0];
+const deviceLanguage
+  = resolveLanguage(deviceLocale?.languageTag ?? undefined)
+    ?? resolveLanguage(deviceLocale?.languageCode ?? undefined);
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: getLanguage() ?? (isSupportedLanguage(deviceLanguage) ? deviceLanguage : 'en'),
+  lng: resolveLanguage(getLanguage() ?? undefined) ?? deviceLanguage ?? 'en',
   fallbackLng: 'en',
   compatibilityJSON: 'v4', // Updated to v4 for i18next compatibility
 

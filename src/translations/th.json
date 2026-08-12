@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "ปิดตัวเลือก",
+      "moving": "กำลังเดิน…",
+      "new_game_message": "เริ่มเกมใหม่หรือไม่?",
+      "new_game_title": "เกมใหม่",
+      "no_legal_moves": "ไม่มีตาที่ถูกกฎ…",
+      "play_again": "เล่นอีกครั้ง",
+      "play_again_a11y": "เล่นอีกครั้ง",
+      "roll_dice": "ทอยลูกเต๋า",
+      "roll_dice_a11y": "ทอยลูกเต๋า",
+      "rolling": "กำลังทอย…"
+    },
+    "nudge": {
+      "roll_first": "ทอยลูกเต๋าก่อน"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} ชนะ {{low}}",
+      "goes_first": "{{player}} ได้เริ่มก่อน!",
+      "roll": "ทอย",
+      "rolls_for_opening": "{{player}} ทอยเพื่อเปิดเกม",
+      "tie": "เสมอ!",
+      "tie_again": "ได้แต้มเท่ากัน — ทอยอีกครั้ง",
+      "waiting_roll": "{{player}} กำลังทอย…",
+      "who_goes_first": "ใครเริ่มก่อน?",
+      "your_roll": "แตะที่ใดก็ได้เพื่อทอย"
+    },
+    "options": {
+      "open_settings": "ภาษาและอื่นๆ",
+      "open_settings_hint": "เปิดการตั้งค่า",
+      "title": "ตัวเลือกเกม"
+    },
+    "preferences": {
+      "auto_move": "เดินอัตโนมัติเมื่อมีทางเดียว",
+      "auto_move_hint": "เล่นตาที่ถูกกฎเพียงตาเดียวโดยอัตโนมัติ",
+      "auto_roll": "ทอยลูกเต๋าอัตโนมัติ",
+      "auto_roll_hint": "ทอยอัตโนมัติเมื่อถึงตาของคุณ",
+      "dice_display": "การแสดงลูกเต๋า",
+      "dice_dots": "จุด",
+      "dice_numbers": "ตัวเลข",
+      "direction_overlay": "ตัวชี้นำทิศทาง",
+      "direction_overlay_hint": "เส้นทางเกือกม้าบนกระดาน",
+      "move_hints": "คำใบ้การเดิน",
+      "move_hints_hint": "จุดสีทองข้างจุดที่คุณเดินได้",
+      "point_numbers": "หมายเลขจุด",
+      "point_numbers_hint": "แสดงป้าย 1–24 บนกระดาน",
+      "section_automation": "ระบบอัตโนมัติ",
+      "section_board": "กระดาน",
+      "section_dice": "ลูกเต๋า",
+      "sound": "เสียงเกม",
+      "sound_hint": "เสียงลูกเต๋า การตี และการชนะแบบเบาๆ — เคารพโหมดเงียบ"
+    },
+    "review": {
+      "back_to_live": "กลับสู่เกมปัจจุบัน",
+      "live": "เกมปัจจุบัน",
+      "live_short": "สด",
+      "move_a11y": "ตาที่ {{ply}}, {{player}}",
+      "move_position": "ตาที่ {{current}} จาก {{total}} · {{player}}",
+      "next": "ตาถัดไป",
+      "opening": "ตำแหน่งเริ่มต้น",
+      "pause_replay": "หยุดชั่วคราว",
+      "player_black": "ดำ",
+      "player_white": "ขาว",
+      "previous": "ตาก่อนหน้า",
+      "replay": "เล่นซ้ำ",
+      "scrubber_hint": "แตะตาเพื่อดูย้อนหลัง",
+      "start": "เริ่ม",
+      "turn_a11y": "ตาที่ {{turn}}, {{player}}",
+      "turn_label": "ตา {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "ตา {{turn}}/{{totalTurns}} · เดิน {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "กำลังดูย้อนหลัง — แตะ สด หรือ กลับ เพื่อเล่นต่อ"
+    },
+    "status": {
+      "black_wins": "ดำชนะ",
+      "computer_wins": "คอมพิวเตอร์ชนะ",
+      "white_wins": "🏆 ขาวชนะ!",
+      "you_win": "🏆 คุณชนะ!"
+    }
+  },
+  "home": {
+    "cancel": "ยกเลิก",
+    "continue": "ดำเนินการต่อ",
+    "continue_or_new": "เล่นเกมปัจจุบันต่อหรือเริ่มเกมใหม่?",
+    "game_in_progress": "มีเกมกำลังเล่นอยู่",
+    "new_game": "เกมใหม่",
+    "new_game_confirm_web": "เริ่มเกมใหม่หรือไม่? (ใช้ เล่นต่อ บนหน้าหลักเพื่อเล่นเกมปัจจุบันต่อ)",
+    "resume": "เล่นเกมต่อ",
+    "resume_a11y": "เล่นเกมที่บันทึกไว้ต่อ",
+    "resume_sub": "เล่นต่อจากที่ค้างไว้",
+    "subtitle": "ครองกระดาน — ทีละตา",
+    "two_players": "2 คน",
+    "two_players_a11y": "เล่นสองคนบนอุปกรณ์นี้",
+    "two_players_sub": "ผลัดกันเล่นบนอุปกรณ์เดียวกัน",
+    "vs_computer": "แข่งกับคอมพิวเตอร์",
+    "vs_computer_a11y": "เล่นกับคอมพิวเตอร์",
+    "vs_computer_sub": "เล่นกับ AI"
+  },
+  "not_found": {
+    "body": "หน้านั้นไม่ใช่ส่วนหนึ่งของ Backgammon Mastermind กลับหน้าหลักเพื่อเริ่มเกม",
+    "heading": "หลุดกระดาน",
+    "home_a11y": "ไปหน้าหลัก",
+    "home_cta": "กลับหน้าหลัก",
+    "title": "ไม่พบ"
+  },
+  "settings": {
+    "about": "เกี่ยวกับ",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "กลับ",
+    "game": "เกม",
+    "generale": "ทั่วไป",
+    "github": "GitHub",
+    "language": "ภาษา",
+    "link_error_body": "โปรดลองอีกครั้งในภายหลัง",
+    "link_error_title": "ไม่สามารถเปิดลิงก์ได้",
+    "links": "ลิงก์",
+    "more": "เพิ่มเติม",
+    "privacy": "นโยบายความเป็นส่วนตัว",
+    "rate": "ให้คะแนน",
+    "share": "แชร์",
+    "support": "สนับสนุน",
+    "support_us": "สนับสนุนเรา",
+    "terms": "ข้อกำหนดการให้บริการ",
+    "title": "การตั้งค่า",
+    "version": "เวอร์ชัน",
+    "website": "เว็บไซต์"
+  }
+}

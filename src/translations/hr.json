@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Zatvori opcije",
+      "moving": "Pomicanje…",
+      "new_game_message": "Pokrenuti novu partiju?",
+      "new_game_title": "Nova partija",
+      "no_legal_moves": "Nema legalnih poteza…",
+      "play_again": "Igraj ponovno",
+      "play_again_a11y": "Igraj ponovno",
+      "roll_dice": "Baci kockice",
+      "roll_dice_a11y": "Baci kockice",
+      "rolling": "Bacanje…"
+    },
+    "nudge": {
+      "roll_first": "Prvo baci kockice"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} pobjeđuje {{low}}",
+      "goes_first": "{{player}} ide prvi!",
+      "roll": "Baci",
+      "rolls_for_opening": "{{player}} baca za otvor",
+      "tie": "Neriješeno!",
+      "tie_again": "Isti broj — bacite ponovno",
+      "waiting_roll": "{{player}} baca…",
+      "who_goes_first": "Tko ide prvi?",
+      "your_roll": "Dodirnite bilo gdje za bacanje"
+    },
+    "options": {
+      "open_settings": "Jezik i više",
+      "open_settings_hint": "Otvori postavke",
+      "title": "Opcije igre"
+    },
+    "preferences": {
+      "auto_move": "Automatski potez kada je prisilan",
+      "auto_move_hint": "Automatski odigraj jedini legalni potez",
+      "auto_roll": "Automatsko bacanje kockica",
+      "auto_roll_hint": "Automatski baci na tvom potezu",
+      "dice_display": "Prikaz kockica",
+      "dice_dots": "Točkice",
+      "dice_numbers": "Brojevi",
+      "direction_overlay": "Smjerni prikaz",
+      "direction_overlay_hint": "Put u obliku potkove na ploči",
+      "move_hints": "Savjeti za poteze",
+      "move_hints_hint": "Zlatna točka pokraj polja s kojih možeš pomaknuti",
+      "point_numbers": "Brojevi polja",
+      "point_numbers_hint": "Prikaži oznake 1–24 na ploči",
+      "section_automation": "Automatizacija",
+      "section_board": "Ploča",
+      "section_dice": "Kockice",
+      "sound": "Zvukovi igre",
+      "sound_hint": "Blagi zvukovi kockica, udaraca i pobjede — poštuje tihi način"
+    },
+    "review": {
+      "back_to_live": "Natrag na tekuću partiju",
+      "live": "Tekuća partija",
+      "live_short": "Uživo",
+      "move_a11y": "Potez {{ply}}, {{player}}",
+      "move_position": "Potez {{current}} od {{total}} · {{player}}",
+      "next": "Sljedeći potez",
+      "opening": "Početna pozicija",
+      "pause_replay": "Pauza",
+      "player_black": "Crni",
+      "player_white": "Bijeli",
+      "previous": "Prethodni potez",
+      "replay": "Ponavljanje",
+      "scrubber_hint": "Dodirni potez za pregled",
+      "start": "Početak",
+      "turn_a11y": "Potez {{turn}}, {{player}}",
+      "turn_label": "Potez {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Potez {{turn}}/{{totalTurns}} · pomak {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Pregled — dodirni Uživo ili Natrag za nastavak igre"
+    },
+    "status": {
+      "black_wins": "Crni pobjeđuje",
+      "computer_wins": "Računalo pobjeđuje",
+      "white_wins": "🏆 Bijeli pobjeđuje!",
+      "you_win": "🏆 Pobijedio si!"
+    }
+  },
+  "home": {
+    "cancel": "Odustani",
+    "continue": "Nastavi",
+    "continue_or_new": "Nastaviti trenutnu partiju ili započeti novu?",
+    "game_in_progress": "Partija u tijeku",
+    "new_game": "Nova partija",
+    "new_game_confirm_web": "Pokrenuti novu partiju? (Za nastavak trenutne koristi Nastavi na početnom zaslonu.)",
+    "resume": "Nastavi partiju",
+    "resume_a11y": "Nastavi spremljenu partiju",
+    "resume_sub": "Nastavi tamo gdje si stao",
+    "subtitle": "Savladaj ploču — potez po potez",
+    "two_players": "2 igrača",
+    "two_players_a11y": "Igraj s dva igrača na ovom uređaju",
+    "two_players_sub": "Naizmjenično na istom uređaju",
+    "vs_computer": "Protiv računala",
+    "vs_computer_a11y": "Igraj protiv računala",
+    "vs_computer_sub": "Igraj protiv AI-ja"
+  },
+  "not_found": {
+    "body": "Ta stranica nije dio Backgammon Mastermind. Vrati se na početak i započni partiju.",
+    "heading": "Izvan ploče",
+    "home_a11y": "Idi na početak",
+    "home_cta": "Natrag na početak",
+    "title": "Nije pronađeno"
+  },
+  "settings": {
+    "about": "O aplikaciji",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Natrag",
+    "game": "Igra",
+    "generale": "Općenito",
+    "github": "GitHub",
+    "language": "Jezik",
+    "link_error_body": "Pokušaj ponovno kasnije.",
+    "link_error_title": "Nije moguće otvoriti poveznicu",
+    "links": "Poveznice",
+    "more": "Više",
+    "privacy": "Politika privatnosti",
+    "rate": "Ocijeni",
+    "share": "Podijeli",
+    "support": "Podrška",
+    "support_us": "Podrži nas",
+    "terms": "Uvjeti korištenja",
+    "title": "Postavke",
+    "version": "Verzija",
+    "website": "Web-stranica"
+  }
+}

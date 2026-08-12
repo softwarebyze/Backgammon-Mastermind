@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Tutup pilihan",
+      "moving": "Menggerakkan…",
+      "new_game_message": "Mulakan permainan baharu?",
+      "new_game_title": "Permainan baharu",
+      "no_legal_moves": "Tiada langkah sah…",
+      "play_again": "Main lagi",
+      "play_again_a11y": "Main lagi",
+      "roll_dice": "Lempar dadu",
+      "roll_dice_a11y": "Lempar dadu",
+      "rolling": "Melontar…"
+    },
+    "nudge": {
+      "roll_first": "Lempar dadu dahulu"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} mengalahkan {{low}}",
+      "goes_first": "{{player}} bermula dahulu!",
+      "roll": "Lempar",
+      "rolls_for_opening": "{{player}} melontar untuk pembukaan",
+      "tie": "Seri!",
+      "tie_again": "Nombor sama — lempar lagi",
+      "waiting_roll": "{{player}} sedang melontar…",
+      "who_goes_first": "Siapa bermula dahulu?",
+      "your_roll": "Ketik di mana-mana untuk melontar"
+    },
+    "options": {
+      "open_settings": "Bahasa & lagi",
+      "open_settings_hint": "Buka Tetapan",
+      "title": "Pilihan permainan"
+    },
+    "preferences": {
+      "auto_move": "Gerakan auto apabila terpaksa",
+      "auto_move_hint": "Mainkan satu-satunya langkah sah secara automatik",
+      "auto_roll": "Lempar dadu auto",
+      "auto_roll_hint": "Lempar secara automatik pada giliran anda",
+      "dice_display": "Paparan dadu",
+      "dice_dots": "Titik",
+      "dice_numbers": "Nombor",
+      "direction_overlay": "Panduan arah",
+      "direction_overlay_hint": "Laluan tapak kuda pada papan",
+      "move_hints": "Petunjuk langkah",
+      "move_hints_hint": "Titik emas di sebelah poin yang boleh anda gerakkan",
+      "point_numbers": "Nombor poin",
+      "point_numbers_hint": "Tunjukkan label 1–24 pada papan",
+      "section_automation": "Automasi",
+      "section_board": "Papan",
+      "section_dice": "Dadu",
+      "sound": "Bunyi permainan",
+      "sound_hint": "Bunyi dadu, pukulan dan kemenangan yang lembut — menghormati mod senyap"
+    },
+    "review": {
+      "back_to_live": "Kembali ke permainan semasa",
+      "live": "Permainan semasa",
+      "live_short": "Langsung",
+      "move_a11y": "Langkah {{ply}}, {{player}}",
+      "move_position": "Langkah {{current}} daripada {{total}} · {{player}}",
+      "next": "Giliran seterusnya",
+      "opening": "Kedudukan pembukaan",
+      "pause_replay": "Jeda",
+      "player_black": "Hitam",
+      "player_white": "Putih",
+      "previous": "Giliran sebelumnya",
+      "replay": "Ulangan",
+      "scrubber_hint": "Ketik giliran untuk semak",
+      "start": "Mula",
+      "turn_a11y": "Giliran {{turn}}, {{player}}",
+      "turn_label": "Giliran {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Giliran {{turn}}/{{totalTurns}} · langkah {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Menyemak — ketik Langsung atau Kembali untuk terus bermain"
+    },
+    "status": {
+      "black_wins": "Hitam menang",
+      "computer_wins": "Komputer menang",
+      "white_wins": "🏆 Putih menang!",
+      "you_win": "🏆 Anda menang!"
+    }
+  },
+  "home": {
+    "cancel": "Batal",
+    "continue": "Teruskan",
+    "continue_or_new": "Teruskan permainan semasa atau mulakan yang baharu?",
+    "game_in_progress": "Permainan sedang berlangsung",
+    "new_game": "Permainan baharu",
+    "new_game_confirm_web": "Mulakan permainan baharu? (Gunakan Sambung semula pada skrin utama untuk meneruskan yang semasa.)",
+    "resume": "Sambung semula permainan",
+    "resume_a11y": "Sambung semula permainan tersimpan",
+    "resume_sub": "Teruskan dari tempat anda berhenti",
+    "subtitle": "Kuasai papan — satu langkah demi satu langkah",
+    "two_players": "2 pemain",
+    "two_players_a11y": "Main dengan dua pemain pada peranti ini",
+    "two_players_sub": "Bergilir pada peranti yang sama",
+    "vs_computer": "vs Komputer",
+    "vs_computer_a11y": "Main menentang komputer",
+    "vs_computer_sub": "Main menentang AI"
+  },
+  "not_found": {
+    "body": "Halaman itu bukan sebahagian daripada Backgammon Mastermind. Kembali ke laman utama untuk memulakan permainan.",
+    "heading": "Di luar papan",
+    "home_a11y": "Pergi ke laman utama",
+    "home_cta": "Kembali ke laman utama",
+    "title": "Tidak dijumpai"
+  },
+  "settings": {
+    "about": "Perihal",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Kembali",
+    "game": "Permainan",
+    "generale": "Umum",
+    "github": "GitHub",
+    "language": "Bahasa",
+    "link_error_body": "Sila cuba lagi kemudian.",
+    "link_error_title": "Tidak dapat membuka pautan",
+    "links": "Pautan",
+    "more": "Lagi",
+    "privacy": "Dasar Privasi",
+    "rate": "Nilai",
+    "share": "Kongsi",
+    "support": "Sokongan",
+    "support_us": "Sokong Kami",
+    "terms": "Syarat Perkhidmatan",
+    "title": "Tetapan",
+    "version": "Versi",
+    "website": "Laman web"
+  }
+}
