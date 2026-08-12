@@ -27,11 +27,6 @@ function updatePreferences(patch: Partial<GamePreferences>) {
   emitChange();
 }
 
-/** Patch prefs outside of React. */
-export function patchGamePreferences(patch: Partial<GamePreferences>) {
-  updatePreferences(patch);
-}
-
 export function useGamePreferences() {
   const preferences = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
