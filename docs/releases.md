@@ -16,7 +16,7 @@ First-time store setup: [production-checklist.md](./production-checklist.md).
 | Verify locally | `pnpm check-all` |
 | iOS TestFlight binary + submit | Actions → **EAS QA Build** (auto `--auto-submit` on iOS preview) |
 | Submit to TestFlight (manual) | `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
-| Push App Store listing (preview TF app) | Actions → **EAS Metadata Push** (`preview`) or `pnpm metadata:push` — see [eas-metadata.md](./eas-metadata.md) |
+| Push App Store listing (preview app) | Actions → **EAS Metadata Push** (`preview`) or `pnpm metadata:push` — see [eas-metadata.md](./eas-metadata.md) |
 | Push App Store listing (production) | Actions → **EAS Metadata Push** (`production`) or `pnpm metadata:push:production` |
 | Marketing renders | **Automatic** on GitHub Release (`Remotion Render (Release Assets)`). Manual: `cd remotion && pnpm render:all` |
 | Tag + GitHub Release | Actions → **New App Version** (patch) or manual tag |

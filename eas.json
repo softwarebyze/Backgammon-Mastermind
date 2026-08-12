@@ -74,7 +74,7 @@
         "ascAppId": "6781121420",
         "bundleIdentifier": "com.backgammonmastermind.preview",
         "appleTeamId": "75M38Z9JBF",
-        "metadataPath": "./store.config.json"
+        "metadataPath": "./store.preview.config.json"
       },
       "android": {}
     },

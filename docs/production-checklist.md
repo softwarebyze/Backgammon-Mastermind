@@ -49,7 +49,7 @@ Use this before the first App Store / Play Store submission.
 
 - [x] App Store listing copy — `store.config.json` (source of truth; push via EAS Metadata)
 - [x] **App Store Connect API key** — via EAS credentials (`M7LGZ9S6S2`) for `eas metadata` / submit
-- [x] `pnpm metadata:push` — listing synced for preview TF app (`6781121420`)
+- [x] `pnpm metadata:push` — listing synced for preview app (`6781121420`)
 - [x] `pnpm metadata:push:production` — sync `store.config.json` → production ASC (`6792138473`)
 - [x] App Store screenshots prepared — `docs/marketing/v1.0.0/app-store-screenshots/` (1320×2868)
 - [x] Upload screenshots — `pnpm screenshots:upload:ios` (Fastlane; 6× 1320×2868 → production 1.0.0)
@@ -153,7 +153,7 @@ After credentials exist, **metadata push** is already in CI (`EAS Metadata Push`
 1. **Merge [#129](https://github.com/softwarebyze/Backgammon-Mastermind/pull/129)** — Vercel SPA + hosted `/privacy/` `/terms/` + 404 (ASC privacy URL already points at production Vercel)
 2. **Privacy nutrition labels** in ASC (PostHog product interaction) — last App Store gate agents can’t fully automate yet
 3. **Submit for App Review** on production `6792138473` / v1.0.0
-4. **TestFlight** — [TF app 6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) once Apple finishes processing (don’t message friends until builds are Available)
+4. **TestFlight** — [Preview app 6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) once Apple finishes processing (don’t message friends until builds are Available)
 5. **Google Play** — create app in Play Console, then AAB + `pnpm screenshots:upload:android`
 6. Fix `EXPO_PUBLIC_APP_STORE_ID` in EAS production env → `6792138473` (still points at old development ASC id)
 See also: `docs/ios-testing-and-store.md`
