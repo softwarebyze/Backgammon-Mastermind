@@ -78,6 +78,12 @@ export function GameScreen() {
     return unsubscribe;
   }, [navigation, leaveGame, allowLeaveRef]);
 
+  useEffect(() => {
+    if (!input.state) {
+      router.replace('/');
+    }
+  }, [input.state]);
+
   if (!input.state || !review.displayState) {
     return (
       <View style={[styles.root, styles.center]}>

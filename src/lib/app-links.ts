@@ -7,7 +7,7 @@ const SUPPORT_EMAIL = 'zackebenfeld@gmail.com';
 /** Canonical product website (Vercel). Privacy/terms must be publicly hosted for store review. */
 const WEBSITE_URL = 'https://backgammon-mastermind.vercel.app';
 
-/** Production ASC Apple ID (6792138473). Set via EAS production env — see docs/app-environments.md. */
+/** Production ASC Apple ID (6792138473). Set via EAS production env — see docs/ios-testing-and-store.md. */
 const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
 
 export const APP_LINKS = {
@@ -19,11 +19,13 @@ export const APP_LINKS = {
 } as const;
 
 export async function openExternalUrl(url: string): Promise<void> {
-  const canOpen = await Linking.canOpenURL(url);
-  if (!canOpen) {
+  // Don't gate on canOpenURL — it false-negatives for mailto: and some https schemes.
+  try {
+    await Linking.openURL(url);
+  }
+  catch {
     throw new Error(`Cannot open URL: ${url}`);
   }
-  await Linking.openURL(url);
 }
 
 export async function shareApp(): Promise<void> {
