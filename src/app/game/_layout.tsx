@@ -5,6 +5,7 @@ import { Platform } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import {
   gameFormSheetOptions,
   gamePlayScreenOptions,
@@ -23,7 +24,7 @@ export default function GameLayout() {
             ? {
                 headerLeft: () => (
                   <HeaderButton
-                    accessibilityLabel="Close options"
+                    accessibilityLabel={translate('game.controls.close_options_a11y')}
                     onPress={() => {
                       hapticLight();
                       router.back();

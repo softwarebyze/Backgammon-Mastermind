@@ -152,11 +152,11 @@ function ActionControl({
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Play again"
+        accessibilityLabel={translate('game.controls.play_again_a11y')}
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onReset}
       >
-        <Text style={styles.primaryBtnText}>Play Again</Text>
+        <Text style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
       </Pressable>
     );
   }
@@ -166,48 +166,48 @@ function ActionControl({
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Roll dice"
+        accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
       >
-        <Text style={styles.primaryBtnText}>Roll Dice</Text>
+        <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
       </Pressable>
     );
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" />;
+    return <StatusPlaceholder text={translate('game.controls.rolling')} />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Roll dice"
+        accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
       >
-        <Text style={styles.primaryBtnText}>Roll Dice</Text>
+        <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
       </Pressable>
     );
   }
 
   if (state.phase === 'rolling' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" />;
+    return <StatusPlaceholder text={translate('game.controls.rolling')} />;
   }
 
   if (state.phase === 'moving' && isComputerTurn) {
-    return <StatusPlaceholder text="Moving…" />;
+    return <StatusPlaceholder text={translate('game.controls.moving')} />;
   }
 
   if (state.phase === 'no-move' && isHumanTurn) {
-    return <StatusPlaceholder text="No legal moves…" />;
+    return <StatusPlaceholder text={translate('game.controls.no_legal_moves')} />;
   }
 
   if (state.phase === 'no-move' && isComputerTurn) {
-    return <StatusPlaceholder text="No legal moves…" />;
+    return <StatusPlaceholder text={translate('game.controls.no_legal_moves')} />;
   }
 
   return <View style={styles.actionSpacer} />;

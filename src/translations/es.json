@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Cerrar opciones",
+      "moving": "Moviendo…",
+      "new_game_message": "¿Empezar una partida nueva?",
+      "new_game_title": "Partida nueva",
+      "no_legal_moves": "No hay movimientos posibles…",
+      "play_again": "Jugar otra vez",
+      "play_again_a11y": "Jugar otra vez",
+      "roll_dice": "Tirar los dados",
+      "roll_dice_a11y": "Tirar los dados",
+      "rolling": "Tirando…"
+    },
+    "nudge": {
+      "roll_first": "Primero tira los dados"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} gana a {{low}}",
+      "goes_first": "¡Empieza {{player}}!",
+      "roll": "Tirar",
+      "rolls_for_opening": "{{player}} tira para la salida",
+      "tie": "¡Empate!",
+      "tie_again": "Mismo número — tirad de nuevo",
+      "waiting_roll": "{{player}} está tirando…",
+      "who_goes_first": "¿Quién empieza?",
+      "your_roll": "Toca en cualquier parte para tirar"
+    },
+    "options": {
+      "open_settings": "Idioma y más",
+      "open_settings_hint": "Abrir Ajustes",
+      "title": "Opciones de partida"
+    },
+    "preferences": {
+      "auto_move": "Mover automáticamente si es forzado",
+      "auto_move_hint": "Jugar automáticamente el único movimiento legal",
+      "auto_roll": "Tirar los dados automáticamente",
+      "auto_roll_hint": "Tirar automáticamente en tu turno",
+      "dice_display": "Aspecto de los dados",
+      "dice_dots": "Puntos",
+      "dice_numbers": "Números",
+      "direction_overlay": "Guía de dirección",
+      "direction_overlay_hint": "Recorrido en herradura sobre el tablero",
+      "move_hints": "Pistas de movimiento",
+      "move_hints_hint": "Punto dorado junto a las casillas desde las que puedes mover",
+      "point_numbers": "Números de casilla",
+      "point_numbers_hint": "Mostrar etiquetas 1–24 en el tablero",
+      "section_automation": "Automatización",
+      "section_board": "Tablero",
+      "section_dice": "Dados",
+      "sound": "Sonidos del juego",
+      "sound_hint": "Dados, capturas y victorias con sonido suave — respeta el modo silencio"
+    },
+    "review": {
+      "back_to_live": "Volver a la partida en curso",
+      "live": "Partida en curso",
+      "live_short": "En vivo",
+      "move_a11y": "Movimiento {{ply}}, {{player}}",
+      "move_position": "Movimiento {{current}} de {{total}} · {{player}}",
+      "next": "Turno siguiente",
+      "opening": "Posición inicial",
+      "pause_replay": "Pausa",
+      "player_black": "Negras",
+      "player_white": "Blancas",
+      "previous": "Turno anterior",
+      "replay": "Repetición",
+      "scrubber_hint": "Toca un turno para revisarlo",
+      "start": "Inicio",
+      "turn_a11y": "Turno {{turn}}, {{player}}",
+      "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Turno {{turn}}/{{totalTurns}} · movimiento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisando — toca En vivo o Volver para seguir jugando"
+    },
+    "status": {
+      "black_wins": "Ganan las negras",
+      "computer_wins": "Gana el ordenador",
+      "white_wins": "🏆 ¡Ganan las blancas!",
+      "you_win": "🏆 ¡Has ganado!"
+    }
+  },
+  "home": {
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "continue_or_new": "¿Continuar la partida actual o empezar una nueva?",
+    "game_in_progress": "Partida en curso",
+    "new_game": "Partida nueva",
+    "new_game_confirm_web": "¿Empezar una partida nueva? (Usa Reanudar en la pantalla de inicio para continuar la actual.)",
+    "resume": "Reanudar partida",
+    "resume_a11y": "Reanudar la partida guardada",
+    "resume_sub": "Continúa donde lo dejaste",
+    "subtitle": "Domina el tablero — movimiento a movimiento",
+    "two_players": "2 jugadores",
+    "two_players_a11y": "Jugar con dos jugadores en este dispositivo",
+    "two_players_sub": "Por turnos en el mismo dispositivo",
+    "vs_computer": "Contra el ordenador",
+    "vs_computer_a11y": "Jugar contra el ordenador",
+    "vs_computer_sub": "Juega contra la IA"
+  },
+  "not_found": {
+    "body": "Esa página no forma parte de Backgammon Mastermind. Vuelve al inicio para empezar una partida.",
+    "heading": "Fuera del tablero",
+    "home_a11y": "Ir al inicio",
+    "home_cta": "Volver al inicio",
+    "title": "No encontrado"
+  },
+  "settings": {
+    "about": "Acerca de",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Atrás",
+    "game": "Partida",
+    "generale": "General",
+    "github": "GitHub",
+    "language": "Idioma",
+    "link_error_body": "Inténtalo de nuevo más tarde.",
+    "link_error_title": "No se puede abrir el enlace",
+    "links": "Enlaces",
+    "more": "Más",
+    "privacy": "Política de privacidad",
+    "rate": "Valorar",
+    "share": "Compartir",
+    "support": "Soporte",
+    "support_us": "Apóyanos",
+    "terms": "Condiciones del servicio",
+    "title": "Ajustes",
+    "version": "Versión",
+    "website": "Sitio web"
+  }
+}

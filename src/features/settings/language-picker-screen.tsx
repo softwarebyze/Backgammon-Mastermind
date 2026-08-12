@@ -1,17 +1,17 @@
 import type { PickerOption } from './components/picker-sheet';
 
-import type { Language } from '@/lib/i18n/resources';
+import type { Language } from '@/lib/i18n';
 
-import { translate, useSelectedLanguage } from '@/lib/i18n';
+import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useSelectedLanguage } from '@/lib/i18n';
 import { PickerSheet } from './components/picker-sheet';
+
+const options: PickerOption<Language>[] = SUPPORTED_LANGUAGES.map(lang => ({
+  value: lang,
+  label: LANGUAGE_NAMES[lang],
+}));
 
 export function LanguagePickerScreen() {
   const { language, setLanguage } = useSelectedLanguage();
-
-  const options: PickerOption<Language>[] = [
-    { value: 'en', label: translate('settings.english') },
-    { value: 'ar', label: translate('settings.arabic') },
-  ];
 
   return (
     <PickerSheet

@@ -19,6 +19,7 @@ import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
@@ -38,9 +39,9 @@ function startGameFromHome(
   if (Platform.OS === 'web') {
     // window.confirm is binary — OK = new game; Resume on home continues
     confirmAction({
-      title: 'Game in progress',
-      message: 'Start a new game? (Use Resume on the home screen to continue the current one.)',
-      confirmLabel: 'New game',
+      title: translate('home.game_in_progress'),
+      message: translate('home.new_game_confirm_web'),
+      confirmLabel: translate('home.new_game'),
       destructive: true,
       onConfirm: () => {
         startGame(mode);
@@ -51,19 +52,19 @@ function startGameFromHome(
   }
 
   Alert.alert(
-    'Game in progress',
-    'Continue your current game or start a new one?',
+    translate('home.game_in_progress'),
+    translate('home.continue_or_new'),
     [
-      { text: 'Continue', onPress: () => router.replace('/game') },
+      { text: translate('home.continue'), onPress: () => router.replace('/game') },
       {
-        text: 'New game',
+        text: translate('home.new_game'),
         style: 'destructive',
         onPress: () => {
           startGame(mode);
           router.replace('/game');
         },
       },
-      { text: 'Cancel', style: 'cancel' },
+      { text: translate('home.cancel'), style: 'cancel' },
     ],
   );
 }
@@ -113,7 +114,7 @@ export function HomeScreen() {
         </View>
 
         <Text accessibilityRole="header" style={styles.title}>BACKGAMMON</Text>
-        <Text style={styles.subtitle}>Master the board — one move at a time</Text>
+        <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>
 
         <View style={styles.dividerRow}>
           <View style={styles.dividerLine} />
@@ -125,7 +126,7 @@ export function HomeScreen() {
           {canResume && (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Resume saved game"
+              accessibilityLabel={translate('home.resume_a11y')}
               style={({ pressed }) => [styles.modeBtn, styles.resumeBtn, pressed && styles.pressed]}
               onPress={handleResume}
             >
@@ -133,15 +134,15 @@ export function HomeScreen() {
                 <Feather name="play-circle" size={24} color="#A0D080" />
               </View>
               <View style={styles.btnTextCol}>
-                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>Resume Game</Text>
-                <Text style={[styles.btnSub, { color: '#6A9A50' }]}>Continue where you left off</Text>
+                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>{translate('home.resume')}</Text>
+                <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>
               </View>
             </Pressable>
           )}
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Play against the computer"
+            accessibilityLabel={translate('home.vs_computer_a11y')}
             style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
             onPress={() => handleStart('vs-computer')}
           >
@@ -149,14 +150,14 @@ export function HomeScreen() {
               <Feather name="cpu" size={24} color={GAME_PALETTE.bg} />
             </View>
             <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>vs Computer</Text>
-              <Text style={[styles.btnSub, { color: '#4A2A10' }]}>Play against AI</Text>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>{translate('home.vs_computer')}</Text>
+              <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>
             </View>
           </Pressable>
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Play with two players locally"
+            accessibilityLabel={translate('home.two_players_a11y')}
             style={({ pressed }) => [styles.modeBtn, styles.secondaryBtn, pressed && styles.pressed]}
             onPress={() => handleStart('vs-human')}
           >
@@ -164,8 +165,8 @@ export function HomeScreen() {
               <Feather name="users" size={24} color={GAME_PALETTE.accent} />
             </View>
             <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>2 Players</Text>
-              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>Pass & play locally</Text>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>{translate('home.two_players')}</Text>
+              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>
             </View>
           </Pressable>
         </View>

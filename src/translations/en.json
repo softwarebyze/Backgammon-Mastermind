@@ -1,5 +1,17 @@
 {
   "game": {
+    "controls": {
+      "close_options_a11y": "Close options",
+      "moving": "Moving…",
+      "new_game_message": "Start a new game?",
+      "new_game_title": "New Game",
+      "no_legal_moves": "No legal moves…",
+      "play_again": "Play Again",
+      "play_again_a11y": "Play again",
+      "roll_dice": "Roll Dice",
+      "roll_dice_a11y": "Roll dice",
+      "rolling": "Rolling…"
+    },
     "nudge": {
       "roll_first": "Roll the dice first"
     },
@@ -58,17 +70,49 @@
       "turn_label": "Turn {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "Turn {{turn}}/{{totalTurns}} · move {{moveInTurn}}/{{movesInTurn}} · {{player}}",
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
+    },
+    "status": {
+      "black_wins": "Black Wins",
+      "computer_wins": "Computer Wins",
+      "white_wins": "🏆 White Wins!",
+      "you_win": "🏆 You Win!"
     }
+  },
+  "home": {
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "continue_or_new": "Continue your current game or start a new one?",
+    "game_in_progress": "Game in progress",
+    "new_game": "New game",
+    "new_game_confirm_web": "Start a new game? (Use Resume on the home screen to continue the current one.)",
+    "resume": "Resume Game",
+    "resume_a11y": "Resume saved game",
+    "resume_sub": "Continue where you left off",
+    "subtitle": "Master the board — one move at a time",
+    "two_players": "2 Players",
+    "two_players_a11y": "Play with two players locally",
+    "two_players_sub": "Pass & play locally",
+    "vs_computer": "vs Computer",
+    "vs_computer_a11y": "Play against the computer",
+    "vs_computer_sub": "Play against AI"
+  },
+  "not_found": {
+    "body": "That page isn't part of Backgammon Mastermind. Head home to start a game.",
+    "heading": "Off the board",
+    "home_a11y": "Go to home",
+    "home_cta": "Back to home",
+    "title": "Not found"
   },
   "settings": {
     "about": "About",
     "app_name": "Backgammon Mastermind",
-    "arabic": "Arabic",
-    "english": "English",
+    "back_a11y": "Back",
     "game": "Game",
     "generale": "General",
     "github": "Github",
     "language": "Language",
+    "link_error_body": "Please try again later.",
+    "link_error_title": "Unable to open link",
     "links": "Links",
     "more": "More",
     "privacy": "Privacy Policy",
@@ -80,6 +124,5 @@
     "title": "Settings",
     "version": "Version",
     "website": "Website"
-  },
-  "welcome": "Welcome to Backgammon Mastermind"
+  }
 }

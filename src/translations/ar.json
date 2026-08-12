@@ -1,5 +1,17 @@
 {
   "game": {
+    "controls": {
+      "close_options_a11y": "إغلاق الخيارات",
+      "moving": "يتحرك…",
+      "new_game_message": "هل تريد بدء لعبة جديدة؟",
+      "new_game_title": "لعبة جديدة",
+      "no_legal_moves": "لا توجد حركات متاحة…",
+      "play_again": "العب مجدداً",
+      "play_again_a11y": "العب مجدداً",
+      "roll_dice": "ارمِ النرد",
+      "roll_dice_a11y": "رمي النرد",
+      "rolling": "يرمي…"
+    },
     "nudge": {
       "roll_first": "ارمِ النرد أولاً"
     },
@@ -58,28 +70,59 @@
       "turn_label": "دور {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "دور {{turn}}/{{totalTurns}} · حركة {{moveInTurn}}/{{movesInTurn}} · {{player}}",
       "viewing_hint": "مراجعة — اضغط مباشر أو العودة للعب للمتابعة"
+    },
+    "status": {
+      "black_wins": "فاز الأسود",
+      "computer_wins": "فاز الكمبيوتر",
+      "white_wins": "🏆 فاز الأبيض!",
+      "you_win": "🏆 لقد فزت!"
     }
   },
+  "home": {
+    "cancel": "إلغاء",
+    "continue": "متابعة",
+    "continue_or_new": "هل تريد متابعة لعبتك الحالية أم بدء لعبة جديدة؟",
+    "game_in_progress": "لعبة قيد التقدم",
+    "new_game": "لعبة جديدة",
+    "new_game_confirm_web": "هل تريد بدء لعبة جديدة؟ (استخدم «استئناف» في الشاشة الرئيسية لمتابعة اللعبة الحالية.)",
+    "resume": "استئناف اللعبة",
+    "resume_a11y": "استئناف اللعبة المحفوظة",
+    "resume_sub": "تابع من حيث توقفت",
+    "subtitle": "أتقن اللوحة — حركة تلو الأخرى",
+    "two_players": "لاعبان",
+    "two_players_a11y": "العب مع لاعبين على نفس الجهاز",
+    "two_players_sub": "تناوبا على نفس الجهاز",
+    "vs_computer": "ضد الكمبيوتر",
+    "vs_computer_a11y": "العب ضد الكمبيوتر",
+    "vs_computer_sub": "العب ضد الذكاء الاصطناعي"
+  },
+  "not_found": {
+    "body": "هذه الصفحة ليست جزءاً من Backgammon Mastermind. عد إلى الرئيسية لبدء لعبة.",
+    "heading": "خارج اللوحة",
+    "home_a11y": "الذهاب إلى الرئيسية",
+    "home_cta": "العودة إلى الرئيسية",
+    "title": "غير موجود"
+  },
   "settings": {
-    "about": "حول التطبيق ",
+    "about": "حول التطبيق",
     "app_name": "Backgammon Mastermind",
-    "arabic": "عربي",
-    "english": "إنجليزي",
+    "back_a11y": "رجوع",
     "game": "اللعبة",
     "generale": "عام",
     "github": "GitHub",
-    "language": "لغة",
+    "language": "اللغة",
+    "link_error_body": "يرجى المحاولة مرة أخرى لاحقاً.",
+    "link_error_title": "تعذّر فتح الرابط",
     "links": "الروابط",
-    "more": "أكثر",
+    "more": "المزيد",
     "privacy": "سياسة الخصوصية",
-    "rate": "تقييم",
-    "share": "شارك",
+    "rate": "قيّمنا",
+    "share": "مشاركة",
     "support": "الدعم",
     "support_us": "ادعمنا",
     "terms": "شروط الخدمة",
-    "title": "إعدادات",
-    "version": "إصدار",
-    "website": "موقع الكتروني"
-  },
-  "welcome": "مرحبًا بك في Backgammon Mastermind"
+    "title": "الإعدادات",
+    "version": "الإصدار",
+    "website": "الموقع الإلكتروني"
+  }
 }

@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Κλείσιμο επιλογών",
+      "moving": "Κίνηση…",
+      "new_game_message": "Να ξεκινήσει νέο παιχνίδι;",
+      "new_game_title": "Νέο παιχνίδι",
+      "no_legal_moves": "Δεν υπάρχουν διαθέσιμες κινήσεις…",
+      "play_again": "Παίξε ξανά",
+      "play_again_a11y": "Παίξε ξανά",
+      "roll_dice": "Ρίξε τα ζάρια",
+      "roll_dice_a11y": "Ρίξε τα ζάρια",
+      "rolling": "Ρίχνει…"
+    },
+    "nudge": {
+      "roll_first": "Ρίξε πρώτα τα ζάρια"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} κερδίζει το {{low}}",
+      "goes_first": "Ξεκινά ο {{player}}!",
+      "roll": "Ρίξε",
+      "rolls_for_opening": "{{player}} ρίχνει για το άνοιγμα",
+      "tie": "Ισοπαλία!",
+      "tie_again": "Ίδιος αριθμός — ρίξτε ξανά",
+      "waiting_roll": "{{player}} ρίχνει…",
+      "who_goes_first": "Ποιος ξεκινά;",
+      "your_roll": "Άγγιξε οπουδήποτε για να ρίξεις"
+    },
+    "options": {
+      "open_settings": "Γλώσσα και άλλα",
+      "open_settings_hint": "Άνοιγμα Ρυθμίσεων",
+      "title": "Επιλογές παιχνιδιού"
+    },
+    "preferences": {
+      "auto_move": "Αυτόματη κίνηση όταν είναι αναγκαστική",
+      "auto_move_hint": "Παίζει αυτόματα τη μοναδική επιτρεπτή κίνηση",
+      "auto_roll": "Αυτόματη ρίψη ζαριών",
+      "auto_roll_hint": "Ρίχνει αυτόματα στη σειρά σου",
+      "dice_display": "Εμφάνιση ζαριών",
+      "dice_dots": "Κουκκίδες",
+      "dice_numbers": "Αριθμοί",
+      "direction_overlay": "Οδηγός κατεύθυνσης",
+      "direction_overlay_hint": "Διαδρομή σε σχήμα πετάλου στο ταμπλό",
+      "move_hints": "Υποδείξεις κινήσεων",
+      "move_hints_hint": "Χρυσή κουκκίδα δίπλα στις θέσεις από όπου μπορείς να κινηθείς",
+      "point_numbers": "Αρίθμηση θέσεων",
+      "point_numbers_hint": "Εμφάνιση ετικετών 1–24 στο ταμπλό",
+      "section_automation": "Αυτοματισμοί",
+      "section_board": "Ταμπλό",
+      "section_dice": "Ζάρια",
+      "sound": "Ήχοι παιχνιδιού",
+      "sound_hint": "Απαλοί ήχοι για ζάρια, χτυπήματα και νίκες — σέβεται την αθόρυβη λειτουργία"
+    },
+    "review": {
+      "back_to_live": "Επιστροφή στο τρέχον παιχνίδι",
+      "live": "Τρέχον παιχνίδι",
+      "live_short": "Live",
+      "move_a11y": "Κίνηση {{ply}}, {{player}}",
+      "move_position": "Κίνηση {{current}} από {{total}} · {{player}}",
+      "next": "Επόμενος γύρος",
+      "opening": "Αρχική θέση",
+      "pause_replay": "Παύση",
+      "player_black": "Μαύρα",
+      "player_white": "Λευκά",
+      "previous": "Προηγούμενος γύρος",
+      "replay": "Επανάληψη",
+      "scrubber_hint": "Άγγιξε έναν γύρο για ανασκόπηση",
+      "start": "Αρχή",
+      "turn_a11y": "Γύρος {{turn}}, {{player}}",
+      "turn_label": "Γύρος {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Γύρος {{turn}}/{{totalTurns}} · κίνηση {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Ανασκόπηση — πάτησε Live ή Επιστροφή για να συνεχίσεις"
+    },
+    "status": {
+      "black_wins": "Νίκη των Μαύρων",
+      "computer_wins": "Νίκη του υπολογιστή",
+      "white_wins": "🏆 Νίκη των Λευκών!",
+      "you_win": "🏆 Κέρδισες!"
+    }
+  },
+  "home": {
+    "cancel": "Ακύρωση",
+    "continue": "Συνέχεια",
+    "continue_or_new": "Θες να συνεχίσεις το τρέχον παιχνίδι ή να ξεκινήσεις νέο;",
+    "game_in_progress": "Παιχνίδι σε εξέλιξη",
+    "new_game": "Νέο παιχνίδι",
+    "new_game_confirm_web": "Να ξεκινήσει νέο παιχνίδι; (Χρησιμοποίησε τη Συνέχιση στην αρχική οθόνη για το τρέχον.)",
+    "resume": "Συνέχιση παιχνιδιού",
+    "resume_a11y": "Συνέχιση αποθηκευμένου παιχνιδιού",
+    "resume_sub": "Συνέχισε από εκεί που σταμάτησες",
+    "subtitle": "Κατάκτησε το ταμπλό — κίνηση την κίνηση",
+    "two_players": "2 παίκτες",
+    "two_players_a11y": "Παίξτε δύο παίκτες στην ίδια συσκευή",
+    "two_players_sub": "Εναλλάξ στην ίδια συσκευή",
+    "vs_computer": "Εναντίον υπολογιστή",
+    "vs_computer_a11y": "Παίξε εναντίον του υπολογιστή",
+    "vs_computer_sub": "Παίξε ενάντια στην ΤΝ"
+  },
+  "not_found": {
+    "body": "Αυτή η σελίδα δεν ανήκει στο Backgammon Mastermind. Πήγαινε στην αρχική για να ξεκινήσεις παιχνίδι.",
+    "heading": "Εκτός ταμπλό",
+    "home_a11y": "Μετάβαση στην αρχική",
+    "home_cta": "Επιστροφή στην αρχική",
+    "title": "Δεν βρέθηκε"
+  },
+  "settings": {
+    "about": "Σχετικά",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Πίσω",
+    "game": "Παιχνίδι",
+    "generale": "Γενικά",
+    "github": "GitHub",
+    "language": "Γλώσσα",
+    "link_error_body": "Δοκίμασε ξανά αργότερα.",
+    "link_error_title": "Αδυναμία ανοίγματος συνδέσμου",
+    "links": "Σύνδεσμοι",
+    "more": "Περισσότερα",
+    "privacy": "Πολιτική Απορρήτου",
+    "rate": "Βαθμολόγησε",
+    "share": "Κοινοποίηση",
+    "support": "Υποστήριξη",
+    "support_us": "Στήριξέ μας",
+    "terms": "Όροι Χρήσης",
+    "title": "Ρυθμίσεις",
+    "version": "Έκδοση",
+    "website": "Ιστότοπος"
+  }
+}

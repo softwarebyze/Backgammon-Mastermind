@@ -4,6 +4,7 @@ import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
@@ -11,7 +12,7 @@ import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 export default function NotFoundScreen() {
   return (
     <>
-      <Stack.Screen options={{ title: 'Not found', headerShown: false }} />
+      <Stack.Screen options={{ title: translate('not_found.title'), headerShown: false }} />
       <FocusAwareStatusBar />
       <View style={styles.root} testID="not-found-screen">
         <View style={styles.badge}>
@@ -19,11 +20,8 @@ export default function NotFoundScreen() {
         </View>
 
         <Text style={styles.code}>404</Text>
-        <Text style={styles.title}>Off the board</Text>
-        <Text style={styles.body}>
-          That page isn&apos;t part of Backgammon Mastermind. Head home to learn
-          or start a game.
-        </Text>
+        <Text style={styles.title}>{translate('not_found.heading')}</Text>
+        <Text style={styles.body}>{translate('not_found.body')}</Text>
 
         <View style={styles.dividerRow}>
           <View style={styles.dividerLine} />
@@ -33,13 +31,13 @@ export default function NotFoundScreen() {
 
         <Pressable
           accessibilityRole="link"
-          accessibilityLabel="Go to home"
+          accessibilityLabel={translate('not_found.home_a11y')}
           onPress={() => router.replace('/')}
           style={({ pressed }) => [styles.homeBtn, pressed && styles.pressed]}
           testID="not-found-home"
         >
           <Feather name="home" size={20} color={GAME_PALETTE.bg} />
-          <Text style={styles.homeLabel}>Back to home</Text>
+          <Text style={styles.homeLabel}>{translate('not_found.home_cta')}</Text>
         </Pressable>
       </View>
     </>

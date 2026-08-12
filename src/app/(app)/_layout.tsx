@@ -39,7 +39,7 @@ export default function AppLayout() {
           ...settingsStackOptions(),
           headerLeft: () => (
             <HeaderButton
-              accessibilityLabel="Back"
+              accessibilityLabel={translate('settings.back_a11y')}
               onPress={() => {
                 hapticLight();
                 router.back();

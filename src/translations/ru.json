@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Закрыть настройки",
+      "moving": "Ход…",
+      "new_game_message": "Начать новую игру?",
+      "new_game_title": "Новая игра",
+      "no_legal_moves": "Нет доступных ходов…",
+      "play_again": "Сыграть ещё раз",
+      "play_again_a11y": "Сыграть ещё раз",
+      "roll_dice": "Бросить кости",
+      "roll_dice_a11y": "Бросить кости",
+      "rolling": "Бросает…"
+    },
+    "nudge": {
+      "roll_first": "Сначала бросьте кости"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} против {{low}}",
+      "goes_first": "{{player}} ходит первым!",
+      "roll": "Бросить",
+      "rolls_for_opening": "{{player}} бросает за право первого хода",
+      "tie": "Ничья!",
+      "tie_again": "Одинаковые числа — бросьте ещё раз",
+      "waiting_roll": "{{player}} бросает…",
+      "who_goes_first": "Кто ходит первым?",
+      "your_roll": "Коснитесь экрана, чтобы бросить"
+    },
+    "options": {
+      "open_settings": "Язык и другое",
+      "open_settings_hint": "Открыть настройки",
+      "title": "Параметры игры"
+    },
+    "preferences": {
+      "auto_move": "Автоход при единственном варианте",
+      "auto_move_hint": "Автоматически делать единственный возможный ход",
+      "auto_roll": "Автобросок костей",
+      "auto_roll_hint": "Автоматически бросать кости в ваш ход",
+      "dice_display": "Вид костей",
+      "dice_dots": "Точки",
+      "dice_numbers": "Числа",
+      "direction_overlay": "Направление движения",
+      "direction_overlay_hint": "Путь подковой на доске",
+      "move_hints": "Подсказки ходов",
+      "move_hints_hint": "Золотая точка у пунктов, с которых можно ходить",
+      "point_numbers": "Номера пунктов",
+      "point_numbers_hint": "Показывать метки 1–24 на доске",
+      "section_automation": "Автоматизация",
+      "section_board": "Доска",
+      "section_dice": "Кости",
+      "sound": "Звуки игры",
+      "sound_hint": "Мягкие звуки костей, ударов и победы — учитывается беззвучный режим"
+    },
+    "review": {
+      "back_to_live": "Вернуться к текущей игре",
+      "live": "Текущая игра",
+      "live_short": "Игра",
+      "move_a11y": "Ход {{ply}}, {{player}}",
+      "move_position": "Ход {{current}} из {{total}} · {{player}}",
+      "next": "Следующий ход",
+      "opening": "Начальная позиция",
+      "pause_replay": "Пауза",
+      "player_black": "Чёрные",
+      "player_white": "Белые",
+      "previous": "Предыдущий ход",
+      "replay": "Повтор",
+      "scrubber_hint": "Коснитесь хода для просмотра",
+      "start": "Начало",
+      "turn_a11y": "Ход {{turn}}, {{player}}",
+      "turn_label": "Ход {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Ход {{turn}}/{{totalTurns}} · перемещение {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Просмотр — нажмите «Игра» или «Вернуться», чтобы продолжить"
+    },
+    "status": {
+      "black_wins": "Чёрные победили",
+      "computer_wins": "Компьютер победил",
+      "white_wins": "🏆 Белые победили!",
+      "you_win": "🏆 Вы победили!"
+    }
+  },
+  "home": {
+    "cancel": "Отмена",
+    "continue": "Продолжить",
+    "continue_or_new": "Продолжить текущую игру или начать новую?",
+    "game_in_progress": "Игра не завершена",
+    "new_game": "Новая игра",
+    "new_game_confirm_web": "Начать новую игру? (Чтобы продолжить текущую, нажмите «Продолжить» на главном экране.)",
+    "resume": "Продолжить игру",
+    "resume_a11y": "Продолжить сохранённую игру",
+    "resume_sub": "Продолжите с того места, где остановились",
+    "subtitle": "Покоряйте доску — ход за ходом",
+    "two_players": "2 игрока",
+    "two_players_a11y": "Играть вдвоём на этом устройстве",
+    "two_players_sub": "По очереди на одном устройстве",
+    "vs_computer": "Против компьютера",
+    "vs_computer_a11y": "Играть против компьютера",
+    "vs_computer_sub": "Игра против ИИ"
+  },
+  "not_found": {
+    "body": "Этой страницы нет в Backgammon Mastermind. Вернитесь на главную, чтобы начать игру.",
+    "heading": "За пределами доски",
+    "home_a11y": "На главную",
+    "home_cta": "На главную",
+    "title": "Не найдено"
+  },
+  "settings": {
+    "about": "О приложении",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Назад",
+    "game": "Игра",
+    "generale": "Общие",
+    "github": "GitHub",
+    "language": "Язык",
+    "link_error_body": "Повторите попытку позже.",
+    "link_error_title": "Не удалось открыть ссылку",
+    "links": "Ссылки",
+    "more": "Ещё",
+    "privacy": "Политика конфиденциальности",
+    "rate": "Оценить",
+    "share": "Поделиться",
+    "support": "Поддержка",
+    "support_us": "Поддержать нас",
+    "terms": "Условия использования",
+    "title": "Настройки",
+    "version": "Версия",
+    "website": "Сайт"
+  }
+}

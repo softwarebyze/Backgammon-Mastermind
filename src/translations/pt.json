@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Fechar opções",
+      "moving": "Movendo…",
+      "new_game_message": "Começar um novo jogo?",
+      "new_game_title": "Novo jogo",
+      "no_legal_moves": "Nenhum movimento possível…",
+      "play_again": "Jogar de novo",
+      "play_again_a11y": "Jogar de novo",
+      "roll_dice": "Lançar os dados",
+      "roll_dice_a11y": "Lançar os dados",
+      "rolling": "Lançando…"
+    },
+    "nudge": {
+      "roll_first": "Lance os dados primeiro"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} vence {{low}}",
+      "goes_first": "{{player}} começa!",
+      "roll": "Lançar",
+      "rolls_for_opening": "{{player}} lança para a abertura",
+      "tie": "Empate!",
+      "tie_again": "Mesmo número — lancem de novo",
+      "waiting_roll": "{{player}} está lançando…",
+      "who_goes_first": "Quem começa?",
+      "your_roll": "Toque em qualquer lugar para lançar"
+    },
+    "options": {
+      "open_settings": "Idioma e mais",
+      "open_settings_hint": "Abrir Ajustes",
+      "title": "Opções do jogo"
+    },
+    "preferences": {
+      "auto_move": "Mover automaticamente quando forçado",
+      "auto_move_hint": "Jogar automaticamente o único movimento legal",
+      "auto_roll": "Lançar dados automaticamente",
+      "auto_roll_hint": "Lançar automaticamente na sua vez",
+      "dice_display": "Aparência dos dados",
+      "dice_dots": "Pontos",
+      "dice_numbers": "Números",
+      "direction_overlay": "Guia de direção",
+      "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
+      "move_hints": "Dicas de movimento",
+      "move_hints_hint": "Ponto dourado ao lado das casas de onde você pode mover",
+      "point_numbers": "Números das casas",
+      "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
+      "section_automation": "Automação",
+      "section_board": "Tabuleiro",
+      "section_dice": "Dados",
+      "sound": "Sons do jogo",
+      "sound_hint": "Dados, capturas e vitórias suaves — respeita o modo silencioso"
+    },
+    "review": {
+      "back_to_live": "Voltar ao jogo em andamento",
+      "live": "Jogo em andamento",
+      "live_short": "Ao vivo",
+      "move_a11y": "Movimento {{ply}}, {{player}}",
+      "move_position": "Movimento {{current}} de {{total}} · {{player}}",
+      "next": "Próximo turno",
+      "opening": "Posição inicial",
+      "pause_replay": "Pausar",
+      "player_black": "Pretas",
+      "player_white": "Brancas",
+      "previous": "Turno anterior",
+      "replay": "Replay",
+      "scrubber_hint": "Toque em um turno para revisar",
+      "start": "Início",
+      "turn_a11y": "Turno {{turn}}, {{player}}",
+      "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Turno {{turn}}/{{totalTurns}} · movimento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisando — toque em Ao vivo ou Voltar para continuar jogando"
+    },
+    "status": {
+      "black_wins": "As Pretas venceram",
+      "computer_wins": "O computador venceu",
+      "white_wins": "🏆 As Brancas venceram!",
+      "you_win": "🏆 Você venceu!"
+    }
+  },
+  "home": {
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "continue_or_new": "Continuar o jogo atual ou começar um novo?",
+    "game_in_progress": "Jogo em andamento",
+    "new_game": "Novo jogo",
+    "new_game_confirm_web": "Começar um novo jogo? (Use Retomar na tela inicial para continuar o atual.)",
+    "resume": "Retomar jogo",
+    "resume_a11y": "Retomar o jogo salvo",
+    "resume_sub": "Continue de onde parou",
+    "subtitle": "Domine o tabuleiro — um movimento de cada vez",
+    "two_players": "2 jogadores",
+    "two_players_a11y": "Jogar em dois neste dispositivo",
+    "two_players_sub": "Revezando no mesmo dispositivo",
+    "vs_computer": "Contra o computador",
+    "vs_computer_a11y": "Jogar contra o computador",
+    "vs_computer_sub": "Jogue contra a IA"
+  },
+  "not_found": {
+    "body": "Essa página não faz parte do Backgammon Mastermind. Volte ao início para começar um jogo.",
+    "heading": "Fora do tabuleiro",
+    "home_a11y": "Ir para o início",
+    "home_cta": "Voltar ao início",
+    "title": "Não encontrado"
+  },
+  "settings": {
+    "about": "Sobre",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Voltar",
+    "game": "Jogo",
+    "generale": "Geral",
+    "github": "GitHub",
+    "language": "Idioma",
+    "link_error_body": "Tente novamente mais tarde.",
+    "link_error_title": "Não foi possível abrir o link",
+    "links": "Links",
+    "more": "Mais",
+    "privacy": "Política de Privacidade",
+    "rate": "Avaliar",
+    "share": "Compartilhar",
+    "support": "Suporte",
+    "support_us": "Apoie-nos",
+    "terms": "Termos de Serviço",
+    "title": "Ajustes",
+    "version": "Versão",
+    "website": "Site"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "オプションを閉じる",
+      "moving": "移動中…",
+      "new_game_message": "新しいゲームを始めますか？",
+      "new_game_title": "新しいゲーム",
+      "no_legal_moves": "動かせる手がありません…",
+      "play_again": "もう一度遊ぶ",
+      "play_again_a11y": "もう一度遊ぶ",
+      "roll_dice": "サイコロを振る",
+      "roll_dice_a11y": "サイコロを振る",
+      "rolling": "振っています…"
+    },
+    "nudge": {
+      "roll_first": "先にサイコロを振ってください"
+    },
+    "opening": {
+      "compare": "{{winner}}の{{high}}が{{low}}に勝ち",
+      "goes_first": "{{player}}が先攻！",
+      "roll": "振る",
+      "rolls_for_opening": "{{player}}がオープニングロール中",
+      "tie": "引き分け！",
+      "tie_again": "同じ目 — もう一度振ってください",
+      "waiting_roll": "{{player}}が振っています…",
+      "who_goes_first": "どちらが先攻？",
+      "your_roll": "画面のどこかをタップして振る"
+    },
+    "options": {
+      "open_settings": "言語・その他",
+      "open_settings_hint": "設定を開く",
+      "title": "ゲームオプション"
+    },
+    "preferences": {
+      "auto_move": "強制手を自動でプレイ",
+      "auto_move_hint": "唯一の合法手を自動的にプレイします",
+      "auto_roll": "サイコロを自動で振る",
+      "auto_roll_hint": "自分の番に自動的に振ります",
+      "dice_display": "サイコロの表示",
+      "dice_dots": "ドット",
+      "dice_numbers": "数字",
+      "direction_overlay": "進行方向ガイド",
+      "direction_overlay_hint": "ボード上に馬蹄形の経路を表示",
+      "move_hints": "ムーブヒント",
+      "move_hints_hint": "動かせるポイントの横に金色の点を表示",
+      "point_numbers": "ポイント番号",
+      "point_numbers_hint": "ボードに1〜24のラベルを表示",
+      "section_automation": "自動化",
+      "section_board": "ボード",
+      "section_dice": "サイコロ",
+      "sound": "ゲームサウンド",
+      "sound_hint": "サイコロ・ヒット・勝利のやさしい効果音 — マナーモードに従います"
+    },
+    "review": {
+      "back_to_live": "対局に戻る",
+      "live": "進行中の対局",
+      "live_short": "ライブ",
+      "move_a11y": "ムーブ{{ply}}、{{player}}",
+      "move_position": "ムーブ{{current}}／{{total}} · {{player}}",
+      "next": "次の手番",
+      "opening": "開始局面",
+      "pause_replay": "一時停止",
+      "player_black": "黒",
+      "player_white": "白",
+      "previous": "前の手番",
+      "replay": "リプレイ",
+      "scrubber_hint": "手番をタップして振り返り",
+      "start": "開始",
+      "turn_a11y": "手番{{turn}}、{{player}}",
+      "turn_label": "手番{{turn}}／{{totalTurns}} · {{player}}",
+      "turn_position": "手番{{turn}}／{{totalTurns}} · ムーブ{{moveInTurn}}／{{movesInTurn}} · {{player}}",
+      "viewing_hint": "振り返り中 — ライブか「対局に戻る」をタップで再開"
+    },
+    "status": {
+      "black_wins": "黒の勝ち",
+      "computer_wins": "コンピュータの勝ち",
+      "white_wins": "🏆 白の勝ち！",
+      "you_win": "🏆 あなたの勝ち！"
+    }
+  },
+  "home": {
+    "cancel": "キャンセル",
+    "continue": "続ける",
+    "continue_or_new": "今のゲームを続けますか？それとも新しく始めますか？",
+    "game_in_progress": "進行中のゲームがあります",
+    "new_game": "新しいゲーム",
+    "new_game_confirm_web": "新しいゲームを始めますか？（今のゲームはホーム画面の「再開」から続けられます。）",
+    "resume": "ゲームを再開",
+    "resume_a11y": "保存したゲームを再開",
+    "resume_sub": "前回の続きから",
+    "subtitle": "一手ずつ、ボードを極める",
+    "two_players": "2人プレイ",
+    "two_players_a11y": "この端末で2人でプレイ",
+    "two_players_sub": "同じ端末で交代プレイ",
+    "vs_computer": "コンピュータ対戦",
+    "vs_computer_a11y": "コンピュータと対戦",
+    "vs_computer_sub": "AIと対戦"
+  },
+  "not_found": {
+    "body": "このページはBackgammon Mastermindにはありません。ホームに戻ってゲームを始めましょう。",
+    "heading": "ボードの外です",
+    "home_a11y": "ホームへ移動",
+    "home_cta": "ホームに戻る",
+    "title": "見つかりません"
+  },
+  "settings": {
+    "about": "このアプリについて",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "戻る",
+    "game": "ゲーム",
+    "generale": "一般",
+    "github": "GitHub",
+    "language": "言語",
+    "link_error_body": "しばらくしてからもう一度お試しください。",
+    "link_error_title": "リンクを開けません",
+    "links": "リンク",
+    "more": "その他",
+    "privacy": "プライバシーポリシー",
+    "rate": "評価する",
+    "share": "共有",
+    "support": "サポート",
+    "support_us": "応援する",
+    "terms": "利用規約",
+    "title": "設定",
+    "version": "バージョン",
+    "website": "ウェブサイト"
+  }
+}

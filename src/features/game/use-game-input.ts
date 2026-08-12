@@ -6,6 +6,7 @@ import { useCallback, useMemo } from 'react';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
 import { useGame } from '@/features/game/use-game';
 import { confirmAction } from '@/lib/confirm';
+import { translate } from '@/lib/i18n';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
 function triggerHaptic(fn: () => Promise<void>) {
@@ -66,9 +67,9 @@ export function useGameInput() {
 
   const handleReset = useCallback(() => {
     confirmAction({
-      title: 'New Game',
-      message: 'Start a new game?',
-      confirmLabel: 'New Game',
+      title: translate('game.controls.new_game_title'),
+      message: translate('game.controls.new_game_message'),
+      confirmLabel: translate('game.controls.new_game_title'),
       destructive: true,
       onConfirm: () => {
         clearPendingDrop();

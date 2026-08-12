@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Zamknij opcje",
+      "moving": "Ruch…",
+      "new_game_message": "Rozpocząć nową grę?",
+      "new_game_title": "Nowa gra",
+      "no_legal_moves": "Brak możliwych ruchów…",
+      "play_again": "Zagraj ponownie",
+      "play_again_a11y": "Zagraj ponownie",
+      "roll_dice": "Rzuć kośćmi",
+      "roll_dice_a11y": "Rzuć kośćmi",
+      "rolling": "Rzuca…"
+    },
+    "nudge": {
+      "roll_first": "Najpierw rzuć kośćmi"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bije {{low}}",
+      "goes_first": "{{player}} zaczyna!",
+      "roll": "Rzuć",
+      "rolls_for_opening": "{{player}} rzuca o rozpoczęcie",
+      "tie": "Remis!",
+      "tie_again": "Ta sama liczba — rzućcie ponownie",
+      "waiting_roll": "{{player}} rzuca…",
+      "who_goes_first": "Kto zaczyna?",
+      "your_roll": "Dotknij gdziekolwiek, aby rzucić"
+    },
+    "options": {
+      "open_settings": "Język i więcej",
+      "open_settings_hint": "Otwórz Ustawienia",
+      "title": "Opcje gry"
+    },
+    "preferences": {
+      "auto_move": "Automatyczny ruch przymusowy",
+      "auto_move_hint": "Automatycznie wykonuje jedyny możliwy ruch",
+      "auto_roll": "Automatyczny rzut kośćmi",
+      "auto_roll_hint": "Rzuca automatycznie w twojej turze",
+      "dice_display": "Wygląd kości",
+      "dice_dots": "Oczka",
+      "dice_numbers": "Liczby",
+      "direction_overlay": "Wskazówka kierunku",
+      "direction_overlay_hint": "Trasa w kształcie podkowy na planszy",
+      "move_hints": "Podpowiedzi ruchów",
+      "move_hints_hint": "Złota kropka przy polach, z których możesz się ruszyć",
+      "point_numbers": "Numery pól",
+      "point_numbers_hint": "Pokaż etykiety 1–24 na planszy",
+      "section_automation": "Automatyzacja",
+      "section_board": "Plansza",
+      "section_dice": "Kości",
+      "sound": "Dźwięki gry",
+      "sound_hint": "Delikatne dźwięki kości, bić i zwycięstw — szanuje tryb cichy"
+    },
+    "review": {
+      "back_to_live": "Wróć do bieżącej gry",
+      "live": "Bieżąca gra",
+      "live_short": "Na żywo",
+      "move_a11y": "Ruch {{ply}}, {{player}}",
+      "move_position": "Ruch {{current}} z {{total}} · {{player}}",
+      "next": "Następna tura",
+      "opening": "Pozycja początkowa",
+      "pause_replay": "Pauza",
+      "player_black": "Czarne",
+      "player_white": "Białe",
+      "previous": "Poprzednia tura",
+      "replay": "Powtórka",
+      "scrubber_hint": "Dotknij tury, aby ją przejrzeć",
+      "start": "Początek",
+      "turn_a11y": "Tura {{turn}}, {{player}}",
+      "turn_label": "Tura {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tura {{turn}}/{{totalTurns}} · ruch {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Przeglądanie — dotknij Na żywo lub Wróć, aby grać dalej"
+    },
+    "status": {
+      "black_wins": "Czarne wygrywają",
+      "computer_wins": "Komputer wygrywa",
+      "white_wins": "🏆 Białe wygrywają!",
+      "you_win": "🏆 Wygrywasz!"
+    }
+  },
+  "home": {
+    "cancel": "Anuluj",
+    "continue": "Kontynuuj",
+    "continue_or_new": "Kontynuować bieżącą grę czy rozpocząć nową?",
+    "game_in_progress": "Gra w toku",
+    "new_game": "Nowa gra",
+    "new_game_confirm_web": "Rozpocząć nową grę? (Użyj Wznów na ekranie głównym, aby kontynuować bieżącą.)",
+    "resume": "Wznów grę",
+    "resume_a11y": "Wznów zapisaną grę",
+    "resume_sub": "Kontynuuj od miejsca, w którym skończyłeś",
+    "subtitle": "Opanuj planszę — ruch po ruchu",
+    "two_players": "2 graczy",
+    "two_players_a11y": "Graj we dwoje na tym urządzeniu",
+    "two_players_sub": "Na zmianę na tym samym urządzeniu",
+    "vs_computer": "Przeciw komputerowi",
+    "vs_computer_a11y": "Graj przeciwko komputerowi",
+    "vs_computer_sub": "Zagraj przeciwko SI"
+  },
+  "not_found": {
+    "body": "Ta strona nie należy do Backgammon Mastermind. Wróć na stronę główną, aby rozpocząć grę.",
+    "heading": "Poza planszą",
+    "home_a11y": "Przejdź na stronę główną",
+    "home_cta": "Wróć na stronę główną",
+    "title": "Nie znaleziono"
+  },
+  "settings": {
+    "about": "O aplikacji",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Wstecz",
+    "game": "Gra",
+    "generale": "Ogólne",
+    "github": "GitHub",
+    "language": "Język",
+    "link_error_body": "Spróbuj ponownie później.",
+    "link_error_title": "Nie można otworzyć linku",
+    "links": "Linki",
+    "more": "Więcej",
+    "privacy": "Polityka prywatności",
+    "rate": "Oceń",
+    "share": "Udostępnij",
+    "support": "Pomoc",
+    "support_us": "Wesprzyj nas",
+    "terms": "Warunki korzystania",
+    "title": "Ustawienia",
+    "version": "Wersja",
+    "website": "Strona internetowa"
+  }
+}

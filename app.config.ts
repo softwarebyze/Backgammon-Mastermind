@@ -134,6 +134,26 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: Env.EXPO_PUBLIC_BUNDLE_ID,
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
+      // Keep in sync with src/lib/i18n/resources.ts (App Store "Languages" + iOS language matching).
+      CFBundleLocalizations: [
+        'en',
+        'ar',
+        'de',
+        'el',
+        'es',
+        'fr',
+        'he',
+        'hi',
+        'it',
+        'ja',
+        'ko',
+        'nl',
+        'pl',
+        'pt',
+        'ru',
+        'tr',
+        'zh',
+      ],
     },
   },
   experiments: {

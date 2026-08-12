@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "विकल्प बंद करें",
+      "moving": "चाल चली जा रही है…",
+      "new_game_message": "नया गेम शुरू करें?",
+      "new_game_title": "नया गेम",
+      "no_legal_moves": "कोई चाल संभव नहीं…",
+      "play_again": "फिर से खेलें",
+      "play_again_a11y": "फिर से खेलें",
+      "roll_dice": "पासे फेंकें",
+      "roll_dice_a11y": "पासे फेंकें",
+      "rolling": "पासे फेंके जा रहे हैं…"
+    },
+    "nudge": {
+      "roll_first": "पहले पासे फेंकें"
+    },
+    "opening": {
+      "compare": "{{winner}} का {{high}}, {{low}} से बड़ा",
+      "goes_first": "{{player}} पहले चलेगा!",
+      "roll": "फेंकें",
+      "rolls_for_opening": "{{player}} शुरुआत के लिए पासा फेंक रहा है",
+      "tie": "बराबरी!",
+      "tie_again": "एक जैसा अंक — फिर से फेंकें",
+      "waiting_roll": "{{player}} पासा फेंक रहा है…",
+      "who_goes_first": "पहले कौन चलेगा?",
+      "your_roll": "फेंकने के लिए कहीं भी टैप करें"
+    },
+    "options": {
+      "open_settings": "भाषा और अन्य",
+      "open_settings_hint": "सेटिंग्स खोलें",
+      "title": "गेम विकल्प"
+    },
+    "preferences": {
+      "auto_move": "मजबूरी की चाल अपने आप चलें",
+      "auto_move_hint": "एकमात्र वैध चाल अपने आप चल दी जाती है",
+      "auto_roll": "पासे अपने आप फेंकें",
+      "auto_roll_hint": "आपकी बारी पर पासे अपने आप फेंके जाते हैं",
+      "dice_display": "पासों का रूप",
+      "dice_dots": "बिंदु",
+      "dice_numbers": "अंक",
+      "direction_overlay": "दिशा मार्गदर्शक",
+      "direction_overlay_hint": "बोर्ड पर घोड़े की नाल जैसा रास्ता",
+      "move_hints": "चाल संकेत",
+      "move_hints_hint": "जिन जगहों से चल सकते हैं उनके पास सुनहरा बिंदु",
+      "point_numbers": "पॉइंट संख्याएँ",
+      "point_numbers_hint": "बोर्ड पर 1–24 लेबल दिखाएँ",
+      "section_automation": "स्वचालन",
+      "section_board": "बोर्ड",
+      "section_dice": "पासे",
+      "sound": "गेम की आवाज़ें",
+      "sound_hint": "हल्की पासे, चोट और जीत की ध्वनियाँ — साइलेंट मोड का पालन करती हैं"
+    },
+    "review": {
+      "back_to_live": "चालू गेम पर लौटें",
+      "live": "चालू गेम",
+      "live_short": "लाइव",
+      "move_a11y": "चाल {{ply}}, {{player}}",
+      "move_position": "चाल {{current}} / {{total}} · {{player}}",
+      "next": "अगली बारी",
+      "opening": "प्रारंभिक स्थिति",
+      "pause_replay": "रोकें",
+      "player_black": "काला",
+      "player_white": "सफ़ेद",
+      "previous": "पिछली बारी",
+      "replay": "रीप्ले",
+      "scrubber_hint": "समीक्षा के लिए किसी बारी पर टैप करें",
+      "start": "आरंभ",
+      "turn_a11y": "बारी {{turn}}, {{player}}",
+      "turn_label": "बारी {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "बारी {{turn}}/{{totalTurns}} · चाल {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "समीक्षा चल रही है — खेलते रहने के लिए लाइव या लौटें दबाएँ"
+    },
+    "status": {
+      "black_wins": "काला जीता",
+      "computer_wins": "कंप्यूटर जीता",
+      "white_wins": "🏆 सफ़ेद जीता!",
+      "you_win": "🏆 आप जीत गए!"
+    }
+  },
+  "home": {
+    "cancel": "रद्द करें",
+    "continue": "जारी रखें",
+    "continue_or_new": "मौजूदा गेम जारी रखें या नया शुरू करें?",
+    "game_in_progress": "गेम चल रहा है",
+    "new_game": "नया गेम",
+    "new_game_confirm_web": "नया गेम शुरू करें? (मौजूदा गेम जारी रखने के लिए होम स्क्रीन पर 'गेम जारी रखें' चुनें।)",
+    "resume": "गेम जारी रखें",
+    "resume_a11y": "सहेजा गया गेम जारी रखें",
+    "resume_sub": "जहाँ छोड़ा था वहीं से जारी रखें",
+    "subtitle": "बोर्ड पर महारत — एक चाल एक बार में",
+    "two_players": "2 खिलाड़ी",
+    "two_players_a11y": "इसी डिवाइस पर दो खिलाड़ी खेलें",
+    "two_players_sub": "एक ही डिवाइस पर बारी-बारी से",
+    "vs_computer": "कंप्यूटर के विरुद्ध",
+    "vs_computer_a11y": "कंप्यूटर के विरुद्ध खेलें",
+    "vs_computer_sub": "AI के विरुद्ध खेलें"
+  },
+  "not_found": {
+    "body": "यह पेज Backgammon Mastermind का हिस्सा नहीं है। गेम शुरू करने के लिए होम पर जाएँ।",
+    "heading": "बोर्ड से बाहर",
+    "home_a11y": "होम पर जाएँ",
+    "home_cta": "होम पर वापस जाएँ",
+    "title": "नहीं मिला"
+  },
+  "settings": {
+    "about": "ऐप के बारे में",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "वापस",
+    "game": "गेम",
+    "generale": "सामान्य",
+    "github": "GitHub",
+    "language": "भाषा",
+    "link_error_body": "कृपया बाद में फिर से प्रयास करें।",
+    "link_error_title": "लिंक नहीं खुल सका",
+    "links": "लिंक",
+    "more": "अधिक",
+    "privacy": "गोपनीयता नीति",
+    "rate": "रेट करें",
+    "share": "साझा करें",
+    "support": "सहायता",
+    "support_us": "हमारा समर्थन करें",
+    "terms": "सेवा की शर्तें",
+    "title": "सेटिंग्स",
+    "version": "संस्करण",
+    "website": "वेबसाइट"
+  }
+}

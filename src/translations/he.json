@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "סגירת אפשרויות",
+      "moving": "מזיז…",
+      "new_game_message": "להתחיל משחק חדש?",
+      "new_game_title": "משחק חדש",
+      "no_legal_moves": "אין מהלכים אפשריים…",
+      "play_again": "שחקו שוב",
+      "play_again_a11y": "לשחק שוב",
+      "roll_dice": "הטילו קוביות",
+      "roll_dice_a11y": "הטלת קוביות",
+      "rolling": "מטיל…"
+    },
+    "nudge": {
+      "roll_first": "קודם הטילו את הקוביות"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} גובר על {{low}}",
+      "goes_first": "{{player}} מתחיל!",
+      "roll": "הטלה",
+      "rolls_for_opening": "{{player}} מטיל לפתיחה",
+      "tie": "תיקו!",
+      "tie_again": "אותו מספר — הטילו שוב",
+      "waiting_roll": "{{player}} מטיל…",
+      "who_goes_first": "מי מתחיל?",
+      "your_roll": "הקישו בכל מקום כדי להטיל"
+    },
+    "options": {
+      "open_settings": "שפה ועוד",
+      "open_settings_hint": "פתיחת הגדרות",
+      "title": "אפשרויות משחק"
+    },
+    "preferences": {
+      "auto_move": "מהלך אוטומטי כשהוא כפוי",
+      "auto_move_hint": "ביצוע אוטומטי של המהלך החוקי היחיד",
+      "auto_roll": "הטלת קוביות אוטומטית",
+      "auto_roll_hint": "הטלה אוטומטית בתורך",
+      "dice_display": "תצוגת קוביות",
+      "dice_dots": "נקודות",
+      "dice_numbers": "מספרים",
+      "direction_overlay": "מסלול כיוון",
+      "direction_overlay_hint": "מסלול בצורת פרסה על הלוח",
+      "move_hints": "רמזי מהלכים",
+      "move_hints_hint": "נקודה זהובה ליד משבצות שמהן אפשר לזוז",
+      "point_numbers": "מספרי משבצות",
+      "point_numbers_hint": "הצגת תוויות 1–24 על הלוח",
+      "section_automation": "אוטומציה",
+      "section_board": "לוח",
+      "section_dice": "קוביות",
+      "sound": "צלילי משחק",
+      "sound_hint": "צלילים עדינים לקוביות, הכאות וניצחון — מכבד מצב שקט"
+    },
+    "review": {
+      "back_to_live": "חזרה למשחק החי",
+      "live": "משחק חי",
+      "live_short": "חי",
+      "move_a11y": "מהלך {{ply}}, {{player}}",
+      "move_position": "מהלך {{current}} מתוך {{total}} · {{player}}",
+      "next": "תור הבא",
+      "opening": "עמדת פתיחה",
+      "pause_replay": "השהיה",
+      "player_black": "שחור",
+      "player_white": "לבן",
+      "previous": "תור קודם",
+      "replay": "הקרנה חוזרת",
+      "scrubber_hint": "הקישו על תור לצפייה",
+      "start": "התחלה",
+      "turn_a11y": "תור {{turn}}, {{player}}",
+      "turn_label": "תור {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "תור {{turn}}/{{totalTurns}} · מהלך {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "צפייה — הקישו על חי או חזרה כדי להמשיך לשחק"
+    },
+    "status": {
+      "black_wins": "השחור ניצח",
+      "computer_wins": "המחשב ניצח",
+      "white_wins": "🏆 הלבן ניצח!",
+      "you_win": "🏆 ניצחת!"
+    }
+  },
+  "home": {
+    "cancel": "ביטול",
+    "continue": "המשך",
+    "continue_or_new": "להמשיך את המשחק הנוכחי או להתחיל חדש?",
+    "game_in_progress": "משחק בעיצומו",
+    "new_game": "משחק חדש",
+    "new_game_confirm_web": "להתחיל משחק חדש? (השתמשו ב\"המשך משחק\" במסך הבית כדי להמשיך את הנוכחי.)",
+    "resume": "המשך משחק",
+    "resume_a11y": "המשך המשחק השמור",
+    "resume_sub": "המשיכו מהמקום שבו עצרתם",
+    "subtitle": "לשלוט בלוח — מהלך אחר מהלך",
+    "two_players": "2 שחקנים",
+    "two_players_a11y": "משחק לשניים על אותו מכשיר",
+    "two_players_sub": "בתורות על אותו מכשיר",
+    "vs_computer": "נגד המחשב",
+    "vs_computer_a11y": "משחק נגד המחשב",
+    "vs_computer_sub": "שחקו נגד הבינה המלאכותית"
+  },
+  "not_found": {
+    "body": "הדף הזה אינו חלק מ‑Backgammon Mastermind. חזרו למסך הבית כדי להתחיל משחק.",
+    "heading": "מחוץ ללוח",
+    "home_a11y": "מעבר למסך הבית",
+    "home_cta": "חזרה למסך הבית",
+    "title": "לא נמצא"
+  },
+  "settings": {
+    "about": "אודות",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "חזרה",
+    "game": "משחק",
+    "generale": "כללי",
+    "github": "GitHub",
+    "language": "שפה",
+    "link_error_body": "נסו שוב מאוחר יותר.",
+    "link_error_title": "לא ניתן לפתוח את הקישור",
+    "links": "קישורים",
+    "more": "עוד",
+    "privacy": "מדיניות פרטיות",
+    "rate": "דירוג",
+    "share": "שיתוף",
+    "support": "תמיכה",
+    "support_us": "תמכו בנו",
+    "terms": "תנאי שימוש",
+    "title": "הגדרות",
+    "version": "גרסה",
+    "website": "אתר"
+  }
+}

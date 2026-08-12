@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Seçenekleri kapat",
+      "moving": "Taş oynanıyor…",
+      "new_game_message": "Yeni oyun başlatılsın mı?",
+      "new_game_title": "Yeni Oyun",
+      "no_legal_moves": "Oynanabilir hamle yok…",
+      "play_again": "Tekrar Oyna",
+      "play_again_a11y": "Tekrar oyna",
+      "roll_dice": "Zar At",
+      "roll_dice_a11y": "Zar at",
+      "rolling": "Zar atılıyor…"
+    },
+    "nudge": {
+      "roll_first": "Önce zarları at"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}}, {{low}}'u geçti",
+      "goes_first": "{{player}} başlıyor!",
+      "roll": "At",
+      "rolls_for_opening": "{{player}} açılış için zar atıyor",
+      "tie": "Berabere!",
+      "tie_again": "Aynı sayı — tekrar atın",
+      "waiting_roll": "{{player}} zar atıyor…",
+      "who_goes_first": "Kim başlayacak?",
+      "your_roll": "Zar atmak için herhangi bir yere dokun"
+    },
+    "options": {
+      "open_settings": "Dil ve daha fazlası",
+      "open_settings_hint": "Ayarları aç",
+      "title": "Oyun seçenekleri"
+    },
+    "preferences": {
+      "auto_move": "Zorunlu hamlede otomatik oyna",
+      "auto_move_hint": "Tek geçerli hamleyi otomatik oynar",
+      "auto_roll": "Zarı otomatik at",
+      "auto_roll_hint": "Sıra sende olduğunda otomatik zar atar",
+      "dice_display": "Zar görünümü",
+      "dice_dots": "Noktalar",
+      "dice_numbers": "Sayılar",
+      "direction_overlay": "Yön kılavuzu",
+      "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
+      "move_hints": "Hamle ipuçları",
+      "move_hints_hint": "Taş oynatabileceğin hanelerin yanında altın nokta",
+      "point_numbers": "Hane numaraları",
+      "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
+      "section_automation": "Otomasyon",
+      "section_board": "Tahta",
+      "section_dice": "Zarlar",
+      "sound": "Oyun sesleri",
+      "sound_hint": "Hafif zar, kırma ve kazanma sesleri — sessiz moda uyar"
+    },
+    "review": {
+      "back_to_live": "Canlı oyuna dön",
+      "live": "Canlı oyun",
+      "live_short": "Canlı",
+      "move_a11y": "Hamle {{ply}}, {{player}}",
+      "move_position": "Hamle {{current}}/{{total}} · {{player}}",
+      "next": "Sonraki el",
+      "opening": "Başlangıç dizilişi",
+      "pause_replay": "Duraklat",
+      "player_black": "Siyah",
+      "player_white": "Beyaz",
+      "previous": "Önceki el",
+      "replay": "Tekrar izle",
+      "scrubber_hint": "İncelemek için bir ele dokun",
+      "start": "Başlangıç",
+      "turn_a11y": "El {{turn}}, {{player}}",
+      "turn_label": "El {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "El {{turn}}/{{totalTurns}} · hamle {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "İnceleme modundasın — oynamaya devam etmek için Canlı'ya dokun"
+    },
+    "status": {
+      "black_wins": "Siyah Kazandı",
+      "computer_wins": "Bilgisayar Kazandı",
+      "white_wins": "🏆 Beyaz Kazandı!",
+      "you_win": "🏆 Kazandın!"
+    }
+  },
+  "home": {
+    "cancel": "İptal",
+    "continue": "Devam et",
+    "continue_or_new": "Mevcut oyuna devam mı, yeni oyun mu?",
+    "game_in_progress": "Devam eden oyun var",
+    "new_game": "Yeni oyun",
+    "new_game_confirm_web": "Yeni oyun başlatılsın mı? (Mevcut oyuna devam etmek için ana ekrandaki Devam Et'i kullan.)",
+    "resume": "Oyuna Devam Et",
+    "resume_a11y": "Kayıtlı oyuna devam et",
+    "resume_sub": "Kaldığın yerden devam et",
+    "subtitle": "Tahtaya hükmet — hamle hamle",
+    "two_players": "2 Oyuncu",
+    "two_players_a11y": "Aynı cihazda iki kişi oyna",
+    "two_players_sub": "Aynı cihazda sırayla",
+    "vs_computer": "Bilgisayara Karşı",
+    "vs_computer_a11y": "Bilgisayara karşı oyna",
+    "vs_computer_sub": "Yapay zekâya karşı oyna"
+  },
+  "not_found": {
+    "body": "Bu sayfa Backgammon Mastermind'ın parçası değil. Oyun başlatmak için ana sayfaya dön.",
+    "heading": "Tahtanın dışı",
+    "home_a11y": "Ana sayfaya git",
+    "home_cta": "Ana sayfaya dön",
+    "title": "Bulunamadı"
+  },
+  "settings": {
+    "about": "Hakkında",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Geri",
+    "game": "Oyun",
+    "generale": "Genel",
+    "github": "GitHub",
+    "language": "Dil",
+    "link_error_body": "Lütfen daha sonra tekrar dene.",
+    "link_error_title": "Bağlantı açılamıyor",
+    "links": "Bağlantılar",
+    "more": "Daha fazla",
+    "privacy": "Gizlilik Politikası",
+    "rate": "Değerlendir",
+    "share": "Paylaş",
+    "support": "Destek",
+    "support_us": "Bize Destek Ol",
+    "terms": "Hizmet Şartları",
+    "title": "Ayarlar",
+    "version": "Sürüm",
+    "website": "Web sitesi"
+  }
+}

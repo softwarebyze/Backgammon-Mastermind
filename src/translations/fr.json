@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Fermer les options",
+      "moving": "Déplacement…",
+      "new_game_message": "Commencer une nouvelle partie ?",
+      "new_game_title": "Nouvelle partie",
+      "no_legal_moves": "Aucun coup possible…",
+      "play_again": "Rejouer",
+      "play_again_a11y": "Rejouer",
+      "roll_dice": "Lancer les dés",
+      "roll_dice_a11y": "Lancer les dés",
+      "rolling": "Lancer en cours…"
+    },
+    "nudge": {
+      "roll_first": "Lance d'abord les dés"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bat {{low}}",
+      "goes_first": "{{player}} commence !",
+      "roll": "Lancer",
+      "rolls_for_opening": "{{player}} lance pour l'ouverture",
+      "tie": "Égalité !",
+      "tie_again": "Même chiffre — relancez",
+      "waiting_roll": "{{player}} lance…",
+      "who_goes_first": "Qui commence ?",
+      "your_roll": "Touchez n'importe où pour lancer"
+    },
+    "options": {
+      "open_settings": "Langue et plus",
+      "open_settings_hint": "Ouvrir les Réglages",
+      "title": "Options de partie"
+    },
+    "preferences": {
+      "auto_move": "Coup auto si forcé",
+      "auto_move_hint": "Jouer automatiquement le seul coup légal",
+      "auto_roll": "Lancer auto des dés",
+      "auto_roll_hint": "Lancer automatiquement à votre tour",
+      "dice_display": "Affichage des dés",
+      "dice_dots": "Points",
+      "dice_numbers": "Chiffres",
+      "direction_overlay": "Guide de direction",
+      "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
+      "move_hints": "Indices de coup",
+      "move_hints_hint": "Point doré près des flèches d'où vous pouvez jouer",
+      "point_numbers": "Numéros des flèches",
+      "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
+      "section_automation": "Automatisation",
+      "section_board": "Plateau",
+      "section_dice": "Dés",
+      "sound": "Sons du jeu",
+      "sound_hint": "Dés, prises et victoires en douceur — respecte le mode silencieux"
+    },
+    "review": {
+      "back_to_live": "Retour à la partie en cours",
+      "live": "Partie en cours",
+      "live_short": "En direct",
+      "move_a11y": "Coup {{ply}}, {{player}}",
+      "move_position": "Coup {{current}} sur {{total}} · {{player}}",
+      "next": "Tour suivant",
+      "opening": "Position de départ",
+      "pause_replay": "Pause",
+      "player_black": "Noirs",
+      "player_white": "Blancs",
+      "previous": "Tour précédent",
+      "replay": "Relecture",
+      "scrubber_hint": "Touchez un tour pour le revoir",
+      "start": "Début",
+      "turn_a11y": "Tour {{turn}}, {{player}}",
+      "turn_label": "Tour {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tour {{turn}}/{{totalTurns}} · coup {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Relecture — touchez En direct ou Retour pour continuer à jouer"
+    },
+    "status": {
+      "black_wins": "Les Noirs gagnent",
+      "computer_wins": "L'ordinateur gagne",
+      "white_wins": "🏆 Les Blancs gagnent !",
+      "you_win": "🏆 Vous gagnez !"
+    }
+  },
+  "home": {
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "continue_or_new": "Continuer la partie en cours ou en commencer une nouvelle ?",
+    "game_in_progress": "Partie en cours",
+    "new_game": "Nouvelle partie",
+    "new_game_confirm_web": "Commencer une nouvelle partie ? (Utilisez Reprendre sur l'écran d'accueil pour continuer la partie en cours.)",
+    "resume": "Reprendre la partie",
+    "resume_a11y": "Reprendre la partie sauvegardée",
+    "resume_sub": "Reprenez là où vous en étiez",
+    "subtitle": "Maîtrisez le plateau — coup après coup",
+    "two_players": "2 joueurs",
+    "two_players_a11y": "Jouer à deux sur cet appareil",
+    "two_players_sub": "À tour de rôle sur le même appareil",
+    "vs_computer": "Contre l'ordinateur",
+    "vs_computer_a11y": "Jouer contre l'ordinateur",
+    "vs_computer_sub": "Affrontez l'IA"
+  },
+  "not_found": {
+    "body": "Cette page ne fait pas partie de Backgammon Mastermind. Revenez à l'accueil pour lancer une partie.",
+    "heading": "Hors du plateau",
+    "home_a11y": "Aller à l'accueil",
+    "home_cta": "Retour à l'accueil",
+    "title": "Introuvable"
+  },
+  "settings": {
+    "about": "À propos",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Retour",
+    "game": "Partie",
+    "generale": "Général",
+    "github": "GitHub",
+    "language": "Langue",
+    "link_error_body": "Veuillez réessayer plus tard.",
+    "link_error_title": "Impossible d'ouvrir le lien",
+    "links": "Liens",
+    "more": "Plus",
+    "privacy": "Politique de confidentialité",
+    "rate": "Noter",
+    "share": "Partager",
+    "support": "Assistance",
+    "support_us": "Soutenez-nous",
+    "terms": "Conditions d'utilisation",
+    "title": "Réglages",
+    "version": "Version",
+    "website": "Site web"
+  }
+}

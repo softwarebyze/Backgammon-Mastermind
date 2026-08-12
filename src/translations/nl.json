@@ -1,0 +1,128 @@
+{
+  "game": {
+    "controls": {
+      "close_options_a11y": "Opties sluiten",
+      "moving": "Aan het zetten…",
+      "new_game_message": "Een nieuw spel starten?",
+      "new_game_title": "Nieuw spel",
+      "no_legal_moves": "Geen zetten mogelijk…",
+      "play_again": "Opnieuw spelen",
+      "play_again_a11y": "Opnieuw spelen",
+      "roll_dice": "Gooi de dobbelstenen",
+      "roll_dice_a11y": "Dobbelstenen gooien",
+      "rolling": "Aan het gooien…"
+    },
+    "nudge": {
+      "roll_first": "Gooi eerst de dobbelstenen"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} verslaat {{low}}",
+      "goes_first": "{{player}} begint!",
+      "roll": "Gooien",
+      "rolls_for_opening": "{{player}} gooit voor de opening",
+      "tie": "Gelijkspel!",
+      "tie_again": "Zelfde getal — gooi opnieuw",
+      "waiting_roll": "{{player}} gooit…",
+      "who_goes_first": "Wie begint?",
+      "your_roll": "Tik ergens om te gooien"
+    },
+    "options": {
+      "open_settings": "Taal en meer",
+      "open_settings_hint": "Instellingen openen",
+      "title": "Spelopties"
+    },
+    "preferences": {
+      "auto_move": "Automatisch zetten bij dwang",
+      "auto_move_hint": "De enige legale zet automatisch spelen",
+      "auto_roll": "Automatisch gooien",
+      "auto_roll_hint": "Automatisch gooien als jij aan de beurt bent",
+      "dice_display": "Weergave dobbelstenen",
+      "dice_dots": "Stippen",
+      "dice_numbers": "Cijfers",
+      "direction_overlay": "Richtingsgids",
+      "direction_overlay_hint": "Hoefijzerpad op het bord",
+      "move_hints": "Zethints",
+      "move_hints_hint": "Gouden stip naast punten waarvandaan je kunt zetten",
+      "point_numbers": "Puntnummers",
+      "point_numbers_hint": "Labels 1–24 op het bord tonen",
+      "section_automation": "Automatisering",
+      "section_board": "Bord",
+      "section_dice": "Dobbelstenen",
+      "sound": "Spelgeluiden",
+      "sound_hint": "Zachte dobbel-, slag- en wingeluiden — respecteert de stille modus"
+    },
+    "review": {
+      "back_to_live": "Terug naar het lopende spel",
+      "live": "Lopend spel",
+      "live_short": "Live",
+      "move_a11y": "Zet {{ply}}, {{player}}",
+      "move_position": "Zet {{current}} van {{total}} · {{player}}",
+      "next": "Volgende beurt",
+      "opening": "Beginopstelling",
+      "pause_replay": "Pauze",
+      "player_black": "Zwart",
+      "player_white": "Wit",
+      "previous": "Vorige beurt",
+      "replay": "Terugkijken",
+      "scrubber_hint": "Tik op een beurt om terug te kijken",
+      "start": "Start",
+      "turn_a11y": "Beurt {{turn}}, {{player}}",
+      "turn_label": "Beurt {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Beurt {{turn}}/{{totalTurns}} · zet {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Terugkijken — tik op Live of Terug om verder te spelen"
+    },
+    "status": {
+      "black_wins": "Zwart wint",
+      "computer_wins": "Computer wint",
+      "white_wins": "🏆 Wit wint!",
+      "you_win": "🏆 Jij wint!"
+    }
+  },
+  "home": {
+    "cancel": "Annuleren",
+    "continue": "Doorgaan",
+    "continue_or_new": "Doorgaan met het huidige spel of een nieuw spel starten?",
+    "game_in_progress": "Spel bezig",
+    "new_game": "Nieuw spel",
+    "new_game_confirm_web": "Een nieuw spel starten? (Gebruik Hervatten op het startscherm om het huidige spel voort te zetten.)",
+    "resume": "Spel hervatten",
+    "resume_a11y": "Opgeslagen spel hervatten",
+    "resume_sub": "Ga verder waar je gebleven was",
+    "subtitle": "Beheers het bord — zet voor zet",
+    "two_players": "2 spelers",
+    "two_players_a11y": "Met z'n tweeën spelen op dit apparaat",
+    "two_players_sub": "Om de beurt op hetzelfde apparaat",
+    "vs_computer": "Tegen de computer",
+    "vs_computer_a11y": "Tegen de computer spelen",
+    "vs_computer_sub": "Speel tegen de AI"
+  },
+  "not_found": {
+    "body": "Die pagina hoort niet bij Backgammon Mastermind. Ga naar het startscherm om een spel te beginnen.",
+    "heading": "Buiten het bord",
+    "home_a11y": "Naar het startscherm",
+    "home_cta": "Terug naar start",
+    "title": "Niet gevonden"
+  },
+  "settings": {
+    "about": "Over",
+    "app_name": "Backgammon Mastermind",
+    "back_a11y": "Terug",
+    "game": "Spel",
+    "generale": "Algemeen",
+    "github": "GitHub",
+    "language": "Taal",
+    "link_error_body": "Probeer het later opnieuw.",
+    "link_error_title": "Kan link niet openen",
+    "links": "Links",
+    "more": "Meer",
+    "privacy": "Privacybeleid",
+    "rate": "Beoordelen",
+    "share": "Delen",
+    "support": "Ondersteuning",
+    "support_us": "Steun ons",
+    "terms": "Servicevoorwaarden",
+    "title": "Instellingen",
+    "version": "Versie",
+    "website": "Website"
+  }
+}
