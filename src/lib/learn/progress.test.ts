@@ -2,6 +2,7 @@ import { LESSON_IDS } from './curriculum';
 import {
   allLessonsComplete,
   EMPTY_LEARN_PROGRESS,
+  isLastStepComplete,
   isReadyToPlay,
   markLessonComplete,
   markQuizPassed,
@@ -40,5 +41,11 @@ describe('learn progress', () => {
     let progress = markLessonComplete(EMPTY_LEARN_PROGRESS, 'goal-board');
     progress = markLessonComplete(progress, 'goal-board');
     expect(progress.completedLessons).toEqual(['goal-board']);
+  });
+
+  it('treats the last successful step as ready to persist', () => {
+    expect(isLastStepComplete(true, 1, 2)).toBe(true);
+    expect(isLastStepComplete(true, 0, 2)).toBe(false);
+    expect(isLastStepComplete(false, 1, 2)).toBe(false);
   });
 });

@@ -2,7 +2,7 @@ import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonId } from '@/lib/learn/curriculum';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
-import { useCallback, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -17,6 +17,7 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
+import { isLastStepComplete } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -81,11 +82,31 @@ function LessonScreenBody({
     showPointNumbers,
     extraChrome: 80,
   });
+  const completedEventRef = useRef(false);
 
   const { setBoardDimensions } = session;
   useEffect(() => {
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
+
+  useEffect(() => {
+    if (!isLastStepComplete(session.stepComplete, session.stepIndex, session.totalSteps)) {
+      return;
+    }
+    completeLesson(lessonId);
+    if (completedEventRef.current) {
+      return;
+    }
+    completedEventRef.current = true;
+    posthog.capture('learn_lesson_completed', { lesson_id: lessonId });
+  }, [
+    completeLesson,
+    lessonId,
+    posthog,
+    session.stepComplete,
+    session.stepIndex,
+    session.totalSteps,
+  ]);
 
   const goNext = useCallback(() => {
     if (session.step.kind === 'explain' && session.stepComplete) {
@@ -99,7 +120,6 @@ function LessonScreenBody({
     if (session.stepIndex >= session.totalSteps - 1) {
       hapticLight();
       completeLesson(lessonId);
-      posthog.capture('learn_lesson_completed', { lesson_id: lessonId });
       const next = getNextLessonId(lessonId);
       if (next === 'graduation') {
         router.replace('/learn/graduation');
