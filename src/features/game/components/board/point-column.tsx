@@ -103,6 +103,7 @@ function PointCheckers({
               size={checkerSize}
               showCount={isTopChecker && point.count > MAX_VISIBLE ? point.count : undefined}
               showMoveHint={isTopChecker && hintTopChecker && !isDragging}
+              isSelected={isTopChecker && isSelected && !isDragging}
             />
           );
           const CheckerWrap = isTopChecker ? Animated.View : View;

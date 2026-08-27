@@ -1,7 +1,7 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect } from 'react';
-import { BackHandler, StyleSheet, Text, View } from 'react-native';
+import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
@@ -29,6 +29,8 @@ export function GameScreen() {
     historyPath,
     ceremonyKey,
     resumeAIScheduling,
+    skipAIDelay,
+    selectPoint,
   } = useGame();
   const { leaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
   const review = useMoveReview({
@@ -42,6 +44,21 @@ export function GameScreen() {
     resumeAIScheduling();
     return () => resetAnimation();
   }, [resumeAIScheduling, resetAnimation]));
+
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (next) => {
+      if (next === 'active') {
+        resumeAIScheduling();
+      }
+    });
+    return () => sub.remove();
+  }, [resumeAIScheduling]);
+
+  useEffect(() => {
+    if (!input.state) {
+      router.replace('/');
+    }
+  }, [input.state]);
 
   const openOptions = useCallback(() => {
     posthog.capture('game_options_opened', { mode: input.state?.mode ?? null });
@@ -99,6 +116,8 @@ export function GameScreen() {
       moveLog={moveLog}
       isComputerTurn={isComputerTurn}
       ceremonyKey={ceremonyKey}
+      onCancelSelection={() => selectPoint(null)}
+      onSkipComputer={skipAIDelay}
     />
   );
 }

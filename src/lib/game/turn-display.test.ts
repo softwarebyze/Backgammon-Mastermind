@@ -48,7 +48,7 @@ describe('turn-display', () => {
     state.selectedPoint = 1;
     const turn = getTurnDisplay(state);
     expect(getActionCaption(state, turn)).toBe(
-      'Selected — tap a highlight or tap the board to cancel',
+      'Selected — tap a highlighted point, or Cancel',
     );
   });
 

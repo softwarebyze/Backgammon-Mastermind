@@ -12,6 +12,8 @@ type Props = {
   showCount?: number;
   /** Subtle ring when move hints are on — top checker only */
   showMoveHint?: boolean;
+  /** Stronger ring when this checker is the selected source. */
+  isSelected?: boolean;
   /** Skip drop shadow — used by the move overlay to avoid double-shadow ghosting. */
   flat?: boolean;
   style?: object;
@@ -52,7 +54,7 @@ function StackCountBadge({ count, size, isWhite }: { count: number; size: number
   );
 }
 
-export function CheckerToken({ player, size, showCount, showMoveHint, flat, style }: Props) {
+export function CheckerToken({ player, size, showCount, showMoveHint, isSelected, flat, style }: Props) {
   const uid = useId().replace(/:/g, '');
   const bodyId = `checker-body-${uid}`;
   const isWhite = player === 'white';
@@ -76,13 +78,13 @@ export function CheckerToken({ player, size, showCount, showMoveHint, flat, styl
         style,
       ]}
     >
-      {showMoveHint && (
+      {(showMoveHint || isSelected) && (
         <View
           style={{
             ...StyleSheet.absoluteFill,
             borderRadius: size / 2,
-            borderWidth: 2,
-            borderColor: 'rgba(212, 168, 67, 0.65)',
+            borderWidth: isSelected ? 3 : 2,
+            borderColor: isSelected ? '#F5D76E' : 'rgba(212, 168, 67, 0.65)',
             zIndex: 2,
           }}
         />

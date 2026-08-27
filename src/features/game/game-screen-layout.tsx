@@ -41,9 +41,20 @@ type Props = {
   moveLog: MoveLogEntry[];
   isComputerTurn: boolean;
   ceremonyKey: number;
+  onCancelSelection: () => void;
+  onSkipComputer: () => void;
 };
 
-export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn, ceremonyKey }: Props) {
+export function GameScreenLayout({
+  board,
+  review,
+  input,
+  moveLog,
+  isComputerTurn,
+  ceremonyKey,
+  onCancelSelection,
+  onSkipComputer,
+}: Props) {
   const posthog = usePostHog();
   const insets = useSafeAreaInsets();
   const dimensions = useBoardDimensions();
@@ -135,6 +146,8 @@ export function GameScreenLayout({ board, review, input, moveLog, isComputerTurn
           onRoll={input.handleRoll}
           onReset={input.handleReset}
           onGoLive={review.goLive}
+          onCancelSelection={onCancelSelection}
+          onSkipComputer={onSkipComputer}
         />
       </View>
     </View>

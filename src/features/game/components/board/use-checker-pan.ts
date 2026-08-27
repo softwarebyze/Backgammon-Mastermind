@@ -57,7 +57,7 @@ export function useCheckerPan(from: number, enabled: boolean, config: CheckerPan
       return Gesture.Pan().enabled(false);
     }
     return Gesture.Pan()
-      .minDistance(8)
+      .minDistance(16)
       .onBegin(() => {
         runOnJS(invokeAttempt)();
       })

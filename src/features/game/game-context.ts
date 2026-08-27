@@ -30,6 +30,8 @@ export type GameContextType = {
   clearAITimeout: () => void;
   /** Re-arm AI timers after leave-home cancelled them without changing game state. */
   resumeAIScheduling: () => void;
+  /** Skip remaining computer think/roll wait. */
+  skipAIDelay: () => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

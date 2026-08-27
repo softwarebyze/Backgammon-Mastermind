@@ -28,6 +28,8 @@ type Props = {
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
+  onCancelSelection?: () => void;
+  onSkipComputer?: () => void;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
@@ -43,6 +45,8 @@ export function GameScreenControls({
   onRoll,
   onReset,
   onGoLive,
+  onCancelSelection,
+  onSkipComputer,
 }: Props) {
   const { preferences } = useGamePreferences();
   const ceremonyVisible = useOpeningCeremonyVisible();
@@ -111,6 +115,8 @@ export function GameScreenControls({
           }}
           onReset={onReset}
           onGoLive={onGoLive}
+          onCancelSelection={onCancelSelection}
+          onSkipComputer={onSkipComputer}
         />
       </View>
       <Text style={styles.caption}>{caption}</Text>
@@ -126,6 +132,8 @@ function ActionControl({
   onRoll,
   onReset,
   onGoLive,
+  onCancelSelection,
+  onSkipComputer,
 }: {
   state: GameState;
   isHumanTurn: boolean;
@@ -134,6 +142,8 @@ function ActionControl({
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
+  onCancelSelection?: () => void;
+  onSkipComputer?: () => void;
 }) {
   if (isReviewing) {
     return (
@@ -153,6 +163,7 @@ function ActionControl({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Play again"
+        testID="play-again-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onReset}
       >
@@ -177,7 +188,7 @@ function ActionControl({
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" />;
+    return <StatusPlaceholder text="Rolling…" onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
@@ -195,11 +206,11 @@ function ActionControl({
   }
 
   if (state.phase === 'rolling' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" />;
+    return <StatusPlaceholder text="Rolling…" onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'moving' && isComputerTurn) {
-    return <StatusPlaceholder text="Moving…" />;
+    return <StatusPlaceholder text="Moving…" onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'no-move' && isHumanTurn) {
@@ -207,17 +218,51 @@ function ActionControl({
   }
 
   if (state.phase === 'no-move' && isComputerTurn) {
-    return <StatusPlaceholder text="No legal moves…" />;
+    return <StatusPlaceholder text="No legal moves…" onSkip={onSkipComputer} />;
+  }
+
+  if (state.phase === 'moving' && isHumanTurn && state.selectedPoint !== null && onCancelSelection) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Cancel selection"
+        testID="cancel-selection-button"
+        style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
+        onPress={() => {
+          hapticLight();
+          onCancelSelection();
+        }}
+      >
+        <Text style={styles.secondaryBtnText}>Cancel</Text>
+      </Pressable>
+    );
   }
 
   return <View style={styles.actionSpacer} />;
 }
 
-function StatusPlaceholder({ text }: { text: string }) {
+function StatusPlaceholder({ text, onSkip }: { text: string; onSkip?: () => void }) {
+  if (!onSkip) {
+    return (
+      <View style={styles.statusSlot}>
+        <Text style={styles.statusText}>{text}</Text>
+      </View>
+    );
+  }
   return (
-    <View style={styles.statusSlot}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${text} Tap to skip wait`}
+      testID="skip-computer-button"
+      style={({ pressed }) => [styles.statusSlot, pressed && styles.pressed]}
+      onPress={() => {
+        hapticLight();
+        onSkip();
+      }}
+    >
       <Text style={styles.statusText}>{text}</Text>
-    </View>
+      <Text style={styles.skipHint}>Tap to skip wait</Text>
+    </Pressable>
   );
 }
 
@@ -269,6 +314,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     ...interFont('semibold'),
   },
+  secondaryBtn: {
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: 'rgba(232, 224, 208, 0.35)',
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    minWidth: 160,
+    alignItems: 'center',
+    ...continuousRadius(12),
+  },
+  secondaryBtnText: {
+    color: GAME_PALETTE.accent,
+    fontSize: 16,
+    ...interFont('semibold'),
+  },
   statusSlot: {
     height: ACTION_SLOT_HEIGHT,
     justifyContent: 'center',
@@ -278,6 +338,12 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
     ...interFont('regular'),
+  },
+  skipHint: {
+    color: GAME_PALETTE.accentDim,
+    fontSize: 11,
+    marginTop: 2,
+    ...interFont('medium'),
   },
   caption: {
     marginTop: 6,

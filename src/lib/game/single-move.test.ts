@@ -3,6 +3,7 @@ import { applyDiceRoll } from './moves';
 import {
   getForcedLegalMove,
   getForcedTurnSequence,
+  getSingleDestinationSequence,
   hasExactlyOneLegalMove,
 } from './single-move';
 
@@ -67,5 +68,42 @@ describe('single-move helpers', () => {
     const sequence = getForcedTurnSequence(state);
     expect(sequence).toHaveLength(2);
     expect(sequence!.every(m => m.to === BEAR_OFF)).toBe(true);
+  });
+
+  it('one-taps a checker that has only one reachable destination', () => {
+    let state = createInitialState('vs-computer');
+    state = {
+      ...state,
+      points: state.points.map(() => ({ player: null, count: 0 })),
+      bar: { white: 0, black: 0 },
+      borneOff: { white: 0, black: 0 },
+      phase: 'moving',
+      currentPlayer: 'white',
+      dice: [3, 5],
+      remainingDice: [3],
+    };
+    state.points[8] = { player: 'white', count: 1 };
+
+    const sequence = getSingleDestinationSequence(state, 8);
+    expect(sequence).toEqual([{ from: 8, to: 5 }]);
+    expect(getSingleDestinationSequence(state, 6)).toBeNull();
+  });
+
+  it('does not one-tap when the same checker can land on more than one point', () => {
+    let state = createInitialState('vs-human');
+    state = {
+      ...state,
+      phase: 'moving',
+      currentPlayer: 'white',
+      dice: [1, 2],
+      remainingDice: [1, 2],
+      points: state.points.map((p, i) =>
+        i === 10 ? { player: 'white', count: 1 } : { player: null, count: 0 },
+      ),
+      bar: { white: 0, black: 0 },
+      borneOff: { white: 0, black: 0 },
+    };
+
+    expect(getSingleDestinationSequence(state, 10)).toBeNull();
   });
 });

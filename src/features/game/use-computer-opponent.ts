@@ -3,13 +3,9 @@ import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
+import { computerMoveDelayMs, computerThinkDelayMs } from '@/lib/game/computer-pace';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
-
-/**
- * Keeps the AI's first move from starting under the opening-roll ceremony
- * overlay (2400ms hold + 520ms fly in opening-roll-ceremony.tsx).
- */
-const OPENING_CEREMONY_GRACE_MS = 3200;
 
 type ComputerOpponentOptions = {
   state: GameState | null;
@@ -27,6 +23,8 @@ export type ComputerOpponentControls = {
   clearAITimeout: () => void;
   /** Re-arm AI timers after leave-home cancelled them (same state, no effect deps change). */
   resumeAIScheduling: () => void;
+  /** Skip remaining think/roll wait (power users). */
+  skipAIDelay: () => void;
 };
 
 /* eslint-disable max-lines-per-function -- AI turn orchestration */
@@ -42,8 +40,11 @@ export function useComputerOpponent({
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
+  const skipRef = useRef(false);
   // Bumped when returning to the game screen so timers re-schedule without a state change.
   const [scheduleGen, setScheduleGen] = useState(0);
+  const { preferences } = useGamePreferences();
+  const fast = preferences.fastComputer;
 
   const clearAITimeout = useCallback(() => {
     if (aiTimeoutRef.current !== null) {
@@ -53,6 +54,11 @@ export function useComputerOpponent({
   }, []);
 
   const resumeAIScheduling = useCallback(() => {
+    setScheduleGen(g => g + 1);
+  }, []);
+
+  const skipAIDelay = useCallback(() => {
+    skipRef.current = true;
     setScheduleGen(g => g + 1);
   }, []);
 
@@ -73,13 +79,14 @@ export function useComputerOpponent({
     if (hasRedo)
       return clearAITimeout;
 
-    const delay
-      = state.phase === 'opening-roll' || state.phase === 'rolling'
-        ? 1200
-        : state.phase === 'no-move'
-          ? 1500
-          : 0;
-    if (delay === 0 && state.phase !== 'moving') {
+    const skip = skipRef.current;
+    skipRef.current = false;
+    const delay = skip ? 0 : computerThinkDelayMs(state.phase, fast);
+    if (delay === 0 && state.phase !== 'moving' && !skip) {
+      return clearAITimeout;
+    }
+    if (skip && state.phase !== 'opening-roll' && state.phase !== 'rolling'
+      && state.phase !== 'no-move' && state.phase !== 'moving') {
       return clearAITimeout;
     }
 
@@ -115,7 +122,7 @@ export function useComputerOpponent({
           setState(passTurn(prev));
           return;
         }
-        const moveDelay = moveCount === 0 ? OPENING_CEREMONY_GRACE_MS : 750;
+        const moveDelay = skip ? 0 : computerMoveDelayMs(moveCount, fast);
         aiTimeoutRef.current = setTimeout(() => {
           const latest = stateRef.current;
           if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
@@ -144,7 +151,8 @@ export function useComputerOpponent({
     recordNoMove,
     clearAITimeout,
     scheduleGen,
+    fast,
   ]);
 
-  return { clearAITimeout, resumeAIScheduling };
+  return { clearAITimeout, resumeAIScheduling, skipAIDelay };
 }

@@ -17,6 +17,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
+import { showErrorMessage } from '@/components/ui/utils';
 import { confirmAction } from '@/lib/confirm';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
@@ -78,13 +79,11 @@ function startGameFromHome(
 
 function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) {
   hapticLight();
-  if (isResumableGame(state)) {
+  if (isResumableGame(state) || resumeGame()) {
     router.replace('/game');
     return;
   }
-  if (resumeGame()) {
-    router.replace('/game');
-  }
+  showErrorMessage('No saved game to resume');
 }
 
 /* eslint-disable max-lines-per-function -- home mode menu composition */
@@ -163,6 +162,7 @@ export function HomeScreen() {
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Resume saved game"
+              testID="resume-game-button"
               style={({ pressed }) => [styles.modeBtn, styles.resumeBtn, pressed && styles.pressed]}
               onPress={handleResume}
             >

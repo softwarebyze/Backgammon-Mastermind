@@ -63,6 +63,7 @@ type StackProps = {
   checkerSize: number;
   dragEnabled: boolean;
   isDragging: boolean;
+  isSelected?: boolean;
   dragOverlay?: DragOverlayRefs;
 } & DragHandlers;
 
@@ -74,6 +75,7 @@ function BarStack({
   checkerSize,
   dragEnabled,
   isDragging,
+  isSelected = false,
   dragOverlay,
   onDragAttempt,
   onDragStart,
@@ -113,7 +115,7 @@ function BarStack({
     >
       {Array.from({ length: visible }, (_, i) => {
         const isTopChecker = i === visible - 1;
-        const token = <CheckerToken player={player} size={small} />;
+        const token = <CheckerToken player={player} size={small} isSelected={isTopChecker && isSelected} />;
         if (!isTopChecker) {
           return <View key={i}>{token}</View>;
         }
@@ -189,6 +191,7 @@ export function BarArea({
         checkerSize={checkerSize}
         dragEnabled={dragEnabled && currentPlayer === 'black' && blackCount > 0}
         isDragging={isDragging && currentPlayer === 'black'}
+        isSelected={isBarSelected && currentPlayer === 'black'}
         {...dragHandlers}
       />
 
@@ -202,6 +205,7 @@ export function BarArea({
         checkerSize={checkerSize}
         dragEnabled={dragEnabled && currentPlayer === 'white' && whiteCount > 0}
         isDragging={isDragging && currentPlayer === 'white'}
+        isSelected={isBarSelected && currentPlayer === 'white'}
         {...dragHandlers}
       />
     </Pressable>
