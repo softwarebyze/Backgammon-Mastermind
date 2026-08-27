@@ -22,6 +22,8 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <ScrollViewStyleReset />
         {/* eslint-disable-next-line react-dom/no-dangerously-set-innerhtml */}
         <style dangerouslySetInnerHTML={{ __html: responsiveBackground }} />
+        {/* eslint-disable-next-line react-dom/no-dangerously-set-innerhtml */}
+        <script dangerouslySetInnerHTML={{ __html: hidePreviewToolbarScript }} />
       </head>
       <body>{children}</body>
     </html>
@@ -56,4 +58,31 @@ body {
     max-width: 768px;
     box-shadow: 0 0 80px rgba(0, 0, 0, 0.45);
   }
-}`;
+}
+
+/* Vercel preview comments pill + leftover Expo debug FABs steal taps. */
+vercel-live-feedback,
+#vercel-live-feedback,
+[data-vercel-toolbar],
+[data-vercel-toolbar-container],
+iframe[src*="vercel.live"],
+#expo-dev-client-menu,
+[data-expo-dev-menu] {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+`;
+
+const hidePreviewToolbarScript = `
+(function () {
+  var sel = 'vercel-live-feedback, #vercel-live-feedback, [data-vercel-toolbar], [data-vercel-toolbar-container], iframe[src*="vercel.live"]';
+  var zap = function () {
+    document.querySelectorAll(sel).forEach(function (el) { el.remove(); });
+  };
+  zap();
+  try {
+    new MutationObserver(zap).observe(document.documentElement, { childList: true, subtree: true });
+  } catch (e) {}
+})();
+`;

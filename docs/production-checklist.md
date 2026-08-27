@@ -4,7 +4,7 @@ Use this before the first App Store / Play Store submission.
 
 **Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
 
-**Last updated:** 2026-08-27 — TestFlight-shareable ship (Learn to Play kept; game-breaking QA + feel: dual horseshoe, wide-web chrome, home i18n; settings key is `settings.general`).
+**Last updated:** 2026-08-27 — TestFlight-shareable ship (Learn kept; feel + playtest: one Settings home, full-row toggles, hide Vercel preview toolbar, dual horseshoe).
 
 ## CI: what runs on every PR?
 
