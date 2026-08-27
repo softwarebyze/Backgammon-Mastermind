@@ -103,7 +103,7 @@ export function GameScreenControls({
             ? <View style={styles.dicePlaceholder} />
             : null}
       </View>
-      <View style={styles.actionSlot}>
+      <View style={styles.actionSlot} pointerEvents="auto" testID="game-action-slot">
         <ActionControl
           state={state}
           isHumanTurn={isHumanTurn}
@@ -228,6 +228,8 @@ function ActionControl({
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.cancel_a11y')}
         testID="cancel-selection-button"
+        collapsable={false}
+        pointerEvents="auto"
         style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
         onPress={() => {
           hapticLight();
@@ -243,27 +245,27 @@ function ActionControl({
 }
 
 function StatusPlaceholder({ text, onSkip }: { text: string; onSkip?: () => void }) {
-  if (!onSkip) {
-    return (
-      <View style={styles.statusSlot}>
-        <Text style={styles.statusText}>{text}</Text>
-      </View>
-    );
-  }
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={translate('game.controls.skip_wait_a11y', { status: text })}
-      testID="skip-computer-button"
-      style={({ pressed }) => [styles.statusSlot, pressed && styles.pressed]}
-      onPress={() => {
-        hapticLight();
-        onSkip();
-      }}
-    >
-      <Text style={styles.statusText}>{text}</Text>
-      <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
-    </Pressable>
+    <View style={styles.statusSlot} pointerEvents="box-none">
+      <Text style={styles.statusText} pointerEvents="none">{text}</Text>
+      {onSkip
+        ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={translate('game.controls.skip_wait_a11y', { status: text })}
+              testID="skip-computer-button"
+              hitSlop={6}
+              style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
+              onPress={() => {
+                hapticLight();
+                onSkip();
+              }}
+            >
+              <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
+            </Pressable>
+          )
+        : null}
+    </View>
   );
 }
 
@@ -291,6 +293,8 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 2,
+    elevation: 4,
   },
   actionSpacer: {
     height: ACTION_SLOT_HEIGHT,
@@ -316,13 +320,14 @@ const styles = StyleSheet.create({
     ...interFont('semibold'),
   },
   secondaryBtn: {
-    backgroundColor: 'transparent',
+    backgroundColor: GAME_PALETTE.bg,
     borderWidth: 1.5,
     borderColor: 'rgba(232, 224, 208, 0.35)',
     paddingHorizontal: 32,
     paddingVertical: 12,
     minWidth: 160,
     alignItems: 'center',
+    zIndex: 2,
     ...continuousRadius(12),
   },
   secondaryBtnText: {
@@ -340,10 +345,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     ...interFont('regular'),
   },
+  skipBtn: {
+    marginTop: 2,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+  },
   skipHint: {
     color: GAME_PALETTE.accentDim,
     fontSize: 11,
-    marginTop: 2,
     ...interFont('medium'),
   },
   caption: {

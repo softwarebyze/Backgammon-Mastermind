@@ -1,16 +1,21 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
-import { computerMoveDelayMs, computerThinkDelayMs } from '@/lib/game/computer-pace';
+import {
+  computerCheckerMoveDurationMs,
+  computerMoveDelayMs,
+  computerThinkDelayMs,
+} from '@/lib/game/computer-pace';
 
 type ComputerOpponentOptions = {
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
-  playMove: (snapshot: GameState, move: Move) => void;
+  playMove: (snapshot: GameState, move: Move, playOpts?: PlayMoveOpts) => void;
   isAnimating: boolean;
   /** Moves played so far — 0 means the opening ceremony may still be on screen. */
   moveCount: number;
@@ -128,7 +133,9 @@ export function useComputerOpponent({
           if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
-          playMove(latest, move);
+          playMove(latest, move, {
+            durationMs: computerCheckerMoveDurationMs(fast),
+          });
         }, moveDelay);
       }
     };
