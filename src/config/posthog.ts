@@ -1,3 +1,4 @@
+import { isRunningInExpoGo } from 'expo';
 import * as Application from 'expo-application';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
@@ -20,6 +21,9 @@ const projectToken = extra?.posthogProjectToken;
 const host = extra?.posthogHost || 'https://us.i.posthog.com';
 const isPostHogConfigured = isPostHogProjectToken(projectToken);
 const isNativeMobile = Platform.OS === 'ios' || Platform.OS === 'android';
+// StoreClient includes both Expo Go and expo-dev-client — use isRunningInExpoGo
+// so TestFlight / standalone / development-client still get replay.
+const enableNativePostHog = isNativeMobile && !isRunningInExpoGo();
 
 if (!isPostHogConfigured && __DEV__) {
   console.warn(
@@ -53,7 +57,7 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
   fetchRetryCount: 3,
   fetchRetryDelay: 3000,
   // Session replay is native-only (dev client / store / TestFlight — not Expo Go or web).
-  enableSessionReplay: isNativeMobile,
+  enableSessionReplay: enableNativePostHog,
   sessionReplayConfig: {
     maskAllTextInputs: true,
     maskAllImages: false,
@@ -68,7 +72,7 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
       uncaughtExceptions: true,
       unhandledRejections: true,
       console: [],
-      nativeCrashes: isNativeMobile,
+      nativeCrashes: enableNativePostHog,
     },
   },
 });

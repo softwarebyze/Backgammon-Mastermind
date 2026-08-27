@@ -1,4 +1,5 @@
 import type { GameMode, GameState, Player } from '@/lib/game/types';
+import { translate } from '@/lib/i18n';
 
 export type TurnDisplay = {
   player: Player;
@@ -97,7 +98,7 @@ export function getActionCaption(
       return 'Enter from the bar before moving other checkers';
     }
     if (state.selectedPoint !== null) {
-      return `Selected — tap a highlighted point, or Cancel`;
+      return translate('game.caption.selected');
     }
     return `Move your ${turn.colorLabel.toLowerCase()} checkers`;
   }

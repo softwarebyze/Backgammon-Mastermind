@@ -34,4 +34,11 @@ describe('storage.getItem', () => {
     const { getItem } = require('./storage') as typeof storage;
     expect(getItem<{ a: number }>('ok')).toEqual({ a: 1 });
   });
+
+  it('clears an empty-string payload instead of leaving it stored', () => {
+    store.empty = '';
+    const { getItem } = require('./storage') as typeof storage;
+    expect(getItem('empty')).toBeNull();
+    expect(store.empty).toBeUndefined();
+  });
 });

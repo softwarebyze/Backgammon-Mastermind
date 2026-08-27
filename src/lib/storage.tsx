@@ -4,7 +4,7 @@ export const storage = createMMKV();
 
 export function getItem<T>(key: string): T | null {
   const value = storage.getString(key);
-  if (!value) {
+  if (value === undefined) {
     return null;
   }
   try {

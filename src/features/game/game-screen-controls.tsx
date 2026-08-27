@@ -226,7 +226,7 @@ function ActionControl({
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Cancel selection"
+        accessibilityLabel={translate('game.controls.cancel_a11y')}
         testID="cancel-selection-button"
         style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
         onPress={() => {
@@ -234,7 +234,7 @@ function ActionControl({
           onCancelSelection();
         }}
       >
-        <Text style={styles.secondaryBtnText}>Cancel</Text>
+        <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
       </Pressable>
     );
   }
@@ -253,7 +253,7 @@ function StatusPlaceholder({ text, onSkip }: { text: string; onSkip?: () => void
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${text} Tap to skip wait`}
+      accessibilityLabel={translate('game.controls.skip_wait_a11y', { status: text })}
       testID="skip-computer-button"
       style={({ pressed }) => [styles.statusSlot, pressed && styles.pressed]}
       onPress={() => {
@@ -262,7 +262,7 @@ function StatusPlaceholder({ text, onSkip }: { text: string; onSkip?: () => void
       }}
     >
       <Text style={styles.statusText}>{text}</Text>
-      <Text style={styles.skipHint}>Tap to skip wait</Text>
+      <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
     </Pressable>
   );
 }

@@ -15,7 +15,7 @@ Use this before the first App Store / Play Store submission.
 | **Tests (Jest)** | Yes | ✅ Required |
 | **Knip** | Yes | ✅ Unused-export check (also in `pnpm check-all`) |
 | **EAS Update Preview** | Yes | ✅ (`EXPO_TOKEN` configured) — Expo QR comment only |
-| **Expo Doctor** | When deps / native config change | ✅ |
+| **Expo Doctor** | When deps / native config change | ⚠️ Configured — currently **fails** on this repo (SDK 56.0.18 vs 56.0.20 patch drift + Hermes V1; upgrade to SDK 57 is out of scope for this TestFlight) |
 | **React Doctor** | Advisory | ✅ |
 | **Dev Client rebuild** | Native / branding path changes | ✅ |
 | **E2E (Maestro)** | Auto on `src/**` / `.maestro/**` changes + every push to `main` | ✅ |

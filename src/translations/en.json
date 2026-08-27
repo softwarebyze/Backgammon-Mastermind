@@ -1,5 +1,14 @@
 {
   "game": {
+    "caption": {
+      "selected": "Selected — tap a highlighted point, or Cancel"
+    },
+    "controls": {
+      "cancel": "Cancel",
+      "cancel_a11y": "Cancel selection",
+      "skip_wait": "Tap to skip wait",
+      "skip_wait_a11y": "{{status}} Tap to skip wait"
+    },
     "nudge": {
       "roll_first": "Roll the dice first"
     },
