@@ -3,13 +3,13 @@ import { Platform, useWindowDimensions } from 'react-native';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
 const BEAR_OFF_WIDTH = 38;
 const MIDDLE_HEIGHT = 12;
 const BOARD_FRAME_WIDTH = 4;
-const MAX_BOARD_WIDTH = 720;
 /**
  * Chrome above/below the board on web (stack header, pip bar, turn banner,
  * review strip, controls). Tuned so common desktop viewports keep the board

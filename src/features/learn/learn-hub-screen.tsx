@@ -22,6 +22,7 @@ import {
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
+import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 export function LearnHubScreen() {
@@ -137,6 +138,9 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.bg,
   },
   content: {
+    width: '100%',
+    maxWidth: GAME_CHROME_MAX_WIDTH,
+    alignSelf: 'center',
     paddingHorizontal: 24,
     paddingTop: 16,
     paddingBottom: 40,

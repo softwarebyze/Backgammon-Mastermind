@@ -10,6 +10,7 @@ import { MovePathOverlay } from '@/features/game/components/board/move-path-over
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT } from '@/lib/game/constants';
+import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 type Input = ReturnType<typeof useGameInput>;
 
@@ -135,6 +136,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     width: '100%',
+    maxWidth: MAX_BOARD_WIDTH,
+    alignSelf: 'center',
     alignItems: 'center',
   },
   boardContainer: {

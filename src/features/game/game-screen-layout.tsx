@@ -22,6 +22,7 @@ import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
+import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 
 type Review = ReturnType<typeof useMoveReview>;
 type Input = ReturnType<typeof useGameInput>;
@@ -79,9 +80,11 @@ export function GameScreenLayout({
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <FocusAwareStatusBar />
-      <GamePipStatusBar state={state} />
-      <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} />
+      <View style={styles.chromeColumn}>
+        <GamePipStatusBar state={state} />
+        <View style={styles.turnBannerWrap}>
+          <TurnIndicatorBanner state={state} />
+        </View>
       </View>
       <GameBoardSection
         boardState={state}
@@ -94,7 +97,7 @@ export function GameScreenLayout({
         pathFadeOutMs={board.pathFadeOutMs}
         input={input}
       />
-      <View style={styles.reviewSlot} pointerEvents="box-none">
+      <View style={[styles.reviewSlot, styles.chromeColumn]} pointerEvents="box-none">
         <MoveReviewBar
           viewIndex={review.viewIndex}
           liveIndex={review.liveIndex}
@@ -135,7 +138,7 @@ export function GameScreenLayout({
         />
       </View>
       {/* Above ceremony so Roll Dice stays visible + tappable; tap-anywhere still hits the board. */}
-      <View style={styles.controlsLayer} pointerEvents="box-none">
+      <View style={[styles.controlsLayer, styles.chromeColumn]} pointerEvents="box-none">
         <GameScreenControls
           state={state}
           liveDiceState={input.state!}
@@ -159,6 +162,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
+  },
+  chromeColumn: {
+    width: '100%',
+    maxWidth: GAME_CHROME_MAX_WIDTH,
+    alignSelf: 'center',
   },
   turnBannerWrap: {
     width: '100%',
