@@ -4,7 +4,7 @@ Use this before the first App Store / Play Store submission.
 
 **Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
 
-**Last updated:** 2026-08-27 — TestFlight-shareable ship (Learn to Play kept; game-breaking QA fixes).
+**Last updated:** 2026-08-27 — TestFlight-shareable ship (Learn to Play kept; game-breaking QA + feel: dual horseshoe, wide-web chrome, home i18n; settings key is `settings.general`).
 
 ## CI: what runs on every PR?
 
@@ -88,7 +88,7 @@ Use this before the first App Store / Play Store submission.
 | ---- | ------ |
 | Core gameplay + prefs UI | Done |
 | Turn indicator (white/black clarity) | Done |
-| Learn to Play | **Kept** — praise waits for Continue; horseshoe colored by player |
+| Learn to Play | **Kept** — praise waits for Continue; horseshoe shows both directions |
 | Branding / dev client (SDK 56) | Done — display name **Backgammon Mastermind** (native rebuild) |
 | Unit tests | Done (`pnpm test`) |
 | Maestro E2E + PR screenshot publish | Done |

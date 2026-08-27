@@ -46,7 +46,7 @@ export function SettingsScreen() {
         }
       >
         <View className="flex-1 px-4 pb-8">
-          <SettingsContainer title="settings.generale">
+          <SettingsContainer title="settings.general">
             <LanguageItem />
           </SettingsContainer>
 

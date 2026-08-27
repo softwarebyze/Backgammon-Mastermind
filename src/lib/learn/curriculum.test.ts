@@ -1,8 +1,10 @@
 import { createPositionState } from '@/lib/game/create-position';
 import { getLegalMoves } from '@/lib/game/moves';
+import en from '@/translations/en.json';
 
 import {
   getNextLessonId,
+  GRADUATION_QUIZ,
   isLessonUnlocked,
   LESSONS,
 } from './curriculum';
@@ -44,5 +46,25 @@ describe('curriculum', () => {
         }
       }
     }
+  });
+
+  it('keeps blot quiz distractors in taught concepts, not the doubling cube', () => {
+    const blot = GRADUATION_QUIZ.find(question => question.id === 'blot');
+    expect(blot?.options.find(option => option.id === 'c')?.labelKey).toBe('learn.quiz.blot.c');
+    expect(en.learn.quiz.blot.c.toLowerCase()).not.toMatch(/doubl/);
+    expect(en.learn.quiz.blot.c.toLowerCase()).toMatch(/made point|two or more/);
+  });
+
+  it('praises home-stack in teacher language, not a pip dump', () => {
+    const praise = en.learn.lessons.direction_setup.steps.home_stack.praise;
+    expect(praise).not.toMatch(/2-5-3-5/);
+    expect(praise.toLowerCase()).toContain('home stack');
+  });
+
+  it('explains bar entry in board language, not 25−N arithmetic', () => {
+    const enter = en.learn.lessons.hitting_bar.steps.enter;
+    expect(enter.wrong).not.toMatch(/25/);
+    expect(enter.body).not.toMatch(/25/);
+    expect(enter.wrong.toLowerCase()).toContain('point 21');
   });
 });

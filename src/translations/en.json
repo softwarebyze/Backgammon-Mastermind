@@ -71,6 +71,26 @@
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
     }
   },
+  "home": {
+    "confirm_cancel": "Cancel",
+    "confirm_continue": "Continue",
+    "confirm_native": "Continue your current game or start a new one?",
+    "confirm_new": "New game",
+    "confirm_title": "Game in progress",
+    "confirm_web": "Start a new game? (Use Resume on the home screen to continue the current one.)",
+    "resume": "Resume Game",
+    "resume_a11y": "Resume saved game",
+    "resume_none": "No saved game to resume",
+    "resume_sub": "Continue where you left off",
+    "subtitle": "Master the board — one move at a time",
+    "title": "BACKGAMMON",
+    "two_players": "2 Players",
+    "two_players_a11y": "Play with two players locally",
+    "two_players_sub": "Pass & play locally",
+    "vs_computer": "vs Computer",
+    "vs_computer_a11y": "Play against the computer",
+    "vs_computer_sub": "Play against AI"
+  },
   "learn": {
     "back_to_hub": "All lessons",
     "continue": "Continue",
@@ -122,7 +142,7 @@
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "You play WHITE — the cream checkers. The cream horseshoe is YOUR path: start at the far top-right, around the left side, then into home at the bottom-right (points 1–6). Black moves the other way.",
+            "body": "You play WHITE — the cream checkers. The cream horseshoe is YOUR path: start at the far top-right, around the left side, then into home at the bottom-right (points 1–6). The cooler dashed line is Black going the other way.",
             "title": "The horseshoe path"
           },
           "far": {
@@ -134,7 +154,7 @@
           "home_stack": {
             "body": "Tap the big stack of five white checkers already in your home (the 6-point).",
             "hint": "Bottom-right: five white checkers on point 6.",
-            "praise": "That’s the 2-5-3-5 setup: 2 on 24, 5 on 13, 3 on 8, 5 on 6.",
+            "praise": "That’s your home stack — five already waiting on the 6-point, closest to bearing off. Every game starts this way.",
             "title": "Your home stack"
           }
         },
@@ -166,11 +186,11 @@
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "You’re on the bar — come back on before moving anyone else. A 4 enters on point 21 (count four pips from 24 toward home).",
-            "hint": "Tap the bar, then point 21 (not 23 — that’s the 2).",
+            "body": "You’re on the bar — come back on before moving anyone else. Count from the 24-point toward home: a 4 lands on point 21.",
+            "hint": "Tap the bar, then point 21 (not 23 — that’s only two pips from the bar).",
             "praise": "You’re back on the board — bar checkers always enter first.",
             "title": "Enter from the bar",
-            "wrong": "That’s the 2 (point 23). Use the 4 — enter on point 21 (25−4)."
+            "wrong": "That’s only two pips from the bar (point 23). Count four points from 24 toward home — that’s point 21."
           },
           "hit": {
             "body": "A single checker is a blot. Land on it and it goes to the bar. You rolled a 3 — hit the black blot on the 5-point.",
@@ -229,7 +249,7 @@
       "blot": {
         "a": "Any stack of three or more",
         "b": "A single checker on a point — it can be hit",
-        "c": "The doubling cube",
+        "c": "Two or more checkers on a point — a made point",
         "prompt": "What is a blot?"
       }
     },
@@ -245,7 +265,7 @@
     "arabic": "Arabic",
     "english": "English",
     "game": "Game",
-    "generale": "General",
+    "general": "General",
     "github": "Github",
     "language": "Language",
     "links": "Links",
