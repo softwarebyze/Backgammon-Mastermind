@@ -76,7 +76,7 @@ export function GameHeaderActions({
         </HeaderIconSlot>
       </HeaderButton>
       <HeaderButton
-        accessibilityLabel={translate('game.options.title')}
+        accessibilityLabel={translate('settings.title')}
         onPress={() => {
           hapticLight();
           onOptions();

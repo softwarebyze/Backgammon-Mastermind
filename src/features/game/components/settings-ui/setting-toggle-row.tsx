@@ -17,6 +17,7 @@ type Props = {
   hint?: string;
   value: boolean;
   onChange: (v: boolean) => void;
+  testID?: string;
 };
 
 function iconForToggle(icon: React.ReactNode, active: boolean): React.ReactNode {
@@ -32,7 +33,7 @@ const TRACK_ON = GAME_PALETTE.accentDim;
 const ANDROID_THUMB_ON = '#F5F0E8';
 const ANDROID_THUMB_OFF = '#C8B8A8';
 
-export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) {
+export function SettingToggleRow({ icon, label, hint, value, onChange, testID }: Props) {
   const handleChange = React.useCallback(
     (next: boolean) => {
       hapticSelection();
@@ -49,31 +50,39 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
       accessibilityRole="switch"
       accessibilityState={{ checked: value }}
       accessibilityLabel={label}
-      testID="setting-toggle-row"
-      style={styles.row}
+      accessibilityHint={hint}
+      testID={testID ?? 'setting-toggle-row'}
+      style={({ pressed }) => [styles.row, pressed && styles.pressed]}
       onPress={onPressRow}
     >
-      <View style={styles.iconWrap}>{iconForToggle(icon, value)}</View>
-      <View style={styles.text}>
+      <View pointerEvents="none" style={styles.iconWrap}>{iconForToggle(icon, value)}</View>
+      <View pointerEvents="none" style={styles.text}>
         <Text style={styles.label}>{label}</Text>
         {hint ? <Text style={styles.hint}>{hint}</Text> : null}
       </View>
-      <Switch
+      <View
         pointerEvents="none"
-        value={value}
-        onValueChange={handleChange}
-        trackColor={{ false: TRACK_OFF, true: TRACK_ON }}
-        thumbColor={Platform.OS === 'android'
-          ? (value ? ANDROID_THUMB_ON : ANDROID_THUMB_OFF)
-          : undefined}
-        ios_backgroundColor={TRACK_OFF}
-        {...Platform.select({
-          web: {
-            activeThumbColor: ANDROID_THUMB_ON,
-            activeTrackColor: TRACK_ON,
-          },
-        })}
-      />
+        accessible={false}
+        importantForAccessibility="no-hide-descendants"
+        style={styles.switchWrap}
+      >
+        <Switch
+          pointerEvents="none"
+          value={value}
+          onValueChange={handleChange}
+          trackColor={{ false: TRACK_OFF, true: TRACK_ON }}
+          thumbColor={Platform.OS === 'android'
+            ? (value ? ANDROID_THUMB_ON : ANDROID_THUMB_OFF)
+            : undefined}
+          ios_backgroundColor={TRACK_OFF}
+          {...Platform.select({
+            web: {
+              activeThumbColor: ANDROID_THUMB_ON,
+              activeTrackColor: TRACK_ON,
+            },
+          })}
+        />
+      </View>
     </Pressable>
   );
 }
@@ -82,10 +91,15 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'stretch',
+    width: '100%',
     minHeight: SETTINGS_ROW_MIN_HEIGHT,
     paddingHorizontal: SETTINGS_ROW_PADDING_H,
     paddingVertical: SETTINGS_ROW_PADDING_V,
     gap: 12,
+  },
+  pressed: {
+    opacity: 0.88,
   },
   iconWrap: {
     width: SETTINGS_ICON_SLOT,
@@ -94,6 +108,9 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
+  },
+  switchWrap: {
+    justifyContent: 'center',
   },
   label: {
     color: GAME_PALETTE.text,

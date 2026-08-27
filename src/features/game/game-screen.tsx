@@ -62,7 +62,7 @@ export function GameScreen() {
 
   const openOptions = useCallback(() => {
     posthog.capture('game_options_opened', { mode: input.state?.mode ?? null });
-    router.push('/game/options');
+    router.push('/settings');
   }, [posthog, input.state?.mode]);
 
   useGameScreenHeader({
