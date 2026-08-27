@@ -2,7 +2,7 @@ import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonId } from '@/lib/learn/curriculum';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -23,8 +23,6 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 type Props = {
   lessonId: LessonId;
 };
-
-const AUTO_ADVANCE_MS = 1400;
 
 export function LessonScreen({ lessonId }: Props) {
   const lesson = getLesson(lessonId);
@@ -116,30 +114,6 @@ function LessonScreenBody({
     }
     session.advance();
   }, [completeLesson, lessonId, posthog, session]);
-
-  const goNextRef = useRef(goNext);
-  goNextRef.current = goNext;
-
-  // After a correct identify/try-move, advance without an extra Continue tap.
-  useEffect(() => {
-    if (!session.stepComplete || session.lessonFinished) {
-      return;
-    }
-    if (session.step.kind === 'explain') {
-      return;
-    }
-    if (session.stepIndex >= session.totalSteps - 1) {
-      return;
-    }
-    const timer = setTimeout(() => goNextRef.current(), AUTO_ADVANCE_MS);
-    return () => clearTimeout(timer);
-  }, [
-    session.lessonFinished,
-    session.step.kind,
-    session.stepComplete,
-    session.stepIndex,
-    session.totalSteps,
-  ]);
 
   const awaitingBoardAction
     = !session.stepComplete

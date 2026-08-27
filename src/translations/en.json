@@ -29,6 +29,8 @@
       "dice_numbers": "Numbers",
       "direction_overlay": "Direction overlay",
       "direction_overlay_hint": "Horseshoe path on the board",
+      "fast_computer": "Fast computer",
+      "fast_computer_hint": "Shorter waits on computer rolls and moves. You can also tap Rolling/Moving to skip.",
       "move_hints": "Move hints",
       "move_hints_hint": "Gold dot beside points you can move from",
       "point_numbers": "Point numbers",
@@ -93,7 +95,7 @@
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Nothing is on the 5-point, but you rolled a 5. Bear off from your highest occupied point (the 3) — a larger die still works.",
+            "body": "Nothing is on the 5-point, but you rolled a 5. Bear off from your highest checker (the 3). A bigger number still takes a checker off.",
             "hint": "Select point 3, then tap the bear-off tray.",
             "praise": "That’s the overshoot rule — you’ll use it a lot when bearing off.",
             "title": "Bigger die, still off"
@@ -111,11 +113,11 @@
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Your white checkers move in a horseshoe: from the far side, across, then into your home (points 1–6). Every game starts with the same 2-5-3-5 pattern.",
+            "body": "You play WHITE — the cream checkers. The cream horseshoe is YOUR path: start at the far top-right, around the left side, then into home at the bottom-right (points 1–6). Black moves the other way.",
             "title": "The horseshoe path"
           },
           "far": {
-            "body": "Tap the point where your two farthest white checkers start (the 24-point).",
+            "body": "Tap the point where your two farthest white checkers start (the 24-point, top-right).",
             "hint": "Look at the top-right — two white checkers on point 24.",
             "praise": "Those start deep in the opponent’s home and have the longest journey.",
             "title": "Your farthest checkers"
@@ -155,7 +157,7 @@
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "You’re on the bar — you must enter before anything else. Die N enters on point 25−N (a 4 → point 21).",
+            "body": "You’re on the bar — come back on before moving anyone else. A 4 enters on point 21 (count four pips from 24 toward home).",
             "hint": "Tap the bar, then point 21 (not 23 — that’s the 2).",
             "praise": "You’re back on the board — bar checkers always enter first.",
             "title": "Enter from the bar",
