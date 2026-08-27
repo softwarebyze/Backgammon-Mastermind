@@ -7,6 +7,7 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
+import { pointAccessibilityLabel } from './point-accessibility';
 import { PointTriangle } from './point-triangle';
 import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
@@ -286,7 +287,7 @@ export function PointColumn({
     () => (dragEnabled ? composeColumnGestures(pan, tap) : null),
     [dragEnabled, pan, tap],
   );
-  const a11yLabel = `Point ${pointIndex}${isSelected ? ', selected' : ''}${isLegalTarget ? ', legal move target' : ''}`;
+  const a11yLabel = pointAccessibilityLabel(pointIndex, point, { isSelected, isLegalTarget });
   const columnStyle = { width: colWidth, height: pointHeight, position: 'relative' as const, overflow: 'visible' as const };
   const columnContent = (
     <ColumnContent
@@ -307,41 +308,40 @@ export function PointColumn({
     />
   );
 
-  if (dragEnabled && columnGesture) {
-    return (
-      <GestureDetector gesture={columnGesture}>
-        {/* box-only: RNGH web captures event.target; nested checkers remount mid-drag and throw. */}
-        <View
-          pointerEvents="box-only"
-          style={columnStyle}
-          accessibilityRole="button"
-          accessibilityLabel={a11yLabel}
-          accessibilityActions={[{ name: 'activate' }]}
-          onAccessibilityAction={(event) => {
-            if (event.nativeEvent.actionName === 'activate') {
-              onPress();
-            }
-          }}
-        >
-          {columnContent}
-        </View>
-      </GestureDetector>
-    );
-  }
-
-  return (
+  const pressable = (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={a11yLabel}
-      onPress={(e) => {
-        e?.stopPropagation?.();
-        onPress();
+      accessible
+      testID={`point-${pointIndex}`}
+      pointerEvents={dragEnabled ? 'box-only' : 'auto'}
+      onPress={dragEnabled
+        ? undefined
+        : (e) => {
+            e?.stopPropagation?.();
+            onPress();
+          }}
+      onPressIn={dragEnabled ? undefined : onPressIn}
+      onPressOut={dragEnabled ? undefined : onPressOut}
+      accessibilityActions={[{ name: 'activate' }]}
+      onAccessibilityAction={(event) => {
+        if (event.nativeEvent.actionName === 'activate') {
+          onPress();
+        }
       }}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
       style={columnStyle}
     >
       {columnContent}
     </Pressable>
   );
+
+  if (dragEnabled && columnGesture) {
+    return (
+      <GestureDetector gesture={columnGesture}>
+        {pressable}
+      </GestureDetector>
+    );
+  }
+
+  return pressable;
 }

@@ -11,6 +11,7 @@ import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { CoachCaption } from '@/features/learn/coach-caption';
+import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -151,13 +152,18 @@ function LessonScreenBody({
     goNext();
   }, [awaitingBoardAction, goNext, session]);
 
-  const primaryLabel = awaitingBoardAction
-    ? translate('learn.hint')
-    : session.stepIndex >= session.totalSteps - 1 && session.stepComplete
-      ? translate('learn.next_lesson')
-      : translate('learn.continue');
-
+  const nextLessonId = getNextLessonId(lessonId);
+  const ctaKind = learnPrimaryCtaKind({
+    awaitingBoardAction,
+    stepComplete: session.stepComplete,
+    stepIndex: session.stepIndex,
+    totalSteps: session.totalSteps,
+    nextLessonId,
+  });
+  const primaryLabel = translate(learnPrimaryCtaKey(ctaKind));
   const showDice = session.state.dice[0] !== 0 || session.state.dice[1] !== 0;
+  const showCompleteBanner
+    = session.stepComplete && session.stepIndex >= session.totalSteps - 1;
 
   return (
     <>
@@ -173,10 +179,10 @@ function LessonScreenBody({
           })}
         />
 
-        <View style={styles.boardWrap}>
-          <Pressable
-            onPress={session.onBoardPress}
+        <View style={styles.boardWrap} pointerEvents="box-none">
+          <View
             style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
+            pointerEvents="box-none"
           >
             <BoardView
               state={session.state}
@@ -199,42 +205,48 @@ function LessonScreenBody({
               emphasisPoints={session.emphasisPoints}
               emphasisBar={session.emphasisBar}
             />
-          </Pressable>
+          </View>
         </View>
 
-        {showDice
-          ? (
-              <View style={styles.diceRow}>
-                <DiceDisplay
-                  dice={session.state.dice}
-                  remainingDice={session.state.remainingDice}
-                  playerColor="white"
-                  displayStyle={diceDisplayStyle}
-                  animateRoll={false}
-                />
-              </View>
-            )
-          : null}
+        <View style={styles.footer} testID="learn-lesson-footer">
+          <View style={styles.diceRow}>
+            {showDice
+              ? (
+                  <DiceDisplay
+                    dice={session.state.dice}
+                    remainingDice={session.state.remainingDice}
+                    playerColor="white"
+                    displayStyle={diceDisplayStyle}
+                    animateRoll={false}
+                  />
+                )
+              : null}
+          </View>
 
-        {session.stepComplete && session.stepIndex >= session.totalSteps - 1
-          ? (
-              <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
-            )
-          : null}
+          <View style={styles.completeSlot}>
+            {showCompleteBanner
+              ? (
+                  <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
+                )
+              : null}
+          </View>
 
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={primaryLabel}
-          style={({ pressed }) => [
-            awaitingBoardAction ? styles.hintBtn : styles.primaryBtn,
-            pressed && styles.pressed,
-          ]}
-          onPress={onPrimary}
-        >
-          <Text style={awaitingBoardAction ? styles.hintLabel : styles.primaryLabel}>
-            {primaryLabel}
-          </Text>
-        </Pressable>
+          <Pressable
+            key="learn-primary-cta"
+            testID="learn-primary-cta"
+            accessibilityRole="button"
+            accessibilityLabel={primaryLabel}
+            style={({ pressed }) => [
+              ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
+              pressed && styles.pressed,
+            ]}
+            onPress={onPrimary}
+          >
+            <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
+              {primaryLabel}
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </>
   );
@@ -256,10 +268,22 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  footer: {
+    width: '100%',
+    alignItems: 'center',
+    flexGrow: 0,
+    flexShrink: 0,
+    paddingBottom: 4,
+  },
   diceRow: {
     minHeight: 48,
     justifyContent: 'center',
     marginBottom: 8,
+  },
+  completeSlot: {
+    minHeight: 28,
+    justifyContent: 'center',
+    marginBottom: 4,
   },
   completeBanner: {
     color: '#A0D080',

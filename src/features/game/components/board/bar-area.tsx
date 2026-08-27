@@ -165,7 +165,11 @@ export function BarArea({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Bar"
+      accessibilityLabel={
+        `Bar${whiteCount > 0 ? `, ${whiteCount} white ${whiteCount === 1 ? 'checker' : 'checkers'}` : ''}`
+        + `${blackCount > 0 ? `, ${blackCount} black ${blackCount === 1 ? 'checker' : 'checkers'}` : ''}`
+      }
+      accessible
       onPress={(e) => {
         // Parent board Pressable clears selection; stop bubble on web.
         e?.stopPropagation?.();
