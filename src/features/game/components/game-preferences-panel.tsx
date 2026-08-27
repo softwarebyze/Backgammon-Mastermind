@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.bg,
     borderWidth: 1,
     borderColor: GAME_PALETTE.surfaceBorder,
-    paddingHorizontal: SETTINGS_ROW_PADDING_H,
     paddingVertical: 4,
+    overflow: 'hidden',
     ...continuousRadius(12),
   },
   diceCard: {

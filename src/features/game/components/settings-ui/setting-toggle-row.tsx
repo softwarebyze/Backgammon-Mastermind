@@ -7,6 +7,7 @@ import { interFont } from '@/lib/ui/fonts';
 import {
   SETTINGS_ICON_SLOT,
   SETTINGS_ROW_MIN_HEIGHT,
+  SETTINGS_ROW_PADDING_H,
   SETTINGS_ROW_PADDING_V,
 } from '@/lib/ui/settings-layout';
 
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     minHeight: SETTINGS_ROW_MIN_HEIGHT,
+    paddingHorizontal: SETTINGS_ROW_PADDING_H,
     paddingVertical: SETTINGS_ROW_PADDING_V,
     gap: 12,
   },
