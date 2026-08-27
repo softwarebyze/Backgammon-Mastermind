@@ -28,7 +28,6 @@ const THUMB = '#F5F0E8';
 function DisplaySwitch({ on, testID }: { on: boolean; testID: string }) {
   return (
     <View
-      pointerEvents="none"
       accessible={false}
       importantForAccessibility="no-hide-descendants"
       testID={testID}
@@ -56,12 +55,12 @@ export function SettingToggleRow({ icon, label, hint, value, onChange, testID }:
       style={styles.row}
       onPress={onPressRow}
     >
-      <View pointerEvents="none" style={styles.iconWrap}>{icon}</View>
-      <View pointerEvents="none" style={styles.text}>
+      <View style={styles.iconWrap}>{icon}</View>
+      <View style={styles.text}>
         <Text style={styles.label}>{label}</Text>
         {hint ? <Text style={styles.hint}>{hint}</Text> : null}
       </View>
-      <View pointerEvents="none" style={styles.switchWrap}>
+      <View style={styles.switchWrap}>
         <DisplaySwitch on={value} testID={`${rowTestId}-track`} />
       </View>
     </Pressable>
@@ -83,12 +82,15 @@ const styles = StyleSheet.create({
     width: SETTINGS_ICON_SLOT,
     alignItems: 'center',
     justifyContent: 'center',
+    pointerEvents: 'none',
   },
   text: {
     flex: 1,
+    pointerEvents: 'none',
   },
   switchWrap: {
     justifyContent: 'center',
+    pointerEvents: 'none',
   },
   track: {
     width: 51,
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
     flexDirection: 'row',
     alignItems: 'center',
+    pointerEvents: 'none',
   },
   trackOn: {
     backgroundColor: TRACK_ON,
