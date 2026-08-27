@@ -23,6 +23,7 @@ type CheckersProps = {
   ghostPlayer: Player | null;
   hintTopChecker: boolean;
   isDragging: boolean;
+  isSelected: boolean;
 };
 
 function stackStyle(opts: {
@@ -71,6 +72,7 @@ function PointCheckers({
   ghostPlayer,
   hintTopChecker,
   isDragging,
+  isSelected,
 }: CheckersProps) {
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
@@ -154,6 +156,7 @@ type ColumnContentProps = {
   stackStep: number;
   visibleCount: number;
   palette: ReturnType<typeof getPointPalette>;
+  isSelected: boolean;
 };
 
 function ColumnContent({
@@ -170,6 +173,7 @@ function ColumnContent({
   stackStep,
   visibleCount,
   palette,
+  isSelected,
 }: ColumnContentProps) {
   return (
     <>
@@ -185,6 +189,7 @@ function ColumnContent({
         ghostPlayer={ghostPlayer}
         hintTopChecker={isMovableSource}
         isDragging={isDragging}
+        isSelected={isSelected}
       />
       {isLegalTarget && point.count === 0 && (
         <View
@@ -298,6 +303,7 @@ export function PointColumn({
       stackStep={stackStep}
       visibleCount={visibleCount}
       palette={palette}
+      isSelected={isSelected}
     />
   );
 

@@ -1,13 +1,12 @@
 /** Opening ceremony overlay: 2400ms hold + 520ms fly in opening-roll-ceremony.tsx. */
 export const OPENING_CEREMONY_GRACE_MS = 3200;
 
-/** Default think time so testers can see whose turn it is before the computer acts. */
-export const COMPUTER_ROLL_DELAY_MS = 1400;
-export const COMPUTER_NO_MOVE_DELAY_MS = 1600;
-export const COMPUTER_MOVE_DELAY_MS = 1100;
+const COMPUTER_ROLL_DELAY_MS = 1400;
+const COMPUTER_NO_MOVE_DELAY_MS = 1600;
+const COMPUTER_MOVE_DELAY_MS = 1100;
 
-export const FAST_COMPUTER_ROLL_DELAY_MS = 350;
-export const FAST_COMPUTER_NO_MOVE_DELAY_MS = 400;
+const FAST_COMPUTER_ROLL_DELAY_MS = 350;
+const FAST_COMPUTER_NO_MOVE_DELAY_MS = 400;
 export const FAST_COMPUTER_MOVE_DELAY_MS = 180;
 export const FAST_OPENING_CEREMONY_GRACE_MS = 800;
 

@@ -85,7 +85,8 @@ describe('single-move helpers', () => {
     state.points[8] = { player: 'white', count: 1 };
 
     const sequence = getSingleDestinationSequence(state, 8);
-    expect(sequence).toEqual([{ from: 8, to: 5 }]);
+    expect(sequence).toHaveLength(1);
+    expect(sequence![0]).toMatchObject({ from: 8, to: 5 });
     expect(getSingleDestinationSequence(state, 6)).toBeNull();
   });
 

@@ -3,9 +3,9 @@ import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
-import { computerMoveDelayMs, computerThinkDelayMs } from '@/lib/game/computer-pace';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
+import { computerMoveDelayMs, computerThinkDelayMs } from '@/lib/game/computer-pace';
 
 type ComputerOpponentOptions = {
   state: GameState | null;

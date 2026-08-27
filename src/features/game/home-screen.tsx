@@ -14,10 +14,10 @@ import {
   View,
 } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
-import { showErrorMessage } from '@/components/ui/utils';
 import { confirmAction } from '@/lib/confirm';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';

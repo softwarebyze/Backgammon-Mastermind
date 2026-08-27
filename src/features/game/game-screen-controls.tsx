@@ -124,6 +124,7 @@ export function GameScreenControls({
   );
 }
 
+/* eslint-disable-next-line max-lines-per-function -- phase switch + skip/cancel slots */
 function ActionControl({
   state,
   isHumanTurn,
