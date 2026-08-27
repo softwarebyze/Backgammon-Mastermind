@@ -7,32 +7,62 @@ import { horseshoeArrowhead } from '@/lib/ui/arrow-geometry';
 type Props = {
   width: number;
   height: number;
-  player?: 'white' | 'black';
 };
 
-/** Subtle horseshoe path — teaching overlay, not garish */
-export function DirectionOverlay({ width, height, player = 'white' }: Props) {
-  const d = buildHorseshoePath(width, height, player);
-  const stroke = player === 'white'
-    ? 'rgba(245, 240, 232, 0.88)'
-    : 'rgba(150, 170, 220, 0.88)';
-  const { polygonPoints } = horseshoeArrowhead(width, height, player);
+const WHITE_STROKE = 'rgba(245, 240, 232, 0.72)';
+const BLACK_STROKE = 'rgba(150, 170, 220, 0.55)';
 
+type LaneProps = {
+  width: number;
+  height: number;
+  player: 'white' | 'black';
+  stroke: string;
+  strokeWidth: number;
+  dashed?: boolean;
+};
+
+function HorseshoeLane({ width, height, player, stroke, strokeWidth, dashed }: LaneProps) {
+  const d = buildHorseshoePath(width, height, player);
+  const { polygonPoints } = horseshoeArrowhead(width, height, player);
+  return (
+    <>
+      <Path
+        d={d}
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray={dashed ? '7 6' : undefined}
+      />
+      <Polygon points={polygonPoints} fill={stroke} />
+    </>
+  );
+}
+
+/** Cream (White) + cooler (Black) lanes — teaching overlay, not garish. */
+export function DirectionOverlay({ width, height }: Props) {
   return (
     <Svg
       width={width}
       height={height}
       style={{ position: 'absolute', top: 0, left: 0, zIndex: 20, pointerEvents: 'none' }}
     >
-      <Path
-        d={d}
-        stroke={stroke}
-        strokeWidth={3}
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      <HorseshoeLane
+        width={width}
+        height={height}
+        player="black"
+        stroke={BLACK_STROKE}
+        strokeWidth={2}
+        dashed
       />
-      <Polygon points={polygonPoints} fill={stroke} />
+      <HorseshoeLane
+        width={width}
+        height={height}
+        player="white"
+        stroke={WHITE_STROKE}
+        strokeWidth={2.5}
+      />
     </Svg>
   );
-};
+}

@@ -1,3 +1,5 @@
+import { horseshoeMetrics } from '@/lib/game/horseshoe-path';
+
 export type Point2 = { x: number; y: number };
 
 export type ArrowheadStyle = {
@@ -59,13 +61,10 @@ export function horseshoeArrowhead(
   height: number,
   player: 'white' | 'black' = 'white',
 ): Arrowhead {
-  const pad = Math.max(4, width * 0.04);
-  const topY = height * 0.22;
-  const botY = height * 0.78;
-  const rightX = width - pad - width * 0.14;
+  const { topY, botY, rightX } = horseshoeMetrics(width, height, player);
 
   if (player === 'white') {
     return buildArrowhead({ x: rightX, y: botY }, { x: 1, y: 0 }, { length: 10, halfWidth: 5.5 });
   }
-  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, { length: 10, halfWidth: 5.5 });
+  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, { length: 9, halfWidth: 5 });
 }

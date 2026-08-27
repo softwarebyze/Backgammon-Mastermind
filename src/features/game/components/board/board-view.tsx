@@ -1,6 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
-import type { GameState, Player } from '@/lib/game/types';
+import type { GameState } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { View } from 'react-native';
@@ -165,7 +165,6 @@ export function BoardView({
     [showHighlights, state],
   );
 
-  const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
   const showDirection = showDirectionOverlay
     && !isReviewing
     && !ceremonyVisible
@@ -332,7 +331,6 @@ export function BoardView({
           <DirectionOverlay
             width={boardWidth}
             height={boardHeight}
-            player={humanPlayer}
           />
         )}
 
