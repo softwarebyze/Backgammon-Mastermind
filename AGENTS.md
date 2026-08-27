@@ -43,7 +43,8 @@ Standard commands from `package.json`:
 pnpm lint          # ESLint (src, app.config.ts, env.ts, .maestro)
 pnpm type-check    # tsc --noemit
 pnpm test          # Jest unit tests
-pnpm check-all     # lint + type-check + lint:translations + test
+pnpm knip          # unused exports (also CI)
+pnpm check-all     # lint + type-check + lint:translations + test + knip
 ```
 
 ### Environment setup notes

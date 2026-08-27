@@ -5,6 +5,8 @@
 Source of truth: **`store.config.json`** at the repo root.  
 Wired via `eas.json` → `submit.*.ios.metadataPath`.
 
+The **preview** profile pushes a generated `store.preview.config.json` (gitignored) — identical to the canonical config except the app name is **Backgammon Mastermind Preview** (ASC names must be unique, so the TestFlight app can't share production's name; Apple/EAS reject "Beta"-style names, hence "Preview"). `pnpm metadata:push` regenerates it automatically via `scripts/make-preview-store-config.mjs`; never edit the generated file.
+
 Prefer this over one-off App Store Connect API / JWT scripts. Listing state stays in git and is re-runnable.
 
 ## Commands
@@ -48,7 +50,7 @@ Three App Store Connect apps — metadata push targets the submit profile’s `a
 
 | Profile | Bundle ID | ASC name | Apple ID |
 |---------|-----------|----------|----------|
-| `preview` | `com.backgammonmastermind.preview` | Backgammon Mastermind TF | `6781121420` |
+| `preview` | `com.backgammonmastermind.preview` | Backgammon Mastermind Preview | `6781121420` |
 | `production` | `com.backgammonmastermind` | Backgammon Mastermind | `6792138473` |
 | *(not used for metadata)* | `com.backgammonmastermind.development` | Backgammon Mastermind Dev | `6780139011` |
 

@@ -426,10 +426,7 @@ The PR QR code is an **EAS Update**, not a new APK. It deep-links into an **alre
 
 #### Reviewer experience (what to automate + document)
 
-On every PR, reviewers should see **two comments**:
-
-1. **Expo bot** — QR for *this PR's* update (auto from `expo/expo-github-action/preview@v8`)
-2. **Sticky setup guide** — "first time? install dev client here → then scan QR above" (second step in `preview.yml`)
+On every PR, Expo's action posts **one comment** — the QR for *this PR's* update (`expo/expo-github-action/preview@v8`). That comment already links to more install info; no second sticky guide.
 
 First-time flow:
 
@@ -458,7 +455,7 @@ on:
   workflow_dispatch:  # manual "refresh dev client" button
 ```
 
-Uses the existing Obytes `eas-build` composite action with `APP_ENV: development`. Link the EAS builds page in README and the PR sticky comment — no need to paste APK URLs into docs (they rotate).
+Uses the existing Obytes `eas-build` composite action with `APP_ENV: development`. Link the EAS builds page in README and the Expo preview comment / EAS development builds page — no need to paste APK URLs into docs (they rotate).
 
 **When dev client rebuild is required:** SDK upgrade, new native module, `runtimeVersion` bump, scheme/bundle ID change, `app.config.ts` plugin changes.
 
@@ -483,7 +480,7 @@ PR workflow uses `eas update --auto --environment preview`. Matching channel let
 | Add to fork | Why |
 | ----------- | --- |
 | `preview.yml` with `qr-target: dev-build` | Correct QR type when `expo-dev-client` is installed |
-| Sticky PR comment with dev client install link | Closes the "QR does nothing" confusion for new reviewers |
+| Rely on Expo preview QR comment (+ EAS development builds page) | Closes the "QR does nothing" confusion for new reviewers |
 | `dev-client.yml` on path-filtered push | Dev client stays current (**Android + iOS**) without manual `eas build` |
 | `development.channel: preview` in `eas.json` | Dev client ↔ PR updates share channel |
 | README "Previewing PRs" blurb | Points to EAS builds + PR flow |
@@ -507,7 +504,7 @@ Some teams add a **label-gated** `eas build --profile preview` job (`preview-apk
 | `expo-dev-client` dep | `expo-updates` + `app.config.ts` updates config |
 | `eas build` scripts + composite action | `preview.yml` |
 | Manual dev client build | `dev-client.yml` auto-rebuild |
-| Nothing | PR sticky comment + README |
+| Nothing | Expo preview comment + README |
 | PascalCase schemes (bug) | Lowercase schemes + zod validation |
 
 ---
@@ -608,7 +605,7 @@ Reload the window after changing settings. Run `**pnpm format**` before committi
 | Change                                                          | Why                                           |
 | --------------------------------------------------------------- | --------------------------------------------- |
 | **`env.ts`: lowercase `SCHEMES` + zod regex on scheme**         | **Stock template breaks EAS Update / PR QR** — see [URL scheme casing](#url-scheme-casing-template-bug--breaks-eas-update) |
-| `dev-client.yml` + PR sticky comment + `development.channel`    | Always-fresh dev client + "first time?" reviewer UX — [Dev client workflow](#dev-client--pr-preview-workflow-recommended-fork-pattern) |
+| `dev-client.yml` + Expo preview comment + `development.channel`  | Always-fresh dev client + "first time?" reviewer UX — [Dev client workflow](#dev-client--pr-preview-workflow-recommended-fork-pattern) |
 | `.env` gitignored + `.env.example`                              | Security baseline                             |
 | `preview.yml` PR workflow                                       | Expected modern DX                            |
 | README / playbook: `EXPO_TOKEN` + `MAESTRO_CLOUD_API_KEY` setup | CI fails silently without them                |
@@ -711,8 +708,9 @@ Add these to your **personal Obytes fork** so every new app ships with the same 
 
 ```bash
 pnpm install
-pnpm check-all          # lint + type-check + translations + test
-pnpm doctor             # expo-doctor
+pnpm check-all          # lint + type-check + translations + test + knip
+pnpm doctor             # expo-doctor (also CI)
+pnpm react-doctor       # React Doctor (also CI)
 pnpm skills:update      # refresh Expo agent skills
 pnpm device:snapshot    # agent-device UI tree (Android dev build)
 eas project:info        # verify EAS linkage
