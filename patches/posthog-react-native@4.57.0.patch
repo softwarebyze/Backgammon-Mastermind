@@ -1,0 +1,109 @@
+diff --git a/tooling/posthog-xcode.sh b/tooling/posthog-xcode.sh
+index 945925f020b0ce3b0fd2858fa34933e6cfc30029..a56f8827ff258c94af697f845a41783a6a46a765 100644
+--- a/tooling/posthog-xcode.sh
++++ b/tooling/posthog-xcode.sh
+@@ -98,8 +98,16 @@ else
+ fi
+ 
+ if [ -z "$PH_CLI_PATH" ] || [ ! -x "$PH_CLI_PATH" ]; then
+-  echo "error: posthog-cli not found"
+-  exit 1
++  echo "warning: posthog-cli not found; skipping PostHog sourcemap upload (app binary will still compile)."
++  SKIP_POSTHOG_UPLOAD=1
++else
++  SKIP_POSTHOG_UPLOAD=0
++fi
++
++# Token is required for upload. Never print it. EAS has project id/host only.
++if [ -z "${POSTHOG_CLI_API_KEY:-}" ] && [ -z "${POSTHOG_CLI_TOKEN:-}" ]; then
++  echo "warning: PostHog CLI token not set; skipping sourcemap upload (app binary will still compile)."
++  SKIP_POSTHOG_UPLOAD=1
+ fi
+ 
+ # mimics how the file is defined in node_modules/react-native/scripts/react-native-xcode.sh (PACKAGER_SOURCEMAP_FILE)
+@@ -143,6 +151,10 @@ if [[ "$SKIP_BUNDLING" ]]; then
+   echo "SKIP_BUNDLING enabled; skipping posthog-cli upload calls."
+   exit 0;
+ fi
++if [ "${SKIP_POSTHOG_UPLOAD:-0}" = "1" ]; then
++  echo "warning: PostHog sourcemap upload skipped; React Native bundle succeeded."
++  exit 0
++fi
+ set -x -e
+ 
+ # posthog-cli auto-detects git by walking UP from the --directory arg
+@@ -199,8 +211,9 @@ CLONE_EXIT_CODE=$?
+ if [ $CLONE_EXIT_CODE -eq 0 ]; then
+   echo "$CLI_CLONE_OUTPUT" | awk '{print "output: posthog-cli - " $0}'
+ else
+-  print_command_error "posthog-cli hermes clone" "$CLONE_EXIT_CODE" "$CLI_CLONE_OUTPUT"
+-  exit $CLONE_EXIT_CODE
++  echo "warning: posthog-cli hermes clone failed with exit code ${CLONE_EXIT_CODE}; continuing app binary build."
++  print_prefixed_output "warning: posthog-cli hermes clone - " "$CLI_CLONE_OUTPUT"
++  exit 0
+ fi
+ set -x -e
+ 
+@@ -211,8 +224,9 @@ UPLOAD_EXIT_CODE=$?
+ if [ $UPLOAD_EXIT_CODE -eq 0 ]; then
+   echo "$CLI_UPLOAD_OUTPUT" | awk '{print "output: posthog-cli - " $0}'
+ else
+-  print_command_error "posthog-cli hermes upload" "$UPLOAD_EXIT_CODE" "$CLI_UPLOAD_OUTPUT"
+-  exit $UPLOAD_EXIT_CODE
++  echo "warning: posthog-cli hermes upload failed with exit code ${UPLOAD_EXIT_CODE}; continuing app binary build."
++  print_prefixed_output "warning: posthog-cli hermes upload - " "$CLI_UPLOAD_OUTPUT"
++  exit 0
+ fi
+ set -x -e
+ 
+diff --git a/tooling/posthog.gradle b/tooling/posthog.gradle
+index 07879b6950289eb40ad2fa04dfa080ac7b4a6386..c6a35fe11ce64ec30c749b85ccee10132c87fd92 100644
+--- a/tooling/posthog.gradle
++++ b/tooling/posthog.gradle
+@@ -114,6 +114,11 @@ plugins.withId('com.android.application') {
+ 
+                         doFirst {
+                             def cliPackage = PostHogCli.resolveCliPackagePath(rootDirFile, reactRoot)
++                            def token = System.getenv("POSTHOG_CLI_API_KEY") ?: System.getenv("POSTHOG_CLI_TOKEN")
++                            if (token == null || token.isEmpty()) {
++                                logger.warn("PostHog CLI token not set; skipping sourcemap upload (app binary will still compile).")
++                                throw new StopExecutionException("posthog sourcemap skip")
++                            }
+                             def args = [cliPackage]
+                             args.addAll(["hermes", "clone",
+                                 "--minified-map-path", packagerSourcemapOutput, // The path to a sourcemap
+@@ -122,9 +127,14 @@ plugins.withId('com.android.application') {
+                             args.addAll(extraArgs)
+                             logger.info("posthog-cli clone arguments: ${args}")
+ 
+-                            injected.execOps.exec {
+-                                workingDir reactRoot
+-                                commandLine(*osCompatibility, *args)
++                            try {
++                                injected.execOps.exec {
++                                    workingDir reactRoot
++                                    commandLine(*osCompatibility, *args)
++                                }
++                            } catch (Exception e) {
++                                logger.warn("posthog-cli not available or clone failed; skipping sourcemap upload (app binary will still compile). ${e.message}")
++                                throw new StopExecutionException("posthog sourcemap skip")
+                             }
+                         }
+ 
+@@ -138,9 +148,13 @@ plugins.withId('com.android.application') {
+                             args.addAll(posthogUploadArgs)
+                             logger.info("posthog-cli upload arguments: ${args}")
+ 
+-                            injected.execOps.exec {
+-                                workingDir reactRoot
+-                                commandLine(*osCompatibility, *args)
++                            try {
++                                injected.execOps.exec {
++                                    workingDir reactRoot
++                                    commandLine(*osCompatibility, *args)
++                                }
++                            } catch (Exception e) {
++                                logger.warn("posthog-cli upload failed; continuing app binary build. ${e.message}")
+                             }
+                         }
+ 

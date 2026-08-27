@@ -7,6 +7,11 @@ settings:
 overrides:
   posthog-react-native-session-replay: '-'
 
+patchedDependencies:
+  posthog-react-native@4.57.0:
+    hash: e4b1403097a68dbb109c26d6f0d9c5e1aad55066c61022f4be5402feb52e6602
+    path: patches/posthog-react-native@4.57.0.patch
+
 importers:
 
   .:
@@ -106,7 +111,7 @@ importers:
         version: 0.30.0(react-dom@19.2.3(react@19.2.3))(react-native-reanimated@4.3.1(react-native-worklets@0.8.3(@babel/core@7.29.0)(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react-native@0.85.3(@babel/core@7.29.0)(@react-native/jest-preset@0.85.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3))(react@19.2.3)
       posthog-react-native:
         specifier: ^4.57.0
-        version: 4.57.0(b3ef2302f18a3a608d9717b55ce0945c)
+        version: 4.57.0(patch_hash=e4b1403097a68dbb109c26d6f0d9c5e1aad55066c61022f4be5402feb52e6602)(b3ef2302f18a3a608d9717b55ce0945c)
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -16721,7 +16726,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-react-native@4.57.0(b3ef2302f18a3a608d9717b55ce0945c):
+  posthog-react-native@4.57.0(patch_hash=e4b1403097a68dbb109c26d6f0d9c5e1aad55066c61022f4be5402feb52e6602)(b3ef2302f18a3a608d9717b55ce0945c):
     dependencies:
       '@posthog/core': 1.43.1
       '@posthog/types': 1.397.0

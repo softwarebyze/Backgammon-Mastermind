@@ -109,6 +109,9 @@ const appPlugins: ExpoConfig['plugins'] = [
   ],
   ['react-native-edge-to-edge'],
   // Native symbol / Hermes map hooks. TestFlight crashes still need a new binary.
+  // posthog-react-native/expo wraps the Xcode "Bundle React Native" phase with
+  // posthog-xcode.sh. That script is pnpm-patched so a missing posthog-cli or
+  // CLI token skips sourcemap upload instead of failing EAS Run fastlane.
   ['posthog-react-native/expo', { skipOnConflict: true }],
 ];
 
