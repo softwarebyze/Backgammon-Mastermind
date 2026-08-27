@@ -39,20 +39,26 @@ export function SettingToggleRow({ icon, label, hint, value, onChange }: Props) 
     },
     [onChange],
   );
-  const switchRef = React.useRef<Switch>(null);
   const onPressRow = React.useCallback(() => {
     handleChange(!value);
   }, [handleChange, value]);
 
   return (
-    <Pressable style={styles.row} onPress={onPressRow}>
+    <Pressable
+      accessibilityRole="switch"
+      accessibilityState={{ checked: value }}
+      accessibilityLabel={label}
+      testID="setting-toggle-row"
+      style={styles.row}
+      onPress={onPressRow}
+    >
       <View style={styles.iconWrap}>{iconForToggle(icon, value)}</View>
       <View style={styles.text}>
         <Text style={styles.label}>{label}</Text>
         {hint ? <Text style={styles.hint}>{hint}</Text> : null}
       </View>
       <Switch
-        ref={switchRef}
+        pointerEvents="none"
         value={value}
         onValueChange={handleChange}
         trackColor={{ false: TRACK_OFF, true: TRACK_ON }}

@@ -18,6 +18,7 @@ import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { getThemeConfig } from '@/components/ui/use-theme-config';
+import { ConfirmDialogHost } from '@/components/ui/confirm-dialog';
 import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
 import { initAppTheme } from '@/lib/init-app-theme';
@@ -115,6 +116,7 @@ function Providers({ children }: { children: React.ReactNode }) {
           <GameProvider>
             <BottomSheetModalProvider>
               {children}
+              <ConfirmDialogHost />
               <FlashMessage position="top" />
             </BottomSheetModalProvider>
           </GameProvider>

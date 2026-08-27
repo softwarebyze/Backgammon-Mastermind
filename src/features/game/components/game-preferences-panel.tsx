@@ -23,6 +23,7 @@ type Props = {
   onAutoRollChange: (value: boolean) => void;
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
+  onFastComputerChange: (value: boolean) => void;
   showHints?: boolean;
 };
 
@@ -35,6 +36,7 @@ export function GamePreferencesPanel({
   onAutoRollChange,
   onAutoMoveWhenForcedChange,
   onSoundEnabledChange,
+  onFastComputerChange,
   showHints = false,
 }: Props) {
   return (
@@ -92,6 +94,18 @@ export function GamePreferencesPanel({
           hint={showHints ? translate('game.preferences.sound_hint') : undefined}
           value={preferences.soundEnabled}
           onChange={onSoundEnabledChange}
+        />
+        <View style={styles.divider} />
+        <SettingToggleRow
+          icon={(
+            <View style={styles.soundIcon}>
+              <Feather name="fast-forward" size={26} color={GAME_PALETTE.accent} />
+            </View>
+          )}
+          label={translate('game.preferences.fast_computer')}
+          hint={showHints ? translate('game.preferences.fast_computer_hint') : undefined}
+          value={preferences.fastComputer}
+          onChange={onFastComputerChange}
         />
       </View>
 

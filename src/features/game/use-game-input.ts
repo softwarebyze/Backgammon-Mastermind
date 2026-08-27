@@ -65,20 +65,27 @@ export function useGameInput() {
   }, [posthog, state?.mode, state?.phase, doRollDice]);
 
   const handleReset = useCallback(() => {
+    const startNew = () => {
+      clearPendingDrop();
+      triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+      posthog.capture('game_reset', {
+        mode: state?.mode ?? null,
+        was_game_over: state?.phase === 'game-over',
+      });
+      resetGame();
+    };
+    // Play Again is an explicit restart — don't hide it behind a confirm that
+    // browsers can swallow.
+    if (state?.phase === 'game-over') {
+      startNew();
+      return;
+    }
     confirmAction({
       title: 'New Game',
       message: 'Start a new game?',
       confirmLabel: 'New Game',
       destructive: true,
-      onConfirm: () => {
-        clearPendingDrop();
-        triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
-        posthog.capture('game_reset', {
-          mode: state?.mode ?? null,
-          was_game_over: state?.phase === 'game-over',
-        });
-        resetGame();
-      },
+      onConfirm: startNew,
     });
   }, [clearPendingDrop, posthog, resetGame, state?.mode, state?.phase]);
 

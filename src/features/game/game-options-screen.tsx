@@ -24,6 +24,7 @@ export function GameOptionsScreen() {
     setAutoRoll,
     setAutoMoveWhenForced,
     setSoundEnabled,
+    setFastComputer,
   } = useGamePreferences();
 
   const trackPreference = React.useCallback(
@@ -61,6 +62,10 @@ export function GameOptionsScreen() {
     trackPreference('sound', v);
     setSoundEnabled(v);
   }, [trackPreference, setSoundEnabled]);
+  const onFastComputerChange = React.useCallback((v: boolean) => {
+    trackPreference('fast_computer', v);
+    setFastComputer(v);
+  }, [trackPreference, setFastComputer]);
 
   const openSettings = React.useCallback(() => {
     hapticLight();
@@ -84,6 +89,7 @@ export function GameOptionsScreen() {
         onAutoRollChange={onAutoRollChange}
         onAutoMoveWhenForcedChange={onAutoMoveWhenForcedChange}
         onSoundEnabledChange={onSoundEnabledChange}
+        onFastComputerChange={onFastComputerChange}
         showHints
       />
 

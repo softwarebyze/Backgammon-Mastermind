@@ -21,6 +21,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
     setAutoRoll,
     setAutoMoveWhenForced,
     setSoundEnabled,
+    setFastComputer,
   } = useGamePreferences();
 
   return (
@@ -35,6 +36,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
         onAutoRollChange={setAutoRoll}
         onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
         onSoundEnabledChange={setSoundEnabled}
+        onFastComputerChange={setFastComputer}
         showHints={showHints}
       />
     </View>
