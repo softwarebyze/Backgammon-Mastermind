@@ -159,11 +159,13 @@ const styles = StyleSheet.create({
   },
   wrap: {
     minHeight: BAR_HEIGHT,
+    maxHeight: BAR_HEIGHT,
     width: '100%',
     maxWidth: 420,
     paddingHorizontal: 8,
     gap: 4,
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   wrapBusy: {
     opacity: 0.92,

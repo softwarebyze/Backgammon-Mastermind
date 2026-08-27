@@ -94,7 +94,7 @@ export function GameScreenLayout({
         pathFadeOutMs={board.pathFadeOutMs}
         input={input}
       />
-      <View style={styles.reviewSlot}>
+      <View style={styles.reviewSlot} pointerEvents="box-none">
         <MoveReviewBar
           viewIndex={review.viewIndex}
           liveIndex={review.liveIndex}
@@ -169,7 +169,11 @@ const styles = StyleSheet.create({
   reviewSlot: {
     width: '100%',
     alignItems: 'center',
-    minHeight: 68,
+    height: 68,
+    flexGrow: 0,
+    flexShrink: 0,
+    overflow: 'hidden',
+    zIndex: 1,
   },
   ceremonyLayer: {
     ...StyleSheet.absoluteFill,
@@ -179,5 +183,8 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     zIndex: 50,
+    flexGrow: 0,
+    flexShrink: 0,
+    elevation: 8,
   },
 });
