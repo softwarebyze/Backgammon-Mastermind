@@ -44,6 +44,23 @@ jobs:
         with:
           command: eas update --auto --environment preview
 
+      - name: Upload PostHog source maps
+        if: ${{ !cancelled() }}
+        env:
+          POSTHOG_CLI_API_KEY: ${{ secrets.POSTHOG_CLI_API_KEY }}
+          POSTHOG_CLI_PROJECT_ID: '507969'
+          POSTHOG_CLI_HOST: https://us.posthog.com
+        run: |
+          if [ -z "$POSTHOG_CLI_API_KEY" ]; then
+            echo "POSTHOG_CLI_API_KEY secret not set — skipping source map upload."
+            exit 0
+          fi
+          if [ -d dist ]; then
+            pnpm posthog:upload-sourcemaps
+          else
+            echo "No dist/ after eas update — skipping PostHog source map upload."
+          fi
+
       # Drop the old sticky "How to preview this PR" comment if present.
       - name: Remove legacy sticky preview guide
         if: ${{ !cancelled() }}

@@ -108,6 +108,8 @@ const appPlugins: ExpoConfig['plugins'] = [
     },
   ],
   ['react-native-edge-to-edge'],
+  // Native symbol / Hermes map hooks. TestFlight crashes still need a new binary.
+  ['posthog-react-native/expo', { skipOnConflict: true }],
 ];
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -158,5 +160,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     posthogProjectToken: process.env.POSTHOG_PROJECT_TOKEN,
     posthogHost: process.env.POSTHOG_HOST || 'https://us.i.posthog.com',
+    appEnv: Env.EXPO_PUBLIC_APP_ENV,
   },
 });

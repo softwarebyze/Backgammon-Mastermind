@@ -1,14 +1,29 @@
+import * as Application from 'expo-application';
 import Constants from 'expo-constants';
+import * as Device from 'expo-device';
 import PostHog from 'posthog-react-native';
+import { Platform } from 'react-native';
 import { createMMKV } from 'react-native-mmkv';
 
-const projectToken = Constants.expoConfig?.extra?.posthogProjectToken as string | undefined;
-const host = (Constants.expoConfig?.extra?.posthogHost as string) || 'https://us.i.posthog.com';
-const isPostHogConfigured = projectToken && projectToken !== 'phc_your_project_token_here';
+import {
+  getPostHogPersonContext,
+  isPostHogProjectToken,
+} from '@/lib/analytics/posthog-context';
+
+const extra = Constants.expoConfig?.extra as {
+  posthogProjectToken?: string;
+  posthogHost?: string;
+  appEnv?: string;
+} | undefined;
+
+const projectToken = extra?.posthogProjectToken;
+const host = extra?.posthogHost || 'https://us.i.posthog.com';
+const isPostHogConfigured = isPostHogProjectToken(projectToken);
+const isNativeMobile = Platform.OS === 'ios' || Platform.OS === 'android';
 
 if (!isPostHogConfigured && __DEV__) {
   console.warn(
-    'PostHog project token not configured. Set POSTHOG_PROJECT_TOKEN in .env to enable analytics.',
+    'PostHog project token not configured. Set POSTHOG_PROJECT_TOKEN in .env (or EAS env) to enable analytics and error tracking.',
   );
 }
 
@@ -37,4 +52,38 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
   requestTimeout: 10000,
   fetchRetryCount: 3,
   fetchRetryDelay: 3000,
+  // Session replay is native-only (dev client / store / TestFlight — not Expo Go or web).
+  enableSessionReplay: isNativeMobile,
+  sessionReplayConfig: {
+    maskAllTextInputs: true,
+    maskAllImages: false,
+    captureLog: true,
+    captureNetworkTelemetry: true,
+    throttleDelayMs: 1000,
+  },
+  // console: [] avoids duplicate reports when PostHogErrorBoundary is mounted
+  // (React also logs render errors to console).
+  errorTracking: {
+    autocapture: {
+      uncaughtExceptions: true,
+      unhandledRejections: true,
+      console: [],
+      nativeCrashes: isNativeMobile,
+    },
+  },
+});
+
+void posthog.register({
+  ...getPostHogPersonContext({
+    appEnv: extra?.appEnv || process.env.EXPO_PUBLIC_APP_ENV,
+    platform: Platform.OS,
+    configVersion: Constants.expoConfig?.version,
+    nativeApplicationVersion: Application.nativeApplicationVersion,
+    nativeBuildVersion: Application.nativeBuildVersion,
+    iosBuildNumber: Constants.expoConfig?.ios?.buildNumber,
+    androidVersionCode: Constants.expoConfig?.android?.versionCode,
+  }),
+  device_os: Device.osName ?? Platform.OS,
+  device_os_version: Device.osVersion ?? null,
+  device_model: Device.modelName ?? null,
 });

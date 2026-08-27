@@ -93,7 +93,8 @@ Use this before the first App Store / Play Store submission.
 | Unit tests | Done (`pnpm test`) |
 | Maestro E2E + PR screenshot publish | Done |
 | Hosted privacy / terms | Done (#129) |
-| Error tracking (PostHog session replay / source maps) | **Deferred** — [#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) is too large for this TestFlight |
+| Error tracking (PostHog exceptions) | **This ship (slim)** — ErrorBoundary + autocapture + env token. Full [#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) dump still deferred |
+
 | Full 17-language i18n | **Not this ship** — [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) |
 | **App Store screenshots** | Recapture if Learn / home UI changed |
 | **Google Play first upload** | Create Play app + service account when ready |
@@ -165,6 +166,6 @@ Avoid one-off App Store Connect API / JWT scripts for shipping.
 5. Recapture screenshots if needed → `pnpm metadata:push:production`
 6. **Rebuild + submit** production iOS (`6792138473`) after TestFlight is good
 7. Google Play — Console app + AAB when ready
-8. Defer [#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) (session replay) until nutrition labels cover it; defer [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) i18n dump
+8. Full PostHog dump ([#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) privacy/docs/source-map CI) still deferred; this ship only wires exceptions. Defer [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) i18n dump
 
 See also: [ios-testing-and-store.md](./ios-testing-and-store.md), [eas-metadata.md](./eas-metadata.md), [releases.md](./releases.md)
