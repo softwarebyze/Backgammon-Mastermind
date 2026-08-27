@@ -56,7 +56,9 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
   requestTimeout: 10000,
   fetchRetryCount: 3,
   fetchRetryDelay: 3000,
-  // Session replay is native-only (dev client / store / TestFlight — not Expo Go or web).
+  // Native replay + crashes come from @posthog/react-native-plugin (PostHog ~> 3.69).
+  // pnpm.overrides drops archived posthog-react-native-session-replay (PostHog ~> 3.58.1)
+  // so CocoaPods is not asked to satisfy both ranges.
   enableSessionReplay: enableNativePostHog,
   sessionReplayConfig: {
     maskAllTextInputs: true,

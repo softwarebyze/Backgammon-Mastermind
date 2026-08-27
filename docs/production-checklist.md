@@ -93,7 +93,7 @@ Use this before the first App Store / Play Store submission.
 | Unit tests | Done (`pnpm test`) |
 | Maestro E2E + PR screenshot publish | Done |
 | Hosted privacy / terms | Done (#129) |
-| Error tracking (PostHog exceptions) | **This ship (slim)** — ErrorBoundary + autocapture + env token. Full [#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) dump still deferred |
+| Error tracking (PostHog exceptions) | **This ship (slim)** — ErrorBoundary + autocapture + env token + `@posthog/react-native-plugin` (native crashes). Do **not** also install archived `posthog-react-native-session-replay` (CocoaPods `PostHog` ~> 3.58 vs ~> 3.69). Full [#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) dump still deferred |
 
 | Full 17-language i18n | **Not this ship** — [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) |
 | **App Store screenshots** | Recapture if Learn / home UI changed |
