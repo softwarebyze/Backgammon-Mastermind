@@ -39,7 +39,7 @@
       "direction_overlay": "Direction overlay",
       "direction_overlay_hint": "Horseshoe path on the board",
       "fast_computer": "Fast computer",
-      "fast_computer_hint": "Shorter waits on computer rolls and moves. You can also tap Rolling/Moving to skip.",
+      "fast_computer_hint": "Shorter waits on computer rolls and moves. You can also tap Skip wait.",
       "move_hints": "Move hints",
       "move_hints_hint": "Gold dot beside points you can move from",
       "point_numbers": "Point numbers",
