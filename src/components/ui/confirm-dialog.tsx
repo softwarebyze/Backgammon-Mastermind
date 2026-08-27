@@ -10,6 +10,9 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 /**
  * In-app confirm so web (and native) never depend on `window.confirm` /
  * `Alert.alert`, which are no-ops or blocked in some browsers.
+ *
+ * `animationType="none"` — a fade animates the title and buttons with the
+ * scrim, which reads as low-opacity overlapping text for ~1s on web.
  */
 export function ConfirmDialogHost() {
   const [pending, setPending] = useState<ConfirmOptions | null>(null);
@@ -34,7 +37,7 @@ export function ConfirmDialogHost() {
     <Modal
       visible
       transparent
-      animationType="fade"
+      animationType="none"
       onRequestClose={close}
     >
       <View style={styles.scrim}>
