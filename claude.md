@@ -2,7 +2,7 @@
 
 ## What: Technology Stack
 
-- **Expo SDK 57** with React Native 0.86.3
+- **Expo SDK 56** with React Native 0.85.3
 - **TypeScript** — strict mode
 - **Expo Router 6** — file-based routing
 - **Uniwind/Nativewind** — utility-first styling
