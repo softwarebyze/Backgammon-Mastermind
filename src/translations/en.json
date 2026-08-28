@@ -142,7 +142,7 @@
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "You play WHITE — the cream checkers. The cream horseshoe is YOUR path: start at the far top-right, around the left side, then into home at the bottom-right (points 1–6). The cooler dashed line is Black going the other way.",
+            "body": "You play WHITE — the cream checkers. The cream horseshoe is YOUR path: start at the far top-right, around the left side, then into home at the bottom-right (points 1–6). The dashed line is Black, heading the opposite way.",
             "title": "The horseshoe path"
           },
           "far": {

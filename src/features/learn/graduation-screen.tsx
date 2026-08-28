@@ -1,12 +1,13 @@
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { QuizCard } from '@/features/learn/quiz-card';
+import { QUIZ_CORRECT_FLASH_MS, resolveQuizTap } from '@/features/learn/quiz-selection';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { enableBeginnerGameAids } from '@/lib/game-preferences/beginner-aids';
 import { hapticLight, hapticSelection } from '@/lib/haptics';
@@ -38,9 +39,20 @@ export function GraduationScreen() {
   const posthog = usePostHog();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [softMessage, setSoftMessage] = useState<string | null>(null);
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
+  const [correctLocked, setCorrectLocked] = useState(false);
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const question = GRADUATION_QUIZ[questionIndex];
   const canPlay = isReadyToPlay(progress);
+
+  useEffect(() => {
+    return () => {
+      if (advanceTimer.current) {
+        clearTimeout(advanceTimer.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     posthog.capture('learn_graduation_opened', { source: 'screen' });
@@ -54,12 +66,27 @@ export function GraduationScreen() {
     router.replace('/game');
   }, [posthog, startGame]);
 
+  const goToHub = useCallback(() => {
+    hapticLight();
+    router.push('/learn');
+  }, []);
+
   const onSelectOption = useCallback((optionId: string) => {
-    if (!question || progress.quizPassed) {
+    if (!question) {
       return;
     }
     const option = question.options.find(item => item.id === optionId);
     if (!option) {
+      return;
+    }
+    const result = resolveQuizTap({
+      optionId,
+      correct: option.correct,
+      isLastQuestion: questionIndex >= GRADUATION_QUIZ.length - 1,
+      locked: correctLocked,
+      quizPassed: progress.quizPassed,
+    });
+    if (result.kind === 'ignore') {
       return;
     }
     posthog.capture('learn_quiz_answered', {
@@ -68,21 +95,27 @@ export function GraduationScreen() {
       correct: option.correct,
       question_index: questionIndex,
     });
-    if (!option.correct) {
+    setSelectedOptionId(optionId);
+    if (result.kind === 'wrong') {
       hapticLight();
       setSoftMessage(translate('learn.graduation.quiz_wrong'));
       return;
     }
     hapticSelection();
     setSoftMessage(null);
-    if (questionIndex >= GRADUATION_QUIZ.length - 1) {
-      completeQuiz();
-      posthog.capture('learn_quiz_completed');
-      setSoftMessage(translate('learn.graduation.quiz_done'));
-      return;
-    }
-    setQuestionIndex(index => index + 1);
-  }, [completeQuiz, posthog, progress.quizPassed, question, questionIndex]);
+    setCorrectLocked(true);
+    advanceTimer.current = setTimeout(() => {
+      setCorrectLocked(false);
+      setSelectedOptionId(null);
+      if (result.complete) {
+        completeQuiz();
+        posthog.capture('learn_quiz_completed');
+        setSoftMessage(translate('learn.graduation.quiz_done'));
+        return;
+      }
+      setQuestionIndex(index => index + 1);
+    }, QUIZ_CORRECT_FLASH_MS);
+  }, [completeQuiz, correctLocked, posthog, progress.quizPassed, question, questionIndex]);
 
   if (!allLessonsComplete(progress)) {
     return <LessonsIncompleteGate />;
@@ -117,6 +150,7 @@ export function GraduationScreen() {
                 questionIndex={questionIndex}
                 total={GRADUATION_QUIZ.length}
                 softMessage={softMessage}
+                selectedOptionId={selectedOptionId}
                 onSelectOption={onSelectOption}
               />
             )
@@ -135,6 +169,15 @@ export function GraduationScreen() {
             </Text>
           </Pressable>
         )}
+
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={translate('learn.back_to_hub')}
+          style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
+          onPress={goToHub}
+        >
+          <Text style={styles.secondaryLabel}>{translate('learn.back_to_hub')}</Text>
+        </Pressable>
       </ScrollView>
     </>
   );
@@ -204,6 +247,15 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.bg,
     fontSize: 17,
     ...interFont('bold'),
+  },
+  secondaryBtn: {
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  secondaryLabel: {
+    color: GAME_PALETTE.accent,
+    fontSize: 15,
+    ...interFont('medium'),
   },
   pressed: {
     opacity: 0.88,

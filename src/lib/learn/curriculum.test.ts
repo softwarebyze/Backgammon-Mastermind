@@ -6,6 +6,7 @@ import {
   getNextLessonId,
   GRADUATION_QUIZ,
   isLessonUnlocked,
+  LESSON_IDS,
   LESSONS,
 } from './curriculum';
 
@@ -66,5 +67,16 @@ describe('curriculum', () => {
     expect(enter.wrong).not.toMatch(/25/);
     expect(enter.body).not.toMatch(/25/);
     expect(enter.wrong.toLowerCase()).toContain('point 21');
+  });
+
+  it('says the dashed line is Black, without “cooler”', () => {
+    const body = en.learn.lessons.direction_setup.steps.explain.body;
+    expect(body.toLowerCase()).not.toContain('cooler');
+    expect(body).toMatch(/dashed line is Black/i);
+    expect(body.toLowerCase()).toContain('opposite');
+  });
+
+  it('keeps every lesson unlocked after the set is complete so hub rows stay replayable', () => {
+    expect(LESSON_IDS.every(id => isLessonUnlocked(id, LESSON_IDS))).toBe(true);
   });
 });
