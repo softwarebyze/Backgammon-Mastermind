@@ -15,7 +15,7 @@ Use this before the first App Store / Play Store submission.
 | **Tests (Jest)** | Yes | ✅ Required |
 | **Knip** | Yes | ✅ Unused-export check (also in `pnpm check-all`) |
 | **EAS Update Preview** | Yes | ✅ (`EXPO_TOKEN` configured) — Expo QR comment only |
-| **Expo Doctor** | When deps / native config change | ⚠️ Configured — currently **fails** on this repo (SDK 56.0.18 vs 56.0.20 patch drift + Hermes V1; upgrade to SDK 57 is out of scope for this TestFlight) |
+| **Expo Doctor** | When deps / native config change | ✅ SDK 57.0.17 (Hermes V1 250829098.0.17 / RN 0.86.3) |
 | **React Doctor** | Advisory | ✅ |
 | **Dev Client rebuild** | Native / branding path changes | ✅ |
 | **E2E (Maestro)** | Auto on `src/**` / `.maestro/**` changes + every push to `main` | ✅ |
@@ -89,7 +89,7 @@ Use this before the first App Store / Play Store submission.
 | Core gameplay + prefs UI | Done |
 | Turn indicator (white/black clarity) | Done |
 | Learn to Play | **Kept** — praise waits for Continue; horseshoe shows both directions |
-| Branding / dev client (SDK 56) | Done — display name **Backgammon Mastermind** (native rebuild) |
+| Branding / dev client (SDK 57) | Done — display name **Backgammon Mastermind** (native rebuild) |
 | Unit tests | Done (`pnpm test`) |
 | Maestro E2E + PR screenshot publish | Done |
 | Hosted privacy / terms | Done (#129) |
