@@ -163,7 +163,9 @@ export function HomeScreen() {
           <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
             {translate('home.title')}
           </Text>
-          <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>
+          {landscape
+            ? null
+            : <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>}
 
           {landscape
             ? null
@@ -176,13 +178,18 @@ export function HomeScreen() {
               )}
         </View>
 
-        <View style={styles.buttons}>
+        <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
           {canResume && (
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={translate('home.resume_a11y')}
               testID="resume-game-button"
-              style={({ pressed }) => [styles.modeBtn, styles.resumeBtn, pressed && styles.pressed]}
+              style={({ pressed }) => [
+                styles.modeBtn,
+                landscape ? styles.modeBtnLandscape : null,
+                styles.resumeBtn,
+                pressed && styles.pressed,
+              ]}
               onPress={handleResume}
             >
               <View style={styles.btnIconSlot}>
@@ -190,7 +197,9 @@ export function HomeScreen() {
               </View>
               <View style={styles.btnTextCol}>
                 <Text style={[styles.btnLabel, { color: '#A0D080' }]}>{translate('home.resume')}</Text>
-                <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>
+                {landscape
+                  ? null
+                  : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>}
               </View>
             </Pressable>
           )}
@@ -198,7 +207,12 @@ export function HomeScreen() {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={translate('learn.home_cta')}
-            style={({ pressed }) => [styles.modeBtn, styles.learnBtn, pressed && styles.pressed]}
+            style={({ pressed }) => [
+              styles.modeBtn,
+              landscape ? styles.modeBtnLandscape : null,
+              styles.learnBtn,
+              pressed && styles.pressed,
+            ]}
             onPress={handleLearn}
           >
             <View style={styles.btnIconSlot}>
@@ -208,16 +222,25 @@ export function HomeScreen() {
               <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>
                 {translate('learn.home_cta')}
               </Text>
-              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>
-                {learnSub}
-              </Text>
+              {landscape
+                ? null
+                : (
+                    <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>
+                      {learnSub}
+                    </Text>
+                  )}
             </View>
           </Pressable>
 
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={translate('home.vs_computer_a11y')}
-            style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
+            style={({ pressed }) => [
+              styles.modeBtn,
+              landscape ? styles.modeBtnLandscape : null,
+              styles.primaryBtn,
+              pressed && styles.pressed,
+            ]}
             onPress={() => handleStart('vs-computer')}
           >
             <View style={styles.btnIconSlot}>
@@ -225,14 +248,21 @@ export function HomeScreen() {
             </View>
             <View style={styles.btnTextCol}>
               <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>{translate('home.vs_computer')}</Text>
-              <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>
+              {landscape
+                ? null
+                : <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>}
             </View>
           </Pressable>
 
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={translate('home.two_players_a11y')}
-            style={({ pressed }) => [styles.modeBtn, styles.secondaryBtn, pressed && styles.pressed]}
+            style={({ pressed }) => [
+              styles.modeBtn,
+              landscape ? styles.modeBtnLandscape : null,
+              styles.secondaryBtn,
+              pressed && styles.pressed,
+            ]}
             onPress={() => handleStart('vs-human')}
           >
             <View style={styles.btnIconSlot}>
@@ -240,7 +270,9 @@ export function HomeScreen() {
             </View>
             <View style={styles.btnTextCol}>
               <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>{translate('home.two_players')}</Text>
-              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>
+              {landscape
+                ? null
+                : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
             </View>
           </Pressable>
         </View>
@@ -341,11 +373,20 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '45deg' }],
   },
   buttons: {
-    width: '100%',
     maxWidth: GAME_CHROME_MAX_WIDTH,
     gap: 14,
     marginBottom: 24,
     flexShrink: 1,
+  },
+  buttonsPortrait: {
+    width: '100%',
+  },
+  buttonsLandscape: {
+    flex: 1,
+    minWidth: 0,
+    gap: 8,
+    marginBottom: 0,
+    justifyContent: 'center',
   },
   modeBtn: {
     flexDirection: 'row',
@@ -355,6 +396,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     gap: 16,
     ...continuousRadius(16),
+  },
+  modeBtnLandscape: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    gap: 10,
+    minHeight: 44,
   },
   pressed: {
     opacity: 0.88,
