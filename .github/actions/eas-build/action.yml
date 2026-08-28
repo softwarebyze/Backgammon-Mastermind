@@ -85,6 +85,10 @@ runs:
         SUBMIT_ARGS=""
         if [ "${{ inputs.AUTO_SUBMIT }}" = "true" ]; then
           SUBMIT_ARGS="--auto-submit"
+          if [ "${{ inputs.APP_ENV }}" = "preview" ]; then
+            pnpm metadata:preview-config
+            test -f store.preview.config.json
+          fi
         fi
         pnpm build:${{ inputs.APP_ENV }}:ios --non-interactive --no-wait ${SUBMIT_ARGS} --message "Build ${{ inputs.APP_ENV }} ${{ inputs.VERSION }}"
       shell: bash

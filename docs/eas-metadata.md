@@ -7,6 +7,8 @@ Wired via `eas.json` → `submit.*.ios.metadataPath`.
 
 The **preview** profile pushes a generated `store.preview.config.json` (gitignored) — identical to the canonical config except the app name is **Backgammon Mastermind Preview** (ASC names must be unique, so the TestFlight app can't share production's name; Apple/EAS reject "Beta"-style names, hence "Preview"). `pnpm metadata:push` regenerates it automatically via `scripts/make-preview-store-config.mjs`; never edit the generated file.
 
+Preview **TestFlight submit** (`eas submit --profile preview` and QA `--auto-submit`) also runs `pnpm metadata:preview-config` first and asserts the file exists, so submit cannot 404 on the gitignored path. Listing sync is still `pnpm metadata:push` / Actions → **EAS Metadata Push**, not a side effect of this agent.
+
 Prefer this over one-off App Store Connect API / JWT scripts. Listing state stays in git and is re-runnable.
 
 ## Commands
