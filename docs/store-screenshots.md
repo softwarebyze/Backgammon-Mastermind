@@ -1,6 +1,6 @@
 # Store screenshots (agents can upload)
 
-Agents **can and should** upload App Store / Play screenshots without a human clicking ASC. EAS Metadata does **not** cover screenshots yet — use **Fastlane** (`deliver` / `supply`).
+Agents **can and should** upload App Store / Play screenshots without a human clicking ASC. EAS Metadata does **not** cover screenshots yet — use **Fastlane** (`deliver` / `supply`). For **Android, Fastlane `supply` also uploads the text listing** (`title.txt`, `full_description.txt`, `short_description.txt`), since EAS Metadata is App Store only.
 
 ## Source of truth
 
@@ -58,15 +58,28 @@ Price / privacy nutrition: ASC UI (or future automation).
 
 ## Play Store
 
-Create a Play Console app + service account JSON once, then:
+Android listing metadata lives in `fastlane/metadata/android/` (title, short/full description, contact email/website) and Play screenshots are staged under `fastlane/metadata/android/en-US/images/phoneScreenshots/` — both uploaded together by the `fastlane android screenshots` (supply) lane.
+
+Need once (you, Play Console):
 
 ```sh
-export PLAY_JSON_KEY_PATH=/path/to/play-service-account.json
+# 1. Create the app in Play Console with package name com.backgammonmastermind
+# 2. Google Cloud → create service account + JSON key; grant Play "Release to production"
+# 3. Set the service account JSON as a GitHub secret (base64):
+#    gh secret set GOOGLE_SERVICE_ACCOUNT_BASE64 < google-service-account.json (base64 -w0)
+```
+
+Then **Actions → Upload Store Screenshots → android** (uses `GOOGLE_SERVICE_ACCOUNT_BASE64`).
+
+Or run supply locally:
+
+```sh
+export PLAY_JSON_KEY_PATH=/path/to/google-service-account.json
 export PLAY_PACKAGE_NAME=com.backgammonmastermind
 pnpm screenshots:upload:android
 ```
 
-Until that credential exists, iOS upload is fully autonomous; Android is stubbed and ready.
+Android screenshots reuse the phone captures from `docs/marketing/…/app-store-screenshots/` (iPhone 6.9" 1320×2868 maps to a 19.5:9 phone slot).
 
 ## Obytes / fork agents
 

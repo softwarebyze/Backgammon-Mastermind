@@ -57,7 +57,7 @@ Use this before the first App Store / Play Store submission.
 - [x] `pnpm metadata:push` — preview ASC (`6781121420`); generates `store.preview.config.json` with title **Backgammon Mastermind Preview**
 - [x] `pnpm metadata:push:production` — production ASC (`6792138473`)
 - [x] App Store screenshots matching shipped UI (Learn in app) — 5× iPhone 6.9" (1320×2868) + 5× iPad Pro 13" (2064×2752) uploaded to production `1.0.0` via `Upload Store Screenshots` GHA (Fastlane deliver) — [store-screenshots.md](./store-screenshots.md)
-- [ ] Google Play Console app record + screenshots + description
+- [ ] Google Play Console app record + screenshots + description (setup steps in [store-screenshots.md](./store-screenshots.md); listing text + screenshots staged in `fastlane/metadata/android/` and uploaded by the `Upload Store Screenshots` GHA)
 - [x] Privacy policy — https://backgammon-mastermind.vercel.app/privacy/
 - [x] Terms of service — hosted `/terms/`
 - [x] Pricing — Paid Up Front **$4.99** USD (ASC Pricing UI)
@@ -76,6 +76,8 @@ Use this before the first App Store / Play Store submission.
 | App Store Connect API key | `metadata:push` / `metadata:pull` | ✅ (EAS credentials) |
 | `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E only | Optional |
 | `GH_TOKEN` | New App Version workflow | Optional |
+| `GOOGLE_SERVICE_ACCOUNT_BASE64` (GH secret) | Fastlane supply — Android screenshots + listing text | ⛔ add: base64 of Play service-account JSON |
+| `GOOGLE_SERVICE_ACCOUNT` (EAS secret) | EAS submit — Android AAB → Google Play | ⛔ add: Play service-account JSON |
 
 ## Post-launch
 
@@ -97,7 +99,7 @@ Use this before the first App Store / Play Store submission.
 
 | Full 17-language i18n | **Not this ship** — [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) |
 | **App Store screenshots** | Done — production 1.0.0 (iPhone 6.9" + iPad 13") via GHA |
-| **Google Play first upload** | Create Play app + service account when ready |
+| **Google Play first upload** | Ready to build+submit once Play Console app + service account exist (`GOOGLE_SERVICE_ACCOUNT_BASE64` GH secret, `GOOGLE_SERVICE_ACCOUNT` EAS secret) |
 | Production binary | Building + auto-submitting from main (SDK 56 stable) |
 | Submit for App Review | Blocked on **privacy nutrition labels** (binary + screenshots on ASC) |
 
@@ -117,8 +119,9 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 | **E2E (Maestro)** | Auto on `src/**` changes + push to `main` | Smoke test + PR screenshots |
 | **EAS Update Preview** | Every PR | OTA preview QR (Expo comment) |
 | **EAS Metadata Push** | Manual | Push `store.config.json` (+ generated preview title) |
-| **Upload Store Screenshots** | Manual (ios/android) | Fastlane deliver/supply from versioned marketing folder |
+| **Upload Store Screenshots** | Manual (ios/android) | Fastlane deliver (iOS ASC key via EAS) / supply (Play key via `GOOGLE_SERVICE_ACCOUNT_BASE64`) |
 | **EAS Submit Production iOS** | Manual | Retry submit of latest (or given) production iOS build |
+| **EAS Production Build and Submit (Android)** | Manual | Build AAB + auto-submit to Google Play (production track) |
 | **Knip / Expo Doctor / React Doctor** | PR / path filters | Unused exports + dependency health |
 
 **TestFlight trigger (no local EXPO_TOKEN needed for agents):** Actions → **EAS QA Build (Android & IOS) (EAS)** on the merged (or this) branch. Preview iOS auto-submits to ASC `6781121420`. Optionally dispatch **EAS Submit Preview iOS (TestFlight)** if a preview IPA already exists.
@@ -166,7 +169,7 @@ Avoid one-off App Store Connect API / JWT scripts for shipping.
 3. ✅ Production metadata pushed (`metadata:push:production`) + screenshots uploaded (iPhone 6.9" + iPad 13")
 4. **Privacy nutrition labels** in ASC (PostHog product interaction) — last App Store gate agents can't fully automate yet
 5. Confirm the submitted binary is on ASC → **Submit for App Review** on production `6792138473` / v1.0.0
-6. Google Play — Console app + AAB when ready
+6. Google Play — Console app (`com.backgammonmastermind`) → service account → `GOOGLE_SERVICE_ACCOUNT_BASE64` + `GOOGLE_SERVICE_ACCOUNT` secrets → content rating/declaration → Actions **EAS Production Build and Submit (Android)** + **Upload Store Screenshots (android)**
 7. Full PostHog dump (#130 privacy/docs/source-map CI) still deferred; this ship only wires exceptions
 
 See also: [ios-testing-and-store.md](./ios-testing-and-store.md), [eas-metadata.md](./eas-metadata.md), [releases.md](./releases.md)
