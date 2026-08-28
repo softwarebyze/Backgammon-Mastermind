@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import sharp from 'sharp';
@@ -20,5 +20,17 @@ describe('public web share icons', () => {
     expect(meta.format).toBe('png');
     expect(meta.width).toBe(48);
     expect(meta.height).toBe(48);
+  });
+
+  it('puts apple-touch-icon and og:image on the SPA HTML template Expo actually exports', () => {
+    const html = readFileSync(join(process.cwd(), 'public/index.html'), 'utf8');
+    expect(html).toContain('%WEB_TITLE%');
+    expect(html).toContain('%LANG_ISO_CODE%');
+    expect(html).toContain('rel="apple-touch-icon"');
+    expect(html).toContain('href="/apple-touch-icon.png"');
+    expect(html).toContain('property="og:image"');
+    expect(html).toContain('content="/apple-touch-icon.png"');
+    expect(html).toContain('rel="icon" type="image/png"');
+    expect(html).toContain('id="root"');
   });
 });

@@ -11,6 +11,8 @@ Canonical site: **https://backgammon-mastermind.vercel.app**
 
 Deploy: Vercel build `expo export -p web` → `dist` (see Vercel project settings). `vercel.json` SPA-rewrites deep links; legal pages and share icons (`apple-touch-icon.png`, `favicon.png`) are static files under `public/`.
 
+The preview is an Expo **SPA** (`web.output` default `single`). Share-sheet / favicon tags must live in **`public/index.html`** — Expo uses that file as the HTML template for both `pnpm web` and `expo export`. `src/app/+html.tsx` only applies to static/SSR output, so a Vercel preview will not pick it up.
+
 ## Deep links were 404ing
 
 Opening `/game` (etc.) on Vercel returned `NOT_FOUND`. Root `/` worked. EAS Hosting (`*.expo.app`) already fell back correctly. Fix: `vercel.json` rewrite → `index.html`.

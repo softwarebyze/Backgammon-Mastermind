@@ -11,8 +11,9 @@ const APP_TITLE = 'Backgammon Mastermind';
 const APP_DESCRIPTION = 'Master the board — one move at a time.';
 const shareImageUrl = webAssetUrl(APPLE_TOUCH_ICON_PATH);
 
-// Web-only root HTML for static export (expo export). Dev mode uses the default
-// Expo shell; global.css + useFonts handle fonts and layout during development.
+// Static-rendering HTML (`web.output: 'static'` / `'server'`). The Vercel
+// preview is SPA (`single`); Expo uses `public/index.html` as that template.
+// Keep share-sheet tags in both places.
 export default function Root({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
