@@ -1,0 +1,16 @@
+Backgammon Mastermind je prepracovaná verzia klasickej strategickej stolovej hry — s interaktívnou cestou Nauč sa hrať, ktorá učí skutočné pravidlá na živej doske.
+
+Si v backgammona nový? Prejdi krátke vedené lekcie: úvodné hody, zásahy, bar, dvojice a vynášanie. Splň rýchly záverečný kvíz a zahraj si prvú partiu s pomôckami pre začiatočníkov.
+
+Hru už poznáš? Skoč rovno do zápasu proti počítaču alebo zdieľaj dosku s kamarátom v režime pass-and-play. Hoď kockami, posúvaj kamene, trefuj bloty a vynes všetkých pätnásť na výhru.
+
+Funkcie:
+• Nauč sa hrať — interaktívne lekcie na skutočnej doske
+• Proti počítaču s heuristickou AI
+• Lokálne 2 hráči (pass-and-play)
+• Potiahni alebo klepni na ťah; legálne ciele zvýraznené
+• Prekrytie smeru a herné predvoľby
+• 33 jazykov vrátane arabčiny a hebrejčiny (RTL)
+• Bez účtu a bez reklám — hra beží na tvojom zariadení
+
+Jeden nákup. Po stiahnutí hraj offline. Ideálne na naučenie pravidiel a brúsenie zručností.

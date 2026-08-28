@@ -1,0 +1,16 @@
+{
+  "subtitle": "Lær og spil backgammon",
+  "promoText": "Interaktivt Lær at spille, vs AI eller pass-and-play. Ingen konto.",
+  "description": "Backgammon Mastermind er en gennemarbejdet udgave af det klassiske strategibrætspil — med en interaktiv Lær at spille-sti, der underviser rigtige regler på et levende bræt.\n\nNy til backgammon? Gennemgå korte guidede lektioner: åbningskast, slag, barren, doubles og at bære af. Bestå en hurtig afslutningsquiz, og spil så dit første parti med begynderhjælp tændt.\n\nKender du spillet allerede? Hop direkte ind i en kamp mod computeren, eller del brættet med en ven i pass-and-play. Kast terninger, flyt brikker, slå blots, og bær alle femten af for at vinde.\n\nFunktioner:\n• Lær at spille — interaktive lektioner på et rigtigt bræt\n• Mod computeren med heuristisk AI\n• Lokalt 2 spillere (pass-and-play)\n• Træk eller tryk for at flytte; lovlige felter fremhæves\n• Retnings-overlay og spilindstillinger\n• 33 sprog, herunder arabisk og hebraisk (RTL)\n• Ingen konto og ingen reklamer — spillet kører på din enhed\n\nÉt køb. Spil offline efter download. Perfekt til at lære reglerne og skærpe dine færdigheder.",
+  "keywords": [
+    "backgammon",
+    "lær",
+    "brætspil",
+    "strategi",
+    "terning",
+    "tutorial",
+    "to spillere",
+    "AI"
+  ],
+  "releaseNotes": "Første App Store-udgivelse: interaktive Lær at spille-lektioner, afslutningsquiz, mod computeren og pass-and-play plus privatlivsvenlig analyse."
+}

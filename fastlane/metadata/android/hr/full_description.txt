@@ -1,0 +1,16 @@
+Backgammon Mastermind je uglađena inačica klasične strateške igre na ploči — s interaktivnim putem Nauči igrati koji uči prava pravila na živoj ploči.
+
+Novi u backgammonu? Prođi kratke vođene lekcije: početna bacanja, udarci, bar, dupli i iznošenje. Položi brzi završni kviz, zatim odigraj prvu partiju s pomoći za početnike.
+
+Već znaš igru? Odmah uđi u meč protiv računala ili podijeli ploču s prijateljem u načinu pass-and-play. Baci kockice, pomiči figure, udaraj blotove i iznesi svih petnaest za pobjedu.
+
+Značajke:
+• Nauči igrati — interaktivne lekcije na pravoj ploči
+• Protiv računala s heurističkim AI-jem
+• Lokalno 2 igrača (pass-and-play)
+• Povuci ili dodirni za pomak; legalna odredišta istaknuta
+• Sloj smjera i postavke igre
+• 33 jezika, uključujući arapski i hebrejski (RTL)
+• Bez računa i bez oglasa — igra radi na tvom uređaju
+
+Jedna kupnja. Igraj offline nakon preuzimanja. Savršeno za učenje pravila i usavršavanje vještina.

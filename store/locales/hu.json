@@ -1,0 +1,16 @@
+{
+  "subtitle": "Tanulj és játssz backgammont",
+  "promoText": "Interaktív Tanulj játszani, AI ellen vagy pass-and-play. Nincs fiók.",
+  "description": "A Backgammon Mastermind a klasszikus stratégiai társasjáték csiszolt változata — interaktív Tanulj játszani útvonallal, amely valódi szabályokat tanít élő táblán.\n\nÚj a backgammonban? Végezz rövid, vezetett leckéket: nyitó dobások, ütések, a bar, duplák és a lehozás. Teljesíts egy gyors záró kvízt, majd játszd az első partidat kezdősegédekkel.\n\nMár ismered a játékot? Ugorj egyből egy gép elleni meccsbe, vagy oszd meg a táblát egy baráttal pass-and-play módban. Dobj, mozgasd a korongokat, üsd a blotokat, és hozd le mind a tizenötöt a győzelemhez.\n\nFunkciók:\n• Tanulj játszani — interaktív leckék valódi táblán\n• Számítógép ellen heurisztikus AI-jal\n• Helyi 2 játékos (pass-and-play)\n• Húzd vagy koppints a lépéshez; a szabályos célok kiemelve\n• Irány-overlay és játékbeállítások\n• 33 nyelv, köztük arab és héber (RTL)\n• Nincs fiók és nincs hirdetés — a játék a készülékeden fut\n\nEgy vásárlás. Letöltés után offline játszható. Tökéletes a szabályok tanulásához és a tudás csiszolásához.",
+  "keywords": [
+    "backgammon",
+    "tanulás",
+    "társasjáték",
+    "stratégia",
+    "kocka",
+    "oktató",
+    "két játékos",
+    "AI"
+  ],
+  "releaseNotes": "Első App Store-megjelenés: interaktív Tanulj játszani leckék, záró kvíz, gép ellen és pass-and-play, plusz adatvédelem-barát analitika."
+}

@@ -1,0 +1,16 @@
+Backgammon Mastermind ialah versi terperinci permainan papan strategi klasik — dengan laluan interaktif Belajar Bermain yang mengajar peraturan sebenar pada papan hidup.
+
+Baharu dengan backgammon? Ikuti pelajaran berpandu ringkas: gulungan pembukaan, pukulan, bar, ganda dan mengeluarkan buah. Lulus kuiz graduasi ringkas, kemudian main permainan pertama dengan bantuan pemula.
+
+Sudah tahu permainan ini? Terus masuk perlawanan menentang komputer atau kongsi papan dengan rakan dalam mod pass-and-play. Guling dadu, gerakkan buah, pukul blot, dan keluarkan kesemua lima belas untuk menang.
+
+Ciri:
+• Belajar Bermain — pelajaran interaktif pada papan sebenar
+• Lawan komputer dengan AI heuristik
+• 2 pemain tempatan (pass-and-play)
+• Seret atau ketik untuk bergerak; destinasi sah diserlahkan
+• Lapisan arah dan keutamaan permainan
+• 33 bahasa, termasuk Arab dan Ibrani (RTL)
+• Tiada akaun dan tiada iklan — permainan berjalan pada peranti anda
+
+Satu pembelian. Main luar talian selepas muat turun. Sesuai untuk belajar peraturan dan menajamkan kemahiran.

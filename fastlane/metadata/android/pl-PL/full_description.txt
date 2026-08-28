@@ -1,0 +1,16 @@
+Backgammon Mastermind to dopracowana odsłona klasycznej strategicznej gry planszowej — z interaktywną ścieżką Naucz się grać, która uczy prawdziwych zasad na żywej planszy.
+
+Nowy w backgammonie? Przerób krótkie lekcje z przewodnikiem: rzuty otwierające, bicia, bar, dublet i zdejmowanie. Zalicz krótki quiz końcowy i zagraj pierwszą partię z pomocami dla początkujących.
+
+Znasz już grę? Wejdź od razu w mecz z komputerem albo podziel się planszą ze znajomym w trybie pass-and-play. Rzuć kośćmi, przesuwaj piony, bij bloty i zdejmij wszystkie piętnaście, by wygrać.
+
+Funkcje:
+• Naucz się grać — interaktywne lekcje na prawdziwej planszy
+• Przeciwko komputerowi z heurystyczną SI
+• Lokalnie 2 graczy (pass-and-play)
+• Przeciągnij lub stuknij, by ruszyć; legalne cele podświetlone
+• Nakładka kierunku i preferencje gry
+• 33 języki, w tym arabski i hebrajski (RTL)
+• Bez konta i bez reklam — gra działa na Twoim urządzeniu
+
+Jeden zakup. Graj offline po pobraniu. Idealne do nauki zasad i szlifowania umiejętności.

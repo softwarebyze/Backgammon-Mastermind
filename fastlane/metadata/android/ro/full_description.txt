@@ -1,0 +1,16 @@
+Backgammon Mastermind este o variantă îngrijită a clasicului joc de strategie pe tablă — cu un traseu interactiv Învață să joci care predă regulile reale pe o tablă vie.
+
+Nou la backgammon? Parcurge lecții ghidate scurte: aruncări de deschidere, lovituri, bara, duble și scoaterea pieselor. Treci un quiz de absolvire, apoi joacă prima partidă cu ajutoarele pentru începători pornite.
+
+Cunoști deja jocul? Intră direct într-un meci împotriva calculatorului sau împarte tabla cu un prieten în modul pass-and-play. Aruncă zarurile, mută piesele, lovește blot-urile și scoate toate cele cincisprezece ca să câștigi.
+
+Funcții:
+• Învață să joci — lecții interactive pe o tablă reală
+• Contra calculatorului cu IA euristică
+• 2 jucători local (pass-and-play)
+• Trage sau atinge pentru a muta; destinațiile legale evidențiate
+• Strat de direcție și preferințe de joc
+• 33 de limbi, inclusiv arabă și ebraică (RTL)
+• Fără cont și fără reclame — jocul rulează pe dispozitivul tău
+
+O singură achiziție. Joacă offline după descărcare. Perfect pentru a învăța regulile și a-ți ascuți abilitățile.

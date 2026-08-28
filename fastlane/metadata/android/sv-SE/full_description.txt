@@ -1,0 +1,16 @@
+Backgammon Mastermind är en genomarbetad version av det klassiska strategispelet — med en interaktiv Lär dig spela-stig som lär ut riktiga regler på en levande bräda.
+
+Ny på backgammon? Gå igenom korta guidade lektioner: öppningskast, slag, barren, dubblar och att bära av. Klara ett snabbt examensquiz och spela sedan ditt första parti med nybörjarhjälp på.
+
+Kan du spelet redan? Hoppa rakt in i en match mot datorn eller dela brädan med en vän i pass-and-play. Kasta tärning, flytta brickor, slå blots och bär av alla femton för att vinna.
+
+Funktioner:
+• Lär dig spela — interaktiva lektioner på en riktig bräda
+• Mot datorn med heuristisk AI
+• Lokalt 2 spelare (pass-and-play)
+• Dra eller tryck för att flytta; lagliga mål markeras
+• Riktningsöverlägg och spelinställningar
+• 33 språk, inklusive arabiska och hebreiska (RTL)
+• Inget konto och inga annonser — spelet körs på din enhet
+
+Ett köp. Spela offline efter nedladdning. Perfekt för att lära dig reglerna och vässa skickligheten.

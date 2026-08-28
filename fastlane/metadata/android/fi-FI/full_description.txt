@@ -1,0 +1,16 @@
+Backgammon Mastermind on hiottu versio klassisesta strategiapelistä — interaktiivinen Opi pelaamaan -polku opettaa oikeat säännöt elävällä laudalla.
+
+Uusi backgammonissa? Käy lyhyet ohjatut oppitunnit: avausheitot, iskut, baari, tuplat ja nappuloiden ulosvienti. Läpäise nopea valmistujaisvisa ja pelaa ensimmäinen pelisi aloittelija-avustuksilla.
+
+Osaatko pelin jo? Hyppää suoraan otteluun tietokonetta vastaan tai jaa lauta ystävän kanssa pass-and-play-tilassa. Heitä noppia, siirrä nappuloita, lyö blotit ja vie kaikki viisitoista ulos voittaaksesi.
+
+Ominaisuudet:
+• Opi pelaamaan — interaktiiviset oppitunnit oikealla laudalla
+• Tietokonetta vastaan heuristisella tekoälyllä
+• Paikallinen 2 pelaajaa (pass-and-play)
+• Vedä tai napauta siirtääksesi; lailliset kohteet korostetaan
+• Suuntapeite ja peliasetukset
+• 33 kieltä, mukaan lukien arabia ja heprea (RTL)
+• Ei tiliä eikä mainoksia — peli toimii laitteellasi
+
+Yksi ostos. Pelaa offline-tilassa latauksen jälkeen. Täydellinen sääntöjen oppimiseen ja taitojen hiomiseen.

@@ -1,0 +1,16 @@
+A Backgammon Mastermind a klasszikus stratégiai társasjáték csiszolt változata — interaktív Tanulj játszani útvonallal, amely valódi szabályokat tanít élő táblán.
+
+Új a backgammonban? Végezz rövid, vezetett leckéket: nyitó dobások, ütések, a bar, duplák és a lehozás. Teljesíts egy gyors záró kvízt, majd játszd az első partidat kezdősegédekkel.
+
+Már ismered a játékot? Ugorj egyből egy gép elleni meccsbe, vagy oszd meg a táblát egy baráttal pass-and-play módban. Dobj, mozgasd a korongokat, üsd a blotokat, és hozd le mind a tizenötöt a győzelemhez.
+
+Funkciók:
+• Tanulj játszani — interaktív leckék valódi táblán
+• Számítógép ellen heurisztikus AI-jal
+• Helyi 2 játékos (pass-and-play)
+• Húzd vagy koppints a lépéshez; a szabályos célok kiemelve
+• Irány-overlay és játékbeállítások
+• 33 nyelv, köztük arab és héber (RTL)
+• Nincs fiók és nincs hirdetés — a játék a készülékeden fut
+
+Egy vásárlás. Letöltés után offline játszható. Tökéletes a szabályok tanulásához és a tudás csiszolásához.

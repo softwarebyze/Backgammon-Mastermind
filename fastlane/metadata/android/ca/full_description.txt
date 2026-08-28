@@ -1,0 +1,16 @@
+Backgammon Mastermind és una versió polida del clàssic joc d’estratègia de tauler — amb un recorregut interactiu Aprèn a jugar que ensenya les regles de veritat en un tauler viu.
+
+Nou al backgammon? Segueix lliçons guiades curtes: tirades d’obertura, cops, la barra, dobles i treure fitxes. Supera un qüestionari de graduació i juga la primera partida amb ajuts per a principiants.
+
+Ja coneixes el joc? Entra de seguida a una partida contra l’ordinador o comparteix el tauler amb un amic en mode passa i juga. Tira els daus, mou les fitxes, colpeja blots i treu les quinze per guanyar.
+
+Funcions:
+• Aprèn a jugar — lliçons interactives en un tauler real
+• Contra l’ordinador amb IA heurística
+• 2 jugadors en local (passa i juga)
+• Arrossega o toca per moure; destinacions legals ressaltades
+• Capa de direcció i preferències de joc
+• 33 idiomes, inclosos l’àrab i l’hebreu (RTL)
+• Sense compte i sense anuncis — el joc s’executa al teu dispositiu
+
+Una sola compra. Juga fora de línia després de descarregar. Perfecte per aprendre les regles i afinar les habilitats.
