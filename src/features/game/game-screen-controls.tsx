@@ -189,7 +189,7 @@ function ActionControl({
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" onSkip={onSkipComputer} />;
+    return <StatusPlaceholder onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
@@ -207,11 +207,11 @@ function ActionControl({
   }
 
   if (state.phase === 'rolling' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" onSkip={onSkipComputer} />;
+    return <StatusPlaceholder onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'moving' && isComputerTurn) {
-    return <StatusPlaceholder text="Moving…" onSkip={onSkipComputer} />;
+    return <StatusPlaceholder onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'no-move' && isHumanTurn) {
@@ -244,15 +244,20 @@ function ActionControl({
   return <View style={styles.actionSpacer} />;
 }
 
-function StatusPlaceholder({ text, onSkip }: { text: string; onSkip?: () => void }) {
+function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => void }) {
+  const skipLabel = text
+    ? translate('game.controls.skip_wait_a11y', { status: text })
+    : translate('game.controls.skip_wait');
   return (
     <View style={styles.statusSlot} pointerEvents="box-none">
-      <Text style={styles.statusText} pointerEvents="none">{text}</Text>
+      {text
+        ? <Text style={styles.statusText} pointerEvents="none">{text}</Text>
+        : null}
       {onSkip
         ? (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={translate('game.controls.skip_wait_a11y', { status: text })}
+              accessibilityLabel={skipLabel}
               testID="skip-computer-button"
               hitSlop={6}
               style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}

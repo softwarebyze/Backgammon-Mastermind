@@ -20,7 +20,16 @@ describe('turn-display', () => {
     expect(turn.colorLabel).toBe('Black');
     expect(turn.headline).toBe('Computer\'s turn');
     expect(turn.isWaiting).toBe(true);
-    expect(getActionCaption(state, turn)).toBe('Black is rolling…');
+    expect(getActionCaption(state, turn)).toBe(' ');
+  });
+
+  it('keeps computer-moving caption quiet so the footer is not a second Moving line', () => {
+    const state = createInitialState('vs-computer');
+    state.phase = 'moving';
+    state.currentPlayer = 'black';
+    const turn = getTurnDisplay(state);
+    expect(turn.headline).toBe('Computer\'s turn');
+    expect(getActionCaption(state, turn)).toBe(' ');
   });
 
   it('labels local two-player black turn once play has started', () => {

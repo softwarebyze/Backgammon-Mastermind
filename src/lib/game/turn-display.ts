@@ -80,18 +80,13 @@ export function getActionCaption(
   if (state.phase === 'opening-roll') {
     return ' ';
   }
+  // Banner already says whose turn it is. Don't stack "Black is moving…"
+  // under a footer "Moving…" (or Rolling…) during computer wait.
+  if (turn.isWaiting && (state.phase === 'rolling' || state.phase === 'moving')) {
+    return ' ';
+  }
   if (state.phase === 'rolling' && turn.isHumanTurn) {
     return `Roll dice — you play ${turn.colorLabel.toUpperCase()}`;
-  }
-  if (state.phase === 'rolling' && turn.isWaiting) {
-    return turn.player === 'black'
-      ? 'Black is rolling…'
-      : 'Opponent is rolling…';
-  }
-  if (state.phase === 'moving' && turn.isWaiting) {
-    return turn.player === 'black'
-      ? 'Black is moving…'
-      : 'Opponent is moving…';
   }
   if (state.phase === 'moving' && turn.isHumanTurn) {
     if (state.bar[state.currentPlayer] > 0) {

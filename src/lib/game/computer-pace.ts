@@ -4,7 +4,7 @@ export const OPENING_CEREMONY_GRACE_MS = 3200;
 const COMPUTER_ROLL_DELAY_MS = 1400;
 const COMPUTER_NO_MOVE_DELAY_MS = 1600;
 const COMPUTER_MOVE_DELAY_MS = 1100;
-/** Beat so "Black is moving…" paints before the first slide (was 0). */
+/** Beat so the banner can paint "Computer's turn" before the first slide (was 0). */
 const COMPUTER_MOVING_THINK_MS = 600;
 export const COMPUTER_CHECKER_MOVE_DURATION_MS = 720;
 
