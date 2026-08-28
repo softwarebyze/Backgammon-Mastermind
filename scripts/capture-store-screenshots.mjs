@@ -17,7 +17,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT_DIR = path.join(ROOT, 'docs/marketing/v1.0.0/app-store-screenshots');
+const OUT_DIR = path.join(ROOT, 'docs/marketing/v1.0.0/app-store-screenshots/raw');
 const BASE = process.env.STORE_SHOT_BASE || 'http://127.0.0.1:8081';
 const MMKV = (key) => `mmkv.default\\${key}`;
 

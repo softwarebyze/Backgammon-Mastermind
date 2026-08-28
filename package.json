@@ -45,6 +45,7 @@
     "metadata:pull:production": "eas metadata:pull --profile production",
     "metadata:push:production": "cross-env EXPO_PUBLIC_APP_ENV=production eas metadata:push --profile production",
     "screenshots:capture": "node scripts/capture-store-screenshots.mjs",
+    "screenshots:compose": "node scripts/compose-store-screenshots.mjs",
     "screenshots:prepare": "node scripts/prepare-store-screenshots.mjs",
     "screenshots:asc-key": "node scripts/asc-api-key-from-eas.mjs",
     "screenshots:upload:ios": "pnpm screenshots:prepare && pnpm screenshots:asc-key && bundle exec fastlane ios screenshots",

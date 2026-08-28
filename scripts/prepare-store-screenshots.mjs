@@ -2,7 +2,7 @@
 /**
  * Stage store screenshots into Fastlane folder layouts from the marketing source of truth.
  *
- * Source: docs/marketing/v1.0.0/app-store-screenshots/
+ * Source: docs/marketing/v1.0.0/app-store-screenshots/ (composed PNGs, not raw/)
  *   iphone-69-*.png  1320×2868 → APP_IPHONE_67 / Play phone
  *   ipad-13-*.png    2064×2752 → iPad Pro 13" slot (iOS only)
  * iOS:    fastlane/screenshots/en-US/

@@ -6,17 +6,19 @@ Agents **can and should** upload App Store / Play screenshots without a human cl
 
 | Asset | Path |
 |-------|------|
-| Production iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/iphone-69-*.png` |
-| Production iPad Pro 13" (2064×2752) | `docs/marketing/v1.0.0/app-store-screenshots/ipad-13-*.png` |
+| Raw captures (undressed) | `docs/marketing/v1.0.0/app-store-screenshots/raw/` |
+| Frame manifest (headlines) | `docs/marketing/v1.0.0/screenshot-frames.json` |
+| Composed iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/iphone-69-*.png` |
+| Composed iPad Pro 13" (2064×2752) | `docs/marketing/v1.0.0/app-store-screenshots/ipad-13-*.png` |
 | Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/en-US/` |
 | Staged for Play (generated, gitignored) | `fastlane/metadata/android/en-US/images/phoneScreenshots/` |
 
-Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel sizes). Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot). iPad 2064×2752 maps to the 13" slot.
+Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel sizes), then dress with screenshots compose. Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot). iPad 2064×2752 maps to the 13" slot.
 
 ## Commands
 
 ```sh
-pnpm screenshots:prepare          # copy marketing PNGs → fastlane folders
+pnpm screenshots:prepare          # copy composed PNGs → fastlane folders
 pnpm screenshots:asc-key          # Expo session → .cache/asc-api-key.json (gitignored)
 pnpm screenshots:upload:ios       # prepare + key + bundle exec fastlane deliver (screenshots only)
 pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH (Play Console service account)
@@ -42,7 +44,7 @@ pnpm screenshots:upload:ios
 
 ## Quirk (Fastlane + ASC processing)
 
-`deliver` sometimes retries while Apple is still processing and briefly creates duplicates (capped at 10 slots). If that happens, delete extras by filename uniqueness via ASC API or re-run after a short wait. A clean set is exactly the files under `docs/marketing/…/app-store-screenshots/` (currently **10**: 5 iPhone + 5 iPad).
+`deliver` sometimes retries while Apple is still processing and briefly creates duplicates (capped at 10 slots). If that happens, delete extras by filename uniqueness via ASC API or re-run after a short wait. A clean set is exactly the composed files under `docs/marketing/…/app-store-screenshots/` (currently **10**: 5 iPhone + 5 iPad).
 
 ## What Fastlane uploads
 
@@ -68,7 +70,7 @@ Until that credential exists, iOS upload is fully autonomous; Android is stubbed
 
 ## Obytes / fork agents
 
-1. Put store-ready PNGs under `docs/marketing/<version>/app-store-screenshots/`
+1. Put composed PNGs under `docs/marketing/<version>/app-store-screenshots/`
 2. Ensure Expo ASC API key is in EAS credentials (or ASC_* env)
 3. Run `pnpm screenshots:upload:ios`
 4. Confirm in App Store Connect → version → Screenshots
