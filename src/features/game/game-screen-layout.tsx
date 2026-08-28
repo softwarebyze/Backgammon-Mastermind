@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { PathSegment } from '@/features/game/components/board/move-path-overlay';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
@@ -18,11 +19,12 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
+import { clearBoardSlotSize, setBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 type Review = ReturnType<typeof useMoveReview>;
 type Input = ReturnType<typeof useGameInput>;
@@ -45,6 +47,36 @@ type Props = {
   onCancelSelection: () => void;
   onSkipComputer: () => void;
 };
+
+function GameBoardSlot({ children }: { children: ReactNode }) {
+  useEffect(() => () => {
+    clearBoardSlotSize();
+  }, []);
+
+  return (
+    <View
+      style={styles.boardSlotHost}
+      testID="game-board-slot"
+      onLayout={(event) => {
+        const { width, height } = event.nativeEvent.layout;
+        setBoardSlotSize({ width, height });
+      }}
+    >
+      {children}
+    </View>
+  );
+}
+
+function GameTopChrome({ state }: { state: GameState }) {
+  return (
+    <View style={styles.chromeColumn}>
+      <GamePipStatusBar state={state} />
+      <View style={styles.turnBannerWrap}>
+        <TurnIndicatorBanner state={state} />
+      </View>
+    </View>
+  );
+}
 
 export function GameScreenLayout({
   board,
@@ -80,23 +112,20 @@ export function GameScreenLayout({
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <FocusAwareStatusBar />
-      <View style={styles.chromeColumn}>
-        <GamePipStatusBar state={state} />
-        <View style={styles.turnBannerWrap}>
-          <TurnIndicatorBanner state={state} />
-        </View>
-      </View>
-      <GameBoardSection
-        boardState={state}
-        boardAnimation={board.boardAnimation}
-        boardOpacity={review.boardOpacity}
-        interactionEnabled={board.interactionEnabled}
-        isReviewing={review.isReviewing}
-        previewTarget={input.previewTarget}
-        pathSegments={board.pathSegments}
-        pathFadeOutMs={board.pathFadeOutMs}
-        input={input}
-      />
+      <GameTopChrome state={state} />
+      <GameBoardSlot>
+        <GameBoardSection
+          boardState={state}
+          boardAnimation={board.boardAnimation}
+          boardOpacity={review.boardOpacity}
+          interactionEnabled={board.interactionEnabled}
+          isReviewing={review.isReviewing}
+          previewTarget={input.previewTarget}
+          pathSegments={board.pathSegments}
+          pathFadeOutMs={board.pathFadeOutMs}
+          input={input}
+        />
+      </GameBoardSlot>
       <View style={[styles.reviewSlot, styles.chromeColumn]} pointerEvents="box-none">
         <MoveReviewBar
           viewIndex={review.viewIndex}
@@ -166,6 +195,14 @@ const styles = StyleSheet.create({
   chromeColumn: {
     width: '100%',
     maxWidth: GAME_CHROME_MAX_WIDTH,
+    alignSelf: 'center',
+  },
+  boardSlotHost: {
+    flex: 1,
+    minHeight: 0,
+    overflow: 'hidden',
+    width: '100%',
+    maxWidth: MAX_BOARD_WIDTH,
     alignSelf: 'center',
   },
   turnBannerWrap: {

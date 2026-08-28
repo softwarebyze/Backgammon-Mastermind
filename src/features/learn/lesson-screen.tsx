@@ -9,6 +9,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { clearBoardSlotSize, setBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { CoachCaption } from '@/features/learn/coach-caption';
 import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
@@ -89,6 +90,10 @@ function LessonScreenBody({
   useEffect(() => {
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
+
+  useEffect(() => () => {
+    clearBoardSlotSize();
+  }, []);
 
   useEffect(() => {
     if (!isLastStepComplete(session.stepComplete, session.stepIndex, session.totalSteps)) {
@@ -179,7 +184,14 @@ function LessonScreenBody({
           })}
         />
 
-        <View style={styles.boardWrap} pointerEvents="box-none">
+        <View
+          style={styles.boardWrap}
+          pointerEvents="box-none"
+          onLayout={(event) => {
+            const { width, height } = event.nativeEvent.layout;
+            setBoardSlotSize({ width, height });
+          }}
+        >
           <View
             style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
             pointerEvents="box-none"
@@ -261,6 +273,8 @@ const styles = StyleSheet.create({
   },
   boardWrap: {
     flex: 1,
+    minHeight: 0,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
   },
