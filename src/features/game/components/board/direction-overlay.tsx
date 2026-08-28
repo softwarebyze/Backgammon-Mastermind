@@ -1,16 +1,20 @@
 import * as React from 'react';
 import Svg, { Path, Polygon } from 'react-native-svg';
 
+import { GAME_PALETTE } from '@/features/game/game-palette';
 import { buildHorseshoePath } from '@/lib/game/horseshoe-path';
-import { horseshoeArrowhead } from '@/lib/ui/arrow-geometry';
+import { horseshoeArrowhead, horseshoeHaloArrow } from '@/lib/ui/arrow-geometry';
 
 type Props = {
   width: number;
   height: number;
 };
 
-const WHITE_STROKE = 'rgba(245, 240, 232, 0.72)';
-const BLACK_STROKE = 'rgba(150, 170, 220, 0.55)';
+const HALO = GAME_PALETTE.bg;
+/** Cream White lane — already readable; light halo keeps it on gold points. */
+const WHITE_STROKE = 'rgba(245, 240, 232, 0.86)';
+/** Cooler-hue Black lane — was 55% pale blue and vanished on gold wood. */
+const BLACK_STROKE = 'rgba(186, 208, 255, 0.9)';
 
 type LaneProps = {
   width: number;
@@ -21,26 +25,51 @@ type LaneProps = {
   dashed?: boolean;
 };
 
+function pathToArrowBase(d: string, lineEnd: { x: number; y: number }): string {
+  return d.replace(/L [\d.]+ [\d.]+$/, `L ${lineEnd.x} ${lineEnd.y}`);
+}
+
 function HorseshoeLane({ width, height, player, stroke, strokeWidth, dashed }: LaneProps) {
   const d = buildHorseshoePath(width, height, player);
-  const { polygonPoints } = horseshoeArrowhead(width, height, player);
+  const head = horseshoeArrowhead(width, height, player);
+  const haloHead = horseshoeHaloArrow(width, height, player);
+  const trimmed = pathToArrowBase(d, head.lineEnd);
+  const dash = dashed ? '6 4' : undefined;
+  const haloWidth = strokeWidth + 3.25;
+
   return (
     <>
       <Path
-        d={d}
+        d={trimmed}
+        stroke={HALO}
+        strokeWidth={haloWidth}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray={dash}
+      />
+      <Path
+        d={trimmed}
         stroke={stroke}
         strokeWidth={strokeWidth}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeDasharray={dashed ? '7 6' : undefined}
+        strokeDasharray={dash}
       />
-      <Polygon points={polygonPoints} fill={stroke} />
+      <Polygon points={haloHead.polygonPoints} fill={HALO} />
+      <Polygon
+        points={head.polygonPoints}
+        fill={stroke}
+        stroke={HALO}
+        strokeWidth={player === 'black' ? 2.25 : 1.75}
+        strokeLinejoin="round"
+      />
     </>
   );
 }
 
-/** Cream (White) + cooler (Black) lanes — teaching overlay, not garish. */
+/** Cream (White) + dashed (Black) lanes — teaching overlay, not garish. */
 export function DirectionOverlay({ width, height }: Props) {
   return (
     <Svg
@@ -53,7 +82,7 @@ export function DirectionOverlay({ width, height }: Props) {
         height={height}
         player="black"
         stroke={BLACK_STROKE}
-        strokeWidth={2}
+        strokeWidth={2.75}
         dashed
       />
       <HorseshoeLane
