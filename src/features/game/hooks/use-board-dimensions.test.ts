@@ -156,4 +156,25 @@ describe('leftoverBoardHeight', () => {
     expect(stacked).toBe(120);
     expect(sideBySide).toBe(334);
   });
+
+  it('keeps side-by-side leftover independent of dice and review height', () => {
+    const shortChrome = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 40,
+      controlsHeight: 40,
+      bottomInset: 0,
+      sideBySide: true,
+    });
+    const tallChrome = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 200,
+      controlsHeight: 180,
+      bottomInset: 0,
+      sideBySide: true,
+    });
+    expect(shortChrome).toBe(tallChrome);
+    expect(tallChrome).toBe(334);
+  });
 });
