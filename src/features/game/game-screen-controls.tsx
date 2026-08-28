@@ -34,6 +34,7 @@ type Props = {
 
 const ACTION_SLOT_HEIGHT = 52;
 const TRAY_FADE_MS = 280;
+const CONTROL_HIT_SLOP = 16;
 
 export function GameScreenControls({
   state,
@@ -153,6 +154,7 @@ function ActionControl({
         accessibilityLabel={translate('game.review.back_to_live')}
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onGoLive}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
       </Pressable>
@@ -167,6 +169,7 @@ function ActionControl({
         testID="play-again-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onReset}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>Play Again</Text>
       </Pressable>
@@ -182,6 +185,7 @@ function ActionControl({
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>Roll Dice</Text>
       </Pressable>
@@ -200,6 +204,7 @@ function ActionControl({
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>Roll Dice</Text>
       </Pressable>
@@ -259,7 +264,7 @@ function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => voi
               accessibilityRole="button"
               accessibilityLabel={skipLabel}
               testID="skip-computer-button"
-              hitSlop={6}
+              hitSlop={CONTROL_HIT_SLOP}
               style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
               onPress={() => {
                 hapticLight();
@@ -352,8 +357,8 @@ const styles = StyleSheet.create({
   },
   skipBtn: {
     marginTop: 2,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   skipHint: {
     color: GAME_PALETTE.accentDim,

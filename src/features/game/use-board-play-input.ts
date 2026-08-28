@@ -7,10 +7,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AccessibilityInfo } from 'react-native';
 
-import { resolveDropTarget } from '@/features/game/board-point-layout';
 import { validateDragStart } from '@/features/game/drag-input';
 import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { dragReleaseAnchor } from '@/features/game/drag-overlay-offset';
+import { resolveFatFingerDrop } from '@/features/game/hit-test-board';
 import { resolvePendingDragDrop } from '@/features/game/pending-drag-drop';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
 import { getSingleDestinationSequence } from '@/lib/game/single-move';
@@ -355,7 +355,7 @@ export function useBoardPlayInput({
       endDrag();
       return;
     }
-    const target = resolveDropTarget(boardX, boardY, dims);
+    const target = resolveFatFingerDrop({ x: boardX, y: boardY, state: s, from, dims });
     if (target === null || target === from) {
       endDrag();
       if (!isAnimating) {

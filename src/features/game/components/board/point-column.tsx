@@ -227,6 +227,8 @@ type Props = {
   onPressIn?: () => void;
   onPressOut?: () => void;
   dragEnabled?: boolean;
+  /** Checker to lift when this column's pan starts (may differ from pointIndex). */
+  dragOrigin?: number;
   isDragging?: boolean;
   dragOverlay?: DragOverlayRefs;
   onDragAttempt?: (pointIndex: number) => void;
@@ -252,6 +254,7 @@ export function PointColumn({
   onPressIn,
   onPressOut,
   dragEnabled = false,
+  dragOrigin,
   isDragging = false,
   dragOverlay,
   onDragAttempt,
@@ -274,7 +277,7 @@ export function PointColumn({
   const stackStep = Math.min(checkerSize - 2, (pointHeight - checkerSize) / (MAX_VISIBLE - 1));
   const visibleCount = Math.min(point.count, MAX_VISIBLE);
 
-  const pan = useCheckerPan(pointIndex, dragEnabled, {
+  const pan = useCheckerPan(dragOrigin ?? pointIndex, dragEnabled, {
     onDragAttempt,
     onDragStart,
     onDragMove,
