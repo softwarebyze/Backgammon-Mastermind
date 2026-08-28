@@ -91,7 +91,13 @@ export function GraduationScreen() {
   return (
     <>
       <FocusAwareStatusBar />
-      <ScrollView contentContainerStyle={styles.content} style={styles.scroll}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        style={styles.scroll}
+        bounces={false}
+        overScrollMode="never"
+        keyboardShouldPersistTaps="handled"
+      >
         <Text style={styles.body}>{translate('learn.graduation.body')}</Text>
 
         <View style={styles.recap}>

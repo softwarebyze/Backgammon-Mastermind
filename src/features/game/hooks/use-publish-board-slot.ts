@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { clearBoardSlotSize, setBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { leftoverBoardHeight } from '@/features/game/hooks/use-board-dimensions';
+import { isLandscapeLayout } from '@/lib/ui/game-chrome';
 
 /**
  * Publish leftover board size from measured chrome + flex slot.
@@ -14,13 +15,14 @@ import { leftoverBoardHeight } from '@/features/game/hooks/use-board-dimensions'
  */
 export function usePublishBoardSlot() {
   const headerHeight = use(HeaderHeightContext) ?? 0;
-  const { height: screenHeight } = useWindowDimensions();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const parts = useRef({ top: 0, controls: 0, slotW: 0, slotH: 0 });
 
   const publish = useCallback(() => {
     const { top, controls, slotW, slotH } = parts.current;
-    if (slotW <= 0 || top <= 0) {
+    const sideBySide = isLandscapeLayout(screenWidth, screenHeight);
+    if (slotW <= 0 || (!sideBySide && top <= 0)) {
       return;
     }
     const fromChrome = leftoverBoardHeight({
@@ -29,10 +31,11 @@ export function usePublishBoardSlot() {
       topChromeHeight: top,
       controlsHeight: controls,
       bottomInset: insets.bottom,
+      sideBySide,
     });
     const height = slotH > 0 ? Math.min(slotH, fromChrome) : fromChrome;
     setBoardSlotSize({ width: slotW, height });
-  }, [screenHeight, headerHeight, insets.bottom]);
+  }, [screenWidth, screenHeight, headerHeight, insets.bottom]);
 
   useEffect(() => {
     publish();

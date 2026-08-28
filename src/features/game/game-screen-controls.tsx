@@ -30,6 +30,8 @@ type Props = {
   onGoLive?: () => void;
   onCancelSelection?: () => void;
   onSkipComputer?: () => void;
+  /** Tighter padding when dice sit beside the board in landscape. */
+  compact?: boolean;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
@@ -48,6 +50,7 @@ export function GameScreenControls({
   onGoLive,
   onCancelSelection,
   onSkipComputer,
+  compact = false,
 }: Props) {
   const { preferences } = useGamePreferences();
   const ceremonyVisible = useOpeningCeremonyVisible();
@@ -83,7 +86,7 @@ export function GameScreenControls({
   const measuring = ceremonyVisible && (handoff === 'measure' || handoff === 'hidden');
 
   return (
-    <View style={styles.controls}>
+    <View style={[styles.controls, compact && styles.controlsCompact]}>
       <View style={styles.diceRow}>
         {showTray
           ? (
@@ -287,6 +290,11 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     paddingHorizontal: 20,
+  },
+  controlsCompact: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingHorizontal: 12,
   },
   diceRow: {
     flexDirection: 'row',

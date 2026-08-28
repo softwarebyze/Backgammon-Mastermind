@@ -89,6 +89,8 @@ export type LeftoverBoardHeightArgs = {
   reviewHeight?: number;
   controlsHeight: number;
   bottomInset: number;
+  /** Pip, review, and dice sit beside the board — do not subtract them from height. */
+  sideBySide?: boolean;
 };
 
 /** Window height minus measured header, pip/banner, review strip, and dice/controls. */
@@ -99,15 +101,17 @@ export function leftoverBoardHeight({
   reviewHeight = REVIEW_SLOT_HEIGHT,
   controlsHeight,
   bottomInset,
+  sideBySide = false,
 }: LeftoverBoardHeightArgs): number {
+  const stackedChrome = sideBySide
+    ? 0
+    : topChromeHeight + reviewHeight + controlsHeight;
   return Math.max(
     120,
     Math.round(
       screenHeight
       - headerHeight
-      - topChromeHeight
-      - reviewHeight
-      - controlsHeight
+      - stackedChrome
       - bottomInset,
     ),
   );

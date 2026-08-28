@@ -138,20 +138,30 @@
     font-family: Inter_400Regular, ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
 
   #root {
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    height: 100%;
     width: 100%;
-    max-width: 480px;
+    max-width: none;
     margin-left: auto;
     margin-right: auto;
     background-color: #1e0c02;
+    overflow: hidden;
   }
 
-  @media (min-width: 768px) {
+  @media (orientation: portrait) and (max-width: 540px) {
+    #root {
+      max-width: 480px;
+    }
+  }
+
+  @media (min-width: 768px) and (orientation: portrait) {
     #root {
       max-width: 768px;
       box-shadow: 0 0 80px rgba(0, 0, 0, 0.45);

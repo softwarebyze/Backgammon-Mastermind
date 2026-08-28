@@ -9,8 +9,10 @@ import {
   Image,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -29,7 +31,7 @@ import {
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
-import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout } from '@/lib/ui/game-chrome';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
@@ -92,6 +94,8 @@ export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
+  const { width, height } = useWindowDimensions();
+  const landscape = isLandscapeLayout(width, height);
   const canResume = canContinueSavedGame(state);
   const learnDone = completedLessonCount(progress);
   const learnReady = isReadyToPlay(progress);
@@ -140,22 +144,36 @@ export function HomeScreen() {
   return (
     <>
       <FocusAwareStatusBar />
-      <View style={styles.root}>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require('../../../assets/brand/display-logo.png')}
-            style={styles.logo}
-            resizeMode="cover"
-          />
-        </View>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={[styles.root, landscape ? styles.rootLandscape : null]}
+        bounces={false}
+        overScrollMode="never"
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={[styles.brand, landscape ? styles.brandLandscape : null]}>
+          <View style={[styles.logoContainer, landscape ? styles.logoLandscape : null]}>
+            <Image
+              source={require('../../../assets/brand/display-logo.png')}
+              style={styles.logo}
+              resizeMode="cover"
+            />
+          </View>
 
-        <Text accessibilityRole="header" style={styles.title}>{translate('home.title')}</Text>
-        <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>
+          <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
+            {translate('home.title')}
+          </Text>
+          <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>
 
-        <View style={styles.dividerRow}>
-          <View style={styles.dividerLine} />
-          <View style={styles.dividerDiamond} />
-          <View style={styles.dividerLine} />
+          {landscape
+            ? null
+            : (
+                <View style={styles.dividerRow}>
+                  <View style={styles.dividerLine} />
+                  <View style={styles.dividerDiamond} />
+                  <View style={styles.dividerLine} />
+                </View>
+              )}
         </View>
 
         <View style={styles.buttons}>
@@ -226,20 +244,42 @@ export function HomeScreen() {
             </View>
           </Pressable>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {
+  scroll: {
     flex: 1,
+    backgroundColor: GAME_PALETTE.bg,
+  },
+  root: {
+    flexGrow: 1,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
     justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
     paddingHorizontal: 24,
     paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
     paddingBottom: 32,
+  },
+  rootLandscape: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingTop: 12,
+    paddingBottom: 16,
+    gap: 16,
+  },
+  brand: {
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: GAME_CHROME_MAX_WIDTH,
+  },
+  brandLandscape: {
+    width: 'auto',
+    flexShrink: 1,
+    maxWidth: 320,
   },
   logoContainer: {
     width: 110,
@@ -253,6 +293,12 @@ const styles = StyleSheet.create({
     boxShadow: '0 4px 16px rgba(212, 168, 67, 0.35)',
     ...continuousRadius(28),
   },
+  logoLandscape: {
+    width: 72,
+    height: 72,
+    marginBottom: 8,
+    marginTop: 0,
+  },
   logo: {
     width: '100%',
     height: '100%',
@@ -263,6 +309,10 @@ const styles = StyleSheet.create({
     letterSpacing: 4,
     ...interFont('extrabold'),
     textAlign: 'center',
+  },
+  titleLandscape: {
+    fontSize: 24,
+    letterSpacing: 2,
   },
   subtitle: {
     fontSize: 13,
@@ -295,11 +345,12 @@ const styles = StyleSheet.create({
     maxWidth: GAME_CHROME_MAX_WIDTH,
     gap: 14,
     marginBottom: 24,
+    flexShrink: 1,
   },
   modeBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 18,
+    paddingVertical: 14,
     paddingHorizontal: 24,
     borderWidth: 2,
     gap: 16,

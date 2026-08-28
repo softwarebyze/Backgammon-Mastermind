@@ -89,6 +89,20 @@ describe('resolveBoardViewport', () => {
     const learn = resolveBoardViewport({ ...phone, extraChrome: 80, showPointNumbers: false });
     expect(learn.boardOuterHeight).toBeLessThanOrEqual(game.boardOuterHeight);
   });
+
+  it('fits a phone-landscape leftover slot (wide and short)', () => {
+    const dims = resolveBoardViewport({
+      screenWidth: 844,
+      screenHeight: 390,
+      platform: 'web',
+      slotWidth: 540,
+      slotHeight: 334,
+      showPointNumbers: true,
+    });
+    expect(dims.boardOuterHeight + POINT_NUMBER_RAIL * 2).toBeLessThanOrEqual(334);
+    expect(dims.boardOuterWidth).toBeLessThanOrEqual(540);
+    expect(dims.boardOuterWidth).toBeGreaterThan(200);
+  });
 });
 
 describe('leftoverBoardHeight', () => {
@@ -121,5 +135,25 @@ describe('leftoverBoardHeight', () => {
     });
     expect(largeText).toBeLessThan(normal);
     expect(largeText).toBeGreaterThanOrEqual(120);
+  });
+
+  it('ignores stacked chrome when the board sits beside dice/review', () => {
+    const stacked = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 80,
+      controlsHeight: 96,
+      bottomInset: 0,
+    });
+    const sideBySide = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 80,
+      controlsHeight: 96,
+      bottomInset: 0,
+      sideBySide: true,
+    });
+    expect(stacked).toBe(120);
+    expect(sideBySide).toBe(334);
   });
 });

@@ -3,7 +3,7 @@ import type { LessonId } from '@/lib/learn/curriculum';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
@@ -21,6 +21,7 @@ import { translate } from '@/lib/i18n';
 import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
 import { isLastStepComplete } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
+import { isLandscapeLayout, landscapeChromeColumnWidth } from '@/lib/ui/game-chrome';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
@@ -79,6 +80,9 @@ function LessonScreenBody({
 }) {
   const session = useLessonSession(lesson);
   const posthog = usePostHog();
+  const { width, height } = useWindowDimensions();
+  const landscape = isLandscapeLayout(width, height);
+  const chromeWidth = landscapeChromeColumnWidth(width);
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
   const dimensions = useBoardDimensions({
     showPointNumbers,
@@ -170,26 +174,73 @@ function LessonScreenBody({
   const showCompleteBanner
     = session.stepComplete && session.stepIndex >= session.totalSteps - 1;
 
+  const caption = (
+    <CoachCaption
+      titleKey={session.step.titleKey}
+      bodyKey={session.step.bodyKey}
+      feedback={session.feedback}
+      stepLabel={translate('learn.step_progress', {
+        current: session.stepIndex + 1,
+        total: session.totalSteps,
+      })}
+      compact={landscape}
+    />
+  );
+
+  const footer = (
+    <View style={styles.footer} testID="learn-lesson-footer">
+      <View style={styles.diceRow}>
+        {showDice
+          ? (
+              <DiceDisplay
+                dice={session.state.dice}
+                remainingDice={session.state.remainingDice}
+                playerColor="white"
+                displayStyle={diceDisplayStyle}
+                animateRoll={false}
+              />
+            )
+          : null}
+      </View>
+
+      <View style={styles.completeSlot}>
+        {showCompleteBanner
+          ? (
+              <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
+            )
+          : null}
+      </View>
+
+      <Pressable
+        key="learn-primary-cta"
+        testID="learn-primary-cta"
+        accessibilityRole="button"
+        accessibilityLabel={primaryLabel}
+        style={({ pressed }) => [
+          ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
+          pressed && styles.pressed,
+        ]}
+        onPress={onPrimary}
+      >
+        <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
+          {primaryLabel}
+        </Text>
+      </Pressable>
+    </View>
+  );
+
   return (
     <>
       <FocusAwareStatusBar />
-      <View style={styles.root}>
-        <CoachCaption
-          titleKey={session.step.titleKey}
-          bodyKey={session.step.bodyKey}
-          feedback={session.feedback}
-          stepLabel={translate('learn.step_progress', {
-            current: session.stepIndex + 1,
-            total: session.totalSteps,
-          })}
-        />
+      <View style={[styles.root, landscape ? styles.rootLandscape : null]}>
+        {landscape ? null : caption}
 
         <View
           style={styles.boardWrap}
           pointerEvents="box-none"
           onLayout={(event) => {
-            const { width, height } = event.nativeEvent.layout;
-            setBoardSlotSize({ width, height });
+            const { width: slotW, height: slotH } = event.nativeEvent.layout;
+            setBoardSlotSize({ width: slotW, height: slotH });
           }}
         >
           <View
@@ -220,45 +271,21 @@ function LessonScreenBody({
           </View>
         </View>
 
-        <View style={styles.footer} testID="learn-lesson-footer">
-          <View style={styles.diceRow}>
-            {showDice
-              ? (
-                  <DiceDisplay
-                    dice={session.state.dice}
-                    remainingDice={session.state.remainingDice}
-                    playerColor="white"
-                    displayStyle={diceDisplayStyle}
-                    animateRoll={false}
-                  />
-                )
-              : null}
-          </View>
-
-          <View style={styles.completeSlot}>
-            {showCompleteBanner
-              ? (
-                  <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
-                )
-              : null}
-          </View>
-
-          <Pressable
-            key="learn-primary-cta"
-            testID="learn-primary-cta"
-            accessibilityRole="button"
-            accessibilityLabel={primaryLabel}
-            style={({ pressed }) => [
-              ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
-              pressed && styles.pressed,
-            ]}
-            onPress={onPrimary}
-          >
-            <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
-              {primaryLabel}
-            </Text>
-          </Pressable>
-        </View>
+        {landscape
+          ? (
+              <View style={[styles.sidePanel, { width: chromeWidth }]}>
+                <ScrollView
+                  style={styles.captionScroll}
+                  contentContainerStyle={styles.captionScrollContent}
+                  bounces={false}
+                  overScrollMode="never"
+                >
+                  {caption}
+                </ScrollView>
+                {footer}
+              </View>
+            )
+          : footer}
       </View>
     </>
   );
@@ -267,9 +294,30 @@ function LessonScreenBody({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    minHeight: 0,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
     paddingBottom: 24,
+  },
+  rootLandscape: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    paddingBottom: 8,
+  },
+  sidePanel: {
+    flexGrow: 0,
+    flexShrink: 0,
+    minHeight: 0,
+    alignItems: 'center',
+  },
+  captionScroll: {
+    flexGrow: 1,
+    flexShrink: 1,
+    minHeight: 0,
+    width: '100%',
+  },
+  captionScrollContent: {
+    flexGrow: 1,
   },
   boardWrap: {
     flexGrow: 1,
@@ -311,8 +359,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
     backgroundColor: GAME_PALETTE.accent,
     paddingVertical: 16,
-    paddingHorizontal: 32,
-    minWidth: 220,
+    paddingHorizontal: 24,
+    minWidth: 180,
     alignItems: 'center',
     ...continuousRadius(14),
   },
@@ -322,8 +370,8 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: 'rgba(232, 224, 208, 0.35)',
     paddingVertical: 14,
-    paddingHorizontal: 32,
-    minWidth: 220,
+    paddingHorizontal: 24,
+    minWidth: 180,
     alignItems: 'center',
     ...continuousRadius(14),
   },

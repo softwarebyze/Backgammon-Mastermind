@@ -25,6 +25,7 @@ import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
+/* eslint-disable-next-line max-lines-per-function -- hub list + skip CTA */
 export function LearnHubScreen() {
   const { progress, startLearning } = useLearnProgress();
   const { startGame } = useGame();
@@ -52,7 +53,13 @@ export function LearnHubScreen() {
   return (
     <>
       <FocusAwareStatusBar />
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.content}
+        bounces={false}
+        overScrollMode="never"
+        keyboardShouldPersistTaps="handled"
+      >
         <Text style={styles.subtitle}>{translate('learn.subtitle')}</Text>
 
         <View style={styles.progressRow}>

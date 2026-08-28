@@ -7,7 +7,7 @@ import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { usePostHog } from 'posthog-react-native';
 import { useEffect, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -24,7 +24,7 @@ import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slo
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { GAME_CHROME_MAX_WIDTH, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout, landscapeChromeColumnWidth, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 type Review = ReturnType<typeof useMoveReview>;
 type Input = ReturnType<typeof useGameInput>;
@@ -103,6 +103,66 @@ function GameReviewSlot({
   );
 }
 
+type ChromeStackProps = {
+  state: GameState;
+  live: GameState;
+  review: Review;
+  moveLog: MoveLogEntry[];
+  input: Input;
+  isComputerTurn: boolean;
+  interactionEnabled: boolean;
+  compact: boolean;
+  includeTop: boolean;
+  onTopLayout: (event: LayoutChangeEvent) => void;
+  onControlsLayout: (event: LayoutChangeEvent) => void;
+  onCancelSelection: () => void;
+  onSkipComputer: () => void;
+};
+
+function GameChromeStack({
+  state,
+  live,
+  review,
+  moveLog,
+  input,
+  isComputerTurn,
+  interactionEnabled,
+  compact,
+  includeTop,
+  onTopLayout,
+  onControlsLayout,
+  onCancelSelection,
+  onSkipComputer,
+}: ChromeStackProps) {
+  return (
+    <>
+      {includeTop ? <GameTopChrome state={state} onLayout={onTopLayout} /> : null}
+      <GameReviewSlot review={review} moveLog={moveLog} state={state} />
+      <View
+        style={[styles.controlsLayer, styles.chromeColumn]}
+        pointerEvents="box-none"
+        onLayout={onControlsLayout}
+      >
+        <GameScreenControls
+          state={state}
+          liveDiceState={live}
+          isHumanTurn={!isComputerTurn && interactionEnabled}
+          isComputerTurn={isComputerTurn}
+          isReviewing={review.isReviewing}
+          captionOverride={input.inputNudge === 'roll' ? translate('game.nudge.roll_first') : null}
+          compact={compact}
+          onRoll={input.handleRoll}
+          onReset={input.handleReset}
+          onGoLive={review.goLive}
+          onCancelSelection={onCancelSelection}
+          onSkipComputer={onSkipComputer}
+        />
+      </View>
+    </>
+  );
+}
+
+/* eslint-disable max-lines-per-function -- portrait vs landscape chrome composition */
 export function GameScreenLayout({
   board,
   review,
@@ -115,6 +175,9 @@ export function GameScreenLayout({
 }: Props) {
   const posthog = usePostHog();
   const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
+  const landscape = isLandscapeLayout(width, height);
+  const chromeWidth = landscapeChromeColumnWidth(width);
   const dimensions = useBoardDimensions();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
@@ -135,12 +198,38 @@ export function GameScreenLayout({
     prevPhaseRef.current = currentPhase;
   }, [posthog, input.state, moveLog.length]);
 
+  const chrome = (
+    <GameChromeStack
+      state={state}
+      live={live}
+      review={review}
+      moveLog={moveLog}
+      input={input}
+      isComputerTurn={isComputerTurn}
+      interactionEnabled={board.interactionEnabled}
+      compact={landscape}
+      includeTop={landscape}
+      onTopLayout={onTopLayout}
+      onControlsLayout={onControlsLayout}
+      onCancelSelection={onCancelSelection}
+      onSkipComputer={onSkipComputer}
+    />
+  );
+
   return (
-    <View style={[styles.root, { paddingBottom: insets.bottom }]}>
+    <View
+      style={[
+        styles.root,
+        landscape ? styles.rootLandscape : null,
+        { paddingBottom: insets.bottom },
+      ]}
+    >
       <FocusAwareStatusBar />
-      <GameTopChrome state={state} onLayout={onTopLayout} />
+      {landscape
+        ? null
+        : <GameTopChrome state={state} onLayout={onTopLayout} />}
       <View
-        style={styles.boardSlotHost}
+        style={[styles.boardSlotHost, landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait]}
         testID="game-board-slot"
         onLayout={onSlotLayout}
       >
@@ -156,7 +245,6 @@ export function GameScreenLayout({
           input={input}
         />
       </View>
-      <GameReviewSlot review={review} moveLog={moveLog} state={state} />
       <WinConfettiOverlay burstKey={winBurstKey} />
       {/* Full-screen so the scrim covers board + review (no hard cut at board edge). */}
       <View style={styles.ceremonyLayer} pointerEvents="box-none">
@@ -172,26 +260,20 @@ export function GameScreenLayout({
           }}
         />
       </View>
-      {/* Above ceremony so Roll Dice stays visible + tappable; tap-anywhere still hits the board. */}
-      <View
-        style={[styles.controlsLayer, styles.chromeColumn]}
-        pointerEvents="box-none"
-        onLayout={onControlsLayout}
-      >
-        <GameScreenControls
-          state={state}
-          liveDiceState={input.state!}
-          isHumanTurn={!isComputerTurn && board.interactionEnabled}
-          isComputerTurn={isComputerTurn}
-          isReviewing={review.isReviewing}
-          captionOverride={input.inputNudge === 'roll' ? translate('game.nudge.roll_first') : null}
-          onRoll={input.handleRoll}
-          onReset={input.handleReset}
-          onGoLive={review.goLive}
-          onCancelSelection={onCancelSelection}
-          onSkipComputer={onSkipComputer}
-        />
-      </View>
+      {landscape
+        ? (
+            <ScrollView
+              style={[styles.chromeRail, { width: chromeWidth }]}
+              contentContainerStyle={styles.chromeRailContent}
+              bounces={false}
+              overScrollMode="never"
+              keyboardShouldPersistTaps="handled"
+              testID="game-landscape-chrome"
+            >
+              {chrome}
+            </ScrollView>
+          )
+        : chrome}
     </View>
   );
 }
@@ -203,10 +285,25 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
   },
+  rootLandscape: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
   chromeColumn: {
     width: '100%',
     maxWidth: GAME_CHROME_MAX_WIDTH,
     alignSelf: 'center',
+  },
+  chromeRail: {
+    flexGrow: 0,
+    flexShrink: 0,
+    minHeight: 0,
+    zIndex: 50,
+  },
+  chromeRailContent: {
+    flexGrow: 1,
+    paddingBottom: 8,
+    alignItems: 'center',
   },
   boardSlotHost: {
     flexGrow: 1,
@@ -215,8 +312,14 @@ const styles = StyleSheet.create({
     minHeight: 0,
     overflow: 'hidden',
     width: '100%',
-    maxWidth: MAX_BOARD_WIDTH,
     alignSelf: 'center',
+  },
+  boardSlotPortrait: {
+    maxWidth: MAX_BOARD_WIDTH,
+  },
+  boardSlotLandscape: {
+    minWidth: 0,
+    maxWidth: '100%',
   },
   turnBannerWrap: {
     width: '100%',

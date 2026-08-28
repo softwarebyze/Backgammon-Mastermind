@@ -41,6 +41,9 @@ export function SettingsScreen() {
 
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
+        bounces={false}
+        overScrollMode="never"
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={
           Platform.OS === 'web' ? { paddingTop: WEB_SETTINGS_TOP_PADDING } : undefined
         }

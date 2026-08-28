@@ -123,7 +123,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: Env.EXPO_PUBLIC_SCHEME,
   slug: 'backgammon-mastermind',
   version: Env.EXPO_PUBLIC_VERSION.toString(),
-  orientation: 'portrait',
+  orientation: 'default',
   icon: brandIcon,
   userInterfaceStyle: 'dark',
   runtimeVersion: {
