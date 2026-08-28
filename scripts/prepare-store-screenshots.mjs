@@ -2,7 +2,9 @@
 /**
  * Stage store screenshots into Fastlane folder layouts from the marketing source of truth.
  *
- * Source: docs/marketing/v1.0.0/app-store-screenshots/*.png (1320×2868 → APP_IPHONE_67)
+ * Source: docs/marketing/v1.0.0/app-store-screenshots/
+ *   iphone-69-*.png  1320×2868 → APP_IPHONE_67 / Play phone
+ *   ipad-13-*.png    2064×2752 → iPad Pro 13" slot (iOS only)
  * iOS:    fastlane/screenshots/en-US/
  * Play:   fastlane/metadata/android/en-US/images/phoneScreenshots/
  */
@@ -55,13 +57,19 @@ function main() {
   clearPngs(IOS_OUT);
   clearPngs(PLAY_OUT);
 
+  let iosCount = 0;
+  let playCount = 0;
   for (const file of files) {
     const src = path.join(SOURCE, file);
     fs.copyFileSync(src, path.join(IOS_OUT, file));
-    fs.copyFileSync(src, path.join(PLAY_OUT, file));
+    iosCount += 1;
+    if (file.startsWith('iphone-')) {
+      fs.copyFileSync(src, path.join(PLAY_OUT, file));
+      playCount += 1;
+    }
   }
 
-  console.log(`Staged ${files.length} screenshots →`);
+  console.log(`Staged ${iosCount} iOS / ${playCount} Play screenshots →`);
   console.log(`  iOS:  ${path.relative(ROOT, IOS_OUT)}`);
   console.log(`  Play: ${path.relative(ROOT, PLAY_OUT)}`);
   console.log('Next: pnpm screenshots:upload:ios  (or :android when Play creds exist)');

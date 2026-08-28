@@ -6,11 +6,12 @@ Agents **can and should** upload App Store / Play screenshots without a human cl
 
 | Asset | Path |
 |-------|------|
-| Production iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/` |
+| Production iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/iphone-69-*.png` |
+| Production iPad Pro 13" (2064×2752) | `docs/marketing/v1.0.0/app-store-screenshots/ipad-13-*.png` |
 | Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/en-US/` |
 | Staged for Play (generated, gitignored) | `fastlane/metadata/android/en-US/images/phoneScreenshots/` |
 
-Capture more anytime (Argent / simulator / Maestro). Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot).
+Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel sizes). Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot). iPad 2064×2752 maps to the 13" slot.
 
 ## Commands
 
@@ -41,7 +42,7 @@ pnpm screenshots:upload:ios
 
 ## Quirk (Fastlane + ASC processing)
 
-`deliver` sometimes retries while Apple is still processing and briefly creates duplicates (capped at 10 slots). If that happens, delete extras by filename uniqueness via ASC API or re-run after a short wait. A clean set is exactly the files under `docs/marketing/…/app-store-screenshots/` (currently **6**).
+`deliver` sometimes retries while Apple is still processing and briefly creates duplicates (capped at 10 slots). If that happens, delete extras by filename uniqueness via ASC API or re-run after a short wait. A clean set is exactly the files under `docs/marketing/…/app-store-screenshots/` (currently **10**: 5 iPhone + 5 iPad).
 
 ## What Fastlane uploads
 
