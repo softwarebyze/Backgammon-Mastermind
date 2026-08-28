@@ -336,13 +336,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+    lineHeight: 38,
     color: GAME_PALETTE.accent,
     letterSpacing: 4,
     ...interFont('extrabold'),
     textAlign: 'center',
   },
   titleLandscape: {
-    fontSize: 24,
+    fontSize: 22,
+    lineHeight: 26,
     letterSpacing: 2,
   },
   subtitle: {
