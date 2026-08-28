@@ -1,3 +1,5 @@
+import { horseshoeMetrics } from '@/lib/game/horseshoe-path';
+
 export type Point2 = { x: number; y: number };
 
 export type ArrowheadStyle = {
@@ -53,19 +55,48 @@ export function buildArrowhead(
   };
 }
 
+/** Arrowhead sizes for the horseshoe direction overlay. */
+export const HORSESHOE_ARROW = {
+  white: { length: 10, halfWidth: 5.5 },
+  black: { length: 16, halfWidth: 8 },
+} as const;
+
+/** Slightly larger head drawn behind the fill as a dark halo. */
+export function horseshoeHaloArrow(
+  width: number,
+  height: number,
+  player: 'white' | 'black' = 'white',
+): Arrowhead {
+  const base = HORSESHOE_ARROW[player];
+  return buildHorseshoeArrowhead({
+    width,
+    height,
+    player,
+    length: base.length + 3.5,
+    halfWidth: base.halfWidth + 2.5,
+  });
+}
+
+function buildHorseshoeArrowhead({
+  width,
+  height,
+  player,
+  ...style
+}: { width: number; height: number; player: 'white' | 'black' } & ArrowheadStyle): Arrowhead {
+  const { topY, botY, rightX } = horseshoeMetrics(width, height, player);
+  const head = Object.keys(style).length > 0 ? style : HORSESHOE_ARROW[player];
+
+  if (player === 'white') {
+    return buildArrowhead({ x: rightX, y: botY }, { x: 1, y: 0 }, head);
+  }
+  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, head);
+}
+
 /** Arrowhead for the horseshoe direction overlay (path ends along outer edge, east). */
 export function horseshoeArrowhead(
   width: number,
   height: number,
   player: 'white' | 'black' = 'white',
 ): Arrowhead {
-  const pad = Math.max(4, width * 0.04);
-  const topY = height * 0.22;
-  const botY = height * 0.78;
-  const rightX = width - pad - width * 0.14;
-
-  if (player === 'white') {
-    return buildArrowhead({ x: rightX, y: botY }, { x: 1, y: 0 }, { length: 10, halfWidth: 5.5 });
-  }
-  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, { length: 10, halfWidth: 5.5 });
+  return buildHorseshoeArrowhead({ width, height, player });
 }

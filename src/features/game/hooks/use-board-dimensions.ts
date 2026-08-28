@@ -2,21 +2,32 @@ import { useMemo } from 'react';
 import { Platform, useWindowDimensions } from 'react-native';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
+import { useBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
 const BEAR_OFF_WIDTH = 38;
 const MIDDLE_HEIGHT = 12;
 const BOARD_FRAME_WIDTH = 4;
-const MAX_BOARD_WIDTH = 720;
 /**
- * Chrome above/below the board on web (stack header, pip bar, turn banner,
- * review strip, controls). Tuned so common desktop viewports keep the board
- * fully on-screen instead of overflowing.
+ * Fallback chrome above/below the board when the leftover slot has not been
+ * measured yet (Learn, first layout frame). Header, pip bar, banner, review
+ * strip, and dice grow with font size — do not treat this as the live budget.
  */
 const WEB_VERTICAL_CHROME = 360;
 const NATIVE_VERTICAL_CHROME = 240;
+/** Floor when no slot is measured. Measured slots may be shorter. */
+const FALLBACK_MIN_OUTER_HEIGHT = 220;
+/**
+ * Learn lessons keep at least this much leftover for the live board so
+ * Point 1–24, the bar, and bear-off stay on screen when coach copy grows.
+ */
+export const MIN_LEARN_BOARD_SLOT_HEIGHT = FALLBACK_MIN_OUTER_HEIGHT;
+/** Always leave a peek of coach copy; overflow scrolls. */
+export const MIN_LEARN_CAPTION_HEIGHT = 56;
+const DEFAULT_LEFTOVER_FLOOR = 120;
 
 export type BoardDimensions = {
   boardWidth: number;
@@ -76,6 +87,112 @@ export function fitBoardToViewport(
   return dims;
 }
 
+/** Move-review strip is a fixed slot in GameScreenLayout. */
+export const REVIEW_SLOT_HEIGHT = 68;
+
+export type LeftoverBoardHeightArgs = {
+  screenHeight: number;
+  headerHeight: number;
+  topChromeHeight: number;
+  reviewHeight?: number;
+  controlsHeight: number;
+  bottomInset: number;
+  /** Pip, review, and dice sit beside the board — do not subtract them from height. */
+  sideBySide?: boolean;
+  /** Floor for the leftover slot. Game chrome uses 120; Learn uses MIN_LEARN_BOARD_SLOT_HEIGHT. */
+  minHeight?: number;
+};
+
+/** Window height minus measured header, pip/banner, review strip, and dice/controls. */
+export function leftoverBoardHeight({
+  screenHeight,
+  headerHeight,
+  topChromeHeight,
+  reviewHeight = REVIEW_SLOT_HEIGHT,
+  controlsHeight,
+  bottomInset,
+  sideBySide = false,
+  minHeight = DEFAULT_LEFTOVER_FLOOR,
+}: LeftoverBoardHeightArgs): number {
+  const stackedChrome = sideBySide
+    ? 0
+    : topChromeHeight + reviewHeight + controlsHeight;
+  return Math.max(
+    minHeight,
+    Math.round(
+      screenHeight
+      - headerHeight
+      - stackedChrome
+      - bottomInset,
+    ),
+  );
+}
+
+export type LearnCaptionMaxHeightArgs = {
+  screenHeight: number;
+  headerHeight: number;
+  footerHeight: number;
+  bottomInset: number;
+  minBoardHeight?: number;
+};
+
+/**
+ * Cap stacked Learn coach copy so the live board keeps `minBoardHeight`.
+ * Caption content beyond this scrolls; it does not clip the board.
+ */
+export function learnCaptionMaxHeight({
+  screenHeight,
+  headerHeight,
+  footerHeight,
+  bottomInset,
+  minBoardHeight = MIN_LEARN_BOARD_SLOT_HEIGHT,
+}: LearnCaptionMaxHeightArgs): number {
+  return Math.max(
+    MIN_LEARN_CAPTION_HEIGHT,
+    Math.round(
+      screenHeight
+      - headerHeight
+      - footerHeight
+      - minBoardHeight
+      - bottomInset,
+    ),
+  );
+}
+
+export type ResolveBoardViewportArgs = {
+  screenWidth: number;
+  screenHeight: number;
+  platform: 'web' | 'native';
+  slotWidth?: number;
+  slotHeight?: number;
+  extraChrome?: number;
+  showPointNumbers?: boolean;
+};
+
+/**
+ * Size the board to leftover slot height when measured; otherwise window height
+ * minus a chrome estimate. Point-number rails count in the height budget.
+ */
+export function resolveBoardViewport({
+  screenWidth,
+  screenHeight,
+  platform,
+  slotWidth,
+  slotHeight,
+  extraChrome = 0,
+  showPointNumbers = true,
+}: ResolveBoardViewportArgs): BoardDimensions {
+  const hasSlot = (slotWidth ?? 0) > 0 && (slotHeight ?? 0) > 0;
+  const chrome = (platform === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME) + extraChrome;
+  const widthBudget = hasSlot ? slotWidth! : screenWidth - BOARD_PADDING * 2;
+  const maxOuterWidth = Math.min(widthBudget, MAX_BOARD_WIDTH);
+  const maxOuterHeight = hasSlot
+    ? slotHeight!
+    : Math.max(FALLBACK_MIN_OUTER_HEIGHT, screenHeight - chrome);
+  const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
+  return fitBoardToViewport(maxOuterWidth, maxOuterHeight, railHeight);
+}
+
 export function useBoardDimensions(options?: {
   showPointNumbers?: boolean;
   /** Extra vertical chrome beyond the default game screen estimate. */
@@ -83,14 +200,22 @@ export function useBoardDimensions(options?: {
 }): BoardDimensions {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const { preferences } = useGamePreferences();
+  const slot = useBoardSlotSize();
   const showPointNumbers = options?.showPointNumbers ?? preferences.showPointNumbers;
   const extraChrome = options?.extraChrome ?? 0;
+  const platform: 'web' | 'native' = Platform.OS === 'web' ? 'web' : 'native';
 
-  return useMemo(() => {
-    const maxOuterWidth = Math.min(screenWidth - BOARD_PADDING * 2, MAX_BOARD_WIDTH);
-    const chrome = (Platform.OS === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME) + extraChrome;
-    const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
-    const maxOuterHeight = Math.max(220, screenHeight - chrome);
-    return fitBoardToViewport(maxOuterWidth, maxOuterHeight, railHeight);
-  }, [screenWidth, screenHeight, showPointNumbers, extraChrome]);
+  return useMemo(
+    () =>
+      resolveBoardViewport({
+        screenWidth,
+        screenHeight,
+        platform,
+        slotWidth: slot.width,
+        slotHeight: slot.height,
+        extraChrome,
+        showPointNumbers,
+      }),
+    [screenWidth, screenHeight, platform, slot.width, slot.height, extraChrome, showPointNumbers],
+  );
 }

@@ -9,6 +9,8 @@ export type GamePreferences = {
   autoMoveWhenForced: boolean;
   /** Soft game one-shots (dice, hits, win). Default on; respects silent switch. */
   soundEnabled: boolean;
+  /** Shorter computer think/move delays for power users. */
+  fastComputer: boolean;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -19,4 +21,5 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   autoRoll: false,
   autoMoveWhenForced: false,
   soundEnabled: true,
+  fastComputer: false,
 };

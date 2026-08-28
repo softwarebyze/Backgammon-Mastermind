@@ -1,3 +1,4 @@
+import { usePostHog } from 'posthog-react-native';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -5,6 +6,7 @@ import { Text } from '@/components/ui';
 import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
 import { SETTINGS_SECTION_GAP } from '@/lib/ui/settings-layout';
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
 };
 
 export function GameSettingsSection({ showHints = false }: Props) {
+  const posthog = usePostHog();
   const {
     preferences,
     setShowMoveHints,
@@ -21,20 +24,56 @@ export function GameSettingsSection({ showHints = false }: Props) {
     setAutoRoll,
     setAutoMoveWhenForced,
     setSoundEnabled,
+    setFastComputer,
   } = useGamePreferences();
+
+  const trackPreference = React.useCallback(
+    (preference: string, value: boolean | string) => {
+      posthog.capture('game_preference_changed', { preference, value });
+    },
+    [posthog],
+  );
 
   return (
     <View style={styles.section}>
       <Text className="pb-2 text-lg" style={styles.title} tx="settings.game" />
       <GamePreferencesPanel
         preferences={preferences}
-        onShowMoveHintsChange={setShowMoveHints}
-        onShowDirectionOverlayChange={setShowDirectionOverlay}
-        onShowPointNumbersChange={setShowPointNumbers}
-        onDiceDisplayStyleChange={setDiceDisplayStyle}
-        onAutoRollChange={setAutoRoll}
-        onAutoMoveWhenForcedChange={setAutoMoveWhenForced}
-        onSoundEnabledChange={setSoundEnabled}
+        onShowMoveHintsChange={(value) => {
+          trackPreference('move_hints', value);
+          setShowMoveHints(value);
+        }}
+        onShowDirectionOverlayChange={(value) => {
+          trackPreference('direction_overlay', value);
+          setShowDirectionOverlay(value);
+        }}
+        onShowPointNumbersChange={(value) => {
+          trackPreference('point_numbers', value);
+          setShowPointNumbers(value);
+        }}
+        onDiceDisplayStyleChange={(value) => {
+          trackPreference('dice_display_style', value);
+          setDiceDisplayStyle(value);
+        }}
+        onAutoRollChange={(value) => {
+          trackPreference('auto_roll', value);
+          setAutoRoll(value);
+        }}
+        onAutoMoveWhenForcedChange={(value) => {
+          trackPreference('auto_move', value);
+          setAutoMoveWhenForced(value);
+        }}
+        onSoundEnabledChange={(value) => {
+          trackPreference('sound', value);
+          setSoundEnabled(value);
+          if (value) {
+            void ensureGameSfxReady();
+          }
+        }}
+        onFastComputerChange={(value) => {
+          trackPreference('fast_computer', value);
+          setFastComputer(value);
+        }}
         showHints={showHints}
       />
     </View>

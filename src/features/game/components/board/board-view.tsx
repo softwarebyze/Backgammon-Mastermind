@@ -1,16 +1,20 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
-import type { GameState, Player } from '@/lib/game/types';
+import type { GameState } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { View } from 'react-native';
 
-import { canDragFromBar, canDragFromColumn } from '@/features/game/drag-input';
+import {
+  boardHitExtraCandidates,
+  remapTapIndex,
+  resolvePanOrigin,
+} from '@/features/game/hit-test-board';
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
 import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { BAR_POINT } from '@/lib/game/constants';
+import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations } from '@/lib/game/moves';
 import { BarArea } from './bar-area';
@@ -165,7 +169,6 @@ export function BoardView({
     [showHighlights, state],
   );
 
-  const humanPlayer: Player = state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
   const showDirection = showDirectionOverlay
     && !isReviewing
     && !ceremonyVisible
@@ -179,17 +182,55 @@ export function BoardView({
       || state.phase === 'rolling'
       || state.phase === 'opening-roll');
 
-  const barCountForPlayer = state.bar[state.currentPlayer];
+  const hitExtra = boardHitExtraCandidates(emphasisPoints, emphasisBar);
+
+  const dispatchFatFingerPress = (geometricIndex: number) => {
+    if (!interactionEnabled) {
+      return;
+    }
+    const resolved = remapTapIndex({
+      state,
+      pointIndex: geometricIndex,
+      dims: dimensions,
+      extraCandidates: hitExtra,
+    });
+    if (resolved === BAR_POINT) {
+      onBarPress();
+      return;
+    }
+    if (resolved === BEAR_OFF) {
+      onBearOffPress();
+      return;
+    }
+    onPointPress(resolved);
+  };
+
+  const dispatchFatFingerPressIn = (geometricIndex: number) => {
+    if (!interactionEnabled) {
+      return;
+    }
+    const resolved = remapTapIndex({
+      state,
+      pointIndex: geometricIndex,
+      dims: dimensions,
+      extraCandidates: hitExtra,
+    });
+    if (resolved === BAR_POINT || resolved === BEAR_OFF) {
+      return;
+    }
+    onPointPressIn(resolved);
+  };
 
   const renderColumn = (idx: number, isTop: boolean) => {
     const point = displayPointDuringAnimation(idx, state.points[idx], moveAnimation);
-    const columnDragEnabled = canDragFromColumn({
-      dragInteractionEnabled: canDrag,
-      phase: state.phase,
-      point,
-      currentPlayer: state.currentPlayer,
-      barCountForPlayer,
-    });
+    const panFrom = canDrag
+      ? resolvePanOrigin({
+          state,
+          pointIndex: idx,
+          dims: dimensions,
+          extraCandidates: hitExtra,
+        })
+      : null;
 
     return (
       <PointColumn
@@ -202,23 +243,16 @@ export function BoardView({
         isMovableSource={movableSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
-        onPress={() => {
-          if (interactionEnabled) {
-            onPointPress(idx);
-          }
-        }}
-        onPressIn={() => {
-          if (interactionEnabled) {
-            onPointPressIn(idx);
-          }
-        }}
+        onPress={() => dispatchFatFingerPress(idx)}
+        onPressIn={() => dispatchFatFingerPressIn(idx)}
         onPressOut={() => {
           if (interactionEnabled) {
             onPointPressOut();
           }
         }}
-        dragEnabled={columnDragEnabled}
-        isDragging={dragFrom === idx}
+        dragEnabled={panFrom !== null}
+        dragOrigin={panFrom ?? idx}
+        isDragging={dragFrom !== null && dragFrom === (panFrom ?? idx)}
         dragOverlay={dragOverlay}
         onDragAttempt={onDragAttempt}
         onDragStart={handleDragStartAbs}
@@ -234,10 +268,14 @@ export function BoardView({
 
   const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
   const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
-  const barDragEnabled = canDragFromBar({
-    dragInteractionEnabled: canDrag,
-    barCountForPlayer,
-  });
+  const barPanFrom = canDrag
+    ? resolvePanOrigin({
+        state,
+        pointIndex: BAR_POINT,
+        dims: dimensions,
+        extraCandidates: hitExtra,
+      })
+    : null;
 
   return (
     <View
@@ -285,13 +323,10 @@ export function BoardView({
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
           selectedPoint={emphasisBar && selectedPoint === null ? BAR_POINT : selectedPoint}
-          onPressBar={() => {
-            if (interactionEnabled) {
-              onBarPress();
-            }
-          }}
-          dragEnabled={barDragEnabled}
-          isDragging={dragFrom === BAR_POINT}
+          onPressBar={() => dispatchFatFingerPress(BAR_POINT)}
+          dragEnabled={barPanFrom !== null}
+          panFrom={barPanFrom ?? BAR_POINT}
+          isDragging={dragFrom !== null && dragFrom === (barPanFrom ?? BAR_POINT)}
           dragOverlay={dragOverlay}
           onDragAttempt={onDragAttempt}
           onDragStart={handleDragStartAbs}
@@ -317,11 +352,7 @@ export function BoardView({
           blackBorneOff={state.borneOff.black}
           isLegalTarget={bearOffLegal && interactionEnabled}
           currentPlayer={state.currentPlayer}
-          onPress={() => {
-            if (interactionEnabled) {
-              onBearOffPress();
-            }
-          }}
+          onPress={() => dispatchFatFingerPress(BEAR_OFF)}
           width={bearOffWidth}
           boardHeight={boardHeight}
           middleHeight={middleHeight}
@@ -332,7 +363,6 @@ export function BoardView({
           <DirectionOverlay
             width={boardWidth}
             height={boardHeight}
-            player={humanPlayer}
           />
         )}
 

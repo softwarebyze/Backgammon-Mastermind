@@ -59,7 +59,7 @@ export function useGameProviderValue(): GameContextType {
     restoreMove,
     gameMode: state?.mode,
   });
-  const { clearAITimeout, resumeAIScheduling } = useComputerOpponent({
+  const { clearAITimeout, resumeAIScheduling, skipAIDelay } = useComputerOpponent({
     state,
     setState,
     playMove,
@@ -121,5 +121,6 @@ export function useGameProviderValue(): GameContextType {
     resetAnimation: resetAllAnimation,
     clearAITimeout,
     resumeAIScheduling,
+    skipAIDelay,
   };
 }

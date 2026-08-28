@@ -20,7 +20,10 @@ export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: !unlocked }}
-      accessibilityLabel={translate(lesson.titleKey as TxKeyPath)}
+      accessibilityLabel={completed
+        ? `${translate(lesson.titleKey as TxKeyPath)}, ${translate('learn.replay')}`
+        : translate(lesson.titleKey as TxKeyPath)}
+      accessibilityHint={completed ? translate('learn.replay') : undefined}
       disabled={!unlocked}
       style={({ pressed }) => [
         styles.lessonRow,

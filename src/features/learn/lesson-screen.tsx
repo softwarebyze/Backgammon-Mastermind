@@ -3,28 +3,34 @@ import type { LessonId } from '@/lib/learn/curriculum';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import {
+  MIN_LEARN_BOARD_SLOT_HEIGHT,
+  useBoardDimensions,
+} from '@/features/game/hooks/use-board-dimensions';
+import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
+import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
+import { isLastStepComplete } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
+import { isLandscapeLayout, landscapeChromeColumnWidth } from '@/lib/ui/game-chrome';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   lessonId: LessonId;
 };
-
-const AUTO_ADVANCE_MS = 1400;
 
 export function LessonScreen({ lessonId }: Props) {
   const lesson = getLesson(lessonId);
@@ -78,16 +84,41 @@ function LessonScreenBody({
 }) {
   const session = useLessonSession(lesson);
   const posthog = usePostHog();
+  const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
+  const landscape = isLandscapeLayout(width, height);
+  const chromeWidth = landscapeChromeColumnWidth(width);
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
-  const dimensions = useBoardDimensions({
-    showPointNumbers,
-    extraChrome: 80,
+  const { onTopLayout, onControlsLayout, onSlotLayout, captionMaxHeight } = usePublishBoardSlot({
+    reviewHeight: 0,
+    minBoardHeight: landscape ? 0 : MIN_LEARN_BOARD_SLOT_HEIGHT,
   });
+  const dimensions = useBoardDimensions({ showPointNumbers });
+  const completedEventRef = useRef(false);
 
   const { setBoardDimensions } = session;
   useEffect(() => {
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
+
+  useEffect(() => {
+    if (!isLastStepComplete(session.stepComplete, session.stepIndex, session.totalSteps)) {
+      return;
+    }
+    completeLesson(lessonId);
+    if (completedEventRef.current) {
+      return;
+    }
+    completedEventRef.current = true;
+    posthog.capture('learn_lesson_completed', { lesson_id: lessonId });
+  }, [
+    completeLesson,
+    lessonId,
+    posthog,
+    session.stepComplete,
+    session.stepIndex,
+    session.totalSteps,
+  ]);
 
   const goNext = useCallback(() => {
     if (session.step.kind === 'explain' && session.stepComplete) {
@@ -101,7 +132,6 @@ function LessonScreenBody({
     if (session.stepIndex >= session.totalSteps - 1) {
       hapticLight();
       completeLesson(lessonId);
-      posthog.capture('learn_lesson_completed', { lesson_id: lessonId });
       const next = getNextLessonId(lessonId);
       if (next === 'graduation') {
         router.replace('/learn/graduation');
@@ -116,30 +146,6 @@ function LessonScreenBody({
     }
     session.advance();
   }, [completeLesson, lessonId, posthog, session]);
-
-  const goNextRef = useRef(goNext);
-  goNextRef.current = goNext;
-
-  // After a correct identify/try-move, advance without an extra Continue tap.
-  useEffect(() => {
-    if (!session.stepComplete || session.lessonFinished) {
-      return;
-    }
-    if (session.step.kind === 'explain') {
-      return;
-    }
-    if (session.stepIndex >= session.totalSteps - 1) {
-      return;
-    }
-    const timer = setTimeout(() => goNextRef.current(), AUTO_ADVANCE_MS);
-    return () => clearTimeout(timer);
-  }, [
-    session.lessonFinished,
-    session.step.kind,
-    session.stepComplete,
-    session.stepIndex,
-    session.totalSteps,
-  ]);
 
   const awaitingBoardAction
     = !session.stepComplete
@@ -157,32 +163,119 @@ function LessonScreenBody({
     goNext();
   }, [awaitingBoardAction, goNext, session]);
 
-  const primaryLabel = awaitingBoardAction
-    ? translate('learn.hint')
-    : session.stepIndex >= session.totalSteps - 1 && session.stepComplete
-      ? translate('learn.next_lesson')
-      : translate('learn.continue');
-
+  const nextLessonId = getNextLessonId(lessonId);
+  const ctaKind = learnPrimaryCtaKind({
+    awaitingBoardAction,
+    stepComplete: session.stepComplete,
+    stepIndex: session.stepIndex,
+    totalSteps: session.totalSteps,
+    nextLessonId,
+  });
+  const primaryLabel = translate(learnPrimaryCtaKey(ctaKind));
   const showDice = session.state.dice[0] !== 0 || session.state.dice[1] !== 0;
+  const showCompleteBanner
+    = session.stepComplete && session.stepIndex >= session.totalSteps - 1;
+
+  const caption = (
+    <CoachCaption
+      titleKey={session.step.titleKey}
+      bodyKey={session.step.bodyKey}
+      feedback={session.feedback}
+      stepLabel={translate('learn.step_progress', {
+        current: session.stepIndex + 1,
+        total: session.totalSteps,
+      })}
+      compact={landscape || (captionMaxHeight != null && captionMaxHeight < 160)}
+    />
+  );
+
+  const footer = (
+    <View style={styles.footer} testID="learn-lesson-footer" onLayout={onControlsLayout}>
+      {showDice
+        ? (
+            <View style={styles.diceRow}>
+              <DiceDisplay
+                dice={session.state.dice}
+                remainingDice={session.state.remainingDice}
+                playerColor="white"
+                displayStyle={diceDisplayStyle}
+                animateRoll={false}
+              />
+            </View>
+          )
+        : null}
+
+      {showCompleteBanner
+        ? (
+            <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
+          )
+        : null}
+
+      <Pressable
+        key="learn-primary-cta"
+        testID="learn-primary-cta"
+        accessibilityRole="button"
+        accessibilityLabel={primaryLabel}
+        style={({ pressed }) => [
+          ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
+          pressed && styles.pressed,
+        ]}
+        onPress={onPrimary}
+      >
+        <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
+          {primaryLabel}
+        </Text>
+      </Pressable>
+    </View>
+  );
+
+  const portraitCaption = (
+    <View
+      style={[
+        styles.captionHost,
+        captionMaxHeight != null ? { maxHeight: captionMaxHeight } : null,
+      ]}
+      testID="learn-caption-host"
+      onLayout={onTopLayout}
+    >
+      <ScrollView
+        style={captionMaxHeight != null ? { maxHeight: captionMaxHeight } : undefined}
+        contentContainerStyle={styles.captionScrollContent}
+        bounces={false}
+        overScrollMode="never"
+        nestedScrollEnabled
+        keyboardShouldPersistTaps="handled"
+        testID="learn-caption-scroll"
+      >
+        {caption}
+      </ScrollView>
+    </View>
+  );
 
   return (
     <>
       <FocusAwareStatusBar />
-      <View style={styles.root}>
-        <CoachCaption
-          titleKey={session.step.titleKey}
-          bodyKey={session.step.bodyKey}
-          feedback={session.feedback}
-          stepLabel={translate('learn.step_progress', {
-            current: session.stepIndex + 1,
-            total: session.totalSteps,
-          })}
-        />
+      <View
+        style={[
+          styles.root,
+          landscape ? styles.rootLandscape : null,
+          { paddingBottom: landscape ? 8 : Math.max(8, insets.bottom) },
+        ]}
+      >
+        {landscape ? null : portraitCaption}
 
-        <View style={styles.boardWrap}>
-          <Pressable
-            onPress={session.onBoardPress}
+        <View
+          style={[
+            styles.boardWrap,
+            landscape ? styles.boardWrapLandscape : styles.boardWrapPortrait,
+          ]}
+          pointerEvents="box-none"
+          testID="learn-board-slot"
+          onLayout={onSlotLayout}
+        >
+          <View
             style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
+            pointerEvents="box-none"
           >
             <BoardView
               state={session.state}
@@ -205,42 +298,24 @@ function LessonScreenBody({
               emphasisPoints={session.emphasisPoints}
               emphasisBar={session.emphasisBar}
             />
-          </Pressable>
+          </View>
         </View>
 
-        {showDice
+        {landscape
           ? (
-              <View style={styles.diceRow}>
-                <DiceDisplay
-                  dice={session.state.dice}
-                  remainingDice={session.state.remainingDice}
-                  playerColor="white"
-                  displayStyle={diceDisplayStyle}
-                  animateRoll={false}
-                />
+              <View style={[styles.sidePanel, { width: chromeWidth }]}>
+                <ScrollView
+                  style={styles.captionScroll}
+                  contentContainerStyle={styles.captionScrollContent}
+                  bounces={false}
+                  overScrollMode="never"
+                >
+                  {caption}
+                </ScrollView>
+                {footer}
               </View>
             )
-          : null}
-
-        {session.stepComplete && session.stepIndex >= session.totalSteps - 1
-          ? (
-              <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
-            )
-          : null}
-
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={primaryLabel}
-          style={({ pressed }) => [
-            awaitingBoardAction ? styles.hintBtn : styles.primaryBtn,
-            pressed && styles.pressed,
-          ]}
-          onPress={onPrimary}
-        >
-          <Text style={awaitingBoardAction ? styles.hintLabel : styles.primaryLabel}>
-            {primaryLabel}
-          </Text>
-        </Pressable>
+          : footer}
       </View>
     </>
   );
@@ -249,21 +324,64 @@ function LessonScreenBody({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    minHeight: 0,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
-    paddingBottom: 24,
+  },
+  rootLandscape: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+  sidePanel: {
+    flexGrow: 0,
+    flexShrink: 0,
+    minHeight: 0,
+    alignItems: 'center',
+  },
+  captionHost: {
+    width: '100%',
+    flexGrow: 0,
+    flexShrink: 1,
+    minHeight: 0,
+  },
+  captionScroll: {
+    flexGrow: 1,
+    flexShrink: 1,
+    minHeight: 0,
+    width: '100%',
+  },
+  captionScrollContent: {
+    flexGrow: 0,
   },
   boardWrap: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+    minHeight: 0,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  boardWrapPortrait: {
+    width: '100%',
+    minHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
+  },
+  boardWrapLandscape: {
+    alignSelf: 'stretch',
+    height: '100%',
   },
   boardContainer: {
     width: '100%',
     alignItems: 'center',
   },
+  footer: {
+    width: '100%',
+    alignItems: 'center',
+    flexGrow: 0,
+    flexShrink: 0,
+    paddingBottom: 4,
+  },
   diceRow: {
-    minHeight: 48,
     justifyContent: 'center',
     marginBottom: 8,
   },
@@ -277,8 +395,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
     backgroundColor: GAME_PALETTE.accent,
     paddingVertical: 16,
-    paddingHorizontal: 32,
-    minWidth: 220,
+    paddingHorizontal: 24,
+    minWidth: 180,
     alignItems: 'center',
     ...continuousRadius(14),
   },
@@ -288,8 +406,8 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: 'rgba(232, 224, 208, 0.35)',
     paddingVertical: 14,
-    paddingHorizontal: 32,
-    minWidth: 220,
+    paddingHorizontal: 24,
+    minWidth: 180,
     alignItems: 'center',
     ...continuousRadius(14),
   },

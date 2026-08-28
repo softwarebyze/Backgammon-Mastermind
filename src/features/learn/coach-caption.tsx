@@ -12,9 +12,10 @@ type Props = {
   bodyKey: string;
   feedback: LessonFeedback | null;
   stepLabel: string;
+  compact?: boolean;
 };
 
-export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel }: Props) {
+export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact = false }: Props) {
   const feedbackColor
     = feedback?.tone === 'praise'
       ? '#A0D080'
@@ -23,12 +24,12 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel }: Props) 
         : GAME_PALETTE.accentDim;
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, compact && styles.rootCompact]}>
       <Text style={styles.stepLabel}>{stepLabel}</Text>
-      <Text accessibilityRole="header" style={styles.title}>
+      <Text accessibilityRole="header" style={[styles.title, compact && styles.titleCompact]}>
         {translate(titleKey as TxKeyPath)}
       </Text>
-      <Text style={styles.body}>{translate(bodyKey as TxKeyPath)}</Text>
+      <Text style={[styles.body, compact && styles.bodyCompact]}>{translate(bodyKey as TxKeyPath)}</Text>
       {feedback
         ? (
             <Text style={[styles.feedback, { color: feedbackColor }]}>
@@ -48,6 +49,13 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 4,
     gap: 4,
+    flexShrink: 1,
+  },
+  rootCompact: {
+    paddingHorizontal: 12,
+    paddingTop: 4,
+    paddingBottom: 0,
+    maxWidth: '100%',
   },
   stepLabel: {
     color: GAME_PALETTE.accentDim,
@@ -60,11 +68,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     ...interFont('bold'),
   },
+  titleCompact: {
+    fontSize: 16,
+  },
   body: {
     color: GAME_PALETTE.text,
     fontSize: 14,
     lineHeight: 20,
+    flexShrink: 1,
     ...interFont('regular'),
+  },
+  bodyCompact: {
+    fontSize: 13,
+    lineHeight: 18,
   },
   feedback: {
     marginTop: 4,

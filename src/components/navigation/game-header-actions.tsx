@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Feather } from '@expo/vector-icons';
 import { HeaderButton } from 'expo-router/react-navigation';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
@@ -76,7 +76,7 @@ export function GameHeaderActions({
         </HeaderIconSlot>
       </HeaderButton>
       <HeaderButton
-        accessibilityLabel={translate('game.options.title')}
+        accessibilityLabel={translate('settings.title')}
         onPress={() => {
           hapticLight();
           onOptions();
@@ -86,17 +86,18 @@ export function GameHeaderActions({
           <Feather name="sliders" size={ICON} color={GAME_PALETTE.accent} />
         </HeaderIconSlot>
       </HeaderButton>
-      <HeaderButton
+      <Pressable
+        accessibilityRole="button"
         accessibilityLabel="Start new game"
+        testID="reset-game-button"
         onPress={() => {
           hapticLight();
           onReset();
         }}
+        style={styles.hit}
       >
-        <HeaderIconSlot>
-          <Feather name="refresh-cw" size={ICON} color={GAME_PALETTE.accentDim} />
-        </HeaderIconSlot>
-      </HeaderButton>
+        <Feather name="refresh-cw" size={ICON} color={GAME_PALETTE.accentDim} />
+      </Pressable>
     </View>
   );
 }

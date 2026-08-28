@@ -2,13 +2,15 @@ import type { PathSegment } from '@/features/game/components/board/move-path-ove
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
 import type { GameState } from '@/lib/game';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { BAR_POINT } from '@/lib/game/constants';
+import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 type Input = ReturnType<typeof useGameInput>;
 
@@ -48,6 +50,21 @@ export function GameBoardSection({
   const { preferences } = useGamePreferences();
   const showPath = pathSegments.length > 0;
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
+  const travelEmphasis = useMemo(() => {
+    if (!boardAnimation) {
+      return { points: undefined as ReadonlySet<number> | undefined, bar: false };
+    }
+    const points = new Set<number>();
+    for (const idx of [boardAnimation.from, boardAnimation.to]) {
+      if (idx >= 1 && idx <= 24) {
+        points.add(idx);
+      }
+    }
+    return {
+      points: points.size > 0 ? points : undefined,
+      bar: boardAnimation.from === BAR_POINT || boardAnimation.to === BAR_POINT,
+    };
+  }, [boardAnimation]);
 
   useEffect(() => {
     input.setBoardDimensions(dimensions);
@@ -84,6 +101,8 @@ export function GameBoardSection({
             onDragCancel={input.handleDragCancel}
             onBarPress={input.handleBarPress}
             onBearOffPress={input.handleBearOffPress}
+            emphasisPoints={travelEmphasis.points}
+            emphasisBar={travelEmphasis.bar}
           />
           {showPath
             ? (
@@ -114,9 +133,16 @@ export function GameBoardSection({
 
 const styles = StyleSheet.create({
   boardWrap: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+    minHeight: 0,
+    minWidth: 0,
+    overflow: 'hidden',
     justifyContent: 'center',
     width: '100%',
+    maxWidth: MAX_BOARD_WIDTH,
+    alignSelf: 'stretch',
     alignItems: 'center',
   },
   boardContainer: {

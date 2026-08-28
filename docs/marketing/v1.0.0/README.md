@@ -2,15 +2,47 @@
 
 ## Screenshots
 
-`app-store-screenshots/` — 1320×2868 (iPhone 6.9") from Learn e2e captures:
+Raw captures: `app-store-screenshots/raw/` from **production** Expo web (`EXPO_PUBLIC_APP_ENV=production`) at Apple’s pixel sizes. No Preview badge, no `0.1.3`, no browser chrome, no Maestro watermark. Headlines live in `screenshot-frames.json`. Compose uses **two zones** that do not share pixels: an opaque `#1E0C02` copy band (headline only) and the raw capture cropped by `cropTop` so in-app chrome is gone. Full-width product, no gold bezel, no gradient overlay. Composed (upload) PNGs: `app-store-screenshots/*.png`.
 
-1. Home
-2. Learn hub
-3. Bearing-off lesson
-4. Lesson + hint
-5. Settings links
+Recapture (Mac iOS simulators are not required):
 
-Upload: `pnpm screenshots:upload:ios` (Fastlane — [store-screenshots.md](../../store-screenshots.md)). Do not wait for a human in ASC.
+```sh
+EXPO_PUBLIC_APP_ENV=production BROWSER=none CI=1 pnpm exec expo start --web --port 8082
+STORE_SHOT_BASE=http://127.0.0.1:8082 pnpm screenshots:capture
+```
+
+After capture, run screenshots compose so Fastlane/ASC get the dressed frames. Do **not** Fastlane-upload until the composed set is approved. Do not merge from this recapture alone.
+
+### Pixel sizes (`file`)
+
+Verified 2026-08-28:
+
+| File | Pixels |
+|------|--------|
+| `iphone-69-01-vs-computer.png` | 1320×2868 |
+| `iphone-69-02-legal-highlights.png` | 1320×2868 |
+| `iphone-69-03-lesson-hitting.png` | 1320×2868 |
+| `iphone-69-04-learn-hub.png` | 1320×2868 |
+| `iphone-69-05-home.png` | 1320×2868 |
+| `ipad-13-01-vs-computer.png` | 2064×2752 |
+| `ipad-13-02-legal-highlights.png` | 2064×2752 |
+| `ipad-13-03-lesson-hitting.png` | 2064×2752 |
+| `ipad-13-04-learn-hub.png` | 2064×2752 |
+| `ipad-13-05-home.png` | 2064×2752 |
+
+iPhone 6.9" is 440×956 CSS at deviceScaleFactor 3 (physical 1320×2868). iPad Pro 13" slot is 1032×1376 CSS at deviceScaleFactor 2 (physical 2064×2752). If `identify` is installed: `identify docs/marketing/v1.0.0/app-store-screenshots/*.png`.
+
+### Carousel (same five on both devices, composed order)
+
+1. **vs Computer** — headline “A thinking opponent”. Board + dice (top chrome cropped).
+2. **Legal-move highlights** — headline “Every move, highlighted”. Checker selected, destinations lit (top chrome cropped).
+3. **Hitting & the bar** — headline “Learn on the board”. Lesson board + dice + Hint (lesson copy cropped).
+4. **Learn hub** — headline “Five lessons. Then play.” Five lesson rows + Skip to play (hub intro cropped).
+5. **Home** — no marketing headline, cropTop 0 (the in-app lockup is the shot). Logo lockup, Learn / vs Computer / 2 Players (no Resume, no Preview).
+
+Raw scene files keep their capture names under `raw/` (01-home … 05-legal-highlights). Compose remaps and reorders via the JSON manifest.
+
+Upload later: `pnpm screenshots:upload:ios` (Fastlane — [store-screenshots.md](../../store-screenshots.md)). Do not wait for a human in ASC.
 
 ## Pricing
 

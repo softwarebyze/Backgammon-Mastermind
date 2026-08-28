@@ -8,6 +8,7 @@ import { applyMove, getLegalMoves } from '@/lib/game';
 export type PlayMoveOpts = {
   fromAnchor?: PointAnchor;
   onComplete?: (next: GameState) => void;
+  durationMs?: number;
 };
 
 export function createPlayMove(opts: {
@@ -57,6 +58,7 @@ export function createPlayMove(opts: {
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, {
       onFinish: settle,
       fromAnchor: playOpts?.fromAnchor,
+      durationMs: playOpts?.durationMs,
     }));
   };
 }

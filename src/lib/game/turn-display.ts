@@ -1,4 +1,5 @@
-import type { GameMode, GameState, Player } from '@/lib/game/types';
+import type { GameMode, GamePhase, GameState, Player } from '@/lib/game/types';
+import { translate } from '@/lib/i18n';
 
 export type TurnDisplay = {
   player: Player;
@@ -45,7 +46,7 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
     return {
       player: 'black',
       colorLabel: 'Black',
-      headline: opponentHeadline(state.mode),
+      headline: computerWaitHeadline(state.phase),
       isHumanTurn: false,
       isWaiting: true,
     };
@@ -67,8 +68,15 @@ function humanHeadline(mode: GameMode, player: Player): string {
   return player === 'white' ? 'White\'s turn' : 'Black\'s turn';
 }
 
-function opponentHeadline(mode: GameMode): string {
-  return mode === 'vs-computer' ? 'Computer\'s turn' : 'Black\'s turn';
+/** One player-named line in the banner — footer is skip-wait only. */
+function computerWaitHeadline(phase: GamePhase): string {
+  if (phase === 'rolling') {
+    return 'Black is rolling…';
+  }
+  if (phase === 'moving') {
+    return 'Black is moving…';
+  }
+  return 'Computer\'s turn';
 }
 
 export function getActionCaption(
@@ -79,25 +87,20 @@ export function getActionCaption(
   if (state.phase === 'opening-roll') {
     return ' ';
   }
+  // Banner already says whose turn it is. Don't stack "Black is moving…"
+  // under a footer "Moving…" (or Rolling…) during computer wait.
+  if (turn.isWaiting && (state.phase === 'rolling' || state.phase === 'moving')) {
+    return ' ';
+  }
   if (state.phase === 'rolling' && turn.isHumanTurn) {
     return `Roll dice — you play ${turn.colorLabel.toUpperCase()}`;
-  }
-  if (state.phase === 'rolling' && turn.isWaiting) {
-    return turn.player === 'black'
-      ? 'Black is rolling…'
-      : 'Opponent is rolling…';
-  }
-  if (state.phase === 'moving' && turn.isWaiting) {
-    return turn.player === 'black'
-      ? 'Black is moving…'
-      : 'Opponent is moving…';
   }
   if (state.phase === 'moving' && turn.isHumanTurn) {
     if (state.bar[state.currentPlayer] > 0) {
       return 'Enter from the bar before moving other checkers';
     }
     if (state.selectedPoint !== null) {
-      return `Selected — tap a highlight or tap the board to cancel`;
+      return translate('game.caption.selected');
     }
     return `Move your ${turn.colorLabel.toLowerCase()} checkers`;
   }

@@ -28,10 +28,15 @@ type Props = {
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
+  onCancelSelection?: () => void;
+  onSkipComputer?: () => void;
+  /** Tighter padding when dice sit beside the board in landscape. */
+  compact?: boolean;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
 const TRAY_FADE_MS = 280;
+const CONTROL_HIT_SLOP = 16;
 
 export function GameScreenControls({
   state,
@@ -43,6 +48,9 @@ export function GameScreenControls({
   onRoll,
   onReset,
   onGoLive,
+  onCancelSelection,
+  onSkipComputer,
+  compact = false,
 }: Props) {
   const { preferences } = useGamePreferences();
   const ceremonyVisible = useOpeningCeremonyVisible();
@@ -78,7 +86,7 @@ export function GameScreenControls({
   const measuring = ceremonyVisible && (handoff === 'measure' || handoff === 'hidden');
 
   return (
-    <View style={styles.controls}>
+    <View style={[styles.controls, compact && styles.controlsCompact]}>
       <View style={styles.diceRow}>
         {showTray
           ? (
@@ -99,7 +107,7 @@ export function GameScreenControls({
             ? <View style={styles.dicePlaceholder} />
             : null}
       </View>
-      <View style={styles.actionSlot}>
+      <View style={styles.actionSlot} pointerEvents="auto" testID="game-action-slot">
         <ActionControl
           state={state}
           isHumanTurn={isHumanTurn}
@@ -111,6 +119,8 @@ export function GameScreenControls({
           }}
           onReset={onReset}
           onGoLive={onGoLive}
+          onCancelSelection={onCancelSelection}
+          onSkipComputer={onSkipComputer}
         />
       </View>
       <Text style={styles.caption}>{caption}</Text>
@@ -118,6 +128,7 @@ export function GameScreenControls({
   );
 }
 
+/* eslint-disable-next-line max-lines-per-function -- phase switch + skip/cancel slots */
 function ActionControl({
   state,
   isHumanTurn,
@@ -126,6 +137,8 @@ function ActionControl({
   onRoll,
   onReset,
   onGoLive,
+  onCancelSelection,
+  onSkipComputer,
 }: {
   state: GameState;
   isHumanTurn: boolean;
@@ -134,6 +147,8 @@ function ActionControl({
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
+  onCancelSelection?: () => void;
+  onSkipComputer?: () => void;
 }) {
   if (isReviewing) {
     return (
@@ -142,6 +157,7 @@ function ActionControl({
         accessibilityLabel={translate('game.review.back_to_live')}
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onGoLive}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
       </Pressable>
@@ -153,8 +169,10 @@ function ActionControl({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Play again"
+        testID="play-again-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onReset}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>Play Again</Text>
       </Pressable>
@@ -170,6 +188,7 @@ function ActionControl({
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>Roll Dice</Text>
       </Pressable>
@@ -177,7 +196,7 @@ function ActionControl({
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" />;
+    return <StatusPlaceholder onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
@@ -188,6 +207,7 @@ function ActionControl({
         testID="roll-dice-button"
         style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
         onPress={onRoll}
+        hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>Roll Dice</Text>
       </Pressable>
@@ -195,11 +215,11 @@ function ActionControl({
   }
 
   if (state.phase === 'rolling' && isComputerTurn) {
-    return <StatusPlaceholder text="Rolling…" />;
+    return <StatusPlaceholder onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'moving' && isComputerTurn) {
-    return <StatusPlaceholder text="Moving…" />;
+    return <StatusPlaceholder onSkip={onSkipComputer} />;
   }
 
   if (state.phase === 'no-move' && isHumanTurn) {
@@ -207,16 +227,57 @@ function ActionControl({
   }
 
   if (state.phase === 'no-move' && isComputerTurn) {
-    return <StatusPlaceholder text="No legal moves…" />;
+    return <StatusPlaceholder text="No legal moves…" onSkip={onSkipComputer} />;
+  }
+
+  if (state.phase === 'moving' && isHumanTurn && state.selectedPoint !== null && onCancelSelection) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={translate('game.controls.cancel_a11y')}
+        testID="cancel-selection-button"
+        collapsable={false}
+        pointerEvents="auto"
+        style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
+        onPress={() => {
+          hapticLight();
+          onCancelSelection();
+        }}
+      >
+        <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
+      </Pressable>
+    );
   }
 
   return <View style={styles.actionSpacer} />;
 }
 
-function StatusPlaceholder({ text }: { text: string }) {
+function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => void }) {
+  const skipLabel = text
+    ? translate('game.controls.skip_wait_a11y', { status: text })
+    : translate('game.controls.skip_wait');
   return (
-    <View style={styles.statusSlot}>
-      <Text style={styles.statusText}>{text}</Text>
+    <View style={styles.statusSlot} pointerEvents="box-none">
+      {text
+        ? <Text style={styles.statusText} pointerEvents="none">{text}</Text>
+        : null}
+      {onSkip
+        ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={skipLabel}
+              testID="skip-computer-button"
+              hitSlop={CONTROL_HIT_SLOP}
+              style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
+              onPress={() => {
+                hapticLight();
+                onSkip();
+              }}
+            >
+              <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
+            </Pressable>
+          )
+        : null}
     </View>
   );
 }
@@ -229,6 +290,11 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     paddingHorizontal: 20,
+  },
+  controlsCompact: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    paddingHorizontal: 12,
   },
   diceRow: {
     flexDirection: 'row',
@@ -245,6 +311,8 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 2,
+    elevation: 4,
   },
   actionSpacer: {
     height: ACTION_SLOT_HEIGHT,
@@ -269,6 +337,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     ...interFont('semibold'),
   },
+  secondaryBtn: {
+    backgroundColor: GAME_PALETTE.bg,
+    borderWidth: 1.5,
+    borderColor: 'rgba(232, 224, 208, 0.35)',
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    minWidth: 160,
+    alignItems: 'center',
+    zIndex: 2,
+    ...continuousRadius(12),
+  },
+  secondaryBtnText: {
+    color: GAME_PALETTE.accent,
+    fontSize: 16,
+    ...interFont('semibold'),
+  },
   statusSlot: {
     height: ACTION_SLOT_HEIGHT,
     justifyContent: 'center',
@@ -278,6 +362,16 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
     ...interFont('regular'),
+  },
+  skipBtn: {
+    marginTop: 2,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+  skipHint: {
+    color: GAME_PALETTE.accentDim,
+    fontSize: 11,
+    ...interFont('medium'),
   },
   caption: {
     marginTop: 6,

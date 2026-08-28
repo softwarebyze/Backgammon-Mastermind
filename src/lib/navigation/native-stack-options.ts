@@ -20,7 +20,16 @@ export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
   headerShown: true,
   headerShadowVisible: false,
-  headerTransparent: true,
+  // Opaque: iOS 26 transparent headers rubber-band non-ScrollView screens.
+  headerTransparent: false,
+  headerStyle: { backgroundColor: GAME_PALETTE.bg },
+  contentStyle: { backgroundColor: GAME_PALETTE.bg },
+  scrollEdgeEffects: {
+    top: 'hidden',
+    bottom: 'hidden',
+    left: 'hidden',
+    right: 'hidden',
+  },
 };
 
 /** Active game board — native header hosts the player label + options/reset actions. */
@@ -28,38 +37,14 @@ export const gamePlayScreenOptions: NativeStackNavigationOptions = {
   headerShown: true,
   headerShadowVisible: false,
   headerBackButtonDisplayMode: 'minimal',
+  // Home is a custom left item, not the system back control (refresh must keep it).
+  headerBackVisible: false,
   gestureEnabled: false,
   headerStyle: gameHeaderStyle,
   headerTintColor: GAME_PALETTE.accent,
   headerTitleStyle: gameHeaderTitleStyle,
   contentStyle: { backgroundColor: GAME_PALETTE.bg },
 };
-
-export function gameFormSheetOptions(): NativeStackNavigationOptions {
-  // Web has no formSheet chrome — show a modal with a header so players can dismiss.
-  if (Platform.OS === 'web') {
-    return {
-      presentation: 'modal',
-      headerShown: true,
-      title: translate('game.options.title'),
-      headerShadowVisible: false,
-      headerStyle: gameHeaderStyle,
-      headerTintColor: GAME_PALETTE.accent,
-      headerTitleStyle: gameHeaderTitleStyle,
-      contentStyle: { backgroundColor: GAME_PALETTE.surface },
-    };
-  }
-
-  return {
-    presentation: 'formSheet',
-    sheetGrabberVisible: true,
-    sheetAllowedDetents: [0.58, 0.92],
-    sheetCornerRadius: 16,
-    sheetExpandsWhenScrolledToEdge: false,
-    headerShown: false,
-    contentStyle: { backgroundColor: GAME_PALETTE.surface },
-  };
-}
 
 export function settingsStackOptions(): NativeStackNavigationOptions {
   return {

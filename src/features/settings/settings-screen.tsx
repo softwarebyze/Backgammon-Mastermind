@@ -41,12 +41,15 @@ export function SettingsScreen() {
 
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
+        bounces={false}
+        overScrollMode="never"
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={
           Platform.OS === 'web' ? { paddingTop: WEB_SETTINGS_TOP_PADDING } : undefined
         }
       >
         <View className="flex-1 px-4 pb-8">
-          <SettingsContainer title="settings.generale">
+          <SettingsContainer title="settings.general">
             <LanguageItem />
           </SettingsContainer>
 

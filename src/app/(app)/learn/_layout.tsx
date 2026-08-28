@@ -1,25 +1,8 @@
-import { Feather } from '@expo/vector-icons';
-import { router, Stack } from 'expo-router';
-import { HeaderButton } from 'expo-router/react-navigation';
+import { Stack } from 'expo-router';
 
-import { GAME_PALETTE } from '@/features/game/game-palette';
-import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { learnStackOptions } from '@/lib/navigation/native-stack-options';
-
-function LearnBackButton() {
-  return (
-    <HeaderButton
-      accessibilityLabel="Back"
-      onPress={() => {
-        hapticLight();
-        router.back();
-      }}
-    >
-      <Feather name="chevron-left" size={24} color={GAME_PALETTE.accent} />
-    </HeaderButton>
-  );
-}
+import { stackEscapeHeaderOptions } from '@/lib/navigation/stack-escape-header';
 
 export default function LearnLayout() {
   return (
@@ -28,21 +11,21 @@ export default function LearnLayout() {
         name="index"
         options={{
           ...learnStackOptions(translate('learn.title')),
-          headerLeft: () => <LearnBackButton />,
+          ...stackEscapeHeaderOptions(),
         }}
       />
       <Stack.Screen
         name="[lesson-id]"
         options={{
           ...learnStackOptions(translate('learn.title')),
-          headerLeft: () => <LearnBackButton />,
+          ...stackEscapeHeaderOptions(),
         }}
       />
       <Stack.Screen
         name="graduation"
         options={{
           ...learnStackOptions(translate('learn.graduation.title')),
-          headerLeft: () => <LearnBackButton />,
+          ...stackEscapeHeaderOptions(),
         }}
       />
     </Stack>

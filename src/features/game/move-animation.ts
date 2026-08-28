@@ -93,6 +93,7 @@ function buildCaptureSlide(snapshot: GameState, move: Move): CheckerSlide | unde
 export type BuildMoveAnimationOpts = {
   onFinish: () => void;
   fromAnchor?: PointAnchor;
+  durationMs?: number;
 };
 
 export function buildMoveAnimationFrame(
@@ -111,6 +112,7 @@ export function buildMoveAnimationFrame(
     destStackCount: destStackCount(snapshot, move.to, snapshot.currentPlayer),
     capture: buildCaptureSlide(snapshot, move),
     fromAnchor: opts.fromAnchor,
+    durationMs: opts.durationMs,
     onFinish: opts.onFinish,
   };
 }

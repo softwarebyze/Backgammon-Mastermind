@@ -27,7 +27,7 @@ Before any metadata push, confirm `store.config.json` → `apple.review.phone` i
 
 1. Build preview IPA: `pnpm build:preview:ios`
 2. Submit: `EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --latest` (or `pnpm submit:preview:ios`)
-3. After Apple processes the build, enable TestFlight testers in App Store Connect ([TF app](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios))
+3. After Apple processes the build, enable TestFlight testers in App Store Connect ([Preview app](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios))
 
 ## Submit the right build to the right ASC app
 
@@ -36,7 +36,7 @@ Three separate App Store Connect records — do not mix them up.
 | EAS env | Bundle ID | ASC name | Apple ID (`ascAppId`) | Role |
 |---------|-----------|----------|----------------------|------|
 | `development` | `com.backgammonmastermind.development` | Backgammon Mastermind Dev | `6780139011` | Dev-client internal builds only |
-| `preview` | `com.backgammonmastermind.preview` | Backgammon Mastermind TF | **`6781121420`** | **QA / TestFlight** |
+| `preview` | `com.backgammonmastermind.preview` | Backgammon Mastermind Preview | **`6781121420`** | **QA / TestFlight** |
 | `production` | `com.backgammonmastermind` | Backgammon Mastermind | **`6792138473`** | App Store release |
 
 Preview IPAs must go to **`6781121420`**. Sending them to the development app (`6780139011`) fails with error **90055** (*bundle identifier cannot be changed*).

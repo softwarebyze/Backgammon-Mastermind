@@ -25,7 +25,10 @@ runs:
 
     - name: Prebuild native project (E2E — no expo-dev-client)
       run: |
-        # Dev client shows a launcher that blocks Maestro without Metro; omit it for CI APKs.
+        # The debug APK embeds its JS bundle and runs without Metro. Leaving
+        # expo-dev-client linked here makes its launcher cast the production
+        # Expo Updates controller to UpdatesDevLauncherInterface and crash
+        # before React starts, so omit the dev client from this CI-only build.
         pnpm remove expo-dev-client
         # app-icon-badge + Android icon generation can intermittently fail with
         # "Could not find MIME for Buffer <null>" on a cold CI checkout.
@@ -54,7 +57,7 @@ runs:
         if ! grep -q 'REACT_NATIVE_NODE_MODULES_DIR' "$APP_GRADLE"; then
           sed -i '/^react {/i ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native")\n' "$APP_GRADLE"
         fi
-        # Embed the JS bundle in debug APK so Maestro can run without Metro (expo-dev-client).
+        # Embed the JS bundle in the debug APK so Maestro can run without Metro.
         if ! grep -q 'debuggableVariants = \[\]' "$APP_GRADLE"; then
           sed -i '/bundleCommand = "export:embed"/a\    debuggableVariants = []' "$APP_GRADLE"
         fi

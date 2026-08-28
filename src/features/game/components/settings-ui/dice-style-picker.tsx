@@ -15,8 +15,8 @@ type Props = {
 };
 
 const OPTIONS: Array<{ id: DiceDisplayStyle; labelKey: TxKeyPath }> = [
-  { id: 'numbers', labelKey: 'game.preferences.dice_numbers' },
   { id: 'dots', labelKey: 'game.preferences.dice_dots' },
+  { id: 'numbers', labelKey: 'game.preferences.dice_numbers' },
 ];
 
 export function DiceStylePicker({ value, onChange }: Props) {

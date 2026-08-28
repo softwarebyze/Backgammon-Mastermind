@@ -112,6 +112,7 @@ export function MoveReviewTurnStrip({
           hapticLight();
           onJumpToPly(0);
         }}
+        hitSlop={4}
         style={[styles.chip, isReviewing && focusedPly === 0 && styles.chipFocused]}
       >
         <Text style={[styles.chipText, isReviewing && focusedPly === 0 && styles.chipTextFocused]}>
@@ -152,7 +153,12 @@ export function MoveReviewTurnStrip({
 }
 
 const styles = StyleSheet.create({
-  timelineScroll: { flex: 1 },
+  timelineScroll: {
+    flexGrow: 1,
+    flexShrink: 1,
+    height: 40,
+    maxHeight: 40,
+  },
   timeline: {
     flexDirection: 'row',
     alignItems: 'center',

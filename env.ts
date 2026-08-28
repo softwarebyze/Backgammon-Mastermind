@@ -32,7 +32,7 @@ const SCHEMES = {
   production: 'backgammonmastermind',
 } as const;
 
-const NAME = 'BackgammonMastermind';
+const NAME = 'Backgammon Mastermind';
 
 const STRICT_ENV_VALIDATION = process.env.STRICT_ENV_VALIDATION === '1';
 

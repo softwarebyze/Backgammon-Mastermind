@@ -63,6 +63,10 @@ export function useGamePreferences() {
     updatePreferences({ soundEnabled });
   }, []);
 
+  const setFastComputer = useCallback((fastComputer: boolean) => {
+    updatePreferences({ fastComputer });
+  }, []);
+
   return {
     preferences,
     setShowMoveHints,
@@ -72,5 +76,6 @@ export function useGamePreferences() {
     setAutoRoll,
     setAutoMoveWhenForced,
     setSoundEnabled,
+    setFastComputer,
   };
 }

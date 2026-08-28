@@ -1,5 +1,14 @@
 {
   "game": {
+    "caption": {
+      "selected": "Selected — tap a highlighted point, or Cancel"
+    },
+    "controls": {
+      "cancel": "Cancel",
+      "cancel_a11y": "Cancel selection",
+      "skip_wait": "Tap to skip wait",
+      "skip_wait_a11y": "{{status}} Tap to skip wait"
+    },
     "nudge": {
       "roll_first": "Roll the dice first"
     },
@@ -29,6 +38,8 @@
       "dice_numbers": "Numbers",
       "direction_overlay": "Direction overlay",
       "direction_overlay_hint": "Horseshoe path on the board",
+      "fast_computer": "Fast computer",
+      "fast_computer_hint": "Shorter waits on computer rolls and moves. You can also tap Skip wait.",
       "move_hints": "Move hints",
       "move_hints_hint": "Gold dot beside points you can move from",
       "point_numbers": "Point numbers",
@@ -59,6 +70,26 @@
       "turn_position": "Turn {{turn}}/{{totalTurns}} · move {{moveInTurn}}/{{movesInTurn}} · {{player}}",
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
     }
+  },
+  "home": {
+    "confirm_cancel": "Cancel",
+    "confirm_continue": "Continue",
+    "confirm_native": "Continue your current game or start a new one?",
+    "confirm_new": "New game",
+    "confirm_title": "Game in progress",
+    "confirm_web": "Start a new game? (Use Resume on the home screen to continue the current one.)",
+    "resume": "Resume Game",
+    "resume_a11y": "Resume saved game",
+    "resume_none": "No saved game to resume",
+    "resume_sub": "Continue where you left off",
+    "subtitle": "Master the board — one move at a time",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "2 Players",
+    "two_players_a11y": "Play with two players locally",
+    "two_players_sub": "Pass & play locally",
+    "vs_computer": "vs Computer",
+    "vs_computer_a11y": "Play against the computer",
+    "vs_computer_sub": "Play against AI"
   },
   "learn": {
     "back_to_hub": "All lessons",
@@ -93,7 +124,7 @@
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Nothing is on the 5-point, but you rolled a 5. Bear off from your highest occupied point (the 3) — a larger die still works.",
+            "body": "Nothing is on the 5-point, but you rolled a 5. Bear off from your highest checker (the 3). A bigger number still takes a checker off.",
             "hint": "Select point 3, then tap the bear-off tray.",
             "praise": "That’s the overshoot rule — you’ll use it a lot when bearing off.",
             "title": "Bigger die, still off"
@@ -111,11 +142,11 @@
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Your white checkers move in a horseshoe: from the far side, across, then into your home (points 1–6). Every game starts with the same 2-5-3-5 pattern.",
+            "body": "You play WHITE — the cream checkers. The cream horseshoe is YOUR path: start at the far top-right, around the left side, then into home at the bottom-right (points 1–6). The dashed line is Black, heading the opposite way.",
             "title": "The horseshoe path"
           },
           "far": {
-            "body": "Tap the point where your two farthest white checkers start (the 24-point).",
+            "body": "Tap the point where your two farthest white checkers start (the 24-point, top-right).",
             "hint": "Look at the top-right — two white checkers on point 24.",
             "praise": "Those start deep in the opponent’s home and have the longest journey.",
             "title": "Your farthest checkers"
@@ -123,7 +154,7 @@
           "home_stack": {
             "body": "Tap the big stack of five white checkers already in your home (the 6-point).",
             "hint": "Bottom-right: five white checkers on point 6.",
-            "praise": "That’s the 2-5-3-5 setup: 2 on 24, 5 on 13, 3 on 8, 5 on 6.",
+            "praise": "That’s your home stack — five already waiting on the 6-point, closest to bearing off. Every game starts this way.",
             "title": "Your home stack"
           }
         },
@@ -155,11 +186,11 @@
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "You’re on the bar — you must enter before anything else. Die N enters on point 25−N (a 4 → point 21).",
-            "hint": "Tap the bar, then point 21 (not 23 — that’s the 2).",
+            "body": "You’re on the bar — come back on before moving anyone else. Count from the 24-point toward home: a 4 lands on point 21.",
+            "hint": "Tap the bar, then point 21 (not 23 — that’s only two pips from the bar).",
             "praise": "You’re back on the board — bar checkers always enter first.",
             "title": "Enter from the bar",
-            "wrong": "That’s the 2 (point 23). Use the 4 — enter on point 21 (25−4)."
+            "wrong": "That’s only two pips from the bar (point 23). Count four points from 24 toward home — that’s point 21."
           },
           "hit": {
             "body": "A single checker is a blot. Land on it and it goes to the bar. You rolled a 3 — hit the black blot on the 5-point.",
@@ -218,7 +249,7 @@
       "blot": {
         "a": "Any stack of three or more",
         "b": "A single checker on a point — it can be hit",
-        "c": "The doubling cube",
+        "c": "Two or more checkers on a point — a made point",
         "prompt": "What is a blot?"
       }
     },
@@ -234,7 +265,7 @@
     "arabic": "Arabic",
     "english": "English",
     "game": "Game",
-    "generale": "General",
+    "general": "General",
     "github": "Github",
     "language": "Language",
     "links": "Links",

@@ -28,6 +28,7 @@ describe('buildMoveAnimationFrame', () => {
     expect(frame.destStackCount).toBe(destStackCount(state, 4, state.currentPlayer));
     expect(frame.player).toBe('white');
     expect(frame.fromAnchor).toBeUndefined();
+    expect(frame.durationMs).toBeUndefined();
   });
 
   it('keeps an optional release anchor for drag handoff', () => {
@@ -40,6 +41,17 @@ describe('buildMoveAnimationFrame', () => {
       { onFinish: () => {}, fromAnchor },
     );
     expect(frame.fromAnchor).toEqual(fromAnchor);
+  });
+
+  it('honors an explicit slide duration', () => {
+    let state = createInitialState('vs-human');
+    state = applyDiceRoll(state, [4, 2]);
+    const frame = buildMoveAnimationFrame(
+      state,
+      { from: 8, to: 4, dieIndex: 0 },
+      { onFinish: () => {}, durationMs: 720 },
+    );
+    expect(frame.durationMs).toBe(720);
   });
 
   it('hides the moving checker on the bar during animation', () => {

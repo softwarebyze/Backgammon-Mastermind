@@ -166,6 +166,17 @@ async function main() {
     .png()
     .toFile(join(brandDir, 'favicon.png'));
 
+  // Static web icons in public/ — Vercel serves these as files, not SPA HTML.
+  const publicDir = join(root, 'public');
+  await sharp(join(brandDir, 'icon.png'))
+    .resize(180, 180)
+    .png()
+    .toFile(join(publicDir, 'apple-touch-icon.png'));
+  await sharp(join(brandDir, 'icon.png'))
+    .resize(48, 48)
+    .png()
+    .toFile(join(publicDir, 'favicon.png'));
+
   // In-app logo: trimmed board at natural aspect (use contain in UI — not square cover crop)
   await board.clone().png().toFile(join(brandDir, 'display-logo.png'));
 
@@ -175,6 +186,8 @@ async function main() {
   console.log('  adaptive-foreground.png — Android adaptive layer');
   console.log('  display-logo.png      — in-app home screen (natural aspect)');
   console.log('  favicon.png           — web');
+  console.log('  public/apple-touch-icon.png — iOS share sheet (180×180)');
+  console.log('  public/favicon.png    — web PNG favicon');
   console.log('\nRebuild dev client to see icon/splash on device.');
   console.log('Note: dev-client splash ≠ production splash — use preview build to verify.');
 }

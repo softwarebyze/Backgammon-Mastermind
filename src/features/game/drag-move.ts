@@ -1,6 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { GameState, Move } from '@/lib/game';
-import { resolveDropTarget } from '@/features/game/board-point-layout';
+import { resolveFatFingerDrop } from '@/features/game/hit-test-board';
 import { findMoveSequence, getLegalMoves } from '@/lib/game';
 
 /** Play a legal single or compound move from `from` to `to`, or null if illegal. */
@@ -39,7 +39,7 @@ export function previewFromDrag(opts: {
   dims: BoardDimensions;
 }): number | null {
   const { state, from, boardX, boardY, dims } = opts;
-  const target = resolveDropTarget(boardX, boardY, dims);
+  const target = resolveFatFingerDrop({ x: boardX, y: boardY, state, from, dims });
   if (target === null || target === from) {
     return null;
   }

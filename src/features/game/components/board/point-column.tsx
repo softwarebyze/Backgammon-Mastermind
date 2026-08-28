@@ -7,6 +7,7 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
+import { pointAccessibilityLabel } from './point-accessibility';
 import { PointTriangle } from './point-triangle';
 import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
@@ -23,6 +24,7 @@ type CheckersProps = {
   ghostPlayer: Player | null;
   hintTopChecker: boolean;
   isDragging: boolean;
+  isSelected: boolean;
 };
 
 function stackStyle(opts: {
@@ -71,6 +73,7 @@ function PointCheckers({
   ghostPlayer,
   hintTopChecker,
   isDragging,
+  isSelected,
 }: CheckersProps) {
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
@@ -103,6 +106,7 @@ function PointCheckers({
               size={checkerSize}
               showCount={isTopChecker && point.count > MAX_VISIBLE ? point.count : undefined}
               showMoveHint={isTopChecker && hintTopChecker && !isDragging}
+              isSelected={isTopChecker && isSelected && !isDragging}
             />
           );
           const CheckerWrap = isTopChecker ? Animated.View : View;
@@ -153,6 +157,7 @@ type ColumnContentProps = {
   stackStep: number;
   visibleCount: number;
   palette: ReturnType<typeof getPointPalette>;
+  isSelected: boolean;
 };
 
 function ColumnContent({
@@ -169,6 +174,7 @@ function ColumnContent({
   stackStep,
   visibleCount,
   palette,
+  isSelected,
 }: ColumnContentProps) {
   return (
     <>
@@ -184,6 +190,7 @@ function ColumnContent({
         ghostPlayer={ghostPlayer}
         hintTopChecker={isMovableSource}
         isDragging={isDragging}
+        isSelected={isSelected}
       />
       {isLegalTarget && point.count === 0 && (
         <View
@@ -220,6 +227,8 @@ type Props = {
   onPressIn?: () => void;
   onPressOut?: () => void;
   dragEnabled?: boolean;
+  /** Checker to lift when this column's pan starts (may differ from pointIndex). */
+  dragOrigin?: number;
   isDragging?: boolean;
   dragOverlay?: DragOverlayRefs;
   onDragAttempt?: (pointIndex: number) => void;
@@ -245,6 +254,7 @@ export function PointColumn({
   onPressIn,
   onPressOut,
   dragEnabled = false,
+  dragOrigin,
   isDragging = false,
   dragOverlay,
   onDragAttempt,
@@ -267,7 +277,7 @@ export function PointColumn({
   const stackStep = Math.min(checkerSize - 2, (pointHeight - checkerSize) / (MAX_VISIBLE - 1));
   const visibleCount = Math.min(point.count, MAX_VISIBLE);
 
-  const pan = useCheckerPan(pointIndex, dragEnabled, {
+  const pan = useCheckerPan(dragOrigin ?? pointIndex, dragEnabled, {
     onDragAttempt,
     onDragStart,
     onDragMove,
@@ -280,7 +290,7 @@ export function PointColumn({
     () => (dragEnabled ? composeColumnGestures(pan, tap) : null),
     [dragEnabled, pan, tap],
   );
-  const a11yLabel = `Point ${pointIndex}${isSelected ? ', selected' : ''}${isLegalTarget ? ', legal move target' : ''}`;
+  const a11yLabel = pointAccessibilityLabel(pointIndex, point, { isSelected, isLegalTarget });
   const columnStyle = { width: colWidth, height: pointHeight, position: 'relative' as const, overflow: 'visible' as const };
   const columnContent = (
     <ColumnContent
@@ -297,44 +307,44 @@ export function PointColumn({
       stackStep={stackStep}
       visibleCount={visibleCount}
       palette={palette}
+      isSelected={isSelected}
     />
   );
 
-  if (dragEnabled && columnGesture) {
-    return (
-      <GestureDetector gesture={columnGesture}>
-        {/* box-only: RNGH web captures event.target; nested checkers remount mid-drag and throw. */}
-        <View
-          pointerEvents="box-only"
-          style={columnStyle}
-          accessibilityRole="button"
-          accessibilityLabel={a11yLabel}
-          accessibilityActions={[{ name: 'activate' }]}
-          onAccessibilityAction={(event) => {
-            if (event.nativeEvent.actionName === 'activate') {
-              onPress();
-            }
-          }}
-        >
-          {columnContent}
-        </View>
-      </GestureDetector>
-    );
-  }
-
-  return (
+  const pressable = (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={a11yLabel}
-      onPress={(e) => {
-        e?.stopPropagation?.();
-        onPress();
+      accessible
+      testID={`point-${pointIndex}`}
+      pointerEvents={dragEnabled ? 'box-only' : 'auto'}
+      onPress={dragEnabled
+        ? undefined
+        : (e) => {
+            e?.stopPropagation?.();
+            onPress();
+          }}
+      onPressIn={dragEnabled ? undefined : onPressIn}
+      onPressOut={dragEnabled ? undefined : onPressOut}
+      accessibilityActions={[{ name: 'activate' }]}
+      onAccessibilityAction={(event) => {
+        if (event.nativeEvent.actionName === 'activate') {
+          onPress();
+        }
       }}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
       style={columnStyle}
     >
       {columnContent}
     </Pressable>
   );
+
+  if (dragEnabled && columnGesture) {
+    return (
+      <GestureDetector gesture={columnGesture}>
+        {pressable}
+      </GestureDetector>
+    );
+  }
+
+  return pressable;
 }

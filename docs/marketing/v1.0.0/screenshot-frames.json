@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0",
+  "rawDir": "app-store-screenshots/raw",
+  "outDir": "app-store-screenshots",
+  "layout": "two-zone",
+  "colors": {
+    "background": "#1E0C02",
+    "headline": "#F3E6C8",
+    "sub": "#E8A04A"
+  },
+  "devices": {
+    "iphone": { "width": 1320, "height": 2868 },
+    "ipad": { "width": 2064, "height": 2752 }
+  },
+  "frames": [
+    {
+      "device": "iphone",
+      "source": "iphone-69-04-vs-computer.png",
+      "dest": "iphone-69-01-vs-computer.png",
+      "headline": "A thinking opponent",
+      "cropTop": 0.30
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-05-legal-highlights.png",
+      "dest": "iphone-69-02-legal-highlights.png",
+      "headline": "Every move, highlighted",
+      "cropTop": 0.30
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-03-lesson-hitting.png",
+      "dest": "iphone-69-03-lesson-hitting.png",
+      "headline": "Learn on the board",
+      "cropTop": 0.35
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-02-learn-hub.png",
+      "dest": "iphone-69-04-learn-hub.png",
+      "headline": "Five lessons. Then play.",
+      "cropTop": 0.16
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-01-home.png",
+      "dest": "iphone-69-05-home.png",
+      "cropTop": 0
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-04-vs-computer.png",
+      "dest": "ipad-13-01-vs-computer.png",
+      "headline": "A thinking opponent",
+      "cropTop": 0.33
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-05-legal-highlights.png",
+      "dest": "ipad-13-02-legal-highlights.png",
+      "headline": "Every move, highlighted",
+      "cropTop": 0.33
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-03-lesson-hitting.png",
+      "dest": "ipad-13-03-lesson-hitting.png",
+      "headline": "Learn on the board",
+      "cropTop": 0.37
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-02-learn-hub.png",
+      "dest": "ipad-13-04-learn-hub.png",
+      "headline": "Five lessons. Then play.",
+      "cropTop": 0.125
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-01-home.png",
+      "dest": "ipad-13-05-home.png",
+      "cropTop": 0
+    }
+  ]
+}

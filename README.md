@@ -62,6 +62,8 @@ Before EAS preview/build or Maestro Cloud E2E workflows will run, add these **re
 
 Full walkthrough: [Obytes Template Playbook → GitHub Actions secrets](./docs/obytes-template-playbook.md#github-actions-secrets-required-for-ci)
 
+**TestFlight (preview iOS):** after merge, dispatch GitHub Actions → **EAS QA Build (Android & IOS) (EAS)** (`AUTO_SUBMIT` true). Manual submit: **EAS Submit Preview iOS (TestFlight)**. Details: [docs/releases.md](./docs/releases.md).
+
 ## Previewing pull requests
 
 Standard **dev client + EAS Update** flow (see [playbook](./docs/obytes-template-playbook.md#dev-client--pr-preview-workflow-recommended-fork-pattern)):

@@ -1,7 +1,6 @@
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { Player } from '@/lib/game/types';
-import * as React from 'react';
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
@@ -10,7 +9,7 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { BAR_POINT } from '@/lib/game/constants';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
-import { useCheckerPan } from './use-checker-pan';
+import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 type DragHandlers = {
   onDragAttempt?: (from: number) => void;
@@ -31,6 +30,8 @@ type Props = {
   middleHeight: number;
   checkerSize: number;
   dragEnabled?: boolean;
+  /** Checker to lift when a pan starts on the bar (may be a nearby unique origin). */
+  panFrom?: number;
   isDragging?: boolean;
   dragOverlay?: DragOverlayRefs;
 } & DragHandlers;
@@ -61,10 +62,9 @@ type StackProps = {
   justify: 'flex-start' | 'flex-end';
   halfHeight: number;
   checkerSize: number;
-  dragEnabled: boolean;
   isDragging: boolean;
-  dragOverlay?: DragOverlayRefs;
-} & DragHandlers;
+  isSelected?: boolean;
+};
 
 function BarStack({
   count,
@@ -72,25 +72,11 @@ function BarStack({
   justify,
   halfHeight,
   checkerSize,
-  dragEnabled,
   isDragging,
-  dragOverlay,
-  onDragAttempt,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-  onDragCancel,
+  isSelected = false,
 }: StackProps) {
   const small = checkerSize * 0.88;
   const visible = Math.min(count, 4);
-  const pan = useCheckerPan(BAR_POINT, dragEnabled, {
-    onDragAttempt,
-    onDragStart,
-    onDragMove,
-    onDragEnd,
-    onDragCancel,
-    overlay: dragOverlay,
-  });
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
   }));
@@ -99,10 +85,8 @@ function BarStack({
     return <View style={{ height: halfHeight }} />;
   }
 
-  const stackContent = (
+  return (
     <View
-      // Keep pointer target on this view while dragging — see PointColumn.
-      pointerEvents={dragEnabled ? 'box-only' : 'auto'}
       style={{
         height: halfHeight,
         alignItems: 'center',
@@ -113,7 +97,7 @@ function BarStack({
     >
       {Array.from({ length: visible }, (_, i) => {
         const isTopChecker = i === visible - 1;
-        const token = <CheckerToken player={player} size={small} />;
+        const token = <CheckerToken player={player} size={small} isSelected={isTopChecker && isSelected} />;
         if (!isTopChecker) {
           return <View key={i}>{token}</View>;
         }
@@ -124,16 +108,6 @@ function BarStack({
         );
       })}
     </View>
-  );
-
-  if (!dragEnabled) {
-    return stackContent;
-  }
-
-  return (
-    <GestureDetector gesture={pan}>
-      {stackContent}
-    </GestureDetector>
   );
 }
 
@@ -148,6 +122,7 @@ export function BarArea({
   middleHeight,
   checkerSize,
   dragEnabled = false,
+  panFrom = BAR_POINT,
   isDragging = false,
   dragOverlay,
   onDragAttempt,
@@ -158,17 +133,36 @@ export function BarArea({
 }: Props) {
   const isBarSelected = selectedPoint === 0;
   const halfHeight = (boardHeight - middleHeight) / 2;
-  const dragHandlers = { onDragAttempt, onDragStart, onDragMove, onDragEnd, onDragCancel, dragOverlay };
+  const pan = useCheckerPan(panFrom, dragEnabled, {
+    onDragAttempt,
+    onDragStart,
+    onDragMove,
+    onDragEnd,
+    onDragCancel,
+    overlay: dragOverlay,
+  });
+  const tap = useColumnTapGesture(dragEnabled, { onPress: onPressBar });
+  const barGesture = useMemo(
+    () => (dragEnabled ? composeColumnGestures(pan, tap) : null),
+    [dragEnabled, pan, tap],
+  );
 
-  return (
+  const pressable = (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Bar"
-      onPress={(e) => {
-        // Parent board Pressable clears selection; stop bubble on web.
-        e?.stopPropagation?.();
-        onPressBar();
-      }}
+      accessibilityLabel={
+        `Bar${whiteCount > 0 ? `, ${whiteCount} white ${whiteCount === 1 ? 'checker' : 'checkers'}` : ''}`
+        + `${blackCount > 0 ? `, ${blackCount} black ${blackCount === 1 ? 'checker' : 'checkers'}` : ''}`
+      }
+      accessible
+      pointerEvents={dragEnabled ? 'box-only' : 'auto'}
+      onPress={dragEnabled
+        ? undefined
+        : (e) => {
+            // Parent board Pressable clears selection; stop bubble on web.
+            e?.stopPropagation?.();
+            onPressBar();
+          }}
       style={({ pressed }) => ({
         width: barWidth,
         height: boardHeight,
@@ -187,9 +181,8 @@ export function BarArea({
         justify="flex-start"
         halfHeight={halfHeight}
         checkerSize={checkerSize}
-        dragEnabled={dragEnabled && currentPlayer === 'black' && blackCount > 0}
         isDragging={isDragging && currentPlayer === 'black'}
-        {...dragHandlers}
+        isSelected={isBarSelected && currentPlayer === 'black'}
       />
 
       <BarHinge width={barWidth} height={middleHeight} />
@@ -200,10 +193,19 @@ export function BarArea({
         justify="flex-end"
         halfHeight={halfHeight}
         checkerSize={checkerSize}
-        dragEnabled={dragEnabled && currentPlayer === 'white' && whiteCount > 0}
         isDragging={isDragging && currentPlayer === 'white'}
-        {...dragHandlers}
+        isSelected={isBarSelected && currentPlayer === 'white'}
       />
     </Pressable>
   );
+
+  if (dragEnabled && barGesture) {
+    return (
+      <GestureDetector gesture={barGesture}>
+        {pressable}
+      </GestureDetector>
+    );
+  }
+
+  return pressable;
 }

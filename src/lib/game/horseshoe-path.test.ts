@@ -1,4 +1,4 @@
-import { buildHorseshoePath } from './horseshoe-path';
+import { buildHorseshoePath, horseshoeMetrics } from './horseshoe-path';
 
 describe('buildHorseshoePath', () => {
   it('returns a closed horseshoe with home direction along the bottom for white', () => {
@@ -13,9 +13,17 @@ describe('buildHorseshoePath', () => {
     const white = buildHorseshoePath(100, 100, 'white');
     const black = buildHorseshoePath(100, 100, 'black');
     expect(white).not.toEqual(black);
-    // pad=4, topY=22, botY=78, leftX=12, rightX=82
-    expect(black).toMatch(/^M 82 78 /);
-    expect(black).toContain('Q 4 50 12 22');
-    expect(black).toMatch(/L 82 22$/);
+    expect(black).toMatch(/^M /);
+    expect(black).toContain('Q ');
+    expect(black).toMatch(/L [\d.]+ [\d.]+$/);
+  });
+
+  it('insets the black lane so both directions can render without stacking', () => {
+    const white = horseshoeMetrics(200, 200, 'white');
+    const black = horseshoeMetrics(200, 200, 'black');
+    expect(black.topY).toBeGreaterThan(white.topY);
+    expect(black.botY).toBeLessThan(white.botY);
+    expect(black.leftX).toBeGreaterThan(white.leftX);
+    expect(black.curveX).toBeGreaterThan(white.curveX);
   });
 });

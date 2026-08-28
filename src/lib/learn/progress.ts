@@ -64,6 +64,15 @@ export function markLessonComplete(
   return next;
 }
 
+/** Last step succeeded — persist even if the player leaves before Next lesson. */
+export function isLastStepComplete(
+  stepComplete: boolean,
+  stepIndex: number,
+  totalSteps: number,
+): boolean {
+  return stepComplete && totalSteps > 0 && stepIndex >= totalSteps - 1;
+}
+
 export function markQuizPassed(progress: LearnProgress): LearnProgress {
   const next: LearnProgress = {
     ...progress,

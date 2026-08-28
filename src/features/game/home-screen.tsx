@@ -9,15 +9,20 @@ import {
   Image,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
+import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { confirmAction } from '@/lib/confirm';
+import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
@@ -28,6 +33,7 @@ import {
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
+import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout } from '@/lib/ui/game-chrome';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
@@ -37,6 +43,7 @@ function startGameFromHome(
   startGame: (mode: GameMode) => void,
 ) {
   hapticLight();
+  void ensureGameSfxReady();
   if (!isResumableGame(state)) {
     startGame(mode);
     router.replace('/game');
@@ -46,9 +53,9 @@ function startGameFromHome(
   if (Platform.OS === 'web') {
     // window.confirm is binary — OK = new game; Resume on home continues
     confirmAction({
-      title: 'Game in progress',
-      message: 'Start a new game? (Use Resume on the home screen to continue the current one.)',
-      confirmLabel: 'New game',
+      title: translate('home.confirm_title'),
+      message: translate('home.confirm_web'),
+      confirmLabel: translate('home.confirm_new'),
       destructive: true,
       onConfirm: () => {
         startGame(mode);
@@ -59,32 +66,30 @@ function startGameFromHome(
   }
 
   Alert.alert(
-    'Game in progress',
-    'Continue your current game or start a new one?',
+    translate('home.confirm_title'),
+    translate('home.confirm_native'),
     [
-      { text: 'Continue', onPress: () => router.replace('/game') },
+      { text: translate('home.confirm_continue'), onPress: () => router.replace('/game') },
       {
-        text: 'New game',
+        text: translate('home.confirm_new'),
         style: 'destructive',
         onPress: () => {
           startGame(mode);
           router.replace('/game');
         },
       },
-      { text: 'Cancel', style: 'cancel' },
+      { text: translate('home.confirm_cancel'), style: 'cancel' },
     ],
   );
 }
 
 function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) {
   hapticLight();
-  if (isResumableGame(state)) {
+  if (isResumableGame(state) || resumeGame()) {
     router.replace('/game');
     return;
   }
-  if (resumeGame()) {
-    router.replace('/game');
-  }
+  showErrorMessage(translate('home.resume_none'));
 }
 
 /* eslint-disable max-lines-per-function -- home mode menu composition */
@@ -92,6 +97,8 @@ export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
+  const { width, height } = useWindowDimensions();
+  const landscape = isLandscapeLayout(width, height);
   const canResume = canContinueSavedGame(state);
   const learnDone = completedLessonCount(progress);
   const learnReady = isReadyToPlay(progress);
@@ -119,12 +126,8 @@ export function HomeScreen() {
       lessons_completed: learnDone,
       quiz_passed: progress.quizPassed,
     });
-    if (learnReady || learnLessonsDone) {
-      router.push('/learn/graduation');
-      return;
-    }
-    router.push('/learn');
-  }, [learnDone, learnLessonsDone, learnReady, posthog, progress.quizPassed]);
+    router.push(learnHomeHref());
+  }, [learnDone, posthog, progress.quizPassed]);
 
   const learnSub = learnReady
     ? translate('learn.home_cta_ready')
@@ -140,38 +143,62 @@ export function HomeScreen() {
   return (
     <>
       <FocusAwareStatusBar />
-      <View style={styles.root}>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require('../../../assets/brand/display-logo.png')}
-            style={styles.logo}
-            resizeMode="cover"
-          />
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={[styles.root, landscape ? styles.rootLandscape : null]}
+        bounces={false}
+        overScrollMode="never"
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={[styles.brand, landscape ? styles.brandLandscape : null]}>
+          <View style={[styles.logoContainer, landscape ? styles.logoLandscape : null]}>
+            <Image
+              source={require('../../../assets/brand/display-logo.png')}
+              style={styles.logo}
+              resizeMode="cover"
+            />
+          </View>
+
+          <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
+            {translate('home.title')}
+          </Text>
+          {landscape
+            ? null
+            : <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>}
+
+          {landscape
+            ? null
+            : (
+                <View style={styles.dividerRow}>
+                  <View style={styles.dividerLine} />
+                  <View style={styles.dividerDiamond} />
+                  <View style={styles.dividerLine} />
+                </View>
+              )}
         </View>
 
-        <Text accessibilityRole="header" style={styles.title}>BACKGAMMON</Text>
-        <Text style={styles.subtitle}>Master the board — one move at a time</Text>
-
-        <View style={styles.dividerRow}>
-          <View style={styles.dividerLine} />
-          <View style={styles.dividerDiamond} />
-          <View style={styles.dividerLine} />
-        </View>
-
-        <View style={styles.buttons}>
+        <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
           {canResume && (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Resume saved game"
-              style={({ pressed }) => [styles.modeBtn, styles.resumeBtn, pressed && styles.pressed]}
+              accessibilityLabel={translate('home.resume_a11y')}
+              testID="resume-game-button"
+              style={({ pressed }) => [
+                styles.modeBtn,
+                landscape ? styles.modeBtnLandscape : null,
+                styles.resumeBtn,
+                pressed && styles.pressed,
+              ]}
               onPress={handleResume}
             >
               <View style={styles.btnIconSlot}>
                 <Feather name="play-circle" size={24} color="#A0D080" />
               </View>
               <View style={styles.btnTextCol}>
-                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>Resume Game</Text>
-                <Text style={[styles.btnSub, { color: '#6A9A50' }]}>Continue where you left off</Text>
+                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>{translate('home.resume')}</Text>
+                {landscape
+                  ? null
+                  : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>}
               </View>
             </Pressable>
           )}
@@ -179,7 +206,12 @@ export function HomeScreen() {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={translate('learn.home_cta')}
-            style={({ pressed }) => [styles.modeBtn, styles.learnBtn, pressed && styles.pressed]}
+            style={({ pressed }) => [
+              styles.modeBtn,
+              landscape ? styles.modeBtnLandscape : null,
+              styles.learnBtn,
+              pressed && styles.pressed,
+            ]}
             onPress={handleLearn}
           >
             <View style={styles.btnIconSlot}>
@@ -189,56 +221,96 @@ export function HomeScreen() {
               <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>
                 {translate('learn.home_cta')}
               </Text>
-              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>
-                {learnSub}
-              </Text>
+              {landscape
+                ? null
+                : (
+                    <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>
+                      {learnSub}
+                    </Text>
+                  )}
             </View>
           </Pressable>
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Play against the computer"
-            style={({ pressed }) => [styles.modeBtn, styles.primaryBtn, pressed && styles.pressed]}
+            accessibilityLabel={translate('home.vs_computer_a11y')}
+            style={({ pressed }) => [
+              styles.modeBtn,
+              landscape ? styles.modeBtnLandscape : null,
+              styles.primaryBtn,
+              pressed && styles.pressed,
+            ]}
             onPress={() => handleStart('vs-computer')}
           >
             <View style={styles.btnIconSlot}>
               <Feather name="cpu" size={24} color={GAME_PALETTE.bg} />
             </View>
             <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>vs Computer</Text>
-              <Text style={[styles.btnSub, { color: '#4A2A10' }]}>Play against AI</Text>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>{translate('home.vs_computer')}</Text>
+              {landscape
+                ? null
+                : <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>}
             </View>
           </Pressable>
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Play with two players locally"
-            style={({ pressed }) => [styles.modeBtn, styles.secondaryBtn, pressed && styles.pressed]}
+            accessibilityLabel={translate('home.two_players_a11y')}
+            style={({ pressed }) => [
+              styles.modeBtn,
+              landscape ? styles.modeBtnLandscape : null,
+              styles.secondaryBtn,
+              pressed && styles.pressed,
+            ]}
             onPress={() => handleStart('vs-human')}
           >
             <View style={styles.btnIconSlot}>
               <Feather name="users" size={24} color={GAME_PALETTE.accent} />
             </View>
             <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>2 Players</Text>
-              <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>Pass & play locally</Text>
+              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>{translate('home.two_players')}</Text>
+              {landscape
+                ? null
+                : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
             </View>
           </Pressable>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {
+  scroll: {
     flex: 1,
+    backgroundColor: GAME_PALETTE.bg,
+  },
+  root: {
+    flexGrow: 1,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
     justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
     paddingHorizontal: 24,
     paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
     paddingBottom: 32,
+  },
+  rootLandscape: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingTop: 12,
+    paddingBottom: 16,
+    gap: 16,
+  },
+  brand: {
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: GAME_CHROME_MAX_WIDTH,
+  },
+  brandLandscape: {
+    width: 'auto',
+    flexShrink: 1,
+    maxWidth: 320,
   },
   logoContainer: {
     width: 110,
@@ -252,16 +324,28 @@ const styles = StyleSheet.create({
     boxShadow: '0 4px 16px rgba(212, 168, 67, 0.35)',
     ...continuousRadius(28),
   },
+  logoLandscape: {
+    width: 72,
+    height: 72,
+    marginBottom: 8,
+    marginTop: 0,
+  },
   logo: {
     width: '100%',
     height: '100%',
   },
   title: {
     fontSize: 32,
+    lineHeight: 38,
     color: GAME_PALETTE.accent,
     letterSpacing: 4,
     ...interFont('extrabold'),
     textAlign: 'center',
+  },
+  titleLandscape: {
+    fontSize: 22,
+    lineHeight: 26,
+    letterSpacing: 2,
   },
   subtitle: {
     fontSize: 13,
@@ -290,19 +374,35 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '45deg' }],
   },
   buttons: {
-    width: '100%',
-    maxWidth: 420,
+    maxWidth: GAME_CHROME_MAX_WIDTH,
     gap: 14,
     marginBottom: 24,
+    flexShrink: 1,
+  },
+  buttonsPortrait: {
+    width: '100%',
+  },
+  buttonsLandscape: {
+    flex: 1,
+    minWidth: 0,
+    gap: 8,
+    marginBottom: 0,
+    justifyContent: 'center',
   },
   modeBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 18,
+    paddingVertical: 14,
     paddingHorizontal: 24,
     borderWidth: 2,
     gap: 16,
     ...continuousRadius(16),
+  },
+  modeBtnLandscape: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    gap: 10,
+    minHeight: 44,
   },
   pressed: {
     opacity: 0.88,

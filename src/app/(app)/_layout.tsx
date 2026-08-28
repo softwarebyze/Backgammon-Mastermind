@@ -1,18 +1,15 @@
-import { Feather } from '@expo/vector-icons';
-import { router, Stack } from 'expo-router';
-import { HeaderButton } from 'expo-router/react-navigation';
+import { Stack } from 'expo-router';
 
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
-import { GAME_PALETTE } from '@/features/game/game-palette';
-import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import {
   homeScreenOptions,
   pickerFormSheetOptions,
   settingsStackOptions,
 } from '@/lib/navigation/native-stack-options';
+import { stackEscapeHeaderOptions } from '@/lib/navigation/stack-escape-header';
 
 export default function AppLayout() {
   useEffect(() => {
@@ -37,17 +34,7 @@ export default function AppLayout() {
         name="settings"
         options={{
           ...settingsStackOptions(),
-          headerLeft: () => (
-            <HeaderButton
-              accessibilityLabel="Back"
-              onPress={() => {
-                hapticLight();
-                router.back();
-              }}
-            >
-              <Feather name="chevron-left" size={24} color={GAME_PALETTE.accent} />
-            </HeaderButton>
-          ),
+          ...stackEscapeHeaderOptions(),
         }}
       />
       <Stack.Screen

@@ -1,5 +1,5 @@
 import type { GameState, Move } from './types';
-import { applyMove, getLegalMoves } from './moves';
+import { applyMove, getLegalMoves, getReachableDestinations } from './moves';
 
 /** True when exactly one distinct legal move exists (no real choice). */
 export function hasExactlyOneLegalMove(state: GameState): boolean {
@@ -74,4 +74,23 @@ export function getForcedTurnSequence(state: GameState): Move[] | null {
     return null;
   }
   return terminals[0]!.moves;
+}
+
+/**
+ * If `from` has exactly one reachable destination this turn (including a
+ * compound/long move that spends multiple dice), return that sequence.
+ */
+export function getSingleDestinationSequence(state: GameState, from: number): Move[] | null {
+  if (state.phase !== 'moving') {
+    return null;
+  }
+  const destinations = getReachableDestinations(state, from);
+  if (destinations.size !== 1) {
+    return null;
+  }
+  const sequence = destinations.values().next().value;
+  if (!sequence || sequence.length === 0) {
+    return null;
+  }
+  return sequence;
 }

@@ -7,12 +7,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AccessibilityInfo } from 'react-native';
 
-import { resolveDropTarget } from '@/features/game/board-point-layout';
 import { validateDragStart } from '@/features/game/drag-input';
 import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { dragReleaseAnchor } from '@/features/game/drag-overlay-offset';
+import { resolveFatFingerDrop } from '@/features/game/hit-test-board';
 import { resolvePendingDragDrop } from '@/features/game/pending-drag-drop';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
+import { getSingleDestinationSequence } from '@/lib/game/single-move';
 import { translate } from '@/lib/i18n';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
@@ -162,6 +163,17 @@ export function useBoardPlayInput({
     }
   }, [doMove, doMoveSequence]);
 
+  const playTapSequence = useCallback((sequence: Move[], inputType: BoardMoveInputType = 'tap') => {
+    triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+    onMoveMadeRef.current?.(inputType);
+    if (sequence.length === 1) {
+      doMove(sequence[0]!);
+    }
+    else {
+      doMoveSequence(sequence);
+    }
+  }, [doMove, doMoveSequence]);
+
   // After an in-flight move commits, play any drop that was queued during the slide.
   useEffect(() => {
     if (wasAnimatingRef.current && !isAnimating) {
@@ -187,6 +199,13 @@ export function useBoardPlayInput({
       if (touchSelectedFromRef.current === pointIndex) {
         touchSelectedFromRef.current = null;
         ignoreNextBoardPressRef.current = true;
+        const live = stateRef.current;
+        if (live && !isAnimating && isHumanTurn && live.phase === 'moving') {
+          const sequence = getSingleDestinationSequence(live, pointIndex);
+          if (sequence) {
+            playTapSequence(sequence);
+          }
+        }
         return;
       }
       if (!state || isAnimating) {
@@ -213,24 +232,26 @@ export function useBoardPlayInput({
         }
         const move = state.legalMovesForSelected.find(m => m.to === pointIndex);
         if (move) {
-          triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
-          onMoveMadeRef.current?.('tap');
-          doMove(move);
+          playTapSequence([move]);
           return;
         }
         const sequence = findMoveSequence(state, state.selectedPoint, pointIndex);
         if (sequence) {
-          triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
-          onMoveMadeRef.current?.('tap');
-          doMoveSequence(sequence);
+          playTapSequence(sequence);
           return;
         }
+      }
+
+      const onlyDest = getSingleDestinationSequence(state, pointIndex);
+      if (onlyDest) {
+        playTapSequence(onlyDest);
+        return;
       }
 
       triggerHaptic(() => Haptics.selectionAsync());
       selectPoint(pointIndex);
     },
-    [state, isAnimating, isHumanTurn, canInteract, doMove, doMoveSequence, selectPoint, setPreviewTarget, nudgeRoll],
+    [state, isAnimating, isHumanTurn, canInteract, playTapSequence, selectPoint, setPreviewTarget, nudgeRoll],
   );
 
   const handlePointPressIn = useCallback(
@@ -334,7 +355,7 @@ export function useBoardPlayInput({
       endDrag();
       return;
     }
-    const target = resolveDropTarget(boardX, boardY, dims);
+    const target = resolveFatFingerDrop({ x: boardX, y: boardY, state: s, from, dims });
     if (target === null || target === from) {
       endDrag();
       if (!isAnimating) {
@@ -369,18 +390,14 @@ export function useBoardPlayInput({
     }
     const move = state.legalMovesForSelected.find(m => m.to === BEAR_OFF);
     if (move) {
-      triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
-      onMoveMadeRef.current?.('bear_off');
-      doMove(move);
+      playTapSequence([move], 'bear_off');
       return;
     }
     const sequence = findMoveSequence(state, state.selectedPoint, BEAR_OFF);
     if (sequence) {
-      triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
-      onMoveMadeRef.current?.('bear_off');
-      doMoveSequence(sequence);
+      playTapSequence(sequence, 'bear_off');
     }
-  }, [state, doMove, doMoveSequence, isAnimating]);
+  }, [state, playTapSequence, isAnimating]);
 
   const handleBarPress = useCallback(() => {
     if (!state || isAnimating || !isHumanTurn) {
@@ -402,6 +419,10 @@ export function useBoardPlayInput({
     if (state.selectedPoint === 0) {
       if (touchSelectedFromRef.current === 0) {
         touchSelectedFromRef.current = null;
+        const onlyDest = getSingleDestinationSequence(state, 0);
+        if (onlyDest) {
+          playTapSequence(onlyDest);
+        }
         return;
       }
       selectPoint(null);
@@ -413,9 +434,15 @@ export function useBoardPlayInput({
       return;
     }
 
+    const onlyDest = getSingleDestinationSequence(state, 0);
+    if (onlyDest) {
+      playTapSequence(onlyDest);
+      return;
+    }
+
     triggerHaptic(() => Haptics.selectionAsync());
     selectPoint(0);
-  }, [state, isAnimating, isHumanTurn, canInteract, selectPoint, nudgeRoll]);
+  }, [state, isAnimating, isHumanTurn, canInteract, playTapSequence, selectPoint, nudgeRoll]);
 
   const handleBoardPress = useCallback(() => {
     if (ignoreNextBoardPressRef.current) {
