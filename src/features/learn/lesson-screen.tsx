@@ -86,7 +86,7 @@ function LessonScreenBody({
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
   const dimensions = useBoardDimensions({
     showPointNumbers,
-    extraChrome: 80,
+    extraChrome: landscape ? 0 : 80,
   });
   const completedEventRef = useRef(false);
 
@@ -236,7 +236,7 @@ function LessonScreenBody({
         {landscape ? null : caption}
 
         <View
-          style={styles.boardWrap}
+          style={[styles.boardWrap, landscape ? styles.boardWrapLandscape : null]}
           pointerEvents="box-none"
           onLayout={(event) => {
             const { width: slotW, height: slotH } = event.nativeEvent.layout;
@@ -327,6 +327,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  boardWrapLandscape: {
+    alignSelf: 'stretch',
+    height: '100%',
   },
   boardContainer: {
     width: '100%',

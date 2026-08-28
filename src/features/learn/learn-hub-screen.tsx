@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -22,7 +22,7 @@ import {
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
-import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout } from '@/lib/ui/game-chrome';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 /* eslint-disable-next-line max-lines-per-function -- hub list + skip CTA */
@@ -30,6 +30,8 @@ export function LearnHubScreen() {
   const { progress, startLearning } = useLearnProgress();
   const { startGame } = useGame();
   const posthog = usePostHog();
+  const { width, height } = useWindowDimensions();
+  const landscape = isLandscapeLayout(width, height);
   const done = completedLessonCount(progress);
   const total = LESSON_IDS.length;
   const ready = isReadyToPlay(progress);
@@ -55,7 +57,7 @@ export function LearnHubScreen() {
       <FocusAwareStatusBar />
       <ScrollView
         style={styles.scroll}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, landscape ? styles.contentLandscape : null]}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
@@ -76,26 +78,27 @@ export function LearnHubScreen() {
           </View>
         </View>
 
-        <View style={styles.list}>
+        <View style={[styles.list, landscape ? styles.listLandscape : null]}>
           {LESSONS.map((lesson) => {
             const completed = progress.completedLessons.includes(lesson.id);
             const unlocked = isLessonUnlocked(lesson.id, progress.completedLessons);
             return (
-              <LessonRow
-                key={lesson.id}
-                lesson={lesson}
-                completed={completed}
-                unlocked={unlocked}
-                onPress={() => {
-                  hapticLight();
-                  startLearning();
-                  posthog.capture('learn_lesson_opened', {
-                    lesson_id: lesson.id,
-                    completed,
-                  });
-                  router.push(`/learn/${lesson.id}`);
-                }}
-              />
+              <View key={lesson.id} style={landscape ? styles.lessonCell : null}>
+                <LessonRow
+                  lesson={lesson}
+                  completed={completed}
+                  unlocked={unlocked}
+                  onPress={() => {
+                    hapticLight();
+                    startLearning();
+                    posthog.capture('learn_lesson_opened', {
+                      lesson_id: lesson.id,
+                      completed,
+                    });
+                    router.push(`/learn/${lesson.id}`);
+                  }}
+                />
+              </View>
             );
           })}
         </View>
@@ -153,6 +156,11 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     gap: 12,
   },
+  contentLandscape: {
+    maxWidth: 920,
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
   subtitle: {
     color: GAME_PALETTE.accentDim,
     fontSize: 14,
@@ -179,6 +187,16 @@ const styles = StyleSheet.create({
   },
   list: {
     gap: 10,
+  },
+  listLandscape: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  lessonCell: {
+    flexGrow: 1,
+    flexBasis: 280,
+    minWidth: 260,
+    maxWidth: '100%',
   },
   primaryBtn: {
     marginTop: 12,
