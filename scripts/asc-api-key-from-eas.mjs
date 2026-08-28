@@ -14,25 +14,30 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, '.cache/asc-api-key.json');
 const DEFAULT_KEY_ID = '6086269d-b10d-43bf-89ad-f212f7150429';
 
-function loadExpoSession() {
+function loadExpoAuth() {
+  const accessToken = process.env.EXPO_TOKEN;
+  if (accessToken) {
+    return { authorization: `Bearer ${accessToken}` };
+  }
+
   const statePath = path.join(os.homedir(), '.expo/state.json');
   if (!fs.existsSync(statePath)) {
-    throw new Error(`No Expo session at ${statePath}. Run: eas login`);
+    throw new Error(`No Expo session at ${statePath}. Run: eas login or set EXPO_TOKEN`);
   }
   const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
   const secret = state?.auth?.sessionSecret;
   if (!secret) {
-    throw new Error('Expo state.json has no auth.sessionSecret. Run: eas login');
+    throw new Error('Expo state.json has no auth.sessionSecret. Run: eas login or set EXPO_TOKEN');
   }
-  return secret;
+  return { 'expo-session': secret };
 }
 
-async function gql(sessionSecret, query, variables) {
+async function gql(authHeaders, query, variables) {
   const res = await fetch('https://api.expo.dev/graphql', {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      'expo-session': sessionSecret,
+      ...authHeaders,
       'user-agent': 'eas-cli/16.0.0',
     },
     body: JSON.stringify({ query, variables }),
@@ -45,10 +50,10 @@ async function gql(sessionSecret, query, variables) {
 }
 
 async function main() {
-  const sessionSecret = loadExpoSession();
+  const authHeaders = loadExpoAuth();
   const keyId = process.env.ASC_EAS_KEY_ID || DEFAULT_KEY_ID;
   const data = await gql(
-    sessionSecret,
+    authHeaders,
     `query($id: ID!) {
       appStoreConnectApiKey {
         byId(id: $id) {
