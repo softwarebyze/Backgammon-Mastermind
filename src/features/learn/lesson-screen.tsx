@@ -4,13 +4,17 @@ import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { clearBoardSlotSize, setBoardSlotSize } from '@/features/game/hooks/board-slot-size';
-import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import {
+  MIN_LEARN_BOARD_SLOT_HEIGHT,
+  useBoardDimensions,
+} from '@/features/game/hooks/use-board-dimensions';
+import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
 import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
@@ -80,24 +84,22 @@ function LessonScreenBody({
 }) {
   const session = useLessonSession(lesson);
   const posthog = usePostHog();
+  const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const landscape = isLandscapeLayout(width, height);
   const chromeWidth = landscapeChromeColumnWidth(width);
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
-  const dimensions = useBoardDimensions({
-    showPointNumbers,
-    extraChrome: landscape ? 0 : 80,
+  const { onTopLayout, onControlsLayout, onSlotLayout, captionMaxHeight } = usePublishBoardSlot({
+    reviewHeight: 0,
+    minBoardHeight: landscape ? 0 : MIN_LEARN_BOARD_SLOT_HEIGHT,
   });
+  const dimensions = useBoardDimensions({ showPointNumbers });
   const completedEventRef = useRef(false);
 
   const { setBoardDimensions } = session;
   useEffect(() => {
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
-
-  useEffect(() => () => {
-    clearBoardSlotSize();
-  }, []);
 
   useEffect(() => {
     if (!isLastStepComplete(session.stepComplete, session.stepIndex, session.totalSteps)) {
@@ -183,15 +185,15 @@ function LessonScreenBody({
         current: session.stepIndex + 1,
         total: session.totalSteps,
       })}
-      compact={landscape}
+      compact={landscape || (captionMaxHeight != null && captionMaxHeight < 160)}
     />
   );
 
   const footer = (
-    <View style={styles.footer} testID="learn-lesson-footer">
-      <View style={styles.diceRow}>
-        {showDice
-          ? (
+    <View style={styles.footer} testID="learn-lesson-footer" onLayout={onControlsLayout}>
+      {showDice
+        ? (
+            <View style={styles.diceRow}>
               <DiceDisplay
                 dice={session.state.dice}
                 remainingDice={session.state.remainingDice}
@@ -199,17 +201,15 @@ function LessonScreenBody({
                 displayStyle={diceDisplayStyle}
                 animateRoll={false}
               />
-            )
-          : null}
-      </View>
+            </View>
+          )
+        : null}
 
-      <View style={styles.completeSlot}>
-        {showCompleteBanner
-          ? (
-              <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
-            )
-          : null}
-      </View>
+      {showCompleteBanner
+        ? (
+            <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
+          )
+        : null}
 
       <Pressable
         key="learn-primary-cta"
@@ -229,19 +229,49 @@ function LessonScreenBody({
     </View>
   );
 
+  const portraitCaption = (
+    <View
+      style={[
+        styles.captionHost,
+        captionMaxHeight != null ? { maxHeight: captionMaxHeight } : null,
+      ]}
+      testID="learn-caption-host"
+      onLayout={onTopLayout}
+    >
+      <ScrollView
+        style={captionMaxHeight != null ? { maxHeight: captionMaxHeight } : undefined}
+        contentContainerStyle={styles.captionScrollContent}
+        bounces={false}
+        overScrollMode="never"
+        nestedScrollEnabled
+        keyboardShouldPersistTaps="handled"
+        testID="learn-caption-scroll"
+      >
+        {caption}
+      </ScrollView>
+    </View>
+  );
+
   return (
     <>
       <FocusAwareStatusBar />
-      <View style={[styles.root, landscape ? styles.rootLandscape : null]}>
-        {landscape ? null : caption}
+      <View
+        style={[
+          styles.root,
+          landscape ? styles.rootLandscape : null,
+          { paddingBottom: landscape ? 8 : Math.max(8, insets.bottom) },
+        ]}
+      >
+        {landscape ? null : portraitCaption}
 
         <View
-          style={[styles.boardWrap, landscape ? styles.boardWrapLandscape : null]}
+          style={[
+            styles.boardWrap,
+            landscape ? styles.boardWrapLandscape : styles.boardWrapPortrait,
+          ]}
           pointerEvents="box-none"
-          onLayout={(event) => {
-            const { width: slotW, height: slotH } = event.nativeEvent.layout;
-            setBoardSlotSize({ width: slotW, height: slotH });
-          }}
+          testID="learn-board-slot"
+          onLayout={onSlotLayout}
         >
           <View
             style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
@@ -297,18 +327,22 @@ const styles = StyleSheet.create({
     minHeight: 0,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
-    paddingBottom: 24,
   },
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'stretch',
-    paddingBottom: 8,
   },
   sidePanel: {
     flexGrow: 0,
     flexShrink: 0,
     minHeight: 0,
     alignItems: 'center',
+  },
+  captionHost: {
+    width: '100%',
+    flexGrow: 0,
+    flexShrink: 1,
+    minHeight: 0,
   },
   captionScroll: {
     flexGrow: 1,
@@ -317,7 +351,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   captionScrollContent: {
-    flexGrow: 1,
+    flexGrow: 0,
   },
   boardWrap: {
     flexGrow: 1,
@@ -327,6 +361,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  boardWrapPortrait: {
+    width: '100%',
+    minHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
   },
   boardWrapLandscape: {
     alignSelf: 'stretch',
@@ -344,14 +382,8 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   diceRow: {
-    minHeight: 48,
     justifyContent: 'center',
     marginBottom: 8,
-  },
-  completeSlot: {
-    minHeight: 28,
-    justifyContent: 'center',
-    marginBottom: 4,
   },
   completeBanner: {
     color: '#A0D080',

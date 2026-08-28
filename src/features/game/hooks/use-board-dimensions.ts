@@ -20,6 +20,14 @@ const WEB_VERTICAL_CHROME = 360;
 const NATIVE_VERTICAL_CHROME = 240;
 /** Floor when no slot is measured. Measured slots may be shorter. */
 const FALLBACK_MIN_OUTER_HEIGHT = 220;
+/**
+ * Learn lessons keep at least this much leftover for the live board so
+ * Point 1–24, the bar, and bear-off stay on screen when coach copy grows.
+ */
+export const MIN_LEARN_BOARD_SLOT_HEIGHT = FALLBACK_MIN_OUTER_HEIGHT;
+/** Always leave a peek of coach copy; overflow scrolls. */
+export const MIN_LEARN_CAPTION_HEIGHT = 56;
+const DEFAULT_LEFTOVER_FLOOR = 120;
 
 export type BoardDimensions = {
   boardWidth: number;
@@ -91,6 +99,8 @@ export type LeftoverBoardHeightArgs = {
   bottomInset: number;
   /** Pip, review, and dice sit beside the board — do not subtract them from height. */
   sideBySide?: boolean;
+  /** Floor for the leftover slot. Game chrome uses 120; Learn uses MIN_LEARN_BOARD_SLOT_HEIGHT. */
+  minHeight?: number;
 };
 
 /** Window height minus measured header, pip/banner, review strip, and dice/controls. */
@@ -102,16 +112,48 @@ export function leftoverBoardHeight({
   controlsHeight,
   bottomInset,
   sideBySide = false,
+  minHeight = DEFAULT_LEFTOVER_FLOOR,
 }: LeftoverBoardHeightArgs): number {
   const stackedChrome = sideBySide
     ? 0
     : topChromeHeight + reviewHeight + controlsHeight;
   return Math.max(
-    120,
+    minHeight,
     Math.round(
       screenHeight
       - headerHeight
       - stackedChrome
+      - bottomInset,
+    ),
+  );
+}
+
+export type LearnCaptionMaxHeightArgs = {
+  screenHeight: number;
+  headerHeight: number;
+  footerHeight: number;
+  bottomInset: number;
+  minBoardHeight?: number;
+};
+
+/**
+ * Cap stacked Learn coach copy so the live board keeps `minBoardHeight`.
+ * Caption content beyond this scrolls; it does not clip the board.
+ */
+export function learnCaptionMaxHeight({
+  screenHeight,
+  headerHeight,
+  footerHeight,
+  bottomInset,
+  minBoardHeight = MIN_LEARN_BOARD_SLOT_HEIGHT,
+}: LearnCaptionMaxHeightArgs): number {
+  return Math.max(
+    MIN_LEARN_CAPTION_HEIGHT,
+    Math.round(
+      screenHeight
+      - headerHeight
+      - footerHeight
+      - minBoardHeight
       - bottomInset,
     ),
   );

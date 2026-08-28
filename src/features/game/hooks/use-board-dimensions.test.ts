@@ -1,7 +1,10 @@
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import {
   fitBoardToViewport,
+  learnCaptionMaxHeight,
   leftoverBoardHeight,
+  MIN_LEARN_BOARD_SLOT_HEIGHT,
+  MIN_LEARN_CAPTION_HEIGHT,
   resolveBoardViewport,
 } from '@/features/game/hooks/use-board-dimensions';
 import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
@@ -103,6 +106,21 @@ describe('resolveBoardViewport', () => {
     expect(dims.boardOuterWidth).toBeLessThanOrEqual(540);
     expect(dims.boardOuterWidth).toBeGreaterThan(200);
   });
+
+  it('keeps Point 1–24 inside the Learn leftover floor with point-number rails', () => {
+    const dims = resolveBoardViewport({
+      screenWidth: 390,
+      screenHeight: 640,
+      platform: 'web',
+      slotWidth: 390,
+      slotHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
+      showPointNumbers: true,
+    });
+    expect(dims.boardOuterHeight + POINT_NUMBER_RAIL * 2).toBeLessThanOrEqual(
+      MIN_LEARN_BOARD_SLOT_HEIGHT,
+    );
+    expect(dims.boardOuterWidth).toBeGreaterThan(200);
+  });
 });
 
 describe('leftoverBoardHeight', () => {
@@ -176,5 +194,62 @@ describe('leftoverBoardHeight', () => {
     });
     expect(shortChrome).toBe(tallChrome);
     expect(tallChrome).toBe(334);
+  });
+
+  it('does not subtract the vs-computer review strip when Learn passes 0', () => {
+    const game = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 140,
+      controlsHeight: 72,
+      bottomInset: 0,
+    });
+    const learn = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 140,
+      reviewHeight: 0,
+      controlsHeight: 72,
+      bottomInset: 0,
+      minHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
+    });
+    expect(learn).toBe(game + 68);
+    expect(learn).toBeGreaterThanOrEqual(MIN_LEARN_BOARD_SLOT_HEIGHT);
+  });
+});
+
+describe('learnCaptionMaxHeight', () => {
+  it('keeps a 220px board slot on iPhone-width when coach copy is tall', () => {
+    const captionMax = learnCaptionMaxHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      footerHeight: 72,
+      bottomInset: 34,
+    });
+    const boardLeftover = 844 - 56 - captionMax - 72 - 34;
+    expect(boardLeftover).toBe(MIN_LEARN_BOARD_SLOT_HEIGHT);
+    expect(captionMax).toBeGreaterThan(MIN_LEARN_CAPTION_HEIGHT);
+  });
+
+  it('scrolls coach copy instead of shrinking the board on a short large-text viewport', () => {
+    const captionMax = learnCaptionMaxHeight({
+      screenHeight: 640,
+      headerHeight: 72,
+      footerHeight: 160,
+      bottomInset: 0,
+    });
+    const boardLeftover = 640 - 72 - captionMax - 160;
+    expect(boardLeftover).toBe(MIN_LEARN_BOARD_SLOT_HEIGHT);
+    expect(captionMax).toBeGreaterThanOrEqual(MIN_LEARN_CAPTION_HEIGHT);
+  });
+
+  it('never hides coach copy completely', () => {
+    const captionMax = learnCaptionMaxHeight({
+      screenHeight: 400,
+      headerHeight: 72,
+      footerHeight: 180,
+      bottomInset: 34,
+    });
+    expect(captionMax).toBe(MIN_LEARN_CAPTION_HEIGHT);
   });
 });

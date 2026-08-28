@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 4,
     gap: 4,
+    flexShrink: 1,
   },
   rootCompact: {
     paddingHorizontal: 12,
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.text,
     fontSize: 14,
     lineHeight: 20,
+    flexShrink: 1,
     ...interFont('regular'),
   },
   bodyCompact: {
