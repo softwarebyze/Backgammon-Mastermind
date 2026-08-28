@@ -9,7 +9,7 @@ Canonical site: **https://backgammon-mastermind.vercel.app**
 | `/privacy/` | Hosted privacy policy (App Store URL) |
 | `/terms/` | Hosted terms |
 
-Deploy: Vercel build `expo export -p web` → `dist` (see Vercel project settings). `vercel.json` SPA-rewrites deep links; legal pages are static files under `public/`.
+Deploy: Vercel build `expo export -p web` → `dist` (see Vercel project settings). `vercel.json` SPA-rewrites deep links; legal pages and share icons (`apple-touch-icon.png`, `favicon.png`) are static files under `public/`.
 
 ## Deep links were 404ing
 

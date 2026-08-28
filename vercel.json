@@ -4,6 +4,9 @@
     { "source": "/privacy/", "destination": "/privacy/index.html" },
     { "source": "/terms", "destination": "/terms/index.html" },
     { "source": "/terms/", "destination": "/terms/index.html" },
-    { "source": "/((?!_expo/).*)", "destination": "/index.html" }
+    {
+      "source": "/((?!_expo/|apple-touch-icon\\.png$|favicon\\.png$|favicon\\.ico$).*)",
+      "destination": "/index.html"
+    }
   ]
 }

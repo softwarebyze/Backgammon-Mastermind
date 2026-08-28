@@ -1,5 +1,16 @@
 import { ScrollViewStyleReset } from 'expo-router/html';
 
+import {
+  APPLE_TOUCH_ICON_PATH,
+  FAVICON_ICO_PATH,
+  FAVICON_PNG_PATH,
+  webAssetUrl,
+} from '@/lib/web-share-meta';
+
+const APP_TITLE = 'Backgammon Mastermind';
+const APP_DESCRIPTION = 'Master the board — one move at a time.';
+const shareImageUrl = webAssetUrl(APPLE_TOUCH_ICON_PATH);
+
 // Web-only root HTML for static export (expo export). Dev mode uses the default
 // Expo shell; global.css + useFonts handle fonts and layout during development.
 export default function Root({ children }: { children: React.ReactNode }) {
@@ -13,6 +24,18 @@ export default function Root({ children }: { children: React.ReactNode }) {
           name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1.00001,viewport-fit=cover"
         />
+        <title>{APP_TITLE}</title>
+        <meta name="description" content={APP_DESCRIPTION} />
+        <link rel="icon" type="image/png" href={FAVICON_PNG_PATH} />
+        <link rel="icon" type="image/x-icon" href={FAVICON_ICO_PATH} />
+        <link rel="apple-touch-icon" sizes="180x180" href={APPLE_TOUCH_ICON_PATH} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={APP_TITLE} />
+        <meta property="og:description" content={APP_DESCRIPTION} />
+        <meta property="og:image" content={shareImageUrl} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={APP_TITLE} />
+        <meta name="twitter:image" content={shareImageUrl} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
