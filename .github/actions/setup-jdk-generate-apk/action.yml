@@ -44,6 +44,16 @@ runs:
         APP_ENV: ${{ inputs.APP_ENV }}
         CI: 'true'
 
+    - name: Use the supported Gradle line for Expo modules
+      run: |
+        # RN 0.86/Expo SDK 57 resolves AGP 8.12.  Its Expo module plugin is not
+        # compatible with Gradle 9's earlier Android DSL finalisation: it tries to
+        # publish Expo's non-publishable root module before `canBePublished false`
+        # is applied.  Gradle 8.14 is the supported AGP 8.12 line.
+        sed -i.bak 's/gradle-9\.3\.1-bin\.zip/gradle-8.14.3-bin.zip/' android/gradle/wrapper/gradle-wrapper.properties
+        rm android/gradle/wrapper/gradle-wrapper.properties.bak
+      shell: bash
+
     - name: Tune Gradle for CI
       run: bash .github/scripts/tune-android-gradle-for-ci.sh android/gradle.properties
       shell: bash
