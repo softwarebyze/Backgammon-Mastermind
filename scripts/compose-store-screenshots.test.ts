@@ -23,13 +23,15 @@ type Frame = {
   device: 'iphone' | 'ipad';
   source: string;
   dest: string;
-  headline: string;
+  headline?: string;
   sub?: string;
 };
 
 type Manifest = {
+  layout?: string;
   frames: Frame[];
   devices: Record<string, { width: number; height: number }>;
+  colors: Record<string, string>;
 };
 
 function loadManifest(): Manifest {
@@ -37,7 +39,7 @@ function loadManifest(): Manifest {
 }
 
 function wordCount(headline: string): number {
-  return headline.trim().split(/\s+/).length;
+  return headline.trim().split(/\s+/).filter(Boolean).length;
 }
 
 describe('screenshot-frames manifest', () => {
@@ -52,7 +54,7 @@ describe('screenshot-frames manifest', () => {
     expect(manifest.devices.ipad).toEqual({ width: 2064, height: 2752 });
   });
 
-  it('uses the store carousel order and 2–5 word headlines', () => {
+  it('uses the store carousel order and 2–5 word headlines (home has none)', () => {
     const iphoneDest = manifest.frames
       .filter(f => f.device === 'iphone')
       .map(f => f.dest);
@@ -73,11 +75,37 @@ describe('screenshot-frames manifest', () => {
       'ipad-13-04-learn-hub.png',
       'ipad-13-05-home.png',
     ]);
+    expect(manifest.frames.filter(f => f.device === 'iphone').map(f => f.headline)).toEqual([
+      'Play a real game',
+      'See every legal move',
+      'Learn by playing',
+      'Five short lessons',
+      undefined,
+    ]);
     for (const frame of manifest.frames) {
-      const n = wordCount(frame.headline);
+      const isHome = frame.dest.includes('-home.');
+      if (isHome) {
+        expect(frame.headline).toBeFalsy();
+        expect(JSON.stringify(frame)).not.toMatch(/Master the board/i);
+        continue;
+      }
+      const n = wordCount(frame.headline ?? '');
       expect(n).toBeGreaterThanOrEqual(2);
       expect(n).toBeLessThanOrEqual(5);
     }
+  });
+
+  it('is a bleed overlay, not a letterboxed gold bezel', () => {
+    expect(manifest.layout).toBe('bleed-overlay');
+    expect(manifest.colors.background).toBe('#1E0C02');
+    const src = readFileSync(SCRIPT, 'utf8');
+    expect(src).toMatch(/object-fit:cover/);
+    expect(src).toMatch(/object-position:top center/);
+    expect(src).toMatch(/font-family:Fraunces/);
+    expect(src).not.toMatch(/font-family:Inter/);
+    expect(src).not.toMatch(/class="device"/);
+    expect(src).not.toMatch(/class="wordmark"/);
+    expect(src).not.toMatch(/class="divider"/);
   });
 });
 
@@ -101,14 +129,10 @@ describe('compose-store-screenshots', () => {
         version: '1.0.0',
         rawDir: 'app-store-screenshots/raw',
         outDir: 'app-store-screenshots',
-        wordmark: 'BACKGAMMON MASTERMIND',
+        layout: 'bleed-overlay',
         colors: {
           background: '#1E0C02',
-          backgroundMid: '#2A1408',
-          headline: '#E8A04A',
-          sub: '#C4A07A',
-          rim: '#E8A04A',
-          wordmark: '#E8A04A',
+          headline: '#F3E6C8',
         },
         devices: {
           iphone: { width: 1320, height: 2868 },

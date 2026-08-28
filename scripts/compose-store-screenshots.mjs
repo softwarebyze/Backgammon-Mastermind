@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 /**
- * Dress raw App Store captures in BM marketing frames (headline + bezel + wordmark).
+ * Dress raw App Store captures as bleed + overlay frames.
+ *
+ * The raw UI fills the canvas (object-fit: cover, top-aligned). A dark
+ * gradient from the top carries a 2–5 word Fraunces headline. No gold
+ * bezel, no letterbox, no device chrome, no wordmark footer.
  *
  * Reads docs/marketing/v1.0.0/screenshot-frames.json
  * Writes composed PNGs at exact Apple pixel sizes.
@@ -11,6 +15,7 @@
  * Playwright-core is loaded from PLAYWRIGHT_CORE or /tmp/pw-store (same as capture).
  */
 import fs from 'node:fs';
+import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,28 +27,24 @@ const DEFAULT_MANIFEST = path.join(
 );
 const PNG_SIG = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
 
+const FRAUNCES_WOFF2_URL
+  = 'https://fonts.gstatic.com/s/fraunces/v38/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58njr1a03gg7S2nfgRYIcUByTCf7T.woff2';
+const FRAUNCES_FILE = 'fraunces-700.woff2';
+
 const LAYOUT = {
   iphone: {
-    padTop: 72,
-    padX: 88,
-    padBottom: 56,
-    headlineSize: 78,
-    subSize: 28,
-    wordmarkSize: 18,
-    radius: 48,
-    rim: 5,
-    copyGap: 14,
+    overlayPct: 0.32,
+    headlineSize: 196,
+    subSize: 36,
+    padX: 64,
+    padTop: 88,
   },
   ipad: {
-    padTop: 64,
-    padX: 140,
-    padBottom: 48,
-    headlineSize: 92,
-    subSize: 32,
-    wordmarkSize: 22,
-    radius: 36,
-    rim: 6,
-    copyGap: 12,
+    overlayPct: 0.30,
+    headlineSize: 168,
+    subSize: 40,
+    padX: 96,
+    padTop: 72,
   },
 };
 
@@ -113,19 +114,63 @@ function esc(value) {
     .replace(/"/g, '&quot;');
 }
 
+function fontDir() {
+  return process.env.DISPLAY_FONT_DIR || '/tmp/display-fonts';
+}
+
+function fontPath() {
+  return path.join(fontDir(), FRAUNCES_FILE);
+}
+
+function downloadFile(url, dest) {
+  return new Promise((resolve, reject) => {
+    const request = (href) => {
+      https.get(href, {
+        headers: { 'User-Agent': 'BackgammonMastermind-compose/1.0' },
+      }, (res) => {
+        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          res.resume();
+          request(res.headers.location);
+          return;
+        }
+        if (res.statusCode !== 200) {
+          res.resume();
+          reject(new Error(`Font download failed: HTTP ${res.statusCode}`));
+          return;
+        }
+        const chunks = [];
+        res.on('data', (c) => chunks.push(c));
+        res.on('end', () => {
+          const buf = Buffer.concat(chunks);
+          if (buf.length < 4 || buf.subarray(0, 4).toString() !== 'wOF2') {
+            reject(new Error('Font download was not a woff2'));
+            return;
+          }
+          fs.mkdirSync(path.dirname(dest), { recursive: true });
+          fs.writeFileSync(dest, buf);
+          resolve(dest);
+        });
+      }).on('error', reject);
+    };
+    request(url);
+  });
+}
+
+async function ensureDisplayFont() {
+  const dest = fontPath();
+  if (fs.existsSync(dest) && fs.statSync(dest).size > 1000)
+    return dest;
+  console.log(`  downloading Fraunces 700 → ${dest}`);
+  await downloadFile(FRAUNCES_WOFF2_URL, dest);
+  return dest;
+}
+
 function fontFaceCss() {
-  const dir = process.env.INTER_FONT_DIR || '/tmp/inter-fonts';
-  const faces = [
-    { file: 'inter-800.woff2', weight: 800 },
-    { file: 'inter-600.woff2', weight: 600 },
-  ];
-  return faces.flatMap((face) => {
-    const abs = path.join(dir, face.file);
-    if (!fs.existsSync(abs))
-      return [];
-    const b64 = fs.readFileSync(abs).toString('base64');
-    return [`@font-face{font-family:Inter;font-style:normal;font-weight:${face.weight};src:url(data:font/woff2;base64,${b64}) format("woff2");font-display:block;}`];
-  }).join('');
+  const abs = fontPath();
+  if (!fs.existsSync(abs))
+    throw new Error(`Missing display font ${abs} — run compose (not --check) first`);
+  const b64 = fs.readFileSync(abs).toString('base64');
+  return `@font-face{font-family:Fraunces;font-style:normal;font-weight:700;src:url(data:font/woff2;base64,${b64}) format("woff2");font-display:block;}`;
 }
 
 function layoutFor(device) {
@@ -135,73 +180,72 @@ function layoutFor(device) {
   return layout;
 }
 
-function frameHtml({ frame, spec, colors, wordmark, dataUrl }) {
+function frameHtml({ frame, spec, colors, dataUrl }) {
   const layout = layoutFor(frame.device);
-  const sub = frame.sub
-    ? `<p class="sub">${esc(frame.sub)}</p>`
-    : '';
+  const headline = (frame.headline || '').trim();
+  const subText = (frame.sub || '').trim();
+  const hasCopy = Boolean(headline);
+  const overlayH = Math.round(spec.height * layout.overlayPct);
   const fonts = fontFaceCss();
+  const headlineColor = colors.headline || '#F3E6C8';
+  const field = colors.background || '#1E0C02';
+  const sub = (hasCopy && subText)
+    ? `<p class="sub">${esc(subText)}</p>`
+    : '';
+  const copy = hasCopy
+    ? `<div class="veil" aria-hidden="true"></div>
+  <div class="copy">
+    <h1>${esc(headline)}</h1>
+    ${sub}
+  </div>`
+    : '';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
 <style>
 ${fonts}
-html,body{margin:0;padding:0;width:${spec.width}px;height:${spec.height}px;overflow:hidden;background:${colors.background};}
+html,body{margin:0;padding:0;width:${spec.width}px;height:${spec.height}px;overflow:hidden;background:${field};}
 *{box-sizing:border-box;}
 .frame{
-  width:${spec.width}px;height:${spec.height}px;
-  background:radial-gradient(ellipse 78% 52% at 50% 46%, ${colors.backgroundMid} 0%, ${colors.background} 72%);
-  display:flex;flex-direction:column;align-items:center;
-  padding:${layout.padTop}px ${layout.padX}px ${layout.padBottom}px;
-  font-family:Inter,Liberation Sans,Nimbus Sans,sans-serif;
-  color:${colors.headline};
+  position:relative;width:${spec.width}px;height:${spec.height}px;
+  overflow:hidden;background:${field};
 }
-.copy{flex:0 0 auto;text-align:center;width:100%;padding:0 8px;}
+.shot{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+}
+.veil{
+  position:absolute;top:0;left:0;right:0;height:${overlayH}px;
+  background:linear-gradient(180deg, ${field} 0%, rgba(30,12,2,0.88) 36%, rgba(30,12,2,0.42) 72%, rgba(30,12,2,0) 100%);
+  pointer-events:none;
+}
+.copy{
+  position:absolute;top:0;left:0;right:0;height:${overlayH}px;
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+  padding:${layout.padTop}px ${layout.padX}px ${Math.round(overlayH * 0.18)}px;
+  text-align:center;z-index:2;
+  font-family:Fraunces,Georgia,"Times New Roman",serif;
+  color:${headlineColor};
+}
 h1{
-  margin:0;font-weight:800;font-size:${layout.headlineSize}px;line-height:1.08;
-  letter-spacing:-0.03em;color:${colors.headline};text-wrap:balance;
+  margin:0;font-family:Fraunces,Georgia,"Times New Roman",serif;
+  font-weight:700;font-size:${layout.headlineSize}px;line-height:1.02;
+  letter-spacing:-0.02em;color:${headlineColor};text-wrap:balance;
+  text-shadow:0 6px 28px rgba(0,0,0,0.92),0 2px 6px rgba(0,0,0,0.88),0 0 2px rgba(0,0,0,0.9);
 }
 .sub{
-  margin:${layout.copyGap}px 0 0;font-weight:600;font-size:${layout.subSize}px;
-  line-height:1.25;color:${colors.sub};letter-spacing:0.01em;
-}
-.divider{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:${layout.copyGap + 6}px;}
-.divider .line{width:72px;height:1px;background:rgba(255,196,153,0.22);}
-.divider .diamond{width:9px;height:9px;background:${colors.headline};transform:rotate(45deg);flex:0 0 auto;}
-.stage{flex:1 1 auto;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;padding:18px 0 22px;}
-.device{
-  height:100%;width:auto;max-width:100%;max-height:100%;
-  aspect-ratio:${spec.width} / ${spec.height};
-  border-radius:${layout.radius}px;
-  padding:${layout.rim}px;
-  background:linear-gradient(180deg,#F0C070 0%,${colors.rim} 42%,#C4843A 100%);
-  box-shadow:0 36px 80px rgba(0,0,0,0.58),0 0 48px rgba(232,160,74,0.16);
-  overflow:hidden;
-}
-.device img{
-  display:block;width:100%;height:100%;object-fit:cover;
-  border-radius:${Math.max(8, layout.radius - layout.rim)}px;
-}
-.foot{flex:0 0 auto;text-align:center;padding-top:4px;}
-.wordmark{
-  font-weight:700;font-size:${layout.wordmarkSize}px;letter-spacing:0.34em;
-  text-transform:uppercase;color:${colors.wordmark};opacity:0.92;
-  font-variant:small-caps;
+  margin:18px 0 0;font-weight:700;font-size:${layout.subSize}px;
+  line-height:1.2;color:${colors.sub || '#C4A07A'};letter-spacing:0.01em;
+  text-shadow:0 3px 14px rgba(0,0,0,0.9);
 }
 </style>
 </head>
 <body>
   <div class="frame">
-    <div class="copy">
-      <h1>${esc(frame.headline)}</h1>
-      ${sub}
-      <div class="divider"><span class="line"></span><span class="diamond"></span><span class="line"></span></div>
-    </div>
-    <div class="stage">
-      <div class="device"><img src="${dataUrl}" alt=""/></div>
-    </div>
-    <div class="foot"><div class="wordmark">${esc(wordmark)}</div></div>
+    <img class="shot" src="${dataUrl}" alt=""/>
+    ${copy}
   </div>
 </body>
 </html>`;
@@ -237,7 +281,6 @@ async function composeFrame(page, manifest, frame) {
     frame,
     spec,
     colors: manifest.colors,
-    wordmark: manifest.wordmark,
     dataUrl,
   });
   const htmlPath = path.join(os.tmpdir(), `bm-frame-${frame.dest}.html`);
@@ -279,6 +322,7 @@ function preflightRaws(manifest) {
 
 async function composeAll(manifest) {
   preflightRaws(manifest);
+  await ensureDisplayFont();
   const browser = await launchBrowser();
   const page = await browser.newPage({
     deviceScaleFactor: 1,

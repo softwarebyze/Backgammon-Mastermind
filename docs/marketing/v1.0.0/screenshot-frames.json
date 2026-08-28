@@ -2,14 +2,11 @@
   "version": "1.0.0",
   "rawDir": "app-store-screenshots/raw",
   "outDir": "app-store-screenshots",
-  "wordmark": "BACKGAMMON MASTERMIND",
+  "layout": "bleed-overlay",
   "colors": {
     "background": "#1E0C02",
-    "backgroundMid": "#2A1408",
-    "headline": "#E8A04A",
-    "sub": "#C4A07A",
-    "rim": "#E8A04A",
-    "wordmark": "#E8A04A"
+    "headline": "#F3E6C8",
+    "sub": "#E8A04A"
   },
   "devices": {
     "iphone": { "width": 1320, "height": 2868 },
@@ -20,71 +17,59 @@
       "device": "iphone",
       "source": "iphone-69-04-vs-computer.png",
       "dest": "iphone-69-01-vs-computer.png",
-      "headline": "Play a real game",
-      "sub": "A thinking opponent. Real dice."
+      "headline": "Play a real game"
     },
     {
       "device": "iphone",
       "source": "iphone-69-05-legal-highlights.png",
       "dest": "iphone-69-02-legal-highlights.png",
-      "headline": "See every legal move",
-      "sub": "Destinations light up when you tap."
+      "headline": "See every legal move"
     },
     {
       "device": "iphone",
       "source": "iphone-69-03-lesson-hitting.png",
       "dest": "iphone-69-03-lesson-hitting.png",
-      "headline": "Learn by playing",
-      "sub": "Interactive lessons. Not a wall of text."
+      "headline": "Learn by playing"
     },
     {
       "device": "iphone",
       "source": "iphone-69-02-learn-hub.png",
       "dest": "iphone-69-04-learn-hub.png",
-      "headline": "Five short lessons",
-      "sub": "Then you are ready to play."
+      "headline": "Five short lessons"
     },
     {
       "device": "iphone",
       "source": "iphone-69-01-home.png",
-      "dest": "iphone-69-05-home.png",
-      "headline": "Master the board",
-      "sub": "Learn, then play."
+      "dest": "iphone-69-05-home.png"
     },
     {
       "device": "ipad",
       "source": "ipad-13-04-vs-computer.png",
       "dest": "ipad-13-01-vs-computer.png",
-      "headline": "Play a real game",
-      "sub": "A thinking opponent. Real dice."
+      "headline": "Play a real game"
     },
     {
       "device": "ipad",
       "source": "ipad-13-05-legal-highlights.png",
       "dest": "ipad-13-02-legal-highlights.png",
-      "headline": "See every legal move",
-      "sub": "Destinations light up when you tap."
+      "headline": "See every legal move"
     },
     {
       "device": "ipad",
       "source": "ipad-13-03-lesson-hitting.png",
       "dest": "ipad-13-03-lesson-hitting.png",
-      "headline": "Learn by playing",
-      "sub": "Interactive lessons. Not a wall of text."
+      "headline": "Learn by playing"
     },
     {
       "device": "ipad",
       "source": "ipad-13-02-learn-hub.png",
       "dest": "ipad-13-04-learn-hub.png",
-      "headline": "Five short lessons",
-      "sub": "Then you are ready to play."
+      "headline": "Five short lessons"
     },
     {
       "device": "ipad",
       "source": "ipad-13-01-home.png",
-      "dest": "ipad-13-05-home.png",
-      "headline": "Master the board",
-      "sub": "Learn, then play."
+      "dest": "ipad-13-05-home.png"
     }
   ]
 }

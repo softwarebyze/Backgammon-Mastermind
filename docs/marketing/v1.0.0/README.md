@@ -2,7 +2,7 @@
 
 ## Screenshots
 
-Raw captures: `app-store-screenshots/raw/` from **production** Expo web (`EXPO_PUBLIC_APP_ENV=production`) at Apple’s pixel sizes. No Preview badge, no `0.1.3`, no browser chrome, no Maestro watermark. Headlines live in `screenshot-frames.json`. Composed (upload) PNGs: `app-store-screenshots/*.png`.
+Raw captures: `app-store-screenshots/raw/` from **production** Expo web (`EXPO_PUBLIC_APP_ENV=production`) at Apple’s pixel sizes. No Preview badge, no `0.1.3`, no browser chrome, no Maestro watermark. Headlines live in `screenshot-frames.json`. Compose uses **bleed + overlay** (raw UI fills the canvas; Fraunces headline on a top gradient; no gold bezel). Composed (upload) PNGs: `app-store-screenshots/*.png`.
 
 Recapture (Mac iOS simulators are not required):
 
@@ -38,7 +38,7 @@ iPhone 6.9" is 440×956 CSS at deviceScaleFactor 3 (physical 1320×2868). iPad P
 2. **Legal-move highlights** — headline “See every legal move”. Checker selected, destinations lit.
 3. **Hitting & the bar** — headline “Learn by playing”. One live-board lesson.
 4. **Learn hub** — headline “Five short lessons”. Full lesson list.
-5. **Home** — headline “Master the board”. Logo lockup, Learn / vs Computer / 2 Players (no Resume, no Preview).
+5. **Home** — no overlay headline (the in-app lockup already says “Master the board”). Logo lockup, Learn / vs Computer / 2 Players (no Resume, no Preview).
 
 Raw scene files keep their capture names under `raw/` (01-home … 05-legal-highlights). Compose remaps and reorders via the JSON manifest.
 
