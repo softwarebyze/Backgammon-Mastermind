@@ -1,4 +1,4 @@
-import type { GameMode, GameState, Player } from '@/lib/game/types';
+import type { GameMode, GamePhase, GameState, Player } from '@/lib/game/types';
 import { translate } from '@/lib/i18n';
 
 export type TurnDisplay = {
@@ -46,7 +46,7 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
     return {
       player: 'black',
       colorLabel: 'Black',
-      headline: opponentHeadline(state.mode),
+      headline: computerWaitHeadline(state.phase),
       isHumanTurn: false,
       isWaiting: true,
     };
@@ -68,8 +68,15 @@ function humanHeadline(mode: GameMode, player: Player): string {
   return player === 'white' ? 'White\'s turn' : 'Black\'s turn';
 }
 
-function opponentHeadline(mode: GameMode): string {
-  return mode === 'vs-computer' ? 'Computer\'s turn' : 'Black\'s turn';
+/** One player-named line in the banner — footer is skip-wait only. */
+function computerWaitHeadline(phase: GamePhase): string {
+  if (phase === 'rolling') {
+    return 'Black is rolling…';
+  }
+  if (phase === 'moving') {
+    return 'Black is moving…';
+  }
+  return 'Computer\'s turn';
 }
 
 export function getActionCaption(

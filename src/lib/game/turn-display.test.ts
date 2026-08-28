@@ -18,7 +18,7 @@ describe('turn-display', () => {
     state.currentPlayer = 'black';
     const turn = getTurnDisplay(state);
     expect(turn.colorLabel).toBe('Black');
-    expect(turn.headline).toBe('Computer\'s turn');
+    expect(turn.headline).toBe('Black is rolling…');
     expect(turn.isWaiting).toBe(true);
     expect(getActionCaption(state, turn)).toBe(' ');
   });
@@ -28,7 +28,7 @@ describe('turn-display', () => {
     state.phase = 'moving';
     state.currentPlayer = 'black';
     const turn = getTurnDisplay(state);
-    expect(turn.headline).toBe('Computer\'s turn');
+    expect(turn.headline).toBe('Black is moving…');
     expect(getActionCaption(state, turn)).toBe(' ');
   });
 
