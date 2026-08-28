@@ -220,7 +220,7 @@ export function GameScreenLayout({
     <View
       style={[
         styles.root,
-        landscape ? styles.rootLandscape : null,
+        landscape ? styles.rootLandscape : styles.rootPortrait,
         { paddingBottom: insets.bottom },
       ]}
     >
@@ -283,6 +283,8 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 0,
     backgroundColor: GAME_PALETTE.bg,
+  },
+  rootPortrait: {
     alignItems: 'center',
   },
   rootLandscape: {
@@ -298,6 +300,7 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexShrink: 0,
     minHeight: 0,
+    alignSelf: 'stretch',
     zIndex: 50,
   },
   chromeRailContent: {
@@ -310,16 +313,17 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexBasis: 0,
     minHeight: 0,
+    minWidth: 0,
     overflow: 'hidden',
-    width: '100%',
-    alignSelf: 'center',
   },
   boardSlotPortrait: {
+    width: '100%',
     maxWidth: MAX_BOARD_WIDTH,
+    alignSelf: 'center',
   },
   boardSlotLandscape: {
-    minWidth: 0,
-    maxWidth: '100%',
+    alignSelf: 'stretch',
+    height: '100%',
   },
   turnBannerWrap: {
     width: '100%',

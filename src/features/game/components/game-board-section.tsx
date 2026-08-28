@@ -137,11 +137,12 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexBasis: 0,
     minHeight: 0,
+    minWidth: 0,
     overflow: 'hidden',
     justifyContent: 'center',
     width: '100%',
     maxWidth: MAX_BOARD_WIDTH,
-    alignSelf: 'center',
+    alignSelf: 'stretch',
     alignItems: 'center',
   },
   boardContainer: {
