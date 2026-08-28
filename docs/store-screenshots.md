@@ -1,18 +1,28 @@
-# Store screenshots (agents can upload)
+# Store screenshots
 
-Agents **can and should** upload App Store / Play screenshots without a human clicking ASC. EAS Metadata does **not** cover screenshots yet — use **Fastlane** (`deliver` / `supply`).
+**Preferred (iOS):** EAS Metadata — put paths on `apple.info[locale].screenshots` in [`store.config.js`](../store.config.js) and run `pnpm metadata:push*` ([eas-metadata.md](./eas-metadata.md)). Display type for our 1320×2868 captures: `APP_IPHONE_67`.
+
+**Fallback / Play:** Fastlane (`deliver` / `supply`) below.
 
 ## Source of truth
 
 | Asset | Path |
 |-------|------|
 | Production iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/` |
+| Wired into EAS Metadata | `store.config.js` → `APP_IPHONE_67` (shared across locales until localized) |
 | Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/en-US/` |
 | Staged for Play (generated, gitignored) | `fastlane/metadata/android/en-US/images/phoneScreenshots/` |
 
-Capture more anytime (Argent / simulator / Maestro). Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot).
+Capture more anytime (Argent / simulator / Maestro). Prefer 1320×2868 for iPhone.
 
-## Commands
+## EAS Metadata upload (iOS)
+
+```sh
+# After PNGs are under docs/marketing/… and listed in store.config.js:
+pnpm metadata:push:production
+```
+
+## Fastlane fallback
 
 ```sh
 pnpm screenshots:prepare          # copy marketing PNGs → fastlane folders
@@ -21,37 +31,9 @@ pnpm screenshots:upload:ios       # prepare + key + bundle exec fastlane deliver
 pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH (Play Console service account)
 ```
 
-Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.237.0**). First time: `bundle install`.
+Uses Bundler (`Gemfile` / `Gemfile.lock`). First time: `bundle install`.
 
-iOS `app_version` defaults from `store.config.json` → `apple.version` (override with `ASC_APP_VERSION`).
-
-Or CI / agent with env:
-
-```sh
-export ASC_KEY_ID=…
-export ASC_ISSUER_ID=…
-export ASC_KEY_PATH=/path/to/AuthKey_….p8
-# optional overrides:
-export ASC_BUNDLE_ID=com.backgammonmastermind
-export ASC_APP_VERSION=1.0.0
-pnpm screenshots:upload:ios
-```
-
-`screenshots:asc-key` is preferred when `eas login` already works — same ASC key EAS Submit uses (`M7LGZ9S6S2` via Expo credentials).
-
-## Quirk (Fastlane + ASC processing)
-
-`deliver` sometimes retries while Apple is still processing and briefly creates duplicates (capped at 10 slots). If that happens, delete extras by filename uniqueness via ASC API or re-run after a short wait. A clean set is exactly the files under `docs/marketing/…/app-store-screenshots/` (currently **6**).
-
-## What Fastlane uploads
-
-| Lane | Tool | Skips |
-|------|------|--------|
-| `fastlane ios screenshots` | `deliver` | binary, listing metadata (title/desc stay in `store.config.json`) |
-| `fastlane android screenshots` | `supply` | AAB/APK, text metadata |
-
-Listing copy: [eas-metadata.md](./eas-metadata.md).  
-Price / privacy nutrition: ASC UI (or future automation).
+iOS `app_version` defaults from `package.json` `version` (override with `ASC_APP_VERSION`).
 
 ## Play Store
 
@@ -63,13 +45,5 @@ export PLAY_PACKAGE_NAME=com.backgammonmastermind
 pnpm screenshots:upload:android
 ```
 
-Until that credential exists, iOS upload is fully autonomous; Android is stubbed and ready.
-
-## Obytes / fork agents
-
-1. Put store-ready PNGs under `docs/marketing/<version>/app-store-screenshots/`
-2. Ensure Expo ASC API key is in EAS credentials (or ASC_* env)
-3. Run `pnpm screenshots:upload:ios`
-4. Confirm in App Store Connect → version → Screenshots
-
-No need for a human in the ASC web UI for screenshot sets.
+Listing copy for Apple: [eas-metadata.md](./eas-metadata.md).  
+Price / privacy nutrition: ASC UI.

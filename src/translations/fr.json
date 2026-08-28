@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Sélectionné — touchez une flèche mise en évidence, ou Annuler"
+    },
+    "controls": {
+      "cancel": "Annuler",
+      "cancel_a11y": "Annuler la sélection",
+      "close_options_a11y": "Fermer les options",
+      "moving": "Déplacement…",
+      "new_game_message": "Commencer une nouvelle partie ?",
+      "new_game_title": "Nouvelle partie",
+      "no_legal_moves": "Aucun coup possible…",
+      "play_again": "Rejouer",
+      "play_again_a11y": "Rejouer",
+      "roll_dice": "Lancer les dés",
+      "roll_dice_a11y": "Lancer les dés",
+      "rolling": "Lancer en cours…",
+      "skip_wait": "Touchez pour passer l’attente",
+      "skip_wait_a11y": "{{status}} Touchez pour passer l’attente"
+    },
+    "nudge": {
+      "roll_first": "Lance d'abord les dés"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bat {{low}}",
+      "goes_first": "{{player}} commence !",
+      "roll": "Lancer",
+      "rolls_for_opening": "{{player}} lance pour l'ouverture",
+      "tie": "Égalité !",
+      "tie_again": "Même chiffre — relancez",
+      "waiting_roll": "{{player}} lance…",
+      "who_goes_first": "Qui commence ?",
+      "your_roll": "Touchez n'importe où pour lancer"
+    },
+    "options": {
+      "open_settings": "Langue et plus",
+      "open_settings_hint": "Ouvrir les Réglages",
+      "title": "Options de partie"
+    },
+    "preferences": {
+      "auto_move": "Coup auto si forcé",
+      "auto_move_hint": "Jouer automatiquement le seul coup légal",
+      "auto_roll": "Lancer auto des dés",
+      "auto_roll_hint": "Lancer automatiquement à votre tour",
+      "dice_display": "Affichage des dés",
+      "dice_dots": "Points",
+      "dice_numbers": "Chiffres",
+      "direction_overlay": "Guide de direction",
+      "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
+      "fast_computer": "Ordinateur rapide",
+      "fast_computer_hint": "Attentes plus courtes sur les lancers et coups de l’ordinateur. Vous pouvez aussi toucher Passer l’attente.",
+      "move_hints": "Indices de coup",
+      "move_hints_hint": "Point doré près des flèches d'où vous pouvez jouer",
+      "point_numbers": "Numéros des flèches",
+      "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
+      "section_automation": "Automatisation",
+      "section_board": "Plateau",
+      "section_dice": "Dés",
+      "sound": "Sons du jeu",
+      "sound_hint": "Dés, prises et victoires en douceur — respecte le mode silencieux"
+    },
+    "review": {
+      "back_to_live": "Retour à la partie en cours",
+      "live": "Partie en cours",
+      "live_short": "En direct",
+      "move_a11y": "Coup {{ply}}, {{player}}",
+      "move_position": "Coup {{current}} sur {{total}} · {{player}}",
+      "next": "Tour suivant",
+      "opening": "Position de départ",
+      "pause_replay": "Pause",
+      "player_black": "Noirs",
+      "player_white": "Blancs",
+      "previous": "Tour précédent",
+      "replay": "Relecture",
+      "scrubber_hint": "Touchez un tour pour le revoir",
+      "start": "Début",
+      "turn_a11y": "Tour {{turn}}, {{player}}",
+      "turn_label": "Tour {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tour {{turn}}/{{totalTurns}} · coup {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Relecture — touchez En direct ou Retour pour continuer à jouer"
+    },
+    "status": {
+      "black_wins": "Les Noirs gagnent",
+      "computer_wins": "L'ordinateur gagne",
+      "white_wins": "🏆 Les Blancs gagnent !",
+      "you_win": "🏆 Vous gagnez !"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Annuler",
+    "confirm_continue": "Continuer",
+    "confirm_native": "Continuer la partie en cours ou en commencer une nouvelle ?",
+    "confirm_new": "Nouvelle partie",
+    "confirm_title": "Partie en cours",
+    "confirm_web": "Commencer une nouvelle partie ? (Utilisez Reprendre sur l'écran d'accueil pour continuer la partie en cours.)",
+    "resume": "Reprendre la partie",
+    "resume_a11y": "Reprendre la partie sauvegardée",
+    "resume_none": "Aucune partie enregistrée à reprendre",
+    "resume_sub": "Reprenez là où vous en étiez",
+    "subtitle": "Maîtrisez le plateau — coup après coup",
+    "title": "BACKGAMMON",
+    "two_players": "2 joueurs",
+    "two_players_a11y": "Jouer à deux sur cet appareil",
+    "two_players_sub": "À tour de rôle sur le même appareil",
+    "vs_computer": "Contre l'ordinateur",
+    "vs_computer_a11y": "Jouer contre l'ordinateur",
+    "vs_computer_sub": "Affrontez l'IA"
+  },
+  "learn": {
+    "back_to_hub": "Toutes les leçons",
+    "continue": "Continuer",
+    "feedback": {
+      "hint_nudge": "Besoin d’un coup de pouce ? Cherchez les zones mises en évidence.",
+      "illegal": "Essayez une flèche mise en évidence — ou touchez Indice.",
+      "legal_but_wrong": "C’est légal dans une vraie partie — ici, jouez le coup qui enseigne cette idée.",
+      "move_progress": "Bien — {{done}} coups sur {{needed}} effectués."
+    },
+    "graduation": {
+      "body": "Vous connaissez le but, le plateau, le déroulement des tours, la frappe et la sortie. Un contrôle rapide — puis votre première vraie partie.",
+      "play_cta": "Jouer votre première partie",
+      "quiz_done": "Dans le mille. Place au jeu.",
+      "quiz_title": "Contrôle rapide",
+      "quiz_wrong": "Pas tout à fait — essayez une autre réponse.",
+      "recap_1": "Course : sortez les 15 pions en premier",
+      "recap_2": "Lancez deux dés ; atterrissez sur des flèches ouvertes",
+      "recap_3": "Frappez les blots → ils s’assoient sur la barre",
+      "recap_4": "Ne sortez que depuis votre jan intérieur",
+      "recap_5": "Les parties commencent avec un dé chacun — le plus haut commence (égalité : on relance)",
+      "title": "Vous êtes prêt à jouer"
+    },
+    "hint": "Indice",
+    "home_cta": "Apprendre à jouer",
+    "home_cta_progress": "{{done}} leçons sur {{total}} terminées",
+    "home_cta_quiz": "Il reste le contrôle rapide — puis jouer",
+    "home_cta_ready": "Vous êtes prêt — jouez une vraie partie",
+    "home_cta_sub": "Leçons interactives pour débutants",
+    "lesson_complete": "Leçon terminée !",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Rien n’est sur la flèche 5, mais vous avez fait 5. Sortez depuis votre pion le plus haut (le 3). Un plus grand chiffre retire quand même un pion.",
+            "hint": "Sélectionnez la flèche 3, puis touchez le plateau de sortie.",
+            "praise": "C’est la règle du dépassement — vous l’utiliserez souvent en sortant.",
+            "title": "Plus grand dé, quand même dehors"
+          },
+          "try": {
+            "body": "Tous vos pions sont dans le jan intérieur (1–6), vous pouvez donc sortir. Vous avez fait 3 — retirez le pion de la flèche 3.",
+            "hint": "Sélectionnez la flèche 3, puis touchez la zone de sortie sur le bord droit.",
+            "praise": "Hors du plateau ! Le premier à sortir les 15 gagne.",
+            "title": "Sortez-en un"
+          }
+        },
+        "subtitle": "Comment gagner",
+        "title": "Sortie des pions"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Vous jouez BLANC — les pions crème. Le fer à cheval crème est VOTRE parcours : partez en haut à droite, contournez le côté gauche, puis entrez dans le jan intérieur en bas à droite (flèches 1–6). La ligne pointillée plus froide, c’est le Noir dans l’autre sens.",
+            "title": "Le parcours en fer à cheval"
+          },
+          "far": {
+            "body": "Touchez la flèche où commencent vos deux pions blancs les plus éloignés (la flèche 24, en haut à droite).",
+            "hint": "Regardez en haut à droite — deux pions blancs sur la flèche 24.",
+            "praise": "Ils commencent au fond du jan intérieur adverse et ont le plus long chemin.",
+            "title": "Vos pions les plus éloignés"
+          },
+          "home_stack": {
+            "body": "Touchez la grande pile de cinq pions blancs déjà dans votre jan intérieur (la flèche 6).",
+            "hint": "En bas à droite : cinq pions blancs sur la flèche 6.",
+            "praise": "C’est votre pile de maison — cinq déjà en attente sur la flèche 6, les plus proches de la sortie. Chaque partie commence ainsi.",
+            "title": "Votre pile de maison"
+          }
+        },
+        "subtitle": "Dans quel sens vous avancez",
+        "title": "Direction et placement"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "La bande surélevée au milieu est la barre. Les pions frappés y attendent. Touchez la barre.",
+            "hint": "Touchez la bande verticale entre les moitiés gauche et droite du plateau.",
+            "praise": "Exact — les pions frappés restent sur la barre jusqu’à leur rentrée.",
+            "title": "La barre"
+          },
+          "explain": {
+            "body": "Vous et votre adversaire avez chacun 15 pions. Déplacez-les autour du plateau et hors de celui-ci — le premier terminé gagne.",
+            "title": "Le premier à tout sortir gagne"
+          },
+          "home": {
+            "body": "Votre jan intérieur, ce sont les flèches 1–6 (en bas à droite). Touchez n’importe quelle flèche de votre jan intérieur.",
+            "hint": "Le jan intérieur, ce sont les six flèches du quadrant inférieur droit — numérotées de 1 à 6.",
+            "praise": "C’est votre jan intérieur — les pions quittent le plateau d’ici.",
+            "title": "Trouvez votre jan intérieur"
+          }
+        },
+        "subtitle": "Ce pour quoi vous courez",
+        "title": "Objectif et plateau"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Vous êtes sur la barre — rentrez avant de bouger qui que ce soit d’autre. Comptez depuis la flèche 24 vers le jan intérieur : un 4 atterrit sur la flèche 21.",
+            "hint": "Touchez la barre, puis la flèche 21 (pas 23 — ce n’est que deux pips depuis la barre).",
+            "praise": "Vous êtes de retour sur le plateau — les pions de la barre rentrent toujours en premier.",
+            "title": "Entrer depuis la barre",
+            "wrong": "Ce n’est que deux pips depuis la barre (flèche 23). Comptez quatre flèches depuis 24 vers le jan intérieur — c’est la flèche 21."
+          },
+          "hit": {
+            "body": "Un pion seul est un blot. Atterrissez dessus et il va à la barre. Vous avez fait 3 — frappez le blot noir de la flèche 5.",
+            "hint": "Touchez votre pion sur 8, puis la flèche 5.",
+            "praise": "Frappé ! Ce pion noir est maintenant sur la barre.",
+            "title": "Frappez le blot"
+          }
+        },
+        "subtitle": "Jeu de contact",
+        "title": "Frappe et barre"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Deux pions adverses ou plus bloquent une flèche — vous ne pouvez pas y atterrir. Touchez la pile noire bloquée de la flèche 5.",
+            "hint": "La pile mise en évidence de deux pions noirs sur la flèche 5.",
+            "praise": "Exact — une flèche faite (2+) est fermée. Vide, à vous, ou un blot (1) sont ouvertes.",
+            "title": "Flèches bloquées"
+          },
+          "doubles": {
+            "body": "Les doubles donnent quatre coups de ce chiffre. Vous avez fait 2-2 — soit quatre 2. Déplacez de la flèche 8 à la 6 quatre fois.",
+            "hint": "Touchez la flèche 8, puis la 6. Faites-le quatre fois — une fois par dé.",
+            "praise": "Exactement — les doubles, c’est quatre coups avec ce chiffre.",
+            "title": "Doubles = quatre coups"
+          },
+          "explain": {
+            "body": "Chaque tour, vous lancez deux dés et jouez les deux chiffres quand vous le pouvez. Vous pouvez atterrir sur des flèches vides, vos pions, ou un adversaire isolé (un blot).",
+            "title": "Deux chiffres, flèches ouvertes"
+          },
+          "two_dice": {
+            "body": "Vous avez fait 3 et 1. Déplacez le pion de la flèche 8 de trois pips (vers 5), et celui de la flèche 6 d’un pip (vers 5).",
+            "hint": "Sélectionnez un pion blanc, puis touchez la flèche 5. Faites-le pour la flèche 8 et la flèche 6.",
+            "praise": "Bien — les deux dés utilisés. Même pion ou deux pions, les deux chiffres doivent être joués quand c’est possible.",
+            "title": "Jouez les deux dés"
+          }
+        },
+        "subtitle": "Comment se déroule un tour",
+        "title": "Se déplacer avec les dés"
+      }
+    },
+    "locked": "Terminez d’abord la leçon précédente",
+    "next_lesson": "Leçon suivante",
+    "quiz": {
+      "bar": {
+        "a": "Déplacez d’abord votre pion le plus éloigné",
+        "b": "Faites entrer ce pion avant de bouger quoi que ce soit d’autre",
+        "c": "Passez votre tour",
+        "prompt": "Tant que vous avez un pion sur la barre, vous devez…"
+      },
+      "bear": {
+        "a": "Dès que vous faites un 6",
+        "b": "Seulement après avoir frappé un blot",
+        "c": "Quand les 15 pions sont dans votre jan intérieur",
+        "prompt": "Quand peut-on sortir ?"
+      },
+      "blot": {
+        "a": "N’importe quelle pile de trois ou plus",
+        "b": "Un pion seul sur une flèche — on peut le frapper",
+        "c": "Deux pions ou plus sur une flèche — une flèche faite",
+        "prompt": "Qu’est-ce qu’un blot ?"
+      }
+    },
+    "replay": "Revoir",
+    "skip_to_play": "Passer au jeu",
+    "step_progress": "Étape {{current}} sur {{total}}",
+    "subtitle": "Cinq leçons courtes — puis vous êtes prêt",
+    "title": "Apprendre à jouer"
+  },
+  "not_found": {
+    "body": "Cette page ne fait pas partie de Backgammon Mastermind. Retournez à l’accueil pour apprendre ou commencer une partie.",
+    "heading": "Hors du plateau",
+    "home_a11y": "Aller à l'accueil",
+    "home_cta": "Retour à l'accueil",
+    "title": "Introuvable"
+  },
+  "settings": {
+    "about": "À propos",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabe",
+    "back_a11y": "Retour",
+    "english": "Anglais",
+    "game": "Partie",
+    "general": "Général",
+    "github": "GitHub",
+    "language": "Langue",
+    "link_error_body": "Veuillez réessayer plus tard.",
+    "link_error_title": "Impossible d'ouvrir le lien",
+    "links": "Liens",
+    "more": "Plus",
+    "privacy": "Politique de confidentialité",
+    "rate": "Noter",
+    "share": "Partager",
+    "support": "Assistance",
+    "support_us": "Soutenez-nous",
+    "terms": "Conditions d'utilisation",
+    "title": "Réglages",
+    "version": "Version",
+    "website": "Site web"
+  },
+  "welcome": "Bienvenue dans Backgammon Mastermind"
+}

@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "已選取 — 點按高亮點位，或取消"
+    },
+    "controls": {
+      "cancel": "取消",
+      "cancel_a11y": "取消選取",
+      "close_options_a11y": "關閉選項",
+      "moving": "移動中…",
+      "new_game_message": "開始新對局？",
+      "new_game_title": "新對局",
+      "no_legal_moves": "沒有可走的棋…",
+      "play_again": "再來一局",
+      "play_again_a11y": "再來一局",
+      "roll_dice": "擲骰子",
+      "roll_dice_a11y": "擲骰子",
+      "rolling": "擲骰中…",
+      "skip_wait": "點按跳過等待",
+      "skip_wait_a11y": "{{status}} 點按跳過等待"
+    },
+    "nudge": {
+      "roll_first": "請先擲骰子"
+    },
+    "opening": {
+      "compare": "{{winner}}的{{high}}勝過{{low}}",
+      "goes_first": "{{player}}先行！",
+      "roll": "擲骰",
+      "rolls_for_opening": "{{player}}正在擲開局骰",
+      "tie": "平局！",
+      "tie_again": "點數相同——請重擲",
+      "waiting_roll": "{{player}}正在擲骰…",
+      "who_goes_first": "誰先走？",
+      "your_roll": "點按任意位置擲骰"
+    },
+    "options": {
+      "open_settings": "語言與更多",
+      "open_settings_hint": "打開設定",
+      "title": "對局選項"
+    },
+    "preferences": {
+      "auto_move": "唯一著法自動走",
+      "auto_move_hint": "自動走出唯一合法的一步",
+      "auto_roll": "自動擲骰",
+      "auto_roll_hint": "輪到你時自動擲骰",
+      "dice_display": "骰子顯示",
+      "dice_dots": "點數",
+      "dice_numbers": "數字",
+      "direction_overlay": "方向指引",
+      "direction_overlay_hint": "在棋盤上顯示馬蹄形路線",
+      "fast_computer": "快速電腦",
+      "fast_computer_hint": "縮短電腦擲骰與走子的等待。也可點按「跳過等待」。",
+      "move_hints": "走子提示",
+      "move_hints_hint": "可移動的點位旁顯示金色圓點",
+      "point_numbers": "點位編號",
+      "point_numbers_hint": "在棋盤上顯示1–24編號",
+      "section_automation": "自動化",
+      "section_board": "棋盤",
+      "section_dice": "骰子",
+      "sound": "遊戲音效",
+      "sound_hint": "輕柔的骰子、擊子與獲勝音效——遵循靜音模式"
+    },
+    "review": {
+      "back_to_live": "返回目前對局",
+      "live": "目前對局",
+      "live_short": "對局",
+      "move_a11y": "第{{ply}}步，{{player}}",
+      "move_position": "第{{current}}步，共{{total}}步 · {{player}}",
+      "next": "下一回合",
+      "opening": "開局局面",
+      "pause_replay": "暫停",
+      "player_black": "黑方",
+      "player_white": "白方",
+      "previous": "上一回合",
+      "replay": "重播",
+      "scrubber_hint": "點按回合進行復盤",
+      "start": "開始",
+      "turn_a11y": "回合{{turn}}，{{player}}",
+      "turn_label": "回合{{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "回合{{turn}}/{{totalTurns}} · 第{{moveInTurn}}/{{movesInTurn}}步 · {{player}}",
+      "viewing_hint": "復盤中——點按「對局」或「返回」繼續遊戲"
+    },
+    "status": {
+      "black_wins": "黑方獲勝",
+      "computer_wins": "電腦獲勝",
+      "white_wins": "🏆 白方獲勝！",
+      "you_win": "🏆 你贏了！"
+    }
+  },
+  "home": {
+    "confirm_cancel": "取消",
+    "confirm_continue": "繼續",
+    "confirm_native": "繼續目前對局，還是開始新對局？",
+    "confirm_new": "新對局",
+    "confirm_title": "有進行中的對局",
+    "confirm_web": "開始新對局？（要繼續目前對局，請使用主畫面的「繼續對局」。）",
+    "resume": "繼續對局",
+    "resume_a11y": "繼續已儲存的對局",
+    "resume_none": "沒有可繼續的已存對局",
+    "resume_sub": "從上次停下的地方繼續",
+    "subtitle": "步步為營，掌控棋盤",
+    "title": "西洋雙陸",
+    "two_players": "雙人對戰",
+    "two_players_a11y": "在本裝置上雙人遊玩",
+    "two_players_sub": "同一裝置輪流遊玩",
+    "vs_computer": "人機對戰",
+    "vs_computer_a11y": "與電腦對戰",
+    "vs_computer_sub": "挑戰AI"
+  },
+  "learn": {
+    "back_to_hub": "全部課程",
+    "continue": "繼續",
+    "feedback": {
+      "hint_nudge": "需要提示？看看高亮的位置。",
+      "illegal": "試試高亮點位 — 或點按提示。",
+      "legal_but_wrong": "這在正式對局中合法 — 這裡請走能教這個概念的那步。",
+      "move_progress": "不錯 — 已完成 {{done}} / {{needed}} 步。"
+    },
+    "graduation": {
+      "body": "你已了解目標、棋盤、回合、擊子和出局。快速測驗 — 然後開始第一盤正式對局。",
+      "play_cta": "開始第一盤對局",
+      "quiz_done": "完全正確。該開打了。",
+      "quiz_title": "快速測驗",
+      "quiz_wrong": "還差一點 — 換個答案試試。",
+      "recap_1": "競賽：先把 15 枚棋子全部出局",
+      "recap_2": "擲兩顆骰子；落在開放點位上",
+      "recap_3": "擊打孤子 → 它們坐在槓上",
+      "recap_4": "只能從內盤出局",
+      "recap_5": "開局各擲一顆骰 — 點數高的先行（平局重擲）",
+      "title": "你已可以開打"
+    },
+    "hint": "提示",
+    "home_cta": "學習玩法",
+    "home_cta_progress": "已完成 {{done}} / {{total}} 課",
+    "home_cta_quiz": "還差快速測驗 — 然後開打",
+    "home_cta_ready": "你已準備好 — 來一盤正式對局",
+    "home_cta_sub": "面向初學者的互動課程",
+    "lesson_complete": "課程完成！",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "5 點位上沒有棋，但你擲出了 5。從最高的棋子（3 點）出局。更大的點數仍能把棋拿下。",
+            "hint": "選擇 3 點位，再點按出局托盤。",
+            "praise": "這就是超額出局規則 — 出局時會經常用到。",
+            "title": "更大的骰，照樣出局"
+          },
+          "try": {
+            "body": "棋子都在內盤（1–6），可以出局。你擲出 3 — 把 3 點位上的棋拿下棋盤。",
+            "hint": "選擇 3 點位，再點按右緣的出局區。",
+            "praise": "離開棋盤！先把 15 枚全部出局者獲勝。",
+            "title": "出局一枚"
+          }
+        },
+        "subtitle": "如何獲勝",
+        "title": "出局"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "你執白 — 奶油色棋子。奶油色馬蹄線是你的路線：從右上遠端出發，繞左側，再進入右下內盤（點位 1–6）。較冷的虛線是黑方反向路線。",
+            "title": "馬蹄形路線"
+          },
+          "far": {
+            "body": "點按你兩枚最遠白棋起始的點位（24 點，右上）。",
+            "hint": "看右上 — 24 點上有兩枚白棋。",
+            "praise": "它們從對方內盤深處出發，路程最長。",
+            "title": "你最遠的棋"
+          },
+          "home_stack": {
+            "body": "點按已在內盤的五枚白棋大疊（6 點）。",
+            "hint": "右下：6 點上有五枚白棋。",
+            "praise": "這是你的內盤疊 — 五枚已在 6 點等候，離出局最近。每盤都這樣開局。",
+            "title": "你的內盤疊"
+          }
+        },
+        "subtitle": "你朝哪個方向走",
+        "title": "方向與佈局"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "中間凸起的條帶是槓。被擊的棋在此等候。點按槓。",
+            "hint": "點按棋盤左右半區之間的豎條。",
+            "praise": "對 — 被擊的棋坐在槓上，直到重新入盤。",
+            "title": "槓"
+          },
+          "explain": {
+            "body": "你和對手各有 15 枚棋。沿棋盤移動並出局 — 先完成者獲勝。",
+            "title": "先出局者勝"
+          },
+          "home": {
+            "body": "你的內盤是點位 1–6（右下）。點按內盤上任意點位。",
+            "hint": "內盤是右下象限的六個點位 — 編號 1 到 6。",
+            "praise": "這是你的內盤 — 棋子從這裡離開棋盤。",
+            "title": "找到你的內盤"
+          }
+        },
+        "subtitle": "你在爭什麼",
+        "title": "目標與棋盤"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "你在槓上 — 先回來再動別的。從 24 點向內盤數：4 落到 21 點。",
+            "hint": "點按槓，再點 21 點（不是 23 — 那距槓只有兩點）。",
+            "praise": "你回到棋盤了 — 槓上的棋總是先入盤。",
+            "title": "從槓入盤",
+            "wrong": "那距槓只有兩點（23 點）。從 24 向內盤數四個點位 — 是 21 點。"
+          },
+          "hit": {
+            "body": "單枚棋是孤子。落在上面它就上槓。你擲出 3 — 擊打 5 點上的黑孤子。",
+            "hint": "點按 8 點上的棋，再點 5 點。",
+            "praise": "擊中！那枚黑棋現在在槓上。",
+            "title": "擊打孤子"
+          }
+        },
+        "subtitle": "接觸對弈",
+        "title": "擊子與槓"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "對方兩枚或以上棋子封住點位 — 你不能落在那裡。點按 5 點被封的黑疊。",
+            "hint": "5 點上高亮的兩枚黑棋疊。",
+            "praise": "對 — 成點（2+）關閉。空點、己方或孤子（1）開放。",
+            "title": "被封的點位"
+          },
+          "doubles": {
+            "body": "對子可用該點數走四步。你擲出 2-2 — 即四個 2。從 8 點走到 6 點四次。",
+            "hint": "點按 8 點，再點 6 點。做四次 — 每顆骰一次。",
+            "praise": "正是 — 對子就是用該點數走四步。",
+            "title": "對子 = 四步"
+          },
+          "explain": {
+            "body": "每回合擲兩顆骰，能走時兩個點數都要走。可落在空點、己方棋或對方單棋（孤子）上。",
+            "title": "兩個點數，開放點位"
+          },
+          "two_dice": {
+            "body": "你擲出 3 和 1。把 8 點的棋走三點（到 5），把 6 點的棋走一點（到 5）。",
+            "hint": "選一枚白棋，再點 5 點。對 8 點和 6 點都這樣做。",
+            "praise": "不錯 — 兩顆骰都用了。同一枚或兩枚棋，能走時兩個點數都必須走。",
+            "title": "兩顆骰都走"
+          }
+        },
+        "subtitle": "回合如何進行",
+        "title": "按骰走子"
+      }
+    },
+    "locked": "請先完成上一課",
+    "next_lesson": "下一課",
+    "quiz": {
+      "bar": {
+        "a": "先走最遠的棋",
+        "b": "先讓那枚棋入盤，再走別的",
+        "c": "跳過本回合",
+        "prompt": "當槓上有棋時，你必須…"
+      },
+      "bear": {
+        "a": "只要擲出 6",
+        "b": "只有擊打孤子之後",
+        "c": "當 15 枚棋都在內盤時",
+        "prompt": "何時可以出局？"
+      },
+      "blot": {
+        "a": "任意三枚或以上的疊",
+        "b": "點位上的單枚棋 — 可被擊打",
+        "c": "點位上兩枚或以上 — 成點",
+        "prompt": "什麼是孤子？"
+      }
+    },
+    "replay": "重播",
+    "skip_to_play": "跳過，直接玩",
+    "step_progress": "第 {{current}} 步，共 {{total}} 步",
+    "subtitle": "五節短課 — 然後你就準備好了",
+    "title": "學習玩法"
+  },
+  "not_found": {
+    "body": "此頁面不是 Backgammon Mastermind 的一部分。返回主畫面以學習或開始對局。",
+    "heading": "出界了",
+    "home_a11y": "前往主頁",
+    "home_cta": "返回主頁",
+    "title": "找不到"
+  },
+  "settings": {
+    "about": "關於",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "阿拉伯文",
+    "back_a11y": "返回",
+    "english": "英文",
+    "game": "對局",
+    "general": "一般",
+    "github": "GitHub",
+    "language": "語言",
+    "link_error_body": "請稍後再試。",
+    "link_error_title": "無法開啟連結",
+    "links": "連結",
+    "more": "更多",
+    "privacy": "隱私權政策",
+    "rate": "評分",
+    "share": "分享",
+    "support": "支援",
+    "support_us": "支持我們",
+    "terms": "服務條款",
+    "title": "設定",
+    "version": "版本",
+    "website": "網站"
+  },
+  "welcome": "歡迎來到 Backgammon Mastermind"
+}

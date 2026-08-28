@@ -6,6 +6,16 @@
     "controls": {
       "cancel": "Cancel",
       "cancel_a11y": "Cancel selection",
+      "close_options_a11y": "Close options",
+      "moving": "Moving…",
+      "new_game_message": "Start a new game?",
+      "new_game_title": "New Game",
+      "no_legal_moves": "No legal moves…",
+      "play_again": "Play Again",
+      "play_again_a11y": "Play again",
+      "roll_dice": "Roll Dice",
+      "roll_dice_a11y": "Roll dice",
+      "rolling": "Rolling…",
       "skip_wait": "Tap to skip wait",
       "skip_wait_a11y": "{{status}} Tap to skip wait"
     },
@@ -69,6 +79,12 @@
       "turn_label": "Turn {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "Turn {{turn}}/{{totalTurns}} · move {{moveInTurn}}/{{movesInTurn}} · {{player}}",
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
+    },
+    "status": {
+      "black_wins": "Black Wins",
+      "computer_wins": "Computer Wins",
+      "white_wins": "🏆 White Wins!",
+      "you_win": "🏆 You Win!"
     }
   },
   "home": {
@@ -259,15 +275,25 @@
     "subtitle": "Five short lessons — then you’re ready",
     "title": "Learn to play"
   },
+  "not_found": {
+    "body": "That page isn't part of Backgammon Mastermind. Head home to learn or start a game.",
+    "heading": "Off the board",
+    "home_a11y": "Go to home",
+    "home_cta": "Back to home",
+    "title": "Not found"
+  },
   "settings": {
     "about": "About",
     "app_name": "Backgammon Mastermind",
     "arabic": "Arabic",
+    "back_a11y": "Back",
     "english": "English",
     "game": "Game",
     "general": "General",
     "github": "Github",
     "language": "Language",
+    "link_error_body": "Please try again later.",
+    "link_error_title": "Unable to open link",
     "links": "Links",
     "more": "More",
     "privacy": "Privacy Policy",

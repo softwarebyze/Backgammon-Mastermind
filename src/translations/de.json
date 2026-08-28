@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Ausgewählt — tippe auf ein hervorgehobenes Feld oder auf Abbrechen"
+    },
+    "controls": {
+      "cancel": "Abbrechen",
+      "cancel_a11y": "Auswahl aufheben",
+      "close_options_a11y": "Optionen schließen",
+      "moving": "Zieht…",
+      "new_game_message": "Neues Spiel starten?",
+      "new_game_title": "Neues Spiel",
+      "no_legal_moves": "Keine gültigen Züge…",
+      "play_again": "Nochmal spielen",
+      "play_again_a11y": "Nochmal spielen",
+      "roll_dice": "Würfeln",
+      "roll_dice_a11y": "Würfeln",
+      "rolling": "Würfelt…",
+      "skip_wait": "Tippen, um Wartezeit zu überspringen",
+      "skip_wait_a11y": "{{status}} Tippen, um Wartezeit zu überspringen"
+    },
+    "nudge": {
+      "roll_first": "Würfle zuerst"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} schlägt {{low}}",
+      "goes_first": "{{player}} beginnt!",
+      "roll": "Würfeln",
+      "rolls_for_opening": "{{player}} würfelt um den Anwurf",
+      "tie": "Unentschieden!",
+      "tie_again": "Gleiche Zahl — nochmal würfeln",
+      "waiting_roll": "{{player}} würfelt…",
+      "who_goes_first": "Wer beginnt?",
+      "your_roll": "Zum Würfeln irgendwo tippen"
+    },
+    "options": {
+      "open_settings": "Sprache & mehr",
+      "open_settings_hint": "Einstellungen öffnen",
+      "title": "Spieloptionen"
+    },
+    "preferences": {
+      "auto_move": "Auto-Zug bei Zwang",
+      "auto_move_hint": "Den einzig möglichen Zug automatisch spielen",
+      "auto_roll": "Automatisch würfeln",
+      "auto_roll_hint": "In deinem Zug automatisch würfeln",
+      "dice_display": "Würfelanzeige",
+      "dice_dots": "Punkte",
+      "dice_numbers": "Zahlen",
+      "direction_overlay": "Richtungsanzeige",
+      "direction_overlay_hint": "Hufeisen-Pfad auf dem Brett",
+      "fast_computer": "Schneller Computer",
+      "fast_computer_hint": "Kürzere Wartezeiten bei Computer-Würfen und -Zügen. Du kannst auch auf „Warten überspringen“ tippen.",
+      "move_hints": "Zughinweise",
+      "move_hints_hint": "Goldener Punkt neben Feldern, von denen du ziehen kannst",
+      "point_numbers": "Feldnummern",
+      "point_numbers_hint": "Beschriftung 1–24 auf dem Brett anzeigen",
+      "section_automation": "Automatisierung",
+      "section_board": "Brett",
+      "section_dice": "Würfel",
+      "sound": "Spielgeräusche",
+      "sound_hint": "Dezente Würfel-, Schlag- und Siegklänge — respektiert den Stummmodus"
+    },
+    "review": {
+      "back_to_live": "Zurück zum laufenden Spiel",
+      "live": "Laufendes Spiel",
+      "live_short": "Live",
+      "move_a11y": "Zug {{ply}}, {{player}}",
+      "move_position": "Zug {{current}} von {{total}} · {{player}}",
+      "next": "Nächster Zug",
+      "opening": "Ausgangsstellung",
+      "pause_replay": "Pause",
+      "player_black": "Schwarz",
+      "player_white": "Weiß",
+      "previous": "Vorheriger Zug",
+      "replay": "Wiederholung",
+      "scrubber_hint": "Tippe auf einen Zug zum Ansehen",
+      "start": "Start",
+      "turn_a11y": "Runde {{turn}}, {{player}}",
+      "turn_label": "Runde {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Runde {{turn}}/{{totalTurns}} · Zug {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Ansichtsmodus — tippe auf Live oder Zurück, um weiterzuspielen"
+    },
+    "status": {
+      "black_wins": "Schwarz gewinnt",
+      "computer_wins": "Computer gewinnt",
+      "white_wins": "🏆 Weiß gewinnt!",
+      "you_win": "🏆 Du gewinnst!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Abbrechen",
+    "confirm_continue": "Fortsetzen",
+    "confirm_native": "Aktuelles Spiel fortsetzen oder ein neues starten?",
+    "confirm_new": "Neues Spiel",
+    "confirm_title": "Spiel läuft",
+    "confirm_web": "Neues Spiel starten? (Mit „Fortsetzen“ auf dem Startbildschirm geht das aktuelle weiter.)",
+    "resume": "Spiel fortsetzen",
+    "resume_a11y": "Gespeichertes Spiel fortsetzen",
+    "resume_none": "Kein gespeichertes Spiel zum Fortsetzen",
+    "resume_sub": "Mach da weiter, wo du aufgehört hast",
+    "subtitle": "Meistere das Brett — Zug für Zug",
+    "title": "BACKGAMMON",
+    "two_players": "2 Spieler",
+    "two_players_a11y": "Zu zweit am selben Gerät spielen",
+    "two_players_sub": "Abwechselnd am selben Gerät",
+    "vs_computer": "Gegen Computer",
+    "vs_computer_a11y": "Gegen den Computer spielen",
+    "vs_computer_sub": "Gegen die KI spielen"
+  },
+  "learn": {
+    "back_to_hub": "Alle Lektionen",
+    "continue": "Weiter",
+    "feedback": {
+      "hint_nudge": "Brauchst du einen Schubs? Achte auf die hervorgehobenen Stellen.",
+      "illegal": "Probiere ein hervorgehobenes Feld — oder tippe auf Hinweis.",
+      "legal_but_wrong": "Das wäre in einem echten Spiel erlaubt — hier nimm den Zug, der diese Idee vermittelt.",
+      "move_progress": "Schön — {{done}} von {{needed}} Zügen erledigt."
+    },
+    "graduation": {
+      "body": "Du kennst das Ziel, das Brett, den Spielzug, Schlagen und Austragen. Ein kurzer Check — dann dein erstes echtes Spiel.",
+      "play_cta": "Dein erstes Spiel spielen",
+      "quiz_done": "Voll ins Schwarze. Zeit zu spielen.",
+      "quiz_title": "Kurzer Check",
+      "quiz_wrong": "Noch nicht — versuch eine andere Antwort.",
+      "recap_1": "Rennen: trage alle 15 zuerst aus",
+      "recap_2": "Zwei Würfel werfen; auf offene Felder ziehen",
+      "recap_3": "Blots schlagen → sie sitzen auf der Bar",
+      "recap_4": "Nur vom Inneren Feld austragen",
+      "recap_5": "Spiele beginnen mit je einem Würfel — die höhere Zahl startet (Gleichstand: neu würfeln)",
+      "title": "Du bist bereit zu spielen"
+    },
+    "hint": "Hinweis",
+    "home_cta": "Lernen zu spielen",
+    "home_cta_progress": "{{done}} von {{total}} Lektionen erledigt",
+    "home_cta_quiz": "Kurzer Check noch offen — dann spielen",
+    "home_cta_ready": "Du bist bereit — spiel ein echtes Spiel",
+    "home_cta_sub": "Interaktive Lektionen für Einsteiger",
+    "lesson_complete": "Lektion abgeschlossen!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Auf dem 5er-Feld steht nichts, aber du hast eine 5 gewürfelt. Trage vom höchsten Stein aus (dem 3er). Eine höhere Zahl nimmt trotzdem einen Stein vom Brett.",
+            "hint": "Wähle Feld 3 und tippe dann auf die Austragsschale.",
+            "praise": "Das ist die Überschussregel — beim Austragen brauchst du sie oft.",
+            "title": "Höherer Würfel, trotzdem raus"
+          },
+          "try": {
+            "body": "Alle Steine sind im Inneren Feld (1–6), also darfst du austragen. Du hast eine 3 gewürfelt — nimm den Stein auf dem 3er-Feld vom Brett.",
+            "hint": "Wähle Feld 3 und tippe dann auf den Austragsbereich am rechten Rand.",
+            "praise": "Vom Brett! Wer zuerst alle 15 austrägt, gewinnt.",
+            "title": "Einen austragen"
+          }
+        },
+        "subtitle": "So gewinnst du",
+        "title": "Austragen"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Du spielst WEISS — die cremefarbenen Steine. Das cremefarbene Hufeisen ist DEIN Weg: start rechts oben, um die linke Seite, dann ins Innere Feld rechts unten (Felder 1–6). Die kühlere gestrichelte Linie ist Schwarz in die andere Richtung.",
+            "title": "Der Hufeisenweg"
+          },
+          "far": {
+            "body": "Tippe auf das Feld, wo deine zwei weitesten weißen Steine starten (das 24er-Feld, rechts oben).",
+            "hint": "Schau rechts oben — zwei weiße Steine auf Feld 24.",
+            "praise": "Die starten tief im Inneren Feld des Gegners und haben den längsten Weg.",
+            "title": "Deine weitesten Steine"
+          },
+          "home_stack": {
+            "body": "Tippe auf den großen Stapel aus fünf weißen Steinen, die schon in deinem Inneren Feld stehen (das 6er-Feld).",
+            "hint": "Rechts unten: fünf weiße Steine auf Feld 6.",
+            "praise": "Das ist dein Heimatstapel — fünf warten schon auf dem 6er, am nächsten am Austragen. Jedes Spiel beginnt so.",
+            "title": "Dein Heimatstapel"
+          }
+        },
+        "subtitle": "In welche Richtung du ziehst",
+        "title": "Richtung und Aufbau"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Der erhöhte Streifen in der Mitte ist die Bar. Geschlagene Steine warten hier. Tippe auf die Bar.",
+            "hint": "Tippe auf den senkrechten Streifen zwischen linker und rechter Brett­hälfte.",
+            "praise": "Richtig — geschlagene Steine sitzen auf der Bar, bis sie wiedereintreten.",
+            "title": "Die Bar"
+          },
+          "explain": {
+            "body": "Du und dein Gegner habt je 15 Steine. Ziehe sie übers Brett und herunter — wer zuerst fertig ist, gewinnt.",
+            "title": "Wer zuerst austrägt, gewinnt"
+          },
+          "home": {
+            "body": "Dein Inneres Feld sind die Felder 1–6 (rechts unten). Tippe auf ein beliebiges Feld darin.",
+            "hint": "Das Innere Feld sind die sechs Felder im rechten unteren Quadranten — nummeriert 1 bis 6.",
+            "praise": "Das ist dein Inneres Feld — von hier verlassen die Steine das Brett.",
+            "title": "Finde dein Inneres Feld"
+          }
+        },
+        "subtitle": "Worum du rennst",
+        "title": "Ziel und Brett"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Du bist auf der Bar — komm zurück, bevor du andere ziehst. Zähle vom 24er Richtung Inneres Feld: eine 4 landet auf Feld 21.",
+            "hint": "Tippe auf die Bar, dann auf Feld 21 (nicht 23 — das sind nur zwei Pips von der Bar).",
+            "praise": "Du bist wieder auf dem Brett — Steine auf der Bar treten immer zuerst ein.",
+            "title": "Von der Bar eintreten",
+            "wrong": "Das sind nur zwei Pips von der Bar (Feld 23). Zähle vier Felder von 24 Richtung Inneres Feld — das ist Feld 21."
+          },
+          "hit": {
+            "body": "Ein einzelner Stein ist ein Blot. Lande darauf, und er geht auf die Bar. Du hast eine 3 gewürfelt — schlage den schwarzen Blot auf dem 5er-Feld.",
+            "hint": "Tippe auf deinen Stein auf 8 und dann auf Feld 5.",
+            "praise": "Getroffen! Der schwarze Stein sitzt jetzt auf der Bar.",
+            "title": "Den Blot schlagen"
+          }
+        },
+        "subtitle": "Kontaktspiel",
+        "title": "Schlagen und die Bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Zwei oder mehr gegnerische Steine blockieren ein Feld — du darfst dort nicht landen. Tippe auf den blockierten schwarzen Stapel auf dem 5er-Feld.",
+            "hint": "Der hervorgehobene Stapel aus zwei schwarzen Steinen auf Feld 5.",
+            "praise": "Richtig — ein gemachtes Feld (2+) ist geschlossen. Leer, eigene Steine oder ein Blot (1) sind offen.",
+            "title": "Blockierte Felder"
+          },
+          "doubles": {
+            "body": "Pasch gibt vier Züge mit dieser Zahl. Du hast 2-2 gewürfelt — das sind vier Zweien. Ziehe viermal vom 8er- auf das 6er-Feld.",
+            "hint": "Tippe auf das 8er-Feld, dann auf das 6er-Feld. Viermal — einmal pro Würfel.",
+            "praise": "Genau — Pasch bedeutet vier Züge mit dieser Zahl.",
+            "title": "Pasch = vier Züge"
+          },
+          "explain": {
+            "body": "Jeden Zug würfelst du zwei Würfel und spielst beide Zahlen, wenn du kannst. Du darfst auf leere Felder, eigene Steine oder einen einzelnen Gegner (einen Blot) ziehen.",
+            "title": "Zwei Zahlen, offene Felder"
+          },
+          "two_dice": {
+            "body": "Du hast 3 und 1 gewürfelt. Ziehe den Stein auf dem 8er drei Pips (auf 5) und den auf dem 6er ein Pip (auf 5).",
+            "hint": "Wähle einen weißen Stein und tippe auf Feld 5. Tu das für das 8er- und das 6er-Feld.",
+            "praise": "Schön — beide Würfel genutzt. Gleicher Stein oder zwei Steine, beide Zahlen müssen gespielt werden, wenn möglich.",
+            "title": "Beide Würfel spielen"
+          }
+        },
+        "subtitle": "So läuft ein Zug",
+        "title": "Ziehen mit Würfeln"
+      }
+    },
+    "locked": "Schließe zuerst die vorherige Lektion ab",
+    "next_lesson": "Nächste Lektion",
+    "quiz": {
+      "bar": {
+        "a": "Ziehe zuerst deinen weitesten Stein",
+        "b": "Tritt mit diesem Stein ein, bevor du etwas anderes ziehst",
+        "c": "Setze deinen Zug aus",
+        "prompt": "Solange ein Stein auf der Bar ist, musst du…"
+      },
+      "bear": {
+        "a": "Immer wenn du eine 6 würfelst",
+        "b": "Erst nachdem du einen Blot geschlagen hast",
+        "c": "Wenn alle 15 Steine im Inneren Feld sind",
+        "prompt": "Wann darfst du austragen?"
+      },
+      "blot": {
+        "a": "Jeder Stapel aus drei oder mehr Steinen",
+        "b": "Ein einzelner Stein auf einem Feld — er kann geschlagen werden",
+        "c": "Zwei oder mehr Steine auf einem Feld — ein gemachtes Feld",
+        "prompt": "Was ist ein Blot?"
+      }
+    },
+    "replay": "Wiederholen",
+    "skip_to_play": "Zum Spielen springen",
+    "step_progress": "Schritt {{current}} von {{total}}",
+    "subtitle": "Fünf kurze Lektionen — dann bist du bereit",
+    "title": "Lernen zu spielen"
+  },
+  "not_found": {
+    "body": "Diese Seite gehört nicht zu Backgammon Mastermind. Zurück zur Startseite, um zu lernen oder ein Spiel zu starten.",
+    "heading": "Neben dem Brett",
+    "home_a11y": "Zur Startseite",
+    "home_cta": "Zur Startseite",
+    "title": "Nicht gefunden"
+  },
+  "settings": {
+    "about": "Über",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabisch",
+    "back_a11y": "Zurück",
+    "english": "Englisch",
+    "game": "Spiel",
+    "general": "Allgemein",
+    "github": "GitHub",
+    "language": "Sprache",
+    "link_error_body": "Bitte versuche es später erneut.",
+    "link_error_title": "Link kann nicht geöffnet werden",
+    "links": "Links",
+    "more": "Mehr",
+    "privacy": "Datenschutzerklärung",
+    "rate": "Bewerten",
+    "share": "Teilen",
+    "support": "Support",
+    "support_us": "Unterstütze uns",
+    "terms": "Nutzungsbedingungen",
+    "title": "Einstellungen",
+    "version": "Version",
+    "website": "Website"
+  },
+  "welcome": "Willkommen bei Backgammon Mastermind"
+}

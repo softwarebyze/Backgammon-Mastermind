@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Terpilih — ketuk titik yang disorot, atau Batal"
+    },
+    "controls": {
+      "cancel": "Batal",
+      "cancel_a11y": "Batalkan pilihan",
+      "close_options_a11y": "Tutup opsi",
+      "moving": "Memindahkan…",
+      "new_game_message": "Mulai permainan baru?",
+      "new_game_title": "Permainan baru",
+      "no_legal_moves": "Tidak ada langkah legal…",
+      "play_again": "Main lagi",
+      "play_again_a11y": "Main lagi",
+      "roll_dice": "Lempar dadu",
+      "roll_dice_a11y": "Lempar dadu",
+      "rolling": "Melempar…",
+      "skip_wait": "Ketuk untuk melewati tunggu",
+      "skip_wait_a11y": "{{status}} Ketuk untuk melewati tunggu"
+    },
+    "nudge": {
+      "roll_first": "Lempar dadu dulu"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} mengalahkan {{low}}",
+      "goes_first": "{{player}} bermain duluan!",
+      "roll": "Lempar",
+      "rolls_for_opening": "{{player}} melempar untuk pembukaan",
+      "tie": "Seri!",
+      "tie_again": "Angka sama — lempar lagi",
+      "waiting_roll": "{{player}} sedang melempar…",
+      "who_goes_first": "Siapa yang duluan?",
+      "your_roll": "Ketuk di mana saja untuk melempar"
+    },
+    "options": {
+      "open_settings": "Bahasa & lainnya",
+      "open_settings_hint": "Buka Pengaturan",
+      "title": "Opsi permainan"
+    },
+    "preferences": {
+      "auto_move": "Gerakan otomatis saat terpaksa",
+      "auto_move_hint": "Mainkan satu-satunya langkah legal secara otomatis",
+      "auto_roll": "Lempar dadu otomatis",
+      "auto_roll_hint": "Lempar otomatis pada giliranmu",
+      "dice_display": "Tampilan dadu",
+      "dice_dots": "Titik",
+      "dice_numbers": "Angka",
+      "direction_overlay": "Panduan arah",
+      "direction_overlay_hint": "Jalur tapal kuda di papan",
+      "fast_computer": "Komputer cepat",
+      "fast_computer_hint": "Tunggu lebih singkat pada lemparan dan langkah komputer. Anda juga bisa ketuk Lewati tunggu.",
+      "move_hints": "Petunjuk langkah",
+      "move_hints_hint": "Titik emas di samping poin yang bisa kamu pindahkan",
+      "point_numbers": "Nomor poin",
+      "point_numbers_hint": "Tampilkan label 1–24 di papan",
+      "section_automation": "Otomatisasi",
+      "section_board": "Papan",
+      "section_dice": "Dadu",
+      "sound": "Suara permainan",
+      "sound_hint": "Suara dadu, pukulan, dan kemenangan yang lembut — menghormati mode senyap"
+    },
+    "review": {
+      "back_to_live": "Kembali ke permainan langsung",
+      "live": "Permainan langsung",
+      "live_short": "Langsung",
+      "move_a11y": "Langkah {{ply}}, {{player}}",
+      "move_position": "Langkah {{current}} dari {{total}} · {{player}}",
+      "next": "Giliran berikutnya",
+      "opening": "Posisi awal",
+      "pause_replay": "Jeda",
+      "player_black": "Hitam",
+      "player_white": "Putih",
+      "previous": "Giliran sebelumnya",
+      "replay": "Putar ulang",
+      "scrubber_hint": "Ketuk giliran untuk meninjau",
+      "start": "Mulai",
+      "turn_a11y": "Giliran {{turn}}, {{player}}",
+      "turn_label": "Giliran {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Giliran {{turn}}/{{totalTurns}} · langkah {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Sedang meninjau — ketuk Langsung atau Kembali untuk terus bermain"
+    },
+    "status": {
+      "black_wins": "Hitam menang",
+      "computer_wins": "Komputer menang",
+      "white_wins": "🏆 Putih menang!",
+      "you_win": "🏆 Kamu menang!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Batal",
+    "confirm_continue": "Lanjutkan",
+    "confirm_native": "Lanjutkan permainan saat ini atau mulai yang baru?",
+    "confirm_new": "Permainan baru",
+    "confirm_title": "Permainan sedang berlangsung",
+    "confirm_web": "Mulai permainan baru? (Gunakan Lanjutkan di layar beranda untuk melanjutkan yang sekarang.)",
+    "resume": "Lanjutkan permainan",
+    "resume_a11y": "Lanjutkan permainan tersimpan",
+    "resume_none": "Tidak ada permainan tersimpan untuk dilanjutkan",
+    "resume_sub": "Lanjutkan dari tempat terakhir",
+    "subtitle": "Kuasai papan — satu langkah demi satu langkah",
+    "title": "BACKGAMMON",
+    "two_players": "2 pemain",
+    "two_players_a11y": "Main dengan dua pemain di perangkat ini",
+    "two_players_sub": "Bergiliran di perangkat yang sama",
+    "vs_computer": "vs Komputer",
+    "vs_computer_a11y": "Main melawan komputer",
+    "vs_computer_sub": "Main melawan AI"
+  },
+  "learn": {
+    "back_to_hub": "Semua pelajaran",
+    "continue": "Lanjutkan",
+    "feedback": {
+      "hint_nudge": "Butuh dorongan? Cari tempat yang disorot.",
+      "illegal": "Coba titik yang disorot — atau ketuk Petunjuk.",
+      "legal_but_wrong": "Itu sah dalam permainan sungguhan — di sini, coba langkah yang mengajarkan ide ini.",
+      "move_progress": "Bagus — {{done}} dari {{needed}} langkah selesai."
+    },
+    "graduation": {
+      "body": "Anda tahu tujuan, papan, cara giliran bekerja, memukul, dan mengeluarkan. Pemeriksaan singkat — lalu permainan sungguhan pertama.",
+      "play_cta": "Mainkan permainan pertama Anda",
+      "quiz_done": "Tepat. Saatnya bermain.",
+      "quiz_title": "Pemeriksaan singkat",
+      "quiz_wrong": "Belum tepat — coba jawaban lain.",
+      "recap_1": "Balapan: keluarkan ke-15 bidak lebih dulu",
+      "recap_2": "Lempar dua dadu; mendarat di titik terbuka",
+      "recap_3": "Pukul blot → mereka duduk di bar",
+      "recap_4": "Keluarkan hanya dari papan rumah",
+      "recap_5": "Permainan dimulai dengan satu dadu masing-masing — yang lebih tinggi duluan (seri lempar ulang)",
+      "title": "Anda siap bermain"
+    },
+    "hint": "Petunjuk",
+    "home_cta": "Belajar bermain",
+    "home_cta_progress": "{{done}} dari {{total}} pelajaran selesai",
+    "home_cta_quiz": "Tinggal pemeriksaan singkat — lalu main",
+    "home_cta_ready": "Anda siap — mainkan permainan sungguhan",
+    "home_cta_sub": "Pelajaran interaktif untuk pemula",
+    "lesson_complete": "Pelajaran selesai!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Tidak ada apa pun di titik 5, tetapi Anda melempar 5. Keluarkan dari bidak tertinggi (yang 3). Angka lebih besar tetap menurunkan bidak.",
+            "hint": "Pilih titik 3, lalu ketuk nampan pengeluaran.",
+            "praise": "Itulah aturan overshoot — akan sering dipakai saat mengeluarkan.",
+            "title": "Dadu lebih besar, tetap keluar"
+          },
+          "try": {
+            "body": "Semua bidak Anda di rumah (1–6), jadi bisa dikeluarkan. Anda melempar 3 — turunkan bidak di titik 3 dari papan.",
+            "hint": "Pilih titik 3, lalu ketuk area pengeluaran di tepi kanan.",
+            "praise": "Keluar papan! Yang pertama mengeluarkan ke-15 menang.",
+            "title": "Keluarkan satu"
+          }
+        },
+        "subtitle": "Cara menang",
+        "title": "Mengeluarkan bidak"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Anda bermain PUTIH — bidak krem. Tapal kuda krem adalah jalur ANDA: mulai di kanan atas, mengelilingi sisi kiri, lalu masuk rumah di kanan bawah (titik 1–6). Garis putus-putus yang lebih dingin adalah Hitam ke arah sebaliknya.",
+            "title": "Jalur tapal kuda"
+          },
+          "far": {
+            "body": "Ketuk titik tempat dua bidak putih terjauh Anda mulai (titik 24, kanan atas).",
+            "hint": "Lihat kanan atas — dua bidak putih di titik 24.",
+            "praise": "Mereka mulai jauh di rumah lawan dan punya perjalanan terpanjang.",
+            "title": "Bidak terjauh Anda"
+          },
+          "home_stack": {
+            "body": "Ketuk tumpukan besar lima bidak putih yang sudah di rumah (titik 6).",
+            "hint": "Kanan bawah: lima bidak putih di titik 6.",
+            "praise": "Itu tumpukan rumah Anda — lima sudah menunggu di titik 6, paling dekat pengeluaran. Setiap permainan dimulai seperti ini.",
+            "title": "Tumpukan rumah Anda"
+          }
+        },
+        "subtitle": "Ke arah mana Anda bergerak",
+        "title": "Arah dan susunan"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Jalur timbul di tengah adalah bar. Bidak yang dipukul menunggu di sini. Ketuk bar.",
+            "hint": "Ketuk jalur vertikal antara belahan kiri dan kanan papan.",
+            "praise": "Benar — bidak yang dipukul duduk di bar sampai masuk kembali.",
+            "title": "Bar"
+          },
+          "explain": {
+            "body": "Anda dan lawan masing-masing punya 15 bidak. Gerakkan di papan dan keluarkan — yang selesai lebih dulu menang.",
+            "title": "Yang pertama mengeluarkan menang"
+          },
+          "home": {
+            "body": "Rumah Anda adalah titik 1–6 (kanan bawah). Ketuk titik mana pun di papan rumah.",
+            "hint": "Rumah adalah enam titik di kuadran kanan bawah — bernomor 1 sampai 6.",
+            "praise": "Itu rumah Anda — bidak meninggalkan papan dari sini.",
+            "title": "Temukan papan rumah"
+          }
+        },
+        "subtitle": "Apa yang Anda kejar",
+        "title": "Tujuan dan papan"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Anda di bar — masuk lagi sebelum menggerakkan yang lain. Hitung dari titik 24 menuju rumah: 4 mendarat di titik 21.",
+            "hint": "Ketuk bar, lalu titik 21 (bukan 23 — itu hanya dua pip dari bar).",
+            "praise": "Anda kembali di papan — bidak bar selalu masuk lebih dulu.",
+            "title": "Masuk dari bar",
+            "wrong": "Itu hanya dua pip dari bar (titik 23). Hitung empat titik dari 24 menuju rumah — itu titik 21."
+          },
+          "hit": {
+            "body": "Bidak tunggal adalah blot. Mendarat di atasnya dan ia ke bar. Anda melempar 3 — pukul blot hitam di titik 5.",
+            "hint": "Ketuk bidak Anda di 8, lalu titik 5.",
+            "praise": "Pukul! Bidak hitam itu sekarang di bar.",
+            "title": "Pukul blot"
+          }
+        },
+        "subtitle": "Permainan kontak",
+        "title": "Memukul dan bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Dua atau lebih bidak lawan menutup titik — Anda tidak bisa mendarat di sana. Ketuk tumpukan hitam tertutup di titik 5.",
+            "hint": "Tumpukan tersorot dua bidak hitam di titik 5.",
+            "praise": "Benar — titik jadi (2+) tertutup. Kosong, milik Anda, atau blot (1) terbuka.",
+            "title": "Titik tertutup"
+          },
+          "doubles": {
+            "body": "Dadu kembar memberi empat langkah angka itu. Anda melempar 2-2 — yaitu empat angka 2. Pindah dari titik 8 ke 6 empat kali.",
+            "hint": "Ketuk titik 8, lalu titik 6. Lakukan empat kali — sekali per dadu.",
+            "praise": "Tepat — kembar berarti empat langkah dengan angka itu.",
+            "title": "Kembar = empat langkah"
+          },
+          "explain": {
+            "body": "Setiap giliran Anda melempar dua dadu dan memainkan kedua angka jika bisa. Boleh mendarat di titik kosong, bidak sendiri, atau lawan tunggal (blot).",
+            "title": "Dua angka, titik terbuka"
+          },
+          "two_dice": {
+            "body": "Anda melempar 3 dan 1. Gerakkan bidak di titik 8 tiga pip (ke 5), dan yang di titik 6 satu pip (ke 5).",
+            "hint": "Pilih bidak putih, lalu ketuk titik 5. Lakukan untuk titik 8 dan titik 6.",
+            "praise": "Bagus — kedua dadu terpakai. Bidak yang sama atau dua, kedua angka harus dimainkan jika bisa.",
+            "title": "Mainkan kedua dadu"
+          }
+        },
+        "subtitle": "Cara kerja giliran",
+        "title": "Bergerak dengan dadu"
+      }
+    },
+    "locked": "Selesaikan pelajaran sebelumnya dulu",
+    "next_lesson": "Pelajaran berikutnya",
+    "quiz": {
+      "bar": {
+        "a": "Gerakkan bidak terjauh dulu",
+        "b": "Masukkan bidak itu sebelum menggerakkan yang lain",
+        "c": "Lewati giliran Anda",
+        "prompt": "Selama ada bidak di bar, Anda harus…"
+      },
+      "bear": {
+        "a": "Setiap kali melempar 6",
+        "b": "Hanya setelah memukul blot",
+        "c": "Ketika ke-15 bidak ada di papan rumah",
+        "prompt": "Kapan bisa mengeluarkan?"
+      },
+      "blot": {
+        "a": "Tumpukan tiga atau lebih apa pun",
+        "b": "Satu bidak di sebuah titik — bisa dipukul",
+        "c": "Dua atau lebih bidak di sebuah titik — titik jadi",
+        "prompt": "Apa itu blot?"
+      }
+    },
+    "replay": "Ulangi",
+    "skip_to_play": "Langsung bermain",
+    "step_progress": "Langkah {{current}} dari {{total}}",
+    "subtitle": "Lima pelajaran singkat — lalu Anda siap",
+    "title": "Belajar bermain"
+  },
+  "not_found": {
+    "body": "Halaman itu bukan bagian dari Backgammon Mastermind. Kembali ke beranda untuk belajar atau mulai permainan.",
+    "heading": "Di luar papan",
+    "home_a11y": "Ke beranda",
+    "home_cta": "Kembali ke beranda",
+    "title": "Tidak ditemukan"
+  },
+  "settings": {
+    "about": "Tentang",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arab",
+    "back_a11y": "Kembali",
+    "english": "Inggris",
+    "game": "Permainan",
+    "general": "Umum",
+    "github": "GitHub",
+    "language": "Bahasa",
+    "link_error_body": "Coba lagi nanti.",
+    "link_error_title": "Tidak dapat membuka tautan",
+    "links": "Tautan",
+    "more": "Lainnya",
+    "privacy": "Kebijakan Privasi",
+    "rate": "Nilai",
+    "share": "Bagikan",
+    "support": "Dukungan",
+    "support_us": "Dukung Kami",
+    "terms": "Ketentuan Layanan",
+    "title": "Pengaturan",
+    "version": "Versi",
+    "website": "Situs web"
+  },
+  "welcome": "Selamat datang di Backgammon Mastermind"
+}

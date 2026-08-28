@@ -6,6 +6,16 @@
     "controls": {
       "cancel": "إلغاء",
       "cancel_a11y": "إلغاء التحديد",
+      "close_options_a11y": "إغلاق الخيارات",
+      "moving": "يتحرك…",
+      "new_game_message": "هل تريد بدء لعبة جديدة؟",
+      "new_game_title": "لعبة جديدة",
+      "no_legal_moves": "لا توجد حركات متاحة…",
+      "play_again": "العب مجدداً",
+      "play_again_a11y": "العب مجدداً",
+      "roll_dice": "ارمِ النرد",
+      "roll_dice_a11y": "رمي النرد",
+      "rolling": "يرمي…",
       "skip_wait": "اضغط لتخطي الانتظار",
       "skip_wait_a11y": "{{status}} اضغط لتخطي الانتظار"
     },
@@ -69,6 +79,12 @@
       "turn_label": "دور {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "دور {{turn}}/{{totalTurns}} · حركة {{moveInTurn}}/{{movesInTurn}} · {{player}}",
       "viewing_hint": "مراجعة — اضغط مباشر أو العودة للعب للمتابعة"
+    },
+    "status": {
+      "black_wins": "فاز الأسود",
+      "computer_wins": "فاز الكمبيوتر",
+      "white_wins": "🏆 فاز الأبيض!",
+      "you_win": "🏆 لقد فزت!"
     }
   },
   "home": {
@@ -259,15 +275,25 @@
     "subtitle": "خمسة دروس قصيرة — ثم تكون جاهزاً",
     "title": "تعلّم اللعب"
   },
+  "not_found": {
+    "body": "هذه الصفحة ليست جزءاً من Backgammon Mastermind. عُد للرئيسية لتتعلم أو تبدأ لعبة.",
+    "heading": "خارج اللوحة",
+    "home_a11y": "الذهاب إلى الرئيسية",
+    "home_cta": "العودة إلى الرئيسية",
+    "title": "غير موجود"
+  },
   "settings": {
     "about": "حول التطبيق ",
     "app_name": "Backgammon Mastermind",
     "arabic": "عربي",
+    "back_a11y": "رجوع",
     "english": "إنجليزي",
     "game": "اللعبة",
     "general": "عام",
     "github": "GitHub",
     "language": "لغة",
+    "link_error_body": "يرجى المحاولة مرة أخرى لاحقاً.",
+    "link_error_title": "تعذّر فتح الرابط",
     "links": "الروابط",
     "more": "أكثر",
     "privacy": "سياسة الخصوصية",

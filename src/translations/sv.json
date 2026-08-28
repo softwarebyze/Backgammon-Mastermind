@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Valt — tryck på en markerad punkt, eller Avbryt"
+    },
+    "controls": {
+      "cancel": "Avbryt",
+      "cancel_a11y": "Avbryt val",
+      "close_options_a11y": "Stäng alternativ",
+      "moving": "Flyttar…",
+      "new_game_message": "Starta ett nytt parti?",
+      "new_game_title": "Nytt parti",
+      "no_legal_moves": "Inga lagliga drag…",
+      "play_again": "Spela igen",
+      "play_again_a11y": "Spela igen",
+      "roll_dice": "Kasta tärningar",
+      "roll_dice_a11y": "Kasta tärningar",
+      "rolling": "Kastar…",
+      "skip_wait": "Tryck för att hoppa över väntan",
+      "skip_wait_a11y": "{{status}} Tryck för att hoppa över väntan"
+    },
+    "nudge": {
+      "roll_first": "Kasta tärningarna först"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} slår {{low}}",
+      "goes_first": "{{player}} börjar!",
+      "roll": "Kasta",
+      "rolls_for_opening": "{{player}} kastar om öppningen",
+      "tie": "Oavgjort!",
+      "tie_again": "Samma siffra — kasta igen",
+      "waiting_roll": "{{player}} kastar…",
+      "who_goes_first": "Vem börjar?",
+      "your_roll": "Tryck var som helst för att kasta"
+    },
+    "options": {
+      "open_settings": "Språk och mer",
+      "open_settings_hint": "Öppna Inställningar",
+      "title": "Partialternativ"
+    },
+    "preferences": {
+      "auto_move": "Automatiskt drag vid tvång",
+      "auto_move_hint": "Spela det enda lagliga draget automatiskt",
+      "auto_roll": "Automatiskt tärningskast",
+      "auto_roll_hint": "Kasta automatiskt på din tur",
+      "dice_display": "Tärningsvisning",
+      "dice_dots": "Prickar",
+      "dice_numbers": "Siffror",
+      "direction_overlay": "Riktningsvisning",
+      "direction_overlay_hint": "Hästskoformad bana på brädet",
+      "fast_computer": "Snabb dator",
+      "fast_computer_hint": "Kortare väntan på datorns kast och drag. Du kan också trycka Hoppa över väntan.",
+      "move_hints": "Dragtips",
+      "move_hints_hint": "Guldpunkt bredvid punkter du kan flytta från",
+      "point_numbers": "Punktnummer",
+      "point_numbers_hint": "Visa etiketter 1–24 på brädet",
+      "section_automation": "Automatisering",
+      "section_board": "Bräde",
+      "section_dice": "Tärningar",
+      "sound": "Spelljud",
+      "sound_hint": "Mjuka tärnings-, slag- och segerljud — respekterar tyst läge"
+    },
+    "review": {
+      "back_to_live": "Tillbaka till pågående parti",
+      "live": "Pågående parti",
+      "live_short": "Live",
+      "move_a11y": "Drag {{ply}}, {{player}}",
+      "move_position": "Drag {{current}} av {{total}} · {{player}}",
+      "next": "Nästa tur",
+      "opening": "Startposition",
+      "pause_replay": "Paus",
+      "player_black": "Svart",
+      "player_white": "Vit",
+      "previous": "Föregående tur",
+      "replay": "Omspelning",
+      "scrubber_hint": "Tryck på en tur för att granska",
+      "start": "Start",
+      "turn_a11y": "Tur {{turn}}, {{player}}",
+      "turn_label": "Tur {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tur {{turn}}/{{totalTurns}} · drag {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Granskar — tryck på Live eller Tillbaka för att fortsätta"
+    },
+    "status": {
+      "black_wins": "Svart vinner",
+      "computer_wins": "Datorn vinner",
+      "white_wins": "🏆 Vit vinner!",
+      "you_win": "🏆 Du vinner!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Avbryt",
+    "confirm_continue": "Fortsätt",
+    "confirm_native": "Fortsätta det aktuella partiet eller starta ett nytt?",
+    "confirm_new": "Nytt parti",
+    "confirm_title": "Parti pågår",
+    "confirm_web": "Starta ett nytt parti? (Använd Fortsätt på startskärmen för att fortsätta det aktuella.)",
+    "resume": "Fortsätt parti",
+    "resume_a11y": "Fortsätt sparat parti",
+    "resume_none": "Inget sparat parti att fortsätta",
+    "resume_sub": "Fortsätt där du slutade",
+    "subtitle": "Bemästra brädet — drag för drag",
+    "title": "BACKGAMMON",
+    "two_players": "2 spelare",
+    "two_players_a11y": "Spela med två spelare på den här enheten",
+    "two_players_sub": "Turvis på samma enhet",
+    "vs_computer": "Mot dator",
+    "vs_computer_a11y": "Spela mot datorn",
+    "vs_computer_sub": "Spela mot AI"
+  },
+  "learn": {
+    "back_to_hub": "Alla lektioner",
+    "continue": "Fortsätt",
+    "feedback": {
+      "hint_nudge": "Behöver du en knuff? Leta efter de markerade ställena.",
+      "illegal": "Prova en markerad punkt — eller tryck Tips.",
+      "legal_but_wrong": "Det vore lagligt i ett riktigt parti — här, prova draget som lär ut idén.",
+      "move_progress": "Snyggt — {{done}} av {{needed}} drag gjorda."
+    },
+    "graduation": {
+      "body": "Du känner målet, brädet, hur turer fungerar, slå och bära av. En snabb koll — sedan ditt första riktiga parti.",
+      "play_cta": "Spela ditt första parti",
+      "quiz_done": "Mitt i prick. Dags att spela.",
+      "quiz_title": "Snabb koll",
+      "quiz_wrong": "Inte riktigt — prova ett annat svar.",
+      "recap_1": "Lopp: bär av alla 15 först",
+      "recap_2": "Kasta två tärningar; landa på öppna punkter",
+      "recap_3": "Slå blotter → de sitter på baren",
+      "recap_4": "Bär av bara från hembrädet",
+      "recap_5": "Partier börjar med en tärning var — högst går först (lika kastas om)",
+      "title": "Du är redo att spela"
+    },
+    "hint": "Tips",
+    "home_cta": "Lär dig spela",
+    "home_cta_progress": "{{done}} av {{total}} lektioner klara",
+    "home_cta_quiz": "Snabb koll kvar — sedan spela",
+    "home_cta_ready": "Du är redo — spela ett riktigt parti",
+    "home_cta_sub": "Interaktiva lektioner för nybörjare",
+    "lesson_complete": "Lektion klar!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Inget står på 5-punkten, men du slog 5. Bär av från din högsta bricka (3:an). Ett större tal tar ändå av en bricka.",
+            "hint": "Välj punkt 3 och tryck sedan på avbäringsbrickan.",
+            "praise": "Det är överskottsregeln — du använder den ofta när du bär av.",
+            "title": "Större tärning, ändå av"
+          },
+          "try": {
+            "body": "Alla brickor är i hemmet (1–6), så du kan bära av. Du slog 3 — ta brickan på 3-punkten av brädet.",
+            "hint": "Välj punkt 3 och tryck sedan på avbäringsområdet vid högerkant.",
+            "praise": "Av brädet! Först att bära av alla 15 vinner.",
+            "title": "Bär av en"
+          }
+        },
+        "subtitle": "Så vinner du",
+        "title": "Att bära av"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Du spelar VIT — de krämfärgade brickorna. Den krämfärgade hästskon är DIN väg: start uppe till höger, runt vänster sida, sedan in i hemmet nere till höger (punkt 1–6). Den svalare streckade linjen är Svart åt andra hållet.",
+            "title": "Hästskovägen"
+          },
+          "far": {
+            "body": "Tryck på punkten där dina två längst bort vita brickor startar (24-punkten, uppe till höger).",
+            "hint": "Titta uppe till höger — två vita brickor på punkt 24.",
+            "praise": "De startar djupt i motståndarens hem och har den längsta resan.",
+            "title": "Dina längst bort-brickor"
+          },
+          "home_stack": {
+            "body": "Tryck på den stora högen med fem vita brickor som redan är i hemmet (6-punkten).",
+            "hint": "Nere till höger: fem vita brickor på punkt 6.",
+            "praise": "Det är din hemhög — fem väntar redan på 6-punkten, närmast att bära av. Varje parti börjar så.",
+            "title": "Din hemhög"
+          }
+        },
+        "subtitle": "Vilket håll du flyttar",
+        "title": "Riktning och uppställning"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Den upphöjda remsan i mitten är baren. Slagna brickor väntar här. Tryck på baren.",
+            "hint": "Tryck på den lodräta remsan mellan brädets vänstra och högra halva.",
+            "praise": "Rätt — slagna brickor sitter på baren tills de kommer in igen.",
+            "title": "Baren"
+          },
+          "explain": {
+            "body": "Du och motståndaren har 15 brickor var. Flytta dem runt brädet och av — den som blir klar först vinner.",
+            "title": "Först att bära av vinner"
+          },
+          "home": {
+            "body": "Ditt hem är punkt 1–6 (nere till höger). Tryck på en punkt på hembrädet.",
+            "hint": "Hemmet är de sex punkterna i nedre högra kvadranten — numrerade 1 till 6.",
+            "praise": "Det är ditt hem — brickor lämnar brädet härifrån.",
+            "title": "Hitta hembrädet"
+          }
+        },
+        "subtitle": "Vad du tävlar om",
+        "title": "Mål och bräde"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Du är på baren — kom in igen innan du flyttar någon annan. Räkna från 24-punkten mot hemmet: en 4 landar på punkt 21.",
+            "hint": "Tryck på baren och sedan punkt 21 (inte 23 — det är bara två pips från baren).",
+            "praise": "Du är tillbaka på brädet — brickor på baren kommer alltid in först.",
+            "title": "Kom in från baren",
+            "wrong": "Det är bara två pips från baren (punkt 23). Räkna fyra punkter från 24 mot hemmet — det är punkt 21."
+          },
+          "hit": {
+            "body": "En ensam bricka är ett blot. Landa på den så går den till baren. Du slog 3 — slå det svarta blotet på 5-punkten.",
+            "hint": "Tryck på din bricka på 8 och sedan punkt 5.",
+            "praise": "Slagen! Den svarta brickan sitter nu på baren.",
+            "title": "Slå blotet"
+          }
+        },
+        "subtitle": "Kontaktspel",
+        "title": "Slå och baren"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Två eller fler motståndarbrickor blockerar en punkt — du kan inte landa där. Tryck på den blockerade svarta högen på 5-punkten.",
+            "hint": "Den markerade högen med två svarta brickor på punkt 5.",
+            "praise": "Rätt — en gjord punkt (2+) är stängd. Tom, din egen eller ett blot (1) är öppna.",
+            "title": "Blockerade punkter"
+          },
+          "doubles": {
+            "body": "Dubblar ger fyra drag med det talet. Du slog 2-2 — det är fyra 2:or. Flytta från 8-punkten till 6-punkten fyra gånger.",
+            "hint": "Tryck på 8-punkten och sedan 6-punkten. Gör det fyra gånger — en gång per tärning.",
+            "praise": "Precis — dubblar betyder fyra drag med det talet.",
+            "title": "Dubblar = fyra drag"
+          },
+          "explain": {
+            "body": "Varje tur kastar du två tärningar och spelar båda talen när du kan. Du får landa på tomma punkter, egna brickor eller en ensam motståndare (ett blot).",
+            "title": "Två tal, öppna punkter"
+          },
+          "two_dice": {
+            "body": "Du slog 3 och 1. Flytta brickan på 8-punkten tre pips (till 5) och den på 6-punkten ett pip (till 5).",
+            "hint": "Välj en vit bricka och tryck på punkt 5. Gör det för både 8-punkten och 6-punkten.",
+            "praise": "Snyggt — båda tärningarna använda. Samma bricka eller två, båda talen måste spelas när det går.",
+            "title": "Spela båda tärningarna"
+          }
+        },
+        "subtitle": "Så fungerar en tur",
+        "title": "Flytta med tärningar"
+      }
+    },
+    "locked": "Slutför föregående lektion först",
+    "next_lesson": "Nästa lektion",
+    "quiz": {
+      "bar": {
+        "a": "Flytta din längst bort-bricka först",
+        "b": "För in den brickan innan du flyttar något annat",
+        "c": "Hoppa över din tur",
+        "prompt": "Medan du har en bricka på baren måste du…"
+      },
+      "bear": {
+        "a": "När du slår en 6",
+        "b": "Bara efter att du slagit ett blot",
+        "c": "När alla 15 brickor är på hembrädet",
+        "prompt": "När får du bära av?"
+      },
+      "blot": {
+        "a": "Vilken hög som helst med tre eller fler",
+        "b": "En ensam bricka på en punkt — den kan slås",
+        "c": "Två eller fler brickor på en punkt — en gjord punkt",
+        "prompt": "Vad är ett blot?"
+      }
+    },
+    "replay": "Spela om",
+    "skip_to_play": "Hoppa till spel",
+    "step_progress": "Steg {{current}} av {{total}}",
+    "subtitle": "Fem korta lektioner — sen är du redo",
+    "title": "Lär dig spela"
+  },
+  "not_found": {
+    "body": "Den sidan är inte en del av Backgammon Mastermind. Gå hem för att lära dig eller starta ett parti.",
+    "heading": "Utanför brädet",
+    "home_a11y": "Gå till start",
+    "home_cta": "Tillbaka till start",
+    "title": "Hittades inte"
+  },
+  "settings": {
+    "about": "Om",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabiska",
+    "back_a11y": "Tillbaka",
+    "english": "Engelska",
+    "game": "Spel",
+    "general": "Allmänt",
+    "github": "GitHub",
+    "language": "Språk",
+    "link_error_body": "Försök igen senare.",
+    "link_error_title": "Kan inte öppna länken",
+    "links": "Länkar",
+    "more": "Mer",
+    "privacy": "Integritetspolicy",
+    "rate": "Betygsätt",
+    "share": "Dela",
+    "support": "Support",
+    "support_us": "Stöd oss",
+    "terms": "Användarvillkor",
+    "title": "Inställningar",
+    "version": "Version",
+    "website": "Webbplats"
+  },
+  "welcome": "Välkommen till Backgammon Mastermind"
+}

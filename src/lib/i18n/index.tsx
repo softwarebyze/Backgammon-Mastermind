@@ -4,14 +4,21 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
 
-import { resources } from './resources';
-import { getLanguage } from './utils';
+import { resolveLanguage, resources } from './resources';
+import { applyDocumentDirection, getLanguage } from './utils';
 
+export * from './resources';
 export * from './utils';
+
+// Prefer languageTag (zh-Hant-TW) then languageCode (pt) via resolveLanguage.
+const deviceLocale = getLocales()[0];
+const deviceLanguage
+  = resolveLanguage(deviceLocale?.languageTag ?? undefined)
+    ?? resolveLanguage(deviceLocale?.languageCode ?? undefined);
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: getLanguage() || getLocales()[0]?.languageTag, // TODO: if you are not supporting multiple languages or languages with multiple directions you can set the default value to `en`
+  lng: resolveLanguage(getLanguage() ?? undefined) ?? deviceLanguage ?? 'en',
   fallbackLng: 'en',
   compatibilityJSON: 'v4', // Updated to v4 for i18next compatibility
 
@@ -24,7 +31,14 @@ i18n.use(initReactI18next).init({
 // Is it a RTL language?
 export const isRTL: boolean = i18n.dir() === 'rtl';
 
-I18nManager.allowRTL(isRTL);
+// Always allow RTL so switching into Arabic/Hebrew at runtime can flip layout.
+I18nManager.allowRTL(true);
 I18nManager.forceRTL(isRTL);
+
+const activeLang = resolveLanguage(i18n.language);
+if (activeLang)
+  applyDocumentDirection(activeLang);
+else if (isRTL)
+  applyDocumentDirection('ar');
 
 export default i18n;

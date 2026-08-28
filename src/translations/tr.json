@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Seçildi — vurgulanan bir haneye dokunun veya İptal"
+    },
+    "controls": {
+      "cancel": "İptal",
+      "cancel_a11y": "Seçimi iptal et",
+      "close_options_a11y": "Seçenekleri kapat",
+      "moving": "Taş oynanıyor…",
+      "new_game_message": "Yeni oyun başlatılsın mı?",
+      "new_game_title": "Yeni Oyun",
+      "no_legal_moves": "Oynanabilir hamle yok…",
+      "play_again": "Tekrar Oyna",
+      "play_again_a11y": "Tekrar oyna",
+      "roll_dice": "Zar At",
+      "roll_dice_a11y": "Zar at",
+      "rolling": "Zar atılıyor…",
+      "skip_wait": "Beklemeyi atlamak için dokunun",
+      "skip_wait_a11y": "{{status}} Beklemeyi atlamak için dokunun"
+    },
+    "nudge": {
+      "roll_first": "Önce zarları at"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}}, {{low}}'u geçti",
+      "goes_first": "{{player}} başlıyor!",
+      "roll": "At",
+      "rolls_for_opening": "{{player}} açılış için zar atıyor",
+      "tie": "Berabere!",
+      "tie_again": "Aynı sayı — tekrar atın",
+      "waiting_roll": "{{player}} zar atıyor…",
+      "who_goes_first": "Kim başlayacak?",
+      "your_roll": "Zar atmak için herhangi bir yere dokun"
+    },
+    "options": {
+      "open_settings": "Dil ve daha fazlası",
+      "open_settings_hint": "Ayarları aç",
+      "title": "Oyun seçenekleri"
+    },
+    "preferences": {
+      "auto_move": "Zorunlu hamlede otomatik oyna",
+      "auto_move_hint": "Tek geçerli hamleyi otomatik oynar",
+      "auto_roll": "Zarı otomatik at",
+      "auto_roll_hint": "Sıra sende olduğunda otomatik zar atar",
+      "dice_display": "Zar görünümü",
+      "dice_dots": "Noktalar",
+      "dice_numbers": "Sayılar",
+      "direction_overlay": "Yön kılavuzu",
+      "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
+      "fast_computer": "Hızlı bilgisayar",
+      "fast_computer_hint": "Bilgisayarın zar atışlarında ve hamlelerinde daha kısa bekleme. Beklemeyi atla’ya da dokunabilirsiniz.",
+      "move_hints": "Hamle ipuçları",
+      "move_hints_hint": "Taş oynatabileceğin hanelerin yanında altın nokta",
+      "point_numbers": "Hane numaraları",
+      "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
+      "section_automation": "Otomasyon",
+      "section_board": "Tahta",
+      "section_dice": "Zarlar",
+      "sound": "Oyun sesleri",
+      "sound_hint": "Hafif zar, kırma ve kazanma sesleri — sessiz moda uyar"
+    },
+    "review": {
+      "back_to_live": "Canlı oyuna dön",
+      "live": "Canlı oyun",
+      "live_short": "Canlı",
+      "move_a11y": "Hamle {{ply}}, {{player}}",
+      "move_position": "Hamle {{current}}/{{total}} · {{player}}",
+      "next": "Sonraki el",
+      "opening": "Başlangıç dizilişi",
+      "pause_replay": "Duraklat",
+      "player_black": "Siyah",
+      "player_white": "Beyaz",
+      "previous": "Önceki el",
+      "replay": "Tekrar izle",
+      "scrubber_hint": "İncelemek için bir ele dokun",
+      "start": "Başlangıç",
+      "turn_a11y": "El {{turn}}, {{player}}",
+      "turn_label": "El {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "El {{turn}}/{{totalTurns}} · hamle {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "İnceleme modundasın — oynamaya devam etmek için Canlı'ya dokun"
+    },
+    "status": {
+      "black_wins": "Siyah Kazandı",
+      "computer_wins": "Bilgisayar Kazandı",
+      "white_wins": "🏆 Beyaz Kazandı!",
+      "you_win": "🏆 Kazandın!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "İptal",
+    "confirm_continue": "Devam et",
+    "confirm_native": "Mevcut oyuna devam mı, yeni oyun mu?",
+    "confirm_new": "Yeni oyun",
+    "confirm_title": "Devam eden oyun var",
+    "confirm_web": "Yeni oyun başlatılsın mı? (Mevcut oyuna devam etmek için ana ekrandaki Devam Et'i kullan.)",
+    "resume": "Oyuna Devam Et",
+    "resume_a11y": "Kayıtlı oyuna devam et",
+    "resume_none": "Devam edilecek kayıtlı oyun yok",
+    "resume_sub": "Kaldığın yerden devam et",
+    "subtitle": "Tahtaya hükmet — hamle hamle",
+    "title": "BACKGAMMON",
+    "two_players": "2 Oyuncu",
+    "two_players_a11y": "Aynı cihazda iki kişi oyna",
+    "two_players_sub": "Aynı cihazda sırayla",
+    "vs_computer": "Bilgisayara Karşı",
+    "vs_computer_a11y": "Bilgisayara karşı oyna",
+    "vs_computer_sub": "Yapay zekâya karşı oyna"
+  },
+  "learn": {
+    "back_to_hub": "Tüm dersler",
+    "continue": "Devam et",
+    "feedback": {
+      "hint_nudge": "Bir dürtme mi lazım? Vurgulanan yerlere bakın.",
+      "illegal": "Vurgulanan bir haneyi deneyin — veya İpucu’na dokunun.",
+      "legal_but_wrong": "Gerçek oyunda bu yasal olurdu — burada bu fikri öğreten hamleyi deneyin.",
+      "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi bitti."
+    },
+    "graduation": {
+      "body": "Hedefi, tahtayı, turların işleyişini, vurmayı ve çıkarmayı biliyorsunuz. Hızlı bir kontrol — sonra ilk gerçek oyununuz.",
+      "play_cta": "İlk oyununuzu oynayın",
+      "quiz_done": "Tam isabet. Oynama zamanı.",
+      "quiz_title": "Hızlı kontrol",
+      "quiz_wrong": "Tam değil — başka bir yanıt deneyin.",
+      "recap_1": "Yarış: 15 pulun hepsini önce çıkarın",
+      "recap_2": "İki zar atın; açık hanelere inin",
+      "recap_3": "Blot’ları vurun → bar’da otururlar",
+      "recap_4": "Yalnızca ev tahtasından çıkarın",
+      "recap_5": "Oyunlar kişi başı bir zarla başlar — yüksek olan başlar (beraberlikte yeniden atılır)",
+      "title": "Oynamaya hazırsınız"
+    },
+    "hint": "İpucu",
+    "home_cta": "Oynamayı öğren",
+    "home_cta_progress": "{{total}} dersten {{done}} tanesi bitti",
+    "home_cta_quiz": "Hızlı kontrol kaldı — sonra oyna",
+    "home_cta_ready": "Hazırsınız — gerçek bir oyun oynayın",
+    "home_cta_sub": "Yeni başlayanlar için etkileşimli dersler",
+    "lesson_complete": "Ders tamam!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "5 hanesinde hiçbir şey yok ama 5 attınız. En yüksek pulunuzdan (3) çıkarın. Daha büyük sayı yine pul indirir.",
+            "hint": "3 hanesini seçin, sonra çıkarma tepsisine dokunun.",
+            "praise": "Bu aşım kuralı — çıkarırken sık kullanırsınız.",
+            "title": "Daha büyük zar, yine dışarı"
+          },
+          "try": {
+            "body": "Tüm pullar evde (1–6), yani çıkarabilirsiniz. 3 attınız — 3 hanesindeki pulu tahtadan alın.",
+            "hint": "3 hanesini seçin, sonra sağ kenardaki çıkarma alanına dokunun.",
+            "praise": "Tahtanın dışında! 15’in hepsini önce çıkaran kazanır.",
+            "title": "Birini çıkar"
+          }
+        },
+        "subtitle": "Nasıl kazanılır",
+        "title": "Çıkarma"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "BEYAZ oynuyorsunuz — krem pullar. Krem nalı SİZİN yolunuz: sağ üstten başlar, sol taraftan döner, sağ alttaki eve girer (hane 1–6). Daha soğuk kesik çizgi ters yöndeki Siyah’tır.",
+            "title": "Nal yolu"
+          },
+          "far": {
+            "body": "En uzak iki beyaz pulunuzun başladığı haneye dokunun (24 hanesi, sağ üst).",
+            "hint": "Sağ üste bakın — 24 hanesinde iki beyaz pul.",
+            "praise": "Rakibin evinin derininde başlarlar ve en uzun yolculukları vardır.",
+            "title": "En uzak pullarınız"
+          },
+          "home_stack": {
+            "body": "Zaten evinizdeki beş beyaz pulun büyük yığınına dokunun (6 hanesi).",
+            "hint": "Sağ alt: 6 hanesinde beş beyaz pul.",
+            "praise": "Bu ev yığını — beş pul zaten 6’da, çıkarmaya en yakın. Her oyun böyle başlar.",
+            "title": "Ev yığınınız"
+          }
+        },
+        "subtitle": "Hangi yöne hareket edersiniz",
+        "title": "Yön ve dizilim"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Ortadaki yükseltilmiş şerit bar’dır. Vurulan pullar burada bekler. Bar’a dokunun.",
+            "hint": "Tahtanın sol ve sağ yarıları arasındaki dikey şeride dokunun.",
+            "praise": "Doğru — vurulan pullar yeniden girene kadar bar’da oturur.",
+            "title": "Bar"
+          },
+          "explain": {
+            "body": "Siz ve rakibiniz 15’er pul. Onları tahta etrafında dolaştırıp çıkarın — ilk bitiren kazanır.",
+            "title": "İlk çıkaran kazanır"
+          },
+          "home": {
+            "body": "Eviniz 1–6 haneleridir (sağ alt). Ev tahtasındaki herhangi bir haneye dokunun.",
+            "hint": "Ev, sağ alt çeyrekteki altı hanedir — 1’den 6’ya numaralı.",
+            "praise": "Burası eviniz — pullar tahtayı buradan terk eder.",
+            "title": "Ev tahtasını bulun"
+          }
+        },
+        "subtitle": "Ne için yarışıyorsunuz",
+        "title": "Hedef ve tahta"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Bar’dasınız — başkasını oynatmadan önce geri girin. 24’ten eve doğru sayın: 4, 21 hanesine iner.",
+            "hint": "Bar’a, sonra 21 hanesine dokunun (23 değil — bar’dan yalnızca iki pip).",
+            "praise": "Tahtadasınız — bar pulları her zaman önce girer.",
+            "title": "Bar’dan giriş",
+            "wrong": "Bu bar’dan yalnızca iki pip (hane 23). 24’ten eve doğru dört hane sayın — o 21’dir."
+          },
+          "hit": {
+            "body": "Tek pul blot’tur. Üzerine inin, bar’a gider. 3 attınız — 5 hanesindeki siyah blot’u vurun.",
+            "hint": "8’deki pulunuza, sonra 5 hanesine dokunun.",
+            "praise": "Vuruş! O siyah pul artık bar’da.",
+            "title": "Blot’u vur"
+          }
+        },
+        "subtitle": "Temas oyunu",
+        "title": "Vurma ve bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "İki veya daha fazla rakip pul bir haneyi kapatır — oraya inemezsiniz. 5’teki kapalı siyah yığına dokunun.",
+            "hint": "5 hanesindeki vurgulanan iki siyah pul yığını.",
+            "praise": "Doğru — yapılmış hane (2+) kapalıdır. Boş, sizinki veya blot (1) açıktır.",
+            "title": "Kapalı haneler"
+          },
+          "doubles": {
+            "body": "Çiftler o sayıyla dört hamle verir. 2-2 attınız — dört tane 2. 8’den 6’ya dört kez hareket edin.",
+            "hint": "8 hanesine, sonra 6’ya dokunun. Bunu dört kez yapın — zar başına bir kez.",
+            "praise": "Aynen — çift o sayıyla dört hamle demektir.",
+            "title": "Çift = dört hamle"
+          },
+          "explain": {
+            "body": "Her tur iki zar atarsınız ve yapabildiğinizde her iki sayıyı da oynarsınız. Boş hanelere, kendi pullarınıza veya yalnız rakibe (blot) inebilirsiniz.",
+            "title": "İki sayı, açık haneler"
+          },
+          "two_dice": {
+            "body": "3 ve 1 attınız. 8’deki pulu üç pip (5’e), 6’dakini bir pip (5’e) oynatın.",
+            "hint": "Beyaz bir pul seçin, sonra 5 hanesine dokunun. Bunu 8 ve 6 için yapın.",
+            "praise": "Güzel — her iki zar da kullanıldı. Aynı pul veya iki pul, mümkünse her iki sayı oynanmalıdır.",
+            "title": "Her iki zarı da oyna"
+          }
+        },
+        "subtitle": "Bir tur nasıl işler",
+        "title": "Zarlarla hareket"
+      }
+    },
+    "locked": "Önce önceki dersi tamamlayın",
+    "next_lesson": "Sonraki ders",
+    "quiz": {
+      "bar": {
+        "a": "Önce en uzak pulunuzu oynatın",
+        "b": "Başka bir şey oynatmadan önce o pulu içeri alın",
+        "c": "Turunuzu atlayın",
+        "prompt": "Bar’da pulunuz varken…"
+      },
+      "bear": {
+        "a": "Ne zaman 6 atarsanız",
+        "b": "Yalnızca bir blot vurdaktan sonra",
+        "c": "15 pulun hepsi ev tahtasındayken",
+        "prompt": "Ne zaman çıkarabilirsiniz?"
+      },
+      "blot": {
+        "a": "Üç veya daha fazla herhangi bir yığın",
+        "b": "Hanede tek pul — vurulabilir",
+        "c": "Hanede iki veya daha fazla pul — yapılmış hane",
+        "prompt": "Blot nedir?"
+      }
+    },
+    "replay": "Yeniden oyna",
+    "skip_to_play": "Oyuna atla",
+    "step_progress": "Adım {{current}} / {{total}}",
+    "subtitle": "Beş kısa ders — sonra hazırsınız",
+    "title": "Oynamayı öğren"
+  },
+  "not_found": {
+    "body": "Bu sayfa Backgammon Mastermind’ın parçası değil. Öğrenmek veya oyun başlatmak için ana ekrana dön.",
+    "heading": "Tahtanın dışı",
+    "home_a11y": "Ana sayfaya git",
+    "home_cta": "Ana sayfaya dön",
+    "title": "Bulunamadı"
+  },
+  "settings": {
+    "about": "Hakkında",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arapça",
+    "back_a11y": "Geri",
+    "english": "İngilizce",
+    "game": "Oyun",
+    "general": "Genel",
+    "github": "GitHub",
+    "language": "Dil",
+    "link_error_body": "Lütfen daha sonra tekrar dene.",
+    "link_error_title": "Bağlantı açılamıyor",
+    "links": "Bağlantılar",
+    "more": "Daha fazla",
+    "privacy": "Gizlilik Politikası",
+    "rate": "Değerlendir",
+    "share": "Paylaş",
+    "support": "Destek",
+    "support_us": "Bize Destek Ol",
+    "terms": "Hizmet Şartları",
+    "title": "Ayarlar",
+    "version": "Sürüm",
+    "website": "Web sitesi"
+  },
+  "welcome": "Backgammon Mastermind’a hoş geldiniz"
+}

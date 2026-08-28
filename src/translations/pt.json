@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Selecionado — toque num ponto destacado, ou Cancelar"
+    },
+    "controls": {
+      "cancel": "Cancelar",
+      "cancel_a11y": "Cancelar seleção",
+      "close_options_a11y": "Fechar opções",
+      "moving": "Movendo…",
+      "new_game_message": "Começar um novo jogo?",
+      "new_game_title": "Novo jogo",
+      "no_legal_moves": "Nenhum movimento possível…",
+      "play_again": "Jogar de novo",
+      "play_again_a11y": "Jogar de novo",
+      "roll_dice": "Lançar os dados",
+      "roll_dice_a11y": "Lançar os dados",
+      "rolling": "Lançando…",
+      "skip_wait": "Toque para saltar a espera",
+      "skip_wait_a11y": "{{status}} Toque para saltar a espera"
+    },
+    "nudge": {
+      "roll_first": "Lance os dados primeiro"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} vence {{low}}",
+      "goes_first": "{{player}} começa!",
+      "roll": "Lançar",
+      "rolls_for_opening": "{{player}} lança para a abertura",
+      "tie": "Empate!",
+      "tie_again": "Mesmo número — lancem de novo",
+      "waiting_roll": "{{player}} está lançando…",
+      "who_goes_first": "Quem começa?",
+      "your_roll": "Toque em qualquer lugar para lançar"
+    },
+    "options": {
+      "open_settings": "Idioma e mais",
+      "open_settings_hint": "Abrir Ajustes",
+      "title": "Opções do jogo"
+    },
+    "preferences": {
+      "auto_move": "Mover automaticamente quando forçado",
+      "auto_move_hint": "Jogar automaticamente o único movimento legal",
+      "auto_roll": "Lançar dados automaticamente",
+      "auto_roll_hint": "Lançar automaticamente na sua vez",
+      "dice_display": "Aparência dos dados",
+      "dice_dots": "Pontos",
+      "dice_numbers": "Números",
+      "direction_overlay": "Guia de direção",
+      "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
+      "fast_computer": "Computador rápido",
+      "fast_computer_hint": "Esperas mais curtas nas jogadas e movimentos do computador. Também pode tocar em Saltar espera.",
+      "move_hints": "Dicas de movimento",
+      "move_hints_hint": "Ponto dourado ao lado das casas de onde você pode mover",
+      "point_numbers": "Números das casas",
+      "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
+      "section_automation": "Automação",
+      "section_board": "Tabuleiro",
+      "section_dice": "Dados",
+      "sound": "Sons do jogo",
+      "sound_hint": "Dados, capturas e vitórias suaves — respeita o modo silencioso"
+    },
+    "review": {
+      "back_to_live": "Voltar ao jogo em andamento",
+      "live": "Jogo em andamento",
+      "live_short": "Ao vivo",
+      "move_a11y": "Movimento {{ply}}, {{player}}",
+      "move_position": "Movimento {{current}} de {{total}} · {{player}}",
+      "next": "Próximo turno",
+      "opening": "Posição inicial",
+      "pause_replay": "Pausar",
+      "player_black": "Pretas",
+      "player_white": "Brancas",
+      "previous": "Turno anterior",
+      "replay": "Replay",
+      "scrubber_hint": "Toque em um turno para revisar",
+      "start": "Início",
+      "turn_a11y": "Turno {{turn}}, {{player}}",
+      "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Turno {{turn}}/{{totalTurns}} · movimento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisando — toque em Ao vivo ou Voltar para continuar jogando"
+    },
+    "status": {
+      "black_wins": "As Pretas venceram",
+      "computer_wins": "O computador venceu",
+      "white_wins": "🏆 As Brancas venceram!",
+      "you_win": "🏆 Você venceu!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Cancelar",
+    "confirm_continue": "Continuar",
+    "confirm_native": "Continuar o jogo atual ou começar um novo?",
+    "confirm_new": "Novo jogo",
+    "confirm_title": "Jogo em andamento",
+    "confirm_web": "Começar um novo jogo? (Use Retomar na tela inicial para continuar o atual.)",
+    "resume": "Retomar jogo",
+    "resume_a11y": "Retomar o jogo salvo",
+    "resume_none": "Nenhum jogo guardado para retomar",
+    "resume_sub": "Continue de onde parou",
+    "subtitle": "Domine o tabuleiro — um movimento de cada vez",
+    "title": "BACKGAMMON",
+    "two_players": "2 jogadores",
+    "two_players_a11y": "Jogar em dois neste dispositivo",
+    "two_players_sub": "Revezando no mesmo dispositivo",
+    "vs_computer": "Contra o computador",
+    "vs_computer_a11y": "Jogar contra o computador",
+    "vs_computer_sub": "Jogue contra a IA"
+  },
+  "learn": {
+    "back_to_hub": "Todas as lições",
+    "continue": "Continuar",
+    "feedback": {
+      "hint_nudge": "Precisa de um empurrão? Procure os sítios destacados.",
+      "illegal": "Tente um ponto destacado — ou toque em Dica.",
+      "legal_but_wrong": "Isso seria legal num jogo a sério — aqui, tente o movimento que ensina esta ideia.",
+      "move_progress": "Boa — {{done}} de {{needed}} movimentos feitos."
+    },
+    "graduation": {
+      "body": "Já sabe o objetivo, o tabuleiro, como funcionam os turnos, capturar e retirar. Uma verificação rápida — depois o primeiro jogo a sério.",
+      "play_cta": "Jogue o seu primeiro jogo",
+      "quiz_done": "Em cheio. Hora de jogar.",
+      "quiz_title": "Verificação rápida",
+      "quiz_wrong": "Ainda não — tente outra resposta.",
+      "recap_1": "Corrida: retire as 15 primeiro",
+      "recap_2": "Lance dois dados; aterre em pontos abertos",
+      "recap_3": "Capture os blots → ficam na barra",
+      "recap_4": "Retire só a partir do tabuleiro de casa",
+      "recap_5": "Os jogos começam com um dado cada — o mais alto começa (empates relançam)",
+      "title": "Está pronto para jogar"
+    },
+    "hint": "Dica",
+    "home_cta": "Aprenda a jogar",
+    "home_cta_progress": "{{done}} de {{total}} lições feitas",
+    "home_cta_quiz": "Falta a verificação rápida — depois jogar",
+    "home_cta_ready": "Está pronto — jogue um jogo a sério",
+    "home_cta_sub": "Lições interativas para principiantes",
+    "lesson_complete": "Lição concluída!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Não há nada no ponto 5, mas tirou 5. Retire da pedra mais alta (a 3). Um número maior ainda tira uma pedra.",
+            "hint": "Selecione o ponto 3 e toque na bandeja de retirada.",
+            "praise": "Essa é a regra do excesso — vai usá-la muito ao retirar.",
+            "title": "Dado maior, mesmo assim fora"
+          },
+          "try": {
+            "body": "Todas as pedras estão em casa (1–6), por isso pode retirar. Tirou 3 — tire do tabuleiro a pedra do ponto 3.",
+            "hint": "Selecione o ponto 3 e toque na zona de retirada no bordo direito.",
+            "praise": "Fora do tabuleiro! O primeiro a retirar as 15 ganha.",
+            "title": "Retire uma"
+          }
+        },
+        "subtitle": "Como se ganha",
+        "title": "Retirar pedras"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Joga BRANCO — as pedras creme. A ferradura creme é o SEU caminho: começa no canto superior direito, contorna o lado esquerdo e entra em casa no canto inferior direito (pontos 1–6). A linha tracejada mais fria é o Preto no sentido contrário.",
+            "title": "O caminho em ferradura"
+          },
+          "far": {
+            "body": "Toque no ponto onde começam as duas pedras brancas mais distantes (o ponto 24, canto superior direito).",
+            "hint": "Olhe para o canto superior direito — duas pedras brancas no ponto 24.",
+            "praise": "Começam no fundo da casa do adversário e têm a viagem mais longa.",
+            "title": "As suas pedras mais distantes"
+          },
+          "home_stack": {
+            "body": "Toque na grande pilha de cinco pedras brancas já em casa (o ponto 6).",
+            "hint": "Canto inferior direito: cinco pedras brancas no ponto 6.",
+            "praise": "Essa é a pilha de casa — cinco já à espera no ponto 6, as mais perto de retirar. Todos os jogos começam assim.",
+            "title": "A sua pilha de casa"
+          }
+        },
+        "subtitle": "Para que lado se move",
+        "title": "Direção e disposição"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "A faixa elevada no meio é a barra. As pedras capturadas esperam aqui. Toque na barra.",
+            "hint": "Toque na faixa vertical entre as metades esquerda e direita do tabuleiro.",
+            "praise": "Certo — as pedras capturadas ficam na barra até reentrar.",
+            "title": "A barra"
+          },
+          "explain": {
+            "body": "Você e o adversário têm 15 pedras cada. Mova-as pelo tabuleiro e para fora — o primeiro a terminar ganha.",
+            "title": "O primeiro a retirar ganha"
+          },
+          "home": {
+            "body": "A sua casa são os pontos 1–6 (canto inferior direito). Toque em qualquer ponto do tabuleiro de casa.",
+            "hint": "A casa são os seis pontos no quadrante inferior direito — numerados de 1 a 6.",
+            "praise": "Essa é a sua casa — as pedras saem do tabuleiro daqui.",
+            "title": "Encontre o tabuleiro de casa"
+          }
+        },
+        "subtitle": "Pelo que está a correr",
+        "title": "Objetivo e tabuleiro"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Está na barra — volte a entrar antes de mover mais ninguém. Conte do ponto 24 para casa: um 4 cai no ponto 21.",
+            "hint": "Toque na barra e depois no ponto 21 (não no 23 — são só dois pips da barra).",
+            "praise": "Está de volta ao tabuleiro — as pedras da barra entram sempre primeiro.",
+            "title": "Entre a partir da barra",
+            "wrong": "São só dois pips da barra (ponto 23). Conte quatro pontos do 24 para casa — é o ponto 21."
+          },
+          "hit": {
+            "body": "Uma pedra sozinha é um blot. Aterre nela e vai para a barra. Tirou 3 — capture o blot preto no ponto 5.",
+            "hint": "Toque na sua pedra no 8 e depois no ponto 5.",
+            "praise": "Captura! Essa pedra preta está agora na barra.",
+            "title": "Capture o blot"
+          }
+        },
+        "subtitle": "Jogo de contacto",
+        "title": "Capturar e a barra"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Duas ou mais pedras do adversário bloqueiam um ponto — não pode aterrar aí. Toque na pilha preta bloqueada no ponto 5.",
+            "hint": "A pilha destacada de duas pedras pretas no ponto 5.",
+            "praise": "Certo — um ponto feito (2+) está fechado. Vazio, seu ou um blot (1) estão abertos.",
+            "title": "Pontos bloqueados"
+          },
+          "doubles": {
+            "body": "Os duplos dão quatro movimentos desse número. Tirou 2-2 — são quatro 2. Mova do ponto 8 para o 6 quatro vezes.",
+            "hint": "Toque no ponto 8 e depois no 6. Faça isto quatro vezes — uma por dado.",
+            "praise": "Exato — duplos significam quatro movimentos com esse número.",
+            "title": "Duplos = quatro movimentos"
+          },
+          "explain": {
+            "body": "Em cada turno lança dois dados e joga ambos os números quando puder. Pode aterrar em pontos vazios, nas suas pedras ou num adversário sozinho (um blot).",
+            "title": "Dois números, pontos abertos"
+          },
+          "two_dice": {
+            "body": "Tirou 3 e 1. Mova a pedra do ponto 8 três pips (para 5) e a do ponto 6 um pip (para 5).",
+            "hint": "Selecione uma pedra branca e toque no ponto 5. Faça isto para o ponto 8 e o ponto 6.",
+            "praise": "Boa — ambos os dados usados. A mesma pedra ou duas, ambos os números devem ser jogados quando possível.",
+            "title": "Jogue ambos os dados"
+          }
+        },
+        "subtitle": "Como funciona um turno",
+        "title": "Mover com os dados"
+      }
+    },
+    "locked": "Conclua primeiro a lição anterior",
+    "next_lesson": "Lição seguinte",
+    "quiz": {
+      "bar": {
+        "a": "Mova primeiro a pedra mais distante",
+        "b": "Faça entrar essa pedra antes de mover qualquer outra",
+        "c": "Passe o turno",
+        "prompt": "Enquanto tiver uma pedra na barra, deve…"
+      },
+      "bear": {
+        "a": "Sempre que tirar um 6",
+        "b": "Só depois de capturar um blot",
+        "c": "Quando as 15 pedras estão no tabuleiro de casa",
+        "prompt": "Quando pode retirar?"
+      },
+      "blot": {
+        "a": "Qualquer pilha de três ou mais",
+        "b": "Uma só pedra num ponto — pode ser capturada",
+        "c": "Duas ou mais pedras num ponto — um ponto feito",
+        "prompt": "O que é um blot?"
+      }
+    },
+    "replay": "Repetir",
+    "skip_to_play": "Saltar para jogar",
+    "step_progress": "Passo {{current}} de {{total}}",
+    "subtitle": "Cinco lições curtas — depois está pronto",
+    "title": "Aprenda a jogar"
+  },
+  "not_found": {
+    "body": "Essa página não faz parte do Backgammon Mastermind. Volta ao início para aprender ou começar um jogo.",
+    "heading": "Fora do tabuleiro",
+    "home_a11y": "Ir para o início",
+    "home_cta": "Voltar ao início",
+    "title": "Não encontrado"
+  },
+  "settings": {
+    "about": "Sobre",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Árabe",
+    "back_a11y": "Voltar",
+    "english": "Inglês",
+    "game": "Jogo",
+    "general": "Geral",
+    "github": "GitHub",
+    "language": "Idioma",
+    "link_error_body": "Tente novamente mais tarde.",
+    "link_error_title": "Não foi possível abrir o link",
+    "links": "Links",
+    "more": "Mais",
+    "privacy": "Política de Privacidade",
+    "rate": "Avaliar",
+    "share": "Compartilhar",
+    "support": "Suporte",
+    "support_us": "Apoie-nos",
+    "terms": "Termos de Serviço",
+    "title": "Ajustes",
+    "version": "Versão",
+    "website": "Site"
+  },
+  "welcome": "Bem-vindo ao Backgammon Mastermind"
+}

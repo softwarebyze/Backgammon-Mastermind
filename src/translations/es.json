@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Seleccionado — toca un punto resaltado, o Cancelar"
+    },
+    "controls": {
+      "cancel": "Cancelar",
+      "cancel_a11y": "Cancelar selección",
+      "close_options_a11y": "Cerrar opciones",
+      "moving": "Moviendo…",
+      "new_game_message": "¿Empezar una partida nueva?",
+      "new_game_title": "Partida nueva",
+      "no_legal_moves": "No hay movimientos posibles…",
+      "play_again": "Jugar otra vez",
+      "play_again_a11y": "Jugar otra vez",
+      "roll_dice": "Tirar los dados",
+      "roll_dice_a11y": "Tirar los dados",
+      "rolling": "Tirando…",
+      "skip_wait": "Toca para saltar la espera",
+      "skip_wait_a11y": "{{status}} Toca para saltar la espera"
+    },
+    "nudge": {
+      "roll_first": "Primero tira los dados"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} gana a {{low}}",
+      "goes_first": "¡Empieza {{player}}!",
+      "roll": "Tirar",
+      "rolls_for_opening": "{{player}} tira para la salida",
+      "tie": "¡Empate!",
+      "tie_again": "Mismo número — tirad de nuevo",
+      "waiting_roll": "{{player}} está tirando…",
+      "who_goes_first": "¿Quién empieza?",
+      "your_roll": "Toca en cualquier parte para tirar"
+    },
+    "options": {
+      "open_settings": "Idioma y más",
+      "open_settings_hint": "Abrir Ajustes",
+      "title": "Opciones de partida"
+    },
+    "preferences": {
+      "auto_move": "Mover automáticamente si es forzado",
+      "auto_move_hint": "Jugar automáticamente el único movimiento legal",
+      "auto_roll": "Tirar los dados automáticamente",
+      "auto_roll_hint": "Tirar automáticamente en tu turno",
+      "dice_display": "Aspecto de los dados",
+      "dice_dots": "Puntos",
+      "dice_numbers": "Números",
+      "direction_overlay": "Guía de dirección",
+      "direction_overlay_hint": "Recorrido en herradura sobre el tablero",
+      "fast_computer": "Ordenador rápido",
+      "fast_computer_hint": "Esperas más cortas en las tiradas y movimientos del ordenador. También puedes tocar Saltar espera.",
+      "move_hints": "Pistas de movimiento",
+      "move_hints_hint": "Punto dorado junto a las casillas desde las que puedes mover",
+      "point_numbers": "Números de casilla",
+      "point_numbers_hint": "Mostrar etiquetas 1–24 en el tablero",
+      "section_automation": "Automatización",
+      "section_board": "Tablero",
+      "section_dice": "Dados",
+      "sound": "Sonidos del juego",
+      "sound_hint": "Dados, capturas y victorias con sonido suave — respeta el modo silencio"
+    },
+    "review": {
+      "back_to_live": "Volver a la partida en curso",
+      "live": "Partida en curso",
+      "live_short": "En vivo",
+      "move_a11y": "Movimiento {{ply}}, {{player}}",
+      "move_position": "Movimiento {{current}} de {{total}} · {{player}}",
+      "next": "Turno siguiente",
+      "opening": "Posición inicial",
+      "pause_replay": "Pausa",
+      "player_black": "Negras",
+      "player_white": "Blancas",
+      "previous": "Turno anterior",
+      "replay": "Repetición",
+      "scrubber_hint": "Toca un turno para revisarlo",
+      "start": "Inicio",
+      "turn_a11y": "Turno {{turn}}, {{player}}",
+      "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Turno {{turn}}/{{totalTurns}} · movimiento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisando — toca En vivo o Volver para seguir jugando"
+    },
+    "status": {
+      "black_wins": "Ganan las negras",
+      "computer_wins": "Gana el ordenador",
+      "white_wins": "🏆 ¡Ganan las blancas!",
+      "you_win": "🏆 ¡Has ganado!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Cancelar",
+    "confirm_continue": "Continuar",
+    "confirm_native": "¿Continuar la partida actual o empezar una nueva?",
+    "confirm_new": "Partida nueva",
+    "confirm_title": "Partida en curso",
+    "confirm_web": "¿Empezar una partida nueva? (Usa Reanudar en la pantalla de inicio para continuar la actual.)",
+    "resume": "Reanudar partida",
+    "resume_a11y": "Reanudar la partida guardada",
+    "resume_none": "No hay partida guardada para reanudar",
+    "resume_sub": "Continúa donde lo dejaste",
+    "subtitle": "Domina el tablero — movimiento a movimiento",
+    "title": "BACKGAMMON",
+    "two_players": "2 jugadores",
+    "two_players_a11y": "Jugar con dos jugadores en este dispositivo",
+    "two_players_sub": "Por turnos en el mismo dispositivo",
+    "vs_computer": "Contra el ordenador",
+    "vs_computer_a11y": "Jugar contra el ordenador",
+    "vs_computer_sub": "Juega contra la IA"
+  },
+  "learn": {
+    "back_to_hub": "Todas las lecciones",
+    "continue": "Continuar",
+    "feedback": {
+      "hint_nudge": "¿Necesitas un empujón? Busca los puntos resaltados.",
+      "illegal": "Prueba un punto resaltado — o toca Pista.",
+      "legal_but_wrong": "Eso sería legal en una partida real — aquí prueba el movimiento que enseña esta idea.",
+      "move_progress": "Bien — {{done}} de {{needed}} movimientos hechos."
+    },
+    "graduation": {
+      "body": "Ya sabes el objetivo, el tablero, cómo funcionan los turnos, golpear y sacar. Una comprobación rápida — y luego tu primera partida de verdad.",
+      "play_cta": "Juega tu primera partida",
+      "quiz_done": "Clavado. Hora de jugar.",
+      "quiz_title": "Comprobación rápida",
+      "quiz_wrong": "No del todo — prueba otra respuesta.",
+      "recap_1": "Carrera: saca las 15 primero",
+      "recap_2": "Tira dos dados; aterriza en puntos abiertos",
+      "recap_3": "Golpea los blots → se quedan en la barra",
+      "recap_4": "Saca solo desde tu tablero de casa",
+      "recap_5": "Las partidas empiezan con un dado cada uno — el más alto empieza (empates se tiran de nuevo)",
+      "title": "Ya estás listo para jugar"
+    },
+    "hint": "Pista",
+    "home_cta": "Aprende a jugar",
+    "home_cta_progress": "{{done}} de {{total}} lecciones hechas",
+    "home_cta_quiz": "Queda la comprobación rápida — luego a jugar",
+    "home_cta_ready": "Ya estás listo — juega una partida de verdad",
+    "home_cta_sub": "Lecciones interactivas para principiantes",
+    "lesson_complete": "¡Lección completada!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "No hay nada en el punto 5, pero has sacado un 5. Saca desde tu ficha más alta (el 3). Un número mayor también saca una ficha.",
+            "hint": "Selecciona el punto 3 y toca la bandeja de sacar.",
+            "praise": "Esa es la regla de exceso — la usarás mucho al sacar.",
+            "title": "Dado más alto, igual fuera"
+          },
+          "try": {
+            "body": "Todas tus fichas están en casa (1–6), así que puedes sacar. Has sacado un 3 — quita del tablero la ficha del punto 3.",
+            "hint": "Selecciona el punto 3 y toca la zona de sacar en el borde derecho.",
+            "praise": "¡Fuera del tablero! El primero en sacar las 15 gana.",
+            "title": "Saca una"
+          }
+        },
+        "subtitle": "Cómo se gana",
+        "title": "Sacar fichas"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Juegas BLANCO — las fichas crema. La herradura crema es TU camino: empieza arriba a la derecha, rodea el lado izquierdo y entra en casa abajo a la derecha (puntos 1–6). La línea discontinua más fría es el Negro en sentido contrario.",
+            "title": "El camino de herradura"
+          },
+          "far": {
+            "body": "Toca el punto donde empiezan tus dos fichas blancas más lejanas (el punto 24, arriba a la derecha).",
+            "hint": "Mira arriba a la derecha — dos fichas blancas en el punto 24.",
+            "praise": "Empiezan en lo profundo de la casa del rival y tienen el viaje más largo.",
+            "title": "Tus fichas más lejanas"
+          },
+          "home_stack": {
+            "body": "Toca la pila grande de cinco fichas blancas ya en tu casa (el punto 6).",
+            "hint": "Abajo a la derecha: cinco fichas blancas en el punto 6.",
+            "praise": "Esa es tu pila de casa — cinco ya esperando en el punto 6, las más cerca de sacar. Toda partida empieza así.",
+            "title": "Tu pila de casa"
+          }
+        },
+        "subtitle": "Hacia dónde te mueves",
+        "title": "Dirección y colocación"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "La franja elevada del centro es la barra. Las fichas golpeadas esperan aquí. Toca la barra.",
+            "hint": "Toca la franja vertical entre las mitades izquierda y derecha del tablero.",
+            "praise": "Correcto — las fichas golpeadas se sientan en la barra hasta que reentran.",
+            "title": "La barra"
+          },
+          "explain": {
+            "body": "Tú y tu rival tenéis 15 fichas cada uno. Muévelas por el tablero y sácalas — el primero que termina gana.",
+            "title": "El primero en sacar gana"
+          },
+          "home": {
+            "body": "Tu casa son los puntos 1–6 (abajo a la derecha). Toca cualquier punto de tu tablero de casa.",
+            "hint": "La casa son los seis puntos del cuadrante inferior derecho — numerados del 1 al 6.",
+            "praise": "Esa es tu casa — las fichas salen del tablero desde aquí.",
+            "title": "Encuentra tu tablero de casa"
+          }
+        },
+        "subtitle": "Por lo que compites",
+        "title": "Objetivo y tablero"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Estás en la barra — entra de nuevo antes de mover nada más. Cuenta desde el punto 24 hacia casa: un 4 cae en el punto 21.",
+            "hint": "Toca la barra y luego el punto 21 (no el 23 — eso son solo dos pips desde la barra).",
+            "praise": "Ya estás de vuelta en el tablero — las fichas de la barra siempre entran primero.",
+            "title": "Entra desde la barra",
+            "wrong": "Eso son solo dos pips desde la barra (punto 23). Cuenta cuatro puntos desde el 24 hacia casa — es el punto 21."
+          },
+          "hit": {
+            "body": "Una ficha sola es un blot. Si aterrizas en ella, va a la barra. Has sacado un 3 — golpea el blot negro del punto 5.",
+            "hint": "Toca tu ficha en el 8 y luego el punto 5.",
+            "praise": "¡Golpe! Esa ficha negra está ahora en la barra.",
+            "title": "Golpea el blot"
+          }
+        },
+        "subtitle": "Juego de contacto",
+        "title": "Golpear y la barra"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Dos o más fichas del rival bloquean un punto — no puedes aterrizar ahí. Toca la pila negra bloqueada del punto 5.",
+            "hint": "La pila resaltada de dos fichas negras en el punto 5.",
+            "praise": "Correcto — un punto hecho (2+) está cerrado. Vacío, tuyo o un blot (1) están abiertos.",
+            "title": "Puntos bloqueados"
+          },
+          "doubles": {
+            "body": "Los dobles te dan cuatro movimientos de ese número. Has sacado 2-2 — son cuatro 2. Mueve del punto 8 al 6 cuatro veces.",
+            "hint": "Toca el punto 8 y luego el 6. Hazlo cuatro veces — una por dado.",
+            "praise": "Exacto — los dobles significan cuatro movimientos con ese número.",
+            "title": "Dobles = cuatro movimientos"
+          },
+          "explain": {
+            "body": "Cada turno tiras dos dados y juegas ambos números cuando puedes. Puedes aterrizar en puntos vacíos, en tus fichas o en un rival solo (un blot).",
+            "title": "Dos números, puntos abiertos"
+          },
+          "two_dice": {
+            "body": "Has sacado 3 y 1. Mueve la ficha del punto 8 tres pips (al 5) y la del punto 6 un pip (al 5).",
+            "hint": "Selecciona una ficha blanca y toca el punto 5. Hazlo para el punto 8 y el punto 6.",
+            "praise": "Bien — ambos dados usados. Misma ficha o dos, hay que jugar ambos números cuando se puede.",
+            "title": "Juega ambos dados"
+          }
+        },
+        "subtitle": "Cómo funciona un turno",
+        "title": "Mover con los dados"
+      }
+    },
+    "locked": "Completa primero la lección anterior",
+    "next_lesson": "Siguiente lección",
+    "quiz": {
+      "bar": {
+        "a": "Mueve primero tu ficha más lejana",
+        "b": "Haz entrar esa ficha antes de mover nada más",
+        "c": "Salta tu turno",
+        "prompt": "Mientras tengas una ficha en la barra, debes…"
+      },
+      "bear": {
+        "a": "Siempre que saques un 6",
+        "b": "Solo después de golpear un blot",
+        "c": "Cuando las 15 fichas están en tu tablero de casa",
+        "prompt": "¿Cuándo puedes sacar?"
+      },
+      "blot": {
+        "a": "Cualquier pila de tres o más",
+        "b": "Una sola ficha en un punto — se puede golpear",
+        "c": "Dos o más fichas en un punto — un punto hecho",
+        "prompt": "¿Qué es un blot?"
+      }
+    },
+    "replay": "Repetir",
+    "skip_to_play": "Saltar a jugar",
+    "step_progress": "Paso {{current}} de {{total}}",
+    "subtitle": "Cinco lecciones cortas — y ya estás listo",
+    "title": "Aprende a jugar"
+  },
+  "not_found": {
+    "body": "Esa página no forma parte de Backgammon Mastermind. Vuelve al inicio para aprender o empezar una partida.",
+    "heading": "Fuera del tablero",
+    "home_a11y": "Ir al inicio",
+    "home_cta": "Volver al inicio",
+    "title": "No encontrado"
+  },
+  "settings": {
+    "about": "Acerca de",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Árabe",
+    "back_a11y": "Atrás",
+    "english": "Inglés",
+    "game": "Partida",
+    "general": "General",
+    "github": "GitHub",
+    "language": "Idioma",
+    "link_error_body": "Inténtalo de nuevo más tarde.",
+    "link_error_title": "No se puede abrir el enlace",
+    "links": "Enlaces",
+    "more": "Más",
+    "privacy": "Política de privacidad",
+    "rate": "Valorar",
+    "share": "Compartir",
+    "support": "Soporte",
+    "support_us": "Apóyanos",
+    "terms": "Condiciones del servicio",
+    "title": "Ajustes",
+    "version": "Versión",
+    "website": "Sitio web"
+  },
+  "welcome": "Bienvenido a Backgammon Mastermind"
+}

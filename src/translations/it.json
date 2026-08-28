@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Selezionato — tocca una punta evidenziata, o Annulla"
+    },
+    "controls": {
+      "cancel": "Annulla",
+      "cancel_a11y": "Annulla selezione",
+      "close_options_a11y": "Chiudi le opzioni",
+      "moving": "Muove…",
+      "new_game_message": "Iniziare una nuova partita?",
+      "new_game_title": "Nuova partita",
+      "no_legal_moves": "Nessuna mossa possibile…",
+      "play_again": "Gioca ancora",
+      "play_again_a11y": "Gioca ancora",
+      "roll_dice": "Lancia i dadi",
+      "roll_dice_a11y": "Lancia i dadi",
+      "rolling": "Sta lanciando…",
+      "skip_wait": "Tocca per saltare l’attesa",
+      "skip_wait_a11y": "{{status}} Tocca per saltare l’attesa"
+    },
+    "nudge": {
+      "roll_first": "Prima lancia i dadi"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} batte {{low}}",
+      "goes_first": "Inizia {{player}}!",
+      "roll": "Lancia",
+      "rolls_for_opening": "{{player}} lancia per l'apertura",
+      "tie": "Pareggio!",
+      "tie_again": "Stesso numero — rilanciate",
+      "waiting_roll": "{{player}} sta lanciando…",
+      "who_goes_first": "Chi inizia?",
+      "your_roll": "Tocca ovunque per lanciare"
+    },
+    "options": {
+      "open_settings": "Lingua e altro",
+      "open_settings_hint": "Apri Impostazioni",
+      "title": "Opzioni di gioco"
+    },
+    "preferences": {
+      "auto_move": "Mossa automatica se obbligata",
+      "auto_move_hint": "Gioca automaticamente l'unica mossa legale",
+      "auto_roll": "Lancio automatico dei dadi",
+      "auto_roll_hint": "Lancia automaticamente nel tuo turno",
+      "dice_display": "Aspetto dei dadi",
+      "dice_dots": "Punti",
+      "dice_numbers": "Numeri",
+      "direction_overlay": "Guida di direzione",
+      "direction_overlay_hint": "Percorso a ferro di cavallo sul tavoliere",
+      "fast_computer": "Computer veloce",
+      "fast_computer_hint": "Attese più brevi sui tiri e le mosse del computer. Puoi anche toccare Salta attesa.",
+      "move_hints": "Suggerimenti di mossa",
+      "move_hints_hint": "Punto dorato accanto alle punte da cui puoi muovere",
+      "point_numbers": "Numeri delle punte",
+      "point_numbers_hint": "Mostra le etichette 1–24 sul tavoliere",
+      "section_automation": "Automazione",
+      "section_board": "Tavoliere",
+      "section_dice": "Dadi",
+      "sound": "Suoni di gioco",
+      "sound_hint": "Dadi, catture e vittorie con suoni delicati — rispetta la modalità silenziosa"
+    },
+    "review": {
+      "back_to_live": "Torna alla partita in corso",
+      "live": "Partita in corso",
+      "live_short": "Live",
+      "move_a11y": "Mossa {{ply}}, {{player}}",
+      "move_position": "Mossa {{current}} di {{total}} · {{player}}",
+      "next": "Turno successivo",
+      "opening": "Posizione iniziale",
+      "pause_replay": "Pausa",
+      "player_black": "Nero",
+      "player_white": "Bianco",
+      "previous": "Turno precedente",
+      "replay": "Replay",
+      "scrubber_hint": "Tocca un turno per rivederlo",
+      "start": "Inizio",
+      "turn_a11y": "Turno {{turn}}, {{player}}",
+      "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Turno {{turn}}/{{totalTurns}} · mossa {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisione — tocca Live o Torna per continuare a giocare"
+    },
+    "status": {
+      "black_wins": "Vince il Nero",
+      "computer_wins": "Vince il computer",
+      "white_wins": "🏆 Vince il Bianco!",
+      "you_win": "🏆 Hai vinto!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Annulla",
+    "confirm_continue": "Continua",
+    "confirm_native": "Continuare la partita attuale o iniziarne una nuova?",
+    "confirm_new": "Nuova partita",
+    "confirm_title": "Partita in corso",
+    "confirm_web": "Iniziare una nuova partita? (Usa Riprendi nella schermata iniziale per continuare quella attuale.)",
+    "resume": "Riprendi la partita",
+    "resume_a11y": "Riprendi la partita salvata",
+    "resume_none": "Nessuna partita salvata da riprendere",
+    "resume_sub": "Continua da dove avevi lasciato",
+    "subtitle": "Domina il tavoliere — una mossa alla volta",
+    "title": "BACKGAMMON",
+    "two_players": "2 giocatori",
+    "two_players_a11y": "Gioca in due su questo dispositivo",
+    "two_players_sub": "A turni sullo stesso dispositivo",
+    "vs_computer": "Contro il computer",
+    "vs_computer_a11y": "Gioca contro il computer",
+    "vs_computer_sub": "Gioca contro l'IA"
+  },
+  "learn": {
+    "back_to_hub": "Tutte le lezioni",
+    "continue": "Continua",
+    "feedback": {
+      "hint_nudge": "Serve una spinta? Cerca i punti evidenziati.",
+      "illegal": "Prova una punta evidenziata — o tocca Suggerimento.",
+      "legal_but_wrong": "Sarebbe legale in una partita vera — qui prova la mossa che insegna quest’idea.",
+      "move_progress": "Bene — {{done}} mosse su {{needed}} fatte."
+    },
+    "graduation": {
+      "body": "Conosci l’obiettivo, il tavoliere, come funzionano i turni, la cattura e il portare fuori. Un controllo rapido — poi la tua prima partita vera.",
+      "play_cta": "Gioca la tua prima partita",
+      "quiz_done": "Centro. È ora di giocare.",
+      "quiz_title": "Controllo rapido",
+      "quiz_wrong": "Non proprio — prova un’altra risposta.",
+      "recap_1": "Corsa: porta fuori tutte e 15 per primo",
+      "recap_2": "Tira due dadi; atterra su punte aperte",
+      "recap_3": "Colpisci i blot → restano sulla barra",
+      "recap_4": "Porta fuori solo dalla tavola di casa",
+      "recap_5": "Le partite iniziano con un dado a testa — il più alto inizia (i pareggi si ritirano)",
+      "title": "Sei pronto a giocare"
+    },
+    "hint": "Suggerimento",
+    "home_cta": "Impara a giocare",
+    "home_cta_progress": "{{done}} lezioni su {{total}} completate",
+    "home_cta_quiz": "Manca il controllo rapido — poi si gioca",
+    "home_cta_ready": "Sei pronto — gioca una partita vera",
+    "home_cta_sub": "Lezioni interattive per principianti",
+    "lesson_complete": "Lezione completata!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Non c’è nulla sulla punta 5, ma hai fatto 5. Porta fuori dalla dama più alta (la 3). Un numero più grande toglie comunque una dama.",
+            "hint": "Seleziona la punta 3, poi tocca il vassoio di uscita.",
+            "praise": "Questa è la regola del sorpasso — la userai spesso portando fuori.",
+            "title": "Dado più alto, comunque fuori"
+          },
+          "try": {
+            "body": "Tutte le dame sono in casa (1–6), quindi puoi portare fuori. Hai fatto 3 — togli dal tavoliere la dama sulla punta 3.",
+            "hint": "Seleziona la punta 3, poi tocca l’area di uscita sul bordo destro.",
+            "praise": "Fuori dal tavoliere! Il primo a portare fuori tutte e 15 vince.",
+            "title": "Portane fuori una"
+          }
+        },
+        "subtitle": "Come si vince",
+        "title": "Portare fuori"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Giochi BIANCO — le dame crema. Il ferro di cavallo crema è il TUO percorso: parti in alto a destra, gira sul lato sinistro, poi entra in casa in basso a destra (punte 1–6). La linea tratteggiata più fredda è il Nero nell’altra direzione.",
+            "title": "Il percorso a ferro di cavallo"
+          },
+          "far": {
+            "body": "Tocca la punta dove partono le tue due dame bianche più lontane (la punta 24, in alto a destra).",
+            "hint": "Guarda in alto a destra — due dame bianche sulla punta 24.",
+            "praise": "Partono in fondo alla casa dell’avversario e hanno il viaggio più lungo.",
+            "title": "Le tue dame più lontane"
+          },
+          "home_stack": {
+            "body": "Tocca la grande pila di cinque dame bianche già in casa (la punta 6).",
+            "hint": "In basso a destra: cinque dame bianche sulla punta 6.",
+            "praise": "Questa è la pila di casa — cinque già in attesa sulla punta 6, le più vicine all’uscita. Ogni partita inizia così.",
+            "title": "La tua pila di casa"
+          }
+        },
+        "subtitle": "In che direzione ti muovi",
+        "title": "Direzione e disposizione"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "La striscia rialzata al centro è la barra. Le dame colpite aspettano qui. Tocca la barra.",
+            "hint": "Tocca la striscia verticale tra le metà sinistra e destra del tavoliere.",
+            "praise": "Giusto — le dame colpite restano sulla barra finché non rientrano.",
+            "title": "La barra"
+          },
+          "explain": {
+            "body": "Tu e l’avversario avete 15 dame ciascuno. Muovile sul tavoliere e fuori — chi finisce per primo vince.",
+            "title": "Il primo a portare fuori vince"
+          },
+          "home": {
+            "body": "La tua casa sono le punte 1–6 (in basso a destra). Tocca una qualsiasi punta della tavola di casa.",
+            "hint": "La casa sono le sei punte nel quadrante in basso a destra — numerate da 1 a 6.",
+            "praise": "Questa è la tua casa — le dame lasciano il tavoliere da qui.",
+            "title": "Trova la tavola di casa"
+          }
+        },
+        "subtitle": "Per cosa stai gareggiando",
+        "title": "Obiettivo e tavoliere"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Sei sulla barra — rientra prima di muovere altro. Conta dalla punta 24 verso casa: un 4 atterra sulla punta 21.",
+            "hint": "Tocca la barra, poi la punta 21 (non la 23 — sono solo due pip dalla barra).",
+            "praise": "Sei di nuovo sul tavoliere — le dame della barra entrano sempre per prime.",
+            "title": "Entra dalla barra",
+            "wrong": "Sono solo due pip dalla barra (punta 23). Conta quattro punte dal 24 verso casa — è la punta 21."
+          },
+          "hit": {
+            "body": "Una dama sola è un blot. Atterra su di essa e va sulla barra. Hai fatto 3 — colpisci il blot nero sulla punta 5.",
+            "hint": "Tocca la tua dama sull’8, poi la punta 5.",
+            "praise": "Colpita! Quella dama nera è ora sulla barra.",
+            "title": "Colpisci il blot"
+          }
+        },
+        "subtitle": "Gioco di contatto",
+        "title": "Colpire e la barra"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Due o più dame avversarie bloccano una punta — non puoi atterrarci. Tocca la pila nera bloccata sulla punta 5.",
+            "hint": "La pila evidenziata di due dame nere sulla punta 5.",
+            "praise": "Giusto — una punta fatta (2+) è chiusa. Vuota, tua o un blot (1) sono aperte.",
+            "title": "Punte bloccate"
+          },
+          "doubles": {
+            "body": "I doppi danno quattro mosse di quel numero. Hai fatto 2-2 — cioè quattro 2. Sposta dalla punta 8 alla 6 quattro volte.",
+            "hint": "Tocca la punta 8, poi la 6. Fallo quattro volte — una per dado.",
+            "praise": "Esatto — i doppi significano quattro mosse con quel numero.",
+            "title": "Doppi = quattro mosse"
+          },
+          "explain": {
+            "body": "Ogni turno tiri due dadi e giochi entrambi i numeri quando puoi. Puoi atterrare su punte vuote, sulle tue dame o su un avversario solo (un blot).",
+            "title": "Due numeri, punte aperte"
+          },
+          "two_dice": {
+            "body": "Hai fatto 3 e 1. Sposta la dama sulla punta 8 di tre pip (al 5) e quella sulla 6 di un pip (al 5).",
+            "hint": "Seleziona una dama bianca, poi tocca la punta 5. Fallo per la punta 8 e la punta 6.",
+            "praise": "Bene — entrambi i dadi usati. Stessa dama o due, entrambi i numeri vanno giocati quando possibile.",
+            "title": "Gioca entrambi i dadi"
+          }
+        },
+        "subtitle": "Come funziona un turno",
+        "title": "Muovere con i dadi"
+      }
+    },
+    "locked": "Completa prima la lezione precedente",
+    "next_lesson": "Lezione successiva",
+    "quiz": {
+      "bar": {
+        "a": "Muovi prima la dama più lontana",
+        "b": "Fai entrare quella dama prima di muovere altro",
+        "c": "Salta il turno",
+        "prompt": "Finché hai una dama sulla barra, devi…"
+      },
+      "bear": {
+        "a": "Ogni volta che fai 6",
+        "b": "Solo dopo aver colpito un blot",
+        "c": "Quando tutte e 15 le dame sono nella tavola di casa",
+        "prompt": "Quando puoi portare fuori?"
+      },
+      "blot": {
+        "a": "Qualsiasi pila di tre o più",
+        "b": "Una dama sola su una punta — può essere colpita",
+        "c": "Due o più dame su una punta — una punta fatta",
+        "prompt": "Che cos’è un blot?"
+      }
+    },
+    "replay": "Rivedi",
+    "skip_to_play": "Passa al gioco",
+    "step_progress": "Passo {{current}} di {{total}}",
+    "subtitle": "Cinque lezioni brevi — poi sei pronto",
+    "title": "Impara a giocare"
+  },
+  "not_found": {
+    "body": "Questa pagina non fa parte di Backgammon Mastermind. Torna alla home per imparare o iniziare una partita.",
+    "heading": "Fuori dal tavoliere",
+    "home_a11y": "Vai alla home",
+    "home_cta": "Torna alla home",
+    "title": "Non trovato"
+  },
+  "settings": {
+    "about": "Informazioni",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabo",
+    "back_a11y": "Indietro",
+    "english": "Inglese",
+    "game": "Partita",
+    "general": "Generali",
+    "github": "GitHub",
+    "language": "Lingua",
+    "link_error_body": "Riprova più tardi.",
+    "link_error_title": "Impossibile aprire il link",
+    "links": "Collegamenti",
+    "more": "Altro",
+    "privacy": "Informativa sulla privacy",
+    "rate": "Valuta",
+    "share": "Condividi",
+    "support": "Supporto",
+    "support_us": "Sostienici",
+    "terms": "Termini di servizio",
+    "title": "Impostazioni",
+    "version": "Versione",
+    "website": "Sito web"
+  },
+  "welcome": "Benvenuto in Backgammon Mastermind"
+}

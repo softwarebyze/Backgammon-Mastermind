@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Selectat — atinge un punct evidențiat sau Anulează"
+    },
+    "controls": {
+      "cancel": "Anulează",
+      "cancel_a11y": "Anulează selecția",
+      "close_options_a11y": "Închide opțiunile",
+      "moving": "Mută…",
+      "new_game_message": "Începi un joc nou?",
+      "new_game_title": "Joc nou",
+      "no_legal_moves": "Nicio mutare legală…",
+      "play_again": "Joacă din nou",
+      "play_again_a11y": "Joacă din nou",
+      "roll_dice": "Aruncă zarurile",
+      "roll_dice_a11y": "Aruncă zarurile",
+      "rolling": "Aruncă…",
+      "skip_wait": "Atinge pentru a sări așteptarea",
+      "skip_wait_a11y": "{{status}} Atinge pentru a sări așteptarea"
+    },
+    "nudge": {
+      "roll_first": "Aruncă mai întâi zarurile"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bate {{low}}",
+      "goes_first": "{{player}} începe!",
+      "roll": "Aruncă",
+      "rolls_for_opening": "{{player}} aruncă pentru deschidere",
+      "tie": "Egalitate!",
+      "tie_again": "Același număr — aruncă din nou",
+      "waiting_roll": "{{player}} aruncă…",
+      "who_goes_first": "Cine începe?",
+      "your_roll": "Atinge oriunde pentru a arunca"
+    },
+    "options": {
+      "open_settings": "Limbă și altele",
+      "open_settings_hint": "Deschide Setările",
+      "title": "Opțiuni de joc"
+    },
+    "preferences": {
+      "auto_move": "Mutare automată când e forțată",
+      "auto_move_hint": "Joacă automat singura mutare legală",
+      "auto_roll": "Aruncare automată a zarurilor",
+      "auto_roll_hint": "Aruncă automat în tura ta",
+      "dice_display": "Afișarea zarurilor",
+      "dice_dots": "Puncte",
+      "dice_numbers": "Numere",
+      "direction_overlay": "Ghid de direcție",
+      "direction_overlay_hint": "Traseu în potcoavă pe tablă",
+      "fast_computer": "Calculator rapid",
+      "fast_computer_hint": "Așteptări mai scurte la aruncările și mutările calculatorului. Poți atinge și Sari așteptarea.",
+      "move_hints": "Indicii de mutare",
+      "move_hints_hint": "Punct auriu lângă punctele de pe care poți muta",
+      "point_numbers": "Numerele punctelor",
+      "point_numbers_hint": "Afișează etichetele 1–24 pe tablă",
+      "section_automation": "Automatizare",
+      "section_board": "Tablă",
+      "section_dice": "Zaruri",
+      "sound": "Sunete de joc",
+      "sound_hint": "Sunete blânde de zaruri, lovituri și victorie — respectă modul silențios"
+    },
+    "review": {
+      "back_to_live": "Înapoi la jocul în curs",
+      "live": "Joc în curs",
+      "live_short": "Live",
+      "move_a11y": "Mutarea {{ply}}, {{player}}",
+      "move_position": "Mutarea {{current}} din {{total}} · {{player}}",
+      "next": "Tura următoare",
+      "opening": "Poziție de start",
+      "pause_replay": "Pauză",
+      "player_black": "Negru",
+      "player_white": "Alb",
+      "previous": "Tura anterioară",
+      "replay": "Reluare",
+      "scrubber_hint": "Atinge o tură pentru a o revizui",
+      "start": "Start",
+      "turn_a11y": "Tura {{turn}}, {{player}}",
+      "turn_label": "Tura {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tura {{turn}}/{{totalTurns}} · mutarea {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revizuire — atinge Live sau Înapoi pentru a continua"
+    },
+    "status": {
+      "black_wins": "Negru câștigă",
+      "computer_wins": "Computerul câștigă",
+      "white_wins": "🏆 Alb câștigă!",
+      "you_win": "🏆 Ai câștigat!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Anulează",
+    "confirm_continue": "Continuă",
+    "confirm_native": "Continui jocul actual sau începi unul nou?",
+    "confirm_new": "Joc nou",
+    "confirm_title": "Joc în curs",
+    "confirm_web": "Începi un joc nou? (Folosește Reluare pe ecranul principal pentru a continua pe cel actual.)",
+    "resume": "Reia jocul",
+    "resume_a11y": "Reia jocul salvat",
+    "resume_none": "Niciun joc salvat de reluat",
+    "resume_sub": "Continuă de unde ai rămas",
+    "subtitle": "Stăpânește tabla — mutare cu mutare",
+    "title": "BACKGAMMON",
+    "two_players": "2 jucători",
+    "two_players_a11y": "Joacă cu doi jucători pe acest dispozitiv",
+    "two_players_sub": "Pe rând pe același dispozitiv",
+    "vs_computer": "Contra computerului",
+    "vs_computer_a11y": "Joacă împotriva computerului",
+    "vs_computer_sub": "Joacă împotriva AI"
+  },
+  "learn": {
+    "back_to_hub": "Toate lecțiile",
+    "continue": "Continuă",
+    "feedback": {
+      "hint_nudge": "Ai nevoie de un impuls? Caută locurile evidențiate.",
+      "illegal": "Încearcă un punct evidențiat — sau atinge Indiciu.",
+      "legal_but_wrong": "Asta ar fi legal într-un joc real — aici încearcă mutarea care predă ideea.",
+      "move_progress": "Frumos — {{done}} din {{needed}} mutări făcute."
+    },
+    "graduation": {
+      "body": "Cunoști scopul, tabla, cum merg tururile, lovirea și scoaterea. O verificare rapidă — apoi primul joc adevărat.",
+      "play_cta": "Joacă primul tău joc",
+      "quiz_done": "Fix la țintă. E timpul să joci.",
+      "quiz_title": "Verificare rapidă",
+      "quiz_wrong": "Nu chiar — încearcă alt răspuns.",
+      "recap_1": "Cursă: scoate toate cele 15 primul",
+      "recap_2": "Aruncă două zaruri; aterizează pe puncte deschise",
+      "recap_3": "Lovește blot-urile → stau pe bar",
+      "recap_4": "Scoate doar de pe tabla de casă",
+      "recap_5": "Jocurile încep cu un zar fiecare — cel mai mare începe (egalitate: se aruncă din nou)",
+      "title": "Ești gata să joci"
+    },
+    "hint": "Indiciu",
+    "home_cta": "Învață să joci",
+    "home_cta_progress": "{{done}} din {{total}} lecții terminate",
+    "home_cta_quiz": "A mai rămas verificarea rapidă — apoi joci",
+    "home_cta_ready": "Ești gata — joacă un joc adevărat",
+    "home_cta_sub": "Lecții interactive pentru începători",
+    "lesson_complete": "Lecție încheiată!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Nu e nimic pe punctul 5, dar ai dat 5. Scoate de pe piesa cea mai înaltă (3). Un număr mai mare tot scoate o piesă.",
+            "hint": "Selectează punctul 3, apoi atinge tava de scoatere.",
+            "praise": "Asta e regula depășirii — o vei folosi des la scoatere.",
+            "title": "Zar mai mare, tot afară"
+          },
+          "try": {
+            "body": "Toate piesele sunt în casă (1–6), deci poți scoate. Ai dat 3 — ia piesa de pe punctul 3 de pe tablă.",
+            "hint": "Selectează punctul 3, apoi atinge zona de scoatere de pe marginea dreaptă.",
+            "praise": "Jos de pe tablă! Primul care scoate toate cele 15 câștigă.",
+            "title": "Scoate una"
+          }
+        },
+        "subtitle": "Cum câștigi",
+        "title": "Scoaterea pieselor"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Joci ALB — piesele crem. Potcoava crem e CALEA ta: începe sus-dreapta, ocolește partea stângă, apoi intra în casă jos-dreapta (punctele 1–6). Linia punctată mai rece e Negrul în sens invers.",
+            "title": "Calea în potcoavă"
+          },
+          "far": {
+            "body": "Atinge punctul unde încep cele două piese albe cele mai îndepărtate (punctul 24, sus-dreapta).",
+            "hint": "Privește sus-dreapta — două piese albe pe punctul 24.",
+            "praise": "Încep adânc în casa adversarului și au drumul cel mai lung.",
+            "title": "Piesele tale cele mai îndepărtate"
+          },
+          "home_stack": {
+            "body": "Atinge grămada mare de cinci piese albe deja în casă (punctul 6).",
+            "hint": "Jos-dreapta: cinci piese albe pe punctul 6.",
+            "praise": "Asta e grămada de casă — cinci așteaptă deja pe punctul 6, cele mai aproape de scoatere. Fiecare joc începe așa.",
+            "title": "Grămada ta de casă"
+          }
+        },
+        "subtitle": "În ce direcție te muți",
+        "title": "Direcție și așezare"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Banda ridicată din mijloc e barul. Piesele lovite așteaptă aici. Atinge barul.",
+            "hint": "Atinge banda verticală dintre jumătățile stângă și dreaptă ale tablei.",
+            "praise": "Corect — piesele lovite stau pe bar până reintră.",
+            "title": "Barul"
+          },
+          "explain": {
+            "body": "Tu și adversarul aveți câte 15 piese. Mută-le pe tablă și afară — primul care termină câștigă.",
+            "title": "Primul care scoate câștigă"
+          },
+          "home": {
+            "body": "Casa ta sunt punctele 1–6 (jos-dreapta). Atinge orice punct de pe tabla de casă.",
+            "hint": "Casa sunt cele șase puncte din cadranul din dreapta jos — numerotate de la 1 la 6.",
+            "praise": "Asta e casa ta — piesele părăsesc tabla de aici.",
+            "title": "Găsește tabla de casă"
+          }
+        },
+        "subtitle": "Pentru ce alergi",
+        "title": "Scop și tablă"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Ești pe bar — revino înainte de a muta altceva. Numără de la punctul 24 spre casă: un 4 aterizează pe punctul 21.",
+            "hint": "Atinge barul, apoi punctul 21 (nu 23 — sunt doar doi pipi de la bar).",
+            "praise": "Ești din nou pe tablă — piesele de pe bar intră întotdeauna primele.",
+            "title": "Intră de pe bar",
+            "wrong": "Sunt doar doi pipi de la bar (punctul 23). Numără patru puncte de la 24 spre casă — e punctul 21."
+          },
+          "hit": {
+            "body": "O piesă singură e un blot. Aterizează pe ea și merge pe bar. Ai dat 3 — lovește blot-ul negru de pe punctul 5.",
+            "hint": "Atinge piesa de pe 8, apoi punctul 5.",
+            "praise": "Lovitură! Piesa neagră e acum pe bar.",
+            "title": "Lovește blot-ul"
+          }
+        },
+        "subtitle": "Joc de contact",
+        "title": "Lovire și barul"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Două sau mai multe piese adverse blochează un punct — nu poți ateriza acolo. Atinge grămada neagră blocată de pe punctul 5.",
+            "hint": "Grămada evidențiată de două piese negre pe punctul 5.",
+            "praise": "Corect — un punct făcut (2+) e închis. Gol, al tău sau un blot (1) sunt deschise.",
+            "title": "Puncte blocate"
+          },
+          "doubles": {
+            "body": "Dublele dau patru mutări cu acel număr. Ai dat 2-2 — adică patru de 2. Mută de pe punctul 8 pe 6 de patru ori.",
+            "hint": "Atinge punctul 8, apoi 6. Fă asta de patru ori — o dată per zar.",
+            "praise": "Exact — dublele înseamnă patru mutări cu acel număr.",
+            "title": "Duble = patru mutări"
+          },
+          "explain": {
+            "body": "Fiecare tur arunci două zaruri și joci ambele numere când poți. Poți ateriza pe puncte goale, pe piesele tale sau pe un adversar singur (un blot).",
+            "title": "Două numere, puncte deschise"
+          },
+          "two_dice": {
+            "body": "Ai dat 3 și 1. Mută piesa de pe punctul 8 trei pipi (pe 5) și pe cea de pe 6 un pip (pe 5).",
+            "hint": "Selectează o piesă albă, apoi atinge punctul 5. Fă asta pentru punctul 8 și punctul 6.",
+            "praise": "Frumos — ambele zaruri folosite. Aceeași piesă sau două, ambele numere trebuie jucate când se poate.",
+            "title": "Joacă ambele zaruri"
+          }
+        },
+        "subtitle": "Cum merge un tur",
+        "title": "Mutare cu zarurile"
+      }
+    },
+    "locked": "Termină mai întâi lecția anterioară",
+    "next_lesson": "Lecția următoare",
+    "quiz": {
+      "bar": {
+        "a": "Mută mai întâi piesa cea mai îndepărtată",
+        "b": "Intră cu piesa aceea înainte de a muta altceva",
+        "c": "Sari tura",
+        "prompt": "Cât timp ai o piesă pe bar, trebuie să…"
+      },
+      "bear": {
+        "a": "Ori de câte ori dai 6",
+        "b": "Doar după ce lovești un blot",
+        "c": "Când toate cele 15 piese sunt pe tabla de casă",
+        "prompt": "Când poți scoate?"
+      },
+      "blot": {
+        "a": "Orice grămadă de trei sau mai multe",
+        "b": "O singură piesă pe un punct — poate fi lovită",
+        "c": "Două sau mai multe piese pe un punct — un punct făcut",
+        "prompt": "Ce este un blot?"
+      }
+    },
+    "replay": "Reia",
+    "skip_to_play": "Sari la joc",
+    "step_progress": "Pasul {{current}} din {{total}}",
+    "subtitle": "Cinci lecții scurte — apoi ești gata",
+    "title": "Învață să joci"
+  },
+  "not_found": {
+    "body": "Pagina aceea nu face parte din Backgammon Mastermind. Revino acasă ca să înveți sau să începi un joc.",
+    "heading": "În afara tablei",
+    "home_a11y": "Mergi acasă",
+    "home_cta": "Înapoi acasă",
+    "title": "Negăsit"
+  },
+  "settings": {
+    "about": "Despre",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabă",
+    "back_a11y": "Înapoi",
+    "english": "Engleză",
+    "game": "Joc",
+    "general": "General",
+    "github": "GitHub",
+    "language": "Limbă",
+    "link_error_body": "Încearcă din nou mai târziu.",
+    "link_error_title": "Nu se poate deschide linkul",
+    "links": "Linkuri",
+    "more": "Mai mult",
+    "privacy": "Politica de confidențialitate",
+    "rate": "Evaluează",
+    "share": "Distribuie",
+    "support": "Asistență",
+    "support_us": "Sprijină-ne",
+    "terms": "Termeni și condiții",
+    "title": "Setări",
+    "version": "Versiune",
+    "website": "Site web"
+  },
+  "welcome": "Bun venit la Backgammon Mastermind"
+}

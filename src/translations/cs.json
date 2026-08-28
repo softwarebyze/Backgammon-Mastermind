@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Vybráno — klepněte na zvýrazněný bod, nebo Zrušit"
+    },
+    "controls": {
+      "cancel": "Zrušit",
+      "cancel_a11y": "Zrušit výběr",
+      "close_options_a11y": "Zavřít možnosti",
+      "moving": "Tah…",
+      "new_game_message": "Začít novou hru?",
+      "new_game_title": "Nová hra",
+      "no_legal_moves": "Žádné platné tahy…",
+      "play_again": "Hrát znovu",
+      "play_again_a11y": "Hrát znovu",
+      "roll_dice": "Hodit kostkami",
+      "roll_dice_a11y": "Hodit kostkami",
+      "rolling": "Házení…",
+      "skip_wait": "Klepnutím přeskočit čekání",
+      "skip_wait_a11y": "{{status}} Klepnutím přeskočit čekání"
+    },
+    "nudge": {
+      "roll_first": "Nejdřív hoďte kostkami"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} poráží {{low}}",
+      "goes_first": "{{player}} začíná!",
+      "roll": "Hodit",
+      "rolls_for_opening": "{{player}} hází o zahájení",
+      "tie": "Remíza!",
+      "tie_again": "Stejné číslo — hoďte znovu",
+      "waiting_roll": "{{player}} hází…",
+      "who_goes_first": "Kdo začíná?",
+      "your_roll": "Klepněte kamkoli pro hod"
+    },
+    "options": {
+      "open_settings": "Jazyk a další",
+      "open_settings_hint": "Otevřít nastavení",
+      "title": "Možnosti hry"
+    },
+    "preferences": {
+      "auto_move": "Automatický tah při nuceném tahu",
+      "auto_move_hint": "Automaticky zahrát jediný platný tah",
+      "auto_roll": "Automatické házení",
+      "auto_roll_hint": "Automaticky hodit na vašem tahu",
+      "dice_display": "Zobrazení kostek",
+      "dice_dots": "Tečky",
+      "dice_numbers": "Čísla",
+      "direction_overlay": "Směrová nápověda",
+      "direction_overlay_hint": "Podkovovitá dráha na desce",
+      "fast_computer": "Rychlý počítač",
+      "fast_computer_hint": "Kratší čekání u hodů a tahů počítače. Můžete také klepnout na Přeskočit čekání.",
+      "move_hints": "Nápovědy tahů",
+      "move_hints_hint": "Zlatá tečka u polí, ze kterých můžete táhnout",
+      "point_numbers": "Čísla polí",
+      "point_numbers_hint": "Zobrazit označení 1–24 na desce",
+      "section_automation": "Automatizace",
+      "section_board": "Deska",
+      "section_dice": "Kostky",
+      "sound": "Herní zvuky",
+      "sound_hint": "Tiché zvuky kostek, zásahů a vítězství — respektuje tichý režim"
+    },
+    "review": {
+      "back_to_live": "Zpět k probíhající hře",
+      "live": "Probíhající hra",
+      "live_short": "Živě",
+      "move_a11y": "Tah {{ply}}, {{player}}",
+      "move_position": "Tah {{current}} z {{total}} · {{player}}",
+      "next": "Další tah",
+      "opening": "Výchozí postavení",
+      "pause_replay": "Pauza",
+      "player_black": "Černý",
+      "player_white": "Bílý",
+      "previous": "Předchozí tah",
+      "replay": "Záznam",
+      "scrubber_hint": "Klepněte na tah pro přehrání",
+      "start": "Start",
+      "turn_a11y": "Kolo {{turn}}, {{player}}",
+      "turn_label": "Kolo {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Kolo {{turn}}/{{totalTurns}} · tah {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Prohlížení — klepněte na Živě nebo Zpět a pokračujte ve hře"
+    },
+    "status": {
+      "black_wins": "Černý vyhrává",
+      "computer_wins": "Počítač vyhrává",
+      "white_wins": "🏆 Bílý vyhrává!",
+      "you_win": "🏆 Vyhráli jste!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Zrušit",
+    "confirm_continue": "Pokračovat",
+    "confirm_native": "Pokračovat v aktuální hře, nebo začít novou?",
+    "confirm_new": "Nová hra",
+    "confirm_title": "Hra probíhá",
+    "confirm_web": "Začít novou hru? (Pro pokračování aktuální použijte Obnovit na úvodní obrazovce.)",
+    "resume": "Obnovit hru",
+    "resume_a11y": "Obnovit uloženou hru",
+    "resume_none": "Žádná uložená hra k obnovení",
+    "resume_sub": "Pokračujte tam, kde jste skončili",
+    "subtitle": "Ovládněte desku — tah za tahem",
+    "title": "BACKGAMMON",
+    "two_players": "2 hráči",
+    "two_players_a11y": "Hrát ve dvou na tomto zařízení",
+    "two_players_sub": "Střídavě na stejném zařízení",
+    "vs_computer": "Proti počítači",
+    "vs_computer_a11y": "Hrát proti počítači",
+    "vs_computer_sub": "Hrát proti AI"
+  },
+  "learn": {
+    "back_to_hub": "Všechny lekce",
+    "continue": "Pokračovat",
+    "feedback": {
+      "hint_nudge": "Potřebujete postrčit? Hledejte zvýrazněná místa.",
+      "illegal": "Zkuste zvýrazněný bod — nebo klepněte na Nápověda.",
+      "legal_but_wrong": "To by v opravdové hře platilo — tady zkuste tah, který učí tuto myšlenku.",
+      "move_progress": "Pěkné — hotovo {{done}} z {{needed}} tahů."
+    },
+    "graduation": {
+      "body": "Znát cíl, desku, jak probíhají tahy, bití i vynášení. Krátká kontrola — a pak první opravdová hra.",
+      "play_cta": "Hrát první hru",
+      "quiz_done": "Trefa. Čas hrát.",
+      "quiz_title": "Rychlá kontrola",
+      "quiz_wrong": "Ještě ne — zkuste jinou odpověď.",
+      "recap_1": "Závod: vyneste všech 15 jako první",
+      "recap_2": "Hoďte dvě kostky; stoupejte na otevřené body",
+      "recap_3": "Bijte bloty → sedí na baru",
+      "recap_4": "Vynášejte jen z domácí desky",
+      "recap_5": "Hry začínají jednou kostkou každému — vyšší začíná (remíza se hází znovu)",
+      "title": "Jste připraveni hrát"
+    },
+    "hint": "Nápověda",
+    "home_cta": "Naučit se hrát",
+    "home_cta_progress": "{{done}} z {{total}} lekcí hotovo",
+    "home_cta_quiz": "Zbývá rychlá kontrola — pak hra",
+    "home_cta_ready": "Jste připraveni — zahrajte si opravdovou hru",
+    "home_cta_sub": "Interaktivní lekce pro začátečníky",
+    "lesson_complete": "Lekce dokončena!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Na 5. bodu nic není, ale hodili jste 5. Vyneste z nejvyššího kamene (3). Větší číslo kámen stejně sundá.",
+            "hint": "Vyberte bod 3 a klepněte na tác na vynášení.",
+            "praise": "To je pravidlo přestřelení — při vynášení ho použijete často.",
+            "title": "Větší kostka, stejně ven"
+          },
+          "try": {
+            "body": "Všechny kameny jsou v domácí desce (1–6), takže můžete vynášet. Hodili jste 3 — sundejte kámen z 3. bodu.",
+            "hint": "Vyberte bod 3 a klepněte na oblast vynášení na pravém okraji.",
+            "praise": "Pryč z desky! První, kdo vynese všech 15, vyhrává.",
+            "title": "Vyneste jeden"
+          }
+        },
+        "subtitle": "Jak vyhrát",
+        "title": "Vynášení"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Hrajete BÍLÝMI — krémovými kameny. Krémová podkova je VAŠE cesta: začátek vpravo nahoře, kolem levé strany a do domácí desky vpravo dole (body 1–6). Chladnější čárkovaná čára je Černý opačným směrem.",
+            "title": "Podkovovitá cesta"
+          },
+          "far": {
+            "body": "Klepněte na bod, kde začínají vaše dva nejvzdálenější bílé kameny (24. bod, vpravo nahoře).",
+            "hint": "Podívejte se vpravo nahoru — dva bílé kameny na bodu 24.",
+            "praise": "Začínají hluboko v soupeřově domácí desce a mají nejdelší cestu.",
+            "title": "Vaše nejvzdálenější kameny"
+          },
+          "home_stack": {
+            "body": "Klepněte na velkou hromadu pěti bílých kamenů už ve vaší domácí desce (6. bod).",
+            "hint": "Vpravo dole: pět bílých kamenů na bodu 6.",
+            "praise": "To je vaše domácí hromada — pět už čeká na 6. bodu, nejblíž vynášení. Každá hra tak začíná.",
+            "title": "Vaše domácí hromada"
+          }
+        },
+        "subtitle": "Kterým směrem táhnete",
+        "title": "Směr a rozestavení"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Vyvýšený pruh uprostřed je bar. Zbití kameny tu čekají. Klepněte na bar.",
+            "hint": "Klepněte na svislý pruh mezi levou a pravou polovinou desky.",
+            "praise": "Správně — zbití kameny sedí na baru, dokud se nevrátí.",
+            "title": "Bar"
+          },
+          "explain": {
+            "body": "Vy i soupeř máte po 15 kamenech. Posouvejte je po desce a pryč — kdo skončí první, vyhraje.",
+            "title": "První, kdo vynese, vyhrává"
+          },
+          "home": {
+            "body": "Vaše domácí deska jsou body 1–6 (vpravo dole). Klepněte na libovolný bod v domácí desce.",
+            "hint": "Domácí deska je šest bodů v pravém dolním kvadrantu — čísla 1 až 6.",
+            "praise": "To je vaše domácí deska — kameny odtud opouštějí desku.",
+            "title": "Najděte domácí desku"
+          }
+        },
+        "subtitle": "O co závodíte",
+        "title": "Cíl a deska"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Jste na baru — vraťte se dřív, než pohnete jiným kamenem. Počítejte od 24. bodu k domácí desce: 4 dopadne na bod 21.",
+            "hint": "Klepněte na bar a pak na bod 21 (ne 23 — to jsou jen dva pipy od baru).",
+            "praise": "Jste zpět na desce — kameny z baru vždy vstupují první.",
+            "title": "Vstup z baru",
+            "wrong": "To jsou jen dva pipy od baru (bod 23). Spočítejte čtyři body od 24 k domácí desce — to je bod 21."
+          },
+          "hit": {
+            "body": "Samostatný kámen je blot. Dopadněte na něj a jde na bar. Hodili jste 3 — trefte černý blot na 5. bodu.",
+            "hint": "Klepněte na kámen na 8 a pak na bod 5.",
+            "praise": "Zásah! Ten černý kámen je teď na baru.",
+            "title": "Trefte blot"
+          }
+        },
+        "subtitle": "Kontaktní hra",
+        "title": "Bití a bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Dva nebo více soupeřových kamenů bod blokují — nemůžete tam stoupnout. Klepněte na zablokovanou černou hromadu na 5. bodu.",
+            "hint": "Zvýrazněná hromada dvou černých kamenů na bodu 5.",
+            "praise": "Správně — udělaný bod (2+) je zavřený. Prázdný, váš, nebo blot (1) jsou otevřené.",
+            "title": "Blokované body"
+          },
+          "doubles": {
+            "body": "Dvojice dávají čtyři tahy daného čísla. Hodili jste 2-2 — to jsou čtyři dvojky. Táhněte z 8. bodu na 6. bod čtyřikrát.",
+            "hint": "Klepněte na 8. bod a pak na 6. bod. Čtyřikrát — jednou za každou kostku.",
+            "praise": "Přesně — dvojice znamenají čtyři tahy s tím číslem.",
+            "title": "Dvojice = čtyři tahy"
+          },
+          "explain": {
+            "body": "Každý tah hodíte dvě kostky a zahrajete obě čísla, když můžete. Můžete stoupnout na prázdné body, vlastní kameny, nebo osamělého soupeře (blot).",
+            "title": "Dvě čísla, otevřené body"
+          },
+          "two_dice": {
+            "body": "Hodili jste 3 a 1. Posuňte kámen na 8. bodu o tři pipy (na 5) a ten na 6. bodu o jeden pip (na 5).",
+            "hint": "Vyberte bílý kámen a klepněte na bod 5. Udělejte to pro 8. i 6. bod.",
+            "praise": "Pěkné — obě kostky použity. Stejný kámen nebo dva, obě čísla se musí zahrát, když to jde.",
+            "title": "Zahrajte obě kostky"
+          }
+        },
+        "subtitle": "Jak probíhá tah",
+        "title": "Pohyb s kostkami"
+      }
+    },
+    "locked": "Nejprve dokončete předchozí lekci",
+    "next_lesson": "Další lekce",
+    "quiz": {
+      "bar": {
+        "a": "Nejprve pohněte nejvzdálenějším kamenem",
+        "b": "Vraťte ten kámen dřív, než pohnete čímkoli jiným",
+        "c": "Přeskočte tah",
+        "prompt": "Dokud máte kámen na baru, musíte…"
+      },
+      "bear": {
+        "a": "Kdykoli hodíte 6",
+        "b": "Jen po trefení blotu",
+        "c": "Když je všech 15 kamenů v domácí desce",
+        "prompt": "Kdy můžete vynášet?"
+      },
+      "blot": {
+        "a": "Jakákoli hromada tří a více",
+        "b": "Jeden kámen na bodu — lze ho trefit",
+        "c": "Dva nebo více kamenů na bodu — udělaný bod",
+        "prompt": "Co je blot?"
+      }
+    },
+    "replay": "Zopakovat",
+    "skip_to_play": "Přeskočit k hraní",
+    "step_progress": "Krok {{current}} z {{total}}",
+    "subtitle": "Pět krátkých lekcí — a jste připraveni",
+    "title": "Naučit se hrát"
+  },
+  "not_found": {
+    "body": "Tato stránka není součástí Backgammon Mastermind. Vraťte se domů a učte se nebo začněte hru.",
+    "heading": "Mimo desku",
+    "home_a11y": "Přejít na úvod",
+    "home_cta": "Zpět na úvod",
+    "title": "Nenalezeno"
+  },
+  "settings": {
+    "about": "O aplikaci",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabština",
+    "back_a11y": "Zpět",
+    "english": "Angličtina",
+    "game": "Hra",
+    "general": "Obecné",
+    "github": "GitHub",
+    "language": "Jazyk",
+    "link_error_body": "Zkuste to prosím později.",
+    "link_error_title": "Odkaz nelze otevřít",
+    "links": "Odkazy",
+    "more": "Další",
+    "privacy": "Zásady ochrany soukromí",
+    "rate": "Ohodnotit",
+    "share": "Sdílet",
+    "support": "Podpora",
+    "support_us": "Podpořte nás",
+    "terms": "Podmínky služby",
+    "title": "Nastavení",
+    "version": "Verze",
+    "website": "Web"
+  },
+  "welcome": "Vítejte v Backgammon Mastermind"
+}

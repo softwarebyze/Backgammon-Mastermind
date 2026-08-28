@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Seleccionat — toca una punta destacada, o Cancel·lar"
+    },
+    "controls": {
+      "cancel": "Cancel·lar",
+      "cancel_a11y": "Cancel·lar la selecció",
+      "close_options_a11y": "Tancar opcions",
+      "moving": "Movent…",
+      "new_game_message": "Vols començar una partida nova?",
+      "new_game_title": "Partida nova",
+      "no_legal_moves": "No hi ha moviments legals…",
+      "play_again": "Tornar a jugar",
+      "play_again_a11y": "Tornar a jugar",
+      "roll_dice": "Tirar els daus",
+      "roll_dice_a11y": "Tirar els daus",
+      "rolling": "Tirant…",
+      "skip_wait": "Toca per saltar l’espera",
+      "skip_wait_a11y": "{{status}} Toca per saltar l’espera"
+    },
+    "nudge": {
+      "roll_first": "Primer tira els daus"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} guanya a {{low}}",
+      "goes_first": "Comença {{player}}!",
+      "roll": "Tirar",
+      "rolls_for_opening": "{{player}} tira per l’obertura",
+      "tie": "Empat!",
+      "tie_again": "Mateix número — torneu a tirar",
+      "waiting_roll": "{{player}} està tirant…",
+      "who_goes_first": "Qui comença?",
+      "your_roll": "Toca a qualsevol lloc per tirar"
+    },
+    "options": {
+      "open_settings": "Idioma i més",
+      "open_settings_hint": "Obrir Configuració",
+      "title": "Opcions de partida"
+    },
+    "preferences": {
+      "auto_move": "Moure automàticament si és forçat",
+      "auto_move_hint": "Jugar automàticament l’únic moviment legal",
+      "auto_roll": "Tirar els daus automàticament",
+      "auto_roll_hint": "Tirar automàticament en el teu torn",
+      "dice_display": "Aspecte dels daus",
+      "dice_dots": "Punts",
+      "dice_numbers": "Números",
+      "direction_overlay": "Guia de direcció",
+      "direction_overlay_hint": "Recorregut en herradura al tauler",
+      "fast_computer": "Ordinador ràpid",
+      "fast_computer_hint": "Esperes més curtes en les tirades i moviments de l’ordinador. També pots tocar Saltar l’espera.",
+      "move_hints": "Pistes de moviment",
+      "move_hints_hint": "Punt daurat al costat dels punts des d’on pots moure",
+      "point_numbers": "Números dels punts",
+      "point_numbers_hint": "Mostrar etiquetes 1–24 al tauler",
+      "section_automation": "Automatització",
+      "section_board": "Tauler",
+      "section_dice": "Daus",
+      "sound": "Sons del joc",
+      "sound_hint": "Sons suaus de daus, cops i victòria — respecta el mode silenci"
+    },
+    "review": {
+      "back_to_live": "Tornar a la partida en curs",
+      "live": "Partida en curs",
+      "live_short": "En viu",
+      "move_a11y": "Moviment {{ply}}, {{player}}",
+      "move_position": "Moviment {{current}} de {{total}} · {{player}}",
+      "next": "Torn següent",
+      "opening": "Posició inicial",
+      "pause_replay": "Pausa",
+      "player_black": "Negres",
+      "player_white": "Blanques",
+      "previous": "Torn anterior",
+      "replay": "Repetició",
+      "scrubber_hint": "Toca un torn per revisar-lo",
+      "start": "Inici",
+      "turn_a11y": "Torn {{turn}}, {{player}}",
+      "turn_label": "Torn {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Torn {{turn}}/{{totalTurns}} · moviment {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisant — toca En viu o Tornar per seguir jugant"
+    },
+    "status": {
+      "black_wins": "Guanyen les negres",
+      "computer_wins": "Guanya l’ordinador",
+      "white_wins": "🏆 Guanyen les blanques!",
+      "you_win": "🏆 Has guanyat!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Cancel·lar",
+    "confirm_continue": "Continuar",
+    "confirm_native": "Continuar la partida actual o començar-ne una de nova?",
+    "confirm_new": "Partida nova",
+    "confirm_title": "Partida en curs",
+    "confirm_web": "Vols començar una partida nova? (Fes servir Reprendre a la pantalla d’inici per continuar l’actual.)",
+    "resume": "Reprendre la partida",
+    "resume_a11y": "Reprendre la partida desada",
+    "resume_none": "No hi ha cap partida desada per reprendre",
+    "resume_sub": "Continua on ho vas deixar",
+    "subtitle": "Domina el tauler — moviment a moviment",
+    "title": "BACKGAMMON",
+    "two_players": "2 jugadors",
+    "two_players_a11y": "Jugar amb dos jugadors en aquest dispositiu",
+    "two_players_sub": "Per torns al mateix dispositiu",
+    "vs_computer": "Contra l’ordinador",
+    "vs_computer_a11y": "Jugar contra l’ordinador",
+    "vs_computer_sub": "Juga contra la IA"
+  },
+  "learn": {
+    "back_to_hub": "Totes les lliçons",
+    "continue": "Continuar",
+    "feedback": {
+      "hint_nudge": "Et cal un empenta? Busca els llocs destacats.",
+      "illegal": "Prova una punta destacada — o toca Pista.",
+      "legal_but_wrong": "Això seria legal en una partida de veritat — aquí, fes el moviment que ensenya aquesta idea.",
+      "move_progress": "Molt bé — {{done}} de {{needed}} moviments fets."
+    },
+    "graduation": {
+      "body": "Ja saps l’objectiu, el tauler, com funcionen els torns, colpejar i treure. Una comprovació ràpida — i després la teva primera partida de veritat.",
+      "play_cta": "Juga la teva primera partida",
+      "quiz_done": "Clavat. Hora de jugar.",
+      "quiz_title": "Comprovació ràpida",
+      "quiz_wrong": "No del tot — prova una altra resposta.",
+      "recap_1": "Cursa: treu les 15 fitxes primer",
+      "recap_2": "Tira dos daus; aterra en puntes obertes",
+      "recap_3": "Colpeja els blots → queden a la barra",
+      "recap_4": "Treu només des del tauler de casa",
+      "recap_5": "Les partides comencen amb un dau cadascú — el més alt comença (empats es tornen a tirar)",
+      "title": "Ja estàs a punt per jugar"
+    },
+    "hint": "Pista",
+    "home_cta": "Aprèn a jugar",
+    "home_cta_progress": "{{done}} de {{total}} lliçons fetes",
+    "home_cta_quiz": "Queda la comprovació ràpida — i després a jugar",
+    "home_cta_ready": "Ja hi ets — juga una partida de veritat",
+    "home_cta_sub": "Lliçons interactives per a principiants",
+    "lesson_complete": "Lliçó completada!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "No hi ha res a la punta 5, però has tirat un 5. Treu des de la teva fitxa més alta (la 3). Un número més gran també treu una fitxa.",
+            "hint": "Selecciona la punta 3 i després toca la safata de treure.",
+            "praise": "Aquesta és la regla de sobrecòs — la faràs servir molt en treure.",
+            "title": "Dau més gran, igualment fora"
+          },
+          "try": {
+            "body": "Totes les teves fitxes són a casa (1–6), així que pots treure. Has tirat un 3 — treu la fitxa de la punta 3 del tauler.",
+            "hint": "Selecciona la punta 3 i després toca la zona de treure a la vora dreta.",
+            "praise": "Fora del tauler! El primer que treu les 15 guanya.",
+            "title": "Treu’n una"
+          }
+        },
+        "subtitle": "Com es gana",
+        "title": "Treure fitxes"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Jugues BLANC — les fitxes crema. La ferradura crema és el TEU camí: comença a dalt a la dreta, gira pel costat esquerre i entra a casa a baix a la dreta (puntes 1–6). La línia discontínua més freda és el Negre en sentit contrari.",
+            "title": "El camí de ferradura"
+          },
+          "far": {
+            "body": "Toca la punta on comencen les teves dues fitxes blanques més llunyanes (la punta 24, dalt a la dreta).",
+            "hint": "Mira dalt a la dreta — dues fitxes blanques a la punta 24.",
+            "praise": "Comencen al fons de la casa del rival i tenen el camí més llarg.",
+            "title": "Les teves fitxes més llunyanes"
+          },
+          "home_stack": {
+            "body": "Toca la pila gran de cinc fitxes blanques ja a casa teva (la punta 6).",
+            "hint": "Baix a la dreta: cinc fitxes blanques a la punta 6.",
+            "praise": "Aquesta és la teva pila de casa — cinc ja esperant a la punta 6, les més a prop de treure. Totes les partides comencen així.",
+            "title": "La teva pila de casa"
+          }
+        },
+        "subtitle": "En quina direcció et mus",
+        "title": "Direcció i col·locació"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "La franja elevada del mig és la barra. Les fitxes colpejades hi esperen. Toca la barra.",
+            "hint": "Toca la franja vertical entre les meitats esquerra i dreta del tauler.",
+            "praise": "Exacte — les fitxes colpejades seuen a la barra fins que reentren.",
+            "title": "La barra"
+          },
+          "explain": {
+            "body": "Tu i el rival teniu 15 fitxes cadascun. Moveu-les pel tauler i treieu-les — el primer que acaba guanya.",
+            "title": "El primer que treu totes guanya"
+          },
+          "home": {
+            "body": "La teva casa són les puntes 1–6 (baix a la dreta). Toca qualsevol punta del teu tauler de casa.",
+            "hint": "La casa són les sis puntes del quadrant inferior dret — numerades de l’1 al 6.",
+            "praise": "Aquesta és la teva casa — les fitxes surten del tauler des d’aquí.",
+            "title": "Troba el teu tauler de casa"
+          }
+        },
+        "subtitle": "Per què corres",
+        "title": "Objectiu i tauler"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Ets a la barra — torna a entrar abans de moure cap altra. Compta des de la punta 24 cap a casa: un 4 cau a la punta 21.",
+            "hint": "Toca la barra i després la punta 21 (no la 23 — només són dos pips des de la barra).",
+            "praise": "Ja ets de nou al tauler — les fitxes de la barra sempre entren primer.",
+            "title": "Entra des de la barra",
+            "wrong": "Això només són dos pips des de la barra (punta 23). Compta quatre puntes des de la 24 cap a casa — és la punta 21."
+          },
+          "hit": {
+            "body": "Una fitxa sola és un blot. Si hi aterres, va a la barra. Has tirat un 3 — colpeja el blot negre de la punta 5.",
+            "hint": "Toca la teva fitxa a la 8 i després la punta 5.",
+            "praise": "Colpejat! Aquesta fitxa negra ara és a la barra.",
+            "title": "Colpeja el blot"
+          }
+        },
+        "subtitle": "Joc de contacte",
+        "title": "Colpejar i la barra"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Dues o més fitxes del rival bloquegen una punta — no hi pots aterrar. Toca la pila negra bloquejada de la punta 5.",
+            "hint": "La pila destacada de dues fitxes negres a la punta 5.",
+            "praise": "Correcte — una punta feta (2+) és tancada. Buida, teva o un blot (1) són obertes.",
+            "title": "Puntes bloquejades"
+          },
+          "doubles": {
+            "body": "Els dobles et donen quatre moviments d’aquest número. Has tirat 2-2 — són quatre 2. Mou de la punta 8 a la 6 quatre vegades.",
+            "hint": "Toca la punta 8 i després la 6. Fes-ho quatre vegades — un cop per dau.",
+            "praise": "Exacte — els dobles volen dir quatre moviments amb aquest número.",
+            "title": "Dobles = quatre moviments"
+          },
+          "explain": {
+            "body": "Cada torn tires dos daus i jugues els dos números quan pots. Pots aterrar en puntes buides, a les teves fitxes o a un rival sol (un blot).",
+            "title": "Dos números, puntes obertes"
+          },
+          "two_dice": {
+            "body": "Has tirat 3 i 1. Mou la fitxa de la punta 8 tres pips (a la 5) i la de la punta 6 un pip (a la 5).",
+            "hint": "Selecciona una fitxa blanca i toca la punta 5. Fes-ho per la punta 8 i la punta 6.",
+            "praise": "Molt bé — els dos daus usats. Mateixa fitxa o dues, cal jugar els dos números quan puguis.",
+            "title": "Juga els dos daus"
+          }
+        },
+        "subtitle": "Com funciona un torn",
+        "title": "Moure amb els daus"
+      }
+    },
+    "locked": "Completa primer la lliçó anterior",
+    "next_lesson": "Lliçó següent",
+    "quiz": {
+      "bar": {
+        "a": "Mou primer la teva fitxa més llunyana",
+        "b": "Fes entrar aquesta fitxa abans de moure res més",
+        "c": "Salta el torn",
+        "prompt": "Mentre tinguis una fitxa a la barra, has de…"
+      },
+      "bear": {
+        "a": "Sempre que treguis un 6",
+        "b": "Només després de colpejar un blot",
+        "c": "Quan les 15 fitxes són al tauler de casa",
+        "prompt": "Quan pots treure?"
+      },
+      "blot": {
+        "a": "Qualsevol pila de tres o més",
+        "b": "Una sola fitxa en una punta — es pot colpejar",
+        "c": "Dues o més fitxes en una punta — una punta feta",
+        "prompt": "Què és un blot?"
+      }
+    },
+    "replay": "Repetir",
+    "skip_to_play": "Saltar a jugar",
+    "step_progress": "Pas {{current}} de {{total}}",
+    "subtitle": "Cinc lliçons curtes — i ja hi seràs",
+    "title": "Aprèn a jugar"
+  },
+  "not_found": {
+    "body": "Aquesta pàgina no forma part de Backgammon Mastermind. Torna a l’inici per aprendre o començar una partida.",
+    "heading": "Fora del tauler",
+    "home_a11y": "Anar a l’inici",
+    "home_cta": "Tornar a l’inici",
+    "title": "No trobat"
+  },
+  "settings": {
+    "about": "Quant a",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Àrab",
+    "back_a11y": "Enrere",
+    "english": "Anglès",
+    "game": "Partida",
+    "general": "General",
+    "github": "GitHub",
+    "language": "Idioma",
+    "link_error_body": "Torna-ho a provar més tard.",
+    "link_error_title": "No s’ha pogut obrir l’enllaç",
+    "links": "Enllaços",
+    "more": "Més",
+    "privacy": "Política de privadesa",
+    "rate": "Valorar",
+    "share": "Compartir",
+    "support": "Suport",
+    "support_us": "Dona’ns suport",
+    "terms": "Condicions del servei",
+    "title": "Configuració",
+    "version": "Versió",
+    "website": "Lloc web"
+  },
+  "welcome": "Benvingut a Backgammon Mastermind"
+}

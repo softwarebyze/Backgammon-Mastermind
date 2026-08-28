@@ -2,6 +2,7 @@ import type { GameState } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -16,13 +17,13 @@ export function GamePipStatusBar({ state }: Props) {
   return (
     <View style={styles.pipRow}>
       <PipCount
-        label="White"
+        label={translate('game.review.player_white')}
         count={state.borneOff.white}
         dotColor="#F2EAD3"
         isActive={activePlayer === 'white'}
       />
       <PipCount
-        label="Black"
+        label={translate('game.review.player_black')}
         count={state.borneOff.black}
         dotColor="#1E1E30"
         isActive={activePlayer === 'black'}
@@ -62,9 +63,13 @@ function PipCount({
 
 function getWinnerLabel(state: GameState) {
   if (state.winner === 'white') {
-    return state.mode === 'vs-computer' ? '🏆 You Win!' : '🏆 White Wins!';
+    return state.mode === 'vs-computer'
+      ? translate('game.status.you_win')
+      : translate('game.status.white_wins');
   }
-  return state.mode === 'vs-computer' ? 'Computer Wins' : 'Black Wins';
+  return state.mode === 'vs-computer'
+    ? translate('game.status.computer_wins')
+    : translate('game.status.black_wins');
 }
 
 const styles = StyleSheet.create({

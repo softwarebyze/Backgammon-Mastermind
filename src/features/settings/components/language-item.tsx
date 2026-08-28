@@ -1,18 +1,19 @@
 import { router } from 'expo-router';
-import * as React from 'react';
 
-import { translate, useSelectedLanguage } from '@/lib/i18n';
+import i18n, {
+  LANGUAGE_NAMES,
+  resolveLanguage,
+  useSelectedLanguage,
+} from '@/lib/i18n';
 
 import { SettingsItem } from './settings-item';
 
 export function LanguageItem() {
   const { language } = useSelectedLanguage();
 
-  const label = React.useMemo(() => {
-    return language === 'ar'
-      ? translate('settings.arabic')
-      : translate('settings.english');
-  }, [language]);
+  // MMKV is empty until the user picks explicitly — fall back to the active i18n language.
+  const active = resolveLanguage(language) ?? resolveLanguage(i18n.language) ?? 'en';
+  const label = LANGUAGE_NAMES[active];
 
   return (
     <SettingsItem

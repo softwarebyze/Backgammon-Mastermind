@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Valittu — napauta korostettua pistettä tai Peruuta"
+    },
+    "controls": {
+      "cancel": "Peruuta",
+      "cancel_a11y": "Peruuta valinta",
+      "close_options_a11y": "Sulje asetukset",
+      "moving": "Siirretään…",
+      "new_game_message": "Aloitetaanko uusi peli?",
+      "new_game_title": "Uusi peli",
+      "no_legal_moves": "Ei laillisia siirtoja…",
+      "play_again": "Pelaa uudelleen",
+      "play_again_a11y": "Pelaa uudelleen",
+      "roll_dice": "Heitä noppaa",
+      "roll_dice_a11y": "Heitä noppaa",
+      "rolling": "Heitetään…",
+      "skip_wait": "Napauta ohittaaksesi odotuksen",
+      "skip_wait_a11y": "{{status}} Napauta ohittaaksesi odotuksen"
+    },
+    "nudge": {
+      "roll_first": "Heitä ensin noppaa"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} voittaa {{low}}",
+      "goes_first": "{{player}} aloittaa!",
+      "roll": "Heitä",
+      "rolls_for_opening": "{{player}} heittää avauksesta",
+      "tie": "Tasapeli!",
+      "tie_again": "Sama silmäluku — heitä uudelleen",
+      "waiting_roll": "{{player}} heittää…",
+      "who_goes_first": "Kuka aloittaa?",
+      "your_roll": "Napauta mihin tahansa heittääksesi"
+    },
+    "options": {
+      "open_settings": "Kieli ja muuta",
+      "open_settings_hint": "Avaa asetukset",
+      "title": "Pelin asetukset"
+    },
+    "preferences": {
+      "auto_move": "Automaattinen siirto pakotettuna",
+      "auto_move_hint": "Pelaa ainoa laillinen siirto automaattisesti",
+      "auto_roll": "Automaattinen heitto",
+      "auto_roll_hint": "Heitä automaattisesti vuorollasi",
+      "dice_display": "Noppanäyttö",
+      "dice_dots": "Pisteet",
+      "dice_numbers": "Numerot",
+      "direction_overlay": "Suuntanäyttö",
+      "direction_overlay_hint": "Hevosenkenkäpolku laudalla",
+      "fast_computer": "Nopea tietokone",
+      "fast_computer_hint": "Lyhyemmät odotukset tietokoneen heittoihin ja siirtoihin. Voit myös napauttaa Ohita odotus.",
+      "move_hints": "Siirtovihjeet",
+      "move_hints_hint": "Kultainen piste pisteillä, joista voit siirtää",
+      "point_numbers": "Pistenumerot",
+      "point_numbers_hint": "Näytä tunnisteet 1–24 laudalla",
+      "section_automation": "Automaatio",
+      "section_board": "Lauta",
+      "section_dice": "Nopat",
+      "sound": "Peliäänet",
+      "sound_hint": "Pehmeät nopan-, iskun- ja voittoäänet — kunnioittaa mykkätilaa"
+    },
+    "review": {
+      "back_to_live": "Takaisin käynnissä olevaan peliin",
+      "live": "Käynnissä oleva peli",
+      "live_short": "Live",
+      "move_a11y": "Siirto {{ply}}, {{player}}",
+      "move_position": "Siirto {{current}} / {{total}} · {{player}}",
+      "next": "Seuraava vuoro",
+      "opening": "Aloitusasema",
+      "pause_replay": "Tauko",
+      "player_black": "Musta",
+      "player_white": "Valkoinen",
+      "previous": "Edellinen vuoro",
+      "replay": "Toisto",
+      "scrubber_hint": "Napauta vuoroa tarkistaaksesi",
+      "start": "Alku",
+      "turn_a11y": "Vuoro {{turn}}, {{player}}",
+      "turn_label": "Vuoro {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Vuoro {{turn}}/{{totalTurns}} · siirto {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Tarkistus — napauta Live tai Takaisin jatkaaksesi"
+    },
+    "status": {
+      "black_wins": "Musta voittaa",
+      "computer_wins": "Tietokone voittaa",
+      "white_wins": "🏆 Valkoinen voittaa!",
+      "you_win": "🏆 Voitit!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Peruuta",
+    "confirm_continue": "Jatka",
+    "confirm_native": "Jatketaanko nykyistä peliä vai aloitetaanko uusi?",
+    "confirm_new": "Uusi peli",
+    "confirm_title": "Peli käynnissä",
+    "confirm_web": "Aloitetaanko uusi peli? (Jatka nykyistä aloitusnäytön Jatka-painikkeella.)",
+    "resume": "Jatka peliä",
+    "resume_a11y": "Jatka tallennettua peliä",
+    "resume_none": "Ei tallennettua peliä jatkettavaksi",
+    "resume_sub": "Jatka siitä, mihin jäit",
+    "subtitle": "Hallitse lautaa — siirto kerrallaan",
+    "title": "BACKGAMMON",
+    "two_players": "2 pelaajaa",
+    "two_players_a11y": "Pelaa kahden pelaajan kanssa tällä laitteella",
+    "two_players_sub": "Vuorotellen samalla laitteella",
+    "vs_computer": "Vastaan tietokone",
+    "vs_computer_a11y": "Pelaa tietokonetta vastaan",
+    "vs_computer_sub": "Pelaa tekoälyä vastaan"
+  },
+  "learn": {
+    "back_to_hub": "Kaikki oppitunnit",
+    "continue": "Jatka",
+    "feedback": {
+      "hint_nudge": "Tarvitsetko tönäisyn? Etsi korostettuja kohtia.",
+      "illegal": "Kokeile korostettua pistettä — tai napauta Vihje.",
+      "legal_but_wrong": "Se olisi sallittu oikeassa pelissä — tässä kokeile siirtoa, joka opettaa idean.",
+      "move_progress": "Hienoa — {{done}} / {{needed}} siirtoa tehty."
+    },
+    "graduation": {
+      "body": "Tunnet tavoitteen, laudan, vuorojen kulun, lyönnin ja kotiutuksen. Pika­tarkistus — sitten ensimmäinen oikea peli.",
+      "play_cta": "Pelaa ensimmäinen pelisi",
+      "quiz_done": "Nappiin. Aika pelata.",
+      "quiz_title": "Pikatarkistus",
+      "quiz_wrong": "Ei ihan — kokeile toista vastausta.",
+      "recap_1": "Kilpa: kotiuta kaikki 15 ensin",
+      "recap_2": "Heitä kaksi noppaa; laskeudu avoimille pisteille",
+      "recap_3": "Lyö blotit → ne istuvat baarissa",
+      "recap_4": "Kotiuta vain kotilaudalta",
+      "recap_5": "Pelit alkavat yhdellä nopalla kullekin — suurempi aloittaa (tasat heitetään uudestaan)",
+      "title": "Olet valmis pelaamaan"
+    },
+    "hint": "Vihje",
+    "home_cta": "Opi pelaamaan",
+    "home_cta_progress": "{{done}} / {{total}} oppituntia tehty",
+    "home_cta_quiz": "Pikatarkistus jäljellä — sitten peli",
+    "home_cta_ready": "Olet valmis — pelaa oikea peli",
+    "home_cta_sub": "Interaktiivisia oppitunteja aloittelijoille",
+    "lesson_complete": "Oppitunti valmis!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "5-pisteellä ei ole mitään, mutta heitit 5. Kotiuta korkeimmasta nappulastasi (3). Suurempi silmäluku vie silti nappulan pois.",
+            "hint": "Valitse piste 3 ja napauta kotiutuslautasta.",
+            "praise": "Se on ylittösääntö — käytät sitä usein kotiuttaessa.",
+            "title": "Isompi noppa, silti pois"
+          },
+          "try": {
+            "body": "Kaikki nappulat ovat kotilaudalla (1–6), joten voit kotiuttaa. Heitit 3 — ota 3-pisteen nappula pois laudalta.",
+            "hint": "Valitse piste 3 ja napauta kotiutusaluetta oikeassa reunassa.",
+            "praise": "Pois laudalta! Ensimmäinen, joka kotiuttaa kaikki 15, voittaa.",
+            "title": "Kotiuta yksi"
+          }
+        },
+        "subtitle": "Miten voitat",
+        "title": "Kotiutus"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Pelaat VALKOISELLA — kermanvärisillä nappuloilla. Kermanvärinen hevosenkenkä on SINUN reittisi: alku oikealta ylhäältä, vasemman laidan ympäri ja kotiin oikealle alas (pisteet 1–6). Viileämpi katkoviiva on Musta toiseen suuntaan.",
+            "title": "Hevosenkengän reitti"
+          },
+          "far": {
+            "body": "Napauta pistettä, josta kaksi kaukaisinta valkoista nappulaa lähtevät (24-piste, oikealla ylhäällä).",
+            "hint": "Katso oikealle ylös — kaksi valkoista nappulaa pisteellä 24.",
+            "praise": "Ne alkavat syvällä vastustajan kotilaudalla ja niillä on pisin matka.",
+            "title": "Kaukaisimmat nappulasi"
+          },
+          "home_stack": {
+            "body": "Napauta isoa viiden valkoisen nappulan pinoa, joka on jo kotilaudallasi (6-piste).",
+            "hint": "Oikealla alhaalla: viisi valkoista nappulaa pisteellä 6.",
+            "praise": "Se on kotipinosi — viisi odottaa jo 6-pisteellä, lähimpänä kotiutusta. Jokainen peli alkaa näin.",
+            "title": "Kotipinosi"
+          }
+        },
+        "subtitle": "Mihin suuntaan liikut",
+        "title": "Suunta ja asettelu"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Keskellä oleva kohotettu kaista on baari. Lyödyt nappulat odottavat siellä. Napauta baaria.",
+            "hint": "Napauta pystysuoraa kaistaa laudan vasemman ja oikean puoliskon välissä.",
+            "praise": "Oikein — lyödyt nappulat istuvat baarissa, kunnes ne palaavat.",
+            "title": "Baari"
+          },
+          "explain": {
+            "body": "Sinulla ja vastustajalla on kummallakin 15 nappulaa. Siirrä niitä laudalla ja pois — ensimmäinen valmis voittaa.",
+            "title": "Ensimmäinen kotiuttaja voittaa"
+          },
+          "home": {
+            "body": "Kotilautasi on pisteet 1–6 (oikealla alhaalla). Napauta mitä tahansa pistettä kotilaudallasi.",
+            "hint": "Koti on kuusi pistettä oikeassa alakulmassa — numerot 1–6.",
+            "praise": "Se on kotilautasi — nappulat poistuvat laudalta täältä.",
+            "title": "Löydä kotilautasi"
+          }
+        },
+        "subtitle": "Mistä kilpailet",
+        "title": "Tavoite ja lauta"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Olet baarissa — palaa ennen kuin siirrät muita. Laske 24-pisteestä kotia kohti: 4 laskeutuu pisteelle 21.",
+            "hint": "Napauta baaria ja sitten pistettä 21 (ei 23 — se on vain kaksi pipiä baarista).",
+            "praise": "Olet taas laudalla — baarin nappulat tulevat aina ensin.",
+            "title": "Tule baarista sisään",
+            "wrong": "Se on vain kaksi pipiä baarista (piste 23). Laske neljä pistettä 24:stä kotia kohti — se on piste 21."
+          },
+          "hit": {
+            "body": "Yksittäinen nappula on blot. Laskeudu sen päälle, niin se menee baariin. Heitit 3 — lyö musta blot 5-pisteellä.",
+            "hint": "Napauta nappulaasi pisteellä 8 ja sitten pistettä 5.",
+            "praise": "Lyönti! Musta nappula on nyt baarissa.",
+            "title": "Lyö blot"
+          }
+        },
+        "subtitle": "Kontaktipeli",
+        "title": "Lyönti ja baari"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Kaksi tai useampi vastustajan nappula tukkii pisteen — et voi laskeutua sinne. Napauta tukittua mustaa pinoa 5-pisteellä.",
+            "hint": "Korostettu kahden mustan nappulan pino pisteellä 5.",
+            "praise": "Oikein — tehty piste (2+) on suljettu. Tyhjä, omasi tai blot (1) ovat avoimia.",
+            "title": "Tukitut pisteet"
+          },
+          "doubles": {
+            "body": "Tuplat antavat neljä siirtoa sillä silmäluvulla. Heitit 2-2 — eli neljä kakkosta. Siirrä 8-pisteestä 6-pisteeseen neljä kertaa.",
+            "hint": "Napauta 8-pistettä ja sitten 6-pistettä. Tee tämä neljä kertaa — kerran per noppa.",
+            "praise": "Juuri niin — tuplat tarkoittavat neljää siirtoa sillä luvulla.",
+            "title": "Tuplat = neljä siirtoa"
+          },
+          "explain": {
+            "body": "Jokaisella vuorolla heität kaksi noppaa ja pelaat molemmat luvut, kun voit. Voit laskeutua tyhjille pisteille, omille nappuloille tai yksinäiseen vastustajaan (blot).",
+            "title": "Kaksi lukua, avoimet pisteet"
+          },
+          "two_dice": {
+            "body": "Heitit 3 ja 1. Siirrä 8-pisteen nappulaa kolme pipiä (pisteelle 5) ja 6-pisteen nappulaa yhden pipin (pisteelle 5).",
+            "hint": "Valitse valkoinen nappula ja napauta pistettä 5. Tee tämä sekä 8- että 6-pisteelle.",
+            "praise": "Hienoa — molemmat nopat käytetty. Sama nappula tai kaksi, molemmat luvut on pelattava, kun se on mahdollista.",
+            "title": "Pelaa molemmat nopat"
+          }
+        },
+        "subtitle": "Miten vuoro toimii",
+        "title": "Siirtäminen noppien mukaan"
+      }
+    },
+    "locked": "Suorita edellinen oppitunti ensin",
+    "next_lesson": "Seuraava oppitunti",
+    "quiz": {
+      "bar": {
+        "a": "Siirrä kaukaisin nappulasi ensin",
+        "b": "Tuo se nappula sisään ennen muita siirtoja",
+        "c": "Ohita vuorosi",
+        "prompt": "Kun nappulasi on baarissa, sinun täytyy…"
+      },
+      "bear": {
+        "a": "Aina kun heität 6",
+        "b": "Vasta blot-lyönnin jälkeen",
+        "c": "Kun kaikki 15 nappulaa ovat kotilaudalla",
+        "prompt": "Milloin voit kotiuttaa?"
+      },
+      "blot": {
+        "a": "Mikä tahansa kolmen tai useamman pino",
+        "b": "Yksi nappula pisteellä — sen voi lyödä",
+        "c": "Kaksi tai useampi nappula pisteellä — tehty piste",
+        "prompt": "Mikä on blot?"
+      }
+    },
+    "replay": "Toista",
+    "skip_to_play": "Siirry peliin",
+    "step_progress": "Vaihe {{current}} / {{total}}",
+    "subtitle": "Viisi lyhyttä oppituntia — sitten olet valmis",
+    "title": "Opi pelaamaan"
+  },
+  "not_found": {
+    "body": "Tämä sivu ei kuulu Backgammon Mastermindiin. Palaa kotiin oppiaksesi tai aloittaaksesi pelin.",
+    "heading": "Laudan ulkopuolella",
+    "home_a11y": "Siirry kotiin",
+    "home_cta": "Takaisin kotiin",
+    "title": "Ei löytynyt"
+  },
+  "settings": {
+    "about": "Tietoja",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabia",
+    "back_a11y": "Takaisin",
+    "english": "Englanti",
+    "game": "Peli",
+    "general": "Yleiset",
+    "github": "GitHub",
+    "language": "Kieli",
+    "link_error_body": "Yritä myöhemmin uudelleen.",
+    "link_error_title": "Linkkiä ei voi avata",
+    "links": "Linkit",
+    "more": "Lisää",
+    "privacy": "Tietosuojakäytäntö",
+    "rate": "Arvostele",
+    "share": "Jaa",
+    "support": "Tuki",
+    "support_us": "Tue meitä",
+    "terms": "Käyttöehdot",
+    "title": "Asetukset",
+    "version": "Versio",
+    "website": "Verkkosivusto"
+  },
+  "welcome": "Tervetuloa Backgammon Mastermindiin"
+}

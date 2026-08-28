@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Valgt — trykk på et uthevet punkt, eller Avbryt"
+    },
+    "controls": {
+      "cancel": "Avbryt",
+      "cancel_a11y": "Avbryt valg",
+      "close_options_a11y": "Lukk alternativer",
+      "moving": "Flytter…",
+      "new_game_message": "Starte et nytt spill?",
+      "new_game_title": "Nytt spill",
+      "no_legal_moves": "Ingen lovlige trekk…",
+      "play_again": "Spill igjen",
+      "play_again_a11y": "Spill igjen",
+      "roll_dice": "Kast terninger",
+      "roll_dice_a11y": "Kast terninger",
+      "rolling": "Kaster…",
+      "skip_wait": "Trykk for å hoppe over venting",
+      "skip_wait_a11y": "{{status}} Trykk for å hoppe over venting"
+    },
+    "nudge": {
+      "roll_first": "Kast terningene først"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} slår {{low}}",
+      "goes_first": "{{player}} starter!",
+      "roll": "Kast",
+      "rolls_for_opening": "{{player}} kaster om åpningen",
+      "tie": "Uavgjort!",
+      "tie_again": "Samme tall — kast på nytt",
+      "waiting_roll": "{{player}} kaster…",
+      "who_goes_first": "Hvem starter?",
+      "your_roll": "Trykk hvor som helst for å kaste"
+    },
+    "options": {
+      "open_settings": "Språk og mer",
+      "open_settings_hint": "Åpne innstillinger",
+      "title": "Spillalternativer"
+    },
+    "preferences": {
+      "auto_move": "Automatisk trekk ved tvang",
+      "auto_move_hint": "Spill det eneste lovlige trekket automatisk",
+      "auto_roll": "Automatisk terningkast",
+      "auto_roll_hint": "Kast automatisk på din tur",
+      "dice_display": "Terningvisning",
+      "dice_dots": "Prikker",
+      "dice_numbers": "Tall",
+      "direction_overlay": "Retningsvisning",
+      "direction_overlay_hint": "Hestesko-sti på brettet",
+      "fast_computer": "Rask datamaskin",
+      "fast_computer_hint": "Kortere venting på datamaskinens kast og trekk. Du kan også trykke Hopp over venting.",
+      "move_hints": "Trekkhint",
+      "move_hints_hint": "Gullprikk ved punkter du kan flytte fra",
+      "point_numbers": "Punktnumre",
+      "point_numbers_hint": "Vis etiketter 1–24 på brettet",
+      "section_automation": "Automatisering",
+      "section_board": "Brett",
+      "section_dice": "Terninger",
+      "sound": "Spilllyder",
+      "sound_hint": "Myke terning-, slag- og seierslyder — respekterer lydløs modus"
+    },
+    "review": {
+      "back_to_live": "Tilbake til pågående spill",
+      "live": "Pågående spill",
+      "live_short": "Live",
+      "move_a11y": "Trekk {{ply}}, {{player}}",
+      "move_position": "Trekk {{current}} av {{total}} · {{player}}",
+      "next": "Neste tur",
+      "opening": "Startposisjon",
+      "pause_replay": "Pause",
+      "player_black": "Svart",
+      "player_white": "Hvit",
+      "previous": "Forrige tur",
+      "replay": "Repetisjon",
+      "scrubber_hint": "Trykk på en tur for å se gjennom",
+      "start": "Start",
+      "turn_a11y": "Tur {{turn}}, {{player}}",
+      "turn_label": "Tur {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tur {{turn}}/{{totalTurns}} · trekk {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Gjennomgang — trykk på Live eller Tilbake for å fortsette"
+    },
+    "status": {
+      "black_wins": "Svart vinner",
+      "computer_wins": "Datamaskinen vinner",
+      "white_wins": "🏆 Hvit vinner!",
+      "you_win": "🏆 Du vinner!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Avbryt",
+    "confirm_continue": "Fortsett",
+    "confirm_native": "Fortsette det nåværende spillet eller starte et nytt?",
+    "confirm_new": "Nytt spill",
+    "confirm_title": "Spill pågår",
+    "confirm_web": "Starte et nytt spill? (Bruk Fortsett på startskjermen for å fortsette det nåværende.)",
+    "resume": "Fortsett spill",
+    "resume_a11y": "Fortsett lagret spill",
+    "resume_none": "Ingen lagret spill å fortsette",
+    "resume_sub": "Fortsett der du slapp",
+    "subtitle": "Mestre brettet — trekk for trekk",
+    "title": "BACKGAMMON",
+    "two_players": "2 spillere",
+    "two_players_a11y": "Spill med to spillere på denne enheten",
+    "two_players_sub": "Turvis på samme enhet",
+    "vs_computer": "Mot datamaskin",
+    "vs_computer_a11y": "Spill mot datamaskinen",
+    "vs_computer_sub": "Spill mot AI"
+  },
+  "learn": {
+    "back_to_hub": "Alle leksjoner",
+    "continue": "Fortsett",
+    "feedback": {
+      "hint_nudge": "Trenger du et dytt? Se etter de uthevede stedene.",
+      "illegal": "Prøv et uthevet punkt — eller trykk Tips.",
+      "legal_but_wrong": "Det er lovlig i et ekte parti — her, prøv trekket som lærer denne ideen.",
+      "move_progress": "Flott — {{done}} av {{needed}} trekk gjort."
+    },
+    "graduation": {
+      "body": "Du kjenner målet, brettet, hvordan trekkene virker, slåing og å bære av. En rask sjekk — så ditt første ekte parti.",
+      "play_cta": "Spill ditt første parti",
+      "quiz_done": "Midt i blinken. På tide å spille.",
+      "quiz_title": "Rask sjekk",
+      "quiz_wrong": "Ikke helt — prøv et annet svar.",
+      "recap_1": "Kapløp: bær av alle 15 først",
+      "recap_2": "Kast to terninger; land på åpne punkt",
+      "recap_3": "Slå blotter → de sitter på baren",
+      "recap_4": "Bær av bare fra hjemmebrettet",
+      "recap_5": "Partier starter med én terning hver — høyeste går først (uavgjort kastes om)",
+      "title": "Du er klar til å spille"
+    },
+    "hint": "Tips",
+    "home_cta": "Lær å spille",
+    "home_cta_progress": "{{done}} av {{total}} leksjoner ferdige",
+    "home_cta_quiz": "Rask sjekk igjen — så spill",
+    "home_cta_ready": "Du er klar — spill et ekte parti",
+    "home_cta_sub": "Interaktive leksjoner for nybegynnere",
+    "lesson_complete": "Leksjon fullført!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Ingenting står på 5-punktet, men du kastet 5. Bær av fra den høyeste brikken (3-eren). Et større tall tar likevel en brikke av.",
+            "hint": "Velg punkt 3, og trykk deretter på avbæringsbrettet.",
+            "praise": "Det er overskuddsregelen — du bruker den ofte når du bærer av.",
+            "title": "Større terning, likevel av"
+          },
+          "try": {
+            "body": "Alle brikkene er i hjemmet (1–6), så du kan bære av. Du kastet 3 — ta brikken på 3-punktet av brettet.",
+            "hint": "Velg punkt 3, og trykk deretter på avbæringsområdet i høyre kant.",
+            "praise": "Av brettet! Først til å bære av alle 15 vinner.",
+            "title": "Bær én av"
+          }
+        },
+        "subtitle": "Slik vinner du",
+        "title": "Å bære av"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Du spiller HVIT — de kremfargede brikkene. Den kremfargede hesteskoen er DIN rute: start øverst til høyre, rundt venstre side, så inn i hjemmet nederst til høyre (punkt 1–6). Den kjøligere stiplede linjen er Svart den andre veien.",
+            "title": "Hesteskostien"
+          },
+          "far": {
+            "body": "Trykk på punktet der de to lengst unna hvite brikkene starter (24-punktet, øverst til høyre).",
+            "hint": "Se øverst til høyre — to hvite brikker på punkt 24.",
+            "praise": "De starter dypt i motstanderens hjem og har den lengste reisen.",
+            "title": "Dine lengst unna brikker"
+          },
+          "home_stack": {
+            "body": "Trykk på den store stabelen med fem hvite brikker som allerede er i hjemmet (6-punktet).",
+            "hint": "Nederst til høyre: fem hvite brikker på punkt 6.",
+            "praise": "Det er hjemmestabelen din — fem venter allerede på 6-punktet, nærmest å bære av. Hvert parti starter slik.",
+            "title": "Hjemmestabelen din"
+          }
+        },
+        "subtitle": "Hvilken vei du flytter",
+        "title": "Retning og oppsett"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Den hevede stripen i midten er baren. Slåtte brikker venter her. Trykk på baren.",
+            "hint": "Trykk på den loddrette stripen mellom venstre og høyre halvdel av brettet.",
+            "praise": "Riktig — slåtte brikker sitter på baren til de kommer inn igjen.",
+            "title": "Baren"
+          },
+          "explain": {
+            "body": "Du og motstanderen har 15 brikker hver. Flytt dem rundt på brettet og av — den som blir ferdig først, vinner.",
+            "title": "Først til å bære av vinner"
+          },
+          "home": {
+            "body": "Hjemmet ditt er punkt 1–6 (nederst til høyre). Trykk på et punkt på hjemmebrettet.",
+            "hint": "Hjemmet er de seks punktene i nedre høyre kvadrant — nummerert 1 til 6.",
+            "praise": "Det er hjemmet ditt — brikkene forlater brettet herfra.",
+            "title": "Finn hjemmebrettet"
+          }
+        },
+        "subtitle": "Hva du kjemper om",
+        "title": "Mål og brett"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Du er på baren — kom inn igjen før du flytter andre. Tell fra 24-punktet mot hjemmet: en 4 lander på punkt 21.",
+            "hint": "Trykk på baren, deretter punkt 21 (ikke 23 — det er bare to pips fra baren).",
+            "praise": "Du er tilbake på brettet — brikker på baren kommer alltid inn først.",
+            "title": "Kom inn fra baren",
+            "wrong": "Det er bare to pips fra baren (punkt 23). Tell fire punkt fra 24 mot hjemmet — det er punkt 21."
+          },
+          "hit": {
+            "body": "En enkelt brikke er et blot. Land på den, og den går til baren. Du kastet 3 — slå det svarte blotet på 5-punktet.",
+            "hint": "Trykk på brikken din på 8, deretter punkt 5.",
+            "praise": "Slått! Den svarte brikken er nå på baren.",
+            "title": "Slå blotet"
+          }
+        },
+        "subtitle": "Kontaktspill",
+        "title": "Slåing og baren"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "To eller flere motstanderbrikker blokkerer et punkt — du kan ikke lande der. Trykk på den blokkerte svarte stabelen på 5-punktet.",
+            "hint": "Den uthevede stabelen med to svarte brikker på punkt 5.",
+            "praise": "Riktig — et laget punkt (2+) er stengt. Tomt, ditt eget eller et blot (1) er åpne.",
+            "title": "Blokkerte punkt"
+          },
+          "doubles": {
+            "body": "Par gir fire trekk med det tallet. Du kastet 2-2 — det er fire 2-ere. Flytt fra 8-punktet til 6-punktet fire ganger.",
+            "hint": "Trykk på 8-punktet, deretter 6-punktet. Gjør dette fire ganger — én gang per terning.",
+            "praise": "Akkurat — par betyr fire trekk med det tallet.",
+            "title": "Par = fire trekk"
+          },
+          "explain": {
+            "body": "Hvert trekk kaster du to terninger og spiller begge tall når du kan. Du kan lande på tomme punkt, egne brikker eller en ensom motstander (et blot).",
+            "title": "To tall, åpne punkt"
+          },
+          "two_dice": {
+            "body": "Du kastet 3 og 1. Flytt brikken på 8-punktet tre pips (til 5) og den på 6-punktet ett pip (til 5).",
+            "hint": "Velg en hvit brikke og trykk på punkt 5. Gjør dette for både 8-punktet og 6-punktet.",
+            "praise": "Flott — begge terningene brukt. Samme brikke eller to, begge tall må spilles når du kan.",
+            "title": "Spill begge terningene"
+          }
+        },
+        "subtitle": "Slik et trekk virker",
+        "title": "Flytte med terninger"
+      }
+    },
+    "locked": "Fullfør den forrige leksjonen først",
+    "next_lesson": "Neste leksjon",
+    "quiz": {
+      "bar": {
+        "a": "Flytt den lengst unna brikken først",
+        "b": "Før den brikken inn før du flytter noe annet",
+        "c": "Hopp over trekket ditt",
+        "prompt": "Mens du har en brikke på baren, må du…"
+      },
+      "bear": {
+        "a": "Når som helst du kaster 6",
+        "b": "Bare etter at du har slått et blot",
+        "c": "Når alle 15 brikker er på hjemmebrettet",
+        "prompt": "Når kan du bære av?"
+      },
+      "blot": {
+        "a": "Enhver stabel på tre eller mer",
+        "b": "Én brikke på et punkt — den kan slås",
+        "c": "To eller flere brikker på et punkt — et laget punkt",
+        "prompt": "Hva er et blot?"
+      }
+    },
+    "replay": "Spill om igjen",
+    "skip_to_play": "Hopp til spill",
+    "step_progress": "Steg {{current}} av {{total}}",
+    "subtitle": "Fem korte leksjoner — så er du klar",
+    "title": "Lær å spille"
+  },
+  "not_found": {
+    "body": "Den siden er ikke en del av Backgammon Mastermind. Gå hjem for å lære eller starte et spill.",
+    "heading": "Utenfor brettet",
+    "home_a11y": "Gå til start",
+    "home_cta": "Tilbake til start",
+    "title": "Ikke funnet"
+  },
+  "settings": {
+    "about": "Om",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabisk",
+    "back_a11y": "Tilbake",
+    "english": "Engelsk",
+    "game": "Spill",
+    "general": "Generelt",
+    "github": "GitHub",
+    "language": "Språk",
+    "link_error_body": "Prøv igjen senere.",
+    "link_error_title": "Kan ikke åpne lenke",
+    "links": "Lenker",
+    "more": "Mer",
+    "privacy": "Personvernerklæring",
+    "rate": "Vurder",
+    "share": "Del",
+    "support": "Support",
+    "support_us": "Støtt oss",
+    "terms": "Vilkår for bruk",
+    "title": "Innstillinger",
+    "version": "Versjon",
+    "website": "Nettsted"
+  },
+  "welcome": "Velkommen til Backgammon Mastermind"
+}

@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Wybrano — stuknij podświetlony punkt albo Anuluj"
+    },
+    "controls": {
+      "cancel": "Anuluj",
+      "cancel_a11y": "Anuluj zaznaczenie",
+      "close_options_a11y": "Zamknij opcje",
+      "moving": "Ruch…",
+      "new_game_message": "Rozpocząć nową grę?",
+      "new_game_title": "Nowa gra",
+      "no_legal_moves": "Brak możliwych ruchów…",
+      "play_again": "Zagraj ponownie",
+      "play_again_a11y": "Zagraj ponownie",
+      "roll_dice": "Rzuć kośćmi",
+      "roll_dice_a11y": "Rzuć kośćmi",
+      "rolling": "Rzuca…",
+      "skip_wait": "Stuknij, aby pominąć oczekiwanie",
+      "skip_wait_a11y": "{{status}} Stuknij, aby pominąć oczekiwanie"
+    },
+    "nudge": {
+      "roll_first": "Najpierw rzuć kośćmi"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bije {{low}}",
+      "goes_first": "{{player}} zaczyna!",
+      "roll": "Rzuć",
+      "rolls_for_opening": "{{player}} rzuca o rozpoczęcie",
+      "tie": "Remis!",
+      "tie_again": "Ta sama liczba — rzućcie ponownie",
+      "waiting_roll": "{{player}} rzuca…",
+      "who_goes_first": "Kto zaczyna?",
+      "your_roll": "Dotknij gdziekolwiek, aby rzucić"
+    },
+    "options": {
+      "open_settings": "Język i więcej",
+      "open_settings_hint": "Otwórz Ustawienia",
+      "title": "Opcje gry"
+    },
+    "preferences": {
+      "auto_move": "Automatyczny ruch przymusowy",
+      "auto_move_hint": "Automatycznie wykonuje jedyny możliwy ruch",
+      "auto_roll": "Automatyczny rzut kośćmi",
+      "auto_roll_hint": "Rzuca automatycznie w twojej turze",
+      "dice_display": "Wygląd kości",
+      "dice_dots": "Oczka",
+      "dice_numbers": "Liczby",
+      "direction_overlay": "Wskazówka kierunku",
+      "direction_overlay_hint": "Trasa w kształcie podkowy na planszy",
+      "fast_computer": "Szybki komputer",
+      "fast_computer_hint": "Krótsze oczekiwanie na rzuty i ruchy komputera. Możesz też stuknąć Pomiń oczekiwanie.",
+      "move_hints": "Podpowiedzi ruchów",
+      "move_hints_hint": "Złota kropka przy polach, z których możesz się ruszyć",
+      "point_numbers": "Numery pól",
+      "point_numbers_hint": "Pokaż etykiety 1–24 na planszy",
+      "section_automation": "Automatyzacja",
+      "section_board": "Plansza",
+      "section_dice": "Kości",
+      "sound": "Dźwięki gry",
+      "sound_hint": "Delikatne dźwięki kości, bić i zwycięstw — szanuje tryb cichy"
+    },
+    "review": {
+      "back_to_live": "Wróć do bieżącej gry",
+      "live": "Bieżąca gra",
+      "live_short": "Na żywo",
+      "move_a11y": "Ruch {{ply}}, {{player}}",
+      "move_position": "Ruch {{current}} z {{total}} · {{player}}",
+      "next": "Następna tura",
+      "opening": "Pozycja początkowa",
+      "pause_replay": "Pauza",
+      "player_black": "Czarne",
+      "player_white": "Białe",
+      "previous": "Poprzednia tura",
+      "replay": "Powtórka",
+      "scrubber_hint": "Dotknij tury, aby ją przejrzeć",
+      "start": "Początek",
+      "turn_a11y": "Tura {{turn}}, {{player}}",
+      "turn_label": "Tura {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tura {{turn}}/{{totalTurns}} · ruch {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Przeglądanie — dotknij Na żywo lub Wróć, aby grać dalej"
+    },
+    "status": {
+      "black_wins": "Czarne wygrywają",
+      "computer_wins": "Komputer wygrywa",
+      "white_wins": "🏆 Białe wygrywają!",
+      "you_win": "🏆 Wygrywasz!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Anuluj",
+    "confirm_continue": "Kontynuuj",
+    "confirm_native": "Kontynuować bieżącą grę czy rozpocząć nową?",
+    "confirm_new": "Nowa gra",
+    "confirm_title": "Gra w toku",
+    "confirm_web": "Rozpocząć nową grę? (Użyj Wznów na ekranie głównym, aby kontynuować bieżącą.)",
+    "resume": "Wznów grę",
+    "resume_a11y": "Wznów zapisaną grę",
+    "resume_none": "Brak zapisanej gry do wznowienia",
+    "resume_sub": "Kontynuuj od miejsca, w którym skończyłeś",
+    "subtitle": "Opanuj planszę — ruch po ruchu",
+    "title": "BACKGAMMON",
+    "two_players": "2 graczy",
+    "two_players_a11y": "Graj we dwoje na tym urządzeniu",
+    "two_players_sub": "Na zmianę na tym samym urządzeniu",
+    "vs_computer": "Przeciw komputerowi",
+    "vs_computer_a11y": "Graj przeciwko komputerowi",
+    "vs_computer_sub": "Zagraj przeciwko SI"
+  },
+  "learn": {
+    "back_to_hub": "Wszystkie lekcje",
+    "continue": "Kontynuuj",
+    "feedback": {
+      "hint_nudge": "Potrzebujesz impulsu? Szukaj podświetlonych miejsc.",
+      "illegal": "Spróbuj podświetlonego punktu — albo stuknij Wskazówka.",
+      "legal_but_wrong": "W prawdziwej partii byłoby to legalne — tutaj zagraj ruch, który uczy tej idei.",
+      "move_progress": "Ładnie — {{done}} z {{needed}} ruchów zrobione."
+    },
+    "graduation": {
+      "body": "Znasz cel, planszę, przebieg tur, bicie i wyprowadzanie. Szybki sprawdzian — potem pierwsza prawdziwa partia.",
+      "play_cta": "Zagraj pierwszą partię",
+      "quiz_done": "W punkt. Czas grać.",
+      "quiz_title": "Szybki sprawdzian",
+      "quiz_wrong": "Jeszcze nie — spróbuj innej odpowiedzi.",
+      "recap_1": "Wyścig: wyprowadź wszystkie 15 jako pierwszy",
+      "recap_2": "Rzuć dwiema kośćmi; stań na otwartych punktach",
+      "recap_3": "Bij blot’y → siadają na barze",
+      "recap_4": "Wyprowadzaj tylko z planszy domowej",
+      "recap_5": "Partie zaczynają się od jednej kości na gracza — wyższy zaczyna (remis: rzut ponowny)",
+      "title": "Jesteś gotów do gry"
+    },
+    "hint": "Wskazówka",
+    "home_cta": "Naucz się grać",
+    "home_cta_progress": "{{done}} z {{total}} lekcji ukończone",
+    "home_cta_quiz": "Został szybki sprawdzian — potem gra",
+    "home_cta_ready": "Jesteś gotów — zagraj prawdziwą partię",
+    "home_cta_sub": "Interaktywne lekcje dla początkujących",
+    "lesson_complete": "Lekcja ukończona!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Na 5. punkcie nic nie ma, ale wyrzuciłeś 5. Wyprowadź z najwyższego pionka (3). Większa liczba i tak zdejmuje pionek.",
+            "hint": "Wybierz punkt 3, potem stuknij tackę wyprowadzania.",
+            "praise": "To zasada przebicia — często jej użyjesz przy wyprowadzaniu.",
+            "title": "Większa kość, i tak poza"
+          },
+          "try": {
+            "body": "Wszystkie pionki są w domu (1–6), więc możesz wyprowadzać. Wyrzuciłeś 3 — zdejmij pionek z 3. punktu.",
+            "hint": "Wybierz punkt 3, potem stuknij strefę wyprowadzania przy prawej krawędzi.",
+            "praise": "Poza planszą! Kto pierwszy wyprowadzi wszystkie 15, wygrywa.",
+            "title": "Wyprowadź jednego"
+          }
+        },
+        "subtitle": "Jak wygrać",
+        "title": "Wyprowadzanie"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Grasz BIAŁYMI — kremowymi pionkami. Kremowa podkowa to TWOJA ścieżka: start prawo góra, wokół lewej strony, potem do domu prawo dół (punkty 1–6). Chłodniejsza linia przerywana to Czarny w drugą stronę.",
+            "title": "Ścieżka podkowy"
+          },
+          "far": {
+            "body": "Stuknij punkt, w którym startują dwa najdalsze białe pionki (punkt 24, prawo góra).",
+            "hint": "Spójrz w prawo górę — dwa białe pionki na punkcie 24.",
+            "praise": "Zaczynają głęboko w domu przeciwnika i mają najdłuższą drogę.",
+            "title": "Twoje najdalsze pionki"
+          },
+          "home_stack": {
+            "body": "Stuknij duży stos pięciu białych pionków już w domu (punkt 6).",
+            "hint": "Prawo dół: pięć białych pionków na punkcie 6.",
+            "praise": "To twój stos domowy — pięć już czeka na 6. punkcie, najbliżej wyprowadzania. Każda partia tak się zaczyna.",
+            "title": "Twój stos domowy"
+          }
+        },
+        "subtitle": "W którą stronę się ruszasz",
+        "title": "Kierunek i ustawienie"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Wypukły pas pośrodku to bar. Bite pionki czekają tu. Stuknij bar.",
+            "hint": "Stuknij pionowy pas między lewą a prawą połową planszy.",
+            "praise": "Tak — bite pionki siedzą na barze, aż wejdą z powrotem.",
+            "title": "Bar"
+          },
+          "explain": {
+            "body": "Ty i przeciwnik macie po 15 pionków. Przesuwajcie je po planszy i poza nią — kto skończy pierwszy, wygrywa.",
+            "title": "Kto pierwszy wyprowadzi, wygrywa"
+          },
+          "home": {
+            "body": "Twój dom to punkty 1–6 (prawo dół). Stuknij dowolny punkt na planszy domowej.",
+            "hint": "Dom to sześć punktów w prawym dolnym kwadrancie — od 1 do 6.",
+            "praise": "To twój dom — pionki opuszczają planszę stąd.",
+            "title": "Znajdź planszę domową"
+          }
+        },
+        "subtitle": "O co walczysz",
+        "title": "Cel i plansza"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Jesteś na barze — wróć, zanim ruszysz cokolwiek innego. Licz od 24. punktu w stronę domu: 4 ląduje na punkcie 21.",
+            "hint": "Stuknij bar, potem punkt 21 (nie 23 — to tylko dwa pipy od bara).",
+            "praise": "Znów jesteś na planszy — pionki z bara zawsze wchodzą pierwsze.",
+            "title": "Wejście z bara",
+            "wrong": "To tylko dwa pipy od bara (punkt 23). Policz cztery punkty od 24 w stronę domu — to punkt 21."
+          },
+          "hit": {
+            "body": "Pojedynczy pionek to blot. Wpadnij na niego, a idzie na bar. Wyrzuciłeś 3 — bij czarny blot na 5. punkcie.",
+            "hint": "Stuknij pionek na 8, potem punkt 5.",
+            "praise": "Bicie! Ten czarny pionek jest teraz na barze.",
+            "title": "Zbij blot"
+          }
+        },
+        "subtitle": "Gra kontaktowa",
+        "title": "Bicie i bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Dwa lub więcej pionków przeciwnika blokują punkt — nie możesz tam stanąć. Stuknij zablokowany czarny stos na 5. punkcie.",
+            "hint": "Podświetlony stos dwóch czarnych pionków na punkcie 5.",
+            "praise": "Tak — zrobiony punkt (2+) jest zamknięty. Pusty, twój lub blot (1) są otwarte.",
+            "title": "Zablokowane punkty"
+          },
+          "doubles": {
+            "body": "Dublet daje cztery ruchy tą liczbą. Wyrzuciłeś 2-2 — to cztery dwójki. Przesuń z 8. punktu na 6. cztery razy.",
+            "hint": "Stuknij punkt 8, potem 6. Zrób to cztery razy — raz na kość.",
+            "praise": "Dokładnie — dublet to cztery ruchy tą liczbą.",
+            "title": "Dublet = cztery ruchy"
+          },
+          "explain": {
+            "body": "W każdej turze rzucasz dwiema kośćmi i grasz obie liczby, gdy możesz. Możesz stanąć na pustych punktach, własnych pionkach lub samotnym przeciwniku (blot).",
+            "title": "Dwie liczby, otwarte punkty"
+          },
+          "two_dice": {
+            "body": "Wyrzuciłeś 3 i 1. Przesuń pionek na 8. punkcie o trzy pipy (na 5) i ten na 6. o jeden pip (na 5).",
+            "hint": "Wybierz biały pionek, potem stuknij punkt 5. Zrób to dla punktu 8 i punktu 6.",
+            "praise": "Ładnie — obie kości użyte. Ten sam pionek lub dwa, obie liczby trzeba zagrać, gdy można.",
+            "title": "Zagraj obie kości"
+          }
+        },
+        "subtitle": "Jak przebiega tura",
+        "title": "Ruch według kości"
+      }
+    },
+    "locked": "Najpierw ukończ poprzednią lekcję",
+    "next_lesson": "Następna lekcja",
+    "quiz": {
+      "bar": {
+        "a": "Najpierw rusz najdalszy pionek",
+        "b": "Wprowadź ten pionek, zanim ruszysz cokolwiek innego",
+        "c": "Pomiń turę",
+        "prompt": "Dopóki masz pionek na barze, musisz…"
+      },
+      "bear": {
+        "a": "Ilekroć wyrzucisz 6",
+        "b": "Tylko po zbiciu blota",
+        "c": "Gdy wszystkie 15 pionków jest na planszy domowej",
+        "prompt": "Kiedy można wyprowadzać?"
+      },
+      "blot": {
+        "a": "Dowolny stos trzech lub więcej",
+        "b": "Jeden pionek na punkcie — można go zbić",
+        "c": "Dwa lub więcej pionków na punkcie — zrobiony punkt",
+        "prompt": "Czym jest blot?"
+      }
+    },
+    "replay": "Powtórz",
+    "skip_to_play": "Przejdź do gry",
+    "step_progress": "Krok {{current}} z {{total}}",
+    "subtitle": "Pięć krótkich lekcji — i jesteś gotów",
+    "title": "Naucz się grać"
+  },
+  "not_found": {
+    "body": "Ta strona nie jest częścią Backgammon Mastermind. Wróć na stronę główną, aby się uczyć lub rozpocząć grę.",
+    "heading": "Poza planszą",
+    "home_a11y": "Przejdź na stronę główną",
+    "home_cta": "Wróć na stronę główną",
+    "title": "Nie znaleziono"
+  },
+  "settings": {
+    "about": "O aplikacji",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabski",
+    "back_a11y": "Wstecz",
+    "english": "Angielski",
+    "game": "Gra",
+    "general": "Ogólne",
+    "github": "GitHub",
+    "language": "Język",
+    "link_error_body": "Spróbuj ponownie później.",
+    "link_error_title": "Nie można otworzyć linku",
+    "links": "Linki",
+    "more": "Więcej",
+    "privacy": "Polityka prywatności",
+    "rate": "Oceń",
+    "share": "Udostępnij",
+    "support": "Pomoc",
+    "support_us": "Wesprzyj nas",
+    "terms": "Warunki korzystania",
+    "title": "Ustawienia",
+    "version": "Wersja",
+    "website": "Strona internetowa"
+  },
+  "welcome": "Witamy w Backgammon Mastermind"
+}

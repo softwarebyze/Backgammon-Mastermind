@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Kiválasztva — koppints egy kiemelt mezőre, vagy Mégse"
+    },
+    "controls": {
+      "cancel": "Mégse",
+      "cancel_a11y": "Kijelölés törlése",
+      "close_options_a11y": "Beállítások bezárása",
+      "moving": "Lépés…",
+      "new_game_message": "Új játék indítása?",
+      "new_game_title": "Új játék",
+      "no_legal_moves": "Nincs szabályos lépés…",
+      "play_again": "Újra játszás",
+      "play_again_a11y": "Újra játszás",
+      "roll_dice": "Kockadobás",
+      "roll_dice_a11y": "Kockadobás",
+      "rolling": "Dobás…",
+      "skip_wait": "Koppints a várakozás kihagyásához",
+      "skip_wait_a11y": "{{status}} Koppints a várakozás kihagyásához"
+    },
+    "nudge": {
+      "roll_first": "Először dobj a kockával"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} jobb, mint {{low}}",
+      "goes_first": "{{player}} kezd!",
+      "roll": "Dobás",
+      "rolls_for_opening": "{{player}} dob a kezdésért",
+      "tie": "Döntetlen!",
+      "tie_again": "Ugyanaz a szám — dobj újra",
+      "waiting_roll": "{{player}} dob…",
+      "who_goes_first": "Ki kezd?",
+      "your_roll": "Érintsd meg bárhol a dobáshoz"
+    },
+    "options": {
+      "open_settings": "Nyelv és egyebek",
+      "open_settings_hint": "Beállítások megnyitása",
+      "title": "Játékbeállítások"
+    },
+    "preferences": {
+      "auto_move": "Automatikus lépés kényszer esetén",
+      "auto_move_hint": "Az egyetlen szabályos lépés automatikus lejátszása",
+      "auto_roll": "Automatikus kockadobás",
+      "auto_roll_hint": "Automatikus dobás a te körödben",
+      "dice_display": "Kockamegjelenítés",
+      "dice_dots": "Pontok",
+      "dice_numbers": "Számok",
+      "direction_overlay": "Iránymutatás",
+      "direction_overlay_hint": "Patkó alakú útvonal a táblán",
+      "fast_computer": "Gyors gép",
+      "fast_computer_hint": "Rövidebb várakozás a gép dobásainál és lépéseinél. A Várakozás kihagyása gombra is koppinthatsz.",
+      "move_hints": "Lépéstippek",
+      "move_hints_hint": "Arany pont azoknál a mezőknél, ahonnan léphetsz",
+      "point_numbers": "Mezőszámok",
+      "point_numbers_hint": "1–24 címkék megjelenítése a táblán",
+      "section_automation": "Automatizálás",
+      "section_board": "Tábla",
+      "section_dice": "Kockák",
+      "sound": "Játékhangok",
+      "sound_hint": "Halk kocka-, ütés- és győzelemhangok — tiszteletben tartja a néma módot"
+    },
+    "review": {
+      "back_to_live": "Vissza az élő játékhoz",
+      "live": "Élő játék",
+      "live_short": "Élő",
+      "move_a11y": "{{ply}}. lépés, {{player}}",
+      "move_position": "{{current}}. / {{total}}. lépés · {{player}}",
+      "next": "Következő kör",
+      "opening": "Kezdőállás",
+      "pause_replay": "Szünet",
+      "player_black": "Fekete",
+      "player_white": "Fehér",
+      "previous": "Előző kör",
+      "replay": "Visszajátszás",
+      "scrubber_hint": "Érintsd meg a kört a visszanézéshez",
+      "start": "Kezdés",
+      "turn_a11y": "{{turn}}. kör, {{player}}",
+      "turn_label": "{{turn}}./{{totalTurns}}. kör · {{player}}",
+      "turn_position": "{{turn}}./{{totalTurns}}. kör · {{moveInTurn}}./{{movesInTurn}}. lépés · {{player}}",
+      "viewing_hint": "Visszanézés — érintsd meg az Élő vagy Vissza gombot a folytatáshoz"
+    },
+    "status": {
+      "black_wins": "Fekete nyer",
+      "computer_wins": "A számítógép nyer",
+      "white_wins": "🏆 Fehér nyer!",
+      "you_win": "🏆 Nyertél!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Mégse",
+    "confirm_continue": "Folytatás",
+    "confirm_native": "Folytatod a jelenlegi játékot, vagy újat kezdesz?",
+    "confirm_new": "Új játék",
+    "confirm_title": "Játék folyamatban",
+    "confirm_web": "Új játék indítása? (A jelenlegi folytatásához használd a Folytatás gombot a kezdőképernyőn.)",
+    "resume": "Játék folytatása",
+    "resume_a11y": "Mentett játék folytatása",
+    "resume_none": "Nincs mentett játék a folytatáshoz",
+    "resume_sub": "Folytasd ott, ahol abbahagytad",
+    "subtitle": "Urald a táblát — lépésről lépésre",
+    "title": "BACKGAMMON",
+    "two_players": "2 játékos",
+    "two_players_a11y": "Két játékossal játszás ezen az eszközön",
+    "two_players_sub": "Felváltva ugyanazon az eszközön",
+    "vs_computer": "Számítógép ellen",
+    "vs_computer_a11y": "Játék a számítógép ellen",
+    "vs_computer_sub": "Játék a MI ellen"
+  },
+  "learn": {
+    "back_to_hub": "Összes lecke",
+    "continue": "Folytatás",
+    "feedback": {
+      "hint_nudge": "Kell egy lökés? Keressed a kiemelt helyeket.",
+      "illegal": "Próbálj egy kiemelt mezőt — vagy koppints a Segítségre.",
+      "legal_but_wrong": "Ez egy igazi játszmában szabályos lenne — itt azt a lépést próbáld, ami ezt az ötletet tanítja.",
+      "move_progress": "Szép — {{done}} / {{needed}} lépés kész."
+    },
+    "graduation": {
+      "body": "Ismered a célt, a táblát, a köröket, az ütést és a kivitelt. Gyors ellenőrzés — aztán az első igazi játék.",
+      "play_cta": "Játszd az első játékod",
+      "quiz_done": "Talált. Itt az ideje játszani.",
+      "quiz_title": "Gyors ellenőrzés",
+      "quiz_wrong": "Még nem — próbálj másik választ.",
+      "recap_1": "Verseny: vidd ki mind a 15-öt először",
+      "recap_2": "Dobj két kockát; lépj nyitott mezőkre",
+      "recap_3": "Üsd a blotokat → a báron ülnek",
+      "recap_4": "Csak a belső tábláról vihetsz ki",
+      "recap_5": "A játékok egy-egy kockával indulnak — a nagyobb kezd (döntetlennél újra dobás)",
+      "title": "Készen állsz a játékra"
+    },
+    "hint": "Segítség",
+    "home_cta": "Tanulj játszani",
+    "home_cta_progress": "{{done}} / {{total}} lecke kész",
+    "home_cta_quiz": "Még egy gyors ellenőrzés — aztán játék",
+    "home_cta_ready": "Készen állsz — játssz egy igazi partit",
+    "home_cta_sub": "Interaktív leckék kezdőknek",
+    "lesson_complete": "Lecke kész!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Az 5-ös mezőn nincs semmi, de 5-öst dobtál. Vidd ki a legmagasabb korongodról (a 3-asról). A nagyobb szám is levenni egy korongot.",
+            "hint": "Válaszd a 3-as mezőt, majd koppints a kiviteli tálcára.",
+            "praise": "Ez a túlnyúlás szabálya — sokat használod majd kivitelnél.",
+            "title": "Nagyobb kocka, mégis kint"
+          },
+          "try": {
+            "body": "Minden korongod a belső táblán van (1–6), tehát vihetsz ki. 3-ast dobtál — vedd le a 3-as mező korongját a tábláról.",
+            "hint": "Válaszd a 3-as mezőt, majd koppints a kiviteli területre a jobb szélén.",
+            "praise": "Le a tábláról! Aki először viszi ki mind a 15-öt, nyer.",
+            "title": "Vigyél ki egyet"
+          }
+        },
+        "subtitle": "Hogyan nyersz",
+        "title": "Kivitel"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "FEHÉRREL játszol — a krémszínű korongokkal. A krémszínű patkó a TE utad: jobbra fent indul, a bal oldalon körbe, majd a belső táblába jobbra lent (1–6. mező). A hűvösebb szaggatott vonal a Fekete, ellenkező irányban.",
+            "title": "A patkóút"
+          },
+          "far": {
+            "body": "Koppints arra a mezőre, ahonnan a két legtávolabbi fehér korongod indul (a 24-es, jobbra fent).",
+            "hint": "Nézz jobbra fel — két fehér korong a 24-es mezőn.",
+            "praise": "Mélyen az ellenfél belső tábláján indulnak, és a leghosszabb útjuk van.",
+            "title": "A legtávolabbi korongjaid"
+          },
+          "home_stack": {
+            "body": "Koppints az öt fehér korong nagy halmára, amely már a belső tábládon van (a 6-os mező).",
+            "hint": "Jobbra lent: öt fehér korong a 6-os mezőn.",
+            "praise": "Ez a belső halmod — öt már a 6-oson vár, a kiviteltől a legközelebb. Minden játék így kezdődik.",
+            "title": "A belső halmod"
+          }
+        },
+        "subtitle": "Merre lépsz",
+        "title": "Irány és felállás"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "A középen kiemelkedő sáv a bár. Az ütött korongok itt várnak. Koppints a bárra.",
+            "hint": "Koppints a függőleges sávra a tábla bal és jobb fele között.",
+            "praise": "Így van — az ütött korongok a báron ülnek, amíg vissza nem lépnek.",
+            "title": "A bár"
+          },
+          "explain": {
+            "body": "Neked és az ellenfélnek is 15 korongja van. Mozgasd őket a táblán és le róla — aki előbb kész, nyer.",
+            "title": "Aki előbb viszi ki, nyer"
+          },
+          "home": {
+            "body": "A belső táblád az 1–6. mező (jobbra lent). Koppints bármelyik mezőre a belső tábládon.",
+            "hint": "A belső tábla a jobb alsó negyed hat mezője — 1-től 6-ig.",
+            "praise": "Ez a belső táblád — innen hagyják el a korongok a táblát.",
+            "title": "Találd meg a belső táblád"
+          }
+        },
+        "subtitle": "Miről versenyeztek",
+        "title": "Cél és tábla"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "A báron vagy — lépj vissza, mielőtt mást mozgatnál. Számolj a 24-estől a belső tábla felé: a 4 a 21-esre esik.",
+            "hint": "Koppints a bárra, majd a 21-esre (ne a 23-asra — az csak két pip a bártól).",
+            "praise": "Visszatértél a táblára — a bár korongjai mindig először lépnek be.",
+            "title": "Belépés a bárról",
+            "wrong": "Az csak két pip a bártól (23-as mező). Számolj négy mezőt a 24-estől a belső tábla felé — az a 21-es."
+          },
+          "hit": {
+            "body": "Egyetlen korong a blot. Rálépsz, és a bárra kerül. 3-ast dobtál — üsd meg a fekete blotot az 5-ösön.",
+            "hint": "Koppints a 8-as korongodra, majd az 5-ös mezőre.",
+            "praise": "Ütés! Az a fekete korong most a báron van.",
+            "title": "Üsd a blotot"
+          }
+        },
+        "subtitle": "Kontaktjáték",
+        "title": "Ütés és a bár"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Két vagy több ellenfélkorong zárja a mezőt — oda nem léphetsz. Koppints a zárt fekete halomra az 5-ösön.",
+            "hint": "A kiemelt két fekete korong halma az 5-ös mezőn.",
+            "praise": "Így van — a kész mező (2+) zárva. Üres, saját vagy blot (1) nyitott.",
+            "title": "Zárt mezők"
+          },
+          "doubles": {
+            "body": "A dupla négy lépést ad ugyanazzal a számmal. 2-2-t dobtál — az négy kettes. Lépj a 8-asról a 6-osra négyszer.",
+            "hint": "Koppints a 8-asra, majd a 6-osra. Tedd ezt négyszer — kockánként egyszer.",
+            "praise": "Pontosan — a dupla négy lépést jelent azzal a számmal.",
+            "title": "Dupla = négy lépés"
+          },
+          "explain": {
+            "body": "Minden körben két kockát dobsz, és mindkét számot lejátszod, ha tudod. Üres mezőre, saját korongra vagy magányos ellenfélre (blot) léphetsz.",
+            "title": "Két szám, nyitott mezők"
+          },
+          "two_dice": {
+            "body": "3-ast és 1-est dobtál. Vidd a 8-as korongot három pippel (az 5-ösre), a 6-osét egy pippel (az 5-ösre).",
+            "hint": "Válassz egy fehér korongot, majd koppints az 5-ösre. Tedd ezt a 8-asra és a 6-osra is.",
+            "praise": "Szép — mindkét kocka felhasználva. Ugyanaz a korong vagy kettő, mindkét számot le kell játszani, ha lehet.",
+            "title": "Játszd mindkét kockát"
+          }
+        },
+        "subtitle": "Hogyan megy egy kör",
+        "title": "Lépés a kockákkal"
+      }
+    },
+    "locked": "Előbb fejezd be az előző leckét",
+    "next_lesson": "Következő lecke",
+    "quiz": {
+      "bar": {
+        "a": "Előbb a legtávolabbi korongodat mozgasd",
+        "b": "Léptesd be azt a korongot, mielőtt mást mozgatnál",
+        "c": "Hagyd ki a köröd",
+        "prompt": "Amíg korongod van a báron, muszáj…"
+      },
+      "bear": {
+        "a": "Valahányszor 6-ost dobsz",
+        "b": "Csak blot ütése után",
+        "c": "Amikor mind a 15 korong a belső tábládon van",
+        "prompt": "Mikor vihetsz ki?"
+      },
+      "blot": {
+        "a": "Bármely három vagy több korongos halom",
+        "b": "Egyetlen korong egy mezőn — megüthető",
+        "c": "Két vagy több korong egy mezőn — kész mező",
+        "prompt": "Mi a blot?"
+      }
+    },
+    "replay": "Újra",
+    "skip_to_play": "Ugrás a játékra",
+    "step_progress": "{{current}}. lépés / {{total}}",
+    "subtitle": "Öt rövid lecke — aztán készen állsz",
+    "title": "Tanulj játszani"
+  },
+  "not_found": {
+    "body": "Ez az oldal nem része a Backgammon Mastermindnak. Térj haza tanulni vagy új játékot indítani.",
+    "heading": "A táblán kívül",
+    "home_a11y": "Ugrás a kezdőlapra",
+    "home_cta": "Vissza a kezdőlapra",
+    "title": "Nem található"
+  },
+  "settings": {
+    "about": "Névjegy",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arab",
+    "back_a11y": "Vissza",
+    "english": "Angol",
+    "game": "Játék",
+    "general": "Általános",
+    "github": "GitHub",
+    "language": "Nyelv",
+    "link_error_body": "Próbáld meg később újra.",
+    "link_error_title": "A hivatkozás nem nyitható meg",
+    "links": "Hivatkozások",
+    "more": "Továbbiak",
+    "privacy": "Adatvédelmi irányelvek",
+    "rate": "Értékelés",
+    "share": "Megosztás",
+    "support": "Támogatás",
+    "support_us": "Támogass minket",
+    "terms": "Szolgáltatási feltételek",
+    "title": "Beállítások",
+    "version": "Verzió",
+    "website": "Weboldal"
+  },
+  "welcome": "Üdvözöl a Backgammon Mastermind"
+}

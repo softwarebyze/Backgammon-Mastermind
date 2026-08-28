@@ -1,0 +1,310 @@
+{
+  "game": {
+    "caption": {
+      "selected": "Đã chọn — chạm một điểm được tô sáng, hoặc Hủy"
+    },
+    "controls": {
+      "cancel": "Hủy",
+      "cancel_a11y": "Hủy lựa chọn",
+      "close_options_a11y": "Đóng tùy chọn",
+      "moving": "Đang đi…",
+      "new_game_message": "Bắt đầu ván mới?",
+      "new_game_title": "Ván mới",
+      "no_legal_moves": "Không có nước đi hợp lệ…",
+      "play_again": "Chơi lại",
+      "play_again_a11y": "Chơi lại",
+      "roll_dice": "Gieo xúc xắc",
+      "roll_dice_a11y": "Gieo xúc xắc",
+      "rolling": "Đang gieo…",
+      "skip_wait": "Chạm để bỏ qua chờ",
+      "skip_wait_a11y": "{{status}} Chạm để bỏ qua chờ"
+    },
+    "nudge": {
+      "roll_first": "Gieo xúc xắc trước"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} thắng {{low}}",
+      "goes_first": "{{player}} đi trước!",
+      "roll": "Gieo",
+      "rolls_for_opening": "{{player}} gieo để mở ván",
+      "tie": "Hòa!",
+      "tie_again": "Cùng số — gieo lại",
+      "waiting_roll": "{{player}} đang gieo…",
+      "who_goes_first": "Ai đi trước?",
+      "your_roll": "Chạm bất kỳ đâu để gieo"
+    },
+    "options": {
+      "open_settings": "Ngôn ngữ & khác",
+      "open_settings_hint": "Mở Cài đặt",
+      "title": "Tùy chọn ván chơi"
+    },
+    "preferences": {
+      "auto_move": "Tự động đi khi bị buộc",
+      "auto_move_hint": "Tự động chơi nước đi hợp lệ duy nhất",
+      "auto_roll": "Tự động gieo xúc xắc",
+      "auto_roll_hint": "Tự động gieo trong lượt của bạn",
+      "dice_display": "Hiển thị xúc xắc",
+      "dice_dots": "Chấm",
+      "dice_numbers": "Số",
+      "direction_overlay": "Hướng dẫn hướng",
+      "direction_overlay_hint": "Đường hình móng ngựa trên bàn",
+      "fast_computer": "Máy tính nhanh",
+      "fast_computer_hint": "Chờ ngắn hơn khi máy tính gieo và đi. Bạn cũng có thể chạm Bỏ qua chờ.",
+      "move_hints": "Gợi ý nước đi",
+      "move_hints_hint": "Chấm vàng cạnh các điểm bạn có thể đi",
+      "point_numbers": "Số điểm",
+      "point_numbers_hint": "Hiện nhãn 1–24 trên bàn",
+      "section_automation": "Tự động hóa",
+      "section_board": "Bàn cờ",
+      "section_dice": "Xúc xắc",
+      "sound": "Âm thanh trò chơi",
+      "sound_hint": "Âm xúc xắc, ăn quân và chiến thắng nhẹ nhàng — tôn trọng chế độ im lặng"
+    },
+    "review": {
+      "back_to_live": "Quay lại ván đang chơi",
+      "live": "Ván đang chơi",
+      "live_short": "Trực tiếp",
+      "move_a11y": "Nước {{ply}}, {{player}}",
+      "move_position": "Nước {{current}} / {{total}} · {{player}}",
+      "next": "Lượt tiếp",
+      "opening": "Thế cờ mở đầu",
+      "pause_replay": "Tạm dừng",
+      "player_black": "Đen",
+      "player_white": "Trắng",
+      "previous": "Lượt trước",
+      "replay": "Phát lại",
+      "scrubber_hint": "Chạm một lượt để xem lại",
+      "start": "Bắt đầu",
+      "turn_a11y": "Lượt {{turn}}, {{player}}",
+      "turn_label": "Lượt {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Lượt {{turn}}/{{totalTurns}} · nước {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Đang xem lại — chạm Trực tiếp hoặc Quay lại để tiếp tục chơi"
+    },
+    "status": {
+      "black_wins": "Đen thắng",
+      "computer_wins": "Máy tính thắng",
+      "white_wins": "🏆 Trắng thắng!",
+      "you_win": "🏆 Bạn thắng!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Hủy",
+    "confirm_continue": "Tiếp tục",
+    "confirm_native": "Tiếp tục ván hiện tại hay bắt đầu ván mới?",
+    "confirm_new": "Ván mới",
+    "confirm_title": "Đang có ván chơi",
+    "confirm_web": "Bắt đầu ván mới? (Dùng Tiếp tục trên màn hình chính để chơi tiếp ván hiện tại.)",
+    "resume": "Tiếp tục ván",
+    "resume_a11y": "Tiếp tục ván đã lưu",
+    "resume_none": "Không có ván đã lưu để tiếp tục",
+    "resume_sub": "Tiếp tục từ chỗ bạn dừng",
+    "subtitle": "Làm chủ bàn cờ — từng nước một",
+    "title": "BACKGAMMON",
+    "two_players": "2 người chơi",
+    "two_players_a11y": "Chơi hai người trên thiết bị này",
+    "two_players_sub": "Luân phiên trên cùng thiết bị",
+    "vs_computer": "Đấu máy",
+    "vs_computer_a11y": "Chơi với máy tính",
+    "vs_computer_sub": "Chơi với AI"
+  },
+  "learn": {
+    "back_to_hub": "Tất cả bài học",
+    "continue": "Tiếp tục",
+    "feedback": {
+      "hint_nudge": "Cần gợi ý? Tìm những chỗ được tô sáng.",
+      "illegal": "Thử một điểm được tô sáng — hoặc chạm Gợi ý.",
+      "legal_but_wrong": "Đó là hợp lệ trong ván thật — ở đây hãy thử nước đi dạy ý tưởng này.",
+      "move_progress": "Hay — đã xong {{done}} / {{needed}} nước."
+    },
+    "graduation": {
+      "body": "Bạn biết mục tiêu, bàn cờ, cách lượt đi, đấm và đưa quân ra. Kiểm tra nhanh — rồi ván thật đầu tiên.",
+      "play_cta": "Chơi ván đầu tiên",
+      "quiz_done": "Chuẩn luôn. Đến lúc chơi.",
+      "quiz_title": "Kiểm tra nhanh",
+      "quiz_wrong": "Chưa đúng — thử đáp án khác.",
+      "recap_1": "Cuộc đua: đưa cả 15 quân ra trước",
+      "recap_2": "Gieo hai xúc xắc; đáp điểm mở",
+      "recap_3": "Đấm blot → chúng ngồi trên bar",
+      "recap_4": "Chỉ đưa quân ra từ bàn nhà",
+      "recap_5": "Ván bắt đầu mỗi người một xúc xắc — cao hơn đi trước (hòa thì gieo lại)",
+      "title": "Bạn đã sẵn sàng chơi"
+    },
+    "hint": "Gợi ý",
+    "home_cta": "Học chơi",
+    "home_cta_progress": "Đã xong {{done}} / {{total}} bài",
+    "home_cta_quiz": "Còn kiểm tra nhanh — rồi chơi",
+    "home_cta_ready": "Bạn sẵn sàng — chơi một ván thật",
+    "home_cta_sub": "Bài học tương tác cho người mới",
+    "lesson_complete": "Xong bài học!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Điểm 5 trống nhưng bạn gieo được 5. Đưa ra từ quân cao nhất (điểm 3). Số lớn hơn vẫn hạ một quân.",
+            "hint": "Chọn điểm 3, rồi chạm khay đưa quân ra.",
+            "praise": "Đó là luật vượt — bạn sẽ dùng nhiều khi đưa quân ra.",
+            "title": "Xúc xắc lớn hơn, vẫn ra"
+          },
+          "try": {
+            "body": "Tất cả quân đã ở nhà (1–6) nên bạn có thể đưa ra. Bạn gieo 3 — hạ quân ở điểm 3 khỏi bàn.",
+            "hint": "Chọn điểm 3, rồi chạm vùng đưa quân ra ở mép phải.",
+            "praise": "Ra khỏi bàn! Ai đưa cả 15 quân ra trước thắng.",
+            "title": "Đưa một quân ra"
+          }
+        },
+        "subtitle": "Cách thắng",
+        "title": "Đưa quân ra"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Bạn chơi TRẮNG — quân kem. Móng ngựa kem là đường CỦA BẠN: bắt đầu góc trên phải, vòng bên trái, rồi vào nhà góc dưới phải (điểm 1–6). Đường đứt nét lạnh hơn là Đen đi ngược chiều.",
+            "title": "Đường móng ngựa"
+          },
+          "far": {
+            "body": "Chạm điểm nơi hai quân trắng xa nhất bắt đầu (điểm 24, góc trên phải).",
+            "hint": "Nhìn góc trên phải — hai quân trắng ở điểm 24.",
+            "praise": "Chúng bắt đầu sâu trong nhà đối thủ và có hành trình dài nhất.",
+            "title": "Quân xa nhất của bạn"
+          },
+          "home_stack": {
+            "body": "Chạm chồng năm quân trắng đã ở nhà (điểm 6).",
+            "hint": "Góc dưới phải: năm quân trắng ở điểm 6.",
+            "praise": "Đó là chồng nhà — năm quân đã chờ ở điểm 6, gần đưa ra nhất. Mọi ván đều bắt đầu vậy.",
+            "title": "Chồng nhà của bạn"
+          }
+        },
+        "subtitle": "Bạn đi hướng nào",
+        "title": "Hướng và bố trí"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Dải nổi giữa bàn là bar. Quân bị đấm chờ ở đây. Chạm bar.",
+            "hint": "Chạm dải dọc giữa nửa trái và nửa phải của bàn.",
+            "praise": "Đúng — quân bị đấm ngồi trên bar đến khi vào lại.",
+            "title": "Bar"
+          },
+          "explain": {
+            "body": "Bạn và đối thủ mỗi bên 15 quân. Di chuyển quanh bàn rồi ra — ai xong trước thắng.",
+            "title": "Ai đưa ra trước thắng"
+          },
+          "home": {
+            "body": "Nhà bạn là điểm 1–6 (góc dưới phải). Chạm bất kỳ điểm nào trên bàn nhà.",
+            "hint": "Nhà là sáu điểm ở góc phần tư dưới phải — số 1 đến 6.",
+            "praise": "Đó là nhà bạn — quân rời bàn từ đây.",
+            "title": "Tìm bàn nhà"
+          }
+        },
+        "subtitle": "Bạn đang đua vì gì",
+        "title": "Mục tiêu và bàn cờ"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Bạn đang trên bar — vào lại trước khi đi quân khác. Đếm từ điểm 24 về nhà: 4 đáp điểm 21.",
+            "hint": "Chạm bar, rồi điểm 21 (không phải 23 — chỉ hai pip từ bar).",
+            "praise": "Bạn đã trở lại bàn — quân trên bar luôn vào trước.",
+            "title": "Vào từ bar",
+            "wrong": "Đó chỉ hai pip từ bar (điểm 23). Đếm bốn điểm từ 24 về nhà — đó là điểm 21."
+          },
+          "hit": {
+            "body": "Một quân đơn là blot. Đáp lên nó thì nó ra bar. Bạn gieo 3 — đấm blot đen ở điểm 5.",
+            "hint": "Chạm quân của bạn ở 8, rồi điểm 5.",
+            "praise": "Đấm! Quân đen đó giờ ở trên bar.",
+            "title": "Đấm blot"
+          }
+        },
+        "subtitle": "Chơi tiếp xúc",
+        "title": "Đấm và bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Hai quân đối thủ trở lên chặn một điểm — bạn không đáp được. Chạm chồng đen bị chặn ở điểm 5.",
+            "hint": "Chồng được tô sáng gồm hai quân đen ở điểm 5.",
+            "praise": "Đúng — điểm đã làm (2+) là đóng. Trống, của bạn, hoặc blot (1) là mở.",
+            "title": "Điểm bị chặn"
+          },
+          "doubles": {
+            "body": "Đôi cho bốn nước với số đó. Bạn gieo 2-2 — tức bốn lần 2. Đi từ điểm 8 đến 6 bốn lần.",
+            "hint": "Chạm điểm 8, rồi điểm 6. Làm bốn lần — mỗi xúc xắc một lần.",
+            "praise": "Chính xác — đôi nghĩa là bốn nước với số đó.",
+            "title": "Đôi = bốn nước"
+          },
+          "explain": {
+            "body": "Mỗi lượt bạn gieo hai xúc xắc và chơi cả hai số khi có thể. Được đáp điểm trống, quân mình, hoặc đối thủ đơn (blot).",
+            "title": "Hai số, điểm mở"
+          },
+          "two_dice": {
+            "body": "Bạn gieo 3 và 1. Đi quân ở điểm 8 ba pip (tới 5) và quân ở điểm 6 một pip (tới 5).",
+            "hint": "Chọn quân trắng, rồi chạm điểm 5. Làm vậy cho điểm 8 và điểm 6.",
+            "praise": "Hay — đã dùng cả hai xúc xắc. Cùng quân hay hai quân, phải chơi cả hai số khi được.",
+            "title": "Chơi cả hai xúc xắc"
+          }
+        },
+        "subtitle": "Một lượt hoạt động thế nào",
+        "title": "Đi theo xúc xắc"
+      }
+    },
+    "locked": "Hãy hoàn thành bài trước đã",
+    "next_lesson": "Bài tiếp theo",
+    "quiz": {
+      "bar": {
+        "a": "Đi quân xa nhất trước",
+        "b": "Cho quân đó vào trước khi đi quân khác",
+        "c": "Bỏ lượt",
+        "prompt": "Khi có quân trên bar, bạn phải…"
+      },
+      "bear": {
+        "a": "Mỗi khi gieo được 6",
+        "b": "Chỉ sau khi đấm một blot",
+        "c": "Khi cả 15 quân đều ở bàn nhà",
+        "prompt": "Khi nào được đưa quân ra?"
+      },
+      "blot": {
+        "a": "Bất kỳ chồng ba quân trở lên",
+        "b": "Một quân trên một điểm — có thể bị đấm",
+        "c": "Hai quân trở lên trên một điểm — điểm đã làm",
+        "prompt": "Blot là gì?"
+      }
+    },
+    "replay": "Chơi lại",
+    "skip_to_play": "Nhảy tới chơi",
+    "step_progress": "Bước {{current}} / {{total}}",
+    "subtitle": "Năm bài ngắn — rồi bạn sẵn sàng",
+    "title": "Học chơi"
+  },
+  "not_found": {
+    "body": "Trang đó không thuộc Backgammon Mastermind. Về trang chủ để học hoặc bắt đầu ván.",
+    "heading": "Ngoài bàn cờ",
+    "home_a11y": "Về trang chủ",
+    "home_cta": "Quay về trang chủ",
+    "title": "Không tìm thấy"
+  },
+  "settings": {
+    "about": "Giới thiệu",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Tiếng Ả Rập",
+    "back_a11y": "Quay lại",
+    "english": "Tiếng Anh",
+    "game": "Trò chơi",
+    "general": "Chung",
+    "github": "GitHub",
+    "language": "Ngôn ngữ",
+    "link_error_body": "Vui lòng thử lại sau.",
+    "link_error_title": "Không thể mở liên kết",
+    "links": "Liên kết",
+    "more": "Thêm",
+    "privacy": "Chính sách quyền riêng tư",
+    "rate": "Đánh giá",
+    "share": "Chia sẻ",
+    "support": "Hỗ trợ",
+    "support_us": "Ủng hộ chúng tôi",
+    "terms": "Điều khoản dịch vụ",
+    "title": "Cài đặt",
+    "version": "Phiên bản",
+    "website": "Trang web"
+  },
+  "welcome": "Chào mừng đến với Backgammon Mastermind"
+}
