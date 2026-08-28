@@ -35,8 +35,10 @@ tags:
                 notVisible: No legal moves
                 timeout: 5000
 - extendedWaitUntil:
-    visible: Point 1
+    visible:
+      id: point-1
     timeout: 90000
 - takeScreenshot: 03-after-opening
-- assertVisible: Point 1
+- assertVisible:
+    id: point-1
 - takeScreenshot: 04-smoke-complete

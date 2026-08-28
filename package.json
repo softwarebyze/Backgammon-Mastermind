@@ -64,7 +64,7 @@
     "test": "jest",
     "knip": "pnpm dlx knip",
     "check-all": "pnpm run lint && pnpm run type-check && pnpm run lint:translations && pnpm run test && pnpm run knip",
-    "posthog:upload-sourcemaps": "npx --yes @posthog/cli@latest hermes upload --directory dist",
+    "posthog:upload-sourcemaps": "npx --yes @posthog/cli@latest hermes upload --directory dist --skip-on-conflict",
     "posthog:upload-sourcemaps:web": "npx --yes @posthog/cli@latest sourcemap upload --directory dist",
     "test:ci": "pnpm run test --coverage",
     "test:watch": "pnpm run test --watch",
