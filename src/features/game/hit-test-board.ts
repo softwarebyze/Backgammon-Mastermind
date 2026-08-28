@@ -45,7 +45,7 @@ function multiSnapPx(dims: BoardDimensions): number {
 }
 
 /** Pixel target for a point/bar/bear-off — top checker, or the empty-point home. */
-export function pointTouchAnchor(
+function pointTouchAnchor(
   pointIndex: number,
   state: GameState,
   dims: BoardDimensions,
