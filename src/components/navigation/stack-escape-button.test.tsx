@@ -66,4 +66,10 @@ describe('stack escape button', () => {
     expect(mockedRouter.replace).toHaveBeenCalledWith('/');
     expect(mockedRouter.back).not.toHaveBeenCalled();
   });
+
+  it('uses the translated Back label by default', () => {
+    mockedRouter.canGoBack.mockReturnValue(true);
+    setup(<StackEscapeButton />);
+    expect(screen.getByLabelText('Back')).toBeOnTheScreen();
+  });
 });

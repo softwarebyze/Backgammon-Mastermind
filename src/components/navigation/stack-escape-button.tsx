@@ -3,6 +3,7 @@ import { HeaderButton } from 'expo-router/react-navigation';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import { goBackOrHome } from '@/lib/navigation/go-back-or-home';
 
 type Props = {
@@ -10,10 +11,11 @@ type Props = {
 };
 
 /** Always-visible leading chevron. Not a native-stack back control (those hide when canGoBack is false). */
-export function StackEscapeButton({ accessibilityLabel = 'Back' }: Props) {
+export function StackEscapeButton({ accessibilityLabel }: Props) {
+  const label = accessibilityLabel ?? translate('settings.back_a11y');
   return (
     <HeaderButton
-      accessibilityLabel={accessibilityLabel}
+      accessibilityLabel={label}
       testID="stack-escape-button"
       onPress={() => {
         hapticLight();

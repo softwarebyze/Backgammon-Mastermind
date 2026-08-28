@@ -77,6 +77,7 @@ describe('i18n catalogs', () => {
         learn: { title: string; continue: string; graduation: { quiz_title: string } };
         game: { preferences: { fast_computer: string }; controls: { skip_wait: string; cancel: string } };
         home: { title: string };
+        settings: { back_a11y: string };
       };
       expect(catalog.learn.title.length).toBeGreaterThan(0);
       expect(catalog.learn.continue.length).toBeGreaterThan(0);
@@ -85,6 +86,7 @@ describe('i18n catalogs', () => {
       expect(catalog.game.controls.skip_wait.length).toBeGreaterThan(0);
       expect(catalog.game.controls.cancel.length).toBeGreaterThan(0);
       expect(catalog.home.title.length).toBeGreaterThan(0);
+      expect(catalog.settings.back_a11y.length).toBeGreaterThan(0);
     }
   });
 
