@@ -1,0 +1,49 @@
+name: Upload Store Screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Target store'
+        required: true
+        default: 'ios'
+        type: choice
+        options:
+          - ios
+          - android
+
+jobs:
+  screenshots:
+    name: Upload ${{ inputs.platform }} screenshots
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "EXPO_TOKEN secret is required to fetch the App Store Connect API key from EAS credentials."
+            exit 1
+          fi
+
+      - name: 📦 Checkout project repo
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: 💎 Setup Ruby + Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: 📦 Stage screenshots from marketing source of truth
+        run: pnpm screenshots:prepare
+
+      - name: 🔑 Fetch App Store Connect API key from EAS credentials
+        run: pnpm screenshots:asc-key
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📤 Upload screenshots
+        run: bundle exec fastlane ${{ inputs.platform }} screenshots
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
