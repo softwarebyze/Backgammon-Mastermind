@@ -92,7 +92,11 @@
         "appleTeamId": "75M38Z9JBF",
         "metadataPath": "./store.config.json"
       },
-      "android": {}
+      "android": {
+        "serviceAccountKeyPath": "@secret:GOOGLE_SERVICE_ACCOUNT",
+        "track": "production",
+        "releaseStatus": "completed"
+      }
     }
   }
 }

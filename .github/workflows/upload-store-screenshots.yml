@@ -20,7 +20,7 @@ jobs:
       - name: Check for EXPO_TOKEN
         run: |
           if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
-            echo "EXPO_TOKEN secret is required to fetch the App Store Connect API key from EAS credentials."
+            echo "EXPO_TOKEN secret is required."
             exit 1
           fi
 
@@ -39,12 +39,25 @@ jobs:
       - name: 📦 Stage screenshots from marketing source of truth
         run: pnpm screenshots:prepare
 
-      - name: 🔑 Fetch App Store Connect API key from EAS credentials
+      - name: 🔑 Fetch App Store Connect API key from EAS credentials (iOS only)
+        if: ${{ inputs.platform == 'ios' }}
         run: pnpm screenshots:asc-key
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 🔑 Unpack Google Play service account (Android only)
+        if: ${{ inputs.platform == 'android' }}
+        run: |
+          set -euo pipefail
+          if [ -z "${{ secrets.GOOGLE_SERVICE_ACCOUNT_BASE64 }}" ]; then
+            echo "GOOGLE_SERVICE_ACCOUNT_BASE64 secret is required for Android. Set it to the base64 of the Play Console service-account JSON."
+            exit 1
+          fi
+          mkdir -p .cache
+          echo "${{ secrets.GOOGLE_SERVICE_ACCOUNT_BASE64 }}" | base64 -d > .cache/google-service-account.json
 
       - name: 📤 Upload screenshots
         run: bundle exec fastlane ${{ inputs.platform }} screenshots
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          PLAY_JSON_KEY_PATH: ${{ inputs.platform == 'android' && '.cache/google-service-account.json' || '' }}
