@@ -19,6 +19,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
+import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { confirmAction } from '@/lib/confirm';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
@@ -125,12 +126,8 @@ export function HomeScreen() {
       lessons_completed: learnDone,
       quiz_passed: progress.quizPassed,
     });
-    if (learnReady || learnLessonsDone) {
-      router.push('/learn/graduation');
-      return;
-    }
-    router.push('/learn');
-  }, [learnDone, learnLessonsDone, learnReady, posthog, progress.quizPassed]);
+    router.push(learnHomeHref());
+  }, [learnDone, posthog, progress.quizPassed]);
 
   const learnSub = learnReady
     ? translate('learn.home_cta_ready')
