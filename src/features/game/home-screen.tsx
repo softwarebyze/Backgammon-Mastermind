@@ -21,6 +21,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { confirmAction } from '@/lib/confirm';
+import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
 import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
@@ -41,6 +42,7 @@ function startGameFromHome(
   startGame: (mode: GameMode) => void,
 ) {
   hapticLight();
+  void ensureGameSfxReady();
   if (!isResumableGame(state)) {
     startGame(mode);
     router.replace('/game');

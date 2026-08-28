@@ -23,6 +23,7 @@ import { ConfirmDialogHost } from '@/components/ui/confirm-dialog';
 import { getThemeConfig } from '@/components/ui/use-theme-config';
 import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
+import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { initAppTheme } from '@/lib/init-app-theme';
 import '@/lib/ignore-known-logs';
 // Import  global CSS file
@@ -113,6 +114,10 @@ function Providers({ children }: { children: React.ReactNode }) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
+
+  useEffect(() => {
+    primeGameSfxFromUserGesture();
+  }, []);
 
   if (!fontsLoaded && !fontError) {
     return null;

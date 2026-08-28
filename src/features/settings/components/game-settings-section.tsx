@@ -6,6 +6,7 @@ import { Text } from '@/components/ui';
 import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
 import { SETTINGS_SECTION_GAP } from '@/lib/ui/settings-layout';
 
 type Props = {
@@ -65,6 +66,9 @@ export function GameSettingsSection({ showHints = false }: Props) {
         onSoundEnabledChange={(value) => {
           trackPreference('sound', value);
           setSoundEnabled(value);
+          if (value) {
+            void ensureGameSfxReady();
+          }
         }}
         onFastComputerChange={(value) => {
           trackPreference('fast_computer', value);
