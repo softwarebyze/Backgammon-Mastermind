@@ -11,14 +11,14 @@
 #         - EXPO_TOKEN: Expo token to authenticate with EAS
 #         - You can get it from https://expo.dev/settings/access-tokens
 
-name: EAS Production Build (Android & IOS) (EAS)
+name: EAS Production Build and Submit (iOS)
 
 on:
   workflow_dispatch:
 
 jobs:
   Build:
-    name: EAS Production Build (Android & IOS) (EAS)
+    name: Build production iOS and submit to App Store Connect
     runs-on: ubuntu-latest
     steps:
       - name: Check for EXPO_TOKEN
@@ -41,4 +41,6 @@ jobs:
         with:
           APP_ENV: production
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          ANDROID: false
           IOS: true
+          AUTO_SUBMIT: true

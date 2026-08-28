@@ -132,10 +132,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   updates: {
     url: `https://u.expo.dev/${EAS_PROJECT_ID}`,
     fallbackToCacheTimeout: 0,
-    // E2E debug APKs use the embedded production-style bundle instead of the
-    // dev-client launcher. This is intentionally CI-only; store builds remain
-    // on Expo Updates' normal production configuration.
-    useNativeDebug: process.env.E2E_NATIVE_DEBUG === '1',
   },
   assetBundlePatterns: ['**/*'],
   ios: {

@@ -23,8 +23,13 @@ runs:
       run: pnpm brand:generate
       shell: bash
 
-    - name: Prebuild native project for embedded E2E bundle
+    - name: Prebuild native project (E2E — no expo-dev-client)
       run: |
+        # The debug APK embeds its JS bundle and runs without Metro. Leaving
+        # expo-dev-client linked here makes its launcher cast the production
+        # Expo Updates controller to UpdatesDevLauncherInterface and crash
+        # before React starts, so omit the dev client from this CI-only build.
+        pnpm remove expo-dev-client
         # app-icon-badge + Android icon generation can intermittently fail with
         # "Could not find MIME for Buffer <null>" on a cold CI checkout.
         for attempt in 1 2 3; do
@@ -41,9 +46,6 @@ runs:
         EXPO_NO_DOTENV: '1'
         APP_ENV: ${{ inputs.APP_ENV }}
         CI: 'true'
-        # expo-updates runs the embedded JS in debug rather than launching the
-        # installed dev client, so Maestro does not need Metro.
-        E2E_NATIVE_DEBUG: '1'
 
     - name: Tune Gradle for CI
       run: bash .github/scripts/tune-android-gradle-for-ci.sh android/gradle.properties
