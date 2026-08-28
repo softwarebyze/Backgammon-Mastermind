@@ -2,7 +2,7 @@
 
 ## Screenshots
 
-Raw captures: `app-store-screenshots/raw/` from **production** Expo web (`EXPO_PUBLIC_APP_ENV=production`) at Apple’s pixel sizes. No Preview badge, no `0.1.3`, no browser chrome, no Maestro watermark. Headlines live in `screenshot-frames.json`. Compose uses **bleed + overlay** (raw UI fills the canvas; Fraunces headline on a top gradient; no gold bezel). Composed (upload) PNGs: `app-store-screenshots/*.png`.
+Raw captures: `app-store-screenshots/raw/` from **production** Expo web (`EXPO_PUBLIC_APP_ENV=production`) at Apple’s pixel sizes. No Preview badge, no `0.1.3`, no browser chrome, no Maestro watermark. Headlines live in `screenshot-frames.json`. Compose uses **two zones** that do not share pixels: an opaque `#1E0C02` copy band (headline only) and the raw capture cropped by `cropTop` so in-app chrome is gone. Full-width product, no gold bezel, no gradient overlay. Composed (upload) PNGs: `app-store-screenshots/*.png`.
 
 Recapture (Mac iOS simulators are not required):
 
@@ -34,11 +34,11 @@ iPhone 6.9" is 440×956 CSS at deviceScaleFactor 3 (physical 1320×2868). iPad P
 
 ### Carousel (same five on both devices, composed order)
 
-1. **vs Computer** — headline “Play a real game”. Full board + dice, opening overlay dismissed.
-2. **Legal-move highlights** — headline “See every legal move”. Checker selected, destinations lit.
-3. **Hitting & the bar** — headline “Learn by playing”. One live-board lesson.
-4. **Learn hub** — headline “Five short lessons”. Full lesson list.
-5. **Home** — no overlay headline (the in-app lockup already says “Master the board”). Logo lockup, Learn / vs Computer / 2 Players (no Resume, no Preview).
+1. **vs Computer** — headline “A thinking opponent”. Board + dice (top chrome cropped).
+2. **Legal-move highlights** — headline “Every move, highlighted”. Checker selected, destinations lit (top chrome cropped).
+3. **Hitting & the bar** — headline “Learn on the board”. Lesson board + dice + Hint (lesson copy cropped).
+4. **Learn hub** — headline “Five lessons. Then play.” Five lesson rows + Skip to play (hub intro cropped).
+5. **Home** — no marketing headline, cropTop 0 (the in-app lockup is the shot). Logo lockup, Learn / vs Computer / 2 Players (no Resume, no Preview).
 
 Raw scene files keep their capture names under `raw/` (01-home … 05-legal-highlights). Compose remaps and reorders via the JSON manifest.
 

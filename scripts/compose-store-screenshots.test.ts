@@ -25,6 +25,7 @@ type Frame = {
   dest: string;
   headline?: string;
   sub?: string;
+  cropTop?: number;
 };
 
 type Manifest = {
@@ -76,32 +77,54 @@ describe('screenshot-frames manifest', () => {
       'ipad-13-05-home.png',
     ]);
     expect(manifest.frames.filter(f => f.device === 'iphone').map(f => f.headline)).toEqual([
-      'Play a real game',
-      'See every legal move',
-      'Learn by playing',
-      'Five short lessons',
+      'A thinking opponent',
+      'Every move, highlighted',
+      'Learn on the board',
+      'Five lessons. Then play.',
       undefined,
     ]);
     for (const frame of manifest.frames) {
       const isHome = frame.dest.includes('-home.');
       if (isHome) {
         expect(frame.headline).toBeFalsy();
+        expect(frame.cropTop).toBe(0);
         expect(JSON.stringify(frame)).not.toMatch(/Master the board/i);
         continue;
       }
       const n = wordCount(frame.headline ?? '');
       expect(n).toBeGreaterThanOrEqual(2);
       expect(n).toBeLessThanOrEqual(5);
+      expect(frame.sub).toBeUndefined();
     }
   });
 
-  it('is a bleed overlay, not a letterboxed gold bezel', () => {
-    expect(manifest.layout).toBe('bleed-overlay');
+  it('crops in-app chrome per scene so the headline band does not cover UI type', () => {
+    const byDest = Object.fromEntries(
+      manifest.frames.filter(f => f.device === 'iphone').map(f => [f.dest, f]),
+    );
+    expect(byDest['iphone-69-01-vs-computer.png']?.cropTop).toBeGreaterThanOrEqual(0.25);
+    expect(byDest['iphone-69-02-legal-highlights.png']?.cropTop).toBeGreaterThanOrEqual(0.25);
+    expect(byDest['iphone-69-03-lesson-hitting.png']?.cropTop).toBeGreaterThanOrEqual(0.3);
+    expect(byDest['iphone-69-04-learn-hub.png']?.cropTop).toBeGreaterThanOrEqual(0.12);
+    expect(byDest['iphone-69-05-home.png']?.cropTop).toBe(0);
+    for (const frame of manifest.frames) {
+      expect(frame.cropTop).toBeGreaterThanOrEqual(0);
+      expect(frame.cropTop).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it('is two opaque zones, not a gradient overlay or gold bezel', () => {
+    expect(manifest.layout).toBe('two-zone');
     expect(manifest.colors.background).toBe('#1E0C02');
+    expect(manifest.colors.headline).toBe('#F3E6C8');
     const src = readFileSync(SCRIPT, 'utf8');
     expect(src).toMatch(/object-fit:cover/);
     expect(src).toMatch(/object-position:top center/);
     expect(src).toMatch(/font-family:Fraunces/);
+    expect(src).toMatch(/cropTop/);
+    expect(src).toMatch(/class="band"/);
+    expect(src).not.toMatch(/linear-gradient/);
+    expect(src).not.toMatch(/class="veil"/);
     expect(src).not.toMatch(/font-family:Inter/);
     expect(src).not.toMatch(/class="device"/);
     expect(src).not.toMatch(/class="wordmark"/);
@@ -129,7 +152,7 @@ describe('compose-store-screenshots', () => {
         version: '1.0.0',
         rawDir: 'app-store-screenshots/raw',
         outDir: 'app-store-screenshots',
-        layout: 'bleed-overlay',
+        layout: 'two-zone',
         colors: {
           background: '#1E0C02',
           headline: '#F3E6C8',
@@ -143,7 +166,8 @@ describe('compose-store-screenshots', () => {
             device: 'iphone',
             source: 'iphone-69-04-vs-computer.png',
             dest: 'iphone-69-01-vs-computer.png',
-            headline: 'Play a real game',
+            headline: 'A thinking opponent',
+            cropTop: 0.3,
           },
         ],
       };

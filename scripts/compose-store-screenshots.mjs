@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 /**
- * Dress raw App Store captures as bleed + overlay frames.
+ * Dress raw App Store captures as two-zone frames.
  *
- * The raw UI fills the canvas (object-fit: cover, top-aligned). A dark
- * gradient from the top carries a 2–5 word Fraunces headline. No gold
- * bezel, no letterbox, no device chrome, no wordmark footer.
+ * Zone 1 (top, optional): opaque copy band, solid #1E0C02, headline only.
+ * Zone 2 (the rest): the raw capture cropped by cropTop (fraction of raw
+ * height clipped from the top) so in-app chrome does not sit under the type.
+ * Product fills the remaining canvas at full width. No gradient overlay,
+ * no gold bezel, no side letterbox, no wordmark footer.
  *
  * Reads docs/marketing/v1.0.0/screenshot-frames.json
  * Writes composed PNGs at exact Apple pixel sizes.
@@ -33,18 +35,16 @@ const FRAUNCES_FILE = 'fraunces-700.woff2';
 
 const LAYOUT = {
   iphone: {
-    overlayPct: 0.32,
-    headlineSize: 196,
-    subSize: 36,
-    padX: 64,
-    padTop: 88,
+    bandPct: 0.20,
+    headlineSize: 184,
+    padX: 72,
+    padY: 56,
   },
   ipad: {
-    overlayPct: 0.30,
-    headlineSize: 168,
-    subSize: 40,
+    bandPct: 0.18,
+    headlineSize: 148,
     padX: 96,
-    padTop: 72,
+    padY: 48,
   },
 };
 
@@ -180,23 +180,35 @@ function layoutFor(device) {
   return layout;
 }
 
+export function clampCropTop(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0)
+    return 0;
+  if (n >= 1)
+    return 1;
+  return n;
+}
+
+export function bandHeightPx(frame, spec) {
+  const headline = (frame.headline || '').trim();
+  if (!headline)
+    return 0;
+  const layout = layoutFor(frame.device);
+  return Math.round(spec.height * layout.bandPct);
+}
+
 function frameHtml({ frame, spec, colors, dataUrl }) {
   const layout = layoutFor(frame.device);
   const headline = (frame.headline || '').trim();
-  const subText = (frame.sub || '').trim();
-  const hasCopy = Boolean(headline);
-  const overlayH = Math.round(spec.height * layout.overlayPct);
+  const cropTop = clampCropTop(frame.cropTop);
+  const bandH = bandHeightPx(frame, spec);
+  const cropY = Math.round(cropTop * spec.height);
   const fonts = fontFaceCss();
   const headlineColor = colors.headline || '#F3E6C8';
   const field = colors.background || '#1E0C02';
-  const sub = (hasCopy && subText)
-    ? `<p class="sub">${esc(subText)}</p>`
-    : '';
-  const copy = hasCopy
-    ? `<div class="veil" aria-hidden="true"></div>
-  <div class="copy">
+  const copy = headline
+    ? `<div class="band">
     <h1>${esc(headline)}</h1>
-    ${sub}
   </div>`
     : '';
   return `<!DOCTYPE html>
@@ -211,40 +223,37 @@ html,body{margin:0;padding:0;width:${spec.width}px;height:${spec.height}px;overf
   position:relative;width:${spec.width}px;height:${spec.height}px;
   overflow:hidden;background:${field};
 }
+.product{
+  position:absolute;top:${bandH}px;left:0;right:0;bottom:0;
+  overflow:hidden;background:${field};
+}
 .shot{
-  position:absolute;inset:0;width:100%;height:100%;
+  position:absolute;left:0;top:-${cropY}px;
+  width:${spec.width}px;height:${spec.height}px;
   object-fit:cover;object-position:top center;
   display:block;
 }
-.veil{
-  position:absolute;top:0;left:0;right:0;height:${overlayH}px;
-  background:linear-gradient(180deg, ${field} 0%, rgba(30,12,2,0.88) 36%, rgba(30,12,2,0.42) 72%, rgba(30,12,2,0) 100%);
-  pointer-events:none;
-}
-.copy{
-  position:absolute;top:0;left:0;right:0;height:${overlayH}px;
-  display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
-  padding:${layout.padTop}px ${layout.padX}px ${Math.round(overlayH * 0.18)}px;
+.band{
+  position:absolute;top:0;left:0;right:0;height:${bandH}px;
+  background:${field};
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:${layout.padY}px ${layout.padX}px;
   text-align:center;z-index:2;
   font-family:Fraunces,Georgia,"Times New Roman",serif;
   color:${headlineColor};
 }
 h1{
   margin:0;font-family:Fraunces,Georgia,"Times New Roman",serif;
-  font-weight:700;font-size:${layout.headlineSize}px;line-height:1.02;
+  font-weight:700;font-size:${layout.headlineSize}px;line-height:1.05;
   letter-spacing:-0.02em;color:${headlineColor};text-wrap:balance;
-  text-shadow:0 6px 28px rgba(0,0,0,0.92),0 2px 6px rgba(0,0,0,0.88),0 0 2px rgba(0,0,0,0.9);
-}
-.sub{
-  margin:18px 0 0;font-weight:700;font-size:${layout.subSize}px;
-  line-height:1.2;color:${colors.sub || '#C4A07A'};letter-spacing:0.01em;
-  text-shadow:0 3px 14px rgba(0,0,0,0.9);
 }
 </style>
 </head>
 <body>
   <div class="frame">
-    <img class="shot" src="${dataUrl}" alt=""/>
+    <div class="product">
+      <img class="shot" src="${dataUrl}" alt=""/>
+    </div>
     ${copy}
   </div>
 </body>
