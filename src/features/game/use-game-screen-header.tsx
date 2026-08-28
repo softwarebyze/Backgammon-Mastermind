@@ -37,6 +37,7 @@ export function useGameScreenHeader({
     }
     navigation.setOptions({
       title: '',
+      headerBackVisible: false,
       headerLeft: () => <GameHomeButton onPress={confirmLeaveGame} />,
       headerRight: () => (
         <GameHeaderActions

@@ -37,6 +37,8 @@ export const gamePlayScreenOptions: NativeStackNavigationOptions = {
   headerShown: true,
   headerShadowVisible: false,
   headerBackButtonDisplayMode: 'minimal',
+  // Home is a custom left item, not the system back control (refresh must keep it).
+  headerBackVisible: false,
   gestureEnabled: false,
   headerStyle: gameHeaderStyle,
   headerTintColor: GAME_PALETTE.accent,
