@@ -4,7 +4,7 @@ Use this before the first App Store / Play Store submission.
 
 **Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
 
-**Last updated:** 2026-08-27 — TestFlight-shareable ship (Learn kept; feel + playtest: one Settings home, full-row toggles, hide Vercel preview toolbar, dual horseshoe).
+**Last updated:** 2026-08-28 — first production release: PR #150 merged (stable SDK 56), production iOS build auto-submitting, metadata + screenshots pushed.
 
 ## CI: what runs on every PR?
 
@@ -15,7 +15,7 @@ Use this before the first App Store / Play Store submission.
 | **Tests (Jest)** | Yes | ✅ Required |
 | **Knip** | Yes | ✅ Unused-export check (also in `pnpm check-all`) |
 | **EAS Update Preview** | Yes | ✅ (`EXPO_TOKEN` configured) — Expo QR comment only |
-| **Expo Doctor** | When deps / native config change | ⚠️ Configured — currently **fails** on this repo (SDK 56.0.18 vs 56.0.20 patch drift + Hermes V1; upgrade to SDK 57 is out of scope for this TestFlight) |
+| **Expo Doctor** | When deps / native config change | ✅ 21/22 on SDK 56.0.20 — the sole SDK 56 Hermes V1 memory advisory is a narrow, documented release exception; SDK 57 upgrade tracked separately |
 | **React Doctor** | Advisory | ✅ |
 | **Dev Client rebuild** | Native / branding path changes | ✅ |
 | **E2E (Maestro)** | Auto on `src/**` / `.maestro/**` changes + every push to `main` | ✅ |
@@ -48,7 +48,7 @@ Use this before the first App Store / Play Store submission.
 | 3. Device QA | Partial | v0.1.x TestFlight done — **re-playtest** the preview binary from this ship |
 | 4. Preview build (TestFlight) | Ready to dispatch | Preview ASC **`6781121420`** (`com.backgammonmastermind.preview`) named **Backgammon Mastermind Preview** |
 | 5. Submit to stores | iOS TestFlight via preview; production pending | Preview TF: [6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) · Prod: [6792138473](https://appstoreconnect.apple.com/apps/6792138473/appstore) |
-| 6. Production build | Stale IPA on ASC | Rebuild from `main` after this TestFlight ship is validated |
+| 6. Production build | In progress | Rebuilt + auto-submitting from `main` (sdk-56 stable candidate, PR #150 merged) to production ASC `6792138473` |
 
 ## Store listing requirements
 
@@ -56,7 +56,7 @@ Use this before the first App Store / Play Store submission.
 - [x] **App Store Connect API key** — via EAS credentials for `eas metadata` / submit
 - [x] `pnpm metadata:push` — preview ASC (`6781121420`); generates `store.preview.config.json` with title **Backgammon Mastermind Preview**
 - [x] `pnpm metadata:push:production` — production ASC (`6792138473`)
-- [ ] App Store screenshots matching shipped UI (Learn still in the app) — [store-screenshots.md](./store-screenshots.md); Fastlane or EAS Metadata
+- [x] App Store screenshots matching shipped UI (Learn in app) — 5× iPhone 6.9" (1320×2868) + 5× iPad Pro 13" (2064×2752) uploaded to production `1.0.0` via `Upload Store Screenshots` GHA (Fastlane deliver) — [store-screenshots.md](./store-screenshots.md)
 - [ ] Google Play Console app record + screenshots + description
 - [x] Privacy policy — https://backgammon-mastermind.vercel.app/privacy/
 - [x] Terms of service — hosted `/terms/`
@@ -96,10 +96,10 @@ Use this before the first App Store / Play Store submission.
 | Error tracking (PostHog exceptions) | **This ship (slim)** — ErrorBoundary + autocapture + env token + `@posthog/react-native-plugin` (native crashes). Do **not** also install archived `posthog-react-native-session-replay` (CocoaPods `PostHog` ~> 3.58 vs ~> 3.69). `posthog-xcode.sh` is patched so missing `posthog-cli` / CLI token **skips** sourcemap upload instead of failing EAS Run fastlane. Full [#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) dump still deferred |
 
 | Full 17-language i18n | **Not this ship** — [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) |
-| **App Store screenshots** | Recapture if Learn / home UI changed |
+| **App Store screenshots** | Done — production 1.0.0 (iPhone 6.9" + iPad 13") via GHA |
 | **Google Play first upload** | Create Play app + service account when ready |
-| Production binary | Rebuild after TestFlight validation |
-| Submit for App Review | Blocked on **privacy nutrition labels** + fresh binary/screenshots |
+| Production binary | Building + auto-submitting from main (SDK 56 stable) |
+| Submit for App Review | Blocked on **privacy nutrition labels** (binary + screenshots on ASC) |
 
 ## Automation vs one-time setup
 
@@ -117,6 +117,8 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 | **E2E (Maestro)** | Auto on `src/**` changes + push to `main` | Smoke test + PR screenshots |
 | **EAS Update Preview** | Every PR | OTA preview QR (Expo comment) |
 | **EAS Metadata Push** | Manual | Push `store.config.json` (+ generated preview title) |
+| **Upload Store Screenshots** | Manual (ios/android) | Fastlane deliver/supply from versioned marketing folder |
+| **EAS Submit Production iOS** | Manual | Retry submit of latest (or given) production iOS build |
 | **Knip / Expo Doctor / React Doctor** | PR / path filters | Unused exports + dependency health |
 
 **TestFlight trigger (no local EXPO_TOKEN needed for agents):** Actions → **EAS QA Build (Android & IOS) (EAS)** on the merged (or this) branch. Preview iOS auto-submits to ASC `6781121420`. Optionally dispatch **EAS Submit Preview iOS (TestFlight)** if a preview IPA already exists.
@@ -155,17 +157,16 @@ Avoid one-off App Store Connect API / JWT scripts for shipping.
 | **Google Play app record** | Play Console signup |
 | **Register iPhone** (`eas device:create`) | Device UDID for ad-hoc dev IPA |
 | **Privacy nutrition labels** | ASC UI |
-| **Screenshots matching final UI** | Capture on device/sim; upload via metadata or Fastlane |
+| **Screenshots matching final UI** | Upload via `Upload Store Screenshots` GHA (already done for 1.0.0) |
 
 ## Suggested order from here
 
-1. Merge this TestFlight-shareable PR (Learn stays; do **not** merge [#139](https://github.com/softwarebyze/Backgammon-Mastermind/pull/139) remove-Learn)
-2. Dispatch **EAS QA Build (Android & IOS) (EAS)** on the merged branch → TestFlight `6781121420`
-3. Manual playtest on that binary (Resume, Home mid-game, Learn praise, fat-finger taps)
-4. **Privacy nutrition labels** in ASC (PostHog product interaction)
-5. Recapture screenshots if needed → `pnpm metadata:push:production`
-6. **Rebuild + submit** production iOS (`6792138473`) after TestFlight is good
-7. Google Play — Console app + AAB when ready
-8. Full PostHog dump ([#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) privacy/docs/source-map CI) still deferred; this ship only wires exceptions. Defer [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) i18n dump
+1. ✅ This TestFlight-shareable PR merged (Learn stays; do **not** merge #139 remove-Learn / #141 i18n dump)
+2. ✅ Production iOS build + auto-submit dispatched from `main` (`EAS Production Build and Submit (iOS)`)
+3. ✅ Production metadata pushed (`metadata:push:production`) + screenshots uploaded (iPhone 6.9" + iPad 13")
+4. **Privacy nutrition labels** in ASC (PostHog product interaction) — last App Store gate agents can't fully automate yet
+5. Confirm the submitted binary is on ASC → **Submit for App Review** on production `6792138473` / v1.0.0
+6. Google Play — Console app + AAB when ready
+7. Full PostHog dump (#130 privacy/docs/source-map CI) still deferred; this ship only wires exceptions
 
 See also: [ios-testing-and-store.md](./ios-testing-and-store.md), [eas-metadata.md](./eas-metadata.md), [releases.md](./releases.md)
