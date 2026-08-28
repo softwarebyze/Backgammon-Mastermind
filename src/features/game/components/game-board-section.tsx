@@ -133,7 +133,9 @@ export function GameBoardSection({
 
 const styles = StyleSheet.create({
   boardWrap: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
     minHeight: 0,
     overflow: 'hidden',
     justifyContent: 'center',

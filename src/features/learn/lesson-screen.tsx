@@ -272,7 +272,9 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   boardWrap: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
     minHeight: 0,
     overflow: 'hidden',
     justifyContent: 'center',

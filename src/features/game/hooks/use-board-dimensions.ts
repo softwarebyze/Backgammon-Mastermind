@@ -79,6 +79,40 @@ export function fitBoardToViewport(
   return dims;
 }
 
+/** Move-review strip is a fixed slot in GameScreenLayout. */
+export const REVIEW_SLOT_HEIGHT = 68;
+
+export type LeftoverBoardHeightArgs = {
+  screenHeight: number;
+  headerHeight: number;
+  topChromeHeight: number;
+  reviewHeight?: number;
+  controlsHeight: number;
+  bottomInset: number;
+};
+
+/** Window height minus measured header, pip/banner, review strip, and dice/controls. */
+export function leftoverBoardHeight({
+  screenHeight,
+  headerHeight,
+  topChromeHeight,
+  reviewHeight = REVIEW_SLOT_HEIGHT,
+  controlsHeight,
+  bottomInset,
+}: LeftoverBoardHeightArgs): number {
+  return Math.max(
+    120,
+    Math.round(
+      screenHeight
+      - headerHeight
+      - topChromeHeight
+      - reviewHeight
+      - controlsHeight
+      - bottomInset,
+    ),
+  );
+}
+
 export type ResolveBoardViewportArgs = {
   screenWidth: number;
   screenHeight: number;

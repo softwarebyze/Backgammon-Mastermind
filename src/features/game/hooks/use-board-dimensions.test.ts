@@ -1,5 +1,9 @@
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
-import { fitBoardToViewport, resolveBoardViewport } from '@/features/game/hooks/use-board-dimensions';
+import {
+  fitBoardToViewport,
+  leftoverBoardHeight,
+  resolveBoardViewport,
+} from '@/features/game/hooks/use-board-dimensions';
 import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 describe('fitBoardToViewport', () => {
@@ -84,5 +88,38 @@ describe('resolveBoardViewport', () => {
     const game = resolveBoardViewport({ ...phone, extraChrome: 0, showPointNumbers: false });
     const learn = resolveBoardViewport({ ...phone, extraChrome: 80, showPointNumbers: false });
     expect(learn.boardOuterHeight).toBeLessThanOrEqual(game.boardOuterHeight);
+  });
+});
+
+describe('leftoverBoardHeight', () => {
+  it('subtracts measured chrome instead of a magic pixel constant', () => {
+    const leftover = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 120,
+      controlsHeight: 96,
+      bottomInset: 0,
+    });
+    // 844 - 56 - 120 - 68 - 96 - 0 = 504
+    expect(leftover).toBe(504);
+  });
+
+  it('grows smaller when font-driven chrome gets taller', () => {
+    const normal = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 90,
+      controlsHeight: 80,
+      bottomInset: 0,
+    });
+    const largeText = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 72,
+      topChromeHeight: 160,
+      controlsHeight: 140,
+      bottomInset: 0,
+    });
+    expect(largeText).toBeLessThan(normal);
+    expect(largeText).toBeGreaterThanOrEqual(120);
   });
 });

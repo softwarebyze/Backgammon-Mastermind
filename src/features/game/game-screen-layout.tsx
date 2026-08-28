@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { LayoutChangeEvent } from 'react-native';
 import type { PathSegment } from '@/features/game/components/board/move-path-overlay';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
@@ -19,8 +19,8 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { clearBoardSlotSize, setBoardSlotSize } from '@/features/game/hooks/board-slot-size';
-import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { REVIEW_SLOT_HEIGHT, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
@@ -48,32 +48,57 @@ type Props = {
   onSkipComputer: () => void;
 };
 
-function GameBoardSlot({ children }: { children: ReactNode }) {
-  useEffect(() => () => {
-    clearBoardSlotSize();
-  }, []);
-
+function GameTopChrome({
+  state,
+  onLayout,
+}: {
+  state: GameState;
+  onLayout: (event: LayoutChangeEvent) => void;
+}) {
   return (
-    <View
-      style={styles.boardSlotHost}
-      testID="game-board-slot"
-      onLayout={(event) => {
-        const { width, height } = event.nativeEvent.layout;
-        setBoardSlotSize({ width, height });
-      }}
-    >
-      {children}
-    </View>
-  );
-}
-
-function GameTopChrome({ state }: { state: GameState }) {
-  return (
-    <View style={styles.chromeColumn}>
+    <View style={styles.chromeColumn} onLayout={onLayout}>
       <GamePipStatusBar state={state} />
       <View style={styles.turnBannerWrap}>
         <TurnIndicatorBanner state={state} />
       </View>
+    </View>
+  );
+}
+
+function GameReviewSlot({
+  review,
+  moveLog,
+  state,
+}: {
+  review: Review;
+  moveLog: MoveLogEntry[];
+  state: GameState;
+}) {
+  return (
+    <View style={[styles.reviewSlot, styles.chromeColumn]} pointerEvents="box-none">
+      <MoveReviewBar
+        viewIndex={review.viewIndex}
+        liveIndex={review.liveIndex}
+        isReviewing={review.isReviewing}
+        isNavigating={review.isNavigating}
+        moveLog={moveLog}
+        focusedPly={review.focusedPly}
+        positionLabel={review.positionLabel}
+        canStepBack={review.canStepBack}
+        canStepForward={review.canStepForward}
+        canReplay={review.canReplay}
+        isLooping={review.isLooping}
+        liveCurrentPlayer={
+          !review.isReviewing && state.phase === 'moving' && state.remainingDice.length > 0
+            ? state.currentPlayer
+            : null
+        }
+        onStepBack={review.stepBack}
+        onStepForward={review.stepForward}
+        onJumpToPly={review.jumpToPly}
+        onGoLive={review.goLive}
+        onToggleReplay={review.toggleReplay}
+      />
     </View>
   );
 }
@@ -91,6 +116,7 @@ export function GameScreenLayout({
   const posthog = usePostHog();
   const insets = useSafeAreaInsets();
   const dimensions = useBoardDimensions();
+  const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
   const canOpeningRoll = !review.isReviewing && !isComputerTurn && live.phase === 'opening-roll';
@@ -112,8 +138,12 @@ export function GameScreenLayout({
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom }]}>
       <FocusAwareStatusBar />
-      <GameTopChrome state={state} />
-      <GameBoardSlot>
+      <GameTopChrome state={state} onLayout={onTopLayout} />
+      <View
+        style={styles.boardSlotHost}
+        testID="game-board-slot"
+        onLayout={onSlotLayout}
+      >
         <GameBoardSection
           boardState={state}
           boardAnimation={board.boardAnimation}
@@ -125,32 +155,8 @@ export function GameScreenLayout({
           pathFadeOutMs={board.pathFadeOutMs}
           input={input}
         />
-      </GameBoardSlot>
-      <View style={[styles.reviewSlot, styles.chromeColumn]} pointerEvents="box-none">
-        <MoveReviewBar
-          viewIndex={review.viewIndex}
-          liveIndex={review.liveIndex}
-          isReviewing={review.isReviewing}
-          isNavigating={review.isNavigating}
-          moveLog={moveLog}
-          focusedPly={review.focusedPly}
-          positionLabel={review.positionLabel}
-          canStepBack={review.canStepBack}
-          canStepForward={review.canStepForward}
-          canReplay={review.canReplay}
-          isLooping={review.isLooping}
-          liveCurrentPlayer={
-            !review.isReviewing && state.phase === 'moving' && state.remainingDice.length > 0
-              ? state.currentPlayer
-              : null
-          }
-          onStepBack={review.stepBack}
-          onStepForward={review.stepForward}
-          onJumpToPly={review.jumpToPly}
-          onGoLive={review.goLive}
-          onToggleReplay={review.toggleReplay}
-        />
       </View>
+      <GameReviewSlot review={review} moveLog={moveLog} state={state} />
       <WinConfettiOverlay burstKey={winBurstKey} />
       {/* Full-screen so the scrim covers board + review (no hard cut at board edge). */}
       <View style={styles.ceremonyLayer} pointerEvents="box-none">
@@ -167,7 +173,11 @@ export function GameScreenLayout({
         />
       </View>
       {/* Above ceremony so Roll Dice stays visible + tappable; tap-anywhere still hits the board. */}
-      <View style={[styles.controlsLayer, styles.chromeColumn]} pointerEvents="box-none">
+      <View
+        style={[styles.controlsLayer, styles.chromeColumn]}
+        pointerEvents="box-none"
+        onLayout={onControlsLayout}
+      >
         <GameScreenControls
           state={state}
           liveDiceState={input.state!}
@@ -189,6 +199,7 @@ export function GameScreenLayout({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    minHeight: 0,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
   },
@@ -198,7 +209,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   boardSlotHost: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
     minHeight: 0,
     overflow: 'hidden',
     width: '100%',
@@ -214,7 +227,7 @@ const styles = StyleSheet.create({
   reviewSlot: {
     width: '100%',
     alignItems: 'center',
-    height: 68,
+    height: REVIEW_SLOT_HEIGHT,
     flexGrow: 0,
     flexShrink: 0,
     overflow: 'hidden',
