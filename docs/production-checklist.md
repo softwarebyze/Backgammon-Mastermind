@@ -33,7 +33,7 @@ Use this before the first App Store / Play Store submission.
 - [ ] **Manual playtest on iPhone** — latest **preview** binary: vs Computer + 2-player, full game to win, Resume, Learn to Play
 - [x] Settings links wired (GitHub, privacy, terms, share, rate)
 - [x] Turn indicator — clear white/black whose-turn UI (PR #23)
-- [x] App Store listing source — `store.config.json` (EAS Metadata)
+- [x] App Store listing source — `store.config.js` + `store/locales/` (EAS Metadata)
 - [x] Review phone: `+1 954 593 1670` in store config
 - [x] `EXPO_PUBLIC_APP_STORE_ID` in EAS **production** env = **`6792138473`**
 - [x] Contact email: `zackebenfeld@gmail.com` in app + legal docs
@@ -52,7 +52,7 @@ Use this before the first App Store / Play Store submission.
 
 ## Store listing requirements
 
-- [x] App Store listing copy — `store.config.json` (push via EAS Metadata)
+- [x] App Store listing copy — `store.config.js` + `store/locales/` (push via EAS Metadata)
 - [x] **App Store Connect API key** — via EAS credentials for `eas metadata` / submit
 - [x] `pnpm metadata:push` — preview ASC (`6781121420`); generates `store.preview.config.json` with title **Backgammon Mastermind Preview**
 - [x] `pnpm metadata:push:production` — production ASC (`6792138473`)
@@ -116,7 +116,7 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 | **New GitHub Release** | Auto on new tag | Draft release notes |
 | **E2E (Maestro)** | Auto on `src/**` changes + push to `main` | Smoke test + PR screenshots |
 | **EAS Update Preview** | Every PR | OTA preview QR (Expo comment) |
-| **EAS Metadata Push** | Manual | Push `store.config.json` (+ generated preview title) |
+| **EAS Metadata Push** | Manual | Push `store.config.js` + `store/locales/` (preview title when `EXPO_PUBLIC_APP_ENV=preview`) |
 | **Knip / Expo Doctor / React Doctor** | PR / path filters | Unused exports + dependency health |
 
 **TestFlight trigger (no local EXPO_TOKEN needed for agents):** Actions → **EAS QA Build (Android & IOS) (EAS)** on the merged (or this) branch. Preview iOS auto-submits to ASC `6781121420`. Optionally dispatch **EAS Submit Preview iOS (TestFlight)** if a preview IPA already exists.
@@ -136,7 +136,7 @@ Full how-to: [eas-metadata.md](./eas-metadata.md).
 
 | Change | How |
 | ------ | --- |
-| Description, keywords, URLs, review notes, age advisory | Edit `store.config.json` → `pnpm metadata:push:production` (or GHA) |
+| Description, keywords, URLs, review notes, age advisory | Edit `store.config.js` + `store/locales/` → `pnpm metadata:push:production` (or GHA) |
 | Preview TestFlight **app name** | `pnpm metadata:push` regenerates `store.preview.config.json` as **Backgammon Mastermind Preview** |
 | Price / availability | ASC **Pricing and Availability** UI |
 | Privacy nutrition labels | ASC UI |

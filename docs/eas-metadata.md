@@ -49,7 +49,7 @@ Preview title: when `EXPO_PUBLIC_APP_ENV=preview`, `store.config.js` sets the AS
 |------|-------------------------|
 | Paid app **price** / availability | ASC Pricing UI |
 | App Privacy **nutrition labels** | ASC UI for now |
-| Google Play listing text / screenshots | Play Console / Fastlane `supply` ([store-screenshots.md](./store-screenshots.md)) |
+| Google Play listing text / screenshots | Text: `fastlane/metadata/android/<locale>/*.txt`. Screenshots: Play Console / Fastlane `supply` ([store-screenshots.md](./store-screenshots.md)) |
 
 Do not invent one-off ASC JWT scripts for listing fields when `metadata:push*` works.
 
@@ -60,6 +60,9 @@ Paths are relative to the repo root, per locale:
 ```js
 info['en-US'].screenshots = {
   APP_IPHONE_67: [
+    'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-01-04-home-ready.png',
+    'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-02-05-learn-hub.png',
+    'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-03-06-lesson-bearing-off.png',
     'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-05-10-settings-links.png',
     'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-06-vs-computer.png',
   ],

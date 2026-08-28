@@ -30,7 +30,7 @@ Update **all** of these for each store release:
 | File | Field |
 |------|--------|
 | `package.json` | `"version"` |
-| `store.config.json` | `apple.version` |
+| `store.config.js` | `apple.version` |
 | App Store Connect | **+ Version** matching `apple.version` |
 | Git tag | `v0.1.2` (matches `package.json`) |
 
@@ -54,7 +54,7 @@ Expo native build numbers are managed by EAS (`eas.json` / remote version source
 # Actions → "New App Version" → patch
 
 # Option B — manual
-# Edit package.json + store.config.json → commit → tag
+# Edit package.json + store.config.js → commit → tag
 git tag v0.1.2 && git push origin v0.1.2
 ```
 
@@ -87,7 +87,7 @@ pnpm metadata:push              # preview ASC 6781121420
 pnpm metadata:push:production   # production ASC 6792138473 — prefer this over ad-hoc ASC API calls
 ```
 
-Prefer **`store.config.json` + `metadata:push*`** for listing fields. Full how-to: [eas-metadata.md](./eas-metadata.md). Screenshots: [store-screenshots.md](./store-screenshots.md) (`pnpm screenshots:upload:ios`). **Price** is not in EAS Metadata — set in ASC Pricing UI ($4.99).
+Prefer **`store.config.js` + `store/locales/` + `metadata:push*`** for listing fields. Full how-to: [eas-metadata.md](./eas-metadata.md). Screenshots: [store-screenshots.md](./store-screenshots.md) (`pnpm screenshots:upload:ios`). **Price** is not in EAS Metadata — set in ASC Pricing UI ($4.99).
 
 ```bash
 pnpm screenshots:upload:ios   # Fastlane deliver — agents OK

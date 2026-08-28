@@ -1,6 +1,7 @@
-# Push App Store listing from store.config.json (EAS Metadata).
+# Push App Store listing from store.config.js + store/locales/ (EAS Metadata).
 # Prefer this over one-off App Store Connect API scripts.
 # Run after the target ASC app has an editable version + binary.
+# Do not run this workflow from this PR unless a human asks — listing files only.
 
 name: EAS Metadata Push
 
@@ -18,7 +19,7 @@ on:
 
 jobs:
   metadata:
-    name: Push store.config.json (${{ inputs.profile }})
+    name: Push store metadata (${{ inputs.profile }})
     runs-on: ubuntu-latest
     steps:
       - name: Check for EXPO_TOKEN

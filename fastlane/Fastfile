@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 # App Store Connect / Play screenshot uploads for agents + humans.
-# Listing copy stays in store.config.json (EAS Metadata). Screenshots use Fastlane
-# because EAS Metadata does not upload screenshots yet.
+# Listing copy lives in store.config.js + store/locales/ (EAS Metadata) and
+# fastlane/metadata/android/<locale>/*.txt (Play). Screenshots: prefer EAS
+# Metadata apple.info.*.screenshots; Fastlane remains a fallback / Play path.
 #
 # Auth (iOS): ASC_KEY_ID + ASC_ISSUER_ID + (ASC_KEY_PATH | ASC_KEY_CONTENT)
 #   or: pnpm screenshots:asc-key  → writes .cache/asc-api-key.json
@@ -54,8 +55,8 @@ platform :ios do
       api_key: api_key,
       app_identifier: ENV.fetch("ASC_BUNDLE_ID", "com.backgammonmastermind"),
       app_version: ENV.fetch("ASC_APP_VERSION") {
-        store = JSON.parse(File.read(File.expand_path("../store.config.json", __dir__)))
-        store.dig("apple", "version") || UI.user_error!("Set ASC_APP_VERSION or apple.version in store.config.json")
+        pkg = JSON.parse(File.read(File.expand_path("../package.json", __dir__)))
+        pkg["version"] || UI.user_error!("Set ASC_APP_VERSION or package.json version")
       },
       screenshots_path: File.expand_path("screenshots", __dir__),
       skip_binary_upload: true,

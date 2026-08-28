@@ -37,6 +37,16 @@ iOS `app_version` defaults from `package.json` `version` (override with `ASC_APP
 
 ## Play Store
 
+Listing **text** lives in git under `fastlane/metadata/android/<play-locale>/`:
+
+| File | Limit |
+|------|--------|
+| `title.txt` | 50 |
+| `short_description.txt` | 80 |
+| `full_description.txt` | 4000 |
+
+Do not invent screenshots; phone captures are staged (gitignored) under `images/phoneScreenshots/`.
+
 Create a Play Console app + service account JSON once, then:
 
 ```sh
@@ -44,6 +54,8 @@ export PLAY_JSON_KEY_PATH=/path/to/play-service-account.json
 export PLAY_PACKAGE_NAME=com.backgammonmastermind
 pnpm screenshots:upload:android
 ```
+
+The `android screenshots` lane skips listing text (`skip_upload_metadata: true`). Upload copy from Play Console or a future `supply` metadata pass.
 
 Listing copy for Apple: [eas-metadata.md](./eas-metadata.md).  
 Price / privacy nutrition: ASC UI.

@@ -63,6 +63,9 @@ const ASC_LOCALE_PACK = {
 };
 
 const IPHONE_67_SCREENSHOTS = [
+  'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-01-04-home-ready.png',
+  'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-02-05-learn-hub.png',
+  'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-03-06-lesson-bearing-off.png',
   'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-05-10-settings-links.png',
   'docs/marketing/v1.0.0/app-store-screenshots/iphone-69-06-vs-computer.png',
 ].filter(rel => existsSync(join(ROOT, rel)));
@@ -154,7 +157,7 @@ module.exports = () => {
         phone: '+1 954 593 1670',
         demoRequired: false,
         notes:
-          'Backgammon Mastermind is a paid board game (no IAP, no login). Open the app and tap vs Computer / 2 Players to start a match. Roll dice and move checkers by tap or drag. All game logic runs on device. Optional anonymous product analytics (PostHog) may be sent when online.',
+          'Backgammon Mastermind is a paid board game (no IAP, no login). Open the app and tap Learn to Play for guided lessons, or tap vs Computer / 2 Players to start a match. Roll dice and move checkers by tap or drag. All game logic runs on device. Optional anonymous product analytics (PostHog) may be sent when online.',
       },
     },
   };

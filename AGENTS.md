@@ -24,7 +24,7 @@ Tracked as [#128](https://github.com/softwarebyze/Backgammon-Mastermind/issues/1
 
 ### Store listing updates
 
-Prefer **`store.config.json` + `pnpm metadata:push` / `pnpm metadata:push:production`** (or Actions → **EAS Metadata Push**) over one-off App Store Connect API scripts. How-to: [docs/eas-metadata.md](./docs/eas-metadata.md). Screenshots: Fastlane — [docs/store-screenshots.md](./docs/store-screenshots.md) (`pnpm screenshots:upload:ios`). Price and privacy nutrition labels are ASC UI-only for now.
+Prefer **`store.config.js` + `store/locales/` + `pnpm metadata:push` / `pnpm metadata:push:production`** (or Actions → **EAS Metadata Push**) over one-off App Store Connect API scripts. How-to: [docs/eas-metadata.md](./docs/eas-metadata.md). iOS screenshots: EAS Metadata (`apple.info.*.screenshots`) preferred; Fastlane remains a fallback / Play path — [docs/store-screenshots.md](./docs/store-screenshots.md). Price and privacy nutrition labels are ASC UI-only for now.
 
 ### Overview
 

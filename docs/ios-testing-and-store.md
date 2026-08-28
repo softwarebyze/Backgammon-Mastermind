@@ -4,9 +4,9 @@
 
 Store listings, privacy policy, and in-app Support use **zackebenfeld@gmail.com** (personal account).
 
-Before any metadata push, confirm `store.config.json` → `apple.review.phone` is correct (currently **+1 954 593 1670**).
+Before any metadata push, confirm `store.config.js` → `apple.review.phone` is correct (currently **+1 954 593 1670**).
 
-**App Store listing sync (EAS Metadata):** see **[eas-metadata.md](./eas-metadata.md)** — edit `store.config.json`, then `pnpm metadata:push` / `pnpm metadata:push:production`.
+**App Store listing sync (EAS Metadata):** see **[eas-metadata.md](./eas-metadata.md)** — edit `store.config.js` + `store/locales/`, then `pnpm metadata:push` / `pnpm metadata:push:production`.
 
 ## iOS testing paths
 
@@ -48,7 +48,7 @@ EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --id <pr
 EXPO_PUBLIC_APP_ENV=production eas submit --platform ios --profile production --latest
 ```
 
-**Screenshots:** Fastlane — [store-screenshots.md](./store-screenshots.md). Not in `store.config.json`.
+**Screenshots:** Fastlane — [store-screenshots.md](./store-screenshots.md). Prefer EAS Metadata `apple.info.*.screenshots` in `store.config.js`.
 
 ## Apple team
 
