@@ -1,4 +1,4 @@
-import { HORSESHOE_ARROW, buildArrowhead, horseshoeArrowhead, unitVector } from '@/lib/ui/arrow-geometry';
+import { buildArrowhead, HORSESHOE_ARROW, horseshoeArrowhead, unitVector } from '@/lib/ui/arrow-geometry';
 
 describe('arrow-geometry', () => {
   it('unitVector points from source to target', () => {

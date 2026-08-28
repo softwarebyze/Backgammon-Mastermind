@@ -33,6 +33,9 @@ function LessonsIncompleteGate() {
   );
 }
 
+// This keeps the quiz state and its screen lifecycle together so the advance timer
+// is always cleaned up with the component that owns it.
+// eslint-disable-next-line max-lines-per-function
 export function GraduationScreen() {
   const { progress, completeQuiz } = useLearnProgress();
   const { startGame } = useGame();

@@ -10,7 +10,7 @@ jest.mock('@/lib/i18n', () => ({
 
 afterEach(cleanup);
 
-describe('QuizCard', () => {
+describe('quizCard', () => {
   it('marks the chosen option selected with a filled accent style', () => {
     expect(quizOptionSelectedStyle.backgroundColor).toBe(GAME_PALETTE.accent);
     setup(

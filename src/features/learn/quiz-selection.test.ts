@@ -1,4 +1,4 @@
-import { QUIZ_CORRECT_FLASH_MS, canAdvanceAfterCorrectFlash, resolveQuizTap } from './quiz-selection';
+import { canAdvanceAfterCorrectFlash, QUIZ_CORRECT_FLASH_MS, resolveQuizTap } from './quiz-selection';
 
 describe('quiz selection', () => {
   it('does not advance before the correct-answer flash', () => {

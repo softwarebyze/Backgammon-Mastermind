@@ -18,7 +18,7 @@ jest.mock('@expo/vector-icons', () => {
 
 afterEach(cleanup);
 
-describe('LessonRow', () => {
+describe('lessonRow', () => {
   it('stays pressable when the lesson is completed', async () => {
     const onPress = jest.fn();
     const { user } = setup(

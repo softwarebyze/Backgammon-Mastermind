@@ -68,10 +68,28 @@ export function horseshoeHaloArrow(
   player: 'white' | 'black' = 'white',
 ): Arrowhead {
   const base = HORSESHOE_ARROW[player];
-  return horseshoeArrowhead(width, height, player, {
+  return buildHorseshoeArrowhead({
+    width,
+    height,
+    player,
     length: base.length + 3.5,
     halfWidth: base.halfWidth + 2.5,
   });
+}
+
+function buildHorseshoeArrowhead({
+  width,
+  height,
+  player,
+  ...style
+}: { width: number; height: number; player: 'white' | 'black' } & ArrowheadStyle): Arrowhead {
+  const { topY, botY, rightX } = horseshoeMetrics(width, height, player);
+  const head = Object.keys(style).length > 0 ? style : HORSESHOE_ARROW[player];
+
+  if (player === 'white') {
+    return buildArrowhead({ x: rightX, y: botY }, { x: 1, y: 0 }, head);
+  }
+  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, head);
 }
 
 /** Arrowhead for the horseshoe direction overlay (path ends along outer edge, east). */
@@ -79,13 +97,6 @@ export function horseshoeArrowhead(
   width: number,
   height: number,
   player: 'white' | 'black' = 'white',
-  style?: ArrowheadStyle,
 ): Arrowhead {
-  const { topY, botY, rightX } = horseshoeMetrics(width, height, player);
-  const head = style ?? HORSESHOE_ARROW[player];
-
-  if (player === 'white') {
-    return buildArrowhead({ x: rightX, y: botY }, { x: 1, y: 0 }, head);
-  }
-  return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, head);
+  return buildHorseshoeArrowhead({ width, height, player });
 }
