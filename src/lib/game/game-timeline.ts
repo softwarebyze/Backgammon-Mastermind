@@ -105,18 +105,21 @@ export function rebuildTimelineFromLog(
     return createTimeline(liveState);
   }
 
-  let timeline = createTimeline(baseline);
+  // Build once: pushTimelineSnapshot copies the growing array on every move,
+  // making a cold restore quadratic in the length of the saved game.
+  const snapshots = [cloneGameState(baseline)];
   for (const entry of log) {
     if (!entry.after) {
       break;
     }
-    const next = mergeSnapshotIntoState(currentTimelineState(timeline), entry.after);
-    timeline = pushTimelineSnapshot(timeline, currentTimelineState(timeline), next);
+    const previous = snapshots[snapshots.length - 1]!;
+    const next = mergeSnapshotIntoState(previous, entry.after);
+    snapshots.push(cloneGameState(next));
   }
 
-  if (timeline.cursor === 0 && log.length > 0) {
+  if (snapshots.length === 1) {
     return createTimeline(liveState);
   }
 
-  return timeline;
+  return { snapshots, cursor: snapshots.length - 1, redo: [], redoMoves: [] };
 }

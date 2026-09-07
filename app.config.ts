@@ -60,10 +60,17 @@ const appPlugins: ExpoConfig['plugins'] = [
           'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
           'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
           'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
+          'node_modules/@expo-google-fonts/inter/800ExtraBold/Inter_800ExtraBold.ttf',
         ],
       },
       android: {
         fonts: [
+          // Filename aliases match runtime loading in Expo Go and older binaries.
+          'node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf',
+          'node_modules/@expo-google-fonts/inter/500Medium/Inter_500Medium.ttf',
+          'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
+          'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
+          'node_modules/@expo-google-fonts/inter/800ExtraBold/Inter_800ExtraBold.ttf',
           {
             fontFamily: 'Inter',
             fontDefinitions: [
@@ -82,6 +89,10 @@ const appPlugins: ExpoConfig['plugins'] = [
               {
                 path: 'node_modules/@expo-google-fonts/inter/700Bold/Inter_700Bold.ttf',
                 weight: 700,
+              },
+              {
+                path: 'node_modules/@expo-google-fonts/inter/800ExtraBold/Inter_800ExtraBold.ttf',
+                weight: 800,
               },
             ],
           },

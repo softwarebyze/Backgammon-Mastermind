@@ -144,6 +144,9 @@ async function warmNativePlayers(): Promise<void> {
  * Safe to call from a tap handler; no-ops when already warm.
  */
 export function ensureGameSfxReady(): Promise<void> {
+  if (!loadGamePreferences().soundEnabled) {
+    return Promise.resolve();
+  }
   unlockWebAudio();
   if (ready) {
     return Promise.resolve();

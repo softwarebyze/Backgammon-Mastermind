@@ -1,12 +1,4 @@
 import type { ErrorBoundaryProps } from 'expo-router';
-import {
-  Inter_400Regular,
-  Inter_500Medium,
-  Inter_600SemiBold,
-  Inter_700Bold,
-  Inter_800ExtraBold,
-  useFonts,
-} from '@expo-google-fonts/inter';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Stack, ThemeProvider, useGlobalSearchParams, usePathname } from 'expo-router';
@@ -23,8 +15,8 @@ import { ConfirmDialogHost } from '@/components/ui/confirm-dialog';
 import { getThemeConfig } from '@/components/ui/use-theme-config';
 import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
-import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { initAppTheme } from '@/lib/init-app-theme';
+import { useAppFonts } from '@/lib/ui/use-app-fonts';
 import '@/lib/ignore-known-logs';
 // Import  global CSS file
 import '../global.css';
@@ -44,12 +36,16 @@ export const unstable_settings = {
 
 initAppTheme();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-// Set the animation options. This is optional.
+void SplashScreen.preventAutoHideAsync().catch(() => {});
 SplashScreen.setOptions({
-  duration: 500,
-  fade: true,
+  duration: 0,
+  fade: false,
 });
+
+function hideSplash() {
+  // Wait for the ready root to lay out so native never reveals a blank frame.
+  void SplashScreen.hideAsync().catch(() => {});
+}
 
 export default function RootLayout() {
   const pathname = usePathname();
@@ -101,31 +97,16 @@ export default function RootLayout() {
 
 function Providers({ children }: { children: React.ReactNode }) {
   const theme = getThemeConfig();
-  const [fontsLoaded, fontError] = useFonts({
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
-    Inter_800ExtraBold,
-  });
+  const fontsReady = useAppFonts();
 
-  useEffect(() => {
-    if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
-
-  useEffect(() => {
-    primeGameSfxFromUserGesture();
-  }, []);
-
-  if (!fontsLoaded && !fontError) {
+  if (!fontsReady) {
     return null;
   }
 
   return (
     <GestureHandlerRootView
       style={styles.container}
+      onLayout={hideSplash}
       // eslint-disable-next-line better-tailwindcss/no-unknown-classes
       className="dark"
     >

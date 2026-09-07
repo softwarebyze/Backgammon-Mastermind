@@ -13,6 +13,7 @@ import {
 } from '@/lib/game/computer-pace';
 
 type ComputerOpponentOptions = {
+  enabled: boolean;
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
   playMove: (snapshot: GameState, move: Move, playOpts?: PlayMoveOpts) => void;
@@ -34,6 +35,7 @@ export type ComputerOpponentControls = {
 
 /* eslint-disable max-lines-per-function -- AI turn orchestration */
 export function useComputerOpponent({
+  enabled,
   state,
   setState,
   playMove,
@@ -70,7 +72,7 @@ export function useComputerOpponent({
   useEffect(() => {
     clearAITimeout();
 
-    if (!state)
+    if (!enabled || !state)
       return clearAITimeout;
     if (state.mode !== 'vs-computer')
       return clearAITimeout;
@@ -149,6 +151,7 @@ export function useComputerOpponent({
 
     return clearAITimeout;
   }, [
+    enabled,
     state,
     setState,
     playMove,

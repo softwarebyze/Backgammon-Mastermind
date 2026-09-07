@@ -81,6 +81,16 @@ describe('playGameSfx', () => {
     expect(createPlayer).not.toHaveBeenCalled();
   });
 
+  it('does not warm muted audio, but can warm after sound is enabled', async () => {
+    loadPrefs.mockReturnValue({ ...DEFAULT_GAME_PREFERENCES, soundEnabled: false });
+    await ensureGameSfxReady();
+    expect(createPlayer).not.toHaveBeenCalled();
+    expect(setMode).not.toHaveBeenCalled();
+    loadPrefs.mockReturnValue({ ...DEFAULT_GAME_PREFERENCES, soundEnabled: true });
+    await ensureGameSfxReady();
+    expect(createPlayer).toHaveBeenCalledTimes(5);
+  });
+
   it('playGameSfxSequence does not throw', () => {
     expect(() => playGameSfxSequence(['hit', 'bearOff'])).not.toThrow();
   });

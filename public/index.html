@@ -45,24 +45,6 @@
         visibility: hidden !important;
       }
     </style>
-    <script>
-      (function () {
-        var sel =
-          'vercel-live-feedback, #vercel-live-feedback, [data-vercel-toolbar], [data-vercel-toolbar-container], iframe[src*="vercel.live"]';
-        var zap = function () {
-          document.querySelectorAll(sel).forEach(function (el) {
-            el.remove();
-          });
-        };
-        zap();
-        try {
-          new MutationObserver(zap).observe(document.documentElement, {
-            childList: true,
-            subtree: true,
-          });
-        } catch (e) {}
-      })();
-    </script>
   </head>
 
   <body>

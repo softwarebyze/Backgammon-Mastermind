@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import * as React from 'react';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
