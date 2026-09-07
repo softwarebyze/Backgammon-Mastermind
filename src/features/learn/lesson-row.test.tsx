@@ -7,13 +7,13 @@ jest.mock('@/lib/i18n', () => ({
   translate: (key: string) => key,
 }));
 
-jest.mock('@expo/vector-icons', () => {
+jest.mock('@expo/vector-icons/Feather', () => {
   const React = require('react');
   const { Text } = require('react-native');
   function FeatherMock(props: { name: string }) {
     return React.createElement(Text, null, props.name);
   }
-  return { Feather: FeatherMock };
+  return { __esModule: true, default: FeatherMock };
 });
 
 afterEach(cleanup);

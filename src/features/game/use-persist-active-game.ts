@@ -12,6 +12,9 @@ export function usePersistActiveGame(
     if (!state) {
       return;
     }
+    // Atomic session write from #167. History lives in the same blob as board
+    // state, so selection/dice updates rewrite the session; splitting keys
+    // would regress crash recovery and completed-game review.
     savePersistedSession({ state, moveLog, replayBaseline });
   }, [state, moveLog, replayBaseline]);
 }
