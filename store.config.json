@@ -63,7 +63,7 @@
       "email": "zackebenfeld@gmail.com",
       "phone": "+1 954 593 1670",
       "demoRequired": false,
-      "notes": "Backgammon Mastermind is a paid board game (no IAP, no login). Open the app and tap Learn to Play for guided lessons, or tap vs Computer / 2 Players to start a match. Roll dice and move checkers by tap or drag. All game logic runs on device. Optional anonymous product analytics (PostHog) may be sent when online. Guideline 2.5.4: this app does not play audio in the background. Dice and move sound effects play only while the app is in the foreground; UIBackgroundModes does not include audio."
+      "notes": "Backgammon Mastermind is a paid board game (no IAP, no login). Open the app and tap Learn to Play for guided lessons, or tap vs Computer / 2 Players to start a match. Roll dice and move checkers by tap or drag. All game logic runs on device. Optional anonymous product analytics (PostHog) may be sent when online."
     }
   }
 }

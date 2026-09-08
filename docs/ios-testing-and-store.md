@@ -53,19 +53,3 @@ EXPO_PUBLIC_APP_ENV=production eas submit --platform ios --profile production --
 ## Apple team
 
 EAS builds use team **Zachary Ebenfeld (Individual)** — `75M38Z9JBF` (set in `eas.json`).
-
-## App Store 2.5.4 — do not declare background audio
-
-Apple rejected **1.0.0 (4)** (submission `ffd0b12f-7491-4298-80cd-f7cf8994f992`) under guideline **2.5.4**: the binary declared `UIBackgroundModes` `audio`, but this is a board game with short in-game SFX, not a music/streaming app.
-
-**Cause:** `expo-audio` defaults `enableBackgroundPlayback` to `true`, which writes `audio` into Info.plist even when JS never plays in the background.
-
-**Fix:** `app.config.ts` configures the plugin with `enableBackgroundPlayback: false`. Runtime SFX already call `setAudioModeAsync({ shouldPlayInBackground: false })`. Do **not** add fake background playback to satisfy review.
-
-**Verify before the next iOS EAS build** (managed workflow; `ios/` is gitignored):
-
-```sh
-pnpm expo config --type introspect --json | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('ios',{}).get('infoPlist',{}).get('UIBackgroundModes'))"
-```
-
-`UIBackgroundModes` must omit `audio` (empty / missing is fine). After EAS, the same check is the generated `Info.plist` in the IPA.
