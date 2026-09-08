@@ -90,7 +90,13 @@ const appPlugins: ExpoConfig['plugins'] = [
     },
   ],
   'expo-asset',
-  'expo-audio',
+  [
+    'expo-audio',
+    {
+      // Default true adds UIBackgroundModes audio (App Store 2.5.4).
+      enableBackgroundPlayback: false,
+    },
+  ],
   'expo-image',
   'expo-localization',
   'expo-router',
