@@ -67,6 +67,7 @@ Use this before the first App Store / Play Store submission.
 - [ ] Google Play content rating questionnaire
 - [x] Production ASC app — `com.backgammonmastermind` / Apple ID `6792138473`
 - [x] Export compliance — `ITSAppUsesNonExemptEncryption: false` in `app.config.ts`
+- [x] App Store 2.5.4 — `expo-audio` `enableBackgroundPlayback: false` so Info.plist does **not** declare `UIBackgroundModes` `audio` (foreground SFX only; see [ios-testing-and-store.md](./ios-testing-and-store.md))
 
 ## Secrets checklist
 
