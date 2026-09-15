@@ -79,7 +79,7 @@ export function useGameProviderValue(): GameContextType {
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
   usePersistActiveGame(state, moveLog, persistMoveLog);
-  const { startGame, resumeGame, resetGame, ceremonyKey } = useGameLifecycle({
+  const { startGame, startFromPosition, resumeGame, resetGame, ceremonyKey } = useGameLifecycle({
     clearAITimeout,
     resetAnimation: resetAllAnimation,
     resetMoveLog,
@@ -103,6 +103,7 @@ export function useGameProviderValue(): GameContextType {
     moveLog,
     replayBaseline,
     startGame,
+    startFromPosition,
     resumeGame,
     resetGame,
     ceremonyKey,
