@@ -11,7 +11,7 @@ Agents **can and should** upload App Store / Play screenshots without a human cl
 | Composed iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/iphone-69-*.png` |
 | Composed iPad Pro 13" (2064×2752) | `docs/marketing/v1.0.0/app-store-screenshots/ipad-13-*.png` |
 | Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/en-US/` |
-| Staged for Play (iPhone 6.9" set; committed) | `fastlane/metadata/android/en-US/images/phoneScreenshots/` |
+| Staged for Play (9:16 crop of iPhone set; committed) | `fastlane/metadata/android/en-US/images/phoneScreenshots/` |
 
 Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel sizes), then dress with screenshots compose. Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot). iPad 2064×2752 maps to the 13" slot.
 
@@ -79,7 +79,7 @@ export PLAY_PACKAGE_NAME=com.backgammonmastermind
 pnpm screenshots:upload:android
 ```
 
-Android screenshots reuse the phone captures from `docs/marketing/…/app-store-screenshots/` (iPhone 6.9" 1320×2868 maps to a 19.5:9 phone slot). The phone set is **committed** under `fastlane/metadata/android/en-US/images/phoneScreenshots/` so Play upload does not depend on a local prepare step. Re-stage with `pnpm screenshots:prepare` after recapture. Do not invent new UI captures for listing shots.
+Android screenshots are a **9:16 crop** (1080×1920) of the iPhone 6.9" marketing set. Play rejects 1320×2868 because the long side is more than twice the short side. `pnpm screenshots:prepare` copies Apple sizes to Fastlane iOS staging and crops Play phone shots from the **top** (headline + board). No new UI captures. The Play set is **committed** under `fastlane/metadata/android/en-US/images/phoneScreenshots/`. Re-stage after recapture.
 
 ## Obytes / fork agents
 

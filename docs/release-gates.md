@@ -15,7 +15,7 @@ Two tracks. **Track A first** (stores). **Track B** only after A is done, or exp
 
 Metadata, screenshots, version sync, and store submit only. **No game rules, Learn, or Expo SDK changes.**
 
-1. Play Console app + content rating + EAS `GOOGLE_SERVICE_ACCOUNT` (GH already has `GOOGLE_SERVICE_ACCOUNT_BASE64` as of 2026-09-14)
+1. Play Console app + content rating. Fastlane screenshot upload needs GH secret `GOOGLE_SERVICE_ACCOUNT_BASE64`; EAS Android submit needs EAS secret `GOOGLE_SERVICE_ACCOUNT` (separate). Secret inventory lives on [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) — do not duplicate it here.
 2. Stage Android phone screenshots from existing marketing captures → Actions **Upload Store Screenshots** (android)
 3. Actions **EAS Production Build and Submit (Android)** — only when Play Console is ready; do not start this from a docs-only PR
 4. Keep `package.json` `"version"` and `store.config.json` `apple.version` matching the live App Store marketing version
