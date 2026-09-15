@@ -4,6 +4,8 @@ Use this before the first App Store / Play Store submission.
 
 **Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
 
+**Release gates:** **[release-gates.md](./release-gates.md)** — Track A (Play + version sync, no gameplay) vs Track B (v1.1.0 correctness). Hard gates (`check-all`, Expo Doctor, Maestro, dice matrix, save recovery, device smoke) live there, not as a second checklist here.
+
 **Last updated:** 2026-08-28 — first production release: PR #150 merged (stable SDK 56), production iOS build auto-submitting, metadata + screenshots pushed.
 
 ## CI: what runs on every PR?
@@ -43,7 +45,7 @@ Use this before the first App Store / Play Store submission.
 
 | Step | Status | Action |
 | ---- | ------ | ------ |
-| 1. Version bump | Done | **v1.0.0** in `package.json` / store metadata |
+| 1. Version bump | Done | **v1.0.1** in `package.json` / `store.config.json` (matches live ASC; EAS build numbers stay remote) |
 | 2. iOS dev client | Done | Rebuild when native deps / display name / `CFBundleDisplayName` change (this ship: spaced name) |
 | 3. Device QA | Partial | v0.1.x TestFlight done — **re-playtest** the preview binary from this ship |
 | 4. Preview build (TestFlight) | Ready to dispatch | Preview ASC **`6781121420`** (`com.backgammonmastermind.preview`) named **Backgammon Mastermind Preview** |
@@ -76,8 +78,8 @@ Use this before the first App Store / Play Store submission.
 | App Store Connect API key | `metadata:push` / `metadata:pull` | ✅ (EAS credentials) |
 | `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E only | Optional |
 | `GH_TOKEN` | New App Version workflow | Optional |
-| `GOOGLE_SERVICE_ACCOUNT_BASE64` (GH secret) | Fastlane supply — Android screenshots + listing text | ⛔ add: base64 of Play service-account JSON |
-| `GOOGLE_SERVICE_ACCOUNT` (EAS secret) | EAS submit — Android AAB → Google Play | ⛔ add: Play service-account JSON |
+| `GOOGLE_SERVICE_ACCOUNT_BASE64` (GH secret) | Fastlane supply — Android screenshots + listing text | See [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) (GH vs EAS are separate) |
+| `GOOGLE_SERVICE_ACCOUNT` (EAS secret) | EAS submit — Android AAB → Google Play | See [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) |
 
 ## Post-launch
 
@@ -168,7 +170,7 @@ Avoid one-off App Store Connect API / JWT scripts for shipping.
 2. ✅ Production iOS build + auto-submit dispatched from `main` (`EAS Production Build and Submit (iOS)`)
 3. ✅ Production metadata pushed (`metadata:push:production`) + screenshots uploaded (iPhone 6.9" + iPad 13")
 4. **Privacy nutrition labels** in ASC (PostHog product interaction) — last App Store gate agents can't fully automate yet
-5. Confirm the submitted binary is on ASC → **Submit for App Review** on production `6792138473` / v1.0.0
+5. Confirm the submitted binary is on ASC → **Submit for App Review** on production `6792138473` / v1.0.1
 6. Google Play — Console app (`com.backgammonmastermind`) → service account → `GOOGLE_SERVICE_ACCOUNT_BASE64` + `GOOGLE_SERVICE_ACCOUNT` secrets → content rating/declaration → Actions **EAS Production Build and Submit (Android)** + **Upload Store Screenshots (android)**
 7. Full PostHog dump (#130 privacy/docs/source-map CI) still deferred; this ship only wires exceptions
 

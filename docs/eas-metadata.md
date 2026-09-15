@@ -22,7 +22,7 @@ Prefer this over one-off App Store Connect API / JWT scripts. Listing state stay
 
 Requires: Expo login or `EXPO_TOKEN`, plus App Store Connect API key in **EAS credentials** (already configured: `M7LGZ9S6S2`).
 
-`apple.version` in `store.config.json` must match an **editable** version in that ASC app (currently `1.0.0` for production). If push fails on version, create the matching version in App Store Connect first.
+`apple.version` in `store.config.json` must match an **editable** version in that ASC app (currently `1.0.1` for production). If push fails on version, create the matching version in App Store Connect first. Confirm with `pnpm asc:status`.
 
 ## What EAS Metadata covers
 
@@ -71,4 +71,5 @@ If you change something in the ASC dashboard that is also in `store.config.json`
 
 - Release steps: [releases.md](./releases.md)
 - First-time ship checklist: [production-checklist.md](./production-checklist.md)
+- Release gates: [release-gates.md](./release-gates.md)
 - Expo schema: https://docs.expo.dev/eas/metadata/schema/

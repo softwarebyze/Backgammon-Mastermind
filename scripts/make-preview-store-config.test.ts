@@ -28,4 +28,12 @@ describe('make-preview-store-config', () => {
     );
     expect(preview.apple.version).toBe(canonical.apple.version);
   });
+
+  it('keeps package.json version in sync with store.config.json apple.version', () => {
+    const canonical = JSON.parse(readFileSync('store.config.json', 'utf8')) as {
+      apple: { version: string };
+    };
+    const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as { version: string };
+    expect(pkg.version).toBe(canonical.apple.version);
+  });
 });

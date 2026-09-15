@@ -5,7 +5,8 @@ How we ship **TestFlight**, **App Store**, and **GitHub** releases.
 What’s already shipped: [GitHub Releases](https://github.com/softwarebyze/Backgammon-Mastermind/releases).  
 What’s next: [open issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (look for a `Release: v…` epic if one exists).
 
-First-time store setup: [production-checklist.md](./production-checklist.md).
+First-time store setup: [production-checklist.md](./production-checklist.md).  
+**What may ship when:** [release-gates.md](./release-gates.md) (Track A stores vs Track B correctness; hard gates).
 
 ---
 
@@ -34,7 +35,7 @@ Update **all** of these for each store release:
 | App Store Connect | **+ Version** matching `apple.version` |
 | Git tag | `v0.1.2` (matches `package.json`) |
 
-Expo native build numbers are managed by EAS (`eas.json` / remote version source).
+Expo native build numbers are managed by EAS (`eas.json` `cli.appVersionSource: "remote"` + `autoIncrement`). They are **not** the same field as `package.json` / `apple.version`. Do not bump one to match the other. Details: [release-gates.md](./release-gates.md).
 
 ---
 
@@ -162,6 +163,7 @@ Full first-submission checklist: [production-checklist.md](./production-checklis
 
 ## Related docs
 
+- [release-gates.md](./release-gates.md) — Track A vs Track B, hard gates, one-concern-per-PR
 - [ios-testing-and-store.md](./ios-testing-and-store.md) — dev client, TestFlight, metadata
 - [production-checklist.md](./production-checklist.md) — first App Store / Play submission
 - [docs/evidence/](./evidence/) — before/after QA screenshots

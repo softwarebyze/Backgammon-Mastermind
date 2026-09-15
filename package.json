@@ -1,6 +1,6 @@
 {
   "name": "backgammonmastermind",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "packageManager": "pnpm@10.12.3",
   "repository": {
@@ -48,6 +48,7 @@
     "screenshots:compose": "node scripts/compose-store-screenshots.mjs",
     "screenshots:prepare": "node scripts/prepare-store-screenshots.mjs",
     "screenshots:asc-key": "node scripts/asc-api-key-from-eas.mjs",
+    "asc:status": "node scripts/asc-version-status.mjs",
     "screenshots:upload:ios": "pnpm screenshots:prepare && pnpm screenshots:asc-key && bundle exec fastlane ios screenshots",
     "screenshots:upload:android": "pnpm screenshots:prepare && bundle exec fastlane android screenshots",
     "submit:preview:ios": "cross-env EXPO_PUBLIC_APP_ENV=preview eas submit --platform ios --profile preview --latest",
