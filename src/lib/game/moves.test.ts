@@ -1,8 +1,10 @@
 import {
+  BAR_POINT,
   BEAR_OFF,
   createInitialPoints,
   createInitialState,
 } from './constants';
+import { createPositionState } from './create-position';
 import {
   allCheckersInHome,
   applyDiceRoll,
@@ -308,6 +310,66 @@ describe('bearing off', () => {
     expect(allCheckersInHome(state, 'white')).toBe(true);
     const moves = getLegalMoves(state);
     expect(moves.some(m => m.to === BEAR_OFF)).toBe(true);
+  });
+});
+
+/**
+ * Issue #155 / PR #153 audit positions.
+ * USBGF: play both dice when possible; if only one die can be used, play the higher.
+ *
+ * `getLegalMoves` currently returns raw single-step entries (bar→24 and bar→23)
+ * without full-turn filtering. These cases encode the CORRECT first-move set
+ * (only bar→23) and are expected to FAIL until the engine fix lands.
+ */
+describe('getLegalMoves full-turn dice usage (issue #155)', () => {
+  const barDestinations = (state: ReturnType<typeof createPositionState>) =>
+    getLegalMoves(state)
+      .filter(m => m.from === BAR_POINT)
+      .map(m => m.to);
+
+  it('must use both dice: only bar→23 (die 2) is legal because it leaves 6→5 with the 1', () => {
+    // White to play 1-2, one on the bar, 14 on point 6.
+    // Black: 2 on 22, 2 on 4, 11 on 19. bar→24 (die 1) strands the 2.
+    const state = createPositionState({
+      placements: [
+        { point: 6, player: 'white', count: 14 },
+        { point: 22, player: 'black', count: 2 },
+        { point: 4, player: 'black', count: 2 },
+        { point: 19, player: 'black', count: 11 },
+      ],
+      bar: { white: 1 },
+      dice: [1, 2],
+      mode: 'vs-human',
+    });
+
+    expect(state.phase).toBe('moving');
+    expect(barDestinations(state)).toEqual([23]);
+
+    const enter23 = getLegalMoves(state).find(m => m.from === BAR_POINT && m.to === 23);
+    expect(enter23).toBeDefined();
+    const after = applyMove(state, enter23!);
+    expect(after.remainingDice).toEqual([1]);
+    expect(getLegalMoves(after).some(m => m.from === 6 && m.to === 5)).toBe(true);
+  });
+
+  it('must use the higher die: only bar→23 is legal when neither entry allows a second move', () => {
+    // White to play 1-2, one on the bar, 14 on point 6.
+    // Black: 2 on 22, 2 on 4, 2 on 5, 9 on 19. Neither entry plays the leftover die.
+    const state = createPositionState({
+      placements: [
+        { point: 6, player: 'white', count: 14 },
+        { point: 22, player: 'black', count: 2 },
+        { point: 4, player: 'black', count: 2 },
+        { point: 5, player: 'black', count: 2 },
+        { point: 19, player: 'black', count: 9 },
+      ],
+      bar: { white: 1 },
+      dice: [1, 2],
+      mode: 'vs-human',
+    });
+
+    expect(state.phase).toBe('moving');
+    expect(barDestinations(state)).toEqual([23]);
   });
 });
 
