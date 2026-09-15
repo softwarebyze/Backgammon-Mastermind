@@ -1,0 +1,91 @@
+
+> backgammonmastermind@1.0.0 test /workspace
+> jest src/lib/game/moves.test.ts --no-coverage
+
+FAIL src/lib/game/moves.test.ts
+  applyOpeningDieRoll
+    ✓ passes the opening die to the opponent (2 ms)
+    ✓ starts the first turn with both opening dice (TestFlight #2) (1 ms)
+    ✓ keeps tied opening dice for UI, then waits for a re-roll (1 ms)
+    ✓ gives black the first turn when black rolls higher
+  createInitialPoints
+    ✓ sets the standard 2-5-3-5 starting layout (1 ms)
+  applyDiceRoll
+    ✓ enters the moving phase with both dice available
+    ✓ grants four moves on doubles
+    ✓ enters no-move phase when no legal move exists after roll (1 ms)
+    ✓ passTurn clears dice and hands play to the opponent (1 ms)
+  getLegalMoves
+    ✓ returns opening moves after a dice roll
+    ✓ requires bar entry when checkers are on the bar
+  compound moves
+    ✓ findMoveSequence uses both dice in one tap (TestFlight #4) (1 ms)
+    ✓ getReachableDestinations includes compound targets beyond single-die moves (1 ms)
+  getLegalMoves / applyMove
+    ✓ moves a checker and consumes one die
+    ✓ hits a blot and sends the opponent to the bar (1 ms)
+    ✓ requires bar entry before other moves
+    ✓ ends the game when the fifteenth checker is borne off
+  applyMove (blot hit)
+    ✓ hits a blot and sends opponent to the bar (1 ms)
+  bearing off
+    ✓ allows bear off when all checkers are home
+  getLegalMoves full-turn dice usage (issue #155)
+    ✕ must use both dice: only bar→23 (die 2) is legal because it leaves 6→5 with the 1 (2 ms)
+    ✕ must use the higher die: only bar→23 is legal when neither entry allows a second move (1 ms)
+  calculatePipCount
+    ✓ is lower when checkers are closer to home
+    ✓ counts board and bar pips for each player (1 ms)
+  rollDice
+    ✓ returns values between 1 and 6 (3 ms)
+
+  ● getLegalMoves full-turn dice usage (issue #155) › must use both dice: only bar→23 (die 2) is legal because it leaves 6→5 with the 1
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 0
+    + Received  + 1
+
+      Array [
+    +   24,
+        23,
+      ]
+
+      344 |
+      345 |     expect(state.phase).toBe('moving');
+    > 346 |     expect(barDestinations(state)).toEqual([23]);
+          |                                    ^
+      347 |
+      348 |     const enter23 = getLegalMoves(state).find(m => m.from === BAR_POINT && m.to === 23);
+      349 |     expect(enter23).toBeDefined();
+
+      at Object.toEqual (src/lib/game/moves.test.ts:346:36)
+
+  ● getLegalMoves full-turn dice usage (issue #155) › must use the higher die: only bar→23 is legal when neither entry allows a second move
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 0
+    + Received  + 1
+
+      Array [
+    +   24,
+        23,
+      ]
+
+      370 |
+      371 |     expect(state.phase).toBe('moving');
+    > 372 |     expect(barDestinations(state)).toEqual([23]);
+          |                                    ^
+      373 |   });
+      374 | });
+      375 |
+
+      at Object.toEqual (src/lib/game/moves.test.ts:372:36)
+
+Test Suites: 1 failed, 1 total
+Tests:       2 failed, 22 passed, 24 total
+Snapshots:   0 total
+Time:        2.263 s
+Ran all test suites matching /src\/lib\/game\/moves.test.ts/i.
+ ELIFECYCLE  Test failed. See above for more details.
