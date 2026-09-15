@@ -8,7 +8,6 @@ import {
   clearMoveLogAndBaseline,
   loadMoveLog,
   loadReplayBaseline,
-  saveMoveLog,
   saveReplayBaseline,
 } from '@/lib/game/persistence';
 
@@ -85,13 +84,6 @@ export function useMoveLog(liveState: GameState | null) {
     setStoredBaseline(loadReplayBaseline());
   }, [commitLog]);
 
-  const persistMoveLog = useCallback((log: MoveLogEntry[]) => {
-    saveMoveLog(log);
-    if (storedBaseline) {
-      saveReplayBaseline(storedBaseline);
-    }
-  }, [storedBaseline]);
-
   const popLastMove = useCallback((): MoveLogEntry | null => {
     const prev = logRef.current;
     if (prev.length === 0) {
@@ -116,7 +108,6 @@ export function useMoveLog(liveState: GameState | null) {
     recordNoMove,
     resetMoveLog,
     reloadMoveLog,
-    persistMoveLog,
     popLastMove,
     restoreMove,
   };

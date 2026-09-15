@@ -3,9 +3,9 @@ import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useMemo } from 'react';
 
+import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
 import { useGame } from '@/features/game/use-game';
-import { confirmAction } from '@/lib/confirm';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
 function triggerHaptic(fn: () => Promise<void>) {
@@ -74,20 +74,12 @@ export function useGameInput() {
       });
       resetGame();
     };
-    // Play Again is an explicit restart — don't hide it behind a confirm that
-    // browsers can swallow.
-    if (state?.phase === 'game-over') {
-      startNew();
-      return;
-    }
-    confirmAction({
-      title: 'New Game',
-      message: 'Start a new game?',
-      confirmLabel: 'New Game',
-      destructive: true,
-      onConfirm: startNew,
+    requestReplaceActiveGame({
+      source: 'reset',
+      liveState: state,
+      onReplace: startNew,
     });
-  }, [clearPendingDrop, posthog, resetGame, state?.mode, state?.phase]);
+  }, [clearPendingDrop, posthog, resetGame, state]);
 
   const handleBack = useCallback(() => {
     router.back();

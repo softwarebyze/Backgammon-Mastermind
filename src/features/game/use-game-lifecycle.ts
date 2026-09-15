@@ -4,14 +4,11 @@ import { useCallback, useState } from 'react';
 
 import { setOpeningCeremonyHandoff, setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 import { createInitialState } from '@/lib/game';
-import {
-  clearActiveGame,
-  isResumableGame,
-  loadRestorableGame,
-  saveActiveGame,
-} from '@/lib/game/persistence';
+import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
+import { performResume } from '@/lib/game/resume-game';
 
 type Options = {
+  state: GameState | null;
   clearAITimeout: () => void;
   resetAnimation: () => void;
   resetMoveLog: () => void;
@@ -22,6 +19,7 @@ type Options = {
 };
 
 export function useGameLifecycle({
+  state,
   clearAITimeout,
   resetAnimation,
   resetMoveLog,
@@ -47,45 +45,34 @@ export function useGameLifecycle({
     clearTimeline();
     bumpCeremony();
     const initial = createInitialState(mode);
+    savePersistedSession({ state: initial, moveLog: [], replayBaseline: null });
     resetTimeline(initial);
     setState(initial);
   }, [bumpCeremony, clearAITimeout, resetAnimation, resetMoveLog, clearTimeline, resetTimeline, setState]);
 
   const resumeGame = useCallback(() => {
-    clearAITimeout();
-    let canResume = false;
-    setState((current) => {
-      if (isResumableGame(current)) {
-        canResume = true;
-        return current;
-      }
-      const saved = loadRestorableGame();
-      if (!saved) {
-        return current;
-      }
-      reloadMoveLog();
-      resetTimeline(saved);
-      canResume = true;
-      return saved;
+    return performResume({
+      current: state,
+      setState,
+      clearAITimeout,
+      reloadMoveLog,
+      resetTimeline,
     });
-    return canResume;
-  }, [clearAITimeout, reloadMoveLog, resetTimeline, setState]);
+  }, [clearAITimeout, reloadMoveLog, resetTimeline, setState, state]);
 
   const resetGame = useCallback(() => {
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
     bumpCeremony();
-    setState((prev) => {
-      if (!prev) {
-        return null;
-      }
-      const next = createInitialState(prev.mode);
-      saveActiveGame(next);
-      resetTimeline(next);
-      return next;
-    });
-  }, [bumpCeremony, clearAITimeout, resetAnimation, resetMoveLog, resetTimeline, setState]);
+    if (!state) {
+      return;
+    }
+    const next = createInitialState(state.mode);
+    savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
+    resetTimeline(next);
+    setState(next);
+  }, [bumpCeremony, clearAITimeout, resetAnimation, resetMoveLog, resetTimeline, setState, state]);
 
   return { startGame, resumeGame, resetGame, ceremonyKey };
 }
