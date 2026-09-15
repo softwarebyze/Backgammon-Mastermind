@@ -14,10 +14,10 @@ import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
 import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
-import { loadRestorableGame } from '@/lib/game/persistence';
+import { loadPersistedGame } from '@/lib/game/persistence';
 
 export function useGameProviderValue(): GameContextType {
-  const [state, setState] = useState(() => loadRestorableGame());
+  const [state, setState] = useState(() => loadPersistedGame());
   const {
     moveLog,
     replayBaseline,
@@ -25,7 +25,6 @@ export function useGameProviderValue(): GameContextType {
     recordNoMove,
     resetMoveLog,
     reloadMoveLog,
-    persistMoveLog,
     popLastMove,
     restoreMove,
   } = useMoveLog(state);
@@ -78,8 +77,9 @@ export function useGameProviderValue(): GameContextType {
     resetAnimation();
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
-  usePersistActiveGame(state, moveLog, persistMoveLog);
+  usePersistActiveGame(state, moveLog, replayBaseline);
   const { startGame, resumeGame, resetGame, ceremonyKey } = useGameLifecycle({
+    state,
     clearAITimeout,
     resetAnimation: resetAllAnimation,
     resetMoveLog,

@@ -4,19 +4,18 @@ import { useCallback, useRef } from 'react';
 import { Platform } from 'react-native';
 
 import { useGame } from '@/features/game/use-game';
-import { isResumableGame, saveActiveGame, saveMoveLog } from '@/lib/game/persistence';
+import { savePersistedSession } from '@/lib/game/persistence';
 import { hapticLight } from '@/lib/haptics';
 
 export function useLeaveGame() {
   const posthog = usePostHog();
-  const { state, moveLog, clearAITimeout } = useGame();
+  const { state, moveLog, replayBaseline, clearAITimeout } = useGame();
   const allowLeaveRef = useRef(false);
 
   const leaveGame = useCallback(() => {
     clearAITimeout();
-    if (state && isResumableGame(state)) {
-      saveActiveGame(state);
-      saveMoveLog(moveLog);
+    if (state) {
+      savePersistedSession({ state, moveLog, replayBaseline });
     }
     posthog.capture('game_exited', {
       mode: state?.mode ?? null,
@@ -26,7 +25,7 @@ export function useLeaveGame() {
     allowLeaveRef.current = true;
     hapticLight();
     router.replace('/');
-  }, [posthog, clearAITimeout, state, moveLog]);
+  }, [posthog, clearAITimeout, state, moveLog, replayBaseline]);
 
   const handleBackPress = useCallback(() => {
     leaveGame();

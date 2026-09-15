@@ -2,10 +2,9 @@ import type { GameMode, GameState } from '@/lib/game';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
-  Alert,
   Image,
   Platform,
   Pressable,
@@ -18,12 +17,19 @@ import {
 import { FocusAwareStatusBar } from '@/components/ui';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { requestReplaceActiveGame } from '@/features/game/request-new-game';
+import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
-import { confirmAction } from '@/lib/confirm';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
-import { canContinueSavedGame, isResumableGame } from '@/lib/game/persistence';
+import {
+  canContinueSavedGame,
+  hasQuarantinedSession,
+  hasReviewableCompletedGame,
+  isResumableGame,
+} from '@/lib/game/persistence';
+import { canOpenPersistedGame } from '@/lib/game/resume-game';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { LESSON_IDS } from '@/lib/learn/curriculum';
@@ -44,48 +50,20 @@ function startGameFromHome(
 ) {
   hapticLight();
   void ensureGameSfxReady();
-  if (!isResumableGame(state)) {
-    startGame(mode);
-    router.replace('/game');
-    return;
-  }
-
-  if (Platform.OS === 'web') {
-    // window.confirm is binary — OK = new game; Resume on home continues
-    confirmAction({
-      title: translate('home.confirm_title'),
-      message: translate('home.confirm_web'),
-      confirmLabel: translate('home.confirm_new'),
-      destructive: true,
-      onConfirm: () => {
-        startGame(mode);
-        router.replace('/game');
-      },
-    });
-    return;
-  }
-
-  Alert.alert(
-    translate('home.confirm_title'),
-    translate('home.confirm_native'),
-    [
-      { text: translate('home.confirm_continue'), onPress: () => router.replace('/game') },
-      {
-        text: translate('home.confirm_new'),
-        style: 'destructive',
-        onPress: () => {
-          startGame(mode);
-          router.replace('/game');
-        },
-      },
-      { text: translate('home.confirm_cancel'), style: 'cancel' },
-    ],
-  );
+  requestReplaceActiveGame({
+    source: 'home',
+    liveState: state,
+    onReplace: () => {
+      startGame(mode);
+      router.replace('/game');
+    },
+    onContinue: () => router.replace('/game'),
+  });
 }
 
-function resumeGameFromHome(state: GameState | null, resumeGame: () => boolean) {
+function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolean) {
   hapticLight();
-  if (isResumableGame(state) || resumeGame()) {
+  if (canOpenPersistedGame(state) || resumeGame()) {
     router.replace('/game');
     return;
   }
@@ -100,6 +78,8 @@ export function HomeScreen() {
   const { width, height } = useWindowDimensions();
   const landscape = isLandscapeLayout(width, height);
   const canResume = canContinueSavedGame(state);
+  const canReview = !canResume && hasReviewableCompletedGame(state);
+  const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
   const learnDone = completedLessonCount(progress);
   const learnReady = isReadyToPlay(progress);
   const learnLessonsDone = allLessonsComplete(progress);
@@ -115,7 +95,15 @@ export function HomeScreen() {
   const handleResume = useCallback(
     () => {
       posthog.capture('game_resumed');
-      resumeGameFromHome(state, resumeGame);
+      openSavedGameFromHome(state, resumeGame);
+    },
+    [posthog, resumeGame, state],
+  );
+
+  const handleReview = useCallback(
+    () => {
+      posthog.capture('game_reviewed');
+      openSavedGameFromHome(state, resumeGame);
     },
     [posthog, resumeGame, state],
   );
@@ -178,6 +166,10 @@ export function HomeScreen() {
         </View>
 
         <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
+          {showRecovery && (
+            <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
+          )}
+
           {canResume && (
             <Pressable
               accessibilityRole="button"
@@ -199,6 +191,31 @@ export function HomeScreen() {
                 {landscape
                   ? null
                   : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>}
+              </View>
+            </Pressable>
+          )}
+
+          {canReview && (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={translate('home.review_a11y')}
+              testID="review-last-game-button"
+              style={({ pressed }) => [
+                styles.modeBtn,
+                landscape ? styles.modeBtnLandscape : null,
+                styles.resumeBtn,
+                pressed && styles.pressed,
+              ]}
+              onPress={handleReview}
+            >
+              <View style={styles.btnIconSlot}>
+                <Feather name="eye" size={24} color="#A0D080" />
+              </View>
+              <View style={styles.btnTextCol}>
+                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>{translate('home.review')}</Text>
+                {landscape
+                  ? null
+                  : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.review_sub')}</Text>}
               </View>
             </Pressable>
           )}

@@ -5,6 +5,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
 import { QuizCard } from '@/features/learn/quiz-card';
 import { QUIZ_CORRECT_FLASH_MS, resolveQuizTap } from '@/features/learn/quiz-selection';
@@ -38,7 +39,7 @@ function LessonsIncompleteGate() {
 // eslint-disable-next-line max-lines-per-function
 export function GraduationScreen() {
   const { progress, completeQuiz } = useLearnProgress();
-  const { startGame } = useGame();
+  const { startGame, state } = useGame();
   const posthog = usePostHog();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [softMessage, setSoftMessage] = useState<string | null>(null);
@@ -64,10 +65,16 @@ export function GraduationScreen() {
   const playFirstGame = useCallback(() => {
     hapticSelection();
     posthog.capture('learn_play_first_game', { source: 'graduation' });
-    enableBeginnerGameAids();
-    startGame('vs-computer');
-    router.replace('/game');
-  }, [posthog, startGame]);
+    requestReplaceActiveGame({
+      source: 'learn',
+      liveState: state,
+      onReplace: () => {
+        enableBeginnerGameAids();
+        startGame('vs-computer');
+        router.replace('/game');
+      },
+    });
+  }, [posthog, startGame, state]);
 
   const goToHub = useCallback(() => {
     hapticLight();
