@@ -35,9 +35,9 @@ artifacts/qa-videos/
 # AI skills cache
 .cache
 
-# Fastlane — staged screenshots (source: docs/marketing/); local reports; ASC key export
+# Fastlane — iOS staging is generated (source: docs/marketing/); local reports; ASC key export
 fastlane/screenshots/**/*.png
-fastlane/metadata/android/**/images/**/*.png
+# Play phoneScreenshots PNGs are committed (Track A / #160). Re-stage: pnpm screenshots:prepare
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/README.md
