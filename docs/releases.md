@@ -165,6 +165,7 @@ Full first-submission checklist: [production-checklist.md](./production-checklis
 
 - [release-gates.md](./release-gates.md) — Track A vs Track B, hard gates, one-concern-per-PR
 - [ios-testing-and-store.md](./ios-testing-and-store.md) — dev client, TestFlight, metadata
+- [android-play-release.md](./android-play-release.md) — Play Console, Fastlane, EAS Android submit
 - [production-checklist.md](./production-checklist.md) — first App Store / Play submission
 - [docs/evidence/](./evidence/) — before/after QA screenshots
 - [docs/remotion/README.md](./remotion/README.md) — video compositions
