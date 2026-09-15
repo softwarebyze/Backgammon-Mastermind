@@ -1,0 +1,63 @@
+#158 pnpm 10 overrides / patchedDependencies evidence
+host: Linux (no Xcode)  pnpm 10.12.3
+command: rm -rf node_modules && pnpm install --frozen-lockfile && pnpm check-all
+
+=== pnpm install --frozen-lockfile ===
+Lockfile is up to date, resolution step is skipped
+Packages: +1865
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Progress: resolved 0, reused 653, downloaded 0, added 0
+Progress: resolved 0, reused 1711, downloaded 0, added 685
+Progress: resolved 0, reused 1711, downloaded 0, added 1865, done
+
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: @parcel/watcher, esbuild, sharp, unrs-resolver.     │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Done in 3.5s using pnpm v10.12.3
+
+=== verification ===
+pnpm 10.12.3
+date: 2026-09-15T03:15:29Z
+
+## ignored-field warning
+absent from pnpm install --frozen-lockfile
+
+## session-replay package
+absent from node_modules (override "-" applied)
+
+## PostHog patch
+101:  echo "warning: posthog-cli not found; skipping PostHog sourcemap upload (app binary will still compile)."
+102:  SKIP_POSTHOG_UPLOAD=1
+104:  SKIP_POSTHOG_UPLOAD=0
+110:  SKIP_POSTHOG_UPLOAD=1
+154:if [ "${SKIP_POSTHOG_UPLOAD:-0}" = "1" ]; then
+
+=== workspace packages (pnpm list -r --depth -1) ===
+backgammonmastermind@1.0.1 only (remotion/ not imported)
+
+=== check-all excerpt ===
+> backgammonmastermind@1.0.1 check-all /workspace
+> pnpm run lint && pnpm run type-check && pnpm run lint:translations && pnpm run test && pnpm run knip
+> backgammonmastermind@1.0.1 lint /workspace
+✖ 5 problems (0 errors, 5 warnings)
+> backgammonmastermind@1.0.1 type-check /workspace
+> backgammonmastermind@1.0.1 lint:translations /workspace
+> backgammonmastermind@1.0.1 test /workspace
+PASS src/lib/analytics/posthog-xcode-skip.test.ts
+PASS src/lib/analytics/posthog-context.test.ts
+Test Suites: 62 passed, 62 total
+Tests:       336 passed, 336 total
+> backgammonmastermind@1.0.1 knip /workspace
+> pnpm dlx knip
+Configuration hints (2)
+fastlane    knip.json  Remove from ignoreBinaries                                   
+.css        knip.json  Compiled extension excluded by project (imports not followed)
+
+=== remaining manual gate ===
+Local iOS archive skipped: this environment has no Xcode / Mac.
