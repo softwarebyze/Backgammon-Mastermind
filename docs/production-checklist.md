@@ -4,6 +4,8 @@ Use this before the first App Store / Play Store submission.
 
 **Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
 
+**Release gates:** **[release-gates.md](./release-gates.md)** — Track A (Play + version sync, no gameplay) vs Track B (v1.1.0 correctness). Hard gates (`check-all`, Expo Doctor, Maestro, dice matrix, save recovery, device smoke) live there, not as a second checklist here.
+
 **Last updated:** 2026-08-28 — first production release: PR #150 merged (stable SDK 56), production iOS build auto-submitting, metadata + screenshots pushed.
 
 ## CI: what runs on every PR?
@@ -43,7 +45,7 @@ Use this before the first App Store / Play Store submission.
 
 | Step | Status | Action |
 | ---- | ------ | ------ |
-| 1. Version bump | Done | **v1.0.0** in `package.json` / store metadata |
+| 1. Version bump | Done | **v1.0.1** in `package.json` / `store.config.json` (matches live ASC; EAS build numbers stay remote) |
 | 2. iOS dev client | Done | Rebuild when native deps / display name / `CFBundleDisplayName` change (this ship: spaced name) |
 | 3. Device QA | Partial | v0.1.x TestFlight done — **re-playtest** the preview binary from this ship |
 | 4. Preview build (TestFlight) | Ready to dispatch | Preview ASC **`6781121420`** (`com.backgammonmastermind.preview`) named **Backgammon Mastermind Preview** |

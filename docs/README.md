@@ -4,6 +4,7 @@
 
 | Doc | What it’s for |
 |-----|----------------|
+| [release-gates.md](./release-gates.md) | **Track A vs Track B**, hard gates, one-concern-per-PR |
 | [eas-metadata.md](./eas-metadata.md) | **EAS Metadata** — `store.config.json` → App Store Connect (`metadata:push*`) |
 | [store-screenshots.md](./store-screenshots.md) | **Fastlane** screenshot upload to ASC / Play (agents can run) |
 | [website.md](./website.md) | Vercel web app, privacy/terms URLs, marketing plan |
