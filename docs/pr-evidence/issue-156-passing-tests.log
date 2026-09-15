@@ -1,0 +1,14 @@
+
+> backgammonmastermind@1.0.1 test /workspace
+> jest --testPathPattern\=persistence\|persisted-session\|resume-game\|request-new-game
+
+PASS src/features/game/request-new-game.test.ts
+PASS src/lib/game/persistence.test.ts
+PASS src/lib/game/resume-game.test.ts
+PASS src/lib/game/persisted-session.test.ts
+
+Test Suites: 4 passed, 4 total
+Tests:       30 passed, 30 total
+Snapshots:   0 total
+Time:        1.175 s
+Ran all test suites matching /persistence|persisted-session|resume-game|request-new-game/i.
