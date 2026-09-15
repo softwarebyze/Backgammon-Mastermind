@@ -1,0 +1,7 @@
+# pnpm 10 reads overrides and patches from this file, not package.json.
+# Omitting `packages` keeps only the app root in the workspace (not remotion/).
+overrides:
+  posthog-react-native-session-replay: '-'
+
+patchedDependencies:
+  posthog-react-native@4.57.0: patches/posthog-react-native@4.57.0.patch

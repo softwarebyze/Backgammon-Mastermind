@@ -42,3 +42,18 @@ describe('storage.getItem', () => {
     expect(store.empty).toBeUndefined();
   });
 });
+
+describe('storage raw string helpers', () => {
+  beforeEach(() => {
+    for (const key of Object.keys(store)) {
+      delete store[key];
+    }
+    jest.resetModules();
+  });
+
+  it('round-trips raw strings without JSON parsing', () => {
+    const { getRawString, setRawString } = require('./storage') as typeof storage;
+    setRawString('session', '{not-json');
+    expect(getRawString('session')).toBe('{not-json');
+  });
+});

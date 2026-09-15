@@ -5,6 +5,7 @@ import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } fr
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
 import { LessonRow } from '@/features/learn/lesson-row';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
@@ -28,7 +29,7 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 /* eslint-disable-next-line max-lines-per-function -- hub list + skip CTA */
 export function LearnHubScreen() {
   const { progress, startLearning } = useLearnProgress();
-  const { startGame } = useGame();
+  const { startGame, state } = useGame();
   const posthog = usePostHog();
   const { width, height } = useWindowDimensions();
   const landscape = isLandscapeLayout(width, height);
@@ -47,10 +48,16 @@ export function LearnHubScreen() {
   const playFirstGame = useCallback((source: 'hub_cta' | 'hub_skip') => {
     hapticSelection();
     posthog.capture('learn_play_first_game', { source });
-    enableBeginnerGameAids();
-    startGame('vs-computer');
-    router.replace('/game');
-  }, [posthog, startGame]);
+    requestReplaceActiveGame({
+      source: 'learn',
+      liveState: state,
+      onReplace: () => {
+        enableBeginnerGameAids();
+        startGame('vs-computer');
+        router.replace('/game');
+      },
+    });
+  }, [posthog, startGame, state]);
 
   return (
     <>

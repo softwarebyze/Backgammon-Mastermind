@@ -24,3 +24,12 @@ export async function setItem<T>(key: string, value: T) {
 export async function removeItem(key: string) {
   storage.remove(key);
 }
+
+/** Raw MMKV access for atomic session commits that must quarantine, not drop, bad JSON. */
+export function getRawString(key: string): string | undefined {
+  return storage.getString(key);
+}
+
+export function setRawString(key: string, value: string): void {
+  storage.set(key, value);
+}

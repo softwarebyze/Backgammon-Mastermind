@@ -191,14 +191,6 @@
       ]
     }
   },
-  "pnpm": {
-    "overrides": {
-      "posthog-react-native-session-replay": "-"
-    },
-    "patchedDependencies": {
-      "posthog-react-native@4.57.0": "patches/posthog-react-native@4.57.0.patch"
-    }
-  },
   "osMetadata": {
     "initVersion": "9.0.0"
   }
