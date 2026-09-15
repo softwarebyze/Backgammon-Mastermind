@@ -57,7 +57,7 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
   fetchRetryCount: 3,
   fetchRetryDelay: 3000,
   // Native replay + crashes come from @posthog/react-native-plugin (PostHog ~> 3.69).
-  // pnpm.overrides drops archived posthog-react-native-session-replay (PostHog ~> 3.58.1)
+  // pnpm-workspace.yaml overrides drop archived posthog-react-native-session-replay (PostHog ~> 3.58.1)
   // so CocoaPods is not asked to satisfy both ranges.
   enableSessionReplay: enableNativePostHog,
   sessionReplayConfig: {
