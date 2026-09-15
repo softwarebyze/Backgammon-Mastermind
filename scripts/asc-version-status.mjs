@@ -67,10 +67,20 @@ function loadAscKey() {
   if (fromEnv) return fromEnv;
 
   if (!fs.existsSync(KEY_JSON)) {
-    execFileSync(process.execPath, [path.join(ROOT, 'scripts/asc-api-key-from-eas.mjs')], {
-      cwd: ROOT,
-      stdio: 'inherit',
-    });
+    try {
+      execFileSync(process.execPath, [path.join(ROOT, 'scripts/asc-api-key-from-eas.mjs')], {
+        cwd: ROOT,
+        stdio: 'inherit',
+      });
+    }
+    catch (err) {
+      const nested = err instanceof Error ? err.message : String(err);
+      throw new Error(
+        nested.includes('Command failed')
+          ? 'Missing ASC key. Run: pnpm screenshots:asc-key  (or set EXPO_TOKEN / eas login)'
+          : nested,
+      );
+    }
   }
   if (!fs.existsSync(KEY_JSON)) {
     throw new Error('Missing ASC key. Run: pnpm screenshots:asc-key  (or set ASC_KEY_ID / ASC_ISSUER_ID / ASC_KEY_PATH)');
