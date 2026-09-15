@@ -73,19 +73,10 @@ function canUseLargerDieToBearOff(state: GameState, player: Player, fromPoint: n
 }
 
 // ---------------------------------------------------------------------------
-// Legal move generation
+// Raw single-step generation (no full-turn dice rules)
 // ---------------------------------------------------------------------------
 
-/**
- * Returns all legal moves for the current player in the given state.
- * Duplicates caused by equal die values are eliminated.
- */
-export function getLegalMoves(state: GameState): Move[] {
-  const { remainingDice, currentPlayer: player, bar } = state;
-  if (remainingDice.length === 0)
-    return [];
-
-  // Deduplicate die values so identical dice don't produce duplicate moves.
+function uniqueRemainingDice(remainingDice: number[]): Array<{ value: number; index: number }> {
   const uniqueDice: Array<{ value: number; index: number }> = [];
   const seen = new Set<number>();
   for (let i = 0; i < remainingDice.length; i++) {
@@ -95,7 +86,19 @@ export function getLegalMoves(state: GameState): Move[] {
       uniqueDice.push({ value: v, index: i });
     }
   }
+  return uniqueDice;
+}
 
+/**
+ * Single-die destinations from this position. Does not apply USBGF max-dice or
+ * higher-die rules — `getLegalMoves` filters those afterwards.
+ */
+function getRawSingleStepMoves(state: GameState): Move[] {
+  const { remainingDice, currentPlayer: player, bar } = state;
+  if (remainingDice.length === 0)
+    return [];
+
+  const uniqueDice = uniqueRemainingDice(remainingDice);
   const moves: Move[] = [];
 
   // ── Bar: must enter before any other move ──────────────────────────────────
@@ -127,7 +130,6 @@ export function getLegalMoves(state: GameState): Move[] {
         }
       }
       else if (inHome && isInHomeBoard(player, fromPoint)) {
-        // Potential bear-off
         const exactExit
           = player === 'white' ? fromPoint - die === 0 : fromPoint + die === 25;
         const overshot
@@ -146,8 +148,93 @@ export function getLegalMoves(state: GameState): Move[] {
   return moves;
 }
 
+function positionKey(state: GameState): string {
+  let key = `${state.currentPlayer}:${state.remainingDice.join(',')}:`;
+  key += `b${state.bar.white},${state.bar.black};`;
+  key += `o${state.borneOff.white},${state.borneOff.black};`;
+  for (let i = 1; i <= 24; i++) {
+    const p = state.points[i]!;
+    if (p.count > 0)
+      key += `${i}${p.player === 'white' ? 'w' : 'b'}${p.count},`;
+  }
+  return key;
+}
+
+/** Deepest number of remaining dice that can still be played from `state`. */
+function maxDiceUsable(state: GameState, memo: Map<string, number>): number {
+  if (state.winner || state.remainingDice.length === 0)
+    return 0;
+
+  const key = positionKey(state);
+  const cached = memo.get(key);
+  if (cached !== undefined)
+    return cached;
+
+  const raw = getRawSingleStepMoves(state);
+  if (raw.length === 0) {
+    memo.set(key, 0);
+    return 0;
+  }
+
+  let best = 0;
+  const target = state.remainingDice.length;
+  for (const move of raw) {
+    const used = 1 + maxDiceUsable(applyMovePhysical(state, move), memo);
+    if (used > best)
+      best = used;
+    if (best === target)
+      break;
+  }
+
+  memo.set(key, best);
+  return best;
+}
+
+/**
+ * USBGF: keep first moves that use the most dice; if only one mixed die can be
+ * used, keep the higher. Never drops every candidate — raw empty iff legal empty.
+ */
+function filterFullTurnLegalMoves(state: GameState, raw: Move[]): Move[] {
+  if (raw.length <= 1 || state.remainingDice.length <= 1)
+    return raw;
+
+  const memo = new Map<string, number>();
+  const scored: Array<{ move: Move; usage: number; die: number }> = [];
+  let maxUsage = 0;
+
+  for (const move of raw) {
+    const die = state.remainingDice[move.dieIndex]!;
+    const usage = 1 + maxDiceUsable(applyMovePhysical(state, move), memo);
+    scored.push({ move, usage, die });
+    if (usage > maxUsage)
+      maxUsage = usage;
+  }
+
+  let legal = scored.filter(s => s.usage === maxUsage);
+  if (maxUsage === 1) {
+    const higher = Math.max(...state.remainingDice);
+    const lower = Math.min(...state.remainingDice);
+    if (higher !== lower && legal.some(s => s.die === higher))
+      legal = legal.filter(s => s.die === higher);
+  }
+
+  return legal.map(s => s.move);
+}
+
+// ---------------------------------------------------------------------------
+// Legal move generation
+// ---------------------------------------------------------------------------
+
+/**
+ * Legal first moves for the current player, after USBGF max-dice / higher-die
+ * filtering. Duplicates caused by equal die values are eliminated.
+ */
+export function getLegalMoves(state: GameState): Move[] {
+  return filterFullTurnLegalMoves(state, getRawSingleStepMoves(state));
+}
+
 export function hasAnyLegalMove(state: GameState): boolean {
-  return getLegalMoves(state).length > 0;
+  return getRawSingleStepMoves(state).length > 0;
 }
 
 /** End the current turn and hand dice to the opponent. */
@@ -371,15 +458,14 @@ function cloneState(state: GameState): GameState {
 }
 
 /**
- * Apply a move and return the next game state.
- * Automatically advances the turn when no dice remain or no moves are available.
+ * Move a checker and consume a die. Does not pass the turn or consult legality,
+ * so full-turn search cannot recurse through `getLegalMoves` / `applyMove`.
  */
-export function applyMove(state: GameState, move: Move): GameState {
+function applyMovePhysical(state: GameState, move: Move): GameState {
   const player = state.currentPlayer;
   const opp = opponent(player);
   const next = cloneState(state);
 
-  // Remove from source
   if (move.from === BAR_POINT) {
     next.bar[player]--;
   }
@@ -390,14 +476,12 @@ export function applyMove(state: GameState, move: Move): GameState {
     }
   }
 
-  // Place at destination
   if (move.to === BEAR_OFF) {
     next.borneOff[player]++;
   }
   else {
     const dest = next.points[move.to];
     if (dest.player === opp && dest.count === 1) {
-      // Hit a blot
       next.bar[opp]++;
       next.points[move.to] = { player, count: 1 };
     }
@@ -406,24 +490,26 @@ export function applyMove(state: GameState, move: Move): GameState {
     }
   }
 
-  // Consume die
   next.remainingDice.splice(move.dieIndex, 1);
+  next.selectedPoint = null;
 
-  // Win condition
   if (next.borneOff[player] === TOTAL_CHECKERS) {
     next.winner = player;
     next.phase = 'game-over';
-    next.selectedPoint = null;
-    return next;
-  }
-
-  // Switch turn when dice are exhausted or no moves remain
-  next.selectedPoint = null;
-  if (next.remainingDice.length === 0 || !hasAnyLegalMove(next)) {
-    return finishMovingTurn(next);
   }
 
   return next;
+}
+
+/**
+ * Apply a move and return the next game state.
+ * Automatically advances the turn when no dice remain or no moves are available.
+ */
+export function applyMove(state: GameState, move: Move): GameState {
+  const next = applyMovePhysical(state, move);
+  if (next.phase === 'game-over')
+    return next;
+  return finishMovingTurn(next);
 }
 
 /** Roll two dice (pure, does not mutate state). */

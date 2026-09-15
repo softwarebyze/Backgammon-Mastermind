@@ -317,9 +317,7 @@ describe('bearing off', () => {
  * Issue #155 / PR #153 audit positions.
  * USBGF: play both dice when possible; if only one die can be used, play the higher.
  *
- * `getLegalMoves` currently returns raw single-step entries (bar→24 and bar→23)
- * without full-turn filtering. These cases encode the CORRECT first-move set
- * (only bar→23) and are expected to FAIL until the engine fix lands.
+ * These cases encode the CORRECT first-move set (only bar→23).
  */
 describe('getLegalMoves full-turn dice usage (issue #155)', () => {
   const barDestinations = (state: ReturnType<typeof createPositionState>) =>
@@ -370,6 +368,177 @@ describe('getLegalMoves full-turn dice usage (issue #155)', () => {
 
     expect(state.phase).toBe('moving');
     expect(barDestinations(state)).toEqual([23]);
+  });
+});
+
+describe('getLegalMoves full-turn: lower die still legal when higher is blocked', () => {
+  it('allows bar→24 with the 1 when die-2 entry is blocked', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 6, player: 'white', count: 14 },
+        { point: 23, player: 'black', count: 2 },
+        { point: 22, player: 'black', count: 2 },
+        { point: 4, player: 'black', count: 2 },
+        { point: 19, player: 'black', count: 9 },
+      ],
+      bar: { white: 1 },
+      dice: [1, 2],
+      mode: 'vs-human',
+    });
+
+    expect(getLegalMoves(state).map(m => m.to)).toEqual([24]);
+  });
+});
+
+describe('getLegalMoves full-turn: black', () => {
+  const barDestinations = (state: ReturnType<typeof createPositionState>) =>
+    getLegalMoves(state)
+      .filter(m => m.from === BAR_POINT)
+      .map(m => m.to);
+
+  it('must use both dice: only bar→2 (die 2) leaves 19→20 with the 1', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 19, player: 'black', count: 14 },
+        { point: 3, player: 'white', count: 2 },
+        { point: 21, player: 'white', count: 2 },
+        { point: 6, player: 'white', count: 11 },
+      ],
+      bar: { black: 1 },
+      dice: [1, 2],
+      currentPlayer: 'black',
+      mode: 'vs-human',
+    });
+
+    expect(barDestinations(state)).toEqual([2]);
+    const enter2 = getLegalMoves(state).find(m => m.from === BAR_POINT && m.to === 2);
+    const after = applyMove(state, enter2!);
+    expect(getLegalMoves(after).some(m => m.from === 19 && m.to === 20)).toBe(true);
+  });
+
+  it('must use the higher die when neither entry allows a second move', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 19, player: 'black', count: 14 },
+        { point: 3, player: 'white', count: 2 },
+        { point: 21, player: 'white', count: 2 },
+        { point: 20, player: 'white', count: 2 },
+        { point: 6, player: 'white', count: 9 },
+      ],
+      bar: { black: 1 },
+      dice: [1, 2],
+      currentPlayer: 'black',
+      mode: 'vs-human',
+    });
+
+    expect(barDestinations(state)).toEqual([2]);
+  });
+});
+
+describe('getLegalMoves full-turn: bearing off', () => {
+  it('must not bear off with 6 when 6→5 uses both dice', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 6, player: 'white', count: 1 },
+        { point: 5, player: 'white', count: 1 },
+        { point: 4, player: 'black', count: 2 },
+      ],
+      borneOff: { white: 13 },
+      dice: [6, 1],
+      mode: 'vs-human',
+    });
+
+    const moves = getLegalMoves(state);
+    expect(moves).toHaveLength(1);
+    expect(moves[0]).toMatchObject({ from: 6, to: 5 });
+  });
+
+  it('black must not bear off with 6 when 19→20 uses both dice', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 19, player: 'black', count: 1 },
+        { point: 20, player: 'black', count: 1 },
+        { point: 21, player: 'white', count: 2 },
+      ],
+      borneOff: { black: 13 },
+      dice: [6, 1],
+      currentPlayer: 'black',
+      mode: 'vs-human',
+    });
+
+    const moves = getLegalMoves(state);
+    expect(moves).toHaveLength(1);
+    expect(moves[0]).toMatchObject({ from: 19, to: 20 });
+  });
+});
+
+describe('getLegalMoves full-turn: doubles', () => {
+  it('keeps every first move that uses three of four 2s', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 8, player: 'white', count: 1 },
+        { point: 6, player: 'white', count: 1 },
+        { point: 4, player: 'white', count: 1 },
+        { point: 2, player: 'black', count: 2 },
+      ],
+      dice: [2, 2],
+      mode: 'vs-human',
+    });
+
+    const pairs = getLegalMoves(state).map(m => `${m.from}-${m.to}`).sort();
+    expect(pairs).toEqual(['6-4', '8-6']);
+  });
+
+  it('still generates opening double-6 moves', () => {
+    const state = applyDiceRoll(createInitialState('vs-human'), [6, 6]);
+    const moves = getLegalMoves(state);
+    expect(moves.length).toBeGreaterThan(0);
+    expect(moves.every(m => m.from >= 1 && m.from <= 24)).toBe(true);
+  });
+});
+
+describe('getLegalMoves full-turn: compound paths', () => {
+  it('does not treat the stranding bar entry as a reachable compound start', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 6, player: 'white', count: 14 },
+        { point: 22, player: 'black', count: 2 },
+        { point: 4, player: 'black', count: 2 },
+        { point: 19, player: 'black', count: 11 },
+      ],
+      bar: { white: 1 },
+      dice: [1, 2],
+      mode: 'vs-human',
+    });
+
+    expect(findMoveSequence(state, BAR_POINT, 24)).toBeNull();
+    const reachable = getReachableDestinations(state, BAR_POINT);
+    expect(reachable.has(24)).toBe(false);
+    expect(reachable.has(23)).toBe(true);
+  });
+});
+
+describe('getLegalMoves full-turn: responsiveness', () => {
+  it('enumerates representative positions quickly', () => {
+    const opening = applyDiceRoll(createInitialState('vs-human'), [6, 6]);
+    const bar = createPositionState({
+      placements: [
+        { point: 6, player: 'white', count: 14 },
+        { point: 22, player: 'black', count: 2 },
+        { point: 4, player: 'black', count: 2 },
+        { point: 19, player: 'black', count: 11 },
+      ],
+      bar: { white: 1 },
+      dice: [1, 2],
+      mode: 'vs-human',
+    });
+
+    const start = performance.now();
+    for (let i = 0; i < 40; i++) {
+      getLegalMoves(opening);
+      getLegalMoves(bar);
+    }
+    expect(performance.now() - start).toBeLessThan(1000);
   });
 });
 
