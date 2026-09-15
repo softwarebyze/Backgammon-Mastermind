@@ -1,0 +1,69 @@
+
+> backgammonmastermind@1.0.1 test /workspace
+> jest src/lib/game/moves.test.ts --no-coverage
+
+PASS src/lib/game/moves.test.ts
+  applyOpeningDieRoll
+    ✓ passes the opening die to the opponent (2 ms)
+    ✓ starts the first turn with both opening dice (TestFlight #2)
+    ✓ keeps tied opening dice for UI, then waits for a re-roll (1 ms)
+    ✓ gives black the first turn when black rolls higher
+  createInitialPoints
+    ✓ sets the standard 2-5-3-5 starting layout (1 ms)
+  applyDiceRoll
+    ✓ enters the moving phase with both dice available
+    ✓ grants four moves on doubles (1 ms)
+    ✓ enters no-move phase when no legal move exists after roll
+    ✓ passTurn clears dice and hands play to the opponent (1 ms)
+  getLegalMoves
+    ✓ returns opening moves after a dice roll (1 ms)
+    ✓ requires bar entry when checkers are on the bar
+  compound moves
+    ✓ findMoveSequence uses both dice in one tap (TestFlight #4) (1 ms)
+    ✓ getReachableDestinations includes compound targets beyond single-die moves (1 ms)
+  getLegalMoves / applyMove
+    ✓ moves a checker and consumes one die
+    ✓ hits a blot and sends the opponent to the bar (1 ms)
+    ✓ requires bar entry before other moves
+    ✓ ends the game when the fifteenth checker is borne off
+  applyMove (blot hit)
+    ✓ hits a blot and sends opponent to the bar (1 ms)
+  bearing off
+    ✓ allows bear off when all checkers are home
+  getLegalMoves full-turn dice usage (issue #155)
+    ✓ must use both dice: only bar→23 (die 2) is legal because it leaves 6→5 with the 1 (1 ms)
+    ✓ must use the higher die: only bar→23 is legal when neither entry allows a second move
+  getLegalMoves full-turn: lower die still legal when higher is blocked
+    ✓ allows bar→24 with the 1 when die-2 entry is blocked
+  getLegalMoves full-turn: black
+    ✓ must use both dice: only bar→2 (die 2) leaves 19→20 with the 1 (3 ms)
+    ✓ must use the higher die when neither entry allows a second move (1 ms)
+  getLegalMoves full-turn: bearing off
+    ✓ must not bear off with 6 when 6→5 uses both dice
+    ✓ black must not bear off with 6 when 19→20 uses both dice (1 ms)
+  getLegalMoves full-turn: doubles
+    ✓ keeps every first move that uses three of four 2s
+    ✓ still generates opening double-6 moves
+  getLegalMoves full-turn: compound paths
+    ✓ does not treat the stranding bar entry as a reachable compound start (1 ms)
+  getLegalMoves full-turn: responsiveness
+    ✓ enumerates representative positions quickly (5 ms)
+  calculatePipCount
+    ✓ is lower when checkers are closer to home
+    ✓ counts board and bar pips for each player
+  rollDice
+    ✓ returns values between 1 and 6 (3 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       33 passed, 33 total
+Snapshots:   0 total
+Time:        0.347 s, estimated 1 s
+Ran all test suites matching /src\/lib\/game\/moves.test.ts/i.
+
+---
+pnpm check-all (same revision)
+lint: 0 errors, 5 pre-existing warnings
+type-check: passed
+lint:translations: passed
+jest: 62 suites, 336 tests passed
+knip: passed (config hints only)
