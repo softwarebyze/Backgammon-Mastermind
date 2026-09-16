@@ -1,0 +1,7 @@
+{
+  "platforms": ["ios", "android"],
+  "params": {
+    "lesson-id": "goal-board",
+    "learn/[lesson-id].lesson-id": "goal-board"
+  }
+}
