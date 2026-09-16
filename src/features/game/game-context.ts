@@ -10,6 +10,8 @@ export type GameContextType = {
   moveLog: MoveLogEntry[];
   replayBaseline: GameState | null;
   startGame: (mode: GameMode) => void;
+  /** Dev/QA: start a playable session from an arbitrary board (skips opening ceremony). */
+  startFromPosition: (state: GameState) => void;
   resumeGame: () => boolean;
   resetGame: () => void;
   /** Remount key for opening ceremony after new/reset game. */

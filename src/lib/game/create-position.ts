@@ -29,8 +29,8 @@ export function createEmptyPoints(): BoardPoint[] {
 }
 
 /**
- * Build a GameState from an arbitrary position — used by learn lessons and tests.
- * Does not go through the opening-roll ceremony.
+ * Build a GameState from an arbitrary position — used by learn lessons, tests,
+ * and the Settings → Developer position loader. Skips the opening-roll ceremony.
  */
 export function createPositionState(options: CreatePositionOptions = {}): GameState {
   const points = options.useStandardSetup

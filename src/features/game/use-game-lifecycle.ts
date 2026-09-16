@@ -37,18 +37,25 @@ export function useGameLifecycle({
     setCeremonyKey(k => k + 1);
   }, []);
 
-  const startGame = useCallback((mode: GameMode) => {
+  const beginSession = useCallback((next: GameState) => {
     clearAITimeout();
     resetAnimation();
     clearActiveGame();
     resetMoveLog();
     clearTimeline();
     bumpCeremony();
-    const initial = createInitialState(mode);
-    savePersistedSession({ state: initial, moveLog: [], replayBaseline: null });
-    resetTimeline(initial);
-    setState(initial);
+    savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
+    resetTimeline(next);
+    setState(next);
   }, [bumpCeremony, clearAITimeout, resetAnimation, resetMoveLog, clearTimeline, resetTimeline, setState]);
+
+  const startGame = useCallback((mode: GameMode) => {
+    beginSession(createInitialState(mode));
+  }, [beginSession]);
+
+  const startFromPosition = useCallback((next: GameState) => {
+    beginSession(next);
+  }, [beginSession]);
 
   const resumeGame = useCallback(() => {
     return performResume({
@@ -74,5 +81,5 @@ export function useGameLifecycle({
     setState(next);
   }, [bumpCeremony, clearAITimeout, resetAnimation, resetMoveLog, resetTimeline, setState, state]);
 
-  return { startGame, resumeGame, resetGame, ceremonyKey };
+  return { startGame, startFromPosition, resumeGame, resetGame, ceremonyKey };
 }

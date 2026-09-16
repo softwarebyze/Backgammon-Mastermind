@@ -21,6 +21,8 @@ import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
+import { DeveloperItem } from './developer-item';
+import { isDeveloperToolsEnabled } from './developer-tools-gate';
 
 export function SettingsScreen() {
   const posthog = usePostHog();
@@ -109,6 +111,14 @@ export function SettingsScreen() {
               onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.website))}
             />
           </SettingsContainer>
+
+          {isDeveloperToolsEnabled()
+            ? (
+                <SettingsContainer title="settings.developer">
+                  <DeveloperItem />
+                </SettingsContainer>
+              )
+            : null}
         </View>
       </ScrollView>
     </>
