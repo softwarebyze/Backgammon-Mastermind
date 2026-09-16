@@ -34,10 +34,16 @@ if [ -n "$android_bundle" ]; then
 fi
 
 if [ -z "$inputs" ]; then
-  echo "No platform bundles to merge."
+  echo "No platform bundles to merge (capture skipped or failed)."
   if [ "$MODE" = "pr" ] && [ -n "${PR_NUMBER:-}" ]; then
-    screenmap-ci status --state failed --post \
+    # PR capture jobs succeed with an empty bundle when there is no map on the
+    # screenmaps branch yet (auto_baseline cannot dispatch until
+    # screenmap-baseline.yml is on the default branch). Do not stamp "failed"
+    # over that no-baseline comment.
+    screenmap-ci status --state no-baseline --post \
       --repo "$REPO" --pr "$PR_NUMBER" \
+      --repo-url "https://github.com/${REPO}" \
+      --branch "$BRANCH" \
       ${RUN_URL:+--run-url "$RUN_URL"} || true
   fi
   exit 0

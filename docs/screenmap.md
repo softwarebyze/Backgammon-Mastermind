@@ -62,6 +62,8 @@ CI looks for the release first, then the latest successful `screenmap-ios-app` a
 
 Run **screenmap · baseline** once (`workflow_dispatch`) or push to `main`. PR diffs need that baseline map on the `screenmaps` branch.
 
+Until that exists, PR capture jobs stay green (Android still builds the Gradle APK) but skip packing a `.scrmap`. The sticky comment is **no-baseline**, not a failed run. `auto_baseline` cannot dispatch `screenmap-baseline.yml` until that workflow is on the default branch.
+
 ## Cost
 
 iOS is macOS (~10× Linux). Android is `ubuntu-latest` (~1/10th).
