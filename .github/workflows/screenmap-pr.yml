@@ -1,0 +1,36 @@
+# .github/workflows/screenmap-pr.yml — review what a PR changes on-screen
+# Template: https://github.com/aleqsio/screenmap/blob/main/action/templates/screenmap-pr.yml
+name: screenmap · PR changes
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+concurrency:
+  group: screenmap-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+permissions:
+  contents: write        # push bundles to the screenmaps branch
+  pull-requests: write   # the sticky comment
+  actions: write         # start the baseline if no map exists yet
+jobs:
+  changes:
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: aleqsio/screenmap@v1
+        with:
+          mode: pr
+          expo_token: ${{ secrets.EXPO_TOKEN }}   # EAS builds or reuses the dev client
+          # app_path: build/MyApp.app   # ...or your own simulator build, with no expo_token
+          # platform: ios   # or android, on runs-on: ubuntu-latest — a tenth of the macOS rate
+          # Agent is optional. Uncomment both when ANTHROPIC_API_KEY is set:
+          # agent_provider: claude
+          # agent_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # eas_profile defaults to development-simulator (added in eas.json)
+          # project: omitted — Expo app is the repo root
+          # publish: omitted — public repo (raw GitHub URLs work)

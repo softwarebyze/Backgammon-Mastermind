@@ -35,6 +35,9 @@ artifacts/qa-videos/
 # AI skills cache
 .cache
 
+# Screenmap generated output (committed flows live in .screenmap/flows/)
+.screenmap/out/
+
 # Fastlane — iOS staging is generated (source: docs/marketing/); local reports; ASC key export
 fastlane/screenshots/**/*.png
 # Play phoneScreenshots PNGs are committed (Track A / #160). Re-stage: pnpm screenshots:prepare

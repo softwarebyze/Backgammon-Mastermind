@@ -1,0 +1,45 @@
+# .github/workflows/screenmap-baseline.yml — keep the map of main fresh, and
+# turn agent discoveries into committed flows
+# Template: https://github.com/aleqsio/screenmap/blob/main/action/templates/screenmap-baseline.yml
+name: screenmap · baseline
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      full:
+        description: Rebuild the whole map instead of incrementally
+        type: boolean
+        default: false
+concurrency:
+  group: screenmap-baseline
+  cancel-in-progress: false
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write         # re-run PRs waiting on this map
+jobs:
+  baseline:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: aleqsio/screenmap@v1
+        with:
+          mode: baseline
+          full: ${{ inputs.full }}
+          expo_token: ${{ secrets.EXPO_TOKEN }}   # EAS builds or reuses the dev client
+          flows_pr: "true"
+          # app_path: build/MyApp.app   # ...or your own simulator build, with no expo_token
+          # platform: ios   # or android on ubuntu-latest
+          # Agent is optional. Uncomment both when ANTHROPIC_API_KEY is set:
+          # agent_provider: claude
+          # agent_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # eas_profile defaults to development-simulator (added in eas.json)
+          # project: omitted — Expo app is the repo root
+          # publish: omitted — public repo (raw GitHub URLs work)
