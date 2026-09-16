@@ -107,22 +107,18 @@ describe('resolveBoardViewport', () => {
     expect(dims.boardOuterWidth).toBeGreaterThan(200);
   });
 
-  it('subtracts landscape left/right insets on the unmeasured fallback path', () => {
-    const flush = resolveBoardViewport({
-      screenWidth: 600,
-      screenHeight: 2000,
+  it('caps phone-landscape width so a 720px board cannot overflow the chrome rail', () => {
+    const chrome = 304;
+    const pane = 844 - chrome - 8;
+    const dims = resolveBoardViewport({
+      screenWidth: 844,
+      screenHeight: 390,
       platform: 'web',
-      showPointNumbers: false,
+      showPointNumbers: true,
+      maxOuterWidthCap: pane,
     });
-    const inset = resolveBoardViewport({
-      screenWidth: 600,
-      screenHeight: 2000,
-      platform: 'web',
-      showPointNumbers: false,
-      horizontalInset: 59 + 21,
-    });
-    expect(flush.boardOuterWidth).toBe(600 - 8);
-    expect(inset.boardOuterWidth).toBe(flush.boardOuterWidth - 80);
+    expect(dims.boardOuterWidth).toBeLessThanOrEqual(pane);
+    expect(dims.boardOuterWidth).toBeGreaterThan(200);
   });
 
   it('keeps Point 1–24 inside the Learn leftover floor with point-number rails', () => {

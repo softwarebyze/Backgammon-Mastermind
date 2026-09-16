@@ -59,3 +59,12 @@ export function gameStageMaxWidth(screenWidth: number): number | undefined {
   }
   return MAX_BOARD_WIDTH + 16 + landscapeChromeColumnWidth(screenWidth);
 }
+
+/** Explicit board pane in landscape so flex min-width cannot overflow the chrome rail. */
+export function landscapeBoardPaneWidth(
+  innerWidth: number,
+  chromeWidth: number,
+  gap = 8,
+): number {
+  return Math.min(MAX_BOARD_WIDTH, Math.max(200, innerWidth - chromeWidth - gap));
+}

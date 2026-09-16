@@ -5,7 +5,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { useBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import {
+  isLandscapeLayout,
+  landscapeBoardPaneWidth,
+  landscapeChromeColumnWidth,
+  MAX_BOARD_WIDTH,
+} from '@/lib/ui/game-chrome';
+import { innerLayoutWidth } from '@/lib/ui/layout-metrics';
 
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
@@ -170,6 +176,8 @@ export type ResolveBoardViewportArgs = {
   showPointNumbers?: boolean;
   /** Left + right safe-area insets; ignored once a slot is measured. */
   horizontalInset?: number;
+  /** Landscape pane cap so the board cannot be 720px on a short phone. */
+  maxOuterWidthCap?: number;
 };
 
 /**
@@ -185,13 +193,18 @@ export function resolveBoardViewport({
   extraChrome = 0,
   showPointNumbers = true,
   horizontalInset = 0,
+  maxOuterWidthCap,
 }: ResolveBoardViewportArgs): BoardDimensions {
   const hasSlot = (slotWidth ?? 0) > 0 && (slotHeight ?? 0) > 0;
   const chrome = (platform === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME) + extraChrome;
   const widthBudget = hasSlot
     ? slotWidth!
     : screenWidth - BOARD_PADDING * 2 - horizontalInset;
-  const maxOuterWidth = Math.min(widthBudget, MAX_BOARD_WIDTH);
+  const maxOuterWidth = Math.min(
+    widthBudget,
+    MAX_BOARD_WIDTH,
+    maxOuterWidthCap ?? Number.POSITIVE_INFINITY,
+  );
   const maxOuterHeight = hasSlot
     ? slotHeight!
     : Math.max(FALLBACK_MIN_OUTER_HEIGHT, screenHeight - chrome);
@@ -212,6 +225,11 @@ export function useBoardDimensions(options?: {
   const extraChrome = options?.extraChrome ?? 0;
   const platform: 'web' | 'native' = Platform.OS === 'web' ? 'web' : 'native';
   const horizontalInset = insets.left + insets.right;
+  const innerWidth = innerLayoutWidth(screenWidth, insets.left, insets.right);
+  const landscape = isLandscapeLayout(screenWidth, screenHeight);
+  const maxOuterWidthCap = landscape
+    ? landscapeBoardPaneWidth(innerWidth, landscapeChromeColumnWidth(innerWidth))
+    : undefined;
 
   return useMemo(
     () =>
@@ -224,6 +242,7 @@ export function useBoardDimensions(options?: {
         extraChrome,
         showPointNumbers,
         horizontalInset,
+        maxOuterWidthCap,
       }),
     [
       screenWidth,
@@ -234,6 +253,7 @@ export function useBoardDimensions(options?: {
       extraChrome,
       showPointNumbers,
       horizontalInset,
+      maxOuterWidthCap,
     ],
   );
 }

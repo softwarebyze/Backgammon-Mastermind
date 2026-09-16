@@ -23,7 +23,7 @@ import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slo
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { GAME_CHROME_MAX_WIDTH, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, landscapeBoardPaneWidth, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Review = ReturnType<typeof useMoveReview>;
@@ -174,8 +174,11 @@ export function GameScreenLayout({
   onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
-  const { landscape, desktop, chromeWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
+  const { landscape, desktop, innerWidth, chromeWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
   const dimensions = useBoardDimensions();
+  const boardPaneWidth = landscape
+    ? landscapeBoardPaneWidth(innerWidth, chromeWidth)
+    : undefined;
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
@@ -232,6 +235,7 @@ export function GameScreenLayout({
         style={[
           styles.boardSlotHost,
           landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait,
+          boardPaneWidth != null ? { maxWidth: boardPaneWidth } : null,
         ]}
         testID="game-board-slot"
         onLayout={onSlotLayout}
@@ -288,6 +292,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     minHeight: 0,
+    minWidth: 0,
     backgroundColor: GAME_PALETTE.bg,
   },
   rootPortrait: {
@@ -335,7 +340,8 @@ const styles = StyleSheet.create({
   },
   boardSlotLandscape: {
     alignSelf: 'stretch',
-    height: '100%',
+    minWidth: 0,
+    minHeight: 0,
     maxWidth: MAX_BOARD_WIDTH,
   },
   turnBannerWrap: {
