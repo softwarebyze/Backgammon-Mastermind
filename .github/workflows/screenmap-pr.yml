@@ -34,7 +34,7 @@ jobs:
       - name: Screenmap iOS (prebuilt .app)
         id: map_prebuilt
         if: steps.ios_app.outputs.have_app == 'true'
-        uses: aleqsio/screenmap@v1
+        uses: aleqsio/screenmap@c54219e4088965593a0cc4b2ce27251d2ce6321c
         with:
           mode: pr
           platform: ios
@@ -48,7 +48,7 @@ jobs:
       - name: Screenmap iOS (EAS fallback)
         id: map_eas
         if: steps.ios_app.outputs.have_app != 'true'
-        uses: aleqsio/screenmap@v1
+        uses: aleqsio/screenmap@c54219e4088965593a0cc4b2ce27251d2ce6321c
         with:
           mode: pr
           platform: ios
@@ -105,7 +105,7 @@ jobs:
           ls "$sdk"
       - name: Screenmap Android (in-CI Gradle APK, no EAS)
         id: map
-        uses: aleqsio/screenmap@v1
+        uses: aleqsio/screenmap@c54219e4088965593a0cc4b2ce27251d2ce6321c
         with:
           mode: pr
           platform: android
@@ -159,7 +159,7 @@ jobs:
       - name: Install screenmap-ci
         run: |
           set -euo pipefail
-          git clone --depth 1 --branch v1 https://github.com/aleqsio/screenmap.git "$RUNNER_TEMP/screenmap"
+          git clone --depth 1 https://github.com/aleqsio/screenmap.git "$RUNNER_TEMP/screenmap"
           cd "$RUNNER_TEMP/screenmap/action/cli"
           npm ci --silent || npm install --silent
           chmod +x screenmap-ci.mjs
