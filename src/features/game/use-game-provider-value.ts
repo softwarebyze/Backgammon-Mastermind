@@ -16,7 +16,7 @@ import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
 import { loadPersistedGame } from '@/lib/game/persistence';
 
-export function useGameProviderValue(): GameContextType {
+export function useGameProviderValue(active: boolean): GameContextType {
   const [state, setState] = useState(() => loadPersistedGame());
   const {
     moveLog,
@@ -59,6 +59,7 @@ export function useGameProviderValue(): GameContextType {
     gameMode: state?.mode,
   });
   const { clearAITimeout, resumeAIScheduling, skipAIDelay } = useComputerOpponent({
+    enabled: active,
     state,
     setState,
     playMove,
@@ -88,8 +89,9 @@ export function useGameProviderValue(): GameContextType {
     clearTimeline,
     setState,
   });
-  useRestoreGameTimeline({ state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
+  useRestoreGameTimeline({ enabled: active, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
   useGameplayHelpers({
+    enabled: active,
     state,
     isAnimating,
     hasRedo: canRedo,

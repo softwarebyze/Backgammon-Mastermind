@@ -1,5 +1,5 @@
 import type { MoveLogEntry } from '@/lib/game/move-log';
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { MoveReviewTurnStrip } from '@/features/game/components/move-review-turn-strip';

@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 type InterWeight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold';
 
-const INTER_POSTSCRIPT: Record<InterWeight, string> = {
+const INTER_RUNTIME: Record<InterWeight, string> = {
   regular: 'Inter_400Regular',
   medium: 'Inter_500Medium',
   semibold: 'Inter_600SemiBold',
@@ -11,18 +11,18 @@ const INTER_POSTSCRIPT: Record<InterWeight, string> = {
   extrabold: 'Inter_800ExtraBold',
 };
 
-const INTER_ANDROID_WEIGHT: Record<InterWeight, TextStyle['fontWeight']> = {
-  regular: '400',
-  medium: '500',
-  semibold: '600',
-  bold: '700',
-  extrabold: '800',
+const INTER_POSTSCRIPT: Record<InterWeight, string> = {
+  regular: 'Inter-Regular',
+  medium: 'Inter-Medium',
+  semibold: 'Inter-SemiBold',
+  bold: 'Inter-Bold',
+  extrabold: 'Inter-ExtraBold',
 };
 
 /** Platform-correct Inter font style. Never combine postscript fontFamily with fontWeight. */
 export function interFont(weight: InterWeight): Pick<TextStyle, 'fontFamily' | 'fontWeight'> {
-  if (Platform.OS === 'android') {
-    return { fontFamily: 'Inter', fontWeight: INTER_ANDROID_WEIGHT[weight] };
+  if (Platform.OS === 'ios') {
+    return { fontFamily: INTER_POSTSCRIPT[weight] };
   }
-  return { fontFamily: INTER_POSTSCRIPT[weight] };
+  return { fontFamily: INTER_RUNTIME[weight] };
 }

@@ -51,7 +51,8 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
   flushInterval: 10000,
   maxBatchSize: 100,
   maxQueueSize: 1000,
-  preloadFeatureFlags: true,
+  // No feature flags are consumed by the app. Don't request them during launch.
+  preloadFeatureFlags: false,
   featureFlagsRequestTimeoutMs: 10000,
   requestTimeout: 10000,
   fetchRetryCount: 3,

@@ -12,6 +12,7 @@ import { useGameInput } from '@/features/game/use-game-input';
 import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
+import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 
 export function GameScreen() {
   const posthog = usePostHog();
@@ -41,6 +42,7 @@ export function GameScreen() {
 
   // Leave-home clears AI timers; same in-memory state won't re-trigger the effect — kick on focus.
   useFocusEffect(useCallback(() => {
+    primeGameSfxFromUserGesture();
     resumeAIScheduling();
     return () => resetAnimation();
   }, [resumeAIScheduling, resetAnimation]));
