@@ -1,4 +1,4 @@
-# PR #168 local check-all (2026-09-15)
+# PR #168 local check-all (2026-09-16)
 
 Command: `pnpm check-all`
 
@@ -7,7 +7,7 @@ Command: `pnpm check-all`
 | lint (eslint) | pass (0 errors; 5 pre-existing warnings, none in this PR) |
 | type-check | pass |
 | lint:translations | pass |
-| test (jest) | pass — 63 suites, 345 tests |
+| test (jest) | pass — 66 suites, 367 tests |
 | knip | pass |
 
-Held as draft for review (no merge). GitHub Actions should follow this commit.
+Marked ready after local validation. GitHub Actions and CodeRabbit review should follow this commit.
