@@ -107,6 +107,24 @@ describe('resolveBoardViewport', () => {
     expect(dims.boardOuterWidth).toBeGreaterThan(200);
   });
 
+  it('subtracts landscape left/right insets on the unmeasured fallback path', () => {
+    const flush = resolveBoardViewport({
+      screenWidth: 600,
+      screenHeight: 2000,
+      platform: 'web',
+      showPointNumbers: false,
+    });
+    const inset = resolveBoardViewport({
+      screenWidth: 600,
+      screenHeight: 2000,
+      platform: 'web',
+      showPointNumbers: false,
+      horizontalInset: 59 + 21,
+    });
+    expect(flush.boardOuterWidth).toBe(600 - 8);
+    expect(inset.boardOuterWidth).toBe(flush.boardOuterWidth - 80);
+  });
+
   it('keeps Point 1–24 inside the Learn leftover floor with point-number rails', () => {
     const dims = resolveBoardViewport({
       screenWidth: 390,
@@ -155,6 +173,29 @@ describe('leftoverBoardHeight', () => {
     expect(largeText).toBeGreaterThanOrEqual(120);
   });
 
+  it('does not subtract the vs-computer review strip when Learn passes 0', () => {
+    const game = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 140,
+      controlsHeight: 72,
+      bottomInset: 0,
+    });
+    const learn = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 140,
+      reviewHeight: 0,
+      controlsHeight: 72,
+      bottomInset: 0,
+      minHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
+    });
+    expect(learn).toBe(game + 68);
+    expect(learn).toBeGreaterThanOrEqual(MIN_LEARN_BOARD_SLOT_HEIGHT);
+  });
+});
+
+describe('leftoverBoardHeight side-by-side', () => {
   it('ignores stacked chrome when the board sits beside dice/review', () => {
     const stacked = leftoverBoardHeight({
       screenHeight: 390,
@@ -173,6 +214,26 @@ describe('leftoverBoardHeight', () => {
     });
     expect(stacked).toBe(120);
     expect(sideBySide).toBe(334);
+  });
+
+  it('subtracts the home-indicator inset from landscape leftover height', () => {
+    const flush = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 80,
+      controlsHeight: 96,
+      bottomInset: 0,
+      sideBySide: true,
+    });
+    const inset = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 80,
+      controlsHeight: 96,
+      bottomInset: 21,
+      sideBySide: true,
+    });
+    expect(flush - inset).toBe(21);
   });
 
   it('keeps side-by-side leftover independent of dice and review height', () => {
@@ -194,27 +255,6 @@ describe('leftoverBoardHeight', () => {
     });
     expect(shortChrome).toBe(tallChrome);
     expect(tallChrome).toBe(334);
-  });
-
-  it('does not subtract the vs-computer review strip when Learn passes 0', () => {
-    const game = leftoverBoardHeight({
-      screenHeight: 844,
-      headerHeight: 56,
-      topChromeHeight: 140,
-      controlsHeight: 72,
-      bottomInset: 0,
-    });
-    const learn = leftoverBoardHeight({
-      screenHeight: 844,
-      headerHeight: 56,
-      topChromeHeight: 140,
-      reviewHeight: 0,
-      controlsHeight: 72,
-      bottomInset: 0,
-      minHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
-    });
-    expect(learn).toBe(game + 68);
-    expect(learn).toBeGreaterThanOrEqual(MIN_LEARN_BOARD_SLOT_HEIGHT);
   });
 });
 

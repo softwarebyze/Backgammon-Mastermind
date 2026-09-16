@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Platform, useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { useBoardSlotSize } from '@/features/game/hooks/board-slot-size';
@@ -167,6 +168,8 @@ export type ResolveBoardViewportArgs = {
   slotHeight?: number;
   extraChrome?: number;
   showPointNumbers?: boolean;
+  /** Left + right safe-area insets; ignored once a slot is measured. */
+  horizontalInset?: number;
 };
 
 /**
@@ -181,10 +184,13 @@ export function resolveBoardViewport({
   slotHeight,
   extraChrome = 0,
   showPointNumbers = true,
+  horizontalInset = 0,
 }: ResolveBoardViewportArgs): BoardDimensions {
   const hasSlot = (slotWidth ?? 0) > 0 && (slotHeight ?? 0) > 0;
   const chrome = (platform === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME) + extraChrome;
-  const widthBudget = hasSlot ? slotWidth! : screenWidth - BOARD_PADDING * 2;
+  const widthBudget = hasSlot
+    ? slotWidth!
+    : screenWidth - BOARD_PADDING * 2 - horizontalInset;
   const maxOuterWidth = Math.min(widthBudget, MAX_BOARD_WIDTH);
   const maxOuterHeight = hasSlot
     ? slotHeight!
@@ -199,11 +205,13 @@ export function useBoardDimensions(options?: {
   extraChrome?: number;
 }): BoardDimensions {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const { preferences } = useGamePreferences();
   const slot = useBoardSlotSize();
   const showPointNumbers = options?.showPointNumbers ?? preferences.showPointNumbers;
   const extraChrome = options?.extraChrome ?? 0;
   const platform: 'web' | 'native' = Platform.OS === 'web' ? 'web' : 'native';
+  const horizontalInset = insets.left + insets.right;
 
   return useMemo(
     () =>
@@ -215,7 +223,17 @@ export function useBoardDimensions(options?: {
         slotHeight: slot.height,
         extraChrome,
         showPointNumbers,
+        horizontalInset,
       }),
-    [screenWidth, screenHeight, platform, slot.width, slot.height, extraChrome, showPointNumbers],
+    [
+      screenWidth,
+      screenHeight,
+      platform,
+      slot.width,
+      slot.height,
+      extraChrome,
+      showPointNumbers,
+      horizontalInset,
+    ],
   );
 }

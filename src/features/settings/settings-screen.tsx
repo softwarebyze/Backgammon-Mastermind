@@ -1,7 +1,7 @@
 import Env from 'env';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, StyleSheet } from 'react-native';
 
 import {
   colors,
@@ -16,6 +16,8 @@ import {
   openStoreListing,
   shareApp,
 } from '@/lib/app-links';
+import { SETTINGS_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
 import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
@@ -26,6 +28,7 @@ import { isDeveloperToolsEnabled } from './developer-tools-gate';
 
 export function SettingsScreen() {
   const posthog = usePostHog();
+  const { insets } = useLayoutMetrics();
   const iconColor = colors.neutral[400];
 
   const runExternalAction = useCallback(async (action: () => Promise<void>) => {
@@ -46,11 +49,12 @@ export function SettingsScreen() {
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={
-          Platform.OS === 'web' ? { paddingTop: WEB_SETTINGS_TOP_PADDING } : undefined
-        }
+        contentContainerStyle={[
+          Platform.OS === 'web' ? { paddingTop: WEB_SETTINGS_TOP_PADDING } : undefined,
+          contentEdgePadding(insets, { bottom: 32 }),
+        ]}
       >
-        <View className="flex-1 px-4 pb-8">
+        <View className="px-4" style={styles.page}>
           <SettingsContainer title="settings.general">
             <LanguageItem />
           </SettingsContainer>
@@ -124,3 +128,12 @@ export function SettingsScreen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  page: {
+    width: '100%',
+    maxWidth: SETTINGS_MAX_WIDTH,
+    alignSelf: 'center',
+    paddingBottom: 8,
+  },
+});
