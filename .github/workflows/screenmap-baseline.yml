@@ -1,5 +1,7 @@
 # .github/workflows/screenmap-baseline.yml — iOS + Android map of main, then merge
 # Dual-platform shape: https://github.com/aleqsio/screenmap/blob/main/action/templates/screenmap-pr.yml
+# Pin past marketplace @v1 (iOS-only; rejects `platform`). This main commit adds Android.
+# SHA: c54219e4088965593a0cc4b2ce27251d2ce6321c
 name: screenmap · baseline
 on:
   push:

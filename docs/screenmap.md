@@ -2,6 +2,8 @@
 
 Visual navigation maps for this Expo app. Workflows: `.github/workflows/screenmap-pr.yml` (PRs) and `screenmap-baseline.yml` (`main`). Both capture **iOS + Android**, then merge into one `.scrmap` with a platform switcher.
 
+CI pins `aleqsio/screenmap@c54219e` (current `main`). Marketplace `@v1` is iOS-only and rejects the `platform` input.
+
 Config: `.screenmap/config.json` (Learn lesson id `goal-board`). Agent guidance: `.screenmap/SKILL.md`.
 
 ## Platforms
