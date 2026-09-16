@@ -1,0 +1,317 @@
+{
+  "error": {
+    "body": "重新启动应用程序继续 。",
+    "heading": "出问题了",
+    "retry": "重试"
+  },
+  "game": {
+    "caption": {
+      "selected": "选中的 - 点击突出显示的点, 或取消"
+    },
+    "controls": {
+      "bear_off_a11y": "走开",
+      "cancel": "取消",
+      "cancel_a11y": "取消选择",
+      "leave_game_a11y": "离开游戏回家",
+      "loading": "正在装入...",
+      "new_game_message": "开始新对局？",
+      "new_game_title": "新对局",
+      "no_legal_moves": "没有可走的棋…",
+      "play_again": "再来一局",
+      "play_again_a11y": "再来一局",
+      "redo_a11y": "重做移动",
+      "roll_dice": "掷骰子",
+      "roll_dice_a11y": "掷骰子",
+      "skip_wait": "点击跳过等待",
+      "skip_wait_a11y": "{{status}}点击跳过等待",
+      "start_new_game_a11y": "开始新游戏",
+      "undo_a11y": "撤消移动"
+    },
+    "nudge": {
+      "roll_first": "请先掷骰子"
+    },
+    "opening": {
+      "compare": "{{winner}}的{{high}}胜过{{low}}",
+      "goes_first": "{{player}}先行！",
+      "roll": "掷骰",
+      "rolls_for_opening": "{{player}}正在掷开局骰",
+      "tie": "平局！",
+      "tie_again": "点数相同——请重掷",
+      "waiting_roll": "{{player}}正在掷骰…",
+      "who_goes_first": "谁先走？",
+      "your_roll": "点按任意位置掷骰"
+    },
+    "options": {
+      "open_settings": "语言与更多",
+      "open_settings_hint": "打开设置",
+      "title": "对局选项"
+    },
+    "preferences": {
+      "auto_move": "唯一着法自动走",
+      "auto_move_hint": "自动走出唯一合法的一步",
+      "auto_roll": "自动掷骰",
+      "auto_roll_hint": "轮到你时自动掷骰",
+      "dice_display": "骰子显示",
+      "dice_dots": "点数",
+      "dice_numbers": "数字",
+      "direction_overlay": "方向指引",
+      "direction_overlay_hint": "在棋盘上显示马蹄形路线",
+      "fast_computer": "快速计算机",
+      "fast_computer_hint": "更短的等待在电脑卷和移动。 您也可以跳跃等待 。",
+      "move_hints": "走子提示",
+      "move_hints_hint": "可移动的点位旁显示金色圆点",
+      "point_numbers": "点位编号",
+      "point_numbers_hint": "在棋盘上显示1–24编号",
+      "section_automation": "自动化",
+      "section_board": "棋盘",
+      "section_dice": "骰子",
+      "sound": "游戏音效",
+      "sound_hint": "轻柔的骰子、击子与获胜音效——遵循静音模式"
+    },
+    "review": {
+      "back_to_live": "返回当前对局",
+      "live": "当前对局",
+      "live_short": "对局",
+      "move_a11y": "第{{ply}}步，{{player}}",
+      "move_position": "第{{current}}步，共{{total}}步 · {{player}}",
+      "next": "下一回合",
+      "opening": "开局局面",
+      "pause_replay": "暂停",
+      "player_black": "黑方",
+      "player_white": "白方",
+      "previous": "上一回合",
+      "replay": "回放",
+      "scrubber_hint": "点按回合进行复盘",
+      "start": "开始",
+      "turn_a11y": "回合{{turn}}，{{player}}",
+      "turn_label": "回合{{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "回合{{turn}}/{{totalTurns}} · 第{{moveInTurn}}/{{movesInTurn}}步 · {{player}}",
+      "viewing_hint": "复盘中——点按“对局”或“返回”继续游戏"
+    },
+    "status": {
+      "black_wins": "黑方获胜",
+      "computer_wins": "电脑获胜",
+      "white_wins": "🏆 白方获胜！",
+      "you_win": "🏆 你赢了！"
+    }
+  },
+  "home": {
+    "confirm_cancel": "取消",
+    "confirm_continue": "继续",
+    "confirm_native": "继续目前的游戏还是开始新的游戏?",
+    "confirm_new": "新游戏",
+    "confirm_title": "游戏中",
+    "confirm_web": "开始新的游戏? (在主屏幕上使用Resume来继续目前的一个.",
+    "resume": "继续对局",
+    "resume_a11y": "继续已保存的对局",
+    "resume_none": "没有保存的游戏可恢复",
+    "resume_sub": "从上次停下的地方继续",
+    "subtitle": "步步为营，掌控棋盘",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "双人对战",
+    "two_players_a11y": "在本设备上双人游玩",
+    "two_players_sub": "同一设备轮流游玩",
+    "vs_computer": "人机对战",
+    "vs_computer_a11y": "与电脑对战",
+    "vs_computer_sub": "与电脑对战"
+  },
+  "learn": {
+    "back_to_hub": "所有教训",
+    "continue": "继续",
+    "feedback": {
+      "hint_nudge": "需要一击吗? 寻找突出的斑点。",
+      "illegal": "尝试一个突出的点——或磁带提示.",
+      "legal_but_wrong": "这在真正的游戏中是合法的。 在这里,试试教这个想法的动作。",
+      "move_progress": "不错...{{done}}页:1{{needed}}移动完成。"
+    },
+    "graduation": {
+      "body": "你知道目标,董事会, 如何转动工作,击球,和轴承离开。 快速检查,然后你的第一个真正的游戏。",
+      "play_cta": "玩你的第一个游戏",
+      "quiz_done": "钉之. 该玩了",
+      "quiz_title": "快速检查",
+      "quiz_wrong": "不尽然——尝试另一个答案。",
+      "recap_1": "赛车: 全部15次抢先",
+      "recap_2": "掷两骰子;在开点降落",
+      "recap_3": "他们坐在吧台上",
+      "recap_4": "只从你家的板上拿起",
+      "recap_5": "游戏从每场比赛一个死开始——高点先走(两次翻转)",
+      "title": "你准备好玩了"
+    },
+    "hint": "提示",
+    "home_cta": "学会演奏",
+    "home_cta_progress": "{{done}}页:1{{total}}经验教训",
+    "home_cta_quiz": "快速检查左边——然后播放",
+    "home_cta_ready": "你准备好了,玩个真正的游戏",
+    "home_cta_sub": "初学者的互动经验教训",
+    "lesson_complete": "课程完成!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "什么也没有在5点, 但你滚了一个5。 从你最高的检查(3)开始。 更多人还是会跳棋",
+            "hint": "选择第3点,然后敲开熊的托盘。",
+            "praise": "这是过度射击的规则,",
+            "title": "死得更惨,还是没死"
+          },
+          "try": {
+            "body": "你的棋子都在家里(1–6),所以你可以忍受。 你卷了3个——从板子上取下3分的棋子.",
+            "hint": "选择第3点,然后在右边缘敲击熊角区域.",
+            "praise": "离开董事会! 首先要承受所有15个胜利。",
+            "title": "扣一个"
+          }
+        },
+        "subtitle": "你怎么赢的",
+        "title": "关闭"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "马蹄与轮到它的选手的棋子相匹配. 它追踪玩家绕板和回家的路线(点1-6).",
+            "title": "马蹄之路"
+          },
+          "far": {
+            "body": "点击两个最远的白色跳棋开始点(24点,右上方).",
+            "hint": "看右上方——24号点两个白棋.",
+            "praise": "这些是从对手的家乡开始的,旅程最长。",
+            "title": "你最远的棋子"
+          },
+          "home_stack": {
+            "body": "敲打5个白棋的大堆 已经在你家里了(6分)。",
+            "hint": "右下角:5个白色跳棋在6号点上.",
+            "praise": "这是你家的堆积物——五个已经等待了6点,最接近承受。 每场比赛都这样开始",
+            "title": "你的家堆叠"
+          }
+        },
+        "subtitle": "你走哪边",
+        "title": "方向设置( S)"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "中间的长条是酒吧. 命中棋手在这里等待。 敲击吧。",
+            "hint": "将棋盘左侧和右侧之间的垂直条形拍下来。",
+            "praise": "右——命中棋手坐在吧台上,直到重新进入.",
+            "title": "那个酒吧"
+          },
+          "explain": {
+            "body": "你和你的对手各有15个跳棋 把它们绕到板子上然后关闭——第一个完成的胜利.",
+            "title": "抢先抢先赢"
+          },
+          "home": {
+            "body": "您的家为 1–6( 右下角) 。 任何点在你的家板。",
+            "hint": "家是右下角象限中的六点——编号为1到6.",
+            "praise": "那是你的家,",
+            "title": "找回你家的棋盘"
+          }
+        },
+        "subtitle": "你赛车的目的",
+        "title": "目标板( B)"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "你在酒吧里, 从24点算到家:21点有4块土地。",
+            "hint": "然后是21点(不是23点,",
+            "praise": "你回到棋盘上,",
+            "title": "从栏中输入",
+            "wrong": "那只是酒吧里的两条嘴(23点)。 从24点到家计4点——即21点。"
+          },
+          "hit": {
+            "body": "单检查器是污点。 降落在它上,它去酒吧。 你翻了3,5点的黑血球",
+            "hint": "敲你的棋子 8,然后敲5点。",
+            "praise": "击! 那个黑检查员现在在酒吧了",
+            "title": "击倒污点"
+          }
+        },
+        "subtitle": "联系游戏",
+        "title": "击打栏( T)"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "两个或两个以上的对手检查员挡住了一个点, 把堵住的黑堆按5点",
+            "hint": "5号点上两个黑棋的突出堆叠.",
+            "praise": "右——一个定点(2+)关闭. 空的,你自己的,或者一个blot(1)是打开的.",
+            "title": "屏蔽点"
+          },
+          "doubles": {
+            "body": "双胞胎给你那四招 你翻了2 -2,这是4 2s。 从八分中转六分四次.",
+            "hint": "敲8点,然后6点。 做这四次——一次死。",
+            "praise": "确切地说,双胞胎意味着4个动作。",
+            "title": "双倍 = 四步"
+          },
+          "explain": {
+            "body": "每转一转,你滚两个骰子, 玩两个数字,当你可以。 您可以降落在空点、 自己的跳棋或孤独的对手上。",
+            "title": "两个数字,开点"
+          },
+          "two_dice": {
+            "body": "你转了3和1。 将8分3个pip上的检查器移到5位,将6分1个pip上的检查器移到5位.",
+            "hint": "选择一个白色检查器,然后是第5点。 既为八分也为六分.",
+            "praise": "不错 都用骰子了 相同的检查器或两个检查器,在可以的时候必须玩两个数字.",
+            "title": "玩双骰子"
+          }
+        },
+        "subtitle": "如何转弯",
+        "title": "用骰子移动"
+      }
+    },
+    "locked": "先完成上一课",
+    "next_lesson": "下一课",
+    "quiz": {
+      "bar": {
+        "a": "先把最远的检查器移开",
+        "b": "在移动其它东西前输入检查器",
+        "c": "轮到你了",
+        "prompt": "酒吧里有个检查员,你必须..."
+      },
+      "bear": {
+        "a": "每当你卷起一个6",
+        "b": "只有在你撞到污点之后",
+        "c": "当所有15个棋子都在你家里的时候",
+        "prompt": "你什么时候能承受?"
+      },
+      "blot": {
+        "a": "任何三叠以上",
+        "b": "点上的单个检查者——可以被击中",
+        "c": "在某一点上有两个或两个以上的跳棋——一个定点",
+        "prompt": "什么是污点?"
+      }
+    },
+    "replay": "重播",
+    "skip_to_play": "跳过播放",
+    "step_progress": "步骤{{current}}页:1{{total}}",
+    "subtitle": "5个短训课——你准备好了",
+    "title": "学会演奏"
+  },
+  "not_found": {
+    "body": "那页不是双陆棋大师的一部分 回家学习或开始游戏。",
+    "heading": "出界了",
+    "home_a11y": "前往主页",
+    "home_cta": "返回主页",
+    "title": "未找到"
+  },
+  "settings": {
+    "about": "关于",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "阿拉伯语",
+    "english": "联合国",
+    "game": "对局",
+    "general": "常规",
+    "github": "GitHub",
+    "language": "语言",
+    "link_error_body": "请稍后再试。",
+    "link_error_title": "无法打开链接",
+    "links": "链接",
+    "more": "更多",
+    "privacy": "隐私政策",
+    "rate": "评分",
+    "share": "分享",
+    "support": "支持",
+    "support_us": "支持我们",
+    "terms": "服务条款",
+    "title": "设置",
+    "version": "版本",
+    "website": "网站"
+  },
+  "welcome": "欢迎来到双陆棋大师"
+}

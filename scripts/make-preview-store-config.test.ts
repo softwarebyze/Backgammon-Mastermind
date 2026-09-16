@@ -11,6 +11,31 @@ afterEach(() => {
 });
 
 describe('make-preview-store-config', () => {
+  it('keeps every 1.0.2 localization within App Store text limits', () => {
+    const canonical = JSON.parse(readFileSync('store.config.json', 'utf8')) as {
+      apple: {
+        version: string;
+        info: Record<string, {
+          title: string;
+          subtitle: string;
+          promoText: string;
+          description: string;
+          keywords: string[];
+        }>;
+      };
+    };
+
+    expect(canonical.apple.version).toBe('1.0.2');
+    expect(Object.keys(canonical.apple.info)).toHaveLength(17);
+    for (const listing of Object.values(canonical.apple.info)) {
+      expect([...listing.title].length).toBeLessThanOrEqual(30);
+      expect([...listing.subtitle].length).toBeLessThanOrEqual(30);
+      expect([...listing.promoText].length).toBeLessThanOrEqual(170);
+      expect([...listing.description].length).toBeLessThanOrEqual(4000);
+      expect(listing.keywords.join(',').length).toBeLessThanOrEqual(100);
+    }
+  });
+
   it('writes the gitignored preview listing with a unique ASC title', () => {
     execFileSync('node', ['scripts/make-preview-store-config.mjs'], { cwd: process.cwd() });
     expect(existsSync(PREVIEW_CONFIG)).toBe(true);

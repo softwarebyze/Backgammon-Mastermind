@@ -19,14 +19,14 @@ Verified 2026-08-28:
 
 | File | Pixels |
 |------|--------|
-| `iphone-69-01-vs-computer.png` | 1320×2868 |
-| `iphone-69-02-legal-highlights.png` | 1320×2868 |
-| `iphone-69-03-lesson-hitting.png` | 1320×2868 |
+| `iphone-69-01-learn-to-play.png` | 1320×2868 |
+| `iphone-69-02-pass-and-play.png` | 1320×2868 |
+| `iphone-69-03-vs-computer.png` | 1320×2868 |
 | `iphone-69-04-learn-hub.png` | 1320×2868 |
 | `iphone-69-05-home.png` | 1320×2868 |
-| `ipad-13-01-vs-computer.png` | 2064×2752 |
-| `ipad-13-02-legal-highlights.png` | 2064×2752 |
-| `ipad-13-03-lesson-hitting.png` | 2064×2752 |
+| `ipad-13-01-learn-to-play.png` | 2064×2752 |
+| `ipad-13-02-pass-and-play.png` | 2064×2752 |
+| `ipad-13-03-vs-computer.png` | 2064×2752 |
 | `ipad-13-04-learn-hub.png` | 2064×2752 |
 | `ipad-13-05-home.png` | 2064×2752 |
 
@@ -34,13 +34,13 @@ iPhone 6.9" is 440×956 CSS at deviceScaleFactor 3 (physical 1320×2868). iPad P
 
 ### Carousel (same five on both devices, composed order)
 
-1. **vs Computer** — headline “A thinking opponent”. Board + dice (top chrome cropped).
-2. **Legal-move highlights** — headline “Every move, highlighted”. Checker selected, destinations lit (top chrome cropped).
-3. **Hitting & the bar** — headline “Learn on the board”. Lesson board + dice + Hint (lesson copy cropped).
-4. **Learn hub** — headline “Five lessons. Then play.” Five lesson rows + Skip to play (hub intro cropped).
+1. **Interactive lesson** — headline “Learn to play backgammon”. The lesson instruction and the live teaching position are both visible.
+2. **Local two-player** — headline “Pass & play offline”, supported by “With friends and family”. A real `vs-human` game is shown.
+3. **vs Computer** — headline “Play against the computer”. Board + dice (top chrome cropped), without implying generative AI or human-like reasoning.
+4. **Learn hub** — headline “Five interactive lessons”. Five lesson rows + Skip to play (hub intro cropped).
 5. **Home** — no marketing headline, cropTop 0 (the in-app lockup is the shot). Logo lockup, Learn / vs Computer / 2 Players (no Resume, no Preview).
 
-Raw scene files keep their capture names under `raw/` (01-home … 05-legal-highlights). Compose remaps and reorders via the JSON manifest.
+Raw scene files keep their capture names under `raw/` (01-home … 05-pass-and-play). Compose remaps and reorders via the JSON manifest.
 
 Upload later: `pnpm screenshots:upload:ios` (Fastlane — [store-screenshots.md](../../store-screenshots.md)). Do not wait for a human in ASC.
 

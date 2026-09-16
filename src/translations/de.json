@@ -1,0 +1,317 @@
+{
+  "error": {
+    "body": "Starten Sie die App neu, um fortzufahren.",
+    "heading": "Etwas ging schief",
+    "retry": "Versuch"
+  },
+  "game": {
+    "caption": {
+      "selected": "Ausgewählt - tippen Sie auf einen hervorgehobenen Punkt oder Abbrechen"
+    },
+    "controls": {
+      "bear_off_a11y": "Bär aus",
+      "cancel": "Stornierung",
+      "cancel_a11y": "Auswahl abbrechen",
+      "leave_game_a11y": "Spiel verlassen und nach Hause zurückkehren",
+      "loading": "Beladung...",
+      "new_game_message": "Neues Spiel starten?",
+      "new_game_title": "Neues Spiel",
+      "no_legal_moves": "Keine gültigen Züge…",
+      "play_again": "Nochmal spielen",
+      "play_again_a11y": "Nochmal spielen",
+      "redo_a11y": "Redo Move",
+      "roll_dice": "Würfeln",
+      "roll_dice_a11y": "Würfeln",
+      "skip_wait": "Tap to skip warten",
+      "skip_wait_a11y": "{{status}}Tap to skip warten",
+      "start_new_game_a11y": "Starten Sie neues Spiel",
+      "undo_a11y": "Undo Bewegung"
+    },
+    "nudge": {
+      "roll_first": "Würfle zuerst"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} schlägt {{low}}",
+      "goes_first": "{{player}} beginnt!",
+      "roll": "Würfeln",
+      "rolls_for_opening": "{{player}} würfelt um den Anwurf",
+      "tie": "Unentschieden!",
+      "tie_again": "Gleiche Zahl — nochmal würfeln",
+      "waiting_roll": "{{player}} würfelt…",
+      "who_goes_first": "Wer beginnt?",
+      "your_roll": "Zum Würfeln irgendwo tippen"
+    },
+    "options": {
+      "open_settings": "Sprache & mehr",
+      "open_settings_hint": "Einstellungen öffnen",
+      "title": "Spieloptionen"
+    },
+    "preferences": {
+      "auto_move": "Auto-Zug bei Zwang",
+      "auto_move_hint": "Den einzig möglichen Zug automatisch spielen",
+      "auto_roll": "Automatisch würfeln",
+      "auto_roll_hint": "In deinem Zug automatisch würfeln",
+      "dice_display": "Würfelanzeige",
+      "dice_dots": "Punkte",
+      "dice_numbers": "Zahlen",
+      "direction_overlay": "Richtungsanzeige",
+      "direction_overlay_hint": "Hufeisen-Pfad auf dem Brett",
+      "fast_computer": "Schneller Computer",
+      "fast_computer_hint": "Kürzere Wartezeiten auf Computerrollen und -bewegungen. Sie können auch auf Skip Wait tippen.",
+      "move_hints": "Zughinweise",
+      "move_hints_hint": "Goldener Punkt neben Feldern, von denen du ziehen kannst",
+      "point_numbers": "Feldnummern",
+      "point_numbers_hint": "Beschriftung 1–24 auf dem Brett anzeigen",
+      "section_automation": "Automatisierung",
+      "section_board": "Brett",
+      "section_dice": "Würfel",
+      "sound": "Spielgeräusche",
+      "sound_hint": "Dezente Würfel-, Schlag- und Siegklänge — respektiert den Stummmodus"
+    },
+    "review": {
+      "back_to_live": "Zurück zum laufenden Spiel",
+      "live": "Laufendes Spiel",
+      "live_short": "Live",
+      "move_a11y": "Zug {{ply}}, {{player}}",
+      "move_position": "Zug {{current}} von {{total}} · {{player}}",
+      "next": "Nächster Zug",
+      "opening": "Ausgangsstellung",
+      "pause_replay": "Pause",
+      "player_black": "Schwarz",
+      "player_white": "Weiß",
+      "previous": "Vorheriger Zug",
+      "replay": "Wiederholung",
+      "scrubber_hint": "Tippe auf einen Zug zum Ansehen",
+      "start": "Start",
+      "turn_a11y": "Runde {{turn}}, {{player}}",
+      "turn_label": "Runde {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Runde {{turn}}/{{totalTurns}} · Zug {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Ansichtsmodus — tippe auf Live oder Zurück, um weiterzuspielen"
+    },
+    "status": {
+      "black_wins": "Schwarz gewinnt",
+      "computer_wins": "Computer gewinnt",
+      "white_wins": "🏆 Weiß gewinnt!",
+      "you_win": "🏆 Du gewinnst!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Stornierung",
+    "confirm_continue": "Weiterfahren",
+    "confirm_native": "Setzen Sie Ihr aktuelles Spiel fort oder starten Sie ein neues?",
+    "confirm_new": "Neues Spiel",
+    "confirm_title": "Spiel im Gange",
+    "confirm_web": "Ein neues Spiel starten? (Verwenden Sie Resume auf dem Startbildschirm, um den aktuellen fortzusetzen.)",
+    "resume": "Spiel fortsetzen",
+    "resume_a11y": "Gespeichertes Spiel fortsetzen",
+    "resume_none": "Kein gespeichertes Spiel wird wieder aufgenommen",
+    "resume_sub": "Mach da weiter, wo du aufgehört hast",
+    "subtitle": "Meistere das Brett — Zug für Zug",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "2 Spieler",
+    "two_players_a11y": "Zu zweit am selben Gerät spielen",
+    "two_players_sub": "Abwechselnd am selben Gerät",
+    "vs_computer": "Gegen Computer",
+    "vs_computer_a11y": "Gegen den Computer spielen",
+    "vs_computer_sub": "Gegen den Computer spielen"
+  },
+  "learn": {
+    "back_to_hub": "Alle Lektionen",
+    "continue": "Weiterfahren",
+    "feedback": {
+      "hint_nudge": "Brauchen Sie einen Nudge? Suchen Sie nach den hervorgehobenen Stellen.",
+      "illegal": "Versuchen Sie einen hervorgehobenen Punkt - oder tippen Sie auf Hint.",
+      "legal_but_wrong": "Das ist legal in einem echten Spiel - hier, versuchen Sie die Bewegung, die diese Idee lehrt.",
+      "move_progress": "Nizza —{{done}}von{{needed}}Moves done."
+    },
+    "graduation": {
+      "body": "Sie kennen das Ziel, das Brett, wie sich Arbeit, Schlagen und Abstützen drehen. Ein kurzer Check - dann dein erstes richtiges Spiel.",
+      "play_cta": "Spielen Sie Ihr erstes Spiel",
+      "quiz_done": "Nagelte es. Zeit zum Spielen.",
+      "quiz_title": "Schnellprüfung",
+      "quiz_wrong": "Nicht ganz - versuchen Sie eine andere Antwort.",
+      "recap_1": "Rennen: Bear off alle 15 zuerst",
+      "recap_2": "Rollen Sie zwei Würfel; landen auf offenen Punkten",
+      "recap_3": "Hit Blots: Sie sitzen an der Bar",
+      "recap_4": "Bear off nur von Ihrem Home Board",
+      "recap_5": "Spiele beginnen mit jeweils einem Würfel - höher geht zuerst (Tiles Re-Roll)",
+      "title": "Du bist bereit zu spielen"
+    },
+    "hint": "Hinweis",
+    "home_cta": "Lernen Sie zu spielen",
+    "home_cta_progress": "{{done}}von{{total}}Lektionen",
+    "home_cta_quiz": "Quick Check links — dann spielen",
+    "home_cta_ready": "Sie sind bereit - spielen Sie ein echtes Spiel",
+    "home_cta_sub": "Interaktiver Unterricht für Anfänger",
+    "lesson_complete": "Lektion komplett!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Nichts ist auf dem 5-Punkt, aber Sie haben eine 5 gewürfelt. Befreien Sie sich von Ihrem höchsten Checker (der 3). Eine größere Zahl nimmt immer noch einen Checker ab.",
+            "hint": "Wählen Sie Punkt 3, dann tippen Sie auf die Ablageschale.",
+            "praise": "Das ist die Überschreitungsregel - Sie werden es viel verwenden, wenn Sie sich abstützen.",
+            "title": "Größere sterben, immer noch weg"
+          },
+          "try": {
+            "body": "Alle Ihre Checker sind zu Hause (1-6), so dass Sie aushalten können. Sie haben eine 3 gerollt - nehmen Sie den Checker auf dem 3-Punkt vom Brett.",
+            "hint": "Wählen Sie Punkt 3, dann tippen Sie auf den Abstützbereich am rechten Rand.",
+            "praise": "Aus dem Board! Zuerst, um alle 15 Siege abzutragen.",
+            "title": "Bear one off"
+          }
+        },
+        "subtitle": "Wie Sie gewinnen",
+        "title": "Abstützung"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Das Hufeisen passt zu den Kontrolleuren des Spielers, dessen Reihe es ist. Es verfolgt die Route dieses Spielers um das Brett und nach Hause (Punkte 1-6).",
+            "title": "Der Hufeisenweg"
+          },
+          "far": {
+            "body": "Tippen Sie auf den Punkt, an dem Ihre beiden am weitesten entfernten weißen Checker beginnen (der 24-Punkt, oben rechts).",
+            "hint": "Schauen Sie sich oben rechts an - zwei weiße Checker auf Punkt 24.",
+            "praise": "Diese beginnen tief im Haus des Gegners und haben die längste Reise.",
+            "title": "Ihre entferntesten Checker"
+          },
+          "home_stack": {
+            "body": "Tippen Sie auf den großen Stapel von fünf weißen Checkern bereits in Ihrem Haus (der 6-Punkt).",
+            "hint": "Rechts unten: fünf weiße Checker auf Punkt 6.",
+            "praise": "Das ist dein Home Stack - fünf warten bereits auf den 6-Punkt, der am nächsten ist. Jedes Spiel beginnt so.",
+            "title": "Dein Home Stack"
+          }
+        },
+        "subtitle": "In welche Richtung du dich bewegst",
+        "title": "Richtung und Einrichtung"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Der erhöhte Streifen in der Mitte ist die Bar. Hit Checkers warten hier. Tippen Sie auf die Bar.",
+            "hint": "Tippen Sie auf den vertikalen Streifen zwischen der linken und rechten Hälfte des Boards.",
+            "praise": "Rechts - hit-checker sitzen auf der bar, bis sie wieder eintreten.",
+            "title": "Die Bar"
+          },
+          "explain": {
+            "body": "Sie und Ihr Gegner haben jeweils 15 Checker. Bewegen Sie sie um das Brett und aus - der erste gewinnt.",
+            "title": "Zuerst, um Gewinne abzutragen"
+          },
+          "home": {
+            "body": "Ihr Haus ist Punkte 1-6 (unten rechts). Tippen Sie auf einen beliebigen Punkt in Ihrem Home Board.",
+            "hint": "Zuhause sind die sechs Punkte im unteren rechten Quadranten - nummeriert 1 bis 6.",
+            "praise": "Das ist dein Zuhause - Checker verlassen das Board von hier.",
+            "title": "Finden Sie Ihr Home Board"
+          }
+        },
+        "subtitle": "Wofür du fährst",
+        "title": "Ziel und Board"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Du bist in der bar - komm wieder an, bevor du jemand anderen bewegst. Zählen Sie vom 24-Punkt nach Hause: eine 4 landet auf Punkt 21.",
+            "hint": "Tippen Sie auf die Bar, dann auf Punkt 21 (nicht 23 - das sind nur zwei Pips von der Bar).",
+            "praise": "Sie sind wieder an der Tafel - Balkenprüfer treten immer zuerst ein.",
+            "title": "Betreten Sie die Bar",
+            "wrong": "Das sind nur zwei Pips von der Bar (Punkt 23). Zählen Sie vier Punkte von 24 nach Hause - das ist Punkt 21."
+          },
+          "hit": {
+            "body": "Ein einzelner Checker ist ein Blot. Landen Sie darauf und es geht zur Bar. Sie haben eine 3 gewürfelt - den schwarzen Fleck auf dem 5-Punkt getroffen.",
+            "hint": "Tippen Sie auf 8 und dann auf Punkt 5.",
+            "praise": "Schlag! Dieser schwarze checker ist jetzt auf der bar.",
+            "title": "Schlagen Sie den Blot"
+          }
+        },
+        "subtitle": "Kontaktspiel",
+        "title": "Schlagen & die Bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Zwei oder mehr gegnerische Checker blockieren einen Punkt - Sie können dort nicht landen. Tippen Sie auf den blockierten schwarzen Stapel auf dem 5-Punkt.",
+            "hint": "Der hervorgehobene Stapel von zwei schwarzen Checkern auf Punkt 5.",
+            "praise": "Rechts - ein gemachter Punkt (2+) ist geschlossen. Leere, eigene oder ein Fleck (1) sind offen.",
+            "title": "Sperrpunkte"
+          },
+          "doubles": {
+            "body": "Doubles geben Ihnen vier Züge dieser Zahl. Du hast 2-2 gerollt - das sind vier 2s. Bewegen Sie sich vom 8-Punkt zum 6-Punkt viermal.",
+            "hint": "Tippen Sie auf den 8-Punkt, dann auf den 6-Punkt. Tun Sie dies vier Mal - einmal pro sterben.",
+            "praise": "Genau - Doppel bedeuten vier Züge mit dieser Zahl.",
+            "title": "Doubles = vier Züge"
+          },
+          "explain": {
+            "body": "Jede Runde rollen Sie zwei Würfel und spielen beide Zahlen, wenn Sie können. Sie können auf leeren Punkten, Ihren eigenen Checkern oder einem einsamen Gegner (einem Fleck) landen.",
+            "title": "Zwei Zahlen, offene Punkte"
+          },
+          "two_dice": {
+            "body": "Du hast 3 und 1 gerollt. Bewegen Sie den Checker auf den 8-Punkte-drei Pips (bis 5) und den einen auf dem 6-Punkte-drei Pip (bis 5).",
+            "hint": "Wählen Sie einen weißen Checker und tippen Sie dann auf Punkt 5. Tun Sie dies sowohl für den 8-Punkt als auch für den 6-Punkt.",
+            "praise": "Schön - beide Würfel verwendet. Gleicher checker oder zwei checker, beide zahlen müssen gespielt werden, wenn sie können.",
+            "title": "Spiele beide Würfel"
+          }
+        },
+        "subtitle": "Wie ein Turn funktioniert",
+        "title": "Umzug mit Würfeln"
+      }
+    },
+    "locked": "Beende zuerst die vorherige Lektion",
+    "next_lesson": "Nächste Lektion",
+    "quiz": {
+      "bar": {
+        "a": "Bewegen Sie Ihren am weitesten entfernten Checker zuerst",
+        "b": "Geben Sie diesen Checker ein, bevor Sie etwas anderes bewegen",
+        "c": "Skip Your Turn",
+        "prompt": "Während Sie einen Checker an der Bar haben, müssen Sie ..."
+      },
+      "bear": {
+        "a": "Wann immer Sie eine 6 rollen",
+        "b": "Erst nachdem Sie einen Fleck getroffen haben",
+        "c": "Wenn alle 15 Checker in Ihrem Home Board sind",
+        "prompt": "Wann kannst du aushalten?"
+      },
+      "blot": {
+        "a": "Jeder Stapel von drei oder mehr",
+        "b": "Ein einzelner Checker an einem Punkt - er kann getroffen werden",
+        "c": "Zwei oder mehr Checker an einem Punkt — ein gemachter Punkt",
+        "prompt": "Was ist ein Blot?"
+      }
+    },
+    "replay": "Wiederholung",
+    "skip_to_play": "Skip zum Spielen",
+    "step_progress": "Schritt{{current}}von{{total}}",
+    "subtitle": "Fünf kurze Lektionen - dann bist du bereit",
+    "title": "Lernen Sie zu spielen"
+  },
+  "not_found": {
+    "body": "Diese Seite ist nicht Teil von Backgammon Mastermind. Geh nach Hause, um zu lernen oder ein Spiel zu beginnen.",
+    "heading": "Neben dem Brett",
+    "home_a11y": "Zur Startseite",
+    "home_cta": "Zur Startseite",
+    "title": "Nicht gefunden"
+  },
+  "settings": {
+    "about": "Über",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabisch",
+    "english": "Englisch",
+    "game": "Spiel",
+    "general": "Generalmajor",
+    "github": "GitHub",
+    "language": "Sprache",
+    "link_error_body": "Bitte versuche es später erneut.",
+    "link_error_title": "Link kann nicht geöffnet werden",
+    "links": "Links",
+    "more": "Mehr",
+    "privacy": "Datenschutzerklärung",
+    "rate": "Bewerten",
+    "share": "Teilen",
+    "support": "Support",
+    "support_us": "Unterstütze uns",
+    "terms": "Nutzungsbedingungen",
+    "title": "Einstellungen",
+    "version": "Version",
+    "website": "Website"
+  },
+  "welcome": "Willkommen bei Backgammon Mastermind"
+}

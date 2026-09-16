@@ -1,13 +1,31 @@
 {
+  "error": {
+    "body": "Restart the app to continue.",
+    "heading": "Something went wrong",
+    "retry": "Retry"
+  },
   "game": {
     "caption": {
       "selected": "Selected — tap a highlighted point, or Cancel"
     },
     "controls": {
+      "bear_off_a11y": "Bear off",
       "cancel": "Cancel",
       "cancel_a11y": "Cancel selection",
+      "leave_game_a11y": "Leave game and return home",
+      "loading": "Loading…",
+      "new_game_message": "Start a new game?",
+      "new_game_title": "New Game",
+      "no_legal_moves": "No legal moves…",
+      "play_again": "Play Again",
+      "play_again_a11y": "Play again",
+      "redo_a11y": "Redo move",
+      "roll_dice": "Roll Dice",
+      "roll_dice_a11y": "Roll dice",
       "skip_wait": "Tap to skip wait",
-      "skip_wait_a11y": "{{status}} Tap to skip wait"
+      "skip_wait_a11y": "{{status}} Tap to skip wait",
+      "start_new_game_a11y": "Start new game",
+      "undo_a11y": "Undo move"
     },
     "nudge": {
       "roll_first": "Roll the dice first"
@@ -69,6 +87,12 @@
       "turn_label": "Turn {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "Turn {{turn}}/{{totalTurns}} · move {{moveInTurn}}/{{movesInTurn}} · {{player}}",
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
+    },
+    "status": {
+      "black_wins": "Black Wins",
+      "computer_wins": "Computer Wins",
+      "white_wins": "🏆 White Wins!",
+      "you_win": "🏆 You Win!"
     }
   },
   "home": {
@@ -96,7 +120,7 @@
     "two_players_sub": "Pass & play locally",
     "vs_computer": "vs Computer",
     "vs_computer_a11y": "Play against the computer",
-    "vs_computer_sub": "Play against AI"
+    "vs_computer_sub": "Play against the computer"
   },
   "learn": {
     "back_to_hub": "All lessons",
@@ -149,7 +173,7 @@
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "You play WHITE — the cream checkers. The cream horseshoe is YOUR path: start at the far top-right, around the left side, then into home at the bottom-right (points 1–6). The dashed line is Black, heading the opposite way.",
+            "body": "The horseshoe matches the checkers of the player whose turn it is. It traces that player's route around the board and into home (points 1–6).",
             "title": "The horseshoe path"
           },
           "far": {
@@ -266,6 +290,13 @@
     "subtitle": "Five short lessons — then you’re ready",
     "title": "Learn to play"
   },
+  "not_found": {
+    "body": "That page isn't part of Backgammon Mastermind. Head home to learn or start a game.",
+    "heading": "Off the board",
+    "home_a11y": "Go to home",
+    "home_cta": "Back to home",
+    "title": "Not found"
+  },
   "settings": {
     "about": "About",
     "app_name": "Backgammon Mastermind",
@@ -281,6 +312,8 @@
     "general": "General",
     "github": "Github",
     "language": "Language",
+    "link_error_body": "Please try again later.",
+    "link_error_title": "Unable to open link",
     "links": "Links",
     "more": "More",
     "privacy": "Privacy Policy",

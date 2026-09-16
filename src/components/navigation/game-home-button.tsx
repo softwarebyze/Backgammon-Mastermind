@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 
 type Props = {
   onPress: () => void;
@@ -12,7 +13,7 @@ type Props = {
 export function GameHomeButton({ onPress }: Props) {
   return (
     <HeaderButton
-      accessibilityLabel="Leave game and return home"
+      accessibilityLabel={translate('game.controls.leave_game_a11y')}
       testID="leave-game-button"
       onPress={() => {
         hapticLight();

@@ -89,7 +89,7 @@ export function pickerFormSheetOptions(title: string): NativeStackNavigationOpti
   return {
     presentation: 'formSheet',
     sheetGrabberVisible: true,
-    sheetAllowedDetents: [0.32],
+    sheetAllowedDetents: [0.55, 0.95],
     sheetCornerRadius: 16,
     title,
     headerShown: true,

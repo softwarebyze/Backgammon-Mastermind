@@ -10,25 +10,19 @@ export type HorseshoeMetrics = {
   curveX: number;
 };
 
-/**
- * White rides the outer cream lane; Black is inset so both directions can
- * show at once without stacking into one stroke.
- */
 export function horseshoeMetrics(
   width: number,
   height: number,
-  player: HorseshoePlayer = 'white',
+  _player: HorseshoePlayer = 'white',
 ): HorseshoeMetrics {
   const pad = Math.max(4, width * 0.04);
-  const lane = player === 'white' ? 0 : 1;
-  const inset = lane * Math.max(8, height * 0.055);
   return {
     pad,
-    topY: height * 0.22 + inset,
-    botY: height * 0.78 - inset,
-    leftX: pad + width * 0.08 + lane * width * 0.028,
-    rightX: width - pad - width * 0.14 - lane * width * 0.018,
-    curveX: pad + lane * width * 0.04,
+    topY: height * 0.22,
+    botY: height * 0.78,
+    leftX: pad + width * 0.08,
+    rightX: width - pad - width * 0.14,
+    curveX: pad,
   };
 }
 
