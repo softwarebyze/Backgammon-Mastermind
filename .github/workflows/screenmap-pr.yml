@@ -1,5 +1,5 @@
-# .github/workflows/screenmap-pr.yml — review what a PR changes on-screen
-# Template: https://github.com/aleqsio/screenmap/blob/main/action/templates/screenmap-pr.yml
+# .github/workflows/screenmap-pr.yml — iOS + Android, then merge into one map
+# Dual-platform shape: https://github.com/aleqsio/screenmap/blob/main/action/templates/screenmap-pr.yml
 name: screenmap · PR changes
 on:
   pull_request:
@@ -8,11 +8,15 @@ concurrency:
   group: screenmap-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 permissions:
-  contents: write        # push bundles to the screenmaps branch
-  pull-requests: write   # the sticky comment
-  actions: write         # start the baseline if no map exists yet
+  contents: write
+  pull-requests: write
+  actions: write
 jobs:
-  changes:
+  ios:
+    # continue-on-error: EAS iOS Free-plan quota is exhausted until 2026-10-01.
+    # Android + merge still run. A prebuilt .app (release tag screenmap-ios-devclient)
+    # skips EAS entirely.
+    continue-on-error: true
     runs-on: macos-26
     timeout-minutes: 60
     steps:
@@ -22,15 +26,148 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - uses: aleqsio/screenmap@v1
+      - name: Restore prebuilt iOS simulator .app
+        id: ios_app
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/restore-screenmap-ios-app.sh
+      - name: Screenmap iOS (prebuilt .app)
+        id: map_prebuilt
+        if: steps.ios_app.outputs.have_app == 'true'
+        uses: aleqsio/screenmap@v1
         with:
           mode: pr
-          expo_token: ${{ secrets.EXPO_TOKEN }}   # EAS builds or reuses the dev client
-          # app_path: build/MyApp.app   # ...or your own simulator build, with no expo_token
-          # platform: ios   # or android, on runs-on: ubuntu-latest — a tenth of the macOS rate
-          # Agent is optional. Uncomment both when ANTHROPIC_API_KEY is set:
+          platform: ios
+          publish: "false"
+          auto_baseline: "false"
+          flows_pr: "false"
+          app_path: ${{ steps.ios_app.outputs.app_path }}
+          # Agent optional — uncomment when ANTHROPIC_API_KEY is set:
           # agent_provider: claude
           # agent_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          # eas_profile defaults to development-simulator (added in eas.json)
-          # project: omitted — Expo app is the repo root
-          # publish: omitted — public repo (raw GitHub URLs work)
+      - name: Screenmap iOS (EAS fallback)
+        id: map_eas
+        if: steps.ios_app.outputs.have_app != 'true'
+        uses: aleqsio/screenmap@v1
+        with:
+          mode: pr
+          platform: ios
+          publish: "false"
+          auto_baseline: "false"
+          flows_pr: "false"
+          expo_token: ${{ secrets.EXPO_TOKEN }}
+          eas_profile: development-simulator
+          # Agent optional — uncomment when ANTHROPIC_API_KEY is set:
+          # agent_provider: claude
+          # agent_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Upload screenmap-ios
+        if: always() && (steps.map_prebuilt.outputs.bundle != '' || steps.map_eas.outputs.bundle != '')
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenmap-ios
+          path: |
+            ${{ steps.map_prebuilt.outputs.bundle || steps.map_eas.outputs.bundle }}
+            .screenmap-ci/summary.json
+          if-no-files-found: ignore
+      - name: Fail iOS if capture produced no bundle
+        if: always() && steps.map_prebuilt.outputs.bundle == '' && steps.map_eas.outputs.bundle == '' && (steps.map_prebuilt.outcome == 'failure' || steps.map_eas.outcome == 'failure')
+        run: |
+          echo "::error::iOS Screenmap produced no bundle (no prebuilt .app, and EAS fallback failed — likely Free-plan iOS quota until 2026-10-01)."
+          exit 1
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      EXPO_PUBLIC_APP_ENV: preview
+      APP_ENV: preview
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+      - name: Set Up JDK + Generate Test APK
+        uses: ./.github/actions/setup-jdk-generate-apk
+        with:
+          APP_ENV: preview
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Screenmap Android (in-CI Gradle APK, no EAS)
+        id: map
+        uses: aleqsio/screenmap@v1
+        with:
+          mode: pr
+          platform: android
+          publish: "false"
+          auto_baseline: "true"
+          flows_pr: "false"
+          app_path: android-test.apk
+          # no expo_token — this APK is the Maestro e2e debug build (no expo-dev-client)
+          # Agent optional — uncomment when ANTHROPIC_API_KEY is set:
+          # agent_provider: claude
+          # agent_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Upload screenmap-android
+        if: always() && steps.map.outputs.bundle != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenmap-android
+          path: |
+            ${{ steps.map.outputs.bundle }}
+            .screenmap-ci/summary.json
+          if-no-files-found: ignore
+      - name: Fail Android if capture produced no bundle
+        if: always() && steps.map.outputs.bundle == '' && steps.map.outcome == 'failure'
+        run: |
+          echo "::error::Android Screenmap produced no bundle."
+          exit 1
+
+  merge:
+    needs: [ios, android]
+    if: always() && (needs.android.result == 'success' || needs.ios.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Download iOS bundle
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: screenmap-ios
+          path: bundles/screenmap-ios
+      - name: Download Android bundle
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: screenmap-android
+          path: bundles/screenmap-android
+      - name: Install screenmap-ci
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch v1 https://github.com/aleqsio/screenmap.git "$RUNNER_TEMP/screenmap"
+          cd "$RUNNER_TEMP/screenmap/action/cli"
+          npm ci --silent || npm install --silent
+          chmod +x screenmap-ci.mjs
+          ln -sfn "$PWD/screenmap-ci.mjs" "$PWD/screenmap-ci"
+          echo "$PWD" >> "$GITHUB_PATH"
+      - name: Merge + publish + comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SCREENMAP_MODE: pr
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          VIEWER_URL: https://app.screenmap.dev
+        run: bash .github/scripts/screenmap-merge-publish.sh
+      - name: Upload combined map
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenmap-merged
+          path: combined.scrmap
+          if-no-files-found: ignore
