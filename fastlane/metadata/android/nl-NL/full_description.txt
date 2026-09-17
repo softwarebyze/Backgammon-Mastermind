@@ -1,17 +1,17 @@
-Backgammon Mastermind is een gepolijste versie van het klassieke strategiespel.
+Backgammon Mastermind is een verzorgde versie van het klassieke strategiespel.
 
-Ga meteen een partij tegen de computer in of deel het bord met een vriend in pass-and-play. Gooi dobbelstenen, verplaats je schijven, sla blotten en breng alle vijftien naar huis om te winnen.
+Begin meteen een partij tegen de computer of deel het bord met een vriend in pass-and-play. Gooi de dobbelstenen, verplaats je stenen, sla losse stenen en speel al je vijftien stenen uit om te winnen.
 
-Nieuw bij backgammon? Leer op het bord met vijf korte interactieve lessen over beweging, raken, de bar, en aftrekken. Speel dan je eerste echte spel.
+Nieuw met backgammon? Leer direct op het bord met vijf korte interactieve lessen over zetten, slaan, de bar en het uitspelen van stenen. Speel daarna je eerste echte partij.
 
 Functies:
-• Leer interactieve lessen afspelen op een echt bord
+• Leer spelen — interactieve lessen op een echt bord
 • Speel tegen de computer
-• lokaal 2 spelers (pass-and-play)
-• Sleep of tik om te zetten; legale bestemmingen gemarkeerd
-• Zet-hints, puntnummers en richtingsoverlay voor beginners
+• Lokale modus voor 2 spelers (pass-and-play)
+• Sleep of tik om te zetten; toegestane bestemmingen worden gemarkeerd
+• Zethints, puntnummers en een richtingsoverlay voor beginners
 • Speel elke beurt van je partij terug en bekijk hem
 • Beschikbaar in 17 talen
 • Geen account en geen advertenties — het spel draait op je apparaat
 
-Eén aankoop. Speel offline na download. Perfect om je vaardigheden aan te scherpen.
+Eén aankoop. Speel offline na het downloaden. Perfect om je vaardigheden te verbeteren.

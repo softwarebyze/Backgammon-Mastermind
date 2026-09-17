@@ -129,7 +129,7 @@
       "hint_nudge": "Heb je een zetje nodig? Zoek naar de gemarkeerde plekken.",
       "illegal": "Probeer een gemarkeerd punt of tik op Hint.",
       "legal_but_wrong": "Dat is legaal in een echt spel hier, probeer de beweging die dit idee leert.",
-      "move_progress": "Mooi.{{done}}van{{needed}}Bewegen gedaan."
+      "move_progress": "Mooi. {{done}} van {{needed}} zetten gedaan."
     },
     "graduation": {
       "body": "Je kent het doel, het bord, hoe het werkt, slaat en afgaat. Een snelle controle en dan je eerste echte spel.",
@@ -146,7 +146,7 @@
     },
     "hint": "Hint",
     "home_cta": "Spelen leren",
-    "home_cta_progress": "{{done}}van{{total}}lessen gedaan",
+    "home_cta_progress": "{{done}} van {{total}} lessen gedaan",
     "home_cta_quiz": "Snel controleren links en dan afspelen",
     "home_cta_ready": "Je bent klaar om een echt spel te spelen",
     "home_cta_sub": "Interactieve lessen voor beginners",
@@ -173,7 +173,7 @@
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "De hoefijzer komt overeen met de dammen van de speler wiens beurt het is. Het spoort de route van de speler rond het bord en naar huis (punten 1",
+            "body": "Het hoefijzer komt overeen met de stenen van de speler die aan de beurt is. Het volgt de route van die speler over het bord en naar huis (punten 1–6).",
             "title": "Het hoefijzerpad"
           },
           "far": {
@@ -286,7 +286,7 @@
     },
     "replay": "Herspelen",
     "skip_to_play": "Afspelen overslaan",
-    "step_progress": "Stap{{current}}van{{total}}",
+    "step_progress": "Stap {{current}} van {{total}}",
     "subtitle": "Vijf korte lessen en dan ben je klaar",
     "title": "Spelen leren"
   },

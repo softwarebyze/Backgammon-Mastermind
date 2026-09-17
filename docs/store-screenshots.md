@@ -23,7 +23,7 @@ pnpm screenshots:prepare          # render all 17 localized sets → Apple + Pla
 pnpm screenshots:asc-key          # Expo session → .cache/asc-api-key.json (gitignored)
 node scripts/dedupe-asc-screenshots.mjs # dry-run duplicate check against production ASC
 pnpm screenshots:upload:ios       # prepare + key + bundle exec fastlane deliver (screenshots only)
-pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH, PLAY_TRACK, PLAY_VERSION_CODE
+pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH; PLAY_PACKAGE_NAME is optional
 ```
 
 Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.239.0**). First time: `bundle install`.
@@ -94,8 +94,6 @@ Or run supply locally:
 ```sh
 export PLAY_JSON_KEY_PATH=/path/to/google-service-account.json
 export PLAY_PACKAGE_NAME=com.backgammonmastermind
-export PLAY_TRACK=internal
-export PLAY_VERSION_CODE=6 # change to the version code on that track
 pnpm screenshots:upload:android
 ```
 

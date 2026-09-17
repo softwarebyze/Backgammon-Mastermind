@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = process.cwd();
@@ -27,9 +27,19 @@ describe('prepare-store-screenshots', () => {
     );
     expect(sourceIphone).toHaveLength(5);
 
+    const staleIos = join(IOS_ROOT, 'zz-stale');
+    const stalePlay = join(PLAY_ROOT, 'zz-ZZ');
+    mkdirSync(staleIos, { recursive: true });
+    mkdirSync(stalePlay, { recursive: true });
+    writeFileSync(join(staleIos, 'old.png'), 'stale');
+    writeFileSync(join(stalePlay, 'title.txt'), 'stale');
+
     execFileSync(process.execPath, ['scripts/prepare-store-screenshots.mjs'], {
       cwd: ROOT,
     });
+
+    expect(existsSync(staleIos)).toBe(false);
+    expect(existsSync(stalePlay)).toBe(false);
 
     for (const name of sourceIphone) {
       const dest = join(PLAY_OUT, name);

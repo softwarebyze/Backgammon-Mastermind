@@ -1,17 +1,17 @@
 Backgammon Mastermind est une version soignée du jeu de plateau stratégique classique.
 
-Lancez-vous tout de suite dans une partie contre l’ordinateur ou partagez le plateau avec un ami en mode pass-and-play. Lancez les dés, déplacez vos pions, frappez les blots et sortez les quinze pour gagner.
+Lancez-vous tout de suite dans une partie contre l’ordinateur ou partagez le plateau avec un ami en mode pass-and-play. Lancez les dés, déplacez vos pions, frappez les pions isolés et sortez les quinze pions pour gagner.
 
-Un nouveau backgammon ? Apprenez sur le tableau avec cinq courtes leçons interactives couvrant le mouvement, le frappe, la barre, et le roulement. Alors jouez à votre premier vrai jeu.
+Vous débutez au backgammon ? Apprenez directement sur le plateau grâce à cinq courtes leçons interactives sur le déplacement, la frappe, la barre et la sortie des pions. Jouez ensuite votre première vraie partie.
 
 Fonctionnalités :
-• Apprendre à jouer — leçons interactives sur un vrai tableau
-• Jouer contre l'ordinateur
-• 2 joueurs en local (pass-and-play)
-• Glissez ou touchez pour bouger ; destinations légales mises en évidence
-• Indices de coups, numéros de points et calque de direction pour les débutants
+• Apprendre à jouer — leçons interactives sur un vrai plateau
+• Jouer contre l’ordinateur
+• Mode local à 2 joueurs (pass-and-play)
+• Glissez ou touchez pour jouer ; les destinations légales sont mises en évidence
+• Indices de coups, numéros de points et guide de direction pour les débutants
 • Rejouez et examinez n’importe quel tour de votre partie
 • Disponible en 17 langues
-• Sans compte et sans pubs — le jeu tourne sur votre appareil
+• Sans compte et sans publicité — le jeu fonctionne sur votre appareil
 
-Un seul achat. Jouez hors ligne après téléchargement. Idéal pour affûter vos compétences.
+Un seul achat. Jouez hors ligne après le téléchargement. Idéal pour améliorer vos compétences.

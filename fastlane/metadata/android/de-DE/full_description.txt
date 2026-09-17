@@ -1,17 +1,17 @@
-Backgammon Mastermind ist eine ausgefeilte Version des klassischen Strategiespiels.
+Backgammon Mastermind ist eine sorgfältig gestaltete Version des klassischen Strategiespiels.
 
-Starte sofort eine Partie gegen den Computer oder teile das Brett mit einem Freund im Pass-and-Play-Modus. Würfle, ziehe deine Steine, schlage Blots und bringe alle fünfzehn Steine heim, um zu gewinnen.
+Starte sofort eine Partie gegen den Computer oder teile das Brett mit einem Freund im Pass-and-Play-Modus. Würfle, ziehe deine Steine, schlage einzelne gegnerische Steine und würfle alle fünfzehn Steine aus, um zu gewinnen.
 
-Neu bei Backgammon? Lernen Sie auf dem Brett mit fünf kurzen interaktiven Lektionen über Bewegung, Schlagen, die Bar und Abstützen. Dann spiele dein erstes richtiges Spiel.
+Noch nie Backgammon gespielt? Lerne direkt auf dem Brett in fünf kurzen interaktiven Lektionen alles über Ziehen, Schlagen, das Wiedereinsetzen von der Bar und das Auswürfeln. Danach spielst du deine erste richtige Partie.
 
 Funktionen:
-• Spielen lernen - interaktive Lektionen auf einem echten Board
-• Spielen Sie gegen den Computer
-• lokal 2 Spieler (Pass-and-Play)
-• Ziehen oder Tippen zum Bewegen; legale Ziele hervorgehoben
-• Zug-Hinweise, Punktnummern und Richtungsüberlagerung für Einsteiger
+• Spielen lernen — interaktive Lektionen auf einem echten Brett
+• Gegen den Computer spielen
+• Lokaler Modus für 2 Spieler (Pass-and-Play)
+• Ziehen oder Tippen zum Bewegen; erlaubte Ziele werden hervorgehoben
+• Zughinweise, Punktnummern und Richtungsanzeige für Einsteiger
 • Züge der Partie wiederholen und prüfen
 • Verfügbar in 17 Sprachen
-• kein Konto und keine Werbung — das Spiel läuft auf deinem Gerät
+• Kein Konto und keine Werbung — das Spiel läuft auf deinem Gerät
 
-Einmaliger Kauf. Nach dem Download offline spielbar. Ideal, um deine Fähigkeiten zu schärfen.
+Einmaliger Kauf. Nach dem Download offline spielbar. Ideal, um deine Fähigkeiten zu verbessern.

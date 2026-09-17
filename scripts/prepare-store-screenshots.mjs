@@ -58,6 +58,17 @@ function clearPngs(dir) {
   }
 }
 
+/** Remove stale generated locale folders that are no longer configured. */
+function pruneLocaleDirectories(root, allowedLocales) {
+  if (!fs.existsSync(root))
+    return;
+  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+    if (entry.isDirectory() && !allowedLocales.has(entry.name)) {
+      fs.rmSync(path.join(root, entry.name), { recursive: true, force: true });
+    }
+  }
+}
+
 /** Crop an App Store phone image to Google Play's accepted 9:16 size. */
 async function stagePlayPhone(src, dest) {
   await sharp(src)
@@ -193,6 +204,10 @@ async function main() {
 
   const localizations = JSON.parse(fs.readFileSync(LOCALIZATIONS_PATH, 'utf8'));
   const storeInfo = JSON.parse(fs.readFileSync(STORE_CONFIG_PATH, 'utf8')).apple.info;
+  const appleLocales = new Set(Object.keys(localizations));
+  const playLocales = new Set(Object.values(localizations).map(copy => copy.playLocale));
+  pruneLocaleDirectories(IOS_ROOT, appleLocales);
+  pruneLocaleDirectories(PLAY_ROOT, playLocales);
 
   let iosCount = 0;
   let playCount = 0;
