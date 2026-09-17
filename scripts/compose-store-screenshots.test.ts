@@ -13,6 +13,10 @@ import { join } from 'node:path';
 
 const ROOT = process.cwd();
 const MANIFEST_PATH = join(ROOT, 'docs/marketing/v1.0.0/screenshot-frames.json');
+const LOCALIZATIONS_PATH = join(
+  ROOT,
+  'docs/marketing/v1.0.0/screenshot-localizations.json',
+);
 const SCRIPT = join(ROOT, 'scripts/compose-store-screenshots.mjs');
 const PNG_1X1 = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
@@ -133,6 +137,29 @@ describe('screenshot-frames manifest', () => {
     expect(src).not.toMatch(/class="device"/);
     expect(src).not.toMatch(/class="wordmark"/);
     expect(src).not.toMatch(/class="divider"/);
+  });
+});
+
+describe('screenshot localizations', () => {
+  it('provides store copy for every 1.0.2 App Store locale', () => {
+    const copy = JSON.parse(readFileSync(LOCALIZATIONS_PATH, 'utf8')) as Record<
+      string,
+      { playLocale: string; learn: string[]; pass: string[]; passSub: string; computer: string[]; lessons: string[] }
+    >;
+    const storeLocales = Object.keys(
+      (JSON.parse(readFileSync(join(ROOT, 'store.config.json'), 'utf8')) as {
+        apple: { info: Record<string, unknown> };
+      }).apple.info,
+    );
+    expect(Object.keys(copy).sort()).toEqual(storeLocales.sort());
+    for (const locale of Object.values(copy)) {
+      expect(locale.playLocale).toBeTruthy();
+      expect(locale.learn.join(' ')).toBeTruthy();
+      expect(locale.pass.join(' ')).toBeTruthy();
+      expect(locale.passSub).toBeTruthy();
+      expect(locale.computer.join(' ')).toBeTruthy();
+      expect(locale.lessons.join(' ')).toBeTruthy();
+    }
   });
 });
 

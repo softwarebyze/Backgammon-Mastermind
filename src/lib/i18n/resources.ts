@@ -61,6 +61,7 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
 export const SUPPORTED_LANGUAGES = Object.keys(LANGUAGE_NAMES) as Language[];
 export const RTL_LANGUAGES: ReadonlySet<Language> = new Set(['ar', 'he']);
 
+/** Narrow an arbitrary locale code to one of the bundled app languages. */
 export function isSupportedLanguage(code: string | undefined): code is Language {
   return !!code && code in resources;
 }

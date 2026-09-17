@@ -7,18 +7,19 @@ Agents **can and should** upload App Store / Play screenshots without a human cl
 | Asset | Path |
 |-------|------|
 | Raw captures (undressed) | `docs/marketing/v1.0.0/app-store-screenshots/raw/` |
-| Frame manifest (headlines) | `docs/marketing/v1.0.0/screenshot-frames.json` |
+| Frame manifest (layout + English headlines) | `docs/marketing/v1.0.0/screenshot-frames.json` |
+| Localized screenshot copy | `docs/marketing/v1.0.0/screenshot-localizations.json` |
 | Composed iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/iphone-69-*.png` |
 | Composed iPad Pro 13" (2064×2752) | `docs/marketing/v1.0.0/app-store-screenshots/ipad-13-*.png` |
-| Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/en-US/` |
-| Staged for Play (9:16 crop of iPhone set; committed) | `fastlane/metadata/android/en-US/images/phoneScreenshots/` |
+| Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/<locale>/` |
+| Staged for Play (generated 9:16 crop) | `fastlane/metadata/android/<locale>/images/phoneScreenshots/` |
 
 Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel sizes), then dress with screenshots compose. Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot). iPad 2064×2752 maps to the 13" slot.
 
 ## Commands
 
 ```sh
-pnpm screenshots:prepare          # copy composed PNGs → fastlane folders
+pnpm screenshots:prepare          # render all 17 localized sets → Apple + Play folders
 pnpm screenshots:asc-key          # Expo session → .cache/asc-api-key.json (gitignored)
 node scripts/dedupe-asc-screenshots.mjs # dry-run duplicate check against production ASC
 pnpm screenshots:upload:ios       # prepare + key + bundle exec fastlane deliver (screenshots only)
@@ -70,7 +71,7 @@ Price / privacy nutrition: ASC UI (or future automation).
 
 ## Play Store
 
-Android listing metadata lives in `fastlane/metadata/android/` (title, short/full description, contact email/website) and Play screenshots are staged under `fastlane/metadata/android/en-US/images/phoneScreenshots/` — both uploaded together by the `fastlane android screenshots` (supply) lane.
+Android listing metadata lives in `fastlane/metadata/android/` (localized title and short/full description, plus contact email/website). `pnpm screenshots:prepare` syncs all 17 Play locale folders from `store.config.json` and renders their localized screenshot headlines from `screenshot-localizations.json`. The listing and screenshots are uploaded together by the `fastlane android screenshots` (`supply`) lane.
 
 Prerequisites (Play Console):
 
@@ -98,7 +99,7 @@ export PLAY_VERSION_CODE=6 # change to the version code on that track
 pnpm screenshots:upload:android
 ```
 
-Android screenshots are a **9:16 crop** (1080×1920) of the iPhone 6.9" marketing set. Play rejects 1320×2868 because the long side is more than twice the short side. `pnpm screenshots:prepare` copies Apple sizes to Fastlane iOS staging and crops Play phone shots from the **top** (headline + board). No new UI captures. The Play set is **committed** under `fastlane/metadata/android/en-US/images/phoneScreenshots/`. Re-stage after recapture.
+Android screenshots are a **9:16 crop** (1080×1920) of each localized iPhone 6.9" marketing set. Play rejects 1320×2868 because the long side is more than twice the short side. `pnpm screenshots:prepare` renders locale-specific marketing bands for Apple, then crops those same images from the **top** (headline + board) for Play. Re-stage after changing screenshot copy or source captures.
 
 ## Obytes / fork agents
 

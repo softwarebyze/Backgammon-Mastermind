@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { Buffer } from 'node:buffer';
 /**
  * Dress raw App Store captures as two-zone frames.
  *
@@ -17,7 +18,6 @@
  * Playwright-core is loaded from PLAYWRIGHT_CORE or /tmp/pw-store (same as capture).
  */
 import fs from 'node:fs';
-import { Buffer } from 'node:buffer';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -55,6 +55,7 @@ const LAYOUT = {
   },
 };
 
+/** Parse the small CLI surface used by generation and CI checks. */
 function parseArgs(argv) {
   const args = { check: false, manifest: DEFAULT_MANIFEST };
   for (let i = 0; i < argv.length; i++) {
@@ -68,6 +69,7 @@ function parseArgs(argv) {
   return args;
 }
 
+/** Read PNG dimensions directly from its IHDR header. */
 export function readPngSize(filePath) {
   const fd = fs.openSync(filePath, 'r');
   const buf = Buffer.alloc(24);
@@ -84,6 +86,7 @@ export function readPngSize(filePath) {
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
 }
 
+/** Load and resolve a screenshot frame manifest. */
 function loadManifest(manifestPath) {
   const raw = fs.readFileSync(manifestPath, 'utf8');
   const manifest = JSON.parse(raw);
@@ -96,6 +99,7 @@ function loadManifest(manifestPath) {
   return manifest;
 }
 
+/** Return a device spec or fail early when the manifest is incomplete. */
 function assertDevicePixels(manifest, deviceName) {
   const spec = manifest.devices[deviceName];
   if (!spec?.width || !spec?.height)
@@ -103,6 +107,7 @@ function assertDevicePixels(manifest, deviceName) {
   return spec;
 }
 
+/** Ensure an input or output image matches the required store dimensions. */
 function assertRawSize(filePath, spec, label) {
   const size = readPngSize(filePath);
   if (size.width !== spec.width || size.height !== spec.height) {
@@ -113,6 +118,7 @@ function assertRawSize(filePath, spec, label) {
   return size;
 }
 
+/** Escape marketing copy before embedding it in generated HTML. */
 function esc(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -121,6 +127,7 @@ function esc(value) {
     .replace(/"/g, '&quot;');
 }
 
+/** Embed the checked-in display fonts for deterministic rendering. */
 function fontFaceCss() {
   for (const fontPath of [INTER_EXTRABOLD, INTER_SEMIBOLD]) {
     if (!fs.existsSync(fontPath))
@@ -134,6 +141,7 @@ function fontFaceCss() {
   ].join('');
 }
 
+/** Return typography/layout tokens for a supported store device. */
 function layoutFor(device) {
   const layout = LAYOUT[device];
   if (!layout)
@@ -141,6 +149,7 @@ function layoutFor(device) {
   return layout;
 }
 
+/** Normalize crop fractions to the inclusive 0–1 range. */
 export function clampCropTop(value) {
   const n = Number(value);
   if (!Number.isFinite(n) || n <= 0)
@@ -150,6 +159,7 @@ export function clampCropTop(value) {
   return n;
 }
 
+/** Calculate the opaque headline-band height for a composed frame. */
 export function bandHeightPx(frame, spec) {
   const headline = (frame.headline || '').trim();
   if (!headline)
@@ -158,6 +168,7 @@ export function bandHeightPx(frame, spec) {
   return Math.round(spec.height * layout.bandPct);
 }
 
+/** Build deterministic HTML for one two-zone marketing frame. */
 function frameHtml({ frame, spec, colors, dataUrl }) {
   const layout = layoutFor(frame.device);
   const headline = (frame.headline || '').trim();
@@ -233,6 +244,7 @@ p{
 </html>`;
 }
 
+/** Launch the headless Chromium instance used for pixel-accurate composition. */
 async function launchBrowser() {
   const playwrightPath
     = process.env.PLAYWRIGHT_CORE
@@ -251,6 +263,7 @@ async function launchBrowser() {
   });
 }
 
+/** Compose and validate one store screenshot frame. */
 async function composeFrame(page, manifest, frame) {
   const spec = assertDevicePixels(manifest, frame.device);
   const src = path.join(manifest.rawAbs, frame.source);
@@ -293,6 +306,7 @@ async function composeFrame(page, manifest, frame) {
   return dest;
 }
 
+/** Validate every raw source before launching Chromium. */
 function preflightRaws(manifest) {
   for (const frame of manifest.frames) {
     const spec = assertDevicePixels(manifest, frame.device);
@@ -303,6 +317,7 @@ function preflightRaws(manifest) {
   }
 }
 
+/** Compose every frame and remove stale outputs from the destination. */
 async function composeAll(manifest) {
   preflightRaws(manifest);
   const browser = await launchBrowser();
@@ -332,6 +347,7 @@ async function composeAll(manifest) {
   return written;
 }
 
+/** Verify that all expected composed screenshots exist at exact dimensions. */
 function checkOutputs(manifest) {
   const errors = [];
   for (const frame of manifest.frames) {
@@ -354,6 +370,7 @@ function checkOutputs(manifest) {
   console.log(`OK ${manifest.frames.length} composed PNGs at Apple pixel sizes.`);
 }
 
+/** Run screenshot composition or output validation for the requested manifest. */
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const manifest = loadManifest(args.manifest);

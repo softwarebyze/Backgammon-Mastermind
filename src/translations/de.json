@@ -129,7 +129,7 @@
       "hint_nudge": "Brauchen Sie einen Nudge? Suchen Sie nach den hervorgehobenen Stellen.",
       "illegal": "Versuchen Sie einen hervorgehobenen Punkt - oder tippen Sie auf Hint.",
       "legal_but_wrong": "Das ist legal in einem echten Spiel - hier, versuchen Sie die Bewegung, die diese Idee lehrt.",
-      "move_progress": "Nizza —{{done}}von{{needed}}Moves done."
+      "move_progress": "Gut — {{done}} von {{needed}} Zügen geschafft."
     },
     "graduation": {
       "body": "Sie kennen das Ziel, das Brett, wie sich Arbeit, Schlagen und Abstützen drehen. Ein kurzer Check - dann dein erstes richtiges Spiel.",
@@ -146,7 +146,7 @@
     },
     "hint": "Hinweis",
     "home_cta": "Lernen Sie zu spielen",
-    "home_cta_progress": "{{done}}von{{total}}Lektionen",
+    "home_cta_progress": "{{done}} von {{total}} Lektionen",
     "home_cta_quiz": "Quick Check links — dann spielen",
     "home_cta_ready": "Sie sind bereit - spielen Sie ein echtes Spiel",
     "home_cta_sub": "Interaktiver Unterricht für Anfänger",
@@ -252,7 +252,7 @@
             "title": "Zwei Zahlen, offene Punkte"
           },
           "two_dice": {
-            "body": "Du hast 3 und 1 gerollt. Bewegen Sie den Checker auf den 8-Punkte-drei Pips (bis 5) und den einen auf dem 6-Punkte-drei Pip (bis 5).",
+            "body": "Du hast eine 3 und eine 1 gewürfelt. Ziehe den Stein auf Punkt 8 drei Felder weit auf Punkt 5 und den Stein auf Punkt 6 ein Feld weit auf Punkt 5.",
             "hint": "Wählen Sie einen weißen Checker und tippen Sie dann auf Punkt 5. Tun Sie dies sowohl für den 8-Punkt als auch für den 6-Punkt.",
             "praise": "Schön - beide Würfel verwendet. Gleicher checker oder zwei checker, beide zahlen müssen gespielt werden, wenn sie können.",
             "title": "Spiele beide Würfel"
@@ -286,7 +286,7 @@
     },
     "replay": "Wiederholung",
     "skip_to_play": "Skip zum Spielen",
-    "step_progress": "Schritt{{current}}von{{total}}",
+    "step_progress": "Schritt {{current}} von {{total}}",
     "subtitle": "Fünf kurze Lektionen - dann bist du bereit",
     "title": "Lernen Sie zu spielen"
   },

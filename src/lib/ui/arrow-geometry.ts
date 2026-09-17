@@ -57,8 +57,8 @@ export function buildArrowhead(
 
 /** Arrowhead sizes for the horseshoe direction overlay. */
 export const HORSESHOE_ARROW = {
-  white: { length: 10, halfWidth: 5.5 },
-  black: { length: 10, halfWidth: 5.5 },
+  white: { length: 9, halfWidth: 5 },
+  black: { length: 9, halfWidth: 5 },
 } as const;
 
 function buildHorseshoeArrowhead({

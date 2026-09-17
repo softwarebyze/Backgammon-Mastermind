@@ -23,22 +23,24 @@ type LaneProps = {
   stroke: string;
 };
 
+/** Trim the lane stroke to the base of its filled arrowhead. */
 function pathToArrowBase(d: string, lineEnd: { x: number; y: number }): string {
   return d.replace(/L [\d.]+ [\d.]+$/, `L ${lineEnd.x} ${lineEnd.y}`);
 }
 
+/** Draw the halo, current-player stroke, and compact arrowhead as one lane. */
 function HorseshoeLane({ width, height, player, stroke }: LaneProps) {
   const d = buildHorseshoePath(width, height, player);
   const head = horseshoeArrowhead(width, height, player);
   const trimmed = pathToArrowBase(d, head.lineEnd);
-  const strokeWidth = 1.6;
+  const strokeWidth = 2.2;
 
   return (
     <>
       <Path
         d={trimmed}
         stroke={HALO}
-        strokeWidth={strokeWidth + 1.2}
+        strokeWidth={strokeWidth + 1.4}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"

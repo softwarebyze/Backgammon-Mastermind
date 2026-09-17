@@ -34,6 +34,11 @@ describe('make-preview-store-config', () => {
       expect([...listing.description].length).toBeLessThanOrEqual(4000);
       expect(listing.keywords.join(',').length).toBeLessThanOrEqual(100);
     }
+    expect(canonical.apple.info.he?.subtitle).toContain('שש');
+    expect(canonical.apple.info.tr?.subtitle).toBe('Tavla öğren ve oyna');
+    for (const locale of ['hi', 'ja', 'ko', 'tr']) {
+      expect(canonical.apple.info[locale]?.description).not.toMatch(/new to backgammon|backgammon에 새로운|Eve dönmek için yeni/i);
+    }
   });
 
   it('writes the gitignored preview listing with a unique ASC title', () => {

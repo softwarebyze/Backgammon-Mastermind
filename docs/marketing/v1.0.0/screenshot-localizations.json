@@ -1,0 +1,155 @@
+{
+  "en-US": {
+    "playLocale": "en-US",
+    "direction": "ltr",
+    "learn": ["Learn to play", "backgammon"],
+    "pass": ["Pass & play offline"],
+    "passSub": "With friends and family",
+    "computer": ["Play against", "the computer"],
+    "lessons": ["Five interactive lessons"]
+  },
+  "ar-SA": {
+    "playLocale": "ar",
+    "direction": "rtl",
+    "learn": ["تعلّم لعب الطاولة"],
+    "pass": ["العبوا بالتناوب دون اتصال"],
+    "passSub": "مع الأصدقاء والعائلة",
+    "computer": ["العب ضد الكمبيوتر"],
+    "lessons": ["خمسة دروس تفاعلية"]
+  },
+  "de-DE": {
+    "playLocale": "de-DE",
+    "direction": "ltr",
+    "learn": ["Backgammon", "spielen lernen"],
+    "pass": ["Offline zu zweit spielen"],
+    "passSub": "Mit Freunden und Familie",
+    "computer": ["Gegen den Computer", "spielen"],
+    "lessons": ["Fünf interaktive Lektionen"]
+  },
+  "el": {
+    "playLocale": "el-GR",
+    "direction": "ltr",
+    "learn": ["Μάθε να παίζεις τάβλι"],
+    "pass": ["Παίξτε μαζί εκτός σύνδεσης"],
+    "passSub": "Με φίλους και οικογένεια",
+    "computer": ["Παίξε με τον υπολογιστή"],
+    "lessons": ["Πέντε διαδραστικά μαθήματα"]
+  },
+  "es-ES": {
+    "playLocale": "es-ES",
+    "direction": "ltr",
+    "learn": ["Aprende a jugar", "al backgammon"],
+    "pass": ["Juega por turnos sin conexión"],
+    "passSub": "Con amigos y familia",
+    "computer": ["Juega contra", "el ordenador"],
+    "lessons": ["Cinco lecciones interactivas"]
+  },
+  "fr-FR": {
+    "playLocale": "fr-FR",
+    "direction": "ltr",
+    "learn": ["Apprenez à jouer", "au backgammon"],
+    "pass": ["Jouez à tour de rôle hors ligne"],
+    "passSub": "Avec vos proches",
+    "computer": ["Jouez contre l’ordinateur"],
+    "lessons": ["Cinq leçons interactives"]
+  },
+  "he": {
+    "playLocale": "he-IL",
+    "direction": "rtl",
+    "learn": ["ללמוד לשחק שש־בש"],
+    "pass": ["משחק בתורות ללא חיבור"],
+    "passSub": "עם חברים ובני משפחה",
+    "computer": ["לשחק נגד המחשב"],
+    "lessons": ["חמישה שיעורים אינטראקטיביים"]
+  },
+  "hi": {
+    "playLocale": "hi-IN",
+    "direction": "ltr",
+    "learn": ["बैकगैमन खेलना सीखें"],
+    "pass": ["ऑफ़लाइन बारी-बारी से खेलें"],
+    "passSub": "दोस्तों और परिवार के साथ",
+    "computer": ["कंप्यूटर के विरुद्ध खेलें"],
+    "lessons": ["पाँच इंटरैक्टिव पाठ"]
+  },
+  "it": {
+    "playLocale": "it-IT",
+    "direction": "ltr",
+    "learn": ["Impara a giocare", "a backgammon"],
+    "pass": ["Gioca a turni offline"],
+    "passSub": "Con amici e familiari",
+    "computer": ["Gioca contro il computer"],
+    "lessons": ["Cinque lezioni interattive"]
+  },
+  "ja": {
+    "playLocale": "ja-JP",
+    "direction": "ltr",
+    "learn": ["バックギャモンを学ぼう"],
+    "pass": ["オフラインで交互にプレイ"],
+    "passSub": "友達や家族と一緒に",
+    "computer": ["コンピュータと対戦"],
+    "lessons": ["5つのインタラクティブレッスン"]
+  },
+  "ko": {
+    "playLocale": "ko-KR",
+    "direction": "ltr",
+    "learn": ["백개먼을 배워 보세요"],
+    "pass": ["오프라인으로 번갈아 플레이"],
+    "passSub": "친구와 가족과 함께",
+    "computer": ["컴퓨터와 대결"],
+    "lessons": ["다섯 개의 대화형 수업"]
+  },
+  "nl-NL": {
+    "playLocale": "nl-NL",
+    "direction": "ltr",
+    "learn": ["Leer backgammon spelen"],
+    "pass": ["Speel om de beurt offline"],
+    "passSub": "Met vrienden en familie",
+    "computer": ["Speel tegen de computer"],
+    "lessons": ["Vijf interactieve lessen"]
+  },
+  "pl": {
+    "playLocale": "pl-PL",
+    "direction": "ltr",
+    "learn": ["Naucz się grać", "w backgammona"],
+    "pass": ["Graj na zmianę offline"],
+    "passSub": "Z rodziną i znajomymi",
+    "computer": ["Zagraj z komputerem"],
+    "lessons": ["Pięć interaktywnych lekcji"]
+  },
+  "pt-PT": {
+    "playLocale": "pt-PT",
+    "direction": "ltr",
+    "learn": ["Aprenda a jogar gamão"],
+    "pass": ["Jogue à vez sem internet"],
+    "passSub": "Com amigos e família",
+    "computer": ["Jogue contra o computador"],
+    "lessons": ["Cinco lições interativas"]
+  },
+  "ru": {
+    "playLocale": "ru-RU",
+    "direction": "ltr",
+    "learn": ["Научитесь играть", "в нарды"],
+    "pass": ["Играйте по очереди офлайн"],
+    "passSub": "С друзьями и семьёй",
+    "computer": ["Играйте против компьютера"],
+    "lessons": ["Пять интерактивных уроков"]
+  },
+  "tr": {
+    "playLocale": "tr-TR",
+    "direction": "ltr",
+    "learn": ["Tavla oynamayı öğren"],
+    "pass": ["Çevrimdışı sırayla oynayın"],
+    "passSub": "Arkadaşlar ve aileyle",
+    "computer": ["Bilgisayara karşı oyna"],
+    "lessons": ["Beş etkileşimli ders"]
+  },
+  "zh-Hans": {
+    "playLocale": "zh-CN",
+    "direction": "ltr",
+    "learn": ["学习双陆棋"],
+    "pass": ["离线轮流对战"],
+    "passSub": "与亲友一起玩",
+    "computer": ["与电脑对战"],
+    "lessons": ["五节互动课程"]
+  }
+}

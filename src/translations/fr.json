@@ -129,7 +129,7 @@
       "hint_nudge": "Besoin d'un coup de pouce ? Cherchez les endroits surlignés.",
       "illegal": "Essayez un point surligné — ou appuyez sur Conseil.",
       "legal_but_wrong": "C'est légal dans un vrai jeu — ici, essayez le mouvement qui enseigne cette idée.",
-      "move_progress": "Joli...{{done}}des{{needed}}C'est fait."
+      "move_progress": "Bien — {{done}} mouvements sur {{needed}} effectués."
     },
     "graduation": {
       "body": "Tu connais le but, le conseil, comment tourne le travail, frappe et recule. Une vérification rapide — puis votre premier vrai jeu.",
@@ -146,7 +146,7 @@
     },
     "hint": "Conseil",
     "home_cta": "Apprendre à jouer",
-    "home_cta_progress": "{{done}}des{{total}}Enseignements tirés",
+    "home_cta_progress": "{{done}} leçons sur {{total}}",
     "home_cta_quiz": "Cochez à gauche — puis jouez",
     "home_cta_ready": "Vous êtes prêt — jouer un vrai jeu",
     "home_cta_sub": "Cours interactifs pour débutants",
@@ -286,7 +286,7 @@
     },
     "replay": "Rejouer",
     "skip_to_play": "Sauter pour jouer",
-    "step_progress": "Étape{{current}}des{{total}}",
+    "step_progress": "Étape {{current}} sur {{total}}",
     "subtitle": "Cinq courtes leçons, puis vous êtes prêt",
     "title": "Apprendre à jouer"
   },

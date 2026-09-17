@@ -58,6 +58,7 @@ div[id*="dev-menu"] {
 }
 `;
 
+/** Build deterministic game states used by the marketing capture scenes. */
 function loadGameStates() {
   const src = `
 import { createPositionState } from './src/lib/game/create-position.ts';
@@ -109,6 +110,7 @@ const PREFS = {
   fastComputer: true,
 };
 
+/** Seed browser storage for a deterministic screenshot scene. */
 function storageFor(kind, states) {
   const base = {
     [MMKV('local')]: 'en',
@@ -138,6 +140,7 @@ const SCENES = [
   { file: '05-pass-and-play.png', kind: 'pass-and-play', path: '/game', ready: '[data-testid="game-board-slot"]' },
 ];
 
+/** Poll the production web preview until it can serve screenshot routes. */
 async function waitForServer(url, tries = 90) {
   for (let i = 0; i < tries; i++) {
     try {
@@ -154,6 +157,7 @@ async function waitForServer(url, tries = 90) {
   throw new Error(`Server not ready at ${url}`);
 }
 
+/** Install storage and screenshot-mode flags before the app initializes. */
 async function preparePage(page, storage) {
   await page.addInitScript((entries) => {
     try {
@@ -176,6 +180,7 @@ async function preparePage(page, storage) {
   });
 }
 
+/** Hide development and hosting chrome that must not appear in store art. */
 async function hideChrome(page) {
   await page.addStyleTag({ content: HIDE_CHROME_CSS });
   await page.evaluate(() => {
@@ -188,6 +193,7 @@ async function hideChrome(page) {
   });
 }
 
+/** Reject common preview-state leaks before saving a production screenshot. */
 async function assertProductionUi(page, kind) {
   const body = await page.locator('body').innerText();
   const lower = body.toLowerCase();
@@ -218,6 +224,7 @@ async function assertProductionUi(page, kind) {
   }
 }
 
+/** Capture one seeded scene at an exact App Store pixel size. */
 async function captureScene(browser, device, scene, states) {
   const page = await browser.newPage({
     viewport: {
@@ -253,6 +260,7 @@ async function captureScene(browser, device, scene, states) {
   return dest;
 }
 
+/** Capture every canonical iPhone and iPad marketing scene. */
 async function main() {
   const playwrightPath
     = process.env.PLAYWRIGHT_CORE

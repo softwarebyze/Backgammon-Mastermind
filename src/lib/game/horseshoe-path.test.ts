@@ -23,4 +23,10 @@ describe('buildHorseshoePath', () => {
     const black = horseshoeMetrics(200, 200, 'black');
     expect(black).toEqual(white);
   });
+
+  it('keeps the guide compact inside the board', () => {
+    const metrics = horseshoeMetrics(200, 200);
+    expect(metrics.rightX - metrics.curveX).toBeLessThan(200 * 0.7);
+    expect(metrics.botY - metrics.topY).toBeLessThan(200 * 0.5);
+  });
 });

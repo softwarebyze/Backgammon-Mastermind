@@ -2,7 +2,7 @@
   "error": {
     "body": "Uruchom aplikację, aby kontynuować.",
     "heading": "Coś poszło nie tak.",
-    "retry": "Retry"
+    "retry": "Spróbuj ponownie"
   },
   "game": {
     "caption": {

@@ -97,7 +97,7 @@
   },
   "home": {
     "confirm_cancel": "キャンセル",
-    "confirm_continue": "お問い合わせ",
+    "confirm_continue": "続ける",
     "confirm_native": "現在のゲームを続行するか、新しいゲームを始めるか?",
     "confirm_new": "新しいゲーム",
     "confirm_replace": "新しいゲームを始めますか？現在のゲームは置き換えられます。",
@@ -124,7 +124,7 @@
   },
   "learn": {
     "back_to_hub": "すべてのレッスン",
-    "continue": "お問い合わせ",
+    "continue": "続ける",
     "feedback": {
       "hint_nudge": "ナッジが必要ですか? ハイライトされたスポットを探します。",
       "illegal": "ハイライトされたポイントを試してみてください。ヒントをタップします。",

@@ -129,7 +129,7 @@
       "hint_nudge": "¿Necesitas un codazo? Busque los puntos destacados.",
       "illegal": "Pruebe un punto destacado — o toque Hint.",
       "legal_but_wrong": "Eso es legal en un juego real — aquí, prueba el movimiento que enseña esta idea.",
-      "move_progress": "Bonito{{done}}de{{needed}}se mueve."
+      "move_progress": "Bien: {{done}} de {{needed}} movimientos completados."
     },
     "graduation": {
       "body": "Conoces el objetivo, el tablero, cómo se convierte en trabajo, golpes y desmantelamiento. Un cheque rápido — luego tu primer juego real.",
@@ -146,7 +146,7 @@
     },
     "hint": "Hint",
     "home_cta": "Aprende a jugar",
-    "home_cta_progress": "{{done}}de{{total}}experiencia adquirida",
+    "home_cta_progress": "{{done}} de {{total}} lecciones",
     "home_cta_quiz": "Cheque rápido a la izquierda - luego jugar",
     "home_cta_ready": "Estás listo - jugar un juego real",
     "home_cta_sub": "Clases interactivas para principiantes",
@@ -190,7 +190,7 @@
           }
         },
         "subtitle": "Por donde te mueves",
-        "title": "Dirección &quot;"
+        "title": "Dirección y disposición"
       },
       "goal_board": {
         "steps": {
@@ -286,7 +286,7 @@
     },
     "replay": "Replay",
     "skip_to_play": "Skip to play",
-    "step_progress": "Paso{{current}}de{{total}}",
+    "step_progress": "Paso {{current}} de {{total}}",
     "subtitle": "Cinco lecciones cortas - entonces usted está listo",
     "title": "Aprende a jugar"
   },
