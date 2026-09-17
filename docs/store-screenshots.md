@@ -38,7 +38,7 @@ export ASC_ISSUER_ID=…
 export ASC_KEY_PATH=/path/to/AuthKey_….p8
 # optional overrides:
 export ASC_BUNDLE_ID=com.backgammonmastermind
-export ASC_APP_VERSION=1.0.0
+export ASC_APP_VERSION=1.0.2
 pnpm screenshots:upload:ios
 ```
 
