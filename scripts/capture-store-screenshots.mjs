@@ -58,6 +58,7 @@ div[id*="dev-menu"] {
 }
 `;
 
+/** Build deterministic game states used by the marketing capture scenes. */
 function loadGameStates() {
   const src = `
 import { createPositionState } from './src/lib/game/create-position.ts';
@@ -71,6 +72,14 @@ const moving = createPositionState({
 });
 moving.openingRolls = { white: 6, black: 3 };
 
+const passAndPlay = createPositionState({
+  useStandardSetup: true,
+  dice: [6, 4],
+  currentPlayer: 'white',
+  mode: 'vs-human',
+});
+passAndPlay.openingRolls = { white: 6, black: 3 };
+
 const selectedPoint = 13;
 const legal = getLegalMoves({ ...moving, selectedPoint }).filter((m) => m.from === selectedPoint);
 const highlighted = {
@@ -79,7 +88,7 @@ const highlighted = {
   legalMovesForSelected: legal,
 };
 
-process.stdout.write(JSON.stringify({ moving, highlighted }));
+process.stdout.write(JSON.stringify({ moving, highlighted, passAndPlay }));
 `;
   const raw = execFileSync('pnpm', ['exec', 'tsx', '-e', src], {
     cwd: ROOT,
@@ -101,6 +110,7 @@ const PREFS = {
   fastComputer: true,
 };
 
+/** Seed browser storage for a deterministic screenshot scene. */
 function storageFor(kind, states) {
   const base = {
     [MMKV('local')]: 'en',
@@ -113,6 +123,9 @@ function storageFor(kind, states) {
   if (kind === 'gameplay') {
     return { ...base, [MMKV('ACTIVE_GAME_STATE')]: JSON.stringify(states.moving) };
   }
+  if (kind === 'pass-and-play') {
+    return { ...base, [MMKV('ACTIVE_GAME_STATE')]: JSON.stringify(states.passAndPlay) };
+  }
   if (kind === 'highlights') {
     return { ...base, [MMKV('ACTIVE_GAME_STATE')]: JSON.stringify(states.highlighted) };
   }
@@ -124,9 +137,10 @@ const SCENES = [
   { file: '02-learn-hub.png', kind: 'learn-hub', path: '/learn', ready: 'text=Goal & board' },
   { file: '03-lesson-hitting.png', kind: 'lesson', path: '/learn/hitting-bar', ready: '[data-testid="learn-board-slot"]' },
   { file: '04-vs-computer.png', kind: 'gameplay', path: '/game', ready: '[data-testid="game-board-slot"]' },
-  { file: '05-legal-highlights.png', kind: 'highlights', path: '/game', ready: '[data-testid="game-board-slot"]' },
+  { file: '05-pass-and-play.png', kind: 'pass-and-play', path: '/game', ready: '[data-testid="game-board-slot"]' },
 ];
 
+/** Poll the production web preview until it can serve screenshot routes. */
 async function waitForServer(url, tries = 90) {
   for (let i = 0; i < tries; i++) {
     try {
@@ -143,6 +157,7 @@ async function waitForServer(url, tries = 90) {
   throw new Error(`Server not ready at ${url}`);
 }
 
+/** Install storage and screenshot-mode flags before the app initializes. */
 async function preparePage(page, storage) {
   await page.addInitScript((entries) => {
     try {
@@ -165,6 +180,7 @@ async function preparePage(page, storage) {
   });
 }
 
+/** Hide development and hosting chrome that must not appear in store art. */
 async function hideChrome(page) {
   await page.addStyleTag({ content: HIDE_CHROME_CSS });
   await page.evaluate(() => {
@@ -177,6 +193,7 @@ async function hideChrome(page) {
   });
 }
 
+/** Reject common preview-state leaks before saving a production screenshot. */
 async function assertProductionUi(page, kind) {
   const body = await page.locator('body').innerText();
   const lower = body.toLowerCase();
@@ -192,16 +209,22 @@ async function assertProductionUi(page, kind) {
   if (kind === 'home' && !body.includes('MASTERMIND')) {
     throw new Error('Home screenshot missing Backgammon Mastermind lockup');
   }
-  if ((kind === 'gameplay' || kind === 'highlights') && body.includes('Who goes first?')) {
+  if ((kind === 'gameplay' || kind === 'highlights' || kind === 'pass-and-play') && body.includes('Who goes first?')) {
     throw new Error('Opening-roll overlay still visible on gameplay screenshot');
   }
-  if (kind === 'gameplay' || kind === 'highlights') {
-    if (!body.includes('Your turn') && !body.includes('Selected')) {
+  if (kind === 'gameplay' || kind === 'highlights' || kind === 'pass-and-play') {
+    if (
+      !body.includes('Your turn')
+      && !body.includes('White\'s turn')
+      && !body.includes('Black\'s turn')
+      && !body.includes('Selected')
+    ) {
       throw new Error(`Gameplay screenshot missing turn chrome (${kind})`);
     }
   }
 }
 
+/** Capture one seeded scene at an exact App Store pixel size. */
 async function captureScene(browser, device, scene, states) {
   const page = await browser.newPage({
     viewport: {
@@ -237,6 +260,7 @@ async function captureScene(browser, device, scene, states) {
   return dest;
 }
 
+/** Capture every canonical iPhone and iPad marketing scene. */
 async function main() {
   const playwrightPath
     = process.env.PLAYWRIGHT_CORE
@@ -248,7 +272,11 @@ async function main() {
   await waitForServer(BASE);
   console.log('Generating seeded game states…');
   const states = loadGameStates();
-  if (states.moving.phase !== 'moving' || states.highlighted.selectedPoint !== 13) {
+  if (
+    states.moving.phase !== 'moving'
+    || states.highlighted.selectedPoint !== 13
+    || states.passAndPlay.mode !== 'vs-human'
+  ) {
     throw new Error('Seeded game states look wrong');
   }
 

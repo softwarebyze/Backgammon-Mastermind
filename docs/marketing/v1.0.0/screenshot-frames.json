@@ -15,30 +15,33 @@
   "frames": [
     {
       "device": "iphone",
-      "source": "iphone-69-04-vs-computer.png",
-      "dest": "iphone-69-01-vs-computer.png",
-      "headline": "A thinking opponent",
-      "cropTop": 0.30
-    },
-    {
-      "device": "iphone",
-      "source": "iphone-69-05-legal-highlights.png",
-      "dest": "iphone-69-02-legal-highlights.png",
-      "headline": "Every move, highlighted",
-      "cropTop": 0.30
-    },
-    {
-      "device": "iphone",
       "source": "iphone-69-03-lesson-hitting.png",
-      "dest": "iphone-69-03-lesson-hitting.png",
-      "headline": "Learn on the board",
-      "cropTop": 0.35
+      "dest": "iphone-69-01-learn-to-play.png",
+      "headline": "Learn to play backgammon",
+      "cropTop": 0.05
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-05-pass-and-play.png",
+      "dest": "iphone-69-02-pass-and-play.png",
+      "headline": "Pass & play offline",
+      "sub": "With friends and family",
+      "cropTop": 0,
+      "fit": "contain"
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-04-vs-computer.png",
+      "dest": "iphone-69-03-vs-computer.png",
+      "headline": "Play against the computer",
+      "cropTop": 0,
+      "fit": "contain"
     },
     {
       "device": "iphone",
       "source": "iphone-69-02-learn-hub.png",
       "dest": "iphone-69-04-learn-hub.png",
-      "headline": "Five lessons. Then play.",
+      "headline": "Five interactive lessons",
       "cropTop": 0.16
     },
     {
@@ -49,30 +52,33 @@
     },
     {
       "device": "ipad",
-      "source": "ipad-13-04-vs-computer.png",
-      "dest": "ipad-13-01-vs-computer.png",
-      "headline": "A thinking opponent",
-      "cropTop": 0.33
-    },
-    {
-      "device": "ipad",
-      "source": "ipad-13-05-legal-highlights.png",
-      "dest": "ipad-13-02-legal-highlights.png",
-      "headline": "Every move, highlighted",
-      "cropTop": 0.33
-    },
-    {
-      "device": "ipad",
       "source": "ipad-13-03-lesson-hitting.png",
-      "dest": "ipad-13-03-lesson-hitting.png",
-      "headline": "Learn on the board",
-      "cropTop": 0.37
+      "dest": "ipad-13-01-learn-to-play.png",
+      "headline": "Learn to play backgammon",
+      "cropTop": 0.045
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-05-pass-and-play.png",
+      "dest": "ipad-13-02-pass-and-play.png",
+      "headline": "Pass & play offline",
+      "sub": "With friends and family",
+      "cropTop": 0,
+      "fit": "contain"
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-04-vs-computer.png",
+      "dest": "ipad-13-03-vs-computer.png",
+      "headline": "Play against the computer",
+      "cropTop": 0,
+      "fit": "contain"
     },
     {
       "device": "ipad",
       "source": "ipad-13-02-learn-hub.png",
       "dest": "ipad-13-04-learn-hub.png",
-      "headline": "Five lessons. Then play.",
+      "headline": "Five interactive lessons",
       "cropTop": 0.125
     },
     {

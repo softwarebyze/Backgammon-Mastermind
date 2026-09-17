@@ -13,6 +13,10 @@ import { join } from 'node:path';
 
 const ROOT = process.cwd();
 const MANIFEST_PATH = join(ROOT, 'docs/marketing/v1.0.0/screenshot-frames.json');
+const LOCALIZATIONS_PATH = join(
+  ROOT,
+  'docs/marketing/v1.0.0/screenshot-localizations.json',
+);
 const SCRIPT = join(ROOT, 'scripts/compose-store-screenshots.mjs');
 const PNG_1X1 = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
@@ -26,6 +30,7 @@ type Frame = {
   headline?: string;
   sub?: string;
   cropTop?: number;
+  fit?: 'cover' | 'contain';
 };
 
 type Manifest = {
@@ -55,14 +60,14 @@ describe('screenshot-frames manifest', () => {
     expect(manifest.devices.ipad).toEqual({ width: 2064, height: 2752 });
   });
 
-  it('uses the store carousel order and 2–5 word headlines (home has none)', () => {
+  it('uses the store carousel order and concise headlines (home has none)', () => {
     const iphoneDest = manifest.frames
       .filter(f => f.device === 'iphone')
       .map(f => f.dest);
     expect(iphoneDest).toEqual([
-      'iphone-69-01-vs-computer.png',
-      'iphone-69-02-legal-highlights.png',
-      'iphone-69-03-lesson-hitting.png',
+      'iphone-69-01-learn-to-play.png',
+      'iphone-69-02-pass-and-play.png',
+      'iphone-69-03-vs-computer.png',
       'iphone-69-04-learn-hub.png',
       'iphone-69-05-home.png',
     ]);
@@ -70,17 +75,17 @@ describe('screenshot-frames manifest', () => {
       .filter(f => f.device === 'ipad')
       .map(f => f.dest);
     expect(ipadDest).toEqual([
-      'ipad-13-01-vs-computer.png',
-      'ipad-13-02-legal-highlights.png',
-      'ipad-13-03-lesson-hitting.png',
+      'ipad-13-01-learn-to-play.png',
+      'ipad-13-02-pass-and-play.png',
+      'ipad-13-03-vs-computer.png',
       'ipad-13-04-learn-hub.png',
       'ipad-13-05-home.png',
     ]);
     expect(manifest.frames.filter(f => f.device === 'iphone').map(f => f.headline)).toEqual([
-      'A thinking opponent',
-      'Every move, highlighted',
-      'Learn on the board',
-      'Five lessons. Then play.',
+      'Learn to play backgammon',
+      'Pass & play offline',
+      'Play against the computer',
+      'Five interactive lessons',
       undefined,
     ]);
     for (const frame of manifest.frames) {
@@ -94,7 +99,10 @@ describe('screenshot-frames manifest', () => {
       const n = wordCount(frame.headline ?? '');
       expect(n).toBeGreaterThanOrEqual(2);
       expect(n).toBeLessThanOrEqual(5);
-      expect(frame.sub).toBeUndefined();
+      if (frame.dest.includes('pass-and-play'))
+        expect(frame.sub).toBe('With friends and family');
+      else
+        expect(frame.sub).toBeUndefined();
     }
   });
 
@@ -102,9 +110,9 @@ describe('screenshot-frames manifest', () => {
     const byDest = Object.fromEntries(
       manifest.frames.filter(f => f.device === 'iphone').map(f => [f.dest, f]),
     );
-    expect(byDest['iphone-69-01-vs-computer.png']?.cropTop).toBeGreaterThanOrEqual(0.25);
-    expect(byDest['iphone-69-02-legal-highlights.png']?.cropTop).toBeGreaterThanOrEqual(0.25);
-    expect(byDest['iphone-69-03-lesson-hitting.png']?.cropTop).toBeGreaterThanOrEqual(0.3);
+    expect(byDest['iphone-69-01-learn-to-play.png']?.cropTop).toBeLessThanOrEqual(0.08);
+    expect(byDest['iphone-69-02-pass-and-play.png']).toMatchObject({ cropTop: 0, fit: 'contain' });
+    expect(byDest['iphone-69-03-vs-computer.png']).toMatchObject({ cropTop: 0, fit: 'contain' });
     expect(byDest['iphone-69-04-learn-hub.png']?.cropTop).toBeGreaterThanOrEqual(0.12);
     expect(byDest['iphone-69-05-home.png']?.cropTop).toBe(0);
     for (const frame of manifest.frames) {
@@ -118,17 +126,40 @@ describe('screenshot-frames manifest', () => {
     expect(manifest.colors.background).toBe('#1E0C02');
     expect(manifest.colors.headline).toBe('#F3E6C8');
     const src = readFileSync(SCRIPT, 'utf8');
-    expect(src).toMatch(/object-fit:cover/);
-    expect(src).toMatch(/object-position:top center/);
-    expect(src).toMatch(/font-family:Fraunces/);
+    expect(src).toMatch(/object-fit:\$\{contain \? 'contain' : 'cover'\}/);
+    expect(src).toMatch(/object-position:center/);
+    expect(src).toMatch(/font-family:InterStore/);
     expect(src).toMatch(/cropTop/);
     expect(src).toMatch(/class="band"/);
     expect(src).not.toMatch(/linear-gradient/);
     expect(src).not.toMatch(/class="veil"/);
-    expect(src).not.toMatch(/font-family:Inter/);
+    expect(src).not.toMatch(/font-family:Fraunces/);
     expect(src).not.toMatch(/class="device"/);
     expect(src).not.toMatch(/class="wordmark"/);
     expect(src).not.toMatch(/class="divider"/);
+  });
+});
+
+describe('screenshot localizations', () => {
+  it('provides store copy for every 1.0.2 App Store locale', () => {
+    const copy = JSON.parse(readFileSync(LOCALIZATIONS_PATH, 'utf8')) as Record<
+      string,
+      { playLocale: string; learn: string[]; pass: string[]; passSub: string; computer: string[]; lessons: string[] }
+    >;
+    const storeLocales = Object.keys(
+      (JSON.parse(readFileSync(join(ROOT, 'store.config.json'), 'utf8')) as {
+        apple: { info: Record<string, unknown> };
+      }).apple.info,
+    );
+    expect(Object.keys(copy).sort()).toEqual(storeLocales.sort());
+    for (const locale of Object.values(copy)) {
+      expect(locale.playLocale).toBeTruthy();
+      expect(locale.learn.join(' ')).toBeTruthy();
+      expect(locale.pass.join(' ')).toBeTruthy();
+      expect(locale.passSub).toBeTruthy();
+      expect(locale.computer.join(' ')).toBeTruthy();
+      expect(locale.lessons.join(' ')).toBeTruthy();
+    }
   });
 });
 
@@ -165,15 +196,15 @@ describe('compose-store-screenshots', () => {
           {
             device: 'iphone',
             source: 'iphone-69-04-vs-computer.png',
-            dest: 'iphone-69-01-vs-computer.png',
-            headline: 'A thinking opponent',
+            dest: 'iphone-69-03-vs-computer.png',
+            headline: 'Play against the computer',
             cropTop: 0.3,
           },
         ],
       };
       const manifestPath = join(dir, 'screenshot-frames.json');
       writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-      expect(existsSync(join(outDir, 'iphone-69-01-vs-computer.png'))).toBe(false);
+      expect(existsSync(join(outDir, 'iphone-69-03-vs-computer.png'))).toBe(false);
 
       try {
         execFileSync('node', [SCRIPT, '--manifest', manifestPath], {

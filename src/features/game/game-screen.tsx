@@ -12,6 +12,7 @@ import { useGameInput } from '@/features/game/use-game-input';
 import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
+import { translate } from '@/lib/i18n';
 
 export function GameScreen() {
   const posthog = usePostHog();
@@ -99,7 +100,7 @@ export function GameScreen() {
     return (
       <View style={[styles.root, styles.center]}>
         <FocusAwareStatusBar />
-        <Text style={{ color: GAME_PALETTE.accent }}>Loading…</Text>
+        <Text style={{ color: GAME_PALETTE.accent }}>{translate('game.controls.loading')}</Text>
       </View>
     );
   }

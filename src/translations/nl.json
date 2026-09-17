@@ -1,0 +1,330 @@
+{
+  "error": {
+    "body": "Herstart de app om verder te gaan.",
+    "heading": "Er ging iets mis.",
+    "retry": "Opnieuw proberen"
+  },
+  "game": {
+    "caption": {
+      "selected": "Geselecteerd Tik op een gemarkeerd punt, of Annuleren"
+    },
+    "controls": {
+      "bear_off_a11y": "Afhouden",
+      "cancel": "Annuleren",
+      "cancel_a11y": "Selectie annuleren",
+      "leave_game_a11y": "Verlaat het spel en keer terug naar huis",
+      "loading": "Laden...",
+      "new_game_message": "Een nieuw spel starten?",
+      "new_game_title": "Nieuw spel",
+      "no_legal_moves": "Geen zetten mogelijk…",
+      "play_again": "Opnieuw spelen",
+      "play_again_a11y": "Opnieuw spelen",
+      "redo_a11y": "Opnieuw verplaatsen",
+      "roll_dice": "Gooi de dobbelstenen",
+      "roll_dice_a11y": "Dobbelstenen gooien",
+      "skip_wait": "Wacht overslaan",
+      "skip_wait_a11y": "{{status}}Wacht overslaan",
+      "start_new_game_a11y": "Nieuw spel starten",
+      "undo_a11y": "Verplaatsen ongedaan maken"
+    },
+    "nudge": {
+      "roll_first": "Gooi eerst de dobbelstenen"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} verslaat {{low}}",
+      "goes_first": "{{player}} begint!",
+      "roll": "Gooien",
+      "rolls_for_opening": "{{player}} gooit voor de opening",
+      "tie": "Gelijkspel!",
+      "tie_again": "Zelfde getal — gooi opnieuw",
+      "waiting_roll": "{{player}} gooit…",
+      "who_goes_first": "Wie begint?",
+      "your_roll": "Tik ergens om te gooien"
+    },
+    "options": {
+      "open_settings": "Taal en meer",
+      "open_settings_hint": "Instellingen openen",
+      "title": "Spelopties"
+    },
+    "preferences": {
+      "auto_move": "Automatisch zetten bij dwang",
+      "auto_move_hint": "De enige legale zet automatisch spelen",
+      "auto_roll": "Automatisch gooien",
+      "auto_roll_hint": "Automatisch gooien als jij aan de beurt bent",
+      "dice_display": "Weergave dobbelstenen",
+      "dice_dots": "Stippen",
+      "dice_numbers": "Cijfers",
+      "direction_overlay": "Richtingsgids",
+      "direction_overlay_hint": "Hoefijzerpad op het bord",
+      "fast_computer": "Snelle computer",
+      "fast_computer_hint": "Korter wacht op computerrollen en bewegingen. U kunt ook op Skip wachten tikken.",
+      "move_hints": "Zethints",
+      "move_hints_hint": "Gouden stip naast punten waarvandaan je kunt zetten",
+      "point_numbers": "Puntnummers",
+      "point_numbers_hint": "Labels 1–24 op het bord tonen",
+      "section_automation": "Automatisering",
+      "section_board": "Bord",
+      "section_dice": "Dobbelstenen",
+      "sound": "Spelgeluiden",
+      "sound_hint": "Zachte dobbel-, slag- en wingeluiden — respecteert de stille modus"
+    },
+    "review": {
+      "back_to_live": "Terug naar het lopende spel",
+      "live": "Lopend spel",
+      "live_short": "Live",
+      "move_a11y": "Zet {{ply}}, {{player}}",
+      "move_position": "Zet {{current}} van {{total}} · {{player}}",
+      "next": "Volgende beurt",
+      "opening": "Beginopstelling",
+      "pause_replay": "Pauze",
+      "player_black": "Zwart",
+      "player_white": "Wit",
+      "previous": "Vorige beurt",
+      "replay": "Terugkijken",
+      "scrubber_hint": "Tik op een beurt om terug te kijken",
+      "start": "Start",
+      "turn_a11y": "Beurt {{turn}}, {{player}}",
+      "turn_label": "Beurt {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Beurt {{turn}}/{{totalTurns}} · zet {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Terugkijken — tik op Live of Terug om verder te spelen"
+    },
+    "status": {
+      "black_wins": "Zwart wint",
+      "computer_wins": "Computer wint",
+      "white_wins": "🏆 Wit wint!",
+      "you_win": "🏆 Jij wint!"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Annuleren",
+    "confirm_continue": "Doorgaan",
+    "confirm_native": "Je huidige spel voortzetten of een nieuwe starten?",
+    "confirm_new": "Nieuw spel",
+    "confirm_replace": "Een nieuw spel starten? Je huidige spel wordt vervangen.",
+    "confirm_title": "Spel aan de gang",
+    "confirm_web": "Een nieuw spel beginnen? (Gebruik Hervatten op het startscherm om de huidige voort te zetten.)",
+    "recovery_body": "De laatste opslag was beschadigd. Je kunt een nieuw spel starten — het beginscherm werkt nog steeds.",
+    "recovery_dismiss": "Sluiten",
+    "recovery_title": "Opgeslagen spel kon niet worden hersteld",
+    "resume": "Spel hervatten",
+    "resume_a11y": "Opgeslagen spel hervatten",
+    "resume_none": "Geen opgeslagen spel om te hervatten",
+    "resume_sub": "Ga verder waar je gebleven was",
+    "review": "Laatste spel bekijken",
+    "review_a11y": "Voltooid spel bekijken",
+    "review_sub": "Bekijk hoe het laatste spel eindigde",
+    "subtitle": "Beheers het bord — zet voor zet",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "2 spelers",
+    "two_players_a11y": "Met z'n tweeën spelen op dit apparaat",
+    "two_players_sub": "Om de beurt op hetzelfde apparaat",
+    "vs_computer": "Tegen de computer",
+    "vs_computer_a11y": "Tegen de computer spelen",
+    "vs_computer_sub": "Speel tegen de computer"
+  },
+  "learn": {
+    "back_to_hub": "Alle lessen",
+    "continue": "Doorgaan",
+    "feedback": {
+      "hint_nudge": "Heb je een zetje nodig? Zoek naar de gemarkeerde plekken.",
+      "illegal": "Probeer een gemarkeerd punt of tik op Hint.",
+      "legal_but_wrong": "Dat is legaal in een echt spel hier, probeer de beweging die dit idee leert.",
+      "move_progress": "Mooi. {{done}} van {{needed}} zetten gedaan."
+    },
+    "graduation": {
+      "body": "Je kent het doel, het bord, hoe het werkt, slaat en afgaat. Een snelle controle en dan je eerste echte spel.",
+      "play_cta": "Speel je eerste spel",
+      "quiz_done": "Gelukt. Tijd om te spelen.",
+      "quiz_title": "Snel controleren",
+      "quiz_wrong": "Probeer een ander antwoord.",
+      "recap_1": "Ras: beer alle 15 eerst af",
+      "recap_2": "Rol twee dobbelstenen; land op open punten",
+      "recap_3": "Hit blots → ze zitten op de bar",
+      "recap_4": "Alleen van je thuisbord afhouden",
+      "recap_5": "Spelletjes beginnen met een die elke hogere gaat eerst (ties re-roll)",
+      "title": "Je bent klaar om te spelen"
+    },
+    "hint": "Hint",
+    "home_cta": "Spelen leren",
+    "home_cta_progress": "{{done}} van {{total}} lessen gedaan",
+    "home_cta_quiz": "Snel controleren links en dan afspelen",
+    "home_cta_ready": "Je bent klaar om een echt spel te spelen",
+    "home_cta_sub": "Interactieve lessen voor beginners",
+    "lesson_complete": "Les voltooid!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Niets is op de 5-punt, maar je rolde een 5. Afhouden van uw hoogste controle (de 3). Een groter getal neemt nog steeds een das uit.",
+            "hint": "Selecteer punt 3, en tik vervolgens op het afdekbakje.",
+            "praise": "Dat is de regel die je veel gebruikt bij het aftrekken.",
+            "title": "Groter sterven, nog steeds uit"
+          },
+          "try": {
+            "body": "Al je stenen staan in je thuisbord (punten 1–6), dus je mag beginnen met uitspelen. Je hebt 3 gegooid: haal de steen op punt 3 van het bord.",
+            "hint": "Selecteer punt 3, en tik vervolgens op het afkantgedeelte aan de rechterkant.",
+            "praise": "Van het bord af! Eerst om alle 15 overwinningen af te dragen.",
+            "title": "Bear one off"
+          }
+        },
+        "subtitle": "Hoe je wint",
+        "title": "Bearing off"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Het hoefijzer komt overeen met de stenen van de speler die aan de beurt is. Het volgt de route van die speler over het bord en naar huis (punten 1–6).",
+            "title": "Het hoefijzerpad"
+          },
+          "far": {
+            "body": "Tik op het punt waar uw twee verste witte dammen beginnen (de 24-punt, rechtsboven).",
+            "hint": "Kijk eens naar de rechterbovenhoek. Twee witte dammen op punt 24.",
+            "praise": "Die beginnen diep in de tegenstander thuis en hebben de langste reis.",
+            "title": "Uw verste dammen"
+          },
+          "home_stack": {
+            "body": "Tik op de grote stapel van vijf witte dammen al in uw huis (de 6-punts).",
+            "hint": "Rechtsonder: vijf witte dammen op punt 6.",
+            "praise": "Dat is uw thuis stapel  Elk spel begint zo.",
+            "title": "Uw thuis stack"
+          }
+        },
+        "subtitle": "Welke kant je op gaat",
+        "title": "Richting instellen"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "De verhoogde strook in het midden is de bar. Hit dackers wacht hier. Tik op de bar.",
+            "hint": "Tik op de verticale strook tussen de linker en rechter helft van het bord.",
+            "praise": "De rechterkant zit op de bar tot ze weer binnenkomen.",
+            "title": "De bar"
+          },
+          "explain": {
+            "body": "Jij en je tegenstander hebben elk 15 dammen. Beweeg ze rond het bord en uit ",
+            "title": "Eerste om af te dragen wint"
+          },
+          "home": {
+            "body": "Uw huis is punten 1 en 6 (rechtsonder). Tik op elk punt in je thuisbord.",
+            "hint": "Thuis is de zes punten in het rechtsonder kwadrant genummerd 1 tot 6.",
+            "praise": "Dat is uw huis ",
+            "title": "Vind uw thuisbord"
+          }
+        },
+        "subtitle": "Waarvoor race je?",
+        "title": "Doel & bord"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Je bent op de bar  Tel vanaf het 24-punt naar huis: een 4 landt op punt 21.",
+            "hint": "Tik op de balk, dan punt 21 (niet 23 ",
+            "praise": "Je bent weer terug op het bord bar dammen altijd eerst invoeren.",
+            "title": "Voer vanuit de balk in",
+            "wrong": "Dat is slechts twee pips van de bar (punt 23). Tel vier punten van 24 in de richting van huis dat is punt 21."
+          },
+          "hit": {
+            "body": "Een enkele controle is een smet. Land erop en het gaat naar de bar. Je rolde een 3 ",
+            "hint": "Tik op je dashboard op 8, dan tik je op punt 5.",
+            "praise": "Hit! Die zwarte dam staat nu op de bar.",
+            "title": "Hit the blot"
+          }
+        },
+        "subtitle": "Contactspel",
+        "title": "& De balk raken"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Twee of meer tegenstander dammen blokkeren een punt  Tik op de geblokkeerde zwarte stack op de 5-punts.",
+            "hint": "De gemarkeerde stapel van twee zwarte dammen op punt 5.",
+            "praise": "Rechts is een gemaakt punt (2+) gesloten. Leeg, je eigen, of een blot (1) zijn open.",
+            "title": "Geblokkeerde punten"
+          },
+          "doubles": {
+            "body": "Je krijgt vier zetten van dat nummer. Je rolde 2-2 dat is 4 2s. Ga van de 8-punt naar de 6-punt vier keer.",
+            "hint": "Tik op de 8-punt, dan de 6-punt. Doe dit vier keer, één keer per keer.",
+            "praise": "Precies... dubbel betekent vier zetten met dat nummer.",
+            "title": "Dubbel = vier zetten"
+          },
+          "explain": {
+            "body": "Elke draai rol je twee dobbelstenen en speel beide nummers wanneer je kunt. U kunt landen op lege punten, uw eigen dammen, of een eenzame tegenstander (een blot).",
+            "title": "Twee nummers, open punten."
+          },
+          "two_dice": {
+            "body": "Je rolde 3 en 1. Verplaats de checker op de 8-punts drie pips (naar 5) en die op de 6-punts één pip (naar 5).",
+            "hint": "Selecteer een witte vink en tik vervolgens op punt 5. Doe dit voor zowel de 8-punt en de 6-punt.",
+            "praise": "Mooie dobbelstenen gebruikt. Dezelfde checker of twee checkers, beide nummers moeten worden afgespeeld wanneer je kunt.",
+            "title": "Speel beide dobbelstenen"
+          }
+        },
+        "subtitle": "Hoe een draai werkt",
+        "title": "Bewegen met dobbelstenen"
+      }
+    },
+    "locked": "De vorige les eerst voltooien",
+    "next_lesson": "Volgende les",
+    "quiz": {
+      "bar": {
+        "a": "Beweeg eerst je verste checker",
+        "b": "Voer die checker in voordat u iets anders verplaatst",
+        "c": "Sla je beurt over",
+        "prompt": "Terwijl je een controle aan de bar hebt, moet je..."
+      },
+      "bear": {
+        "a": "Wanneer je een 6 rolt",
+        "b": "Pas nadat je een vlek geraakt hebt.",
+        "c": "Wanneer alle 15 dammen in uw huis board",
+        "prompt": "Wanneer kun je het verdragen?"
+      },
+      "blot": {
+        "a": "Elke stapel van drie of meer",
+        "b": "Een enkele controleer op een punt kan worden geraakt",
+        "c": "Twee of meer dammen op een punt",
+        "prompt": "Wat is een vlek?"
+      }
+    },
+    "replay": "Herspelen",
+    "skip_to_play": "Afspelen overslaan",
+    "step_progress": "Stap {{current}} van {{total}}",
+    "subtitle": "Vijf korte lessen en dan ben je klaar",
+    "title": "Spelen leren"
+  },
+  "not_found": {
+    "body": "Die pagina hoort niet bij Backgammon Mastermind. Ga naar huis om te leren of een spel te beginnen.",
+    "heading": "Buiten het bord",
+    "home_a11y": "Naar het startscherm",
+    "home_cta": "Terug naar start",
+    "title": "Niet gevonden"
+  },
+  "settings": {
+    "about": "Over",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabisch",
+    "developer": "Ontwikkelaar",
+    "developer_blurb": "Laad een willekeurige bordpositie om de engine te testen. Start vanaf die positie een normaal spel. Dit is geen productfunctie.",
+    "developer_json": "Positie-JSON",
+    "developer_load": "JSON laden",
+    "developer_open": "Positie laden",
+    "developer_presets": "Testinstellingen",
+    "english": "Engels",
+    "game": "Spel",
+    "general": "Algemeen",
+    "github": "GitHub",
+    "language": "Taal",
+    "link_error_body": "Probeer het later opnieuw.",
+    "link_error_title": "Kan link niet openen",
+    "links": "Links",
+    "more": "Meer",
+    "privacy": "Privacybeleid",
+    "rate": "Beoordelen",
+    "share": "Delen",
+    "support": "Ondersteuning",
+    "support_us": "Steun ons",
+    "terms": "Servicevoorwaarden",
+    "title": "Instellingen",
+    "version": "Versie",
+    "website": "Website"
+  },
+  "welcome": "Welkom bij Backgammon Mastermind"
+}

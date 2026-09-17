@@ -69,11 +69,11 @@ describe('curriculum', () => {
     expect(enter.wrong.toLowerCase()).toContain('point 21');
   });
 
-  it('says the dashed line is Black, without “cooler”', () => {
+  it('explains the single route as matching the current player', () => {
     const body = en.learn.lessons.direction_setup.steps.explain.body;
-    expect(body.toLowerCase()).not.toContain('cooler');
-    expect(body).toMatch(/dashed line is Black/i);
-    expect(body.toLowerCase()).toContain('opposite');
+    expect(body.toLowerCase()).toContain('player whose turn it is');
+    expect(body.toLowerCase()).toContain('player\'s route');
+    expect(body.toLowerCase()).not.toMatch(/dashed|cooler|opposite/);
   });
 
   it('keeps every lesson unlocked after the set is complete so hub rows stay replayable', () => {

@@ -22,9 +22,8 @@ describe('arrow-geometry', () => {
     expect(polygonPoints.split(' ').length).toBeGreaterThanOrEqual(3);
   });
 
-  it('black horseshoe arrowhead is large enough to read as a point', () => {
-    expect(HORSESHOE_ARROW.black.length).toBeGreaterThanOrEqual(16);
-    expect(HORSESHOE_ARROW.black.halfWidth).toBeGreaterThanOrEqual(8);
+  it('uses the same compact arrowhead for either current player', () => {
+    expect(HORSESHOE_ARROW.black).toEqual(HORSESHOE_ARROW.white);
     const { lineEnd, polygonPoints } = horseshoeArrowhead(320, 400, 'black');
     const xs = polygonPoints.split(' ').map(p => Number(p.split(',')[0]));
     expect(Math.max(...xs) - Math.min(...xs)).toBeCloseTo(HORSESHOE_ARROW.black.length);

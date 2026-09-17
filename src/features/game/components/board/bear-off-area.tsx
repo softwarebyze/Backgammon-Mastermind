@@ -10,6 +10,7 @@ import {
   bearOffTokenSize,
   maxBearOffVisibleSlots,
 } from '@/features/game/bear-off-layout';
+import { translate } from '@/lib/i18n';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 
@@ -147,7 +148,7 @@ export function BearOffArea({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Bear off"
+      accessibilityLabel={translate('game.controls.bear_off_a11y')}
       onPress={(e) => {
         e?.stopPropagation?.();
         onPress();

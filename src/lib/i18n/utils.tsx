@@ -9,6 +9,7 @@ import { I18nManager, NativeModules, Platform } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 import RNRestart from 'react-native-restart';
 import { storage } from '../storage';
+import { RTL_LANGUAGES } from './resources';
 
 type DefaultLocale = typeof resources.en.translation;
 export type TxKeyPath = RecursiveKeyOf<DefaultLocale>;
@@ -26,12 +27,7 @@ export const translate = memoize(
 
 export function changeLanguage(lang: Language) {
   i18n.changeLanguage(lang);
-  if (lang === 'ar') {
-    I18nManager.forceRTL(true);
-  }
-  else {
-    I18nManager.forceRTL(false);
-  }
+  I18nManager.forceRTL(RTL_LANGUAGES.has(lang));
   if (Platform.OS === 'ios' || Platform.OS === 'android') {
     if (__DEV__)
       NativeModules.DevSettings.reload();
