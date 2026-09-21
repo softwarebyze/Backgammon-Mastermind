@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Black Wins",
       "computer_wins": "Computer Wins",
+      "off_short": "off",
+      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} of 15 borne off",
       "white_wins": "🏆 White Wins!",
       "you_win": "🏆 You Win!"
     },
