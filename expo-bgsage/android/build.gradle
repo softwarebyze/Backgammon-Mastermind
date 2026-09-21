@@ -1,0 +1,41 @@
+// expo-bgsage/android/build.gradle
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'expo-module-gradle-plugin'
+
+group = 'com.bgsage'
+version = '0.1.0'
+
+android {
+  namespace 'com.bgsage'
+  compileSdk 35
+
+  defaultConfig {
+    minSdk 24
+    // Build the engine for all four ABIs the module supports.
+    externalNativeBuild {
+      cmake {
+        abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
+        arguments '-DANDROID_STL=c++_shared'
+      }
+    }
+  }
+
+  externalNativeBuild {
+    cmake {
+      // .github/scripts/fetch-bgsage-engine.sh populates ../vendor/bgsage in CI.
+      path 'src/main/cpp/CMakeLists.txt'
+      version '3.22.1+'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+  kotlinOptions { jvmTarget = '17' }
+}
+
+dependencies {
+  implementation project(':expo-modules-core')
+}

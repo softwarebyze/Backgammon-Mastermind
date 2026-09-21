@@ -14,6 +14,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { SettingsChevron } from '@/features/settings/components/settings-chevron';
 import { SettingsContainer } from '@/features/settings/components/settings-container';
+import { SageLabSection } from '@/features/settings/sage-lab-section';
 import { isDeveloperToolsEnabled } from '@/features/settings/developer-tools-gate';
 import {
   loadPositionPreset,
@@ -62,6 +63,7 @@ export function DeveloperScreen() {
           <Text className="pb-4 text-sm" style={styles.blurb} tx="settings.developer_blurb" />
           <PresetSection onLoad={startLoaded} />
           <JsonSection onLoad={startLoaded} />
+          <SageLabSection />
         </View>
       </ScrollView>
     </>

@@ -1,0 +1,162 @@
+# bgsage native verification (demo branch only).
+# - Android: full Gradle APK build (compiles Kotlin + JNI + the bgsage C++
+#   engine for real), then a Maestro flow on an emulator drives the Sage Lab
+#   screen and asserts the engine's actual move output.
+# - iOS: Expo prebuild + xcodebuild for the iOS simulator (compiles the
+#   Swift/ObjC++ bridge + engine for real). No signing, no EAS, no Apple creds.
+
+name: bgsage native verify
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [bgsage/demo-ci]
+
+concurrency:
+  group: bgsage-verify-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    name: Android — APK build + Maestro engine test
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Fetch bgsage engine (pinned commit)
+        run: bash .github/scripts/fetch-bgsage-engine.sh
+
+      - name: Build expo-bgsage TS
+        run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
+
+      - name: Type-check app (covers sage-lab-section)
+        run: pnpm type-check
+
+      - name: Set Up JDK + Generate Test APK
+        uses: ./.github/actions/setup-jdk-generate-apk
+        with:
+          APP_ENV: preview
+
+      - name: Upload Test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgsage-test-apk
+          path: ./android-test.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Install Maestro
+        run: npm run install-maestro
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Enable KVM (hardware emulator acceleration)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Pre-install Android system image (retry)
+        run: bash .github/scripts/install-android-system-image.sh 34 google_apis x86_64
+
+      - name: Run Sage engine flow with Maestro
+        id: maestro_emulator
+        uses: reactivecircus/android-emulator-runner@v2.38.0
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: '1'
+        with:
+          working-directory: ${{ github.workspace }}
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          emulator-boot-timeout: 600
+          force-avd-creation: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          cores: 2
+          ram-size: 4096M
+          script: bash .github/scripts/run-maestro-sage-emulator.sh "${{ github.workspace }}" com.backgammonmastermind.preview
+
+      - name: Upload Maestro logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgsage-maestro-logs
+          path: |
+            .maestro-ci-output/**
+            report.xml
+            e2e-recording.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+
+  ios:
+    name: iOS — simulator compile check
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Fetch bgsage engine (pinned commit)
+        run: bash .github/scripts/fetch-bgsage-engine.sh
+
+      - name: Build expo-bgsage TS
+        run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
+
+      - name: Generate brand assets
+        run: pnpm brand:generate
+        env:
+          EXPO_NO_DOTENV: '1'
+          APP_ENV: preview
+          CI: 'true'
+
+      - name: Prebuild native project
+        run: |
+          for attempt in 1 2 3; do
+            rm -rf ios android
+            if pnpm prebuild:preview; then
+              exit 0
+            fi
+            echo "::warning::prebuild attempt ${attempt} failed; retrying..."
+            sleep 5
+          done
+          exit 1
+        env:
+          EXPO_NO_DOTENV: '1'
+          APP_ENV: preview
+          CI: 'true'
+
+      - name: Install CocoaPods dependencies
+        run: cd ios && pod install
+        env:
+          CI: 'true'
+
+      - name: Build for iOS simulator (compile check)
+        run: |
+          cd ios
+          WORKSPACE=$(ls -d *.xcworkspace | head -1)
+          echo "workspace: $WORKSPACE"
+          SCHEME=$(xcodebuild -list -workspace "$WORKSPACE" | awk '/^ *Schemes:$/{f=1;next} f && NF{print $1; exit}')
+          echo "scheme: $SCHEME"
+          xcodebuild -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -derivedDataPath "$RUNNER_TEMP/bgsage-dd" \
+            build

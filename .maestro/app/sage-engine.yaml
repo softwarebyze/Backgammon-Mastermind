@@ -1,0 +1,30 @@
+# Sage engine end-to-end: drives the Sage Lab screen (developer tools) and
+# asserts the real bgsage engine's move output for the opening 3-1 (black).
+# Expected: black plays 8/5 6/5 in black-relative terms = app moves 17/20 19/20.
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "vs Computer"
+    timeout: 90000
+- takeScreenshot: 01-home
+# Deep-link straight to the developer screen (preview scheme).
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible:
+      id: sage-run-analysis
+    timeout: 60000
+- takeScreenshot: 02-sage-lab
+- tapOn:
+    id: sage-run-analysis
+# First run includes engine init (~50ms) + weight mmap + 2-ply search.
+- extendedWaitUntil:
+    visible:
+      id: sage-result
+    timeout: 180000
+- takeScreenshot: 03-sage-result
+- assertVisible:
+    text: "SAGE OK"
+- assertVisible:
+    text: "17/20"
