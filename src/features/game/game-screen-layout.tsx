@@ -23,7 +23,7 @@ import { useOpeningReveal } from '@/features/game/use-opening-reveal';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { openingCopy, openingTray } from '@/lib/game/opening-display';
 import { translate } from '@/lib/i18n';
-import { GAME_CHROME_MAX_WIDTH, LANDSCAPE_GAP, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Review = ReturnType<typeof useMoveReview>;
@@ -174,6 +174,7 @@ function GameChromeStack({
   );
 }
 
+/* eslint-disable-next-line max-lines-per-function -- portrait vs landscape chrome composition */
 export function GameScreenLayout({
   board,
   review,
@@ -184,7 +185,15 @@ export function GameScreenLayout({
   onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
-  const { landscape, desktop, chromeWidth, boardPaneWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
+  const {
+    landscape,
+    desktop,
+    chromeWidth,
+    boardPaneWidth,
+    boardMaxWidth,
+    stageMaxWidth,
+    contentInsets,
+  } = useLayoutMetrics();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
@@ -246,7 +255,7 @@ export function GameScreenLayout({
         style={[
           styles.boardSlotHost,
           landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait,
-          boardPaneWidth != null ? { maxWidth: boardPaneWidth } : null,
+          { maxWidth: boardPaneWidth ?? boardMaxWidth },
         ]}
         testID="game-board-slot"
         onLayout={onSlotLayout}
@@ -332,14 +341,12 @@ const styles = StyleSheet.create({
   },
   boardSlotPortrait: {
     width: '100%',
-    maxWidth: MAX_BOARD_WIDTH,
     alignSelf: 'center',
   },
   boardSlotLandscape: {
     alignSelf: 'stretch',
     minWidth: 0,
     minHeight: 0,
-    maxWidth: MAX_BOARD_WIDTH,
   },
   turnBannerWrap: {
     width: '100%',

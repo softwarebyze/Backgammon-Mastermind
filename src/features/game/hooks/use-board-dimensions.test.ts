@@ -18,8 +18,8 @@ describe('fitBoardToViewport', () => {
   });
 
   it('accounts for extra height (point-number rails) when fitting', () => {
-    const withoutRails = fitBoardToViewport(720, 400, 0);
-    const withRails = fitBoardToViewport(720, 400, 36);
+    const withoutRails = fitBoardToViewport(720, 400);
+    const withRails = fitBoardToViewport(720, 400, { extraHeight: 36 });
     expect(withRails.boardOuterWidth).toBeLessThanOrEqual(withoutRails.boardOuterWidth);
     expect(withRails.boardOuterHeight + 36).toBeLessThanOrEqual(400);
   });
@@ -305,7 +305,34 @@ describe('point height uses leftover slot height', () => {
   });
 
   it('never shrinks below the compact 5.2-checker point', () => {
-    const dims = fitBoardToViewport(720, 2000, 36);
+    const dims = fitBoardToViewport(720, 2000, { extraHeight: 36 });
     expect(dims.pointHeight).toBeGreaterThanOrEqual(Math.round(dims.checkerSize * 5.2));
+  });
+});
+
+describe('desktop checker cap', () => {
+  it('keeps the phone/tablet board byte-identical at the default cap', () => {
+    const a = fitBoardToViewport(720, 2000);
+    const b = fitBoardToViewport(720, 2000, { checkerCap: 32 });
+    expect(a).toEqual(b);
+    expect(a.checkerSize).toBe(32);
+    expect(a.barWidth).toBe(28);
+    expect(a.bearOffWidth).toBe(38);
+  });
+
+  it('grows checkers, bar, and tray together on a 1000px desktop board', () => {
+    const dims = fitBoardToViewport(1000, 2000, { checkerCap: 48 });
+    expect(dims.checkerSize).toBeGreaterThan(40);
+    expect(dims.checkerSize).toBeLessThanOrEqual(48);
+    // Bar checkers render at 0.88× — the bar must still hold one.
+    expect(dims.barWidth).toBeGreaterThanOrEqual(Math.round(dims.checkerSize * 0.85));
+    expect(dims.bearOffWidth).toBeGreaterThan(dims.barWidth);
+    // Columns + bar + tray still exactly fill the board.
+    expect(dims.colWidth * 12 + dims.barWidth + dims.bearOffWidth).toBeCloseTo(dims.boardWidth, 5);
+  });
+
+  it('still shrinks a large-cap board to fit a short window', () => {
+    const dims = fitBoardToViewport(1000, 500, { checkerCap: 48, extraHeight: 28 });
+    expect(dims.boardOuterHeight + 28).toBeLessThanOrEqual(500);
   });
 });
