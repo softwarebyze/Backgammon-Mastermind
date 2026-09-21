@@ -28,7 +28,6 @@ export function GameScreen() {
     doUndo,
     doRedo,
     historyPath,
-    ceremonyKey,
     resumeAIScheduling,
     skipAIDelay,
     selectPoint,
@@ -116,7 +115,6 @@ export function GameScreen() {
       input={input}
       moveLog={moveLog}
       isComputerTurn={isComputerTurn}
-      ceremonyKey={ceremonyKey}
       onCancelSelection={() => selectPoint(null)}
       onSkipComputer={skipAIDelay}
     />

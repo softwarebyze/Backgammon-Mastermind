@@ -10,7 +10,6 @@ import { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
-import { OpeningRollCeremony } from '@/features/game/components/board/opening-roll-ceremony';
 import { GameBoardSection } from '@/features/game/components/game-board-section';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { MoveReviewBar } from '@/features/game/components/move-review-bar';
@@ -18,10 +17,11 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { REVIEW_SLOT_HEIGHT, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { REVIEW_SLOT_HEIGHT } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
+import { useOpeningReveal } from '@/features/game/use-opening-reveal';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
-import { hapticLight } from '@/lib/haptics';
+import { openingCopy, openingTray } from '@/lib/game/opening-display';
 import { translate } from '@/lib/i18n';
 import { GAME_CHROME_MAX_WIDTH, LANDSCAPE_GAP, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
@@ -43,23 +43,24 @@ type Props = {
   input: Input;
   moveLog: MoveLogEntry[];
   isComputerTurn: boolean;
-  ceremonyKey: number;
   onCancelSelection: () => void;
   onSkipComputer: () => void;
 };
 
 function GameTopChrome({
   state,
+  headline,
   onLayout,
 }: {
   state: GameState;
+  headline: string | null;
   onLayout: (event: LayoutChangeEvent) => void;
 }) {
   return (
     <View style={styles.chromeColumn} onLayout={onLayout}>
       <GamePipStatusBar state={state} />
       <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} />
+        <TurnIndicatorBanner state={state} headlineOverride={headline} />
       </View>
     </View>
   );
@@ -113,6 +114,8 @@ type ChromeStackProps = {
   interactionEnabled: boolean;
   compact: boolean;
   includeTop: boolean;
+  opening: ReturnType<typeof openingTray>;
+  openingText: ReturnType<typeof openingCopy>;
   onTopLayout: (event: LayoutChangeEvent) => void;
   onControlsLayout: (event: LayoutChangeEvent) => void;
   onCancelSelection: () => void;
@@ -129,6 +132,8 @@ function GameChromeStack({
   interactionEnabled,
   compact,
   includeTop,
+  opening,
+  openingText,
   onTopLayout,
   onControlsLayout,
   onCancelSelection,
@@ -136,7 +141,9 @@ function GameChromeStack({
 }: ChromeStackProps) {
   return (
     <>
-      {includeTop ? <GameTopChrome state={state} onLayout={onTopLayout} /> : null}
+      {includeTop
+        ? <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />
+        : null}
       <GameReviewSlot review={review} moveLog={moveLog} state={state} />
       <View
         style={[styles.controlsLayer, styles.chromeColumn]}
@@ -149,7 +156,12 @@ function GameChromeStack({
           isHumanTurn={!isComputerTurn && interactionEnabled}
           isComputerTurn={isComputerTurn}
           isReviewing={review.isReviewing}
-          captionOverride={input.inputNudge === 'roll' ? translate('game.nudge.roll_first') : null}
+          captionOverride={
+            input.inputNudge === 'roll'
+              ? translate('game.nudge.roll_first')
+              : openingText?.caption ?? null
+          }
+          opening={opening}
           compact={compact}
           onRoll={input.handleRoll}
           onReset={input.handleReset}
@@ -162,32 +174,24 @@ function GameChromeStack({
   );
 }
 
-/* eslint-disable max-lines-per-function -- portrait vs landscape chrome composition */
 export function GameScreenLayout({
   board,
   review,
   input,
   moveLog,
   isComputerTurn,
-  ceremonyKey,
   onCancelSelection,
   onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
-  const {
-    landscape,
-    desktop,
-    insets,
-    chromeWidth,
-    boardPaneWidth,
-    stageMaxWidth,
-    contentInsets,
-  } = useLayoutMetrics();
-  const dimensions = useBoardDimensions();
+  const { landscape, desktop, chromeWidth, boardPaneWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
-  const canOpeningRoll = !review.isReviewing && !isComputerTurn && live.phase === 'opening-roll';
+  // Live state only — review scrub must not drive the opening reveal.
+  const reveal = useOpeningReveal(input.state, input.handleRoll);
+  const opening = openingTray(live, reveal);
+  const openingText = openingCopy(live, reveal);
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
   const prevPhaseRef = useRef<string | undefined>(undefined);
 
@@ -214,6 +218,8 @@ export function GameScreenLayout({
       interactionEnabled={board.interactionEnabled}
       compact={landscape}
       includeTop={landscape}
+      opening={opening}
+      openingText={openingText}
       onTopLayout={onTopLayout}
       onControlsLayout={onControlsLayout}
       onCancelSelection={onCancelSelection}
@@ -235,7 +241,7 @@ export function GameScreenLayout({
       <FocusAwareStatusBar />
       {landscape
         ? null
-        : <GameTopChrome state={state} onLayout={onTopLayout} />}
+        : <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />}
       <View
         style={[
           styles.boardSlotHost,
@@ -258,28 +264,6 @@ export function GameScreenLayout({
         />
       </View>
       <WinConfettiOverlay burstKey={winBurstKey} />
-      {/*
-        Full-size layer so flying dice can reach the tray. Portrait: scrim covers
-        board + review. Landscape: scrim + card stay inside the board pane.
-      */}
-      <View style={styles.ceremonyLayer} pointerEvents="box-none">
-        <OpeningRollCeremony
-          key={ceremonyKey}
-          // Live state only — review scrub must not drive the opening ceremony.
-          state={input.state!}
-          dimensions={dimensions}
-          canRoll={canOpeningRoll}
-          paneRect={
-            landscape && boardPaneWidth != null
-              ? { left: insets.left, width: boardPaneWidth }
-              : undefined
-          }
-          onRoll={() => {
-            hapticLight();
-            input.handleRoll();
-          }}
-        />
-      </View>
       {landscape
         ? (
             <ScrollView
@@ -371,12 +355,6 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     overflow: 'hidden',
     zIndex: 1,
-  },
-  ceremonyLayer: {
-    ...StyleSheet.absoluteFill,
-    // Above the landscape chrome rail (50) so the pip bar / banner never paint
-    // over the card and flying dice pass over the rail, not under it.
-    zIndex: 60,
   },
   controlsLayer: {
     width: '100%',

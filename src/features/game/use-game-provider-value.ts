@@ -78,7 +78,7 @@ export function useGameProviderValue(): GameContextType {
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
   usePersistActiveGame(state, moveLog, replayBaseline);
-  const { startGame, startFromPosition, resumeGame, resetGame, ceremonyKey } = useGameLifecycle({
+  const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,
     clearAITimeout,
     resetAnimation: resetAllAnimation,
@@ -106,7 +106,6 @@ export function useGameProviderValue(): GameContextType {
     startFromPosition,
     resumeGame,
     resetGame,
-    ceremonyKey,
     doRollDice,
     doPassTurn,
     selectPoint,

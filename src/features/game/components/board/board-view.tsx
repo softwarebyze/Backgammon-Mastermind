@@ -11,7 +11,6 @@ import {
   resolvePanOrigin,
 } from '@/features/game/hit-test-board';
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
-import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
@@ -115,7 +114,6 @@ export function BoardView({
   const showDirectionOverlay
     = aidsOverride?.showDirectionOverlay ?? preferences.showDirectionOverlay;
   const showPointNumbers = aidsOverride?.showPointNumbers ?? preferences.showPointNumbers;
-  const ceremonyVisible = useOpeningCeremonyVisible();
   const surfaceRef = useRef<View>(null);
   const {
     overlay: dragOverlay,
@@ -171,7 +169,6 @@ export function BoardView({
 
   const showDirection = showDirectionOverlay
     && !isReviewing
-    && !ceremonyVisible
     && state.phase !== 'game-over'
     && state.phase !== 'opening-roll';
 

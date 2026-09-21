@@ -1,14 +1,9 @@
 import type { GameState } from '@/lib/game';
-import { useEffect } from 'react';
+import type { OpeningTray } from '@/lib/game/opening-display';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import {
-  useOpeningCeremonyHandoff,
-  useOpeningCeremonyVisible,
-} from '@/features/game/opening-ceremony-gate';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
@@ -23,8 +18,10 @@ type Props = {
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing?: boolean;
-  /** Ephemeral caption override (e.g. "Roll the dice first"). */
+  /** Ephemeral caption override (e.g. "Roll the dice first", opening copy). */
   captionOverride?: string | null;
+  /** Opening roll in progress / being revealed: white-left, black-right tray. */
+  opening?: OpeningTray | null;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
@@ -35,7 +32,6 @@ type Props = {
 };
 
 const ACTION_SLOT_HEIGHT = 52;
-const TRAY_FADE_MS = 280;
 const CONTROL_HIT_SLOP = 16;
 
 export function GameScreenControls({
@@ -45,6 +41,7 @@ export function GameScreenControls({
   isComputerTurn,
   isReviewing = false,
   captionOverride = null,
+  opening = null,
   onRoll,
   onReset,
   onGoLive,
@@ -53,59 +50,40 @@ export function GameScreenControls({
   compact = false,
 }: Props) {
   const { preferences } = useGamePreferences();
-  const ceremonyVisible = useOpeningCeremonyVisible();
-  const handoff = useOpeningCeremonyHandoff();
   const turn = getTurnDisplay(state);
   const caption = captionOverride
     ?? (isReviewing
       ? translate('game.review.viewing_hint')
-      : ceremonyVisible
-        ? ' '
-        : getActionCaption(state, turn));
-
-  const showTray = !ceremonyVisible || handoff === 'reveal' || handoff === 'measure';
-  const trayOpacity = useSharedValue(ceremonyVisible ? 0 : 1);
-
-  useEffect(() => {
-    if (!ceremonyVisible) {
-      trayOpacity.value = 1;
-      return;
-    }
-    if (handoff === 'reveal') {
-      trayOpacity.value = withTiming(1, { duration: TRAY_FADE_MS });
-      return;
-    }
-    trayOpacity.value = 0;
-  }, [ceremonyVisible, handoff, trayOpacity]);
-
-  const trayStyle = useAnimatedStyle(() => ({
-    opacity: trayOpacity.value,
-  }));
+      : getActionCaption(state, turn));
 
   const diceForTray = isReviewing ? state : liveDiceState;
-  const measuring = ceremonyVisible && (handoff === 'measure' || handoff === 'hidden');
+  const showOpening = opening !== null && !isReviewing;
 
   return (
     <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow}>
-        {showTray
+      <View style={styles.diceRow} pointerEvents="none">
+        {showOpening
           ? (
-              <Animated.View style={trayStyle} pointerEvents="none">
-                <DiceDisplay
-                  dice={measuring ? [0, 0] : diceForTray.dice}
-                  remainingDice={measuring ? [] : diceForTray.remainingDice}
-                  playerColor={diceForTray.currentPlayer}
-                  // Opening dice are [whiteDie, blackDie] — keep faces matched during fly-in.
-                  slotColors={ceremonyVisible ? ['white', 'black'] : undefined}
-                  displayStyle={preferences.diceDisplayStyle}
-                  animateRoll={!isReviewing && !ceremonyVisible}
-                  reportTraySlots={ceremonyVisible}
-                />
-              </Animated.View>
+              // Opening: each side's die in its own color; the engine hands these
+              // same two values to the winner, so nothing has to travel.
+              <DiceDisplay
+                dice={opening.dice}
+                remainingDice={opening.dice.filter(v => v !== 0)}
+                playerColor={diceForTray.currentPlayer}
+                slotColors={['white', 'black']}
+                emphasis={opening.emphasis}
+                displayStyle={preferences.diceDisplayStyle}
+              />
             )
-          : liveDiceState.phase === 'opening-roll'
-            ? <View style={styles.dicePlaceholder} />
-            : null}
+          : (
+              <DiceDisplay
+                dice={diceForTray.dice}
+                remainingDice={diceForTray.remainingDice}
+                playerColor={diceForTray.currentPlayer}
+                displayStyle={preferences.diceDisplayStyle}
+                animateRoll={!isReviewing}
+              />
+            )}
       </View>
       <View style={styles.actionSlot} pointerEvents="auto" testID="game-action-slot">
         <ActionControl
@@ -302,9 +280,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 44,
     marginBottom: 8,
-  },
-  dicePlaceholder: {
-    minHeight: 44,
   },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
