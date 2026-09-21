@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
+import type { ComponentProps } from 'react';
 import { Feather } from '@expo/vector-icons';
-import { HeaderButton } from 'expo-router/react-navigation';
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
@@ -20,8 +20,48 @@ const ICON = Platform.OS === 'web' ? 22 : 20;
 const GAP = Platform.OS === 'web' ? 8 : 0;
 const HIT = 44;
 
-function HeaderIconSlot({ children }: { children: ReactNode }) {
-  return <View style={styles.hit}>{children}</View>;
+function HeaderIcon({
+  name,
+  label,
+  onPress,
+  disabled = false,
+  testID,
+  dim = false,
+}: {
+  name: ComponentProps<typeof Feather>['name'];
+  label: string;
+  onPress: () => void;
+  disabled?: boolean;
+  testID?: string;
+  /** Secondary action (new game) — quieter than undo/redo/options when idle. */
+  dim?: boolean;
+}) {
+  return (
+    <HoverPressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
+      testID={testID}
+      onPress={() => {
+        hapticLight();
+        onPress();
+      }}
+      style={({ pressed, hovered }) => [
+        styles.hit,
+        hovered && !disabled && styles.hitHover,
+        pressed && !disabled && styles.hitPressed,
+      ]}
+    >
+      <Feather
+        name={name}
+        size={ICON}
+        // Disabled: a legible gray, not accent at 35% (which vanished on the dark brown).
+        color={disabled ? GAME_PALETTE.textMuted : dim ? GAME_PALETTE.accentDim : GAME_PALETTE.accent}
+        style={disabled ? styles.iconDisabled : null}
+      />
+    </HoverPressable>
+  );
 }
 
 /** Always reserve undo+redo slots so the header never layout-shifts. */
@@ -35,69 +75,30 @@ export function GameHeaderActions({
 }: Props) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: GAP }}>
-      <HeaderButton
-        accessibilityLabel={translate('game.controls.undo_a11y')}
+      <HeaderIcon
+        name="corner-up-left"
+        label={translate('game.controls.undo_a11y')}
         disabled={!canUndo || !onUndo}
-        onPress={() => {
-          if (!canUndo || !onUndo) {
-            return;
-          }
-          hapticLight();
-          onUndo();
-        }}
-      >
-        <HeaderIconSlot>
-          <Feather
-            name="corner-up-left"
-            size={ICON}
-            color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
-            style={{ opacity: canUndo ? 1 : 0.35 }}
-          />
-        </HeaderIconSlot>
-      </HeaderButton>
-      <HeaderButton
-        accessibilityLabel={translate('game.controls.redo_a11y')}
+        onPress={() => onUndo?.()}
+      />
+      <HeaderIcon
+        name="corner-up-right"
+        label={translate('game.controls.redo_a11y')}
         disabled={!canRedo || !onRedo}
-        onPress={() => {
-          if (!canRedo || !onRedo) {
-            return;
-          }
-          hapticLight();
-          onRedo();
-        }}
-      >
-        <HeaderIconSlot>
-          <Feather
-            name="corner-up-right"
-            size={ICON}
-            color={canRedo ? GAME_PALETTE.accent : GAME_PALETTE.accentDim}
-            style={{ opacity: canRedo ? 1 : 0.35 }}
-          />
-        </HeaderIconSlot>
-      </HeaderButton>
-      <HeaderButton
-        accessibilityLabel={translate('settings.title')}
-        onPress={() => {
-          hapticLight();
-          onOptions();
-        }}
-      >
-        <HeaderIconSlot>
-          <Feather name="sliders" size={ICON} color={GAME_PALETTE.accent} />
-        </HeaderIconSlot>
-      </HeaderButton>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={translate('game.controls.start_new_game_a11y')}
+        onPress={() => onRedo?.()}
+      />
+      <HeaderIcon
+        name="sliders"
+        label={translate('settings.title')}
+        onPress={onOptions}
+      />
+      <HeaderIcon
+        name="refresh-cw"
+        label={translate('game.controls.start_new_game_a11y')}
         testID="reset-game-button"
-        onPress={() => {
-          hapticLight();
-          onReset();
-        }}
-        style={styles.hit}
-      >
-        <Feather name="refresh-cw" size={ICON} color={GAME_PALETTE.accentDim} />
-      </Pressable>
+        onPress={onReset}
+        dim
+      />
     </View>
   );
 }
@@ -108,5 +109,15 @@ const styles = StyleSheet.create({
     minHeight: HIT,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 10,
+  },
+  hitHover: {
+    backgroundColor: 'rgba(255, 196, 153, 0.12)',
+  },
+  hitPressed: {
+    opacity: 0.7,
+  },
+  iconDisabled: {
+    opacity: 0.6,
   },
 });

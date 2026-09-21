@@ -9,11 +9,13 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
+import { useGameKeyboardShortcuts } from '@/features/game/use-game-keyboard-shortcuts';
 import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
 import { translate } from '@/lib/i18n';
 
+/* eslint-disable-next-line max-lines-per-function -- screen wiring: header, shortcuts, leave guards */
 export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
@@ -75,6 +77,17 @@ export function GameScreen() {
     openOptions,
     handleReset: input.handleReset,
     confirmLeaveGame: leaveGame,
+  });
+
+  useGameKeyboardShortcuts({
+    state: input.state,
+    isReviewing: review.isReviewing,
+    canUndo: !review.isReviewing && canUndo,
+    canRedo: !review.isReviewing && canRedo,
+    onRoll: input.handleRoll,
+    onUndo: doUndo,
+    onRedo: doRedo,
+    onCancelSelection: () => selectPoint(null),
   });
 
   useEffect(() => {
