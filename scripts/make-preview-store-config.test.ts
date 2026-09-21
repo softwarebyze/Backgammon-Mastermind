@@ -11,6 +11,36 @@ afterEach(() => {
 });
 
 describe('make-preview-store-config', () => {
+  it('keeps every 1.0.2 localization within App Store text limits', () => {
+    const canonical = JSON.parse(readFileSync('store.config.json', 'utf8')) as {
+      apple: {
+        version: string;
+        info: Record<string, {
+          title: string;
+          subtitle: string;
+          promoText: string;
+          description: string;
+          keywords: string[];
+        }>;
+      };
+    };
+
+    expect(canonical.apple.version).toBe('1.0.2');
+    expect(Object.keys(canonical.apple.info)).toHaveLength(17);
+    for (const listing of Object.values(canonical.apple.info)) {
+      expect([...listing.title].length).toBeLessThanOrEqual(30);
+      expect([...listing.subtitle].length).toBeLessThanOrEqual(30);
+      expect([...listing.promoText].length).toBeLessThanOrEqual(170);
+      expect([...listing.description].length).toBeLessThanOrEqual(4000);
+      expect(listing.keywords.join(',').length).toBeLessThanOrEqual(100);
+    }
+    expect(canonical.apple.info.he?.subtitle).toContain('שש');
+    expect(canonical.apple.info.tr?.subtitle).toBe('Tavla öğren ve oyna');
+    for (const locale of ['hi', 'ja', 'ko', 'tr']) {
+      expect(canonical.apple.info[locale]?.description).not.toMatch(/new to backgammon|backgammon에 새로운|Eve dönmek için yeni/i);
+    }
+  });
+
   it('writes the gitignored preview listing with a unique ASC title', () => {
     execFileSync('node', ['scripts/make-preview-store-config.mjs'], { cwd: process.cwd() });
     expect(existsSync(PREVIEW_CONFIG)).toBe(true);

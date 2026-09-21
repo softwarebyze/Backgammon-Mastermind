@@ -1,0 +1,345 @@
+{
+  "error": {
+    "body": "Uruchom aplikację, aby kontynuować.",
+    "heading": "Coś poszło nie tak.",
+    "retry": "Spróbuj ponownie"
+  },
+  "game": {
+    "caption": {
+      "selected": "Wybrane - dotknij zaznaczonego punktu lub Anuluj"
+    },
+    "controls": {
+      "bear_off_a11y": "Trzymaj się.",
+      "cancel": "Anuluj",
+      "cancel_a11y": "Anuluj zaznaczenie",
+      "leave_game_a11y": "Zostaw grę i wróć do domu",
+      "loading": "Ładowanie...",
+      "new_game_message": "Rozpocząć nową grę?",
+      "new_game_title": "Nowa gra",
+      "no_legal_moves": "Brak możliwych ruchów…",
+      "play_again": "Zagraj ponownie",
+      "play_again_a11y": "Zagraj ponownie",
+      "redo_a11y": "Cofnij ruch",
+      "roll_dice": "Rzuć kośćmi",
+      "roll_dice_a11y": "Rzuć kośćmi",
+      "skip_wait": "Dotknij, aby pominąć oczekiwanie",
+      "skip_wait_a11y": "{{status}}Dotknij, aby pominąć oczekiwanie",
+      "start_new_game_a11y": "Rozpocznij nową grę",
+      "undo_a11y": "Cofnij ruch"
+    },
+    "nudge": {
+      "roll_first": "Najpierw rzuć kośćmi"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bije {{low}}",
+      "goes_first": "{{player}} zaczyna!",
+      "roll": "Rzuć",
+      "rolls_for_opening": "{{player}} rzuca o rozpoczęcie",
+      "tie": "Remis!",
+      "tie_again": "Ta sama liczba — rzućcie ponownie",
+      "waiting_roll": "{{player}} rzuca…",
+      "who_goes_first": "Kto zaczyna?",
+      "your_roll": "Dotknij gdziekolwiek, aby rzucić"
+    },
+    "options": {
+      "open_settings": "Język i więcej",
+      "open_settings_hint": "Otwórz Ustawienia",
+      "title": "Opcje gry"
+    },
+    "preferences": {
+      "auto_move": "Automatyczny ruch przymusowy",
+      "auto_move_hint": "Automatycznie wykonuje jedyny możliwy ruch",
+      "auto_roll": "Automatyczny rzut kośćmi",
+      "auto_roll_hint": "Rzuca automatycznie w twojej turze",
+      "dice_display": "Wygląd kości",
+      "dice_dots": "Oczka",
+      "dice_numbers": "Liczby",
+      "direction_overlay": "Wskazówka kierunku",
+      "direction_overlay_hint": "Trasa w kształcie podkowy na planszy",
+      "fast_computer": "Szybki komputer",
+      "fast_computer_hint": "Krócej czeka na rolety komputerowe i ruchy. Możesz również stuknąć Skip wait.",
+      "move_hints": "Podpowiedzi ruchów",
+      "move_hints_hint": "Złota kropka przy polach, z których możesz się ruszyć",
+      "point_numbers": "Numery pól",
+      "point_numbers_hint": "Pokaż etykiety 1–24 na planszy",
+      "section_automation": "Automatyzacja",
+      "section_board": "Plansza",
+      "section_dice": "Kości",
+      "sound": "Dźwięki gry",
+      "sound_hint": "Delikatne dźwięki kości, bić i zwycięstw — szanuje tryb cichy"
+    },
+    "review": {
+      "back_to_live": "Wróć do bieżącej gry",
+      "live": "Bieżąca gra",
+      "live_short": "Na żywo",
+      "move_a11y": "Ruch {{ply}}, {{player}}",
+      "move_position": "Ruch {{current}} z {{total}} · {{player}}",
+      "next": "Następna tura",
+      "opening": "Pozycja początkowa",
+      "pause_replay": "Pauza",
+      "player_black": "Czarne",
+      "player_white": "Białe",
+      "previous": "Poprzednia tura",
+      "replay": "Powtórka",
+      "scrubber_hint": "Dotknij tury, aby ją przejrzeć",
+      "start": "Początek",
+      "turn_a11y": "Tura {{turn}}, {{player}}",
+      "turn_label": "Tura {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tura {{turn}}/{{totalTurns}} · ruch {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Przeglądanie — dotknij Na żywo lub Wróć, aby grać dalej"
+    },
+    "status": {
+      "black_wins": "Czarne wygrywają",
+      "computer_wins": "Komputer wygrywa",
+      "white_wins": "🏆 Białe wygrywają!",
+      "you_win": "🏆 Wygrywasz!"
+    },
+    "turn": {
+      "black_is_moving": "Czarne wykonują ruch…",
+      "black_is_rolling": "Czarne rzucają…",
+      "black_turn": "Ruch czarnych",
+      "cant_enter": "Nie możesz wejść z bandy przy {{die1}} i {{die2}} — zakończ turę",
+      "computer_turn": "Ruch komputera",
+      "enter_from_bar": "Wejdź z bandy przed ruchem innymi pionkami",
+      "game_over": "Koniec gry",
+      "move_checkers": "Przesuń swoje {{color}} pionki",
+      "no_legal_moves": "Brak dozwolonych ruchów przy {{die1}} i {{die2}} — zakończ turę",
+      "opening_roll": "Rzut otwierający",
+      "roll_dice": "Rzuć kośćmi — grasz kolorem {{color}}",
+      "white_turn": "Ruch białych",
+      "your_turn": "Twój ruch"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Anuluj",
+    "confirm_continue": "Kontynuuj",
+    "confirm_native": "Kontynuować grę czy rozpocząć nową?",
+    "confirm_new": "Nowa gra",
+    "confirm_replace": "Rozpocząć nową grę? Bieżąca gra zostanie zastąpiona.",
+    "confirm_title": "Gra w toku",
+    "confirm_web": "Zacząć nową grę? (Użyj ponownie na ekranie głównym, aby kontynuować bieżący.)",
+    "recovery_body": "Ostatni zapis był uszkodzony. Możesz rozpocząć nową grę — ekran główny nadal działa.",
+    "recovery_dismiss": "Zamknij",
+    "recovery_title": "Nie udało się przywrócić zapisanej gry",
+    "resume": "Wznów grę",
+    "resume_a11y": "Wznów zapisaną grę",
+    "resume_none": "Brak zapisanej gry do wznowienia",
+    "resume_sub": "Kontynuuj od miejsca, w którym skończyłeś",
+    "review": "Przejrzyj ostatnią grę",
+    "review_a11y": "Przejrzyj zakończoną grę",
+    "review_sub": "Zobacz, jak zakończyła się ostatnia gra",
+    "subtitle": "Opanuj planszę — ruch po ruchu",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "2 graczy",
+    "two_players_a11y": "Graj we dwoje na tym urządzeniu",
+    "two_players_sub": "Na zmianę na tym samym urządzeniu",
+    "vs_computer": "Przeciw komputerowi",
+    "vs_computer_a11y": "Graj przeciwko komputerowi",
+    "vs_computer_sub": "Zagraj przeciwko komputerowi"
+  },
+  "learn": {
+    "back_to_hub": "Wszystkie lekcje",
+    "continue": "Kontynuuj",
+    "feedback": {
+      "hint_nudge": "Potrzebujesz kuksańca? Szukaj zaznaczonych miejsc.",
+      "illegal": "Wypróbuj zaznaczony punkt - lub dotknij podpowiedzi.",
+      "legal_but_wrong": "To jest legalne w prawdziwej grze - tutaj, spróbuj ruchu, który uczy ten pomysł.",
+      "move_progress": "Nieźle.{{done}}z{{needed}}Wykonane ruchy."
+    },
+    "graduation": {
+      "body": "Znasz cel, tablicę, jak się obraca, uderza i odjeżdża. Szybkie sprawdzenie - potem twoja pierwsza prawdziwa gra.",
+      "play_cta": "Zagraj w swoją pierwszą grę",
+      "quiz_done": "Trafiłem. Czas na zabawę.",
+      "quiz_title": "Szybka kontrola",
+      "quiz_wrong": "Nie całkiem - spróbuj innej odpowiedzi.",
+      "recap_1": "Wyścig: potrzymaj wszystkie 15 pierwszy",
+      "recap_2": "Rzucić dwie kości; ziemi na punkty otwarte",
+      "recap_3": "Hit blots → siadają na barze",
+      "recap_4": "Wytrzymaj tylko w domu",
+      "recap_5": "Gry zaczynają się od jednego umrzeć każdy - wyższy idzie pierwszy (krawaty re- roll)",
+      "title": "Jesteś gotowy do gry."
+    },
+    "hint": "Podpowiedź",
+    "home_cta": "Naucz się grać",
+    "home_cta_progress": "{{done}}z{{total}}wnioski",
+    "home_cta_quiz": "Szybkie sprawdzenie w lewo - następnie grać",
+    "home_cta_ready": "Jesteś gotowy - zagraj prawdziwą grę",
+    "home_cta_sub": "Interaktywne lekcje dla początkujących",
+    "lesson_complete": "Lekcja zakończona!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Nic nie ma na 5-tym punkcie, ale zwinęłaś 5. Należy odstąpić od najwyższego poziomu kontroli (3). Większa liczba nadal zdejmuje warcaby.",
+            "hint": "Wybierz punkt 3, a następnie dotknij tacki z brodaczem.",
+            "praise": "To zasada przesady - będziesz ją często używał, kiedy odchodzisz.",
+            "title": "Większa śmierć, wciąż wyłączona"
+          },
+          "try": {
+            "body": "Wszystkie warcaby są w domu (1-6), więc można się wytrwać. Rzuciłeś 3 - weź sprawdzacz na 3- punkt z tablicy.",
+            "hint": "Wybierz punkt 3, a następnie dotknij miejsca na prawej krawędzi.",
+            "praise": "Z tablicy! Pierwszy, który zniesie wszystkie 15 zwycięstw.",
+            "title": "Niedźwiedź jeden"
+          }
+        },
+        "subtitle": "Jak wygrywasz",
+        "title": "Wyłączenie"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Podkowa pasuje do warcaby gracza, którego kolej jest. Śledzi trasę gracza wokół planszy i do domu (pkt 1- 6).",
+            "title": "Ścieżka podkowa"
+          },
+          "far": {
+            "body": "Dotknij punktu, w którym zaczynają się twoje dwa najdalsze białe warcaby (24- punkt, gór- prawo).",
+            "hint": "Spójrz na górną prawą - dwie białe warcaby na punkcie 24.",
+            "praise": "Te zaczynają się głęboko w domu przeciwnika i mają najdłuższą podróż.",
+            "title": "Twoje najdalsze warcaby"
+          },
+          "home_stack": {
+            "body": "Dotknij duży stos pięciu białych warcaby już w domu (punkt 6).",
+            "hint": "Bottom-right: pięć białych warcaby w punkcie 6.",
+            "praise": "To twój domowy stos. Pięciu już czeka na punkt szósty, najbliżej przerwy. Każda gra zaczyna się w ten sposób.",
+            "title": "Twój domowy stos"
+          }
+        },
+        "subtitle": "Którędy się ruszysz?",
+        "title": "Kierunek i ustawienie"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Podniesiony pasek w środku to bar. Hit warcaby czekać tutaj. Stuknij w pasek.",
+            "hint": "Dotknij pionowego pasa między lewym i prawym połówką deski.",
+            "praise": "Prawo - hit warcaby siedzieć na barze, aż ponownie wejść.",
+            "title": "Bar"
+          },
+          "explain": {
+            "body": "Ty i twój przeciwnik macie po 15 warcaby. Przesuń je wokół planszy i wyłączyć - pierwszy zakończył wygrywa.",
+            "title": "Kto pierwszy wytrzyma wygrywa"
+          },
+          "home": {
+            "body": "Twój dom to punkty 1- 6 (dolny prawy). Dotknij dowolnego punktu w swojej tablicy.",
+            "hint": "Dom to sześć punktów w prawym dolnym kwadrancie - od 1 do 6.",
+            "praise": "To twój dom. Warcaby opuszczają zarząd.",
+            "title": "Znajdź swoją tablicę"
+          }
+        },
+        "subtitle": "Po co się ścigasz?",
+        "title": "Cel & plansza"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Jesteś na barze - wracaj, zanim ruszysz kogoś innego. Policz od 24- punktu w kierunku domu: 4 ziemie na punkt 21.",
+            "hint": "Dotknij paska, a następnie punkt 21 (nie 23 - to tylko dwa pipy z paska).",
+            "praise": "Jesteś z powrotem w zarządzie - sprawdzacze zawsze wchodzą pierwszy.",
+            "title": "Wpisz z paska",
+            "wrong": "To tylko dwa pipy z baru (pkt 23). Policz cztery punkty od 24 do domu - to jest punkt 21."
+          },
+          "hit": {
+            "body": "Pojedynczy sprawdzacz to plama. Wyląduj na nim i idzie do baru. Rzuciłeś 3 - trafiłeś czarną plamę na 5- punkt.",
+            "hint": "Dotknij kontrolera na 8, a następnie naciśnij punkt 5.",
+            "praise": "Uderz! Ten czarny sprawdzacz jest teraz na barze.",
+            "title": "Hit the blot"
+          }
+        },
+        "subtitle": "Odtwarzanie kontaktów",
+        "title": "Uderzanie i pasek"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Dwa lub więcej warcaby przeciwników blokują punkt - nie można tam wylądować. Stuknij zablokowany czarny stos na 5- punkt.",
+            "hint": "Podświetlona stos dwóch czarnych warcaby w punkcie 5.",
+            "praise": "Prawo - punkt 2 + zostaje zamknięty. Pusty, własny lub blot (1) są otwarte.",
+            "title": "Zablokowane punkty"
+          },
+          "doubles": {
+            "body": "Podwójne daje cztery ruchy tej liczby. Rzuciłeś 2-2 - to cztery 2s. Przesuń z punktu ósmego do punktu szóstego cztery razy.",
+            "hint": "Dotknij 8- punktu, a następnie 6- punktu. Zrób to cztery razy - raz na śmierć.",
+            "praise": "Dokładnie - podwójne oznacza cztery ruchy z tą liczbą.",
+            "title": "Podwójne = cztery ruchy"
+          },
+          "explain": {
+            "body": "Każdy skręca dwie kości i grać obie liczby, kiedy można. Możesz lądować na pustych punktach, własnych warcaby, lub samotny przeciwnik (blot).",
+            "title": "Dwie liczby, punkty otwarte"
+          },
+          "two_dice": {
+            "body": "Rzuciłeś 3 i 1. Przesuń sprawdzacz na 8- punkt trzy pipy (do 5), a jeden na 6- punkt jeden pip (do 5).",
+            "hint": "Wybierz biały sprawdzacz, a następnie stuknij punkt 5. Zrób to zarówno dla 8- i 6- punktu.",
+            "praise": "Nieźle - obie kości używane. Te same warcaby lub dwa warcaby, obie liczby muszą być odtwarzane, gdy możesz.",
+            "title": "Zagraj w obie kości"
+          }
+        },
+        "subtitle": "Jak działa obrót",
+        "title": "Przeprowadzka z kośćmi"
+      }
+    },
+    "locked": "Najpierw ukończ poprzednią lekcję",
+    "next_lesson": "Następna lekcja",
+    "quiz": {
+      "bar": {
+        "a": "Przesuń swój najdalej sprawdzacz pierwszy",
+        "b": "Wprowadź ten sprawdzacz przed przesunięciem czegokolwiek innego",
+        "c": "Pomiń swoją kolej",
+        "prompt": "Podczas gdy masz sprawdzacz na barze, musisz..."
+      },
+      "bear": {
+        "a": "Ilekroć rzucasz 6",
+        "b": "Tylko po tym, jak uderzysz w plamę.",
+        "c": "Kiedy wszystkie 15 warcaby są w domu",
+        "prompt": "Kiedy wytrzymasz?"
+      },
+      "blot": {
+        "a": "Każdy stos trzech lub więcej",
+        "b": "Pojedynczy sprawdzacz w punkcie - można go trafić",
+        "c": "Dwa lub więcej warcaby na punkt - punkt ustalony",
+        "prompt": "Co to jest plama?"
+      }
+    },
+    "replay": "Powtórz",
+    "skip_to_play": "Przejdź do gry",
+    "step_progress": "Krok{{current}}z{{total}}",
+    "subtitle": "Pięć krótkich lekcji - potem jesteś gotowy",
+    "title": "Naucz się grać"
+  },
+  "not_found": {
+    "body": "Ta strona nie jest częścią Backgammon Mastermind. Jedź do domu, by się nauczyć albo zacząć grę.",
+    "heading": "Poza planszą",
+    "home_a11y": "Przejdź na stronę główną",
+    "home_cta": "Wróć na stronę główną",
+    "title": "Nie znaleziono"
+  },
+  "settings": {
+    "about": "O aplikacji",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabski",
+    "developer": "Deweloper",
+    "developer_blurb": "Wczytaj dowolną pozycję planszy do testowania silnika. Rozpoczyna normalną grę od tej pozycji. To nie jest funkcja produktu.",
+    "developer_json": "JSON pozycji",
+    "developer_load": "Wczytaj JSON",
+    "developer_open": "Wczytaj pozycję",
+    "developer_presets": "Ustawienia testowe",
+    "english": "Angielski",
+    "game": "Gra",
+    "general": "Ogólne",
+    "github": "GitHub",
+    "language": "Język",
+    "link_error_body": "Spróbuj ponownie później.",
+    "link_error_title": "Nie można otworzyć linku",
+    "links": "Linki",
+    "more": "Więcej",
+    "privacy": "Polityka prywatności",
+    "rate": "Oceń",
+    "share": "Udostępnij",
+    "support": "Pomoc",
+    "support_us": "Wesprzyj nas",
+    "terms": "Warunki korzystania",
+    "title": "Ustawienia",
+    "version": "Wersja",
+    "website": "Strona internetowa"
+  },
+  "welcome": "Witamy w Backgammon Mastermind"
+}

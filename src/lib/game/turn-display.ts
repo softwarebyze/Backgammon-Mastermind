@@ -4,7 +4,7 @@ import { translate } from '@/lib/i18n';
 export type TurnDisplay = {
   player: Player;
   /** Short color name shown beside the checker disc */
-  colorLabel: 'White' | 'Black';
+  colorLabel: string;
   /** Main turn message */
   headline: string;
   /** Whether the local human should act right now */
@@ -17,13 +17,13 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
   const isComputerTurn
     = state.mode === 'vs-computer' && state.currentPlayer === 'black';
   const isHumanTurn = !isComputerTurn;
-  const colorLabel = state.currentPlayer === 'white' ? 'White' : 'Black';
+  const colorLabel = playerLabel(state.currentPlayer);
 
   if (state.phase === 'game-over') {
     return {
       player: state.currentPlayer,
       colorLabel,
-      headline: 'Game over',
+      headline: translate('game.turn.game_over'),
       isHumanTurn: false,
       isWaiting: true,
     };
@@ -36,7 +36,7 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
       player: state.currentPlayer,
       colorLabel,
       // Ceremony owns the copy — keep the banner quiet so we don't say it 3×.
-      headline: isComputerOpening ? 'Opening roll' : 'Opening roll',
+      headline: translate('game.turn.opening_roll'),
       isHumanTurn: !isComputerOpening,
       isWaiting: isComputerOpening,
     };
@@ -45,7 +45,7 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
   if (isComputerTurn) {
     return {
       player: 'black',
-      colorLabel: 'Black',
+      colorLabel: playerLabel('black'),
       headline: computerWaitHeadline(state.phase),
       isHumanTurn: false,
       isWaiting: true,
@@ -63,20 +63,24 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
 
 function humanHeadline(mode: GameMode, player: Player): string {
   if (mode === 'vs-computer') {
-    return 'Your turn';
+    return translate('game.turn.your_turn');
   }
-  return player === 'white' ? 'White\'s turn' : 'Black\'s turn';
+  return translate(player === 'white' ? 'game.turn.white_turn' : 'game.turn.black_turn');
+}
+
+function playerLabel(player: Player): string {
+  return translate(player === 'white' ? 'game.review.player_white' : 'game.review.player_black');
 }
 
 /** One player-named line in the banner — footer is skip-wait only. */
 function computerWaitHeadline(phase: GamePhase): string {
   if (phase === 'rolling') {
-    return 'Black is rolling…';
+    return translate('game.turn.black_is_rolling');
   }
   if (phase === 'moving') {
-    return 'Black is moving…';
+    return translate('game.turn.black_is_moving');
   }
-  return 'Computer\'s turn';
+  return translate('game.turn.computer_turn');
 }
 
 export function getActionCaption(
@@ -93,23 +97,23 @@ export function getActionCaption(
     return ' ';
   }
   if (state.phase === 'rolling' && turn.isHumanTurn) {
-    return `Roll dice — you play ${turn.colorLabel.toUpperCase()}`;
+    return translate('game.turn.roll_dice', { color: turn.colorLabel });
   }
   if (state.phase === 'moving' && turn.isHumanTurn) {
     if (state.bar[state.currentPlayer] > 0) {
-      return 'Enter from the bar before moving other checkers';
+      return translate('game.turn.enter_from_bar');
     }
     if (state.selectedPoint !== null) {
       return translate('game.caption.selected');
     }
-    return `Move your ${turn.colorLabel.toLowerCase()} checkers`;
+    return translate('game.turn.move_checkers', { color: turn.colorLabel.toLocaleLowerCase() });
   }
   if (state.phase === 'no-move' && turn.isHumanTurn) {
     const [d1, d2] = state.dice;
     if (state.bar[state.currentPlayer] > 0) {
-      return `Can't enter from the bar with ${d1} and ${d2} — end your turn`;
+      return translate('game.turn.cant_enter', { die1: d1, die2: d2 });
     }
-    return `No legal moves with ${d1} and ${d2} — end your turn`;
+    return translate('game.turn.no_legal_moves', { die1: d1, die2: d2 });
   }
   return ' ';
 }

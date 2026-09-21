@@ -10,28 +10,24 @@ export type HorseshoeMetrics = {
   curveX: number;
 };
 
-/**
- * White rides the outer cream lane; Black is inset so both directions can
- * show at once without stacking into one stroke.
- */
+/** Calculate a compact, player-independent lane inset inside the board. */
 export function horseshoeMetrics(
   width: number,
   height: number,
-  player: HorseshoePlayer = 'white',
+  _player: HorseshoePlayer = 'white',
 ): HorseshoeMetrics {
-  const pad = Math.max(4, width * 0.04);
-  const lane = player === 'white' ? 0 : 1;
-  const inset = lane * Math.max(8, height * 0.055);
+  const pad = Math.max(4, width * 0.05);
   return {
     pad,
-    topY: height * 0.22 + inset,
-    botY: height * 0.78 - inset,
-    leftX: pad + width * 0.08 + lane * width * 0.028,
-    rightX: width - pad - width * 0.14 - lane * width * 0.018,
-    curveX: pad + lane * width * 0.04,
+    topY: height * 0.27,
+    botY: height * 0.73,
+    leftX: pad + width * 0.11,
+    rightX: width - pad - width * 0.18,
+    curveX: pad + width * 0.03,
   };
 }
 
+/** Build the current player's directional horseshoe as an SVG path. */
 export function buildHorseshoePath(
   width: number,
   height: number,

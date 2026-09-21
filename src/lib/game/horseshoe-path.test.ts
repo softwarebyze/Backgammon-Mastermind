@@ -18,12 +18,15 @@ describe('buildHorseshoePath', () => {
     expect(black).toMatch(/L [\d.]+ [\d.]+$/);
   });
 
-  it('insets the black lane so both directions can render without stacking', () => {
+  it('uses the same quiet lane for whichever player is moving', () => {
     const white = horseshoeMetrics(200, 200, 'white');
     const black = horseshoeMetrics(200, 200, 'black');
-    expect(black.topY).toBeGreaterThan(white.topY);
-    expect(black.botY).toBeLessThan(white.botY);
-    expect(black.leftX).toBeGreaterThan(white.leftX);
-    expect(black.curveX).toBeGreaterThan(white.curveX);
+    expect(black).toEqual(white);
+  });
+
+  it('keeps the guide compact inside the board', () => {
+    const metrics = horseshoeMetrics(200, 200);
+    expect(metrics.rightX - metrics.curveX).toBeLessThan(200 * 0.7);
+    expect(metrics.botY - metrics.topY).toBeLessThan(200 * 0.5);
   });
 });

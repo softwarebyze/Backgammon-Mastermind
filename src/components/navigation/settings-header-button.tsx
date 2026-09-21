@@ -4,11 +4,12 @@ import { HeaderButton } from 'expo-router/react-navigation';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 
 export function SettingsHeaderButton() {
   return (
     <HeaderButton
-      accessibilityLabel="Settings"
+      accessibilityLabel={translate('settings.title')}
       onPress={() => {
         hapticLight();
         router.push('/settings');
