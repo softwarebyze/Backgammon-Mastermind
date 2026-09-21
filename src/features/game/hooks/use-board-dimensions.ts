@@ -129,6 +129,14 @@ export function fitBoardToViewport(
 /** Move-review strip is a fixed slot in GameScreenLayout. */
 export const REVIEW_SLOT_HEIGHT = 68;
 
+/** Tray die edge on phones/tablets. */
+export const TRAY_DIE_SIZE = 44;
+
+/** Tray die for a board with this checker: 44 up to a 32px checker, up to 64 with desktop checkers. */
+export function trayDieSize(checkerSize: number): number {
+  return Math.min(64, Math.max(TRAY_DIE_SIZE, Math.round(checkerSize * 1.35)));
+}
+
 export type LeftoverBoardHeightArgs = {
   screenHeight: number;
   headerHeight: number;

@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
@@ -30,6 +31,8 @@ type Props = {
   onSkipComputer?: () => void;
   /** Tighter padding when dice sit beside the board in landscape. */
   compact?: boolean;
+  /** Tray die edge; the layout derives it from the board's checker size. */
+  dieSize?: number;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
@@ -49,6 +52,7 @@ export function GameScreenControls({
   onCancelSelection,
   onSkipComputer,
   compact = false,
+  dieSize = TRAY_DIE_SIZE,
 }: Props) {
   const { preferences } = useGamePreferences();
   const turn = getTurnDisplay(state);
@@ -74,6 +78,7 @@ export function GameScreenControls({
                 slotColors={['white', 'black']}
                 emphasis={opening.emphasis}
                 displayStyle={preferences.diceDisplayStyle}
+                size={dieSize}
               />
             )
           : (
@@ -83,6 +88,7 @@ export function GameScreenControls({
                 playerColor={diceForTray.currentPlayer}
                 displayStyle={preferences.diceDisplayStyle}
                 animateRoll={!isReviewing}
+                size={dieSize}
               />
             )}
       </View>
@@ -356,7 +362,7 @@ const styles = StyleSheet.create({
   },
   skipHint: {
     color: GAME_PALETTE.accentDim,
-    fontSize: 11,
+    fontSize: 13,
     ...interFont('medium'),
   },
   caption: {
