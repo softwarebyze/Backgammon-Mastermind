@@ -27,8 +27,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 🏃‍♂️Create A Draft Github Release
+      - name: 🏃‍♂️Create GitHub release if needed
         uses: ncipollo/release-action@v1
         with:
           generateReleaseNotes: true
           draft: false
+          skipIfReleaseExists: true
