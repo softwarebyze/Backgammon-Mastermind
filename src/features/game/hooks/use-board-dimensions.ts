@@ -44,11 +44,25 @@ export type BoardDimensions = {
   middleHeight: number;
 };
 
-function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
+/**
+ * Point length in checker diameters. 5.2 is the compact floor (five checkers
+ * just fit). Up to 8, points stretch to use leftover height — phone portrait
+ * used to leave ~40% of the slot empty around a squat board.
+ */
+const MIN_POINT_CHECKERS = 5.2;
+const MAX_POINT_CHECKERS = 7;
+
+/** When `maxOuterHeight` is given, points grow toward it (never past MAX_POINT_CHECKERS). */
+function dimensionsForWidth(boardOuterWidth: number, maxOuterHeight = 0): BoardDimensions {
   const boardWidth = boardOuterWidth - BOARD_FRAME_WIDTH * 2;
   const colWidth = (boardWidth - BAR_WIDTH - BEAR_OFF_WIDTH) / 12;
   const checkerSize = Math.min(colWidth - 4, 32);
-  const pointHeight = Math.round(Math.min(160, checkerSize * 5.2));
+  const minPoint = Math.round(checkerSize * MIN_POINT_CHECKERS);
+  const roomFor = Math.floor((maxOuterHeight - BOARD_FRAME_WIDTH * 2 - MIDDLE_HEIGHT) / 2);
+  const pointHeight = Math.max(
+    minPoint,
+    Math.min(Math.round(checkerSize * MAX_POINT_CHECKERS), roomFor),
+  );
   const boardHeight = pointHeight * 2 + MIDDLE_HEIGHT;
   const boardOuterHeight = boardHeight + BOARD_FRAME_WIDTH * 2;
 
@@ -78,12 +92,13 @@ export function fitBoardToViewport(
   maxOuterHeight: number,
   extraHeight = 0,
 ): BoardDimensions {
+  const innerHeight = maxOuterHeight - extraHeight;
   let width = maxOuterWidth;
-  let dims = dimensionsForWidth(width);
+  let dims = dimensionsForWidth(width, innerHeight);
   // linear shrink — ~40 iterations max; switch to binary search if this gets hot
   while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
     width -= 8;
-    dims = dimensionsForWidth(width);
+    dims = dimensionsForWidth(width, innerHeight);
   }
   return dims;
 }

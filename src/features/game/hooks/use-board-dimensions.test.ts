@@ -289,3 +289,23 @@ describe('learnCaptionMaxHeight', () => {
     expect(captionMax).toBe(MIN_LEARN_CAPTION_HEIGHT);
   });
 });
+
+describe('point height uses leftover slot height', () => {
+  it('stretches points into a tall portrait slot instead of leaving it empty', () => {
+    const compact = fitBoardToViewport(382, 260);
+    const tall = fitBoardToViewport(382, 480);
+    expect(tall.boardOuterWidth).toBe(compact.boardOuterWidth);
+    expect(tall.pointHeight).toBeGreaterThan(compact.pointHeight);
+    expect(tall.boardOuterHeight).toBeLessThanOrEqual(480);
+  });
+
+  it('caps point length at 7 checkers so stacks stay readable', () => {
+    const dims = fitBoardToViewport(382, 5000);
+    expect(dims.pointHeight).toBe(Math.round(dims.checkerSize * 7));
+  });
+
+  it('never shrinks below the compact 5.2-checker point', () => {
+    const dims = fitBoardToViewport(720, 2000, 36);
+    expect(dims.pointHeight).toBeGreaterThanOrEqual(Math.round(dims.checkerSize * 5.2));
+  });
+});
