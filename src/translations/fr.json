@@ -1,0 +1,345 @@
+{
+  "error": {
+    "body": "Redémarrer l'application pour continuer.",
+    "heading": "Quelque chose a mal tourné",
+    "retry": "Réessayer"
+  },
+  "game": {
+    "caption": {
+      "selected": "Sélectionné — appuyez sur un point surligné, ou Annuler"
+    },
+    "controls": {
+      "bear_off_a11y": "Débarrassez-vous",
+      "cancel": "Annuler",
+      "cancel_a11y": "Annuler la sélection",
+      "leave_game_a11y": "Laissez le jeu et rentrez chez vous",
+      "loading": "Chargement...",
+      "new_game_message": "Commencer une nouvelle partie ?",
+      "new_game_title": "Nouvelle partie",
+      "no_legal_moves": "Aucun coup possible…",
+      "play_again": "Rejouer",
+      "play_again_a11y": "Rejouer",
+      "redo_a11y": "Redéplacement",
+      "roll_dice": "Lancer les dés",
+      "roll_dice_a11y": "Lancer les dés",
+      "skip_wait": "Appuyez sur pour sauter attendre",
+      "skip_wait_a11y": "{{status}}Appuyez sur pour sauter attendre",
+      "start_new_game_a11y": "Démarrer un nouveau jeu",
+      "undo_a11y": "Déplacer"
+    },
+    "nudge": {
+      "roll_first": "Lance d'abord les dés"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} bat {{low}}",
+      "goes_first": "{{player}} commence !",
+      "roll": "Lancer",
+      "rolls_for_opening": "{{player}} lance pour l'ouverture",
+      "tie": "Égalité !",
+      "tie_again": "Même chiffre — relancez",
+      "waiting_roll": "{{player}} lance…",
+      "who_goes_first": "Qui commence ?",
+      "your_roll": "Touchez n'importe où pour lancer"
+    },
+    "options": {
+      "open_settings": "Langue et plus",
+      "open_settings_hint": "Ouvrir les Réglages",
+      "title": "Options de partie"
+    },
+    "preferences": {
+      "auto_move": "Coup auto si forcé",
+      "auto_move_hint": "Jouer automatiquement le seul coup légal",
+      "auto_roll": "Lancer auto des dés",
+      "auto_roll_hint": "Lancer automatiquement à votre tour",
+      "dice_display": "Affichage des dés",
+      "dice_dots": "Points",
+      "dice_numbers": "Chiffres",
+      "direction_overlay": "Guide de direction",
+      "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
+      "fast_computer": "Ordinateur rapide",
+      "fast_computer_hint": "Plus court attend sur les rouleaux d'ordinateur et se déplace. Vous pouvez également appuyer sur Sauter l'attente.",
+      "move_hints": "Indices de coup",
+      "move_hints_hint": "Point doré près des flèches d'où vous pouvez jouer",
+      "point_numbers": "Numéros des flèches",
+      "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
+      "section_automation": "Automatisation",
+      "section_board": "Plateau",
+      "section_dice": "Dés",
+      "sound": "Sons du jeu",
+      "sound_hint": "Dés, prises et victoires en douceur — respecte le mode silencieux"
+    },
+    "review": {
+      "back_to_live": "Retour à la partie en cours",
+      "live": "Partie en cours",
+      "live_short": "En direct",
+      "move_a11y": "Coup {{ply}}, {{player}}",
+      "move_position": "Coup {{current}} sur {{total}} · {{player}}",
+      "next": "Tour suivant",
+      "opening": "Position de départ",
+      "pause_replay": "Pause",
+      "player_black": "Noirs",
+      "player_white": "Blancs",
+      "previous": "Tour précédent",
+      "replay": "Relecture",
+      "scrubber_hint": "Touchez un tour pour le revoir",
+      "start": "Début",
+      "turn_a11y": "Tour {{turn}}, {{player}}",
+      "turn_label": "Tour {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Tour {{turn}}/{{totalTurns}} · coup {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Relecture — touchez En direct ou Retour pour continuer à jouer"
+    },
+    "status": {
+      "black_wins": "Les Noirs gagnent",
+      "computer_wins": "L'ordinateur gagne",
+      "white_wins": "🏆 Les Blancs gagnent !",
+      "you_win": "🏆 Vous gagnez !"
+    },
+    "turn": {
+      "black_is_moving": "Les noirs jouent…",
+      "black_is_rolling": "Les noirs lancent…",
+      "black_turn": "Au tour des noirs",
+      "cant_enter": "Impossible de rentrer avec {{die1}} et {{die2}} — terminez votre tour",
+      "computer_turn": "Au tour de l’ordinateur",
+      "enter_from_bar": "Rentrez depuis la barre avant de déplacer d’autres pions",
+      "game_over": "Partie terminée",
+      "move_checkers": "Déplacez vos pions {{color}}",
+      "no_legal_moves": "Aucun coup légal avec {{die1}} et {{die2}} — terminez votre tour",
+      "opening_roll": "Jet d’ouverture",
+      "roll_dice": "Lancez les dés — vous jouez les {{color}}",
+      "white_turn": "Au tour des blancs",
+      "your_turn": "À vous de jouer"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Annuler",
+    "confirm_continue": "Continuer",
+    "confirm_native": "Continuer votre jeu actuel ou en démarrer un nouveau ?",
+    "confirm_new": "Nouveau jeu",
+    "confirm_replace": "Commencer une nouvelle partie ? La partie en cours sera remplacée.",
+    "confirm_title": "Jeu en cours",
+    "confirm_web": "Commencer un nouveau jeu ? (Utilisez Resume sur l'écran d'accueil pour continuer le courant.)",
+    "recovery_body": "La dernière sauvegarde était endommagée. Tu peux commencer une nouvelle partie — l’accueil fonctionne toujours.",
+    "recovery_dismiss": "Fermer",
+    "recovery_title": "Impossible de restaurer la partie sauvegardée",
+    "resume": "Reprendre la partie",
+    "resume_a11y": "Reprendre la partie sauvegardée",
+    "resume_none": "Aucun jeu enregistré à reprendre",
+    "resume_sub": "Reprenez là où vous en étiez",
+    "review": "Revoir la dernière partie",
+    "review_a11y": "Revoir la partie terminée",
+    "review_sub": "Découvre comment la dernière partie s’est terminée",
+    "subtitle": "Maîtrisez le plateau — coup après coup",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "2 joueurs",
+    "two_players_a11y": "Jouer à deux sur cet appareil",
+    "two_players_sub": "À tour de rôle sur le même appareil",
+    "vs_computer": "Contre l'ordinateur",
+    "vs_computer_a11y": "Jouer contre l'ordinateur",
+    "vs_computer_sub": "Jouez contre l’ordinateur"
+  },
+  "learn": {
+    "back_to_hub": "Toutes les leçons",
+    "continue": "Continuer",
+    "feedback": {
+      "hint_nudge": "Besoin d'un coup de pouce ? Cherchez les endroits surlignés.",
+      "illegal": "Essayez un point surligné — ou appuyez sur Conseil.",
+      "legal_but_wrong": "C'est légal dans un vrai jeu — ici, essayez le mouvement qui enseigne cette idée.",
+      "move_progress": "Bien — {{done}} mouvements sur {{needed}} effectués."
+    },
+    "graduation": {
+      "body": "Tu connais le but, le conseil, comment tourne le travail, frappe et recule. Une vérification rapide — puis votre premier vrai jeu.",
+      "play_cta": "Jouez à votre premier jeu",
+      "quiz_done": "J'ai tout gâché. Il est temps de jouer.",
+      "quiz_title": "Vérification rapide",
+      "quiz_wrong": "Pas tout à fait — essayez une autre réponse.",
+      "recap_1": "Course : battre les 15 premiers",
+      "recap_2": "Rouler deux dés; atterrir sur des points ouverts",
+      "recap_3": "Hit blots → ils s'assoient sur le bar",
+      "recap_4": "Ne vous éloignez que de votre pensionnat",
+      "recap_5": "Les jeux commencent avec une mort chacun — plus haut passe en premier (ties re-roll)",
+      "title": "Vous êtes prêt à jouer"
+    },
+    "hint": "Conseil",
+    "home_cta": "Apprendre à jouer",
+    "home_cta_progress": "{{done}} leçons sur {{total}}",
+    "home_cta_quiz": "Cochez à gauche — puis jouez",
+    "home_cta_ready": "Vous êtes prêt — jouer un vrai jeu",
+    "home_cta_sub": "Cours interactifs pour débutants",
+    "lesson_complete": "Leçon terminée!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Rien n'est sur le 5-point, mais vous avez roulé un 5. L'ours de votre plus haut chèque (le 3). Un nombre plus grand enlève encore un chèque.",
+            "hint": "Sélectionnez le point 3, puis appuyez sur le plateau d'appui.",
+            "praise": "C'est la règle de dépassement — vous l'utiliserez beaucoup en prenant du recul.",
+            "title": "Plus grand, mort, toujours éteint"
+          },
+          "try": {
+            "body": "Tous vos vérificateurs sont à la maison (1-6), donc vous pouvez supporter. Vous avez roulé un 3 — prenez le checker sur le 3-point de la planche.",
+            "hint": "Sélectionnez le point 3, puis appuyez sur la zone d'ours sur le bord droit.",
+            "praise": "Dehors ! D'abord pour supporter les 15 victoires.",
+            "title": "Enlève-en un."
+          }
+        },
+        "subtitle": "Comment tu gagnes",
+        "title": "Démarrage"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Le fer à cheval correspond aux dames du joueur dont c'est le tour. Il retrace le parcours du joueur autour du plateau et à la maison (points 1 à 6).",
+            "title": "Le sentier du fer à cheval"
+          },
+          "far": {
+            "body": "Appuyez sur le point de départ de vos deux vérificateurs blancs les plus éloignés (le 24-point, en haut à droite).",
+            "hint": "Regardez en haut à droite — deux dames blanches au point 24.",
+            "praise": "Ceux qui commencent profondément dans la maison de l'adversaire et ont le plus long voyage.",
+            "title": "Vos meilleurs vérificateurs"
+          },
+          "home_stack": {
+            "body": "Tapez sur la grande pile de cinq dames blanches déjà dans votre maison (le 6-point).",
+            "hint": "En bas à droite : cinq dames blanches au point 6.",
+            "praise": "C'est la pile de votre maison — cinq qui attendent déjà sur le 6-point, le plus proche de se tenir. Chaque jeu commence comme ça.",
+            "title": "Votre pile de maison"
+          }
+        },
+        "subtitle": "Par où tu bouges",
+        "title": "Direction & configuration"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "La bande surélevée au milieu est la barre. Les contrôleurs attendent ici. Tapez sur le bar.",
+            "hint": "Tapez la bande verticale entre les moitiés gauche et droite de la planche.",
+            "praise": "Droite — les vérificateurs sont assis sur le bar jusqu'à ce qu'ils rentrent.",
+            "title": "La barre"
+          },
+          "explain": {
+            "body": "Vous et votre adversaire avez chacun 15 checkers. Déplacez - les autour du plateau et retirez - les.",
+            "title": "Tout d'abord à supporter les victoires"
+          },
+          "home": {
+            "body": "Votre maison est points 1–6 (en bas à droite). Tapez sur n'importe quel point dans votre homeboard.",
+            "hint": "Accueil est les six points dans le quadrant inférieur droit — numérotés 1 à 6.",
+            "praise": "C'est votre maison, les dames quittent le conseil d'administration.",
+            "title": "Trouvez votre carte d'accueil"
+          }
+        },
+        "subtitle": "Ce que vous êtes en course pour",
+        "title": "Objectif & conseil"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Vous êtes au bar, revenez avant de déplacer quelqu'un d'autre. Comptez du 24-point vers la maison: un 4 terres sur le point 21.",
+            "hint": "Appuyez sur la barre, puis le point 21 (pas 23 — qui est seulement deux pips de la barre).",
+            "praise": "Vous êtes de retour sur le tableau — les contrôleurs de barre entrent toujours en premier.",
+            "title": "Entrez dans la barre",
+            "wrong": "Ce n'est que deux pips de la barre (point 23). Comptez quatre points de 24 vers la maison — ce qui est le point 21."
+          },
+          "hit": {
+            "body": "Un seul checker est une tache. Atterrissez dessus et il va au bar. Vous avez roulé un 3 — frappez la tache noire sur le 5-point.",
+            "hint": "Appuyez sur votre checker sur 8, puis sur le point 5.",
+            "praise": "Frappe ! Ce checker noir est maintenant sur le bar.",
+            "title": "Frappe la tache"
+          }
+        },
+        "subtitle": "Jeu de contact",
+        "title": "Hitting & la barre"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Deux ou plusieurs contrôleurs adversaires bloquent un point — vous ne pouvez pas atterrir là. Appuyez sur la pile noire bloquée sur le 5-point.",
+            "hint": "La pile surlignée de deux dames noires sur le point 5.",
+            "praise": "Droite — un point marqué (2+) est fermé. Vide, le vôtre, ou un blot (1) sont ouverts.",
+            "title": "Points bloqués"
+          },
+          "doubles": {
+            "body": "Les doubles vous donnent quatre coups de ce nombre. Vous avez roulé 2-2, ça fait 4-2. Passer de la 8-point à la 6-point quatre fois.",
+            "hint": "Appuyez sur le 8-point, puis le 6-point. Faites cela quatre fois — une fois par mort.",
+            "praise": "Exactement — le double signifie quatre mouvements avec ce nombre.",
+            "title": "Doubles = quatre mouvements"
+          },
+          "explain": {
+            "body": "Chaque tour vous roulez deux dés et jouez les deux nombres quand vous pouvez. Vous pouvez atterrir sur des points vides, vos propres dames, ou un seul adversaire (un blot).",
+            "title": "Deux numéros, points ouverts"
+          },
+          "two_dice": {
+            "body": "Vous avez roulé 3 et 1. Déplacez le checker sur le 8-point trois pips (à 5), et celui sur le 6-point un pip (à 5).",
+            "hint": "Sélectionnez un vérificateur blanc, puis touchez le point 5. Faites cela pour le 8-point et le 6-point.",
+            "praise": "Nice — les deux dés utilisés. Même checker ou deux checkers, les deux numéros doivent être joués quand vous pouvez.",
+            "title": "Jouer les deux dés"
+          }
+        },
+        "subtitle": "Comment fonctionne un tour",
+        "title": "Déplacement avec dés"
+      }
+    },
+    "locked": "Compléter la leçon précédente d'abord",
+    "next_lesson": "Leçon suivante",
+    "quiz": {
+      "bar": {
+        "a": "Déplacez d'abord votre meilleur vérificateur",
+        "b": "Entrez ce vérificateur avant de déplacer autre chose",
+        "c": "Saute ton tour",
+        "prompt": "Pendant que vous avez un vérificateur sur le bar, vous devez..."
+      },
+      "bear": {
+        "a": "Chaque fois que vous roulez un 6",
+        "b": "Seulement après avoir touché une tache",
+        "c": "Lorsque les 15 vérificateurs sont dans votre pension",
+        "prompt": "Quand pouvez-vous supporter ?"
+      },
+      "blot": {
+        "a": "Toute pile de trois ou plus",
+        "b": "Un seul vérificateur sur un point — il peut être frappé",
+        "c": "Deux contrôleurs ou plus sur un point — un point",
+        "prompt": "Qu'est-ce qu'une tache ?"
+      }
+    },
+    "replay": "Rejouer",
+    "skip_to_play": "Sauter pour jouer",
+    "step_progress": "Étape {{current}} sur {{total}}",
+    "subtitle": "Cinq courtes leçons, puis vous êtes prêt",
+    "title": "Apprendre à jouer"
+  },
+  "not_found": {
+    "body": "Cette page ne fait pas partie de Backgammon Mastermind. Rentre chez toi pour apprendre ou commencer un jeu.",
+    "heading": "Hors du plateau",
+    "home_a11y": "Aller à l'accueil",
+    "home_cta": "Retour à l'accueil",
+    "title": "Introuvable"
+  },
+  "settings": {
+    "about": "À propos",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arabe",
+    "developer": "Développeur",
+    "developer_blurb": "Charge une position quelconque pour tester le moteur. Lance une partie normale à partir de cette position. Ce n’est pas une fonctionnalité du produit.",
+    "developer_json": "JSON de la position",
+    "developer_load": "Charger le JSON",
+    "developer_open": "Charger la position",
+    "developer_presets": "Préréglages de test",
+    "english": "changements climatiques",
+    "game": "Partie",
+    "general": "Généralités",
+    "github": "GitHub",
+    "language": "Langue",
+    "link_error_body": "Veuillez réessayer plus tard.",
+    "link_error_title": "Impossible d'ouvrir le lien",
+    "links": "Liens",
+    "more": "Plus",
+    "privacy": "Politique de confidentialité",
+    "rate": "Noter",
+    "share": "Partager",
+    "support": "Assistance",
+    "support_us": "Soutenez-nous",
+    "terms": "Conditions d'utilisation",
+    "title": "Réglages",
+    "version": "Version",
+    "website": "Site web"
+  },
+  "welcome": "Bienvenue à Backgammon Mastermind"
+}

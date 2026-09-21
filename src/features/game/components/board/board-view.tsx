@@ -363,6 +363,7 @@ export function BoardView({
           <DirectionOverlay
             width={boardWidth}
             height={boardHeight}
+            player={state.currentPlayer}
           />
         )}
 

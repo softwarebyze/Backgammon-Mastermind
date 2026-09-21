@@ -131,6 +131,7 @@ export function HomeScreen() {
     <>
       <FocusAwareStatusBar />
       <ScrollView
+        testID="home-screen"
         style={styles.scroll}
         contentContainerStyle={[
           styles.root,

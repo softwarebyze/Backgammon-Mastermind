@@ -55,7 +55,9 @@ runs:
       run: |
         APP_GRADLE=android/app/build.gradle
         if ! grep -q 'REACT_NATIVE_NODE_MODULES_DIR' "$APP_GRADLE"; then
-          sed -i '/^react {/i ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native")\n' "$APP_GRADLE"
+          # Worklets 0.10 reads this extension as a String; passing Gradle's File
+          # object causes a ClassCastException while configuring the Android build.
+          sed -i '/^react {/i ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native").absolutePath\n' "$APP_GRADLE"
         fi
         # Embed the JS bundle in the debug APK so Maestro can run without Metro.
         if ! grep -q 'debuggableVariants = \[\]' "$APP_GRADLE"; then

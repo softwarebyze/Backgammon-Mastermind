@@ -1,0 +1,345 @@
+{
+  "error": {
+    "body": "Uygulamayı devam etmeye yeniden başlayın.",
+    "heading": "Bir şey yanlış gitti yanlış bir şey gitti",
+    "retry": "Retry"
+  },
+  "game": {
+    "caption": {
+      "selected": "Seçilen – vurgulanan bir noktaya dokun veya Cancel"
+    },
+    "controls": {
+      "bear_off_a11y": "Ayık Ayı",
+      "cancel": "Cancel Cancel Cancel Cancel",
+      "cancel_a11y": "İptal seçimi",
+      "leave_game_a11y": "Oyun bırak ve eve geri dön",
+      "loading": "Yükleniyor...",
+      "new_game_message": "Yeni oyun başlatılsın mı?",
+      "new_game_title": "Yeni Oyun",
+      "no_legal_moves": "Oynanabilir hamle yok…",
+      "play_again": "Tekrar Oyna",
+      "play_again_a11y": "Tekrar oyna",
+      "redo_a11y": "Redo hareket",
+      "roll_dice": "Zar At",
+      "roll_dice_a11y": "Zar at",
+      "skip_wait": "Beklemek için Tap",
+      "skip_wait_a11y": "{{status}}Beklemek için Tap",
+      "start_new_game_a11y": "Yeni oyun başla",
+      "undo_a11y": "Undo hareketsiz"
+    },
+    "nudge": {
+      "roll_first": "Önce zarları at"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}}, {{low}}'u geçti",
+      "goes_first": "{{player}} başlıyor!",
+      "roll": "At",
+      "rolls_for_opening": "{{player}} açılış için zar atıyor",
+      "tie": "Berabere!",
+      "tie_again": "Aynı sayı — tekrar atın",
+      "waiting_roll": "{{player}} zar atıyor…",
+      "who_goes_first": "Kim başlayacak?",
+      "your_roll": "Zar atmak için herhangi bir yere dokun"
+    },
+    "options": {
+      "open_settings": "Dil ve daha fazlası",
+      "open_settings_hint": "Ayarları aç",
+      "title": "Oyun seçenekleri"
+    },
+    "preferences": {
+      "auto_move": "Zorunlu hamlede otomatik oyna",
+      "auto_move_hint": "Tek geçerli hamleyi otomatik oynar",
+      "auto_roll": "Zarı otomatik at",
+      "auto_roll_hint": "Sıra sende olduğunda otomatik zar atar",
+      "dice_display": "Zar görünümü",
+      "dice_dots": "Noktalar",
+      "dice_numbers": "Sayılar",
+      "direction_overlay": "Yön kılavuzu",
+      "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
+      "fast_computer": "Hızlı bilgisayar",
+      "fast_computer_hint": "Kısaer bilgisayar rulolarında bekler ve hareket eder. Ayrıca Skip wait'a da dokunabilirsiniz.",
+      "move_hints": "Hamle ipuçları",
+      "move_hints_hint": "Taş oynatabileceğin hanelerin yanında altın nokta",
+      "point_numbers": "Hane numaraları",
+      "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
+      "section_automation": "Otomasyon",
+      "section_board": "Tahta",
+      "section_dice": "Zarlar",
+      "sound": "Oyun sesleri",
+      "sound_hint": "Hafif zar, kırma ve kazanma sesleri — sessiz moda uyar"
+    },
+    "review": {
+      "back_to_live": "Canlı oyuna dön",
+      "live": "Canlı oyun",
+      "live_short": "Canlı",
+      "move_a11y": "Hamle {{ply}}, {{player}}",
+      "move_position": "Hamle {{current}}/{{total}} · {{player}}",
+      "next": "Sonraki el",
+      "opening": "Başlangıç dizilişi",
+      "pause_replay": "Duraklat",
+      "player_black": "Siyah",
+      "player_white": "Beyaz",
+      "previous": "Önceki el",
+      "replay": "Tekrar izle",
+      "scrubber_hint": "İncelemek için bir ele dokun",
+      "start": "Başlangıç",
+      "turn_a11y": "El {{turn}}, {{player}}",
+      "turn_label": "El {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "El {{turn}}/{{totalTurns}} · hamle {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "İnceleme modundasın — oynamaya devam etmek için Canlı'ya dokun"
+    },
+    "status": {
+      "black_wins": "Siyah Kazandı",
+      "computer_wins": "Bilgisayar Kazandı",
+      "white_wins": "🏆 Beyaz Kazandı!",
+      "you_win": "🏆 Kazandın!"
+    },
+    "turn": {
+      "black_is_moving": "Siyah oynuyor…",
+      "black_is_rolling": "Siyah zar atıyor…",
+      "black_turn": "Siyahın sırası",
+      "cant_enter": "{{die1}} ve {{die2}} ile bardan giremezsiniz — sıranızı bitirin",
+      "computer_turn": "Bilgisayarın sırası",
+      "enter_from_bar": "Diğer pulları oynatmadan önce bardan girin",
+      "game_over": "Oyun bitti",
+      "move_checkers": "{{color}} pullarınızı oynatın",
+      "no_legal_moves": "{{die1}} ve {{die2}} ile geçerli hamle yok — sıranızı bitirin",
+      "opening_roll": "Açılış zarı",
+      "roll_dice": "Zarları atın — {{color}} ile oynuyorsunuz",
+      "white_turn": "Beyazın sırası",
+      "your_turn": "Sıra sizde"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Cancel Cancel Cancel Cancel",
+    "confirm_continue": "Devam etmeye devam et",
+    "confirm_native": "Mevcut oyununıza devam edin veya yeni bir tane başla?",
+    "confirm_new": "Yeni oyun",
+    "confirm_replace": "Yeni bir oyun başlatılsın mı? Mevcut oyununuz değiştirilecek.",
+    "confirm_title": "İlerlemede Oyun",
+    "confirm_web": "Yeni bir oyuna başlayın? (Mevcut olanı sürdürmek için ev ekranında Resume kullanın.)",
+    "recovery_body": "Son kayıt bozulmuştu. Yeni bir oyun başlatabilirsiniz — ana ekran çalışmaya devam ediyor.",
+    "recovery_dismiss": "Kapat",
+    "recovery_title": "Kayıtlı oyun geri yüklenemedi",
+    "resume": "Oyuna Devam Et",
+    "resume_a11y": "Kayıtlı oyuna devam et",
+    "resume_none": "Hiçbir kurtarma oyunu",
+    "resume_sub": "Kaldığın yerden devam et",
+    "review": "Son oyunu incele",
+    "review_a11y": "Tamamlanan oyunu incele",
+    "review_sub": "Son oyunun nasıl bittiğini görün",
+    "subtitle": "Tahtaya hükmet — hamle hamle",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "2 Oyuncu",
+    "two_players_a11y": "Aynı cihazda iki kişi oyna",
+    "two_players_sub": "Aynı cihazda sırayla",
+    "vs_computer": "Bilgisayara Karşı",
+    "vs_computer_a11y": "Bilgisayara karşı oyna",
+    "vs_computer_sub": "Bilgisayara karşı oyna"
+  },
+  "learn": {
+    "back_to_hub": "Tüm dersler",
+    "continue": "Devam etmeye devam et",
+    "feedback": {
+      "hint_nudge": "Bir nudgea mı ihtiyacınız var? vurgulanan noktalara bakın.",
+      "illegal": "Bir vurgu noktası deneyin - ya da Hint tapın.",
+      "legal_but_wrong": "Bu gerçek bir oyunda yasal - burada, bu fikri öğreten hareketi deneyin.",
+      "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı."
+    },
+    "graduation": {
+      "body": "Hedefi biliyorsun, yönetim kurulu, nasıl çalışır, vurup duruyorsunuz. Hızlı bir kontrol - sonra ilk gerçek oyun.",
+      "play_cta": "İlk oyununuzu oynayın",
+      "quiz_done": "Çiçerdi. Oynamak için zaman.",
+      "quiz_title": "Hızlı check",
+      "quiz_wrong": "Oldukça değil – başka bir cevap deneyin.",
+      "recap_1": "Yarış: Tüm 15 ilk",
+      "recap_2": "Roll two dice; açık noktalarda arazi",
+      "recap_3": "Hit blots → barda otururlar",
+      "recap_4": "Sadece ev yönetim kurulundan uzak durun",
+      "recap_5": "Oyunlar her biri ile başlar - daha yüksek gider (en yüksek kayıt)",
+      "title": "Oynamaya hazırsın"
+    },
+    "hint": "Hint Hint",
+    "home_cta": "Oynamayı Öğrenin",
+    "home_cta_progress": "{{done}}Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of{{total}}Dersler yapıldı",
+    "home_cta_quiz": "Hızlı check ayrıldı – sonra oyun oyna",
+    "home_cta_ready": "Hazırsınız – gerçek bir oyun oynamak",
+    "home_cta_sub": "Yeni başlayanlar için Etkileşimli dersler",
+    "lesson_complete": "Azon tamam!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "5- Hiçbir şey 5 noktada değil, ama sen 5. En yüksek çekerinizden (The 3). Daha büyük bir sayı hala bir çeker alır.",
+            "hint": "3. noktası seçin, sonra ayı-off tepsisine tıklayın.",
+            "praise": "Bu overshoot kuralı - dışarı çıkarken çok şey kullanırsınız.",
+            "title": "Daha büyük ölü, hala kapalı"
+          },
+          "try": {
+            "body": "Tüm kontrolleriniz evde (1–6), böylece dışarı çıkabilirsiniz. 3'ü çıkardın - tahtadan 3 noktada çeker alın.",
+            "hint": "3. noktası seçin, sonra doğru kenardaki ayı-off alanına dokun.",
+            "praise": "Gemiden kaçtı! İlk olarak tüm 15 kazanır.",
+            "title": "Ayı One off"
+          }
+        },
+        "subtitle": "Nasıl kazanırsın",
+        "title": "Ayrılma"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "Athoe, onu döndüren oyuncunun çekcileri ile karşılaşır. Bu oyuncunun gemideki rotasını ve eve ( 1-6) izler.",
+            "title": "Atlarhoe yolu"
+          },
+          "far": {
+            "body": "İki en büyük beyaz çekçinizin başladığı noktaya dokun (24 nokta, üst sağ).",
+            "hint": "En iyi sağa bak - 24. sırada iki beyaz çek.",
+            "praise": "Bunlar rakibin evinde derin başlıyor ve en uzun yolculuğu var.",
+            "title": "your farthest checkers"
+          },
+          "home_stack": {
+            "body": "Evinizde zaten beş beyaz çekçinin büyük yığınına dokun (en 6 nokta).",
+            "hint": "Sub-right: 5 beyaz kontrol noktası 6.",
+            "praise": "Bu senin ev yığını - beş zaten 6 noktada, takılmak için en yakın. Her oyun bu şekilde başlar.",
+            "title": "Eviniz yığını"
+          }
+        },
+        "subtitle": "Hangi şekilde hareket edersiniz",
+        "title": "Yön & Kurulum"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "Ortadaki yükseltilmiş şerit bar. Hit checkers burada bekler. Barın.",
+            "hint": "Masanın sol ve sağ yarısı arasındaki dikey şerite dokunun.",
+            "praise": "Doğru – hit checkers yeniden girinceye kadar barda oturur.",
+            "title": "Barın The bar"
+          },
+          "explain": {
+            "body": "Siz ve rakibiniz her biri 15 kontrol sahibi. Onları gemide ve dışarıda hareket ettirin – ilki bitirin.",
+            "title": "İlk önce kazanmak için"
+          },
+          "home": {
+            "body": "Eviniz 1-6 puandır (sağlık). Ev kurulunda herhangi bir noktaya dokun.",
+            "hint": "Ev, alt sağ kadrandaki altı puandır - 6.",
+            "praise": "Bu sizin eviniz – çekers buradan kurulu terk ediyor.",
+            "title": "Ev kurulunu bul"
+          }
+        },
+        "subtitle": "Ne için yarışıyorsun",
+        "title": "Goal & board"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Bardasın - başka birini hareket etmeden önce geri gel. Eve doğru 24 noktasından Kont: 21.",
+            "hint": "Bara dokun, sonra 21 ( 23 değil – bardan sadece iki boru).",
+            "praise": "Gemiye geri döndün - bar çekers her zaman önce girer.",
+            "title": "Bardan içeri girin",
+            "wrong": "Bu, bardan sadece iki pips (görüntü 23). Eve doğru 24 puan verin - 21."
+          },
+          "hit": {
+            "body": "Tek bir çeker bir blot. Arazi üzerinde ve bara gider. 3 tane getirdin - 5 noktada siyah blot vurdun.",
+            "hint": "Kontrolörünüzü 8'de kapatın, sonra 5.",
+            "praise": "Hit! Bu siyah çeker şimdi barda.",
+            "title": "Hit the blot"
+          }
+        },
+        "subtitle": "Contact play",
+        "title": "Hitting & bar"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "İki veya daha fazla rakip kontrolcü bir noktayı engeller - orada toprak yapamazsınız. 5 noktada bloke edilen kara yığınına dokunun.",
+            "hint": "Tartışmalı iki siyah çekçinin 5.",
+            "praise": "Doğru - yapılmış bir nokta (2+) kapalıdır. Boş, kendi, ya da blot (1) açık.",
+            "title": "Blocked points"
+          },
+          "doubles": {
+            "body": "Doubles size bu sayının dört hareketini verir. 2-2 – bu dört 2. 8-point'ten dört kez hareket edin.",
+            "hint": "8-point'e dokun, sonra 6 nokta. Bu dört kez yapın - bir kez ölür.",
+            "praise": "Tam olarak - çiftler bu sayıyla dört hareket anlamına gelir.",
+            "title": "Doubles = dört hareket"
+          },
+          "explain": {
+            "body": "Her biri iki indeksi yuvarlar ve her iki sayıyı da yapabilirsiniz. Boş noktalarda, kendi çekçileriniz veya bir lone rakibiniz (a blot).",
+            "title": "İki sayı, açık noktalar"
+          },
+          "two_dice": {
+            "body": "3 ve 1. checker'i 8-point üç pips (to 5) ve 6 noktadaki bir pip (to 5).",
+            "hint": "Beyaz bir çeker seçin, sonra 5. Bunu hem 8 nokta hem de 6 nokta için yapın.",
+            "praise": "Nice - her iki işaret de kullanılır. Aynı checker veya iki çeker, her iki sayı da yapabileceğiniz zaman oynanmalıdır.",
+            "title": "Play both dice"
+          }
+        },
+        "subtitle": "Bir dönüş nasıl çalışır",
+        "title": "dice ile hareket edin"
+      }
+    },
+    "locked": "Önceki dersi ilk önce tamamlayın",
+    "next_lesson": "Sonraki ders",
+    "quiz": {
+      "bar": {
+        "a": "Önce en büyük çekerinizi hareket ettirin",
+        "b": "Başka bir şey yapmadan önce bu çeker girin",
+        "c": "Başlayın",
+        "prompt": "Barda bir çeker olsan,..."
+      },
+      "bear": {
+        "a": "Ne zaman bir 6 yuvarlarsanız",
+        "b": "Sadece bir blot vurduktan sonra",
+        "c": "Her 15 çekçi ev yönetim kurulunda olduğunda",
+        "prompt": "Ne zaman kapatabilirsiniz?"
+      },
+      "blot": {
+        "a": "Herhangi bir üç veya daha fazla yığını",
+        "b": "Bir noktada tek bir çeker – vurulabilir",
+        "c": "Bir noktada iki veya daha fazla kontrol - bir nokta",
+        "prompt": "Bir blot nedir?"
+      }
+    },
+    "replay": "Replay",
+    "skip_to_play": "Oynamak için Skip to play",
+    "step_progress": "Adım Adım Adım Adım Adım{{current}}Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of{{total}}",
+    "subtitle": "Beş kısa ders – sonra hazırsınız",
+    "title": "Oynamayı Öğrenin"
+  },
+  "not_found": {
+    "body": "Bu sayfa Backgammon Mastermind'in bir parçası değildir. Bir oyun öğrenmek ya da başlamak için ev.",
+    "heading": "Tahtanın dışı",
+    "home_a11y": "Ana sayfaya git",
+    "home_cta": "Ana sayfaya dön",
+    "title": "Bulunamadı"
+  },
+  "settings": {
+    "about": "Hakkında",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Arapça Arapça Arapça",
+    "developer": "Geliştirici",
+    "developer_blurb": "Motor testi için istediğiniz bir tahta konumunu yükleyin. Bu konumdan normal bir oyun başlatır. Ürün özelliği değildir.",
+    "developer_json": "Konum JSON’u",
+    "developer_load": "JSON yükle",
+    "developer_open": "Konum yükle",
+    "developer_presets": "Test ön ayarları",
+    "english": "İngilizce İngilizce İngilizce English",
+    "game": "Oyun",
+    "general": "General General General General General General General General General General General General General General",
+    "github": "GitHub",
+    "language": "Dil",
+    "link_error_body": "Lütfen daha sonra tekrar dene.",
+    "link_error_title": "Bağlantı açılamıyor",
+    "links": "Bağlantılar",
+    "more": "Daha fazla",
+    "privacy": "Gizlilik Politikası",
+    "rate": "Değerlendir",
+    "share": "Paylaş",
+    "support": "Destek",
+    "support_us": "Bize Destek Ol",
+    "terms": "Hizmet Şartları",
+    "title": "Ayarlar",
+    "version": "Sürüm",
+    "website": "Web sitesi"
+  },
+  "welcome": "Backgammon Mastermind'a hoş geldiniz"
+}

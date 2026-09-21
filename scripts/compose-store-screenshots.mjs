@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { Buffer } from 'node:buffer';
 /**
  * Dress raw App Store captures as two-zone frames.
  *
@@ -17,7 +18,6 @@
  * Playwright-core is loaded from PLAYWRIGHT_CORE or /tmp/pw-store (same as capture).
  */
 import fs from 'node:fs';
-import https from 'node:https';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,25 +29,33 @@ const DEFAULT_MANIFEST = path.join(
 );
 const PNG_SIG = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
 
-const FRAUNCES_WOFF2_URL
-  = 'https://fonts.gstatic.com/s/fraunces/v38/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58njr1a03gg7S2nfgRYIcUByTCf7T.woff2';
-const FRAUNCES_FILE = 'fraunces-700.woff2';
+const INTER_EXTRABOLD = path.join(
+  ROOT,
+  'node_modules/@expo-google-fonts/inter/800ExtraBold/Inter_800ExtraBold.ttf',
+);
+const INTER_SEMIBOLD = path.join(
+  ROOT,
+  'node_modules/@expo-google-fonts/inter/600SemiBold/Inter_600SemiBold.ttf',
+);
 
 const LAYOUT = {
   iphone: {
     bandPct: 0.20,
-    headlineSize: 184,
+    headlineSize: 142,
+    subSize: 54,
     padX: 72,
     padY: 56,
   },
   ipad: {
     bandPct: 0.18,
-    headlineSize: 148,
+    headlineSize: 126,
+    subSize: 48,
     padX: 96,
     padY: 48,
   },
 };
 
+/** Parse the small CLI surface used by generation and CI checks. */
 function parseArgs(argv) {
   const args = { check: false, manifest: DEFAULT_MANIFEST };
   for (let i = 0; i < argv.length; i++) {
@@ -61,6 +69,7 @@ function parseArgs(argv) {
   return args;
 }
 
+/** Read PNG dimensions directly from its IHDR header. */
 export function readPngSize(filePath) {
   const fd = fs.openSync(filePath, 'r');
   const buf = Buffer.alloc(24);
@@ -77,6 +86,7 @@ export function readPngSize(filePath) {
   return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
 }
 
+/** Load and resolve a screenshot frame manifest. */
 function loadManifest(manifestPath) {
   const raw = fs.readFileSync(manifestPath, 'utf8');
   const manifest = JSON.parse(raw);
@@ -89,6 +99,7 @@ function loadManifest(manifestPath) {
   return manifest;
 }
 
+/** Return a device spec or fail early when the manifest is incomplete. */
 function assertDevicePixels(manifest, deviceName) {
   const spec = manifest.devices[deviceName];
   if (!spec?.width || !spec?.height)
@@ -96,6 +107,7 @@ function assertDevicePixels(manifest, deviceName) {
   return spec;
 }
 
+/** Ensure an input or output image matches the required store dimensions. */
 function assertRawSize(filePath, spec, label) {
   const size = readPngSize(filePath);
   if (size.width !== spec.width || size.height !== spec.height) {
@@ -106,6 +118,7 @@ function assertRawSize(filePath, spec, label) {
   return size;
 }
 
+/** Escape marketing copy before embedding it in generated HTML. */
 function esc(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -114,65 +127,21 @@ function esc(value) {
     .replace(/"/g, '&quot;');
 }
 
-function fontDir() {
-  return process.env.DISPLAY_FONT_DIR || '/tmp/display-fonts';
-}
-
-function fontPath() {
-  return path.join(fontDir(), FRAUNCES_FILE);
-}
-
-function downloadFile(url, dest) {
-  return new Promise((resolve, reject) => {
-    const request = (href) => {
-      https.get(href, {
-        headers: { 'User-Agent': 'BackgammonMastermind-compose/1.0' },
-      }, (res) => {
-        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          res.resume();
-          request(res.headers.location);
-          return;
-        }
-        if (res.statusCode !== 200) {
-          res.resume();
-          reject(new Error(`Font download failed: HTTP ${res.statusCode}`));
-          return;
-        }
-        const chunks = [];
-        res.on('data', (c) => chunks.push(c));
-        res.on('end', () => {
-          const buf = Buffer.concat(chunks);
-          if (buf.length < 4 || buf.subarray(0, 4).toString() !== 'wOF2') {
-            reject(new Error('Font download was not a woff2'));
-            return;
-          }
-          fs.mkdirSync(path.dirname(dest), { recursive: true });
-          fs.writeFileSync(dest, buf);
-          resolve(dest);
-        });
-      }).on('error', reject);
-    };
-    request(url);
-  });
-}
-
-async function ensureDisplayFont() {
-  const dest = fontPath();
-  if (fs.existsSync(dest) && fs.statSync(dest).size > 1000)
-    return dest;
-  console.log(`  downloading Fraunces 700 → ${dest}`);
-  await downloadFile(FRAUNCES_WOFF2_URL, dest);
-  return dest;
-}
-
+/** Embed the checked-in display fonts for deterministic rendering. */
 function fontFaceCss() {
-  const abs = fontPath();
-  if (!fs.existsSync(abs))
-    throw new Error(`Missing display font ${abs} — run compose (not --check) first`);
-  const b64 = fs.readFileSync(abs).toString('base64');
-  return `@font-face{font-family:Fraunces;font-style:normal;font-weight:700;src:url(data:font/woff2;base64,${b64}) format("woff2");font-display:block;}`;
+  for (const fontPath of [INTER_EXTRABOLD, INTER_SEMIBOLD]) {
+    if (!fs.existsSync(fontPath))
+      throw new Error(`Missing display font ${fontPath} — run pnpm install first`);
+  }
+  const extraBold = fs.readFileSync(INTER_EXTRABOLD).toString('base64');
+  const semiBold = fs.readFileSync(INTER_SEMIBOLD).toString('base64');
+  return [
+    `@font-face{font-family:InterStore;font-style:normal;font-weight:800;src:url(data:font/ttf;base64,${extraBold}) format("truetype");font-display:block;}`,
+    `@font-face{font-family:InterStore;font-style:normal;font-weight:600;src:url(data:font/ttf;base64,${semiBold}) format("truetype");font-display:block;}`,
+  ].join('');
 }
 
+/** Return typography/layout tokens for a supported store device. */
 function layoutFor(device) {
   const layout = LAYOUT[device];
   if (!layout)
@@ -180,6 +149,7 @@ function layoutFor(device) {
   return layout;
 }
 
+/** Normalize crop fractions to the inclusive 0–1 range. */
 export function clampCropTop(value) {
   const n = Number(value);
   if (!Number.isFinite(n) || n <= 0)
@@ -189,6 +159,7 @@ export function clampCropTop(value) {
   return n;
 }
 
+/** Calculate the opaque headline-band height for a composed frame. */
 export function bandHeightPx(frame, spec) {
   const headline = (frame.headline || '').trim();
   if (!headline)
@@ -197,18 +168,25 @@ export function bandHeightPx(frame, spec) {
   return Math.round(spec.height * layout.bandPct);
 }
 
+/** Build deterministic HTML for one two-zone marketing frame. */
 function frameHtml({ frame, spec, colors, dataUrl }) {
   const layout = layoutFor(frame.device);
   const headline = (frame.headline || '').trim();
+  const sub = (frame.sub || '').trim();
   const cropTop = clampCropTop(frame.cropTop);
   const bandH = bandHeightPx(frame, spec);
   const cropY = Math.round(cropTop * spec.height);
+  const contain = frame.fit === 'contain';
   const fonts = fontFaceCss();
   const headlineColor = colors.headline || '#F3E6C8';
   const field = colors.background || '#1E0C02';
+  const subCopy = sub
+    ? `
+    <p>${esc(sub)}</p>`
+    : '';
   const copy = headline
     ? `<div class="band">
-    <h1>${esc(headline)}</h1>
+    <h1>${esc(headline)}</h1>${subCopy}
   </div>`
     : '';
   return `<!DOCTYPE html>
@@ -228,9 +206,9 @@ html,body{margin:0;padding:0;width:${spec.width}px;height:${spec.height}px;overf
   overflow:hidden;background:${field};
 }
 .shot{
-  position:absolute;left:0;top:-${cropY}px;
-  width:${spec.width}px;height:${spec.height}px;
-  object-fit:cover;object-position:top center;
+  position:absolute;${contain ? 'inset:0;margin:auto;' : `left:0;top:-${cropY}px;`}
+  width:${contain ? '100%' : `${spec.width}px`};height:${contain ? '100%' : `${spec.height}px`};
+  object-fit:${contain ? 'contain' : 'cover'};object-position:center;
   display:block;
 }
 .band{
@@ -239,13 +217,19 @@ html,body{margin:0;padding:0;width:${spec.width}px;height:${spec.height}px;overf
   display:flex;flex-direction:column;justify-content:center;align-items:center;
   padding:${layout.padY}px ${layout.padX}px;
   text-align:center;z-index:2;
-  font-family:Fraunces,Georgia,"Times New Roman",serif;
+  font-family:InterStore,Inter,ui-sans-serif,system-ui,sans-serif;
   color:${headlineColor};
 }
 h1{
-  margin:0;font-family:Fraunces,Georgia,"Times New Roman",serif;
-  font-weight:700;font-size:${layout.headlineSize}px;line-height:1.05;
-  letter-spacing:-0.02em;color:${headlineColor};text-wrap:balance;
+  margin:0;font-family:InterStore,Inter,ui-sans-serif,system-ui,sans-serif;
+  font-weight:800;font-size:${layout.headlineSize}px;line-height:1.02;
+  letter-spacing:-0.045em;color:${headlineColor};text-wrap:balance;
+}
+p{
+  margin:${Math.round(layout.subSize * 0.34)}px 0 0;
+  font-family:InterStore,Inter,ui-sans-serif,system-ui,sans-serif;
+  font-weight:600;font-size:${layout.subSize}px;line-height:1.2;
+  letter-spacing:-0.015em;color:${colors.sub || headlineColor};
 }
 </style>
 </head>
@@ -260,6 +244,7 @@ h1{
 </html>`;
 }
 
+/** Launch the headless Chromium instance used for pixel-accurate composition. */
 async function launchBrowser() {
   const playwrightPath
     = process.env.PLAYWRIGHT_CORE
@@ -278,6 +263,7 @@ async function launchBrowser() {
   });
 }
 
+/** Compose and validate one store screenshot frame. */
 async function composeFrame(page, manifest, frame) {
   const spec = assertDevicePixels(manifest, frame.device);
   const src = path.join(manifest.rawAbs, frame.source);
@@ -300,11 +286,12 @@ async function composeFrame(page, manifest, frame) {
     if (document.fonts?.ready)
       await document.fonts.ready;
     const img = document.querySelector('img');
-    if (img && !img.complete)
+    if (img && !img.complete) {
       await new Promise((resolve, reject) => {
         img.onload = resolve;
         img.onerror = () => reject(new Error('frame image failed to load'));
       });
+    }
   });
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   await page.screenshot({
@@ -319,6 +306,7 @@ async function composeFrame(page, manifest, frame) {
   return dest;
 }
 
+/** Validate every raw source before launching Chromium. */
 function preflightRaws(manifest) {
   for (const frame of manifest.frames) {
     const spec = assertDevicePixels(manifest, frame.device);
@@ -329,9 +317,9 @@ function preflightRaws(manifest) {
   }
 }
 
+/** Compose every frame and remove stale outputs from the destination. */
 async function composeAll(manifest) {
   preflightRaws(manifest);
-  await ensureDisplayFont();
   const browser = await launchBrowser();
   const page = await browser.newPage({
     deviceScaleFactor: 1,
@@ -348,9 +336,18 @@ async function composeAll(manifest) {
   finally {
     await browser.close();
   }
+  const writtenNames = new Set(written.map(file => path.basename(file)));
+  const stale = fs.readdirSync(manifest.outAbs).filter(
+    file => file.endsWith('.png') && !writtenNames.has(file),
+  );
+  for (const file of stale) {
+    fs.unlinkSync(path.join(manifest.outAbs, file));
+    console.log(`  deleted stale ${path.relative(ROOT, path.join(manifest.outAbs, file))}`);
+  }
   return written;
 }
 
+/** Verify that all expected composed screenshots exist at exact dimensions. */
 function checkOutputs(manifest) {
   const errors = [];
   for (const frame of manifest.frames) {
@@ -373,6 +370,7 @@ function checkOutputs(manifest) {
   console.log(`OK ${manifest.frames.length} composed PNGs at Apple pixel sizes.`);
 }
 
+/** Run screenshot composition or output validation for the requested manifest. */
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const manifest = loadManifest(args.manifest);

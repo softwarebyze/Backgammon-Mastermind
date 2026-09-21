@@ -36,7 +36,7 @@ export function GameHeaderActions({
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: GAP }}>
       <HeaderButton
-        accessibilityLabel="Undo move"
+        accessibilityLabel={translate('game.controls.undo_a11y')}
         disabled={!canUndo || !onUndo}
         onPress={() => {
           if (!canUndo || !onUndo) {
@@ -56,7 +56,7 @@ export function GameHeaderActions({
         </HeaderIconSlot>
       </HeaderButton>
       <HeaderButton
-        accessibilityLabel="Redo move"
+        accessibilityLabel={translate('game.controls.redo_a11y')}
         disabled={!canRedo || !onRedo}
         onPress={() => {
           if (!canRedo || !onRedo) {
@@ -88,7 +88,7 @@ export function GameHeaderActions({
       </HeaderButton>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Start new game"
+        accessibilityLabel={translate('game.controls.start_new_game_a11y')}
         testID="reset-game-button"
         onPress={() => {
           hapticLight();

@@ -1,0 +1,345 @@
+{
+  "error": {
+    "body": "Reinicie o aplicativo para continuar.",
+    "heading": "Algo correu mal.",
+    "retry": "Repetir"
+  },
+  "game": {
+    "caption": {
+      "selected": "Selecionado — toque num ponto realçado ou em Cancelar"
+    },
+    "controls": {
+      "bear_off_a11y": "Retirar pedra",
+      "cancel": "Cancelar",
+      "cancel_a11y": "Cancelar seleção",
+      "leave_game_a11y": "Deixe o jogo e volte para casa",
+      "loading": "Carregando...",
+      "new_game_message": "Começar um novo jogo?",
+      "new_game_title": "Novo jogo",
+      "no_legal_moves": "Nenhum movimento possível…",
+      "play_again": "Jogar de novo",
+      "play_again_a11y": "Jogar de novo",
+      "redo_a11y": "Refazer a jogada",
+      "roll_dice": "Lançar os dados",
+      "roll_dice_a11y": "Lançar os dados",
+      "skip_wait": "Toque em para ignorar a espera",
+      "skip_wait_a11y": "{{status}}Toque em para ignorar a espera",
+      "start_new_game_a11y": "Iniciar um novo jogo",
+      "undo_a11y": "Desfazer a jogada"
+    },
+    "nudge": {
+      "roll_first": "Lance os dados primeiro"
+    },
+    "opening": {
+      "compare": "{{winner}} {{high}} vence {{low}}",
+      "goes_first": "{{player}} começa!",
+      "roll": "Lançar",
+      "rolls_for_opening": "{{player}} lança para a abertura",
+      "tie": "Empate!",
+      "tie_again": "Mesmo número — lancem de novo",
+      "waiting_roll": "{{player}} está lançando…",
+      "who_goes_first": "Quem começa?",
+      "your_roll": "Toque em qualquer lugar para lançar"
+    },
+    "options": {
+      "open_settings": "Idioma e mais",
+      "open_settings_hint": "Abrir Ajustes",
+      "title": "Opções do jogo"
+    },
+    "preferences": {
+      "auto_move": "Mover automaticamente quando forçado",
+      "auto_move_hint": "Jogar automaticamente o único movimento legal",
+      "auto_roll": "Lançar dados automaticamente",
+      "auto_roll_hint": "Lançar automaticamente na sua vez",
+      "dice_display": "Aparência dos dados",
+      "dice_dots": "Pontos",
+      "dice_numbers": "Números",
+      "direction_overlay": "Guia de direção",
+      "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
+      "fast_computer": "Computador rápido",
+      "fast_computer_hint": "Mais curto espera em rolos de computador e movimentos. Você também pode tocar em Skip wait.",
+      "move_hints": "Dicas de movimento",
+      "move_hints_hint": "Ponto dourado ao lado das casas de onde você pode mover",
+      "point_numbers": "Números das casas",
+      "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
+      "section_automation": "Automação",
+      "section_board": "Tabuleiro",
+      "section_dice": "Dados",
+      "sound": "Sons do jogo",
+      "sound_hint": "Dados, capturas e vitórias suaves — respeita o modo silencioso"
+    },
+    "review": {
+      "back_to_live": "Voltar ao jogo em andamento",
+      "live": "Jogo em andamento",
+      "live_short": "Ao vivo",
+      "move_a11y": "Movimento {{ply}}, {{player}}",
+      "move_position": "Movimento {{current}} de {{total}} · {{player}}",
+      "next": "Próximo turno",
+      "opening": "Posição inicial",
+      "pause_replay": "Pausar",
+      "player_black": "Pretas",
+      "player_white": "Brancas",
+      "previous": "Turno anterior",
+      "replay": "Replay",
+      "scrubber_hint": "Toque em um turno para revisar",
+      "start": "Início",
+      "turn_a11y": "Turno {{turn}}, {{player}}",
+      "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Turno {{turn}}/{{totalTurns}} · movimento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Revisando — toque em Ao vivo ou Voltar para continuar jogando"
+    },
+    "status": {
+      "black_wins": "As Pretas venceram",
+      "computer_wins": "O computador venceu",
+      "white_wins": "🏆 As Brancas venceram!",
+      "you_win": "🏆 Você venceu!"
+    },
+    "turn": {
+      "black_is_moving": "As pretas estão a mover…",
+      "black_is_rolling": "As pretas estão a lançar…",
+      "black_turn": "Vez das pretas",
+      "cant_enter": "Não pode entrar da barra com {{die1}} e {{die2}} — termine a vez",
+      "computer_turn": "Vez do computador",
+      "enter_from_bar": "Entre da barra antes de mover outras peças",
+      "game_over": "Fim do jogo",
+      "move_checkers": "Mova as suas peças {{color}}",
+      "no_legal_moves": "Sem jogadas válidas com {{die1}} e {{die2}} — termine a vez",
+      "opening_roll": "Lançamento inicial",
+      "roll_dice": "Lance os dados — joga com {{color}}",
+      "white_turn": "Vez das brancas",
+      "your_turn": "A sua vez"
+    }
+  },
+  "home": {
+    "confirm_cancel": "Cancelar",
+    "confirm_continue": "Continuar",
+    "confirm_native": "Continuar o seu jogo atual ou iniciar um novo?",
+    "confirm_new": "Novo jogo",
+    "confirm_replace": "Iniciar um novo jogo? O jogo atual será substituído.",
+    "confirm_title": "Jogo em andamento",
+    "confirm_web": "Começar um novo jogo? (Use Retomar na tela inicial para continuar a atual.)",
+    "recovery_body": "O último jogo guardado estava danificado. Podes iniciar um novo jogo — o ecrã inicial continua a funcionar.",
+    "recovery_dismiss": "Fechar",
+    "recovery_title": "Não foi possível restaurar o jogo guardado",
+    "resume": "Retomar jogo",
+    "resume_a11y": "Retomar o jogo salvo",
+    "resume_none": "Nenhum jogo salvo para retomar",
+    "resume_sub": "Continue de onde parou",
+    "review": "Rever o último jogo",
+    "review_a11y": "Rever o jogo concluído",
+    "review_sub": "Vê como terminou o último jogo",
+    "subtitle": "Domine o tabuleiro — um movimento de cada vez",
+    "title": "BACKGAMMON\nMASTERMIND",
+    "two_players": "2 jogadores",
+    "two_players_a11y": "Jogar em dois neste dispositivo",
+    "two_players_sub": "Revezando no mesmo dispositivo",
+    "vs_computer": "Contra o computador",
+    "vs_computer_a11y": "Jogar contra o computador",
+    "vs_computer_sub": "Jogue contra o computador"
+  },
+  "learn": {
+    "back_to_hub": "Todas as lições",
+    "continue": "Continuar",
+    "feedback": {
+      "hint_nudge": "Precisas de um empurrão? Procure os pontos destacados.",
+      "illegal": "Tente um ponto destacado — ou toque em Dica.",
+      "legal_but_wrong": "Isso é legal em um jogo real — aqui, tente o movimento que ensina esta idéia.",
+      "move_progress": "Boa...{{done}}de{{needed}}movimentos feitos."
+    },
+    "graduation": {
+      "body": "Sabes qual é o objectivo, o tabuleiro, como é que se transforma no trabalho, bater e aguentar. Uma verificação rápida — então seu primeiro jogo real.",
+      "play_cta": "Jogar o seu primeiro jogo",
+      "quiz_done": "Acertei em cheio. Hora de jogar.",
+      "quiz_title": "Verificação rápida",
+      "quiz_wrong": "Não exatamente — tente outra resposta.",
+      "recap_1": "Corrida: suportar todos os 15 primeiro",
+      "recap_2": "Lança dois dados; pousa em pontos abertos",
+      "recap_3": "Hit blots → eles sentam na barra",
+      "recap_4": "Afaste-se apenas do seu tabuleiro",
+      "recap_5": "Jogos começam com um dado cada — mais alto vai primeiro (ties re-roll)",
+      "title": "Você está pronto para jogar"
+    },
+    "hint": "Dica",
+    "home_cta": "Aprender a jogar",
+    "home_cta_progress": "{{done}}de{{total}}lições feitas",
+    "home_cta_quiz": "Verificação rápida à esquerda - em seguida, jogar",
+    "home_cta_ready": "Você está pronto — jogue um jogo real",
+    "home_cta_sub": "Aulas interativas para iniciantes",
+    "lesson_complete": "Lição completa!",
+    "lessons": {
+      "bearing_off": {
+        "steps": {
+          "overshoot": {
+            "body": "Nada está no 5-ponto, mas você rolou um 5. Afaste-se do seu verificador mais alto (o 3). Um número maior ainda tira um cheque.",
+            "hint": "Selecione o ponto 3, em seguida, toque na bandeja de Bear-off.",
+            "praise": "Essa é a regra de superação — você vai usá-la muito quando suportar.",
+            "title": "Maior morrer, ainda fora"
+          },
+          "try": {
+            "body": "Todas as suas damas estão em casa (1–6), para que você possa suportar. Você rolou um 3 - tirar o verificador no 3 ponto fora do tabuleiro.",
+            "hint": "Selecione o ponto 3, em seguida, toque na área de Bear-off na borda direita.",
+            "praise": "Fora do tabuleiro! O primeiro a suportar as 15 vitórias.",
+            "title": "Leva um fora."
+          }
+        },
+        "subtitle": "Como você ganha",
+        "title": "Deslocamento"
+      },
+      "direction_setup": {
+        "steps": {
+          "explain": {
+            "body": "A ferradura corresponde às damas do jogador cuja vez é. Ele traça a rota do jogador ao redor do tabuleiro e para casa (pontos 1-6).",
+            "title": "O caminho da ferradura"
+          },
+          "far": {
+            "body": "Toque no ponto onde as suas duas damas brancas mais distantes começam (o 24 pontos, superior-direita).",
+            "hint": "Olhe para a parte superior direita — duas damas brancas no ponto 24.",
+            "praise": "Aqueles começam profundamente na casa do oponente e têm a viagem mais longa.",
+            "title": "As tuas damas mais distantes."
+          },
+          "home_stack": {
+            "body": "Toque na grande pilha de cinco damas brancas já em sua casa (o 6 ponto).",
+            "hint": "Inferior-direita: cinco damas brancas no ponto 6.",
+            "praise": "Essa é a sua pilha de casa — cinco já esperando no 6 ponto, mais próximo de suportar. Todos os jogos começam assim.",
+            "title": "Sua pilha de casa"
+          }
+        },
+        "subtitle": "Para que lado te moves?",
+        "title": "& Configuração da direção"
+      },
+      "goal_board": {
+        "steps": {
+          "bar": {
+            "body": "A faixa levantada no meio é o bar. Bater damas esperar aqui. Toca no bar.",
+            "hint": "Toque na faixa vertical entre as metades esquerda e direita do tabuleiro.",
+            "praise": "Direita — aperte damas sentar na barra até que eles re-entram.",
+            "title": "O bar"
+          },
+          "explain": {
+            "body": "Tu e o teu adversário têm 15 damas. Mova - os ao redor do tabuleiro e off — o primeiro a terminar vence.",
+            "title": "O primeiro a suportar vitórias"
+          },
+          "home": {
+            "body": "Sua casa é pontos 1-6 (baixo-direita). Toque em qualquer ponto do seu tabuleiro.",
+            "hint": "Home é os seis pontos no quadrante inferior direito — numerados de 1 a 6.",
+            "praise": "Essa é a sua casa — damas deixam o tabuleiro daqui.",
+            "title": "Encontre o seu homeboard"
+          }
+        },
+        "subtitle": "O que você está correndo para",
+        "title": "& Tabuleiro de Objectivos"
+      },
+      "hitting_bar": {
+        "steps": {
+          "enter": {
+            "body": "Você está no bar — volte antes de mover mais alguém. Conte do 24 ponto para casa: um 4 pousa no ponto 21.",
+            "hint": "Toque na barra e, em seguida, no ponto 21 (não 23 — são apenas dois pips da barra).",
+            "praise": "Você está de volta ao tabuleiro — damas de bar sempre entrar primeiro.",
+            "title": "Digite da barra",
+            "wrong": "São apenas dois pips da barra (ponto 23). Conte quatro pontos de 24 para casa — esse é o ponto 21."
+          },
+          "hit": {
+            "body": "Um único verificador é uma mancha. Pouse nele e vai para o bar. Você rolou um 3 — atingiu a mancha preta no 5 ponto.",
+            "hint": "Toque no seu verificador no ponto 8, em seguida, toque no ponto 5.",
+            "praise": "Bate! Aquele cheque preto está agora no bar.",
+            "title": "Carregar na mancha"
+          }
+        },
+        "subtitle": "Jogo de contato",
+        "title": "A & bater na barra"
+      },
+      "moving_dice": {
+        "steps": {
+          "blocked": {
+            "body": "Duas ou mais damas do oponente bloqueiam um ponto — você não pode pousar lá. Toque na pilha preta bloqueada no 5 pontos.",
+            "hint": "A pilha destacada de duas damas pretas no ponto 5.",
+            "praise": "Certo — está encerrado o ponto (2+). Vazio, seu próprio, ou uma mancha (1) estão abertos.",
+            "title": "Pontos bloqueados"
+          },
+          "doubles": {
+            "body": "Os duplos dão-te quatro jogadas desse número. Você rolou 2-2 — são quatro 2s. Vá do ponto 8 para o ponto 6 quatro vezes.",
+            "hint": "Toque no ponto 8 e depois no ponto 6. Faça isso quatro vezes — uma vez por morrer.",
+            "praise": "Exatamente — duplos significam quatro movimentos com esse número.",
+            "title": "Duplos = quatro movimentos"
+          },
+          "explain": {
+            "body": "Cada turno você joga dois dados e joga os dois números quando você pode. Você pode pousar em pontos vazios, suas próprias damas, ou um adversário solitário (uma mancha).",
+            "title": "Dois números, pontos em aberto"
+          },
+          "two_dice": {
+            "body": "Você rolou 3 e 1. Mova o verificador no ponto 8 três pips (para 5), e no ponto 6 pip um (para 5).",
+            "hint": "Selecione um verificador branco e toque no ponto 5. Faça isso tanto para o ponto 8 quanto para o ponto 6.",
+            "praise": "Boa — ambos os dados usados. Mesmo damas ou duas damas, ambos os números devem ser jogados quando você puder.",
+            "title": "Jogar ambos os dados"
+          }
+        },
+        "subtitle": "Como funciona uma curva",
+        "title": "Movendo com dados"
+      }
+    },
+    "locked": "Completar a lição anterior primeiro",
+    "next_lesson": "Próxima lição",
+    "quiz": {
+      "bar": {
+        "a": "Mova seu verificador mais distante primeiro",
+        "b": "Digite esse verificador antes de mover qualquer outra coisa",
+        "c": "Salta a tua vez.",
+        "prompt": "Enquanto tens um verificador no bar, tens de..."
+      },
+      "bear": {
+        "a": "Sempre que rolares um 6",
+        "b": "Só depois de acertares numa mancha",
+        "c": "Quando todas as 15 damas estão em seu homeboard",
+        "prompt": "Quando é que aguentas?"
+      },
+      "blot": {
+        "a": "Qualquer pilha de três ou mais",
+        "b": "Um único verificador num ponto — pode ser atingido",
+        "c": "Duas ou mais damas sobre um ponto — uma observação feita",
+        "prompt": "O que é uma mancha?"
+      }
+    },
+    "replay": "Repetir",
+    "skip_to_play": "Saltar para Jogar",
+    "step_progress": "Passo{{current}}de{{total}}",
+    "subtitle": "Cinco aulas curtas — então você está pronto",
+    "title": "Aprender a jogar"
+  },
+  "not_found": {
+    "body": "Essa página não faz parte do Backgammon Mastermind. Vá para casa para aprender ou começar um jogo.",
+    "heading": "Fora do tabuleiro",
+    "home_a11y": "Ir para o início",
+    "home_cta": "Voltar ao início",
+    "title": "Não encontrado"
+  },
+  "settings": {
+    "about": "Sobre",
+    "app_name": "Backgammon Mastermind",
+    "arabic": "Árabe",
+    "developer": "Programador",
+    "developer_blurb": "Carrega qualquer posição do tabuleiro para testar o motor. Inicia um jogo normal a partir dessa posição. Não é uma funcionalidade do produto.",
+    "developer_json": "JSON da posição",
+    "developer_load": "Carregar JSON",
+    "developer_open": "Carregar posição",
+    "developer_presets": "Predefinições de teste",
+    "english": "Inglês",
+    "game": "Jogo",
+    "general": "Geral",
+    "github": "GitHub",
+    "language": "Idioma",
+    "link_error_body": "Tente novamente mais tarde.",
+    "link_error_title": "Não foi possível abrir o link",
+    "links": "Links",
+    "more": "Mais",
+    "privacy": "Política de Privacidade",
+    "rate": "Avaliar",
+    "share": "Compartilhar",
+    "support": "Suporte",
+    "support_us": "Apoie-nos",
+    "terms": "Termos de Serviço",
+    "title": "Ajustes",
+    "version": "Versão",
+    "website": "Site"
+  },
+  "welcome": "Bem- vindo ao Backgammon Mastermind"
+}

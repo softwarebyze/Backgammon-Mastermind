@@ -37,7 +37,10 @@ artifacts/qa-videos/
 
 # Fastlane — iOS staging is generated (source: docs/marketing/); local reports; ASC key export
 fastlane/screenshots/**/*.png
-# Play phoneScreenshots PNGs are committed (Track A / #160). Re-stage: pnpm screenshots:prepare
+# English Play phone screenshots remain committed; localized sets are generated from the
+# marketing source and screenshot-localizations.json by pnpm screenshots:prepare.
+fastlane/metadata/android/*/images/phoneScreenshots/*.png
+!fastlane/metadata/android/en-US/images/phoneScreenshots/*.png
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/README.md

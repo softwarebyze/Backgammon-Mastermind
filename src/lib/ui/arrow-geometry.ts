@@ -57,25 +57,9 @@ export function buildArrowhead(
 
 /** Arrowhead sizes for the horseshoe direction overlay. */
 export const HORSESHOE_ARROW = {
-  white: { length: 10, halfWidth: 5.5 },
-  black: { length: 16, halfWidth: 8 },
+  white: { length: 9, halfWidth: 5 },
+  black: { length: 9, halfWidth: 5 },
 } as const;
-
-/** Slightly larger head drawn behind the fill as a dark halo. */
-export function horseshoeHaloArrow(
-  width: number,
-  height: number,
-  player: 'white' | 'black' = 'white',
-): Arrowhead {
-  const base = HORSESHOE_ARROW[player];
-  return buildHorseshoeArrowhead({
-    width,
-    height,
-    player,
-    length: base.length + 3.5,
-    halfWidth: base.halfWidth + 2.5,
-  });
-}
 
 function buildHorseshoeArrowhead({
   width,

@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -16,19 +17,19 @@ export function PostHogErrorFallback({ error, onRetry }: Props) {
 
   return (
     <View style={styles.root} accessibilityRole="alert" testID="posthog-error-fallback">
-      <Text style={styles.title}>Something went wrong</Text>
-      <Text style={styles.body}>Restart the app to continue.</Text>
+      <Text style={styles.title}>{translate('error.heading')}</Text>
+      <Text style={styles.body}>{translate('error.body')}</Text>
       {__DEV__ ? <Text style={styles.dev}>{message}</Text> : null}
       {onRetry
         ? (
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Retry"
+              accessibilityLabel={translate('error.retry')}
               testID="posthog-error-retry"
               onPress={onRetry}
               style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
             >
-              <Text style={styles.buttonLabel}>Retry</Text>
+              <Text style={styles.buttonLabel}>{translate('error.retry')}</Text>
             </Pressable>
           )
         : null}

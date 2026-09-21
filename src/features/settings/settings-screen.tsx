@@ -16,6 +16,7 @@ import {
   openStoreListing,
   shareApp,
 } from '@/lib/app-links';
+import { translate } from '@/lib/i18n';
 import { SETTINGS_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
@@ -36,7 +37,7 @@ export function SettingsScreen() {
       await action();
     }
     catch {
-      Alert.alert('Unable to open link', 'Please try again later.');
+      Alert.alert(translate('settings.link_error_title'), translate('settings.link_error_body'));
     }
   }, []);
 

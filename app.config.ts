@@ -108,7 +108,7 @@ const appPlugins: ExpoConfig['plugins'] = [
     {
       android: {
         compileSdkVersion: 36,
-        targetSdkVersion: 35,
+        targetSdkVersion: 36,
         buildToolsVersion: '36.0.0',
       },
     },
@@ -145,6 +145,25 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: Env.EXPO_PUBLIC_BUNDLE_ID,
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
+      CFBundleLocalizations: [
+        'en',
+        'ar',
+        'de',
+        'el',
+        'es',
+        'fr',
+        'he',
+        'hi',
+        'it',
+        'ja',
+        'ko',
+        'nl',
+        'pl',
+        'pt',
+        'ru',
+        'tr',
+        'zh-Hans',
+      ],
     },
   },
   experiments: {
