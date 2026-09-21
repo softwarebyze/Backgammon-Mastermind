@@ -13,7 +13,7 @@ export const DESKTOP_MAX_BOARD_WIDTH = 1000;
 
 /** Checker diameter caps: 32 keeps phone/tablet pixel-identical; desktop may go to 48. */
 export const CHECKER_CAP = 32;
-export const DESKTOP_CHECKER_CAP = 48;
+const DESKTOP_CHECKER_CAP = 48;
 
 /** Desktop / macOS window — board+chrome sit in a centered stage. */
 export const DESKTOP_MIN_WIDTH = 1024;
