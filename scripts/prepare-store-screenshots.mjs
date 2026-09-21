@@ -44,6 +44,21 @@ const BAND_BACKGROUND = '#1E0C02';
 const HEADLINE_COLOR = '#F3E6C8';
 const SUB_COLOR = '#E8A04A';
 
+// librsvg (used by sharp for SVG text) does not always perform character-level
+// fallback from a generic sans-serif face. Keep script-specific families first
+// so localized headlines cannot silently turn into hexadecimal missing-glyph
+// boxes. The upload workflow installs the Noto families; the remaining names
+// are native macOS fallbacks for local screenshot generation.
+const FONT_FAMILIES = {
+  ar: "'Noto Sans Arabic', 'Geeza Pro', 'Arial Unicode MS', sans-serif",
+  he: "'Noto Sans Hebrew', 'Arial Hebrew', 'Arial Unicode MS', sans-serif",
+  hi: "'Noto Sans Devanagari', 'Kohinoor Devanagari', 'Arial Unicode MS', sans-serif",
+  ja: "'Noto Sans CJK JP', 'Noto Sans JP', 'Hiragino Sans', 'Arial Unicode MS', sans-serif",
+  ko: "'Noto Sans CJK KR', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Arial Unicode MS', sans-serif",
+  zh: "'Noto Sans CJK SC', 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', 'Arial Unicode MS', sans-serif",
+};
+const DEFAULT_FONT_FAMILY = "'Noto Sans', 'Arial Unicode MS', sans-serif";
+
 /** Create a staging directory when it does not exist. */
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
@@ -140,12 +155,14 @@ function localizedBandSvg({ width, height, device, copy, key }) {
   const blockHeight = lines.length * headlineLineHeight + (sub ? subGap + subSize : 0);
   const firstBaseline = Math.round((bandHeight - blockHeight) / 2 + headlineSize * 0.84);
   const direction = copy.direction === 'rtl' ? 'rtl' : 'ltr';
+  const language = copy.appLanguage;
+  const fontFamily = FONT_FAMILIES[language] || DEFAULT_FONT_FAMILY;
   const textAnchor = 'middle';
   const headline = lines.map((line, index) => (
-    `<text x="${width / 2}" y="${firstBaseline + index * headlineLineHeight}" text-anchor="${textAnchor}" direction="${direction}" unicode-bidi="plaintext" font-family="sans-serif" font-weight="800" font-size="${headlineSize}" fill="${HEADLINE_COLOR}">${xmlEscape(line)}</text>`
+    `<text x="${width / 2}" y="${firstBaseline + index * headlineLineHeight}" text-anchor="${textAnchor}" direction="${direction}" unicode-bidi="plaintext" lang="${language}" xml:lang="${language}" font-family="${fontFamily}" font-weight="800" font-size="${headlineSize}" fill="${HEADLINE_COLOR}">${xmlEscape(line)}</text>`
   )).join('');
   const subText = sub
-    ? `<text x="${width / 2}" y="${firstBaseline + lines.length * headlineLineHeight + subGap}" text-anchor="${textAnchor}" direction="${direction}" unicode-bidi="plaintext" font-family="sans-serif" font-weight="600" font-size="${subSize}" fill="${SUB_COLOR}">${xmlEscape(sub)}</text>`
+    ? `<text x="${width / 2}" y="${firstBaseline + lines.length * headlineLineHeight + subGap}" text-anchor="${textAnchor}" direction="${direction}" unicode-bidi="plaintext" lang="${language}" xml:lang="${language}" font-family="${fontFamily}" font-weight="600" font-size="${subSize}" fill="${SUB_COLOR}">${xmlEscape(sub)}</text>`
     : '';
   return Buffer.from(`<svg width="${width}" height="${bandHeight}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="${BAND_BACKGROUND}"/>${headline}${subText}</svg>`);
 }

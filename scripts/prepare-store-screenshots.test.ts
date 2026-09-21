@@ -24,6 +24,21 @@ function pngSize(filePath: string) {
 }
 
 describe('prepare-store-screenshots', () => {
+  it('selects deterministic font fallbacks for every non-Latin screenshot script', () => {
+    const source = readFileSync(
+      join(ROOT, 'scripts/prepare-store-screenshots.mjs'),
+      'utf8',
+    );
+
+    expect(source).toContain("'Noto Sans Arabic'");
+    expect(source).toContain("'Noto Sans Hebrew'");
+    expect(source).toContain("'Noto Sans Devanagari'");
+    expect(source).toContain("'Noto Sans CJK JP'");
+    expect(source).toContain("'Noto Sans CJK KR'");
+    expect(source).toContain("'Noto Sans CJK SC'");
+    expect(source).toContain('xml:lang="${language}"');
+  });
+
   it('stages a 9:16 Play crop of the iPhone 6.9" marketing set', () => {
     const sourceIphone = FRAMES.frames.filter(frame => frame.device === 'iphone').map(frame => frame.dest);
     expect(sourceIphone).toHaveLength(5);

@@ -36,6 +36,11 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
+      - name: 🔤 Install localized screenshot fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends fonts-noto-core fonts-noto-cjk
+
       - name: 📦 Stage screenshots from marketing source of truth
         run: pnpm screenshots:prepare
 
