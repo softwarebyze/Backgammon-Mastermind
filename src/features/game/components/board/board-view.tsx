@@ -3,7 +3,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import {
   boardHitExtraCandidates,
@@ -160,6 +160,15 @@ export function BoardView({
     return getMovableSources(state);
   }, [showLiveHints, showHighlights, showMoveHints, state]);
 
+  // Web hover: any checker the player could pick up, independent of the hint pref.
+  const hoverSources = useMemo(() => {
+    if (Platform.OS !== 'web' || !interactionEnabled || !showHighlights
+      || state.phase !== 'moving' || state.selectedPoint !== null) {
+      return new Set<number>();
+    }
+    return getMovableSources(state);
+  }, [interactionEnabled, showHighlights, state]);
+
   const bearOffLegal = useMemo(
     () => showHighlights
       && state.selectedPoint !== null
@@ -238,6 +247,7 @@ export function BoardView({
         isSelected={selectedPoint === idx}
         isLegalTarget={legalTargets.has(idx) || (emphasisPoints?.has(idx) ?? false)}
         isMovableSource={movableSources.has(idx)}
+        isHoverable={hoverSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
         onPress={() => dispatchFatFingerPress(idx)}
