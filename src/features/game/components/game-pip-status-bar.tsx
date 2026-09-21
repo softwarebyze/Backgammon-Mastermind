@@ -1,7 +1,9 @@
-import type { GameState } from '@/lib/game';
+import type { GameState, Player } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { calculatePipCount } from '@/lib/game/moves';
+import { playerLabel } from '@/lib/game/turn-display';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
@@ -17,14 +19,14 @@ export function GamePipStatusBar({ state }: Props) {
   return (
     <View style={styles.pipRow}>
       <PipCount
-        label={translate('game.review.player_white')}
-        count={state.borneOff.white}
+        player="white"
+        state={state}
         dotColor="#F2EAD3"
         isActive={activePlayer === 'white'}
       />
       <PipCount
-        label={translate('game.review.player_black')}
-        count={state.borneOff.black}
+        player="black"
+        state={state}
         dotColor="#1E1E30"
         isActive={activePlayer === 'black'}
       />
@@ -37,39 +39,51 @@ export function GamePipStatusBar({ state }: Props) {
   );
 }
 
+/**
+ * Pip count is the racing metric players actually read; borne-off only
+ * matters once someone starts bearing off, so it appears then.
+ */
 function PipCount({
-  label,
-  count,
+  player,
+  state,
   dotColor,
   isActive,
 }: {
-  label: string;
-  count: number;
+  player: Player;
+  state: GameState;
   dotColor: string;
   isActive: boolean;
 }) {
+  const label = playerLabel(player);
+  const pips = calculatePipCount(state, player);
+  const off = state.borneOff[player];
   return (
-    <View style={[styles.pipItem, isActive && styles.pipItemActive]}>
+    <View
+      style={[styles.pipItem, isActive && styles.pipItemActive]}
+      accessibilityRole="text"
+      accessibilityLabel={translate('game.status.pips_a11y', { player: label, pips, off })}
+    >
       <View style={[styles.pipDot, { backgroundColor: dotColor }, isActive && styles.pipDotActive]} />
-      <Text style={[styles.pipText, isActive && styles.pipTextActive]} selectable>
+      <Text style={[styles.pipText, isActive && styles.pipTextActive]} numberOfLines={1}>
         {label}
-        :
-        {count}
-        /15
       </Text>
+      <Text style={[styles.pipNumber, isActive && styles.pipTextActive]}>{pips}</Text>
+      {off > 0
+        ? (
+            <Text style={[styles.pipText, isActive && styles.pipTextActive]}>
+              {`· ${off} ${translate('game.status.off_short')}`}
+            </Text>
+          )
+        : null}
     </View>
   );
 }
 
 function getWinnerLabel(state: GameState) {
   if (state.winner === 'white') {
-    return state.mode === 'vs-computer'
-      ? translate('game.status.you_win')
-      : translate('game.status.white_wins');
+    return translate(state.mode === 'vs-computer' ? 'game.status.you_win' : 'game.status.white_wins');
   }
-  return state.mode === 'vs-computer'
-    ? translate('game.status.computer_wins')
-    : translate('game.status.black_wins');
+  return translate(state.mode === 'vs-computer' ? 'game.status.computer_wins' : 'game.status.black_wins');
 }
 
 const styles = StyleSheet.create({
@@ -111,6 +125,12 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
     ...interFont('regular'),
+    fontVariant: ['tabular-nums'],
+  },
+  pipNumber: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 13,
+    ...interFont('semibold'),
     fontVariant: ['tabular-nums'],
   },
   pipTextActive: {

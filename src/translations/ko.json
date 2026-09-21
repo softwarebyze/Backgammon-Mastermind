@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "흑 승리",
       "computer_wins": "컴퓨터 승리",
+      "off_short": "완료",
+      "pips_a11y": "{{player}}: {{pips}} 핍, 15개 중 {{off}}개 완료",
       "white_wins": "🏆 백 승리!",
       "you_win": "🏆 승리했습니다!"
     },

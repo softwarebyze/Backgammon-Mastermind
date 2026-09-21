@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Νίκη των Μαύρων",
       "computer_wins": "Νίκη του υπολογιστή",
+      "off_short": "έξω",
+      "pips_a11y": "{{player}}: {{pips}} πόντοι, {{off}} από 15 έξω",
       "white_wins": "🏆 Νίκη των Λευκών!",
       "you_win": "🏆 Κέρδισες!"
     },

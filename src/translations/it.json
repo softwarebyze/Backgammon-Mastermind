@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Vince il Nero",
       "computer_wins": "Vince il computer",
+      "off_short": "fuori",
+      "pips_a11y": "{{player}}: {{pips}} pip, {{off}} su 15 portate fuori",
       "white_wins": "🏆 Vince il Bianco!",
       "you_win": "🏆 Hai vinto!"
     },

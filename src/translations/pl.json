@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Czarne wygrywają",
       "computer_wins": "Komputer wygrywa",
+      "off_short": "zbite",
+      "pips_a11y": "{{player}}: {{pips}} pipsów, {{off}} z 15 zdjętych",
       "white_wins": "🏆 Białe wygrywają!",
       "you_win": "🏆 Wygrywasz!"
     },

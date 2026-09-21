@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "黒の勝ち",
       "computer_wins": "コンピュータの勝ち",
+      "off_short": "上がり",
+      "pips_a11y": "{{player}}: {{pips}} ピップ、15個中{{off}}個上がり",
       "white_wins": "🏆 白の勝ち！",
       "you_win": "🏆 あなたの勝ち！"
     },
