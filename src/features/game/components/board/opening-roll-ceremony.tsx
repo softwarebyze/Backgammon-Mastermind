@@ -33,12 +33,16 @@ function playerName(player: Player): string {
   return translate(player === 'white' ? 'game.review.player_white' : 'game.review.player_black');
 }
 
+/** Horizontal extent of the board pane; card + scrim stay inside it in landscape. */
+export type PaneRect = { left: number; width: number };
+
 type Props = {
   state: GameState;
   dimensions: BoardDimensions;
   /** Duolingo-style: tap the ceremony (not only the footer button) to roll. */
   onRoll?: () => void;
   canRoll?: boolean;
+  paneRect?: PaneRect;
 };
 
 const DOT_LAYOUTS: Record<number, Array<[number, number]>> = {
@@ -247,7 +251,7 @@ function useOpeningCeremonyStage(state: GameState, onRoll?: () => void) {
  * Opening roll ceremony — dice live inside the callout card, tap-anywhere to roll,
  * then dice fly down past the board into the tray (rendered above the clipped board).
  */
-export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false }: Props) {
+export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false, paneRect }: Props) {
   const { preferences } = useGamePreferences();
   const { stage, revealDice, showing, phase } = useOpeningCeremonyStage(state, onRoll);
 
@@ -264,6 +268,7 @@ export function OpeningRollCeremony({ state, dimensions, onRoll, canRoll = false
       diceStyle={preferences.diceDisplayStyle}
       onRoll={onRoll}
       canRoll={canRoll && stage === 'rolling' && phase === 'opening-roll'}
+      paneRect={paneRect}
     />
   );
 }
@@ -493,6 +498,7 @@ function OpeningStage({
   diceStyle,
   onRoll,
   canRoll,
+  paneRect,
 }: {
   state: GameState;
   dimensions: BoardDimensions;
@@ -501,8 +507,14 @@ function OpeningStage({
   diceStyle: DiceDisplayStyle;
   onRoll?: () => void;
   canRoll: boolean;
+  paneRect?: PaneRect;
 }) {
   const size = Math.min(Math.max(dimensions.checkerSize * 1.7, 52), 64);
+  // Landscape: keep scrim + card over the board pane, never over the chrome rail.
+  const paneStyle = paneRect ? { left: paneRect.left, width: paneRect.width, right: undefined } : null;
+  const cardPaneStyle = paneRect
+    ? { left: paneRect.left + 16, width: paneRect.width - 32, right: undefined }
+    : null;
   const showReveal = (stage === 'reveal' || stage === 'fly') && revealDice;
   const whiteValue = showReveal ? revealDice.white : state.openingRolls.white;
   const blackValue = showReveal ? revealDice.black : state.openingRolls.black;
@@ -524,8 +536,8 @@ function OpeningStage({
 
   const body = (
     <>
-      <Animated.View style={[styles.scrim, scrimStyle]} pointerEvents="none" />
-      <View style={styles.card} pointerEvents="none">
+      <Animated.View style={[styles.scrim, paneStyle, scrimStyle]} pointerEvents="none" />
+      <View style={[styles.card, cardPaneStyle]} pointerEvents="none">
         <Animated.View style={[styles.cardFill, cardStyle]} />
         <Animated.View style={[{ alignItems: 'center', gap: 6, zIndex: 1 }, cardStyle]}>
           <Text style={styles.headline}>{headline}</Text>

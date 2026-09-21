@@ -174,7 +174,15 @@ export function GameScreenLayout({
   onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
-  const { landscape, desktop, chromeWidth, boardPaneWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
+  const {
+    landscape,
+    desktop,
+    insets,
+    chromeWidth,
+    boardPaneWidth,
+    stageMaxWidth,
+    contentInsets,
+  } = useLayoutMetrics();
   const dimensions = useBoardDimensions();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
@@ -250,7 +258,10 @@ export function GameScreenLayout({
         />
       </View>
       <WinConfettiOverlay burstKey={winBurstKey} />
-      {/* Full-screen so the scrim covers board + review (no hard cut at board edge). */}
+      {/*
+        Full-size layer so flying dice can reach the tray. Portrait: scrim covers
+        board + review. Landscape: scrim + card stay inside the board pane.
+      */}
       <View style={styles.ceremonyLayer} pointerEvents="box-none">
         <OpeningRollCeremony
           key={ceremonyKey}
@@ -258,6 +269,11 @@ export function GameScreenLayout({
           state={input.state!}
           dimensions={dimensions}
           canRoll={canOpeningRoll}
+          paneRect={
+            landscape && boardPaneWidth != null
+              ? { left: insets.left, width: boardPaneWidth }
+              : undefined
+          }
           onRoll={() => {
             hapticLight();
             input.handleRoll();
@@ -358,7 +374,9 @@ const styles = StyleSheet.create({
   },
   ceremonyLayer: {
     ...StyleSheet.absoluteFill,
-    zIndex: 40,
+    // Above the landscape chrome rail (50) so the pip bar / banner never paint
+    // over the card and flying dice pass over the rail, not under it.
+    zIndex: 60,
   },
   controlsLayer: {
     width: '100%',
