@@ -27,7 +27,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 🔎 Check whether the tag already has a release
+        id: existing-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api --paginate "repos/${GITHUB_REPOSITORY}/releases?per_page=100" \
+            --jq '.[].tag_name' | grep -Fqx "$GITHUB_REF_NAME"; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 🏃‍♂️Create GitHub release if needed
+        if: steps.existing-release.outputs.exists != 'true'
         uses: ncipollo/release-action@v1
         with:
           generateReleaseNotes: true
