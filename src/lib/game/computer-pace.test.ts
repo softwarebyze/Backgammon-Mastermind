@@ -5,14 +5,13 @@ import {
   computerThinkDelayMs,
   FAST_COMPUTER_CHECKER_MOVE_DURATION_MS,
   FAST_COMPUTER_MOVE_DELAY_MS,
-  FAST_OPENING_CEREMONY_GRACE_MS,
-  OPENING_CEREMONY_GRACE_MS,
+  FAST_OPENING_FIRST_MOVE_GRACE_MS,
+  OPENING_REVEAL_MS,
 } from './computer-pace';
 
 describe('computer pace', () => {
   it('gives the human time to see a normal computer roll', () => {
     expect(computerThinkDelayMs('rolling', false)).toBeGreaterThanOrEqual(1200);
-    expect(computerThinkDelayMs('opening-roll', false)).toBeGreaterThanOrEqual(1200);
   });
 
   it('gives the human a moving beat before the first checker slides', () => {
@@ -31,8 +30,14 @@ describe('computer pace', () => {
     expect(computerMoveDelayMs(3, true)).toBe(FAST_COMPUTER_MOVE_DELAY_MS);
   });
 
-  it('keeps opening-ceremony grace on the computer\'s first move', () => {
-    expect(computerMoveDelayMs(0, false)).toBe(OPENING_CEREMONY_GRACE_MS);
-    expect(computerMoveDelayMs(0, true)).toBe(FAST_OPENING_CEREMONY_GRACE_MS);
+  it('never moves the computer\'s first checker while the opening reveal is on screen', () => {
+    expect(computerMoveDelayMs(0, false)).toBeGreaterThan(OPENING_REVEAL_MS);
+    expect(computerMoveDelayMs(0, true)).toBe(FAST_OPENING_FIRST_MOVE_GRACE_MS);
+    expect(FAST_OPENING_FIRST_MOVE_GRACE_MS).toBeGreaterThan(OPENING_REVEAL_MS);
+  });
+
+  it('rolls the computer\'s opening die quickly so both dice land together', () => {
+    expect(computerThinkDelayMs('opening-roll', false)).toBeLessThan(computerThinkDelayMs('rolling', false));
+    expect(computerThinkDelayMs('opening-roll', false)).toBeLessThan(600);
   });
 });
