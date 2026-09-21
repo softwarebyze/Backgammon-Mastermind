@@ -24,7 +24,7 @@ import { translate } from '@/lib/i18n';
 import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
 import { isLastStepComplete } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
-import { landscapeBoardPaneWidth, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { LANDSCAPE_GAP, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -84,11 +84,8 @@ function LessonScreenBody({
 }) {
   const session = useLessonSession(lesson);
   const posthog = usePostHog();
-  const { insets, landscape, innerWidth, chromeWidth, stageMaxWidth } = useLayoutMetrics();
+  const { insets, landscape, chromeWidth, boardPaneWidth, stageMaxWidth } = useLayoutMetrics();
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
-  const boardPaneWidth = landscape
-    ? landscapeBoardPaneWidth(innerWidth, chromeWidth)
-    : undefined;
   const { onTopLayout, onControlsLayout, onSlotLayout, captionMaxHeight } = usePublishBoardSlot({
     reviewHeight: 0,
     minBoardHeight: landscape ? 0 : MIN_LEARN_BOARD_SLOT_HEIGHT,
@@ -341,7 +338,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     justifyContent: 'center',
-    gap: 8,
+    gap: LANDSCAPE_GAP,
   },
   sidePanel: {
     flexGrow: 0,

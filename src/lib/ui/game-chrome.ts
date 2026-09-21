@@ -19,6 +19,9 @@ export const SETTINGS_MAX_WIDTH = 640;
 /** Minimum width for dice / coach / review when they sit beside the board. */
 const LANDSCAPE_CHROME_MIN = 220;
 
+/** Gap between the board pane and the chrome rail in landscape. */
+export const LANDSCAPE_GAP = 8;
+
 /**
  * Desktop chrome rail cap. Phone landscape may use up to GAME_CHROME_MAX_WIDTH
  * (36% of 844 ≈ 304). Uncapped 36% of 1920 is 691px of empty rail.
@@ -57,14 +60,10 @@ export function gameStageMaxWidth(screenWidth: number): number | undefined {
   if (screenWidth < DESKTOP_MIN_WIDTH) {
     return undefined;
   }
-  return MAX_BOARD_WIDTH + 16 + landscapeChromeColumnWidth(screenWidth);
+  return MAX_BOARD_WIDTH + LANDSCAPE_GAP + landscapeChromeColumnWidth(screenWidth);
 }
 
 /** Explicit board pane in landscape so flex min-width cannot overflow the chrome rail. */
-export function landscapeBoardPaneWidth(
-  innerWidth: number,
-  chromeWidth: number,
-  gap = 8,
-): number {
-  return Math.min(MAX_BOARD_WIDTH, Math.max(200, innerWidth - chromeWidth - gap));
+export function landscapeBoardPaneWidth(innerWidth: number, chromeWidth: number): number {
+  return Math.min(MAX_BOARD_WIDTH, Math.max(200, innerWidth - chromeWidth - LANDSCAPE_GAP));
 }
