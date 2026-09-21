@@ -93,6 +93,21 @@
       "computer_wins": "המחשב ניצח",
       "white_wins": "🏆 הלבן ניצח!",
       "you_win": "🏆 ניצחת!"
+    },
+    "turn": {
+      "black_is_moving": "השחור מזיז…",
+      "black_is_rolling": "השחור מטיל…",
+      "black_turn": "תור השחור",
+      "cant_enter": "אי אפשר להיכנס מהבר עם {{die1}} ו־{{die2}} — סיום התור",
+      "computer_turn": "תור המחשב",
+      "enter_from_bar": "יש להיכנס מהבר לפני הזזת כלים אחרים",
+      "game_over": "המשחק הסתיים",
+      "move_checkers": "הזז את כלי ה{{color}} שלך",
+      "no_legal_moves": "אין מהלכים חוקיים עם {{die1}} ו־{{die2}} — סיום התור",
+      "opening_roll": "הטלת פתיחה",
+      "roll_dice": "הטל קוביות — אתה משחק ב{{color}}",
+      "white_turn": "תור הלבן",
+      "your_turn": "תורך"
     }
   },
   "home": {

@@ -93,6 +93,21 @@
       "computer_wins": "Bilgisayar Kazandı",
       "white_wins": "🏆 Beyaz Kazandı!",
       "you_win": "🏆 Kazandın!"
+    },
+    "turn": {
+      "black_is_moving": "Siyah oynuyor…",
+      "black_is_rolling": "Siyah zar atıyor…",
+      "black_turn": "Siyahın sırası",
+      "cant_enter": "{{die1}} ve {{die2}} ile bardan giremezsiniz — sıranızı bitirin",
+      "computer_turn": "Bilgisayarın sırası",
+      "enter_from_bar": "Diğer pulları oynatmadan önce bardan girin",
+      "game_over": "Oyun bitti",
+      "move_checkers": "{{color}} pullarınızı oynatın",
+      "no_legal_moves": "{{die1}} ve {{die2}} ile geçerli hamle yok — sıranızı bitirin",
+      "opening_roll": "Açılış zarı",
+      "roll_dice": "Zarları atın — {{color}} ile oynuyorsunuz",
+      "white_turn": "Beyazın sırası",
+      "your_turn": "Sıra sizde"
     }
   },
   "home": {

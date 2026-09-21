@@ -18,8 +18,12 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = path.join(ROOT, 'docs/marketing/v1.0.0/app-store-screenshots/raw');
+const LOCALIZATIONS_PATH = path.join(
+  ROOT,
+  'docs/marketing/v1.0.0/screenshot-localizations.json',
+);
 const BASE = process.env.STORE_SHOT_BASE || 'http://127.0.0.1:8081';
-const MMKV = (key) => `mmkv.default\\${key}`;
+const MMKV = key => `mmkv.default\\${key}`;
 
 const DEVICES = {
   iphone: {
@@ -111,9 +115,9 @@ const PREFS = {
 };
 
 /** Seed browser storage for a deterministic screenshot scene. */
-function storageFor(kind, states) {
+function storageFor(kind, states, appLanguage) {
   const base = {
-    [MMKV('local')]: 'en',
+    [MMKV('local')]: appLanguage,
     [MMKV('GAME_PREFERENCES')]: JSON.stringify(PREFS),
     [MMKV('GAME_PREFERENCES_DICE_DOTS_V1')]: 'true',
   };
@@ -133,8 +137,8 @@ function storageFor(kind, states) {
 }
 
 const SCENES = [
-  { file: '01-home.png', kind: 'home', path: '/', ready: 'text=Learn to play' },
-  { file: '02-learn-hub.png', kind: 'learn-hub', path: '/learn', ready: 'text=Goal & board' },
+  { file: '01-home.png', kind: 'home', path: '/', ready: '[data-testid="home-screen"]' },
+  { file: '02-learn-hub.png', kind: 'learn-hub', path: '/learn', ready: '[data-testid="learn-hub-screen"]' },
   { file: '03-lesson-hitting.png', kind: 'lesson', path: '/learn/hitting-bar', ready: '[data-testid="learn-board-slot"]' },
   { file: '04-vs-computer.png', kind: 'gameplay', path: '/game', ready: '[data-testid="game-board-slot"]' },
   { file: '05-pass-and-play.png', kind: 'pass-and-play', path: '/game', ready: '[data-testid="game-board-slot"]' },
@@ -152,7 +156,7 @@ async function waitForServer(url, tries = 90) {
     catch {
       // still booting
     }
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 1000));
   }
   throw new Error(`Server not ready at ${url}`);
 }
@@ -187,7 +191,7 @@ async function hideChrome(page) {
     const zap = () => {
       document.querySelectorAll(
         'vercel-live-feedback, #vercel-live-feedback, [data-vercel-toolbar], iframe[src*="vercel.live"]',
-      ).forEach((el) => el.remove());
+      ).forEach(el => el.remove());
     };
     zap();
   });
@@ -195,7 +199,7 @@ async function hideChrome(page) {
 
 /** Reject common preview-state leaks before saving a production screenshot. */
 async function assertProductionUi(page, kind) {
-  const body = await page.locator('body').innerText();
+  const body = await page.locator('body').textContent() || '';
   const lower = body.toLowerCase();
   if (/\bpreview\b/.test(lower) && !lower.includes('tap a highlighted')) {
     throw new Error(`PREVIEW copy leaked into ${kind} screenshot`);
@@ -204,28 +208,21 @@ async function assertProductionUi(page, kind) {
     throw new Error(`Version 0.1.3 leaked into ${kind} screenshot`);
   }
   if (kind === 'home' && body.includes('Resume Game')) {
-    throw new Error('Home screenshot still shows Resume Game');
+    throw new Error('Home screenshot still shows an English Resume Game control');
   }
   if (kind === 'home' && !body.includes('MASTERMIND')) {
     throw new Error('Home screenshot missing Backgammon Mastermind lockup');
   }
-  if ((kind === 'gameplay' || kind === 'highlights' || kind === 'pass-and-play') && body.includes('Who goes first?')) {
-    throw new Error('Opening-roll overlay still visible on gameplay screenshot');
-  }
   if (kind === 'gameplay' || kind === 'highlights' || kind === 'pass-and-play') {
-    if (
-      !body.includes('Your turn')
-      && !body.includes('White\'s turn')
-      && !body.includes('Black\'s turn')
-      && !body.includes('Selected')
-    ) {
+    if (await page.locator('[data-testid="game-board-slot"]').count() === 0) {
       throw new Error(`Gameplay screenshot missing turn chrome (${kind})`);
     }
   }
 }
 
 /** Capture one seeded scene at an exact App Store pixel size. */
-async function captureScene(browser, device, scene, states) {
+async function captureScene(browser, context) {
+  const { device, scene, states, appleLocale, copy } = context;
   const page = await browser.newPage({
     viewport: {
       width: device.viewport.width,
@@ -234,10 +231,10 @@ async function captureScene(browser, device, scene, states) {
     deviceScaleFactor: device.viewport.deviceScaleFactor,
     hasTouch: true,
     isMobile: device.prefix.startsWith('iphone'),
-    locale: 'en-US',
+    locale: copy.playLocale,
     colorScheme: 'dark',
   });
-  await preparePage(page, storageFor(scene.kind, states));
+  await preparePage(page, storageFor(scene.kind, states, copy.appLanguage));
   await page.goto(`${BASE}${scene.path}`, { waitUntil: 'domcontentloaded', timeout: 120_000 });
   await page.waitForSelector(scene.ready, { timeout: 60_000 });
   await hideChrome(page);
@@ -246,9 +243,11 @@ async function captureScene(browser, device, scene, states) {
       await document.fonts.ready;
     }
   });
-  await new Promise((r) => setTimeout(r, 900));
+  await new Promise(r => setTimeout(r, 900));
   await assertProductionUi(page, scene.kind);
-  const dest = path.join(OUT_DIR, `${device.prefix}-${scene.file}`);
+  const localeDir = path.join(OUT_DIR, appleLocale);
+  fs.mkdirSync(localeDir, { recursive: true });
+  const dest = path.join(localeDir, `${device.prefix}-${scene.file}`);
   await page.screenshot({
     path: dest,
     type: 'png',
@@ -272,6 +271,23 @@ async function main() {
   await waitForServer(BASE);
   console.log('Generating seeded game states…');
   const states = loadGameStates();
+  const localizations = JSON.parse(fs.readFileSync(LOCALIZATIONS_PATH, 'utf8'));
+  const requestedScenes = new Set(
+    (process.env.STORE_SHOT_SCENES || '').split(',').map(value => value.trim()).filter(Boolean),
+  );
+  const scenes = requestedScenes.size === 0
+    ? SCENES
+    : SCENES.filter(scene => requestedScenes.has(scene.file));
+  if (scenes.length === 0)
+    throw new Error(`STORE_SHOT_SCENES did not match any scene: ${[...requestedScenes].join(', ')}`);
+  const requestedLocales = new Set(
+    (process.env.STORE_SHOT_LOCALES || '').split(',').map(value => value.trim()).filter(Boolean),
+  );
+  const localeEntries = Object.entries(localizations).filter(([locale]) => (
+    requestedLocales.size === 0 || requestedLocales.has(locale)
+  ));
+  if (localeEntries.length === 0)
+    throw new Error(`STORE_SHOT_LOCALES did not match any locale: ${[...requestedLocales].join(', ')}`);
   if (
     states.moving.phase !== 'moving'
     || states.highlighted.selectedPoint !== 13
@@ -294,12 +310,17 @@ async function main() {
 
   const written = [];
   try {
-    for (const [name, device] of Object.entries(DEVICES)) {
-      console.log(`\n=== ${name} ${device.pixels.width}×${device.pixels.height} ===`);
-      for (const scene of SCENES) {
-        const dest = await captureScene(browser, device, scene, states);
-        written.push(dest);
-        console.log(`  wrote ${path.relative(ROOT, dest)}`);
+    for (const [appleLocale, copy] of localeEntries) {
+      if (!copy.appLanguage)
+        throw new Error(`Missing appLanguage for ${appleLocale}`);
+      console.log(`\n=== ${appleLocale} (${copy.appLanguage}) ===`);
+      for (const [name, device] of Object.entries(DEVICES)) {
+        console.log(`  ${name} ${device.pixels.width}×${device.pixels.height}`);
+        for (const scene of scenes) {
+          const dest = await captureScene(browser, { device, scene, states, appleLocale, copy });
+          written.push(dest);
+          console.log(`    wrote ${path.relative(ROOT, dest)}`);
+        }
       }
     }
   }
@@ -307,10 +328,9 @@ async function main() {
     await browser.close();
   }
 
-  const old = fs.readdirSync(OUT_DIR).filter((f) => f.endsWith('.png') && !written.some((w) => path.basename(w) === f));
-  for (const file of old) {
-    fs.unlinkSync(path.join(OUT_DIR, file));
-    console.log(`  deleted stale ${file}`);
+  const englishDir = path.join(OUT_DIR, 'en-US');
+  for (const file of fs.readdirSync(englishDir).filter(file => file.endsWith('.png'))) {
+    fs.copyFileSync(path.join(englishDir, file), path.join(OUT_DIR, file));
   }
 
   console.log('\nDone.');

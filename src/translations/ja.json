@@ -93,6 +93,21 @@
       "computer_wins": "コンピュータの勝ち",
       "white_wins": "🏆 白の勝ち！",
       "you_win": "🏆 あなたの勝ち！"
+    },
+    "turn": {
+      "black_is_moving": "黒が移動中…",
+      "black_is_rolling": "黒がサイコロを振っています…",
+      "black_turn": "黒の番",
+      "cant_enter": "{{die1}}と{{die2}}ではバーから入れません — 手番を終了してください",
+      "computer_turn": "コンピュータの番",
+      "enter_from_bar": "他の駒を動かす前にバーから入れてください",
+      "game_over": "ゲーム終了",
+      "move_checkers": "{{color}}の駒を動かしてください",
+      "no_legal_moves": "{{die1}}と{{die2}}で有効な手はありません — 手番を終了してください",
+      "opening_roll": "開始ロール",
+      "roll_dice": "サイコロを振る — {{color}}でプレイ",
+      "white_turn": "白の番",
+      "your_turn": "あなたの番"
     }
   },
   "home": {

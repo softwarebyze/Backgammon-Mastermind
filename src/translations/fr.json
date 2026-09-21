@@ -93,6 +93,21 @@
       "computer_wins": "L'ordinateur gagne",
       "white_wins": "🏆 Les Blancs gagnent !",
       "you_win": "🏆 Vous gagnez !"
+    },
+    "turn": {
+      "black_is_moving": "Les noirs jouent…",
+      "black_is_rolling": "Les noirs lancent…",
+      "black_turn": "Au tour des noirs",
+      "cant_enter": "Impossible de rentrer avec {{die1}} et {{die2}} — terminez votre tour",
+      "computer_turn": "Au tour de l’ordinateur",
+      "enter_from_bar": "Rentrez depuis la barre avant de déplacer d’autres pions",
+      "game_over": "Partie terminée",
+      "move_checkers": "Déplacez vos pions {{color}}",
+      "no_legal_moves": "Aucun coup légal avec {{die1}} et {{die2}} — terminez votre tour",
+      "opening_roll": "Jet d’ouverture",
+      "roll_dice": "Lancez les dés — vous jouez les {{color}}",
+      "white_turn": "Au tour des blancs",
+      "your_turn": "À vous de jouer"
     }
   },
   "home": {

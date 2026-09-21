@@ -63,6 +63,7 @@ export function LearnHubScreen() {
     <>
       <FocusAwareStatusBar />
       <ScrollView
+        testID="learn-hub-screen"
         style={styles.scroll}
         contentContainerStyle={[styles.content, landscape ? styles.contentLandscape : null]}
         bounces={false}

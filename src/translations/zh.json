@@ -93,6 +93,21 @@
       "computer_wins": "电脑获胜",
       "white_wins": "🏆 白方获胜！",
       "you_win": "🏆 你赢了！"
+    },
+    "turn": {
+      "black_is_moving": "黑方正在走棋…",
+      "black_is_rolling": "黑方正在掷骰子…",
+      "black_turn": "黑方回合",
+      "cant_enter": "掷出 {{die1}} 和 {{die2}} 无法从中间条入场 — 请结束回合",
+      "computer_turn": "电脑回合",
+      "enter_from_bar": "移动其他棋子前，请先从中间条入场",
+      "game_over": "游戏结束",
+      "move_checkers": "移动你的{{color}}棋子",
+      "no_legal_moves": "掷出 {{die1}} 和 {{die2}} 时无合法走法 — 请结束回合",
+      "opening_roll": "开局掷骰",
+      "roll_dice": "掷骰子 — 你执{{color}}",
+      "white_turn": "白方回合",
+      "your_turn": "你的回合"
     }
   },
   "home": {

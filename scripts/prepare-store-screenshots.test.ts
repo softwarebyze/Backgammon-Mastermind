@@ -3,10 +3,13 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { join } from 'node:path';
 
 const ROOT = process.cwd();
-const SOURCE = join(ROOT, 'docs/marketing/v1.0.0/app-store-screenshots');
+const RAW_SOURCE = join(ROOT, 'docs/marketing/v1.0.0/app-store-screenshots/raw');
+const FRAMES = JSON.parse(
+  readFileSync(join(ROOT, 'docs/marketing/v1.0.0/screenshot-frames.json'), 'utf8'),
+) as { frames: Array<{ device: string; source: string; dest: string }> };
 const LOCALIZATIONS = JSON.parse(
   readFileSync(join(ROOT, 'docs/marketing/v1.0.0/screenshot-localizations.json'), 'utf8'),
-) as Record<string, { playLocale: string }>;
+) as Record<string, { appLanguage: string; playLocale: string }>;
 const IOS_ROOT = join(ROOT, 'fastlane/screenshots');
 const PLAY_ROOT = join(ROOT, 'fastlane/metadata/android');
 const PLAY_OUT = join(
@@ -22,10 +25,15 @@ function pngSize(filePath: string) {
 
 describe('prepare-store-screenshots', () => {
   it('stages a 9:16 Play crop of the iPhone 6.9" marketing set', () => {
-    const sourceIphone = readdirSync(SOURCE).filter(name =>
-      name.startsWith('iphone-69-') && name.endsWith('.png'),
-    );
+    const sourceIphone = FRAMES.frames.filter(frame => frame.device === 'iphone').map(frame => frame.dest);
     expect(sourceIphone).toHaveLength(5);
+
+    for (const [appleLocale, { appLanguage }] of Object.entries(LOCALIZATIONS)) {
+      expect(appLanguage).toBeTruthy();
+      for (const frame of FRAMES.frames) {
+        expect(existsSync(join(RAW_SOURCE, appleLocale, frame.source))).toBe(true);
+      }
+    }
 
     const staleIos = join(IOS_ROOT, 'zz-stale');
     const stalePlay = join(PLAY_ROOT, 'zz-ZZ');
@@ -71,5 +79,11 @@ describe('prepare-store-screenshots', () => {
       expect([...shortDescription].length).toBeLessThanOrEqual(80);
       expect([...fullDescription].length).toBeLessThanOrEqual(4000);
     }
+
+    expect(
+      readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-05-home.png')).equals(
+        readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-05-home.png')),
+      ),
+    ).toBe(false);
   });
 });

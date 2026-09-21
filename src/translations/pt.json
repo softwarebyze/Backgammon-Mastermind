@@ -93,6 +93,21 @@
       "computer_wins": "O computador venceu",
       "white_wins": "🏆 As Brancas venceram!",
       "you_win": "🏆 Você venceu!"
+    },
+    "turn": {
+      "black_is_moving": "As pretas estão a mover…",
+      "black_is_rolling": "As pretas estão a lançar…",
+      "black_turn": "Vez das pretas",
+      "cant_enter": "Não pode entrar da barra com {{die1}} e {{die2}} — termine a vez",
+      "computer_turn": "Vez do computador",
+      "enter_from_bar": "Entre da barra antes de mover outras peças",
+      "game_over": "Fim do jogo",
+      "move_checkers": "Mova as suas peças {{color}}",
+      "no_legal_moves": "Sem jogadas válidas com {{die1}} e {{die2}} — termine a vez",
+      "opening_roll": "Lançamento inicial",
+      "roll_dice": "Lance os dados — joga com {{color}}",
+      "white_turn": "Vez das brancas",
+      "your_turn": "A sua vez"
     }
   },
   "home": {

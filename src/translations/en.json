@@ -93,6 +93,21 @@
       "computer_wins": "Computer Wins",
       "white_wins": "🏆 White Wins!",
       "you_win": "🏆 You Win!"
+    },
+    "turn": {
+      "black_is_moving": "Black is moving…",
+      "black_is_rolling": "Black is rolling…",
+      "black_turn": "Black's turn",
+      "cant_enter": "Can't enter from the bar with {{die1}} and {{die2}} — end your turn",
+      "computer_turn": "Computer's turn",
+      "enter_from_bar": "Enter from the bar before moving other checkers",
+      "game_over": "Game over",
+      "move_checkers": "Move your {{color}} checkers",
+      "no_legal_moves": "No legal moves with {{die1}} and {{die2}} — end your turn",
+      "opening_roll": "Opening roll",
+      "roll_dice": "Roll dice — you play {{color}}",
+      "white_turn": "White's turn",
+      "your_turn": "Your turn"
     }
   },
   "home": {

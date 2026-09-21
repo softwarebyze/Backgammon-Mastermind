@@ -144,7 +144,7 @@ describe('screenshot localizations', () => {
   it('provides store copy for every 1.0.2 App Store locale', () => {
     const copy = JSON.parse(readFileSync(LOCALIZATIONS_PATH, 'utf8')) as Record<
       string,
-      { playLocale: string; learn: string[]; pass: string[]; passSub: string; computer: string[]; lessons: string[] }
+      { appLanguage: string; playLocale: string; learn: string[]; pass: string[]; passSub: string; computer: string[]; lessons: string[] }
     >;
     const storeLocales = Object.keys(
       (JSON.parse(readFileSync(join(ROOT, 'store.config.json'), 'utf8')) as {
@@ -153,6 +153,7 @@ describe('screenshot localizations', () => {
     );
     expect(Object.keys(copy).sort()).toEqual(storeLocales.sort());
     for (const locale of Object.values(copy)) {
+      expect(locale.appLanguage).toBeTruthy();
       expect(locale.playLocale).toBeTruthy();
       expect(locale.learn.join(' ')).toBeTruthy();
       expect(locale.pass.join(' ')).toBeTruthy();

@@ -93,6 +93,21 @@
       "computer_wins": "Vince il computer",
       "white_wins": "🏆 Vince il Bianco!",
       "you_win": "🏆 Hai vinto!"
+    },
+    "turn": {
+      "black_is_moving": "Il nero muove…",
+      "black_is_rolling": "Il nero tira…",
+      "black_turn": "Turno del nero",
+      "cant_enter": "Non puoi entrare dalla barra con {{die1}} e {{die2}} — termina il turno",
+      "computer_turn": "Turno del computer",
+      "enter_from_bar": "Entra dalla barra prima di muovere le altre pedine",
+      "game_over": "Partita terminata",
+      "move_checkers": "Muovi le tue pedine {{color}}",
+      "no_legal_moves": "Nessuna mossa valida con {{die1}} e {{die2}} — termina il turno",
+      "opening_roll": "Tiro iniziale",
+      "roll_dice": "Tira i dadi — giochi con il {{color}}",
+      "white_turn": "Turno del bianco",
+      "your_turn": "Il tuo turno"
     }
   },
   "home": {

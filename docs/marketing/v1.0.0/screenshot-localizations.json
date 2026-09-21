@@ -1,5 +1,6 @@
 {
   "en-US": {
+    "appLanguage": "en",
     "playLocale": "en-US",
     "direction": "ltr",
     "learn": ["Learn to play", "backgammon"],
@@ -9,6 +10,7 @@
     "lessons": ["Five interactive lessons"]
   },
   "ar-SA": {
+    "appLanguage": "ar",
     "playLocale": "ar",
     "direction": "rtl",
     "learn": ["تعلّم لعب الطاولة"],
@@ -18,6 +20,7 @@
     "lessons": ["خمسة دروس تفاعلية"]
   },
   "de-DE": {
+    "appLanguage": "de",
     "playLocale": "de-DE",
     "direction": "ltr",
     "learn": ["Backgammon", "spielen lernen"],
@@ -27,6 +30,7 @@
     "lessons": ["Fünf interaktive Lektionen"]
   },
   "el": {
+    "appLanguage": "el",
     "playLocale": "el-GR",
     "direction": "ltr",
     "learn": ["Μάθε να παίζεις τάβλι"],
@@ -36,6 +40,7 @@
     "lessons": ["Πέντε διαδραστικά μαθήματα"]
   },
   "es-ES": {
+    "appLanguage": "es",
     "playLocale": "es-ES",
     "direction": "ltr",
     "learn": ["Aprende a jugar", "al backgammon"],
@@ -45,6 +50,7 @@
     "lessons": ["Cinco lecciones interactivas"]
   },
   "fr-FR": {
+    "appLanguage": "fr",
     "playLocale": "fr-FR",
     "direction": "ltr",
     "learn": ["Apprenez à jouer", "au backgammon"],
@@ -54,6 +60,7 @@
     "lessons": ["Cinq leçons interactives"]
   },
   "he": {
+    "appLanguage": "he",
     "playLocale": "he-IL",
     "direction": "rtl",
     "learn": ["ללמוד לשחק שש־בש"],
@@ -63,6 +70,7 @@
     "lessons": ["חמישה שיעורים אינטראקטיביים"]
   },
   "hi": {
+    "appLanguage": "hi",
     "playLocale": "hi-IN",
     "direction": "ltr",
     "learn": ["बैकगैमन खेलना सीखें"],
@@ -72,6 +80,7 @@
     "lessons": ["पाँच इंटरैक्टिव पाठ"]
   },
   "it": {
+    "appLanguage": "it",
     "playLocale": "it-IT",
     "direction": "ltr",
     "learn": ["Impara a giocare", "a backgammon"],
@@ -81,6 +90,7 @@
     "lessons": ["Cinque lezioni interattive"]
   },
   "ja": {
+    "appLanguage": "ja",
     "playLocale": "ja-JP",
     "direction": "ltr",
     "learn": ["バックギャモンを学ぼう"],
@@ -90,6 +100,7 @@
     "lessons": ["5つのインタラクティブレッスン"]
   },
   "ko": {
+    "appLanguage": "ko",
     "playLocale": "ko-KR",
     "direction": "ltr",
     "learn": ["백개먼을 배워 보세요"],
@@ -99,6 +110,7 @@
     "lessons": ["다섯 개의 대화형 수업"]
   },
   "nl-NL": {
+    "appLanguage": "nl",
     "playLocale": "nl-NL",
     "direction": "ltr",
     "learn": ["Leer backgammon spelen"],
@@ -108,6 +120,7 @@
     "lessons": ["Vijf interactieve lessen"]
   },
   "pl": {
+    "appLanguage": "pl",
     "playLocale": "pl-PL",
     "direction": "ltr",
     "learn": ["Naucz się grać", "w backgammona"],
@@ -117,6 +130,7 @@
     "lessons": ["Pięć interaktywnych lekcji"]
   },
   "pt-PT": {
+    "appLanguage": "pt",
     "playLocale": "pt-PT",
     "direction": "ltr",
     "learn": ["Aprenda a jogar gamão"],
@@ -126,6 +140,7 @@
     "lessons": ["Cinco lições interativas"]
   },
   "ru": {
+    "appLanguage": "ru",
     "playLocale": "ru-RU",
     "direction": "ltr",
     "learn": ["Научитесь играть", "в нарды"],
@@ -135,6 +150,7 @@
     "lessons": ["Пять интерактивных уроков"]
   },
   "tr": {
+    "appLanguage": "tr",
     "playLocale": "tr-TR",
     "direction": "ltr",
     "learn": ["Tavla oynamayı öğren"],
@@ -144,6 +160,7 @@
     "lessons": ["Beş etkileşimli ders"]
   },
   "zh-Hans": {
+    "appLanguage": "zh",
     "playLocale": "zh-CN",
     "direction": "ltr",
     "learn": ["学习双陆棋"],

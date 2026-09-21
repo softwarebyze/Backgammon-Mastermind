@@ -93,6 +93,21 @@
       "computer_wins": "Computer wint",
       "white_wins": "🏆 Wit wint!",
       "you_win": "🏆 Jij wint!"
+    },
+    "turn": {
+      "black_is_moving": "Zwart zet…",
+      "black_is_rolling": "Zwart werpt…",
+      "black_turn": "Zwart is aan de beurt",
+      "cant_enter": "Je kunt niet binnenkomen met {{die1}} en {{die2}} — beëindig je beurt",
+      "computer_turn": "De computer is aan de beurt",
+      "enter_from_bar": "Kom vanaf de balk binnen voordat je andere stenen verplaatst",
+      "game_over": "Spel afgelopen",
+      "move_checkers": "Verplaats je {{color}} stenen",
+      "no_legal_moves": "Geen geldige zetten met {{die1}} en {{die2}} — beëindig je beurt",
+      "opening_roll": "Openingsworp",
+      "roll_dice": "Gooi de dobbelstenen — je speelt {{color}}",
+      "white_turn": "Wit is aan de beurt",
+      "your_turn": "Jij bent aan de beurt"
     }
   },
   "home": {

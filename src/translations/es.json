@@ -93,6 +93,21 @@
       "computer_wins": "Gana el ordenador",
       "white_wins": "🏆 ¡Ganan las blancas!",
       "you_win": "🏆 ¡Has ganado!"
+    },
+    "turn": {
+      "black_is_moving": "Las negras mueven…",
+      "black_is_rolling": "Las negras tiran…",
+      "black_turn": "Turno de las negras",
+      "cant_enter": "No puedes entrar desde la barra con {{die1}} y {{die2}} — termina tu turno",
+      "computer_turn": "Turno del ordenador",
+      "enter_from_bar": "Entra desde la barra antes de mover otras fichas",
+      "game_over": "Fin de la partida",
+      "move_checkers": "Mueve tus fichas {{color}}",
+      "no_legal_moves": "No hay movimientos legales con {{die1}} y {{die2}} — termina tu turno",
+      "opening_roll": "Tirada inicial",
+      "roll_dice": "Tira los dados — juegas con {{color}}",
+      "white_turn": "Turno de las blancas",
+      "your_turn": "Tu turno"
     }
   },
   "home": {

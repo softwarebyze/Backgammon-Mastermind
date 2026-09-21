@@ -93,6 +93,21 @@
       "computer_wins": "컴퓨터 승리",
       "white_wins": "🏆 백 승리!",
       "you_win": "🏆 승리했습니다!"
+    },
+    "turn": {
+      "black_is_moving": "검정이 이동 중…",
+      "black_is_rolling": "검정이 주사위를 굴리는 중…",
+      "black_turn": "검정 차례",
+      "cant_enter": "{{die1}}와 {{die2}}로 바에서 들어올 수 없습니다 — 차례를 마치세요",
+      "computer_turn": "컴퓨터 차례",
+      "enter_from_bar": "다른 말을 움직이기 전에 바에서 들어오세요",
+      "game_over": "게임 종료",
+      "move_checkers": "{{color}} 말을 움직이세요",
+      "no_legal_moves": "{{die1}}와 {{die2}}로 가능한 수가 없습니다 — 차례를 마치세요",
+      "opening_roll": "시작 주사위",
+      "roll_dice": "주사위를 굴리세요 — {{color}}으로 플레이",
+      "white_turn": "흰색 차례",
+      "your_turn": "내 차례"
     }
   },
   "home": {

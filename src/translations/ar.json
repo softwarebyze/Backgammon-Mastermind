@@ -93,6 +93,21 @@
       "computer_wins": "فاز الكمبيوتر",
       "white_wins": "🏆 فاز الأبيض!",
       "you_win": "🏆 لقد فزت!"
+    },
+    "turn": {
+      "black_is_moving": "الأسود يتحرك…",
+      "black_is_rolling": "الأسود يرمي…",
+      "black_turn": "دور الأسود",
+      "cant_enter": "لا يمكن الدخول من الحاجز بـ {{die1}} و{{die2}} — أنهِ دورك",
+      "computer_turn": "دور الكمبيوتر",
+      "enter_from_bar": "أدخل من الحاجز قبل تحريك الأحجار الأخرى",
+      "game_over": "انتهت اللعبة",
+      "move_checkers": "حرّك أحجار {{color}}",
+      "no_legal_moves": "لا حركات قانونية بـ {{die1}} و{{die2}} — أنهِ دورك",
+      "opening_roll": "رمية الافتتاح",
+      "roll_dice": "ارمِ النرد — أنت تلعب بـ {{color}}",
+      "white_turn": "دور الأبيض",
+      "your_turn": "دورك"
     }
   },
   "home": {

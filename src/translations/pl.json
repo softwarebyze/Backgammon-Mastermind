@@ -93,6 +93,21 @@
       "computer_wins": "Komputer wygrywa",
       "white_wins": "🏆 Białe wygrywają!",
       "you_win": "🏆 Wygrywasz!"
+    },
+    "turn": {
+      "black_is_moving": "Czarne wykonują ruch…",
+      "black_is_rolling": "Czarne rzucają…",
+      "black_turn": "Ruch czarnych",
+      "cant_enter": "Nie możesz wejść z bandy przy {{die1}} i {{die2}} — zakończ turę",
+      "computer_turn": "Ruch komputera",
+      "enter_from_bar": "Wejdź z bandy przed ruchem innymi pionkami",
+      "game_over": "Koniec gry",
+      "move_checkers": "Przesuń swoje {{color}} pionki",
+      "no_legal_moves": "Brak dozwolonych ruchów przy {{die1}} i {{die2}} — zakończ turę",
+      "opening_roll": "Rzut otwierający",
+      "roll_dice": "Rzuć kośćmi — grasz kolorem {{color}}",
+      "white_turn": "Ruch białych",
+      "your_turn": "Twój ruch"
     }
   },
   "home": {

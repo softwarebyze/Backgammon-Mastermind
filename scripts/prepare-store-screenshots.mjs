@@ -3,14 +3,15 @@ import { Buffer } from 'node:buffer';
 /**
  * Stage store screenshots into Fastlane folder layouts from the marketing source of truth.
  *
- * Source: docs/marketing/v1.0.0/app-store-screenshots/ (composed PNGs, not raw/)
+ * Source: docs/marketing/v1.0.0/app-store-screenshots/raw/<App Store locale>/
  *   iphone-69-*.png  1320×2868 → APP_IPHONE_67 (iOS, copied as-is)
  *   ipad-13-*.png    2064×2752 → iPad Pro 13" slot (iOS only)
  * Play phone: 9:16 crop of the iPhone set → 1080×1920 (Play long-side ≤ 2× short-side)
  * iOS:    fastlane/screenshots/<App Store locale>/
  * Play:   fastlane/metadata/android/<Play locale>/images/phoneScreenshots/
  *
- * Localized marketing bands are rendered from screenshot-localizations.json.
+ * Both the captured app UI and marketing bands are localized. Missing locale
+ * captures fail the build instead of silently falling back to English.
  * The same locale pass also stages localized Play title/description files from
  * store.config.json so Apple and Google Play stay in sync.
  */
@@ -21,10 +22,11 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE = path.join(
+const RAW_SOURCE = path.join(
   ROOT,
-  'docs/marketing/v1.0.0/app-store-screenshots',
+  'docs/marketing/v1.0.0/app-store-screenshots/raw',
 );
+const FRAMES_PATH = path.join(ROOT, 'docs/marketing/v1.0.0/screenshot-frames.json');
 const LOCALIZATIONS_PATH = path.join(
   ROOT,
   'docs/marketing/v1.0.0/screenshot-localizations.json',
@@ -104,11 +106,6 @@ function copyKeyFor(file) {
   return null;
 }
 
-/** Infer the layout family from the canonical screenshot filename. */
-function deviceFor(file) {
-  return file.startsWith('iphone-') ? 'iphone' : 'ipad';
-}
-
 /** Estimate rendered width while accounting for wide non-Latin glyphs. */
 function visualLength(line) {
   return Array.from(line).reduce((total, char) => {
@@ -153,24 +150,59 @@ function localizedBandSvg({ width, height, device, copy, key }) {
   return Buffer.from(`<svg width="${width}" height="${bandHeight}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="${BAND_BACKGROUND}"/>${headline}${subText}</svg>`);
 }
 
-/** Replace the English marketing band while preserving the product capture. */
-async function stageLocalizedIos({ src, dest, file, copy }) {
+/** Compose one localized raw app capture beneath its localized marketing band. */
+async function stageLocalizedIos({ src, dest, frame, copy, spec }) {
+  const file = frame.dest;
   const key = copyKeyFor(file);
   if (!key) {
     fs.copyFileSync(src, dest);
     return;
   }
-  const image = sharp(src);
-  const metadata = await image.metadata();
-  const device = deviceFor(file);
+  const metadata = await sharp(src).metadata();
+  if (metadata.width !== spec.width || metadata.height !== spec.height) {
+    throw new Error(
+      `${src} is ${metadata.width}×${metadata.height}; expected ${spec.width}×${spec.height}`,
+    );
+  }
+  const device = frame.device;
+  const bandHeight = Math.round(spec.height * LAYOUT[device].bandPct);
+  const productHeight = spec.height - bandHeight;
   const band = localizedBandSvg({
-    width: metadata.width,
-    height: metadata.height,
+    width: spec.width,
+    height: spec.height,
     device,
     copy,
     key,
   });
-  await image.composite([{ input: band, top: 0, left: 0 }]).png().toFile(dest);
+  let product;
+  if (frame.fit === 'contain') {
+    product = await sharp(src)
+      .resize(spec.width, productHeight, { fit: 'contain', background: BAND_BACKGROUND })
+      .png()
+      .toBuffer();
+  }
+  else {
+    const cropY = Math.round(Math.max(0, Math.min(1, Number(frame.cropTop) || 0)) * spec.height);
+    const visibleHeight = Math.min(productHeight, spec.height - cropY);
+    product = await sharp(src)
+      .extract({ left: 0, top: cropY, width: spec.width, height: visibleHeight })
+      .png()
+      .toBuffer();
+  }
+  await sharp({
+    create: {
+      width: spec.width,
+      height: spec.height,
+      channels: 3,
+      background: BAND_BACKGROUND,
+    },
+  })
+    .composite([
+      { input: product, top: bandHeight, left: 0 },
+      { input: band, top: 0, left: 0 },
+    ])
+    .png()
+    .toFile(dest);
 }
 
 /** Sync one Google Play text-listing locale from the Apple metadata source. */
@@ -187,22 +219,16 @@ function stagePlayListing(appleLocale, playLocale, storeInfo) {
 
 /** Generate localized Apple and Google Play screenshot staging trees. */
 async function main() {
-  if (!fs.existsSync(SOURCE)) {
-    console.error(`Missing screenshot source: ${SOURCE}`);
-    process.exit(1);
-  }
-
-  const files = fs
-    .readdirSync(SOURCE)
-    .filter(f => f.toLowerCase().endsWith('.png'))
-    .sort();
-
-  if (files.length === 0) {
-    console.error(`No PNGs in ${SOURCE}`);
+  if (!fs.existsSync(RAW_SOURCE)) {
+    console.error(`Missing screenshot source: ${RAW_SOURCE}`);
     process.exit(1);
   }
 
   const localizations = JSON.parse(fs.readFileSync(LOCALIZATIONS_PATH, 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync(FRAMES_PATH, 'utf8'));
+  const frames = manifest.frames;
+  if (!Array.isArray(frames) || frames.length === 0)
+    throw new Error(`No frames in ${FRAMES_PATH}`);
   const storeInfo = JSON.parse(fs.readFileSync(STORE_CONFIG_PATH, 'utf8')).apple.info;
   const appleLocales = new Set(Object.keys(localizations));
   const playLocales = new Set(Object.values(localizations).map(copy => copy.playLocale));
@@ -220,15 +246,23 @@ async function main() {
     clearPngs(playOut);
     stagePlayListing(appleLocale, copy.playLocale, storeInfo);
 
-    for (const file of files) {
-      const src = path.join(SOURCE, file);
-      const localized = path.join(iosOut, file);
-      if (appleLocale === 'en-US')
-        fs.copyFileSync(src, localized);
-      else await stageLocalizedIos({ src, dest: localized, file, copy });
+    if (!copy.appLanguage)
+      throw new Error(`Missing appLanguage for ${appleLocale}`);
+    for (const frame of frames) {
+      const spec = manifest.devices[frame.device];
+      if (!spec)
+        throw new Error(`Missing device spec for ${frame.device}`);
+      const src = path.join(RAW_SOURCE, appleLocale, frame.source);
+      if (!fs.existsSync(src)) {
+        throw new Error(
+          `Missing localized app capture: ${path.relative(ROOT, src)} (no English fallback)`,
+        );
+      }
+      const localized = path.join(iosOut, frame.dest);
+      await stageLocalizedIos({ src, dest: localized, frame, copy, spec });
       iosCount += 1;
-      if (file.startsWith('iphone-')) {
-        await stagePlayPhone(localized, path.join(playOut, file));
+      if (frame.device === 'iphone') {
+        await stagePlayPhone(localized, path.join(playOut, frame.dest));
         playCount += 1;
       }
     }

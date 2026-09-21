@@ -93,6 +93,21 @@
       "computer_wins": "Computer gewinnt",
       "white_wins": "🏆 Weiß gewinnt!",
       "you_win": "🏆 Du gewinnst!"
+    },
+    "turn": {
+      "black_is_moving": "Schwarz zieht…",
+      "black_is_rolling": "Schwarz würfelt…",
+      "black_turn": "Schwarz ist am Zug",
+      "cant_enter": "Mit {{die1}} und {{die2}} kein Einsetzen möglich — Zug beenden",
+      "computer_turn": "Der Computer ist am Zug",
+      "enter_from_bar": "Erst vom Balken einsetzen, bevor du andere Steine ziehst",
+      "game_over": "Spiel beendet",
+      "move_checkers": "Bewege deine {{color}}en Steine",
+      "no_legal_moves": "Keine gültigen Züge mit {{die1}} und {{die2}} — Zug beenden",
+      "opening_roll": "Eröffnungswurf",
+      "roll_dice": "Würfeln — du spielst {{color}}",
+      "white_turn": "Weiß ist am Zug",
+      "your_turn": "Du bist am Zug"
     }
   },
   "home": {
