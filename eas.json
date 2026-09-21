@@ -93,7 +93,7 @@
         "metadataPath": "./store.config.json"
       },
       "android": {
-        "serviceAccountKeyPath": "@secret:GOOGLE_SERVICE_ACCOUNT",
+        "serviceAccountKeyPath": ".cache/google-service-account.json",
         "track": "production",
         "releaseStatus": "completed"
       }
