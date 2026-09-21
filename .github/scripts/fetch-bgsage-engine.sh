@@ -69,4 +69,6 @@ cd - >/dev/null
 
 echo "vendor: $(find "$VENDOR" -type f | wc -l) files"
 echo "assets: $(ls "$ASSETS" | wc -l) files, $(du -sh "$ASSETS" | cut -f1)"
-test "$(ls "$ASSETS" | wc -l)" = "22" || { echo "expected 22 asset files"; exit 1; }
+# NOTE: strip wc's padding (BSD wc on macOS pads the count, GNU does not)
+ASSET_COUNT="$(ls -1 "$ASSETS" | wc -l | tr -d '[:space:]')"
+test "$ASSET_COUNT" = "22" || { echo "expected 22 asset files, found $ASSET_COUNT"; exit 1; }

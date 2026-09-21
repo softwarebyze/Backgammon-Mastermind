@@ -31,12 +31,27 @@ function copyDir(src, dest) {
   }
 }
 
+// pnpm (node-linker=hoisted) copies `file:` deps into node_modules at install
+// time instead of symlinking, so engine assets fetched AFTER `pnpm install`
+// (as CI does) are missing from the installed copy. Prefer the workspace
+// source dir; fall back to the installed copy.
+function resolveModuleAssets(projectRoot) {
+  const candidates = [
+    path.join(projectRoot, 'expo-bgsage', 'assets'),
+    path.join(projectRoot, 'node_modules', 'expo-bgsage', 'assets'),
+  ];
+  for (const dir of candidates) {
+    if (ASSET_FILES.every((f) => fs.existsSync(path.join(dir, f)))) return dir;
+  }
+  return candidates[1]; // let copyDir throw the descriptive "missing asset" error
+}
+
 const withBgsageAssets = (config) => {
   // iOS: copy into ios/bgsage-assets and add each file to the app target's
   // Resources build phase so Bundle.main can find them.
   config = withXcodeProject(config, (config) => {
     const projectRoot = config.modRequest.projectRoot;
-    const moduleAssets = path.join(projectRoot, 'node_modules', 'expo-bgsage', 'assets');
+    const moduleAssets = resolveModuleAssets(projectRoot);
     const iosDest = path.join(projectRoot, 'ios', 'bgsage-assets');
     copyDir(moduleAssets, iosDest);
 
@@ -61,7 +76,7 @@ const withBgsageAssets = (config) => {
     'android',
     (config) => {
       const projectRoot = config.modRequest.projectRoot;
-      const moduleAssets = path.join(projectRoot, 'node_modules', 'expo-bgsage', 'assets');
+      const moduleAssets = resolveModuleAssets(projectRoot);
       const androidDest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'assets', 'bgsage');
       copyDir(moduleAssets, androidDest);
       return config;
