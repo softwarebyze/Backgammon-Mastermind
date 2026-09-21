@@ -7,6 +7,11 @@ on:
         description: 'Optional EAS Android build ID to submit without creating another build'
         required: false
         type: string
+      build_locally:
+        description: 'Build the production AAB on the GitHub runner to bypass the EAS cloud queue'
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   Build:
@@ -48,7 +53,7 @@ jobs:
           chmod 600 .cache/google-service-account.json
 
       - name: ⏱️ EAS Build (AAB) and auto-submit to Google Play
-        if: ${{ inputs.submit_existing_build_id == '' }}
+        if: ${{ inputs.submit_existing_build_id == '' && inputs.build_locally == false }}
         run: |
           EXPO_PUBLIC_APP_ENV=production eas build \
             --platform android \
@@ -57,6 +62,29 @@ jobs:
             --no-wait \
             --auto-submit \
             --message "Build production (Android)"
+        shell: bash
+
+      - name: 🏗️ Build production AAB locally
+        if: ${{ inputs.submit_existing_build_id == '' && inputs.build_locally }}
+        run: |
+          EXPO_PUBLIC_APP_ENV=production eas build \
+            --platform android \
+            --profile production \
+            --local \
+            --non-interactive \
+            --output ./backgammon-mastermind.aab \
+            --message "Build production (Android, local fallback)"
+        shell: bash
+
+      - name: 📤 Submit locally built AAB to Google Play
+        if: ${{ inputs.submit_existing_build_id == '' && inputs.build_locally }}
+        run: |
+          EXPO_PUBLIC_APP_ENV=production eas submit \
+            --platform android \
+            --profile production \
+            --path ./backgammon-mastermind.aab \
+            --non-interactive \
+            --no-wait
         shell: bash
 
       - name: 📤 Submit existing AAB to Google Play
