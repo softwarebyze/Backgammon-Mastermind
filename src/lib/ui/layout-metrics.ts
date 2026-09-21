@@ -3,6 +3,8 @@ import { useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
+  boardMaxWidth,
+  checkerCap,
   gameStageMaxWidth,
   isDesktopLayout,
   isLandscapeLayout,
@@ -59,6 +61,8 @@ export function useLayoutMetrics() {
     desktop: isDesktopLayout(innerWidth),
     innerWidth,
     chromeWidth,
+    boardMaxWidth: boardMaxWidth(innerWidth),
+    checkerCap: checkerCap(innerWidth),
     /** Board pane beside the chrome rail; `undefined` when chrome stacks below the board. */
     boardPaneWidth: landscape ? landscapeBoardPaneWidth(innerWidth, chromeWidth) : undefined,
     stageMaxWidth: landscape ? gameStageMaxWidth(innerWidth) : undefined,
