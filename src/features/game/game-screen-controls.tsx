@@ -1,7 +1,8 @@
 import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -130,46 +131,46 @@ function ActionControl({
 }) {
   if (isReviewing) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.back_to_live')}
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onGoLive}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   if (state.phase === 'game-over') {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.play_again_a11y')}
         testID="play-again-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onReset}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   // Opening: keep the Roll Dice button (tap-anywhere on the ceremony still works).
   if (state.phase === 'opening-roll' && isHumanTurn) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
@@ -179,16 +180,16 @@ function ActionControl({
 
   if (state.phase === 'rolling' && isHumanTurn) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
@@ -210,20 +211,20 @@ function ActionControl({
 
   if (state.phase === 'moving' && isHumanTurn && state.selectedPoint !== null && onCancelSelection) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.cancel_a11y')}
         testID="cancel-selection-button"
         collapsable={false}
         pointerEvents="auto"
-        style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.secondaryBtn, hovered && styles.secondaryBtnHover, pressed && styles.pressed]}
         onPress={() => {
           hapticLight();
           onCancelSelection();
         }}
       >
         <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
@@ -241,19 +242,19 @@ function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => voi
         : null}
       {onSkip
         ? (
-            <Pressable
+            <HoverPressable
               accessibilityRole="button"
               accessibilityLabel={skipLabel}
               testID="skip-computer-button"
               hitSlop={CONTROL_HIT_SLOP}
-              style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
+              style={({ pressed, hovered }) => [styles.skipBtn, hovered && styles.skipBtnHover, pressed && styles.pressed]}
               onPress={() => {
                 hapticLight();
                 onSkip();
               }}
             >
               <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
-            </Pressable>
+            </HoverPressable>
           )
         : null}
     </View>
@@ -303,6 +304,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
     ...continuousRadius(12),
+  },
+  primaryBtnHover: {
+    backgroundColor: '#A32222',
+    borderColor: GAME_PALETTE.accent,
+  },
+  secondaryBtnHover: {
+    borderColor: GAME_PALETTE.accent,
+  },
+  skipBtnHover: {
+    opacity: 0.8,
   },
   pressed: {
     opacity: 0.9,
