@@ -17,7 +17,7 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { REVIEW_SLOT_HEIGHT } from '@/features/game/hooks/use-board-dimensions';
+import { REVIEW_SLOT_HEIGHT, trayDieSize, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { useOpeningReveal } from '@/features/game/use-opening-reveal';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
@@ -114,6 +114,7 @@ type ChromeStackProps = {
   interactionEnabled: boolean;
   compact: boolean;
   includeTop: boolean;
+  dieSize: number;
   opening: ReturnType<typeof openingTray>;
   openingText: ReturnType<typeof openingCopy>;
   onTopLayout: (event: LayoutChangeEvent) => void;
@@ -132,6 +133,7 @@ function GameChromeStack({
   interactionEnabled,
   compact,
   includeTop,
+  dieSize,
   opening,
   openingText,
   onTopLayout,
@@ -163,6 +165,7 @@ function GameChromeStack({
           }
           opening={opening}
           compact={compact}
+          dieSize={dieSize}
           onRoll={input.handleRoll}
           onReset={input.handleReset}
           onGoLive={review.goLive}
@@ -195,6 +198,7 @@ export function GameScreenLayout({
     contentInsets,
   } = useLayoutMetrics();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
+  const dieSize = trayDieSize(useBoardDimensions().checkerSize);
   const state = board.boardState;
   const live = input.state!;
   // Live state only — review scrub must not drive the opening reveal.
@@ -227,6 +231,7 @@ export function GameScreenLayout({
       interactionEnabled={board.interactionEnabled}
       compact={landscape}
       includeTop={landscape}
+      dieSize={dieSize}
       opening={opening}
       openingText={openingText}
       onTopLayout={onTopLayout}

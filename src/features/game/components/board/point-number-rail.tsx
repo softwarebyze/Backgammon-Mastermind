@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
   },
   label: {
     textAlign: 'center',
-    fontSize: 10,
-    lineHeight: 12,
+    fontSize: 11,
+    lineHeight: 13,
     color: 'rgba(255, 220, 175, 0.9)',
     ...interFont('semibold'),
   },
