@@ -2,6 +2,11 @@ name: EAS Production Build and Submit (Android)
 
 on:
   workflow_dispatch:
+    inputs:
+      submit_existing_build_id:
+        description: 'Optional EAS Android build ID to submit without creating another build'
+        required: false
+        type: string
 
 jobs:
   Build:
@@ -43,6 +48,7 @@ jobs:
           chmod 600 .cache/google-service-account.json
 
       - name: ⏱️ EAS Build (AAB) and auto-submit to Google Play
+        if: ${{ inputs.submit_existing_build_id == '' }}
         run: |
           EXPO_PUBLIC_APP_ENV=production eas build \
             --platform android \
@@ -51,4 +57,15 @@ jobs:
             --no-wait \
             --auto-submit \
             --message "Build production (Android)"
+        shell: bash
+
+      - name: 📤 Submit existing AAB to Google Play
+        if: ${{ inputs.submit_existing_build_id != '' }}
+        run: |
+          EXPO_PUBLIC_APP_ENV=production eas submit \
+            --platform android \
+            --profile production \
+            --id "${{ inputs.submit_existing_build_id }}" \
+            --non-interactive \
+            --no-wait
         shell: bash
