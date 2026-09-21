@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
+import { SageHintButton } from '@/features/game/components/sage-hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import {
   useOpeningCeremonyHandoff,
@@ -247,6 +248,12 @@ function ActionControl({
         <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
       </Pressable>
     );
+  }
+
+  // Human turn, dice rolled, nothing selected yet: offer the Sage hint.
+  // (With a selection, the slot shows Cancel instead — see above.)
+  if (state.phase === 'moving' && isHumanTurn && !isReviewing) {
+    return <SageHintButton state={state} />;
   }
 
   return <View style={styles.actionSpacer} />;

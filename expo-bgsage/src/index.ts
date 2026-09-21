@@ -4,6 +4,7 @@
 // src/lib/game/types.ts (Player, BoardPoint, Move, GameState). They are
 // declared locally so this module doesn't depend on the host app; his full
 // GameState/Move are assignable to these (TypeScript structural typing).
+import { Platform } from 'react-native';
 import { requireNativeModule } from 'expo-modules-core';
 
 export type SagePlayer = 'white' | 'black';
@@ -24,16 +25,33 @@ export class SageEngineError extends Error {}
 // Lazily resolved so that importing this module never throws when the native
 // side isn't linked (e.g. Expo Go) — only actual engine calls fail, letting
 // the caller fall back to the heuristic AI.
-let cachedNative: any = null;
-function nativeModule(): any {
-  if (!cachedNative) {
-    try {
-      cachedNative = requireNativeModule('Bgsage');
-    } catch (e) {
-      throw new SageEngineError('Bgsage native module is not linked: ' + String(e));
-    }
+//
+// Platform routing:
+//   iOS / Android -> the Expo native module (Swift/Kotlin -> C ABI).
+//   web           -> the WebAssembly build, lazy-loaded by ./web-engine
+//                    (~13MB of weights download on first use).
+interface SageEngineApi {
+  analyzeCheckers(board: number[], die1: number, die2: number, ply: number): Promise<string>;
+  analyzeCube(board: number[], cubeValue: number, cubeOwner: number, ply: number): Promise<string>;
+}
+
+let cachedApi: SageEngineApi | null = null;
+async function engineApi(): Promise<SageEngineApi> {
+  if (cachedApi) return cachedApi;
+  if (Platform.OS === 'web') {
+    const web = await import('./web-engine');
+    cachedApi = {
+      analyzeCheckers: web.analyzeCheckers,
+      analyzeCube: web.analyzeCube,
+    };
+    return cachedApi;
   }
-  return cachedNative;
+  try {
+    cachedApi = requireNativeModule('Bgsage') as SageEngineApi;
+  } catch (e) {
+    throw new SageEngineError('Bgsage native module is not linked: ' + String(e));
+  }
+  return cachedApi;
 }
 
 // ---- board conversion: Mastermind <-> bgsage player-on-roll 26-array ----
@@ -130,7 +148,7 @@ export async function planSageTurn(state: SageGameState, ply: 1 | 2 = 2): Promis
   const [d1, d2] = state.dice;
   let raw: string;
   try {
-    raw = await nativeModule().analyzeCheckers(board, d1, d2, ply);
+    raw = await (await engineApi()).analyzeCheckers(board, d1, d2, ply);
   } catch (e) {
     throw new SageEngineError('sage analyzeCheckers failed: ' + String(e));
   }
@@ -172,7 +190,7 @@ export async function sageCubeDecision(
   state: SageGameState, cubeValue: number, cubeOwner: 0 | 1 | 2, ply: 1 | 2 = 2,
 ): Promise<SageCubeVerdict> {
   const board = gameStateToSageBoard(state);
-  const raw: string = await nativeModule().analyzeCube(board, cubeValue, cubeOwner, ply);
+  const raw: string = await (await engineApi()).analyzeCube(board, cubeValue, cubeOwner, ply);
   const j = JSON.parse(raw);
   if (j.error) throw new SageEngineError('sage cube failed: ' + j.error);
   return {
