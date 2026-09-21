@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   buttonLabel: {
-    color: GAME_PALETTE.text,
+    color: GAME_PALETTE.controlInk,
     fontSize: 16,
     ...interFont('semibold'),
   },

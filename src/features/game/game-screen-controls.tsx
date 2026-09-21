@@ -306,8 +306,8 @@ const styles = StyleSheet.create({
     ...continuousRadius(12),
   },
   primaryBtnHover: {
-    backgroundColor: '#A32222',
-    borderColor: GAME_PALETTE.accent,
+    backgroundColor: GAME_PALETTE.controlHover,
+    borderColor: '#FFE0A0',
   },
   secondaryBtnHover: {
     borderColor: GAME_PALETTE.accent,
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   primaryBtnText: {
-    color: GAME_PALETTE.text,
+    color: GAME_PALETTE.controlInk,
     fontSize: 16,
     ...interFont('semibold'),
   },
