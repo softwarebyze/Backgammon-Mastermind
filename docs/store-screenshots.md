@@ -28,6 +28,12 @@ pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH; PLAY_PACKAGE_NAME 
 
 Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.239.0**). First time: `bundle install`.
 
+Localized headline rendering uses script-specific Noto fonts in CI. On macOS,
+the generator also falls back to the equivalent bundled system families
+(PingFang/Hiragino, Apple SD Gothic Neo, Geeza Pro, and Kohinoor Devanagari).
+Do not replace the locale-aware font stacks with a generic `sans-serif` face:
+Sharp/librsvg can render unsupported CJK characters as hexadecimal boxes.
+
 iOS `app_version` defaults from `store.config.json` → `apple.version` (override with `ASC_APP_VERSION`).
 
 Or CI / agent with env:
