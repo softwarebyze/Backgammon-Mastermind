@@ -21,6 +21,9 @@ class BgsageModule : Module() {
     AsyncFunction("analyzeCheckers") { board: List<Int>, die1: Int, die2: Int, ply: Int, promise: Promise ->
       queue.execute {
         try {
+          if (!BgsageNative.loaded) {
+            throw IllegalStateException("bgsage native library not linked (vendor sources were not fetched at build time)")
+          }
           val json = BgsageNative.analyzeCheckers(nativeHandle(), board.toIntArray(), die1, die2, ply)
           promise.resolve(json)
         } catch (e: Exception) {
@@ -32,6 +35,9 @@ class BgsageModule : Module() {
     AsyncFunction("analyzeCube") { board: List<Int>, cubeValue: Int, cubeOwner: Int, ply: Int, promise: Promise ->
       queue.execute {
         try {
+          if (!BgsageNative.loaded) {
+            throw IllegalStateException("bgsage native library not linked (vendor sources were not fetched at build time)")
+          }
           val json = BgsageNative.analyzeCube(nativeHandle(), board.toIntArray(), cubeValue, cubeOwner, ply)
           promise.resolve(json)
         } catch (e: Exception) {
@@ -83,9 +89,15 @@ class BgsageModule : Module() {
   }
 }
 
-// Thin JNI facade. libbgsage_jni.so is built by android/src/main/cpp/CMakeLists.txt.
+// Thin JNI facade. libbgsage_jni.so is built by android/src/main/cpp/CMakeLists.txt
+// when vendor sources are present; otherwise `loaded` is false and callers fall back.
 internal object BgsageNative {
-  init { System.loadLibrary("bgsage_jni") }
+  val loaded: Boolean = try {
+    System.loadLibrary("bgsage_jni")
+    true
+  } catch (_: UnsatisfiedLinkError) {
+    false
+  }
 
   @JvmStatic external fun create(modelPaths: Array<String>, bearoffPath: String): Long
   @JvmStatic external fun analyzeCheckers(handle: Long, board: IntArray, die1: Int, die2: Int, ply: Int): String
