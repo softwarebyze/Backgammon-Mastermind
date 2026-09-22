@@ -9,11 +9,15 @@
     "src/lib/storage.tsx",
     "env.ts"
   ],
-  "project": ["src/**/*.{ts,tsx}"],
+  "project": [
+    "src/**/*.{ts,tsx}"
+  ],
   "ignore": [
     "src/components/ui/form-utils.ts",
     "src/components/ui/modal-keyboard-aware-scroll-view.tsx",
-    "src/lib/utils.ts"
+    "src/lib/utils.ts",
+    "expo-bgsage/**",
+    "public/bgsage/**"
   ],
   "ignoreBinaries": [
     "adb",
@@ -35,6 +39,7 @@
     "@types/invariant",
     "dotenv",
     "eslint-plugin-unicorn",
-    "zustand"
+    "zustand",
+    "expo-bgsage"
   ]
 }
