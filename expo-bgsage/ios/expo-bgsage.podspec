@@ -10,13 +10,17 @@ Pod::Spec.new do |s|
   s.static_framework = true
 
   # Module sources (Swift + ObjC++ bridge) plus the vendored bgsage engine.
-  # .github/scripts/fetch-bgsage-engine.sh populates ../vendor/bgsage in CI.
-  s.source_files = '**/*.{h,m,mm,swift}', '../vendor/bgsage/cpp/src/*.cpp'
-  s.public_header_files = '**/BgsageBridge.h', '../vendor/bgsage/cpp/include/bgbot/*.h'
-  s.preserve_paths = '../vendor/bgsage/**/*'
+  # .github/scripts/fetch-bgsage-engine.sh copies the engine C++ tree into
+  # ios/vendor/bgsage in CI. CocoaPods resolves source_files relative to the
+  # pod root (this directory), so the vendored sources must live UNDER ios/ —
+  # a '../vendor/...' glob can never match anything (the pod's file list only
+  # contains paths beneath the pod root).
+  s.source_files = '**/*.{h,m,mm,swift}', 'vendor/bgsage/cpp/src/*.cpp'
+  s.public_header_files = '**/BgsageBridge.h', 'vendor/bgsage/cpp/include/bgbot/*.h'
+  s.preserve_paths = 'vendor/bgsage/**/*'
 
   s.pod_target_xcconfig = {
-    'HEADER_SEARCH_PATHS' => '"$(PODS_TARGET_SRCROOT)/../vendor/bgsage/cpp/include"',
+    'HEADER_SEARCH_PATHS' => '"$(PODS_TARGET_SRCROOT)/vendor/bgsage/cpp/include"',
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
     'CLANG_CXX_LIBRARY' => 'libc++',
     # Mirror upstream per-arch optimization (arm64 device + simulator).

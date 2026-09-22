@@ -35,6 +35,7 @@ maestro test "${WORKSPACE}/.maestro/app/sage-engine.yaml" \
 adb shell pkill -2 screenrecord 2>/dev/null || true
 sleep 2
 adb pull /sdcard/sage-recording.mp4 "${WORKSPACE}/e2e-recording.mp4" 2>/dev/null || true
-adb logcat -d -v brief > "${MAESTRO_OUT}/logcat.txt" 2>/dev/null || true
+adb logcat -d -v brief > "${MAESTRO_OUT}/logcat.txt" || echo "::warning::adb logcat dump failed (exit $?)"
+ls -la "${MAESTRO_OUT}" || true
 
 exit "$MAESTRO_EXIT"

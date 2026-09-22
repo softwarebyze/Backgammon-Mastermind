@@ -40,7 +40,9 @@ jobs:
         uses: ./.github/actions/setup-node-pnpm-install
 
       - name: Verify vendored engine in node_modules
-        run: test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
+        run: |
+          test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
+          test -f node_modules/expo-bgsage/ios/vendor/bgsage/cpp/src/mobile.cpp || { echo "::error::expo-bgsage iOS vendor sources missing from node_modules copy"; exit 1; }
 
       - name: Build expo-bgsage TS
         run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
@@ -126,7 +128,9 @@ jobs:
         uses: ./.github/actions/setup-node-pnpm-install
 
       - name: Verify vendored engine in node_modules
-        run: test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
+        run: |
+          test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
+          test -f node_modules/expo-bgsage/ios/vendor/bgsage/cpp/src/mobile.cpp || { echo "::error::expo-bgsage iOS vendor sources missing from node_modules copy"; exit 1; }
 
       - name: Build expo-bgsage TS
         run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json

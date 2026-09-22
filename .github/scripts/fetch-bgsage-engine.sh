@@ -2,6 +2,11 @@
 # Fetches the bgsage engine sources + production weights at a pinned commit
 # into expo-bgsage/vendor/bgsage and expo-bgsage/assets/.
 #
+# The engine C++ tree is ALSO copied to expo-bgsage/ios/vendor/bgsage:
+# CocoaPods resolves a podspec's source_files relative to the pod root
+# (expo-bgsage/ios/), so the iOS build needs the sources underneath ios/.
+# Android keeps using expo-bgsage/vendor/bgsage via CMakeLists.txt.
+#
 # Only the files the mobile build needs are checked out (sparse, blobless):
 #   - cpp/include/bgbot/*.h and the 17 engine .cpp files
 #   - the 21 unique production weight files (stage11 backgame_pair_phased)
@@ -66,6 +71,13 @@ for f in models/*.weights.best data/bearoff_1sided.db; do
   cp "$f" "../../assets/$(basename "$f")"
 done
 cd - >/dev/null
+
+# iOS copy of the engine C++ tree (see header comment). Only the cpp/
+# subtree is needed: headers + sources. Weights stay in assets/ only.
+IOS_VENDOR="expo-bgsage/ios/vendor/bgsage"
+rm -rf "$IOS_VENDOR"
+mkdir -p "$IOS_VENDOR"
+cp -r "$VENDOR/cpp" "$IOS_VENDOR/cpp"
 
 echo "vendor: $(find "$VENDOR" -type f | wc -l) files"
 echo "assets: $(ls "$ASSETS" | wc -l) files, $(du -sh "$ASSETS" | cut -f1)"
