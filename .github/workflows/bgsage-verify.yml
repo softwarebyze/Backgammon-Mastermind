@@ -30,11 +30,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch bgsage engine (pinned commit)
+        # Must run BEFORE pnpm install: pnpm copies the file: dependency
+        # expo-bgsage into node_modules at install time, so the vendored
+        # C++ sources must already exist or CMake won't find them.
+        run: bash .github/scripts/fetch-bgsage-engine.sh
+
       - name: Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
 
-      - name: Fetch bgsage engine (pinned commit)
-        run: bash .github/scripts/fetch-bgsage-engine.sh
+      - name: Verify vendored engine in node_modules
+        run: test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
 
       - name: Build expo-bgsage TS
         run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
@@ -110,11 +116,38 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch bgsage engine (pinned commit)
+        # Must run BEFORE pnpm install (see android job).
+        run: bash .github/scripts/fetch-bgsage-engine.sh
+
       - name: Setup Node + PNPM + install deps
         uses: ./.github/actions/setup-node-pnpm-install
 
-      - name: Fetch bgsage engine (pinned commit)
-        run: bash .github/scripts/fetch-bgsage-engine.sh
+      - name: Verify vendored engine in node_modules
+        run: test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
+
+      - name: Select newest Xcode
+        run: |
+          ls -d /Applications/Xcode*.app 2>/dev/null || true
+          CANDIDATE=$(ls -d /Applications/Xcode_2*.app 2>/dev/null | sort -r | head -1)
+          if [ -n "$CANDIDATE" ]; then
+            echo "Selecting $CANDIDATE"
+            sudo xcode-select -s "$CANDIDATE"
+          else
+            echo "No Xcode 26+ found; keeping default"
+          fi
+          xcodebuild -version
+          xcrun swiftc --version | head -2
+
+      - name: Patch expo-modules-jsi Swift tools version
+        # expo-modules-jsi@57.1.0 declares swift-tools-version 6.2, but the
+        # macos-15 runner's Xcode 16.4 ships Swift 6.1, so the ExpoModulesJSI
+        # slice rebuild (via SwiftPM) fails package resolution. Lowering the
+        # declared minimum is CI-only; EAS/production builds use Xcode 26.
+        run: |
+          sed -i '' 's|// swift-tools-version: 6.2|// swift-tools-version: 6.1|' \
+            node_modules/expo-modules-jsi/apple/Package.swift
+          head -1 node_modules/expo-modules-jsi/apple/Package.swift
 
       - name: Build expo-bgsage TS
         run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
