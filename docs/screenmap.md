@@ -6,11 +6,13 @@ CI pins `aleqsio/screenmap@c54219e` (current `main`). Marketplace `@v1` is iOS-o
 
 Config: `.screenmap/config.json` (Learn lesson id `goal-board`). Agent guidance: `.screenmap/SKILL.md`.
 
+Deep links: `config.json` sets `scheme: backgammonmastermind.dev` (the `development` scheme from `env.ts`). Baseline mode fails with `no deep-link scheme` without it. Screenmap uses one scheme for both platforms, so the Android Screenmap APK is built with `APP_ENV=development` to match the iOS `development-simulator` prebuilt — unlike the Maestro e2e workflows, which build the same APK with `APP_ENV=preview`.
+
 ## Platforms
 
 | Job | Runner | Binary | EAS |
 | --- | --- | --- | --- |
-| `android` | `ubuntu-latest` | In-CI Gradle debug APK via `./.github/actions/setup-jdk-generate-apk` (`APP_ENV: preview` → `android-test.apk`) | **Not used** |
+| `android` | `ubuntu-latest` | In-CI Gradle debug APK via `./.github/actions/setup-jdk-generate-apk` (`APP_ENV: development` → `android-test.apk`) | **Not used** |
 | `ios` | `macos-26` | Prebuilt simulator `.app` if present; else `eas_profile: development-simulator` | Fallback only |
 | `merge` | `ubuntu-latest` | `screenmap-ci merge` then publish/comment once | — |
 

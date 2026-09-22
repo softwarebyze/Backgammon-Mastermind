@@ -77,15 +77,17 @@ jobs:
       - name: Fail iOS if capture produced no bundle
         if: always() && steps.map_prebuilt.outputs.bundle == '' && steps.map_eas.outputs.bundle == '' && (steps.map_prebuilt.outcome == 'failure' || steps.map_eas.outcome == 'failure')
         run: |
-          echo "::error::iOS Screenmap produced no bundle (no prebuilt .app, and EAS fallback failed — likely Free-plan iOS quota until 2026-10-01)."
+          echo "::error::iOS Screenmap produced no bundle (have_app=${{ steps.ios_app.outputs.have_app }}). Check the Screenmap step log above; if no prebuilt .app, EAS fallback is likely blocked by Free-plan iOS quota until 2026-10-01."
           exit 1
 
   android:
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    # development, not preview: deep-link scheme must match .screenmap/config.json
+    # and the iOS development-simulator prebuilt (backgammonmastermind.dev).
     env:
-      EXPO_PUBLIC_APP_ENV: preview
-      APP_ENV: preview
+      EXPO_PUBLIC_APP_ENV: development
+      APP_ENV: development
     steps:
       - uses: actions/checkout@v4
         with:
@@ -95,7 +97,7 @@ jobs:
       - name: Set Up JDK + Generate Test APK
         uses: ./.github/actions/setup-jdk-generate-apk
         with:
-          APP_ENV: preview
+          APP_ENV: development
       - name: Use GitHub-hosted Android SDK
         run: |
           set -euo pipefail
