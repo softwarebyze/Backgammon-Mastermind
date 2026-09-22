@@ -7,10 +7,9 @@
 //   <module>/assets/sl_s9_*.weights.best   (14 files)
 //   <module>/assets/sl_s11_*.weights.best  (7 files)
 //   <module>/assets/bearoff_1sided.db
-const { withXcodeProject, withDangerousMod } = require('@expo/config-plugins');
+const { withXcodeProject, withDangerousMod, IOSConfig } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
-const xcode = require('xcode');
 
 const WEIGHT_NAMES = [
   'sl_s9_purerace', 'sl_s9_race_race', 'sl_s9_race_att', 'sl_s9_race_prim',
@@ -49,23 +48,33 @@ function resolveModuleAssets(projectRoot) {
 const withBgsageAssets = (config) => {
   // iOS: copy into ios/bgsage-assets and add each file to the app target's
   // Resources build phase so Bundle.main can find them.
+  //
+  // Implementation notes (both learned the hard way in CI):
+  // - Mutate config.modResults (the parsed project the ios.xcodeproj base mod
+  //   writes back). Re-parsing project.pbxproj with a separate `xcode`
+  //   instance and writing it directly is silently clobbered by the base mod.
+  // - Use IOSConfig's addResourceFileToGroup, not xcode's addResourceFile():
+  //   the latter unconditionally dereferences a PBXGroup named "Resources"
+  //   (correctForResourcesPath), which a fresh Expo prebuild does not have ->
+  //   TypeError: Cannot read properties of null (reading 'path').
   config = withXcodeProject(config, (config) => {
     const projectRoot = config.modRequest.projectRoot;
     const moduleAssets = resolveModuleAssets(projectRoot);
     const iosDest = path.join(projectRoot, 'ios', 'bgsage-assets');
     copyDir(moduleAssets, iosDest);
 
-    const iosDir = path.join(projectRoot, 'ios');
-    const xcodeproj = fs.readdirSync(iosDir).find((f) => f.endsWith('.xcodeproj'));
-    if (!xcodeproj) throw new Error('[expo-bgsage] no .xcodeproj found under ios/');
-    const pbxPath = path.join(iosDir, xcodeproj, 'project.pbxproj');
-    const proj = xcode.project(pbxPath);
-    proj.parseSync();
-    const target = proj.getFirstTarget().uuid;
+    const project = config.modResults;
+    IOSConfig.XcodeUtils.ensureGroupRecursively(project, 'bgsage-assets');
+    const targetUuid = project.getFirstTarget().uuid;
     for (const f of ASSET_FILES) {
-      proj.addResourceFile(path.join('bgsage-assets', f), { target });
+      IOSConfig.XcodeUtils.addResourceFileToGroup({
+        filepath: path.join('bgsage-assets', f),
+        groupName: 'bgsage-assets',
+        isBuildFile: true,
+        project,
+        targetUuid,
+      });
     }
-    fs.writeFileSync(pbxPath, proj.writeSync());
     return config;
   });
 
