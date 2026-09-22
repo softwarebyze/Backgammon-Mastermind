@@ -40,7 +40,10 @@ function openingBlack31(): SageGameState {
 
 export function SageLabSection() {
   const [running, setRunning] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
+  // Rendered as separate exact strings: the Maestro flow asserts the status
+  // ("SAGE OK") and the move notation ("17/20 19/20") verbatim, so each must
+  // be its own text element — not embedded in a longer line.
+  const [result, setResult] = useState<{ status: string; moves: string; ms: number } | null>(null);
 
   const run = useCallback(async () => {
     if (running) return;
@@ -54,11 +57,13 @@ export function SageLabSection() {
     try {
       const moves = await planSageTurn(openingBlack31(), 2);
       const notation = moves.map((m) => `${m.from}/${m.to}`).join(' ');
-      console.log(`[SageLab] result: ${notation} (${Date.now() - t0}ms)`);
-      setResult(`SAGE OK: ${notation} (${Date.now() - t0}ms)`);
+      const ms = Date.now() - t0;
+      console.log(`[SageLab] result: ${notation} (${ms}ms)`);
+      setResult({ status: 'SAGE OK', moves: notation, ms });
     } catch (e) {
-      console.log(`[SageLab] error: ${e instanceof Error ? e.message : String(e)}`);
-      setResult(`SAGE ERROR: ${e instanceof Error ? e.message : String(e)}`);
+      const msg = e instanceof Error ? e.message : String(e);
+      console.log(`[SageLab] error: ${msg}`);
+      setResult({ status: 'SAGE ERROR', moves: msg, ms: Date.now() - t0 });
     } finally {
       setRunning(false);
     }
@@ -85,9 +90,17 @@ export function SageLabSection() {
           </Text>
         </Pressable>
         {result !== null ? (
-          <Text testID="sage-result" style={styles.result}>
-            {result}
-          </Text>
+          <View testID="sage-result" style={styles.resultBlock}>
+            <Text testID="sage-status" style={styles.result}>
+              {result.status}
+            </Text>
+            <Text testID="sage-moves" style={styles.resultDetail}>
+              {result.moves}
+            </Text>
+            <Text testID="sage-timing" style={styles.resultDetail}>
+              ({result.ms}ms)
+            </Text>
+          </View>
         ) : null}
       </View>
     </SettingsContainer>
@@ -129,5 +142,13 @@ const styles = StyleSheet.create({
     ...interFont('medium'),
     fontSize: 14,
     color: GAME_PALETTE.text,
+  },
+  resultBlock: {
+    gap: 2,
+  },
+  resultDetail: {
+    ...interFont('regular'),
+    fontSize: 13,
+    color: GAME_PALETTE.textMuted,
   },
 });

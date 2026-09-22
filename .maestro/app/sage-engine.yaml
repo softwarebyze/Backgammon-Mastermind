@@ -30,12 +30,15 @@ appId: ${APP_ID}
 # weight copy + 2-ply search.
 - swipe:
     direction: UP
+# Wait on the status element, then assert exact strings: the app renders the
+# status ("SAGE OK") and the move notation ("17/20 19/20") verbatim in their
+# own elements, which is what Maestro's text assertions match against.
 - extendedWaitUntil:
     visible:
-      id: sage-result
+      id: sage-status
     timeout: 180000
 - takeScreenshot: 03-sage-result
 - assertVisible:
     text: "SAGE OK"
 - assertVisible:
-    text: "17/20"
+    text: "17/20 19/20"

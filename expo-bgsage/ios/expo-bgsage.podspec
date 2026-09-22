@@ -16,7 +16,14 @@ Pod::Spec.new do |s|
   # a '../vendor/...' glob can never match anything (the pod's file list only
   # contains paths beneath the pod root).
   s.source_files = '**/*.{h,m,mm,swift}', 'vendor/bgsage/cpp/src/*.cpp'
-  s.public_header_files = '**/BgsageBridge.h', 'vendor/bgsage/cpp/include/bgbot/*.h'
+  # Only the ObjC++ facade is public. The vendored bgsage C++ headers must NOT
+  # be public: CocoaPods puts public headers in expo-bgsage-umbrella.h, which
+  # Swift compiles as Objective-C (not Objective-C++), so '#include <array>'
+  # inside bgbot/types.h fails with "'array' file not found" and the whole
+  # module fails to build. The .mm bridge includes them directly via
+  # HEADER_SEARCH_PATHS instead.
+  s.public_header_files = '**/BgsageBridge.h'
+  s.private_header_files = 'vendor/bgsage/cpp/include/bgbot/*.h'
   s.preserve_paths = 'vendor/bgsage/**/*'
 
   s.pod_target_xcconfig = {
