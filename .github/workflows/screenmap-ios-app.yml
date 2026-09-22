@@ -1,0 +1,57 @@
+# Store a prebuilt iOS simulator .app for Screenmap (avoids EAS cloud iOS quota).
+# Preferred: `gh release create/upload screenmap-ios-devclient BackgammonMastermind.app.zip`
+# from a Mac. This workflow is an alternative if you have an HTTPS zip URL.
+#
+# Docs: docs/screenmap.md
+
+name: screenmap · store iOS simulator app
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_zip_url:
+        description: HTTPS URL of a zip/tar.gz containing the simulator .app
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  store:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Download prebuilt simulator app
+        env:
+          APP_ZIP_URL: ${{ inputs.app_zip_url }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          curl -fsSL "$APP_ZIP_URL" -o dist/BackgammonMastermind.app.zip
+          file dist/BackgammonMastermind.app.zip
+          ls -lh dist/BackgammonMastermind.app.zip
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenmap-ios-app
+          path: dist/BackgammonMastermind.app.zip
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Publish or update GitHub Release screenmap-ios-devclient
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view screenmap-ios-devclient --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            gh release upload screenmap-ios-devclient dist/BackgammonMastermind.app.zip \
+              --repo "${{ github.repository }}" --clobber
+          else
+            gh release create screenmap-ios-devclient dist/BackgammonMastermind.app.zip \
+              --repo "${{ github.repository }}" \
+              --title "Screenmap iOS simulator dev client" \
+              --notes "Prebuilt development-simulator .app for Screenmap CI. Replace by re-running this workflow or \`gh release upload screenmap-ios-devclient … --clobber\`."
+          fi
