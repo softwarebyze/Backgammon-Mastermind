@@ -12,9 +12,15 @@ appId: ${APP_ID}
 # Deep-link straight to the developer screen (preview scheme).
 - openLink: backgammonmastermind.preview://developer
 - extendedWaitUntil:
-    visible:
-      id: sage-run-analysis
+    visible: "Developer"
     timeout: 60000
+# Sage Lab is the third section on the developer screen (below the fold);
+# scroll it into view before interacting.
+- scrollUntilVisible:
+    element:
+      id: sage-run-analysis
+    direction: DOWN
+    timeout: 30000
 - takeScreenshot: 02-sage-lab
 - tapOn:
     id: sage-run-analysis

@@ -108,7 +108,9 @@ jobs:
 
   ios:
     name: iOS — simulator compile check
-    runs-on: macos-15
+    # macos-26 = Xcode 26 / Swift 6.2 (GA Feb 2026). Required: expo-modules-jsi
+    # declares swift-tools-version 6.2 and uses 6.2-only compiler features.
+    runs-on: macos-26
     timeout-minutes: 120
     steps:
       - name: Checkout repository
@@ -125,29 +127,6 @@ jobs:
 
       - name: Verify vendored engine in node_modules
         run: test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
-
-      - name: Select newest Xcode
-        run: |
-          ls -d /Applications/Xcode*.app 2>/dev/null || true
-          CANDIDATE=$(ls -d /Applications/Xcode_2*.app 2>/dev/null | sort -r | head -1)
-          if [ -n "$CANDIDATE" ]; then
-            echo "Selecting $CANDIDATE"
-            sudo xcode-select -s "$CANDIDATE"
-          else
-            echo "No Xcode 26+ found; keeping default"
-          fi
-          xcodebuild -version
-          xcrun swiftc --version | head -2
-
-      - name: Patch expo-modules-jsi Swift tools version
-        # expo-modules-jsi@57.1.0 declares swift-tools-version 6.2, but the
-        # macos-15 runner's Xcode 16.4 ships Swift 6.1, so the ExpoModulesJSI
-        # slice rebuild (via SwiftPM) fails package resolution. Lowering the
-        # declared minimum is CI-only; EAS/production builds use Xcode 26.
-        run: |
-          sed -i '' 's|// swift-tools-version: 6.2|// swift-tools-version: 6.1|' \
-            node_modules/expo-modules-jsi/apple/Package.swift
-          head -1 node_modules/expo-modules-jsi/apple/Package.swift
 
       - name: Build expo-bgsage TS
         run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
