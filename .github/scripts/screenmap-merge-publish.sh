@@ -12,6 +12,14 @@ RUN_URL="${RUN_URL:-}"
 BUNDLES_DIR="${BUNDLES_DIR:-bundles}"
 OUT="${OUT:-combined.scrmap}"
 
+# PR jobs upload .diff.scrmap; merge expects baseline-shaped bundles.
+to_baseline_bundle() {
+  local src="$1"
+  local dest="$2"
+  python3 "$(dirname "$0")/screenmap-diff-head-to-baseline.py" "$src" "$dest"
+}
+
+
 pick_bundle() {
   local dir="$1"
   find "$dir" -maxdepth 10 \( -name '*.diff.scrmap' -o -name '*.scrmap' \) 2>/dev/null \
@@ -21,15 +29,22 @@ pick_bundle() {
 ios_bundle="$(pick_bundle "$BUNDLES_DIR/screenmap-ios")"
 android_bundle="$(pick_bundle "$BUNDLES_DIR/screenmap-android")"
 
+CONV_DIR="$(mktemp -d)"
+trap 'rm -rf "$CONV_DIR"' EXIT
+
 inputs=""
 if [ -n "$ios_bundle" ]; then
-  inputs="ios=$ios_bundle"
+  ios_for_merge="$CONV_DIR/ios.scrmap"
+  to_baseline_bundle "$ios_bundle" "$ios_for_merge"
+  inputs="ios=$ios_for_merge"
 fi
 if [ -n "$android_bundle" ]; then
+  android_for_merge="$CONV_DIR/android.scrmap"
+  to_baseline_bundle "$android_bundle" "$android_for_merge"
   if [ -n "$inputs" ]; then
-    inputs="$inputs,android=$android_bundle"
+    inputs="$inputs,android=$android_for_merge"
   else
-    inputs="android=$android_bundle"
+    inputs="android=$android_for_merge"
   fi
 fi
 
