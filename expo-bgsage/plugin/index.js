@@ -42,7 +42,7 @@ function resolveModuleAssets(projectRoot) {
   for (const dir of candidates) {
     if (ASSET_FILES.every((f) => fs.existsSync(path.join(dir, f)))) return dir;
   }
-  return candidates[1]; // let copyDir throw the descriptive "missing asset" error
+  return null; // assets not fetched (normal outside bgsage-verify)
 }
 
 const withBgsageAssets = (config) => {
@@ -60,6 +60,10 @@ const withBgsageAssets = (config) => {
   config = withXcodeProject(config, (config) => {
     const projectRoot = config.modRequest.projectRoot;
     const moduleAssets = resolveModuleAssets(projectRoot);
+    if (!moduleAssets) {
+      console.warn('[expo-bgsage] engine assets missing — skipping iOS resource copy (run fetch-bgsage-engine.sh for a real engine build)');
+      return config;
+    }
     const iosDest = path.join(projectRoot, 'ios', 'bgsage-assets');
     copyDir(moduleAssets, iosDest);
 
@@ -86,6 +90,10 @@ const withBgsageAssets = (config) => {
     (config) => {
       const projectRoot = config.modRequest.projectRoot;
       const moduleAssets = resolveModuleAssets(projectRoot);
+      if (!moduleAssets) {
+        console.warn('[expo-bgsage] engine assets missing — skipping Android asset copy (run fetch-bgsage-engine.sh for a real engine build)');
+        return config;
+      }
       const androidDest = path.join(projectRoot, 'android', 'app', 'src', 'main', 'assets', 'bgsage');
       copyDir(moduleAssets, androidDest);
       return config;
