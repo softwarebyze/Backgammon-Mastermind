@@ -76,13 +76,15 @@ describe('getSageHint', () => {
       mode: 'vs-computer',
       dice: [6, 6],
       placements: [
-        // White has a checker on the bar; black holds every entry point.
-        { point: 1, player: 'black', count: 2 },
-        { point: 2, player: 'black', count: 2 },
-        { point: 3, player: 'black', count: 2 },
-        { point: 4, player: 'black', count: 2 },
-        { point: 5, player: 'black', count: 2 },
-        { point: 6, player: 'black', count: 2 },
+        // White has a checker on the bar; black holds every white entry
+        // point. White enters at 25 - die, i.e. points 19..24 (NOT 1..6 —
+        // blocking 1..6 leaves the position wide open).
+        { point: 19, player: 'black', count: 2 },
+        { point: 20, player: 'black', count: 2 },
+        { point: 21, player: 'black', count: 2 },
+        { point: 22, player: 'black', count: 2 },
+        { point: 23, player: 'black', count: 2 },
+        { point: 24, player: 'black', count: 2 },
       ],
       bar: { white: 1 },
     });

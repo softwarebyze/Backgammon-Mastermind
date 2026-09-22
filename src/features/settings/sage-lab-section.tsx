@@ -44,6 +44,9 @@ export function SageLabSection() {
 
   const run = useCallback(async () => {
     if (running) return;
+    // [SageLab] markers go to logcat (ReactNativeJS) — CI scrapes them to
+    // tell a missed tap apart from an engine hang/crash.
+    console.log('[SageLab] run pressed');
     hapticLight();
     setRunning(true);
     setResult(null);
@@ -51,8 +54,10 @@ export function SageLabSection() {
     try {
       const moves = await planSageTurn(openingBlack31(), 2);
       const notation = moves.map((m) => `${m.from}/${m.to}`).join(' ');
+      console.log(`[SageLab] result: ${notation} (${Date.now() - t0}ms)`);
       setResult(`SAGE OK: ${notation} (${Date.now() - t0}ms)`);
     } catch (e) {
+      console.log(`[SageLab] error: ${e instanceof Error ? e.message : String(e)}`);
       setResult(`SAGE ERROR: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setRunning(false);

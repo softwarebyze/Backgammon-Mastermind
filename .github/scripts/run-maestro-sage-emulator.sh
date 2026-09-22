@@ -15,6 +15,10 @@ adb shell settings put global transition_animation_scale 0
 adb shell settings put global animator_duration_scale 0
 adb install -r "${WORKSPACE}/android-test.apk"
 
+# Clear logcat so the dump below covers only this run. The Sage Lab screen
+# logs [SageLab] markers (run pressed / result / error) to ReactNativeJS.
+adb logcat -c
+
 adb shell screenrecord --time-limit 300 /sdcard/sage-recording.mp4 &
 RECORD_PID=$!
 
@@ -31,5 +35,6 @@ maestro test "${WORKSPACE}/.maestro/app/sage-engine.yaml" \
 adb shell pkill -2 screenrecord 2>/dev/null || true
 sleep 2
 adb pull /sdcard/sage-recording.mp4 "${WORKSPACE}/e2e-recording.mp4" 2>/dev/null || true
+adb logcat -d -v brief > "${MAESTRO_OUT}/logcat.txt" 2>/dev/null || true
 
 exit "$MAESTRO_EXIT"

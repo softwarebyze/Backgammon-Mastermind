@@ -166,9 +166,24 @@ jobs:
           echo "workspace: $WORKSPACE"
           SCHEME=$(xcodebuild -list -workspace "$WORKSPACE" | awk '/^ *Schemes:$/{f=1;next} f && NF{print $1; exit}')
           echo "scheme: $SCHEME"
+          # Runner images don't guarantee a specific simulator device name
+          # (macos-26 ships no iPhone 16) — pick any available iPhone by UDID.
+          DEVICE_UDID=$(xcrun simctl list devices available --json | python3 -c "
+          import json, sys
+          d = json.load(sys.stdin)
+          for runtime in sorted(d['devices']):
+              if 'iOS' not in runtime:
+                  continue
+              for dev in d['devices'][runtime]:
+                  if 'iPhone' in dev['name']:
+                      print(dev['udid'])
+                      sys.exit(0)
+          sys.exit('no available iPhone simulator found')
+          ")
+          echo "simulator UDID: $DEVICE_UDID"
           xcodebuild -workspace "$WORKSPACE" \
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -destination "platform=iOS Simulator,id=$DEVICE_UDID" \
             -derivedDataPath "$RUNNER_TEMP/bgsage-dd" \
             build

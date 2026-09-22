@@ -3,11 +3,18 @@
  * graceful fallback to the built-in heuristic AI when the engine isn't
  * available (Expo Go, unlinked native module, web assets not yet loaded).
  *
- * expo-bgsage is imported lazily so merely rendering a game screen never
- * pays the cost of (or fails on) the engine — web included, where the WASM
- * weights download on first use.
+ * The expo-bgsage import is side-effect free on every platform: the native
+ * module handle is only required (and the WASM only fetched) inside the
+ * async planSageTurn call, so merely rendering a game screen never pays
+ * the cost of — or fails on — the engine.
+ *
+ * NOTE: keep this a static import, not a dynamic import(). jest.mock()
+ * cannot intercept dynamic import() (known Jest limitation), which broke
+ * the unit tests in CI.
  */
 import type { GameState, Move } from '@/lib/game/types';
+
+import { planSageTurn } from 'expo-bgsage';
 
 import { getAIMove } from '@/lib/game/ai';
 import { applyMove } from '@/lib/game/moves';
@@ -49,8 +56,7 @@ function heuristicTurn(state: GameState): Move[] {
 export async function getSageHint(state: GameState): Promise<SageHint> {
   const t0 = Date.now();
   try {
-    const sage = await import('expo-bgsage');
-    const sageMoves = await sage.planSageTurn(state, 2);
+    const sageMoves = await planSageTurn(state, 2);
     const moves = sageMoves as Move[];
     if (moves.length > 0) {
       return {
