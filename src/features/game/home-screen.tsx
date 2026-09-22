@@ -11,7 +11,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -39,7 +38,8 @@ import {
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
-import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
@@ -75,8 +75,7 @@ export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
-  const { width, height } = useWindowDimensions();
-  const landscape = isLandscapeLayout(width, height);
+  const { insets, landscape } = useLayoutMetrics();
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
   const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
@@ -134,7 +133,15 @@ export function HomeScreen() {
       <ScrollView
         testID="home-screen"
         style={styles.scroll}
-        contentContainerStyle={[styles.root, landscape ? styles.rootLandscape : null]}
+        contentContainerStyle={[
+          styles.root,
+          landscape ? styles.rootLandscape : null,
+          contentEdgePadding(insets, {
+            left: 24,
+            right: 24,
+            bottom: landscape ? 16 : 32,
+          }),
+        ]}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
@@ -308,17 +315,14 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
     justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
-    paddingHorizontal: 24,
     paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
-    paddingBottom: 32,
   },
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     paddingTop: 12,
-    paddingBottom: 16,
-    gap: 16,
+    gap: 24,
   },
   brand: {
     alignItems: 'center',
@@ -401,8 +405,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonsLandscape: {
-    flex: 1,
-    minWidth: 0,
+    flexGrow: 1,
+    flexShrink: 1,
+    minWidth: 240,
+    maxWidth: GAME_CHROME_MAX_WIDTH,
+    width: '100%',
     gap: 8,
     marginBottom: 0,
     justifyContent: 'center',

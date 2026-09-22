@@ -24,6 +24,8 @@ import {
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { SETTINGS_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import {
   SETTINGS_ROW_MIN_HEIGHT,
@@ -43,6 +45,7 @@ function useStartLoadedPosition() {
 
 export function DeveloperScreen() {
   const startLoaded = useStartLoadedPosition();
+  const { insets } = useLayoutMetrics();
 
   if (!isDeveloperToolsEnabled()) {
     return <Redirect href="/settings" />;
@@ -54,11 +57,12 @@ export function DeveloperScreen() {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={
-          Platform.OS === 'web' ? { paddingTop: WEB_SETTINGS_TOP_PADDING } : undefined
-        }
+        contentContainerStyle={[
+          Platform.OS === 'web' ? { paddingTop: WEB_SETTINGS_TOP_PADDING } : undefined,
+          contentEdgePadding(insets, { bottom: 32 }),
+        ]}
       >
-        <View className="flex-1 px-4 pb-8">
+        <View className="px-4" style={styles.page}>
           <Text className="pb-4 text-sm" style={styles.blurb} tx="settings.developer_blurb" />
           <PresetSection onLoad={startLoaded} />
           <JsonSection onLoad={startLoaded} />
@@ -132,6 +136,12 @@ function JsonSection({ onLoad }: { onLoad: (state: GameState) => void }) {
 }
 
 const styles = StyleSheet.create({
+  page: {
+    width: '100%',
+    maxWidth: SETTINGS_MAX_WIDTH,
+    alignSelf: 'center',
+    paddingBottom: 8,
+  },
   blurb: {
     color: GAME_PALETTE.textMuted,
   },
