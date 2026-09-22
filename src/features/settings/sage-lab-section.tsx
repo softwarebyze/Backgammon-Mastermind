@@ -1,8 +1,13 @@
 // Demo-only: exercises the real bgsage engine end-to-end inside the app.
 // Only rendered on the developer screen (non-production builds). Not part of
 // the shipped product.
-import { planSageTurn } from 'expo-bgsage';
-import type { SageBoardPoint, SageGameState, SagePlayer } from 'expo-bgsage';
+import {
+  planSageTurn,
+  type SageBoardPoint,
+  type SageGameState,
+  type SageMove,
+  type SagePlayer,
+} from 'expo-bgsage';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
@@ -56,7 +61,7 @@ export function SageLabSection() {
     const t0 = Date.now();
     try {
       const moves = await planSageTurn(openingBlack31(), 2);
-      const notation = moves.map((m) => `${m.from}/${m.to}`).join(' ');
+      const notation = moves.map((m: SageMove) => `${m.from}/${m.to}`).join(' ');
       const ms = Date.now() - t0;
       console.log(`[SageLab] result: ${notation} (${ms}ms)`);
       setResult({ status: 'SAGE OK', moves: notation, ms });
