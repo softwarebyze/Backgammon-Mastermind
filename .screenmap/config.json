@@ -1,0 +1,9 @@
+{
+  "$comment": "scheme = development env (env.ts SCHEMES). Matches the iOS development-simulator prebuilt and the Android Screenmap APK (APP_ENV=development).",
+  "scheme": "backgammonmastermind.dev",
+  "platforms": ["ios", "android"],
+  "params": {
+    "lesson-id": "goal-board",
+    "learn/[lesson-id].lesson-id": "goal-board"
+  }
+}
