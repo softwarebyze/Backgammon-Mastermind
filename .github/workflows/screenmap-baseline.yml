@@ -176,7 +176,7 @@ jobs:
           SCREENMAP_MODE: baseline
           GITHUB_SHA: ${{ github.sha }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          VIEWER_URL: https://app.screenmap.dev
+          VIEWER_URL: https://softwarebyze.github.io/Backgammon-Mastermind
         run: bash .github/scripts/screenmap-merge-publish.sh
       - name: Upload combined map
         if: always()
