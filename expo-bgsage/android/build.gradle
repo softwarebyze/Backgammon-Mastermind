@@ -12,6 +12,9 @@ android {
 
   defaultConfig {
     minSdk 24
+    // Required by expo-module-gradle-plugin: PublicationInfo reads
+    // android.defaultConfig.versionName for the module's maven publication.
+    versionName version
     // Build the engine for all four ABIs the module supports.
     externalNativeBuild {
       cmake {

@@ -2,6 +2,7 @@ Pod::Spec.new do |s|
   s.name           = 'expo-bgsage'
   s.version        = '0.1.0'
   s.summary        = 'Expo native module wrapping the bgsage backgammon engine'
+  s.homepage       = 'https://github.com/softwarebyze/Backgammon-Mastermind'
   s.authors        = 'softwarebyze'
   s.license        = 'MPL-2.0'
   s.platforms      = { ios: '15.1' }
