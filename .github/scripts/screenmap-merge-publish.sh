@@ -14,7 +14,7 @@ OUT="${OUT:-combined.scrmap}"
 
 pick_bundle() {
   local dir="$1"
-  find "$dir" -maxdepth 2 \( -name '*.diff.scrmap' -o -name '*.scrmap' \) 2>/dev/null \
+  find "$dir" -maxdepth 10 \( -name '*.diff.scrmap' -o -name '*.scrmap' \) 2>/dev/null \
     | head -1 || true
 }
 
