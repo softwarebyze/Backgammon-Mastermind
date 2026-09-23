@@ -136,13 +136,32 @@ function decomposeMoves(oldB: number[], newB: number[], dice: number[]): RawMove
 }
 
 // ---- public API ----
+export interface SageTurnCandidate {
+  /** Resulting board (bgsage 26-array, player-on-roll perspective). */
+  board: number[];
+  /** Cubeless equity for the player on roll after this candidate. */
+  equity: number;
+}
+
+export interface SageTurnPlan {
+  /** Best full-turn move sequence, Mastermind-style (dieIndex into state.remainingDice). */
+  moves: SageMove[];
+  /** Cubeless equity of the best move for the player on roll. */
+  equity: number;
+  /** Every legal candidate's resulting board + equity, best first. */
+  candidates: SageTurnCandidate[];
+}
+
 /**
- * Ask the engine for the full checker-play turn. Returns Mastermind-style
- * Moves (with dieIndex into state.remainingDice) ready to animate.
+ * Ask the engine for the full checker-play turn, with equities. Returns the
+ * best move sequence plus every candidate's resulting board and equity
+ * (best first) — the candidate list powers tutor-mode blunder detection
+ * (equity loss of the played move vs the engine's best).
  * Throws SageEngineError when the engine is unavailable or its output can't
- * be decomposed — the caller should fall back to the heuristic AI.
+ * be decomposed — the caller should fall back to the heuristic AI (hints)
+ * or skip silently (tutor).
  */
-export async function planSageTurn(state: SageGameState, ply: 1 | 2 = 2): Promise<SageMove[]> {
+export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Promise<SageTurnPlan> {
   const P = state.currentPlayer;
   const board = gameStateToSageBoard(state);
   const [d1, d2] = state.dice;
@@ -156,11 +175,17 @@ export async function planSageTurn(state: SageGameState, ply: 1 | 2 = 2): Promis
   if (json.error || !json.moves || json.moves.length === 0) {
     throw new SageEngineError('sage returned no moves: ' + (json.error ?? String(raw).slice(0, 120)));
   }
+  const candidates: SageTurnCandidate[] = json.moves.map(
+    (m: { board: number[]; equity: number; cubeless_equity: number }) => ({
+      board: m.board,
+      equity: Number(m.cubeless_equity ?? m.equity),
+    }),
+  );
   const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
-  const seq = decomposeMoves(board, json.moves[0].board, dice);
+  const seq = decomposeMoves(board, candidates[0].board, dice);
   if (!seq) throw new SageEngineError('could not decompose sage result into moves');
   const used = new Array(state.remainingDice.length).fill(false);
-  return seq.map((m) => {
+  const moves = seq.map((m) => {
     const j = state.remainingDice.findIndex((v, k) => !used[k] && v === m.die);
     if (j === -1) throw new SageEngineError('die mismatch while mapping sage move');
     used[j] = true;
@@ -170,6 +195,17 @@ export async function planSageTurn(state: SageGameState, ply: 1 | 2 = 2): Promis
       dieIndex: j,
     };
   });
+  return { moves, equity: candidates[0].equity, candidates };
+}
+
+/**
+ * Ask the engine for the full checker-play turn. Returns Mastermind-style
+ * Moves (with dieIndex into state.remainingDice) ready to animate.
+ * Throws SageEngineError when the engine is unavailable or its output can't
+ * be decomposed — the caller should fall back to the heuristic AI.
+ */
+export async function planSageTurn(state: SageGameState, ply: 1 | 2 = 2): Promise<SageMove[]> {
+  return (await planSageTurnFull(state, ply)).moves;
 }
 
 export interface SageCubeVerdict {
