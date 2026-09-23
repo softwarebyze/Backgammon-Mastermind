@@ -12,12 +12,15 @@ import { useGameInput } from '@/features/game/use-game-input';
 import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
+import { useTutorMode } from '@/features/game/use-tutor';
 import { translate } from '@/lib/i18n';
 
 export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
   const input = useGameInput();
+  // Tutor mode: background blunder-checking for human turns.
+  useTutorMode(input.state);
   const {
     moveAnimation,
     resetAnimation,
