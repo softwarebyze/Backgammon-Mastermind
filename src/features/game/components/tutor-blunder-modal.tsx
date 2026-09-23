@@ -1,3 +1,5 @@
+import type { TutorBlunderPrompt } from '@/features/game/tutor-store';
+
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -5,106 +7,172 @@ import { hintMovesToSegments } from '@/features/game/hint-arrows';
 import { setHintArrows } from '@/features/game/hint-arrows-store';
 import { clearTutorBlunder, useTutorBlunder } from '@/features/game/tutor-store';
 import { useGame } from '@/features/game/use-game';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
+/** How many candidate plays to list with their equities. */
+const CANDIDATE_ROWS = 4;
+
+function formatEquity(e: number): string {
+  return `${e >= 0 ? '+' : '−'}${Math.abs(e).toFixed(2)}`;
+}
+
+function BlunderMessage({ prompt }: { prompt: TutorBlunderPrompt }) {
+  return (
+    <>
+      <Text style={styles.title}>Big blunder!</Text>
+      <Text style={styles.message}>
+        Your move ranked #
+        {prompt.playedRank}
+        {' '}
+        of
+        {' '}
+        {prompt.candidateCount}
+        {' '}
+        (−
+        {prompt.loss.toFixed(2)}
+        ).
+        {'\n'}
+        Sage preferred
+        {' '}
+        {prompt.bestNotation}
+        .
+      </Text>
+    </>
+  );
+}
+
+function CandidateList({ equities }: { equities: number[] }) {
+  const rows = equities.slice(0, CANDIDATE_ROWS);
+  const best = rows[0];
+  if (best === undefined)
+    return null;
+  return (
+    <View style={styles.candidates} testID="tutor-candidates">
+      {rows.map((equity, i) => {
+        const error = best - equity;
+        return (
+          <View key={`${equity.toFixed(3)}-${i}`} style={styles.candidateRow}>
+            <Text style={styles.candidateRank}>
+              #
+              {i + 1}
+            </Text>
+            <Text style={styles.candidateEquity}>{formatEquity(equity)}</Text>
+            <Text style={styles.candidateError}>
+              {i === 0 ? 'best' : `−${error.toFixed(2)}`}
+            </Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 /**
- * Tutor mode's blunder intervention: pauses the game when a big blunder is
- * detected and offers three choices — play Sage's move instead, go back and
- * try again, or see the suggestion as board arrows.
+ * Tutor mode's blunder intervention, XG-style: the game is paused with the
+ * blundered position still on the board, and the player can take the move
+ * back, ask for a hint (candidate equities included), keep the move anyway,
+ * or turn the tutor off. Nothing is auto-replaced.
  *
  * Demo branch: strings are English-only.
  */
 export function TutorBlunderModal() {
   const prompt = useTutorBlunder();
   const game = useGame();
+  const { setTutorMode } = useGamePreferences();
 
   if (!prompt) {
     return null;
   }
 
-  const dismiss = () => {
-    hapticLight();
-    clearTutorBlunder();
-  };
-
-  const handlePlayBest = () => {
-    hapticLight();
-    const { startState, movesMade, bestMoves } = prompt;
-    clearTutorBlunder();
-    // Revert the blundered turn and auto-play Sage's line.
-    game.tutorApplyBestMoves(startState, movesMade, bestMoves);
-  };
-
-  const handleTryAgain = () => {
-    hapticLight();
+  const revertTurn = () => {
     const { startState, movesMade } = prompt;
-    clearTutorBlunder();
     game.tutorRevertTurn(startState, movesMade);
   };
 
-  const handleShowSuggestion = () => {
+  const handleTakeBack = () => {
     hapticLight();
-    const { startState, movesMade, bestMoves } = prompt;
+    clearTutorBlunder();
+    revertTurn();
+  };
+
+  const handleHint = () => {
+    hapticLight();
+    const { bestMoves, startState } = prompt;
     clearTutorBlunder();
     // Back to turn start, then draw Sage's suggestion as arrows.
-    game.tutorRevertTurn(startState, movesMade);
+    revertTurn();
     // Defer one tick so the revert's setState lands first.
     setTimeout(() => {
       setHintArrows(hintMovesToSegments(bestMoves, startState));
     }, 50);
   };
 
+  const handleKeepMove = () => {
+    hapticLight();
+    // Play anyway: the blunder stands and the game continues.
+    clearTutorBlunder();
+  };
+
+  const handleTurnOff = () => {
+    hapticLight();
+    clearTutorBlunder();
+    setTutorMode(false);
+  };
+
+  const showCandidates = prompt.candidateEquities.length > 0;
+
   return (
     <Modal
       visible
       transparent
       animationType="none"
-      onRequestClose={dismiss}
+      onRequestClose={handleKeepMove}
     >
       <View style={styles.scrim}>
         <View style={styles.card} accessibilityRole="alert" testID="tutor-blunder-modal">
-          <Text style={styles.title}>Big blunder!</Text>
-          <Text style={styles.message}>
-            Sage preferred
-            {' '}
-            {prompt.bestNotation}
-            {' '}
-            (−
-            {prompt.loss.toFixed(2)}
-            ).
-          </Text>
-          <Text style={styles.sub}>
-            Want to fix it?
-          </Text>
+          <BlunderMessage prompt={prompt} />
+          {showCandidates && (
+            <CandidateList equities={prompt.candidateEquities} />
+          )}
           <View style={styles.actions}>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Play Sage's move instead"
-              testID="tutor-play-best"
-              onPress={handlePlayBest}
+              accessibilityLabel="Take back the move and try again"
+              testID="tutor-take-back"
+              onPress={handleTakeBack}
               style={({ pressed }) => [styles.btn, styles.btnPrimary, pressed && styles.pressed]}
             >
-              <Text style={styles.btnPrimaryLabel}>Play Sage&apos;s move</Text>
+              <Text style={styles.btnPrimaryLabel}>Take back</Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Go back and try again"
-              testID="tutor-try-again"
-              onPress={handleTryAgain}
+              accessibilityLabel="Show a hint for this position"
+              testID="tutor-hint"
+              onPress={handleHint}
               style={({ pressed }) => [styles.btn, styles.btnSecondary, pressed && styles.pressed]}
             >
-              <Text style={styles.btnSecondaryLabel}>Try again</Text>
+              <Text style={styles.btnSecondaryLabel}>Hint</Text>
             </Pressable>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="Show me the suggestion"
-              testID="tutor-show-suggestion"
-              onPress={handleShowSuggestion}
+              accessibilityLabel="Keep my move and continue"
+              testID="tutor-keep-move"
+              onPress={handleKeepMove}
               style={({ pressed }) => [styles.btn, styles.btnGhost, pressed && styles.pressed]}
             >
-              <Text style={styles.btnGhostLabel}>Show suggestion</Text>
+              <Text style={styles.btnGhostLabel}>Keep my move</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Turn Tutor mode off"
+              testID="tutor-turn-off"
+              onPress={handleTurnOff}
+              style={({ pressed }) => [styles.btn, styles.btnGhost, pressed && styles.pressed]}
+            >
+              <Text style={styles.btnMutedLabel}>Turn Tutor off</Text>
             </Pressable>
           </View>
         </View>
@@ -144,10 +212,34 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...interFont('regular'),
   },
-  sub: {
+  candidates: {
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    ...continuousRadius(10),
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    gap: 2,
+  },
+  candidateRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 8,
+    paddingVertical: 2,
+  },
+  candidateRank: {
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
-    textAlign: 'center',
+    width: 28,
+    ...interFont('semibold'),
+  },
+  candidateEquity: {
+    color: GAME_PALETTE.text,
+    fontSize: 14,
+    flex: 1,
+    ...interFont('regular'),
+  },
+  candidateError: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 13,
     ...interFont('regular'),
   },
   actions: {
@@ -186,6 +278,12 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 14,
     ...interFont('semibold'),
+  },
+  btnMutedLabel: {
+    color: GAME_PALETTE.textMuted,
+    opacity: 0.7,
+    fontSize: 13,
+    ...interFont('regular'),
   },
   pressed: {
     opacity: 0.88,

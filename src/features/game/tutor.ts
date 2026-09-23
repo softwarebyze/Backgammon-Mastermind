@@ -35,6 +35,10 @@ export type TutorVerdict = {
   /** Equity points the played turn gave up vs the engine's best. */
   loss: number;
   bestNotation: string;
+  /** 1-based rank of the played turn among the engine's candidates. */
+  playedRank: number;
+  /** Total candidate plays compared. */
+  candidateCount: number;
 };
 
 function boardEq(a: number[], b: number[]): boolean {
@@ -52,25 +56,24 @@ function boardEq(a: number[], b: number[]): boolean {
  * engine is unavailable — tutor mode stays silent rather than guessing.
  */
 export async function analyzeTutorTurn(state: GameState): Promise<TutorTurnAnalysis | null> {
-  let plan;
   try {
-    plan = await planSageTurnFull(state, 2);
+    const plan = await planSageTurnFull(state, 2);
+    const candidates = (plan?.candidates ?? []).filter(c => Number.isFinite(c.equity));
+    if (!plan || !Number.isFinite(plan.equity) || candidates.length === 0) {
+      return null;
+    }
+    return {
+      key: `${state.currentPlayer}|${state.dice[0]},${state.dice[1]}`,
+      player: state.currentPlayer,
+      bestNotation: formatHintNotation(plan.moves),
+      bestEquity: plan.equity,
+      bestMoves: plan.moves as Move[],
+      candidates,
+    };
   }
   catch {
     return null;
   }
-  const candidates = plan.candidates.filter(c => Number.isFinite(c.equity));
-  if (!Number.isFinite(plan.equity) || candidates.length === 0) {
-    return null;
-  }
-  return {
-    key: `${state.currentPlayer}|${state.dice[0]},${state.dice[1]}`,
-    player: state.currentPlayer,
-    bestNotation: formatHintNotation(plan.moves),
-    bestEquity: plan.equity,
-    bestMoves: plan.moves as Move[],
-    candidates,
-  };
 }
 
 /**
@@ -87,11 +90,17 @@ export function judgeTutorTurn(
   analysis: TutorTurnAnalysis,
   endBoard: number[],
 ): TutorVerdict | null {
-  const played = analysis.candidates.find(c => boardEq(c.board, endBoard));
-  if (!played)
+  const playedIndex = analysis.candidates.findIndex(c => boardEq(c.board, endBoard));
+  if (playedIndex < 0)
     return null;
+  const played = analysis.candidates[playedIndex];
   const loss = analysis.bestEquity - played.equity;
   if (!(loss >= TUTOR_BLUNDER_THRESHOLD))
     return null;
-  return { loss, bestNotation: analysis.bestNotation };
+  return {
+    loss,
+    bestNotation: analysis.bestNotation,
+    playedRank: playedIndex + 1,
+    candidateCount: analysis.candidates.length,
+  };
 }

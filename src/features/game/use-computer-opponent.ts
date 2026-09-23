@@ -49,6 +49,8 @@ export function useComputerOpponent({
   const stateRef = useRef(state);
   stateRef.current = state;
   const skipRef = useRef(false);
+  const pausedRef = useRef(paused);
+  pausedRef.current = paused;
   // Bumped when returning to the game screen so timers re-schedule without a state change.
   const [scheduleGen, setScheduleGen] = useState(0);
   const { preferences } = useGamePreferences();
@@ -101,6 +103,9 @@ export function useComputerOpponent({
     }
 
     const runAI = () => {
+      // Failsafe: a timeout scheduled just before the pause must not fire through it.
+      if (pausedRef.current)
+        return;
       const prev = stateRef.current;
       if (!prev || prev.currentPlayer !== 'black')
         return;
@@ -134,6 +139,8 @@ export function useComputerOpponent({
         }
         const moveDelay = skip ? 0 : computerMoveDelayMs(moveCount, fast);
         aiTimeoutRef.current = setTimeout(() => {
+          if (pausedRef.current)
+            return;
           const latest = stateRef.current;
           if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;

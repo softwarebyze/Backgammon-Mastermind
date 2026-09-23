@@ -1,7 +1,7 @@
 import type { GameContextType } from '@/features/game/game-context';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useState } from 'react';
-import { useTutorBlunder } from '@/features/game/tutor-store';
+import { useTutorBlunder, useTutorVerdictPending } from '@/features/game/tutor-store';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
@@ -42,12 +42,14 @@ export function useGameProviderValue(): GameContextType {
     doMove,
     doMoveSequence,
     playMove,
-    playMoveSequence,
     resetAnimation,
     armAnimationFinish,
     setMoveAnimation,
   } = useAnimatedMoves(state, setState, handleMoveRecorded);
   const tutorBlunder = useTutorBlunder();
+  const tutorVerdictPending = useTutorVerdictPending();
+  /** Tutor prompt open or a completed turn waiting on its verdict — pause everything. */
+  const tutorPaused = tutorBlunder !== null || tutorVerdictPending;
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     timeline,
@@ -70,7 +72,7 @@ export function useGameProviderValue(): GameContextType {
     moveCount: moveLog.length,
     hasRedo: canRedo,
     recordNoMove,
-    paused: tutorBlunder !== null,
+    paused: tutorPaused,
   });
   const { doPassTurn, doRollDice } = useGameDiceActions({
     state,
@@ -98,6 +100,7 @@ export function useGameProviderValue(): GameContextType {
     state,
     isAnimating,
     hasRedo: canRedo,
+    paused: tutorPaused,
     doRollDice,
     doMove,
     doMoveSequence,
@@ -133,38 +136,6 @@ export function useGameProviderValue(): GameContextType {
     });
   }, [clearAITimeout, resetAllAnimation, popLastMove, setTimeline, setState]);
 
-  const tutorApplyBestMoves = useCallback((startState: GameState, movesMade: number, bestMoves: Move[]) => {
-    clearAITimeout();
-    resetAllAnimation();
-    const n = Math.max(0, Math.min(movesMade, 8));
-    for (let i = 0; i < n; i++) {
-      popLastMove();
-    }
-    setTimeline((prev) => {
-      if (!prev)
-        return prev;
-      const newCursor = Math.max(0, prev.cursor - n);
-      return {
-        snapshots: prev.snapshots.slice(0, newCursor + 1),
-        cursor: newCursor,
-        redo: [],
-        redoMoves: [],
-      };
-    });
-    const cleanStart: GameState = {
-      ...startState,
-      points: startState.points.map(p => ({ ...p })),
-      bar: { ...startState.bar },
-      borneOff: { ...startState.borneOff },
-      remainingDice: [...startState.remainingDice],
-      selectedPoint: null,
-      legalMovesForSelected: [],
-    };
-    // Play Sage's line from the clean start; playMoveSequence records
-    // timeline + move log via handleMoveRecorded.
-    playMoveSequence(cleanStart, bestMoves);
-  }, [clearAITimeout, resetAllAnimation, popLastMove, setTimeline, playMoveSequence]);
-
   return {
     state,
     moveLog,
@@ -191,6 +162,5 @@ export function useGameProviderValue(): GameContextType {
     resumeAIScheduling,
     skipAIDelay,
     tutorRevertTurn,
-    tutorApplyBestMoves,
   };
 }
