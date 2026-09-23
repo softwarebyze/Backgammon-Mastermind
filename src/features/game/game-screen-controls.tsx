@@ -250,13 +250,21 @@ function ActionControl({
     );
   }
 
-  // Human turn, dice rolled, nothing selected yet: offer the Sage hint.
-  // (With a selection, the slot shows Cancel instead — see above.)
-  if (state.phase === 'moving' && isHumanTurn && !isReviewing) {
+  // Human turn, dice rolled, nothing played yet: offer the Hint button.
+  // (Hidden once a checker has moved — the engine plans whole turns from
+  // the roll, so a mid-turn suggestion would be stale. With a selection,
+  // the slot shows Cancel instead — see above.)
+  if (state.phase === 'moving' && isHumanTurn && !isReviewing && noMovesPlayedYet(state)) {
     return <SageHintButton state={state} />;
   }
 
   return <View style={styles.actionSpacer} />;
+}
+
+/** True while the turn-start dice are all still unplayed. */
+function noMovesPlayedYet(state: GameState): boolean {
+  const expectedDice = state.dice[0] === state.dice[1] ? 4 : 2;
+  return state.remainingDice.length === expectedDice;
 }
 
 function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => void }) {

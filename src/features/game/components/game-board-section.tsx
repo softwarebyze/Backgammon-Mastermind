@@ -7,6 +7,7 @@ import { Animated, Pressable, StyleSheet, View } from 'react-native';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
+import { useHintArrows } from '@/features/game/hint-arrows-store';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT } from '@/lib/game/constants';
@@ -48,7 +49,10 @@ export function GameBoardSection({
 }: Props) {
   const dimensions = useBoardDimensions();
   const { preferences } = useGamePreferences();
-  const showPath = pathSegments.length > 0;
+  const hintArrows = useHintArrows();
+  // Hint arrows layer onto the live board only — never over review scrub.
+  const overlaySegments = isReviewing ? pathSegments : [...pathSegments, ...hintArrows];
+  const showPath = overlaySegments.length > 0;
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
   const travelEmphasis = useMemo(() => {
     if (!boardAnimation) {
@@ -117,7 +121,7 @@ export function GameBoardSection({
                   pointerEvents="none"
                 >
                   <MovePathOverlay
-                    segments={pathSegments}
+                    segments={overlaySegments}
                     dimensions={dimensions}
                     animation={boardAnimation}
                     fadeOutMs={pathFadeOutMs}

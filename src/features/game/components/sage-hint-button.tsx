@@ -1,9 +1,11 @@
+import type { GameState } from '@/lib/game/types';
+
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import type { GameState } from '@/lib/game/types';
-
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { hintMovesToSegments } from '@/features/game/hint-arrows';
+import { clearHintArrows, setHintArrows } from '@/features/game/hint-arrows-store';
 import { getSageHint } from '@/features/game/sage-hint';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
@@ -16,10 +18,10 @@ type Props = {
 type Phase = 'idle' | 'loading' | 'done' | 'error';
 
 /**
- * "Ask Sage" hint button for the human turn. Lives in the action slot while
- * the player is moving. Shows the engine's suggested turn as compact
- * notation (e.g. "13/11 · 8/5"); falls back to the built-in heuristic AI
- * when the native/WASM engine isn't available.
+ * "Hint" button for the human turn. Asks the Sage engine for the best turn
+ * and draws the suggested moves as arrows on the board, with the compact
+ * notation (e.g. "13/11 · 8/5") in the action slot. Falls back to the
+ * built-in heuristic AI when the native/WASM engine isn't available.
  *
  * Demo branch: strings are English-only.
  */
@@ -38,22 +40,32 @@ export function SageHintButton({ state }: Props) {
     setNotation(null);
     setEngine(null);
     setMs(null);
+    clearHintArrows();
   }, [turnKey]);
 
+  // Never leave stale arrows on the board (e.g. button unmounts when the
+  // player selects a checker or makes a move).
+  useEffect(() => () => clearHintArrows(), []);
+
   const ask = async () => {
-    if (phase === 'loading') return;
+    if (phase === 'loading')
+      return;
     hapticLight();
     const id = ++requestId.current;
     setPhase('loading');
     try {
       const hint = await getSageHint(state);
-      if (requestId.current !== id) return; // turn changed mid-flight
+      if (requestId.current !== id)
+        return; // turn changed mid-flight
       setNotation(hint.notation);
       setEngine(hint.engine);
       setMs(hint.ms);
       setPhase('done');
-    } catch {
-      if (requestId.current !== id) return;
+      setHintArrows(hintMovesToSegments(hint.moves, state));
+    }
+    catch {
+      if (requestId.current !== id)
+        return;
       setPhase('error');
     }
   };
@@ -63,6 +75,7 @@ export function SageHintButton({ state }: Props) {
     requestId.current += 1;
     setPhase('idle');
     setNotation(null);
+    clearHintArrows();
   };
 
   if (phase === 'loading') {
@@ -84,7 +97,9 @@ export function SageHintButton({ state }: Props) {
         style={({ pressed }) => [styles.resultPill, pressed && styles.pressed]}
       >
         <Text style={styles.resultText} numberOfLines={2}>
-          {engine === 'sage' ? 'Sage suggests' : 'Hint'}: {notation}
+          {engine === 'sage' ? 'Sage suggests' : 'Hint'}
+          :
+          {notation}
           {ms !== null ? ` (${ms}ms)` : ''}
         </Text>
         <Text style={styles.dismissText}>tap to dismiss</Text>
@@ -109,12 +124,12 @@ export function SageHintButton({ state }: Props) {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Ask Sage for a move hint"
+      accessibilityLabel="Get a move hint"
       testID="sage-hint-button"
       onPress={ask}
       style={({ pressed }) => [styles.hintBtn, pressed && styles.pressed]}
     >
-      <Text style={styles.hintBtnText}>Ask Sage</Text>
+      <Text style={styles.hintBtnText}>Hint</Text>
     </Pressable>
   );
 }
