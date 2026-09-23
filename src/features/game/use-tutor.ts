@@ -7,11 +7,13 @@ import { useEffect, useRef } from 'react';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { analyzeTutorTurn, judgeTutorTurn } from './tutor';
-import { clearTutorNotice, showTutorNotice } from './tutor-store';
+import { clearTutorBlunder, showTutorBlunder } from './tutor-store';
 
 type TrackedTurn = {
   key: string;
   analysis: TutorTurnAnalysis | null;
+  startState: GameState;
+  startMoveLogLength: number;
 };
 
 function isHumanTurn(state: GameState): boolean {
@@ -27,22 +29,40 @@ function turnJustStarted(state: GameState): boolean {
   return state.remainingDice.length === expectedDice;
 }
 
+function cloneGameState(state: GameState): GameState {
+  return {
+    ...state,
+    points: state.points.map(p => ({ ...p })),
+    bar: { ...state.bar },
+    borneOff: { ...state.borneOff },
+    dice: [...state.dice] as [number, number],
+    remainingDice: [...state.remainingDice],
+    openingRolls: { ...state.openingRolls },
+    legalMovesForSelected: [],
+    selectedPoint: null,
+  };
+}
+
 /**
  * Tutor mode: when a fresh human turn starts, the turn-start position is
  * analyzed in the background; when the turn ends, the played resulting
- * board is compared against the engine's candidate equities and big
- * blunders get flagged with the better move. Silent when the engine is
- * unavailable, and never judges a turn it couldn't analyze from the start.
+ * board is compared against the engine's candidate equities. On a big
+ * blunder the game pauses with a prompt offering to play Sage's move,
+ * try again, or see the suggestion — instead of the old passive banner.
+ * Silent when the engine is unavailable, and never judges a turn it
+ * couldn't analyze from the start.
  */
-export function useTutorMode(liveState: GameState | null) {
+export function useTutorMode(liveState: GameState | null, moveLogLength: number) {
   const { preferences } = useGamePreferences();
   const trackedRef = useRef<TrackedTurn | null>(null);
+  const moveLogLengthRef = useRef(moveLogLength);
+  moveLogLengthRef.current = moveLogLength;
   const tutorOn = preferences.tutorMode;
 
   useEffect(() => {
     if (!tutorOn) {
       trackedRef.current = null;
-      clearTutorNotice();
+      clearTutorBlunder();
       return;
     }
     if (!liveState)
@@ -61,9 +81,16 @@ export function useTutorMode(liveState: GameState | null) {
         });
         const verdict = judgeTutorTurn(tracked.analysis, endBoard);
         if (verdict) {
-          showTutorNotice({
-            title: 'Big blunder!',
-            body: `Sage preferred ${verdict.bestNotation} (−${verdict.loss.toFixed(2)}).`,
+          const movesMade = Math.max(
+            0,
+            moveLogLengthRef.current - tracked.startMoveLogLength,
+          );
+          showTutorBlunder({
+            bestNotation: verdict.bestNotation,
+            loss: verdict.loss,
+            bestMoves: tracked.analysis.bestMoves,
+            startState: tracked.startState,
+            movesMade,
           });
         }
       }
@@ -72,7 +99,12 @@ export function useTutorMode(liveState: GameState | null) {
     // A fresh human turn just started → analyze it in the background.
     if (isHumanTurn(liveState) && liveState.phase === 'moving' && turnJustStarted(liveState)) {
       if (!trackedRef.current || trackedRef.current.key !== key) {
-        const entry: TrackedTurn = { key, analysis: null };
+        const entry: TrackedTurn = {
+          key,
+          analysis: null,
+          startState: cloneGameState(liveState),
+          startMoveLogLength: moveLogLengthRef.current,
+        };
         trackedRef.current = entry;
         void analyzeTutorTurn(liveState).then((analysis) => {
           if (trackedRef.current !== entry)
@@ -86,5 +118,5 @@ export function useTutorMode(liveState: GameState | null) {
         });
       }
     }
-  }, [liveState, tutorOn]);
+  }, [liveState, moveLogLength, tutorOn]);
 }

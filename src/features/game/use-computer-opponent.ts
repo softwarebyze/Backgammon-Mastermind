@@ -22,6 +22,8 @@ type ComputerOpponentOptions = {
   /** Undo left a redo stack — don't auto-play or the AI wipes redo. */
   hasRedo: boolean;
   recordNoMove: (before: GameState, after: GameState) => void;
+  /** Tutor blunder prompt is open — pause the AI until the user chooses. */
+  paused?: boolean;
 };
 
 export type ComputerOpponentControls = {
@@ -41,6 +43,7 @@ export function useComputerOpponent({
   moveCount,
   hasRedo,
   recordNoMove,
+  paused = false,
 }: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
@@ -70,6 +73,8 @@ export function useComputerOpponent({
   useEffect(() => {
     clearAITimeout();
 
+    if (paused)
+      return clearAITimeout;
     if (!state)
       return clearAITimeout;
     if (state.mode !== 'vs-computer')
@@ -159,6 +164,7 @@ export function useComputerOpponent({
     clearAITimeout,
     scheduleGen,
     fast,
+    paused,
   ]);
 
   return { clearAITimeout, resumeAIScheduling, skipAIDelay };

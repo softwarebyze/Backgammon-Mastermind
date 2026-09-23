@@ -1,4 +1,4 @@
-import type { GameState, Player } from '@/lib/game/types';
+import type { GameState, Move, Player } from '@/lib/game/types';
 
 import { planSageTurnFull } from 'expo-bgsage';
 
@@ -25,6 +25,8 @@ export type TutorTurnAnalysis = {
   /** e.g. "13/11 · 8/5" — shown when flagging the blunder. */
   bestNotation: string;
   bestEquity: number;
+  /** Best full-turn move sequence (for "play it for me"). */
+  bestMoves: Move[];
   /** Every legal candidate's resulting board + equity, best first. */
   candidates: TutorTurnCandidate[];
 };
@@ -66,6 +68,7 @@ export async function analyzeTutorTurn(state: GameState): Promise<TutorTurnAnaly
     player: state.currentPlayer,
     bestNotation: formatHintNotation(plan.moves),
     bestEquity: plan.equity,
+    bestMoves: plan.moves as Move[],
     candidates,
   };
 }

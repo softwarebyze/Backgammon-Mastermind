@@ -7,6 +7,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
+import { useTutorBlunder } from '@/features/game/tutor-store';
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
 import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
@@ -15,12 +16,11 @@ import { useMoveReview } from '@/features/game/use-move-review';
 import { useTutorMode } from '@/features/game/use-tutor';
 import { translate } from '@/lib/i18n';
 
+/* eslint-disable max-lines-per-function -- screen composes all game slices */
 export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
   const input = useGameInput();
-  // Tutor mode: background blunder-checking for human turns.
-  useTutorMode(input.state);
   const {
     moveAnimation,
     resetAnimation,
@@ -36,6 +36,9 @@ export function GameScreen() {
     skipAIDelay,
     selectPoint,
   } = useGame();
+  // Tutor mode: background blunder-checking for human turns.
+  useTutorMode(input.state, moveLog.length);
+  const tutorBlunder = useTutorBlunder();
   const { leaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
   const review = useMoveReview({
     liveState: input.state,
@@ -111,14 +114,16 @@ export function GameScreen() {
   const board = deriveGameBoardPresentation(review, moveAnimation, historyPath);
   const state = board.boardState!;
   const isComputerTurn = state.mode === 'vs-computer' && state.currentPlayer === 'black';
+  // Pause interaction while the tutor blunder prompt is open.
+  const interactionEnabled = board.interactionEnabled && tutorBlunder === null;
 
   return (
     <GameScreenLayout
-      board={{ ...board, boardState: state }}
+      board={{ ...board, boardState: state, interactionEnabled }}
       review={review}
       input={input}
       moveLog={moveLog}
-      isComputerTurn={isComputerTurn}
+      isComputerTurn={isComputerTurn || tutorBlunder !== null}
       ceremonyKey={ceremonyKey}
       onCancelSelection={() => selectPoint(null)}
       onSkipComputer={skipAIDelay}

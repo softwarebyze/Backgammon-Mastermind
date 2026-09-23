@@ -50,6 +50,10 @@ function sampleAnalysis(): TutorTurnAnalysis {
     player: 'white',
     bestNotation: '13/11 · 8/5',
     bestEquity: 0.2,
+    bestMoves: [
+      { from: 13, to: 11, dieIndex: 0 },
+      { from: 8, to: 5, dieIndex: 1 },
+    ],
     candidates: [
       { board: boardWith({}), equity: 0.2 },
       { board: boardWith({ 5: 1 }), equity: 0.15 },

@@ -34,6 +34,15 @@ export type GameContextType = {
   resumeAIScheduling: () => void;
   /** Skip remaining computer think/roll wait. */
   skipAIDelay: () => void;
+  /**
+   * Tutor mode: revert a blundered turn to its start snapshot, trimming the
+   * move log and timeline so history stays consistent. Used for "try again".
+   */
+  tutorRevertTurn: (startState: GameState, movesMade: number) => void;
+  /**
+   * Tutor mode: revert the blundered turn and play Sage's best moves instead.
+   */
+  tutorApplyBestMoves: (startState: GameState, movesMade: number, bestMoves: Move[]) => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

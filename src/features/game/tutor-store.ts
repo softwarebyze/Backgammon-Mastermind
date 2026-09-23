@@ -1,14 +1,21 @@
+import type { GameState, Move } from '@/lib/game/types';
+
 import { useSyncExternalStore } from 'react';
 
-export type TutorNotice = {
+export type TutorBlunderPrompt = {
   id: number;
-  /** e.g. "Big blunder!" */
-  title: string;
-  /** e.g. "Sage preferred 13/11 · 8/5 (−0.12)." */
-  body: string;
+  /** e.g. "13/11 · 8/5" */
+  bestNotation: string;
+  loss: number;
+  /** Best move sequence to play instead. */
+  bestMoves: Move[];
+  /** Turn-start snapshot to restore for "try again". */
+  startState: GameState;
+  /** How many move-log entries the blundered turn added (for revert). */
+  movesMade: number;
 };
 
-let notice: TutorNotice | null = null;
+let prompt: TutorBlunderPrompt | null = null;
 let nextId = 1;
 const listeners = new Set<() => void>();
 
@@ -25,22 +32,22 @@ function subscribe(listener: () => void) {
   };
 }
 
-function getSnapshot(): TutorNotice | null {
-  return notice;
+function getSnapshot(): TutorBlunderPrompt | null {
+  return prompt;
 }
 
-export function showTutorNotice(n: Omit<TutorNotice, 'id'>) {
-  notice = { ...n, id: nextId++ };
+export function showTutorBlunder(p: Omit<TutorBlunderPrompt, 'id'>) {
+  prompt = { ...p, id: nextId++ };
   emit();
 }
 
-export function clearTutorNotice() {
-  if (notice === null)
+export function clearTutorBlunder() {
+  if (prompt === null)
     return;
-  notice = null;
+  prompt = null;
   emit();
 }
 
-export function useTutorNotice(): TutorNotice | null {
+export function useTutorBlunder(): TutorBlunderPrompt | null {
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
