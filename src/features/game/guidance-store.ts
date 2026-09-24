@@ -40,6 +40,12 @@ export type GuidanceSession = {
   myMoves: Move[];
   engineMoves: Move[];
   revealed: boolean;
+  /**
+   * Blunder-only. When the revealed view was opened via "Show my move",
+   * only the player's own path is shown — the best move (notation, arrows,
+   * details) stays hidden until the player explicitly asks for it.
+   */
+  revealMineOnly?: boolean;
   /** Which arrow sets the solution view draws. */
   showMine: boolean;
   showEngine: boolean;

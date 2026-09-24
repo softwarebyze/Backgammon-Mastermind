@@ -3,6 +3,7 @@ import type { GuidanceSession } from '@/features/game/guidance-store';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { BlunderMeter } from '@/features/game/components/blunder-meter';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import {
   blunderDetailsSummary,
@@ -68,16 +69,21 @@ function DetailsSection({ session }: { session: GuidanceSession }) {
 }
 
 /** Toggle chips for the two arrow sets in the solution view. */
-function PathToggles({ session }: { session: GuidanceSession }) {
-  const chip = (
-    label: string,
-    color: string,
-    active: boolean,
-    testID: string,
-    onPress: () => void,
-  ) => (
+function Chip({
+  label,
+  color,
+  active,
+  testID,
+  onPress,
+}: {
+  label: string;
+  color: string;
+  active: boolean;
+  testID: string;
+  onPress: () => void;
+}) {
+  return (
     <Pressable
-      key={testID}
       accessibilityRole="button"
       accessibilityLabel={`${active ? 'Hide' : 'Show'} ${label}`}
       testID={testID}
@@ -91,12 +97,25 @@ function PathToggles({ session }: { session: GuidanceSession }) {
       <Text style={[styles.chipText, active && styles.chipTextActive]}>{label}</Text>
     </Pressable>
   );
+}
+
+function PathToggles({ session }: { session: GuidanceSession }) {
   return (
     <View style={styles.chips}>
-      {chip('Your move', GAME_PALETTE.guideMine, session.showMine, 'guidance-toggle-mine', () =>
-        updateGuidance({ showMine: !session.showMine }))}
-      {chip('Best move', GAME_PALETTE.guideEngine, session.showEngine, 'guidance-toggle-engine', () =>
-        updateGuidance({ showEngine: !session.showEngine }))}
+      <Chip
+        label="Your move"
+        color={GAME_PALETTE.guideMine}
+        active={session.showMine}
+        testID="guidance-toggle-mine"
+        onPress={() => updateGuidance({ showMine: !session.showMine })}
+      />
+      <Chip
+        label="Best move"
+        color={GAME_PALETTE.guideEngine}
+        active={session.showEngine}
+        testID="guidance-toggle-engine"
+        onPress={() => updateGuidance({ showEngine: !session.showEngine })}
+      />
     </View>
   );
 }
@@ -133,13 +152,115 @@ function ActionButton({
 }
 
 /**
+ * The revealed answer: either the player's own move alone ("Show my move",
+ * best move still hidden) or the full comparison with the engine's best.
+ */
+function SolutionView({
+  session,
+  onRevealBest,
+  onBackToQuestion,
+  onTakeBack,
+  onKeepMove,
+}: {
+  session: GuidanceSession;
+  onRevealBest: () => void;
+  onBackToQuestion: () => void;
+  onTakeBack: () => void;
+  onKeepMove: () => void;
+}) {
+  return (
+    <>
+      <Text style={styles.title}>
+        {session.revealMineOnly ? 'Your move' : 'The best move'}
+      </Text>
+      {session.revealMineOnly
+        ? (
+            <View style={styles.paths}>
+              <View style={styles.pathRow}>
+                <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideMine }]} />
+                <Text style={styles.pathText}>
+                  You played:
+                  {' '}
+                  {formatHintNotation(session.myMoves)}
+                </Text>
+              </View>
+            </View>
+          )
+        : (
+            <>
+              <PathToggles session={session} />
+              <View style={styles.paths}>
+                <View style={styles.pathRow}>
+                  <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideMine }]} />
+                  <Text style={styles.pathText}>
+                    You played:
+                    {' '}
+                    {formatHintNotation(session.myMoves)}
+                  </Text>
+                </View>
+                <View style={styles.pathRow}>
+                  <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideEngine }]} />
+                  <Text style={styles.pathText}>
+                    Best:
+                    {' '}
+                    {formatHintNotation(session.engineMoves)}
+                  </Text>
+                </View>
+              </View>
+              <DetailsSection session={session} />
+            </>
+          )}
+      <View style={styles.actions}>
+        {session.revealMineOnly && (
+          <ActionButton
+            label="Show the best move"
+            a11y="Reveal the recommended move"
+            testID="guidance-reveal"
+            onPress={onRevealBest}
+            style={styles.btnSecondary}
+            labelStyle={styles.btnSecondaryLabel}
+          />
+        )}
+        <ActionButton
+          label="Back to question"
+          a11y="Go back without the answer"
+          testID="guidance-back-to-question"
+          onPress={onBackToQuestion}
+          style={styles.btnSecondary}
+          labelStyle={styles.btnSecondaryLabel}
+        />
+        <ActionButton
+          label="Take back & retry"
+          a11y="Take back the move and try again"
+          testID="guidance-take-back"
+          onPress={onTakeBack}
+          style={styles.btnPrimary}
+          labelStyle={styles.btnPrimaryLabel}
+        />
+        <ActionButton
+          label="Keep my move"
+          a11y="Keep my move and continue"
+          testID="guidance-keep-move"
+          onPress={onKeepMove}
+          style={styles.btnGhost}
+          labelStyle={styles.btnGhostLabel}
+        />
+      </View>
+    </>
+  );
+}
+
+/**
  * Blunder intervention, XG-style with progressive disclosure: the game is
  * paused with the blundered position on the board, and the question view
- * deliberately does NOT reveal the recommended move — the player can
- * take back and retry, peek at the answer, keep the move, or turn the tutor
- * off. Revealing shows both paths (theirs in orange, the best in green) on a
+ * deliberately does NOT reveal the recommended move — a blunder-severity
+ * meter (standard GNU Backgammon bands) shows how bad the move was, and the
+ * player can take back and retry, peek at the answer, look at just their
+ * own move again, keep the move, or turn the tutor off. Revealing shows both
+ * paths (theirs in orange, the best in green) on a
  * display-only preview of the turn-start board, with a way back to the
- * question. Nothing is ever auto-replaced.
+ * question; "Show my move" shows only their own path and notation, keeping
+ * the best move hidden until explicitly requested. Nothing is ever auto-replaced.
  *
  * Demo branch: strings are English-only.
  */
@@ -161,7 +282,16 @@ export function GuidanceModal() {
     revertTurn();
   };
   const handleReveal = () => updateGuidance({ revealed: true });
-  const handleBackToQuestion = () => updateGuidance({ revealed: false });
+  const handleShowMine = () => updateGuidance({
+    revealed: true,
+    showMine: true,
+    showEngine: false,
+    revealMineOnly: true,
+  });
+  const handleRevealBest = () =>
+    updateGuidance({ revealMineOnly: false, showEngine: true });
+  const handleBackToQuestion = () =>
+    updateGuidance({ revealed: false, revealMineOnly: false });
   const handleKeepMove = () => clearGuidance();
   const handleTurnOff = () => {
     clearGuidance();
@@ -184,6 +314,7 @@ export function GuidanceModal() {
                   <Text style={styles.message}>
                     {blunderQuestionBody(verdict.playedRank, verdict.candidateCount, verdict.loss)}
                   </Text>
+                  <BlunderMeter loss={verdict.loss} />
                   <Text style={styles.explainer}>{EQUITY_EXPLAINER}</Text>
                   <View style={styles.actions}>
                     <ActionButton
@@ -201,6 +332,14 @@ export function GuidanceModal() {
                       onPress={handleReveal}
                       style={styles.btnSecondary}
                       labelStyle={styles.btnSecondaryLabel}
+                    />
+                    <ActionButton
+                      label="Show my move"
+                      a11y="Show only my move, without revealing the best move"
+                      testID="guidance-show-mine"
+                      onPress={handleShowMine}
+                      style={styles.btnGhost}
+                      labelStyle={styles.btnGhostLabel}
                     />
                     <ActionButton
                       label="Keep my move"
@@ -222,55 +361,13 @@ export function GuidanceModal() {
                 </>
               )
             : (
-                <>
-                  <Text style={styles.title}>The best move</Text>
-                  <PathToggles session={session} />
-                  <View style={styles.paths}>
-                    <View style={styles.pathRow}>
-                      <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideMine }]} />
-                      <Text style={styles.pathText}>
-                        You played:
-                        {' '}
-                        {formatHintNotation(session.myMoves)}
-                      </Text>
-                    </View>
-                    <View style={styles.pathRow}>
-                      <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideEngine }]} />
-                      <Text style={styles.pathText}>
-                        Best:
-                        {' '}
-                        {formatHintNotation(session.engineMoves)}
-                      </Text>
-                    </View>
-                  </View>
-                  <DetailsSection session={session} />
-                  <View style={styles.actions}>
-                    <ActionButton
-                      label="Back to question"
-                      a11y="Go back without the answer"
-                      testID="guidance-back-to-question"
-                      onPress={handleBackToQuestion}
-                      style={styles.btnSecondary}
-                      labelStyle={styles.btnSecondaryLabel}
-                    />
-                    <ActionButton
-                      label="Take back & retry"
-                      a11y="Take back the move and try again"
-                      testID="guidance-take-back"
-                      onPress={handleTakeBack}
-                      style={styles.btnPrimary}
-                      labelStyle={styles.btnPrimaryLabel}
-                    />
-                    <ActionButton
-                      label="Keep my move"
-                      a11y="Keep my move and continue"
-                      testID="guidance-keep-move"
-                      onPress={handleKeepMove}
-                      style={styles.btnGhost}
-                      labelStyle={styles.btnGhostLabel}
-                    />
-                  </View>
-                </>
+                <SolutionView
+                  session={session}
+                  onRevealBest={handleRevealBest}
+                  onBackToQuestion={handleBackToQuestion}
+                  onTakeBack={handleTakeBack}
+                  onKeepMove={handleKeepMove}
+                />
               )}
         </View>
       </View>

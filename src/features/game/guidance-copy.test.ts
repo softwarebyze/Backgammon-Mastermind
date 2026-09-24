@@ -12,11 +12,11 @@ describe('guidance copy', () => {
   describe('blunderSeverity', () => {
     it('labels large losses as big blunders', () => {
       expect(blunderSeverity(0.2)).toBe('Big blunder');
-      expect(blunderSeverity(0.15)).toBe('Big blunder');
+      expect(blunderSeverity(0.16)).toBe('Big blunder');
     });
 
     it('labels medium losses as mistakes', () => {
-      expect(blunderSeverity(0.149)).toBe('Mistake');
+      expect(blunderSeverity(0.159)).toBe('Mistake');
       expect(blunderSeverity(0.08)).toBe('Mistake');
     });
 

@@ -3,8 +3,8 @@ import type { GuidanceSession } from '../guidance-store';
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, render, screen } from '@/lib/test-utils';
 
-import { GuidanceModal } from './guidance-modal';
 import { clearGuidance, showGuidance } from '../guidance-store';
+import { GuidanceModal } from './guidance-modal';
 
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),
@@ -41,6 +41,14 @@ function blunderSession(): Omit<GuidanceSession, 'id'> {
   };
 }
 
+/** Opens a blunder prompt and renders the modal, the common test setup. */
+function renderQuestion(session: Omit<GuidanceSession, 'id'> = blunderSession()) {
+  act(() => {
+    showGuidance(session);
+  });
+  render(<GuidanceModal />);
+}
+
 beforeEach(() => {
   mockTutorRevertTurn.mockClear();
   mockSetTutorMode.mockClear();
@@ -51,37 +59,66 @@ afterEach(() => {
   clearGuidance();
 });
 
-describe('GuidanceModal', () => {
+describe('guidance modal question', () => {
   it('renders nothing without a blunder session', () => {
     render(<GuidanceModal />);
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
   });
 
   it('question view explains the mistake without revealing the answer', () => {
-    act(() => {
-      showGuidance(blunderSession());
-    });
-    render(<GuidanceModal />);
+    renderQuestion();
 
     expect(screen.getByTestId('guidance-modal')).toBeTruthy();
-    expect(screen.getByText('Mistake')).toBeTruthy();
+    // Title and meter agree on the severity word.
+    expect(screen.getAllByText('Mistake')).toHaveLength(2);
     // Plain-language question copy…
     expect(screen.getByText(/3rd-best of 18 ways/)).toBeTruthy();
+    // …a visual blunder scale…
+    expect(screen.getByTestId('guidance-blunder-meter')).toBeTruthy();
     // …but no recommended-move notation anywhere in the question view.
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.queryByText(/13\/10/)).toBeNull();
     // Actions available from the question.
     expect(screen.getByTestId('guidance-take-back')).toBeTruthy();
     expect(screen.getByTestId('guidance-reveal')).toBeTruthy();
+    expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
     expect(screen.getByTestId('guidance-keep-move')).toBeTruthy();
     expect(screen.getByTestId('guidance-turn-off')).toBeTruthy();
   });
 
+  it('show my move reveals only the player path; the best move stays hidden', () => {
+    renderQuestion();
+
+    fireEvent.press(screen.getByTestId('guidance-show-mine'));
+
+    expect(screen.getByText('Your move')).toBeTruthy();
+    expect(screen.getByText(/You played:/)).toBeTruthy();
+    expect(screen.getByText(/6\/5/)).toBeTruthy();
+    // The answer is not spoiled: no best-move notation, chips, or details.
+    expect(screen.queryByText(/Best:/)).toBeNull();
+    expect(screen.queryByText(/13\/10/)).toBeNull();
+    expect(screen.queryByTestId('guidance-toggle-mine')).toBeNull();
+    expect(screen.queryByTestId('guidance-toggle-engine')).toBeNull();
+    expect(screen.queryByTestId('guidance-details-toggle')).toBeNull();
+
+    // From here the player can still reveal the best move…
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+    expect(screen.getByText('The best move')).toBeTruthy();
+    expect(screen.getByText(/Best:/)).toBeTruthy();
+    expect(screen.getByText(/13\/10/)).toBeTruthy();
+
+    // …or go back to the unspoiled question.
+    fireEvent.press(screen.getByTestId('guidance-back-to-question'));
+    expect(screen.getByText(/3rd-best of 18 ways/)).toBeTruthy();
+    expect(screen.queryByText(/Best:/)).toBeNull();
+    expect(screen.queryByText(/You played:/)).toBeNull();
+    expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
+  });
+});
+
+describe('guidance modal solution', () => {
   it('reveal shows both paths side by side, and back returns to the question', () => {
-    act(() => {
-      showGuidance(blunderSession());
-    });
-    render(<GuidanceModal />);
+    renderQuestion();
 
     fireEvent.press(screen.getByTestId('guidance-reveal'));
     expect(screen.getByText(/You played:/)).toBeTruthy();
@@ -100,10 +137,7 @@ describe('GuidanceModal', () => {
   });
 
   it('details are collapsed until the player asks for them', () => {
-    act(() => {
-      showGuidance(blunderSession());
-    });
-    render(<GuidanceModal />);
+    renderQuestion();
     fireEvent.press(screen.getByTestId('guidance-reveal'));
 
     expect(screen.queryByTestId('guidance-details')).toBeNull();
@@ -117,10 +151,7 @@ describe('GuidanceModal', () => {
 
   it('take back reverts the turn and closes the modal', () => {
     const session = blunderSession();
-    act(() => {
-      showGuidance(session);
-    });
-    render(<GuidanceModal />);
+    renderQuestion(session);
 
     fireEvent.press(screen.getByTestId('guidance-take-back'));
     expect(mockTutorRevertTurn).toHaveBeenCalledWith(session.questionState, 1);
@@ -128,10 +159,7 @@ describe('GuidanceModal', () => {
   });
 
   it('keep my move closes the modal without reverting', () => {
-    act(() => {
-      showGuidance(blunderSession());
-    });
-    render(<GuidanceModal />);
+    renderQuestion();
 
     fireEvent.press(screen.getByTestId('guidance-keep-move'));
     expect(mockTutorRevertTurn).not.toHaveBeenCalled();
@@ -140,10 +168,7 @@ describe('GuidanceModal', () => {
   });
 
   it('turn tutor off persists the preference and closes the modal', () => {
-    act(() => {
-      showGuidance(blunderSession());
-    });
-    render(<GuidanceModal />);
+    renderQuestion();
 
     fireEvent.press(screen.getByTestId('guidance-turn-off'));
     expect(mockSetTutorMode).toHaveBeenCalledWith(false);
@@ -152,10 +177,7 @@ describe('GuidanceModal', () => {
   });
 
   it('path toggles flip arrow visibility', () => {
-    act(() => {
-      showGuidance(blunderSession());
-    });
-    render(<GuidanceModal />);
+    renderQuestion();
     fireEvent.press(screen.getByTestId('guidance-reveal'));
 
     const mine = screen.getByTestId('guidance-toggle-mine');

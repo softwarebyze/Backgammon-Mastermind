@@ -6,8 +6,13 @@
  */
 
 /** Plain-word severity for an equity loss (flag threshold is 0.05). */
+/**
+ * Beginner words for the standard blunder bands. Boundaries follow GNU
+ * Backgammon's official move annotations (manual, "What do ! and ? mean?"):
+ * ?! doubtful at 0.04, ? bad at 0.08, ?? very bad at 0.16.
+ */
 export function blunderSeverity(loss: number): 'Small slip' | 'Mistake' | 'Big blunder' {
-  if (loss >= 0.15)
+  if (loss >= 0.16)
     return 'Big blunder';
   if (loss >= 0.08)
     return 'Mistake';
@@ -86,8 +91,10 @@ export function candidateRows(
 // sage-hint.ts re-exports it for its existing callers.
 
 function pointLabel(p: number): string {
-  if (p === 0) return 'bar';
-  if (p === 25) return 'off';
+  if (p === 0)
+    return 'bar';
+  if (p === 25)
+    return 'off';
   return String(p);
 }
 
