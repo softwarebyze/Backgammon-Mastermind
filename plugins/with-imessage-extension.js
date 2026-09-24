@@ -60,6 +60,10 @@ function withImessageSources(config) {
         path.join(fromDir, 'Info.plist'),
         path.join(toDir, 'Info.plist'),
       );
+      fs.copyFileSync(
+        path.join(fromDir, 'MainInterface.storyboard'),
+        path.join(toDir, 'MainInterface.storyboard'),
+      );
       fs.rmSync(path.join(toDir, 'Assets.xcassets'), { recursive: true, force: true });
       fs.cpSync(path.join(fromDir, 'Assets.xcassets'), path.join(toDir, 'Assets.xcassets'), {
         recursive: true,
@@ -107,8 +111,8 @@ function withImessageTarget(config) {
     for (const file of SWIFT_FILES) {
       project.addSourceFile(`${EXT_FOLDER}/${file}`, { target: extUuid }, groupKey);
     }
-    // Asset catalog: addResourceFile assumes a top-level Resources group that
-    // Expo projects lack, so wire the PBX entries directly instead.
+    // Asset catalog + storyboard: wire PBX entries directly (addResourceFile
+    // assumes a top-level Resources group that Expo projects lack).
     const catalog = project.addFile(
       `${EXT_FOLDER}/Assets.xcassets`,
       groupKey,
@@ -118,6 +122,15 @@ function withImessageTarget(config) {
     catalog.target = extUuid;
     project.addToPbxBuildFileSection(catalog);
     project.addToPbxResourcesBuildPhase(catalog);
+    const storyboard = project.addFile(
+      `${EXT_FOLDER}/MainInterface.storyboard`,
+      groupKey,
+      { target: extUuid },
+    );
+    storyboard.uuid = project.generateUuid();
+    storyboard.target = extUuid;
+    project.addToPbxBuildFileSection(storyboard);
+    project.addToPbxResourcesBuildPhase(storyboard);
     if (!project.hasFile('Messages.framework')) {
       project.addFramework('Messages.framework', { target: extUuid, link: true });
     }
