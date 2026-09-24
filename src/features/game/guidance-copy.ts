@@ -4,19 +4,21 @@
  * details collapsed. The raw engine numbers never appear without units
  * and a one-line explanation of what they mean.
  */
+import { BLUNDER_BANDS } from './blunder-bands';
 
 /** Plain-word severity for an equity loss (flag threshold is 0.05). */
 /**
  * Beginner words for the standard blunder bands. Boundaries follow GNU
  * Backgammon's official move annotations (manual, "What do ! and ? mean?"):
  * ?! doubtful at 0.04, ? bad at 0.08, ?? very bad at 0.16.
+ *
+ * Returns the BLUNDER_BANDS label directly so the modal title can never
+ * disagree with the highlighted meter band.
  */
-export function blunderSeverity(loss: number): 'Small slip' | 'Mistake' | 'Big blunder' {
-  if (loss >= 0.16)
-    return 'Big blunder';
-  if (loss >= 0.08)
-    return 'Mistake';
-  return 'Small slip';
+export function blunderSeverity(loss: number): string {
+  const found = BLUNDER_BANDS.findIndex(band => loss < band.max);
+  const index = found === -1 ? BLUNDER_BANDS.length - 1 : found;
+  return BLUNDER_BANDS[index].label;
 }
 
 export function ordinal(n: number): string {

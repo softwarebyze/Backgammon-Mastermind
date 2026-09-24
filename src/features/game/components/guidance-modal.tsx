@@ -25,6 +25,9 @@ import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
+/** Gap between side-by-side comparison boards — must match styles.compareBoards.gap. */
+const COMPARE_BOARDS_GAP = 14;
+
 /** Collapsible "why" details: rank recap + top alternatives, labeled. */
 function DetailsSection({ session }: { session: GuidanceSession }) {
   const [open, setOpen] = useState(false);
@@ -253,7 +256,7 @@ function CompareBoards({
   mineOnly: boolean;
 }) {
   // Side by side: split the available width between the two boards (minus the gap).
-  const halfWidth = (boardWidth - 14) / 2;
+  const halfWidth = (boardWidth - COMPARE_BOARDS_GAP) / 2;
   return (
     <View style={styles.compareBoards}>
       <AnimatedPathBoard
@@ -312,7 +315,6 @@ function SolutionView({
         ? (
             <View style={styles.paths}>
               <View style={styles.pathRow}>
-                <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideMine }]} />
                 <Text style={styles.pathText}>
                   You played:
                   {' '}
@@ -326,7 +328,6 @@ function SolutionView({
               <PathToggles session={session} />
               <View style={styles.paths}>
                 <View style={styles.pathRow}>
-                  <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideMine }]} />
                   <Text style={styles.pathText}>
                     You played:
                     {' '}
@@ -334,7 +335,6 @@ function SolutionView({
                   </Text>
                 </View>
                 <View style={styles.pathRow}>
-                  <View style={[styles.dot, { backgroundColor: GAME_PALETTE.guideEngine }]} />
                   <Text style={styles.pathText}>
                     Best:
                     {' '}

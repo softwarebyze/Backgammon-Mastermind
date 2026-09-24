@@ -2,7 +2,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game/types';
 import { useEffect, useRef, useState } from 'react';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
@@ -32,10 +32,13 @@ export function AnimatedPathBoard({
   boardWidth: number;
   testID?: string;
 }) {
-  const dimensions = fitBoardToViewport(boardWidth, 240);
+  const dimensions = fitBoardToViewport(boardWidth, 240, 0, { compact: true });
   const [displayState, setDisplayState] = useState(baseState);
   const [frame, setFrame] = useState<MoveAnimationFrame | null>(null);
+  const [paused, setPaused] = useState(false);
   const genRef = useRef(0);
+  const pausedRef = useRef(false);
+  pausedRef.current = paused;
 
   useEffect(() => {
     if (moves.length === 0)
@@ -52,8 +55,20 @@ export function AnimatedPathBoard({
       await wait(700);
       let snap = baseState;
       while (alive()) {
+        // Pause: wait here until resumed.
+        while (pausedRef.current && alive()) {
+          await wait(200);
+        }
+        if (!alive())
+          return;
         let played = 0;
         for (const planned of moves) {
+          if (!alive())
+            return;
+          // Check pause between moves too.
+          while (pausedRef.current && alive()) {
+            await wait(200);
+          }
           if (!alive())
             return;
           const legal = getLegalMoves(snap).find(
@@ -103,6 +118,15 @@ export function AnimatedPathBoard({
       <View style={styles.labelRow}>
         <View style={[styles.dot, { backgroundColor: accent }]} />
         <Text style={styles.label}>{label}</Text>
+        <Pressable
+          onPress={() => setPaused(p => !p)}
+          accessibilityRole="button"
+          accessibilityLabel={paused ? `Play ${label} replay` : `Pause ${label} replay`}
+          testID={testID ? `${testID}-play-pause` : undefined}
+          style={styles.playPause}
+        >
+          <Text style={styles.playPauseIcon}>{paused ? '▶' : '⏸'}</Text>
+        </Pressable>
       </View>
       <View style={styles.board}>
         <BoardView
@@ -132,6 +156,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
+  },
+  playPause: {
+    marginLeft: 4,
+    padding: 6,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  playPauseIcon: {
+    color: GAME_PALETTE.text,
+    fontSize: 12,
+    lineHeight: 14,
   },
   dot: {
     width: 10,

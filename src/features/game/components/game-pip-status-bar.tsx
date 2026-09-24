@@ -1,7 +1,7 @@
 import type { StrategyKey } from '@/features/game/strategy';
 import type { GameState } from '@/lib/game';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy, pipCount } from '@/features/game/strategy';
@@ -29,6 +29,12 @@ const STRATEGY_DOT: Record<StrategyKey, string> = {
  */
 export function GamePipStatusBar({ state }: Props) {
   const [expanded, setExpanded] = useState(false);
+  // Reset the why/tip panel when the position changes — the explanation
+  // is for a specific board state.
+  const positionKey = `${state.currentPlayer}-${state.dice.join(',')}-${state.points.map(p => `${p.player ?? '-' }${p.count}`).join(',')}`;
+  useEffect(() => {
+    setExpanded(false);
+  }, [positionKey]);
   const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
   const strategy = classifyStrategy(state, perspective);
   const whitePips = pipCount(state, 'white');
@@ -51,7 +57,7 @@ export function GamePipStatusBar({ state }: Props) {
           accessibilityRole="button"
           accessibilityLabel={`${strategy.label}. ${strategy.why} ${strategy.tip}`}
           style={styles.strategyRow}
-          testID="strategy-pill"
+          testID="strategy-line"
         >
           <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
           <Text style={styles.strategyText}>{strategy.label}</Text>

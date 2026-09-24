@@ -25,7 +25,7 @@ describe('gamePipStatusBar', () => {
     const state = createInitialState('vs-computer');
     render(<GamePipStatusBar state={state} />);
 
-    expect(screen.getByTestId('strategy-pill')).toBeTruthy();
+    expect(screen.getByTestId('strategy-line')).toBeTruthy();
     expect(screen.getByText('Developing')).toBeTruthy();
     // Both race pip counts render (opening position: 167 each).
     expect(screen.getAllByText('167')).toHaveLength(2);
@@ -36,7 +36,7 @@ describe('gamePipStatusBar', () => {
     render(<GamePipStatusBar state={state} />);
 
     expect(screen.queryByText(/Build points/)).toBeNull();
-    fireEvent.press(screen.getByTestId('strategy-pill'));
+    fireEvent.press(screen.getByTestId('strategy-line'));
     expect(screen.getByText(/Build points/)).toBeTruthy();
   });
 
@@ -59,7 +59,7 @@ describe('gamePipStatusBar game-over', () => {
     render(<GamePipStatusBar state={state} />);
 
     // No strategy pill, no pip counts at game over.
-    expect(screen.queryByTestId('strategy-pill')).toBeNull();
+    expect(screen.queryByTestId('strategy-line')).toBeNull();
     expect(screen.queryByText('167')).toBeNull();
     // Winner badge shows.
     expect(screen.getByText('game.status.you_win')).toBeTruthy();

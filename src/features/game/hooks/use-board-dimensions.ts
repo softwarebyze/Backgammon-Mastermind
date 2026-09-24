@@ -9,6 +9,9 @@ import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
 const BEAR_OFF_WIDTH = 38;
+/** Narrower chrome for mini boards (guidance replays) so the points stay readable. */
+const COMPACT_BAR_WIDTH = 16;
+const COMPACT_BEAR_OFF_WIDTH = 20;
 const MIDDLE_HEIGHT = 12;
 const BOARD_FRAME_WIDTH = 4;
 /**
@@ -43,9 +46,11 @@ export type BoardDimensions = {
   middleHeight: number;
 };
 
-function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
+function dimensionsForWidth(boardOuterWidth: number, compact = false): BoardDimensions {
   const boardWidth = boardOuterWidth - BOARD_FRAME_WIDTH * 2;
-  const colWidth = (boardWidth - BAR_WIDTH - BEAR_OFF_WIDTH) / 12;
+  const barWidth = compact ? COMPACT_BAR_WIDTH : BAR_WIDTH;
+  const bearOffWidth = compact ? COMPACT_BEAR_OFF_WIDTH : BEAR_OFF_WIDTH;
+  const colWidth = (boardWidth - barWidth - bearOffWidth) / 12;
   // Clamp to a minimum so mini boards (e.g. side-by-side guidance replays)
   // never produce negative SVG radii.
   const checkerSize = Math.max(8, Math.min(colWidth - 4, 32));
@@ -62,8 +67,8 @@ function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
     colWidth,
     checkerSize,
     pointHeight,
-    barWidth: BAR_WIDTH,
-    bearOffWidth: BEAR_OFF_WIDTH,
+    barWidth,
+    bearOffWidth,
     middleHeight: MIDDLE_HEIGHT,
   };
 }
@@ -73,18 +78,21 @@ function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
  * @param maxOuterWidth — max board outer width for the viewport
  * @param maxOuterHeight — max board outer height for the viewport
  * @param extraHeight — e.g. point-number rails rendered inside the board frame
+ * @param options.compact — narrower bar/bear-off for mini boards (guidance replays)
  */
 export function fitBoardToViewport(
   maxOuterWidth: number,
   maxOuterHeight: number,
   extraHeight = 0,
+  options?: { compact?: boolean },
 ): BoardDimensions {
+  const compact = options?.compact ?? false;
   let width = maxOuterWidth;
-  let dims = dimensionsForWidth(width);
+  let dims = dimensionsForWidth(width, compact);
   // linear shrink — ~40 iterations max; switch to binary search if this gets hot
   while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
     width -= 8;
-    dims = dimensionsForWidth(width);
+    dims = dimensionsForWidth(width, compact);
   }
   return dims;
 }

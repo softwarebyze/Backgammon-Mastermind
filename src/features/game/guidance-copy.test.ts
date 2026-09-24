@@ -21,9 +21,14 @@ describe('guidance copy', () => {
       expect(blunderSeverity(0.08)).toBe('Mistake');
     });
 
-    it('labels small losses as small slips', () => {
-      expect(blunderSeverity(0.079)).toBe('Small slip');
-      expect(blunderSeverity(0.01)).toBe('Small slip');
+    it('labels small losses as slips', () => {
+      expect(blunderSeverity(0.079)).toBe('Slip');
+      expect(blunderSeverity(0.04)).toBe('Slip');
+    });
+
+    it('labels tiny losses as fine (matches the meter band)', () => {
+      expect(blunderSeverity(0.039)).toBe('Fine');
+      expect(blunderSeverity(0.01)).toBe('Fine');
     });
   });
 
