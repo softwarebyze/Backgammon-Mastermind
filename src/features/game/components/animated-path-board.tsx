@@ -3,6 +3,7 @@ import type { GameState, Move } from '@/lib/game/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Svg, { Polygon, Rect } from 'react-native-svg';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -11,6 +12,25 @@ import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
+
+/**
+ * Clean vector play/pause glyphs (no emoji).
+ */
+function PlayPauseIcon({ paused }: { paused: boolean }) {
+  const color = GAME_PALETTE.text;
+  return (
+    <Svg width={12} height={12} viewBox="0 0 12 12">
+      {paused
+        ? <Polygon points="3,2 10,6 3,10" fill={color} />
+        : (
+            <>
+              <Rect x={2.5} y={2} width={2.5} height={8} rx={1} fill={color} />
+              <Rect x={7} y={2} width={2.5} height={8} rx={1} fill={color} />
+            </>
+          )}
+    </Svg>
+  );
+}
 
 /**
  * A mini board that loops an animated replay of one move path (e.g. "Your
@@ -154,7 +174,7 @@ export function AnimatedPathBoard({
           testID={testID ? `${testID}-play-pause` : undefined}
           style={styles.playPause}
         >
-          <Text style={styles.playPauseIcon}>{paused ? '▶' : '⏸'}</Text>
+          <PlayPauseIcon paused={paused} />
         </Pressable>
       </View>
       <View style={styles.board}>
@@ -209,11 +229,8 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
-  },
-  playPauseIcon: {
-    color: GAME_PALETTE.text,
-    fontSize: 12,
-    lineHeight: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   dot: {
     width: 10,

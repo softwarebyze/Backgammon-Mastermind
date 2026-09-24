@@ -25,9 +25,6 @@ import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
-/** Gap between side-by-side comparison boards — must match styles.compareBoards.gap. */
-const COMPARE_BOARDS_GAP = 14;
-
 /** Collapsible "why" details: rank recap + top alternatives, labeled. */
 function DetailsSection({ session }: { session: GuidanceSession }) {
   const [open, setOpen] = useState(false);
@@ -243,9 +240,20 @@ function QuestionView({
 }
 
 /**
- * The animated visual replay: the player's path alone, or both paths
- * stacked for comparison. Each board loops its own path.
+ * The animated visual replay: one board at a time, toggled between the
+ * player's path, the engine's best path, both stacked, or the static
+ * starting position. Single-board views use the full width so the board
+ * stays readable on phones.
  */
+type CompareViewMode = 'mine' | 'best' | 'both' | 'start';
+
+const COMPARE_VIEW_OPTIONS: { mode: CompareViewMode; label: string }[] = [
+  { mode: 'mine', label: 'Mine' },
+  { mode: 'best', label: 'Best' },
+  { mode: 'both', label: 'Both' },
+  { mode: 'start', label: 'Start' },
+];
+
 function CompareBoards({
   session,
   boardWidth,
@@ -255,28 +263,88 @@ function CompareBoards({
   boardWidth: number;
   mineOnly: boolean;
 }) {
-  // Side by side: split the available width between the two boards (minus the gap).
-  const halfWidth = (boardWidth - COMPARE_BOARDS_GAP) / 2;
-  return (
-    <View style={styles.compareBoards}>
-      <AnimatedPathBoard
-        baseState={session.questionState}
-        moves={session.myMoves}
-        label={mineOnly ? 'Your move, replayed' : 'Your move'}
-        tone="mine"
-        boardWidth={mineOnly ? boardWidth : halfWidth}
-        testID="guidance-compare-mine"
-      />
-      {!mineOnly && (
+  const [viewMode, setViewMode] = useState<CompareViewMode>('mine');
+
+  if (mineOnly) {
+    return (
+      <View style={styles.compareBoards}>
         <AnimatedPathBoard
           baseState={session.questionState}
-          moves={session.engineMoves}
-          label="Best move"
-          tone="engine"
-          boardWidth={halfWidth}
-          testID="guidance-compare-engine"
+          moves={session.myMoves}
+          label="Your move, replayed"
+          tone="mine"
+          boardWidth={boardWidth}
+          testID="guidance-compare-mine"
         />
-      )}
+      </View>
+    );
+  }
+
+  const showMine = viewMode === 'mine' || viewMode === 'both';
+  const showBest = viewMode === 'best' || viewMode === 'both';
+
+  return (
+    <View>
+      <View style={styles.viewToggle} testID="guidance-view-toggle">
+        {COMPARE_VIEW_OPTIONS.map(({ mode, label }) => (
+          <Pressable
+            key={mode}
+            accessibilityRole="button"
+            accessibilityLabel={`Show ${label} board`}
+            accessibilityState={{ selected: viewMode === mode }}
+            testID={`guidance-view-${mode}`}
+            onPress={() => {
+              hapticLight();
+              setViewMode(mode);
+            }}
+            style={[
+              styles.viewToggleBtn,
+              viewMode === mode && styles.viewToggleBtnActive,
+            ]}
+          >
+            <Text
+              style={[
+                styles.viewToggleText,
+                viewMode === mode && styles.viewToggleTextActive,
+              ]}
+            >
+              {label}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+      <View style={styles.compareBoardsColumn}>
+        {showMine && (
+          <AnimatedPathBoard
+            baseState={session.questionState}
+            moves={session.myMoves}
+            label="Your move"
+            tone="mine"
+            boardWidth={boardWidth}
+            testID="guidance-compare-mine"
+          />
+        )}
+        {showBest && (
+          <AnimatedPathBoard
+            baseState={session.questionState}
+            moves={session.engineMoves}
+            label="Best move"
+            tone="engine"
+            boardWidth={boardWidth}
+            testID="guidance-compare-engine"
+          />
+        )}
+        {viewMode === 'start' && (
+          <AnimatedPathBoard
+            baseState={session.questionState}
+            moves={[]}
+            label="Starting position"
+            tone="mine"
+            boardWidth={boardWidth}
+            testID="guidance-compare-start"
+          />
+        )}
+      </View>
     </View>
   );
 }
@@ -514,6 +582,36 @@ const styles = StyleSheet.create({
   compareBoards: {
     flexDirection: 'row',
     gap: 14,
+  },
+  compareBoardsColumn: {
+    flexDirection: 'column',
+    gap: 16,
+  },
+  viewToggle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
+  viewToggleBtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.accentDim,
+    ...continuousRadius(20),
+  },
+  viewToggleBtnActive: {
+    backgroundColor: GAME_PALETTE.accent,
+    borderColor: GAME_PALETTE.accent,
+  },
+  viewToggleText: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 13,
+    ...interFont('medium'),
+  },
+  viewToggleTextActive: {
+    color: GAME_PALETTE.bg,
+    ...interFont('semibold'),
   },
   title: {
     color: GAME_PALETTE.accent,
