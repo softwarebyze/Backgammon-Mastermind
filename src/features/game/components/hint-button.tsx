@@ -75,6 +75,7 @@ export function HintButton({ state, moveLogLength }: Props) {
   const session = useGuidance();
   const hintOpen = session?.kind === 'hint' && session.revealed;
   const hintRequest = useHintRequest(state);
+  const { doMoveSequence } = useGame();
 
   const ask = async () => {
     if (phase === 'loading')
@@ -116,23 +117,50 @@ export function HintButton({ state, moveLogLength }: Props) {
     clearGuidance();
   };
 
+  const playHintedMove = () => {
+    if (!session || session.kind !== 'hint')
+      return;
+    const moves = session.engineMoves;
+    if (moves.length === 0)
+      return;
+    hapticLight();
+    hintRequest.invalidate();
+    setPhase('idle');
+    clearGuidance();
+    // Play the suggested line as an animated sequence.
+    doMoveSequence(moves);
+  };
+
   if (hintOpen && session) {
     const label = session.engineId === primaryEngine.id ? 'Suggested move' : 'Hint';
     return (
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Back to my turn, dismiss the hint"
-        testID="hint-result"
-        onPress={dismiss}
-        style={({ pressed }) => [styles.resultPill, pressed && styles.pressed]}
-      >
+      <View style={styles.resultWrap} testID="hint-result">
         <Text style={styles.resultText} numberOfLines={2}>
           {label}
           :
           {formatHintNotation(session.engineMoves)}
         </Text>
-        <Text style={styles.dismissText}>Back to my turn</Text>
-      </Pressable>
+        <View style={styles.resultActions}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Play the suggested move"
+            testID="hint-play-move"
+            onPress={playHintedMove}
+            style={({ pressed }) => [styles.playBtn, pressed && styles.pressed]}
+          >
+            <Text style={styles.playBtnText}>Play this move</Text>
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Back to my turn, dismiss the hint"
+            testID="hint-dismiss"
+            onPress={dismiss}
+            style={({ pressed }) => [styles.dismissBtn, pressed && styles.pressed]}
+          >
+            <Text style={styles.dismissText}>Back to my turn</Text>
+          </Pressable>
+        </View>
+      </View>
     );
   }
 
@@ -203,7 +231,7 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.85,
   },
-  resultPill: {
+  resultWrap: {
     backgroundColor: 'rgba(232, 224, 208, 0.08)',
     borderWidth: 1,
     borderColor: GAME_PALETTE.accentDim,
@@ -219,10 +247,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...interFont('semibold'),
   },
+  resultActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    marginTop: 8,
+  },
+  playBtn: {
+    backgroundColor: GAME_PALETTE.accent,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    ...continuousRadius(10),
+  },
+  playBtnText: {
+    color: GAME_PALETTE.bg,
+    fontSize: 15,
+    ...interFont('semibold'),
+  },
+  dismissBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
   dismissText: {
     color: GAME_PALETTE.textMuted,
-    fontSize: 10,
-    marginTop: 2,
-    ...interFont('regular'),
+    fontSize: 13,
+    ...interFont('medium'),
   },
 });

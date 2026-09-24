@@ -64,10 +64,12 @@ export function GamePipStatusBar({ state }: Props) {
           <Text style={styles.chevron}>{expanded ? '▾' : '▸'}</Text>
         </Pressable>
         <View style={styles.pips}>
+          <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
           <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
             {whitePips}
           </Text>
           <Text style={styles.pipDivider}>–</Text>
+          <View style={[styles.pipDot, { backgroundColor: '#2A2A2E' }]} />
           <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
             {blackPips}
           </Text>
@@ -143,6 +145,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+  },
+  pipDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(232, 224, 208, 0.4)',
   },
   pipDivider: {
     color: GAME_PALETTE.textMuted,
