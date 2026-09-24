@@ -310,15 +310,83 @@ function CompareBoards({
  * Both modes show the move paths as looping animated mini-boards — the
  * visual replay — with the notation kept as a secondary caption.
  */
+/** The action row under the revealed answer. */
+function SolutionActions({
+  mineOnly,
+  onRevealBest,
+  onPlayBestMove,
+  onBackToQuestion,
+  onTakeBack,
+  onKeepMove,
+}: {
+  mineOnly: boolean;
+  onRevealBest: () => void;
+  onPlayBestMove: () => void;
+  onBackToQuestion: () => void;
+  onTakeBack: () => void;
+  onKeepMove: () => void;
+}) {
+  return (
+    <View style={styles.actions}>
+      {mineOnly && (
+        <ActionButton
+          label="Show the best move"
+          a11y="Reveal the recommended move"
+          testID="guidance-reveal"
+          onPress={onRevealBest}
+          style={styles.btnSecondary}
+          labelStyle={styles.btnSecondaryLabel}
+        />
+      )}
+      {!mineOnly && (
+        <ActionButton
+          label="Play best move"
+          a11y="Take back my move and play the best move"
+          testID="guidance-play-best"
+          onPress={onPlayBestMove}
+          style={styles.btnPrimary}
+          labelStyle={styles.btnPrimaryLabel}
+        />
+      )}
+      <ActionButton
+        label="Back to question"
+        a11y="Go back without the answer"
+        testID="guidance-back-to-question"
+        onPress={onBackToQuestion}
+        style={styles.btnSecondary}
+        labelStyle={styles.btnSecondaryLabel}
+      />
+      <ActionButton
+        label="Take back & retry"
+        a11y="Take back the move and try again"
+        testID="guidance-take-back"
+        onPress={onTakeBack}
+        style={mineOnly ? styles.btnPrimary : styles.btnSecondary}
+        labelStyle={mineOnly ? styles.btnPrimaryLabel : styles.btnSecondaryLabel}
+      />
+      <ActionButton
+        label="Keep my move"
+        a11y="Keep my move and continue"
+        testID="guidance-keep-move"
+        onPress={onKeepMove}
+        style={styles.btnGhost}
+        labelStyle={styles.btnGhostLabel}
+      />
+    </View>
+  );
+}
+
 function SolutionView({
   session,
   onRevealBest,
+  onPlayBestMove,
   onBackToQuestion,
   onTakeBack,
   onKeepMove,
 }: {
   session: GuidanceSession;
   onRevealBest: () => void;
+  onPlayBestMove: () => void;
   onBackToQuestion: () => void;
   onTakeBack: () => void;
   onKeepMove: () => void;
@@ -372,42 +440,14 @@ function SolutionView({
               <DetailsSection session={session} />
             </>
           )}
-      <View style={styles.actions}>
-        {session.revealMineOnly && (
-          <ActionButton
-            label="Show the best move"
-            a11y="Reveal the recommended move"
-            testID="guidance-reveal"
-            onPress={onRevealBest}
-            style={styles.btnSecondary}
-            labelStyle={styles.btnSecondaryLabel}
-          />
-        )}
-        <ActionButton
-          label="Back to question"
-          a11y="Go back without the answer"
-          testID="guidance-back-to-question"
-          onPress={onBackToQuestion}
-          style={styles.btnSecondary}
-          labelStyle={styles.btnSecondaryLabel}
-        />
-        <ActionButton
-          label="Take back & retry"
-          a11y="Take back the move and try again"
-          testID="guidance-take-back"
-          onPress={onTakeBack}
-          style={styles.btnPrimary}
-          labelStyle={styles.btnPrimaryLabel}
-        />
-        <ActionButton
-          label="Keep my move"
-          a11y="Keep my move and continue"
-          testID="guidance-keep-move"
-          onPress={onKeepMove}
-          style={styles.btnGhost}
-          labelStyle={styles.btnGhostLabel}
-        />
-      </View>
+      <SolutionActions
+        mineOnly={mineOnly}
+        onRevealBest={onRevealBest}
+        onPlayBestMove={onPlayBestMove}
+        onBackToQuestion={onBackToQuestion}
+        onTakeBack={onTakeBack}
+        onKeepMove={onKeepMove}
+      />
     </>
   );
 }
@@ -465,6 +505,22 @@ export function GuidanceModal() {
   const handleBackToQuestion = () =>
     updateGuidance({ revealed: false, revealMineOnly: false });
   const handleKeepMove = () => clearGuidance();
+  /**
+   * One-tap apply: revert the player's turn, then animate the engine's best
+   * move in its place. The modal dismisses first and the sequence starts on
+   * the next frame so the board has settled before the replay runs.
+   */
+  const handlePlayBestMove = () => {
+    const moves = session.engineMoves;
+    if (moves.length === 0)
+      return;
+    hapticLight();
+    clearGuidance();
+    game.tutorRevertTurn(session.questionState, session.myMoves.length);
+    requestAnimationFrame(() => {
+      game.doMoveSequence(moves);
+    });
+  };
   const handleTurnOff = () => {
     clearGuidance();
     setTutorMode(false);
@@ -501,6 +557,7 @@ export function GuidanceModal() {
                   <SolutionView
                     session={session}
                     onRevealBest={handleRevealFull}
+                    onPlayBestMove={handlePlayBestMove}
                     onBackToQuestion={handleBackToQuestion}
                     onTakeBack={handleTakeBack}
                     onKeepMove={handleKeepMove}

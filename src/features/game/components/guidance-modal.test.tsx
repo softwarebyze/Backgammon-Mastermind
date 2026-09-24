@@ -12,6 +12,7 @@ jest.mock('@/lib/haptics', () => ({
 
 const mockTutorRevertTurn = jest.fn();
 const mockDoUndo = jest.fn();
+const mockDoMoveSequence = jest.fn();
 const mockSetTutorMode = jest.fn();
 let mockCanUndo = true;
 
@@ -19,6 +20,7 @@ jest.mock('@/features/game/use-game', () => ({
   useGame: () => ({
     tutorRevertTurn: mockTutorRevertTurn,
     doUndo: mockDoUndo,
+    doMoveSequence: mockDoMoveSequence,
     canUndo: mockCanUndo,
   }),
 }));
@@ -68,6 +70,7 @@ function renderQuestion(session: Omit<GuidanceSession, 'id'> = blunderSession())
 beforeEach(() => {
   mockTutorRevertTurn.mockClear();
   mockDoUndo.mockClear();
+  mockDoMoveSequence.mockClear();
   mockSetTutorMode.mockClear();
   mockCanUndo = true;
 });
@@ -270,6 +273,47 @@ describe('guidance modal solution', () => {
     // Toggling boards keeps the modal open on the solution.
     expect(screen.getByTestId('guidance-modal')).toBeTruthy();
     expect(screen.getByText(/Best:/)).toBeTruthy();
+  });
+});
+
+describe('guidance modal play best move', () => {
+  it('reverts the turn and animates the best move on the next frame', () => {
+    const rafCallbacks: FrameRequestCallback[] = [];
+    const origRaf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = ((cb: FrameRequestCallback) => {
+      rafCallbacks.push(cb);
+      return rafCallbacks.length;
+    }) as typeof requestAnimationFrame;
+
+    const session = blunderSession();
+    renderQuestion(session);
+
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+    // The one-tap apply is offered on the full comparison…
+    expect(screen.getByTestId('guidance-play-best')).toBeTruthy();
+
+    fireEvent.press(screen.getByTestId('guidance-play-best'));
+    // …the modal closes and the player's turn is reverted…
+    expect(screen.queryByTestId('guidance-modal')).toBeNull();
+    expect(mockTutorRevertTurn).toHaveBeenCalledWith(session.questionState, 1);
+    // …and the best move animates on the next frame, not synchronously.
+    expect(mockDoMoveSequence).not.toHaveBeenCalled();
+    act(() => {
+      rafCallbacks.forEach(cb => cb(0));
+    });
+    expect(mockDoMoveSequence).toHaveBeenCalledTimes(1);
+    expect(mockDoMoveSequence).toHaveBeenCalledWith(session.engineMoves);
+
+    globalThis.requestAnimationFrame = origRaf;
+  });
+
+  it('is not offered on the mine-only view', () => {
+    renderQuestion();
+
+    fireEvent.press(screen.getByTestId('guidance-show-mine'));
+    expect(screen.queryByTestId('guidance-play-best')).toBeNull();
+    // The primary action there stays take-back-and-retry.
+    expect(screen.getByTestId('guidance-take-back')).toBeTruthy();
   });
 });
 
