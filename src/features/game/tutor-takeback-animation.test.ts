@@ -150,6 +150,44 @@ describe('runTakeBackAnimation', () => {
     queue.shift()!();
     expect(live).toHaveLength(0);
   });
+
+  it('pops exactly once per move across the animation and the provider finish', () => {
+    // Regression: the animation pops the log as slides land, and the
+    // provider's finish must not pop again (skipPop) — otherwise a 2-move
+    // turn would lose 4 log entries.
+    const { baseline, log } = twoMoveFixture();
+    const live = [...log];
+    let popCount = 0;
+    const finishedWith: number[] = [];
+    const queue: Array<() => void> = [];
+    runTakeBackAnimation(
+      {
+        replayBaseline: baseline,
+        moveLog: log,
+        popLastMove: () => {
+          popCount++;
+          return live.pop() ?? null;
+        },
+        setState: () => {},
+        setMoveAnimation: () => {},
+        armAnimationFinish: (onFinish) => {
+          queue.push(onFinish);
+          return onFinish;
+        },
+        // Models the provider wiring: finish(skipPop: true) pops zero times.
+        finish: (n) => {
+          finishedWith.push(n);
+        },
+      },
+      log.length,
+    );
+    while (queue.length > 0) {
+      queue.shift()!();
+    }
+    expect(finishedWith).toEqual([2]);
+    expect(popCount).toBe(2);
+    expect(live).toHaveLength(0);
+  });
 });
 
 describe('runTakeBackAnimation edge cases', () => {

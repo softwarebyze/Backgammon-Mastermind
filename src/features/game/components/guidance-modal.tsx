@@ -1,8 +1,9 @@
 import type { GuidanceSession } from '@/features/game/guidance-store';
 
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
+import { AnimatedPathBoard } from '@/features/game/components/animated-path-board';
 import { BlunderMeter } from '@/features/game/components/blunder-meter';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import {
@@ -158,6 +159,8 @@ function ActionButton({
 function QuestionView({
   verdict,
   onTakeBack,
+  onUndoLastMove,
+  canUndoLastMove,
   onRevealFull,
   onShowMine,
   onKeepMove,
@@ -165,6 +168,8 @@ function QuestionView({
 }: {
   verdict: NonNullable<GuidanceSession['verdict']>;
   onTakeBack: () => void;
+  onUndoLastMove: () => void;
+  canUndoLastMove: boolean;
   onRevealFull: () => void;
   onShowMine: () => void;
   onKeepMove: () => void;
@@ -181,12 +186,22 @@ function QuestionView({
       <View style={styles.actions}>
         <ActionButton
           label="Take back & retry"
-          a11y="Take back the move and try again"
+          a11y="Take back the whole turn and try again"
           testID="guidance-take-back"
           onPress={onTakeBack}
           style={styles.btnPrimary}
           labelStyle={styles.btnPrimaryLabel}
         />
+        {canUndoLastMove && (
+          <ActionButton
+            label="Undo last move"
+            a11y="Undo just the last move and replay it"
+            testID="guidance-undo-last-move"
+            onPress={onUndoLastMove}
+            style={styles.btnSecondary}
+            labelStyle={styles.btnSecondaryLabel}
+          />
+        )}
         <ActionButton
           label="Show the best move"
           a11y="Reveal the recommended move"
@@ -225,8 +240,47 @@ function QuestionView({
 }
 
 /**
+ * The animated visual replay: the player's path alone, or both paths
+ * stacked for comparison. Each board loops its own path.
+ */
+function CompareBoards({
+  session,
+  boardWidth,
+  mineOnly,
+}: {
+  session: GuidanceSession;
+  boardWidth: number;
+  mineOnly: boolean;
+}) {
+  return (
+    <View style={styles.compareBoards}>
+      <AnimatedPathBoard
+        baseState={session.questionState}
+        moves={session.myMoves}
+        label={mineOnly ? 'Your move, replayed' : 'Your move'}
+        tone="mine"
+        boardWidth={boardWidth}
+        testID="guidance-compare-mine"
+      />
+      {!mineOnly && (
+        <AnimatedPathBoard
+          baseState={session.questionState}
+          moves={session.engineMoves}
+          label="Best move"
+          tone="engine"
+          boardWidth={boardWidth}
+          testID="guidance-compare-engine"
+        />
+      )}
+    </View>
+  );
+}
+
+/**
  * The revealed answer: either the player's own move alone ("Show my move",
  * best move still hidden) or the full comparison with the engine's best.
+ * Both modes show the move paths as looping animated mini-boards — the
+ * visual replay — with the notation kept as a secondary caption.
  */
 function SolutionView({
   session,
@@ -241,12 +295,18 @@ function SolutionView({
   onTakeBack: () => void;
   onKeepMove: () => void;
 }) {
+  const { width: screenWidth } = useWindowDimensions();
+  // Card is maxWidth 380 with 24pt scrim padding and 22pt card padding.
+  const boardWidth = Math.min(380, screenWidth - 48) - 44;
+  const mineOnly = session.revealMineOnly ?? false;
+
   return (
     <>
       <Text style={styles.title}>
-        {session.revealMineOnly ? 'Your move' : 'The best move'}
+        {mineOnly ? 'Your move' : 'Your move vs the best move'}
       </Text>
-      {session.revealMineOnly
+      <CompareBoards session={session} boardWidth={boardWidth} mineOnly={mineOnly} />
+      {mineOnly
         ? (
             <View style={styles.paths}>
               <View style={styles.pathRow}>
@@ -354,6 +414,11 @@ export function GuidanceModal() {
     clearGuidance();
     revertTurn();
   };
+  /** Undo just the last die move so the player can retry part of the turn. */
+  const handleUndoLastMove = () => {
+    clearGuidance();
+    game.doUndo();
+  };
   // Every reveal transition writes the complete reveal state, so Back →
   // reveal can never resurrect stale toggles from an earlier view.
   const handleRevealFull = () => updateGuidance({
@@ -385,26 +450,34 @@ export function GuidanceModal() {
     >
       <View style={styles.scrim}>
         <View style={styles.card} accessibilityRole="alert" testID="guidance-modal">
-          {!session.revealed
-            ? (
-                <QuestionView
-                  verdict={verdict}
-                  onTakeBack={handleTakeBack}
-                  onRevealFull={handleRevealFull}
-                  onShowMine={handleShowMine}
-                  onKeepMove={handleKeepMove}
-                  onTurnOff={handleTurnOff}
-                />
-              )
-            : (
-                <SolutionView
-                  session={session}
-                  onRevealBest={handleRevealFull}
-                  onBackToQuestion={handleBackToQuestion}
-                  onTakeBack={handleTakeBack}
-                  onKeepMove={handleKeepMove}
-                />
-              )}
+          <ScrollView
+            style={styles.cardScroll}
+            contentContainerStyle={styles.cardScrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {!session.revealed
+              ? (
+                  <QuestionView
+                    verdict={verdict}
+                    onTakeBack={handleTakeBack}
+                    onUndoLastMove={handleUndoLastMove}
+                    canUndoLastMove={game.canUndo ?? false}
+                    onRevealFull={handleRevealFull}
+                    onShowMine={handleShowMine}
+                    onKeepMove={handleKeepMove}
+                    onTurnOff={handleTurnOff}
+                  />
+                )
+              : (
+                  <SolutionView
+                    session={session}
+                    onRevealBest={handleRevealFull}
+                    onBackToQuestion={handleBackToQuestion}
+                    onTakeBack={handleTakeBack}
+                    onKeepMove={handleKeepMove}
+                  />
+                )}
+          </ScrollView>
         </View>
       </View>
     </Modal>
@@ -422,12 +495,22 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 380,
+    maxHeight: '92%',
     backgroundColor: GAME_PALETTE.surface,
     padding: 22,
     gap: 10,
     ...continuousRadius(16),
     borderWidth: 1.5,
     borderColor: GAME_PALETTE.accent,
+  },
+  cardScroll: {
+    width: '100%',
+  },
+  cardScrollContent: {
+    gap: 10,
+  },
+  compareBoards: {
+    gap: 14,
   },
   title: {
     color: GAME_PALETTE.accent,

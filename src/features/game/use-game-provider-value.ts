@@ -128,11 +128,15 @@ export function useGameProviderValue(): GameContextType {
   /**
    * Instant revert: pop N moves, rewind the timeline, and restore the exact
    * turn-start state. Used directly when there is nothing to animate, and as
-   * the final commit after the take-back animation finishes.
+   * the final commit after the take-back animation finishes (which pops the
+   * log itself as each reverse slide lands — so the animated path passes
+   * `skipPop` to avoid popping twice).
    */
-  const revertTurnInstant = useCallback((startState: GameState, n: number) => {
-    for (let i = 0; i < n; i++) {
-      popLastMove();
+  const revertTurnInstant = useCallback((startState: GameState, n: number, opts?: { skipPop?: boolean }) => {
+    if (!opts?.skipPop) {
+      for (let i = 0; i < n; i++) {
+        popLastMove();
+      }
     }
     setTimeline((prev) => {
       if (!prev)
@@ -178,7 +182,7 @@ export function useGameProviderValue(): GameContextType {
         setState,
         setMoveAnimation,
         armAnimationFinish,
-        finish: undone => revertTurnInstant(startState, undone),
+        finish: undone => revertTurnInstant(startState, undone, { skipPop: true }),
       },
       movesMade,
     );

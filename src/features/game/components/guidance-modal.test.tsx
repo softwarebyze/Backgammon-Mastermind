@@ -11,15 +11,28 @@ jest.mock('@/lib/haptics', () => ({
 }));
 
 const mockTutorRevertTurn = jest.fn();
+const mockDoUndo = jest.fn();
 const mockSetTutorMode = jest.fn();
+let mockCanUndo = true;
 
 jest.mock('@/features/game/use-game', () => ({
-  useGame: () => ({ tutorRevertTurn: mockTutorRevertTurn }),
+  useGame: () => ({
+    tutorRevertTurn: mockTutorRevertTurn,
+    doUndo: mockDoUndo,
+    canUndo: mockCanUndo,
+  }),
 }));
 
 jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
   // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock must keep the real hook's export name
-  useGamePreferences: () => ({ setTutorMode: mockSetTutorMode }),
+  useGamePreferences: () => ({
+    setTutorMode: mockSetTutorMode,
+    preferences: {
+      showMoveHints: false,
+      showDirectionOverlay: false,
+      showPointNumbers: false,
+    },
+  }),
 }));
 
 function blunderSession(): Omit<GuidanceSession, 'id'> {
@@ -51,7 +64,9 @@ function renderQuestion(session: Omit<GuidanceSession, 'id'> = blunderSession())
 
 beforeEach(() => {
   mockTutorRevertTurn.mockClear();
+  mockDoUndo.mockClear();
   mockSetTutorMode.mockClear();
+  mockCanUndo = true;
 });
 
 afterEach(() => {
@@ -103,7 +118,7 @@ describe('guidance modal question', () => {
 
     // From here the player can still reveal the best move…
     fireEvent.press(screen.getByTestId('guidance-reveal'));
-    expect(screen.getByText('The best move')).toBeTruthy();
+    expect(screen.getByText('Your move vs the best move')).toBeTruthy();
     expect(screen.getByText(/Best:/)).toBeTruthy();
     expect(screen.getByText(/13\/10/)).toBeTruthy();
 
@@ -113,6 +128,34 @@ describe('guidance modal question', () => {
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.queryByText(/You played:/)).toBeNull();
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
+  });
+
+  it('undo last move rewinds a single die move and closes the modal', () => {
+    renderQuestion();
+
+    fireEvent.press(screen.getByTestId('guidance-undo-last-move'));
+
+    expect(mockDoUndo).toHaveBeenCalledTimes(1);
+    expect(mockTutorRevertTurn).not.toHaveBeenCalled();
+    expect(screen.queryByTestId('guidance-modal')).toBeNull();
+  });
+
+  it('hides undo last move when there is nothing to undo', () => {
+    mockCanUndo = false;
+    renderQuestion();
+
+    expect(screen.queryByTestId('guidance-undo-last-move')).toBeNull();
+    // The whole-turn take-back is still available.
+    expect(screen.getByTestId('guidance-take-back')).toBeTruthy();
+  });
+
+  it('show my move renders the animated replay board for the player path', () => {
+    renderQuestion();
+
+    fireEvent.press(screen.getByTestId('guidance-show-mine'));
+
+    expect(screen.getByTestId('guidance-compare-mine')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-engine')).toBeNull();
   });
 });
 
@@ -125,6 +168,9 @@ describe('guidance modal solution', () => {
     expect(screen.getByText(/Best:/)).toBeTruthy();
     expect(screen.getByText(/6\/5/)).toBeTruthy();
     expect(screen.getByText(/13\/10/)).toBeTruthy();
+    // Both animated comparison boards render side by side.
+    expect(screen.getByTestId('guidance-compare-mine')).toBeTruthy();
+    expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
     // Path toggles for the two arrow sets.
     expect(screen.getByTestId('guidance-toggle-mine')).toBeTruthy();
     expect(screen.getByTestId('guidance-toggle-engine')).toBeTruthy();

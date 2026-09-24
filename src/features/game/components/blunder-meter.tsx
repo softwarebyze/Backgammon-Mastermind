@@ -62,7 +62,7 @@ export function BlunderMeter({ loss }: { loss: number }) {
         ))}
       </View>
       <Text style={styles.caption}>
-        Bands follow GNU Backgammon&apos;s official annotations: ?! 0.04 · ? 0.08 · ?? 0.16
+        Blunder scale (GNU Backgammon): Fine under 0.04 · Slip 0.04–0.08 · Mistake 0.08–0.16 · Big blunder 0.16+
       </Text>
     </View>
   );

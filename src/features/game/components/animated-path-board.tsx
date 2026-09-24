@@ -1,0 +1,150 @@
+import type { MoveAnimationFrame } from '@/features/game/move-animation';
+import type { GameState, Move } from '@/lib/game/types';
+import { useEffect, useRef, useState } from 'react';
+
+import { StyleSheet, Text, View } from 'react-native';
+import { BoardView } from '@/features/game/components/board/board-view';
+import { GAME_PALETTE } from '@/features/game/game-palette';
+import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
+import { buildMoveAnimationFrame } from '@/features/game/move-animation';
+import { applyMove, getLegalMoves } from '@/lib/game';
+import { interFont } from '@/lib/ui/fonts';
+import { continuousRadius } from '@/lib/ui/native-styles';
+
+/**
+ * A mini board that loops an animated replay of one move path (e.g. "Your
+ * move" or "Best move") from a fixed start position. Both boards in a
+ * comparison animate simultaneously so the player can watch the two lines
+ * side by side.
+ */
+export function AnimatedPathBoard({
+  baseState,
+  moves,
+  label,
+  tone,
+  boardWidth,
+  testID,
+}: {
+  baseState: GameState;
+  moves: Move[];
+  label: string;
+  tone: 'mine' | 'engine';
+  boardWidth: number;
+  testID?: string;
+}) {
+  const dimensions = fitBoardToViewport(boardWidth, 240);
+  const [displayState, setDisplayState] = useState(baseState);
+  const [frame, setFrame] = useState<MoveAnimationFrame | null>(null);
+  const genRef = useRef(0);
+
+  useEffect(() => {
+    if (moves.length === 0)
+      return;
+    const gen = ++genRef.current;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const alive = () => genRef.current === gen;
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timer = setTimeout(resolve, ms);
+      });
+
+    const run = async () => {
+      await wait(700);
+      let snap = baseState;
+      while (alive()) {
+        let played = 0;
+        for (const planned of moves) {
+          if (!alive())
+            return;
+          const legal = getLegalMoves(snap).find(
+            m => m.from === planned.from && m.to === planned.to,
+          );
+          if (!legal)
+            break;
+          await new Promise<void>((resolve) => {
+            if (!alive()) {
+              resolve();
+              return;
+            }
+            setFrame(buildMoveAnimationFrame(snap, legal, {
+              onFinish: resolve,
+              durationMs: 450,
+            }));
+          });
+          if (!alive())
+            return;
+          snap = applyMove(snap, legal);
+          setDisplayState(snap);
+          setFrame(null);
+          played++;
+          await wait(280);
+        }
+        if (played === 0 || !alive())
+          return;
+        await wait(1500);
+        if (!alive())
+          return;
+        snap = baseState;
+        setDisplayState(snap);
+      }
+    };
+    run();
+    return () => {
+      genRef.current++;
+      if (timer)
+        clearTimeout(timer);
+    };
+  }, [baseState, moves]);
+
+  const accent = tone === 'mine' ? GAME_PALETTE.guideMine : GAME_PALETTE.guideEngine;
+
+  return (
+    <View style={styles.wrap} testID={testID}>
+      <View style={styles.labelRow}>
+        <View style={[styles.dot, { backgroundColor: accent }]} />
+        <Text style={styles.label}>{label}</Text>
+      </View>
+      <View style={styles.board}>
+        <BoardView
+          state={displayState}
+          dimensions={dimensions}
+          previewTarget={null}
+          moveAnimation={frame}
+          onPointPress={() => {}}
+          onPointPressIn={() => {}}
+          onPointPressOut={() => {}}
+          onBarPress={() => {}}
+          onBearOffPress={() => {}}
+          interactionEnabled={false}
+          isReviewing
+        />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  wrap: {
+    gap: 6,
+  },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  label: {
+    color: GAME_PALETTE.text,
+    fontSize: 14,
+    ...interFont('semibold'),
+  },
+  board: {
+    ...continuousRadius(10),
+    overflow: 'hidden',
+  },
+});
