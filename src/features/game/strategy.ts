@@ -116,7 +116,9 @@ function longestPrime(made: number[]): number {
 
 /**
  * Whether `player` has an exposed blot the opponent can reach: a blot of
- * either side within 1-6 pips of an enemy checker (a direct shot).
+ * either side with an enemy checker 1-6 pips *behind* it — i.e. a checker
+ * the enemy can still move onto the blot. Attackers ahead of the blot have
+ * already raced past it and can never come back, so they don't count.
  */
 function contactExposed(state: GameState, player: Player): boolean {
   const foe = opponent(player);
@@ -133,7 +135,9 @@ function contactExposed(state: GameState, player: Player): boolean {
   }
   const inShot = (blot: number, attackers: Set<number>, forward: 1 | -1): boolean => {
     for (let d = 1; d <= 6; d++) {
-      if (attackers.has(blot + d * forward))
+      // Attacker at p moving `forward` lands on p + forward*d; it threatens
+      // the blot at b exactly when p = b - forward*d (behind the blot).
+      if (attackers.has(blot - d * forward))
         return true;
     }
     return false;
@@ -147,6 +151,35 @@ function contactExposed(state: GameState, player: Player): boolean {
     || state.bar[player] > 0
     || state.bar[foe] > 0
   );
+}
+
+/**
+ * Whether no contact is possible for the rest of the game: every white
+ * checker has already passed every black checker (white's highest point is
+ * below black's lowest), so neither side can ever hit the other. White moves
+ * 24 -> 1 and black moves 1 -> 24, so once all of white sits below all of
+ * black they're racing away from each other. Bar checkers re-enter into
+ * contact, so any checker on the bar disqualifies the race.
+ */
+function isPureRace(state: GameState): boolean {
+  if (state.bar.white > 0 || state.bar.black > 0)
+    return false;
+  let whiteMax = -1;
+  let blackMin = 25;
+  for (let n = 1; n <= 24; n++) {
+    const point = state.points[n];
+    if (point.count === 0)
+      continue;
+    if (point.player === 'white')
+      whiteMax = n;
+    else if (point.player === 'black')
+      blackMin = Math.min(blackMin, n);
+  }
+  // A side with no checkers on the board has nothing left to touch; leave
+  // those (game-over or synthetic) positions to the cascade below.
+  if (whiteMax < 0 || blackMin > 24)
+    return false;
+  return whiteMax < blackMin;
 }
 
 /**
@@ -173,6 +206,7 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
   const pipLead = foePips > 0 ? (foePips - myPips) / foePips : 0;
   const pipDeficit = myPips > 0 ? (myPips - foePips) / myPips : 0;
   const pipGap = Math.abs(myPips - foePips);
+  const pureRace = isPureRace(state);
 
   let key: StrategyKey = 'developing';
   let why = 'No prime, anchor, or attack on the board yet — the game is still taking shape.';
@@ -197,9 +231,11 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
     key = 'holding';
     why = `You hold an anchor on the ${anchors[0]} while trailing by ${pipGap} pips.`;
   }
-  else if (pipLead >= 0.1 && !contactExposed(state, player)) {
+  else if (pureRace || (pipLead >= 0.1 && !contactExposed(state, player))) {
     key = 'running';
-    why = `You lead the race ${foePips} to ${myPips} with no blots in hitting range.`;
+    why = pureRace
+      ? `No contact is possible — it's a straight race to bear off (${myPips} vs ${foePips} pips).`
+      : `You lead the race ${foePips} to ${myPips} with no blots in hitting range.`;
   }
 
   return { key, why, ...STRATEGIES[key] };

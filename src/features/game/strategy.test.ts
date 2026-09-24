@@ -155,3 +155,69 @@ describe('classifyStrategy', () => {
     expect(classifyStrategy(state, 'white').key).toBe('backgame');
   });
 });
+
+describe('classifyStrategy pure race', () => {
+  it('calls a pure race a running game even with blots on the board', () => {
+    // Black: 15:1, 20:1, 22:2, 23:4, 24:7 (one borne off) — 36 pips.
+    // White: 12:1, 6:2, 5:3, 4:2, 3:2, 2:5 — 63 pips.
+    // Every white checker has passed every black checker, so no contact is
+    // possible despite the blots: the old code read the shot direction
+    // backwards and called this "developing".
+    const holdings: Array<[number, Player, number]> = [
+      [15, 'black', 1],
+      [20, 'black', 1],
+      [22, 'black', 2],
+      [23, 'black', 4],
+      [24, 'black', 7],
+      [12, 'white', 1],
+      [6, 'white', 2],
+      [5, 'white', 3],
+      [4, 'white', 2],
+      [3, 'white', 2],
+      [2, 'white', 5],
+    ];
+    const base = stateWith(holdings, 'black');
+    const state: GameState = {
+      ...base,
+      borneOff: { white: 0, black: 1 },
+    };
+    expect(pipCount(state, 'black')).toBe(36);
+    expect(pipCount(state, 'white')).toBe(63);
+    const info = classifyStrategy(state, 'black');
+    expect(info.key).toBe('running');
+    expect(info.why).toMatch(/straight race/);
+  });
+
+  it('still spots a real direct shot behind a blot', () => {
+    // White blot on 5 with a black checker on 3: black moves 3 -> 5 and hits.
+    // The old backwards check missed this entirely (it looked ahead of the
+    // blot instead of behind it).
+    const state = stateWith([
+      [6, 'white', 2],
+      [5, 'white', 1],
+      [4, 'white', 2],
+      [3, 'black', 1],
+      [24, 'black', 8],
+    ]);
+    expect(pipCount(state, 'white')).toBeLessThan(pipCount(state, 'black') * 0.9);
+    // Genuine contact, so this is not a running game despite the pip lead.
+    expect(classifyStrategy(state, 'white').key).not.toBe('running');
+  });
+
+  it('calls a pure race for the trailer too', () => {
+    // No prime, no anchor, no contact — white trails 20 to 12 pips but both
+    // sides are just bearing off.
+    const state = stateWith([
+      [2, 'white', 3],
+      [4, 'white', 2],
+      [6, 'white', 1],
+      [22, 'black', 2],
+      [23, 'black', 2],
+      [24, 'black', 2],
+    ]);
+    expect(pipCount(state, 'white')).toBeGreaterThan(pipCount(state, 'black'));
+    const info = classifyStrategy(state, 'white');
+    expect(info.key).toBe('running');
+    expect(info.why).toMatch(/straight race/);
+  });
+});
