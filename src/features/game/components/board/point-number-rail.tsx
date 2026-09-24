@@ -1,12 +1,19 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import type { Player } from '@/lib/game/types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
+import { pointNumberLabel } from '@/features/game/point-numbering';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
   side: 'top' | 'bottom';
   dimensions: BoardDimensions;
+  /**
+   * Whose point of view the numbers are labeled from. Black's 1-point is
+   * physical point 24, so black's labels read 25 - n.
+   */
+  perspective?: Player;
 };
 
 const TOP_LEFT = [13, 14, 15, 16, 17, 18];
@@ -33,16 +40,16 @@ function PointHalf({ indices, colWidth }: { indices: number[]; colWidth: number 
 }
 
 /** Column-aligned number rail — matches board column widths exactly. */
-export function PointNumberRail({ side, dimensions }: Props) {
+export function PointNumberRail({ side, dimensions, perspective = 'white' }: Props) {
   const { colWidth, barWidth, bearOffWidth, boardWidth } = dimensions;
   const left = side === 'top' ? TOP_LEFT : BOT_LEFT;
   const right = side === 'top' ? TOP_RIGHT : BOT_RIGHT;
 
   return (
     <View style={[styles.rail, { height: POINT_NUMBER_RAIL, width: boardWidth }]}>
-      <PointHalf indices={left} colWidth={colWidth} />
+      <PointHalf indices={left.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
       <View style={{ width: barWidth }} />
-      <PointHalf indices={right} colWidth={colWidth} />
+      <PointHalf indices={right.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
       <View style={{ width: bearOffWidth }} />
     </View>
   );

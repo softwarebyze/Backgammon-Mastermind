@@ -22,6 +22,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { REVIEW_SLOT_HEIGHT, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
+import { resolveNumberPerspective } from '@/features/game/point-numbering';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
@@ -184,6 +185,14 @@ export function GameScreenLayout({
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
+  // Point numbers are labeled from the point of view of the side whose turn
+  // is on screen: live that's the player to move; in review it's the player
+  // whose turn is being reviewed.
+  const numberPerspective = resolveNumberPerspective({
+    isReviewing: review.isReviewing,
+    reviewedPlayer: review.reviewedPlayer,
+    currentPlayer: state.currentPlayer,
+  });
   const canOpeningRoll = !review.isReviewing && !isComputerTurn && live.phase === 'opening-roll';
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
   const prevPhaseRef = useRef<string | undefined>(undefined);
@@ -245,6 +254,7 @@ export function GameScreenLayout({
           pathSegments={board.pathSegments}
           pathFadeOutMs={board.pathFadeOutMs}
           input={input}
+          numberPerspective={numberPerspective}
         />
       </View>
       <WinConfettiOverlay burstKey={winBurstKey} />

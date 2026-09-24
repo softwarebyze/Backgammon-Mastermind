@@ -193,6 +193,7 @@ export function AnimatedPathBoard({
           onBearOffPress={() => {}}
           interactionEnabled={false}
           isReviewing
+          numberPerspective={baseState.currentPlayer}
         />
         {segments.length > 0 && (
           <View

@@ -1,7 +1,7 @@
 import type { PathSegment } from '@/features/game/components/board/move-path-overlay';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
-import type { GameState } from '@/lib/game';
+import type { GameState, Player } from '@/lib/game';
 import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
@@ -25,6 +25,8 @@ type Props = {
   pathSegments: PathSegment[];
   pathFadeOutMs?: number;
   input: Input;
+  /** Whose point of view the point-number rails are labeled from. */
+  numberPerspective: Player;
 };
 
 /** Playing-surface origin inside BoardView (frame + optional number rail). */
@@ -46,6 +48,7 @@ export function GameBoardSection({
   pathSegments,
   pathFadeOutMs,
   input,
+  numberPerspective,
 }: Props) {
   const dimensions = useBoardDimensions();
   const { preferences } = useGamePreferences();
@@ -95,6 +98,7 @@ export function GameBoardSection({
             dragFrom={interactionEnabled ? input.dragFrom : null}
             interactionEnabled={interactionEnabled}
             isReviewing={isReviewing}
+            numberPerspective={numberPerspective}
             onPointPress={input.handlePointPress}
             onPointPressIn={input.handlePointPressIn}
             onPointPressOut={input.handlePointPressOut}
