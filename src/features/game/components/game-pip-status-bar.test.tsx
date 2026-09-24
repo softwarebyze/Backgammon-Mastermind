@@ -53,8 +53,8 @@ describe('gamePipStatusBar game-over', () => {
   it('hides pip counts and centers the winner badge', () => {
     const state = {
       ...createInitialState('vs-computer'),
-      phase: 'game-over',
-      winner: 'white',
+      phase: 'game-over' as const,
+      winner: 'white' as const,
     };
     render(<GamePipStatusBar state={state} />);
 

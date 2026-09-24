@@ -49,20 +49,23 @@ export function BlunderMeter({ loss }: { loss: number }) {
       </View>
       <View style={styles.labels}>
         {BLUNDER_BANDS.map((band, i) => (
-          <Text
-            key={band.label}
-            style={[
-              styles.label,
-              { flex: band.flex },
-              i === activeIndex && styles.labelActive,
-            ]}
-          >
-            {band.label}
-          </Text>
+          <View key={band.label} style={{ flex: band.flex, alignItems: 'center' }}>
+            <Text
+              style={[
+                styles.label,
+                i === activeIndex && styles.labelActive,
+              ]}
+            >
+              {band.label}
+            </Text>
+            <Text style={styles.range}>
+              {band.range}
+            </Text>
+          </View>
         ))}
       </View>
       <Text style={styles.caption}>
-        Blunder scale (GNU Backgammon): Fine under 0.04 · Slip 0.04–0.08 · Mistake 0.08–0.16 · Big blunder 0.16+
+        Blunder scale (GNU Backgammon)
       </Text>
     </View>
   );
@@ -115,6 +118,14 @@ const styles = StyleSheet.create({
   },
   labelActive: {
     color: GAME_PALETTE.text,
+  },
+  range: {
+    textAlign: 'center',
+    fontSize: 9,
+    color: GAME_PALETTE.textMuted,
+    opacity: 0.7,
+    ...interFont('regular'),
+    fontVariant: ['tabular-nums'],
   },
   caption: {
     textAlign: 'center',

@@ -12,10 +12,10 @@ export const BLUNDER_METER_MAX = 0.3;
  * the labels match the app's beginner severity words exactly.
  */
 export const BLUNDER_BANDS = [
-  { label: 'Fine', max: 0.04, flex: 4, color: colors.success[400] },
+  { label: 'Fine', range: '<0.04', max: 0.04, flex: 4, color: colors.success[400] },
   // Single-word label: the low bands are too narrow for longer captions
   // ("Small slip" wrapped to two lines at phone width).
-  { label: 'Slip', max: 0.08, flex: 4, color: colors.warning[400] },
-  { label: 'Mistake', max: 0.16, flex: 8, color: colors.primary[400] },
-  { label: 'Big blunder', max: BLUNDER_METER_MAX, flex: 14, color: colors.danger[400] },
+  { label: 'Slip', range: '0.04–0.08', max: 0.08, flex: 4, color: colors.warning[400] },
+  { label: 'Mistake', range: '0.08–0.16', max: 0.16, flex: 8, color: colors.primary[400] },
+  { label: 'Big blunder', range: '0.16+', max: BLUNDER_METER_MAX, flex: 14, color: colors.danger[400] },
 ] as const;
