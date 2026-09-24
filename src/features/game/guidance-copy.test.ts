@@ -3,6 +3,7 @@ import {
   blunderQuestionBody,
   blunderSeverity,
   candidateRows,
+  EQUITY_EXPLAINER,
   formatHintNotation,
   formatPoints,
   ordinal,
@@ -67,7 +68,24 @@ describe('guidance copy', () => {
     it('recaps rank, field size, and cost plainly', () => {
       const summary = blunderDetailsSummary(3, 18, 0.117);
       expect(summary).toBe(
-        'Your move ranked 3rd of 18 and gives up about 0.12 points per game versus the best move.',
+        'Your move ranked 3rd of 18, scoring about 0.12 points per game less than the best move.',
+      );
+    });
+
+    it('defines points per game without circular wording', () => {
+      // "average points a move earns" defined points with points; the new
+      // explainer attributes the score to the engine and states it plainly.
+      expect(EQUITY_EXPLAINER).toBe(
+        'The engine scores each move by the points it expects to win per game, on average. Higher is better.',
+      );
+      expect(EQUITY_EXPLAINER).not.toMatch(/average points/i);
+    });
+
+    it('keeps the first sentence and states the cost as a comparison', () => {
+      const body = blunderQuestionBody(5, 12, 0.351);
+      expect(body).toBe(
+        'Your move was the 5th-best of 12 ways to play this roll. '
+        + 'On average, it scores about 0.35 points per game less than the best move.',
       );
     });
   });

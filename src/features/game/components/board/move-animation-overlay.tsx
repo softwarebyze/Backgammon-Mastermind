@@ -109,7 +109,9 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
     const duration = animation.durationMs ?? CHECKER_MOVE_DURATION_MS;
     // Reanimated can cancel without calling the callback (remount, interrupt).
     // A backup commit prevents empty-bar / stuck-undo half-states.
-    const backup = setTimeout(finish, duration + 120);
+    const backup = setTimeout(() => {
+      finish();
+    }, duration + 120);
 
     progress.value = 0;
     progress.value = withTiming(

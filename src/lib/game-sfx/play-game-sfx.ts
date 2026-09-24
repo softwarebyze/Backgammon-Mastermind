@@ -56,6 +56,7 @@ type WebAudioWindow = {
 let ready = false;
 let readyPromise: Promise<void> | null = null;
 let primedGesture = false;
+
 const nativePlayers = new Map<GameSfxKind, NativePlayer>();
 const webBuffers = new Map<GameSfxKind, WebAudioBuffer>();
 const webUris = new Map<GameSfxKind, string>();

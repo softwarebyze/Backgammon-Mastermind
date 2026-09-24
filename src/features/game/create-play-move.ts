@@ -18,6 +18,13 @@ export function createPlayMove(opts: {
   setState: Dispatch<SetStateAction<GameState | null>>;
   setMoveAnimation: Dispatch<SetStateAction<MoveAnimationFrame | null>>;
   onMoveApplied?: (before: GameState, move: Move, after: GameState) => void;
+  /**
+   * Fires when the move's animation begins (not when it settles). Used for
+   * immediate audio feedback — the SFX plays on tap, not ~400ms later at
+   * landing. `after` is a preview computed via applyMove; the commit still
+   * happens in settle.
+   */
+  onMoveStarted?: (before: GameState, move: Move, after: GameState) => void;
 }) {
   const {
     generationRef,
@@ -26,6 +33,7 @@ export function createPlayMove(opts: {
     setState,
     setMoveAnimation,
     onMoveApplied,
+    onMoveStarted,
   } = opts;
 
   return (
@@ -55,6 +63,12 @@ export function createPlayMove(opts: {
       playOpts?.onComplete?.(next);
     };
     finishOnceRef.current = settle;
+    // Immediate audio feedback: play the move's SFX now, not at landing.
+    // applyMove is pure, so the preview matches what settle will commit.
+    const legalPreview = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
+    if (legalPreview) {
+      onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview));
+    }
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, {
       onFinish: settle,
       fromAnchor: playOpts?.fromAnchor,

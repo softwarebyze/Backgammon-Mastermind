@@ -27,6 +27,7 @@ export function playValidatedMoveSequence(opts: {
   isAnimating: boolean;
   playMove: PlayMove;
   onMoveApplied?: (before: GameState, move: Move, after: GameState) => void;
+  onMoveStarted?: (before: GameState, move: Move, after: GameState) => void;
   setState: Dispatch<SetStateAction<GameState | null>>;
   setMoveAnimation: Dispatch<SetStateAction<MoveAnimationFrame | null>>;
   setSequenceActive: Dispatch<SetStateAction<boolean>>;
@@ -42,6 +43,7 @@ export function playValidatedMoveSequence(opts: {
     isAnimating,
     playMove,
     onMoveApplied,
+    onMoveStarted,
     setState,
     setMoveAnimation,
     setSequenceActive,
@@ -72,6 +74,13 @@ export function playValidatedMoveSequence(opts: {
     };
     setSequenceActive(true);
     finishOnceRef.current = settle;
+    // Immediate audio feedback for the whole glide: play each step's SFX now.
+    const steps = resolveSequenceSteps(snapshot, moves);
+    if (steps) {
+      for (const step of steps) {
+        onMoveStarted?.(step.before, step.legal, step.after);
+      }
+    }
     setMoveAnimation(buildMoveAnimationFrame(snapshot, glideMove, { onFinish: settle, fromAnchor }));
     return;
   }

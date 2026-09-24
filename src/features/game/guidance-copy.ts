@@ -37,7 +37,7 @@ export function formatPoints(e: number): string {
 }
 
 export const EQUITY_EXPLAINER
-  = 'Points per game is the average points a move earns. Higher is better.';
+  = 'The engine scores each move by the points it expects to win per game, on average. Higher is better.';
 
 /**
  * Blunder question copy. Deliberately contains no recommended move and no
@@ -46,15 +46,15 @@ export const EQUITY_EXPLAINER
 export function blunderQuestionBody(rank: number, candidateCount: number, loss: number): string {
   return (
     `Your move was the ${ordinal(rank)}-best of ${candidateCount} ways to play this roll. `
-    + `It gives up about ${loss.toFixed(2)} points per game compared with the best move.`
+    + `On average, it scores about ${loss.toFixed(2)} points per game less than the best move.`
   );
 }
 
 /** One-line recap for the collapsed details section of the solution view. */
 export function blunderDetailsSummary(rank: number, candidateCount: number, loss: number): string {
   return (
-    `Your move ranked ${ordinal(rank)} of ${candidateCount} and gives up about `
-    + `${loss.toFixed(2)} points per game versus the best move.`
+    `Your move ranked ${ordinal(rank)} of ${candidateCount}, scoring about `
+    + `${loss.toFixed(2)} points per game less than the best move.`
   );
 }
 

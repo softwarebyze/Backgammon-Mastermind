@@ -7,13 +7,13 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
+import { guidanceArrowSegments } from '@/features/game/guidance-arrows';
 import {
   clearGuidance,
   setGuidanceVerdictPending,
   useGuidance,
   useGuidanceVerdictPending,
 } from '@/features/game/guidance-store';
-import { guidanceArrowSegments } from '@/features/game/guidance-arrows';
 import {
   clearHintArrows,
   setHintArrows,
