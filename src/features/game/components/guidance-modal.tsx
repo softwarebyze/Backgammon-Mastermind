@@ -152,6 +152,79 @@ function ActionButton({
 }
 
 /**
+ * The unspoiled question: severity, meter, and the actions that either
+ * reveal an answer (full or mine-only) or dismiss the prompt.
+ */
+function QuestionView({
+  verdict,
+  onTakeBack,
+  onRevealFull,
+  onShowMine,
+  onKeepMove,
+  onTurnOff,
+}: {
+  verdict: NonNullable<GuidanceSession['verdict']>;
+  onTakeBack: () => void;
+  onRevealFull: () => void;
+  onShowMine: () => void;
+  onKeepMove: () => void;
+  onTurnOff: () => void;
+}) {
+  return (
+    <>
+      <Text style={styles.title}>{blunderSeverity(verdict.loss)}</Text>
+      <Text style={styles.message}>
+        {blunderQuestionBody(verdict.playedRank, verdict.candidateCount, verdict.loss)}
+      </Text>
+      <BlunderMeter loss={verdict.loss} />
+      <Text style={styles.explainer}>{EQUITY_EXPLAINER}</Text>
+      <View style={styles.actions}>
+        <ActionButton
+          label="Take back & retry"
+          a11y="Take back the move and try again"
+          testID="guidance-take-back"
+          onPress={onTakeBack}
+          style={styles.btnPrimary}
+          labelStyle={styles.btnPrimaryLabel}
+        />
+        <ActionButton
+          label="Show the best move"
+          a11y="Reveal the recommended move"
+          testID="guidance-reveal"
+          onPress={onRevealFull}
+          style={styles.btnSecondary}
+          labelStyle={styles.btnSecondaryLabel}
+        />
+        <ActionButton
+          label="Show my move"
+          a11y="Show only my move, without revealing the best move"
+          testID="guidance-show-mine"
+          onPress={onShowMine}
+          style={styles.btnGhost}
+          labelStyle={styles.btnGhostLabel}
+        />
+        <ActionButton
+          label="Keep my move"
+          a11y="Keep my move and continue"
+          testID="guidance-keep-move"
+          onPress={onKeepMove}
+          style={styles.btnGhost}
+          labelStyle={styles.btnGhostLabel}
+        />
+        <ActionButton
+          label="Turn Tutor off"
+          a11y="Turn Tutor mode off"
+          testID="guidance-turn-off"
+          onPress={onTurnOff}
+          style={styles.btnGhost}
+          labelStyle={styles.btnMutedLabel}
+        />
+      </View>
+    </>
+  );
+}
+
+/**
  * The revealed answer: either the player's own move alone ("Show my move",
  * best move still hidden) or the full comparison with the engine's best.
  */
@@ -281,15 +354,20 @@ export function GuidanceModal() {
     clearGuidance();
     revertTurn();
   };
-  const handleReveal = () => updateGuidance({ revealed: true });
+  // Every reveal transition writes the complete reveal state, so Back →
+  // reveal can never resurrect stale toggles from an earlier view.
+  const handleRevealFull = () => updateGuidance({
+    revealed: true,
+    revealMineOnly: false,
+    showMine: true,
+    showEngine: true,
+  });
   const handleShowMine = () => updateGuidance({
     revealed: true,
     showMine: true,
     showEngine: false,
     revealMineOnly: true,
   });
-  const handleRevealBest = () =>
-    updateGuidance({ revealMineOnly: false, showEngine: true });
   const handleBackToQuestion = () =>
     updateGuidance({ revealed: false, revealMineOnly: false });
   const handleKeepMove = () => clearGuidance();
@@ -309,61 +387,19 @@ export function GuidanceModal() {
         <View style={styles.card} accessibilityRole="alert" testID="guidance-modal">
           {!session.revealed
             ? (
-                <>
-                  <Text style={styles.title}>{blunderSeverity(verdict.loss)}</Text>
-                  <Text style={styles.message}>
-                    {blunderQuestionBody(verdict.playedRank, verdict.candidateCount, verdict.loss)}
-                  </Text>
-                  <BlunderMeter loss={verdict.loss} />
-                  <Text style={styles.explainer}>{EQUITY_EXPLAINER}</Text>
-                  <View style={styles.actions}>
-                    <ActionButton
-                      label="Take back & retry"
-                      a11y="Take back the move and try again"
-                      testID="guidance-take-back"
-                      onPress={handleTakeBack}
-                      style={styles.btnPrimary}
-                      labelStyle={styles.btnPrimaryLabel}
-                    />
-                    <ActionButton
-                      label="Show the best move"
-                      a11y="Reveal the recommended move"
-                      testID="guidance-reveal"
-                      onPress={handleReveal}
-                      style={styles.btnSecondary}
-                      labelStyle={styles.btnSecondaryLabel}
-                    />
-                    <ActionButton
-                      label="Show my move"
-                      a11y="Show only my move, without revealing the best move"
-                      testID="guidance-show-mine"
-                      onPress={handleShowMine}
-                      style={styles.btnGhost}
-                      labelStyle={styles.btnGhostLabel}
-                    />
-                    <ActionButton
-                      label="Keep my move"
-                      a11y="Keep my move and continue"
-                      testID="guidance-keep-move"
-                      onPress={handleKeepMove}
-                      style={styles.btnGhost}
-                      labelStyle={styles.btnGhostLabel}
-                    />
-                    <ActionButton
-                      label="Turn Tutor off"
-                      a11y="Turn Tutor mode off"
-                      testID="guidance-turn-off"
-                      onPress={handleTurnOff}
-                      style={styles.btnGhost}
-                      labelStyle={styles.btnMutedLabel}
-                    />
-                  </View>
-                </>
+                <QuestionView
+                  verdict={verdict}
+                  onTakeBack={handleTakeBack}
+                  onRevealFull={handleRevealFull}
+                  onShowMine={handleShowMine}
+                  onKeepMove={handleKeepMove}
+                  onTurnOff={handleTurnOff}
+                />
               )
             : (
                 <SolutionView
                   session={session}
-                  onRevealBest={handleRevealBest}
+                  onRevealBest={handleRevealFull}
                   onBackToQuestion={handleBackToQuestion}
                   onTakeBack={handleTakeBack}
                   onKeepMove={handleKeepMove}

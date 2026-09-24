@@ -3,7 +3,7 @@ import type { GuidanceSession } from '../guidance-store';
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, render, screen } from '@/lib/test-utils';
 
-import { clearGuidance, showGuidance } from '../guidance-store';
+import { clearGuidance, getGuidance, showGuidance } from '../guidance-store';
 import { GuidanceModal } from './guidance-modal';
 
 jest.mock('@/lib/haptics', () => ({
@@ -185,5 +185,67 @@ describe('guidance modal solution', () => {
     // Toggling updates the session; the modal stays open on the solution.
     expect(screen.getByTestId('guidance-modal')).toBeTruthy();
     expect(screen.getByText(/Best:/)).toBeTruthy();
+  });
+});
+
+describe('guidance modal reveal state', () => {
+  it('mine-only -> back -> full reveal restores both arrow sets', () => {
+    renderQuestion();
+
+    fireEvent.press(screen.getByTestId('guidance-show-mine'));
+    // Mine-only: the best move stays hidden.
+    expect(screen.queryByText(/Best:/)).toBeNull();
+    expect(getGuidance()?.revealMineOnly).toBe(true);
+    expect(getGuidance()?.showEngine).toBe(false);
+
+    fireEvent.press(screen.getByTestId('guidance-back-to-question'));
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+
+    const session = getGuidance();
+    expect(session?.revealed).toBe(true);
+    expect(session?.revealMineOnly).toBe(false);
+    expect(session?.showMine).toBe(true);
+    expect(session?.showEngine).toBe(true);
+    // Both paths and both arrow toggles are back.
+    expect(screen.getByText(/You played:/)).toBeTruthy();
+    expect(screen.getByText(/Best:/)).toBeTruthy();
+    expect(screen.getByTestId('guidance-toggle-mine')).toBeTruthy();
+    expect(screen.getByTestId('guidance-toggle-engine')).toBeTruthy();
+  });
+
+  it('toggled arrows -> back -> reopening the full answer restores defaults', () => {
+    renderQuestion();
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+
+    fireEvent.press(screen.getByTestId('guidance-toggle-mine'));
+    fireEvent.press(screen.getByTestId('guidance-toggle-engine'));
+    expect(getGuidance()?.showMine).toBe(false);
+    expect(getGuidance()?.showEngine).toBe(false);
+
+    fireEvent.press(screen.getByTestId('guidance-back-to-question'));
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+
+    const session = getGuidance();
+    expect(session?.revealed).toBe(true);
+    expect(session?.showMine).toBe(true);
+    expect(session?.showEngine).toBe(true);
+  });
+
+  it('a fresh blunder session does not inherit stale toggles', () => {
+    renderQuestion();
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+    fireEvent.press(screen.getByTestId('guidance-toggle-engine'));
+    expect(getGuidance()?.showEngine).toBe(false);
+
+    // Next turn's blunder replaces the session wholesale.
+    act(() => {
+      showGuidance(blunderSession());
+    });
+
+    const session = getGuidance();
+    expect(session?.revealed).toBe(false);
+    expect(session?.showMine).toBe(true);
+    expect(session?.showEngine).toBe(true);
+    expect(session?.revealMineOnly).toBeFalsy();
   });
 });
