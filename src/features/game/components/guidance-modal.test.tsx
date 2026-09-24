@@ -1,7 +1,7 @@
 import type { GuidanceSession } from '../guidance-store';
 
 import { createInitialState } from '@/lib/game/constants';
-import { act, cleanup, fireEvent, render, screen } from '@/lib/test-utils';
+import { act, cleanup, fireEvent, render, screen, within } from '@/lib/test-utils';
 
 import { clearGuidance, getGuidance, showGuidance } from '../guidance-store';
 import { GuidanceModal } from './guidance-modal';
@@ -160,7 +160,7 @@ describe('guidance modal question', () => {
 });
 
 describe('guidance modal solution', () => {
-  it('reveal shows both paths side by side, and back returns to the question', () => {
+  it('reveal opens on the best move; the view toggle switches boards', () => {
     renderQuestion();
 
     fireEvent.press(screen.getByTestId('guidance-reveal'));
@@ -168,12 +168,27 @@ describe('guidance modal solution', () => {
     expect(screen.getByText(/Best:/)).toBeTruthy();
     expect(screen.getByText(/6\/5/)).toBeTruthy();
     expect(screen.getByText(/13\/10/)).toBeTruthy();
-    // Both animated comparison boards render side by side.
+    // The learner asked to see the best move, so the best board is up first.
+    expect(screen.getByTestId('guidance-view-toggle')).toBeTruthy();
+    expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-mine')).toBeNull();
+
+    // Mine shows only the player's replay.
+    fireEvent.press(screen.getByTestId('guidance-view-mine'));
+    expect(screen.getByTestId('guidance-compare-mine')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-engine')).toBeNull();
+
+    // Both stacks the two replays.
+    fireEvent.press(screen.getByTestId('guidance-view-both'));
     expect(screen.getByTestId('guidance-compare-mine')).toBeTruthy();
     expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
-    // Path toggles for the two arrow sets.
-    expect(screen.getByTestId('guidance-toggle-mine')).toBeTruthy();
-    expect(screen.getByTestId('guidance-toggle-engine')).toBeTruthy();
+
+    // Start shows the shared starting position with no replay controls.
+    fireEvent.press(screen.getByTestId('guidance-view-start'));
+    expect(screen.getByTestId('guidance-compare-start')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-start-play-pause')).toBeNull();
+    expect(screen.queryByTestId('guidance-compare-mine')).toBeNull();
+    expect(screen.queryByTestId('guidance-compare-engine')).toBeNull();
 
     fireEvent.press(screen.getByTestId('guidance-back-to-question'));
     // Back at the question: the answer is hidden again.
@@ -190,9 +205,11 @@ describe('guidance modal solution', () => {
     fireEvent.press(screen.getByTestId('guidance-details-toggle'));
     expect(screen.getByTestId('guidance-details')).toBeTruthy();
     expect(screen.getByText(/ranked 3rd of 18/)).toBeTruthy();
-    // Labeled candidate rows, not raw numbers alone.
-    expect(screen.getByText('Best')).toBeTruthy();
-    expect(screen.getByText('3rd (yours)')).toBeTruthy();
+    // Labeled candidate rows, not raw numbers alone. The view toggle also
+    // renders a "Best" label, so scope the query to the details section.
+    const details = screen.getByTestId('guidance-details');
+    expect(within(details).getByText('Best')).toBeTruthy();
+    expect(within(details).getByText('3rd (yours)')).toBeTruthy();
   });
 
   it('take back reverts the turn and closes the modal', () => {
@@ -222,20 +239,25 @@ describe('guidance modal solution', () => {
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
   });
 
-  it('path toggles flip arrow visibility', () => {
+  it('view toggle switches between mine, best, both, and start boards', () => {
     renderQuestion();
     fireEvent.press(screen.getByTestId('guidance-reveal'));
 
-    const mine = screen.getByTestId('guidance-toggle-mine');
-    fireEvent.press(mine);
-    // Toggling updates the session; the modal stays open on the solution.
+    // Starts on the best move the learner asked for.
+    expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
+
+    fireEvent.press(screen.getByTestId('guidance-view-mine'));
+    expect(screen.getByTestId('guidance-compare-mine')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-engine')).toBeNull();
+
+    // Toggling boards keeps the modal open on the solution.
     expect(screen.getByTestId('guidance-modal')).toBeTruthy();
     expect(screen.getByText(/Best:/)).toBeTruthy();
   });
 });
 
 describe('guidance modal reveal state', () => {
-  it('mine-only -> back -> full reveal restores both arrow sets', () => {
+  it('mine-only -> back -> full reveal opens on the best move', () => {
     renderQuestion();
 
     fireEvent.press(screen.getByTestId('guidance-show-mine'));
@@ -252,46 +274,49 @@ describe('guidance modal reveal state', () => {
     expect(session?.revealMineOnly).toBe(false);
     expect(session?.showMine).toBe(true);
     expect(session?.showEngine).toBe(true);
-    // Both paths and both arrow toggles are back.
+    // The full comparison is back, opening on the best move.
     expect(screen.getByText(/You played:/)).toBeTruthy();
     expect(screen.getByText(/Best:/)).toBeTruthy();
-    expect(screen.getByTestId('guidance-toggle-mine')).toBeTruthy();
-    expect(screen.getByTestId('guidance-toggle-engine')).toBeTruthy();
+    expect(screen.getByTestId('guidance-view-toggle')).toBeTruthy();
+    expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-mine')).toBeNull();
   });
 
-  it('toggled arrows -> back -> reopening the full answer restores defaults', () => {
+  it('switching views -> back -> re-reveal resets to the best move', () => {
     renderQuestion();
     fireEvent.press(screen.getByTestId('guidance-reveal'));
 
-    fireEvent.press(screen.getByTestId('guidance-toggle-mine'));
-    fireEvent.press(screen.getByTestId('guidance-toggle-engine'));
-    expect(getGuidance()?.showMine).toBe(false);
-    expect(getGuidance()?.showEngine).toBe(false);
+    // The learner picks a different board…
+    fireEvent.press(screen.getByTestId('guidance-view-mine'));
+    expect(screen.getByTestId('guidance-compare-mine')).toBeTruthy();
 
+    // …goes back and reveals again: the default view is restored.
     fireEvent.press(screen.getByTestId('guidance-back-to-question'));
     fireEvent.press(screen.getByTestId('guidance-reveal'));
 
     const session = getGuidance();
     expect(session?.revealed).toBe(true);
-    expect(session?.showMine).toBe(true);
-    expect(session?.showEngine).toBe(true);
+    expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-mine')).toBeNull();
   });
 
-  it('a fresh blunder session does not inherit stale toggles', () => {
+  it('a fresh blunder session opens on the best move', () => {
     renderQuestion();
     fireEvent.press(screen.getByTestId('guidance-reveal'));
-    fireEvent.press(screen.getByTestId('guidance-toggle-engine'));
-    expect(getGuidance()?.showEngine).toBe(false);
+    fireEvent.press(screen.getByTestId('guidance-view-mine'));
+    expect(screen.getByTestId('guidance-compare-mine')).toBeTruthy();
 
     // Next turn's blunder replaces the session wholesale.
     act(() => {
       showGuidance(blunderSession());
     });
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
 
     const session = getGuidance();
-    expect(session?.revealed).toBe(false);
-    expect(session?.showMine).toBe(true);
-    expect(session?.showEngine).toBe(true);
+    expect(session?.revealed).toBe(true);
     expect(session?.revealMineOnly).toBeFalsy();
+    // The new session starts on the best view, not the previous pick.
+    expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-compare-mine')).toBeNull();
   });
 });
