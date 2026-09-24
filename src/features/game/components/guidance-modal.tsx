@@ -212,7 +212,9 @@ function CompareBoards({
   boardWidth: number;
   mineOnly: boolean;
 }) {
-  const [viewMode, setViewMode] = useState<CompareViewMode>('mine');
+  // Start on the best move: this view only appears after the learner asked
+  // to see the best move (the mine-only view has its own separate branch).
+  const [viewMode, setViewMode] = useState<CompareViewMode>('best');
 
   if (mineOnly) {
     return (
