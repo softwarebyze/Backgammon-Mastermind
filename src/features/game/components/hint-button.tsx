@@ -1,6 +1,6 @@
 import type { GameState } from '@/lib/game/types';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { primaryEngine } from '@/features/game/engine';
@@ -12,6 +12,7 @@ import {
   showGuidance,
   useGuidance,
 } from '@/features/game/guidance-store';
+import { useGame } from '@/features/game/use-game';
 import { cloneGameState } from '@/lib/game/snapshot';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
@@ -25,13 +26,44 @@ type Props = {
 type Phase = 'idle' | 'loading' | 'error';
 
 /**
- * "Hint" button for the human turn, available at any point in the moving
- * phase — including mid-turn after some dice are played. Asks the engine
- * (falling back to the built-in heuristic when it's unavailable) for the
- * best continuation from the CURRENT position + remaining dice, then opens
- * a hint guidance session: the suggestion draws as arrows on the board and
- * a pill offers "Back to my turn" to dismiss and keep playing. The game is
- * never paused.
+ * Tracks the identity of the current hint request. `begin()` starts a new
+ * request and returns its id; `isCurrent(id)` tells whether that request is
+ * still the latest; `invalidate()` cancels whatever is in flight. The id
+ * bumps automatically whenever the board may have moved under a request:
+ * - `state` — the committed game state (covers undo, take-back, passes).
+ * - `isAnimating` false→true — a move INITIATION. The game state only
+ *   commits when the move animation finishes, so keying off `state` alone
+ *   leaves a window where the engine can answer for the pre-move position
+ *   after the player has already moved. isAnimating flips synchronously
+ *   when the animation starts, closing that window.
+ * Stale answers are therefore dropped instead of surfacing as guidance.
+ */
+function useHintRequest(state: GameState) {
+  const requestIdRef = useRef(0);
+  const { isAnimating } = useGame();
+  useEffect(() => {
+    requestIdRef.current += 1;
+  }, [state]);
+  const wasAnimating = useRef(isAnimating);
+  useEffect(() => {
+    if (isAnimating && !wasAnimating.current)
+      requestIdRef.current += 1;
+    wasAnimating.current = isAnimating;
+  }, [isAnimating]);
+  const begin = useCallback(() => ++requestIdRef.current, []);
+  const isCurrent = useCallback((id: number) => requestIdRef.current === id, []);
+  const invalidate = useCallback(() => {
+    requestIdRef.current += 1;
+  }, []);
+  return { begin, isCurrent, invalidate };
+}
+
+/**
+ * "Hint" button for the human turn, available at TURN START only (the
+ * controls hide it once a move is played). Asks the primary engine for the
+ * best line from the turn-start position, then opens a hint guidance
+ * session: the suggestion draws as arrows on the board and a pill offers
+ * "Back to my turn" to dismiss and keep playing. The game is never paused.
  *
  * If the player moves while the request is in flight, the stale result is
  * discarded — an answer for a dead position is worse than none.
@@ -42,26 +74,20 @@ export function HintButton({ state, moveLogLength }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
   const session = useGuidance();
   const hintOpen = session?.kind === 'hint' && session.revealed;
-  const requestId = useRef(0);
-
-  // Any board change invalidates an in-flight request (stale positions
-  // must never surface as guidance).
-  useEffect(() => {
-    requestId.current += 1;
-  }, [state]);
+  const hintRequest = useHintRequest(state);
 
   const ask = async () => {
     if (phase === 'loading')
       return;
     hapticLight();
-    const id = ++requestId.current;
+    const id = hintRequest.begin();
     setPhase('loading');
     // Snapshot now: the answer belongs to this exact position.
     const questionState = cloneGameState(state);
     const atRequestMoveLogLength = moveLogLength;
     try {
       const hint = await getEngineHint(state);
-      if (requestId.current !== id)
+      if (!hintRequest.isCurrent(id))
         return; // the player moved on — drop the stale answer
       setPhase('idle');
       showGuidance({
@@ -77,7 +103,7 @@ export function HintButton({ state, moveLogLength }: Props) {
       });
     }
     catch {
-      if (requestId.current !== id)
+      if (!hintRequest.isCurrent(id))
         return;
       setPhase('error');
     }
@@ -85,7 +111,7 @@ export function HintButton({ state, moveLogLength }: Props) {
 
   const dismiss = () => {
     hapticLight();
-    requestId.current += 1;
+    hintRequest.invalidate();
     setPhase('idle');
     clearGuidance();
   };
