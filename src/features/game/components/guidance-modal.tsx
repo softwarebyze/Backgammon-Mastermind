@@ -70,57 +70,6 @@ function DetailsSection({ session }: { session: GuidanceSession }) {
 }
 
 /** Toggle chips for the two arrow sets in the solution view. */
-function Chip({
-  label,
-  color,
-  active,
-  testID,
-  onPress,
-}: {
-  label: string;
-  color: string;
-  active: boolean;
-  testID: string;
-  onPress: () => void;
-}) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={`${active ? 'Hide' : 'Show'} ${label}`}
-      testID={testID}
-      onPress={() => {
-        hapticLight();
-        onPress();
-      }}
-      style={[styles.chip, active && styles.chipActive]}
-    >
-      <View style={[styles.dot, { backgroundColor: color }]} />
-      <Text style={[styles.chipText, active && styles.chipTextActive]}>{label}</Text>
-    </Pressable>
-  );
-}
-
-function PathToggles({ session }: { session: GuidanceSession }) {
-  return (
-    <View style={styles.chips}>
-      <Chip
-        label="Your move"
-        color={GAME_PALETTE.guideMine}
-        active={session.showMine}
-        testID="guidance-toggle-mine"
-        onPress={() => updateGuidance({ showMine: !session.showMine })}
-      />
-      <Chip
-        label="Best move"
-        color={GAME_PALETTE.guideEngine}
-        active={session.showEngine}
-        testID="guidance-toggle-engine"
-        onPress={() => updateGuidance({ showEngine: !session.showEngine })}
-      />
-    </View>
-  );
-}
-
 function ActionButton({
   label,
   a11y,
@@ -393,7 +342,6 @@ function SolutionView({
           )
         : (
             <>
-              <PathToggles session={session} />
               <View style={styles.paths}>
                 <View style={styles.pathRow}>
                   <Text style={styles.pathText}>

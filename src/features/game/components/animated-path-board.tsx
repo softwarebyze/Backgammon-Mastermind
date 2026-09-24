@@ -60,6 +60,7 @@ export function AnimatedPathBoard({
   const genRef = useRef(0);
   const pausedRef = useRef(false);
   pausedRef.current = paused;
+  const hasMoves = moves.length > 0;
 
   // Build the full path as arrow segments: each move's before-state is the
   // result of applying all previous moves to the base state.
@@ -167,17 +168,19 @@ export function AnimatedPathBoard({
       <View style={styles.labelRow}>
         <View style={[styles.dot, { backgroundColor: accent }]} />
         <Text style={styles.label}>{label}</Text>
-        <Pressable
-          onPress={() => setPaused(p => !p)}
-          accessibilityRole="button"
-          accessibilityLabel={paused ? `Play ${label} replay` : `Pause ${label} replay`}
-          testID={testID ? `${testID}-play-pause` : undefined}
-          style={styles.playPause}
-        >
-          <PlayPauseIcon paused={paused} />
-        </Pressable>
+        {hasMoves && (
+          <Pressable
+            onPress={() => setPaused(p => !p)}
+            accessibilityRole="button"
+            accessibilityLabel={paused ? `Play ${label} replay` : `Pause ${label} replay`}
+            testID={testID ? `${testID}-play-pause` : undefined}
+            style={styles.playPause}
+          >
+            <PlayPauseIcon paused={paused} />
+          </Pressable>
+        )}
       </View>
-      <View style={styles.board}>
+      <View style={[styles.board, { width: dimensions.boardWidth, height: dimensions.boardHeight }]}>
         <BoardView
           state={displayState}
           dimensions={dimensions}
@@ -245,5 +248,6 @@ const styles = StyleSheet.create({
   board: {
     ...continuousRadius(10),
     overflow: 'hidden',
+    position: 'relative',
   },
 });
