@@ -81,6 +81,31 @@ two local simulators requires Apple-ID sign-in on both.
 > Pod note: if `pod install` fails with a `UnicodeNormalize` crash, your shell
 > isn't UTF-8 — `export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` first.
 
+## Signing notes (read before touching provisioning)
+
+- Dev flavor team: **`75M38Z9JBF`** (Apple Development identity in the login
+  keychain). `CJDYC6P4X3` looks like a team id but is not — passing it as
+  `DEVELOPMENT_TEAM` fails with “No Account for Team”.
+- Preview/production flavors may live under **different Apple IDs/teams** —
+  do dev-flavor work only until the owner confirms each flavor's team.
+- Simulator builds need no profiles (`CODE_SIGNING_ALLOWED=NO` suffices for
+  compiling), but the simulator's plugind would not index the appex in our
+  testing (see Status below) — device testing is the supported path.
+
+## Status: simulator vs device testing
+
+- **Simulator (blocked, 2026-09-23):** app+appex build, install, and launch
+  fine on two iOS 26 simulators, but `pluginkit -m -A` never lists
+  `com.backgammonmastermind.development.messages` (tried ad-hoc + dev
+  signatures, Messages restart, full reboot, two runtimes) so the extension
+  never appears in the Messages drawer. Likely installd skips appex plugin
+  registration without real provisioning. Not pursued further.
+- **Device (in progress):** local Debug `iphoneos` build with
+  `DEVELOPMENT_TEAM=75M38Z9JBF -allowProvisioningUpdates`, then
+  `xcrun devicectl install` on two paired iPhones for a real two-party
+  iMessage test (sides come from the payload, so same-Apple-ID play works —
+  unlike Backgammon Match; see “same ID” runbook below).
+
 ## Two-simulator test runbook (one Apple ID is enough)
 
 1. Build + install on two booted simulators (Debug, simulator SDK):
