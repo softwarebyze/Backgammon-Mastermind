@@ -11,21 +11,21 @@ import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 describe('fitBoardToViewport', () => {
   it('shrinks width when height is constrained', () => {
-    const roomy = fitBoardToViewport(720, 2000);
-    const tight = fitBoardToViewport(720, 280);
+    const roomy = fitBoardToViewport({ maxOuterWidth: 720, maxOuterHeight: 2000 });
+    const tight = fitBoardToViewport({ maxOuterWidth: 720, maxOuterHeight: 280 });
     expect(tight.boardOuterWidth).toBeLessThan(roomy.boardOuterWidth);
     expect(tight.boardOuterHeight).toBeLessThanOrEqual(280);
   });
 
   it('accounts for extra height (point-number rails) when fitting', () => {
-    const withoutRails = fitBoardToViewport(720, 400, 0);
-    const withRails = fitBoardToViewport(720, 400, 36);
+    const withoutRails = fitBoardToViewport({ maxOuterWidth: 720, maxOuterHeight: 400 });
+    const withRails = fitBoardToViewport({ maxOuterWidth: 720, maxOuterHeight: 400, extraHeight: 36 });
     expect(withRails.boardOuterWidth).toBeLessThanOrEqual(withoutRails.boardOuterWidth);
     expect(withRails.boardOuterHeight + 36).toBeLessThanOrEqual(400);
   });
 
   it('keeps max width when height allows', () => {
-    const dims = fitBoardToViewport(500, 2000);
+    const dims = fitBoardToViewport({ maxOuterWidth: 500, maxOuterHeight: 2000 });
     expect(dims.boardOuterWidth).toBe(500);
   });
 });

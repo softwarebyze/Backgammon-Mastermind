@@ -9,14 +9,14 @@
  * delay and assert the computer never rolls or moves while paused.
  */
 import type { SetStateAction } from 'react';
+import type { GuidanceSession } from './guidance-store';
+
 import type { GameState } from '@/lib/game/types';
 
 import { useEffect, useRef, useState } from 'react';
-
 import { createInitialState } from '@/lib/game/constants';
-import { act, cleanup, render } from '@/lib/test-utils';
 
-import type { GuidanceSession } from './guidance-store';
+import { act, cleanup, render } from '@/lib/test-utils';
 
 import {
   clearGuidance,

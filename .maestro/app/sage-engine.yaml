@@ -6,13 +6,13 @@ appId: ${APP_ID}
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: "vs Computer"
+    visible: vs Computer
     timeout: 90000
 - takeScreenshot: 01-home
 # Deep-link straight to the developer screen (preview scheme).
 - openLink: backgammonmastermind.preview://developer
 - extendedWaitUntil:
-    visible: "Developer"
+    visible: Developer
     timeout: 60000
 # Sage Lab is the third section on the developer screen (below the fold);
 # scroll it into view before interacting.
@@ -39,6 +39,6 @@ appId: ${APP_ID}
     timeout: 180000
 - takeScreenshot: 03-sage-result
 - assertVisible:
-    text: "SAGE OK"
+    text: SAGE OK
 - assertVisible:
-    text: "17/20 19/20"
+    text: 17/20 19/20

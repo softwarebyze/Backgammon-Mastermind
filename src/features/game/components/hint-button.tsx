@@ -1,8 +1,9 @@
+import type { GuidanceSession } from '@/features/game/guidance-store';
+
 import type { GameState } from '@/lib/game/types';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { primaryEngine } from '@/features/game/engine';
 import { getEngineHint } from '@/features/game/engine-hint';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -56,6 +57,47 @@ function useHintRequest(state: GameState) {
     requestIdRef.current += 1;
   }, []);
   return { begin, isCurrent, invalidate };
+}
+
+/**
+ * The revealed-hint card: the suggested move plus "Play this move" and
+ * "Back to my turn" actions.
+ */
+function HintResult({ session, onPlay, onDismiss }: {
+  session: GuidanceSession;
+  onPlay: () => void;
+  onDismiss: () => void;
+}) {
+  const label = session.engineId === primaryEngine.id ? 'Suggested move' : 'Hint';
+  return (
+    <View style={styles.resultWrap} testID="hint-result">
+      <Text style={styles.resultText} numberOfLines={2}>
+        {label}
+        :
+        {formatHintNotation(session.engineMoves)}
+      </Text>
+      <View style={styles.resultActions}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Play the suggested move"
+          testID="hint-play-move"
+          onPress={onPlay}
+          style={({ pressed }) => [styles.playBtn, pressed && styles.pressed]}
+        >
+          <Text style={styles.playBtnText}>Play this move</Text>
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Back to my turn, dismiss the hint"
+          testID="hint-dismiss"
+          onPress={onDismiss}
+          style={({ pressed }) => [styles.dismissBtn, pressed && styles.pressed]}
+        >
+          <Text style={styles.dismissText}>Back to my turn</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
 }
 
 /**
@@ -134,36 +176,13 @@ export function HintButton({ state, moveLogLength }: Props) {
     });
   };
 
-  if (hintOpen && session) {
-    const label = session.engineId === primaryEngine.id ? 'Suggested move' : 'Hint';
+  if (hintOpen && session && session.kind === 'hint') {
     return (
-      <View style={styles.resultWrap} testID="hint-result">
-        <Text style={styles.resultText} numberOfLines={2}>
-          {label}
-          :
-          {formatHintNotation(session.engineMoves)}
-        </Text>
-        <View style={styles.resultActions}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Play the suggested move"
-            testID="hint-play-move"
-            onPress={playHintedMove}
-            style={({ pressed }) => [styles.playBtn, pressed && styles.pressed]}
-          >
-            <Text style={styles.playBtnText}>Play this move</Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Back to my turn, dismiss the hint"
-            testID="hint-dismiss"
-            onPress={dismiss}
-            style={({ pressed }) => [styles.dismissBtn, pressed && styles.pressed]}
-          >
-            <Text style={styles.dismissText}>Back to my turn</Text>
-          </Pressable>
-        </View>
-      </View>
+      <HintResult
+        session={session}
+        onPlay={playHintedMove}
+        onDismiss={dismiss}
+      />
     );
   }
 

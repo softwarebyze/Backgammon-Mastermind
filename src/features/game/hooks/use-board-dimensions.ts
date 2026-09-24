@@ -73,20 +73,24 @@ function dimensionsForWidth(boardOuterWidth: number, compact = false): BoardDime
   };
 }
 
+export type FitBoardToViewportArgs = {
+  maxOuterWidth: number;
+  maxOuterHeight: number;
+  /** e.g. point-number rails rendered inside the board frame */
+  extraHeight?: number;
+  /** narrower bar/bear-off for mini boards (guidance replays) */
+  compact?: boolean;
+};
+
 /**
  * Shrink width until the board (+ optional rails) fits in the available height.
- * @param maxOuterWidth — max board outer width for the viewport
- * @param maxOuterHeight — max board outer height for the viewport
- * @param extraHeight — e.g. point-number rails rendered inside the board frame
- * @param options.compact — narrower bar/bear-off for mini boards (guidance replays)
  */
-export function fitBoardToViewport(
-  maxOuterWidth: number,
-  maxOuterHeight: number,
+export function fitBoardToViewport({
+  maxOuterWidth,
+  maxOuterHeight,
   extraHeight = 0,
-  options?: { compact?: boolean },
-): BoardDimensions {
-  const compact = options?.compact ?? false;
+  compact = false,
+}: FitBoardToViewportArgs): BoardDimensions {
   let width = maxOuterWidth;
   let dims = dimensionsForWidth(width, compact);
   // linear shrink — ~40 iterations max; switch to binary search if this gets hot
@@ -200,7 +204,7 @@ export function resolveBoardViewport({
     ? slotHeight!
     : Math.max(FALLBACK_MIN_OUTER_HEIGHT, screenHeight - chrome);
   const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
-  return fitBoardToViewport(maxOuterWidth, maxOuterHeight, railHeight);
+  return fitBoardToViewport({ maxOuterWidth, maxOuterHeight, extraHeight: railHeight });
 }
 
 export function useBoardDimensions(options?: {

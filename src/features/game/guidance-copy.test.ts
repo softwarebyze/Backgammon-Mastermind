@@ -94,7 +94,9 @@ describe('guidance copy', () => {
       );
     });
   });
+});
 
+describe('guidance copy details', () => {
   describe('candidateRows', () => {
     it('labels the top row and marks the played row', () => {
       const rows = candidateRows([0.5, 0.42, 0.38], 3);

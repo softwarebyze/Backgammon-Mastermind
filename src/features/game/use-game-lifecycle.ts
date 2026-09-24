@@ -2,8 +2,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
 import { useCallback, useState } from 'react';
 
-import { setOpeningCeremonyHandoff, setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { setOpeningCeremonyHandoff, setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 import { createInitialState } from '@/lib/game';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
 import { performResume } from '@/lib/game/resume-game';

@@ -2,7 +2,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Polygon, Rect } from 'react-native-svg';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
@@ -32,63 +32,71 @@ function PlayPauseIcon({ paused }: { paused: boolean }) {
   );
 }
 
+type PathSegment = {
+  entry: {
+    from: number;
+    to: number;
+    dice: [number, number];
+    player: GameState['currentPlayer'];
+    ply: number;
+  };
+  beforeState: GameState;
+  tone: 'mine' | 'engine';
+};
+
 /**
- * A mini board that loops an animated replay of one move path (e.g. "Your
- * move" or "Best move") from a fixed start position. Both boards in a
- * comparison animate simultaneously so the player can watch the two lines
- * side by side.
+ * Build the full path as arrow segments: each move's before-state is the
+ * result of applying all previous moves to the base state.
  */
-export function AnimatedPathBoard({
+function buildPathSegments(
+  baseState: GameState,
+  moves: Move[],
+  tone: 'mine' | 'engine',
+): PathSegment[] {
+  const result: PathSegment[] = [];
+  let snap = baseState;
+  let ply = 0;
+  for (const move of moves) {
+    const legal = getLegalMoves(snap).find(
+      m => m.from === move.from && m.to === move.to,
+    );
+    if (!legal)
+      break;
+    result.push({
+      entry: {
+        from: legal.from,
+        to: legal.to,
+        dice: snap.dice,
+        player: snap.currentPlayer,
+        ply: ++ply,
+      },
+      beforeState: snap,
+      tone,
+    });
+    snap = applyMove(snap, legal);
+  }
+  return result;
+}
+
+/**
+ * Loop the move-path replay: play each move with its animation, hold the
+ * final position, then reset to the base state. Honors pause between moves.
+ */
+function usePathReplay({
   baseState,
   moves,
-  label,
-  tone,
-  boardWidth,
-  testID,
+  setDisplayState,
+  setFrame,
 }: {
   baseState: GameState;
   moves: Move[];
-  label: string;
-  tone: 'mine' | 'engine';
-  boardWidth: number;
-  testID?: string;
+  setDisplayState: (state: GameState) => void;
+  setFrame: (frame: MoveAnimationFrame | null) => void;
 }) {
-  const dimensions = fitBoardToViewport(boardWidth, 240, 0, { compact: true });
-  const [displayState, setDisplayState] = useState(baseState);
-  const [frame, setFrame] = useState<MoveAnimationFrame | null>(null);
   const [paused, setPaused] = useState(false);
   const genRef = useRef(0);
   const pausedRef = useRef(false);
   pausedRef.current = paused;
-  const hasMoves = moves.length > 0;
-
-  // Build the full path as arrow segments: each move's before-state is the
-  // result of applying all previous moves to the base state.
-  const segments = useMemo(() => {
-    const result: { entry: { from: number; to: number; dice: [number, number]; player: GameState['currentPlayer']; ply: number }; beforeState: GameState; tone: 'mine' | 'engine' }[] = [];
-    let snap = baseState;
-    let ply = 0;
-    for (const move of moves) {
-      const legal = getLegalMoves(snap).find(
-        m => m.from === move.from && m.to === move.to,
-      );
-      if (!legal)
-        break;
-      result.push({
-        entry: {
-          from: legal.from,
-          to: legal.to,
-          dice: snap.dice,
-          player: snap.currentPlayer,
-          ply: ++ply,
-        },
-        beforeState: snap,
-        tone,
-      });
-      snap = applyMove(snap, legal);
-    }
-    return result;
-  }, [baseState, moves, tone]);
 
   useEffect(() => {
     if (moves.length === 0)
@@ -159,7 +167,42 @@ export function AnimatedPathBoard({
       if (timer)
         clearTimeout(timer);
     };
-  }, [baseState, moves]);
+  }, [baseState, moves, setDisplayState, setFrame]);
+
+  return { paused, setPaused };
+}
+
+/**
+ * A mini board that loops an animated replay of one move path (e.g. "Your
+ * move" or "Best move") from a fixed start position. Both boards in a
+ * comparison animate simultaneously so the player can watch the two lines
+ * side by side.
+ */
+export function AnimatedPathBoard({
+  baseState,
+  moves,
+  label,
+  tone,
+  boardWidth,
+  testID,
+}: {
+  baseState: GameState;
+  moves: Move[];
+  label: string;
+  tone: 'mine' | 'engine';
+  boardWidth: number;
+  testID?: string;
+}) {
+  const dimensions = fitBoardToViewport({ maxOuterWidth: boardWidth, maxOuterHeight: 240, compact: true });
+  const [displayState, setDisplayState] = useState(baseState);
+  const [frame, setFrame] = useState<MoveAnimationFrame | null>(null);
+  const { paused, setPaused } = usePathReplay({ baseState, moves, setDisplayState, setFrame });
+  const hasMoves = moves.length > 0;
+
+  const segments = useMemo(
+    () => buildPathSegments(baseState, moves, tone),
+    [baseState, moves, tone],
+  );
 
   const accent = tone === 'mine' ? GAME_PALETTE.guideMine : GAME_PALETTE.guideEngine;
 

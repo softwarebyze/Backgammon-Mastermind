@@ -1,19 +1,17 @@
+import type { SageBoardPoint, SageGameState, SageMove, SagePlayer } from 'expo-bgsage';
 // Demo-only: exercises the real bgsage engine end-to-end inside the app.
 // Only rendered on the developer screen (non-production builds). Not part of
 // the shipped product.
 import {
   planSageTurn,
-  type SageBoardPoint,
-  type SageGameState,
-  type SageMove,
-  type SagePlayer,
+
 } from 'expo-bgsage';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/ui';
-import { SettingsContainer } from '@/features/settings/components/settings-container';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { SettingsContainer } from '@/features/settings/components/settings-container';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 
@@ -51,7 +49,8 @@ export function SageLabSection() {
   const [result, setResult] = useState<{ status: string; moves: string; ms: number } | null>(null);
 
   const run = useCallback(async () => {
-    if (running) return;
+    if (running)
+      return;
     // [SageLab] markers go to logcat (ReactNativeJS) — CI scrapes them to
     // tell a missed tap apart from an engine hang/crash.
     console.log('[SageLab] run pressed');
@@ -65,11 +64,13 @@ export function SageLabSection() {
       const ms = Date.now() - t0;
       console.log(`[SageLab] result: ${notation} (${ms}ms)`);
       setResult({ status: 'SAGE OK', moves: notation, ms });
-    } catch (e) {
+    }
+    catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       console.log(`[SageLab] error: ${msg}`);
       setResult({ status: 'SAGE ERROR', moves: msg, ms: Date.now() - t0 });
-    } finally {
+    }
+    finally {
       setRunning(false);
     }
   }, [running]);
@@ -94,19 +95,23 @@ export function SageLabSection() {
             {running ? 'Analyzing…' : 'Run Sage analysis'}
           </Text>
         </Pressable>
-        {result !== null ? (
-          <View testID="sage-result" style={styles.resultBlock}>
-            <Text testID="sage-status" style={styles.result}>
-              {result.status}
-            </Text>
-            <Text testID="sage-moves" style={styles.resultDetail}>
-              {result.moves}
-            </Text>
-            <Text testID="sage-timing" style={styles.resultDetail}>
-              ({result.ms}ms)
-            </Text>
-          </View>
-        ) : null}
+        {result !== null
+          ? (
+              <View testID="sage-result" style={styles.resultBlock}>
+                <Text testID="sage-status" style={styles.result}>
+                  {result.status}
+                </Text>
+                <Text testID="sage-moves" style={styles.resultDetail}>
+                  {result.moves}
+                </Text>
+                <Text testID="sage-timing" style={styles.resultDetail}>
+                  (
+                  {result.ms}
+                  ms)
+                </Text>
+              </View>
+            )
+          : null}
       </View>
     </SettingsContainer>
   );
