@@ -60,6 +60,10 @@ function withImessageSources(config) {
         path.join(fromDir, 'Info.plist'),
         path.join(toDir, 'Info.plist'),
       );
+      fs.rmSync(path.join(toDir, 'Assets.xcassets'), { recursive: true, force: true });
+      fs.cpSync(path.join(fromDir, 'Assets.xcassets'), path.join(toDir, 'Assets.xcassets'), {
+        recursive: true,
+      });
       return cfg;
     },
   ]);
@@ -94,14 +98,26 @@ function withImessageTarget(config) {
     // Messages extensions are a distinct product type from generic app extensions.
     project.pbxNativeTargetSection()[extUuid].productType = `"${EXT_PRODUCT_TYPE}"`;
 
-    // Sources / Frameworks phases (addTarget leaves buildPhases empty).
+    // Sources / Frameworks / Resources phases (addTarget leaves buildPhases empty).
     project.addBuildPhase([], 'PBXSourcesBuildPhase', 'Sources', extUuid);
     project.addBuildPhase([], 'PBXFrameworksBuildPhase', 'Frameworks', extUuid);
+    project.addBuildPhase([], 'PBXResourcesBuildPhase', 'Resources', extUuid);
 
     const groupKey = project.pbxCreateGroup(EXT_FOLDER, EXT_FOLDER);
     for (const file of SWIFT_FILES) {
       project.addSourceFile(`${EXT_FOLDER}/${file}`, { target: extUuid }, groupKey);
     }
+    // Asset catalog: addResourceFile assumes a top-level Resources group that
+    // Expo projects lack, so wire the PBX entries directly instead.
+    const catalog = project.addFile(
+      `${EXT_FOLDER}/Assets.xcassets`,
+      groupKey,
+      { target: extUuid },
+    );
+    catalog.uuid = project.generateUuid();
+    catalog.target = extUuid;
+    project.addToPbxBuildFileSection(catalog);
+    project.addToPbxResourcesBuildPhase(catalog);
     if (!project.hasFile('Messages.framework')) {
       project.addFramework('Messages.framework', { target: extUuid, link: true });
     }
@@ -128,6 +144,13 @@ function withImessageTarget(config) {
         extTargetName,
       );
       project.updateBuildProperty('SWIFT_VERSION', '5.0', build, extTargetName);
+      project.updateBuildProperty('GENERATE_INFOPLIST_FILE', 'NO', build, extTargetName);
+      project.updateBuildProperty(
+        'ASSETCATALOG_COMPILER_APPICON_NAME',
+        '"iMessage App Icon"',
+        build,
+        extTargetName,
+      );
       project.updateBuildProperty('GENERATE_INFOPLIST_FILE', 'NO', build, extTargetName);
       project.updateBuildProperty('TARGETED_DEVICE_FAMILY', '"1,2"', build, extTargetName);
       project.updateBuildProperty(
