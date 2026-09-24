@@ -1,12 +1,13 @@
 import type { StrategyKey } from '@/features/game/strategy';
 import type { GameState } from '@/lib/game';
 
-import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy, pipCount } from '@/features/game/strategy';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
@@ -28,13 +29,7 @@ const STRATEGY_DOT: Record<StrategyKey, string> = {
  * the header, not a floating badge.
  */
 export function GamePipStatusBar({ state }: Props) {
-  const [expanded, setExpanded] = useState(false);
-  // Reset the why/tip panel when the position changes — the explanation
-  // is for a specific board state.
-  const positionKey = `${state.currentPlayer}-${state.dice.join(',')}-${state.points.map(p => `${p.player ?? '-' }${p.count}`).join(',')}`;
-  useEffect(() => {
-    setExpanded(false);
-  }, [positionKey]);
+  const [showExplanation, setShowExplanation] = useState(false);
   const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
   const strategy = classifyStrategy(state, perspective);
   const whitePips = pipCount(state, 'white');
@@ -43,8 +38,10 @@ export function GamePipStatusBar({ state }: Props) {
 
   if (gameOver) {
     return (
-      <View style={styles.gameOverWrap}>
-        <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
+      <View style={styles.wrap}>
+        <View style={styles.gameOverWrap}>
+          <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
+        </View>
       </View>
     );
   }
@@ -53,7 +50,7 @@ export function GamePipStatusBar({ state }: Props) {
     <View style={styles.wrap}>
       <View style={styles.row}>
         <Pressable
-          onPress={() => setExpanded(v => !v)}
+          onPress={() => setShowExplanation(true)}
           accessibilityRole="button"
           accessibilityLabel={`${strategy.label}. ${strategy.why} ${strategy.tip}`}
           style={styles.strategyRow}
@@ -61,7 +58,7 @@ export function GamePipStatusBar({ state }: Props) {
         >
           <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
           <Text style={styles.strategyText}>{strategy.label}</Text>
-          <Text style={styles.chevron}>{expanded ? '▾' : '▸'}</Text>
+          <Text style={styles.chevron}>▸</Text>
         </Pressable>
         <View style={styles.pips}>
           <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
@@ -75,12 +72,36 @@ export function GamePipStatusBar({ state }: Props) {
           </Text>
         </View>
       </View>
-      {expanded && (
-        <View style={styles.whyBox} testID="strategy-why">
-          <Text style={styles.whyText}>{strategy.why}</Text>
-          <Text style={styles.tipText}>{strategy.tip}</Text>
-        </View>
-      )}
+      <Modal
+        visible={showExplanation}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowExplanation(false)}
+      >
+        <Pressable
+          style={styles.modalScrim}
+          onPress={() => setShowExplanation(false)}
+          testID="strategy-explanation-scrim"
+        >
+          <Pressable style={styles.modalCard} onPress={() => {}} testID="strategy-explanation">
+            <View style={styles.modalHeader}>
+              <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
+              <Text style={styles.modalTitle}>{strategy.label}</Text>
+            </View>
+            <Text style={styles.whyText}>{strategy.why}</Text>
+            <Text style={styles.tipText}>{strategy.tip}</Text>
+            <Pressable
+              onPress={() => setShowExplanation(false)}
+              accessibilityRole="button"
+              accessibilityLabel="Close strategy explanation"
+              style={styles.modalClose}
+              testID="strategy-explanation-close"
+            >
+              <Text style={styles.modalCloseText}>Got it</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -165,23 +186,55 @@ const styles = StyleSheet.create({
     ...interFont('regular'),
     fontVariant: ['tabular-nums'],
   },
-  whyBox: {
-    gap: 4,
-    paddingLeft: 13,
-    borderLeftWidth: 2,
-    borderLeftColor: GAME_PALETTE.accent,
-    opacity: 0.95,
+  modalScrim: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  modalCard: {
+    backgroundColor: GAME_PALETTE.surface,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.accentDim,
+    padding: 20,
+    maxWidth: 340,
+    width: '100%',
+    gap: 10,
+    ...continuousRadius(16),
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  modalTitle: {
+    color: GAME_PALETTE.text,
+    fontSize: 17,
+    ...interFont('semibold'),
   },
   whyText: {
     color: GAME_PALETTE.text,
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 14,
+    lineHeight: 20,
     ...interFont('regular'),
   },
   tipText: {
     color: GAME_PALETTE.textMuted,
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 14,
+    lineHeight: 20,
     ...interFont('regular'),
+  },
+  modalClose: {
+    marginTop: 6,
+    backgroundColor: GAME_PALETTE.accent,
+    paddingVertical: 10,
+    alignItems: 'center',
+    ...continuousRadius(10),
+  },
+  modalCloseText: {
+    color: GAME_PALETTE.bg,
+    fontSize: 15,
+    ...interFont('semibold'),
   },
 });
