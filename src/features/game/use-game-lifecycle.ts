@@ -3,7 +3,7 @@ import type { GameMode, GameState } from '@/lib/game';
 import { useCallback, useState } from 'react';
 
 import { setOpeningCeremonyHandoff, setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
-import { clearTutorBlunder, setTutorVerdictPending } from '@/features/game/tutor-store';
+import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { createInitialState } from '@/lib/game';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
 import { performResume } from '@/lib/game/resume-game';
@@ -44,8 +44,8 @@ export function useGameLifecycle({
     clearActiveGame();
     resetMoveLog();
     clearTimeline();
-    setTutorVerdictPending(false);
-    clearTutorBlunder();
+    setGuidanceVerdictPending(false);
+    clearGuidance();
     bumpCeremony();
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
@@ -74,8 +74,8 @@ export function useGameLifecycle({
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
-    setTutorVerdictPending(false);
-    clearTutorBlunder();
+    setGuidanceVerdictPending(false);
+    clearGuidance();
     bumpCeremony();
     if (!state) {
       return;

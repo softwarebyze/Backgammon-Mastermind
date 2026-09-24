@@ -3,49 +3,52 @@ import type { GameState } from '@/lib/game/types';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { primaryEngine } from '@/features/game/engine';
+import { getEngineHint } from '@/features/game/engine-hint';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { hintMovesToSegments } from '@/features/game/hint-arrows';
-import { clearHintArrows, setHintArrows } from '@/features/game/hint-arrows-store';
-import { getSageHint } from '@/features/game/sage-hint';
+import { formatHintNotation } from '@/features/game/guidance-copy';
+import {
+  clearGuidance,
+  showGuidance,
+  useGuidance,
+} from '@/features/game/guidance-store';
+import { cloneGameState } from '@/lib/game/snapshot';
 import { hapticLight } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
+  moveLogLength: number;
 };
 
-type Phase = 'idle' | 'loading' | 'done' | 'error';
+type Phase = 'idle' | 'loading' | 'error';
 
 /**
- * "Hint" button for the human turn. Asks the Sage engine for the best turn
- * and draws the suggested moves as arrows on the board, with the compact
- * notation (e.g. "13/11 · 8/5") in the action slot. Falls back to the
- * built-in heuristic AI when the native/WASM engine isn't available.
+ * "Hint" button for the human turn, available at any point in the moving
+ * phase — including mid-turn after some dice are played. Asks the engine
+ * (falling back to the built-in heuristic when it's unavailable) for the
+ * best continuation from the CURRENT position + remaining dice, then opens
+ * a hint guidance session: the suggestion draws as arrows on the board and
+ * a pill offers "Back to my turn" to dismiss and keep playing. The game is
+ * never paused.
+ *
+ * If the player moves while the request is in flight, the stale result is
+ * discarded — an answer for a dead position is worse than none.
  *
  * Demo branch: strings are English-only.
  */
-export function SageHintButton({ state }: Props) {
+export function HintButton({ state, moveLogLength }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
-  const [notation, setNotation] = useState<string | null>(null);
-  const [engine, setEngine] = useState<'sage' | 'heuristic' | null>(null);
-  const [ms, setMs] = useState<number | null>(null);
+  const session = useGuidance();
+  const hintOpen = session?.kind === 'hint' && session.revealed;
   const requestId = useRef(0);
 
-  // A new roll / turn invalidates the previous suggestion.
-  const turnKey = `${state.currentPlayer}|${state.dice[0]},${state.dice[1]}|${state.remainingDice.join(',')}`;
+  // Any board change invalidates an in-flight request (stale positions
+  // must never surface as guidance).
   useEffect(() => {
     requestId.current += 1;
-    setPhase('idle');
-    setNotation(null);
-    setEngine(null);
-    setMs(null);
-    clearHintArrows();
-  }, [turnKey]);
-
-  // Never leave stale arrows on the board (e.g. button unmounts when the
-  // player selects a checker or makes a move).
-  useEffect(() => () => clearHintArrows(), []);
+  }, [state]);
 
   const ask = async () => {
     if (phase === 'loading')
@@ -53,15 +56,25 @@ export function SageHintButton({ state }: Props) {
     hapticLight();
     const id = ++requestId.current;
     setPhase('loading');
+    // Snapshot now: the answer belongs to this exact position.
+    const questionState = cloneGameState(state);
+    const atRequestMoveLogLength = moveLogLength;
     try {
-      const hint = await getSageHint(state);
+      const hint = await getEngineHint(state);
       if (requestId.current !== id)
-        return; // turn changed mid-flight
-      setNotation(hint.notation);
-      setEngine(hint.engine);
-      setMs(hint.ms);
-      setPhase('done');
-      setHintArrows(hintMovesToSegments(hint.moves, state));
+        return; // the player moved on — drop the stale answer
+      setPhase('idle');
+      showGuidance({
+        kind: 'hint',
+        questionState,
+        myMoves: [],
+        engineMoves: hint.moves,
+        revealed: true,
+        showMine: false,
+        showEngine: true,
+        engineId: hint.engineId,
+        hintMoveLogLength: atRequestMoveLogLength,
+      });
     }
     catch {
       if (requestId.current !== id)
@@ -74,36 +87,35 @@ export function SageHintButton({ state }: Props) {
     hapticLight();
     requestId.current += 1;
     setPhase('idle');
-    setNotation(null);
-    clearHintArrows();
+    clearGuidance();
   };
 
-  if (phase === 'loading') {
-    return (
-      <View style={styles.slot} testID="sage-hint-loading">
-        <ActivityIndicator size="small" color={GAME_PALETTE.accent} />
-        <Text style={styles.loadingText}>Consulting Sage…</Text>
-      </View>
-    );
-  }
-
-  if (phase === 'done' && notation) {
+  if (hintOpen && session) {
+    const label = session.engineId === primaryEngine.id ? 'Suggested move' : 'Hint';
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Dismiss Sage hint"
-        testID="sage-hint-result"
+        accessibilityLabel="Back to my turn, dismiss the hint"
+        testID="hint-result"
         onPress={dismiss}
         style={({ pressed }) => [styles.resultPill, pressed && styles.pressed]}
       >
         <Text style={styles.resultText} numberOfLines={2}>
-          {engine === 'sage' ? 'Sage suggests' : 'Hint'}
+          {label}
           :
-          {notation}
-          {ms !== null ? ` (${ms}ms)` : ''}
+          {formatHintNotation(session.engineMoves)}
         </Text>
-        <Text style={styles.dismissText}>tap to dismiss</Text>
+        <Text style={styles.dismissText}>Back to my turn</Text>
       </Pressable>
+    );
+  }
+
+  if (phase === 'loading') {
+    return (
+      <View style={styles.slot} testID="hint-loading">
+        <ActivityIndicator size="small" color={GAME_PALETTE.accent} />
+        <Text style={styles.loadingText}>Finding the best move…</Text>
+      </View>
     );
   }
 
@@ -111,12 +123,12 @@ export function SageHintButton({ state }: Props) {
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Retry Sage hint"
-        testID="sage-hint-button"
+        accessibilityLabel="Retry hint"
+        testID="hint-button"
         onPress={ask}
         style={({ pressed }) => [styles.hintBtn, pressed && styles.pressed]}
       >
-        <Text style={styles.hintBtnText}>Couldn't reach Sage — tap to retry</Text>
+        <Text style={styles.hintBtnText}>Couldn't find a hint — tap to retry</Text>
       </Pressable>
     );
   }
@@ -125,7 +137,7 @@ export function SageHintButton({ state }: Props) {
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Get a move hint"
-      testID="sage-hint-button"
+      testID="hint-button"
       onPress={ask}
       style={({ pressed }) => [styles.hintBtn, pressed && styles.pressed]}
     >

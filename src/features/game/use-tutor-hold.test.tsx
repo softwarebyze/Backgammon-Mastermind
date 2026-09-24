@@ -16,21 +16,21 @@ import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, render } from '@/lib/test-utils';
 
 import {
-  clearTutorBlunder,
-  setTutorVerdictPending,
-  useTutorBlunder,
-  useTutorVerdictPending,
-} from './tutor-store';
+  clearGuidance,
+  setGuidanceVerdictPending,
+  useGuidance,
+  useGuidanceVerdictPending,
+} from './guidance-store';
 import { useTutorMode } from './use-tutor';
 
-jest.mock(
-  'expo-bgsage',
-  () => ({
-    planSageTurnFull: jest.fn(),
-    gameStateToSageBoard: jest.fn(() => 'END_BOARD'),
-  }),
-  { virtual: true },
-);
+// Path-based (not virtual) mock: this is the same module instance that
+// src/features/game/engine/bgsage-engine.ts imports, so the mock reliably
+// intercepts it. A virtual bare-package mock proved order-sensitive and
+// flaky under parallel workers.
+jest.mock('../../../expo-bgsage/src/index', () => ({
+  planSageTurnFull: jest.fn(),
+  gameStateToSageBoard: jest.fn(() => 'END_BOARD'),
+}));
 
 jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
   // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock must keep the real hook's export name
@@ -81,27 +81,27 @@ function cleanPlan() {
   };
 }
 
-type ProbeSnapshot = { pending: boolean; promptNull: boolean };
+type ProbeSnapshot = { pending: boolean; blunderNull: boolean };
 
 function Probe({ onSnapshot }: { onSnapshot: (s: ProbeSnapshot) => void }) {
-  const pending = useTutorVerdictPending();
-  const promptNull = useTutorBlunder() === null;
+  const pending = useGuidanceVerdictPending();
+  const guidance = useGuidance();
   useEffect(() => {
-    onSnapshot({ pending, promptNull });
+    onSnapshot({ pending, blunderNull: guidance?.kind !== 'blunder' });
   });
   return null;
 }
 
 function Harness({ state, onSnapshot }: { state: GameState; onSnapshot: (s: ProbeSnapshot) => void }) {
-  useTutorMode(state, 0);
+  useTutorMode(state, []);
   return <Probe onSnapshot={onSnapshot} />;
 }
 
 function renderHarness(state: GameState) {
-  const probe: ProbeSnapshot = { pending: false, promptNull: true };
+  const probe: ProbeSnapshot = { pending: false, blunderNull: true };
   const onSnapshot = (s: ProbeSnapshot) => {
     probe.pending = s.pending;
-    probe.promptNull = s.promptNull;
+    probe.blunderNull = s.blunderNull;
   };
   const utils = render(<Harness state={state} onSnapshot={onSnapshot} />);
   return { ...utils, probe, onSnapshot };
@@ -109,8 +109,8 @@ function renderHarness(state: GameState) {
 
 afterEach(() => {
   cleanup();
-  clearTutorBlunder();
-  setTutorVerdictPending(false);
+  clearGuidance();
+  setGuidanceVerdictPending(false);
   planSageTurnFullMock.mockReset();
 });
 
@@ -128,13 +128,13 @@ describe('tutor verdict-pending hold', () => {
     // The human finishes the turn while Sage is still thinking.
     rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
     expect(probe.pending).toBe(true);
-    expect(probe.promptNull).toBe(true);
+    expect(probe.blunderNull).toBe(true);
 
     // The verdict lands: a blunder → prompt opens, hold releases.
     await act(async () => {
       resolveAnalysis(blunderPlan() as never);
     });
-    expect(probe.promptNull).toBe(false);
+    expect(probe.blunderNull).toBe(false);
     expect(probe.pending).toBe(false);
   });
 
@@ -151,7 +151,7 @@ describe('tutor verdict-pending hold', () => {
     await act(async () => {
       resolveAnalysis(cleanPlan() as never);
     });
-    expect(probe.promptNull).toBe(true);
+    expect(probe.blunderNull).toBe(true);
     expect(probe.pending).toBe(false);
   });
 
@@ -168,7 +168,7 @@ describe('tutor verdict-pending hold', () => {
     await act(async () => {
       resolveAnalysis(null as never);
     });
-    expect(probe.promptNull).toBe(true);
+    expect(probe.blunderNull).toBe(true);
     expect(probe.pending).toBe(false);
   });
 
@@ -184,11 +184,11 @@ describe('tutor verdict-pending hold', () => {
       resolveAnalysis(blunderPlan() as never);
     });
     expect(probe.pending).toBe(false);
-    expect(probe.promptNull).toBe(true);
+    expect(probe.blunderNull).toBe(true);
 
     // Passing the turn judges at once — no hold, prompt opens in the same commit.
     rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
     expect(probe.pending).toBe(false);
-    expect(probe.promptNull).toBe(false);
+    expect(probe.blunderNull).toBe(false);
   });
 });

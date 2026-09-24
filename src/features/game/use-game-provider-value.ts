@@ -1,7 +1,7 @@
 import type { GameContextType } from '@/features/game/game-context';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useState } from 'react';
-import { useTutorBlunder, useTutorVerdictPending } from '@/features/game/tutor-store';
+import { useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
@@ -46,10 +46,13 @@ export function useGameProviderValue(): GameContextType {
     armAnimationFinish,
     setMoveAnimation,
   } = useAnimatedMoves(state, setState, handleMoveRecorded);
-  const tutorBlunder = useTutorBlunder();
-  const tutorVerdictPending = useTutorVerdictPending();
-  /** Tutor prompt open or a completed turn waiting on its verdict — pause everything. */
-  const tutorPaused = tutorBlunder !== null || tutorVerdictPending;
+  const guidance = useGuidance();
+  const guidanceVerdictPending = useGuidanceVerdictPending();
+  /**
+   * Blunder prompt open or a completed turn waiting on its verdict — pause
+   * everything. (Hint sessions never pause: the player keeps playing.)
+   */
+  const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     timeline,

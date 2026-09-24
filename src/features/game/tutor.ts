@@ -1,8 +1,7 @@
+import type { GameEngine } from './engine';
+
 import type { GameState, Move, Player } from '@/lib/game/types';
-
-import { planSageTurnFull } from 'expo-bgsage';
-
-import { formatHintNotation } from './sage-hint';
+import { formatHintNotation } from './guidance-copy';
 
 /**
  * Equity loss (in cubeless money-game points) at or above which the tutor
@@ -13,7 +12,7 @@ import { formatHintNotation } from './sage-hint';
 export const TUTOR_BLUNDER_THRESHOLD = 0.05;
 
 type TutorTurnCandidate = {
-  /** Resulting board (bgsage 26-array, mover's perspective). */
+  /** Resulting board fingerprint (mover's perspective), from the engine. */
   board: number[];
   equity: number;
 };
@@ -52,23 +51,22 @@ function boardEq(a: number[], b: number[]): boolean {
 }
 
 /**
- * Analyze a turn-start position with the Sage engine. Returns null when the
- * engine is unavailable — tutor mode stays silent rather than guessing.
+ * Analyze a turn-start position with the given engine. Returns null when
+ * the engine is unavailable — tutor mode stays silent rather than guessing.
  */
-export async function analyzeTutorTurn(state: GameState): Promise<TutorTurnAnalysis | null> {
+export async function analyzeTutorTurn(
+  state: GameState,
+  engine: GameEngine,
+): Promise<TutorTurnAnalysis | null> {
   try {
-    const plan = await planSageTurnFull(state, 2);
-    const candidates = (plan?.candidates ?? []).filter(c => Number.isFinite(c.equity));
-    if (!plan || !Number.isFinite(plan.equity) || candidates.length === 0) {
-      return null;
-    }
+    const plan = await engine.planTurn(state);
     return {
       key: `${state.currentPlayer}|${state.dice[0]},${state.dice[1]}`,
       player: state.currentPlayer,
       bestNotation: formatHintNotation(plan.moves),
       bestEquity: plan.equity,
-      bestMoves: plan.moves as Move[],
-      candidates,
+      bestMoves: plan.moves,
+      candidates: plan.candidates,
     };
   }
   catch {
@@ -83,8 +81,9 @@ export async function analyzeTutorTurn(state: GameState): Promise<TutorTurnAnaly
  * when the equity loss is below the blunder threshold.
  *
  * @param analysis the turn-start analysis from {@link analyzeTutorTurn}.
- * @param endBoard the turn's final board as a bgsage 26-array from the
- * mover's perspective (see gameStateToSageBoard).
+ * @param endBoard the turn's final board fingerprint from the mover's
+ * perspective — must come from the same engine that produced the analysis
+ * (see GameEngine.boardAfterTurn).
  */
 export function judgeTutorTurn(
   analysis: TutorTurnAnalysis,

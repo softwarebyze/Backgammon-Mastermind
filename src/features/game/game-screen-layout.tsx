@@ -16,7 +16,7 @@ import { GameBoardSection } from '@/features/game/components/game-board-section'
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { MoveReviewBar } from '@/features/game/components/move-review-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
-import { TutorBlunderModal } from '@/features/game/components/tutor-blunder-modal';
+import { GuidanceModal } from '@/features/game/components/guidance-modal';
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
@@ -150,6 +150,7 @@ function GameChromeStack({
           isHumanTurn={!isComputerTurn && interactionEnabled}
           isComputerTurn={isComputerTurn}
           isReviewing={review.isReviewing}
+          moveLogLength={moveLog.length}
           captionOverride={input.inputNudge === 'roll' ? translate('game.nudge.roll_first') : null}
           compact={compact}
           onRoll={input.handleRoll}
@@ -262,7 +263,7 @@ export function GameScreenLayout({
         />
       </View>
       {/* Tutor blunder intervention — pauses play until the user chooses. */}
-      <TutorBlunderModal />
+      <GuidanceModal />
       {landscape
         ? (
             <ScrollView

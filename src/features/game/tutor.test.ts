@@ -1,21 +1,31 @@
+import type { GameEngine } from './engine/types';
+
 import type { TutorTurnAnalysis } from './tutor';
 
 import type { GameState } from '@/lib/game/types';
-import { planSageTurnFull } from 'expo-bgsage';
-
 import { createPositionState } from '@/lib/game/create-position';
 import { analyzeTutorTurn, judgeTutorTurn, TUTOR_BLUNDER_THRESHOLD } from './tutor';
 
-jest.mock(
-  'expo-bgsage',
-  () => ({
-    planSageTurn: jest.fn(),
-    planSageTurnFull: jest.fn(),
-  }),
-  { virtual: true },
-);
-
-const planSageTurnFullMock = jest.mocked(planSageTurnFull);
+/** A deterministic stand-in for a real engine — no native module needed. */
+function fakeEngine(plan: object | Error): GameEngine {
+  return {
+    id: 'fake',
+    planTurn: jest.fn(async () => {
+      if (plan instanceof Error)
+        throw plan;
+      return {
+        moves: [
+          { from: 13, to: 11, dieIndex: 0 },
+          { from: 8, to: 5, dieIndex: 1 },
+        ],
+        equity: 0.214,
+        candidates: [{ board: boardWith({}), equity: 0.214 }],
+        ...plan,
+      };
+    }),
+    boardAfterTurn: jest.fn(() => boardWith({})),
+  };
+}
 
 /** White to move with 3-1 from a midgame-ish position. */
 function movingState(): GameState {
@@ -63,21 +73,8 @@ function sampleAnalysis(): TutorTurnAnalysis {
 }
 
 describe('analyzeTutorTurn', () => {
-  beforeEach(() => {
-    planSageTurnFullMock.mockReset();
-  });
-
   it('returns the best move and candidates when the engine resolves', async () => {
-    planSageTurnFullMock.mockResolvedValue({
-      moves: [
-        { from: 13, to: 11, dieIndex: 0 },
-        { from: 8, to: 5, dieIndex: 1 },
-      ],
-      equity: 0.214,
-      candidates: [{ board: boardWith({}), equity: 0.214 }],
-    });
-
-    const result = await analyzeTutorTurn(movingState());
+    const result = await analyzeTutorTurn(movingState(), fakeEngine({}));
 
     expect(result?.key).toBe('white|3,1');
     expect(result?.player).toBe('white');
@@ -87,13 +84,13 @@ describe('analyzeTutorTurn', () => {
   });
 
   it('returns null when the engine is unavailable', async () => {
-    planSageTurnFullMock.mockRejectedValue(new Error('Bgsage native module is not linked'));
-    expect(await analyzeTutorTurn(movingState())).toBeNull();
+    const engine = fakeEngine(new Error('engine not linked'));
+    expect(await analyzeTutorTurn(movingState(), engine)).toBeNull();
   });
 
-  it('returns null when the engine reports no usable equity', async () => {
-    planSageTurnFullMock.mockResolvedValue({ moves: [], equity: Number.NaN, candidates: [] });
-    expect(await analyzeTutorTurn(movingState())).toBeNull();
+  it('returns null when the engine reports no usable plan', async () => {
+    const engine = fakeEngine(new Error('no usable plan'));
+    expect(await analyzeTutorTurn(movingState(), engine)).toBeNull();
   });
 });
 

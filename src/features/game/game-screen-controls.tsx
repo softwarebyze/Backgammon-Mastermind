@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
-import { SageHintButton } from '@/features/game/components/sage-hint-button';
+import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import {
   useOpeningCeremonyHandoff,
@@ -24,6 +24,8 @@ type Props = {
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing?: boolean;
+  /** Move-log length for hint-session staleness tracking. */
+  moveLogLength: number;
   /** Ephemeral caption override (e.g. "Roll the dice first"). */
   captionOverride?: string | null;
   onRoll: () => void;
@@ -45,6 +47,7 @@ export function GameScreenControls({
   isHumanTurn,
   isComputerTurn,
   isReviewing = false,
+  moveLogLength,
   captionOverride = null,
   onRoll,
   onReset,
@@ -114,6 +117,7 @@ export function GameScreenControls({
           isHumanTurn={isHumanTurn}
           isComputerTurn={isComputerTurn}
           isReviewing={isReviewing}
+          moveLogLength={moveLogLength}
           onRoll={() => {
             hapticLight();
             onRoll();
@@ -135,6 +139,7 @@ function ActionControl({
   isHumanTurn,
   isComputerTurn,
   isReviewing,
+  moveLogLength,
   onRoll,
   onReset,
   onGoLive,
@@ -145,6 +150,7 @@ function ActionControl({
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing: boolean;
+  moveLogLength: number;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
@@ -250,21 +256,16 @@ function ActionControl({
     );
   }
 
-  // Human turn, dice rolled, nothing played yet: offer the Hint button.
-  // (Hidden once a checker has moved — the engine plans whole turns from
-  // the roll, so a mid-turn suggestion would be stale. With a selection,
+  // Human turn, dice rolled: offer the Hint button at any point in the
+  // moving phase — including mid-turn after some dice are played. The hint
+  // plans from the current position + remaining dice, so mid-turn answers
+  // are fresh continuations, not stale whole-turn plans. (With a selection,
   // the slot shows Cancel instead — see above.)
-  if (state.phase === 'moving' && isHumanTurn && !isReviewing && noMovesPlayedYet(state)) {
-    return <SageHintButton state={state} />;
+  if (state.phase === 'moving' && isHumanTurn && !isReviewing) {
+    return <HintButton state={state} moveLogLength={moveLogLength} />;
   }
 
   return <View style={styles.actionSpacer} />;
-}
-
-/** True while the turn-start dice are all still unplayed. */
-function noMovesPlayedYet(state: GameState): boolean {
-  const expectedDice = state.dice[0] === state.dice[1] ? 4 : 2;
-  return state.remainingDice.length === expectedDice;
 }
 
 function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => void }) {

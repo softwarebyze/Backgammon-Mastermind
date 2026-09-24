@@ -72,7 +72,7 @@ export function GamePreferencesPanel({
         <View style={styles.divider} />
         <SettingToggleRow
           icon={<TutorIcon size={32} active={preferences.tutorMode} />}
-          // Demo branch: Sage strings are English-only (see sage-hint-button).
+          // Demo branch: hint strings are English-only (see hint-button).
           label="Tutor mode"
           hint={showHints ? 'The engine checks your moves and flags big blunders' : undefined}
           value={preferences.tutorMode}

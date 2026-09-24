@@ -16,11 +16,13 @@ import { useEffect, useRef, useState } from 'react';
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, render } from '@/lib/test-utils';
 
+import type { GuidanceSession } from './guidance-store';
+
 import {
-  clearTutorBlunder,
-  showTutorBlunder,
-  useTutorBlunder,
-} from './tutor-store';
+  clearGuidance,
+  showGuidance,
+  useGuidance,
+} from './guidance-store';
 import { useComputerOpponent } from './use-computer-opponent';
 
 jest.mock('@/lib/game-sfx/play-game-sfx', () => ({
@@ -48,22 +50,28 @@ function blackRollingState(): GameState {
   return s;
 }
 
-const FAKE_PROMPT = {
-  bestNotation: '13/11 · 8/5',
-  loss: 0.12,
-  bestMoves: [],
-  startState: whiteMovingState(),
-  movesMade: 2,
-  candidateEquities: [0.5, 0.38],
-  playedRank: 2,
-  candidateCount: 8,
+const FAKE_SESSION: Omit<GuidanceSession, 'id'> = {
+  kind: 'blunder',
+  questionState: whiteMovingState(),
+  myMoves: [],
+  engineMoves: [],
+  revealed: false,
+  showMine: true,
+  showEngine: true,
+  verdict: {
+    loss: 0.12,
+    playedRank: 2,
+    candidateCount: 8,
+    candidateEquities: [0.5, 0.38],
+    bestEquity: 0.5,
+  },
 };
 
-/** Stands in for GameScreen: opens the tutor prompt when the turn passes. */
+/** Stands in for GameScreen: opens the guidance prompt when the turn passes. */
 function TutorChild({ state }: { state: GameState | null }) {
   useEffect(() => {
     if (state && state.currentPlayer === 'black') {
-      showTutorBlunder(FAKE_PROMPT);
+      showGuidance(FAKE_SESSION);
     }
   }, [state]);
   return null;
@@ -71,7 +79,7 @@ function TutorChild({ state }: { state: GameState | null }) {
 
 afterEach(() => {
   cleanup();
-  clearTutorBlunder();
+  clearGuidance();
   jest.clearAllTimers();
 });
 
@@ -84,13 +92,13 @@ describe('tutor pause vs the computer opponent', () => {
 
     function Harness() {
       const [state, setState] = useState<GameState | null>(whiteMovingState);
-      const prompt = useTutorBlunder();
+      const guidance = useGuidance();
       const setStateRef = useRef(setState);
       setStateRef.current = setState;
 
       useEffect(() => {
-        promptSeen.push(prompt !== null);
-      }, [prompt]);
+        promptSeen.push(guidance?.kind === 'blunder');
+      }, [guidance]);
 
       const setStateSpy = useRef((u: SetStateAction<GameState | null>) => {
         setStates.push(
@@ -112,7 +120,7 @@ describe('tutor pause vs the computer opponent', () => {
         moveCount: 10,
         hasRedo: false,
         recordNoMove: jest.fn(),
-        paused: prompt !== null,
+        paused: guidance?.kind === 'blunder',
       });
 
       useEffect(() => {

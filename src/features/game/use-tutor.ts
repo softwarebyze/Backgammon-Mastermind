@@ -1,17 +1,20 @@
 import type { TutorTurnAnalysis } from './tutor';
 
-import type { GameState, Player } from '@/lib/game/types';
+import type { MoveLogEntry } from '@/lib/game/move-log';
+import type { GameState, Move, Player } from '@/lib/game/types';
 
-import { gameStateToSageBoard } from 'expo-bgsage';
 import { useEffect, useRef } from 'react';
-
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { analyzeTutorTurn, judgeTutorTurn } from './tutor';
+
+import { cloneGameState } from '@/lib/game/snapshot';
+import { primaryEngine } from './engine';
 import {
-  clearTutorBlunder,
-  setTutorVerdictPending,
-  showTutorBlunder,
-} from './tutor-store';
+  clearGuidanceKind,
+  getGuidance,
+  setGuidanceVerdictPending,
+  showGuidance,
+} from './guidance-store';
+import { analyzeTutorTurn, judgeTutorTurn } from './tutor';
 
 type TrackedTurn = {
   key: string;
@@ -23,7 +26,7 @@ type TrackedTurn = {
   startMoveLogLength: number;
   /**
    * True once the turn ended while analysis was still running. The game
-   * stays paused (see setTutorVerdictPending) until the verdict lands.
+   * stays paused (see setGuidanceVerdictPending) until the verdict lands.
    */
   holdActive: boolean;
   /** Turn-end board + move-log length, stashed when the hold engages. */
@@ -47,21 +50,21 @@ function turnJustStarted(state: GameState): boolean {
   return state.remainingDice.length === expectedDice;
 }
 
-function cloneGameState(state: GameState): GameState {
-  return {
-    ...state,
-    points: state.points.map(p => ({ ...p })),
-    bar: { ...state.bar },
-    borneOff: { ...state.borneOff },
-    dice: [...state.dice] as [number, number],
-    remainingDice: [...state.remainingDice],
-    openingRolls: { ...state.openingRolls },
-    legalMovesForSelected: [],
-    selectedPoint: null,
-  };
+/** True while `live` is still the same moving turn the hint was asked on. */
+function isSameMovingTurn(live: GameState, question: GameState): boolean {
+  return live.phase === 'moving'
+    && live.currentPlayer === question.currentPlayer
+    && live.dice[0] === question.dice[0]
+    && live.dice[1] === question.dice[1];
 }
 
-function openBlunderPrompt(entry: TrackedTurn, endBoard: number[], endMoveLogLength: number) {
+function openBlunderPrompt(args: {
+  entry: TrackedTurn;
+  endBoard: number[];
+  moveLog: MoveLogEntry[];
+  endMoveLogLength: number;
+}) {
+  const { entry, endBoard, moveLog, endMoveLogLength } = args;
   const analysis = entry.analysis;
   if (!analysis)
     return;
@@ -69,15 +72,29 @@ function openBlunderPrompt(entry: TrackedTurn, endBoard: number[], endMoveLogLen
   if (!verdict)
     return;
   const movesMade = Math.max(0, endMoveLogLength - entry.startMoveLogLength);
-  showTutorBlunder({
-    bestNotation: verdict.bestNotation,
-    loss: verdict.loss,
-    bestMoves: analysis.bestMoves,
-    startState: entry.startState,
-    movesMade,
-    candidateEquities: analysis.candidates.slice(0, 8).map(c => c.equity),
-    playedRank: verdict.playedRank,
-    candidateCount: verdict.candidateCount,
+  // The player's own path, for the side-by-side solution view. dieIndex is
+  // re-resolved when drawing arrows, so a sentinel is fine.
+  const myMoves: Move[] = moveLog
+    .slice(Math.max(0, moveLog.length - movesMade))
+    .filter(e => e.from >= 0 && e.to >= 0)
+    .map(e => ({ from: e.from, to: e.to, dieIndex: -1 }));
+  showGuidance({
+    kind: 'blunder',
+    questionState: entry.startState,
+    myMoves,
+    engineMoves: analysis.bestMoves,
+    // Progressive disclosure: the answer stays hidden until the player
+    // asks to see it.
+    revealed: false,
+    showMine: true,
+    showEngine: true,
+    verdict: {
+      loss: verdict.loss,
+      playedRank: verdict.playedRank,
+      candidateCount: verdict.candidateCount,
+      candidateEquities: analysis.candidates.slice(0, 8).map(c => c.equity),
+      bestEquity: analysis.bestEquity,
+    },
   });
 }
 
@@ -89,7 +106,7 @@ function openBlunderPrompt(entry: TrackedTurn, endBoard: number[], endMoveLogLen
 function finishTrackedTurn(args: {
   liveState: GameState;
   tracked: TrackedTurn;
-  moveLogLength: number;
+  moveLog: MoveLogEntry[];
   trackedRef: { current: TrackedTurn | null };
   pendingTimeoutRef: { current: ReturnType<typeof setTimeout> | null };
   abandonTurn: (entry: TrackedTurn) => void;
@@ -98,21 +115,22 @@ function finishTrackedTurn(args: {
   const {
     liveState,
     tracked,
-    moveLogLength,
+    moveLog,
     trackedRef,
     pendingTimeoutRef,
     abandonTurn,
     clearPendingTimeout,
   } = args;
+  const moveLogLength = moveLog.length;
   if (moveLogLength < tracked.startMoveLogLength) {
     // New game (or rewound past the turn start): the old turn is gone.
     abandonTurn(tracked);
     return;
   }
-  const endBoard = gameStateToSageBoard({ ...liveState, currentPlayer: tracked.player });
+  const endBoard = primaryEngine.boardAfterTurn({ ...liveState, currentPlayer: tracked.player });
   if (tracked.analysis) {
     trackedRef.current = null;
-    openBlunderPrompt(tracked, endBoard, moveLogLength);
+    openBlunderPrompt({ entry: tracked, endBoard, moveLog, endMoveLogLength: moveLogLength });
     return;
   }
   if (!tracked.analysisPending)
@@ -120,7 +138,7 @@ function finishTrackedTurn(args: {
   tracked.endBoard = endBoard;
   tracked.endMoveLogLength = moveLogLength;
   tracked.holdActive = true;
-  setTutorVerdictPending(true);
+  setGuidanceVerdictPending(true);
   clearPendingTimeout();
   pendingTimeoutRef.current = setTimeout(() => {
     pendingTimeoutRef.current = null;
@@ -132,20 +150,26 @@ function finishTrackedTurn(args: {
  * Tutor mode: when a fresh human turn starts, the turn-start position is
  * analyzed in the background; when the turn ends, the played resulting
  * board is compared against the engine's candidate equities. On a big
- * blunder the game pauses with a prompt offering to take back, see a hint,
- * keep the move, or turn the tutor off — instead of the old passive banner.
+ * blunder the game pauses with a guidance session: the question view names
+ * the mistake in plain words without revealing the answer, and the player
+ * can take back, peek at the best move (both paths side by side), keep the
+ * move, or turn the tutor off.
  *
  * The game is held paused while a completed turn waits on its analysis
- * (setTutorVerdictPending), so a fast player can never outrun the tutor and
- * watch the game "keep going" past a blunder. Silent when the engine is
+ * (setGuidanceVerdictPending), so a fast player can never outrun the tutor
+ * and watch the game "keep going" past a blunder. Silent when the engine is
  * unavailable, and never judges a turn it couldn't analyze from the start.
+ *
+ * This hook also owns hint-session lifecycle: a hint belongs to the turn it
+ * was asked on, so it is dropped when that turn ends. (Not gated on the
+ * tutor preference — hints work with Tutor Mode off.)
  */
-export function useTutorMode(liveState: GameState | null, moveLogLength: number) {
+export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[]) {
   const { preferences } = useGamePreferences();
   const trackedRef = useRef<TrackedTurn | null>(null);
   const pendingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const moveLogLengthRef = useRef(moveLogLength);
-  moveLogLengthRef.current = moveLogLength;
+  const moveLogRef = useRef(moveLog);
+  moveLogRef.current = moveLog;
   const tutorOn = preferences.tutorMode;
 
   useEffect(() => {
@@ -162,8 +186,18 @@ export function useTutorMode(liveState: GameState | null, moveLogLength: number)
         trackedRef.current = null;
       }
       clearPendingTimeout();
-      setTutorVerdictPending(false);
+      setGuidanceVerdictPending(false);
     };
+
+    // Hint sessions belong to one turn — drop a stale one before anything
+    // else (this runs before a blunder prompt could be shown below, and
+    // clearGuidanceKind only touches hint sessions).
+    if (liveState) {
+      const g = getGuidance();
+      if (g?.kind === 'hint' && !isSameMovingTurn(liveState, g.questionState)) {
+        clearGuidanceKind('hint');
+      }
+    }
 
     if (!tutorOn) {
       const tracked = trackedRef.current;
@@ -172,9 +206,10 @@ export function useTutorMode(liveState: GameState | null, moveLogLength: number)
       }
       else {
         clearPendingTimeout();
-        setTutorVerdictPending(false);
+        setGuidanceVerdictPending(false);
       }
-      clearTutorBlunder();
+      // Hints are tutor-independent — only blunder prompts are gated.
+      clearGuidanceKind('blunder');
       return;
     }
     if (!liveState)
@@ -188,7 +223,7 @@ export function useTutorMode(liveState: GameState | null, moveLogLength: number)
       finishTrackedTurn({
         liveState,
         tracked,
-        moveLogLength: moveLogLengthRef.current,
+        moveLog: moveLogRef.current,
         trackedRef,
         pendingTimeoutRef,
         abandonTurn,
@@ -205,13 +240,13 @@ export function useTutorMode(liveState: GameState | null, moveLogLength: number)
           analysis: null,
           analysisPending: true,
           startState: cloneGameState(liveState),
-          startMoveLogLength: moveLogLengthRef.current,
+          startMoveLogLength: moveLogRef.current.length,
           holdActive: false,
           endBoard: null,
           endMoveLogLength: 0,
         };
         trackedRef.current = entry;
-        void analyzeTutorTurn(liveState).then((analysis) => {
+        void analyzeTutorTurn(liveState, primaryEngine).then((analysis) => {
           if (trackedRef.current !== entry)
             return; // turn ended mid-flight (already judged) or abandoned
           entry.analysisPending = false;
@@ -226,11 +261,11 @@ export function useTutorMode(liveState: GameState | null, moveLogLength: number)
             // Open the prompt BEFORE releasing the hold so the game can
             // never observe an unpaused gap between the two.
             const { endBoard, endMoveLogLength } = entry;
-            openBlunderPrompt(entry, endBoard, endMoveLogLength);
+            openBlunderPrompt({ entry, endBoard, moveLog: moveLogRef.current, endMoveLogLength });
             abandonTurn(entry);
           }
         });
       }
     }
-  }, [liveState, moveLogLength, tutorOn]);
+  }, [liveState, moveLog, tutorOn]);
 }

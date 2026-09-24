@@ -12,8 +12,15 @@ import { applyMove, getLegalMoves } from '@/lib/game/moves';
  * Each hint move is re-resolved against the app's own legal moves before
  * applying, so dieIndex bookkeeping stays correct as dice are consumed.
  * Stops at the first hint move that isn't legal from the current position.
+ *
+ * `tone` colors the arrows: 'mine' (the player's own path, orange) vs
+ * 'engine' (the recommended path, green) — see MovePathOverlay.
  */
-export function hintMovesToSegments(moves: Move[], startState: GameState): PathSegment[] {
+export function hintMovesToSegments(
+  moves: Move[],
+  startState: GameState,
+  tone?: PathSegment['tone'],
+): PathSegment[] {
   const segments: PathSegment[] = [];
   let snap = startState;
   for (let i = 0; i < moves.length; i++) {
@@ -28,7 +35,7 @@ export function hintMovesToSegments(moves: Move[], startState: GameState): PathS
       from: legal.from,
       to: legal.to,
     };
-    segments.push({ entry, beforeState: snap });
+    segments.push({ entry, beforeState: snap, tone });
     snap = applyMove(snap, legal);
   }
   return segments;

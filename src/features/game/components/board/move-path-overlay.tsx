@@ -16,6 +16,11 @@ export type PathSegment = {
   beforeState: GameState;
   /** Dim inactive segments while one move is mid-flight. */
   active?: boolean;
+  /**
+   * Arrow colorway for guidance comparisons: 'mine' (the player's own path)
+   * vs 'engine' (the recommended path). Unset = default accent arrows.
+   */
+  tone?: 'mine' | 'engine';
 };
 
 type Props = {
@@ -30,18 +35,28 @@ type Props = {
 
 const ARROW_COLOR = GAME_PALETTE.accent;
 
+function toneColor(tone: PathSegment['tone']): string {
+  if (tone === 'engine')
+    return GAME_PALETTE.guideEngine;
+  if (tone === 'mine')
+    return GAME_PALETTE.guideMine;
+  return ARROW_COLOR;
+}
+
 function PathArrow({
   entry,
   beforeState,
   dimensions,
   animation,
   opacity,
+  tone,
 }: {
   entry: MoveLogEntry;
   beforeState: GameState;
   dimensions: BoardDimensions;
   animation?: MoveAnimationFrame | null;
   opacity: number;
+  tone?: PathSegment['tone'];
 }) {
   // Tip/tail on checker centers (openings-website style) — no extra inset trim.
   const { from, to } = resolvePathAnchors({ entry, beforeState, dims: dimensions, animation });
@@ -50,6 +65,7 @@ function PathArrow({
     length: 12,
     halfWidth: 6.5,
   });
+  const color = toneColor(tone);
 
   return (
     <>
@@ -58,13 +74,13 @@ function PathArrow({
         y1={from.y}
         x2={lineEnd.x}
         y2={lineEnd.y}
-        stroke={ARROW_COLOR}
+        stroke={color}
         strokeWidth={3}
         strokeDasharray="10 8"
         strokeLinecap="round"
         opacity={opacity}
       />
-      <Polygon points={polygonPoints} fill={ARROW_COLOR} opacity={opacity} />
+      <Polygon points={polygonPoints} fill={color} opacity={opacity} />
     </>
   );
 }
@@ -98,12 +114,13 @@ export function MovePathOverlay({ segments, dimensions, animation, fadeOutMs }: 
           const opacity = seg.active === false ? 0.35 : matchesAnim ? 0.95 : 0.75;
           return (
             <PathArrow
-              key={seg.entry.ply}
+              key={`${seg.tone ?? 'default'}-${seg.entry.ply}`}
               entry={seg.entry}
               beforeState={seg.beforeState}
               dimensions={dimensions}
               animation={matchesAnim ? animation : null}
               opacity={opacity}
+              tone={seg.tone}
             />
           );
         })}
