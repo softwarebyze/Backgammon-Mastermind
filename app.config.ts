@@ -102,6 +102,9 @@ const appPlugins: ExpoConfig['plugins'] = [
   'expo-router',
   'expo-status-bar',
   'expo-updates',
+  // iMessage extension (turn-based play over Messages). Sources live in
+  // targets/imessage/; see docs/imessage-extension.md.
+  './plugins/with-imessage-extension',
   ['app-icon-badge', appIconBadgeConfig],
   [
     'expo-build-properties',

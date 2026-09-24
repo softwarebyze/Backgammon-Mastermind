@@ -5,6 +5,7 @@
     "src/components/ui/index.tsx",
     "src/components/ui/icons/index.tsx",
     "src/lib/game/index.ts",
+    "src/lib/imessage/index.ts",
     "src/lib/i18n/index.tsx",
     "src/lib/storage.tsx",
     "env.ts"
