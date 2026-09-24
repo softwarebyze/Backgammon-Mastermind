@@ -182,7 +182,12 @@ export function useGameProviderValue(): GameContextType {
         setState,
         setMoveAnimation,
         armAnimationFinish,
-        finish: undone => revertTurnInstant(startState, undone, { skipPop: true }),
+        finish: (undone) => {
+          // Clear the animation frame — otherwise isAnimating stays true and
+          // the board is stuck unresponsive after the take-back slides land.
+          setMoveAnimation(null);
+          revertTurnInstant(startState, undone, { skipPop: true });
+        },
       },
       movesMade,
     );
