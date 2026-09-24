@@ -109,23 +109,28 @@ describe('classifyStrategy', () => {
   });
 
   it('detects a priming game with a four-point wall', () => {
+    // Black has a blot on the 1-point that must escape through white's wall,
+    // so the prime means something (and this is not a pure race).
     const state = stateWith([
       [3, 'white', 2],
       [4, 'white', 2],
       [5, 'white', 2],
       [6, 'white', 2],
       [22, 'black', 2],
+      [1, 'black', 1],
     ]);
     expect(classifyStrategy(state, 'white').key).toBe('priming');
   });
 
   it('detects a holding game with an advanced anchor while behind', () => {
+    // Black still has checkers at 10 that must travel past white's anchor on
+    // the 20-point, so the anchor means something (not a pure race).
     const state = stateWith([
       [20, 'white', 2],
       [13, 'white', 3],
       [8, 'white', 2],
-      [21, 'black', 3],
-      [22, 'black', 2],
+      [21, 'black', 2],
+      [10, 'black', 2],
     ]);
     // White behind in the race with a 20-point anchor.
     expect(pipCount(state, 'white')).toBeGreaterThan(pipCount(state, 'black'));
@@ -216,6 +221,28 @@ describe('classifyStrategy pure race', () => {
       [24, 'black', 2],
     ]);
     expect(pipCount(state, 'white')).toBeGreaterThan(pipCount(state, 'black'));
+    const info = classifyStrategy(state, 'white');
+    expect(info.key).toBe('running');
+    expect(info.why).toMatch(/straight race/);
+  });
+
+  it('does not call it priming when the prime is behind all enemy checkers', () => {
+    // White holds a full 5-prime on 2-6, but every black checker is already
+    // past it (19-24): the prime cannot trap anything, so this is a pure
+    // race, not a priming game.
+    const state = stateWith([
+      [2, 'white', 2],
+      [3, 'white', 2],
+      [4, 'white', 2],
+      [5, 'white', 2],
+      [6, 'white', 2],
+      [12, 'white', 5],
+      [19, 'black', 2],
+      [20, 'black', 2],
+      [22, 'black', 3],
+      [23, 'black', 3],
+      [24, 'black', 5],
+    ], 'white');
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('running');
     expect(info.why).toMatch(/straight race/);

@@ -210,8 +210,14 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
 
   let key: StrategyKey = 'developing';
   let why = 'No prime, anchor, or attack on the board yet — the game is still taking shape.';
+  // No contact is possible, so no prime, blitz, backgame, or holding game can
+  // mean anything: it's a straight race to bear off.
+  if (pureRace) {
+    key = 'running';
+    why = `No contact is possible — it's a straight race to bear off (${myPips} vs ${foePips} pips).`;
+  }
   // Most committal first: a deep two-anchor back game overrides everything.
-  if (anchors.length >= 2 && deepAnchors.length >= 2 && pipDeficit > 0.08) {
+  else if (anchors.length >= 2 && deepAnchors.length >= 2 && pipDeficit > 0.08) {
     key = 'backgame';
     why = `You hold deep anchors on the ${deepAnchors.slice(0, 2).join(' and ')} while down ${pipGap} pips in the race.`;
   }
@@ -231,11 +237,9 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
     key = 'holding';
     why = `You hold an anchor on the ${anchors[0]} while trailing by ${pipGap} pips.`;
   }
-  else if (pureRace || (pipLead >= 0.1 && !contactExposed(state, player))) {
+  else if (pipLead >= 0.1 && !contactExposed(state, player)) {
     key = 'running';
-    why = pureRace
-      ? `No contact is possible — it's a straight race to bear off (${myPips} vs ${foePips} pips).`
-      : `You lead the race ${foePips} to ${myPips} with no blots in hitting range.`;
+    why = `You lead the race ${foePips} to ${myPips} with no blots in hitting range.`;
   }
 
   return { key, why, ...STRATEGIES[key] };
