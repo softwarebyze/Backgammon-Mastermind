@@ -32,6 +32,7 @@ old bubble to review that position.
 | `targets/imessage/Sources/BoardView.swift` | SwiftUI compact + expanded board. |
 | `targets/imessage/Sources/MessagesViewController.swift` | `MSMessagesAppViewController`: loads incoming bubbles, sends turns. |
 | `targets/imessage/Info.plist` | Extension plist template (bundle id/version injected by the plugin). |
+| `targets/imessage/Assets.xcassets/` | Committed **stickers icon set** (“iMessage App Icon”, Xcode-template slots). Regenerate with `pnpm dlx tsx scripts/generate-imessage-icons.ts` after brand changes. |
 | `plugins/with-imessage-extension.js` | Expo config plugin: copies sources into `ios/` and injects the `BackgammonMastermindMessages` target (`com.apple.product-type.app-extension.messages`, `<app-id>.messages`) on every `expo prebuild`. |
 | `scripts/imessage-parity-vectors.ts` | Regenerates cross-language test vectors (`pnpm dlx tsx …`). |
 
@@ -80,6 +81,32 @@ two local simulators requires Apple-ID sign-in on both.
 > Pod note: if `pod install` fails with a `UnicodeNormalize` crash, your shell
 > isn't UTF-8 — `export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` first.
 
+## Two-simulator test runbook (one Apple ID is enough)
+
+1. Build + install on two booted simulators (Debug, simulator SDK):
+   `xcodebuild -workspace ios/*.xcworkspace -scheme BackgammonMastermind -sdk iphonesimulator build`
+   `xcrun simctl install <sim-A> <app.app>` (repeat for sim-B). The `.appex`
+   embeds automatically (verify: `.app/PlugIns/BackgammonMastermindMessages.appex`).
+2. **Owner step:** on each simulator open Settings → sign into the *same*
+   Apple ID, then open Messages and enable iMessage. (Agent cannot enter
+   passwords.)
+3. On sim-A: new conversation to yourself → app drawer → Backgammon → New
+   game → roll, move, **Send turn**.
+4. On sim-B: tap the bubble → play Black → **Send turn**.
+5. Back on sim-A: tap the reply → next turn. Game ends with the “wins 🏆”
+   bubble. Capture screenshots/recordings per turn for the PR.
+
+## EAS / TestFlight runbook
+
+- The plugin derives `<app-id>.messages` per flavor automatically
+  (development / preview / production — nothing extra to code).
+- First build per flavor auto-provisions via the linked App Store Connect API
+  key: `eas build --profile development --platform ios`, then preview, then
+  production. If a build complains about the `.messages` bundle id, register
+  it in Identifiers (App Store Connect) and re-run `eas credentials -p ios`.
+- Icons ship in the appex (`Assets.car` verified in simulator builds), which
+  satisfies iMessage App Store icon validation.
+
 ## Verification done so far (no device needed)
 
 - `xcodebuild -target BackgammonMastermindMessages -sdk iphonesimulator build` → **BUILD SUCCEEDED**.
@@ -99,7 +126,6 @@ two local simulators requires Apple-ID sign-in on both.
 - Dice are rolled locally on each device (same trust model as Backgammon Match
   casual play); no anti-cheat.
 - Bubble has a text caption only (no rendered board snapshot image yet).
-- Extension icon set is the default — add a Messages app-icon asset before
-  App Store submission (App Store validation requires it).
+- Extension icons ship as a stickers icon set (`Assets.car` in the appex).
 - Requires real two-party Messages testing (provisioning + devices) before
   calling it “fully working” end-to-end — see Prerequisites.
