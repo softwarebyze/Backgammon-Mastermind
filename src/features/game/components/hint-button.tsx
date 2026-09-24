@@ -127,8 +127,11 @@ export function HintButton({ state, moveLogLength }: Props) {
     hintRequest.invalidate();
     setPhase('idle');
     clearGuidance();
-    // Play the suggested line as an animated sequence.
-    doMoveSequence(moves);
+    // Dismiss the hint UI first, then play the moves on the next frame so
+    // the board has settled and the animation runs cleanly.
+    requestAnimationFrame(() => {
+      doMoveSequence(moves);
+    });
   };
 
   if (hintOpen && session) {
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   resultWrap: {
-    backgroundColor: 'rgba(232, 224, 208, 0.08)',
+    backgroundColor: GAME_PALETTE.surface,
     borderWidth: 1,
     borderColor: GAME_PALETTE.accentDim,
     paddingHorizontal: 16,
