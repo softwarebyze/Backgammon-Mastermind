@@ -36,9 +36,12 @@ jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
 }));
 
 function blunderSession(): Omit<GuidanceSession, 'id'> {
+  const questionState = createInitialState('vs-computer');
+  questionState.dice = [6, 1];
+  questionState.remainingDice = [6, 1];
   return {
     kind: 'blunder',
-    questionState: createInitialState('vs-computer'),
+    questionState,
     myMoves: [{ from: 6, to: 5, dieIndex: 1 }],
     engineMoves: [{ from: 13, to: 10, dieIndex: 0 }],
     revealed: false,
@@ -237,6 +240,20 @@ describe('guidance modal solution', () => {
     expect(mockSetTutorMode).toHaveBeenCalledWith(false);
     expect(mockTutorRevertTurn).not.toHaveBeenCalled();
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
+  });
+
+  it('solution shows the dice rolled on the reviewed turn', () => {
+    renderQuestion();
+
+    // Mine-only view shows the roll…
+    fireEvent.press(screen.getByTestId('guidance-show-mine'));
+    expect(screen.getByTestId('guidance-roll')).toBeTruthy();
+    expect(screen.getByText('You rolled 6–1')).toBeTruthy();
+
+    // …and so does the full comparison.
+    fireEvent.press(screen.getByTestId('guidance-back-to-question'));
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+    expect(screen.getByText('You rolled 6–1')).toBeTruthy();
   });
 
   it('view toggle switches between mine, best, both, and start boards', () => {

@@ -26,6 +26,10 @@ import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 /** Collapsible "why" details: rank recap + top alternatives, labeled. */
+function formatRoll(dice: [number, number]): string {
+  return `${dice[0]}–${dice[1]}`;
+}
+
 function DetailsSection({ session }: { session: GuidanceSession }) {
   const [open, setOpen] = useState(false);
   const verdict = session.verdict;
@@ -329,6 +333,11 @@ function SolutionView({
       <Text style={styles.title}>
         {mineOnly ? 'Your move' : 'Your move vs the best move'}
       </Text>
+      <Text style={styles.rollSubtitle} testID="guidance-roll">
+        You rolled
+        {' '}
+        {formatRoll(session.questionState.dice)}
+      </Text>
       <CompareBoards session={session} boardWidth={boardWidth} mineOnly={mineOnly} />
       {mineOnly
         ? (
@@ -568,6 +577,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     ...interFont('bold'),
+  },
+  rollSubtitle: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 2,
+    marginBottom: 6,
+    ...interFont('medium'),
   },
   message: {
     color: GAME_PALETTE.text,
