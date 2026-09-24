@@ -35,22 +35,28 @@ export function GamePipStatusBar({ state }: Props) {
   const blackPips = pipCount(state, 'black');
   const gameOver = state.phase === 'game-over';
 
+  if (gameOver) {
+    return (
+      <View style={styles.gameOverWrap}>
+        <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.wrap}>
       <View style={styles.row}>
-        {!gameOver && (
-          <Pressable
-            onPress={() => setExpanded(v => !v)}
-            accessibilityRole="button"
-            accessibilityLabel={`${strategy.label}. ${strategy.why} ${strategy.tip}`}
-            style={styles.strategyRow}
-            testID="strategy-pill"
-          >
-            <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
-            <Text style={styles.strategyText}>{strategy.label}</Text>
-            <Text style={styles.chevron}>{expanded ? '▾' : '▸'}</Text>
-          </Pressable>
-        )}
+        <Pressable
+          onPress={() => setExpanded(v => !v)}
+          accessibilityRole="button"
+          accessibilityLabel={`${strategy.label}. ${strategy.why} ${strategy.tip}`}
+          style={styles.strategyRow}
+          testID="strategy-pill"
+        >
+          <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
+          <Text style={styles.strategyText}>{strategy.label}</Text>
+          <Text style={styles.chevron}>{expanded ? '▾' : '▸'}</Text>
+        </Pressable>
         <View style={styles.pips}>
           <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
             {whitePips}
@@ -60,9 +66,8 @@ export function GamePipStatusBar({ state }: Props) {
             {blackPips}
           </Text>
         </View>
-        {gameOver && <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>}
       </View>
-      {expanded && !gameOver && (
+      {expanded && (
         <View style={styles.whyBox} testID="strategy-why">
           <Text style={styles.whyText}>{strategy.why}</Text>
           <Text style={styles.tipText}>{strategy.tip}</Text>
@@ -89,6 +94,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 2,
     gap: 6,
+  },
+  gameOverWrap: {
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  winnerBadge: {
+    color: '#E8C860',
+    fontSize: 20,
+    letterSpacing: 0.5,
+    ...interFont('bold'),
   },
   row: {
     flexDirection: 'row',
@@ -152,10 +168,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 17,
     ...interFont('regular'),
-  },
-  winnerBadge: {
-    color: '#E8C860',
-    fontSize: 13,
-    ...interFont('bold'),
   },
 });

@@ -48,3 +48,20 @@ describe('gamePipStatusBar', () => {
     expect(screen.getByLabelText('game.review.player_black pip count 167')).toBeTruthy();
   });
 });
+
+describe('gamePipStatusBar game-over', () => {
+  it('hides pip counts and centers the winner badge', () => {
+    const state = {
+      ...createInitialState('vs-computer'),
+      phase: 'game-over',
+      winner: 'white',
+    };
+    render(<GamePipStatusBar state={state} />);
+
+    // No strategy pill, no pip counts at game over.
+    expect(screen.queryByTestId('strategy-pill')).toBeNull();
+    expect(screen.queryByText('167')).toBeNull();
+    // Winner badge shows.
+    expect(screen.getByText('game.status.you_win')).toBeTruthy();
+  });
+});
