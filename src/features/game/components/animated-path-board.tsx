@@ -1,9 +1,10 @@
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game/types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { BoardView } from '@/features/game/components/board/board-view';
+import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
@@ -39,6 +40,34 @@ export function AnimatedPathBoard({
   const genRef = useRef(0);
   const pausedRef = useRef(false);
   pausedRef.current = paused;
+
+  // Build the full path as arrow segments: each move's before-state is the
+  // result of applying all previous moves to the base state.
+  const segments = useMemo(() => {
+    const result: { entry: { from: number; to: number; dice: [number, number]; player: GameState['currentPlayer']; ply: number }; beforeState: GameState; tone: 'mine' | 'engine' }[] = [];
+    let snap = baseState;
+    let ply = 0;
+    for (const move of moves) {
+      const legal = getLegalMoves(snap).find(
+        m => m.from === move.from && m.to === move.to,
+      );
+      if (!legal)
+        break;
+      result.push({
+        entry: {
+          from: legal.from,
+          to: legal.to,
+          dice: snap.dice,
+          player: snap.currentPlayer,
+          ply: ++ply,
+        },
+        beforeState: snap,
+        tone,
+      });
+      snap = applyMove(snap, legal);
+    }
+    return result;
+  }, [baseState, moves, tone]);
 
   useEffect(() => {
     if (moves.length === 0)
@@ -142,6 +171,24 @@ export function AnimatedPathBoard({
           interactionEnabled={false}
           isReviewing
         />
+        {segments.length > 0 && (
+          <View
+            style={{
+              position: 'absolute',
+              width: dimensions.boardWidth,
+              height: dimensions.boardHeight,
+              left: 0,
+              top: 0,
+            }}
+            pointerEvents="none"
+          >
+            <MovePathOverlay
+              segments={segments}
+              dimensions={dimensions}
+              animation={frame}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
