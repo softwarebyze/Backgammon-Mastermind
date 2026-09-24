@@ -15,6 +15,8 @@ export type StrategyInfo = {
   label: string;
   /** One-line execution tip. */
   tip: string;
+  /** Why the position calls for this strategy — grounded in the actual features. */
+  why: string;
 };
 
 const STRATEGIES: Record<StrategyKey, { label: string; tip: string }> = {
@@ -170,24 +172,35 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
 
   const pipLead = foePips > 0 ? (foePips - myPips) / foePips : 0;
   const pipDeficit = myPips > 0 ? (myPips - foePips) / myPips : 0;
+  const pipGap = Math.abs(myPips - foePips);
 
   let key: StrategyKey = 'developing';
+  let why = 'No prime, anchor, or attack on the board yet — the game is still taking shape.';
   // Most committal first: a deep two-anchor back game overrides everything.
   if (anchors.length >= 2 && deepAnchors.length >= 2 && pipDeficit > 0.08) {
     key = 'backgame';
+    why = `You hold deep anchors on the ${deepAnchors.slice(0, 2).join(' and ')} while down ${pipGap} pips in the race.`;
   }
   else if ((foeBlotsHome.length >= 2 || state.bar[foe] > 0) && homeMade.length >= 2) {
     key = 'blitz';
+    const threats = [
+      ...(state.bar[foe] > 0 ? [`${state.bar[foe]} on the bar`] : []),
+      ...(foeBlotsHome.length > 0 ? [`${foeBlotsHome.length} ${foeBlotsHome.length === 1 ? 'blot' : 'blots'} in your home board`] : []),
+    ].join(' and ');
+    why = `There's ${threats}, and you've already made ${homeMade.length} home-board points.`;
   }
   else if (prime >= 4 || (prime >= 3 && anchors.length >= 1)) {
     key = 'priming';
+    why = `You've built a ${prime}-point prime${anchors.length >= 1 ? ' with an anchor behind it' : ''}.`;
   }
   else if (anchors.length >= 1 && pipDeficit > 0.03) {
     key = 'holding';
+    why = `You hold an anchor on the ${anchors[0]} while trailing by ${pipGap} pips.`;
   }
   else if (pipLead >= 0.1 && !contactExposed(state, player)) {
     key = 'running';
+    why = `You lead the race ${foePips} to ${myPips} with no blots in hitting range.`;
   }
 
-  return { key, ...STRATEGIES[key] };
+  return { key, why, ...STRATEGIES[key] };
 }

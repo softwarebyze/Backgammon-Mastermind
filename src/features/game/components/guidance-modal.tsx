@@ -252,6 +252,8 @@ function CompareBoards({
   boardWidth: number;
   mineOnly: boolean;
 }) {
+  // Side by side: split the available width between the two boards (minus the gap).
+  const halfWidth = (boardWidth - 14) / 2;
   return (
     <View style={styles.compareBoards}>
       <AnimatedPathBoard
@@ -259,7 +261,7 @@ function CompareBoards({
         moves={session.myMoves}
         label={mineOnly ? 'Your move, replayed' : 'Your move'}
         tone="mine"
-        boardWidth={boardWidth}
+        boardWidth={mineOnly ? boardWidth : halfWidth}
         testID="guidance-compare-mine"
       />
       {!mineOnly && (
@@ -268,7 +270,7 @@ function CompareBoards({
           moves={session.engineMoves}
           label="Best move"
           tone="engine"
-          boardWidth={boardWidth}
+          boardWidth={halfWidth}
           testID="guidance-compare-engine"
         />
       )}
@@ -510,6 +512,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   compareBoards: {
+    flexDirection: 'row',
     gap: 14,
   },
   title: {

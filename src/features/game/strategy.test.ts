@@ -59,6 +59,25 @@ describe('classifyStrategy', () => {
     expect(classifyStrategy(state, 'white').key).toBe('developing');
   });
 
+  it('explains why: developing cites the lack of structure', () => {
+    const state = createInitialState('vs-human');
+    const info = classifyStrategy(state, 'white');
+    expect(info.why).toMatch(/still taking shape/);
+    expect(info.tip).toMatch(/Build points/);
+  });
+
+  it('explains why: priming cites the prime length', () => {
+    const state = stateWith([
+      [3, 'white', 2],
+      [4, 'white', 2],
+      [5, 'white', 2],
+      [6, 'white', 2],
+    ]);
+    const info = classifyStrategy(state, 'white');
+    expect(info.key).toBe('priming');
+    expect(info.why).toMatch(/4-point prime/);
+  });
+
   it('detects a running game with a big pip lead and no contact', () => {
     // White has borne off 10 (50 pips left-ish); black is far behind.
     // No blots anywhere: white points made, black points made.

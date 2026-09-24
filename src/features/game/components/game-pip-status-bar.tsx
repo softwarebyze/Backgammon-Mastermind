@@ -1,13 +1,12 @@
 import type { StrategyKey } from '@/features/game/strategy';
 import type { GameState } from '@/lib/game';
-import { useState } from 'react';
 
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy, pipCount } from '@/features/game/strategy';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
-import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
@@ -24,11 +23,12 @@ const STRATEGY_DOT: Record<StrategyKey, string> = {
 };
 
 /**
- * Slim status bar: the strategy the position points to (tap for the one-line
- * tip) plus both race pip counts. The leader's count is highlighted.
+ * Quiet status line: the strategy the position points to (tap for why + tip)
+ * and both race pip counts. Deliberately bubble-free — it reads as part of
+ * the header, not a floating badge.
  */
 export function GamePipStatusBar({ state }: Props) {
-  const [showTip, setShowTip] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
   const strategy = classifyStrategy(state, perspective);
   const whitePips = pipCount(state, 'white');
@@ -40,60 +40,34 @@ export function GamePipStatusBar({ state }: Props) {
       <View style={styles.row}>
         {!gameOver && (
           <Pressable
-            onPress={() => setShowTip(t => !t)}
+            onPress={() => setExpanded(v => !v)}
             accessibilityRole="button"
-            accessibilityLabel={`${strategy.label}. ${strategy.tip}`}
-            style={styles.strategyPill}
+            accessibilityLabel={`${strategy.label}. ${strategy.why} ${strategy.tip}`}
+            style={styles.strategyRow}
             testID="strategy-pill"
           >
             <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
             <Text style={styles.strategyText}>{strategy.label}</Text>
+            <Text style={styles.chevron}>{expanded ? '▾' : '▸'}</Text>
           </Pressable>
         )}
         <View style={styles.pips}>
-          <PipCount
-            label={translate('game.review.player_white')}
-            count={whitePips}
-            dotColor="#F2EAD3"
-            leading={whitePips <= blackPips}
-          />
-          <Text style={styles.pipDivider}>·</Text>
-          <PipCount
-            label={translate('game.review.player_black')}
-            count={blackPips}
-            dotColor="#1E1E30"
-            leading={blackPips < whitePips}
-          />
+          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
+            {whitePips}
+          </Text>
+          <Text style={styles.pipDivider}>–</Text>
+          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
+            {blackPips}
+          </Text>
         </View>
         {gameOver && <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>}
       </View>
-      {showTip && !gameOver && (
-        <Text style={styles.tip}>{strategy.tip}</Text>
+      {expanded && !gameOver && (
+        <View style={styles.whyBox} testID="strategy-why">
+          <Text style={styles.whyText}>{strategy.why}</Text>
+          <Text style={styles.tipText}>{strategy.tip}</Text>
+        </View>
       )}
-    </View>
-  );
-}
-
-function PipCount({
-  label,
-  count,
-  dotColor,
-  leading,
-}: {
-  label: string;
-  count: number;
-  dotColor: string;
-  leading: boolean;
-}) {
-  return (
-    <View
-      style={styles.pipItem}
-      accessibilityLabel={`${label} pip count ${count}`}
-    >
-      <View style={[styles.pipDot, { backgroundColor: dotColor }]} />
-      <Text style={[styles.pipText, leading && styles.pipTextLeading]} selectable>
-        {count}
-      </Text>
     </View>
   );
 }
@@ -112,73 +86,71 @@ function getWinnerLabel(state: GameState) {
 const styles = StyleSheet.create({
   wrap: {
     width: '100%',
-    paddingHorizontal: 12,
-    marginBottom: 4,
-    gap: 4,
+    paddingHorizontal: 16,
+    marginBottom: 2,
+    gap: 6,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  strategyPill: {
+  strategyRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    ...continuousRadius(999),
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    borderWidth: 1,
-    borderColor: 'rgba(232, 224, 208, 0.14)',
+    gap: 6,
+    paddingVertical: 4,
   },
   strategyDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
   },
   strategyText: {
-    color: GAME_PALETTE.text,
+    color: GAME_PALETTE.textMuted,
     fontSize: 12,
-    letterSpacing: 0.4,
-    ...interFont('semibold'),
+    letterSpacing: 0.3,
+    ...interFont('medium'),
+  },
+  chevron: {
+    color: GAME_PALETTE.textMuted,
+    opacity: 0.6,
+    fontSize: 10,
   },
   pips: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-  },
-  pipItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 6,
-  },
-  pipDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#BBA070',
   },
   pipDivider: {
     color: GAME_PALETTE.textMuted,
-    fontSize: 12,
+    opacity: 0.5,
+    fontSize: 11,
   },
   pipText: {
     color: GAME_PALETTE.textMuted,
-    fontSize: 13,
+    opacity: 0.85,
+    fontSize: 12,
     ...interFont('regular'),
     fontVariant: ['tabular-nums'],
   },
-  pipTextLeading: {
-    color: GAME_PALETTE.text,
-    ...interFont('semibold'),
+  whyBox: {
+    gap: 4,
+    paddingLeft: 13,
+    borderLeftWidth: 2,
+    borderLeftColor: GAME_PALETTE.accent,
+    opacity: 0.95,
   },
-  tip: {
+  whyText: {
+    color: GAME_PALETTE.text,
+    fontSize: 12,
+    lineHeight: 17,
+    ...interFont('regular'),
+  },
+  tipText: {
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
-    lineHeight: 16,
-    textAlign: 'center',
+    lineHeight: 17,
     ...interFont('regular'),
   },
   winnerBadge: {

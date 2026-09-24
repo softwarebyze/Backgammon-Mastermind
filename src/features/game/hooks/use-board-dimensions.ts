@@ -46,7 +46,9 @@ export type BoardDimensions = {
 function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
   const boardWidth = boardOuterWidth - BOARD_FRAME_WIDTH * 2;
   const colWidth = (boardWidth - BAR_WIDTH - BEAR_OFF_WIDTH) / 12;
-  const checkerSize = Math.min(colWidth - 4, 32);
+  // Clamp to a minimum so mini boards (e.g. side-by-side guidance replays)
+  // never produce negative SVG radii.
+  const checkerSize = Math.max(8, Math.min(colWidth - 4, 32));
   const pointHeight = Math.round(Math.min(160, checkerSize * 5.2));
   const boardHeight = pointHeight * 2 + MIDDLE_HEIGHT;
   const boardOuterHeight = boardHeight + BOARD_FRAME_WIDTH * 2;
