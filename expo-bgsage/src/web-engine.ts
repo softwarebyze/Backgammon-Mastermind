@@ -91,7 +91,15 @@ function callJson(
   try {
     mod.HEAP32.set(board, ptr >> 2);
     const outPtr = fn(engine, ptr, ...args);
-    return mod.UTF8ToString(outPtr);
+    try {
+      return mod.UTF8ToString(outPtr);
+    } finally {
+      // The engine mallocs the JSON output (native bridges free it with
+      // bgsage_mobile_free). Free it here too — otherwise every analyze
+      // call leaks WASM heap until the tab crashes (iOS Safari).
+      // free(NULL) is a no-op, so a null outPtr is safe.
+      mod._free(outPtr);
+    }
   } finally {
     mod._free(ptr);
   }
