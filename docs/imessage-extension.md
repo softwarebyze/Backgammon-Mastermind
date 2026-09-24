@@ -88,6 +88,13 @@ two local simulators requires Apple-ID sign-in on both.
   `DEVELOPMENT_TEAM` fails with “No Account for Team”.
 - Preview/production flavors may live under **different Apple IDs/teams** —
   do dev-flavor work only until the owner confirms each flavor's team.
+- `com.backgammonmastermind.development.messages` was registered via EAS
+  GraphQL `createAppleAppIdentifier` (parent = main app id, team 75M38Z9JBF).
+- Xcode-managed team profiles go stale: after portal changes (new devices),
+  refresh via Xcode → Settings → Accounts → Download Manual Profiles, then
+  rebuild with `-allowProvisioningUpdates`. If Xcode reports devices as
+  unregistered that EAS `device:list` shows, the Accounts session needs
+  re-login.
 - Simulator builds need no profiles (`CODE_SIGNING_ALLOWED=NO` suffices for
   compiling), but the simulator's plugind would not index the appex in our
   testing (see Status below) — device testing is the supported path.
