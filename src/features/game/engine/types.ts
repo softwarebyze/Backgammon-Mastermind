@@ -2,8 +2,10 @@ import type { GameState, Move } from '@/lib/game/types';
 
 /**
  * One legal way to play the turn, with its resulting position.
+ * Module-private: callers only ever touch candidates through EngineTurnPlan,
+ * and the board fingerprint is opaque outside the producing engine.
  */
-export type EngineTurnCandidate = {
+type EngineTurnCandidate = {
   /**
    * Resulting position fingerprint — opaque to callers, only meaningful to
    * the engine that produced it. The tutor compares the played turn's

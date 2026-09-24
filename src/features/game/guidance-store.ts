@@ -4,8 +4,8 @@ import { useSyncExternalStore } from 'react';
 
 export type GuidanceKind = 'blunder' | 'hint';
 
-/** Blunder-only verdict facts, used for beginner-friendly copy. */
-export type GuidanceVerdict = {
+/** Blunder-only verdict facts, used for beginner-friendly copy. Module-private: only referenced by GuidanceSession below. */
+type GuidanceVerdict = {
   /** Equity points the played turn gave up vs the engine's best. */
   loss: number;
   /** 1-based rank of the played turn among the engine's candidates. */

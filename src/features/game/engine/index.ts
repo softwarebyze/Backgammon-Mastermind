@@ -2,9 +2,7 @@ import type { GameEngine } from './types';
 import { bgsageEngine } from './bgsage-engine';
 import { heuristicEngine } from './heuristic-engine';
 
-export { bgsageEngine } from './bgsage-engine';
-export { heuristicEngine } from './heuristic-engine';
-export type { EngineTurnCandidate, EngineTurnPlan, GameEngine } from './types';
+export type { GameEngine } from './types';
 
 /**
  * ENGINE SWAP POINT — the one place that chooses the engine behind the
