@@ -72,11 +72,10 @@ npx expo prebuild --platform ios   # injects BackgammonMastermindMessages
 open ios/*.xcworkspace
 ```
 
-In Xcode: select the **BackgammonMastermindMessages** scheme → run on two
-simulators/devices signed into different Apple IDs (or one device + TestFlight
-for a second player) → open Messages, start a conversation, open the app drawer,
-play. The simulator's Messages app can host the extension UI; sending between
-two local simulators requires Apple-ID sign-in on both.
+Apple's documented test flow (Xcode docs, "Running your iMessage app"): select
+the Messages extension scheme → Run → choose Messages as the host when
+prompted. This repo does not commit an extension scheme yet (tracked below);
+until then, Run the main scheme on the device, then open Messages manually.
 
 > Pod note: if `pod install` fails with a `UnicodeNormalize` crash, your shell
 > isn't UTF-8 — `export LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` first.
@@ -99,19 +98,37 @@ two local simulators requires Apple-ID sign-in on both.
   compiling), but the simulator's plugind would not index the appex in our
   testing (see Status below) — device testing is the supported path.
 
-## Status: simulator vs device testing
+## Status: the one remaining blocker
 
-- **Simulator (blocked, 2026-09-23):** app+appex build, install, and launch
-  fine on two iOS 26 simulators, but `pluginkit -m -A` never lists
-  `com.backgammonmastermind.development.messages` (tried ad-hoc + dev
-  signatures, Messages restart, full reboot, two runtimes) so the extension
-  never appears in the Messages drawer. Likely installd skips appex plugin
-  registration without real provisioning. Not pursued further.
-- **Device (in progress):** local Debug `iphoneos` build with
-  `DEVELOPMENT_TEAM=75M38Z9JBF -allowProvisioningUpdates`, then
-  `xcrun devicectl install` on two paired iPhones for a real two-party
-  iMessage test (sides come from the payload, so same-Apple-ID play works —
-  unlike Backgammon Match; see “same ID” runbook below).
+Everything builds, signs, installs, and launches — but the extension does not
+appear in the Messages app drawer (simulator ×2, iPhone 13 Pro Max, iPad),
+while store-signed third-party extensions (Maps, Venmo) do. No crash logs exist
+for the extension: it is never indexed/launched, not failing at runtime.
+
+What was eliminated, with evidence:
+
+| Hypothesis | Verdict |
+| --- | --- |
+| Wrong extension point (`com.apple.messages`) | Eliminated: matches Apple docs, Xcode 26 template product type, and every shipping iMessage app (Backgammon Match works on the same phones). A `message-payload-provider` experiment changed nothing. |
+| Missing storyboard entry | Eliminated as sole cause: added minimal `MainInterface.storyboard` mirroring Apple's template (compiled `storyboardc` verified in the appex); drawer still empty. Kept — it matches the template. |
+| Missing icons | Eliminated as sole cause: full stickers icon set compiles (`Assets.car` + extracted PNGs verified). Kept — required for store validation. |
+| Bad bundle id / prefix | Eliminated: `com.backgammonmastermind.development.messages`, registered in portal, prefix-correct. |
+| Bad signature / profile | Eliminated as install blocker: dev + ad-hoc installs verify and launch; profiles embed correctly with all devices. |
+| `simctl`/`devicectl` install path | Open: a minimal pure-native test extension (no Expo) built from Apple's template shape is equally invisible after `simctl install`, even after reboot — suggesting direct installs don't register extensions in this environment, independent of our code. |
+| Dev/ad-hoc vs store signature filtering | Open: every visible third-party extension is store-signed. Untested: store-signed (TestFlight) install of ours. |
+| Xcode Run install path | Open: user ran to iPad; drawer still empty. (Same installd underneath, so unsurprising in hindsight.) |
+
+Next steps, in order:
+
+1. **Store-signed install (TestFlight).** The single highest-signal test: EAS cloud build
+   when free-plan minutes reset (Oct 1) or after a plan upgrade, then TestFlight
+   on both test phones. If the drawer lists it → dev-signing was the filter;
+   ship via the store path.
+2. **Apple DTS / Developer Forums** with the evidence bundle (working minimal
+   repro = MinMsg experiment notes above, sysdiagnose needs on-device approval).
+3. **Extension scheme for one-click Runs** (nice-to-have): generate a shared
+   `BackgammonMastermindMessages.xcscheme` in the plugin (needs the generated
+   target UUID at prebuild time) so Xcode offers Messages as host automatically.
 
 ## Two-simulator test runbook (one Apple ID is enough)
 
