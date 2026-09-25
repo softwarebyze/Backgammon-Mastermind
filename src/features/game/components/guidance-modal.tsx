@@ -168,24 +168,24 @@ function QuestionView({
           a11y="Show only my move, without revealing the best move"
           testID="guidance-show-mine"
           onPress={onShowMine}
-          style={styles.btnGhost}
-          labelStyle={styles.btnGhostLabel}
+          style={styles.btnSecondary}
+          labelStyle={styles.btnSecondaryLabel}
         />
         <ActionButton
           label="Keep my move"
           a11y="Keep my move and continue"
           testID="guidance-keep-move"
           onPress={onKeepMove}
-          style={styles.btnGhost}
-          labelStyle={styles.btnGhostLabel}
+          style={styles.btnSecondary}
+          labelStyle={styles.btnSecondaryLabel}
         />
         <ActionButton
           label="Turn Tutor off"
           a11y="Turn Tutor mode off"
           testID="guidance-turn-off"
           onPress={onTurnOff}
-          style={styles.btnGhost}
-          labelStyle={styles.btnMutedLabel}
+          style={styles.btnLink}
+          labelStyle={styles.btnLinkLabel}
         />
       </View>
     </>
@@ -369,8 +369,8 @@ function SolutionActions({
         a11y="Keep my move and continue"
         testID="guidance-keep-move"
         onPress={onKeepMove}
-        style={styles.btnGhost}
-        labelStyle={styles.btnGhostLabel}
+        style={styles.btnSecondary}
+        labelStyle={styles.btnSecondaryLabel}
       />
     </View>
   );
@@ -794,17 +794,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     ...interFont('semibold'),
   },
-  btnGhost: {
+  btnLink: {
     backgroundColor: 'transparent',
+    paddingVertical: 8,
   },
-  btnGhostLabel: {
+  btnLinkLabel: {
     color: GAME_PALETTE.textMuted,
-    fontSize: 14,
-    ...interFont('semibold'),
-  },
-  btnMutedLabel: {
-    color: GAME_PALETTE.textMuted,
-    opacity: 0.7,
     fontSize: 13,
     ...interFont('regular'),
   },

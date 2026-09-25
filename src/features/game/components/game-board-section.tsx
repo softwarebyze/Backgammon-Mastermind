@@ -4,9 +4,9 @@ import type { useGameInput } from '@/features/game/use-game-input';
 import type { GameState, Player } from '@/lib/game';
 import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
-import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
+import { playingSurfaceOffset } from '@/features/game/components/board/playing-surface-offset';
 import { useHintArrows } from '@/features/game/hint-arrows-store';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -28,15 +28,6 @@ type Props = {
   /** Whose point of view the point-number rails are labeled from. */
   numberPerspective: Player;
 };
-
-/** Playing-surface origin inside BoardView (frame + optional number rail). */
-function playingSurfaceOffset(boardFrameWidth: number, showPointNumbers: boolean) {
-  const rail = showPointNumbers ? POINT_NUMBER_RAIL : 0;
-  return {
-    left: boardFrameWidth,
-    top: boardFrameWidth + rail,
-  };
-}
 
 export function GameBoardSection({
   boardState,

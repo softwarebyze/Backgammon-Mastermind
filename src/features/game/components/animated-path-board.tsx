@@ -6,10 +6,16 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Polygon, Rect } from 'react-native-svg';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
+import {
+  boardViewHeight,
+  playingSurfaceOffset,
+  pointNumberRailsHeight,
+} from '@/features/game/components/board/playing-surface-offset';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -193,7 +199,16 @@ export function AnimatedPathBoard({
   boardWidth: number;
   testID?: string;
 }) {
-  const dimensions = fitBoardToViewport({ maxOuterWidth: boardWidth, maxOuterHeight: 240, compact: true });
+  const { preferences } = useGamePreferences();
+  const showPointNumbers = preferences.showPointNumbers;
+  const dimensions = fitBoardToViewport({
+    maxOuterWidth: boardWidth,
+    maxOuterHeight: 240,
+    extraHeight: pointNumberRailsHeight(showPointNumbers),
+    compact: true,
+  });
+  const surface = playingSurfaceOffset(dimensions.boardFrameWidth, showPointNumbers);
+  const boardHeight = boardViewHeight(dimensions.boardOuterHeight, showPointNumbers);
   const [displayState, setDisplayState] = useState(baseState);
   const [frame, setFrame] = useState<MoveAnimationFrame | null>(null);
   const { paused, setPaused } = usePathReplay({ baseState, moves, setDisplayState, setFrame });
@@ -223,7 +238,7 @@ export function AnimatedPathBoard({
           </Pressable>
         )}
       </View>
-      <View style={[styles.board, { width: dimensions.boardWidth, height: dimensions.boardHeight }]}>
+      <View style={[styles.board, { width: dimensions.boardOuterWidth, height: boardHeight }]}>
         <BoardView
           state={displayState}
           dimensions={dimensions}
@@ -244,8 +259,8 @@ export function AnimatedPathBoard({
               position: 'absolute',
               width: dimensions.boardWidth,
               height: dimensions.boardHeight,
-              left: 0,
-              top: 0,
+              left: surface.left,
+              top: surface.top,
             }}
             pointerEvents="none"
           >
