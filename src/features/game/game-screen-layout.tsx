@@ -23,7 +23,7 @@ import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slo
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { GAME_CHROME_MAX_WIDTH, landscapeBoardPaneWidth, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, LANDSCAPE_GAP, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Review = ReturnType<typeof useMoveReview>;
@@ -174,11 +174,8 @@ export function GameScreenLayout({
   onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
-  const { landscape, desktop, innerWidth, chromeWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
+  const { landscape, desktop, chromeWidth, boardPaneWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
   const dimensions = useBoardDimensions();
-  const boardPaneWidth = landscape
-    ? landscapeBoardPaneWidth(innerWidth, chromeWidth)
-    : undefined;
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
@@ -302,7 +299,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     justifyContent: 'center',
-    gap: 8,
+    gap: LANDSCAPE_GAP,
   },
   chromeColumn: {
     width: '100%',

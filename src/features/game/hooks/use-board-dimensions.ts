@@ -1,17 +1,11 @@
 import { useMemo } from 'react';
-import { Platform, useWindowDimensions } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Platform } from 'react-native';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { useBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import {
-  isLandscapeLayout,
-  landscapeBoardPaneWidth,
-  landscapeChromeColumnWidth,
-  MAX_BOARD_WIDTH,
-} from '@/lib/ui/game-chrome';
-import { innerLayoutWidth } from '@/lib/ui/layout-metrics';
+import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
@@ -217,19 +211,18 @@ export function useBoardDimensions(options?: {
   /** Extra vertical chrome beyond the default game screen estimate. */
   extraChrome?: number;
 }): BoardDimensions {
-  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
+  const {
+    width: screenWidth,
+    height: screenHeight,
+    insets,
+    boardPaneWidth: maxOuterWidthCap,
+  } = useLayoutMetrics();
   const { preferences } = useGamePreferences();
   const slot = useBoardSlotSize();
   const showPointNumbers = options?.showPointNumbers ?? preferences.showPointNumbers;
   const extraChrome = options?.extraChrome ?? 0;
   const platform: 'web' | 'native' = Platform.OS === 'web' ? 'web' : 'native';
   const horizontalInset = insets.left + insets.right;
-  const innerWidth = innerLayoutWidth(screenWidth, insets.left, insets.right);
-  const landscape = isLandscapeLayout(screenWidth, screenHeight);
-  const maxOuterWidthCap = landscape
-    ? landscapeBoardPaneWidth(innerWidth, landscapeChromeColumnWidth(innerWidth))
-    : undefined;
 
   return useMemo(
     () =>

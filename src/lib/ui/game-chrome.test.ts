@@ -4,6 +4,7 @@ import {
   gameStageMaxWidth,
   isDesktopLayout,
   isLandscapeLayout,
+  LANDSCAPE_GAP,
   landscapeBoardPaneWidth,
   landscapeChromeColumnWidth,
   MAX_BOARD_WIDTH,
@@ -49,14 +50,14 @@ describe('game chrome layout', () => {
   it('leaves phone landscape unstaged and centers a desktop board+chrome row', () => {
     expect(gameStageMaxWidth(844)).toBeUndefined();
     expect(gameStageMaxWidth(1023)).toBeUndefined();
-    expect(gameStageMaxWidth(1280)).toBe(MAX_BOARD_WIDTH + 16 + 360);
-    expect(gameStageMaxWidth(1920)).toBe(MAX_BOARD_WIDTH + 16 + 360);
+    expect(gameStageMaxWidth(1280)).toBe(MAX_BOARD_WIDTH + LANDSCAPE_GAP + 360);
+    expect(gameStageMaxWidth(1920)).toBe(MAX_BOARD_WIDTH + LANDSCAPE_GAP + 360);
   });
 
   it('sizes the landscape board pane so board + chrome fit the inner width', () => {
     const chrome = landscapeChromeColumnWidth(844);
     const pane = landscapeBoardPaneWidth(844, chrome);
-    expect(pane + chrome + 8).toBe(844);
+    expect(pane + chrome + LANDSCAPE_GAP).toBe(844);
     expect(pane).toBeLessThanOrEqual(MAX_BOARD_WIDTH);
     expect(landscapeBoardPaneWidth(1920, 360)).toBe(MAX_BOARD_WIDTH);
   });
