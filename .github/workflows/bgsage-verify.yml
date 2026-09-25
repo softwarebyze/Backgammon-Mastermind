@@ -1,0 +1,193 @@
+# bgsage native verification (demo branch only).
+# - Android: full Gradle APK build (compiles Kotlin + JNI + the bgsage C++
+#   engine for real), then a Maestro flow on an emulator drives the Sage Lab
+#   screen and asserts the engine's actual move output.
+# - iOS: Expo prebuild + xcodebuild for the iOS simulator (compiles the
+#   Swift/ObjC++ bridge + engine for real). No signing, no EAS, no Apple creds.
+
+name: bgsage native verify
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [bgsage/demo-ci]
+
+concurrency:
+  group: bgsage-verify-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    name: Android — APK build + Maestro engine test
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch bgsage engine (pinned commit)
+        # Must run BEFORE pnpm install: pnpm copies the file: dependency
+        # expo-bgsage into node_modules at install time, so the vendored
+        # C++ sources must already exist or CMake won't find them.
+        run: bash .github/scripts/fetch-bgsage-engine.sh
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Verify vendored engine in node_modules
+        run: |
+          test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
+          test -f node_modules/expo-bgsage/ios/vendor/bgsage/cpp/src/mobile.cpp || { echo "::error::expo-bgsage iOS vendor sources missing from node_modules copy"; exit 1; }
+
+      - name: Build expo-bgsage TS
+        run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
+
+      - name: Type-check app (covers sage-lab-section)
+        run: pnpm type-check
+
+      - name: Set Up JDK + Generate Test APK
+        uses: ./.github/actions/setup-jdk-generate-apk
+        with:
+          APP_ENV: preview
+
+      - name: Upload Test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgsage-test-apk
+          path: ./android-test.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Install Maestro
+        run: npm run install-maestro
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Enable KVM (hardware emulator acceleration)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Pre-install Android system image (retry)
+        run: bash .github/scripts/install-android-system-image.sh 34 google_apis x86_64
+
+      - name: Run Sage engine flow with Maestro
+        id: maestro_emulator
+        uses: reactivecircus/android-emulator-runner@v2.38.0
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: '1'
+        with:
+          working-directory: ${{ github.workspace }}
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          emulator-boot-timeout: 600
+          force-avd-creation: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          cores: 2
+          ram-size: 4096M
+          script: bash .github/scripts/run-maestro-sage-emulator.sh "${{ github.workspace }}" com.backgammonmastermind.preview
+
+      - name: Upload Maestro logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bgsage-maestro-logs
+          path: |
+            .maestro-ci-output/**
+            report.xml
+            e2e-recording.mp4
+          if-no-files-found: ignore
+          retention-days: 14
+
+  ios:
+    name: iOS — simulator compile check
+    # macos-26 = Xcode 26 / Swift 6.2 (GA Feb 2026). Required: expo-modules-jsi
+    # declares swift-tools-version 6.2 and uses 6.2-only compiler features.
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch bgsage engine (pinned commit)
+        # Must run BEFORE pnpm install (see android job).
+        run: bash .github/scripts/fetch-bgsage-engine.sh
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Verify vendored engine in node_modules
+        run: |
+          test -f node_modules/expo-bgsage/vendor/bgsage/cpp/src/board.cpp || { echo "::error::expo-bgsage vendor sources missing from node_modules copy"; exit 1; }
+          test -f node_modules/expo-bgsage/ios/vendor/bgsage/cpp/src/mobile.cpp || { echo "::error::expo-bgsage iOS vendor sources missing from node_modules copy"; exit 1; }
+
+      - name: Build expo-bgsage TS
+        run: ./node_modules/.bin/tsc -p expo-bgsage/tsconfig.json
+
+      - name: Generate brand assets
+        run: pnpm brand:generate
+        env:
+          EXPO_NO_DOTENV: '1'
+          APP_ENV: preview
+          CI: 'true'
+
+      - name: Prebuild native project
+        run: |
+          for attempt in 1 2 3; do
+            rm -rf ios android
+            if pnpm prebuild:preview; then
+              exit 0
+            fi
+            echo "::warning::prebuild attempt ${attempt} failed; retrying..."
+            sleep 5
+          done
+          exit 1
+        env:
+          EXPO_NO_DOTENV: '1'
+          APP_ENV: preview
+          CI: 'true'
+
+      - name: Install CocoaPods dependencies
+        run: cd ios && pod install
+        env:
+          CI: 'true'
+
+      - name: Build for iOS simulator (compile check)
+        run: |
+          cd ios
+          WORKSPACE=$(ls -d *.xcworkspace | head -1)
+          echo "workspace: $WORKSPACE"
+          SCHEME=$(xcodebuild -list -workspace "$WORKSPACE" | awk '/^ *Schemes:$/{f=1;next} f && NF{print $1; exit}')
+          echo "scheme: $SCHEME"
+          # Runner images don't guarantee a specific simulator device name
+          # (macos-26 ships no iPhone 16) — pick any available iPhone by UDID.
+          DEVICE_UDID=$(xcrun simctl list devices available --json | python3 -c "
+          import json, sys
+          d = json.load(sys.stdin)
+          for runtime in sorted(d['devices']):
+              if 'iOS' not in runtime:
+                  continue
+              for dev in d['devices'][runtime]:
+                  if 'iPhone' in dev['name']:
+                      print(dev['udid'])
+                      sys.exit(0)
+          sys.exit('no available iPhone simulator found')
+          ")
+          echo "simulator UDID: $DEVICE_UDID"
+          xcodebuild -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,id=$DEVICE_UDID" \
+            -derivedDataPath "$RUNNER_TEMP/bgsage-dd" \
+            build

@@ -275,6 +275,52 @@
         },
         "subtitle": "How a turn works",
         "title": "Moving with dice"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "White has borne off 5 checkers and the rest are close to home. Black's checkers are still spread across the board. Tap any white checker — white is ahead in the race with the lower pip count.",
+            "hint": "Look for the checkers closest to bearing off.",
+            "praise": "Exactly! White's lower pip count means fewer points to travel.",
+            "title": "Who's ahead?"
+          },
+          "behind": {
+            "body": "Same position. Black's checkers are far from home with a much higher pip count. Tap any black checker — black is behind in the race.",
+            "hint": "Look for the checkers farthest from home.",
+            "praise": "Right! Black needs many more pips to bear off.",
+            "title": "Who's behind?"
+          },
+          "explain": {
+            "body": "Pip count is the total number of points your checkers must travel to bear off. Each checker contributes its point number — a checker on the 6-point counts 6, on the 13-point counts 13. Add them all up and you get your pip count. Lower is better: it means you're closer to bearing off. The pip counts appear at the top of the screen during every game, with a dot showing which number belongs to which color.",
+            "title": "What is pip count?"
+          }
+        },
+        "subtitle": "Learn to read who's winning the race",
+        "title": "Pip Count: The Race Score"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "This is a priming game. Tap any point that's part of the white prime — the wall of consecutive made points blocking black.",
+            "hint": "Look for consecutive points with at least 2 white checkers each.",
+            "praise": "Perfect! That wall is the prime — black's back checkers are trapped.",
+            "title": "Spot the prime"
+          },
+          "prime": {
+            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that black's back checkers cannot pass. Extend your prime one point at a time and trap their checkers behind it.",
+            "title": "Priming Game"
+          },
+          "running": {
+            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board.",
+            "title": "Running Game"
+          }
+        },
+        "subtitle": "Recognize the six classic game plans",
+        "title": "Game Strategies"
       }
     },
     "locked": "Complete the previous lesson first",
@@ -297,6 +343,30 @@
         "b": "A single checker on a point — it can be hit",
         "c": "Two or more checkers on a point — a made point",
         "prompt": "What is a blot?"
+      },
+      "pip_ahead": {
+        "a": "Your opponent, with the higher count",
+        "b": "You, with the lower count",
+        "c": "Neither — pip count doesn't measure the race",
+        "prompt": "Your pip count is 85 and your opponent's is 102. Who is ahead in the race?"
+      },
+      "pip_meaning": {
+        "a": "The total points your checkers must travel to bear off",
+        "b": "The number of checkers you have on the board",
+        "c": "The number of points you have made",
+        "prompt": "What does your pip count represent?"
+      },
+      "strat_blitz": {
+        "a": "Hit the blot and keep building your home board (blitz)",
+        "b": "Ignore the blot and run your back checkers",
+        "c": "Break your home board to make an anchor",
+        "prompt": "You have 3 home-board points made and your opponent has a blot in your home board. What's the best plan?"
+      },
+      "strat_prime": {
+        "a": "Break the prime to attack",
+        "b": "Keep the prime and extend it — they're trapped",
+        "c": "Bear off as fast as possible",
+        "prompt": "Your opponent has two checkers trapped behind your 5-point prime. What's your plan?"
       }
     },
     "replay": "Replay",

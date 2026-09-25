@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
 import { useCallback, useState } from 'react';
 
+import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { setOpeningCeremonyHandoff, setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 import { createInitialState } from '@/lib/game';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
@@ -43,6 +44,8 @@ export function useGameLifecycle({
     clearActiveGame();
     resetMoveLog();
     clearTimeline();
+    setGuidanceVerdictPending(false);
+    clearGuidance();
     bumpCeremony();
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
@@ -71,6 +74,8 @@ export function useGameLifecycle({
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
+    setGuidanceVerdictPending(false);
+    clearGuidance();
     bumpCeremony();
     if (!state) {
       return;

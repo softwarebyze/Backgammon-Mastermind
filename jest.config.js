@@ -36,5 +36,10 @@ module.exports = {
   coverageDirectory: '<rootDir>/coverage/',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    // expo-bgsage's package.json points main at build/index.js, which only
+    // exists after `tsc -p expo-bgsage/tsconfig.json`. Map to the TS source
+    // so Jest resolves the static import in src/features/game/engine/
+    // without requiring a prior build step.
+    '^expo-bgsage$': '<rootDir>/expo-bgsage/src/index.ts',
   },
 };

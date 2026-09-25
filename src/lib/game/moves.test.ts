@@ -16,6 +16,7 @@ import {
   getLegalMoves,
   getReachableDestinations,
   hasAnyLegalMove,
+  isTurnStart,
   passTurn,
   rollDice,
 } from './moves';
@@ -567,5 +568,39 @@ describe('rollDice', () => {
       expect(b).toBeGreaterThanOrEqual(1);
       expect(b).toBeLessThanOrEqual(6);
     }
+  });
+});
+
+describe('isTurnStart', () => {
+  it('is true with a full normal roll', () => {
+    let state = createInitialState('vs-computer');
+    state = applyDiceRoll(state, [3, 1]);
+    expect(isTurnStart(state)).toBe(true);
+  });
+
+  it('is true with a full doubles roll (4 dice granted)', () => {
+    let state = createInitialState('vs-computer');
+    state = applyDiceRoll(state, [4, 4]);
+    expect(state.remainingDice).toHaveLength(4);
+    expect(isTurnStart(state)).toBe(true);
+  });
+
+  it('is false once any die is consumed', () => {
+    let state = createInitialState('vs-computer');
+    state = applyDiceRoll(state, [3, 1]);
+    const moves = getLegalMoves(state);
+    expect(moves.length).toBeGreaterThan(0);
+    state = applyMove(state, moves[0]);
+    expect(isTurnStart(state)).toBe(false);
+  });
+
+  it('is false mid-doubles after one move', () => {
+    let state = createInitialState('vs-computer');
+    state = applyDiceRoll(state, [4, 4]);
+    const moves = getLegalMoves(state);
+    expect(moves.length).toBeGreaterThan(0);
+    state = applyMove(state, moves[0]);
+    expect(state.remainingDice).toHaveLength(3);
+    expect(isTurnStart(state)).toBe(false);
   });
 });

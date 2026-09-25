@@ -1,0 +1,44 @@
+# Sage engine end-to-end: drives the Sage Lab screen (developer tools) and
+# asserts the real bgsage engine's move output for the opening 3-1 (black).
+# Expected: black plays 8/5 6/5 in black-relative terms = app moves 17/20 19/20.
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- takeScreenshot: 01-home
+# Deep-link straight to the developer screen (preview scheme).
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Developer
+    timeout: 60000
+# Sage Lab is the third section on the developer screen (below the fold);
+# scroll it into view before interacting.
+- scrollUntilVisible:
+    element:
+      id: sage-run-analysis
+    direction: DOWN
+    timeout: 30000
+- takeScreenshot: 02-sage-lab
+- tapOn:
+    id: sage-run-analysis
+# The result renders directly below the button, which sits at the bottom
+# edge of the viewport after the scroll above — nudge content up so the
+# result is on screen before waiting. First run includes engine init,
+# weight copy + 2-ply search.
+- swipe:
+    direction: UP
+# Wait on the status element, then assert exact strings: the app renders the
+# status ("SAGE OK") and the move notation ("17/20 19/20") verbatim in their
+# own elements, which is what Maestro's text assertions match against.
+- extendedWaitUntil:
+    visible:
+      id: sage-status
+    timeout: 180000
+- takeScreenshot: 03-sage-result
+- assertVisible:
+    text: SAGE OK
+- assertVisible:
+    text: 17/20 19/20

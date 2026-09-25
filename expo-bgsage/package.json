@@ -1,0 +1,39 @@
+{
+  "author": "softwarebyze",
+  "dependencies": {
+    "@expo/config-plugins": "57.0.9",
+    "expo-modules-core": "57.0.19",
+    "xcode": "3.0.1"
+  },
+  "description": "Expo native module wrapping the bgsage backgammon engine (stage11 backgame_pair_phased).",
+  "expo": {
+    "autolinking": {
+      "nativeModules": [
+        "Bgsage"
+      ]
+    }
+  },
+  "keywords": [
+    "expo",
+    "backgammon",
+    "bgsage"
+  ],
+  "license": "MPL-2.0",
+  "main": "src/index.ts",
+  "name": "expo-bgsage",
+  "peerDependencies": {
+    "expo": "*",
+    "react-native": "*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "types": "src/index.ts",
+  "version": "0.1.0",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  }
+}

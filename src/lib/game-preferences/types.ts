@@ -11,6 +11,8 @@ export type GamePreferences = {
   soundEnabled: boolean;
   /** Shorter computer think/move delays for power users. */
   fastComputer: boolean;
+  /** Tutor mode: the Sage engine checks your turn and flags big blunders. */
+  tutorMode: boolean;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -22,4 +24,5 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   autoMoveWhenForced: false,
   soundEnabled: true,
   fastComputer: false,
+  tutorMode: false,
 };

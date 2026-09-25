@@ -77,6 +77,7 @@ jest.mock('react-native-mmkv', () => ({
     getNumber: jest.fn(),
     getBoolean: jest.fn(),
     delete: jest.fn(),
+    remove: jest.fn(),
     clearAll: jest.fn(),
     getAllKeys: jest.fn(() => []),
   })),
@@ -90,6 +91,7 @@ jest.mock('react-native-mmkv', () => ({
     getNumber: jest.fn(),
     getBoolean: jest.fn(),
     delete: jest.fn(),
+    remove: jest.fn(),
     clearAll: jest.fn(),
     getAllKeys: jest.fn(() => []),
   })),
@@ -101,3 +103,15 @@ global.window = {};
 
 // @ts-expect-error
 global.window = global;
+
+// Mock expo-audio (native module) so provider-level tests can import the SFX chain.
+jest.mock('expo-audio', () => ({
+  createAudioPlayer: jest.fn(() => ({
+    play: jest.fn(),
+    pause: jest.fn(),
+    remove: jest.fn(),
+    replace: jest.fn(),
+  })),
+  setAudioModeAsync: jest.fn(() => Promise.resolve()),
+  useAudioPlayer: jest.fn(),
+}));

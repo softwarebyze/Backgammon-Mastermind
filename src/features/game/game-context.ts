@@ -34,6 +34,11 @@ export type GameContextType = {
   resumeAIScheduling: () => void;
   /** Skip remaining computer think/roll wait. */
   skipAIDelay: () => void;
+  /**
+   * Tutor mode: revert a blundered turn to its start snapshot, trimming the
+   * move log and timeline so history stays consistent. Used for "take back".
+   */
+  tutorRevertTurn: (startState: GameState, movesMade: number) => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

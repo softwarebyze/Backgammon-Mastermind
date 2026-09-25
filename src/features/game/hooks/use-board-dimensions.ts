@@ -9,6 +9,9 @@ import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
 const BEAR_OFF_WIDTH = 38;
+/** Narrower chrome for mini boards (guidance replays) so the points stay readable. */
+const COMPACT_BAR_WIDTH = 16;
+const COMPACT_BEAR_OFF_WIDTH = 20;
 const MIDDLE_HEIGHT = 12;
 const BOARD_FRAME_WIDTH = 4;
 /**
@@ -43,10 +46,14 @@ export type BoardDimensions = {
   middleHeight: number;
 };
 
-function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
+function dimensionsForWidth(boardOuterWidth: number, compact = false): BoardDimensions {
   const boardWidth = boardOuterWidth - BOARD_FRAME_WIDTH * 2;
-  const colWidth = (boardWidth - BAR_WIDTH - BEAR_OFF_WIDTH) / 12;
-  const checkerSize = Math.min(colWidth - 4, 32);
+  const barWidth = compact ? COMPACT_BAR_WIDTH : BAR_WIDTH;
+  const bearOffWidth = compact ? COMPACT_BEAR_OFF_WIDTH : BEAR_OFF_WIDTH;
+  const colWidth = (boardWidth - barWidth - bearOffWidth) / 12;
+  // Clamp to a minimum so mini boards (e.g. side-by-side guidance replays)
+  // never produce negative SVG radii.
+  const checkerSize = Math.max(8, Math.min(colWidth - 4, 32));
   const pointHeight = Math.round(Math.min(160, checkerSize * 5.2));
   const boardHeight = pointHeight * 2 + MIDDLE_HEIGHT;
   const boardOuterHeight = boardHeight + BOARD_FRAME_WIDTH * 2;
@@ -60,29 +67,36 @@ function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
     colWidth,
     checkerSize,
     pointHeight,
-    barWidth: BAR_WIDTH,
-    bearOffWidth: BEAR_OFF_WIDTH,
+    barWidth,
+    bearOffWidth,
     middleHeight: MIDDLE_HEIGHT,
   };
 }
 
+export type FitBoardToViewportArgs = {
+  maxOuterWidth: number;
+  maxOuterHeight: number;
+  /** e.g. point-number rails rendered inside the board frame */
+  extraHeight?: number;
+  /** narrower bar/bear-off for mini boards (guidance replays) */
+  compact?: boolean;
+};
+
 /**
  * Shrink width until the board (+ optional rails) fits in the available height.
- * @param maxOuterWidth — max board outer width for the viewport
- * @param maxOuterHeight — max board outer height for the viewport
- * @param extraHeight — e.g. point-number rails rendered inside the board frame
  */
-export function fitBoardToViewport(
-  maxOuterWidth: number,
-  maxOuterHeight: number,
+export function fitBoardToViewport({
+  maxOuterWidth,
+  maxOuterHeight,
   extraHeight = 0,
-): BoardDimensions {
+  compact = false,
+}: FitBoardToViewportArgs): BoardDimensions {
   let width = maxOuterWidth;
-  let dims = dimensionsForWidth(width);
+  let dims = dimensionsForWidth(width, compact);
   // linear shrink — ~40 iterations max; switch to binary search if this gets hot
   while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
     width -= 8;
-    dims = dimensionsForWidth(width);
+    dims = dimensionsForWidth(width, compact);
   }
   return dims;
 }
@@ -190,7 +204,7 @@ export function resolveBoardViewport({
     ? slotHeight!
     : Math.max(FALLBACK_MIN_OUTER_HEIGHT, screenHeight - chrome);
   const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
-  return fitBoardToViewport(maxOuterWidth, maxOuterHeight, railHeight);
+  return fitBoardToViewport({ maxOuterWidth, maxOuterHeight, extraHeight: railHeight });
 }
 
 export function useBoardDimensions(options?: {

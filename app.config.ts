@@ -43,6 +43,9 @@ const appIconBadgeConfig: AppIconBadgeConfig = {
 };
 
 const appPlugins: ExpoConfig['plugins'] = [
+  // Copies the bgsage neural-net weights + bearoff DB into the native
+  // projects during prebuild (demo branch only).
+  'expo-bgsage/plugin',
   [
     'expo-splash-screen',
     {

@@ -1,12 +1,13 @@
 import type { PathSegment } from '@/features/game/components/board/move-path-overlay';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
-import type { GameState } from '@/lib/game';
+import type { GameState, Player } from '@/lib/game';
 import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
-import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
+import { playingSurfaceOffset } from '@/features/game/components/board/playing-surface-offset';
+import { useHintArrows } from '@/features/game/hint-arrows-store';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT } from '@/lib/game/constants';
@@ -24,16 +25,9 @@ type Props = {
   pathSegments: PathSegment[];
   pathFadeOutMs?: number;
   input: Input;
+  /** Whose point of view the point-number rails are labeled from. */
+  numberPerspective: Player;
 };
-
-/** Playing-surface origin inside BoardView (frame + optional number rail). */
-function playingSurfaceOffset(boardFrameWidth: number, showPointNumbers: boolean) {
-  const rail = showPointNumbers ? POINT_NUMBER_RAIL : 0;
-  return {
-    left: boardFrameWidth,
-    top: boardFrameWidth + rail,
-  };
-}
 
 export function GameBoardSection({
   boardState,
@@ -45,10 +39,14 @@ export function GameBoardSection({
   pathSegments,
   pathFadeOutMs,
   input,
+  numberPerspective,
 }: Props) {
   const dimensions = useBoardDimensions();
   const { preferences } = useGamePreferences();
-  const showPath = pathSegments.length > 0;
+  const hintArrows = useHintArrows();
+  // Hint arrows layer onto the live board only — never over review scrub.
+  const overlaySegments = isReviewing ? pathSegments : [...pathSegments, ...hintArrows];
+  const showPath = overlaySegments.length > 0;
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
   const travelEmphasis = useMemo(() => {
     if (!boardAnimation) {
@@ -91,6 +89,7 @@ export function GameBoardSection({
             dragFrom={interactionEnabled ? input.dragFrom : null}
             interactionEnabled={interactionEnabled}
             isReviewing={isReviewing}
+            numberPerspective={numberPerspective}
             onPointPress={input.handlePointPress}
             onPointPressIn={input.handlePointPressIn}
             onPointPressOut={input.handlePointPressOut}
@@ -117,7 +116,7 @@ export function GameBoardSection({
                   pointerEvents="none"
                 >
                   <MovePathOverlay
-                    segments={pathSegments}
+                    segments={overlaySegments}
                     dimensions={dimensions}
                     animation={boardAnimation}
                     fadeOutMs={pathFadeOutMs}

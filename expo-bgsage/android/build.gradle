@@ -1,0 +1,53 @@
+// expo-bgsage/android/build.gradle
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'expo-module-gradle-plugin'
+
+group = 'com.bgsage'
+version = '0.1.0'
+
+// Vendored engine lands via .github/scripts/fetch-bgsage-engine.sh (bgsage-verify).
+// Normal CI (Maestro e2e / Screenmap) does not fetch it — skip JNI so prebuild/APK still works.
+def vendorBoard = file("${projectDir}/../vendor/bgsage/cpp/src/board.cpp")
+def hasBgsageVendor = vendorBoard.exists()
+
+android {
+  namespace 'com.bgsage'
+  compileSdk 35
+
+  defaultConfig {
+    minSdk 24
+    // Required by expo-module-gradle-plugin: PublicationInfo reads
+    // android.defaultConfig.versionName for the module's maven publication.
+    versionName version
+    if (hasBgsageVendor) {
+      externalNativeBuild {
+        cmake {
+          abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64', 'x86'
+          arguments '-DANDROID_STL=c++_shared'
+        }
+      }
+    }
+  }
+
+  if (hasBgsageVendor) {
+    externalNativeBuild {
+      cmake {
+        path 'src/main/cpp/CMakeLists.txt'
+        version '3.22.1+'
+      }
+    }
+  } else {
+    logger.warn("[expo-bgsage] vendor sources missing at ${vendorBoard} — skipping native CMake (Ask Sage falls back to heuristic until fetch-bgsage-engine.sh runs)")
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+  kotlinOptions { jvmTarget = '17' }
+}
+
+dependencies {
+  implementation project(':expo-modules-core')
+}
