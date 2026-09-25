@@ -91,15 +91,12 @@ function callJson(
   try {
     mod.HEAP32.set(board, ptr >> 2);
     const outPtr = fn(engine, ptr, ...args);
-    try {
-      return mod.UTF8ToString(outPtr);
-    } finally {
-      // The engine mallocs the JSON output (native bridges free it with
-      // bgsage_mobile_free). Free it here too — otherwise every analyze
-      // call leaks WASM heap until the tab crashes (iOS Safari).
-      // free(NULL) is a no-op, so a null outPtr is safe.
-      mod._free(outPtr);
-    }
+    // NOTE: do NOT free outPtr. The web entry points return a pointer to a
+    // reused static buffer (same address across calls, WASM heap never
+    // grows) — freeing it corrupts the Emscripten heap and crashes the tab.
+    // This differs from the native bridges, where bgsage_mobile_free frees
+    // a per-call malloc'd string.
+    return mod.UTF8ToString(outPtr);
   } finally {
     mod._free(ptr);
   }
