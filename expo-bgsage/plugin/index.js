@@ -1,4 +1,4 @@
-// expo-bgsage/plugin/index.js — Expo config plugin (plain JS: loaded via require()).
+// Expo config plugin (plain JS: loaded via require()).
 //
 // Copies the 21 bgsage weight files + bearoff DB into the native projects and
 // registers them as bundled resources (iOS) / assets (Android).
@@ -7,25 +7,41 @@
 //   <module>/assets/sl_s9_*.weights.best   (14 files)
 //   <module>/assets/sl_s11_*.weights.best  (7 files)
 //   <module>/assets/bearoff_1sided.db
+const fs = require('node:fs');
+const path = require('node:path');
 const { withXcodeProject, withDangerousMod, IOSConfig } = require('@expo/config-plugins');
-const fs = require('fs');
-const path = require('path');
 
 const WEIGHT_NAMES = [
-  'sl_s9_purerace', 'sl_s9_race_race', 'sl_s9_race_att', 'sl_s9_race_prim',
-  'sl_s9_race_anch', 'sl_s9_att_race', 'sl_s9_att_att', 'sl_s9_att_prim',
-  'sl_s9_att_anch', 'sl_s9_prim_race', 'sl_s9_prim_att', 'sl_s9_prim_anch',
-  'sl_s9_anch_race', 'sl_s9_anch_att', 'sl_s11_bg_deep', 'sl_s11_bg_middle',
-  'sl_s11_bg_double', 'sl_s11_bg_p3', 'sl_s11_bg_containment', 'sl_s11_bg_snake',
+  'sl_s9_purerace',
+  'sl_s9_race_race',
+  'sl_s9_race_att',
+  'sl_s9_race_prim',
+  'sl_s9_race_anch',
+  'sl_s9_att_race',
+  'sl_s9_att_att',
+  'sl_s9_att_prim',
+  'sl_s9_att_anch',
+  'sl_s9_prim_race',
+  'sl_s9_prim_att',
+  'sl_s9_prim_anch',
+  'sl_s9_anch_race',
+  'sl_s9_anch_att',
+  'sl_s11_bg_deep',
+  'sl_s11_bg_middle',
+  'sl_s11_bg_double',
+  'sl_s11_bg_p3',
+  'sl_s11_bg_containment',
+  'sl_s11_bg_snake',
   'sl_s11_bg_massive',
 ];
-const ASSET_FILES = [...WEIGHT_NAMES.map((n) => `${n}.weights.best`), 'bearoff_1sided.db'];
+const ASSET_FILES = [...WEIGHT_NAMES.map(n => `${n}.weights.best`), 'bearoff_1sided.db'];
 
 function copyDir(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
   for (const f of ASSET_FILES) {
     const s = path.join(src, f);
-    if (!fs.existsSync(s)) throw new Error(`[expo-bgsage] missing asset: ${s}`);
+    if (!fs.existsSync(s))
+      throw new Error(`[expo-bgsage] missing asset: ${s}`);
     fs.copyFileSync(s, path.join(dest, f));
   }
 }
@@ -40,12 +56,13 @@ function resolveModuleAssets(projectRoot) {
     path.join(projectRoot, 'node_modules', 'expo-bgsage', 'assets'),
   ];
   for (const dir of candidates) {
-    if (ASSET_FILES.every((f) => fs.existsSync(path.join(dir, f)))) return dir;
+    if (ASSET_FILES.every(f => fs.existsSync(path.join(dir, f))))
+      return dir;
   }
   return null; // assets not fetched (normal outside bgsage-verify)
 }
 
-const withBgsageAssets = (config) => {
+function withBgsageAssets(config) {
   // iOS: copy into ios/bgsage-assets and add each file to the app target's
   // Resources build phase so Bundle.main can find them.
   //
@@ -101,6 +118,6 @@ const withBgsageAssets = (config) => {
   ]);
 
   return config;
-};
+}
 
 module.exports = withBgsageAssets;

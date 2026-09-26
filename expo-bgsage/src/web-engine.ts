@@ -14,14 +14,16 @@ declare const window: any;
 declare const document: any;
 
 type SageWasm = {
-  _sage_create(): number;
-  _sage_checkers(engine: number, boardPtr: number, d1: number, d2: number, ply: number): number;
-  _sage_cube(engine: number, boardPtr: number, cubeVal: number, cubeOwner: number, ply: number): number;
-  _sage_last_error(): number;
-  UTF8ToString(ptr: number): string;
-  _malloc(size: number): number;
-  _free(ptr: number): void;
-  HEAP32: { set(data: ArrayLike<number>, offset: number): void };
+  _sage_create: () => number;
+  // eslint-disable-next-line max-params -- C entry point: engine, board pointer, two dice, ply
+  _sage_checkers: (engine: number, boardPtr: number, d1: number, d2: number, ply: number) => number;
+  // eslint-disable-next-line max-params -- C entry point: engine, board pointer, cube value, owner, ply
+  _sage_cube: (engine: number, boardPtr: number, cubeVal: number, cubeOwner: number, ply: number) => number;
+  _sage_last_error: () => number;
+  UTF8ToString: (ptr: number) => string;
+  _malloc: (size: number) => number;
+  _free: (ptr: number) => void;
+  HEAP32: { set: (data: ArrayLike<number>, offset: number) => void };
 };
 
 /** Served from the host app's public/ dir (Expo serves public/ at root). */
@@ -51,7 +53,7 @@ async function getWasm(): Promise<SageWasm> {
       await loadScript(`${ASSET_BASE}bgsage.js`);
       const factory = window.SageModule;
       if (typeof factory !== 'function') {
-        throw new Error('bgsage.js did not expose a SageModule factory');
+        throw new TypeError('bgsage.js did not expose a SageModule factory');
       }
       // locateFile keeps the .wasm/.data fetches under /bgsage/ too.
       const mod = await factory({
@@ -70,20 +72,21 @@ async function getEngine(): Promise<{ mod: SageWasm; engine: number }> {
     if (!engineHandle) {
       const errPtr = mod._sage_last_error();
       throw new Error(
-        'sage_create failed: ' + (errPtr ? mod.UTF8ToString(errPtr) : 'unknown error'),
+        `sage_create failed: ${errPtr ? mod.UTF8ToString(errPtr) : 'unknown error'}`,
       );
     }
   }
   return { mod, engine: engineHandle };
 }
 
-function callJson(
-  mod: SageWasm,
-  engine: number,
-  fn: (engine: number, boardPtr: number, ...args: number[]) => number,
-  board: number[],
-  args: number[],
-): string {
+function callJson(call: {
+  mod: SageWasm;
+  engine: number;
+  fn: (engine: number, boardPtr: number, ...args: number[]) => number;
+  board: number[];
+  args: number[];
+}): string {
+  const { mod, engine, fn, board, args } = call;
   if (board.length !== 26) {
     throw new Error(`sage web: board must be 26 ints, got ${board.length}`);
   }
@@ -97,12 +100,14 @@ function callJson(
     // This differs from the native bridges, where bgsage_mobile_free frees
     // a per-call malloc'd string.
     return mod.UTF8ToString(outPtr);
-  } finally {
+  }
+  finally {
     mod._free(ptr);
   }
 }
 
 /** Same contract as the native Bgsage.analyzeCheckers: JSON string out. */
+// eslint-disable-next-line max-params
 export async function analyzeCheckers(
   board: number[],
   die1: number,
@@ -110,10 +115,17 @@ export async function analyzeCheckers(
   ply: number,
 ): Promise<string> {
   const { mod, engine } = await getEngine();
-  return callJson(mod, engine, mod._sage_checkers.bind(mod), board, [die1, die2, ply]);
+  return callJson({
+    mod,
+    engine,
+    fn: mod._sage_checkers.bind(mod),
+    board,
+    args: [die1, die2, ply],
+  });
 }
 
 /** Same contract as the native Bgsage.analyzeCube: JSON string out. */
+// eslint-disable-next-line max-params
 export async function analyzeCube(
   board: number[],
   cubeValue: number,
@@ -121,5 +133,11 @@ export async function analyzeCube(
   ply: number,
 ): Promise<string> {
   const { mod, engine } = await getEngine();
-  return callJson(mod, engine, mod._sage_cube.bind(mod), board, [cubeValue, cubeOwner, ply]);
+  return callJson({
+    mod,
+    engine,
+    fn: mod._sage_cube.bind(mod),
+    board,
+    args: [cubeValue, cubeOwner, ply],
+  });
 }

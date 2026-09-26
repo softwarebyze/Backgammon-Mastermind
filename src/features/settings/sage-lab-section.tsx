@@ -1,11 +1,8 @@
-import type { SageBoardPoint, SageGameState, SageMove, SagePlayer } from 'expo-bgsage';
 // Demo-only: exercises the real bgsage engine end-to-end inside the app.
 // Only rendered on the developer screen (non-production builds). Not part of
 // the shipped product.
-import {
-  planSageTurn,
-
-} from 'expo-bgsage';
+import type { SageBoardPoint, SageGameState, SageMove, SagePlayer } from 'expo-bgsage';
+import { planSageTurn } from 'expo-bgsage';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 

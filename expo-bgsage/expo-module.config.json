@@ -1,1 +1,9 @@
-{"android":{"modules":["com.bgsage.BgsageModule"]},"apple":{"modules":["BgsageModule"]},"platforms":["apple","android","web"]}
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["BgsageModule"]
+  },
+  "android": {
+    "modules": ["com.bgsage.BgsageModule"]
+  }
+}
