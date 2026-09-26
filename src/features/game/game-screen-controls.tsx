@@ -258,12 +258,9 @@ function ActionControl({
   }
 
   // Human turn, dice rolled: offer the Hint button at TURN START only.
-  // Mid-turn hints are descoped: the primary engine cannot plan from a
-  // partial-turn position (die mismatch), so mid-turn requests silently
-  // fell back to the heuristic — a weaker answer with no honest label.
-  // (Turn-start hints use the primary engine; the blunder-review solution
-  // view still draws best-move arrows after take-back, which restores the
-  // turn-start position.)
+  // The engine plans a full turn from the dice just rolled. A failed
+  // analysis shows no suggestion. The blunder-review solution view still
+  // draws best-move arrows after take-back, which restores turn start.
   if (state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
     return <HintButton state={state} moveLogLength={moveLogLength} />;
   }

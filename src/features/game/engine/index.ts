@@ -1,6 +1,5 @@
 import type { GameEngine } from './types';
 import { bgsageEngine } from './bgsage-engine';
-import { heuristicEngine } from './heuristic-engine';
 
 export type { GameEngine } from './types';
 
@@ -10,12 +9,8 @@ export type { GameEngine } from './types';
  * guidance UI) only talks to the `GameEngine` interface and never names an
  * engine, so swapping engines means implementing `GameEngine` (see
  * `./types.ts`) and repointing `primaryEngine` here. Nothing else changes.
+ *
+ * There is no fallback engine. If this one cannot answer, the hint button
+ * offers nothing and the tutor stays silent.
  */
 export const primaryEngine: GameEngine = bgsageEngine;
-
-/**
- * Used when the primary engine is unavailable (Expo Go, WASM not loaded
- * yet). Hints fall back to it; the tutor stays silent instead — a guessy
- * blunder verdict is worse than none.
- */
-export const fallbackEngine: GameEngine = heuristicEngine;

@@ -46,78 +46,31 @@ function fakeEngine(id: string, plan: Partial<EngineTurnPlan> | Error): GameEngi
 }
 
 describe('getEngineHint', () => {
-  it('returns the first engine\u2019s plan when it resolves', async () => {
-    const primary = fakeEngine('primary', {});
-    const fallback = fakeEngine('fallback', {});
+  it('returns the engine plan when it resolves', async () => {
+    const engine = fakeEngine('primary', {});
 
-    const hint = await getEngineHint(movingState(), [primary, fallback]);
+    const hint = await getEngineHint(movingState(), engine);
 
     expect(hint.engineId).toBe('primary');
     expect(hint.notation).toBe('13/11 · 8/5');
     expect(hint.moves).toHaveLength(2);
-    expect(fallback.planTurn).not.toHaveBeenCalled();
   });
 
-  it('falls back to the next engine when the first is unavailable', async () => {
-    const primary = fakeEngine('primary', new Error('engine not linked'));
-    const fallback = fakeEngine('fallback', {});
-
-    const hint = await getEngineHint(movingState(), [primary, fallback]);
-
-    expect(hint.engineId).toBe('fallback');
-    expect(hint.moves).toHaveLength(2);
+  it('throws when the engine is unavailable', async () => {
+    const engine = fakeEngine('primary', new Error('engine not linked'));
+    await expect(getEngineHint(movingState(), engine)).rejects.toThrow('engine not linked');
   });
 
-  it('skips an engine that returns no moves and tries the next', async () => {
-    const primary = fakeEngine('primary', { moves: [] });
-    const fallback = fakeEngine('fallback', {});
-
-    const hint = await getEngineHint(movingState(), [primary, fallback]);
-
-    expect(hint.engineId).toBe('fallback');
-  });
-
-  it('throws when every engine fails', async () => {
-    const broken = fakeEngine('broken', new Error('nope'));
-    await expect(getEngineHint(movingState(), [broken])).rejects.toThrow('nope');
-  });
-
-  it('throws when no engine has a legal move to suggest', async () => {
-    const empty = fakeEngine('empty', { moves: [] });
-    await expect(getEngineHint(movingState(), [empty])).rejects.toThrow();
+  it('throws when the engine returns no moves', async () => {
+    const engine = fakeEngine('primary', { moves: [] });
+    await expect(getEngineHint(movingState(), engine)).rejects.toThrow('returned no moves');
   });
 });
 
-describe('getEngineHint with the real engines', () => {
-  it('falls back to the heuristic engine when bgsage is unavailable', async () => {
-    // In Jest the native module is not linked, so the primary engine throws
-    // and the built-in heuristic answers — no mocks needed.
-    const hint = await getEngineHint(movingState());
-    expect(hint.engineId).toBe('heuristic');
-    expect(hint.moves.length).toBeGreaterThan(0);
-    // Both dice of the 3-1 should be consumed by the suggested turn.
-    expect(hint.moves).toHaveLength(2);
-    expect(hint.notation).toMatch(/\d+\/\d+ · \d+\/\d+/);
-  });
-
-  it('throws when there is nothing legal to suggest', async () => {
-    const blocked = createPositionState({
-      currentPlayer: 'white',
-      mode: 'vs-computer',
-      dice: [6, 6],
-      placements: [
-        // White has a checker on the bar; black holds every white entry
-        // point. White enters at 25 - die, i.e. points 19..24 (NOT 1..6 —
-        // blocking 1..6 leaves the position wide open).
-        { point: 19, player: 'black', count: 2 },
-        { point: 20, player: 'black', count: 2 },
-        { point: 21, player: 'black', count: 2 },
-        { point: 22, player: 'black', count: 2 },
-        { point: 23, player: 'black', count: 2 },
-        { point: 24, player: 'black', count: 2 },
-      ],
-      bar: { white: 1 },
-    });
-    await expect(getEngineHint(blocked)).rejects.toThrow();
+describe('getEngineHint with the real engine', () => {
+  it('offers nothing when bgsage is unavailable', async () => {
+    // Jest has no native module and no WASM load. That must throw, not
+    // answer with a different engine.
+    await expect(getEngineHint(movingState())).rejects.toThrow(/bgsage|sage|not linked/i);
   });
 });

@@ -31,9 +31,9 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch bgsage engine (pinned commit)
-        # Must run BEFORE pnpm install: pnpm copies the file: dependency
-        # expo-bgsage into node_modules at install time, so the vendored
-        # C++ sources must already exist or CMake won't find them.
+        # Same script as the repo preinstall. Running it here, before
+        # pnpm install, means the file: copy of expo-bgsage already
+        # contains the C++ sources. preinstall then sees the pin and skips.
         run: bash .github/scripts/fetch-bgsage-engine.sh
 
       - name: Setup Node + PNPM + install deps
@@ -121,7 +121,7 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch bgsage engine (pinned commit)
-        # Must run BEFORE pnpm install (see android job).
+        # Same script as preinstall. See the android job.
         run: bash .github/scripts/fetch-bgsage-engine.sh
 
       - name: Setup Node + PNPM + install deps

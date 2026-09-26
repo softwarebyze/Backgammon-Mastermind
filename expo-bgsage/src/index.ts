@@ -23,8 +23,8 @@ export type SageMove = { from: number; to: number; dieIndex: number };
 export class SageEngineError extends Error {}
 
 // Lazily resolved so that importing this module never throws when the native
-// side isn't linked (e.g. Expo Go) — only actual engine calls fail, letting
-// the caller fall back to the heuristic AI.
+// side isn't linked (e.g. Expo Go) — only actual engine calls fail. Callers
+// then offer no hint.
 //
 // Platform routing:
 //   iOS / Android -> the Expo native module (Swift/Kotlin -> C ABI).
@@ -143,7 +143,18 @@ function applySingle(w: number[], m: { from: number; to: number }): number[] {
   }
   return n;
 }
-function decomposeMoves(oldB: number[], newB: number[], dice: number[]): RawMove[] | null {
+
+/**
+ * Recover the player-on-roll moves that turn `oldB` into `newB`.
+ * Boards are bgsage 26-arrays (index 0 = opponent bar, 25 = player bar,
+ * 0 as a move destination = bear off). Returns null when no legal sequence
+ * of `dice` reaches the end board.
+ */
+export function decomposePlayerOnRollBoard(
+  oldB: number[],
+  newB: number[],
+  dice: number[],
+): RawMove[] | null {
   const orders
     = dice.length === 2 && dice[0] !== dice[1] ? [[dice[0], dice[1]], [dice[1], dice[0]]] : [dice.slice()];
   for (const order of orders) {
@@ -193,8 +204,7 @@ export type SageTurnPlan = {
  * (best first) — the candidate list powers tutor-mode blunder detection
  * (equity loss of the played move vs the engine's best).
  * Throws SageEngineError when the engine is unavailable or its output can't
- * be decomposed — the caller should fall back to the heuristic AI (hints)
- * or skip silently (tutor).
+ * be decomposed. Callers offer no hint and the tutor stays silent.
  */
 export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Promise<SageTurnPlan> {
   const P = state.currentPlayer;
@@ -218,7 +228,7 @@ export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Pr
     }),
   );
   const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
-  const seq = decomposeMoves(board, candidates[0].board, dice);
+  const seq = decomposePlayerOnRollBoard(board, candidates[0].board, dice);
   if (!seq)
     throw new SageEngineError('could not decompose sage result into moves');
   const used = Array.from({ length: state.remainingDice.length }, () => false);
@@ -240,7 +250,7 @@ export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Pr
  * Ask the engine for the full checker-play turn. Returns Mastermind-style
  * Moves (with dieIndex into state.remainingDice) ready to animate.
  * Throws SageEngineError when the engine is unavailable or its output can't
- * be decomposed — the caller should fall back to the heuristic AI.
+ * be decomposed. Callers offer no hint.
  */
 export async function planSageTurn(state: SageGameState, ply: 1 | 2 = 2): Promise<SageMove[]> {
   return (await planSageTurnFull(state, ply)).moves;

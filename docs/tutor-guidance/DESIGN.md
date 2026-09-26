@@ -1,7 +1,7 @@
 # Tutor Guidance — Design
 
 Unified design for tutor guidance: automatic end-of-turn blunder review
-(Tutor Mode) and user-requested mid-turn hints. Written Sep 2026
+(Tutor Mode) and user-requested turn-start hints. Written Sep 2026
 from Zachary's feedback; the goal is one coherent feature, not accumulated
 one-off exceptions.
 
@@ -21,7 +21,8 @@ the question after viewing the solution; (3) beginner-clear messages,
 especially the numbers; (4) documented, reviewable; (5) see my move and the
 recommended move at the same time, with good choice UX; (6) don't reveal the
 recommended move at first — let the player try to figure it out; (7) build
-the feature properly, no hero exceptions.
+the feature properly, no hero exceptions. Mid-turn hints were descoped:
+the engine plans a full roll, so the button is offered at turn start only.
 
 ## Core model: `GuidanceSession`
 
@@ -70,9 +71,9 @@ idle ── blunder found ──▶ question ── reveal ──▶ solution �
   The game is paused while any blunder session is open (existing `tutorPaused`
   semantics). The recommended move is NOT shown until the player taps
   "Show the best move".
-- **Hint** (user taps Hint during their moving phase): opens in `solution`
-  with the best move's continuation arrows. The game is NOT paused — the player keeps
-  playing. Dismissing returns to the exact mid-turn position ("the question").
+- **Hint** (user taps Hint at turn start, before any checker has moved):
+  opens in `solution` with the best move's arrows and a "Play this move"
+  button. The game is NOT paused. Dismissing leaves the turn-start position.
 
 ### "The question" and the board
 
@@ -82,9 +83,8 @@ idle ── blunder found ──▶ question ── reveal ──▶ solution �
   `questionState` (turn start) with two arrow sets: the player's path in
   orange, the best move in green, with a legend and per-set toggles. The live game
   state is untouched; closing the session removes the preview.
-- Hint `solution` view: the board stays on the live mid-turn position; only
-  the best move's continuation arrows are drawn (the player's moves so far are already
-  visible as the board position).
+- Hint `solution` view: the board stays on the live turn-start position; the
+  best move's arrows are drawn. The player can play that move or dismiss it.
 
 ### Arrow derivation (no stored segments)
 
@@ -114,8 +114,10 @@ answer spoiled immediately.
 
 New principles: **words first, one explained number, details collapsed.**
 
-- Severity from equity loss: ≥ 0.15 "Big blunder", ≥ 0.08 "Mistake", else
-  "Small slip" (flag threshold stays 0.05).
+- Severity follows the GNU Backgammon bands on the meter: Fine below 0.04,
+  Slip 0.04–0.08, Mistake 0.08–0.16, Big blunder 0.16+. The tutor only opens
+  a prompt at 0.05 or more, so a Slip between 0.04 and 0.05 is on the scale
+  but not flagged.
 - Question view: `"Your move was the 3rd-best of 18 ways to play this roll.
   It gives up about 0.11 points per game compared with the best move."` plus
   one explainer line: `"Points per game is the average points a move earns.
@@ -123,8 +125,8 @@ New principles: **words first, one explained number, details collapsed.**
 - Solution view: `"You played: 13/8 · 13/11"` / `"Best: 8/4 · 6/4"`, legend,
   toggles; a collapsed "Details" section holds the rank/loss explanation and
   the top alternatives with labeled columns (`+0.12 pts`, `−0.11 vs best`).
-- Hint pill: `"Suggested move: 8/4 · 6/4"` + `"Back to my turn"`; heuristic
-  fallback is labeled `"Hint: …"`.
+- Hint pill: `"Suggested move: 8/4 · 6/4"`, `"Play this move"`, and
+  `"Back to my turn"`. If the engine cannot answer, the pill is not shown.
 
 ## Decisions (explicit, so they don't become exceptions later)
 
@@ -140,10 +142,11 @@ New principles: **words first, one explained number, details collapsed.**
 5. **Stale hint requests are discarded.** If the player moves while "Finding
    the best move…" is in flight, the result is dropped — an answer for a dead position
    is worse than none.
-6. **No auto-play.** Nothing ever substitutes the recommended move for the player's,
-   in either flow (unchanged rule).
-7. **No mid-turn auto-review.** The tutor still judges only completed turns;
-   the hint button is the mid-turn instrument. One trigger each, no overlap.
+6. **Play this move is explicit.** The hint pill can play the suggested
+   turn when the player taps it. Nothing plays a move on its own, and a
+   failed engine never substitutes a different suggestion.
+7. **Hints are turn-start only.** The engine plans the full roll. The tutor
+   still judges only completed turns. One trigger each, no overlap.
 8. **The engine is swappable, not branded.** The tutor and hints talk only to
    the `GameEngine` interface (`planTurn` + `boardAfterTurn`); no feature code
    names an engine, and no user-facing copy personifies one.
@@ -159,23 +162,18 @@ which:
   candidates' boards, so the tutor can rank the played turn).
 - `bgsage-engine.ts` — the bgsage neural-net engine behind the interface.
   Owns the expo-bgsage import and the "no usable plan" validation.
-- `heuristic-engine.ts` — the built-in greedy AI behind the interface.
-  Single candidate, equity 0: good enough for suggestions, never for
-  blunder verdicts.
-- `index.ts` — the swap point: `primaryEngine` (bgsage) and `fallbackEngine`
-  (heuristic). To swap engines, implement `GameEngine` and repoint
-  `primaryEngine` here. Nothing else changes.
+- `index.ts` — the swap point: `primaryEngine` (bgsage). To swap engines,
+  implement `GameEngine` and repoint `primaryEngine` here. Nothing else
+  changes. There is no second engine for hints or verdicts.
 
 Wiring:
 
-- Hints: `getEngineHint(state)` tries `[primaryEngine, fallbackEngine]` in
-  order and reports which `engineId` answered (the pill says "Suggested move"
-  for the primary engine, "Hint" for a fallback).
+- Hints: `getEngineHint(state)` asks `primaryEngine` only. A throw (module
+  not linked, web load failed, over budget, or no decomposition) means the
+  hint button offers nothing.
 - Tutor: `analyzeTutorTurn(state, primaryEngine)`; the played turn's
-  fingerprint comes from the same engine (`primaryEngine.boardAfterTurn`),
-  so judging stays consistent. Engine unavailable → null → silent, same as
-  before; the tutor never falls back to the heuristic (a guessy verdict is
-  worse than none).
+  fingerprint comes from the same engine (`primaryEngine.boardAfterTurn`).
+  Engine unavailable → null → silent. A guess is worse than no verdict.
 
 Tests inject fake engines directly (`getEngineHint(state, [fake])`,
 `analyzeTutorTurn(state, fake)`) — no native-module mocks for these paths.
@@ -198,12 +196,12 @@ real wiring), via a path-based mock of `expo-bgsage/src/index`.
 - `src/features/game/guidance-copy.ts` — severity, messages, ordinals (pure)
 - `src/features/game/guidance-arrows.ts` — segment derivation (pure)
 - `src/features/game/components/guidance-modal.tsx` — blunder modal (replaces `tutor-blunder-modal.tsx`)
-- `src/features/game/components/hint-button.tsx` — mid-turn, store-driven
-- `src/features/game/engine-hint.ts` — `getEngineHint`, tries engines in order
-- `src/features/game/engine/` — the swappable engine seam (see below):
-  `types.ts` (`GameEngine` interface), `bgsage-engine.ts`, `heuristic-engine.ts`,
-  `index.ts` (the swap point: `primaryEngine` / `fallbackEngine`)
-- `src/features/game/game-screen-controls.tsx` — Hint available all human moving phase
+- `src/features/game/components/hint-button.tsx` — turn-start, store-driven
+- `src/features/game/engine-hint.ts` — `getEngineHint`, primary engine only
+- `src/features/game/engine/` — the swappable engine seam:
+  `types.ts` (`GameEngine` interface), `bgsage-engine.ts`,
+  `index.ts` (the swap point: `primaryEngine`)
+- `src/features/game/game-screen-controls.tsx` — Hint at turn start only
 - `src/features/game/game-screen.tsx` / `game-screen-layout.tsx` — wiring, preview override, pause semantics
 - `src/features/game/use-tutor.ts` — builds blunder sessions (now with `myMoves`), clears stale hint sessions
 
@@ -218,9 +216,11 @@ real wiring), via a path-based mock of `expo-bgsage/src/index`.
   back-to-question; take-back reverts; keep/turn-off.
 - Existing tutor tests updated for the rename (`useTutorBlunder` →
   `useGuidance`, etc.).
-- `engine-hint.test.ts`: fake engines (primary/fallback/skip/throw) plus the
-  real wiring — bgsage unavailable in Jest, so the heuristic answers.
+- `engine-hint.test.ts`: a fake engine answers or throws. The real wiring
+  throws in Jest, where bgsage is not linked — no substitute suggestion.
+- `sage-move-recovery.test.ts`: recovered moves for white and black, a hit,
+  the bar, and bearing off, checked against `src/lib/game/moves.ts`.
 - `tutor.test.ts`: `analyzeTutorTurn` takes a fake `GameEngine`; no
   native-module mocks.
-- Natural browser run: mid-turn hint after 1/2 moves; blunder → question →
+- Natural browser run: turn-start hint; blunder → question →
   reveal (both moves) → back to question → take back; screenshots.

@@ -60,7 +60,11 @@ async function getWasm(): Promise<SageWasm> {
         locateFile: (path: string) => `${ASSET_BASE}${path}`,
       });
       return mod as SageWasm;
-    })();
+    })().catch((err: unknown) => {
+      // A rejected load must not stick. The next hint can try again.
+      modulePromise = null;
+      throw err;
+    });
   }
   return modulePromise;
 }
@@ -68,13 +72,14 @@ async function getWasm(): Promise<SageWasm> {
 async function getEngine(): Promise<{ mod: SageWasm; engine: number }> {
   const mod = await getWasm();
   if (engineHandle === null) {
-    engineHandle = mod._sage_create();
-    if (!engineHandle) {
+    const handle = mod._sage_create();
+    if (!handle) {
       const errPtr = mod._sage_last_error();
       throw new Error(
         `sage_create failed: ${errPtr ? mod.UTF8ToString(errPtr) : 'unknown error'}`,
       );
     }
+    engineHandle = handle;
   }
   return { mod, engine: engineHandle };
 }

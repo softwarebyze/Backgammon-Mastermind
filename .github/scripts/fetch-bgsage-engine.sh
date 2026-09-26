@@ -17,6 +17,19 @@ REF="${BGSAGE_REF:-d8325a4}"
 REPO="${BGSAGE_REPO:-https://github.com/markbgsage/bgsage.git}"
 VENDOR="expo-bgsage/vendor/bgsage"
 ASSETS="expo-bgsage/assets"
+IOS_VENDOR="expo-bgsage/ios/vendor/bgsage"
+PIN_FILE="$VENDOR/.pin"
+
+# pnpm install runs this from preinstall, before it copies the file:
+# package. Skip when this checkout is already the pinned engine.
+if [[ -f "$PIN_FILE" && -f "$VENDOR/cpp/src/board.cpp" && -f "$IOS_VENDOR/cpp/src/mobile.cpp" && -f "$ASSETS/bearoff_1sided.db" ]]; then
+  PIN="$(tr -d '[:space:]' < "$PIN_FILE")"
+  ASSET_COUNT="$(ls -1 "$ASSETS" | wc -l | tr -d '[:space:]')"
+  if [[ "$PIN" == "$REF" && "$ASSET_COUNT" == "22" ]]; then
+    echo "bgsage engine already present at $REF"
+    exit 0
+  fi
+fi
 
 rm -rf "$VENDOR" "$ASSETS"
 mkdir -p "$ASSETS"
@@ -74,7 +87,6 @@ cd - >/dev/null
 
 # iOS copy of the engine C++ tree (see header comment). Only the cpp/
 # subtree is needed: headers + sources. Weights stay in assets/ only.
-IOS_VENDOR="expo-bgsage/ios/vendor/bgsage"
 rm -rf "$IOS_VENDOR"
 mkdir -p "$IOS_VENDOR"
 cp -r "$VENDOR/cpp" "$IOS_VENDOR/cpp"
@@ -84,3 +96,4 @@ echo "assets: $(ls "$ASSETS" | wc -l) files, $(du -sh "$ASSETS" | cut -f1)"
 # NOTE: strip wc's padding (BSD wc on macOS pads the count, GNU does not)
 ASSET_COUNT="$(ls -1 "$ASSETS" | wc -l | tr -d '[:space:]')"
 test "$ASSET_COUNT" = "22" || { echo "expected 22 asset files, found $ASSET_COUNT"; exit 1; }
+printf '%s\n' "$REF" > "$PIN_FILE"

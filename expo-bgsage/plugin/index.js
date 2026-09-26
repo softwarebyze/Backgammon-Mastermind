@@ -46,10 +46,9 @@ function copyDir(src, dest) {
   }
 }
 
-// pnpm (node-linker=hoisted) copies `file:` deps into node_modules at install
-// time instead of symlinking, so engine assets fetched AFTER `pnpm install`
-// (as CI does) are missing from the installed copy. Prefer the workspace
-// source dir; fall back to the installed copy.
+// pnpm (node-linker=hoisted) copies `file:` deps into node_modules.
+// preinstall fetches into the workspace first; postinstall mirrors that
+// tree into node_modules. Prefer the workspace dir, then the installed copy.
 function resolveModuleAssets(projectRoot) {
   const candidates = [
     path.join(projectRoot, 'expo-bgsage', 'assets'),

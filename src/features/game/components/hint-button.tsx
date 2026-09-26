@@ -4,7 +4,6 @@ import type { GameState } from '@/lib/game/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
-import { primaryEngine } from '@/features/game/engine';
 import { getEngineHint } from '@/features/game/engine-hint';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { formatHintNotation } from '@/features/game/guidance-copy';
@@ -68,7 +67,7 @@ function HintResult({ session, onPlay, onDismiss }: {
   onPlay: () => void;
   onDismiss: () => void;
 }) {
-  const label = session.engineId === primaryEngine.id ? 'Suggested move' : 'Hint';
+  const label = 'Suggested move';
   return (
     <View style={styles.resultWrap} testID="hint-result">
       <Text style={styles.resultText} numberOfLines={2}>
