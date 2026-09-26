@@ -80,6 +80,19 @@ type Props = {
 };
 
 export function MoveAnimationOverlay({ animation, dimensions }: Props) {
+  // Remount per slide. Reusing one shared progress leaves it at 1 after the
+  // first checker lands, and the next withTiming(1) finishes immediately —
+  // that checker jumps into place instead of sliding.
+  return (
+    <CheckerSlideOverlay
+      key={animationKey(animation)}
+      animation={animation}
+      dimensions={dimensions}
+    />
+  );
+}
+
+function CheckerSlideOverlay({ animation, dimensions }: Props) {
   const progress = useSharedValue(0);
   const onFinishRef = useRef(animation.onFinish);
   onFinishRef.current = animation.onFinish;

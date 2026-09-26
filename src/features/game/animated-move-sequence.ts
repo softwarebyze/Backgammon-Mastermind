@@ -7,6 +7,16 @@ import type { GameState, Move } from '@/lib/game';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves, moveSequenceInvolvesHit } from '@/lib/game';
 
+/** One checker continuing (13/10 then 10/9), not two separate plays. */
+export function isSingleCheckerPath(moves: Move[]): boolean {
+  for (let i = 1; i < moves.length; i++) {
+    if (moves[i]!.from !== moves[i - 1]!.to) {
+      return false;
+    }
+  }
+  return moves.length > 1;
+}
+
 export function resolveSequenceSteps(
   snapshot: GameState,
   moves: Move[],
@@ -62,7 +72,7 @@ export function runMoveSequence(
     return;
   }
   ctx.setSequenceActive(true);
-  if (!moveSequenceInvolvesHit(snapshot, moves)) {
+  if (isSingleCheckerPath(moves) && !moveSequenceInvolvesHit(snapshot, moves)) {
     const glideMove: Move = {
       from: moves[0]!.from,
       to: moves[moves.length - 1]!.to,

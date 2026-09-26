@@ -6,6 +6,7 @@ import { DiceDisplay } from '@/features/game/components/board/dice-display';
 
 import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { useGuidance } from '@/features/game/guidance-store';
 import {
   useOpeningCeremonyHandoff,
   useOpeningCeremonyVisible,
@@ -58,6 +59,8 @@ export function GameScreenControls({
   compact = false,
 }: Props) {
   const { preferences } = useGamePreferences();
+  const guidance = useGuidance();
+  const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
   const ceremonyVisible = useOpeningCeremonyVisible();
   const handoff = useOpeningCeremonyHandoff();
   const turn = getTurnDisplay(state);
@@ -112,7 +115,11 @@ export function GameScreenControls({
             ? <View style={styles.dicePlaceholder} />
             : null}
       </View>
-      <View style={styles.actionSlot} pointerEvents="auto" testID="game-action-slot">
+      <View
+        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
+        pointerEvents="auto"
+        testID="game-action-slot"
+      >
         <ActionControl
           state={state}
           isHumanTurn={isHumanTurn}
@@ -325,6 +332,16 @@ const styles = StyleSheet.create({
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+    elevation: 4,
+  },
+  // The suggestion card is a label, the move, and two actions. Sharing the
+  // fixed 52px slot paints the caption through the bottom of that card.
+  actionSlotOpen: {
+    width: '100%',
+    minHeight: ACTION_SLOT_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 2,

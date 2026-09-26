@@ -1,4 +1,5 @@
 import {
+  animationKey,
   buildMoveAnimationFrame,
   checkerRenderSize,
   countAtPoint,
@@ -138,6 +139,18 @@ describe('checkerRenderSize', () => {
     expect(checkerRenderSize(32, BAR_POINT)).toBeCloseTo(28.16);
     expect(checkerRenderSize(32, 25)).toBe(Math.round(32 * 0.78));
     expect(checkerRenderSize(32, 8)).toBe(32);
+  });
+});
+
+describe('animationKey', () => {
+  it('changes when a second checker leaves the same point', () => {
+    const frame = buildMoveAnimationFrame(
+      createInitialState('vs-human'),
+      { from: 6, to: 4, dieIndex: 0 },
+      { onFinish: () => {} },
+    );
+
+    expect(animationKey(frame)).not.toBe(animationKey({ ...frame, sourceStackCount: frame.sourceStackCount - 1 }));
   });
 });
 

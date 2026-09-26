@@ -67,12 +67,10 @@ function HintResult({ session, onPlay, onDismiss }: {
   onPlay: () => void;
   onDismiss: () => void;
 }) {
-  const label = 'Suggested move';
   return (
     <View style={styles.resultWrap} testID="hint-result">
+      <Text style={styles.resultLabel}>Suggested move</Text>
       <Text style={styles.resultText} numberOfLines={2}>
-        {label}
-        :
         {formatHintNotation(session.engineMoves)}
       </Text>
       <View style={styles.resultActions}>
@@ -253,18 +251,25 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   resultWrap: {
+    width: '100%',
     backgroundColor: GAME_PALETTE.surface,
     borderWidth: 1,
     borderColor: GAME_PALETTE.accentDim,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    maxWidth: '100%',
+    paddingHorizontal: 14,
+    paddingTop: 12,
+    paddingBottom: 8,
     alignItems: 'center',
     ...continuousRadius(12),
   },
+  resultLabel: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 12,
+    ...interFont('medium'),
+  },
   resultText: {
     color: GAME_PALETTE.text,
-    fontSize: 15,
+    fontSize: 17,
+    marginTop: 2,
     textAlign: 'center',
     ...interFont('semibold'),
   },
@@ -272,8 +277,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12,
-    marginTop: 8,
+    gap: 8,
+    marginTop: 10,
   },
   playBtn: {
     backgroundColor: GAME_PALETTE.accent,

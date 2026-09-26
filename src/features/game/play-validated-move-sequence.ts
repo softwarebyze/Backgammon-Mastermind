@@ -6,6 +6,7 @@ import type { GameState, Move } from '@/lib/game';
 
 import {
   applyResolvedSequence,
+  isSingleCheckerPath,
   resolveSequenceSteps,
   runMoveSequence,
 } from '@/features/game/animated-move-sequence';
@@ -52,7 +53,7 @@ export function playValidatedMoveSequence(opts: {
   } = opts;
 
   if (
-    moves.length > 1
+    isSingleCheckerPath(moves)
     && !moveSequenceInvolvesHit(snapshot, moves)
     && resolveSequenceSteps(snapshot, moves)
   ) {
