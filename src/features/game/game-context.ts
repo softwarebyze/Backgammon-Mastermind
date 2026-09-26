@@ -38,7 +38,7 @@ export type GameContextType = {
    * Tutor mode: revert a blundered turn to its start snapshot, trimming the
    * move log and timeline so history stays consistent. Used for "take back".
    */
-  tutorRevertTurn: (startState: GameState, movesMade: number) => void;
+  tutorRevertTurn: (startState: GameState, movesMade: number, onComplete?: () => void) => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

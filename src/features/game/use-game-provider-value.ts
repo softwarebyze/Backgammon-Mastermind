@@ -165,13 +165,14 @@ export function useGameProviderValue(): GameContextType {
    * spots, then commit the exact turn-start state. Falls back to an instant
    * revert when there is no move log to animate from.
    */
-  const tutorRevertTurn = useCallback((startState: GameState, movesMade: number) => {
+  const tutorRevertTurn = useCallback((startState: GameState, movesMade: number, onComplete?: () => void) => {
     clearAITimeout();
     resetAllAnimation();
     const baseline = replayBaselineRef.current;
     const log = moveLogRef.current;
     if (!baseline || log.length === 0) {
       revertTurnInstant(startState, Math.max(0, Math.min(movesMade, 8)));
+      onComplete?.();
       return;
     }
     runTakeBackAnimation(
@@ -187,6 +188,7 @@ export function useGameProviderValue(): GameContextType {
           // the board is stuck unresponsive after the take-back slides land.
           setMoveAnimation(null);
           revertTurnInstant(startState, undone, { skipPop: true });
+          onComplete?.();
         },
       },
       movesMade,

@@ -516,9 +516,12 @@ export function GuidanceModal() {
       return;
     hapticLight();
     clearGuidance();
-    game.tutorRevertTurn(session.questionState, session.myMoves.length);
-    requestAnimationFrame(() => {
-      game.doMoveSequence(moves);
+    game.tutorRevertTurn(session.questionState, session.myMoves.length, () => {
+      // The sequence must wait for every reverse slide and the final state
+      // commit. Otherwise doMoveSequence sees an active animation and drops it.
+      requestAnimationFrame(() => {
+        game.doMoveSequence(moves);
+      });
     });
   };
   const handleTurnOff = () => {

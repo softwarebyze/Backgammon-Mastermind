@@ -75,10 +75,13 @@ describe('provider tutor take-back', () => {
     expect(result.current.canUndo).toBe(true);
 
     // Take back & retry, as the tutor guidance modal triggers it.
+    const onComplete = jest.fn();
     act(() => {
-      result.current.tutorRevertTurn(turnStart, 2);
+      result.current.tutorRevertTurn(turnStart, 2, onComplete);
     });
+    expect(onComplete).not.toHaveBeenCalled();
     settleAllAnimations(result);
+    expect(onComplete).toHaveBeenCalledTimes(1);
 
     // Not stuck: no lingering animation frame.
     expect(result.current.isAnimating).toBe(false);

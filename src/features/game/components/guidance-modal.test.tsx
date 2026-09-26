@@ -277,7 +277,7 @@ describe('guidance modal solution', () => {
 });
 
 describe('guidance modal play best move', () => {
-  it('reverts the turn and animates the best move on the next frame', () => {
+  it('waits for the rewind to finish before animating the best move', () => {
     const rafCallbacks: FrameRequestCallback[] = [];
     const origRaf = globalThis.requestAnimationFrame;
     globalThis.requestAnimationFrame = ((cb: FrameRequestCallback) => {
@@ -295,9 +295,18 @@ describe('guidance modal play best move', () => {
     fireEvent.press(screen.getByTestId('guidance-play-best'));
     // …the modal closes and the player's turn is reverted…
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
-    expect(mockTutorRevertTurn).toHaveBeenCalledWith(session.questionState, 1);
-    // …and the best move animates on the next frame, not synchronously.
+    expect(mockTutorRevertTurn).toHaveBeenCalledWith(
+      session.questionState,
+      1,
+      expect.any(Function),
+    );
+    // No playback frame is scheduled until the reverse animation finishes.
+    expect(rafCallbacks).toHaveLength(0);
     expect(mockDoMoveSequence).not.toHaveBeenCalled();
+    act(() => {
+      mockTutorRevertTurn.mock.calls[0]![2]();
+    });
+    expect(rafCallbacks).toHaveLength(1);
     act(() => {
       rafCallbacks.forEach(cb => cb(0));
     });
