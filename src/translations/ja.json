@@ -94,6 +94,40 @@
       "white_wins": "🏆 白の勝ち！",
       "you_win": "🏆 あなたの勝ち！"
     },
+    "strategy": {
+      "close_a11y": "戦略の解説を閉じる",
+      "got_it": "了解",
+      "label": {
+        "backgame": "バックゲーム",
+        "blitz": "ブリッツ",
+        "developing": "発展",
+        "holding": "ホールディング",
+        "priming": "Prim（壁）",
+        "running": "レース"
+      },
+      "tip": {
+        "backgame": "後手で回り、ホームボードを厚くして、遅いチャンスを待ちます。",
+        "blitz": "攻撃です。孤立した駒をすべて叩き、ホームボードを閉じてください。",
+        "developing": "駒を増やし、5 を狙いつつ、柔軟に動きます。",
+        "holding": "アンカーを保ち、安全を保って、叩きのチャンスを待ちます。",
+        "priming": "Prim を一点ずつ延ばし、相手のバックを閉じ込めます。",
+        "running": "駒を効率よく退避させ、まだ危険な駒を守りましょう。"
+      },
+      "why": {
+        "backgame": "{{point1}} と {{point2}} に深いアンカーを持ちながら、レースでは {{pipGap}} ポイント遅れています。",
+        "blitz_bar": "バーに {{barCount}} があり、ホームボードではすでに {{homeMade}} ポイント作られています。",
+        "blitz_bar_blot": "バーに {{barCount}} があり、ホームボードに孤立した駒が 1 個、すでにホームボードで {{homeMade}} ポイント作られています。",
+        "blitz_bar_blots": "バーに {{barCount}} があり、ホームボードに孤立した駒が {{blotCount}} 個、すでにホームボードで {{homeMade}} ポイント作られています。",
+        "blitz_blot": "ホームボードに孤立した駒が 1 個あり、すでに {{homeMade}} ポイント作られています。",
+        "blitz_blots": "ホームボードに孤立した駒が {{blotCount}} 個あり、すでに {{homeMade}} ポイント作られています。",
+        "developing": "まだ Prim もアンカーも攻撃もありません — まだ形づく段階です。",
+        "holding": "{{point}} にアンカーを保持しつつ、{{pipGap}} ポイント遅れています。",
+        "priming": "{{prime}} ポイントの Prim（壁）を完成させました。",
+        "priming_anchor": "{{prime}} ポイントの Prim（壁）を完成させ、その後ろにアンカーまで作りました。",
+        "running_lead": "レースは {{foePips}} 対 {{myPips}} でリードしており、叩ける範囲に孤立した駒はありません。",
+        "running_race": "接触は不可能です — そのまま持ち切るレースです（{{myPips}} 対 {{foePips}} ポイント）。"
+      }
+    },
     "turn": {
       "black_is_moving": "黒が移動中…",
       "black_is_rolling": "黒がサイコロを振っています…",

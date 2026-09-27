@@ -140,7 +140,6 @@ export default antfu(
       // Keep in sync with PENDING_TRANSLATION_KEYS in
       // src/lib/i18n/resources.test.ts.
       'i18n-json/ignore-keys': [
-        'game.strategy',
         'learn.lessons.pip_count',
         'learn.lessons.strategies',
         'learn.quiz.pip_ahead',

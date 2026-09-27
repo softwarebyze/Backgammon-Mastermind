@@ -94,6 +94,40 @@
       "white_wins": "🏆 白方获胜！",
       "you_win": "🏆 你赢了！"
     },
+    "strategy": {
+      "close_a11y": "关闭策略说明",
+      "got_it": "明白了",
+      "label": {
+        "backgame": "后手局",
+        "blitz": "全攻",
+        "developing": "布局",
+        "holding": "防守局",
+        "priming": "Prime（墙）",
+        "running": "竞速"
+      },
+      "tip": {
+        "backgame": "稳守后手，加固自己的底仓，等待后期机会。",
+        "blitz": "进攻：打掉每一个孤子，并封住自己的底仓。",
+        "developing": "堆点、争夺 5 点，同时保持灵活。",
+        "holding": "守住锚点，稳住阵脚，等待进击的机会。",
+        "priming": "一点一点扩大你的墙，把对方的后方棋子锁住。",
+        "running": "高效地把棋子带回底仓，并保护仍有风险的棋子。"
+      },
+      "why": {
+        "backgame": "你在 {{point1}} 和 {{point2}} 都有深锚，但竞速中落后 {{pipGap}} 分。",
+        "blitz_bar": "你有 {{barCount}} 颗在 bar 上，并且已经在底仓做好了 {{homeMade}} 个点。",
+        "blitz_bar_blot": "你有 {{barCount}} 颗在 bar 上，底仓还有 1 个孤子，并且已经在底仓做好了 {{homeMade}} 个点。",
+        "blitz_bar_blots": "你有 {{barCount}} 颗在 bar 上，底仓还有 {{blotCount}} 个孤子，并且已经在底仓做好了 {{homeMade}} 个点。",
+        "blitz_blot": "你的底仓还有 1 个孤子，并且已经做好了 {{homeMade}} 个点。",
+        "blitz_blots": "你的底仓还有 {{blotCount}} 个孤子，并且已经做好了 {{homeMade}} 个点。",
+        "developing": "棋盘上还看不出墙、锚点或进攻——局面仍在成形。",
+        "holding": "你在 {{point}} 守着锚点，但落后 {{pipGap}} 分。",
+        "priming": "你建成了一道 {{prime}} 点的墙。",
+        "priming_anchor": "你建成了一道 {{prime}} 点的墙，后面还有锚点保护。",
+        "running_lead": "竞速中你以 {{foePips}} 比 {{myPips}} 领先，且没有棋子落在对方可打的范围内。",
+        "running_race": "无法接触——这是一场纯粹比谁先收完的竞速（{{myPips}} 对 {{foePips}} 分）。"
+      }
+    },
     "turn": {
       "black_is_moving": "黑方正在走棋…",
       "black_is_rolling": "黑方正在掷骰子…",

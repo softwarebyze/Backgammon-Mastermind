@@ -94,6 +94,40 @@
       "white_wins": "🏆 As Brancas venceram!",
       "you_win": "🏆 Você venceu!"
     },
+    "strategy": {
+      "close_a11y": "Fechar a explicação da estratégia",
+      "got_it": "Entendi",
+      "label": {
+        "backgame": "Jogo de espera",
+        "blitz": "Blitz",
+        "developing": "Desenvolvimento",
+        "holding": "Jogo de contenção",
+        "priming": "Muralha",
+        "running": "Corrida"
+      },
+      "tip": {
+        "backgame": "Fique atrás, fortaleça a sua base e espere a oportunidade tardia.",
+        "blitz": "Ataque: bata em cada peça solta e feche a sua base.",
+        "developing": "Construa pontos, brigue pelo 5 e continue flexível.",
+        "holding": "Segure a sua âncora, fique seguro e espere a sua oportunidade de bater.",
+        "priming": "Estenda a sua muralha ponto a ponto e capture as peças de trás deles.",
+        "running": "Traga as suas peças para casa com eficiência e proteja as que ainda estiverem em risco."
+      },
+      "why": {
+        "backgame": "Você tem âncoras profundas no {{point1}} e no {{point2}} enquanto está {{pipGap}} pontos atrás na corrida.",
+        "blitz_bar": "Há {{barCount}} no bar e você já fez {{homeMade}} pontos na sua base.",
+        "blitz_bar_blot": "Há {{barCount}} no bar e 1 peça solta na sua base, e você já fez {{homeMade}} pontos na base.",
+        "blitz_bar_blots": "Há {{barCount}} no bar e {{blotCount}} peças soltas na sua base, e você já fez {{homeMade}} pontos na base.",
+        "blitz_blot": "Há 1 peça solta na sua base e você já fez {{homeMade}} pontos na base.",
+        "blitz_blots": "Há {{blotCount}} peças soltas na sua base e você já fez {{homeMade}} pontos na base.",
+        "developing": "Ainda não há muralha, âncora ou ataque no tabuleiro — o jogo ainda está a tomar forma.",
+        "holding": "Segura uma âncora no {{point}} enquanto está {{pipGap}} pontos atrás.",
+        "priming": "Você construiu uma muralha de {{prime}} pontos.",
+        "priming_anchor": "Você construiu uma muralha de {{prime}} pontos com uma âncora atrás.",
+        "running_lead": "Você lidera a corrida {{foePips}} a {{myPips}} sem peças soltas ao alcance de um golpe.",
+        "running_race": "Não há contato possível — é uma corrida direta para tirar ({{myPips}} contra {{foePips}} pontos)."
+      }
+    },
     "turn": {
       "black_is_moving": "As pretas estão a mover…",
       "black_is_rolling": "As pretas estão a lançar…",

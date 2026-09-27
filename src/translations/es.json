@@ -94,6 +94,40 @@
       "white_wins": "🏆 ¡Ganan las blancas!",
       "you_win": "🏆 ¡Has ganado!"
     },
+    "strategy": {
+      "close_a11y": "Cerrar la explicación de la estrategia",
+      "got_it": "Entendido",
+      "label": {
+        "backgame": "Juego de espera",
+        "blitz": "Blitz",
+        "developing": "Desarrollo",
+        "holding": "Juego de retención",
+        "priming": "Muralla",
+        "running": "Carrera"
+      },
+      "tip": {
+        "backgame": "Quédate atrás, refuerza tu casa y espera la oportunidad tardía.",
+        "blitz": "Ataca: golpea cada ficha suelta y cierra tu casa.",
+        "developing": "Construye puntos, lucha por el 5 y mantente flexible.",
+        "holding": "Mantén tu ancla, sigue seguro y espera tu oportunidad de golpear.",
+        "priming": "Amplía tu muralla punto a punto y atrapa sus fichas traseras.",
+        "running": "Saca tus fichas a casa con eficacia y protege las que sigan en riesgo."
+      },
+      "why": {
+        "backgame": "Mantienes anclas profundas en el {{point1}} y el {{point2}} mientras vas {{pipGap}} puntos atrás en la carrera.",
+        "blitz_bar": "Tienes {{barCount}} en la barra y ya has hecho {{homeMade}} puntos en casa.",
+        "blitz_bar_blot": "Tienes {{barCount}} en la barra y 1 ficha suelta en casa, y ya has hecho {{homeMade}} puntos en casa.",
+        "blitz_bar_blots": "Tienes {{barCount}} en la barra y {{blotCount}} fichas sueltas en casa, y ya has hecho {{homeMade}} puntos en casa.",
+        "blitz_blot": "Tienes 1 ficha suelta en casa y ya has hecho {{homeMade}} puntos en casa.",
+        "blitz_blots": "Tienes {{blotCount}} fichas sueltas en casa y ya has hecho {{homeMade}} puntos en casa.",
+        "developing": "Todavía no hay muralla, ancla ni ataque en el tablero: la partida aún se está formando.",
+        "holding": "Mantienes un ancla en el {{point}} mientras vas {{pipGap}} puntos atrás.",
+        "priming": "Has construido una muralla de {{prime}} puntos.",
+        "priming_anchor": "Has construido una muralla de {{prime}} puntos con un ancla detrás.",
+        "running_lead": "Lideras la carrera {{foePips}} a {{myPips}} sin fichas sueltas al alcance de un golpe.",
+        "running_race": "No hay contacto posible: es una carrera directa para sacar ({{myPips}} frente a {{foePips}} puntos)."
+      }
+    },
     "turn": {
       "black_is_moving": "Las negras mueven…",
       "black_is_rolling": "Las negras tiran…",

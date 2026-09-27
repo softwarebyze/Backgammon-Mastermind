@@ -28,7 +28,6 @@ function placeholders(value: string) {
  * Keep in sync with `settings['i18n-json/ignore-keys']` in eslint.config.mjs.
  */
 const PENDING_TRANSLATION_KEYS = [
-  'game.strategy',
   'learn.lessons.pip_count',
   'learn.lessons.strategies',
   'learn.quiz.pip_ahead',

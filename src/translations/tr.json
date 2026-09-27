@@ -94,6 +94,40 @@
       "white_wins": "🏆 Beyaz Kazandı!",
       "you_win": "🏆 Kazandın!"
     },
+    "strategy": {
+      "close_a11y": "Strateji açıklamasını kapat",
+      "got_it": "Anladım",
+      "label": {
+        "backgame": "Geride oyun",
+        "blitz": "Blitz",
+        "developing": "Geliştirme",
+        "holding": "Tutma oyunu",
+        "priming": "Duvar",
+        "running": "Yarış"
+      },
+      "tip": {
+        "backgame": "Geride kal, evini güçlendir ve geç fırsatı bekle.",
+        "blitz": "Saldır: tek başına duran her taşı vur ve evini kapat.",
+        "developing": "Puan kur, 5 için çabala ve esnek kal.",
+        "holding": "Çapanı tut, güvende kal ve vurma fırsatını bekle.",
+        "priming": "Duvarnı nokta nokta büyüt ve onların arka taşlarını haps et.",
+        "running": "Taşlarını verimli biçimde eve getir ve hâlâ risk altındaki taşları koru."
+      },
+      "why": {
+        "backgame": "{{point1}} ve {{point2}} üzerinde derin çapaların var ama yarışta {{pipGap}} puan geridesin.",
+        "blitz_bar": "Barda {{barCount}} var ve evinde zaten {{homeMade}} puan yaptın.",
+        "blitz_bar_blot": "Barda {{barCount}} var ve evinde tek başına duran 1 taş var; ayrıca evinde zaten {{homeMade}} puan yaptın.",
+        "blitz_bar_blots": "Barda {{barCount}} var ve evinde {{blotCount}} tek başına duran taş var; ayrıca evinde zaten {{homeMade}} puan yaptın.",
+        "blitz_blot": "Evinde tek başına duran 1 taş var ve zaten {{homeMade}} puan yaptın.",
+        "blitz_blots": "Evinde {{blotCount}} tek başına duran taş var ve zaten {{homeMade}} puan yaptın.",
+        "developing": "Tahtada henüz duvar, çapa ya da saldırı yok — oyun daha şekilleniyor.",
+        "holding": "{{point}} üzerinde bir çapa tutuyorsun ve {{pipGap}} puan geridesin.",
+        "priming": "{{prime}} puanlık bir duvar kurdun.",
+        "priming_anchor": "{{prime}} puanlık bir duvar kurdun ve arkasında da bir çapa var.",
+        "running_lead": "Yarışta {{foePips}}-{{myPips}} ile öndesin ve vurulabilir menzilde tek başına duran taş yok.",
+        "running_race": "Temas mümkün değil — doğrudan taş çıkarma yarışı ({{myPips}} karşı {{foePips}} puan)."
+      }
+    },
     "turn": {
       "black_is_moving": "Siyah oynuyor…",
       "black_is_rolling": "Siyah zar atıyor…",

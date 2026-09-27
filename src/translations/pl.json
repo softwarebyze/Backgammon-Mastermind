@@ -94,6 +94,40 @@
       "white_wins": "🏆 Białe wygrywają!",
       "you_win": "🏆 Wygrywasz!"
     },
+    "strategy": {
+      "close_a11y": "Zamknij wyjaśnienie strategii",
+      "got_it": "Rozumiem",
+      "label": {
+        "backgame": "Gra wyczekująca",
+        "blitz": "Blitz",
+        "developing": "Rozwój",
+        "holding": "Gra blokująca",
+        "priming": "Mur",
+        "running": "Wyścig"
+      },
+      "tip": {
+        "backgame": "Zostań z tyłu, wzmocnij swój dom i czekaj na późniejszą okazję.",
+        "blitz": "Atakuj: bij każdą samotną figurę i zamknij swój dom.",
+        "developing": "Buduj punkty, walcz o piątkę i bądź elastyczny.",
+        "holding": "Trzymaj kotwicę, bądź bezpieczny i czekaj na swoją okazję do uderzenia.",
+        "priming": "Rozbudowuj mur punkt po punkcie i schwyłaj ich tylne figury.",
+        "running": "Sprawnie odsadzaj swoje figury do domu i chroń te, które wciąż są zagrożone."
+      },
+      "why": {
+        "backgame": "Trzymasz głębokie kotwice na {{point1}} i {{point2}}, będąc {{pipGap}} punktami do tyłu w wyścigu.",
+        "blitz_bar": "Na pasku masz {{barCount}}, a w domu zrobiłeś już {{homeMade}} punktów.",
+        "blitz_bar_blot": "Na pasku masz {{barCount}} i 1 samotną figurę w domu, a w domu zrobiłeś już {{homeMade}} punktów.",
+        "blitz_bar_blots": "Na pasku masz {{barCount}} i {{blotCount}} samotnych figur w domu, a w domu zrobiłeś już {{homeMade}} punktów.",
+        "blitz_blot": "Masz 1 samotną figurę w domu, a zrobiłeś już {{homeMade}} punktów.",
+        "blitz_blots": "Masz {{blotCount}} samotnych figur w domu, a zrobiłeś już {{homeMade}} punktów.",
+        "developing": "Na szachownicy nie ma jeszcze muru, kotwicy ani ataku — gra dopiero się kształtuje.",
+        "holding": "Trzymasz kotwicę na {{point}}, będąc {{pipGap}} punktami do tyłu.",
+        "priming": "Zbudowałeś mur z {{prime}} punktów.",
+        "priming_anchor": "Zbudowałeś mur z {{prime}} punktów z kotwicą za nim.",
+        "running_lead": "Prowadzisz w wyścigu {{foePips}} do {{myPips}}, bez samotnych figur w zasięgu uderzenia.",
+        "running_race": "Kontakt jest niemożliwy — to prosty wyścig do wyprowadzenia figur ({{myPips}} do {{foePips}} punktów)."
+      }
+    },
     "turn": {
       "black_is_moving": "Czarne wykonują ruch…",
       "black_is_rolling": "Czarne rzucają…",

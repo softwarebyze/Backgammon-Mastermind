@@ -94,6 +94,40 @@
       "white_wins": "🏆 Les Blancs gagnent !",
       "you_win": "🏆 Vous gagnez !"
     },
+    "strategy": {
+      "close_a11y": "Fermer l'explication de la stratégie",
+      "got_it": "J'ai compris",
+      "label": {
+        "backgame": "Jeu d'attente",
+        "blitz": "Blitz",
+        "developing": "Développement",
+        "holding": "Jeu de blocage",
+        "priming": "Muraille",
+        "running": "Course"
+      },
+      "tip": {
+        "backgame": "Restez en retrait, reinforcez votre maison et attendez l'occasion tardive.",
+        "blitz": "Attaquez : frappez chaque pion isolé et fermez votre maison.",
+        "developing": "Construisez des points, battez-vous pour le 5 et restez souple.",
+        "holding": "Tenez votre ancre, restez en sécurité et attendez votre occasion de frappe.",
+        "priming": "Prolongez votre muraille point par point et capturez leurs pions arrières.",
+        "running": "Ramachez vos pions efficacement et protégez ceux qui restent en danger."
+      },
+      "why": {
+        "backgame": "Vous tenez des ancres profondes sur le {{point1}} et le {{point2}} tout en ayant {{pipGap}} points de retard dans la course.",
+        "blitz_bar": "Vous avez {{barCount}} sur la barre et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_bar_blot": "Vous avez {{barCount}} sur la barre et 1 pion isolé dans votre maison, et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_bar_blots": "Vous avez {{barCount}} sur la barre et {{blotCount}} pions isolés dans votre maison, et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_blot": "Vous avez 1 pion isolé dans votre maison et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_blots": "Vous avez {{blotCount}} pions isolés dans votre maison et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "developing": "Pas encore de muraille, d'ancre ni d'attaque sur le board — la partie se façonne.",
+        "holding": "Vous tenez une ancre sur le {{point}} avec {{pipGap}} points de retard.",
+        "priming": "Vous avez construit une muraille de {{prime}} points.",
+        "priming_anchor": "Vous avez construit une muraille de {{prime}} points avec une ancre derrière.",
+        "running_lead": "Vous menez la course {{foePips}} à {{myPips}} sans pion isolé à portée de frappe.",
+        "running_race": "Aucun contact possible — c'est une course directe pour sortir ({{myPips}} contre {{foePips}} points)."
+      }
+    },
     "turn": {
       "black_is_moving": "Les noirs jouent…",
       "black_is_rolling": "Les noirs lancent…",

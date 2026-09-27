@@ -94,6 +94,40 @@
       "white_wins": "🏆 Vince il Bianco!",
       "you_win": "🏆 Hai vinto!"
     },
+    "strategy": {
+      "close_a11y": "Chiudi la spiegazione della strategia",
+      "got_it": "Ho capito",
+      "label": {
+        "backgame": "Gioco di attesa",
+        "blitz": "Attacco totale",
+        "developing": "Sviluppo",
+        "holding": "Gioco di blocco",
+        "priming": "Muro",
+        "running": "Corsa"
+      },
+      "tip": {
+        "backgame": "Resta indietro, rafforza la tua base e aspetta l'occasione tardiva.",
+        "blitz": "Attacca: colpisci ogni pedina singola e chiudi la tua base.",
+        "developing": "Costruisci punti, lotta per il 5 e resta flessibile.",
+        "holding": "Tieni la tua àncora, stai al sicuro e aspetta la tua occasione di colpire.",
+        "priming": "Estendi il tuo muro punto per punto e cattura le loro pedine arretrate.",
+        "running": "Porta a casa le pedine in modo efficiente e proteggi quelle ancora a rischio."
+      },
+      "why": {
+        "backgame": "Hai àncore profonde sul {{point1}} e sul {{point2}} mentre sei in ritardo di {{pipGap}} punti nella corsa.",
+        "blitz_bar": "Hai {{barCount}} sul bar e hai già realizzato {{homeMade}} punti nella tua base.",
+        "blitz_bar_blot": "Hai {{barCount}} sul bar e 1 pedina singola nella tua base, e hai già realizzato {{homeMade}} punti nella base.",
+        "blitz_bar_blots": "Hai {{barCount}} sul bar e {{blotCount}} pedine singole nella tua base, e hai già realizzato {{homeMade}} punti nella base.",
+        "blitz_blot": "Hai 1 pedina singola nella tua base e hai già realizzato {{homeMade}} punti nella base.",
+        "blitz_blots": "Hai {{blotCount}} pedine singole nella tua base e hai già realizzato {{homeMade}} punti nella base.",
+        "developing": "Ancora nessun muro, àncora o attacco sul tabellone — la partita si sta ancora plasmando.",
+        "holding": "Tieni un'àncora sul {{point}} mentre sei in ritardo di {{pipGap}} punti.",
+        "priming": "Hai costruito un muro di {{prime}} punti.",
+        "priming_anchor": "Hai costruito un muro di {{prime}} punti con un'àncora dietro.",
+        "running_lead": "Guidi la corsa {{foePips}} a {{myPips}} senza pedine singole a portata di colpo.",
+        "running_race": "Nessun contatto possibile — è una corsa diretta per uscire ({{myPips}} contro {{foePips}} punti)."
+      }
+    },
     "turn": {
       "black_is_moving": "Il nero muove…",
       "black_is_rolling": "Il nero tira…",

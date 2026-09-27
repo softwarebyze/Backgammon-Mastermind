@@ -1,7 +1,8 @@
 # PR #188 review findings — fix evidence
 
 Addresses the five review findings raised on [PR #188](https://github.com/softwarebyze/Backgammon-Mastermind/pull/188)
-(`7d86e36`), all reproduced before the fix and re-verified after.
+(`7d86e36`), all reproduced before the fix and re-verified after, plus two
+follow-ups (#3 translations, #6 guidance mini-board RTL).
 
 Board coordinate contract, which three of the findings depend on: React Native
 mirrors the board's flex rows itself in an RTL locale, so the rendered board is a
@@ -70,11 +71,17 @@ English fragments.
   button reads `Got it` with accessibility label `Close strategy explanation`, and
   the chevron flips to `◂` in RTL.
 - `after-03-strategy-modal-rtl.png`
-- **Pending:** the new keys are listed in `PENDING_TRANSLATION_KEYS` and in the
-  `i18n-json/ignore-keys` lint setting, so non-English locales fall back to
-  English until a native speaker checks the backgammon terminology. The Arabic
-  screenshots therefore show English copy by design, which also proves the
-  fallback path works.
+- **Translations now complete (follow-up):** the strategy keys were originally
+  parked in `PENDING_TRANSLATION_KEYS` and the `i18n-json/ignore-keys` lint
+  setting so non-English locales fell back to English pending native review. All
+  16 non-English locales (`ar`, `de`, `el`, `es`, `fr`, `he`, `hi`, `it`, `ja`,
+  `ko`, `nl`, `pl`, `pt`, `ru`, `tr`, `zh`) now carry the full
+  `game.strategy.*` set, and both exceptions were removed.
+  - `pnpm jest src/lib/i18n/resources.test.ts` — 3/3 pass.
+  - `pnpm lint:translations` — clean.
+  - Runtime (Arabic): the developing and priming lines render translated
+    (`بناء المقامر…`, `حاجز متصل…`) as does the containment line
+    (`لعبة احتواء…`).
 - **Left alone on purpose:** the hint button label `Get a move hint`
   (`src/features/game/components/hint-button.tsx`) is still hardcoded English,
   matching the explicit decision in `game-preferences-panel.tsx` that hint/tutor
@@ -125,11 +132,43 @@ lockfile.
 - Evidence: the workflow diff plus a path-list check showing the previous filter
   excluded the files the job actually depends on.
 
+## 6. P1 — guidance mini board replayed backwards in RTL
+
+Follow-up to finding 2. The main board picked up `BoardDimensions.rtl` from
+`useBoardDimensions`, but `AnimatedPathBoard` — the looping replay mini board in
+the tutor's compare view — built its own dimensions with a direct
+`fitBoardToViewport()` call and never passed `rtl`, so it silently defaulted to
+LTR. `BoardView` still mirrored its flex rows natively, which left the replay
+checker and its dashed path arrow using LTR geometry against a reflected layout:
+the checker slid the wrong way across the mini board.
+
+Fix: `animated-path-board.tsx` imports `isRTL` from `@/lib/i18n` and passes
+`rtl: isRTL` to `fitBoardToViewport()`, so the same dimensions feed both
+`BoardView` and `MovePathOverlay` — exactly the single-mirror contract from
+finding 2.
+
+- Test: `src/features/game/components/animated-path-board.test.tsx` (3) — the
+  built dimensions carry `rtl: true`; a 6→5 replay puts point 5 left of point 6;
+  the bear-off sits left of point 1.
+- **Red:** all 3 fail with `rtl: isRTL` removed from the call.
+- **Green:** 3/3 pass.
+- Runtime (iPhone 17 Pro, Arabic, vs computer, Tutor mode): a deliberate
+  blunder (`13/10 · 10/9`, rated "Big blunder", 3rd-best of 16, −0.20) opened
+  the compare view. Both `AnimatedPathBoard` instances are mirrored — point 24
+  renders at x≈0.20 (left) and point 13 at x≈0.85 (right) — and on the
+  "Best move" board point 8 (x≈0.62) sits right of point 5 (x≈0.42), so the
+  engine's `8/5 · 6/5` replay must travel left. The recording shows it looping
+  left along the mirrored layout.
+- `after-06-rtl-guidance-compare-both.png`
+- `after-07-rtl-guidance-replay-loop.mp4`
+- No before capture: with the pre-fix code the mini board's own frames are the
+  defect, and the regression test is the before/after record for the direction.
+
 ## Validation
 
 - `pnpm check-all` green on the final tree: lint (0 errors, 7 pre-existing
   warnings, all in untouched files), `tsc` for `tsconfig.json` and
-  `tsconfig.test.json`, translation JSON lint, **93 suites / 536 tests**, and knip
+  `tsconfig.test.json`, translation JSON lint, **94 suites / 539 tests**, and knip
   clean (only the `.css` configuration hint, which is informational).
 - Runtime evidence above was captured on the native iOS development client
   (`com.backgammonmastermind.development`, iPhone 17 Pro, iOS 26.5) in Arabic via

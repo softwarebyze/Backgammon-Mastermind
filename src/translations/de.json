@@ -94,6 +94,40 @@
       "white_wins": "🏆 Weiß gewinnt!",
       "you_win": "🏆 Du gewinnst!"
     },
+    "strategy": {
+      "close_a11y": "Strategieerklärung schließen",
+      "got_it": "Verstanden",
+      "label": {
+        "backgame": "Rückstandsspiel",
+        "blitz": "Blitz",
+        "developing": "Aufbau",
+        "holding": "Haltespiel",
+        "priming": "Prime",
+        "running": "Rennspiel"
+      },
+      "tip": {
+        "backgame": "Bleib hinten, stärke dein Heimmbrett und warte auf die späte Chance.",
+        "blitz": "Greif an: Triff jede einzelne Figur und schließe dein Heimmbrett.",
+        "developing": "Punkte aufbauen, um die 5 kämpfen und flexibel bleiben.",
+        "holding": "Halte deinen Anker, bleib sicher und warte auf deine Trefferchance.",
+        "priming": "Erweitere deine Mauer Schritt für Schritt und fange ihre hinteren Figuren ein.",
+        "running": "Bring deine Figuren effizient nach Hause und schütze jede Figur, die noch gefährdet ist."
+      },
+      "why": {
+        "backgame": "Du hältst tiefe Anker auf {{point1}} und {{point2}}, während du im Rennen {{pipGap}} Punkte zurückliegst.",
+        "blitz_bar": "Es stehen {{barCount}} auf der Bar, und du hast bereits {{homeMade}} Punkte in deinem Heimmbrett gemacht.",
+        "blitz_bar_blot": "Es stehen {{barCount}} auf der Bar und eine einzelne Figur in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "blitz_bar_blots": "Es stehen {{barCount}} auf der Bar und {{blotCount}} einzelne Figuren in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "blitz_blot": "Es ist eine einzelne Figur in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "blitz_blots": "Es sind {{blotCount}} einzelne Figuren in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "developing": "Noch keine Prime, kein Anker und kein Angriff auf dem Brett — das Spiel formt sich erst.",
+        "holding": "Du hältst einen Anker auf {{point}}, während du {{pipGap}} Punkte zurückliegst.",
+        "priming": "Du hast eine Prime über {{prime}} Punkte aufgebaut.",
+        "priming_anchor": "Du hast eine Prime über {{prime}} Punkte mit einem Anker dahinter aufgebaut.",
+        "running_lead": "Du führst im Rennen {{foePips}} zu {{myPips}}, ohne einzelne Figuren in Reichweite.",
+        "running_race": "Kein Kontakt möglich — ein reines Rennen zum Auswerfen ({{myPips}} zu {{foePips}} Punkte)."
+      }
+    },
     "turn": {
       "black_is_moving": "Schwarz zieht…",
       "black_is_rolling": "Schwarz würfelt…",

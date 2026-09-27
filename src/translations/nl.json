@@ -94,6 +94,40 @@
       "white_wins": "🏆 Wit wint!",
       "you_win": "🏆 Jij wint!"
     },
+    "strategy": {
+      "close_a11y": "Uitleg van de strategie sluiten",
+      "got_it": "Begrepen",
+      "label": {
+        "backgame": "Achterstandspartij",
+        "blitz": "Blitz",
+        "developing": "Opbouw",
+        "holding": "Houdspel",
+        "priming": "Muur",
+        "running": "Race"
+      },
+      "tip": {
+        "backgame": "Blijf achteren, versterk je thuisbord en wacht op de late kans.",
+        "blitz": "Val aan: pak elk losse steen en sluit je thuisbord.",
+        "developing": "Bouw punten, vecht om de 5 en blijf flexibel.",
+        "holding": "Houd je anker vast, blijf veilig en wacht op je kans om te slaan.",
+        "priming": "Bouw je muur steeds verder uit en vang hun achterste stenen.",
+        "running": "Breng je stenen efficiënt thuis en bescherm de stenen die nog in gevaar zijn."
+      },
+      "why": {
+        "backgame": "Je houdt diepe ankers op {{point1}} en {{point2}} terwijl je {{pipGap}} punten achterloopt in de race.",
+        "blitz_bar": "Er staan {{barCount}} op de bar en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_bar_blot": "Er staan {{barCount}} op de bar en 1 losse steen op je thuisbord, en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_bar_blots": "Er staan {{barCount}} op de bar en {{blotCount}} losse stenen op je thuisbord, en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_blot": "Er is 1 losse steen op je thuisbord en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_blots": "Er zijn {{blotCount}} losse stenen op je thuisbord en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "developing": "Nog geen muur, anker of aanval op het bord — het spel vormt zich nog.",
+        "holding": "Je houdt een anker op {{point}} terwijl je {{pipGap}} punten achterloopt.",
+        "priming": "Je hebt een muur van {{prime}} punten gebouwd.",
+        "priming_anchor": "Je hebt een muur van {{prime}} punten gebouwd met er een anker achter.",
+        "running_lead": "Je leidt de race {{foePips}} tegen {{myPips}} met geen losse stenen binnen slagafstand.",
+        "running_race": "Geen contact mogelijk — het is een rechte race om af te spelen ({{myPips}} tegen {{foePips}} punten)."
+      }
+    },
     "turn": {
       "black_is_moving": "Zwart zet…",
       "black_is_rolling": "Zwart werpt…",

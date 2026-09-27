@@ -16,6 +16,7 @@ import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { isRTL } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -206,6 +207,9 @@ export function AnimatedPathBoard({
     maxOuterHeight: 240,
     extraHeight: pointNumberRailsHeight(showPointNumbers),
     compact: true,
+    // BoardView mirrors its flex rows natively in RTL, so the replay's anchors
+    // and path arrows have to mirror too or the mini board animates sideways.
+    rtl: isRTL,
   });
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, showPointNumbers);
   const boardHeight = boardViewHeight(dimensions.boardOuterHeight, showPointNumbers);
