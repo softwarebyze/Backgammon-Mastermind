@@ -65,23 +65,33 @@ English fragments.
 - Tests: `src/features/game/strategy.test.ts` and
   `src/features/game/components/game-pip-status-bar.test.tsx` assert key identity
   so the assertions hold for every locale.
-- **Green:** part of the 536-test run below; both suites fail if a strategy string
+- **Green:** part of the 539-test run below; both suites fail if a strategy string
   is inlined again.
 - Runtime: strategy line and expanded modal resolve labels/reasons/tips, close
   button reads `Got it` with accessibility label `Close strategy explanation`, and
-  the chevron flips to `◂` in RTL.
+  the chevron flips to `◂` in RTL. This capture predates the translations below,
+  so it still shows the English fallback in Arabic — which is the "before" of
+  the pair.
 - `after-03-strategy-modal-rtl.png`
 - **Translations now complete (follow-up):** the strategy keys were originally
   parked in `PENDING_TRANSLATION_KEYS` and the `i18n-json/ignore-keys` lint
   setting so non-English locales fell back to English pending native review. All
   16 non-English locales (`ar`, `de`, `el`, `es`, `fr`, `he`, `hi`, `it`, `ja`,
   `ko`, `nl`, `pl`, `pt`, `ru`, `tr`, `zh`) now carry the full
-  `game.strategy.*` set, and both exceptions were removed.
+  `game.strategy.*` set, and both exceptions were removed. Placeholders are
+  preserved and each file stays deep-sorted.
   - `pnpm jest src/lib/i18n/resources.test.ts` — 3/3 pass.
   - `pnpm lint:translations` — clean.
-  - Runtime (Arabic): the developing and priming lines render translated
-    (`بناء المقامر…`, `حاجز متصل…`) as does the containment line
-    (`لعبة احتواء…`).
+  - Runtime (Arabic): the strategy line resolves Arabic for the
+    developing/builder state — `بناء المقامر. لا حاجز ولا مرتكز ولا هجوم على
+    اللوح بعد …` — instead of the English fallback. The priming
+    (`حاجز متصل…`) and containment (`لعبة احتواء…`) variants were checked in the
+    same session.
+  - `after-06-rtl-guidance-compare-both.png` (top of frame, `id="strategy-line"`)
+- **Not re-captured:** the *expanded* strategy modal in Arabic. The mini-board
+  verification ran with the compare modal open, which intercepted taps on the
+  strategy line, so the translated inline line is evidenced above while the
+  expanded-modal screenshot still shows the pre-translation fallback.
 - **Left alone on purpose:** the hint button label `Get a move hint`
   (`src/features/game/components/hint-button.tsx`) is still hardcoded English,
   matching the explicit decision in `game-preferences-panel.tsx` that hint/tutor
@@ -154,11 +164,15 @@ finding 2.
 - **Green:** 3/3 pass.
 - Runtime (iPhone 17 Pro, Arabic, vs computer, Tutor mode): a deliberate
   blunder (`13/10 · 10/9`, rated "Big blunder", 3rd-best of 16, −0.20) opened
-  the compare view. Both `AnimatedPathBoard` instances are mirrored — point 24
-  renders at x≈0.20 (left) and point 13 at x≈0.85 (right) — and on the
-  "Best move" board point 8 (x≈0.62) sits right of point 5 (x≈0.42), so the
-  engine's `8/5 · 6/5` replay must travel left. The recording shows it looping
-  left along the mirrored layout.
+  the compare view with `Show Both board` selected, so both `AnimatedPathBoard`
+  instances were live. Point 24 renders at x≈0.171 and point 13 at x≈0.818 on
+  each mini board, matching the main board's x≈0.104 / x≈0.922 — i.e. both are
+  mirrored. On the "Best move" board point 8 sits at x≈0.597 and point 5 at
+  x≈0.391, so the engine's `8/5 · 6/5` must travel left; the recorded loop does
+  exactly that. Sampling the accessibility tree mid-replay also caught the
+  transient animated checker (a `Point 5, 1 white checker` node appearing over
+  the empty `Point 5` on the best-move board), confirming the token is what
+  moves between the two anchors.
 - `after-06-rtl-guidance-compare-both.png`
 - `after-07-rtl-guidance-replay-loop.mp4`
 - No before capture: with the pre-fix code the mini board's own frames are the
