@@ -22,7 +22,7 @@ export type StrategyInfo = {
 const STRATEGIES: Record<StrategyKey, { label: string; tip: string }> = {
   running: {
     label: 'Running game',
-    tip: 'You lead the race — bring checkers home safely and avoid leaving blots.',
+    tip: 'Bring checkers home efficiently, and protect any checkers still at risk.',
   },
   blitz: {
     label: 'Blitz',

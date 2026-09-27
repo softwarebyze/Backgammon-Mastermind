@@ -17,6 +17,7 @@ import { act, cleanup, render } from '@/lib/test-utils';
 
 import {
   clearGuidance,
+  getGuidance,
   setGuidanceVerdictPending,
   useGuidance,
   useGuidanceVerdictPending,
@@ -115,6 +116,23 @@ afterEach(() => {
 });
 
 describe('tutor verdict-pending hold', () => {
+  it('discards a late verdict after leaving the game screen', async () => {
+    let resolveAnalysis!: (plan: never) => void;
+    planSageTurnFullMock.mockImplementation(
+      () => new Promise((resolve) => { resolveAnalysis = resolve as (plan: never) => void; }),
+    );
+
+    const { rerender, unmount, onSnapshot, probe } = renderHarness(whiteMovingState());
+    rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
+    expect(probe.pending).toBe(true);
+    unmount();
+
+    await act(async () => {
+      resolveAnalysis(blunderPlan() as never);
+    });
+    expect(getGuidance()).toBeNull();
+  });
+
   it('holds the game paused when the turn ends before analysis resolves, then opens the prompt on a blunder', async () => {
     let resolveAnalysis!: (plan: never) => void;
     planSageTurnFullMock.mockImplementation(

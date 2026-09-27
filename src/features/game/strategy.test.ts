@@ -224,6 +224,7 @@ describe('classifyStrategy pure race', () => {
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('running');
     expect(info.why).toMatch(/straight race/);
+    expect(info.tip).not.toMatch(/you lead/i);
   });
 
   it('does not call it priming when the prime is behind all enemy checkers', () => {

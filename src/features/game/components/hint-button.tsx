@@ -50,6 +50,10 @@ function useHintRequest(state: GameState) {
       requestIdRef.current += 1;
     wasAnimating.current = isAnimating;
   }, [isAnimating]);
+  useEffect(() => () => {
+    // A slow engine result must not open guidance after leaving this screen.
+    requestIdRef.current += 1;
+  }, []);
   const begin = useCallback(() => ++requestIdRef.current, []);
   const isCurrent = useCallback((id: number) => requestIdRef.current === id, []);
   const invalidate = useCallback(() => {

@@ -16,8 +16,7 @@
     "src/components/ui/form-utils.ts",
     "src/components/ui/modal-keyboard-aware-scroll-view.tsx",
     "src/lib/utils.ts",
-    "expo-bgsage/**",
-    "public/bgsage/**"
+    "expo-bgsage/**"
   ],
   "ignoreBinaries": [
     "adb",
@@ -25,8 +24,7 @@
     "eas",
     "maestro",
     "remotion",
-    "skills",
-    "fastlane"
+    "skills"
   ],
   "ignoreDependencies": [
     "husky",
@@ -39,7 +37,6 @@
     "@types/invariant",
     "dotenv",
     "eslint-plugin-unicorn",
-    "zustand",
-    "expo-bgsage"
+    "zustand"
   ]
 }

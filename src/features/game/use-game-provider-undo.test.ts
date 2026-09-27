@@ -30,7 +30,9 @@ function finishAnimation(result: { current: Provider }) {
 /** Roll the opening until somebody wins it (ties re-roll). */
 function playOpening(result: { current: Provider }) {
   let guard = 0;
-  while (result.current.state?.phase === 'opening-roll' && guard++ < 10) {
+  // Each tie needs a dismissal plus two fresh rolls. Give the randomized
+  // opening room to resolve without making this undo test probabilistic.
+  while (result.current.state?.phase === 'opening-roll' && guard++ < 100) {
     act(() => {
       result.current.doRollDice();
     });
@@ -68,7 +70,7 @@ function playComputerOpening(result: { current: Provider }) {
   jest.useFakeTimers();
   try {
     let guard = 0;
-    while (result.current.state?.phase === 'opening-roll' && guard++ < 20) {
+    while (result.current.state?.phase === 'opening-roll' && guard++ < 100) {
       if (result.current.state.currentPlayer === 'white') {
         act(() => {
           result.current.doRollDice();

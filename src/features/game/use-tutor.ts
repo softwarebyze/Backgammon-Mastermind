@@ -164,6 +164,7 @@ function finishTrackedTurn(args: {
  * was asked on, so it is dropped when that turn ends. (Not gated on the
  * tutor preference — hints work with Tutor Mode off.)
  */
+// eslint-disable-next-line max-lines-per-function -- coordinates the turn analysis, verdict hold, and cleanup
 export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[]) {
   const { preferences } = useGamePreferences();
   const trackedRef = useRef<TrackedTurn | null>(null);
@@ -171,6 +172,17 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
   const moveLogRef = useRef(moveLog);
   moveLogRef.current = moveLog;
   const tutorOn = preferences.tutorMode;
+
+  useEffect(() => () => {
+    // An engine request can finish after the game screen is gone. Invalidate
+    // its turn before it can publish a blunder prompt into the next game.
+    trackedRef.current = null;
+    if (pendingTimeoutRef.current !== null) {
+      clearTimeout(pendingTimeoutRef.current);
+      pendingTimeoutRef.current = null;
+    }
+    setGuidanceVerdictPending(false);
+  }, []);
 
   useEffect(() => {
     const clearPendingTimeout = () => {

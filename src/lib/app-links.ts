@@ -12,6 +12,7 @@ const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
 
 export const APP_LINKS = {
   github: REPOSITORY_URL,
+  openSource: 'https://github.com/markbgsage/bgsage/tree/d8325a491168062df1047ffd998f3a5dfb426a0c#license',
   website: WEBSITE_URL,
   privacy: `${WEBSITE_URL}/privacy/`,
   terms: `${WEBSITE_URL}/terms/`,

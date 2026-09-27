@@ -13,7 +13,7 @@
 #   - data/bearoff_1sided.db
 set -euo pipefail
 
-REF="${BGSAGE_REF:-d8325a4}"
+REF="${BGSAGE_REF:-d8325a491168062df1047ffd998f3a5dfb426a0c}"
 REPO="${BGSAGE_REPO:-https://github.com/markbgsage/bgsage.git}"
 VENDOR="expo-bgsage/vendor/bgsage"
 ASSETS="expo-bgsage/assets"

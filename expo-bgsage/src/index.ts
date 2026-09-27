@@ -6,6 +6,7 @@
 // GameState and Move are assignable to these.
 import { requireNativeModule } from 'expo-modules-core';
 import { Platform } from 'react-native';
+import { rankCubelessCandidates } from './rank-candidates';
 
 export type SagePlayer = 'white' | 'black';
 export type SageBoardPoint = { player: SagePlayer | null; count: number };
@@ -221,12 +222,15 @@ export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Pr
   if (json.error || !json.moves || json.moves.length === 0) {
     throw new SageEngineError(`sage returned no moves: ${json.error ?? String(raw).slice(0, 120)}`);
   }
-  const candidates: SageTurnCandidate[] = json.moves.map(
-    (m: { board: number[]; equity: number; cubeless_equity: number }) => ({
+  const candidates = rankCubelessCandidates(json.moves.map(
+    (m: { board: number[]; cubeless_equity: number }) => ({
       board: m.board,
-      equity: Number(m.cubeless_equity ?? m.equity),
+      equity: Number(m.cubeless_equity),
     }),
-  );
+  ));
+  // The app has no doubling cube, so tutor loss and the suggested play use
+  // cubeless equity. The native engine orders its JSON by cubeful equity;
+  // those rankings can differ. Keep every learner-facing result consistent.
   const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
   const seq = decomposePlayerOnRollBoard(board, candidates[0].board, dice);
   if (!seq)

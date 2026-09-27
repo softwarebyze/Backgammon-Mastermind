@@ -44,8 +44,11 @@ export function GameBoardSection({
   const dimensions = useBoardDimensions();
   const { preferences } = useGamePreferences();
   const hintArrows = useHintArrows();
-  // Hint arrows layer onto the live board only — never over review scrub.
-  const overlaySegments = isReviewing ? pathSegments : [...pathSegments, ...hintArrows];
+  // Guidance owns the live board while it is visible. Mixing its arrows with
+  // the previous move's path makes the suggestion ambiguous, and the old
+  // path's fade timer would also hide the guidance arrows.
+  const overlaySegments = isReviewing ? pathSegments : hintArrows.length > 0 ? hintArrows : pathSegments;
+  const overlayFadeOutMs = !isReviewing && hintArrows.length > 0 ? undefined : pathFadeOutMs;
   const showPath = overlaySegments.length > 0;
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
   const travelEmphasis = useMemo(() => {
@@ -89,6 +92,7 @@ export function GameBoardSection({
             dragFrom={interactionEnabled ? input.dragFrom : null}
             interactionEnabled={interactionEnabled}
             isReviewing={isReviewing}
+            aidsOverride={hintArrows.length > 0 && !isReviewing ? { showDirectionOverlay: false } : undefined}
             numberPerspective={numberPerspective}
             onPointPress={input.handlePointPress}
             onPointPressIn={input.handlePointPressIn}
@@ -119,7 +123,7 @@ export function GameBoardSection({
                     segments={overlaySegments}
                     dimensions={dimensions}
                     animation={boardAnimation}
-                    fadeOutMs={pathFadeOutMs}
+                    fadeOutMs={overlayFadeOutMs}
                   />
                 </View>
               )
