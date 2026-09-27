@@ -1,4 +1,4 @@
-# bgsage native verification (demo branch only).
+# Open Sage native verification for engine and game changes in PRs.
 # - Android: full Gradle APK build (compiles Kotlin + JNI + the bgsage C++
 #   engine for real), then a Maestro flow on an emulator drives the Sage Lab
 #   screen and asserts the engine's actual move output.
@@ -9,8 +9,18 @@ name: bgsage native verify
 
 on:
   workflow_dispatch:
-  push:
-    branches: [bgsage/demo-ci]
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/scripts/fetch-bgsage-engine.sh'
+      - '.github/workflows/bgsage-verify.yml'
+      - '.maestro/app/sage-engine.yaml'
+      - 'app.config.ts'
+      - 'expo-bgsage/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'scripts/sync-bgsage-vendor.mjs'
+      - 'src/features/game/**'
 
 concurrency:
   group: bgsage-verify-${{ github.ref }}
