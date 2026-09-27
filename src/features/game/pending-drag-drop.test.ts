@@ -22,7 +22,7 @@ describe('resolvePendingDragDrop', () => {
     });
     expect(resolved).toEqual({
       kind: 'single',
-      move: { from: 24, to: 21, dieIndex: expect.any(Number) },
+      move: { from: 24, to: 21, dieIndex: expect.any(Number), die: expect.any(Number) },
     });
   });
 

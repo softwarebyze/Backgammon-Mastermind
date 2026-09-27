@@ -11,16 +11,24 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [main]
+    # This job runs `pnpm type-check` over the whole app and builds both native
+    # targets, so it is sensitive to any app source or build config — not just
+    # the engine. The previous list named a handful of specific paths and
+    # silently skipped ~110 changed files per PR, including the Maestro runner
+    # and the shared CI actions this workflow calls.
     paths:
-      - '.github/scripts/fetch-bgsage-engine.sh'
-      - '.github/workflows/bgsage-verify.yml'
-      - '.maestro/app/sage-engine.yaml'
+      - '.github/**'
+      - '.maestro/**'
       - 'app.config.ts'
+      - 'babel.config.js'
       - 'expo-bgsage/**'
+      - 'metro.config.js'
       - 'package.json'
       - 'pnpm-lock.yaml'
-      - 'scripts/sync-bgsage-vendor.mjs'
-      - 'src/features/game/**'
+      - 'scripts/**'
+      - 'src/**'
+      - 'tsconfig.json'
+      - 'tsconfig.test.json'
 
 concurrency:
   group: bgsage-verify-${{ github.ref }}

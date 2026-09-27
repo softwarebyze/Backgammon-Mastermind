@@ -94,6 +94,40 @@
       "white_wins": "🏆 White Wins!",
       "you_win": "🏆 You Win!"
     },
+    "strategy": {
+      "close_a11y": "Close strategy explanation",
+      "got_it": "Got it",
+      "label": {
+        "backgame": "Back game",
+        "blitz": "Blitz",
+        "developing": "Developing",
+        "holding": "Holding game",
+        "priming": "Priming game",
+        "running": "Running game"
+      },
+      "tip": {
+        "backgame": "Stay back, keep your home board strong, and wait for a late shot.",
+        "blitz": "Attack: hit every blot you can and close your home board.",
+        "developing": "Build points, fight for the 5-point, and stay flexible.",
+        "holding": "Hold your anchor, stay safe, and wait for your hitting chance.",
+        "priming": "Extend your wall one point at a time and trap their back checkers.",
+        "running": "Bring checkers home efficiently, and protect any checkers still at risk."
+      },
+      "why": {
+        "backgame": "You hold deep anchors on the {{point1}} and {{point2}} while down {{pipGap}} pips in the race.",
+        "blitz_bar": "There's {{barCount}} on the bar, and you've already made {{homeMade}} home-board points.",
+        "blitz_bar_blot": "There's {{barCount}} on the bar and 1 blot in your home board, and you've already made {{homeMade}} home-board points.",
+        "blitz_bar_blots": "There's {{barCount}} on the bar and {{blotCount}} blots in your home board, and you've already made {{homeMade}} home-board points.",
+        "blitz_blot": "There's 1 blot in your home board, and you've already made {{homeMade}} home-board points.",
+        "blitz_blots": "There's {{blotCount}} blots in your home board, and you've already made {{homeMade}} home-board points.",
+        "developing": "No prime, anchor, or attack on the board yet — the game is still taking shape.",
+        "holding": "You hold an anchor on the {{point}} while trailing by {{pipGap}} pips.",
+        "priming": "You've built a {{prime}}-point prime.",
+        "priming_anchor": "You've built a {{prime}}-point prime with an anchor behind it.",
+        "running_lead": "You lead the race {{foePips}} to {{myPips}} with no blots in hitting range.",
+        "running_race": "No contact is possible — it's a straight race to bear off ({{myPips}} vs {{foePips}} pips)."
+      }
+    },
     "turn": {
       "black_is_moving": "Black is moving…",
       "black_is_rolling": "Black is rolling…",

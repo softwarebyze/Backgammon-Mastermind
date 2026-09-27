@@ -17,6 +17,7 @@ const DIMENSIONS = {
   barWidth: 24,
   bearOffWidth: 24,
   middleHeight: 40,
+  rtl: false,
 } as const;
 
 describe('pointNumberLabel', () => {

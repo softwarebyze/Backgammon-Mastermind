@@ -17,6 +17,18 @@ function stackStep(dims: BoardDimensions): number {
   return Math.min(dims.checkerSize - 2, (dims.pointHeight - dims.checkerSize) / (MAX_VISIBLE - 1));
 }
 
+/**
+ * Reflect a board-space x across the playing surface for RTL layouts.
+ *
+ * React Native mirrors the board's flex rows itself, so the rendered board in an
+ * RTL locale is a left-right reflection of the LTR geometry. Every board-local x
+ * that reaches the screen (or comes from a touch) has to cross this mirror, and
+ * the two sides of the board (bar, bear-off, columns) swap accordingly.
+ */
+function mirrorX(x: number, dims: Pick<BoardDimensions, 'boardWidth' | 'rtl'>): number {
+  return dims.rtl ? dims.boardWidth - x : x;
+}
+
 function columnForPoint(pointIndex: number): { col: number; isTop: boolean } | null {
   if (pointIndex >= 13 && pointIndex <= 18) {
     return { col: pointIndex - 13, isTop: true };
@@ -47,6 +59,10 @@ export function pointIndexFromColumn(col: number, isTop: boolean): number | null
 /**
  * Map board-local coordinates (0,0 = top-left of playing surface) to a drop target.
  * Returns 1–24, BAR_POINT (0), BEAR_OFF (25), or null if outside a hit region.
+ *
+ * Accepts *physical* board-local x (as measured from the surface's left edge) and
+ * mirrors it into board space when the layout is RTL, so callers that already work
+ * in screen space (touch hit-testing, drag previews) need no extra bookkeeping.
  */
 export function resolveDropTarget(
   boardX: number,
@@ -56,16 +72,18 @@ export function resolveDropTarget(
   const { colWidth, pointHeight, middleHeight, barWidth, bearOffWidth, boardWidth, boardHeight }
     = dims;
 
-  if (boardX < 0 || boardY < 0 || boardX > boardWidth || boardY > boardHeight) {
+  const x = dims.rtl ? boardWidth - boardX : boardX;
+
+  if (x < 0 || boardY < 0 || x > boardWidth || boardY > boardHeight) {
     return null;
   }
 
   const pointsWidth = 12 * colWidth + barWidth;
-  if (boardX >= pointsWidth && boardX <= pointsWidth + bearOffWidth) {
+  if (x >= pointsWidth && x <= pointsWidth + bearOffWidth) {
     return BEAR_OFF;
   }
 
-  if (boardX >= 6 * colWidth && boardX < 6 * colWidth + barWidth) {
+  if (x >= 6 * colWidth && x < 6 * colWidth + barWidth) {
     return BAR_POINT;
   }
 
@@ -76,11 +94,11 @@ export function resolveDropTarget(
 
   const isTop = boardY < pointHeight;
   let col: number;
-  if (boardX < 6 * colWidth) {
-    col = Math.floor(boardX / colWidth);
+  if (x < 6 * colWidth) {
+    col = Math.floor(x / colWidth);
   }
-  else if (boardX >= 6 * colWidth + barWidth) {
-    col = 6 + Math.floor((boardX - 6 * colWidth - barWidth) / colWidth);
+  else if (x >= 6 * colWidth + barWidth) {
+    col = 6 + Math.floor((x - 6 * colWidth - barWidth) / colWidth);
   }
   else {
     return BAR_POINT;
@@ -128,12 +146,12 @@ export function getCheckerAnchor({
   if (pointIndex === BAR_POINT) {
     const x = 6 * colWidth + barWidth / 2;
     const y = barCheckerCenterY(dims, player ?? 'white', topOffset);
-    return { x, y };
+    return { x: mirrorX(x, dims), y };
   }
 
   if (pointIndex === BEAR_OFF) {
     return {
-      x: bearOffCheckerCenterX(dims),
+      x: mirrorX(bearOffCheckerCenterX(dims), dims),
       y: bearOffCheckerCenterY(dims, player ?? 'white', stackCount),
     };
   }
@@ -143,7 +161,8 @@ export function getCheckerAnchor({
     return { x: dims.boardWidth / 2, y: boardHeight / 2 };
   }
 
-  const x = mapped.col * colWidth + colWidth / 2 + (mapped.col >= 6 ? barWidth : 0);
+  const ltrX = mapped.col * colWidth + colWidth / 2 + (mapped.col >= 6 ? barWidth : 0);
+  const x = mirrorX(ltrX, dims);
   const y = mapped.isTop
     ? checkerSize / 2 + topOffset * step
     : pointHeight + middleHeight + pointHeight - checkerSize / 2 - topOffset * step;

@@ -367,6 +367,7 @@ export function BoardView({
             width={boardWidth}
             height={boardHeight}
             player={state.currentPlayer}
+            rtl={dimensions.rtl}
           />
         )}
 

@@ -61,6 +61,20 @@ function blackRollingState(): GameState {
   return s;
 }
 
+/** Pass-and-play state: both sides are human, so both turns get analyzed. */
+function passAndPlayState(
+  phase: GameState['phase'],
+  player: 'white' | 'black',
+  dice: [number, number],
+): GameState {
+  const s = createInitialState('vs-human');
+  s.currentPlayer = player;
+  s.phase = phase;
+  s.dice = dice;
+  s.remainingDice = dice[0] === 0 ? [] : [...dice];
+  return s;
+}
+
 /** Plan whose played board (END_BOARD) loses 0.20 vs the best. */
 function blunderPlan() {
   return {
@@ -208,5 +222,41 @@ describe('tutor verdict-pending hold', () => {
     rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
     expect(probe.pending).toBe(false);
     expect(probe.blunderNull).toBe(false);
+  });
+});
+
+describe('tutor verdict-pending hold in pass-and-play', () => {
+  it('still judges the held turn when the opponent starts a new turn before analysis resolves', async () => {
+    // In pass-and-play the opponent is human too, so their turn starts a second
+    // analysis. That must not orphan the turn we are already holding for.
+    const resolvers: Array<(plan: never) => void> = [];
+    planSageTurnFullMock.mockImplementation(
+      () => new Promise((resolve) => { resolvers.push(resolve as (plan: never) => void); }),
+    );
+
+    const { rerender, probe, onSnapshot } = renderHarness(
+      passAndPlayState('moving', 'white', [3, 1]),
+    );
+    expect(planSageTurnFullMock).toHaveBeenCalledTimes(1);
+
+    // White passes the turn while Sage is still thinking → the hold engages.
+    rerender(
+      <Harness state={passAndPlayState('rolling', 'black', [0, 0])} onSnapshot={onSnapshot} />,
+    );
+    expect(probe.pending).toBe(true);
+    expect(probe.blunderNull).toBe(true);
+
+    // Black rolls and starts their own turn while the hold is still active.
+    rerender(
+      <Harness state={passAndPlayState('moving', 'black', [5, 2])} onSnapshot={onSnapshot} />,
+    );
+
+    // White's analysis lands: the blunder must still be reported.
+    await act(async () => {
+      resolvers[0](blunderPlan() as never);
+    });
+
+    expect(probe.blunderNull).toBe(false);
+    expect(probe.pending).toBe(false);
   });
 });

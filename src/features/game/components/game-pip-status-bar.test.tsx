@@ -26,7 +26,7 @@ describe('gamePipStatusBar', () => {
     render(<GamePipStatusBar state={state} />);
 
     expect(screen.getByTestId('strategy-line')).toBeTruthy();
-    expect(screen.getByText('Developing')).toBeTruthy();
+    expect(screen.getByText('game.strategy.label.developing')).toBeTruthy();
     // Both race pip counts render (opening position: 167 each).
     expect(screen.getAllByText('167')).toHaveLength(2);
   });
@@ -35,9 +35,9 @@ describe('gamePipStatusBar', () => {
     const state = createInitialState('vs-computer');
     render(<GamePipStatusBar state={state} />);
 
-    expect(screen.queryByText(/Build points/)).toBeNull();
+    expect(screen.queryByText('game.strategy.tip.developing')).toBeNull();
     fireEvent.press(screen.getByTestId('strategy-line'));
-    expect(screen.getByText(/Build points/)).toBeTruthy();
+    expect(screen.getByText('game.strategy.tip.developing')).toBeTruthy();
   });
 
   it('labels the pip counts accessibly per player', () => {

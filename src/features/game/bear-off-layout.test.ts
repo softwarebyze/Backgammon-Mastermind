@@ -21,6 +21,7 @@ const TEST_DIMS: BoardDimensions = {
   barWidth: 28,
   bearOffWidth: 38,
   middleHeight: 12,
+  rtl: false,
 };
 
 describe('bearOffStackStep', () => {
