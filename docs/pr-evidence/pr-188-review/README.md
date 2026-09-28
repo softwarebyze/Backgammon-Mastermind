@@ -1,8 +1,9 @@
 # PR #188 review findings — fix evidence
 
 Addresses the five review findings raised on [PR #188](https://github.com/softwarebyze/Backgammon-Mastermind/pull/188)
-(`7d86e36`), all reproduced before the fix and re-verified after, plus two
-follow-ups (#3 translations, #6 guidance mini-board RTL).
+(`7d86e36`), all reproduced before the fix and re-verified after, plus three
+follow-ups (#3 translations, #6 guidance mini-board RTL, #7 floating checker
+proxies mirrored twice).
 
 Board coordinate contract, which three of the findings depend on: React Native
 mirrors the board's flex rows itself in an RTL locale, so the rendered board is a
@@ -178,15 +179,58 @@ finding 2.
 - No before capture: with the pre-fix code the mini board's own frames are the
   defect, and the regression test is the before/after record for the direction.
 
+## 7. P1 — floating checker proxies were mirrored twice in RTL
+
+Follow-up to finding 2. `mirrorX()` handles board-local x, but it is not enough for
+a view that positions itself with an absolute `left` **inside** the already-mirrored
+surface. React Native mirrors absolute `left` in an RTL container, so the proxy's
+board-space x got flipped a second time and every floating checker crossed the
+board the wrong way. The two affected views are the move slide
+(`MoveAnimationOverlay`) and the drag ghost (`DragCheckerOverlay`) — the only
+floating checkers on the board. The on-board checkers, path arrows, and direction
+lane were all correct, which is why the board looked mirrored while the *moving*
+checker did not.
+
+Root cause confirmed against the live native hierarchy, not inferred. Probe views
+injected into the 394x254 surface measured:
+
+| probe style (inside RTL surface) | measured x | expected |
+| --- | --- | --- |
+| `left: 20` | 354 | 20 |
+| `right: 20` | 20 | — |
+| `left: 0` | 374 | 0 |
+| `left: 0` + `translateX: 100` | 474 | 100 |
+
+So `left` is mirrored (`x = width - left - childWidth`), `right` is not, and
+`transform` is not direction-flipped.
+
+Fix: both proxies are hosted in one full-bleed, non-interactive layer pinned to
+`direction: 'ltr'` (`styles.floatingProxyLayer` in `board-view.tsx`), so their
+board-space x lands where `mirrorX` says it should. Re-running the same probes
+inside the new layer gave `left: 20` → 20, `left: 0` → 0, and `translateX: 100` →
+100. The slide and the ghost share the layer, so the drag ghost is fixed by the
+same change.
+
+- Test: `src/features/game/components/board/board-view.test.tsx` (5) — the move
+  slide and the drag ghost are both inside a full-bleed layer with
+  `direction: 'ltr'` and `pointerEvents: 'none'`.
+- **Red:** 4/5 fail with `direction: 'ltr'` removed from the layer style.
+- **Green:** 5/5 pass.
+- `DirectionOverlay` and `MovePathOverlay` needed no change: the direction lane is
+  full-width `left: 0` and the path overlay is an absolute fill, so mirroring
+  either produces no net offset.
+- `AnimatedPathBoard` inherits the fix, since it renders the same `BoardView`.
+
 ## Validation
 
 - `pnpm check-all` green on the final tree: lint (0 errors, 7 pre-existing
   warnings, all in untouched files), `tsc` for `tsconfig.json` and
-  `tsconfig.test.json`, translation JSON lint, **94 suites / 539 tests**, and knip
+  `tsconfig.test.json`, translation JSON lint, **95 suites / 544 tests**, and knip
   clean (only the `.css` configuration hint, which is informational).
 - Runtime evidence above was captured on the native iOS development client
   (`com.backgammonmastermind.development`, iPhone 17 Pro, iOS 26.5) in Arabic via
-  Metro.
+  Metro. The finding-7 measurements are native view frames read from the live
+  hierarchy, and the probes were removed before the tree was committed.
 - No native sources changed (nothing under `ios/`, `android/`, or
   `expo-bgsage/plugin`, and no `app.config.ts` change), so a native rebuild cannot
   regress; the new bundle was exercised on-device instead.

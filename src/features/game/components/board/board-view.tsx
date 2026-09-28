@@ -3,7 +3,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import {
   boardHitExtraCandidates,
@@ -371,19 +371,27 @@ export function BoardView({
           />
         )}
 
-        {moveAnimation && (
-          <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
-        )}
+        {/* Floating checkers are positioned from board-space pixels that
+            `mirrorX` already flipped for RTL (getCheckerAnchor, dragOverlay).
+            The surface above inherits RTL from the app root, so an absolute
+            `left` here would be mirrored a second time and the proxy would
+            travel opposite to the move it represents. Pin this layer to LTR so
+            its children lay out in raw board pixels. */}
+        <View pointerEvents="none" style={styles.floatingProxyLayer}>
+          {moveAnimation && (
+            <MoveAnimationOverlay animation={moveAnimation} dimensions={dimensions} />
+          )}
 
-        {dragFrom !== null
-          ? (
-              <DragCheckerOverlay
-                player={state.currentPlayer}
-                checkerSize={checkerSize}
-                overlay={dragOverlay}
-              />
-            )
-          : null}
+          {dragFrom !== null
+            ? (
+                <DragCheckerOverlay
+                  player={state.currentPlayer}
+                  checkerSize={checkerSize}
+                  overlay={dragOverlay}
+                />
+              )
+            : null}
+        </View>
       </View>
 
       {showPointNumbers && (
@@ -392,3 +400,19 @@ export function BoardView({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  /**
+   * Hosts the floating checker proxies. `direction: 'ltr'` stops the RTL
+   * inherited from the app root from mirroring their absolute `left`, so a
+   * board-space x lands where `mirrorX` says it should.
+   */
+  floatingProxyLayer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    direction: 'ltr',
+  },
+});
