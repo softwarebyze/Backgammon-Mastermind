@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", "module": "ESNext", "moduleResolution": "bundler",
+    "strict": true, "noEmit": true, "skipLibCheck": true,
+    "types": ["node"], "allowImportingTsExtensions": true, "verbatimModuleSyntax": true
+  },
+  "include": ["scripts/generate-third-party-notices.ts","scripts/sync-bgsage-vendor.ts","scripts/view-maestro-report.ts"]
+}

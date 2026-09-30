@@ -61,3 +61,6 @@ expo-bgsage/vendor/
 expo-bgsage/ios/vendor/
 expo-bgsage/assets/
 expo-bgsage/build/
+
+# Local native-module Gradle caches
+expo-bgsage/android/.gradle/

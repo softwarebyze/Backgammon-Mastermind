@@ -1,3 +1,19 @@
+# DISABLED — kept as a reference for a possible future Maestro Cloud trial.
+#
+# GitHub ignores workflows whose filename does not end in .yml/.yaml, so the
+# .disabled suffix is what actually stops it (GitHub Actions has no built-in
+# disable switch). While it was live it still appeared in the PR checks list
+# on every push, because the pull_request trigger fired even though the only
+# job was gated behind the android-test-maestro-cloud label.
+#
+# The active, free equivalent is e2e-android.yml (GitHub-hosted emulator,
+# no API key). Prefer improving that one over re-enabling this.
+#
+# To re-enable:  git mv .github/workflows/e2e-android-maestro.yml.disabled \
+#                     .github/workflows/e2e-android-maestro.yml
+# Then set the MAESTRO_CLOUD_API_KEY secret and label a PR
+# `android-test-maestro-cloud`, or dispatch manually.
+#
 # Maestro Cloud E2E — backgammon smoke on labeled PRs or manual dispatch.
 # Label: android-test-maestro-cloud | Secret: MAESTRO_CLOUD_API_KEY
 
