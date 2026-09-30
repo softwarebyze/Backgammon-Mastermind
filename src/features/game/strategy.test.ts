@@ -1,7 +1,26 @@
+import type { StrategyInfo } from '@/features/game/strategy';
 import type { GameState, Player } from '@/lib/game/types';
+import type { TxKeyPath } from '@/lib/i18n';
 
 import { createInitialState } from '@/lib/game/constants';
+import { translate } from '@/lib/i18n';
 import { classifyStrategy, pipCount } from './strategy';
+
+/**
+ * The strategy copy is localizable, so resolve it the way the UI does instead of
+ * reading literals off the classifier. These tests still assert on the English
+ * wording, which is what the message templates say today.
+ */
+function whyText(info: StrategyInfo): string {
+  return translate(
+    `game.strategy.why.${info.reason.message}` as TxKeyPath,
+    info.reason.params,
+  );
+}
+
+function tipText(info: StrategyInfo): string {
+  return translate(`game.strategy.tip.${info.key}` as TxKeyPath);
+}
 
 /** Build a state with explicit point holdings: [point, player, count][]. */
 function stateWith(
@@ -62,8 +81,8 @@ describe('classifyStrategy', () => {
   it('explains why: developing cites the lack of structure', () => {
     const state = createInitialState('vs-human');
     const info = classifyStrategy(state, 'white');
-    expect(info.why).toMatch(/still taking shape/);
-    expect(info.tip).toMatch(/Build points/);
+    expect(whyText(info)).toMatch(/still taking shape/);
+    expect(tipText(info)).toMatch(/Build points/);
   });
 
   it('explains why: priming cites the prime length', () => {
@@ -75,7 +94,8 @@ describe('classifyStrategy', () => {
     ]);
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('priming');
-    expect(info.why).toMatch(/4-point prime/);
+    expect(info.reason.params.prime).toBe(4);
+    expect(whyText(info)).toMatch(/4-point prime/);
   });
 
   it('detects a running game with a big pip lead and no contact', () => {
@@ -190,7 +210,7 @@ describe('classifyStrategy pure race', () => {
     expect(pipCount(state, 'white')).toBe(63);
     const info = classifyStrategy(state, 'black');
     expect(info.key).toBe('running');
-    expect(info.why).toMatch(/straight race/);
+    expect(whyText(info)).toMatch(/straight race/);
   });
 
   it('still spots a real direct shot behind a blot', () => {
@@ -223,8 +243,8 @@ describe('classifyStrategy pure race', () => {
     expect(pipCount(state, 'white')).toBeGreaterThan(pipCount(state, 'black'));
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('running');
-    expect(info.why).toMatch(/straight race/);
-    expect(info.tip).not.toMatch(/you lead/i);
+    expect(whyText(info)).toMatch(/straight race/);
+    expect(tipText(info)).not.toMatch(/you lead/i);
   });
 
   it('does not call it priming when the prime is behind all enemy checkers', () => {
@@ -246,6 +266,6 @@ describe('classifyStrategy pure race', () => {
     ], 'white');
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('running');
-    expect(info.why).toMatch(/straight race/);
+    expect(whyText(info)).toMatch(/straight race/);
   });
 });

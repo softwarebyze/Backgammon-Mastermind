@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Start new game",
       "undo_a11y": "Undo move"
     },
+    "hint": {
+      "back_to_turn": "Back to my turn",
+      "back_to_turn_a11y": "Back to my turn, dismiss the hint",
+      "button": "Hint",
+      "button_a11y": "Get a move hint",
+      "error": "Couldn't find a hint — tap to retry",
+      "error_a11y": "Retry hint",
+      "finding": "Finding the best move…",
+      "play": "Play this move",
+      "play_a11y": "Play the suggested move",
+      "suggested": "Suggested move"
+    },
     "nudge": {
       "roll_first": "Roll the dice first"
     },
@@ -66,7 +78,9 @@
       "section_board": "Board",
       "section_dice": "Dice",
       "sound": "Game sounds",
-      "sound_hint": "Soft dice, hits, and win cues — respects silent mode"
+      "sound_hint": "Soft dice, hits, and win cues — respects silent mode",
+      "tutor_mode": "Tutor mode",
+      "tutor_mode_hint": "The engine checks your moves and flags big blunders"
     },
     "review": {
       "back_to_live": "Back to live game",
@@ -94,6 +108,40 @@
       "white_wins": "🏆 White Wins!",
       "you_win": "🏆 You Win!"
     },
+    "strategy": {
+      "close_a11y": "Close strategy explanation",
+      "got_it": "Got it",
+      "label": {
+        "backgame": "Back game",
+        "blitz": "Blitz",
+        "developing": "Developing",
+        "holding": "Holding game",
+        "priming": "Priming game",
+        "running": "Running game"
+      },
+      "tip": {
+        "backgame": "Stay back, keep your home board strong, and wait for a late shot.",
+        "blitz": "Attack: hit every blot you can and close your home board.",
+        "developing": "Build points, fight for the 5-point, and stay flexible.",
+        "holding": "Hold your anchor, stay safe, and wait for your hitting chance.",
+        "priming": "Extend your wall one point at a time and trap their back checkers.",
+        "running": "Bring checkers home efficiently, and protect any checkers still at risk."
+      },
+      "why": {
+        "backgame": "You hold deep anchors on the {{point1}} and {{point2}} while down {{pipGap}} pips in the race.",
+        "blitz_bar": "There's {{barCount}} on the bar, and you've already made {{homeMade}} home-board points.",
+        "blitz_bar_blot": "There's {{barCount}} on the bar and 1 blot in your home board, and you've already made {{homeMade}} home-board points.",
+        "blitz_bar_blots": "There's {{barCount}} on the bar and {{blotCount}} blots in your home board, and you've already made {{homeMade}} home-board points.",
+        "blitz_blot": "There's 1 blot in your home board, and you've already made {{homeMade}} home-board points.",
+        "blitz_blots": "There's {{blotCount}} blots in your home board, and you've already made {{homeMade}} home-board points.",
+        "developing": "No prime, anchor, or attack on the board yet — the game is still taking shape.",
+        "holding": "You hold an anchor on the {{point}} while trailing by {{pipGap}} pips.",
+        "priming": "You've built a {{prime}}-point prime.",
+        "priming_anchor": "You've built a {{prime}}-point prime with an anchor behind it.",
+        "running_lead": "You lead the race {{foePips}} to {{myPips}} with no blots in hitting range.",
+        "running_race": "No contact is possible — it's a straight race to bear off ({{myPips}} vs {{foePips}} pips)."
+      }
+    },
     "turn": {
       "black_is_moving": "Black is moving…",
       "black_is_rolling": "Black is rolling…",
@@ -108,6 +156,63 @@
       "roll_dice": "Roll dice — you play {{color}}",
       "white_turn": "White's turn",
       "your_turn": "Your turn"
+    },
+    "tutor": {
+      "back_to_question": "Back to question",
+      "back_to_question_a11y": "Go back without the answer",
+      "band": {
+        "big_blunder": "Big blunder",
+        "fine": "Fine",
+        "mistake": "Mistake",
+        "slip": "Slip"
+      },
+      "best": "Best",
+      "best_played": "Best:",
+      "compare": {
+        "best": "Best",
+        "best_move": "Best move",
+        "both": "Both",
+        "mine": "Mine",
+        "show_a11y": "Show {{label}} board",
+        "start": "Start",
+        "starting_position": "Starting position",
+        "your_move": "Your move",
+        "your_move_replayed": "Your move, replayed"
+      },
+      "details_hide": "Hide details",
+      "details_hide_a11y": "Hide details",
+      "details_show": "Details",
+      "details_show_a11y": "Show details",
+      "details_summary": "Your move ranked {{rank}} of {{count}}, scoring about {{loss}} points per game less than the best move.",
+      "equity_explainer": "The engine scores each move by the points it expects to win per game, on average. Higher is better.",
+      "equity_pts": "{{points}} pts",
+      "keep": "Keep my move",
+      "keep_a11y": "Keep my move and continue",
+      "meter_a11y": "Blunder severity: {{severity}}. Lost about {{loss}} points per game. Standard scale bands follow GNU Backgammon: doubtful at 0.04, bad at 0.08, very bad at 0.16.",
+      "meter_caption": "Blunder scale (GNU Backgammon)",
+      "play_best": "Play best move",
+      "play_best_a11y": "Take back my move and play the best move",
+      "question_body": "Your move ranked {{rank}} of {{count}} ways to play this roll. On average, it scores about {{loss}} points per game less than the best move.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (yours)",
+      "replay_pause_a11y": "Pause {{label}} replay",
+      "replay_play_a11y": "Play {{label}} replay",
+      "reveal": "Show the best move",
+      "reveal_a11y": "Reveal the recommended move",
+      "rolled": "You rolled {{dice}}",
+      "show_mine": "Show my move",
+      "show_mine_a11y": "Show only my move, without revealing the best move",
+      "take_back": "Take back & retry",
+      "take_back_a11y": "Take back the whole turn and try again",
+      "take_back_retry_a11y": "Take back the move and try again",
+      "title_compare": "Your move vs the best move",
+      "title_mine": "Your move",
+      "turn_off": "Turn Tutor off",
+      "turn_off_a11y": "Turn Tutor mode off",
+      "undo_last": "Undo last move",
+      "undo_last_a11y": "Undo just the last move and replay it",
+      "vs_best": "−{{delta}} vs best",
+      "you_played": "You played:"
     }
   },
   "home": {

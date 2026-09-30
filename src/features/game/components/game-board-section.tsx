@@ -4,6 +4,7 @@ import type { useGameInput } from '@/features/game/use-game-input';
 import type { GameState, Player } from '@/lib/game';
 import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
+import { boardLayoutStyle, boardWebDir } from '@/features/game/components/board/board-layout-direction';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
 import { playingSurfaceOffset } from '@/features/game/components/board/playing-surface-offset';
@@ -78,11 +79,15 @@ export function GameBoardSection({
         style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
       >
         <Animated.View
-          style={{
-            width: dimensions.boardOuterWidth,
-            alignItems: 'center',
-            opacity: boardOpacity,
-          }}
+          {...boardWebDir}
+          style={[
+            {
+              width: dimensions.boardOuterWidth,
+              alignItems: 'center',
+              opacity: boardOpacity,
+            },
+            boardLayoutStyle,
+          ]}
         >
           <BoardView
             state={boardState}

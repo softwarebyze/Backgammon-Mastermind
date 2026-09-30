@@ -1,11 +1,12 @@
 import type { StrategyKey } from '@/features/game/strategy';
 import type { GameState } from '@/lib/game';
+import type { TxKeyPath } from '@/lib/i18n';
 
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy, pipCount } from '@/features/game/strategy';
-import { translate } from '@/lib/i18n';
+import { isRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -23,6 +24,11 @@ const STRATEGY_DOT: Record<StrategyKey, string> = {
   developing: '#8A8A92',
 };
 
+/** Resolve `game.strategy.<group>.<strategyKey>` without losing key typing. */
+function strategyMessage(group: 'label' | 'tip', key: StrategyKey) {
+  return translate(`game.strategy.${group}.${key}` as TxKeyPath);
+}
+
 /**
  * Quiet status line: the strategy the position points to (tap for why + tip)
  * and both race pip counts. Deliberately bubble-free — it reads as part of
@@ -32,6 +38,12 @@ export function GamePipStatusBar({ state }: Props) {
   const [showExplanation, setShowExplanation] = useState(false);
   const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
   const strategy = classifyStrategy(state, perspective);
+  const label = strategyMessage('label', strategy.key);
+  const tip = strategyMessage('tip', strategy.key);
+  const why = translate(
+    `game.strategy.why.${strategy.reason.message}` as TxKeyPath,
+    strategy.reason.params,
+  );
   const whitePips = pipCount(state, 'white');
   const blackPips = pipCount(state, 'black');
   const gameOver = state.phase === 'game-over';
@@ -52,13 +64,13 @@ export function GamePipStatusBar({ state }: Props) {
         <Pressable
           onPress={() => setShowExplanation(true)}
           accessibilityRole="button"
-          accessibilityLabel={`${strategy.label}. ${strategy.why} ${strategy.tip}`}
+          accessibilityLabel={`${label}. ${why} ${tip}`}
           style={styles.strategyRow}
           testID="strategy-line"
         >
           <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
-          <Text style={styles.strategyText}>{strategy.label}</Text>
-          <Text style={styles.chevron}>▸</Text>
+          <Text style={styles.strategyText}>{label}</Text>
+          <Text style={styles.chevron}>{isRTL ? '◂' : '▸'}</Text>
         </Pressable>
         <View style={styles.pips}>
           <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
@@ -86,18 +98,18 @@ export function GamePipStatusBar({ state }: Props) {
           <Pressable style={styles.modalCard} onPress={() => {}} testID="strategy-explanation">
             <View style={styles.modalHeader}>
               <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
-              <Text style={styles.modalTitle}>{strategy.label}</Text>
+              <Text style={styles.modalTitle}>{label}</Text>
             </View>
-            <Text style={styles.whyText}>{strategy.why}</Text>
-            <Text style={styles.tipText}>{strategy.tip}</Text>
+            <Text style={styles.whyText}>{why}</Text>
+            <Text style={styles.tipText}>{tip}</Text>
             <Pressable
               onPress={() => setShowExplanation(false)}
               accessibilityRole="button"
-              accessibilityLabel="Close strategy explanation"
+              accessibilityLabel={translate('game.strategy.close_a11y')}
               style={styles.modalClose}
               testID="strategy-explanation-close"
             >
-              <Text style={styles.modalCloseText}>Got it</Text>
+              <Text style={styles.modalCloseText}>{translate('game.strategy.got_it')}</Text>
             </Pressable>
           </Pressable>
         </Pressable>

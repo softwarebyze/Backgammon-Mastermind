@@ -3,7 +3,7 @@ import type { TutorTurnAnalysis } from './tutor';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import type { GameState, Move, Player } from '@/lib/game/types';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
 import { cloneGameState } from '@/lib/game/snapshot';
@@ -172,6 +172,11 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
   const moveLogRef = useRef(moveLog);
   moveLogRef.current = moveLog;
   const tutorOn = preferences.tutorMode;
+  /**
+   * Bumped when a verdict hold releases, so the effect below re-runs and picks
+   * up a turn that was blocked while the hold was active.
+   */
+  const [holdEpoch, setHoldEpoch] = useState(0);
 
   useEffect(() => () => {
     // An engine request can finish after the game screen is gone. Invalidate
@@ -193,12 +198,21 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
     };
     /** Drop the tracked turn and release any hold without judging. */
     const abandonTurn = (entry: TrackedTurn) => {
+      const wasHolding = entry.holdActive;
       entry.holdActive = false;
       if (trackedRef.current === entry) {
         trackedRef.current = null;
       }
       clearPendingTimeout();
       setGuidanceVerdictPending(false);
+      if (wasHolding) {
+        // The hold blocked a later turn from being tracked. Re-run the effect
+        // so that turn starts its own analysis instead of being skipped. Bumping
+        // an epoch is the supported way to re-fire an effect; inlining the
+        // analysis here would duplicate the bookkeeping this hook already owns.
+        // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+        setHoldEpoch(epoch => epoch + 1);
+      }
     };
 
     // Hint sessions belong to one turn — drop a stale one before anything
@@ -245,7 +259,12 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
 
     // A fresh human turn just started → analyze it in the background.
     if (isHumanTurn(liveState) && liveState.phase === 'moving' && turnJustStarted(liveState)) {
-      if (!trackedRef.current || trackedRef.current.key !== key) {
+      // A held turn owns the pause until its verdict lands. Tracking a new turn
+      // here would overwrite it in trackedRef, orphaning the in-flight verdict
+      // (silently dropped) and freezing the game until VERDICT_PENDING_TIMEOUT_MS.
+      // In pass-and-play the opponent's turn can start during that hold.
+      const current = trackedRef.current;
+      if ((!current || current.key !== key) && !current?.holdActive) {
         const entry: TrackedTurn = {
           key,
           player: liveState.currentPlayer,
@@ -279,5 +298,5 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
         });
       }
     }
-  }, [liveState, moveLog, tutorOn]);
+  }, [liveState, moveLog, tutorOn, holdEpoch]);
 }

@@ -1,6 +1,6 @@
 import type { EngineTurnPlan, GameEngine } from './types';
 
-import type { GameState, Move } from '@/lib/game/types';
+import type { GameState } from '@/lib/game/types';
 
 import { gameStateToSageBoard, planSageTurnFull } from 'expo-bgsage';
 
@@ -21,7 +21,11 @@ export const bgsageEngine: GameEngine = {
       throw new Error('bgsage returned no usable plan');
     }
     return {
-      moves: plan.moves as Move[],
+      // Sage indexes into the dice as they stood at plan time. Copy the fields
+      // explicitly rather than casting the whole array: a cast would launder a
+      // different shape into `Move`, and `die` stays absent so the index is
+      // re-resolved against the live dice as the sequence is played.
+      moves: plan.moves.map(m => ({ from: m.from, to: m.to, dieIndex: m.dieIndex })),
       equity: plan.equity,
       candidates,
     };

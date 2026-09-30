@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Polygon, Rect } from 'react-native-svg';
+import { boardLayoutStyle, boardWebDir } from '@/features/game/components/board/board-layout-direction';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
 import {
@@ -16,6 +17,7 @@ import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -230,7 +232,10 @@ export function AnimatedPathBoard({
           <Pressable
             onPress={() => setPaused(p => !p)}
             accessibilityRole="button"
-            accessibilityLabel={paused ? `Play ${label} replay` : `Pause ${label} replay`}
+            accessibilityLabel={translate(
+              paused ? 'game.tutor.replay_play_a11y' : 'game.tutor.replay_pause_a11y',
+              { label },
+            )}
             testID={testID ? `${testID}-play-pause` : undefined}
             style={styles.playPause}
           >
@@ -238,7 +243,14 @@ export function AnimatedPathBoard({
           </Pressable>
         )}
       </View>
-      <View style={[styles.board, { width: dimensions.boardOuterWidth, height: boardHeight }]}>
+      <View
+        {...boardWebDir}
+        style={[
+          styles.board,
+          { width: dimensions.boardOuterWidth, height: boardHeight },
+          boardLayoutStyle,
+        ]}
+      >
         <BoardView
           state={displayState}
           dimensions={dimensions}

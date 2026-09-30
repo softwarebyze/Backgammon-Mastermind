@@ -9,41 +9,34 @@ export type StrategyKey
     | 'backgame'
     | 'developing';
 
-export type StrategyInfo = {
-  key: StrategyKey;
-  /** Short label, e.g. "Running game". */
-  label: string;
-  /** One-line execution tip. */
-  tip: string;
-  /** Why the position calls for this strategy — grounded in the actual features. */
-  why: string;
+/**
+ * Message under `game.strategy.why.` explaining why the position calls for this
+ * strategy. Copy lives in the translation resources, not here, so it is
+ * localizable like the rest of the game chrome.
+ */
+type StrategyReasonKey
+  = | 'backgame'
+    | 'blitz_bar'
+    | 'blitz_bar_blot'
+    | 'blitz_bar_blots'
+    | 'blitz_blot'
+    | 'blitz_blots'
+    | 'developing'
+    | 'holding'
+    | 'priming'
+    | 'priming_anchor'
+    | 'running_lead'
+    | 'running_race';
+
+type StrategyReason = {
+  message: StrategyReasonKey;
+  /** Interpolation values for the message (pip counts, point numbers). */
+  params: Record<string, number>;
 };
 
-const STRATEGIES: Record<StrategyKey, { label: string; tip: string }> = {
-  running: {
-    label: 'Running game',
-    tip: 'Bring checkers home efficiently, and protect any checkers still at risk.',
-  },
-  blitz: {
-    label: 'Blitz',
-    tip: 'Attack: hit every blot you can and close your home board.',
-  },
-  priming: {
-    label: 'Priming game',
-    tip: 'Extend your wall one point at a time and trap their back checkers.',
-  },
-  holding: {
-    label: 'Holding game',
-    tip: 'Hold your anchor, stay safe, and wait for your hitting chance.',
-  },
-  backgame: {
-    label: 'Back game',
-    tip: 'Stay back, keep your home board strong, and wait for a late shot.',
-  },
-  developing: {
-    label: 'Developing',
-    tip: 'Build points, fight for the 5-point, and stay flexible.',
-  },
+export type StrategyInfo = {
+  key: StrategyKey;
+  reason: StrategyReason;
 };
 
 /**
@@ -209,38 +202,55 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
   const pureRace = isPureRace(state);
 
   let key: StrategyKey = 'developing';
-  let why = 'No prime, anchor, or attack on the board yet — the game is still taking shape.';
+  let reason: StrategyReason = { message: 'developing', params: {} };
   // No contact is possible, so no prime, blitz, backgame, or holding game can
   // mean anything: it's a straight race to bear off.
   if (pureRace) {
     key = 'running';
-    why = `No contact is possible — it's a straight race to bear off (${myPips} vs ${foePips} pips).`;
+    reason = { message: 'running_race', params: { myPips, foePips } };
   }
   // Most committal first: a deep two-anchor back game overrides everything.
   else if (anchors.length >= 2 && deepAnchors.length >= 2 && pipDeficit > 0.08) {
     key = 'backgame';
-    why = `You hold deep anchors on the ${deepAnchors.slice(0, 2).join(' and ')} while down ${pipGap} pips in the race.`;
+    reason = {
+      message: 'backgame',
+      params: { point1: deepAnchors[0], point2: deepAnchors[1], pipGap },
+    };
   }
   else if ((foeBlotsHome.length >= 2 || state.bar[foe] > 0) && homeMade.length >= 2) {
     key = 'blitz';
-    const threats = [
-      ...(state.bar[foe] > 0 ? [`${state.bar[foe]} on the bar`] : []),
-      ...(foeBlotsHome.length > 0 ? [`${foeBlotsHome.length} ${foeBlotsHome.length === 1 ? 'blot' : 'blots'} in your home board`] : []),
-    ].join(' and ');
-    why = `There's ${threats}, and you've already made ${homeMade.length} home-board points.`;
+    // The bar count and the blot count are each optional, and the blot count
+    // takes a singular form at one — four distinct messages rather than a
+    // pre-joined English fragment.
+    const barCount = state.bar[foe];
+    const blotCount = foeBlotsHome.length;
+    const message: StrategyReasonKey
+      = barCount > 0
+        ? blotCount === 0
+          ? 'blitz_bar'
+          : blotCount === 1
+            ? 'blitz_bar_blot'
+            : 'blitz_bar_blots'
+        : blotCount === 1
+          ? 'blitz_blot'
+          : 'blitz_blots';
+    reason = { message, params: { barCount, blotCount, homeMade: homeMade.length } };
   }
   else if (prime >= 4 || (prime >= 3 && anchors.length >= 1)) {
     key = 'priming';
-    why = `You've built a ${prime}-point prime${anchors.length >= 1 ? ' with an anchor behind it' : ''}.`;
+    reason = {
+      message: anchors.length >= 1 ? 'priming_anchor' : 'priming',
+      params: { prime },
+    };
   }
   else if (anchors.length >= 1 && pipDeficit > 0.03) {
     key = 'holding';
-    why = `You hold an anchor on the ${anchors[0]} while trailing by ${pipGap} pips.`;
+    reason = { message: 'holding', params: { point: anchors[0], pipGap } };
   }
   else if (pipLead >= 0.1 && !contactExposed(state, player)) {
     key = 'running';
-    why = `You lead the race ${foePips} to ${myPips} with no blots in hitting range.`;
+    reason = { message: 'running_lead', params: { foePips, myPips } };
   }
 
-  return { key, why, ...STRATEGIES[key] };
+  return { key, reason };
 }

@@ -2,6 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { BLUNDER_BANDS, BLUNDER_METER_MAX } from '@/features/game/blunder-bands';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { blunderBandLabel } from '@/features/game/guidance-copy';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -18,22 +20,21 @@ export function BlunderMeter({ loss }: { loss: number }) {
   const activeIndex = found === -1 ? BLUNDER_BANDS.length - 1 : found;
   // The accessible severity comes from the highlighted band, so it can never
   // disagree with what sighted users see.
-  const severity = BLUNDER_BANDS[activeIndex].label;
+  const severity = blunderBandLabel(BLUNDER_BANDS[activeIndex]!.id);
 
   return (
     <View
       testID="guidance-blunder-meter"
       accessibilityRole="image"
       accessibilityLabel={
-        `Blunder severity: ${severity}. Lost about ${loss.toFixed(2)} points per game. `
-        + 'Standard scale bands follow GNU Backgammon: doubtful at 0.04, bad at 0.08, very bad at 0.16.'
+        translate('game.tutor.meter_a11y', { severity, loss: loss.toFixed(2) })
       }
       style={styles.wrap}
     >
       <View style={styles.track}>
         {BLUNDER_BANDS.map((band, i) => (
           <View
-            key={band.label}
+            key={band.id}
             style={[
               styles.segment,
               { flex: band.flex, backgroundColor: band.color },
@@ -49,14 +50,14 @@ export function BlunderMeter({ loss }: { loss: number }) {
       </View>
       <View style={styles.labels}>
         {BLUNDER_BANDS.map((band, i) => (
-          <View key={band.label} style={{ flex: band.flex, alignItems: 'center' }}>
+          <View key={band.id} style={{ flex: band.flex, alignItems: 'center' }}>
             <Text
               style={[
                 styles.label,
                 i === activeIndex && styles.labelActive,
               ]}
             >
-              {band.label}
+              {blunderBandLabel(band.id)}
             </Text>
             <Text style={styles.range}>
               {band.range}
@@ -65,7 +66,7 @@ export function BlunderMeter({ loss }: { loss: number }) {
         ))}
       </View>
       <Text style={styles.caption}>
-        Blunder scale (GNU Backgammon)
+        {translate('game.tutor.meter_caption')}
       </Text>
     </View>
   );

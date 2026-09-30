@@ -19,6 +19,7 @@ import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations } from '@/lib/game/moves';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
+import { boardLayoutStyle, boardWebDir } from './board-layout-direction';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { DragCheckerOverlay } from './drag-checker-overlay';
@@ -282,19 +283,24 @@ export function BoardView({
 
   return (
     <View
-      style={{
-        width: boardOuterWidth,
-        borderRadius: 10,
-        borderWidth: boardFrameWidth,
-        borderColor: BOARD_THEME.frame.rim,
-        backgroundColor: BOARD_THEME.frame.outer,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.45,
-        shadowRadius: 10,
-        elevation: 8,
-        overflow: 'hidden',
-      }}
+      testID="board-view"
+      {...boardWebDir}
+      style={[
+        {
+          width: boardOuterWidth,
+          borderRadius: 10,
+          borderWidth: boardFrameWidth,
+          borderColor: BOARD_THEME.frame.rim,
+          backgroundColor: BOARD_THEME.frame.outer,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.45,
+          shadowRadius: 10,
+          elevation: 8,
+          overflow: 'hidden',
+        },
+        boardLayoutStyle,
+      ]}
     >
       {showPointNumbers && (
         <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} />

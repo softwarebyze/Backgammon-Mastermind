@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Iniciar um novo jogo",
       "undo_a11y": "Desfazer a jogada"
     },
+    "hint": {
+      "back_to_turn": "Voltar ao meu turno",
+      "back_to_turn_a11y": "Voltar ao meu turno e fechar a dica",
+      "button": "Dica",
+      "button_a11y": "Pedir uma dica de jogada",
+      "error": "Não encontrei uma dica — toque para tentar de novo",
+      "error_a11y": "Tentar a dica outra vez",
+      "finding": "A procurar a melhor jogada…",
+      "play": "Jogar esta jogada",
+      "play_a11y": "Jogar a jogada sugerida",
+      "suggested": "Jogada sugerida"
+    },
     "nudge": {
       "roll_first": "Lance os dados primeiro"
     },
@@ -66,7 +78,9 @@
       "section_board": "Tabuleiro",
       "section_dice": "Dados",
       "sound": "Sons do jogo",
-      "sound_hint": "Dados, capturas e vitórias suaves — respeita o modo silencioso"
+      "sound_hint": "Dados, capturas e vitórias suaves — respeita o modo silencioso",
+      "tutor_mode": "Modo tutor",
+      "tutor_mode_hint": "O motor revê as suas jogadas e assinala erros graves"
     },
     "review": {
       "back_to_live": "Voltar ao jogo em andamento",
@@ -94,6 +108,40 @@
       "white_wins": "🏆 As Brancas venceram!",
       "you_win": "🏆 Você venceu!"
     },
+    "strategy": {
+      "close_a11y": "Fechar a explicação da estratégia",
+      "got_it": "Entendi",
+      "label": {
+        "backgame": "Jogo de espera",
+        "blitz": "Blitz",
+        "developing": "Desenvolvimento",
+        "holding": "Jogo de contenção",
+        "priming": "Muralha",
+        "running": "Corrida"
+      },
+      "tip": {
+        "backgame": "Fique atrás, fortaleça a sua base e espere a oportunidade tardia.",
+        "blitz": "Ataque: bata em cada peça solta e feche a sua base.",
+        "developing": "Construa pontos, brigue pelo 5 e continue flexível.",
+        "holding": "Segure a sua âncora, fique seguro e espere a sua oportunidade de bater.",
+        "priming": "Estenda a sua muralha ponto a ponto e capture as peças de trás deles.",
+        "running": "Traga as suas peças para casa com eficiência e proteja as que ainda estiverem em risco."
+      },
+      "why": {
+        "backgame": "Você tem âncoras profundas no {{point1}} e no {{point2}} enquanto está {{pipGap}} pontos atrás na corrida.",
+        "blitz_bar": "Há {{barCount}} no bar e você já fez {{homeMade}} pontos na sua base.",
+        "blitz_bar_blot": "Há {{barCount}} no bar e 1 peça solta na sua base, e você já fez {{homeMade}} pontos na base.",
+        "blitz_bar_blots": "Há {{barCount}} no bar e {{blotCount}} peças soltas na sua base, e você já fez {{homeMade}} pontos na base.",
+        "blitz_blot": "Há 1 peça solta na sua base e você já fez {{homeMade}} pontos na base.",
+        "blitz_blots": "Há {{blotCount}} peças soltas na sua base e você já fez {{homeMade}} pontos na base.",
+        "developing": "Ainda não há muralha, âncora ou ataque no tabuleiro — o jogo ainda está a tomar forma.",
+        "holding": "Segura uma âncora no {{point}} enquanto está {{pipGap}} pontos atrás.",
+        "priming": "Você construiu uma muralha de {{prime}} pontos.",
+        "priming_anchor": "Você construiu uma muralha de {{prime}} pontos com uma âncora atrás.",
+        "running_lead": "Você lidera a corrida {{foePips}} a {{myPips}} sem peças soltas ao alcance de um golpe.",
+        "running_race": "Não há contato possível — é uma corrida direta para tirar ({{myPips}} contra {{foePips}} pontos)."
+      }
+    },
     "turn": {
       "black_is_moving": "As pretas estão a mover…",
       "black_is_rolling": "As pretas estão a lançar…",
@@ -108,6 +156,63 @@
       "roll_dice": "Lance os dados — joga com {{color}}",
       "white_turn": "Vez das brancas",
       "your_turn": "A sua vez"
+    },
+    "tutor": {
+      "back_to_question": "Voltar à pergunta",
+      "back_to_question_a11y": "Voltar sem mostrar a resposta",
+      "band": {
+        "big_blunder": "Erro grave",
+        "fine": "Boa",
+        "mistake": "Erro",
+        "slip": "Deslize"
+      },
+      "best": "Melhor",
+      "best_played": "Melhor:",
+      "compare": {
+        "best": "Melhor",
+        "best_move": "Melhor jogada",
+        "both": "Ambas",
+        "mine": "A minha",
+        "show_a11y": "Mostrar o tabuleiro {{label}}",
+        "start": "Início",
+        "starting_position": "Posição inicial",
+        "your_move": "A sua jogada",
+        "your_move_replayed": "A sua jogada, repetida"
+      },
+      "details_hide": "Ocultar detalhes",
+      "details_hide_a11y": "Ocultar detalhes",
+      "details_show": "Detalhes",
+      "details_show_a11y": "Mostrar detalhes",
+      "details_summary": "A sua jogada ficou em {{rank}} de {{count}}, cerca de {{loss}} pontos por partida a menos que a melhor.",
+      "equity_explainer": "O motor avalia cada jogada pelos pontos que espera ganhar por partida, em média. Mais alto é melhor.",
+      "equity_pts": "{{points}} pts",
+      "keep": "Ficar com a minha jogada",
+      "keep_a11y": "Ficar com a minha jogada e continuar",
+      "meter_a11y": "Gravidade do erro: {{severity}}. Perdeu cerca de {{loss}} pontos por partida. A escala segue o GNU Backgammon: duvidosa a 0.04, má a 0.08, muito má a 0.16.",
+      "meter_caption": "Escala de erros (GNU Backgammon)",
+      "play_best": "Jogar a melhor jogada",
+      "play_best_a11y": "Anular a minha jogada e jogar a melhor",
+      "question_body": "A sua jogada ficou em {{rank}} de {{count}} formas de jogar este lançamento. Em média vale cerca de {{loss}} pontos por partida a menos que a melhor.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (sua)",
+      "replay_pause_a11y": "Pausar a repetição de {{label}}",
+      "replay_play_a11y": "Reproduzir a repetição de {{label}}",
+      "reveal": "Mostrar a melhor jogada",
+      "reveal_a11y": "Revelar a jogada recomendada",
+      "rolled": "Saiu {{dice}}",
+      "show_mine": "Mostrar a minha jogada",
+      "show_mine_a11y": "Mostrar só a minha jogada, sem revelar a melhor",
+      "take_back": "Anular e tentar de novo",
+      "take_back_a11y": "Anular o turno inteiro e tentar de novo",
+      "take_back_retry_a11y": "Anular a jogada e tentar de novo",
+      "title_compare": "A sua jogada contra a melhor",
+      "title_mine": "A sua jogada",
+      "turn_off": "Desligar o tutor",
+      "turn_off_a11y": "Desligar o modo tutor",
+      "undo_last": "Anular a última jogada",
+      "undo_last_a11y": "Anular só a última jogada e voltar a jogá-la",
+      "vs_best": "−{{delta}} face à melhor",
+      "you_played": "Jogou:"
     }
   },
   "home": {

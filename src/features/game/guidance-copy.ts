@@ -4,6 +4,10 @@
  * details collapsed. The raw engine numbers never appear without units
  * and a one-line explanation of what they mean.
  */
+import type { TxKeyPath } from '@/lib/i18n';
+
+import { translate } from '@/lib/i18n';
+
 import { BLUNDER_BANDS } from './blunder-bands';
 
 /** Plain-word severity for an equity loss (flag threshold is 0.05). */
@@ -15,22 +19,21 @@ import { BLUNDER_BANDS } from './blunder-bands';
  * Returns the BLUNDER_BANDS label directly so the modal title can never
  * disagree with the highlighted meter band.
  */
+const BAND_LABEL: Record<(typeof BLUNDER_BANDS)[number]['id'], TxKeyPath> = {
+  fine: 'game.tutor.band.fine',
+  slip: 'game.tutor.band.slip',
+  mistake: 'game.tutor.band.mistake',
+  big_blunder: 'game.tutor.band.big_blunder',
+};
+
+export function blunderBandLabel(id: (typeof BLUNDER_BANDS)[number]['id']): string {
+  return translate(BAND_LABEL[id]);
+}
+
 export function blunderSeverity(loss: number): string {
   const found = BLUNDER_BANDS.findIndex(band => loss < band.max);
   const index = found === -1 ? BLUNDER_BANDS.length - 1 : found;
-  return BLUNDER_BANDS[index].label;
-}
-
-export function ordinal(n: number): string {
-  const mod100 = n % 100;
-  if (mod100 >= 11 && mod100 <= 13)
-    return `${n}th`;
-  switch (n % 10) {
-    case 1: return `${n}st`;
-    case 2: return `${n}nd`;
-    case 3: return `${n}rd`;
-    default: return `${n}th`;
-  }
+  return blunderBandLabel(BLUNDER_BANDS[index]!.id);
 }
 
 /** "+0.12" / "−0.11" (minus sign, not hyphen). */
@@ -38,26 +41,29 @@ export function formatPoints(e: number): string {
   return `${e >= 0 ? '+' : '−'}${Math.abs(e).toFixed(2)}`;
 }
 
-export const EQUITY_EXPLAINER
-  = 'The engine scores each move by the points it expects to win per game, on average. Higher is better.';
+export function equityExplainer(): string {
+  return translate('game.tutor.equity_explainer');
+}
 
 /**
  * Blunder question copy. Deliberately contains no recommended move and no
  * candidate table — the player decides whether to peek.
  */
 export function blunderQuestionBody(rank: number, candidateCount: number, loss: number): string {
-  return (
-    `Your move was the ${ordinal(rank)}-best of ${candidateCount} ways to play this roll. `
-    + `On average, it scores about ${loss.toFixed(2)} points per game less than the best move.`
-  );
+  return translate('game.tutor.question_body', {
+    rank,
+    count: candidateCount,
+    loss: loss.toFixed(2),
+  });
 }
 
 /** One-line recap for the collapsed details section of the solution view. */
 export function blunderDetailsSummary(rank: number, candidateCount: number, loss: number): string {
-  return (
-    `Your move ranked ${ordinal(rank)} of ${candidateCount}, scoring about `
-    + `${loss.toFixed(2)} points per game less than the best move.`
-  );
+  return translate('game.tutor.details_summary', {
+    rank,
+    count: candidateCount,
+    loss: loss.toFixed(2),
+  });
 }
 
 export type CandidateRow = {
@@ -80,9 +86,13 @@ export function candidateRows(
   if (best === undefined)
     return [];
   return rows.map((equity, i) => ({
-    label: i === 0 ? 'Best' : `${ordinal(i + 1)}${i + 1 === playedRank ? ' (yours)' : ''}`,
-    equity: `${formatPoints(equity)} pts`,
-    vsBest: i === 0 ? null : `−${(best - equity).toFixed(2)} vs best`,
+    label: i === 0
+      ? translate('game.tutor.best')
+      : translate(i + 1 === playedRank ? 'game.tutor.rank_yours' : 'game.tutor.rank', { rank: i + 1 }),
+    equity: translate('game.tutor.equity_pts', { points: formatPoints(equity) }),
+    vsBest: i === 0
+      ? null
+      : translate('game.tutor.vs_best', { delta: (best - equity).toFixed(2) }),
   }));
 }
 

@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Nieuw spel starten",
       "undo_a11y": "Verplaatsen ongedaan maken"
     },
+    "hint": {
+      "back_to_turn": "Terug naar mijn beurt",
+      "back_to_turn_a11y": "Terug naar mijn beurt, hint sluiten",
+      "button": "Hint",
+      "button_a11y": "Vraag een zethint",
+      "error": "Geen hint gevonden — tik om opnieuw te proberen",
+      "error_a11y": "Hint opnieuw proberen",
+      "finding": "Beste zet zoeken…",
+      "play": "Deze zet spelen",
+      "play_a11y": "De voorgestelde zet spelen",
+      "suggested": "Voorgestelde zet"
+    },
     "nudge": {
       "roll_first": "Gooi eerst de dobbelstenen"
     },
@@ -66,7 +78,9 @@
       "section_board": "Bord",
       "section_dice": "Dobbelstenen",
       "sound": "Spelgeluiden",
-      "sound_hint": "Zachte dobbel-, slag- en wingeluiden — respecteert de stille modus"
+      "sound_hint": "Zachte dobbel-, slag- en wingeluiden — respecteert de stille modus",
+      "tutor_mode": "Tutormodus",
+      "tutor_mode_hint": "De engine controleert je zetten en markeert grote fouten"
     },
     "review": {
       "back_to_live": "Terug naar het lopende spel",
@@ -94,6 +108,40 @@
       "white_wins": "🏆 Wit wint!",
       "you_win": "🏆 Jij wint!"
     },
+    "strategy": {
+      "close_a11y": "Uitleg van de strategie sluiten",
+      "got_it": "Begrepen",
+      "label": {
+        "backgame": "Achterstandspartij",
+        "blitz": "Blitz",
+        "developing": "Opbouw",
+        "holding": "Houdspel",
+        "priming": "Muur",
+        "running": "Race"
+      },
+      "tip": {
+        "backgame": "Blijf achteren, versterk je thuisbord en wacht op de late kans.",
+        "blitz": "Val aan: pak elk losse steen en sluit je thuisbord.",
+        "developing": "Bouw punten, vecht om de 5 en blijf flexibel.",
+        "holding": "Houd je anker vast, blijf veilig en wacht op je kans om te slaan.",
+        "priming": "Bouw je muur steeds verder uit en vang hun achterste stenen.",
+        "running": "Breng je stenen efficiënt thuis en bescherm de stenen die nog in gevaar zijn."
+      },
+      "why": {
+        "backgame": "Je houdt diepe ankers op {{point1}} en {{point2}} terwijl je {{pipGap}} punten achterloopt in de race.",
+        "blitz_bar": "Er staan {{barCount}} op de bar en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_bar_blot": "Er staan {{barCount}} op de bar en 1 losse steen op je thuisbord, en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_bar_blots": "Er staan {{barCount}} op de bar en {{blotCount}} losse stenen op je thuisbord, en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_blot": "Er is 1 losse steen op je thuisbord en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "blitz_blots": "Er zijn {{blotCount}} losse stenen op je thuisbord en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
+        "developing": "Nog geen muur, anker of aanval op het bord — het spel vormt zich nog.",
+        "holding": "Je houdt een anker op {{point}} terwijl je {{pipGap}} punten achterloopt.",
+        "priming": "Je hebt een muur van {{prime}} punten gebouwd.",
+        "priming_anchor": "Je hebt een muur van {{prime}} punten gebouwd met er een anker achter.",
+        "running_lead": "Je leidt de race {{foePips}} tegen {{myPips}} met geen losse stenen binnen slagafstand.",
+        "running_race": "Geen contact mogelijk — het is een rechte race om af te spelen ({{myPips}} tegen {{foePips}} punten)."
+      }
+    },
     "turn": {
       "black_is_moving": "Zwart zet…",
       "black_is_rolling": "Zwart werpt…",
@@ -108,6 +156,63 @@
       "roll_dice": "Gooi de dobbelstenen — je speelt {{color}}",
       "white_turn": "Wit is aan de beurt",
       "your_turn": "Jij bent aan de beurt"
+    },
+    "tutor": {
+      "back_to_question": "Terug naar de vraag",
+      "back_to_question_a11y": "Terug zonder het antwoord te tonen",
+      "band": {
+        "big_blunder": "Grote fout",
+        "fine": "Goed",
+        "mistake": "Fout",
+        "slip": "Misser"
+      },
+      "best": "Beste",
+      "best_played": "Beste:",
+      "compare": {
+        "best": "Beste",
+        "best_move": "Beste zet",
+        "both": "Beide",
+        "mine": "De mijne",
+        "show_a11y": "Bord {{label}} tonen",
+        "start": "Start",
+        "starting_position": "Beginstelling",
+        "your_move": "Jouw zet",
+        "your_move_replayed": "Jouw zet, herhaald"
+      },
+      "details_hide": "Details verbergen",
+      "details_hide_a11y": "Details verbergen",
+      "details_show": "Details",
+      "details_show_a11y": "Details tonen",
+      "details_summary": "Jouw zet stond op plek {{rank}} van {{count}}, ongeveer {{loss}} punten per partij minder dan de beste zet.",
+      "equity_explainer": "De engine beoordeelt elke zet op de punten die hij gemiddeld per partij verwacht te winnen. Hoger is beter.",
+      "equity_pts": "{{points}} ptn",
+      "keep": "Mijn zet houden",
+      "keep_a11y": "Mijn zet houden en doorgaan",
+      "meter_a11y": "Ernst van de fout: {{severity}}. Ongeveer {{loss}} punten per partij verloren. De schaal volgt GNU Backgammon: twijfelachtig bij 0.04, slecht bij 0.08, zeer slecht bij 0.16.",
+      "meter_caption": "Foutenschaal (GNU Backgammon)",
+      "play_best": "Beste zet spelen",
+      "play_best_a11y": "Mijn zet terugnemen en de beste zet spelen",
+      "question_body": "Jouw zet stond op plek {{rank}} van {{count}} manieren om deze worp te spelen. Gemiddeld levert hij ongeveer {{loss}} punten per partij minder op dan de beste zet.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (van jou)",
+      "replay_pause_a11y": "Herhaling van {{label}} pauzeren",
+      "replay_play_a11y": "Herhaling van {{label}} afspelen",
+      "reveal": "Beste zet tonen",
+      "reveal_a11y": "De aanbevolen zet onthullen",
+      "rolled": "Je gooide {{dice}}",
+      "show_mine": "Mijn zet tonen",
+      "show_mine_a11y": "Alleen mijn zet tonen, zonder de beste zet te onthullen",
+      "take_back": "Terugnemen en opnieuw proberen",
+      "take_back_a11y": "De hele beurt terugnemen en opnieuw proberen",
+      "take_back_retry_a11y": "De zet terugnemen en opnieuw proberen",
+      "title_compare": "Jouw zet tegen de beste zet",
+      "title_mine": "Jouw zet",
+      "turn_off": "Tutor uitzetten",
+      "turn_off_a11y": "Tutormodus uitzetten",
+      "undo_last": "Laatste zet ongedaan maken",
+      "undo_last_a11y": "Alleen de laatste zet ongedaan maken en opnieuw spelen",
+      "vs_best": "−{{delta}} t.o.v. beste",
+      "you_played": "Je speelde:"
     }
   },
   "home": {

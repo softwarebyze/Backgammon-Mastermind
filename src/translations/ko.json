@@ -27,6 +27,18 @@
       "start_new_game_a11y": "새로운 게임 시작",
       "undo_a11y": "취소 이동"
     },
+    "hint": {
+      "back_to_turn": "내 차례로 돌아가기",
+      "back_to_turn_a11y": "내 차례로 돌아가 힌트를 닫기",
+      "button": "힌트",
+      "button_a11y": "수 힌트 받기",
+      "error": "힌트를 찾지 못했습니다 — 탭하여 다시 시도",
+      "error_a11y": "힌트 다시 시도",
+      "finding": "최선의 수를 찾는 중…",
+      "play": "이 수를 두기",
+      "play_a11y": "제안된 수를 두기",
+      "suggested": "제안된 수"
+    },
     "nudge": {
       "roll_first": "먼저 주사위를 굴리세요"
     },
@@ -66,7 +78,9 @@
       "section_board": "보드",
       "section_dice": "주사위",
       "sound": "게임 소리",
-      "sound_hint": "부드러운 주사위·히트·승리 효과음 — 무음 모드를 따릅니다"
+      "sound_hint": "부드러운 주사위·히트·승리 효과음 — 무음 모드를 따릅니다",
+      "tutor_mode": "튜터 모드",
+      "tutor_mode_hint": "엔진이 수를 확인하고 큰 실수를 표시합니다"
     },
     "review": {
       "back_to_live": "진행 중인 게임으로 돌아가기",
@@ -94,6 +108,40 @@
       "white_wins": "🏆 백 승리!",
       "you_win": "🏆 승리했습니다!"
     },
+    "strategy": {
+      "close_a11y": "전략 설명 닫기",
+      "got_it": "알겠습니다",
+      "label": {
+        "backgame": "백 게임",
+        "blitz": "블리츠",
+        "developing": "발전",
+        "holding": "홀딩 게임",
+        "priming": "프라임(벽)",
+        "running": "레이스"
+      },
+      "tip": {
+        "backgame": "뒤에서 지켜보며 홈 보드를 단단히 하고 늦은 기회를 기다리세요.",
+        "blitz": "공격하세요. 홀로 있는 말을 모두 잡고 홈 보드를 닫으세요.",
+        "developing": "말을 쌓고 5를 다투며 유연하게 움직이세요.",
+        "holding": "앵커를 지키고 안전하게 버티며 잡을 기회를 기다리세요.",
+        "priming": "벽을 한 칸씩 늘려 상대의 뒷말을 가두세요.",
+        "running": "말을 효율적으로 집으로 옮기고 아직 위험한 말들을 지키세요."
+      },
+      "why": {
+        "backgame": "{{point1}}와 {{point2}}에 깊은 앵커를 갖고 있지만 레이스에서 {{pipGap}}포인트 뒤처져 있습니다.",
+        "blitz_bar": "바에 {{barCount}}가 있고 홈 보드에서 이미 {{homeMade}}포인트를 만들었습니다.",
+        "blitz_bar_blot": "바에 {{barCount}}가 있고 홈 보드에 홀로 있는 말이 1개 있으며, 이미 홈 보드에서 {{homeMade}}포인트를 만들었습니다.",
+        "blitz_bar_blots": "바에 {{barCount}}가 있고 홈 보드에 홀로 있는 말이 {{blotCount}}개 있으며, 이미 홈 보드에서 {{homeMade}}포인트를 만들었습니다.",
+        "blitz_blot": "홈 보드에 홀로 있는 말이 1개 있고 이미 {{homeMade}}포인트를 만들었습니다.",
+        "blitz_blots": "홈 보드에 홀로 있는 말이 {{blotCount}}개 있고 이미 {{homeMade}}포인트를 만들었습니다.",
+        "developing": "아직 벽도 앵커도 공격도 없습니다 — 아직 게임이 정해지는 단계입니다.",
+        "holding": "{{point}}에 앵커를 잡고 있지만 {{pipGap}}포인트 뒤처져 있습니다.",
+        "priming": "{{prime}}포인트짜리 벽을 만들었습니다.",
+        "priming_anchor": "{{prime}}포인트짜리 벽을 만들고 그 뒤에 앵커까지 만들었습니다.",
+        "running_lead": "레이스에서 {{foePips}} 대 {{myPips}}로 앞서고 있고 잡을 수 있는 거리에 홀린 말이 없습니다.",
+        "running_race": "접촉은 불가능합니다 — 그대로 내보내기만 하면 되는 레이스입니다 ({{myPips}} 대 {{foePips}}포인트)."
+      }
+    },
     "turn": {
       "black_is_moving": "검정이 이동 중…",
       "black_is_rolling": "검정이 주사위를 굴리는 중…",
@@ -108,6 +156,63 @@
       "roll_dice": "주사위를 굴리세요 — {{color}}으로 플레이",
       "white_turn": "흰색 차례",
       "your_turn": "내 차례"
+    },
+    "tutor": {
+      "back_to_question": "질문으로 돌아가기",
+      "back_to_question_a11y": "답을 보지 않고 돌아가기",
+      "band": {
+        "big_blunder": "큰 실수",
+        "fine": "양호",
+        "mistake": "실수",
+        "slip": "작은 실수"
+      },
+      "best": "최선",
+      "best_played": "최선:",
+      "compare": {
+        "best": "최선",
+        "best_move": "최선의 수",
+        "both": "둘 다",
+        "mine": "내 수",
+        "show_a11y": "{{label}} 보드 보기",
+        "start": "시작",
+        "starting_position": "시작 국면",
+        "your_move": "당신의 수",
+        "your_move_replayed": "당신의 수, 다시 보기"
+      },
+      "details_hide": "세부 정보 숨기기",
+      "details_hide_a11y": "세부 정보 숨기기",
+      "details_show": "세부 정보",
+      "details_show_a11y": "세부 정보 보기",
+      "details_summary": "당신의 수는 {{count}}개 중 {{rank}}위이며, 최선의 수보다 게임당 약 {{loss}}점 낮습니다.",
+      "equity_explainer": "엔진은 각 수를 게임당 평균으로 이길 것으로 예상하는 점수로 평가합니다. 높을수록 좋습니다.",
+      "equity_pts": "{{points}}점",
+      "keep": "내 수 유지",
+      "keep_a11y": "내 수를 유지하고 계속",
+      "meter_a11y": "실수 정도: {{severity}}. 게임당 약 {{loss}}점 손실. 기준은 GNU Backgammon입니다. 0.04에서 의심, 0.08에서 나쁨, 0.16에서 매우 나쁨.",
+      "meter_caption": "실수 척도 (GNU Backgammon)",
+      "play_best": "최선의 수 두기",
+      "play_best_a11y": "내 수를 취소하고 최선의 수 두기",
+      "question_body": "당신의 수는 이 주사위를 두는 {{count}}가지 방법 중 {{rank}}위였습니다. 평균적으로 최선의 수보다 게임당 약 {{loss}}점 낮습니다.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (당신)",
+      "replay_pause_a11y": "{{label}} 재생 일시정지",
+      "replay_play_a11y": "{{label}} 재생 재생",
+      "reveal": "최선의 수 보기",
+      "reveal_a11y": "추천 수 공개",
+      "rolled": "{{dice}}가 나왔습니다",
+      "show_mine": "내 수 보기",
+      "show_mine_a11y": "최선의 수를 공개하지 않고 내 수만 보기",
+      "take_back": "취소하고 다시 시도",
+      "take_back_a11y": "차례 전체를 취소하고 다시 시도",
+      "take_back_retry_a11y": "수를 취소하고 다시 시도",
+      "title_compare": "당신의 수와 최선의 수",
+      "title_mine": "당신의 수",
+      "turn_off": "튜터 끄기",
+      "turn_off_a11y": "튜터 모드 끄기",
+      "undo_last": "마지막 수 취소",
+      "undo_last_a11y": "마지막 수만 취소하고 다시 두기",
+      "vs_best": "최선 대비 −{{delta}}",
+      "you_played": "둔 수:"
     }
   },
   "home": {
