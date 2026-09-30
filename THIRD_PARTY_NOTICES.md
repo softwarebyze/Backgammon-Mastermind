@@ -532,7 +532,7 @@ An SPDX label alone does not complete attribution. Review upstream notices for
 any of these packages included in the distributed application:
 - @expo/devcert@1.2.1
 - @expo/sdk-runtime-versions@1.0.0
-- @expo/ui@57.0.20
+- @expo/ui@57.0.21
 - @expo/ws-tunnel@2.0.0
 - @expo/xcpretty@4.4.4
 - @posthog/core@1.43.1
@@ -568,9 +568,9 @@ any of these packages included in the distributed application:
 - cliui@8.0.1
 - deepmerge@4.3.1
 - emoji-regex@8.0.0
-- expo-router@57.0.23
+- expo-router@57.0.24
 - expo-structured-headers@57.0.1
-- expo-updates@57.0.23
+- expo-updates@57.0.24
 - fb-dotslash@0.5.8
 - fb-watchman@2.0.2
 - hermes-compiler@250829098.0.17
@@ -3680,7 +3680,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/ui@57.0.20
+### @expo/ui@57.0.21
 
 Declared license: MIT
 
@@ -10627,7 +10627,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </pre>
 
-### expo@57.0.25
+### expo@57.0.26
 
 Declared license: MIT
 
@@ -10767,7 +10767,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-constants@57.0.19
+### expo-constants@57.0.20
 
 Declared license: MIT
 
@@ -11299,7 +11299,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-modules-core@57.0.19
+### expo-modules-core@57.0.20
 
 Declared license: MIT
 
@@ -11355,7 +11355,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-router@57.0.23
+### expo-router@57.0.24
 
 Declared license: MIT
 
@@ -11507,7 +11507,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-updates@57.0.23
+### expo-updates@57.0.24
 
 Declared license: MIT
 

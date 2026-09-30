@@ -1,5 +1,5 @@
 import type { GameState, Player } from '@/lib/game/types';
-import { opponent } from '@/lib/game';
+import { calculatePipCount, opponent } from '@/lib/game';
 
 export type StrategyKey
   = | 'running'
@@ -38,25 +38,6 @@ export type StrategyInfo = {
   key: StrategyKey;
   reason: StrategyReason;
 };
-
-/**
- * Race pip count: total pips a player's checkers must travel to bear off.
- * Lower is ahead. Bar checkers count 25 (re-enter, then travel the full
- * board); borne-off checkers count 0.
- */
-export function pipCount(state: GameState, player: Player): number {
-  let pips = 0;
-  for (let n = 1; n <= 24; n++) {
-    const point = state.points[n];
-    if (point.player !== player)
-      continue;
-    // White travels 24 -> 1 (point n is n pips out); black travels 1 -> 24.
-    const distance = player === 'white' ? n : 25 - n;
-    pips += point.count * distance;
-  }
-  pips += state.bar[player] * 25;
-  return pips;
-}
 
 /** Points (1-24) where `player` has a made point (2+ checkers). */
 function madePoints(state: GameState, player: Player): number[] {
@@ -182,8 +163,8 @@ function isPureRace(state: GameState): boolean {
  */
 export function classifyStrategy(state: GameState, player: Player): StrategyInfo {
   const foe = opponent(player);
-  const myPips = pipCount(state, player);
-  const foePips = pipCount(state, foe);
+  const myPips = calculatePipCount(state, player);
+  const foePips = calculatePipCount(state, foe);
   const made = madePoints(state, player);
   const [oppLo, oppHi] = oppHomeRange(player);
   const [homeLo, homeHi] = ownHomeRange(player);

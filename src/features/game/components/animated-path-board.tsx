@@ -171,7 +171,7 @@ function usePathReplay({
     };
     run();
     return () => {
-      genRef.current++;
+      genRef.current = gen + 1;
       if (timer)
         clearTimeout(timer);
     };

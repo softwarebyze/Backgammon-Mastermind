@@ -94,6 +94,7 @@ export function useComputerOpponent({
     const skip = skipRef.current;
     skipRef.current = false;
     const delay = skip ? 0 : computerThinkDelayMs(state.phase, fast);
+    let moveTimer: ReturnType<typeof setTimeout> | undefined;
     if (delay === 0 && state.phase !== 'moving' && !skip) {
       return clearAITimeout;
     }
@@ -138,7 +139,7 @@ export function useComputerOpponent({
           return;
         }
         const moveDelay = skip ? 0 : computerMoveDelayMs(moveCount, fast);
-        aiTimeoutRef.current = setTimeout(() => {
+        moveTimer = setTimeout(() => {
           if (pausedRef.current)
             return;
           const latest = stateRef.current;
@@ -149,17 +150,23 @@ export function useComputerOpponent({
             durationMs: computerCheckerMoveDurationMs(fast),
           });
         }, moveDelay);
+        aiTimeoutRef.current = moveTimer;
       }
     };
 
-    if (delay === 0) {
+    const thinkTimer = delay === 0 ? null : setTimeout(runAI, delay);
+    if (thinkTimer === null)
       runAI();
-      return clearAITimeout;
-    }
+    else
+      aiTimeoutRef.current = thinkTimer;
 
-    aiTimeoutRef.current = setTimeout(runAI, delay);
-
-    return clearAITimeout;
+    return () => {
+      if (thinkTimer !== null)
+        clearTimeout(thinkTimer);
+      if (moveTimer !== undefined)
+        clearTimeout(moveTimer);
+      clearAITimeout();
+    };
   }, [
     state,
     setState,

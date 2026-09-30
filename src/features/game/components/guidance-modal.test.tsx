@@ -17,24 +17,27 @@ const mockSetTutorMode = jest.fn();
 let mockCanUndo = true;
 
 jest.mock('@/features/game/use-game', () => ({
-  useGame: () => ({
-    tutorRevertTurn: mockTutorRevertTurn,
-    doUndo: mockDoUndo,
-    doMoveSequence: mockDoMoveSequence,
-    canUndo: mockCanUndo,
-  }),
+  useGame: function gameApi() {
+    return {
+      tutorRevertTurn: mockTutorRevertTurn,
+      doUndo: mockDoUndo,
+      doMoveSequence: mockDoMoveSequence,
+      canUndo: mockCanUndo,
+    };
+  },
 }));
 
 jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
-  // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock must keep the real hook's export name
-  useGamePreferences: () => ({
-    setTutorMode: mockSetTutorMode,
-    preferences: {
-      showMoveHints: false,
-      showDirectionOverlay: false,
-      showPointNumbers: false,
-    },
-  }),
+  useGamePreferences: function gamePreferencesApi() {
+    return {
+      setTutorMode: mockSetTutorMode,
+      preferences: {
+        showMoveHints: false,
+        showDirectionOverlay: false,
+        showPointNumbers: false,
+      },
+    };
+  },
 }));
 
 function blunderSession(): Omit<GuidanceSession, 'id'> {

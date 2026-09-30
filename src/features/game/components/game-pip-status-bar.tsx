@@ -1,11 +1,12 @@
 import type { StrategyKey } from '@/features/game/strategy';
 import type { GameState } from '@/lib/game';
 import type { TxKeyPath } from '@/lib/i18n';
-
 import { useState } from 'react';
+
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { classifyStrategy, pipCount } from '@/features/game/strategy';
+import { classifyStrategy } from '@/features/game/strategy';
+import { calculatePipCount } from '@/lib/game';
 import { isRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
@@ -44,8 +45,8 @@ export function GamePipStatusBar({ state }: Props) {
     `game.strategy.why.${strategy.reason.message}` as TxKeyPath,
     strategy.reason.params,
   );
-  const whitePips = pipCount(state, 'white');
-  const blackPips = pipCount(state, 'black');
+  const whitePips = calculatePipCount(state, 'white');
+  const blackPips = calculatePipCount(state, 'black');
   const gameOver = state.phase === 'game-over';
 
   if (gameOver) {

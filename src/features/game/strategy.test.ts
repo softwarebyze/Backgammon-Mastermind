@@ -2,9 +2,10 @@ import type { StrategyInfo } from '@/features/game/strategy';
 import type { GameState, Player } from '@/lib/game/types';
 import type { TxKeyPath } from '@/lib/i18n';
 
+import { calculatePipCount } from '@/lib/game';
 import { createInitialState } from '@/lib/game/constants';
 import { translate } from '@/lib/i18n';
-import { classifyStrategy, pipCount } from './strategy';
+import { classifyStrategy } from './strategy';
 
 /**
  * The strategy copy is localizable, so resolve it the way the UI does instead of
@@ -46,11 +47,11 @@ function stateWith(
   };
 }
 
-describe('pipCount', () => {
+describe('calculatePipCount', () => {
   it('counts the opening position at 167 pips each', () => {
     const state = createInitialState('vs-human');
-    expect(pipCount(state, 'white')).toBe(167);
-    expect(pipCount(state, 'black')).toBe(167);
+    expect(calculatePipCount(state, 'white')).toBe(167);
+    expect(calculatePipCount(state, 'black')).toBe(167);
   });
 
   it('counts bar checkers at 25 and borne-off at 0', () => {
@@ -61,14 +62,14 @@ describe('pipCount', () => {
       borneOff: { white: 13, black: 0 },
     };
     // 2 checkers on the 1-point (2 pips) + 1 on the bar (25 pips).
-    expect(pipCount(withBar, 'white')).toBe(27);
+    expect(calculatePipCount(withBar, 'white')).toBe(27);
   });
 
   it('mirrors distances for black', () => {
     const state = stateWith([[24, 'black', 1]]);
-    expect(pipCount(state, 'black')).toBe(1);
+    expect(calculatePipCount(state, 'black')).toBe(1);
     const whiteSame = stateWith([[24, 'white', 1]]);
-    expect(pipCount(whiteSame, 'white')).toBe(24);
+    expect(calculatePipCount(whiteSame, 'white')).toBe(24);
   });
 });
 
@@ -112,7 +113,7 @@ describe('classifyStrategy', () => {
       ...state,
       borneOff: { white: 10, black: 0 },
     };
-    expect(pipCount(racing, 'white')).toBeLessThan(pipCount(racing, 'black') * 0.9);
+    expect(calculatePipCount(racing, 'white')).toBeLessThan(calculatePipCount(racing, 'black') * 0.9);
     expect(classifyStrategy(racing, 'white').key).toBe('running');
   });
 
@@ -153,7 +154,7 @@ describe('classifyStrategy', () => {
       [10, 'black', 2],
     ]);
     // White behind in the race with a 20-point anchor.
-    expect(pipCount(state, 'white')).toBeGreaterThan(pipCount(state, 'black'));
+    expect(calculatePipCount(state, 'white')).toBeGreaterThan(calculatePipCount(state, 'black'));
     expect(classifyStrategy(state, 'white').key).toBe('holding');
   });
 
@@ -206,8 +207,8 @@ describe('classifyStrategy pure race', () => {
       ...base,
       borneOff: { white: 0, black: 1 },
     };
-    expect(pipCount(state, 'black')).toBe(36);
-    expect(pipCount(state, 'white')).toBe(63);
+    expect(calculatePipCount(state, 'black')).toBe(36);
+    expect(calculatePipCount(state, 'white')).toBe(63);
     const info = classifyStrategy(state, 'black');
     expect(info.key).toBe('running');
     expect(whyText(info)).toMatch(/straight race/);
@@ -224,7 +225,7 @@ describe('classifyStrategy pure race', () => {
       [3, 'black', 1],
       [24, 'black', 8],
     ]);
-    expect(pipCount(state, 'white')).toBeLessThan(pipCount(state, 'black') * 0.9);
+    expect(calculatePipCount(state, 'white')).toBeLessThan(calculatePipCount(state, 'black') * 0.9);
     // Genuine contact, so this is not a running game despite the pip lead.
     expect(classifyStrategy(state, 'white').key).not.toBe('running');
   });
@@ -240,7 +241,7 @@ describe('classifyStrategy pure race', () => {
       [23, 'black', 2],
       [24, 'black', 2],
     ]);
-    expect(pipCount(state, 'white')).toBeGreaterThan(pipCount(state, 'black'));
+    expect(calculatePipCount(state, 'white')).toBeGreaterThan(calculatePipCount(state, 'black'));
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('running');
     expect(whyText(info)).toMatch(/straight race/);
