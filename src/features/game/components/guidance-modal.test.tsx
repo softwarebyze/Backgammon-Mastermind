@@ -93,7 +93,7 @@ describe('guidance modal question', () => {
     // Title and meter agree on the severity word.
     expect(screen.getAllByText('Mistake')).toHaveLength(2);
     // Plain-language question copy…
-    expect(screen.getByText(/3rd-best of 18 ways/)).toBeTruthy();
+    expect(screen.getByText(/ranked 3 of 18 ways/)).toBeTruthy();
     // …a visual blunder scale…
     expect(screen.getByTestId('guidance-blunder-meter')).toBeTruthy();
     // …but no recommended-move notation anywhere in the question view.
@@ -130,7 +130,7 @@ describe('guidance modal question', () => {
 
     // …or go back to the unspoiled question.
     fireEvent.press(screen.getByTestId('guidance-back-to-question'));
-    expect(screen.getByText(/3rd-best of 18 ways/)).toBeTruthy();
+    expect(screen.getByText(/ranked 3 of 18 ways/)).toBeTruthy();
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.queryByText(/You played:/)).toBeNull();
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
@@ -198,7 +198,7 @@ describe('guidance modal solution', () => {
 
     fireEvent.press(screen.getByTestId('guidance-back-to-question'));
     // Back at the question: the answer is hidden again.
-    expect(screen.getByText(/3rd-best of 18 ways/)).toBeTruthy();
+    expect(screen.getByText(/ranked 3 of 18 ways/)).toBeTruthy();
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.getByTestId('guidance-reveal')).toBeTruthy();
   });
@@ -210,12 +210,12 @@ describe('guidance modal solution', () => {
     expect(screen.queryByTestId('guidance-details')).toBeNull();
     fireEvent.press(screen.getByTestId('guidance-details-toggle'));
     expect(screen.getByTestId('guidance-details')).toBeTruthy();
-    expect(screen.getByText(/ranked 3rd of 18/)).toBeTruthy();
+    expect(screen.getByText(/ranked 3 of 18/)).toBeTruthy();
     // Labeled candidate rows, not raw numbers alone. The view toggle also
     // renders a "Best" label, so scope the query to the details section.
     const details = screen.getByTestId('guidance-details');
     expect(within(details).getByText('Best')).toBeTruthy();
-    expect(within(details).getByText('3rd (yours)')).toBeTruthy();
+    expect(within(details).getByText('3 (yours)')).toBeTruthy();
   });
 
   it('take back reverts the turn and closes the modal', () => {

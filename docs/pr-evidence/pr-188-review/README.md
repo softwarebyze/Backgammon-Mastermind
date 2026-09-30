@@ -5,12 +5,12 @@ Addresses the five review findings raised on [PR #188](https://github.com/softwa
 follow-ups (#3 translations, #6 guidance mini-board RTL, #7 floating checker
 proxies mirrored twice).
 
-Board coordinate contract, which three of the findings depend on: React Native
-mirrors the board's flex rows itself in an RTL locale, so the rendered board is a
-left-right reflection of the LTR geometry. Every board-local x that reaches the
-screen (or arrives from a touch) has to cross that mirror exactly once. The fix
-puts that behind a single `BoardDimensions.rtl` flag plus a private `mirrorX()`
-in `board-point-layout.ts`, rather than mirroring at each call site.
+The board contract below is superseded. Locale RTL must not flip the board.
+Point order, home, the bar, and bear-off stay in the standard left-to-right
+layout. The board subtree is pinned LTR in `board-layout-direction.ts` (Yoga
+`direction: 'ltr'` on native, `dir="ltr"` on web). Screenshots in this folder
+that show a mirrored board are the discarded approach. Hint, tutor, and Tutor
+mode copy is translated in every shipped locale.
 
 ## 1. P1 — pass-and-play tutor hold was dropped (race)
 

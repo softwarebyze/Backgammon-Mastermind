@@ -15,6 +15,7 @@ import {
 import { useGame } from '@/features/game/use-game';
 import { cloneGameState } from '@/lib/game/snapshot';
 import { hapticLight } from '@/lib/haptics';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -73,28 +74,28 @@ function HintResult({ session, onPlay, onDismiss }: {
 }) {
   return (
     <View style={styles.resultWrap} testID="hint-result">
-      <Text style={styles.resultLabel}>Suggested move</Text>
+      <Text style={styles.resultLabel}>{translate('game.hint.suggested')}</Text>
       <Text style={styles.resultText} numberOfLines={2}>
         {formatHintNotation(session.engineMoves)}
       </Text>
       <View style={styles.resultActions}>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Play the suggested move"
+          accessibilityLabel={translate('game.hint.play_a11y')}
           testID="hint-play-move"
           onPress={onPlay}
           style={({ pressed }) => [styles.playBtn, pressed && styles.pressed]}
         >
-          <Text style={styles.playBtnText}>Play this move</Text>
+          <Text style={styles.playBtnText}>{translate('game.hint.play')}</Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Back to my turn, dismiss the hint"
+          accessibilityLabel={translate('game.hint.back_to_turn_a11y')}
           testID="hint-dismiss"
           onPress={onDismiss}
           style={({ pressed }) => [styles.dismissBtn, pressed && styles.pressed]}
         >
-          <Text style={styles.dismissText}>Back to my turn</Text>
+          <Text style={styles.dismissText}>{translate('game.hint.back_to_turn')}</Text>
         </Pressable>
       </View>
     </View>
@@ -110,8 +111,6 @@ function HintResult({ session, onPlay, onDismiss }: {
  *
  * If the player moves while the request is in flight, the stale result is
  * discarded — an answer for a dead position is worse than none.
- *
- * Demo branch: strings are English-only.
  */
 export function HintButton({ state, moveLogLength }: Props) {
   const [phase, setPhase] = useState<Phase>('idle');
@@ -191,7 +190,7 @@ export function HintButton({ state, moveLogLength }: Props) {
     return (
       <View style={styles.slot} testID="hint-loading">
         <ActivityIndicator size="small" color={GAME_PALETTE.accent} />
-        <Text style={styles.loadingText}>Finding the best move…</Text>
+        <Text style={styles.loadingText}>{translate('game.hint.finding')}</Text>
       </View>
     );
   }
@@ -200,12 +199,12 @@ export function HintButton({ state, moveLogLength }: Props) {
     return (
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Retry hint"
+        accessibilityLabel={translate('game.hint.error_a11y')}
         testID="hint-button"
         onPress={ask}
         style={({ pressed }) => [styles.hintBtn, pressed && styles.pressed]}
       >
-        <Text style={styles.hintBtnText}>Couldn't find a hint — tap to retry</Text>
+        <Text style={styles.hintBtnText}>{translate('game.hint.error')}</Text>
       </Pressable>
     );
   }
@@ -213,12 +212,12 @@ export function HintButton({ state, moveLogLength }: Props) {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Get a move hint"
+      accessibilityLabel={translate('game.hint.button_a11y')}
       testID="hint-button"
       onPress={ask}
       style={({ pressed }) => [styles.hintBtn, pressed && styles.pressed]}
     >
-      <Text style={styles.hintBtnText}>Hint</Text>
+      <Text style={styles.hintBtnText}>{translate('game.hint.button')}</Text>
     </Pressable>
   );
 }

@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Inicio nuevo juego",
       "undo_a11y": "Muévete."
     },
+    "hint": {
+      "back_to_turn": "Volver a mi turno",
+      "back_to_turn_a11y": "Volver a mi turno y cerrar la pista",
+      "button": "Pista",
+      "button_a11y": "Pedir una pista de jugada",
+      "error": "No hubo pista — toca para reintentar",
+      "error_a11y": "Reintentar la pista",
+      "finding": "Buscando la mejor jugada…",
+      "play": "Jugar esta jugada",
+      "play_a11y": "Jugar la jugada sugerida",
+      "suggested": "Jugada sugerida"
+    },
     "nudge": {
       "roll_first": "Primero tira los dados"
     },
@@ -66,7 +78,9 @@
       "section_board": "Tablero",
       "section_dice": "Dados",
       "sound": "Sonidos del juego",
-      "sound_hint": "Dados, capturas y victorias con sonido suave — respeta el modo silencio"
+      "sound_hint": "Dados, capturas y victorias con sonido suave — respeta el modo silencio",
+      "tutor_mode": "Modo tutor",
+      "tutor_mode_hint": "El motor revisa tus jugadas y marca los errores graves"
     },
     "review": {
       "back_to_live": "Volver a la partida en curso",
@@ -142,6 +156,63 @@
       "roll_dice": "Tira los dados — juegas con {{color}}",
       "white_turn": "Turno de las blancas",
       "your_turn": "Tu turno"
+    },
+    "tutor": {
+      "back_to_question": "Volver a la pregunta",
+      "back_to_question_a11y": "Volver sin mostrar la respuesta",
+      "band": {
+        "big_blunder": "Error grave",
+        "fine": "Bien",
+        "mistake": "Error",
+        "slip": "Desliz"
+      },
+      "best": "Mejor",
+      "best_played": "Mejor:",
+      "compare": {
+        "best": "Mejor",
+        "best_move": "Mejor jugada",
+        "both": "Ambas",
+        "mine": "La mía",
+        "show_a11y": "Mostrar el tablero {{label}}",
+        "start": "Inicio",
+        "starting_position": "Posición inicial",
+        "your_move": "Tu jugada",
+        "your_move_replayed": "Tu jugada, repetida"
+      },
+      "details_hide": "Ocultar detalles",
+      "details_hide_a11y": "Ocultar detalles",
+      "details_show": "Detalles",
+      "details_show_a11y": "Mostrar detalles",
+      "details_summary": "Tu jugada quedó en el puesto {{rank}} de {{count}}, con unos {{loss}} puntos por partida menos que la mejor.",
+      "equity_explainer": "El motor puntúa cada jugada según los puntos que espera ganar por partida, de media. Más alto es mejor.",
+      "equity_pts": "{{points}} pts",
+      "keep": "Quedarme con mi jugada",
+      "keep_a11y": "Quedarme con mi jugada y seguir",
+      "meter_a11y": "Gravedad del error: {{severity}}. Perdiste unos {{loss}} puntos por partida. Las bandas siguen a GNU Backgammon: dudosa a 0.04, mala a 0.08, muy mala a 0.16.",
+      "meter_caption": "Escala de errores (GNU Backgammon)",
+      "play_best": "Jugar la mejor jugada",
+      "play_best_a11y": "Deshacer mi jugada y jugar la mejor",
+      "question_body": "Tu jugada quedó en el puesto {{rank}} de {{count}} formas de jugar esta tirada. De media suma unos {{loss}} puntos por partida menos que la mejor.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (tuya)",
+      "replay_pause_a11y": "Pausar la repetición de {{label}}",
+      "replay_play_a11y": "Reproducir la repetición de {{label}}",
+      "reveal": "Mostrar la mejor jugada",
+      "reveal_a11y": "Revelar la jugada recomendada",
+      "rolled": "Sacaste {{dice}}",
+      "show_mine": "Mostrar mi jugada",
+      "show_mine_a11y": "Mostrar solo mi jugada, sin revelar la mejor",
+      "take_back": "Deshacer y reintentar",
+      "take_back_a11y": "Deshacer todo el turno e intentarlo de nuevo",
+      "take_back_retry_a11y": "Deshacer la jugada e intentarlo de nuevo",
+      "title_compare": "Tu jugada frente a la mejor",
+      "title_mine": "Tu jugada",
+      "turn_off": "Apagar el tutor",
+      "turn_off_a11y": "Apagar el modo tutor",
+      "undo_last": "Deshacer la última jugada",
+      "undo_last_a11y": "Deshacer solo la última jugada y repetirla",
+      "vs_best": "−{{delta}} frente a la mejor",
+      "you_played": "Jugaste:"
     }
   },
   "home": {

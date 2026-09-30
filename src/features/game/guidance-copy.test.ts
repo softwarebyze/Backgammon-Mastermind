@@ -3,10 +3,9 @@ import {
   blunderQuestionBody,
   blunderSeverity,
   candidateRows,
-  EQUITY_EXPLAINER,
+  equityExplainer,
   formatHintNotation,
   formatPoints,
-  ordinal,
 } from './guidance-copy';
 
 describe('guidance copy', () => {
@@ -32,20 +31,6 @@ describe('guidance copy', () => {
     });
   });
 
-  describe('ordinal', () => {
-    it('handles the teens correctly', () => {
-      expect(ordinal(1)).toBe('1st');
-      expect(ordinal(2)).toBe('2nd');
-      expect(ordinal(3)).toBe('3rd');
-      expect(ordinal(4)).toBe('4th');
-      expect(ordinal(11)).toBe('11th');
-      expect(ordinal(12)).toBe('12th');
-      expect(ordinal(13)).toBe('13th');
-      expect(ordinal(21)).toBe('21st');
-      expect(ordinal(22)).toBe('22nd');
-    });
-  });
-
   describe('formatPoints', () => {
     it('always shows a sign and two decimals', () => {
       expect(formatPoints(0.117)).toBe('+0.12');
@@ -57,7 +42,7 @@ describe('guidance copy', () => {
   describe('blunderQuestionBody', () => {
     it('explains the mistake without leaking the recommended move', () => {
       const body = blunderQuestionBody(3, 18, 0.117);
-      expect(body).toContain('3rd-best');
+      expect(body).toContain('ranked 3 of 18');
       expect(body).toContain('18 ways');
       expect(body).toContain('0.12 points per game');
       // The answer must stay hidden in the question view.
@@ -65,7 +50,7 @@ describe('guidance copy', () => {
     });
 
     it('reads naturally for a single-candidate position', () => {
-      expect(blunderQuestionBody(1, 1, 0.08)).toContain('best of 1 way');
+      expect(blunderQuestionBody(1, 1, 0.08)).toContain('ranked 1 of 1');
     });
   });
 
@@ -73,23 +58,23 @@ describe('guidance copy', () => {
     it('recaps rank, field size, and cost plainly', () => {
       const summary = blunderDetailsSummary(3, 18, 0.117);
       expect(summary).toBe(
-        'Your move ranked 3rd of 18, scoring about 0.12 points per game less than the best move.',
+        'Your move ranked 3 of 18, scoring about 0.12 points per game less than the best move.',
       );
     });
 
     it('defines points per game without circular wording', () => {
       // "average points a move earns" defined points with points; the new
       // explainer attributes the score to the engine and states it plainly.
-      expect(EQUITY_EXPLAINER).toBe(
+      expect(equityExplainer()).toBe(
         'The engine scores each move by the points it expects to win per game, on average. Higher is better.',
       );
-      expect(EQUITY_EXPLAINER).not.toMatch(/average points/i);
+      expect(equityExplainer()).not.toMatch(/average points/i);
     });
 
     it('keeps the first sentence and states the cost as a comparison', () => {
       const body = blunderQuestionBody(5, 12, 0.351);
       expect(body).toBe(
-        'Your move was the 5th-best of 12 ways to play this roll. '
+        'Your move ranked 5 of 12 ways to play this roll. '
         + 'On average, it scores about 0.35 points per game less than the best move.',
       );
     });
@@ -101,14 +86,14 @@ describe('guidance copy details', () => {
     it('labels the top row and marks the played row', () => {
       const rows = candidateRows([0.5, 0.42, 0.38], 3);
       expect(rows[0]).toEqual({ label: 'Best', equity: '+0.50 pts', vsBest: null });
-      expect(rows[1]).toEqual({ label: '2nd', equity: '+0.42 pts', vsBest: '−0.08 vs best' });
-      expect(rows[2]).toEqual({ label: '3rd (yours)', equity: '+0.38 pts', vsBest: '−0.12 vs best' });
+      expect(rows[1]).toEqual({ label: '2', equity: '+0.42 pts', vsBest: '−0.08 vs best' });
+      expect(rows[2]).toEqual({ label: '3 (yours)', equity: '+0.38 pts', vsBest: '−0.12 vs best' });
     });
 
     it('caps the displayed rows at four', () => {
       const rows = candidateRows([0.5, 0.4, 0.3, 0.2, 0.1, 0.0, -0.1], 7);
       expect(rows).toHaveLength(4);
-      expect(rows[3].label).toBe('4th');
+      expect(rows[3].label).toBe('4');
     });
 
     it('returns nothing for an empty candidate list', () => {

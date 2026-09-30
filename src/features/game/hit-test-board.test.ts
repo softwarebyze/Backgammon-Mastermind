@@ -24,7 +24,6 @@ const DIMS: BoardDimensions = {
   barWidth: 28,
   bearOffWidth: 38,
   middleHeight: 12,
-  rtl: false,
 };
 
 function tapOn(point: number, state = createPositionState()) {

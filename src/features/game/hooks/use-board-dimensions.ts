@@ -4,7 +4,6 @@ import { Platform, useWindowDimensions } from 'react-native';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { useBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { isRTL } from '@/lib/i18n';
 import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
 const BOARD_PADDING = 4;
@@ -45,15 +44,9 @@ export type BoardDimensions = {
   barWidth: number;
   bearOffWidth: number;
   middleHeight: number;
-  /**
-   * True when the board is laid out right-to-left. React Native mirrors the
-   * board's flex rows natively, so every board-local x must be mirrored about
-   * `boardWidth` to line up with what is actually on screen.
-   */
-  rtl: boolean;
 };
 
-function dimensionsForWidth(boardOuterWidth: number, compact = false, rtl = false): BoardDimensions {
+function dimensionsForWidth(boardOuterWidth: number, compact = false): BoardDimensions {
   const boardWidth = boardOuterWidth - BOARD_FRAME_WIDTH * 2;
   const barWidth = compact ? COMPACT_BAR_WIDTH : BAR_WIDTH;
   const bearOffWidth = compact ? COMPACT_BEAR_OFF_WIDTH : BEAR_OFF_WIDTH;
@@ -77,7 +70,6 @@ function dimensionsForWidth(boardOuterWidth: number, compact = false, rtl = fals
     barWidth,
     bearOffWidth,
     middleHeight: MIDDLE_HEIGHT,
-    rtl,
   };
 }
 
@@ -88,8 +80,6 @@ export type FitBoardToViewportArgs = {
   extraHeight?: number;
   /** narrower bar/bear-off for mini boards (guidance replays) */
   compact?: boolean;
-  /** mirror board-local x (see BoardDimensions.rtl) */
-  rtl?: boolean;
 };
 
 /**
@@ -100,14 +90,13 @@ export function fitBoardToViewport({
   maxOuterHeight,
   extraHeight = 0,
   compact = false,
-  rtl = false,
 }: FitBoardToViewportArgs): BoardDimensions {
   let width = maxOuterWidth;
-  let dims = dimensionsForWidth(width, compact, rtl);
+  let dims = dimensionsForWidth(width, compact);
   // linear shrink — ~40 iterations max; switch to binary search if this gets hot
   while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
     width -= 8;
-    dims = dimensionsForWidth(width, compact, rtl);
+    dims = dimensionsForWidth(width, compact);
   }
   return dims;
 }
@@ -192,7 +181,6 @@ export type ResolveBoardViewportArgs = {
   slotHeight?: number;
   extraChrome?: number;
   showPointNumbers?: boolean;
-  rtl?: boolean;
 };
 
 /**
@@ -207,7 +195,6 @@ export function resolveBoardViewport({
   slotHeight,
   extraChrome = 0,
   showPointNumbers = true,
-  rtl = false,
 }: ResolveBoardViewportArgs): BoardDimensions {
   const hasSlot = (slotWidth ?? 0) > 0 && (slotHeight ?? 0) > 0;
   const chrome = (platform === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME) + extraChrome;
@@ -217,7 +204,7 @@ export function resolveBoardViewport({
     ? slotHeight!
     : Math.max(FALLBACK_MIN_OUTER_HEIGHT, screenHeight - chrome);
   const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
-  return fitBoardToViewport({ maxOuterWidth, maxOuterHeight, extraHeight: railHeight, rtl });
+  return fitBoardToViewport({ maxOuterWidth, maxOuterHeight, extraHeight: railHeight });
 }
 
 export function useBoardDimensions(options?: {
@@ -242,7 +229,6 @@ export function useBoardDimensions(options?: {
         slotHeight: slot.height,
         extraChrome,
         showPointNumbers,
-        rtl: isRTL,
       }),
     [screenWidth, screenHeight, platform, slot.width, slot.height, extraChrome, showPointNumbers],
   );

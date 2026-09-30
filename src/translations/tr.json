@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Yeni oyun başla",
       "undo_a11y": "Undo hareketsiz"
     },
+    "hint": {
+      "back_to_turn": "Sırama dön",
+      "back_to_turn_a11y": "Sırama dön ve ipucunu kapat",
+      "button": "İpucu",
+      "button_a11y": "Hamle ipucu al",
+      "error": "İpucu bulunamadı — yeniden denemek için dokun",
+      "error_a11y": "İpucunu yeniden dene",
+      "finding": "En iyi hamle aranıyor…",
+      "play": "Bu hamleyi oyna",
+      "play_a11y": "Önerilen hamleyi oyna",
+      "suggested": "Önerilen hamle"
+    },
     "nudge": {
       "roll_first": "Önce zarları at"
     },
@@ -66,7 +78,9 @@
       "section_board": "Tahta",
       "section_dice": "Zarlar",
       "sound": "Oyun sesleri",
-      "sound_hint": "Hafif zar, kırma ve kazanma sesleri — sessiz moda uyar"
+      "sound_hint": "Hafif zar, kırma ve kazanma sesleri — sessiz moda uyar",
+      "tutor_mode": "Eğitmen modu",
+      "tutor_mode_hint": "Motor hamlelerini denetler ve büyük hataları işaretler"
     },
     "review": {
       "back_to_live": "Canlı oyuna dön",
@@ -142,6 +156,63 @@
       "roll_dice": "Zarları atın — {{color}} ile oynuyorsunuz",
       "white_turn": "Beyazın sırası",
       "your_turn": "Sıra sizde"
+    },
+    "tutor": {
+      "back_to_question": "Soruya dön",
+      "back_to_question_a11y": "Yanıtı göstermeden geri dön",
+      "band": {
+        "big_blunder": "Büyük hata",
+        "fine": "İyi",
+        "mistake": "Hata",
+        "slip": "Ufak kaçış"
+      },
+      "best": "En iyi",
+      "best_played": "En iyi:",
+      "compare": {
+        "best": "En iyi",
+        "best_move": "En iyi hamle",
+        "both": "İkisi",
+        "mine": "Benimki",
+        "show_a11y": "{{label}} tahtasını göster",
+        "start": "Başlangıç",
+        "starting_position": "Başlangıç konumu",
+        "your_move": "Hamlen",
+        "your_move_replayed": "Hamlen, yeniden"
+      },
+      "details_hide": "Ayrıntıları gizle",
+      "details_hide_a11y": "Ayrıntıları gizle",
+      "details_show": "Ayrıntılar",
+      "details_show_a11y": "Ayrıntıları göster",
+      "details_summary": "Hamlen {{count}} seçenekten {{rank}}. sırada ve en iyi hamleden oyun başına yaklaşık {{loss}} puan daha düşük.",
+      "equity_explainer": "Motor her hamleyi, oyun başına kazanmayı beklediği puanlara göre ortalamayla puanlar. Yüksek olan daha iyidir.",
+      "equity_pts": "{{points}} p",
+      "keep": "Hamlemi tut",
+      "keep_a11y": "Hamlemi tut ve devam et",
+      "meter_a11y": "Hata şiddeti: {{severity}}. Oyun başına yaklaşık {{loss}} puan kaybı. Ölçek GNU Backgammon’a göredir: 0.04’te şüpheli, 0.08’de kötü, 0.16’da çok kötü.",
+      "meter_caption": "Hata ölçeği (GNU Backgammon)",
+      "play_best": "En iyi hamleyi oyna",
+      "play_best_a11y": "Hamlemi geri al ve en iyi hamleyi oyna",
+      "question_body": "Hamlen bu zarı oynamanın {{count}} yolundan {{rank}}. sırada. Ortalama olarak en iyi hamleden oyun başına yaklaşık {{loss}} puan daha düşük.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (seninki)",
+      "replay_pause_a11y": "{{label}} tekrarını duraklat",
+      "replay_play_a11y": "{{label}} tekrarını oynat",
+      "reveal": "En iyi hamleyi göster",
+      "reveal_a11y": "Önerilen hamleyi aç",
+      "rolled": "{{dice}} attın",
+      "show_mine": "Hamlemi göster",
+      "show_mine_a11y": "En iyi hamleyi açmadan yalnız benim hamlemi göster",
+      "take_back": "Geri al ve yeniden dene",
+      "take_back_a11y": "Tüm turu geri al ve yeniden dene",
+      "take_back_retry_a11y": "Hamleyi geri al ve yeniden dene",
+      "title_compare": "Hamlen ile en iyi hamle",
+      "title_mine": "Hamlen",
+      "turn_off": "Eğitmeni kapat",
+      "turn_off_a11y": "Eğitmen modunu kapat",
+      "undo_last": "Son hamleyi geri al",
+      "undo_last_a11y": "Yalnız son hamleyi geri al ve yeniden oyna",
+      "vs_best": "−{{delta}} en iyiye göre",
+      "you_played": "Oynadın:"
     }
   },
   "home": {

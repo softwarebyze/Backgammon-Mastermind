@@ -27,6 +27,18 @@
       "start_new_game_a11y": "新しいゲームを始める",
       "undo_a11y": "Undo 移動"
     },
+    "hint": {
+      "back_to_turn": "自分の手番に戻る",
+      "back_to_turn_a11y": "自分の手番に戻り、ヒントを閉じる",
+      "button": "ヒント",
+      "button_a11y": "手のヒントを得る",
+      "error": "ヒントが見つかりません — タップして再試行",
+      "error_a11y": "ヒントを再試行",
+      "finding": "最善手を探しています…",
+      "play": "この手を指す",
+      "play_a11y": "提案された手を指す",
+      "suggested": "提案された手"
+    },
     "nudge": {
       "roll_first": "先にサイコロを振ってください"
     },
@@ -66,7 +78,9 @@
       "section_board": "ボード",
       "section_dice": "サイコロ",
       "sound": "ゲームサウンド",
-      "sound_hint": "サイコロ・ヒット・勝利のやさしい効果音 — マナーモードに従います"
+      "sound_hint": "サイコロ・ヒット・勝利のやさしい効果音 — マナーモードに従います",
+      "tutor_mode": "チューターモード",
+      "tutor_mode_hint": "エンジンが手を確認し、大きなミスを示します"
     },
     "review": {
       "back_to_live": "対局に戻る",
@@ -142,6 +156,63 @@
       "roll_dice": "サイコロを振る — {{color}}でプレイ",
       "white_turn": "白の番",
       "your_turn": "あなたの番"
+    },
+    "tutor": {
+      "back_to_question": "質問に戻る",
+      "back_to_question_a11y": "答えを見ずに戻る",
+      "band": {
+        "big_blunder": "大悪手",
+        "fine": "問題なし",
+        "mistake": "悪手",
+        "slip": "小さなミス"
+      },
+      "best": "最善",
+      "best_played": "最善:",
+      "compare": {
+        "best": "最善",
+        "best_move": "最善手",
+        "both": "両方",
+        "mine": "自分",
+        "show_a11y": "{{label}}の盤面を表示",
+        "start": "開始",
+        "starting_position": "開始局面",
+        "your_move": "あなたの手",
+        "your_move_replayed": "あなたの手（再表示）"
+      },
+      "details_hide": "詳細を隠す",
+      "details_hide_a11y": "詳細を隠す",
+      "details_show": "詳細",
+      "details_show_a11y": "詳細を表示",
+      "details_summary": "あなたの手は{{count}}手中{{rank}}位で、最善手より1ゲームあたり約{{loss}}点低くなります。",
+      "equity_explainer": "エンジンは各手を、1ゲームあたり平均して獲得すると見込む点数で評価します。高いほど良い手です。",
+      "equity_pts": "{{points}}点",
+      "keep": "自分の手を残す",
+      "keep_a11y": "自分の手を残して続ける",
+      "meter_a11y": "ミスの程度: {{severity}}。1ゲームあたり約{{loss}}点の損失。基準はGNU Backgammonです。0.04で疑わしい、0.08で悪い、0.16で非常に悪い。",
+      "meter_caption": "ミスの尺度（GNU Backgammon）",
+      "play_best": "最善手を指す",
+      "play_best_a11y": "自分の手を取り消して最善手を指す",
+      "question_body": "あなたの手は、この出目の指し方{{count}}通りのうち{{rank}}位でした。平均すると、最善手より1ゲームあたり約{{loss}}点低くなります。",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}}（あなた）",
+      "replay_pause_a11y": "{{label}}の再生を一時停止",
+      "replay_play_a11y": "{{label}}の再生を再生",
+      "reveal": "最善手を表示",
+      "reveal_a11y": "推奨手を表示",
+      "rolled": "{{dice}}が出ました",
+      "show_mine": "自分の手を表示",
+      "show_mine_a11y": "最善手を見せずに、自分の手だけ表示",
+      "take_back": "取り消してやり直す",
+      "take_back_a11y": "手番全体を取り消してやり直す",
+      "take_back_retry_a11y": "手を取り消してやり直す",
+      "title_compare": "あなたの手と最善手",
+      "title_mine": "あなたの手",
+      "turn_off": "チューターをオフ",
+      "turn_off_a11y": "チューターモードをオフ",
+      "undo_last": "直前の手を取り消す",
+      "undo_last_a11y": "直前の手だけ取り消して指し直す",
+      "vs_best": "最善より −{{delta}}",
+      "you_played": "指した手:"
     }
   },
   "home": {

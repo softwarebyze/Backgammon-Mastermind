@@ -72,9 +72,8 @@ export function GamePreferencesPanel({
         <View style={styles.divider} />
         <SettingToggleRow
           icon={<TutorIcon size={32} active={preferences.tutorMode} />}
-          // Demo branch: hint strings are English-only (see hint-button).
-          label="Tutor mode"
-          hint={showHints ? 'The engine checks your moves and flags big blunders' : undefined}
+          label={translate('game.preferences.tutor_mode')}
+          hint={showHints ? translate('game.preferences.tutor_mode_hint') : undefined}
           value={preferences.tutorMode}
           onChange={onTutorModeChange}
           testID="setting-toggle-tutor-mode"

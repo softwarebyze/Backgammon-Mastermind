@@ -20,7 +20,6 @@ function mockDims(): BoardDimensions {
     barWidth: 28,
     bearOffWidth: 32,
     checkerSize: 28,
-    rtl: false,
   };
 }
 

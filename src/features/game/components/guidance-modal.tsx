@@ -11,7 +11,7 @@ import {
   blunderQuestionBody,
   blunderSeverity,
   candidateRows,
-  EQUITY_EXPLAINER,
+  equityExplainer,
   formatHintNotation,
 } from '@/features/game/guidance-copy';
 import {
@@ -22,6 +22,7 @@ import {
 import { useGame } from '@/features/game/use-game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
+import { isRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -40,7 +41,9 @@ function DetailsSection({ session }: { session: GuidanceSession }) {
     <View style={styles.detailsWrap}>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={open ? 'Hide details' : 'Show details'}
+        accessibilityLabel={open
+          ? translate('game.tutor.details_hide_a11y')
+          : translate('game.tutor.details_show_a11y')}
         testID="guidance-details-toggle"
         onPress={() => {
           hapticLight();
@@ -49,7 +52,9 @@ function DetailsSection({ session }: { session: GuidanceSession }) {
         style={styles.detailsToggle}
       >
         <Text style={styles.detailsToggleText}>
-          {open ? 'Hide details ▾' : 'Details ▸'}
+          {open
+            ? `${translate('game.tutor.details_hide')} ▾`
+            : `${translate('game.tutor.details_show')} ${isRTL ? '◂' : '▸'}`}
         </Text>
       </Pressable>
       {open && (
@@ -57,7 +62,7 @@ function DetailsSection({ session }: { session: GuidanceSession }) {
           <Text style={styles.detailsSummary}>
             {blunderDetailsSummary(verdict.playedRank, verdict.candidateCount, verdict.loss)}
           </Text>
-          <Text style={styles.detailsExplainer}>{EQUITY_EXPLAINER}</Text>
+          <Text style={styles.detailsExplainer}>{equityExplainer()}</Text>
           <View style={styles.candidates}>
             {rows.map(row => (
               <View key={row.label} style={styles.candidateRow}>
@@ -135,11 +140,11 @@ function QuestionView({
         {blunderQuestionBody(verdict.playedRank, verdict.candidateCount, verdict.loss)}
       </Text>
       <BlunderMeter loss={verdict.loss} />
-      <Text style={styles.explainer}>{EQUITY_EXPLAINER}</Text>
+      <Text style={styles.explainer}>{equityExplainer()}</Text>
       <View style={styles.actions}>
         <ActionButton
-          label="Take back & retry"
-          a11y="Take back the whole turn and try again"
+          label={translate('game.tutor.take_back')}
+          a11y={translate('game.tutor.take_back_a11y')}
           testID="guidance-take-back"
           onPress={onTakeBack}
           style={styles.btnPrimary}
@@ -147,8 +152,8 @@ function QuestionView({
         />
         {canUndoLastMove && (
           <ActionButton
-            label="Undo last move"
-            a11y="Undo just the last move and replay it"
+            label={translate('game.tutor.undo_last')}
+            a11y={translate('game.tutor.undo_last_a11y')}
             testID="guidance-undo-last-move"
             onPress={onUndoLastMove}
             style={styles.btnSecondary}
@@ -156,32 +161,32 @@ function QuestionView({
           />
         )}
         <ActionButton
-          label="Show the best move"
-          a11y="Reveal the recommended move"
+          label={translate('game.tutor.reveal')}
+          a11y={translate('game.tutor.reveal_a11y')}
           testID="guidance-reveal"
           onPress={onRevealFull}
           style={styles.btnSecondary}
           labelStyle={styles.btnSecondaryLabel}
         />
         <ActionButton
-          label="Show my move"
-          a11y="Show only my move, without revealing the best move"
+          label={translate('game.tutor.show_mine')}
+          a11y={translate('game.tutor.show_mine_a11y')}
           testID="guidance-show-mine"
           onPress={onShowMine}
           style={styles.btnSecondary}
           labelStyle={styles.btnSecondaryLabel}
         />
         <ActionButton
-          label="Keep my move"
-          a11y="Keep my move and continue"
+          label={translate('game.tutor.keep')}
+          a11y={translate('game.tutor.keep_a11y')}
           testID="guidance-keep-move"
           onPress={onKeepMove}
           style={styles.btnSecondary}
           labelStyle={styles.btnSecondaryLabel}
         />
         <ActionButton
-          label="Turn Tutor off"
-          a11y="Turn Tutor mode off"
+          label={translate('game.tutor.turn_off')}
+          a11y={translate('game.tutor.turn_off_a11y')}
           testID="guidance-turn-off"
           onPress={onTurnOff}
           style={styles.btnLink}
@@ -199,12 +204,13 @@ function QuestionView({
  * stays readable on phones.
  */
 type CompareViewMode = 'mine' | 'best' | 'both' | 'start';
+type TxKey = Parameters<typeof translate>[0];
 
-const COMPARE_VIEW_OPTIONS: { mode: CompareViewMode; label: string }[] = [
-  { mode: 'mine', label: 'Mine' },
-  { mode: 'best', label: 'Best' },
-  { mode: 'both', label: 'Both' },
-  { mode: 'start', label: 'Start' },
+const COMPARE_VIEW_OPTIONS: { mode: CompareViewMode; label: TxKey }[] = [
+  { mode: 'mine', label: 'game.tutor.compare.mine' },
+  { mode: 'best', label: 'game.tutor.compare.best' },
+  { mode: 'both', label: 'game.tutor.compare.both' },
+  { mode: 'start', label: 'game.tutor.compare.start' },
 ];
 
 function CompareBoards({
@@ -226,7 +232,7 @@ function CompareBoards({
         <AnimatedPathBoard
           baseState={session.questionState}
           moves={session.myMoves}
-          label="Your move, replayed"
+          label={translate('game.tutor.compare.your_move_replayed')}
           tone="mine"
           boardWidth={boardWidth}
           testID="guidance-compare-mine"
@@ -241,39 +247,42 @@ function CompareBoards({
   return (
     <View>
       <View style={styles.viewToggle} testID="guidance-view-toggle">
-        {COMPARE_VIEW_OPTIONS.map(({ mode, label }) => (
-          <Pressable
-            key={mode}
-            accessibilityRole="button"
-            accessibilityLabel={`Show ${label} board`}
-            accessibilityState={{ selected: viewMode === mode }}
-            testID={`guidance-view-${mode}`}
-            onPress={() => {
-              hapticLight();
-              setViewMode(mode);
-            }}
-            style={[
-              styles.viewToggleBtn,
-              viewMode === mode && styles.viewToggleBtnActive,
-            ]}
-          >
-            <Text
+        {COMPARE_VIEW_OPTIONS.map(({ mode, label }) => {
+          const viewLabel = translate(label);
+          return (
+            <Pressable
+              key={mode}
+              accessibilityRole="button"
+              accessibilityLabel={translate('game.tutor.compare.show_a11y', { label: viewLabel })}
+              accessibilityState={{ selected: viewMode === mode }}
+              testID={`guidance-view-${mode}`}
+              onPress={() => {
+                hapticLight();
+                setViewMode(mode);
+              }}
               style={[
-                styles.viewToggleText,
-                viewMode === mode && styles.viewToggleTextActive,
+                styles.viewToggleBtn,
+                viewMode === mode && styles.viewToggleBtnActive,
               ]}
             >
-              {label}
-            </Text>
-          </Pressable>
-        ))}
+              <Text
+                style={[
+                  styles.viewToggleText,
+                  viewMode === mode && styles.viewToggleTextActive,
+                ]}
+              >
+                {viewLabel}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
       <View style={styles.compareBoardsColumn}>
         {showMine && (
           <AnimatedPathBoard
             baseState={session.questionState}
             moves={session.myMoves}
-            label="Your move"
+            label={translate('game.tutor.compare.your_move')}
             tone="mine"
             boardWidth={boardWidth}
             testID="guidance-compare-mine"
@@ -283,7 +292,7 @@ function CompareBoards({
           <AnimatedPathBoard
             baseState={session.questionState}
             moves={session.engineMoves}
-            label="Best move"
+            label={translate('game.tutor.compare.best_move')}
             tone="engine"
             boardWidth={boardWidth}
             testID="guidance-compare-engine"
@@ -293,7 +302,7 @@ function CompareBoards({
           <AnimatedPathBoard
             baseState={session.questionState}
             moves={[]}
-            label="Starting position"
+            label={translate('game.tutor.compare.starting_position')}
             tone="mine"
             boardWidth={boardWidth}
             testID="guidance-compare-start"
@@ -330,8 +339,8 @@ function SolutionActions({
     <View style={styles.actions}>
       {mineOnly && (
         <ActionButton
-          label="Show the best move"
-          a11y="Reveal the recommended move"
+          label={translate('game.tutor.reveal')}
+          a11y={translate('game.tutor.reveal_a11y')}
           testID="guidance-reveal"
           onPress={onRevealBest}
           style={styles.btnSecondary}
@@ -340,8 +349,8 @@ function SolutionActions({
       )}
       {!mineOnly && (
         <ActionButton
-          label="Play best move"
-          a11y="Take back my move and play the best move"
+          label={translate('game.tutor.play_best')}
+          a11y={translate('game.tutor.play_best_a11y')}
           testID="guidance-play-best"
           onPress={onPlayBestMove}
           style={styles.btnPrimary}
@@ -349,24 +358,24 @@ function SolutionActions({
         />
       )}
       <ActionButton
-        label="Back to question"
-        a11y="Go back without the answer"
+        label={translate('game.tutor.back_to_question')}
+        a11y={translate('game.tutor.back_to_question_a11y')}
         testID="guidance-back-to-question"
         onPress={onBackToQuestion}
         style={styles.btnSecondary}
         labelStyle={styles.btnSecondaryLabel}
       />
       <ActionButton
-        label="Take back & retry"
-        a11y="Take back the move and try again"
+        label={translate('game.tutor.take_back')}
+        a11y={translate('game.tutor.take_back_retry_a11y')}
         testID="guidance-take-back"
         onPress={onTakeBack}
         style={mineOnly ? styles.btnPrimary : styles.btnSecondary}
         labelStyle={mineOnly ? styles.btnPrimaryLabel : styles.btnSecondaryLabel}
       />
       <ActionButton
-        label="Keep my move"
-        a11y="Keep my move and continue"
+        label={translate('game.tutor.keep')}
+        a11y={translate('game.tutor.keep_a11y')}
         testID="guidance-keep-move"
         onPress={onKeepMove}
         style={styles.btnSecondary}
@@ -399,12 +408,10 @@ function SolutionView({
   return (
     <>
       <Text style={styles.title}>
-        {mineOnly ? 'Your move' : 'Your move vs the best move'}
+        {mineOnly ? translate('game.tutor.title_mine') : translate('game.tutor.title_compare')}
       </Text>
       <Text style={styles.rollSubtitle} testID="guidance-roll">
-        You rolled
-        {' '}
-        {formatRoll(session.questionState.dice)}
+        {translate('game.tutor.rolled', { dice: formatRoll(session.questionState.dice) })}
       </Text>
       <CompareBoards session={session} boardWidth={boardWidth} mineOnly={mineOnly} />
       {mineOnly
@@ -412,7 +419,7 @@ function SolutionView({
             <View style={styles.paths}>
               <View style={styles.pathRow}>
                 <Text style={styles.pathText}>
-                  You played:
+                  {translate('game.tutor.you_played')}
                   {' '}
                   {formatHintNotation(session.myMoves)}
                 </Text>
@@ -424,14 +431,14 @@ function SolutionView({
               <View style={styles.paths}>
                 <View style={styles.pathRow}>
                   <Text style={styles.pathText}>
-                    You played:
+                    {translate('game.tutor.you_played')}
                     {' '}
                     {formatHintNotation(session.myMoves)}
                   </Text>
                 </View>
                 <View style={styles.pathRow}>
                   <Text style={styles.pathText}>
-                    Best:
+                    {translate('game.tutor.best_played')}
                     {' '}
                     {formatHintNotation(session.engineMoves)}
                   </Text>
@@ -464,7 +471,6 @@ function SolutionView({
  * question; "Show my move" shows only their own path and notation, keeping
  * the best move hidden until explicitly requested. Nothing is ever auto-replaced.
  *
- * Demo branch: strings are English-only.
  */
 export function GuidanceModal() {
   const session = useGuidance();
