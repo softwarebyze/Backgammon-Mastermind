@@ -1,4 +1,4 @@
-// Demo-only: exercises the real bgsage engine end-to-end inside the app.
+// Exercises the real bgsage engine end-to-end inside the app.
 // Only rendered on the developer screen (non-production builds). Not part of
 // the shipped product.
 import type { SageBoardPoint, SageGameState, SageMove, SagePlayer } from 'expo-bgsage';
@@ -75,7 +75,7 @@ export function SageLabSection() {
   return (
     <SettingsContainer>
       <View style={styles.body}>
-        <Text style={styles.title}>Sage engine lab (demo)</Text>
+        <Text style={styles.title}>Sage engine lab</Text>
         <Text style={styles.blurb}>
           Runs the real bgsage neural-net engine at 2-ply on the opening 3-1
           (black to move). Book answer: the standard split-and-build play.
