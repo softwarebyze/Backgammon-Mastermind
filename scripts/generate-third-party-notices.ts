@@ -40,6 +40,10 @@ type Upstream = {
   modified?: boolean;
 };
 
+function cmp(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
 function readJson<T>(absPath: string): T {
   return JSON.parse(readFileSync(absPath, 'utf8')) as T;
 }
@@ -72,8 +76,10 @@ export function collectRuntimeDeps(rootDir = root) {
     if (warnings.length) {
       throw new Error(`Dependency license scan failed:\n${warnings.join('\n')}`);
     }
+    // Byte order, not localeCompare. Node 22 on Linux and Node 24 on macOS
+    // collate punctuation differently, which reordered the notice and failed CI.
     return Object.values(licenses).sort((a, b) =>
-      a.name.localeCompare(b.name) || a.version.localeCompare(b.version),
+      cmp(a.name, b.name) || cmp(a.version, b.version),
     );
   }
   finally {
@@ -211,6 +217,22 @@ ${packageNotices(deps)}
 `;
 }
 
+function headingDiff(current: string, next: string): string {
+  const currentHeadings = current.split('\n').filter(line => line.startsWith('### '));
+  const nextHeadings = next.split('\n').filter(line => line.startsWith('### '));
+  const lines: string[] = [];
+  const count = Math.max(currentHeadings.length, nextHeadings.length);
+  for (let i = 0; i < count && lines.length < 40; i++) {
+    if (currentHeadings[i] !== nextHeadings[i]) {
+      lines.push(`- ${currentHeadings[i] ?? '(end)'}`);
+      lines.push(`+ ${nextHeadings[i] ?? '(end)'}`);
+    }
+  }
+  if (lines.length > 0)
+    return lines.join('\n');
+  return 'Package headings match; license text differs.';
+}
+
 function main(): void {
   const next = build();
   const outputs: Array<[string, string]> = [
@@ -226,6 +248,11 @@ function main(): void {
   }
   if (process.argv.includes('--check')) {
     console.error('Third-party notices are out of date. Run: pnpm notices');
+    for (const [path, content] of changed) {
+      const current = existsSync(path) ? readFileSync(path, 'utf8') : '';
+      console.error(`\n--- ${basename(path)}`);
+      console.error(headingDiff(current, content));
+    }
     process.exit(1);
   }
   for (const [path, content] of changed) {

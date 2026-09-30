@@ -24,13 +24,19 @@ const upstream = JSON.parse(read('expo-bgsage/upstream.json')) as {
 
 describe('third-party notices', () => {
   it('is up to date with the generator (run: pnpm notices)', () => {
-    expect(() =>
-      execFileSync(process.execPath, ['--import', 'tsx', 'scripts/generate-third-party-notices.ts', '--check'], {
-        cwd: root,
-        stdio: 'pipe',
-        encoding: 'utf8',
-      }),
-    ).not.toThrow();
+    expect(() => {
+      try {
+        execFileSync(process.execPath, ['--import', 'tsx', 'scripts/generate-third-party-notices.ts', '--check'], {
+          cwd: root,
+          stdio: 'pipe',
+          encoding: 'utf8',
+        });
+      }
+      catch (error) {
+        const failed = error as { stderr?: string; message: string };
+        throw new Error(failed.stderr || failed.message);
+      }
+    }).not.toThrow();
   });
 
   it('names the pinned bgsage commit and license', () => {
