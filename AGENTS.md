@@ -93,10 +93,13 @@ out of them and vice versa.
 
 ### Third-party licensing
 
-`THIRD_PARTY_NOTICES.md` is **generated** — never edit it by hand. It inventories
-required direct and transitive production packages and preserves supplied license
-texts, including MIT. Its missing-license list and optional/native dependencies
-need review before distribution; generation alone is not a complete license audit.
+`THIRD_PARTY_NOTICES.md` is **generated** — never edit it by hand. It uses the pinned
+`@callstack/licenses` API from react-native-legal to scan direct and transitive
+production packages and extract license text, including MIT. Scan warnings fail
+generation. The scanner selects one license file per package; additional notices,
+its missing-license list, and optional/native dependencies need review before
+distribution. Generation alone is not a complete license audit. The local
+`file:` expo-bgsage module is handled by the project-specific MPL/source notice.
 The generator also writes `assets/licenses/third_party_notices.json`, which
 `expo-asset` embeds explicitly in native builds. Run
 `pnpm notices` after adding/removing a dependency, changing the bgsage pin, or

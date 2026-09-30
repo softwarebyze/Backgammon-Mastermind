@@ -97,7 +97,7 @@ console.log(JSON.stringify(collectRuntimeDeps(${JSON.stringify(fixture)}).map(de
 
   it('fails instead of silently omitting a missing required package', () => {
     rmSync(join(fixture, 'node_modules/parent/node_modules/child'), { recursive: true });
-    expect(discover).toThrow(/Missing required dependency child/);
+    expect(discover).toThrow(/Dependency license scan failed:/);
   });
 });
 

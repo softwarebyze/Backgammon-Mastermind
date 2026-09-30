@@ -12,31 +12,22 @@
 //   * the OFL text is the copy shipped in assets/licenses/
 //
 // The only prose lives in this file. To change the notice, change it here.
+import type * as Callstack from '@callstack/licenses/node';
 import { createHash } from 'node:crypto';
-import { existsSync, readdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+// The root require export selects Callstack's Node API under tsx/CommonJS.
+const { scanDependencies } = createRequire(import.meta.url)('@callstack/licenses') as typeof Callstack;
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_FILE = join(root, 'THIRD_PARTY_NOTICES.md');
 const NATIVE_NOTICES_FILE = join(root, 'assets/licenses/third_party_notices.json');
 const UPSTREAM_FILE = join(root, 'expo-bgsage/upstream.json');
 const OFL_FILE = join(root, 'assets/licenses/Inter-OFL-1.1.txt');
-
-type LicenseLike = {
-  type?: string;
-};
-
-type PackageManifest = {
-  name?: string;
-  dependencies?: Record<string, string>;
-  optionalDependencies?: Record<string, string>;
-  repository?: string | { url?: string };
-  version?: string;
-  license?: unknown;
-  licenses?: Array<string | LicenseLike> | LicenseLike;
-};
 
 type Upstream = {
   name: string;
@@ -49,12 +40,6 @@ type Upstream = {
   modified?: boolean;
 };
 
-type Dep = {
-  name: string;
-  pkg: PackageManifest;
-  path: string;
-};
-
 function readJson<T>(absPath: string): T {
   return JSON.parse(readFileSync(absPath, 'utf8')) as T;
 }
@@ -63,128 +48,64 @@ function sha256Of(absPath: string): string {
   return createHash('sha256').update(readFileSync(absPath)).digest('hex');
 }
 
-/** Normalises the several shapes npm licenses arrive in to a single string. */
-function readLicense(pkg: PackageManifest): string | null {
-  const raw = pkg.license ?? pkg.licenses;
-  if (!raw) {
-    return null;
+/** Callstack owns dependency traversal and license extraction; fail on skipped packages. */
+export function collectRuntimeDeps(rootDir = root) {
+  const manifest = readJson<{ dependencies: Record<string, string> }>(join(rootDir, 'package.json'));
+  // Callstack does not support file: packages. Our local engine is covered by
+  // the pinned-source/MPL section below, using the source manifest and license.
+  const dependencies = { ...manifest.dependencies };
+  delete dependencies['expo-bgsage'];
+  const scratch = mkdtempSync(join(tmpdir(), 'bgsage-notices-'));
+  const cwd = process.cwd();
+  const warn = console.warn;
+  const warnings: string[] = [];
+  try {
+    const input = join(scratch, 'package.json');
+    writeFileSync(input, JSON.stringify({ dependencies }));
+    process.chdir(rootDir);
+    console.warn = (...args: unknown[]) => warnings.push(args.map(String).join(' '));
+    const licenses = scanDependencies(input, () => ({
+      includeDevDependencies: false,
+      includeTransitiveDependencies: true,
+      includeOptionalDependencies: false,
+    }));
+    if (warnings.length) {
+      throw new Error(`Dependency license scan failed:\n${warnings.join('\n')}`);
+    }
+    return Object.values(licenses).sort((a, b) =>
+      a.name.localeCompare(b.name) || a.version.localeCompare(b.version),
+    );
   }
-  if (typeof raw === 'string') {
-    return raw;
+  finally {
+    console.warn = warn;
+    process.chdir(cwd);
+    rmSync(scratch, { recursive: true, force: true });
   }
-  if (Array.isArray(raw)) {
-    return raw.map(l => (typeof l === 'string' ? l : l.type ?? '')).filter(Boolean).join(' AND ');
-  }
-  // Older manifests use `{ licenses: { type } }`; the union above cannot prove
-  // which branch we are in once narrowed by runtime checks.
-  return (raw as LicenseLike).type ?? null;
 }
 
-/**
- * Follow required production dependencies using Node's installed resolution.
- * Optional dependencies are not included: their installation varies by platform.
- * This inventory is conservative and includes production tools as well as code
- * bundled into the app; it is not a claim that every npm package ships at runtime.
- */
-export function collectRuntimeDeps(rootDir = root): Dep[] {
-  const found = new Map<string, Dep>();
-  const seen = new Set<string>();
-  function visit(manifestPath: string): void {
-    const pkg = readJson<PackageManifest>(manifestPath);
-    const resolver = createRequire(manifestPath);
-    for (const name of Object.keys(pkg.dependencies ?? {}).sort()) {
-      if (name in (pkg.optionalDependencies ?? {})) {
-        continue;
-      }
-      const candidate = (resolver.resolve.paths('__dependency_manifest__') ?? [])
-        .map(dir => join(dir, name, 'package.json'))
-        .find(path => existsSync(path));
-      if (!candidate) {
-        throw new Error(`Missing required dependency ${name}, referenced by ${pkg.name ?? manifestPath}. Run pnpm install.`);
-      }
-      const installed = realpathSync(candidate);
-      if (seen.has(installed)) {
-        continue;
-      }
-      seen.add(installed);
-      // A local file: package may have a stale installed copy; read its source
-      // manifest and license for the artifact we will install from this repo.
-      const source = name === 'expo-bgsage' && manifestPath === join(rootDir, 'package.json')
-        ? join(rootDir, 'expo-bgsage/package.json')
-        : installed;
-      const dep = readJson<PackageManifest>(source);
-      found.set(`${dep.name ?? name}@${dep.version ?? ''}`, { name: dep.name ?? name, pkg: dep, path: dirname(source) });
-      visit(installed);
-    }
-  }
-  visit(join(rootDir, 'package.json'));
-  return [...found.values()].sort((a, b) =>
-    a.name.localeCompare(b.name) || (a.pkg.version ?? '').localeCompare(b.pkg.version ?? ''),
-  );
-}
+function packageNotices(deps: ReturnType<typeof collectRuntimeDeps>): string {
+  const missing = deps.filter(dep => !dep.content).map(dep => `- ${dep.name}@${dep.version}`);
+  const notices = deps.map((dep) => {
+    const text = dep.content?.trim().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return `### ${dep.name}@${dep.version}\n\nDeclared license: ${dep.type ?? 'UNDECLARED'}\n\n${text ? `<pre>\n${text}\n</pre>` : 'No license text found; review upstream notices before distribution.'}`;
+  }).join('\n\n');
+  return `## Production dependency notices
 
-type LicenseText = { text: string; packages: string[] };
+Scanned by @callstack/licenses (from react-native-legal), with transitive
+production dependencies enabled and dev/optional dependencies excluded.
+This includes tools that may not ship in the binary. The scanner selects one
+license file per package; additional notices, native libraries and vendored code
+need separate review. The local expo-bgsage module is covered above.
 
-function packageNotices(deps: Dep[]): string {
-  const texts = new Map<string, LicenseText>();
-  const missing: string[] = [];
-  for (const dep of deps) {
-    const label = `${dep.name}@${dep.pkg.version ?? 'local'}`;
-    const files = readdirSync(dep.path, { withFileTypes: true })
-      .filter(entry => entry.isFile() && /^(?:licen[cs]e|copying|copyright|notice)(?:[._-]|$)/i.test(entry.name))
-      .map(entry => entry.name)
-      .sort();
-    if (files.length === 0) {
-      missing.push(label);
-    }
-    for (const file of files) {
-      const text = readFileSync(join(dep.path, file), 'utf8').trim();
-      const key = createHash('sha256').update(text).digest('hex');
-      const group = texts.get(key) ?? { text, packages: [] };
-      group.packages.push(`${label} (${file})`);
-      texts.set(key, group);
-    }
-  }
-  const inventory = deps.map(dep => `| ${dep.name} | ${dep.pkg.version ?? 'local'} | ${readLicense(dep.pkg) ?? 'UNDECLARED'} |`).join('\n');
-  const licenseTexts = [...texts.values()].map(group =>
-    `### ${group.packages[0]}\n\nApplies to:\n${group.packages.map(name => `- ${name}`).join('\n')}\n\n<pre>\n${group.text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}\n</pre>`,
-  ).join('\n\n');
-  return `## Production dependency inventory
+## Packages without license text found by the scanner
 
-This follows required direct and transitive npm dependencies from the installed
-tree. It includes build tools that may not ship in an app binary, and excludes
-platform-dependent optional packages. Native libraries and vendored code need
-separate review. Regenerate using the lockfile's installation before release.
+An SPDX label alone does not complete attribution. Review upstream notices for
+any of these packages included in the distributed application:
+${missing.join('\n') || '- None'}
 
-MIT, BSD, ISC, and other permissive licenses can require preservation of
-copyright and license notices. Their supplied notices are reproduced below.
+## License texts supplied by npm packages
 
-| Package | Version | Declared license |
-| --- | --- | --- |
-${inventory}
-
-## Packages without a supplied top-level license file
-
-These packages declare a license but their npm distribution does not provide a
-top-level license/notice file. This generator does not invent copyright holders
-or imply that an SPDX label alone completes attribution. Review the upstream
-notices for any of these included in the distributed application:
-${missing.map(name => `- ${name}`).join('\n') || '- None'}
-
-## License and notice files supplied by npm packages
-
-Identical texts are grouped without removing package-specific copyright notices.
-
-${licenseTexts}`;
-}
-
-function licenseTally(deps: Dep[]): Array<[string, number]> {
-  const byLicense = new Map<string, number>();
-  for (const { pkg } of deps) {
-    const lic = readLicense(pkg) ?? 'UNDECLARED';
-    byLicense.set(lic, (byLicense.get(lic) ?? 0) + 1);
-  }
-  return [...byLicense.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+${notices}`;
 }
 
 function bgsageSection(upstream: Upstream): string {
@@ -256,7 +177,6 @@ embedded into native builds by the expo-asset config plugin.`;
 export function build(): string {
   const upstream = readJson<Upstream>(UPSTREAM_FILE);
   const deps = collectRuntimeDeps();
-  const tally = licenseTally(deps);
 
   return `# Third-party notices
 
@@ -265,11 +185,7 @@ export function build(): string {
 
 This file records the pinned Open Sage engine, bundled Inter fonts, and
 required production npm dependency notices. It is generated from installed
-packages; review the inventory limitations and missing-license list below.
-
-## Summary
-
-${tally.map(([lic, count]) => `- \`${lic}\` — ${count} package${count === 1 ? '' : 's'}`).join('\n')}
+packages using @callstack/licenses; review the scan limitations and missing-license list below.
 
 ${bgsageSection(upstream)}
 
