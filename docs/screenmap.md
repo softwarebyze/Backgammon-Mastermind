@@ -1,5 +1,14 @@
 # Screenmap CI
 
+## Viewer
+
+Multi-platform maps are `formatVersion` 3. The public site [app.screenmap.dev](https://app.screenmap.dev) still only opens versions 1–2, so CI comments link to our pinned visualiser on GitHub Pages:
+
+https://softwarebyze.github.io/Backgammon-Mastermind/
+
+(Source: `aleqsio/screenmap@c54219e`, branch `screenmap-viewer`.)
+
+
 Visual navigation maps for this Expo app. Workflows: `.github/workflows/screenmap-pr.yml` (PRs) and `screenmap-baseline.yml` (`main`). Both capture **iOS + Android**, then merge into one `.scrmap` with a platform switcher.
 
 CI pins `aleqsio/screenmap@c54219e` (current `main`). Marketplace `@v1` is iOS-only and rejects the `platform` input.
