@@ -133,6 +133,21 @@ export default antfu(
       meta: { name: '.json' },
       ...i18nJsonPlugin.processors['.json'],
     },
+    settings: {
+      // New Learn curriculum keys, intentionally English-only while the
+      // curriculum stabilizes (decision 2026-09-24: do not translate the
+      // partial curriculum yet). i18next falls back to English at runtime.
+      // Keep in sync with PENDING_TRANSLATION_KEYS in
+      // src/lib/i18n/resources.test.ts.
+      'i18n-json/ignore-keys': [
+        'learn.lessons.pip_count',
+        'learn.lessons.strategies',
+        'learn.quiz.pip_ahead',
+        'learn.quiz.pip_meaning',
+        'learn.quiz.strat_blitz',
+        'learn.quiz.strat_prime',
+      ],
+    },
     rules: {
       ...i18nJsonPlugin.configs.recommended.rules,
       'i18n-json/valid-message-syntax': [

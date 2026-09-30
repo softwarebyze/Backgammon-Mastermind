@@ -10,6 +10,7 @@ import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-i
 import { PointNumbersIcon } from '@/features/game/components/settings-ui/point-numbers-icon';
 import { SettingToggleRow } from '@/features/game/components/settings-ui/setting-toggle-row';
 import { SoundIcon } from '@/features/game/components/settings-ui/sound-icon';
+import { TutorIcon } from '@/features/game/components/settings-ui/tutor-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { continuousRadius } from '@/lib/ui/native-styles';
@@ -25,6 +26,7 @@ type Props = {
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
   onFastComputerChange: (value: boolean) => void;
+  onTutorModeChange: (value: boolean) => void;
   showHints?: boolean;
 };
 
@@ -38,6 +40,7 @@ export function GamePreferencesPanel({
   onAutoMoveWhenForcedChange,
   onSoundEnabledChange,
   onFastComputerChange,
+  onTutorModeChange,
   showHints = false,
 }: Props) {
   return (
@@ -65,6 +68,16 @@ export function GamePreferencesPanel({
           hint={showHints ? translate('game.preferences.point_numbers_hint') : undefined}
           value={preferences.showPointNumbers}
           onChange={onShowPointNumbersChange}
+        />
+        <View style={styles.divider} />
+        <SettingToggleRow
+          icon={<TutorIcon size={32} active={preferences.tutorMode} />}
+          // Demo branch: hint strings are English-only (see hint-button).
+          label="Tutor mode"
+          hint={showHints ? 'The engine checks your moves and flags big blunders' : undefined}
+          value={preferences.tutorMode}
+          onChange={onTutorModeChange}
+          testID="setting-toggle-tutor-mode"
         />
       </View>
 

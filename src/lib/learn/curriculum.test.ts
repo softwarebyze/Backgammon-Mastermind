@@ -18,8 +18,10 @@ describe('curriculum', () => {
   });
 
   it('routes the last lesson to graduation', () => {
-    expect(getNextLessonId('bearing-off')).toBe('graduation');
     expect(getNextLessonId('goal-board')).toBe('direction-setup');
+    expect(getNextLessonId('bearing-off')).toBe('pip-count');
+    expect(getNextLessonId('pip-count')).toBe('strategies');
+    expect(getNextLessonId('strategies')).toBe('graduation');
   });
 
   it('ensures every tryMove accepted path is legal from its position', () => {

@@ -150,6 +150,8 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
     positionLabel,
     effectivePly,
     focusedPly: plies.scrubberPly,
+    /** Player whose turn is being reviewed (null when live). */
+    reviewedPlayer: plies.isReviewing ? focusedTurn?.player ?? null : null,
     ...nav,
     isLooping: looping,
     toggleReplay,

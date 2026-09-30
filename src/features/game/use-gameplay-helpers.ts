@@ -17,6 +17,8 @@ type Options = {
   isAnimating: boolean;
   /** Undo left a redo stack — don't auto-play or a forced move wipes redo. */
   hasRedo: boolean;
+  /** Tutor prompt open or verdict pending — hold all automation. */
+  paused?: boolean;
   doRollDice: () => void;
   doMove: (move: Move) => void;
   doMoveSequence: (moves: Move[]) => void;
@@ -27,6 +29,7 @@ export function useGameplayHelpers({
   state,
   isAnimating,
   hasRedo,
+  paused = false,
   doRollDice,
   doMove,
   doMoveSequence,
@@ -45,7 +48,7 @@ export function useGameplayHelpers({
 
     clear();
 
-    if (!state || isAnimating || hasRedo || state.phase === 'game-over') {
+    if (!state || isAnimating || hasRedo || paused || state.phase === 'game-over') {
       return clear;
     }
 
@@ -91,6 +94,7 @@ export function useGameplayHelpers({
     state,
     isAnimating,
     hasRedo,
+    paused,
     preferences.autoRoll,
     preferences.autoMoveWhenForced,
     doRollDice,

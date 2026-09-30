@@ -1,6 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
-import type { GameState } from '@/lib/game/types';
+import type { GameState, Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { View } from 'react-native';
@@ -84,6 +84,8 @@ type Props = {
   aidsOverride?: BoardAidsOverride;
   /** Extra points to paint as targets (identify / coach emphasis). */
   emphasisPoints?: ReadonlySet<number>;
+  /** Whose point of view the point-number rails are labeled from. */
+  numberPerspective?: Player;
   emphasisBar?: boolean;
 };
 
@@ -109,6 +111,7 @@ export function BoardView({
   aidsOverride,
   emphasisPoints,
   emphasisBar = false,
+  numberPerspective = 'white',
 }: Props) {
   const { preferences } = useGamePreferences();
   const showMoveHints = aidsOverride?.showMoveHints ?? preferences.showMoveHints;
@@ -294,7 +297,7 @@ export function BoardView({
       }}
     >
       {showPointNumbers && (
-        <PointNumberRail side="top" dimensions={dimensions} />
+        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} />
       )}
 
       <View
@@ -383,7 +386,7 @@ export function BoardView({
       </View>
 
       {showPointNumbers && (
-        <PointNumberRail side="bottom" dimensions={dimensions} />
+        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} />
       )}
     </View>
   );

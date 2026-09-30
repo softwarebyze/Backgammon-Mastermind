@@ -605,3 +605,12 @@ export function calculatePipCount(state: GameState, player: Player): number {
   pips += state.bar[player] * 25;
   return pips;
 }
+
+/**
+ * True when no move has been played yet this turn: every granted die is
+ * still unused. Doubles grant four dice, any other roll grants two.
+ */
+export function isTurnStart(state: GameState): boolean {
+  const granted = state.dice[0] === state.dice[1] ? 4 : 2;
+  return state.remainingDice.length === granted;
+}

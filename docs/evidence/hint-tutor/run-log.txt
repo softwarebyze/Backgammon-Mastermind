@@ -1,0 +1,15 @@
+goto / (home)
+home screen visible; clicking "vs Computer"
+game screen action slot visible
+clicking roll-dice-button
+clicking roll-dice-button
+Hint button visible on fresh human turn
+tapping Hint (WASM engine loads on first use, may take a while)
+RESULT PILL: Sage suggests:6/2 · 8/2 (660ms)tap to dismiss
+screenshot: hint-arrows.png
+result pill after dismiss: gone (good)
+goto /settings
+Tutor Mode toggle found
+Tutor Mode toggled
+toggle after reload: {"aria":null,"role":"switch","text":"Tutor modeThe engine checks your moves and flags big blunders"}
+ALL STEPS COMPLETED

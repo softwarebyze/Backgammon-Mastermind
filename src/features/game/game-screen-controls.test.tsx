@@ -24,6 +24,7 @@ function renderComputerControls(phase: 'rolling' | 'moving') {
       liveDiceState={state}
       isHumanTurn={false}
       isComputerTurn
+      moveLogLength={0}
       onRoll={jest.fn()}
       onReset={jest.fn()}
       onSkipComputer={jest.fn()}
