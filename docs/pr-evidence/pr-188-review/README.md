@@ -93,11 +93,8 @@ English fragments.
   verification ran with the compare modal open, which intercepted taps on the
   strategy line, so the translated inline line is evidenced above while the
   expanded-modal screenshot still shows the pre-translation fallback.
-- **Left alone on purpose:** the hint button label `Get a move hint`
-  (`src/features/game/components/hint-button.tsx`) is still hardcoded English,
-  matching the explicit decision in `game-preferences-panel.tsx` that hint/tutor
-  copy stays English on the demo branch. Flagged here rather than translated
-  unilaterally.
+- Hint, tutor, and Tutor mode copy has since been moved onto translation keys
+  in every shipped locale. This note originally left that copy in English.
 
 ## 4. P2 — stale `dieIndex` could consume the wrong die or nothing
 

@@ -20,11 +20,9 @@ function placeholders(value: string) {
 }
 
 /**
- * New Learn curriculum keys, intentionally English-only while the curriculum
- * stabilizes (decision 2026-09-24: do not translate the partial curriculum
- * yet), plus the game.strategy.* coaching copy, which needs a native-speaker
- * pass on backgammon terminology before it ships. i18next falls back to English
- * for these at runtime.
+ * Learn curriculum keys that stay English while that curriculum stabilizes
+ * (decision 2026-09-24). Hint, tutor, and strategy copy are translated.
+ * i18next falls back to English for these keys at runtime.
  * Keep in sync with `settings['i18n-json/ignore-keys']` in eslint.config.mjs.
  */
 const PENDING_TRANSLATION_KEYS = [
