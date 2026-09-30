@@ -19,7 +19,7 @@ on:
       - 'expo-bgsage/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
-      - 'scripts/sync-bgsage-vendor.mjs'
+      - 'scripts/sync-bgsage-vendor.ts'
       - 'src/features/game/**'
 
 concurrency:

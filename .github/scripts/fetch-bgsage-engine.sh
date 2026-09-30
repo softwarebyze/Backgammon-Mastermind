@@ -11,10 +11,20 @@
 #   - cpp/include/bgbot/*.h and the 17 engine .cpp files
 #   - the 21 unique production weight files (stage11 backgame_pair_phased)
 #   - data/bearoff_1sided.db
+#
+# The pinned commit lives in expo-bgsage/upstream.json — the single source of
+# truth shared with THIRD_PARTY_NOTICES.md (see scripts/generate-third-party-notices.ts).
+# Both env vars below are escape hatches for trying a different commit locally.
 set -euo pipefail
 
-REF="${BGSAGE_REF:-d8325a491168062df1047ffd998f3a5dfb426a0c}"
-REPO="${BGSAGE_REPO:-https://github.com/markbgsage/bgsage.git}"
+UPSTREAM_JSON="expo-bgsage/upstream.json"
+read_json_string() {
+  # Minimal reader: pulls "key": "value" out of the flat upstream.json.
+  node -e "const d=require('./$1');const v=d['$2'];if(typeof v!=='string')process.exit(1);process.stdout.write(v)"
+}
+
+REF="${BGSAGE_REF:-$(read_json_string "$UPSTREAM_JSON" ref)}"
+REPO="${BGSAGE_REPO:-$(read_json_string "$UPSTREAM_JSON" repo)}"
 VENDOR="expo-bgsage/vendor/bgsage"
 ASSETS="expo-bgsage/assets"
 IOS_VENDOR="expo-bgsage/ios/vendor/bgsage"

@@ -69,32 +69,24 @@ jest.mock('expo-localization', () => ({
   ]),
 }));
 
-// Mock react-native-mmkv
-jest.mock('react-native-mmkv', () => ({
-  MMKV: jest.fn(() => ({
-    set: jest.fn(),
-    getString: jest.fn(),
-    getNumber: jest.fn(),
-    getBoolean: jest.fn(),
-    delete: jest.fn(),
-    remove: jest.fn(),
-    clearAll: jest.fn(),
-    getAllKeys: jest.fn(() => []),
-  })),
-  useMMKVString: jest.fn((_key: string) => [undefined, jest.fn()]),
-  useMMKVNumber: jest.fn((_key: string) => [undefined, jest.fn()]),
-  useMMKVBoolean: jest.fn((_key: string) => [undefined, jest.fn()]),
-  useMMKVObject: jest.fn((_key: string) => [undefined, jest.fn()]),
-  createMMKV: jest.fn(() => ({
-    set: jest.fn(),
-    getString: jest.fn(),
-    getNumber: jest.fn(),
-    getBoolean: jest.fn(),
-    delete: jest.fn(),
-    remove: jest.fn(),
-    clearAll: jest.fn(),
-    getAllKeys: jest.fn(() => []),
-  })),
+// Mock the Nitro native boundary, NOT react-native-mmkv.
+//
+// MMKV v4 builds on Nitro, and its index pulls in getMMKVFactory at module
+// scope -> react-native-nitro-modules -> NativeNitroModules, which throws
+// under Jest. MMKV's own isTest() guard only short-circuits createMMKV() at
+// CALL time, so mocking the boundary here is what lets the import succeed.
+//
+// With this in place createMMKV() returns MMKV's real in-memory mock, so
+// storage genuinely round-trips and the useMMKV* hooks actually re-render.
+// Faking react-native-mmkv instead would stub out that behaviour (and the
+// MMKV class it mocked no longer exists in v4).
+jest.mock('react-native-nitro-modules', () => ({
+  NitroModules: {
+    createHybridObject: jest.fn(() => {
+      throw new Error('Nitro hybrid objects are unavailable in tests');
+    }),
+  },
+  installWorkletsSupport: jest.fn(),
 }));
 
 // Global window object setup for React Native testing

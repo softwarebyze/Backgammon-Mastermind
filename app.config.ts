@@ -92,7 +92,7 @@ const appPlugins: ExpoConfig['plugins'] = [
       },
     },
   ],
-  'expo-asset',
+  ['expo-asset', { assets: ['./assets/licenses/third_party_notices.json'] }],
   [
     'expo-audio',
     {
