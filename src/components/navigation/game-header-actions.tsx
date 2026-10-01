@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import { HeaderButton } from 'expo-router/react-navigation';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
 
