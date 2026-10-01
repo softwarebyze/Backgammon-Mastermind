@@ -2,6 +2,7 @@ import { createInitialState } from '@/lib/game/constants';
 import { cleanup, fireEvent, render, screen } from '@/lib/test-utils';
 
 import { GamePipStatusBar } from './game-pip-status-bar';
+import { StrategyMark } from './strategy-icon';
 
 jest.mock('@/lib/i18n', () => ({
   translate: (key: string) => key,
@@ -38,6 +39,10 @@ describe('gamePipStatusBar', () => {
     expect(screen.queryByText('game.strategy.tip.developing')).toBeNull();
     fireEvent.press(screen.getByTestId('strategy-line'));
     expect(screen.getByText('game.strategy.tip.developing')).toBeTruthy();
+    expect(screen.queryByTestId('strategy-compare')).toBeNull();
+
+    fireEvent.press(screen.getByTestId('strategy-explanation-close'));
+    expect(screen.getByTestId('strategy-mark')).toBeTruthy();
   });
 
   it('labels the pip counts accessibly per player', () => {
@@ -46,6 +51,21 @@ describe('gamePipStatusBar', () => {
 
     expect(screen.getByLabelText('game.review.player_white pip count 167')).toBeTruthy();
     expect(screen.getByLabelText('game.review.player_black pip count 167')).toBeTruthy();
+  });
+});
+
+describe('strategy mark', () => {
+  it('shows the plan emoji', () => {
+    const { rerender } = render(<StrategyMark strategy="running" size={18} />);
+    expect(screen.getByText('🏃')).toBeTruthy();
+    rerender(<StrategyMark strategy="blitz" size={18} />);
+    expect(screen.getByText('⚔️')).toBeTruthy();
+    rerender(<StrategyMark strategy="priming" size={18} />);
+    expect(screen.getByText('🧱')).toBeTruthy();
+    rerender(<StrategyMark strategy="holding" size={18} />);
+    expect(screen.getByText('⚓')).toBeTruthy();
+    rerender(<StrategyMark strategy="backgame" size={18} />);
+    expect(screen.getByText('🕸️')).toBeTruthy();
   });
 });
 
