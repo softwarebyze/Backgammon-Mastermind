@@ -3,9 +3,12 @@ import { useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
+  boardMaxWidth,
+  checkerCap,
   gameStageMaxWidth,
   isDesktopLayout,
   isLandscapeLayout,
+  landscapeBoardPaneWidth,
   landscapeChromeColumnWidth,
 } from '@/lib/ui/game-chrome';
 
@@ -47,17 +50,21 @@ export function useLayoutMetrics() {
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const landscape = isLandscapeLayout(width, height);
-  const desktop = isDesktopLayout(width);
   const innerWidth = innerLayoutWidth(width, insets.left, insets.right);
+  const chromeWidth = landscapeChromeColumnWidth(innerWidth);
 
   return {
     width,
     height,
     insets,
     landscape,
-    desktop,
+    desktop: isDesktopLayout(innerWidth),
     innerWidth,
-    chromeWidth: landscapeChromeColumnWidth(innerWidth),
+    chromeWidth,
+    boardMaxWidth: boardMaxWidth(innerWidth),
+    checkerCap: checkerCap(innerWidth),
+    /** Board pane beside the chrome rail; `undefined` when chrome stacks below the board. */
+    boardPaneWidth: landscape ? landscapeBoardPaneWidth(innerWidth, chromeWidth) : undefined,
     stageMaxWidth: landscape ? gameStageMaxWidth(innerWidth) : undefined,
     contentInsets: contentEdgePadding(insets),
   };

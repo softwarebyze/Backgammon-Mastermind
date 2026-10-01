@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Zwart wint",
       "computer_wins": "Computer wint",
+      "off_short": "eraf",
+      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} van 15 eraf",
       "white_wins": "🏆 Wit wint!",
       "you_win": "🏆 Jij wint!"
     },

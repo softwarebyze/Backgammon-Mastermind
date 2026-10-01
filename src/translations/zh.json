@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "黑方获胜",
       "computer_wins": "电脑获胜",
+      "off_short": "已出",
+      "pips_a11y": "{{player}}：{{pips}} 点，已出 {{off}}/15",
       "white_wins": "🏆 白方获胜！",
       "you_win": "🏆 你赢了！"
     },

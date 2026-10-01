@@ -56,41 +56,45 @@ export function MoveReviewBar({
 
   return (
     <View style={[styles.wrap, isNavigating && styles.wrapBusy]}>
-      <View style={styles.labelRow}>
-        <Text style={isReviewing ? styles.positionLabel : styles.scrubberHint} numberOfLines={1}>
-          {isReviewing && positionLabel
-            ? positionLabel
-            : translate('game.review.scrubber_hint')}
-        </Text>
-        {isReviewing && canReplay && onToggleReplay
-          ? (
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={isLooping
-                  ? translate('game.review.pause_replay')
-                  : translate('game.review.replay')}
-                onPress={onToggleReplay}
-                style={({ pressed }) => [
-                  styles.replayBtn,
-                  isLooping && styles.replayBtnActive,
-                  pressed && styles.navBtnPressed,
-                ]}
-                hitSlop={8}
-              >
-                <Feather
-                  name={isLooping ? 'pause' : 'rotate-cw'}
-                  size={14}
-                  color={isLooping ? '#2A1A08' : GAME_PALETTE.accent}
-                />
-                <Text style={[styles.replayText, isLooping && styles.replayTextActive]}>
-                  {isLooping
-                    ? translate('game.review.pause_replay')
-                    : translate('game.review.replay')}
-                </Text>
-              </Pressable>
-            )
-          : null}
-      </View>
+      {/* Live: the turn pills are self-evidently tappable — no instruction row.
+          Reviewing: the position label carries real information. */}
+      {isReviewing
+        ? (
+            <View style={styles.labelRow}>
+              <Text style={styles.positionLabel} numberOfLines={1}>
+                {positionLabel ?? translate('game.review.scrubber_hint')}
+              </Text>
+              {canReplay && onToggleReplay
+                ? (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={isLooping
+                        ? translate('game.review.pause_replay')
+                        : translate('game.review.replay')}
+                      onPress={onToggleReplay}
+                      style={({ pressed }) => [
+                        styles.replayBtn,
+                        isLooping && styles.replayBtnActive,
+                        pressed && styles.navBtnPressed,
+                      ]}
+                      hitSlop={8}
+                    >
+                      <Feather
+                        name={isLooping ? 'pause' : 'rotate-cw'}
+                        size={14}
+                        color={isLooping ? '#2A1A08' : GAME_PALETTE.accent}
+                      />
+                      <Text style={[styles.replayText, isLooping && styles.replayTextActive]}>
+                        {isLooping
+                          ? translate('game.review.pause_replay')
+                          : translate('game.review.replay')}
+                      </Text>
+                    </Pressable>
+                  )
+                : null}
+            </View>
+          )
+        : null}
 
       <View style={styles.row}>
         <NavButton
@@ -183,12 +187,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     letterSpacing: 0.2,
     ...interFont('semibold'),
-  },
-  scrubberHint: {
-    textAlign: 'center',
-    color: GAME_PALETTE.textMuted,
-    fontSize: 12,
-    ...interFont('regular'),
   },
   replayBtn: {
     flexDirection: 'row',

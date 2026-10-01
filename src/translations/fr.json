@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Les Noirs gagnent",
       "computer_wins": "L'ordinateur gagne",
+      "off_short": "sorties",
+      "pips_a11y": "{{player}} : {{pips}} pips, {{off}} sur 15 sorties",
       "white_wins": "🏆 Les Blancs gagnent !",
       "you_win": "🏆 Vous gagnez !"
     },

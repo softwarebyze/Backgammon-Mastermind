@@ -2,10 +2,18 @@
 export const GAME_CHROME_MAX_WIDTH = 480;
 
 /**
- * Board never grows past this. Wrap the playing surface to the same cap so
- * wide-web brown flanks sit outside the stage, not inside a 100% board wrap.
+ * Board never grows past this on phones and tablets. Wrap the playing surface
+ * to the same cap so wide-web brown flanks sit outside the stage, not inside
+ * a 100% board wrap.
  */
 export const MAX_BOARD_WIDTH = 720;
+
+/** Desktop / wide windows: the board may use the height it has. */
+export const DESKTOP_MAX_BOARD_WIDTH = 1000;
+
+/** Checker diameter caps: 32 keeps phone/tablet pixel-identical; desktop may go to 48. */
+export const CHECKER_CAP = 32;
+const DESKTOP_CHECKER_CAP = 48;
 
 /** Desktop / macOS window — board+chrome sit in a centered stage. */
 export const DESKTOP_MIN_WIDTH = 1024;
@@ -18,6 +26,9 @@ export const SETTINGS_MAX_WIDTH = 640;
 
 /** Minimum width for dice / coach / review when they sit beside the board. */
 const LANDSCAPE_CHROME_MIN = 220;
+
+/** Gap between the board pane and the chrome rail in landscape. */
+export const LANDSCAPE_GAP = 8;
 
 /**
  * Desktop chrome rail cap. Phone landscape may use up to GAME_CHROME_MAX_WIDTH
@@ -36,6 +47,16 @@ export function isLandscapeLayout(width: number, height: number): boolean {
 /** True on desktop web and wide macOS / iPad landscape windows. */
 export function isDesktopLayout(width: number): boolean {
   return width >= DESKTOP_MIN_WIDTH;
+}
+
+/** Widest the board may be for this window. */
+export function boardMaxWidth(innerWidth: number): number {
+  return isDesktopLayout(innerWidth) ? DESKTOP_MAX_BOARD_WIDTH : MAX_BOARD_WIDTH;
+}
+
+/** Largest checker the board may draw for this window. */
+export function checkerCap(innerWidth: number): number {
+  return isDesktopLayout(innerWidth) ? DESKTOP_CHECKER_CAP : CHECKER_CAP;
 }
 
 /**
@@ -57,14 +78,10 @@ export function gameStageMaxWidth(screenWidth: number): number | undefined {
   if (screenWidth < DESKTOP_MIN_WIDTH) {
     return undefined;
   }
-  return MAX_BOARD_WIDTH + 16 + landscapeChromeColumnWidth(screenWidth);
+  return boardMaxWidth(screenWidth) + LANDSCAPE_GAP + landscapeChromeColumnWidth(screenWidth);
 }
 
 /** Explicit board pane in landscape so flex min-width cannot overflow the chrome rail. */
-export function landscapeBoardPaneWidth(
-  innerWidth: number,
-  chromeWidth: number,
-  gap = 8,
-): number {
-  return Math.min(MAX_BOARD_WIDTH, Math.max(200, innerWidth - chromeWidth - gap));
+export function landscapeBoardPaneWidth(innerWidth: number, chromeWidth: number): number {
+  return Math.min(boardMaxWidth(innerWidth), Math.max(200, innerWidth - chromeWidth - LANDSCAPE_GAP));
 }

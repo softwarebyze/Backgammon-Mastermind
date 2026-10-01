@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Siyah Kazandı",
       "computer_wins": "Bilgisayar Kazandı",
+      "off_short": "dışarı",
+      "pips_a11y": "{{player}}: {{pips}} pip, 15 pulun {{off}} tanesi çıkarıldı",
       "white_wins": "🏆 Beyaz Kazandı!",
       "you_win": "🏆 Kazandın!"
     },

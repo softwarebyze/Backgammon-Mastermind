@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "As Pretas venceram",
       "computer_wins": "O computador venceu",
+      "off_short": "fora",
+      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} de 15 retiradas",
       "white_wins": "🏆 As Brancas venceram!",
       "you_win": "🏆 Você venceu!"
     },

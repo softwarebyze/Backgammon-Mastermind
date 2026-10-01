@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Ganan las negras",
       "computer_wins": "Gana el ordenador",
+      "off_short": "fuera",
+      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} de 15 retiradas",
       "white_wins": "🏆 ¡Ganan las blancas!",
       "you_win": "🏆 ¡Has ganado!"
     },

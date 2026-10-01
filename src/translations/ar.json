@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "فاز الأسود",
       "computer_wins": "فاز الكمبيوتر",
+      "off_short": "خارج",
+      "pips_a11y": "{{player}}: {{pips}} نقطة، {{off}} من 15 خرجت",
       "white_wins": "🏆 فاز الأبيض!",
       "you_win": "🏆 لقد فزت!"
     },

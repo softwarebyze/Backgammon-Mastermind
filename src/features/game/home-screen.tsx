@@ -7,13 +7,13 @@ import { useCallback, useState } from 'react';
 import {
   Image,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
@@ -179,12 +179,13 @@ export function HomeScreen() {
           )}
 
           {canResume && (
-            <Pressable
+            <HoverPressable
               accessibilityRole="button"
               accessibilityLabel={translate('home.resume_a11y')}
               testID="resume-game-button"
-              style={({ pressed }) => [
+              style={({ pressed, hovered }) => [
                 styles.modeBtn,
+                hovered && styles.modeBtnHover,
                 landscape ? styles.modeBtnLandscape : null,
                 styles.resumeBtn,
                 pressed && styles.pressed,
@@ -200,16 +201,17 @@ export function HomeScreen() {
                   ? null
                   : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>}
               </View>
-            </Pressable>
+            </HoverPressable>
           )}
 
           {canReview && (
-            <Pressable
+            <HoverPressable
               accessibilityRole="button"
               accessibilityLabel={translate('home.review_a11y')}
               testID="review-last-game-button"
-              style={({ pressed }) => [
+              style={({ pressed, hovered }) => [
                 styles.modeBtn,
+                hovered && styles.modeBtnHover,
                 landscape ? styles.modeBtnLandscape : null,
                 styles.resumeBtn,
                 pressed && styles.pressed,
@@ -225,14 +227,15 @@ export function HomeScreen() {
                   ? null
                   : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.review_sub')}</Text>}
               </View>
-            </Pressable>
+            </HoverPressable>
           )}
 
-          <Pressable
+          <HoverPressable
             accessibilityRole="button"
             accessibilityLabel={translate('learn.home_cta')}
-            style={({ pressed }) => [
+            style={({ pressed, hovered }) => [
               styles.modeBtn,
+              hovered && styles.modeBtnHover,
               landscape ? styles.modeBtnLandscape : null,
               styles.learnBtn,
               pressed && styles.pressed,
@@ -254,13 +257,14 @@ export function HomeScreen() {
                     </Text>
                   )}
             </View>
-          </Pressable>
+          </HoverPressable>
 
-          <Pressable
+          <HoverPressable
             accessibilityRole="button"
             accessibilityLabel={translate('home.vs_computer_a11y')}
-            style={({ pressed }) => [
+            style={({ pressed, hovered }) => [
               styles.modeBtn,
+              hovered && styles.modeBtnHover,
               landscape ? styles.modeBtnLandscape : null,
               styles.primaryBtn,
               pressed && styles.pressed,
@@ -276,13 +280,14 @@ export function HomeScreen() {
                 ? null
                 : <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>}
             </View>
-          </Pressable>
+          </HoverPressable>
 
-          <Pressable
+          <HoverPressable
             accessibilityRole="button"
             accessibilityLabel={translate('home.two_players_a11y')}
-            style={({ pressed }) => [
+            style={({ pressed, hovered }) => [
               styles.modeBtn,
+              hovered && styles.modeBtnHover,
               landscape ? styles.modeBtnLandscape : null,
               styles.secondaryBtn,
               pressed && styles.pressed,
@@ -298,7 +303,7 @@ export function HomeScreen() {
                 ? null
                 : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
             </View>
-          </Pressable>
+          </HoverPressable>
         </View>
       </ScrollView>
     </>
@@ -428,6 +433,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 10,
     minHeight: 44,
+  },
+  modeBtnHover: {
+    borderColor: GAME_PALETTE.accent,
   },
   pressed: {
     opacity: 0.88,

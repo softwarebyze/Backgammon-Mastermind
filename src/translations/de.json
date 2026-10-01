@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Schwarz gewinnt",
       "computer_wins": "Computer gewinnt",
+      "off_short": "raus",
+      "pips_a11y": "{{player}}: {{pips}} Pips, {{off}} von 15 herausgewürfelt",
       "white_wins": "🏆 Weiß gewinnt!",
       "you_win": "🏆 Du gewinnst!"
     },

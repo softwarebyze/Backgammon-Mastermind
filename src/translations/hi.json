@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "काला जीता",
       "computer_wins": "कंप्यूटर जीता",
+      "off_short": "बाहर",
+      "pips_a11y": "{{player}}: {{pips}} पिप्स, 15 में से {{off}} बाहर",
       "white_wins": "🏆 सफ़ेद जीता!",
       "you_win": "🏆 आप जीत गए!"
     },

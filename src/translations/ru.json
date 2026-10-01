@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "Чёрные победили",
       "computer_wins": "Компьютер победил",
+      "off_short": "снято",
+      "pips_a11y": "{{player}}: {{pips}} пипсов, снято {{off}} из 15",
       "white_wins": "🏆 Белые победили!",
       "you_win": "🏆 Вы победили!"
     },

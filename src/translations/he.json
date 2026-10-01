@@ -91,6 +91,8 @@
     "status": {
       "black_wins": "השחור ניצח",
       "computer_wins": "המחשב ניצח",
+      "off_short": "בחוץ",
+      "pips_a11y": "{{player}}: {{pips}} פיפים, {{off}} מתוך 15 הוצאו",
       "white_wins": "🏆 הלבן ניצח!",
       "you_win": "🏆 ניצחת!"
     },

@@ -3,7 +3,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import {
   boardHitExtraCandidates,
@@ -11,7 +11,6 @@ import {
   resolvePanOrigin,
 } from '@/features/game/hit-test-board';
 import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
-import { useOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
@@ -115,7 +114,6 @@ export function BoardView({
   const showDirectionOverlay
     = aidsOverride?.showDirectionOverlay ?? preferences.showDirectionOverlay;
   const showPointNumbers = aidsOverride?.showPointNumbers ?? preferences.showPointNumbers;
-  const ceremonyVisible = useOpeningCeremonyVisible();
   const surfaceRef = useRef<View>(null);
   const {
     overlay: dragOverlay,
@@ -162,6 +160,15 @@ export function BoardView({
     return getMovableSources(state);
   }, [showLiveHints, showHighlights, showMoveHints, state]);
 
+  // Web hover: any checker the player could pick up, independent of the hint pref.
+  const hoverSources = useMemo(() => {
+    if (Platform.OS !== 'web' || !interactionEnabled || !showHighlights
+      || state.phase !== 'moving' || state.selectedPoint !== null) {
+      return new Set<number>();
+    }
+    return getMovableSources(state);
+  }, [interactionEnabled, showHighlights, state]);
+
   const bearOffLegal = useMemo(
     () => showHighlights
       && state.selectedPoint !== null
@@ -171,7 +178,6 @@ export function BoardView({
 
   const showDirection = showDirectionOverlay
     && !isReviewing
-    && !ceremonyVisible
     && state.phase !== 'game-over'
     && state.phase !== 'opening-roll';
 
@@ -241,6 +247,7 @@ export function BoardView({
         isSelected={selectedPoint === idx}
         isLegalTarget={legalTargets.has(idx) || (emphasisPoints?.has(idx) ?? false)}
         isMovableSource={movableSources.has(idx)}
+        isHoverable={hoverSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
         onPress={() => dispatchFatFingerPress(idx)}
