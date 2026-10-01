@@ -12,6 +12,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GameBoardSection } from '@/features/game/components/game-board-section';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
+import { GuidanceModal } from '@/features/game/components/guidance-modal';
 import { MoveReviewBar } from '@/features/game/components/move-review-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
@@ -19,6 +20,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { REVIEW_SLOT_HEIGHT } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
+import { resolveNumberPerspective } from '@/features/game/point-numbering';
 import { useOpeningReveal } from '@/features/game/use-opening-reveal';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { openingCopy, openingTray } from '@/lib/game/opening-display';
@@ -156,6 +158,7 @@ function GameChromeStack({
           isHumanTurn={!isComputerTurn && interactionEnabled}
           isComputerTurn={isComputerTurn}
           isReviewing={review.isReviewing}
+          moveLogLength={moveLog.length}
           captionOverride={
             input.inputNudge === 'roll'
               ? translate('game.nudge.roll_first')
@@ -197,6 +200,14 @@ export function GameScreenLayout({
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
+  // Point numbers are labeled from the point of view of the side whose turn
+  // is on screen: live that's the player to move; in review it's the player
+  // whose turn is being reviewed.
+  const numberPerspective = resolveNumberPerspective({
+    isReviewing: review.isReviewing,
+    reviewedPlayer: review.reviewedPlayer,
+    currentPlayer: state.currentPlayer,
+  });
   // Live state only — review scrub must not drive the opening reveal.
   const reveal = useOpeningReveal(input.state, input.handleRoll);
   const opening = openingTray(live, reveal);
@@ -270,9 +281,13 @@ export function GameScreenLayout({
           pathSegments={board.pathSegments}
           pathFadeOutMs={board.pathFadeOutMs}
           input={input}
+          numberPerspective={numberPerspective}
         />
       </View>
       <WinConfettiOverlay burstKey={winBurstKey} />
+      <View style={styles.tutorSlot} pointerEvents="box-none">
+        <GuidanceModal />
+      </View>
       {landscape
         ? (
             <ScrollView
@@ -362,6 +377,10 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     overflow: 'hidden',
     zIndex: 1,
+  },
+  tutorSlot: {
+    ...StyleSheet.absoluteFill,
+    zIndex: 55,
   },
   controlsLayer: {
     width: '100%',

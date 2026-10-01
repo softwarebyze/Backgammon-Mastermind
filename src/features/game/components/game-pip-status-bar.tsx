@@ -1,10 +1,13 @@
-import type { GameState, Player } from '@/lib/game';
-import { StyleSheet, Text, View } from 'react-native';
+import type { StrategyKey } from '@/features/game/strategy';
+import type { GameState } from '@/lib/game';
+import type { TxKeyPath } from '@/lib/i18n';
+import { useState } from 'react';
 
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { calculatePipCount } from '@/lib/game/moves';
-import { playerLabel } from '@/lib/game/turn-display';
-import { translate } from '@/lib/i18n';
+import { classifyStrategy } from '@/features/game/strategy';
+import { calculatePipCount } from '@/lib/game';
+import { isRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -12,136 +15,239 @@ type Props = {
   state: GameState;
 };
 
-export function GamePipStatusBar({ state }: Props) {
-  const activePlayer
-    = state.phase === 'game-over' ? null : state.currentPlayer;
+/** Muted glanceable dot per strategy — tasteful, not flashy. */
+const STRATEGY_DOT: Record<StrategyKey, string> = {
+  running: '#7BC98B',
+  blitz: '#E08A6D',
+  priming: '#8FA8D8',
+  holding: '#D8C88F',
+  backgame: '#C98F7B',
+  developing: '#8A8A92',
+};
 
-  return (
-    <View style={styles.pipRow}>
-      <PipCount
-        player="white"
-        state={state}
-        dotColor="#F2EAD3"
-        isActive={activePlayer === 'white'}
-      />
-      <PipCount
-        player="black"
-        state={state}
-        dotColor="#1E1E30"
-        isActive={activePlayer === 'black'}
-      />
-      {state.phase === 'game-over'
-        ? (
-            <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
-          )
-        : null}
-    </View>
-  );
+/** Resolve `game.strategy.<group>.<strategyKey>` without losing key typing. */
+function strategyMessage(group: 'label' | 'tip', key: StrategyKey) {
+  return translate(`game.strategy.${group}.${key}` as TxKeyPath);
 }
 
 /**
- * Pip count is the racing metric players actually read; borne-off only
- * matters once someone starts bearing off, so it appears then.
+ * Quiet status line: the strategy the position points to (tap for why + tip)
+ * and both race pip counts. Deliberately bubble-free — it reads as part of
+ * the header, not a floating badge.
  */
-function PipCount({
-  player,
-  state,
-  dotColor,
-  isActive,
-}: {
-  player: Player;
-  state: GameState;
-  dotColor: string;
-  isActive: boolean;
-}) {
-  const label = playerLabel(player);
-  const pips = calculatePipCount(state, player);
-  const off = state.borneOff[player];
+export function GamePipStatusBar({ state }: Props) {
+  const [showExplanation, setShowExplanation] = useState(false);
+  const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
+  const strategy = classifyStrategy(state, perspective);
+  const label = strategyMessage('label', strategy.key);
+  const tip = strategyMessage('tip', strategy.key);
+  const why = translate(
+    `game.strategy.why.${strategy.reason.message}` as TxKeyPath,
+    strategy.reason.params,
+  );
+  const whitePips = calculatePipCount(state, 'white');
+  const blackPips = calculatePipCount(state, 'black');
+  const gameOver = state.phase === 'game-over';
+
+  if (gameOver) {
+    return (
+      <View style={styles.wrap}>
+        <View style={styles.gameOverWrap}>
+          <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
-    <View
-      style={[styles.pipItem, isActive && styles.pipItemActive]}
-      accessibilityRole="text"
-      accessibilityLabel={translate('game.status.pips_a11y', { player: label, pips, off })}
-    >
-      <View style={[styles.pipDot, { backgroundColor: dotColor }, isActive && styles.pipDotActive]} />
-      <Text style={[styles.pipText, isActive && styles.pipTextActive]} numberOfLines={1}>
-        {label}
-      </Text>
-      <Text style={[styles.pipNumber, isActive && styles.pipTextActive]}>{pips}</Text>
-      {off > 0
-        ? (
-            <Text style={[styles.pipText, isActive && styles.pipTextActive]}>
-              {`· ${off} ${translate('game.status.off_short')}`}
-            </Text>
-          )
-        : null}
+    <View style={styles.wrap}>
+      <View style={styles.row}>
+        <Pressable
+          onPress={() => setShowExplanation(true)}
+          accessibilityRole="button"
+          accessibilityLabel={`${label}. ${why} ${tip}`}
+          style={styles.strategyRow}
+          testID="strategy-line"
+        >
+          <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
+          <Text style={styles.strategyText}>{label}</Text>
+          <Text style={styles.chevron}>{isRTL ? '◂' : '▸'}</Text>
+        </Pressable>
+        <View style={styles.pips}>
+          <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
+          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
+            {whitePips}
+          </Text>
+          <Text style={styles.pipDivider}>–</Text>
+          <View style={[styles.pipDot, { backgroundColor: '#2A2A2E' }]} />
+          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
+            {blackPips}
+          </Text>
+        </View>
+      </View>
+      <Modal
+        visible={showExplanation}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowExplanation(false)}
+      >
+        <Pressable
+          style={styles.modalScrim}
+          onPress={() => setShowExplanation(false)}
+          testID="strategy-explanation-scrim"
+        >
+          <Pressable style={styles.modalCard} onPress={() => {}} testID="strategy-explanation">
+            <View style={styles.modalHeader}>
+              <View style={[styles.strategyDot, { backgroundColor: STRATEGY_DOT[strategy.key] }]} />
+              <Text style={styles.modalTitle}>{label}</Text>
+            </View>
+            <Text style={styles.whyText}>{why}</Text>
+            <Text style={styles.tipText}>{tip}</Text>
+            <Pressable
+              onPress={() => setShowExplanation(false)}
+              accessibilityRole="button"
+              accessibilityLabel={translate('game.strategy.close_a11y')}
+              style={styles.modalClose}
+              testID="strategy-explanation-close"
+            >
+              <Text style={styles.modalCloseText}>{translate('game.strategy.got_it')}</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
 
 function getWinnerLabel(state: GameState) {
   if (state.winner === 'white') {
-    return translate(state.mode === 'vs-computer' ? 'game.status.you_win' : 'game.status.white_wins');
+    return state.mode === 'vs-computer'
+      ? translate('game.status.you_win')
+      : translate('game.status.white_wins');
   }
-  return translate(state.mode === 'vs-computer' ? 'game.status.computer_wins' : 'game.status.black_wins');
+  return state.mode === 'vs-computer'
+    ? translate('game.status.computer_wins')
+    : translate('game.status.black_wins');
 }
 
 const styles = StyleSheet.create({
-  pipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
+  wrap: {
     width: '100%',
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
+    marginBottom: 2,
+    gap: 6,
   },
-  pipItem: {
+  gameOverWrap: {
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  winnerBadge: {
+    color: '#E8C860',
+    fontSize: 20,
+    letterSpacing: 0.5,
+    ...interFont('bold'),
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  strategyRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: 8,
     paddingVertical: 4,
-    ...continuousRadius(10),
   },
-  pipItemActive: {
-    backgroundColor: 'rgba(232, 200, 96, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(232, 200, 96, 0.35)',
+  strategyDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+  },
+  strategyText: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 12,
+    letterSpacing: 0.3,
+    ...interFont('medium'),
+  },
+  chevron: {
+    color: GAME_PALETTE.textMuted,
+    opacity: 0.6,
+    fontSize: 10,
+  },
+  pips: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   pipDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     borderWidth: 1,
-    borderColor: '#BBA070',
+    borderColor: 'rgba(232, 224, 208, 0.4)',
   },
-  pipDotActive: {
-    borderColor: '#E8C860',
-    borderWidth: 1.5,
+  pipDivider: {
+    color: GAME_PALETTE.textMuted,
+    opacity: 0.5,
+    fontSize: 11,
   },
   pipText: {
     color: GAME_PALETTE.textMuted,
+    opacity: 0.85,
     fontSize: 12,
     ...interFont('regular'),
     fontVariant: ['tabular-nums'],
   },
-  pipNumber: {
-    color: GAME_PALETTE.textMuted,
-    fontSize: 13,
-    ...interFont('semibold'),
-    fontVariant: ['tabular-nums'],
+  modalScrim: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
   },
-  pipTextActive: {
-    color: GAME_PALETTE.text,
-    ...interFont('semibold'),
-  },
-  winnerBadge: {
-    color: '#E8C860',
-    fontSize: 13,
-    ...interFont('bold'),
+  modalCard: {
+    backgroundColor: GAME_PALETTE.surface,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.accentDim,
+    padding: 20,
+    maxWidth: 340,
     width: '100%',
-    textAlign: 'center',
+    gap: 10,
+    ...continuousRadius(16),
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  modalTitle: {
+    color: GAME_PALETTE.text,
+    fontSize: 17,
+    ...interFont('semibold'),
+  },
+  whyText: {
+    color: GAME_PALETTE.text,
+    fontSize: 14,
+    lineHeight: 20,
+    ...interFont('regular'),
+  },
+  tipText: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 14,
+    lineHeight: 20,
+    ...interFont('regular'),
+  },
+  modalClose: {
+    marginTop: 6,
+    backgroundColor: GAME_PALETTE.accent,
+    paddingVertical: 10,
+    alignItems: 'center',
+    ...continuousRadius(10),
+  },
+  modalCloseText: {
+    color: GAME_PALETTE.bg,
+    fontSize: 15,
+    ...interFont('semibold'),
   },
 });

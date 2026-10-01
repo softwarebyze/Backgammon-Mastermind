@@ -1,6 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
-import type { GameState } from '@/lib/game/types';
+import type { GameState, Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { Platform, View } from 'react-native';
@@ -18,6 +18,7 @@ import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations } from '@/lib/game/moves';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
+import { boardLayoutStyle, boardWebDir } from './board-layout-direction';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { DragCheckerOverlay } from './drag-checker-overlay';
@@ -83,6 +84,8 @@ type Props = {
   aidsOverride?: BoardAidsOverride;
   /** Extra points to paint as targets (identify / coach emphasis). */
   emphasisPoints?: ReadonlySet<number>;
+  /** Whose point of view the point-number rails are labeled from. */
+  numberPerspective?: Player;
   emphasisBar?: boolean;
 };
 
@@ -108,6 +111,7 @@ export function BoardView({
   aidsOverride,
   emphasisPoints,
   emphasisBar = false,
+  numberPerspective = 'white',
 }: Props) {
   const { preferences } = useGamePreferences();
   const showMoveHints = aidsOverride?.showMoveHints ?? preferences.showMoveHints;
@@ -286,22 +290,27 @@ export function BoardView({
 
   return (
     <View
-      style={{
-        width: boardOuterWidth,
-        borderRadius: 10,
-        borderWidth: boardFrameWidth,
-        borderColor: BOARD_THEME.frame.rim,
-        backgroundColor: BOARD_THEME.frame.outer,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.45,
-        shadowRadius: 10,
-        elevation: 8,
-        overflow: 'hidden',
-      }}
+      testID="board-view"
+      {...boardWebDir}
+      style={[
+        {
+          width: boardOuterWidth,
+          borderRadius: 10,
+          borderWidth: boardFrameWidth,
+          borderColor: BOARD_THEME.frame.rim,
+          backgroundColor: BOARD_THEME.frame.outer,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.45,
+          shadowRadius: 10,
+          elevation: 8,
+          overflow: 'hidden',
+        },
+        boardLayoutStyle,
+      ]}
     >
       {showPointNumbers && (
-        <PointNumberRail side="top" dimensions={dimensions} />
+        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} />
       )}
 
       <View
@@ -390,7 +399,7 @@ export function BoardView({
       </View>
 
       {showPointNumbers && (
-        <PointNumberRail side="bottom" dimensions={dimensions} />
+        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} />
       )}
     </View>
   );

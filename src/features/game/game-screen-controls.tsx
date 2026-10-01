@@ -4,7 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
+
+import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { useGuidance } from '@/features/game/guidance-store';
+import { isTurnStart } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
@@ -19,6 +23,8 @@ type Props = {
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing?: boolean;
+  /** Move-log length for hint-session staleness tracking. */
+  moveLogLength: number;
   /** Ephemeral caption override (e.g. "Roll the dice first", opening copy). */
   captionOverride?: string | null;
   /** Opening roll in progress / being revealed: white-left, black-right tray. */
@@ -41,6 +47,7 @@ export function GameScreenControls({
   isHumanTurn,
   isComputerTurn,
   isReviewing = false,
+  moveLogLength,
   captionOverride = null,
   opening = null,
   onRoll,
@@ -51,6 +58,8 @@ export function GameScreenControls({
   compact = false,
 }: Props) {
   const { preferences } = useGamePreferences();
+  const guidance = useGuidance();
+  const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
   const turn = getTurnDisplay(state);
   const caption = captionOverride
     ?? (isReviewing
@@ -86,12 +95,17 @@ export function GameScreenControls({
               />
             )}
       </View>
-      <View style={styles.actionSlot} pointerEvents="auto" testID="game-action-slot">
+      <View
+        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
+        pointerEvents="auto"
+        testID="game-action-slot"
+      >
         <ActionControl
           state={state}
           isHumanTurn={isHumanTurn}
           isComputerTurn={isComputerTurn}
           isReviewing={isReviewing}
+          moveLogLength={moveLogLength}
           onRoll={() => {
             hapticLight();
             onRoll();
@@ -113,6 +127,7 @@ function ActionControl({
   isHumanTurn,
   isComputerTurn,
   isReviewing,
+  moveLogLength,
   onRoll,
   onReset,
   onGoLive,
@@ -123,6 +138,7 @@ function ActionControl({
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing: boolean;
+  moveLogLength: number;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
@@ -228,6 +244,14 @@ function ActionControl({
     );
   }
 
+  // Human turn, dice rolled: offer the Hint button at TURN START only.
+  // The engine plans a full turn from the dice just rolled. A failed
+  // analysis shows no suggestion. The blunder-review solution view still
+  // draws best-move arrows after take-back, which restores turn start.
+  if (state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
+    return <HintButton state={state} moveLogLength={moveLogLength} />;
+  }
+
   return <View style={styles.actionSpacer} />;
 }
 
@@ -285,6 +309,16 @@ const styles = StyleSheet.create({
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+    elevation: 4,
+  },
+  // The suggestion card is a label, the move, and two actions. Sharing the
+  // fixed 52px slot paints the caption through the bottom of that card.
+  actionSlotOpen: {
+    width: '100%',
+    minHeight: ACTION_SLOT_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 2,

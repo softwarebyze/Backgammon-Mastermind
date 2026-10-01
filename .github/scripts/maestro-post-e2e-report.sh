@@ -14,6 +14,7 @@ PR_COMMENT_FILE="$WORKSPACE/maestro-pr-comment.md"
 RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 SCREENSHOT_BASE_URL=""
 PR_SCREENSHOT_BASE_URL=""
+VIDEO_URL=""
 
 rm -rf "$BUNDLE_DIR"
 mkdir -p "$BUNDLE_DIR"
@@ -52,15 +53,26 @@ fi
 
 mapfile -t screenshots < <(find "$BUNDLE_DIR" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
 
-# Publish screenshots for raw.githubusercontent.com URLs (data: URIs are blocked in summaries).
-if ((${#screenshots[@]} > 0)) && [[ -n "${GITHUB_TOKEN:-}" ]]; then
-  bash "$WORKSPACE/.github/scripts/maestro-publish-screenshots.sh" "$BUNDLE_DIR"
+URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
+# A failed publish must not reuse URLs left by an earlier run.
+: >"$URL_FILE"
+
+# Publish screenshots for raw.githubusercontent.com URLs (data: URIs are blocked in summaries),
+# then publish a stable recording download link; the HTML bundle has a player.
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  if ((${#screenshots[@]} > 0)); then
+    bash "$WORKSPACE/.github/scripts/maestro-publish-screenshots.sh" "$BUNDLE_DIR" || echo "::warning::Screenshot publish failed — images remain in the artifact."
+  fi
+  if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
+    bash "$WORKSPACE/.github/scripts/maestro-publish-video.sh" "$BUNDLE_DIR" || echo "::warning::Video publish failed — recording remains in the artifact."
+  fi
   URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
   if [[ -f "$URL_FILE" ]]; then
     # shellcheck disable=SC1090
     source "$URL_FILE"
     SCREENSHOT_BASE_URL="${MAESTRO_SCREENSHOT_BASE_URL:-}"
     PR_SCREENSHOT_BASE_URL="${MAESTRO_PR_SCREENSHOT_BASE_URL:-}"
+    VIDEO_URL="${MAESTRO_VIDEO_URL:-}"
   fi
 fi
 
@@ -96,7 +108,12 @@ html_path="$BUNDLE_DIR/index.html"
   echo ""
   if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
     echo "### Screen recording"
-    echo "Download **e2e-recording.mp4** from the \`maestro-visual-report\` artifact (or watch in \`index.html\`)."
+    if [[ -n "$VIDEO_URL" ]]; then
+      echo ""
+      echo "[▶ Watch the emulator recording](${VIDEO_URL})"
+    else
+      echo "Download **e2e-recording.mp4** from the \`maestro-visual-report\` artifact (or watch in \`index.html\`)."
+    fi
     echo ""
   fi
   if ((${#screenshots[@]} > 0)); then
@@ -158,7 +175,16 @@ html_path="$BUNDLE_DIR/index.html"
     fi
   fi
   if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
-    echo "Screen recording: \`e2e-recording.mp4\` in \`maestro-visual-report\`."
+    echo ""
+    echo "### Screen recording"
+    echo ""
+    if [[ -n "$VIDEO_URL" ]]; then
+      # The release URL provides a download; the HTML bundle provides a player.
+      echo "[▶ Watch the emulator recording](${VIDEO_URL})"
+    else
+      echo "_Recording publish unavailable. \`e2e-recording.mp4\` is in the \`maestro-visual-report\` artifact._"
+    fi
+    echo ""
   fi
 } >"$PR_COMMENT_FILE"
 

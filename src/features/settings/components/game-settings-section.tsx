@@ -25,6 +25,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
     setAutoMoveWhenForced,
     setSoundEnabled,
     setFastComputer,
+    setTutorMode,
   } = useGamePreferences();
 
   const trackPreference = React.useCallback(
@@ -73,6 +74,10 @@ export function GameSettingsSection({ showHints = false }: Props) {
         onFastComputerChange={(value) => {
           trackPreference('fast_computer', value);
           setFastComputer(value);
+        }}
+        onTutorModeChange={(value) => {
+          trackPreference('tutor_mode', value);
+          setTutorMode(value);
         }}
         showHints={showHints}
       />

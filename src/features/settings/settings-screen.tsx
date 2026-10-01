@@ -67,6 +67,10 @@ export function SettingsScreen() {
               text="settings.version"
               value={Env.EXPO_PUBLIC_VERSION}
             />
+            <SettingsItem
+              text="settings.open_source"
+              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.openSource))}
+            />
           </SettingsContainer>
 
           <SettingsContainer title="settings.support_us">

@@ -56,16 +56,18 @@ export function resolveDropTarget(
   const { colWidth, pointHeight, middleHeight, barWidth, bearOffWidth, boardWidth, boardHeight }
     = dims;
 
-  if (boardX < 0 || boardY < 0 || boardX > boardWidth || boardY > boardHeight) {
+  const x = boardX;
+
+  if (x < 0 || boardY < 0 || x > boardWidth || boardY > boardHeight) {
     return null;
   }
 
   const pointsWidth = 12 * colWidth + barWidth;
-  if (boardX >= pointsWidth && boardX <= pointsWidth + bearOffWidth) {
+  if (x >= pointsWidth && x <= pointsWidth + bearOffWidth) {
     return BEAR_OFF;
   }
 
-  if (boardX >= 6 * colWidth && boardX < 6 * colWidth + barWidth) {
+  if (x >= 6 * colWidth && x < 6 * colWidth + barWidth) {
     return BAR_POINT;
   }
 
@@ -76,11 +78,11 @@ export function resolveDropTarget(
 
   const isTop = boardY < pointHeight;
   let col: number;
-  if (boardX < 6 * colWidth) {
-    col = Math.floor(boardX / colWidth);
+  if (x < 6 * colWidth) {
+    col = Math.floor(x / colWidth);
   }
-  else if (boardX >= 6 * colWidth + barWidth) {
-    col = 6 + Math.floor((boardX - 6 * colWidth - barWidth) / colWidth);
+  else if (x >= 6 * colWidth + barWidth) {
+    col = 6 + Math.floor((x - 6 * colWidth - barWidth) / colWidth);
   }
   else {
     return BAR_POINT;
