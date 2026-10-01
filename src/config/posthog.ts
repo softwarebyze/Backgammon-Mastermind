@@ -51,7 +51,9 @@ export const posthog = new PostHog(projectToken || 'placeholder_key', {
   flushInterval: 10000,
   maxBatchSize: 100,
   maxQueueSize: 1000,
-  // No feature flags are consumed by the app. Don't request them during launch.
+  // No call site reads a flag. Remote config (replay, error tracking) still loads.
+  // Turn this back on in the same change that first reads a flag, or that read
+  // sees an unloaded flag and treats it as off.
   preloadFeatureFlags: false,
   featureFlagsRequestTimeoutMs: 10000,
   requestTimeout: 10000,

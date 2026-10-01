@@ -21,6 +21,12 @@ it('only enables foreground gameplay, and responds to app visibility changes', (
   jest.mocked(usePathname).mockReturnValue('/game');
   rerender({});
   expect(result.current).toBe(true);
+  jest.mocked(usePathname).mockReturnValue('/game?x=1');
+  rerender({});
+  expect(result.current).toBe(true);
+  jest.mocked(usePathname).mockReturnValue('/game/');
+  rerender({});
+  expect(result.current).toBe(true);
   act(() => {
     AppState.currentState = 'background';
     onChange();
