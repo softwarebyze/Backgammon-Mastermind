@@ -1,7 +1,7 @@
 {
   "configVersion": 0,
   "apple": {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "copyright": "2026 Zachary Ebenfeld",
     "categories": [
       [
@@ -47,7 +47,7 @@
           "offline",
           "classic"
         ],
-        "releaseNotes": "Version 1.0.2 adds 17-language support in the app and App Store, a quieter player-colored direction guide, and refreshed screenshots that show each feature completely.",
+        "releaseNotes": "Version 1.0.3 adds a tutor for blunders, strategy marks on the status line, faster computer play by default, and a clearer header.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -69,7 +69,7 @@
           "backgammon",
           "nard"
         ],
-        "releaseNotes": "يضيف الإصدار 1.0.2 دعم 17 لغة داخل التطبيق وعلى App Store، ودليل اتجاه أكثر هدوءًا بلون اللاعب الحالي، ولقطات شاشة محدّثة تعرض كل ميزة كاملة.",
+        "releaseNotes": "يضيف الإصدار 1.0.3 دعم 17 لغة داخل التطبيق وعلى App Store، ودليل اتجاه أكثر هدوءًا بلون اللاعب الحالي، ولقطات شاشة محدّثة تعرض كل ميزة كاملة.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -91,7 +91,7 @@
           "Tavla",
           "Nard"
         ],
-        "releaseNotes": "Version 1.0.2 bietet 17-sprachige Unterstützung in der App und im App Store, eine leisere, spielerfarbene Anleitung und aktualisierte Screenshots, die jede Funktion vollständig anzeigen.",
+        "releaseNotes": "Version 1.0.3 bietet 17-sprachige Unterstützung in der App und im App Store, eine leisere, spielerfarbene Anleitung und aktualisierte Screenshots, die jede Funktion vollständig anzeigen.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -113,7 +113,7 @@
           "offline",
           "tavla"
         ],
-        "releaseNotes": "Έκδοση 1.0.2 προσθέτει 17-γλώσσα υποστήριξη στην εφαρμογή και App Store, ένα πιο ήσυχο παίκτη-χρωματισμένο οδηγό κατεύθυνσης, και ανανεωμένα στιγμιότυπα οθόνης που δείχνουν κάθε χαρακτηριστικό εντελώς.",
+        "releaseNotes": "Έκδοση 1.0.3 προσθέτει 17-γλώσσα υποστήριξη στην εφαρμογή και App Store, ένα πιο ήσυχο παίκτη-χρωματισμένο οδηγό κατεύθυνσης, και ανανεωμένα στιγμιότυπα οθόνης που δείχνουν κάθε χαρακτηριστικό εντελώς.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -135,7 +135,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Versión 1.0.2 añade soporte de 17 idiomas en la aplicación y App Store, una guía de dirección más silenciosa de color de jugador, y capturas de pantalla refrescadas que muestran cada característica completamente.",
+        "releaseNotes": "Versión 1.0.3 añade soporte de 17 idiomas en la aplicación y App Store, una guía de dirección más silenciosa de color de jugador, y capturas de pantalla refrescadas que muestran cada característica completamente.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -157,7 +157,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "La version 1.0.2 ajoute un support 17 langues dans l'application et l'App Store, un guide de direction plus silencieux et des captures d'écran rafraîchies qui montrent toutes les fonctionnalités.",
+        "releaseNotes": "La version 1.0.3 ajoute un support 17 langues dans l'application et l'App Store, un guide de direction plus silencieux et des captures d'écran rafraîchies qui montrent toutes les fonctionnalités.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -179,7 +179,7 @@
           "אופליין",
           "tavla"
         ],
-        "releaseNotes": "גרסה 1.0.2 מוסיפה תמיכה בשפה 17 באפליקציית ו- App Store, מדריך צבעוני יותר לשחקן, וצילומי מסך רעננות המציגים כל תכונה.",
+        "releaseNotes": "גרסה 1.0.3 מוסיפה תמיכה בשפה 17 באפליקציית ו- App Store, מדריך צבעוני יותר לשחקן, וצילומי מסך רעננות המציגים כל תכונה.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -201,7 +201,7 @@
           "ऑफ़लाइन",
           "tavla"
         ],
-        "releaseNotes": "संस्करण 1.0.2 ऐप और ऐप स्टोर में 17-भाषा समर्थन जोड़ता है, एक शांत खिलाड़ी रंग की दिशा गाइड और ताज़ा स्क्रीनशॉट जो प्रत्येक सुविधा को पूरी तरह से दिखाते हैं।",
+        "releaseNotes": "संस्करण 1.0.3 ऐप और ऐप स्टोर में 17-भाषा समर्थन जोड़ता है, एक शांत खिलाड़ी रंग की दिशा गाइड और ताज़ा स्क्रीनशॉट जो प्रत्येक सुविधा को पूरी तरह से दिखाते हैं।",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -223,7 +223,7 @@
           "tavola",
           "nard"
         ],
-        "releaseNotes": "La versione 1.0.2 aggiunge il supporto in 17 lingue nell'app e nell'App Store, una guida in direzione color giocatore più silenziosa, e gli screenshot rinfrescati che mostrano ogni funzione completamente.",
+        "releaseNotes": "La versione 1.0.3 aggiunge il supporto in 17 lingue nell'app e nell'App Store, una guida in direzione color giocatore più silenziosa, e gli screenshot rinfrescati che mostrano ogni funzione completamente.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -245,7 +245,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "バージョン1.0.2は、アプリとApp Storeで17の言語サポート、より静かなプレーヤーカラーの方向ガイド、各機能が完全に表示されたスクリーンショットを追加します。",
+        "releaseNotes": "バージョン1.0.3は、アプリとApp Storeで17の言語サポート、より静かなプレーヤーカラーの方向ガイド、各機能が完全に表示されたスクリーンショットを追加します。",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -267,7 +267,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "버전 1.0.2는 앱 및 앱 스토어, 조용한 플레이어 색 방향 가이드 및 각 기능을 완전히 보여주는 재생 된 스크린 샷을 추가합니다.",
+        "releaseNotes": "버전 1.0.3는 앱 및 앱 스토어, 조용한 플레이어 색 방향 가이드 및 각 기능을 완전히 보여주는 재생 된 스크린 샷을 추가합니다.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -289,7 +289,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Versie 1.0.2 voegt 17-taal ondersteuning in de app en App Store, een stillere speler-gekleurde richting gids, en vernieuwde screenshots die elke functie volledig tonen.",
+        "releaseNotes": "Versie 1.0.3 voegt 17-taal ondersteuning in de app en App Store, een stillere speler-gekleurde richting gids, en vernieuwde screenshots die elke functie volledig tonen.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -311,7 +311,7 @@
           "tryktrak",
           "nard"
         ],
-        "releaseNotes": "Wersja 1.0.2 dodaje 17-językowe wsparcie w aplikacji i App Store, cichszy poradnik kierunku barwy gracza, i odświeżone zrzuty ekranu, które pokazują każdą funkcję całkowicie.",
+        "releaseNotes": "Wersja 1.0.3 dodaje 17-językowe wsparcie w aplikacji i App Store, cichszy poradnik kierunku barwy gracza, i odświeżone zrzuty ekranu, które pokazują każdą funkcję całkowicie.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -333,7 +333,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "A versão 1.0.2 adiciona suporte em 17 idiomas no aplicativo e App Store, um guia de direção mais silencioso e atualizado que mostra cada recurso completamente.",
+        "releaseNotes": "A versão 1.0.3 adiciona suporte em 17 idiomas no aplicativo e App Store, um guia de direção mais silencioso e atualizado que mostra cada recurso completamente.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -355,7 +355,7 @@
           "офлайн",
           "tavla"
         ],
-        "releaseNotes": "В версии 1.0.2 добавлена поддержка 17 языков в приложении и App Store, более тихий гид по направлению для игроков и обновленные скриншоты, которые полностью отображают каждую функцию.",
+        "releaseNotes": "В версии 1.0.3 добавлена поддержка 17 языков в приложении и App Store, более тихий гид по направлению для игроков и обновленные скриншоты, которые полностью отображают каждую функцию.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -377,7 +377,7 @@
           "çevrimdışı",
           "nard"
         ],
-        "releaseNotes": "Version 1.0.2, uygulama ve App Store'da 17 dil desteği ekler, sessiz bir oyuncu renkli yön rehberi ve her özelliği tamamen gösteren ekran görüntüleri yeniler.",
+        "releaseNotes": "Version 1.0.3, uygulama ve App Store'da 17 dil desteği ekler, sessiz bir oyuncu renkli yön rehberi ve her özelliği tamamen gösteren ekran görüntüleri yeniler.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -399,7 +399,7 @@
           "离线",
           "tavla"
         ],
-        "releaseNotes": "1.0.2版本在App和App Store中增加了17种语言支持,这是比较安静的玩家色彩方向指南,并刷新了显示每个特性的截图.",
+        "releaseNotes": "1.0.3版本在App和App Store中增加了17种语言支持,这是比较安静的玩家色彩方向指南,并刷新了显示每个特性的截图.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
