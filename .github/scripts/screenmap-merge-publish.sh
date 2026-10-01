@@ -19,6 +19,18 @@ to_baseline_bundle() {
   python3 "$(dirname "$0")/screenmap-diff-head-to-baseline.py" "$src" "$dest"
 }
 
+# Zip files omit empty directories. A diff with zero screenshots converts to a
+# baseline that names the platform but has no screens/ files, and screenmap-ci
+# merge rejects that as a swapped-platform bundle.
+bundle_has_screens() {
+  python3 - "$1" <<'PY'
+import sys, zipfile
+with zipfile.ZipFile(sys.argv[1]) as z:
+    ok = any(n.startswith("screens/") and not n.endswith("/") for n in z.namelist())
+sys.exit(0 if ok else 1)
+PY
+}
+
 
 pick_bundle() {
   local dir="$1"
@@ -33,22 +45,38 @@ CONV_DIR="$(mktemp -d)"
 trap 'rm -rf "$CONV_DIR"' EXIT
 
 inputs=""
+saw_bundle=0
+add_input() {
+  local platform="$1"
+  local file="$2"
+  if ! bundle_has_screens "$file"; then
+    echo "Skipping $platform: bundle has no screenshots."
+    return
+  fi
+  if [ -n "$inputs" ]; then
+    inputs="$inputs,$platform=$file"
+  else
+    inputs="$platform=$file"
+  fi
+}
 if [ -n "$ios_bundle" ]; then
+  saw_bundle=1
   ios_for_merge="$CONV_DIR/ios.scrmap"
   to_baseline_bundle "$ios_bundle" "$ios_for_merge"
-  inputs="ios=$ios_for_merge"
+  add_input ios "$ios_for_merge"
 fi
 if [ -n "$android_bundle" ]; then
+  saw_bundle=1
   android_for_merge="$CONV_DIR/android.scrmap"
   to_baseline_bundle "$android_bundle" "$android_for_merge"
-  if [ -n "$inputs" ]; then
-    inputs="$inputs,android=$android_for_merge"
-  else
-    inputs="android=$android_for_merge"
-  fi
+  add_input android "$android_for_merge"
 fi
 
 if [ -z "$inputs" ]; then
+  if [ "$saw_bundle" = 1 ]; then
+    echo "Bundles had no screenshots; nothing to merge."
+    exit 0
+  fi
   echo "No platform bundles to merge (capture skipped or failed)."
   if [ "$MODE" = "pr" ] && [ -n "${PR_NUMBER:-}" ]; then
     # PR capture jobs succeed with an empty bundle when there is no map on the
