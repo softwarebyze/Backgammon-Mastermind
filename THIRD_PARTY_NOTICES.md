@@ -30,7 +30,7 @@ The app bundles the **Inter** typeface.
 - Upstream: <https://github.com/rsms/inter>
 - Packaged as: `@expo-google-fonts/inter@0.4.2`
 - License: **SIL Open Font License 1.1** (OFL-1.1) — the font files are not MIT.
-- Bundled weights: `400Regular`, `500Medium`, `600SemiBold`, `700Bold`
+- Bundled weights: `400Regular`, `500Medium`, `600SemiBold`, `700Bold`, `800ExtraBold`
 - Copyright: Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
 
 The OFL requires the copyright notice and license to accompany every copy of
