@@ -80,6 +80,19 @@ type Props = {
 };
 
 export function MoveAnimationOverlay({ animation, dimensions }: Props) {
+  // Remount per slide. Reusing one shared progress leaves it at 1 after the
+  // first checker lands, and the next withTiming(1) finishes immediately —
+  // that checker jumps into place instead of sliding.
+  return (
+    <CheckerSlideOverlay
+      key={animationKey(animation)}
+      animation={animation}
+      dimensions={dimensions}
+    />
+  );
+}
+
+function CheckerSlideOverlay({ animation, dimensions }: Props) {
   const progress = useSharedValue(0);
   const onFinishRef = useRef(animation.onFinish);
   onFinishRef.current = animation.onFinish;
@@ -109,7 +122,9 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
     const duration = animation.durationMs ?? CHECKER_MOVE_DURATION_MS;
     // Reanimated can cancel without calling the callback (remount, interrupt).
     // A backup commit prevents empty-bar / stuck-undo half-states.
-    const backup = setTimeout(finish, duration + 120);
+    const backup = setTimeout(() => {
+      finish();
+    }, duration + 120);
 
     progress.value = 0;
     progress.value = withTiming(

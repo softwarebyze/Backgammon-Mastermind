@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
 import { useCallback } from 'react';
 
+import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { createInitialState } from '@/lib/game';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
 import { performResume } from '@/lib/game/resume-game';
@@ -33,6 +34,8 @@ export function useGameLifecycle({
     clearActiveGame();
     resetMoveLog();
     clearTimeline();
+    setGuidanceVerdictPending(false);
+    clearGuidance();
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);
@@ -60,6 +63,8 @@ export function useGameLifecycle({
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
+    setGuidanceVerdictPending(false);
+    clearGuidance();
     if (!state) {
       return;
     }

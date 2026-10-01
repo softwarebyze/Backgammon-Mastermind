@@ -24,6 +24,12 @@ export const homeScreenOptions: NativeStackNavigationOptions = {
   headerTransparent: false,
   headerStyle: { backgroundColor: GAME_PALETTE.bg },
   contentStyle: { backgroundColor: GAME_PALETTE.bg },
+  // Home is the root of the app stack: it must never render a back control.
+  // headerBackVisible alone is not enough — expo-router's web header ignores
+  // it and synthesizes a back chevron whenever headerLeft is undefined and
+  // the route inherits back context — so pin headerLeft explicitly.
+  headerBackVisible: false,
+  headerLeft: () => null,
   scrollEdgeEffects: {
     top: 'hidden',
     bottom: 'hidden',

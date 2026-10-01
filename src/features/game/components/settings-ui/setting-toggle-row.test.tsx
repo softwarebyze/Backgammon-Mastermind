@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import * as React from 'react';
 import { Switch, Text } from 'react-native';
 
@@ -13,13 +13,13 @@ jest.mock('@/lib/haptics', () => ({
   hapticSelection: jest.fn(),
 }));
 
-jest.mock('@expo/vector-icons', () => {
+jest.mock('@expo/vector-icons/Feather', () => {
   const React = require('react');
   const { Text: RNText } = require('react-native');
   function FeatherMock(props: { name: string; color: string }) {
     return React.createElement(RNText, null, `${props.name}:${props.color}`);
   }
-  return { Feather: FeatherMock };
+  return { __esModule: true, default: FeatherMock };
 });
 
 afterEach(cleanup);

@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Rozpocznij nową grę",
       "undo_a11y": "Cofnij ruch"
     },
+    "hint": {
+      "back_to_turn": "Wróć do mojej tury",
+      "back_to_turn_a11y": "Wróć do mojej tury i zamknij podpowiedź",
+      "button": "Podpowiedź",
+      "button_a11y": "Poproś o podpowiedź ruchu",
+      "error": "Brak podpowiedzi — dotknij, aby spróbować ponownie",
+      "error_a11y": "Ponów podpowiedź",
+      "finding": "Szukam najlepszego ruchu…",
+      "play": "Zagraj ten ruch",
+      "play_a11y": "Zagraj sugerowany ruch",
+      "suggested": "Sugerowany ruch"
+    },
     "nudge": {
       "roll_first": "Najpierw rzuć kośćmi"
     },
@@ -66,7 +78,9 @@
       "section_board": "Plansza",
       "section_dice": "Kości",
       "sound": "Dźwięki gry",
-      "sound_hint": "Delikatne dźwięki kości, bić i zwycięstw — szanuje tryb cichy"
+      "sound_hint": "Delikatne dźwięki kości, bić i zwycięstw — szanuje tryb cichy",
+      "tutor_mode": "Tryb tutora",
+      "tutor_mode_hint": "Silnik sprawdza twoje ruchy i oznacza duże błędy"
     },
     "review": {
       "back_to_live": "Wróć do bieżącej gry",
@@ -96,6 +110,40 @@
       "white_wins": "🏆 Białe wygrywają!",
       "you_win": "🏆 Wygrywasz!"
     },
+    "strategy": {
+      "close_a11y": "Zamknij wyjaśnienie strategii",
+      "got_it": "Rozumiem",
+      "label": {
+        "backgame": "Gra wyczekująca",
+        "blitz": "Blitz",
+        "developing": "Rozwój",
+        "holding": "Gra blokująca",
+        "priming": "Mur",
+        "running": "Wyścig"
+      },
+      "tip": {
+        "backgame": "Zostań z tyłu, wzmocnij swój dom i czekaj na późniejszą okazję.",
+        "blitz": "Atakuj: bij każdą samotną figurę i zamknij swój dom.",
+        "developing": "Buduj punkty, walcz o piątkę i bądź elastyczny.",
+        "holding": "Trzymaj kotwicę, bądź bezpieczny i czekaj na swoją okazję do uderzenia.",
+        "priming": "Rozbudowuj mur punkt po punkcie i schwyłaj ich tylne figury.",
+        "running": "Sprawnie odsadzaj swoje figury do domu i chroń te, które wciąż są zagrożone."
+      },
+      "why": {
+        "backgame": "Trzymasz głębokie kotwice na {{point1}} i {{point2}}, będąc {{pipGap}} punktami do tyłu w wyścigu.",
+        "blitz_bar": "Na pasku masz {{barCount}}, a w domu zrobiłeś już {{homeMade}} punktów.",
+        "blitz_bar_blot": "Na pasku masz {{barCount}} i 1 samotną figurę w domu, a w domu zrobiłeś już {{homeMade}} punktów.",
+        "blitz_bar_blots": "Na pasku masz {{barCount}} i {{blotCount}} samotnych figur w domu, a w domu zrobiłeś już {{homeMade}} punktów.",
+        "blitz_blot": "Masz 1 samotną figurę w domu, a zrobiłeś już {{homeMade}} punktów.",
+        "blitz_blots": "Masz {{blotCount}} samotnych figur w domu, a zrobiłeś już {{homeMade}} punktów.",
+        "developing": "Na szachownicy nie ma jeszcze muru, kotwicy ani ataku — gra dopiero się kształtuje.",
+        "holding": "Trzymasz kotwicę na {{point}}, będąc {{pipGap}} punktami do tyłu.",
+        "priming": "Zbudowałeś mur z {{prime}} punktów.",
+        "priming_anchor": "Zbudowałeś mur z {{prime}} punktów z kotwicą za nim.",
+        "running_lead": "Prowadzisz w wyścigu {{foePips}} do {{myPips}}, bez samotnych figur w zasięgu uderzenia.",
+        "running_race": "Kontakt jest niemożliwy — to prosty wyścig do wyprowadzenia figur ({{myPips}} do {{foePips}} punktów)."
+      }
+    },
     "turn": {
       "black_is_moving": "Czarne wykonują ruch…",
       "black_is_rolling": "Czarne rzucają…",
@@ -110,6 +158,63 @@
       "roll_dice": "Rzuć kośćmi — grasz kolorem {{color}}",
       "white_turn": "Ruch białych",
       "your_turn": "Twój ruch"
+    },
+    "tutor": {
+      "back_to_question": "Wróć do pytania",
+      "back_to_question_a11y": "Wróć bez pokazywania odpowiedzi",
+      "band": {
+        "big_blunder": "Duży błąd",
+        "fine": "Dobrze",
+        "mistake": "Błąd",
+        "slip": "Potknięcie"
+      },
+      "best": "Najlepszy",
+      "best_played": "Najlepszy:",
+      "compare": {
+        "best": "Najlepszy",
+        "best_move": "Najlepszy ruch",
+        "both": "Oba",
+        "mine": "Mój",
+        "show_a11y": "Pokaż planszę {{label}}",
+        "start": "Start",
+        "starting_position": "Pozycja początkowa",
+        "your_move": "Twój ruch",
+        "your_move_replayed": "Twój ruch, powtórzony"
+      },
+      "details_hide": "Ukryj szczegóły",
+      "details_hide_a11y": "Ukryj szczegóły",
+      "details_show": "Szczegóły",
+      "details_show_a11y": "Pokaż szczegóły",
+      "details_summary": "Twój ruch był {{rank}} z {{count}} i daje około {{loss}} punktu na partię mniej niż najlepszy.",
+      "equity_explainer": "Silnik ocenia każdy ruch według punktów, które spodziewa się wygrać na partię, średnio. Wyżej znaczy lepiej.",
+      "equity_pts": "{{points}} pkt",
+      "keep": "Zostaw mój ruch",
+      "keep_a11y": "Zostaw mój ruch i graj dalej",
+      "meter_a11y": "Waga błędu: {{severity}}. Strata około {{loss}} punktu na partię. Skala jak w GNU Backgammon: wątpliwy od 0.04, zły od 0.08, bardzo zły od 0.16.",
+      "meter_caption": "Skala błędów (GNU Backgammon)",
+      "play_best": "Zagraj najlepszy ruch",
+      "play_best_a11y": "Cofnij mój ruch i zagraj najlepszy",
+      "question_body": "Twój ruch był {{rank}} z {{count}} sposobów zagrania tego rzutu. Średnio daje około {{loss}} punktu na partię mniej niż najlepszy.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (twój)",
+      "replay_pause_a11y": "Wstrzymaj powtórkę {{label}}",
+      "replay_play_a11y": "Odtwórz powtórkę {{label}}",
+      "reveal": "Pokaż najlepszy ruch",
+      "reveal_a11y": "Odkryj zalecany ruch",
+      "rolled": "Wyrzuciłeś {{dice}}",
+      "show_mine": "Pokaż mój ruch",
+      "show_mine_a11y": "Pokaż tylko mój ruch, bez odkrywania najlepszego",
+      "take_back": "Cofnij i spróbuj ponownie",
+      "take_back_a11y": "Cofnij całą turę i spróbuj ponownie",
+      "take_back_retry_a11y": "Cofnij ruch i spróbuj ponownie",
+      "title_compare": "Twój ruch wobec najlepszego",
+      "title_mine": "Twój ruch",
+      "turn_off": "Wyłącz tutora",
+      "turn_off_a11y": "Wyłącz tryb tutora",
+      "undo_last": "Cofnij ostatni ruch",
+      "undo_last_a11y": "Cofnij tylko ostatni ruch i zagraj go ponownie",
+      "vs_best": "−{{delta}} względem najlepszego",
+      "you_played": "Zagrałeś:"
     }
   },
   "home": {
@@ -333,6 +438,7 @@
     "link_error_title": "Nie można otworzyć linku",
     "links": "Linki",
     "more": "Więcej",
+    "open_source": "Informacje o otwartym kodzie",
     "privacy": "Polityka prywatności",
     "rate": "Oceń",
     "share": "Udostępnij",

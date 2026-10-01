@@ -56,8 +56,7 @@ function HeaderIcon({
       <Feather
         name={name}
         size={ICON}
-        // Disabled: a legible gray, not accent at 35% (which vanished on the dark brown).
-        color={disabled ? GAME_PALETTE.textMuted : dim ? GAME_PALETTE.accentDim : GAME_PALETTE.accent}
+        color={disabled || dim ? GAME_PALETTE.accentDim : GAME_PALETTE.accent}
         style={disabled ? styles.iconDisabled : null}
       />
     </HoverPressable>
@@ -118,6 +117,6 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   iconDisabled: {
-    opacity: 0.6,
+    opacity: 0.35,
   },
 });

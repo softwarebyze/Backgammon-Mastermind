@@ -9,6 +9,8 @@ export const LESSON_IDS = [
   'moving-dice',
   'hitting-bar',
   'bearing-off',
+  'pip-count',
+  'strategies',
 ] as const;
 
 export type LessonId = (typeof LESSON_IDS)[number];
@@ -316,6 +318,163 @@ export const LESSONS: LessonDefinition[] = [
       },
     ],
   },
+  {
+    id: 'pip-count',
+    order: 6,
+    titleKey: 'learn.lessons.pip_count.title',
+    subtitleKey: 'learn.lessons.pip_count.subtitle',
+    steps: [
+      {
+        id: 'pip-explain',
+        kind: 'explain',
+        titleKey: 'learn.lessons.pip_count.steps.explain.title',
+        bodyKey: 'learn.lessons.pip_count.steps.explain.body',
+        aids: { showPointNumbers: true },
+        position: { useStandardSetup: true },
+      },
+      {
+        id: 'pip-ahead',
+        kind: 'identify',
+        titleKey: 'learn.lessons.pip_count.steps.ahead.title',
+        bodyKey: 'learn.lessons.pip_count.steps.ahead.body',
+        hintKey: 'learn.lessons.pip_count.steps.ahead.hint',
+        praiseKey: 'learn.lessons.pip_count.steps.ahead.praise',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 6, player: 'white', count: 5 },
+            { point: 5, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 2 },
+            { point: 1, player: 'black', count: 2 },
+            { point: 12, player: 'black', count: 5 },
+            { point: 17, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 5 },
+          ],
+          borneOff: { white: 5 },
+        },
+        // White is ahead in the race (fewer pips) — tap any white checker.
+        targets: [6, 5, 13],
+        emphasisPoints: [6, 5, 13],
+      },
+      {
+        id: 'pip-behind',
+        kind: 'identify',
+        titleKey: 'learn.lessons.pip_count.steps.behind.title',
+        bodyKey: 'learn.lessons.pip_count.steps.behind.body',
+        hintKey: 'learn.lessons.pip_count.steps.behind.hint',
+        praiseKey: 'learn.lessons.pip_count.steps.behind.praise',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 6, player: 'white', count: 5 },
+            { point: 5, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 2 },
+            { point: 1, player: 'black', count: 2 },
+            { point: 12, player: 'black', count: 5 },
+            { point: 17, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 5 },
+          ],
+          borneOff: { white: 5 },
+        },
+        // Black is behind in the race (more pips) — tap any black checker.
+        targets: [1, 12, 17, 19],
+        emphasisPoints: [1, 12, 17, 19],
+      },
+    ],
+  },
+  {
+    id: 'strategies',
+    order: 7,
+    titleKey: 'learn.lessons.strategies.title',
+    subtitleKey: 'learn.lessons.strategies.subtitle',
+    steps: [
+      {
+        id: 'strat-running',
+        kind: 'explain',
+        titleKey: 'learn.lessons.strategies.steps.running.title',
+        bodyKey: 'learn.lessons.strategies.steps.running.body',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 6, player: 'white', count: 4 },
+            { point: 5, player: 'white', count: 3 },
+            { point: 8, player: 'white', count: 2 },
+            { point: 13, player: 'white', count: 2 },
+            { point: 1, player: 'black', count: 2 },
+            { point: 12, player: 'black', count: 4 },
+            { point: 17, player: 'black', count: 3 },
+          ],
+          borneOff: { white: 4 },
+        },
+        emphasisPoints: [6, 5, 8],
+      },
+      {
+        id: 'strat-blitz',
+        kind: 'explain',
+        titleKey: 'learn.lessons.strategies.steps.blitz.title',
+        bodyKey: 'learn.lessons.strategies.steps.blitz.body',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 6, player: 'white', count: 2 },
+            { point: 5, player: 'white', count: 2 },
+            { point: 4, player: 'white', count: 2 },
+            { point: 8, player: 'white', count: 2 },
+            { point: 13, player: 'white', count: 3 },
+            { point: 7, player: 'black', count: 1 },
+            { point: 12, player: 'black', count: 3 },
+          ],
+          bar: { black: 1 },
+        },
+        emphasisPoints: [6, 5, 4],
+        emphasisBar: true,
+      },
+      {
+        id: 'strat-prime',
+        kind: 'explain',
+        titleKey: 'learn.lessons.strategies.steps.prime.title',
+        bodyKey: 'learn.lessons.strategies.steps.prime.body',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 6, player: 'white', count: 2 },
+            { point: 5, player: 'white', count: 2 },
+            { point: 4, player: 'white', count: 2 },
+            { point: 3, player: 'white', count: 2 },
+            { point: 13, player: 'white', count: 2 },
+            { point: 24, player: 'black', count: 2 },
+            { point: 23, player: 'black', count: 2 },
+            { point: 1, player: 'black', count: 2 },
+          ],
+        },
+        emphasisPoints: [6, 5, 4, 3],
+      },
+      {
+        id: 'strat-identify',
+        kind: 'identify',
+        titleKey: 'learn.lessons.strategies.steps.identify.title',
+        bodyKey: 'learn.lessons.strategies.steps.identify.body',
+        hintKey: 'learn.lessons.strategies.steps.identify.hint',
+        praiseKey: 'learn.lessons.strategies.steps.identify.praise',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 6, player: 'white', count: 2 },
+            { point: 5, player: 'white', count: 2 },
+            { point: 4, player: 'white', count: 2 },
+            { point: 3, player: 'white', count: 2 },
+            { point: 13, player: 'white', count: 2 },
+            { point: 24, player: 'black', count: 2 },
+            { point: 23, player: 'black', count: 2 },
+            { point: 1, player: 'black', count: 2 },
+          ],
+        },
+        // Tap any point of the prime (4-point prime on 3-6).
+        targets: [6, 5, 4, 3],
+        emphasisPoints: [6, 5, 4, 3],
+      },
+    ],
+  },
 ];
 
 type QuizOption = {
@@ -356,6 +515,42 @@ export const GRADUATION_QUIZ: QuizQuestion[] = [
       { id: 'a', labelKey: 'learn.quiz.bear.a', correct: false },
       { id: 'b', labelKey: 'learn.quiz.bear.b', correct: false },
       { id: 'c', labelKey: 'learn.quiz.bear.c', correct: true },
+    ],
+  },
+  {
+    id: 'pip-ahead',
+    promptKey: 'learn.quiz.pip_ahead.prompt',
+    options: [
+      { id: 'a', labelKey: 'learn.quiz.pip_ahead.a', correct: false },
+      { id: 'b', labelKey: 'learn.quiz.pip_ahead.b', correct: true },
+      { id: 'c', labelKey: 'learn.quiz.pip_ahead.c', correct: false },
+    ],
+  },
+  {
+    id: 'pip-meaning',
+    promptKey: 'learn.quiz.pip_meaning.prompt',
+    options: [
+      { id: 'a', labelKey: 'learn.quiz.pip_meaning.a', correct: true },
+      { id: 'b', labelKey: 'learn.quiz.pip_meaning.b', correct: false },
+      { id: 'c', labelKey: 'learn.quiz.pip_meaning.c', correct: false },
+    ],
+  },
+  {
+    id: 'strat-prime',
+    promptKey: 'learn.quiz.strat_prime.prompt',
+    options: [
+      { id: 'a', labelKey: 'learn.quiz.strat_prime.a', correct: false },
+      { id: 'b', labelKey: 'learn.quiz.strat_prime.b', correct: true },
+      { id: 'c', labelKey: 'learn.quiz.strat_prime.c', correct: false },
+    ],
+  },
+  {
+    id: 'strat-blitz',
+    promptKey: 'learn.quiz.strat_blitz.prompt',
+    options: [
+      { id: 'a', labelKey: 'learn.quiz.strat_blitz.a', correct: true },
+      { id: 'b', labelKey: 'learn.quiz.strat_blitz.b', correct: false },
+      { id: 'c', labelKey: 'learn.quiz.strat_blitz.c', correct: false },
     ],
   },
 ];

@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Inizia nuovo gioco",
       "undo_a11y": "Muoversi"
     },
+    "hint": {
+      "back_to_turn": "Torna al mio turno",
+      "back_to_turn_a11y": "Torna al mio turno e chiudi il suggerimento",
+      "button": "Suggerimento",
+      "button_a11y": "Chiedi un suggerimento di mossa",
+      "error": "Nessun suggerimento — tocca per riprovare",
+      "error_a11y": "Riprova il suggerimento",
+      "finding": "Cerco la mossa migliore…",
+      "play": "Gioca questa mossa",
+      "play_a11y": "Gioca la mossa suggerita",
+      "suggested": "Mossa suggerita"
+    },
     "nudge": {
       "roll_first": "Prima lancia i dadi"
     },
@@ -66,7 +78,9 @@
       "section_board": "Tavoliere",
       "section_dice": "Dadi",
       "sound": "Suoni di gioco",
-      "sound_hint": "Dadi, catture e vittorie con suoni delicati — rispetta la modalità silenziosa"
+      "sound_hint": "Dadi, catture e vittorie con suoni delicati — rispetta la modalità silenziosa",
+      "tutor_mode": "Modalità tutor",
+      "tutor_mode_hint": "Il motore controlla le tue mosse e segnala gli errori gravi"
     },
     "review": {
       "back_to_live": "Torna alla partita in corso",
@@ -96,6 +110,40 @@
       "white_wins": "🏆 Vince il Bianco!",
       "you_win": "🏆 Hai vinto!"
     },
+    "strategy": {
+      "close_a11y": "Chiudi la spiegazione della strategia",
+      "got_it": "Ho capito",
+      "label": {
+        "backgame": "Gioco di attesa",
+        "blitz": "Attacco totale",
+        "developing": "Sviluppo",
+        "holding": "Gioco di blocco",
+        "priming": "Muro",
+        "running": "Corsa"
+      },
+      "tip": {
+        "backgame": "Resta indietro, rafforza la tua base e aspetta l'occasione tardiva.",
+        "blitz": "Attacca: colpisci ogni pedina singola e chiudi la tua base.",
+        "developing": "Costruisci punti, lotta per il 5 e resta flessibile.",
+        "holding": "Tieni la tua àncora, stai al sicuro e aspetta la tua occasione di colpire.",
+        "priming": "Estendi il tuo muro punto per punto e cattura le loro pedine arretrate.",
+        "running": "Porta a casa le pedine in modo efficiente e proteggi quelle ancora a rischio."
+      },
+      "why": {
+        "backgame": "Hai àncore profonde sul {{point1}} e sul {{point2}} mentre sei in ritardo di {{pipGap}} punti nella corsa.",
+        "blitz_bar": "Hai {{barCount}} sul bar e hai già realizzato {{homeMade}} punti nella tua base.",
+        "blitz_bar_blot": "Hai {{barCount}} sul bar e 1 pedina singola nella tua base, e hai già realizzato {{homeMade}} punti nella base.",
+        "blitz_bar_blots": "Hai {{barCount}} sul bar e {{blotCount}} pedine singole nella tua base, e hai già realizzato {{homeMade}} punti nella base.",
+        "blitz_blot": "Hai 1 pedina singola nella tua base e hai già realizzato {{homeMade}} punti nella base.",
+        "blitz_blots": "Hai {{blotCount}} pedine singole nella tua base e hai già realizzato {{homeMade}} punti nella base.",
+        "developing": "Ancora nessun muro, àncora o attacco sul tabellone — la partita si sta ancora plasmando.",
+        "holding": "Tieni un'àncora sul {{point}} mentre sei in ritardo di {{pipGap}} punti.",
+        "priming": "Hai costruito un muro di {{prime}} punti.",
+        "priming_anchor": "Hai costruito un muro di {{prime}} punti con un'àncora dietro.",
+        "running_lead": "Guidi la corsa {{foePips}} a {{myPips}} senza pedine singole a portata di colpo.",
+        "running_race": "Nessun contatto possibile — è una corsa diretta per uscire ({{myPips}} contro {{foePips}} punti)."
+      }
+    },
     "turn": {
       "black_is_moving": "Il nero muove…",
       "black_is_rolling": "Il nero tira…",
@@ -110,6 +158,63 @@
       "roll_dice": "Tira i dadi — giochi con il {{color}}",
       "white_turn": "Turno del bianco",
       "your_turn": "Il tuo turno"
+    },
+    "tutor": {
+      "back_to_question": "Torna alla domanda",
+      "back_to_question_a11y": "Torna indietro senza la risposta",
+      "band": {
+        "big_blunder": "Errore grave",
+        "fine": "Buona",
+        "mistake": "Errore",
+        "slip": "Svista"
+      },
+      "best": "Migliore",
+      "best_played": "Migliore:",
+      "compare": {
+        "best": "Migliore",
+        "best_move": "Mossa migliore",
+        "both": "Entrambe",
+        "mine": "La mia",
+        "show_a11y": "Mostra la tavola {{label}}",
+        "start": "Inizio",
+        "starting_position": "Posizione iniziale",
+        "your_move": "La tua mossa",
+        "your_move_replayed": "La tua mossa, ripetuta"
+      },
+      "details_hide": "Nascondi i dettagli",
+      "details_hide_a11y": "Nascondi i dettagli",
+      "details_show": "Dettagli",
+      "details_show_a11y": "Mostra i dettagli",
+      "details_summary": "La tua mossa è {{rank}}ª su {{count}} e vale circa {{loss}} punti a partita in meno della migliore.",
+      "equity_explainer": "Il motore valuta ogni mossa secondo i punti che si aspetta di vincere a partita, in media. Più alto è meglio.",
+      "equity_pts": "{{points}} pt",
+      "keep": "Tieni la mia mossa",
+      "keep_a11y": "Tieni la mia mossa e continua",
+      "meter_a11y": "Gravità dell’errore: {{severity}}. Persi circa {{loss}} punti a partita. La scala segue GNU Backgammon: dubbia a 0.04, cattiva a 0.08, pessima a 0.16.",
+      "meter_caption": "Scala degli errori (GNU Backgammon)",
+      "play_best": "Gioca la mossa migliore",
+      "play_best_a11y": "Annulla la mia mossa e gioca la migliore",
+      "question_body": "La tua mossa è {{rank}}ª su {{count}} modi di giocare questo tiro. In media vale circa {{loss}} punti a partita in meno della migliore.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (tua)",
+      "replay_pause_a11y": "Metti in pausa il replay di {{label}}",
+      "replay_play_a11y": "Riproduci il replay di {{label}}",
+      "reveal": "Mostra la mossa migliore",
+      "reveal_a11y": "Rivela la mossa consigliata",
+      "rolled": "Hai tirato {{dice}}",
+      "show_mine": "Mostra la mia mossa",
+      "show_mine_a11y": "Mostra solo la mia mossa, senza rivelare la migliore",
+      "take_back": "Annulla e riprova",
+      "take_back_a11y": "Annulla tutto il turno e riprova",
+      "take_back_retry_a11y": "Annulla la mossa e riprova",
+      "title_compare": "La tua mossa contro la migliore",
+      "title_mine": "La tua mossa",
+      "turn_off": "Disattiva il tutor",
+      "turn_off_a11y": "Disattiva la modalità tutor",
+      "undo_last": "Annulla l’ultima mossa",
+      "undo_last_a11y": "Annulla solo l’ultima mossa e rigiocala",
+      "vs_best": "−{{delta}} rispetto alla migliore",
+      "you_played": "Hai giocato:"
     }
   },
   "home": {
@@ -333,6 +438,7 @@
     "link_error_title": "Impossibile aprire il link",
     "links": "Collegamenti",
     "more": "Altro",
+    "open_source": "Note open source",
     "privacy": "Informativa sulla privacy",
     "rate": "Valuta",
     "share": "Condividi",

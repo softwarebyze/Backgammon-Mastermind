@@ -45,6 +45,7 @@ jobs:
               - '.github/scripts/install-android-system-image.sh'
               - '.github/scripts/maestro-post-e2e-report.sh'
               - '.github/scripts/maestro-publish-screenshots.sh'
+              - '.github/scripts/maestro-publish-video.sh'
 
   generate-test-apk:
     needs: changes

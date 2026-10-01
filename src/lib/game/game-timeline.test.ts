@@ -4,6 +4,7 @@ import {
   createTimeline,
   currentTimelineState,
   pushTimelineSnapshot,
+  rebuildTimelineFromLog,
   redoTimeline,
   undoTimeline,
 } from './game-timeline';
@@ -68,6 +69,37 @@ describe('game-timeline', () => {
 
 describe('move-log sync contract', () => {
   const initial = createInitialState('vs-human');
+
+  it('restores a saved timeline with independently owned snapshots and working undo/redo', () => {
+    const after = { ...initial, phase: 'moving' as const, remainingDice: [2] };
+    const log = appendMoveLogEntry([], {
+      player: 'white',
+      dice: [4, 2],
+      move: { from: 13, to: 9, dieIndex: 0 },
+      after,
+    });
+    const restored = rebuildTimelineFromLog(initial, log, after);
+    expect(restored.cursor).toBe(1);
+    expect(currentTimelineState(restored)).toEqual(after);
+    const undone = undoTimeline(restored, log[0]!);
+    expect(currentTimelineState(undone)).toEqual(initial);
+    expect(currentTimelineState(redoTimeline(undone))).toEqual(after);
+    restored.snapshots[1]!.points[1]!.count = 99;
+    expect(initial.points[1]!.count).toBe(2);
+    expect(log[0]!.after!.points[1]!.count).toBe(2);
+  });
+
+  it('falls back to the live save when legacy history has no snapshots', () => {
+    const live = { ...initial, phase: 'rolling' as const };
+    const restored = rebuildTimelineFromLog(initial, [{
+      ply: 1,
+      player: 'white',
+      dice: [4, 2],
+      from: 13,
+      to: 9,
+    }], live);
+    expect(restored).toEqual(createTimeline(live));
+  });
 
   it('cursor matches move count at live head', () => {
     let timeline = createTimeline(initial);

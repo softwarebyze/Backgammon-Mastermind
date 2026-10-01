@@ -15,11 +15,41 @@ export type AnimatedMoveOpts = {
   fromAnchor?: PointAnchor;
 };
 
+export type AnimatedMoveCallbacks = {
+  onMoveApplied?: (before: GameState, move: Move, after: GameState) => void;
+  /** Fires when a move's animation begins — used for immediate SFX feedback. */
+  onMoveStarted?: (before: GameState, move: Move, after: GameState) => void;
+};
+
+type FinishRefs = {
+  generationRef: { current: number };
+  commitGenRef: { current: number };
+  finishOnceRef: { current: (() => void) | null };
+};
+
+function armFinish(refs: FinishRefs, onFinish: () => void): () => void {
+  const { generationRef, commitGenRef, finishOnceRef } = refs;
+  const gen = generationRef.current;
+  commitGenRef.current = gen;
+  let settled = false;
+  const settle = () => {
+    if (settled || generationRef.current !== gen) {
+      return;
+    }
+    settled = true;
+    finishOnceRef.current = null;
+    onFinish();
+  };
+  finishOnceRef.current = settle;
+  return settle;
+}
+
 export function useAnimatedMoves(
   state: GameState | null,
   setState: Dispatch<SetStateAction<GameState | null>>,
-  onMoveApplied?: (before: GameState, move: Move, after: GameState) => void,
+  callbacks: AnimatedMoveCallbacks = {},
 ) {
+  const { onMoveApplied, onMoveStarted } = callbacks;
   const stateRef = useRef(state);
   stateRef.current = state;
   const [moveAnimation, setMoveAnimation] = useState<MoveAnimationFrame | null>(null);
@@ -39,21 +69,8 @@ export function useAnimatedMoves(
     setSequenceActive(false);
   }, []);
 
-  const armAnimationFinish = useCallback((onFinish: () => void) => {
-    const gen = generationRef.current;
-    commitGenRef.current = gen;
-    let settled = false;
-    const settle = () => {
-      if (settled || generationRef.current !== gen) {
-        return;
-      }
-      settled = true;
-      finishOnceRef.current = null;
-      onFinish();
-    };
-    finishOnceRef.current = settle;
-    return settle;
-  }, []);
+  const armAnimationFinish = useCallback((onFinish: () => void) =>
+    armFinish({ generationRef, commitGenRef, finishOnceRef }, onFinish), []);
 
   useAnimationWatchdogs({ moveAnimation, sequenceActive, finishOnceRef, setSequenceActive });
 
@@ -69,8 +86,9 @@ export function useAnimatedMoves(
       setState,
       setMoveAnimation,
       onMoveApplied,
+      onMoveStarted,
     })(snapshot, move, playOpts);
-  }, [setState, onMoveApplied]);
+  }, [setState, onMoveApplied, onMoveStarted]);
 
   const playMoveSequence = useCallback((
     snapshot: GameState,
@@ -88,13 +106,14 @@ export function useAnimatedMoves(
       isAnimating: isAnimatingRef.current,
       playMove,
       onMoveApplied,
+      onMoveStarted,
       setState,
       setMoveAnimation,
       setSequenceActive,
       isCommitLive,
       fromAnchor: playOpts?.fromAnchor,
     });
-  }, [isCommitLive, playMove, onMoveApplied, setState]);
+  }, [isCommitLive, playMove, onMoveApplied, onMoveStarted, setState]);
 
   const doMove = useCallback((move: Move, playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;

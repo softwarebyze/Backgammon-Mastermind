@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { rebuildTimelineFromLog } from '@/lib/game/game-timeline';
 
 export function useRestoreGameTimeline(args: {
+  enabled: boolean;
   state: GameState | null;
   timeline: GameTimeline | null;
   moveLog: MoveLogEntry[];
@@ -14,10 +15,10 @@ export function useRestoreGameTimeline(args: {
   resetTimeline: (initial: GameState) => void;
   setTimeline: Dispatch<SetStateAction<GameTimeline | null>>;
 }) {
-  const { state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline } = args;
+  const { enabled, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline } = args;
 
   useEffect(() => {
-    if (!state || timeline !== null) {
+    if (!enabled || !state || timeline !== null) {
       return;
     }
     if (moveLog.length === 0) {
@@ -29,5 +30,5 @@ export function useRestoreGameTimeline(args: {
       return;
     }
     resetTimeline(state);
-  }, [state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline]);
+  }, [enabled, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline]);
 }
