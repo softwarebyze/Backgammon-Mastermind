@@ -1,5 +1,5 @@
 import type { GameMode, GameState } from '@/lib/game';
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
@@ -7,14 +7,13 @@ import { useCallback, useState } from 'react';
 import {
   Image,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
@@ -39,7 +38,8 @@ import {
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
-import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
@@ -75,8 +75,7 @@ export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
-  const { width, height } = useWindowDimensions();
-  const landscape = isLandscapeLayout(width, height);
+  const { insets, landscape } = useLayoutMetrics();
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
   const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
@@ -134,7 +133,15 @@ export function HomeScreen() {
       <ScrollView
         testID="home-screen"
         style={styles.scroll}
-        contentContainerStyle={[styles.root, landscape ? styles.rootLandscape : null]}
+        contentContainerStyle={[
+          styles.root,
+          landscape ? styles.rootLandscape : null,
+          contentEdgePadding(insets, {
+            left: 24,
+            right: 24,
+            bottom: landscape ? 16 : 32,
+          }),
+        ]}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
@@ -172,12 +179,13 @@ export function HomeScreen() {
           )}
 
           {canResume && (
-            <Pressable
+            <HoverPressable
               accessibilityRole="button"
               accessibilityLabel={translate('home.resume_a11y')}
               testID="resume-game-button"
-              style={({ pressed }) => [
+              style={({ pressed, hovered }) => [
                 styles.modeBtn,
+                hovered && styles.modeBtnHover,
                 landscape ? styles.modeBtnLandscape : null,
                 styles.resumeBtn,
                 pressed && styles.pressed,
@@ -193,16 +201,17 @@ export function HomeScreen() {
                   ? null
                   : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>}
               </View>
-            </Pressable>
+            </HoverPressable>
           )}
 
           {canReview && (
-            <Pressable
+            <HoverPressable
               accessibilityRole="button"
               accessibilityLabel={translate('home.review_a11y')}
               testID="review-last-game-button"
-              style={({ pressed }) => [
+              style={({ pressed, hovered }) => [
                 styles.modeBtn,
+                hovered && styles.modeBtnHover,
                 landscape ? styles.modeBtnLandscape : null,
                 styles.resumeBtn,
                 pressed && styles.pressed,
@@ -218,14 +227,15 @@ export function HomeScreen() {
                   ? null
                   : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.review_sub')}</Text>}
               </View>
-            </Pressable>
+            </HoverPressable>
           )}
 
-          <Pressable
+          <HoverPressable
             accessibilityRole="button"
             accessibilityLabel={translate('learn.home_cta')}
-            style={({ pressed }) => [
+            style={({ pressed, hovered }) => [
               styles.modeBtn,
+              hovered && styles.modeBtnHover,
               landscape ? styles.modeBtnLandscape : null,
               styles.learnBtn,
               pressed && styles.pressed,
@@ -247,13 +257,14 @@ export function HomeScreen() {
                     </Text>
                   )}
             </View>
-          </Pressable>
+          </HoverPressable>
 
-          <Pressable
+          <HoverPressable
             accessibilityRole="button"
             accessibilityLabel={translate('home.vs_computer_a11y')}
-            style={({ pressed }) => [
+            style={({ pressed, hovered }) => [
               styles.modeBtn,
+              hovered && styles.modeBtnHover,
               landscape ? styles.modeBtnLandscape : null,
               styles.primaryBtn,
               pressed && styles.pressed,
@@ -269,13 +280,14 @@ export function HomeScreen() {
                 ? null
                 : <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>}
             </View>
-          </Pressable>
+          </HoverPressable>
 
-          <Pressable
+          <HoverPressable
             accessibilityRole="button"
             accessibilityLabel={translate('home.two_players_a11y')}
-            style={({ pressed }) => [
+            style={({ pressed, hovered }) => [
               styles.modeBtn,
+              hovered && styles.modeBtnHover,
               landscape ? styles.modeBtnLandscape : null,
               styles.secondaryBtn,
               pressed && styles.pressed,
@@ -291,7 +303,7 @@ export function HomeScreen() {
                 ? null
                 : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
             </View>
-          </Pressable>
+          </HoverPressable>
         </View>
       </ScrollView>
     </>
@@ -308,17 +320,14 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
     justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
-    paddingHorizontal: 24,
     paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
-    paddingBottom: 32,
   },
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     paddingTop: 12,
-    paddingBottom: 16,
-    gap: 16,
+    gap: 24,
   },
   brand: {
     alignItems: 'center',
@@ -401,8 +410,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonsLandscape: {
-    flex: 1,
-    minWidth: 0,
+    flexGrow: 1,
+    flexShrink: 1,
+    minWidth: 240,
+    maxWidth: GAME_CHROME_MAX_WIDTH,
+    width: '100%',
     gap: 8,
     marginBottom: 0,
     justifyContent: 'center',
@@ -421,6 +433,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 10,
     minHeight: 44,
+  },
+  modeBtnHover: {
+    borderColor: GAME_PALETTE.accent,
   },
   pressed: {
     opacity: 0.88,

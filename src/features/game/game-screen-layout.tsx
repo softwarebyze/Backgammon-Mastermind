@@ -7,11 +7,9 @@ import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { usePostHog } from 'posthog-react-native';
 import { useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
-import { OpeningRollCeremony } from '@/features/game/components/board/opening-roll-ceremony';
 import { GameBoardSection } from '@/features/game/components/game-board-section';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { GuidanceModal } from '@/features/game/components/guidance-modal';
@@ -20,13 +18,15 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { REVIEW_SLOT_HEIGHT, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { REVIEW_SLOT_HEIGHT } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { resolveNumberPerspective } from '@/features/game/point-numbering';
+import { useOpeningReveal } from '@/features/game/use-opening-reveal';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
-import { hapticLight } from '@/lib/haptics';
+import { openingCopy, openingTray } from '@/lib/game/opening-display';
 import { translate } from '@/lib/i18n';
-import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout, landscapeChromeColumnWidth, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
+import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Review = ReturnType<typeof useMoveReview>;
 type Input = ReturnType<typeof useGameInput>;
@@ -45,23 +45,24 @@ type Props = {
   input: Input;
   moveLog: MoveLogEntry[];
   isComputerTurn: boolean;
-  ceremonyKey: number;
   onCancelSelection: () => void;
   onSkipComputer: () => void;
 };
 
 function GameTopChrome({
   state,
+  headline,
   onLayout,
 }: {
   state: GameState;
+  headline: string | null;
   onLayout: (event: LayoutChangeEvent) => void;
 }) {
   return (
     <View style={styles.chromeColumn} onLayout={onLayout}>
       <GamePipStatusBar state={state} />
       <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} />
+        <TurnIndicatorBanner state={state} headlineOverride={headline} />
       </View>
     </View>
   );
@@ -115,6 +116,8 @@ type ChromeStackProps = {
   interactionEnabled: boolean;
   compact: boolean;
   includeTop: boolean;
+  opening: ReturnType<typeof openingTray>;
+  openingText: ReturnType<typeof openingCopy>;
   onTopLayout: (event: LayoutChangeEvent) => void;
   onControlsLayout: (event: LayoutChangeEvent) => void;
   onCancelSelection: () => void;
@@ -131,6 +134,8 @@ function GameChromeStack({
   interactionEnabled,
   compact,
   includeTop,
+  opening,
+  openingText,
   onTopLayout,
   onControlsLayout,
   onCancelSelection,
@@ -138,7 +143,9 @@ function GameChromeStack({
 }: ChromeStackProps) {
   return (
     <>
-      {includeTop ? <GameTopChrome state={state} onLayout={onTopLayout} /> : null}
+      {includeTop
+        ? <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />
+        : null}
       <GameReviewSlot review={review} moveLog={moveLog} state={state} />
       <View
         style={[styles.controlsLayer, styles.chromeColumn]}
@@ -152,7 +159,12 @@ function GameChromeStack({
           isComputerTurn={isComputerTurn}
           isReviewing={review.isReviewing}
           moveLogLength={moveLog.length}
-          captionOverride={input.inputNudge === 'roll' ? translate('game.nudge.roll_first') : null}
+          captionOverride={
+            input.inputNudge === 'roll'
+              ? translate('game.nudge.roll_first')
+              : openingText?.caption ?? null
+          }
+          opening={opening}
           compact={compact}
           onRoll={input.handleRoll}
           onReset={input.handleReset}
@@ -165,23 +177,26 @@ function GameChromeStack({
   );
 }
 
-/* eslint-disable max-lines-per-function -- portrait vs landscape chrome composition */
+/* eslint-disable-next-line max-lines-per-function -- portrait vs landscape chrome composition */
 export function GameScreenLayout({
   board,
   review,
   input,
   moveLog,
   isComputerTurn,
-  ceremonyKey,
   onCancelSelection,
   onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
-  const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
-  const landscape = isLandscapeLayout(width, height);
-  const chromeWidth = landscapeChromeColumnWidth(width);
-  const dimensions = useBoardDimensions();
+  const {
+    landscape,
+    desktop,
+    chromeWidth,
+    boardPaneWidth,
+    boardMaxWidth,
+    stageMaxWidth,
+    contentInsets,
+  } = useLayoutMetrics();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
@@ -193,7 +208,10 @@ export function GameScreenLayout({
     reviewedPlayer: review.reviewedPlayer,
     currentPlayer: state.currentPlayer,
   });
-  const canOpeningRoll = !review.isReviewing && !isComputerTurn && live.phase === 'opening-roll';
+  // Live state only — review scrub must not drive the opening reveal.
+  const reveal = useOpeningReveal(input.state, input.handleRoll);
+  const opening = openingTray(live, reveal);
+  const openingText = openingCopy(live, reveal);
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
   const prevPhaseRef = useRef<string | undefined>(undefined);
 
@@ -220,6 +238,8 @@ export function GameScreenLayout({
       interactionEnabled={board.interactionEnabled}
       compact={landscape}
       includeTop={landscape}
+      opening={opening}
+      openingText={openingText}
       onTopLayout={onTopLayout}
       onControlsLayout={onControlsLayout}
       onCancelSelection={onCancelSelection}
@@ -232,15 +252,22 @@ export function GameScreenLayout({
       style={[
         styles.root,
         landscape ? styles.rootLandscape : styles.rootPortrait,
-        { paddingBottom: insets.bottom },
+        contentInsets,
+        landscape && stageMaxWidth != null
+          ? { maxWidth: stageMaxWidth, width: '100%', alignSelf: 'center' }
+          : null,
       ]}
     >
       <FocusAwareStatusBar />
       {landscape
         ? null
-        : <GameTopChrome state={state} onLayout={onTopLayout} />}
+        : <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />}
       <View
-        style={[styles.boardSlotHost, landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait]}
+        style={[
+          styles.boardSlotHost,
+          landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait,
+          { maxWidth: boardPaneWidth ?? boardMaxWidth },
+        ]}
         testID="game-board-slot"
         onLayout={onSlotLayout}
       >
@@ -258,27 +285,17 @@ export function GameScreenLayout({
         />
       </View>
       <WinConfettiOverlay burstKey={winBurstKey} />
-      {/* Full-screen so the scrim covers board + review (no hard cut at board edge). */}
-      <View style={styles.ceremonyLayer} pointerEvents="box-none">
-        <OpeningRollCeremony
-          key={ceremonyKey}
-          // Live state only — review scrub must not drive the opening ceremony.
-          state={input.state!}
-          dimensions={dimensions}
-          canRoll={canOpeningRoll}
-          onRoll={() => {
-            hapticLight();
-            input.handleRoll();
-          }}
-        />
+      <View style={styles.tutorSlot} pointerEvents="box-none">
+        <GuidanceModal />
       </View>
-      {/* Tutor blunder intervention — pauses play until the user chooses. */}
-      <GuidanceModal />
       {landscape
         ? (
             <ScrollView
               style={[styles.chromeRail, { width: chromeWidth }]}
-              contentContainerStyle={styles.chromeRailContent}
+              contentContainerStyle={[
+                styles.chromeRailContent,
+                desktop ? styles.chromeRailContentTall : null,
+              ]}
               bounces={false}
               overScrollMode="never"
               keyboardShouldPersistTaps="handled"
@@ -296,6 +313,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     minHeight: 0,
+    minWidth: 0,
     backgroundColor: GAME_PALETTE.bg,
   },
   rootPortrait: {
@@ -304,6 +322,8 @@ const styles = StyleSheet.create({
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'stretch',
+    justifyContent: 'center',
+    gap: LANDSCAPE_GAP,
   },
   chromeColumn: {
     width: '100%',
@@ -320,7 +340,11 @@ const styles = StyleSheet.create({
   chromeRailContent: {
     flexGrow: 1,
     paddingBottom: 8,
+    paddingHorizontal: 8,
     alignItems: 'center',
+  },
+  chromeRailContentTall: {
+    justifyContent: 'center',
   },
   boardSlotHost: {
     flexGrow: 1,
@@ -332,12 +356,12 @@ const styles = StyleSheet.create({
   },
   boardSlotPortrait: {
     width: '100%',
-    maxWidth: MAX_BOARD_WIDTH,
     alignSelf: 'center',
   },
   boardSlotLandscape: {
     alignSelf: 'stretch',
-    height: '100%',
+    minWidth: 0,
+    minHeight: 0,
   },
   turnBannerWrap: {
     width: '100%',
@@ -355,13 +379,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   tutorSlot: {
-    width: '100%',
-    alignItems: 'center',
-    zIndex: 55,
-  },
-  ceremonyLayer: {
     ...StyleSheet.absoluteFill,
-    zIndex: 40,
+    zIndex: 55,
   },
   controlsLayer: {
     width: '100%',

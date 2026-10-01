@@ -12,7 +12,7 @@ import { useHintArrows } from '@/features/game/hint-arrows-store';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT } from '@/lib/game/constants';
-import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Input = ReturnType<typeof useGameInput>;
 
@@ -43,6 +43,7 @@ export function GameBoardSection({
   numberPerspective,
 }: Props) {
   const dimensions = useBoardDimensions();
+  const { boardMaxWidth } = useLayoutMetrics();
   const { preferences } = useGamePreferences();
   const hintArrows = useHintArrows();
   // Guidance owns the live board while it is visible. Mixing its arrows with
@@ -73,7 +74,7 @@ export function GameBoardSection({
   }, [dimensions, input]);
 
   return (
-    <View style={styles.boardWrap}>
+    <View style={[styles.boardWrap, { maxWidth: boardMaxWidth }]}>
       <Pressable
         onPress={interactionEnabled ? input.handleBoardPress : undefined}
         style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
@@ -149,7 +150,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
     width: '100%',
-    maxWidth: MAX_BOARD_WIDTH,
     alignSelf: 'stretch',
     alignItems: 'center',
   },

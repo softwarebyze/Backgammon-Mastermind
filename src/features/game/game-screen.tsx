@@ -24,6 +24,7 @@ import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
 import { useTutorMode } from '@/features/game/use-tutor';
+import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
@@ -60,7 +61,6 @@ export function GameScreen() {
     doUndo,
     doRedo,
     historyPath,
-    ceremonyKey,
     resumeAIScheduling,
     skipAIDelay,
     selectPoint,
@@ -104,6 +104,7 @@ export function GameScreen() {
 
   // Leave-home clears AI timers; same in-memory state won't re-trigger the effect — kick on focus.
   useFocusEffect(useCallback(() => {
+    primeGameSfxFromUserGesture();
     resumeAIScheduling();
     return () => resetAnimation();
   }, [resumeAIScheduling, resetAnimation]));
@@ -184,7 +185,6 @@ export function GameScreen() {
         input={input}
         moveLog={moveLog}
         isComputerTurn={isComputerTurn || tutorPaused}
-        ceremonyKey={ceremonyKey}
         onCancelSelection={() => selectPoint(null)}
         onSkipComputer={skipAIDelay}
       />

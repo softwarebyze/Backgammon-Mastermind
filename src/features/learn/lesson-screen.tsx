@@ -3,8 +3,7 @@ import type { LessonId } from '@/lib/learn/curriculum';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
@@ -25,7 +24,8 @@ import { translate } from '@/lib/i18n';
 import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
 import { isLastStepComplete } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
-import { isLandscapeLayout, landscapeChromeColumnWidth } from '@/lib/ui/game-chrome';
+import { LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
+import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
@@ -84,10 +84,7 @@ function LessonScreenBody({
 }) {
   const session = useLessonSession(lesson);
   const posthog = usePostHog();
-  const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
-  const landscape = isLandscapeLayout(width, height);
-  const chromeWidth = landscapeChromeColumnWidth(width);
+  const { insets, landscape, chromeWidth, boardPaneWidth, boardMaxWidth, stageMaxWidth } = useLayoutMetrics();
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
   const { onTopLayout, onControlsLayout, onSlotLayout, captionMaxHeight } = usePublishBoardSlot({
     reviewHeight: 0,
@@ -259,7 +256,14 @@ function LessonScreenBody({
         style={[
           styles.root,
           landscape ? styles.rootLandscape : null,
-          { paddingBottom: landscape ? 8 : Math.max(8, insets.bottom) },
+          {
+            paddingLeft: insets.left,
+            paddingRight: insets.right,
+            paddingBottom: Math.max(8, insets.bottom),
+          },
+          landscape && stageMaxWidth != null
+            ? { maxWidth: stageMaxWidth, width: '100%', alignSelf: 'center' }
+            : null,
         ]}
       >
         {landscape ? null : portraitCaption}
@@ -268,6 +272,7 @@ function LessonScreenBody({
           style={[
             styles.boardWrap,
             landscape ? styles.boardWrapLandscape : styles.boardWrapPortrait,
+            { maxWidth: boardPaneWidth ?? boardMaxWidth },
           ]}
           pointerEvents="box-none"
           testID="learn-board-slot"
@@ -325,12 +330,15 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     minHeight: 0,
+    minWidth: 0,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
   },
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'stretch',
+    justifyContent: 'center',
+    gap: LANDSCAPE_GAP,
   },
   sidePanel: {
     flexGrow: 0,
@@ -368,7 +376,8 @@ const styles = StyleSheet.create({
   },
   boardWrapLandscape: {
     alignSelf: 'stretch',
-    height: '100%',
+    minWidth: 0,
+    minHeight: 0,
   },
   boardContainer: {
     width: '100%',

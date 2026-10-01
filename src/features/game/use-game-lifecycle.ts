@@ -1,9 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
-import { setOpeningCeremonyHandoff, setOpeningCeremonyVisible } from '@/features/game/opening-ceremony-gate';
 import { createInitialState } from '@/lib/game';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
 import { performResume } from '@/lib/game/resume-game';
@@ -29,15 +28,6 @@ export function useGameLifecycle({
   clearTimeline,
   setState,
 }: Options) {
-  // Remount opening ceremony on each new/reset game (clears stuck exit stage).
-  const [ceremonyKey, setCeremonyKey] = useState(0);
-
-  const bumpCeremony = useCallback(() => {
-    setOpeningCeremonyVisible(false);
-    setOpeningCeremonyHandoff('hidden');
-    setCeremonyKey(k => k + 1);
-  }, []);
-
   const beginSession = useCallback((next: GameState) => {
     clearAITimeout();
     resetAnimation();
@@ -46,11 +36,10 @@ export function useGameLifecycle({
     clearTimeline();
     setGuidanceVerdictPending(false);
     clearGuidance();
-    bumpCeremony();
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);
-  }, [bumpCeremony, clearAITimeout, resetAnimation, resetMoveLog, clearTimeline, resetTimeline, setState]);
+  }, [clearAITimeout, resetAnimation, resetMoveLog, clearTimeline, resetTimeline, setState]);
 
   const startGame = useCallback((mode: GameMode) => {
     beginSession(createInitialState(mode));
@@ -76,7 +65,6 @@ export function useGameLifecycle({
     resetMoveLog();
     setGuidanceVerdictPending(false);
     clearGuidance();
-    bumpCeremony();
     if (!state) {
       return;
     }
@@ -84,7 +72,7 @@ export function useGameLifecycle({
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);
-  }, [bumpCeremony, clearAITimeout, resetAnimation, resetMoveLog, resetTimeline, setState, state]);
+  }, [clearAITimeout, resetAnimation, resetMoveLog, resetTimeline, setState, state]);
 
-  return { startGame, startFromPosition, resumeGame, resetGame, ceremonyKey };
+  return { startGame, startFromPosition, resumeGame, resetGame };
 }

@@ -1,16 +1,13 @@
 import type { GameState } from '@/lib/game';
-import { useEffect } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import type { OpeningTray } from '@/lib/game/opening-display';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 
 import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
-import {
-  useOpeningCeremonyHandoff,
-  useOpeningCeremonyVisible,
-} from '@/features/game/opening-ceremony-gate';
 import { isTurnStart } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
@@ -28,8 +25,10 @@ type Props = {
   isReviewing?: boolean;
   /** Move-log length for hint-session staleness tracking. */
   moveLogLength: number;
-  /** Ephemeral caption override (e.g. "Roll the dice first"). */
+  /** Ephemeral caption override (e.g. "Roll the dice first", opening copy). */
   captionOverride?: string | null;
+  /** Opening roll in progress / being revealed: white-left, black-right tray. */
+  opening?: OpeningTray | null;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
@@ -40,7 +39,6 @@ type Props = {
 };
 
 const ACTION_SLOT_HEIGHT = 52;
-const TRAY_FADE_MS = 280;
 const CONTROL_HIT_SLOP = 16;
 
 export function GameScreenControls({
@@ -51,6 +49,7 @@ export function GameScreenControls({
   isReviewing = false,
   moveLogLength,
   captionOverride = null,
+  opening = null,
   onRoll,
   onReset,
   onGoLive,
@@ -61,59 +60,40 @@ export function GameScreenControls({
   const { preferences } = useGamePreferences();
   const guidance = useGuidance();
   const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
-  const ceremonyVisible = useOpeningCeremonyVisible();
-  const handoff = useOpeningCeremonyHandoff();
   const turn = getTurnDisplay(state);
   const caption = captionOverride
     ?? (isReviewing
       ? translate('game.review.viewing_hint')
-      : ceremonyVisible
-        ? ' '
-        : getActionCaption(state, turn));
-
-  const showTray = !ceremonyVisible || handoff === 'reveal' || handoff === 'measure';
-  const trayOpacity = useSharedValue(ceremonyVisible ? 0 : 1);
-
-  useEffect(() => {
-    if (!ceremonyVisible) {
-      trayOpacity.value = 1;
-      return;
-    }
-    if (handoff === 'reveal') {
-      trayOpacity.value = withTiming(1, { duration: TRAY_FADE_MS });
-      return;
-    }
-    trayOpacity.value = 0;
-  }, [ceremonyVisible, handoff, trayOpacity]);
-
-  const trayStyle = useAnimatedStyle(() => ({
-    opacity: trayOpacity.value,
-  }));
+      : getActionCaption(state, turn));
 
   const diceForTray = isReviewing ? state : liveDiceState;
-  const measuring = ceremonyVisible && (handoff === 'measure' || handoff === 'hidden');
+  const showOpening = opening !== null && !isReviewing;
 
   return (
     <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow}>
-        {showTray
+      <View style={styles.diceRow} pointerEvents="none">
+        {showOpening
           ? (
-              <Animated.View style={trayStyle} pointerEvents="none">
-                <DiceDisplay
-                  dice={measuring ? [0, 0] : diceForTray.dice}
-                  remainingDice={measuring ? [] : diceForTray.remainingDice}
-                  playerColor={diceForTray.currentPlayer}
-                  // Opening dice are [whiteDie, blackDie] — keep faces matched during fly-in.
-                  slotColors={ceremonyVisible ? ['white', 'black'] : undefined}
-                  displayStyle={preferences.diceDisplayStyle}
-                  animateRoll={!isReviewing && !ceremonyVisible}
-                  reportTraySlots={ceremonyVisible}
-                />
-              </Animated.View>
+              // Opening: each side's die in its own color; the engine hands these
+              // same two values to the winner, so nothing has to travel.
+              <DiceDisplay
+                dice={opening.dice}
+                remainingDice={opening.dice.filter(v => v !== 0)}
+                playerColor={diceForTray.currentPlayer}
+                slotColors={['white', 'black']}
+                emphasis={opening.emphasis}
+                displayStyle={preferences.diceDisplayStyle}
+              />
             )
-          : liveDiceState.phase === 'opening-roll'
-            ? <View style={styles.dicePlaceholder} />
-            : null}
+          : (
+              <DiceDisplay
+                dice={diceForTray.dice}
+                remainingDice={diceForTray.remainingDice}
+                playerColor={diceForTray.currentPlayer}
+                displayStyle={preferences.diceDisplayStyle}
+                animateRoll={!isReviewing}
+              />
+            )}
       </View>
       <View
         style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
@@ -167,46 +147,46 @@ function ActionControl({
 }) {
   if (isReviewing) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.back_to_live')}
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onGoLive}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   if (state.phase === 'game-over') {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.play_again_a11y')}
         testID="play-again-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onReset}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   // Opening: keep the Roll Dice button (tap-anywhere on the ceremony still works).
   if (state.phase === 'opening-roll' && isHumanTurn) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
@@ -216,16 +196,16 @@ function ActionControl({
 
   if (state.phase === 'rolling' && isHumanTurn) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
@@ -247,20 +227,20 @@ function ActionControl({
 
   if (state.phase === 'moving' && isHumanTurn && state.selectedPoint !== null && onCancelSelection) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.cancel_a11y')}
         testID="cancel-selection-button"
         collapsable={false}
         pointerEvents="auto"
-        style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.secondaryBtn, hovered && styles.secondaryBtnHover, pressed && styles.pressed]}
         onPress={() => {
           hapticLight();
           onCancelSelection();
         }}
       >
         <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
@@ -286,19 +266,19 @@ function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => voi
         : null}
       {onSkip
         ? (
-            <Pressable
+            <HoverPressable
               accessibilityRole="button"
               accessibilityLabel={skipLabel}
               testID="skip-computer-button"
               hitSlop={CONTROL_HIT_SLOP}
-              style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
+              style={({ pressed, hovered }) => [styles.skipBtn, hovered && styles.skipBtnHover, pressed && styles.pressed]}
               onPress={() => {
                 hapticLight();
                 onSkip();
               }}
             >
               <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
-            </Pressable>
+            </HoverPressable>
           )
         : null}
     </View>
@@ -325,9 +305,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 44,
     marginBottom: 8,
-  },
-  dicePlaceholder: {
-    minHeight: 44,
   },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
@@ -362,11 +339,21 @@ const styles = StyleSheet.create({
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
     ...continuousRadius(12),
   },
+  primaryBtnHover: {
+    backgroundColor: GAME_PALETTE.controlHover,
+    borderColor: '#FFE0A0',
+  },
+  secondaryBtnHover: {
+    borderColor: GAME_PALETTE.accent,
+  },
+  skipBtnHover: {
+    opacity: 0.8,
+  },
   pressed: {
     opacity: 0.9,
   },
   primaryBtnText: {
-    color: GAME_PALETTE.text,
+    color: GAME_PALETTE.controlInk,
     fontSize: 16,
     ...interFont('semibold'),
   },

@@ -14,8 +14,6 @@ export type GameContextType = {
   startFromPosition: (state: GameState) => void;
   resumeGame: () => boolean;
   resetGame: () => void;
-  /** Remount key for opening ceremony after new/reset game. */
-  ceremonyKey: number;
   doRollDice: () => void;
   doPassTurn: () => void;
   selectPoint: (point: number | null) => void;

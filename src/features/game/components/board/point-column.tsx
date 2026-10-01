@@ -1,10 +1,11 @@
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { BoardPoint, Player } from '@/lib/game/types';
 import { useMemo } from 'react';
-import { Pressable, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
 import { pointAccessibilityLabel } from './point-accessibility';
@@ -221,6 +222,8 @@ type Props = {
   isSelected: boolean;
   isLegalTarget: boolean;
   isMovableSource: boolean;
+  /** Web: brighten on hover (legal target or a checker that can move). */
+  isHoverable?: boolean;
   showGhost: boolean;
   ghostPlayer: Player | null;
   onPress: () => void;
@@ -248,6 +251,7 @@ export function PointColumn({
   isSelected,
   isLegalTarget,
   isMovableSource,
+  isHoverable = false,
   showGhost,
   ghostPlayer,
   onPress,
@@ -312,7 +316,7 @@ export function PointColumn({
   );
 
   const pressable = (
-    <Pressable
+    <HoverPressable
       accessibilityRole="button"
       accessibilityLabel={a11yLabel}
       accessible
@@ -332,10 +336,11 @@ export function PointColumn({
           onPress();
         }
       }}
-      style={columnStyle}
+      // Web: brighten only points the player can actually use right now.
+      style={({ hovered }) => [columnStyle, hovered && (isLegalTarget || isHoverable) && styles.hovered]}
     >
       {columnContent}
-    </Pressable>
+    </HoverPressable>
   );
 
   if (dragEnabled && columnGesture) {
@@ -348,3 +353,9 @@ export function PointColumn({
 
   return pressable;
 }
+
+const styles = StyleSheet.create({
+  hovered: {
+    backgroundColor: 'rgba(255, 236, 200, 0.10)',
+  },
+});

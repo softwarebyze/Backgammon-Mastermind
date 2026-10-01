@@ -18,8 +18,8 @@ describe('fitBoardToViewport', () => {
   });
 
   it('accounts for extra height (point-number rails) when fitting', () => {
-    const withoutRails = fitBoardToViewport({ maxOuterWidth: 720, maxOuterHeight: 400 });
-    const withRails = fitBoardToViewport({ maxOuterWidth: 720, maxOuterHeight: 400, extraHeight: 36 });
+    const withoutRails = fitBoardToViewport(720, 400);
+    const withRails = fitBoardToViewport(720, 400, { extraHeight: 36 });
     expect(withRails.boardOuterWidth).toBeLessThanOrEqual(withoutRails.boardOuterWidth);
     expect(withRails.boardOuterHeight + 36).toBeLessThanOrEqual(400);
   });
@@ -107,6 +107,20 @@ describe('resolveBoardViewport', () => {
     expect(dims.boardOuterWidth).toBeGreaterThan(200);
   });
 
+  it('caps phone-landscape width so a 720px board cannot overflow the chrome rail', () => {
+    const chrome = 304;
+    const pane = 844 - chrome - 8;
+    const dims = resolveBoardViewport({
+      screenWidth: 844,
+      screenHeight: 390,
+      platform: 'web',
+      showPointNumbers: true,
+      maxOuterWidthCap: pane,
+    });
+    expect(dims.boardOuterWidth).toBeLessThanOrEqual(pane);
+    expect(dims.boardOuterWidth).toBeGreaterThan(200);
+  });
+
   it('keeps Point 1–24 inside the Learn leftover floor with point-number rails', () => {
     const dims = resolveBoardViewport({
       screenWidth: 390,
@@ -155,6 +169,29 @@ describe('leftoverBoardHeight', () => {
     expect(largeText).toBeGreaterThanOrEqual(120);
   });
 
+  it('does not subtract the vs-computer review strip when Learn passes 0', () => {
+    const game = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 140,
+      controlsHeight: 72,
+      bottomInset: 0,
+    });
+    const learn = leftoverBoardHeight({
+      screenHeight: 844,
+      headerHeight: 56,
+      topChromeHeight: 140,
+      reviewHeight: 0,
+      controlsHeight: 72,
+      bottomInset: 0,
+      minHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
+    });
+    expect(learn).toBe(game + 68);
+    expect(learn).toBeGreaterThanOrEqual(MIN_LEARN_BOARD_SLOT_HEIGHT);
+  });
+});
+
+describe('leftoverBoardHeight side-by-side', () => {
   it('ignores stacked chrome when the board sits beside dice/review', () => {
     const stacked = leftoverBoardHeight({
       screenHeight: 390,
@@ -173,6 +210,26 @@ describe('leftoverBoardHeight', () => {
     });
     expect(stacked).toBe(120);
     expect(sideBySide).toBe(334);
+  });
+
+  it('subtracts the home-indicator inset from landscape leftover height', () => {
+    const flush = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 80,
+      controlsHeight: 96,
+      bottomInset: 0,
+      sideBySide: true,
+    });
+    const inset = leftoverBoardHeight({
+      screenHeight: 390,
+      headerHeight: 56,
+      topChromeHeight: 80,
+      controlsHeight: 96,
+      bottomInset: 21,
+      sideBySide: true,
+    });
+    expect(flush - inset).toBe(21);
   });
 
   it('keeps side-by-side leftover independent of dice and review height', () => {
@@ -194,27 +251,6 @@ describe('leftoverBoardHeight', () => {
     });
     expect(shortChrome).toBe(tallChrome);
     expect(tallChrome).toBe(334);
-  });
-
-  it('does not subtract the vs-computer review strip when Learn passes 0', () => {
-    const game = leftoverBoardHeight({
-      screenHeight: 844,
-      headerHeight: 56,
-      topChromeHeight: 140,
-      controlsHeight: 72,
-      bottomInset: 0,
-    });
-    const learn = leftoverBoardHeight({
-      screenHeight: 844,
-      headerHeight: 56,
-      topChromeHeight: 140,
-      reviewHeight: 0,
-      controlsHeight: 72,
-      bottomInset: 0,
-      minHeight: MIN_LEARN_BOARD_SLOT_HEIGHT,
-    });
-    expect(learn).toBe(game + 68);
-    expect(learn).toBeGreaterThanOrEqual(MIN_LEARN_BOARD_SLOT_HEIGHT);
   });
 });
 
@@ -251,5 +287,52 @@ describe('learnCaptionMaxHeight', () => {
       bottomInset: 34,
     });
     expect(captionMax).toBe(MIN_LEARN_CAPTION_HEIGHT);
+  });
+});
+
+describe('point height uses leftover slot height', () => {
+  it('stretches points into a tall portrait slot instead of leaving it empty', () => {
+    const compact = fitBoardToViewport(382, 260);
+    const tall = fitBoardToViewport(382, 480);
+    expect(tall.boardOuterWidth).toBe(compact.boardOuterWidth);
+    expect(tall.pointHeight).toBeGreaterThan(compact.pointHeight);
+    expect(tall.boardOuterHeight).toBeLessThanOrEqual(480);
+  });
+
+  it('caps point length at 7 checkers so stacks stay readable', () => {
+    const dims = fitBoardToViewport(382, 5000);
+    expect(dims.pointHeight).toBe(Math.round(dims.checkerSize * 7));
+  });
+
+  it('never shrinks below the compact 5.2-checker point', () => {
+    const dims = fitBoardToViewport(720, 2000, { extraHeight: 36 });
+    expect(dims.pointHeight).toBeGreaterThanOrEqual(Math.round(dims.checkerSize * 5.2));
+  });
+});
+
+describe('desktop checker cap', () => {
+  it('keeps the phone/tablet board byte-identical at the default cap', () => {
+    const a = fitBoardToViewport(720, 2000);
+    const b = fitBoardToViewport(720, 2000, { checkerCap: 32 });
+    expect(a).toEqual(b);
+    expect(a.checkerSize).toBe(32);
+    expect(a.barWidth).toBe(28);
+    expect(a.bearOffWidth).toBe(38);
+  });
+
+  it('grows checkers, bar, and tray together on a 1000px desktop board', () => {
+    const dims = fitBoardToViewport(1000, 2000, { checkerCap: 48 });
+    expect(dims.checkerSize).toBeGreaterThan(40);
+    expect(dims.checkerSize).toBeLessThanOrEqual(48);
+    // Bar checkers render at 0.88× — the bar must still hold one.
+    expect(dims.barWidth).toBeGreaterThanOrEqual(Math.round(dims.checkerSize * 0.85));
+    expect(dims.bearOffWidth).toBeGreaterThan(dims.barWidth);
+    // Columns + bar + tray still exactly fill the board.
+    expect(dims.colWidth * 12 + dims.barWidth + dims.bearOffWidth).toBeCloseTo(dims.boardWidth, 5);
+  });
+
+  it('still shrinks a large-cap board to fit a short window', () => {
+    const dims = fitBoardToViewport(1000, 500, { checkerCap: 48, extraHeight: 28 });
+    expect(dims.boardOuterHeight + 28).toBeLessThanOrEqual(500);
   });
 });

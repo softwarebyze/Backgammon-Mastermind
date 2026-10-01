@@ -19,7 +19,7 @@ import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
 import { loadPersistedGame } from '@/lib/game/persistence';
 
 /* eslint-disable max-lines-per-function -- provider composes all game slices */
-export function useGameProviderValue(): GameContextType {
+export function useGameProviderValue(active: boolean): GameContextType {
   const [state, setState] = useState(() => loadPersistedGame());
   const {
     moveLog,
@@ -83,6 +83,7 @@ export function useGameProviderValue(): GameContextType {
     gameMode: state?.mode,
   });
   const { clearAITimeout, resumeAIScheduling, skipAIDelay } = useComputerOpponent({
+    enabled: active,
     state,
     setState,
     playMove,
@@ -103,7 +104,7 @@ export function useGameProviderValue(): GameContextType {
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
   usePersistActiveGame(state, moveLog, replayBaseline);
-  const { startGame, startFromPosition, resumeGame, resetGame, ceremonyKey } = useGameLifecycle({
+  const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,
     clearAITimeout,
     resetAnimation: resetAllAnimation,
@@ -113,8 +114,9 @@ export function useGameProviderValue(): GameContextType {
     clearTimeline,
     setState,
   });
-  useRestoreGameTimeline({ state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
+  useRestoreGameTimeline({ enabled: active, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
   useGameplayHelpers({
+    enabled: active,
     state,
     isAnimating,
     hasRedo: canRedo,
@@ -211,7 +213,6 @@ export function useGameProviderValue(): GameContextType {
     startFromPosition,
     resumeGame,
     resetGame,
-    ceremonyKey,
     doRollDice,
     doPassTurn,
     selectPoint,
