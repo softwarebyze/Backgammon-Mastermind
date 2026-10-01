@@ -20,6 +20,7 @@ import {
 } from '@/features/game/hint-arrows-store';
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
+import { useGameKeyboardShortcuts } from '@/features/game/use-game-keyboard-shortcuts';
 import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
@@ -139,6 +140,17 @@ export function GameScreen() {
     openOptions,
     handleReset: input.handleReset,
     confirmLeaveGame: leaveGame,
+  });
+
+  useGameKeyboardShortcuts({
+    state: input.state,
+    isReviewing: review.isReviewing,
+    canUndo: !review.isReviewing && canUndo,
+    canRedo: !review.isReviewing && canRedo,
+    onRoll: input.handleRoll,
+    onUndo: doUndo,
+    onRedo: doRedo,
+    onCancelSelection: () => selectPoint(null),
   });
 
   useEffect(() => {

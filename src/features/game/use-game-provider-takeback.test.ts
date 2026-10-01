@@ -57,7 +57,7 @@ function makeMove(result: { current: Provider }) {
 
 describe('provider tutor take-back', () => {
   it('take-back restores turn-start and the board is immediately interactive', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-human');
     });
@@ -111,7 +111,7 @@ describe('provider tutor take-back', () => {
   });
 
   it('take-back with no moves to animate falls back to an instant revert', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-human');
     });

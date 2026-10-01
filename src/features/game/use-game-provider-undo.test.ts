@@ -100,7 +100,7 @@ function playComputerOpening(result: { current: Provider }) {
 
 describe('provider undo keeps the roll (pass-and-play)', () => {
   it('pass-and-play: roll, move, undo restores the same dice in phase moving', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-human');
     });
@@ -117,7 +117,7 @@ describe('provider undo keeps the roll (pass-and-play)', () => {
   });
 
   it('pass-and-play: undo after two moves restores one move with the same roll', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-human');
     });
@@ -140,7 +140,7 @@ describe('provider undo keeps the roll (pass-and-play)', () => {
   });
 
   it('pass-and-play: after undo, an alternate legal move can be made with the same roll', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-human');
     });
@@ -176,7 +176,7 @@ describe('provider undo keeps the roll (pass-and-play)', () => {
 
 describe('provider undo keeps the roll (vs-computer and history)', () => {
   it('pass-and-play mid-game: roll, move, undo keeps the same roll', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-human');
     });
@@ -206,7 +206,7 @@ describe('provider undo keeps the roll (vs-computer and history)', () => {
   });
 
   it('vs-computer: human roll, move, undo restores the human roll', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-computer');
     });
@@ -230,7 +230,7 @@ describe('provider undo keeps the roll (vs-computer and history)', () => {
   });
 
   it('undo -> redo -> undo still restores the same roll', () => {
-    const { result } = renderHook(() => useGameProviderValue());
+    const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-human');
     });

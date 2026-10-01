@@ -37,6 +37,7 @@ export default antfu(
       'ios',
       '.vscode',
       'docs/',
+      'public/bgsage/**',
       'cli/',
       '.agents/**',
       'expo-env.d.ts',

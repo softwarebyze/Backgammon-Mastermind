@@ -113,6 +113,7 @@ describe('tutor pause vs the computer opponent', () => {
       // child's effect (opening the prompt) flushes first — exactly like
       // GameScreen's effects flushing before the provider's AI effect.
       useComputerOpponent({
+        enabled: true,
         state,
         setState: setStateSpy.current,
         playMove,
