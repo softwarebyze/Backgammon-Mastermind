@@ -1,11 +1,10 @@
-import type { StrategyMarkKind } from '@/features/game/components/strategy-icon';
 import type { StrategyKey } from '@/features/game/strategy';
 import type { GameState } from '@/lib/game';
 import type { TxKeyPath } from '@/lib/i18n';
 
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import { StrategyMark, StrategyMarkCompare } from '@/features/game/components/strategy-icon';
+import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy } from '@/features/game/strategy';
 import { calculatePipCount } from '@/lib/game';
@@ -29,7 +28,6 @@ function strategyMessage(group: 'label' | 'tip', key: StrategyKey) {
  */
 export function GamePipStatusBar({ state }: Props) {
   const [showExplanation, setShowExplanation] = useState(false);
-  const [markKind, setMarkKind] = useState<StrategyMarkKind>('icon');
   const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
   const strategy = classifyStrategy(state, perspective);
   const label = strategyMessage('label', strategy.key);
@@ -63,7 +61,7 @@ export function GamePipStatusBar({ state }: Props) {
           testID="strategy-line"
         >
           <View testID="strategy-mark">
-            <StrategyMark strategy={strategy.key} kind={markKind} size={18} />
+            <StrategyMark strategy={strategy.key} size={18} />
           </View>
           <Text style={styles.strategyText}>{label}</Text>
           <Text style={styles.chevron}>{isRTL ? '◂' : '▸'}</Text>
@@ -93,12 +91,11 @@ export function GamePipStatusBar({ state }: Props) {
         >
           <Pressable style={styles.modalCard} onPress={() => {}} testID="strategy-explanation">
             <View style={styles.modalHeader}>
-              <StrategyMark strategy={strategy.key} kind={markKind} size={22} />
+              <StrategyMark strategy={strategy.key} size={22} />
               <Text style={styles.modalTitle}>{label}</Text>
             </View>
             <Text style={styles.whyText}>{why}</Text>
             <Text style={styles.tipText}>{tip}</Text>
-            <StrategyMarkCompare kind={markKind} onPick={setMarkKind} />
             <Pressable
               onPress={() => setShowExplanation(false)}
               accessibilityRole="button"
