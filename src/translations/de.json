@@ -27,6 +27,18 @@
       "start_new_game_a11y": "Starten Sie neues Spiel",
       "undo_a11y": "Undo Bewegung"
     },
+    "hint": {
+      "back_to_turn": "Zurück zu meinem Zug",
+      "back_to_turn_a11y": "Zurück zu meinem Zug, Hinweis schließen",
+      "button": "Hinweis",
+      "button_a11y": "Einen Zughinweis holen",
+      "error": "Kein Hinweis gefunden — tippen zum Wiederholen",
+      "error_a11y": "Hinweis erneut versuchen",
+      "finding": "Suche den besten Zug…",
+      "play": "Diesen Zug spielen",
+      "play_a11y": "Den vorgeschlagenen Zug spielen",
+      "suggested": "Vorgeschlagener Zug"
+    },
     "nudge": {
       "roll_first": "Würfle zuerst"
     },
@@ -66,7 +78,9 @@
       "section_board": "Brett",
       "section_dice": "Würfel",
       "sound": "Spielgeräusche",
-      "sound_hint": "Dezente Würfel-, Schlag- und Siegklänge — respektiert den Stummmodus"
+      "sound_hint": "Dezente Würfel-, Schlag- und Siegklänge — respektiert den Stummmodus",
+      "tutor_mode": "Tutor-Modus",
+      "tutor_mode_hint": "Die Engine prüft deine Züge und markiert große Fehler"
     },
     "review": {
       "back_to_live": "Zurück zum laufenden Spiel",
@@ -96,6 +110,40 @@
       "white_wins": "🏆 Weiß gewinnt!",
       "you_win": "🏆 Du gewinnst!"
     },
+    "strategy": {
+      "close_a11y": "Strategieerklärung schließen",
+      "got_it": "Verstanden",
+      "label": {
+        "backgame": "Rückstandsspiel",
+        "blitz": "Blitz",
+        "developing": "Aufbau",
+        "holding": "Haltespiel",
+        "priming": "Prime",
+        "running": "Rennspiel"
+      },
+      "tip": {
+        "backgame": "Bleib hinten, stärke dein Heimmbrett und warte auf die späte Chance.",
+        "blitz": "Greif an: Triff jede einzelne Figur und schließe dein Heimmbrett.",
+        "developing": "Punkte aufbauen, um die 5 kämpfen und flexibel bleiben.",
+        "holding": "Halte deinen Anker, bleib sicher und warte auf deine Trefferchance.",
+        "priming": "Erweitere deine Mauer Schritt für Schritt und fange ihre hinteren Figuren ein.",
+        "running": "Bring deine Figuren effizient nach Hause und schütze jede Figur, die noch gefährdet ist."
+      },
+      "why": {
+        "backgame": "Du hältst tiefe Anker auf {{point1}} und {{point2}}, während du im Rennen {{pipGap}} Punkte zurückliegst.",
+        "blitz_bar": "Es stehen {{barCount}} auf der Bar, und du hast bereits {{homeMade}} Punkte in deinem Heimmbrett gemacht.",
+        "blitz_bar_blot": "Es stehen {{barCount}} auf der Bar und eine einzelne Figur in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "blitz_bar_blots": "Es stehen {{barCount}} auf der Bar und {{blotCount}} einzelne Figuren in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "blitz_blot": "Es ist eine einzelne Figur in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "blitz_blots": "Es sind {{blotCount}} einzelne Figuren in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
+        "developing": "Noch keine Prime, kein Anker und kein Angriff auf dem Brett — das Spiel formt sich erst.",
+        "holding": "Du hältst einen Anker auf {{point}}, während du {{pipGap}} Punkte zurückliegst.",
+        "priming": "Du hast eine Prime über {{prime}} Punkte aufgebaut.",
+        "priming_anchor": "Du hast eine Prime über {{prime}} Punkte mit einem Anker dahinter aufgebaut.",
+        "running_lead": "Du führst im Rennen {{foePips}} zu {{myPips}}, ohne einzelne Figuren in Reichweite.",
+        "running_race": "Kein Kontakt möglich — ein reines Rennen zum Auswerfen ({{myPips}} zu {{foePips}} Punkte)."
+      }
+    },
     "turn": {
       "black_is_moving": "Schwarz zieht…",
       "black_is_rolling": "Schwarz würfelt…",
@@ -110,6 +158,63 @@
       "roll_dice": "Würfeln — du spielst {{color}}",
       "white_turn": "Weiß ist am Zug",
       "your_turn": "Du bist am Zug"
+    },
+    "tutor": {
+      "back_to_question": "Zurück zur Frage",
+      "back_to_question_a11y": "Zurück, ohne die Antwort zu zeigen",
+      "band": {
+        "big_blunder": "Grober Fehler",
+        "fine": "In Ordnung",
+        "mistake": "Fehler",
+        "slip": "Ausrutscher"
+      },
+      "best": "Bester",
+      "best_played": "Bester:",
+      "compare": {
+        "best": "Bester",
+        "best_move": "Bester Zug",
+        "both": "Beide",
+        "mine": "Meiner",
+        "show_a11y": "Brett {{label}} zeigen",
+        "start": "Start",
+        "starting_position": "Anfangsposition",
+        "your_move": "Dein Zug",
+        "your_move_replayed": "Dein Zug, wiederholt"
+      },
+      "details_hide": "Details ausblenden",
+      "details_hide_a11y": "Details ausblenden",
+      "details_show": "Details",
+      "details_show_a11y": "Details anzeigen",
+      "details_summary": "Dein Zug lag auf Platz {{rank}} von {{count}} und bringt etwa {{loss}} Punkte pro Partie weniger als der beste Zug.",
+      "equity_explainer": "Die Engine bewertet jeden Zug nach den Punkten, die er im Schnitt pro Partie gewinnen soll. Höher ist besser.",
+      "equity_pts": "{{points}} Pkt.",
+      "keep": "Meinen Zug behalten",
+      "keep_a11y": "Meinen Zug behalten und weiterspielen",
+      "meter_a11y": "Fehlerstärke: {{severity}}. Etwa {{loss}} Punkte pro Partie verloren. Die Skala folgt GNU Backgammon: zweifelhaft ab 0.04, schlecht ab 0.08, sehr schlecht ab 0.16.",
+      "meter_caption": "Fehlerskala (GNU Backgammon)",
+      "play_best": "Besten Zug spielen",
+      "play_best_a11y": "Meinen Zug zurücknehmen und den besten Zug spielen",
+      "question_body": "Dein Zug lag auf Platz {{rank}} von {{count}} Möglichkeiten für diesen Wurf. Im Schnitt bringt er etwa {{loss}} Punkte pro Partie weniger als der beste Zug.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (deiner)",
+      "replay_pause_a11y": "Wiederholung von {{label}} pausieren",
+      "replay_play_a11y": "Wiederholung von {{label}} abspielen",
+      "reveal": "Besten Zug zeigen",
+      "reveal_a11y": "Den empfohlenen Zug aufdecken",
+      "rolled": "Du hast {{dice}} gewürfelt",
+      "show_mine": "Meinen Zug zeigen",
+      "show_mine_a11y": "Nur meinen Zug zeigen, ohne den besten Zug aufzudecken",
+      "take_back": "Zurücknehmen und erneut versuchen",
+      "take_back_a11y": "Den ganzen Zug zurücknehmen und erneut versuchen",
+      "take_back_retry_a11y": "Den Zug zurücknehmen und erneut versuchen",
+      "title_compare": "Dein Zug gegen den besten Zug",
+      "title_mine": "Dein Zug",
+      "turn_off": "Tutor ausschalten",
+      "turn_off_a11y": "Tutor-Modus ausschalten",
+      "undo_last": "Letzten Zug zurücknehmen",
+      "undo_last_a11y": "Nur den letzten Zug zurücknehmen und neu spielen",
+      "vs_best": "−{{delta}} ggü. bestem",
+      "you_played": "Du spieltest:"
     }
   },
   "home": {
@@ -333,6 +438,7 @@
     "link_error_title": "Link kann nicht geöffnet werden",
     "links": "Links",
     "more": "Mehr",
+    "open_source": "Open-Source-Hinweise",
     "privacy": "Datenschutzerklärung",
     "rate": "Bewerten",
     "share": "Teilen",

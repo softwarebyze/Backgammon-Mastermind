@@ -10,6 +10,9 @@ import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
 const BEAR_OFF_WIDTH = 38;
+/** Narrower chrome for mini boards (guidance replays) so the points stay readable. */
+const COMPACT_BAR_WIDTH = 16;
+const COMPACT_BEAR_OFF_WIDTH = 20;
 const MIDDLE_HEIGHT = 12;
 const BOARD_FRAME_WIDTH = 4;
 /**
@@ -46,7 +49,7 @@ export type BoardDimensions = {
 
 /**
  * Point length in checker diameters. 5.2 is the compact floor (five checkers
- * just fit). Up to 8, points stretch to use leftover height — phone portrait
+ * just fit). Up to 7, points stretch to use leftover height — phone portrait
  * used to leave ~40% of the slot empty around a squat board.
  */
 const MIN_POINT_CHECKERS = 5.2;
@@ -78,15 +81,34 @@ function boardColumns(boardWidth: number, cap: number) {
 }
 
 /** When `maxOuterHeight` is given, points grow toward it (never past MAX_POINT_CHECKERS). */
-function dimensionsForWidth(boardOuterWidth: number, maxOuterHeight = 0, cap = CHECKER_CAP): BoardDimensions {
+function dimensionsForWidth(
+  boardOuterWidth: number,
+  options: { maxOuterHeight?: number; cap?: number; compact?: boolean } = {},
+): BoardDimensions {
+  const maxOuterHeight = options.maxOuterHeight ?? 0;
+  const cap = options.cap ?? CHECKER_CAP;
+  const compact = options.compact ?? false;
   const boardWidth = boardOuterWidth - BOARD_FRAME_WIDTH * 2;
-  const { colWidth, checkerSize, barWidth, bearOffWidth } = boardColumns(boardWidth, cap);
+  const sized = compact
+    ? {
+        barWidth: COMPACT_BAR_WIDTH,
+        bearOffWidth: COMPACT_BEAR_OFF_WIDTH,
+        colWidth: (boardWidth - COMPACT_BAR_WIDTH - COMPACT_BEAR_OFF_WIDTH) / 12,
+        checkerSize: 0,
+      }
+    : boardColumns(boardWidth, cap);
+  const colWidth = sized.colWidth;
+  const barWidth = sized.barWidth;
+  const bearOffWidth = sized.bearOffWidth;
+  // Mini guidance boards clamp to a minimum so SVG radii stay positive.
+  const checkerSize = compact
+    ? Math.max(8, Math.min(colWidth - COLUMN_GUTTER, cap))
+    : sized.checkerSize;
   const minPoint = Math.round(checkerSize * MIN_POINT_CHECKERS);
   const roomFor = Math.floor((maxOuterHeight - BOARD_FRAME_WIDTH * 2 - MIDDLE_HEIGHT) / 2);
-  const pointHeight = Math.max(
-    minPoint,
-    Math.min(Math.round(checkerSize * MAX_POINT_CHECKERS), roomFor),
-  );
+  const pointHeight = compact
+    ? Math.round(Math.min(160, checkerSize * MIN_POINT_CHECKERS))
+    : Math.max(minPoint, Math.min(Math.round(checkerSize * MAX_POINT_CHECKERS), roomFor));
   const boardHeight = pointHeight * 2 + MIDDLE_HEIGHT;
   const boardOuterHeight = boardHeight + BOARD_FRAME_WIDTH * 2;
 
@@ -105,23 +127,55 @@ function dimensionsForWidth(boardOuterWidth: number, maxOuterHeight = 0, cap = C
   };
 }
 
+export type FitBoardToViewportArgs = {
+  maxOuterWidth: number;
+  maxOuterHeight: number;
+  /** e.g. point-number rails rendered inside the board frame */
+  extraHeight?: number;
+  /** narrower bar/bear-off for mini boards (guidance replays) */
+  compact?: boolean;
+  /** largest checker allowed (desktop lifts this above the phone 32) */
+  checkerCap?: number;
+};
+
 /**
  * Shrink width until the board (+ optional rails) fits in the available height.
- * `extraHeight`: point-number rails rendered inside the frame. `checkerCap`:
- * largest checker allowed (desktop lifts this above the phone 32).
+ * Accepts either positional args or a single options object (guidance mini boards).
  */
 export function fitBoardToViewport(
-  maxOuterWidth: number,
-  maxOuterHeight: number,
-  { extraHeight = 0, checkerCap: cap = CHECKER_CAP }: { extraHeight?: number; checkerCap?: number } = {},
+  maxOuterWidthOrArgs: number | FitBoardToViewportArgs,
+  maxOuterHeight = 0,
+  options: { extraHeight?: number; checkerCap?: number; compact?: boolean } = {},
 ): BoardDimensions {
-  const innerHeight = maxOuterHeight - extraHeight;
-  let width = maxOuterWidth;
-  let dims = dimensionsForWidth(width, innerHeight, cap);
+  const args = typeof maxOuterWidthOrArgs === 'number'
+    ? {
+        maxOuterWidth: maxOuterWidthOrArgs,
+        maxOuterHeight,
+        extraHeight: options.extraHeight ?? 0,
+        compact: options.compact ?? false,
+        checkerCap: options.checkerCap ?? CHECKER_CAP,
+      }
+    : {
+        extraHeight: 0,
+        compact: false,
+        checkerCap: CHECKER_CAP,
+        ...maxOuterWidthOrArgs,
+      };
+  const innerHeight = args.maxOuterHeight - args.extraHeight;
+  let width = args.maxOuterWidth;
+  let dims = dimensionsForWidth(width, {
+    maxOuterHeight: innerHeight,
+    cap: args.checkerCap,
+    compact: args.compact,
+  });
   // linear shrink — ~100 iterations max; switch to binary search if this gets hot
-  while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
+  while (dims.boardOuterHeight + args.extraHeight > args.maxOuterHeight && width > 200) {
     width -= 8;
-    dims = dimensionsForWidth(width, innerHeight, cap);
+    dims = dimensionsForWidth(width, {
+      maxOuterHeight: innerHeight,
+      cap: args.checkerCap,
+      compact: args.compact,
+    });
   }
   return dims;
 }

@@ -1,58 +1,45 @@
 import type * as storage from './storage';
 
-const store: Record<string, string> = {};
+// No react-native-mmkv mock here on purpose: jest-setup.ts stubs the Nitro
+// boundary, so createMMKV() returns MMKV's real in-memory mock and the tests
+// exercise the actual storage wrapper. Values are seeded and inspected through
+// the module's raw helpers, which is the same surface app code uses.
 
-jest.mock('react-native-mmkv', () => ({
-  createMMKV: () => ({
-    getString: (key: string) => store[key],
-    set: (key: string, value: string) => {
-      store[key] = value;
-    },
-    remove: (key: string) => {
-      delete store[key];
-    },
-  }),
-}));
+function loadStorage(): typeof storage {
+  jest.resetModules();
+  return require('./storage') as typeof storage;
+}
 
 describe('storage.getItem', () => {
-  beforeEach(() => {
-    for (const key of Object.keys(store)) {
-      delete store[key];
-    }
-    jest.resetModules();
-  });
-
   it('returns null and clears the key when JSON is corrupt', () => {
-    store.bad = '{not-json';
-    const { getItem } = require('./storage') as typeof storage;
+    const { getItem, getRawString, setRawString } = loadStorage();
+    setRawString('bad', '{not-json');
     expect(getItem('bad')).toBeNull();
-    expect(store.bad).toBeUndefined();
+    expect(getRawString('bad')).toBeUndefined();
   });
 
   it('parses valid JSON', () => {
-    store.ok = JSON.stringify({ a: 1 });
-    const { getItem } = require('./storage') as typeof storage;
+    const { getItem, setRawString } = loadStorage();
+    setRawString('ok', JSON.stringify({ a: 1 }));
     expect(getItem<{ a: number }>('ok')).toEqual({ a: 1 });
   });
 
   it('clears an empty-string payload instead of leaving it stored', () => {
-    store.empty = '';
-    const { getItem } = require('./storage') as typeof storage;
+    const { getItem, getRawString, setRawString } = loadStorage();
+    setRawString('empty', '');
     expect(getItem('empty')).toBeNull();
-    expect(store.empty).toBeUndefined();
+    expect(getRawString('empty')).toBeUndefined();
+  });
+
+  it('returns null for a key that was never written', () => {
+    const { getItem } = loadStorage();
+    expect(getItem('missing')).toBeNull();
   });
 });
 
 describe('storage raw string helpers', () => {
-  beforeEach(() => {
-    for (const key of Object.keys(store)) {
-      delete store[key];
-    }
-    jest.resetModules();
-  });
-
   it('round-trips raw strings without JSON parsing', () => {
-    const { getRawString, setRawString } = require('./storage') as typeof storage;
+    const { getRawString, setRawString } = loadStorage();
     setRawString('session', '{not-json');
     expect(getRawString('session')).toBe('{not-json');
   });

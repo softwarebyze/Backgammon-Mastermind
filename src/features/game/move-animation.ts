@@ -158,5 +158,6 @@ export function isBoardHighlightActive(animation: MoveAnimationFrame | null): bo
 
 export function animationKey(frame: MoveAnimationFrame): string {
   const capture = frame.capture ? `-cap-${frame.capture.player}` : '';
-  return `${frame.from}-${frame.to}-${frame.player}${capture}`;
+  // Stack height distinguishes a second checker leaving the same point (6/4, 6/4).
+  return `${frame.from}-${frame.to}-${frame.player}-${frame.sourceStackCount}${capture}`;
 }

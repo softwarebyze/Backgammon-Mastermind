@@ -1,0 +1,10 @@
+{
+  "name": "bgsage",
+  "displayName": "Open Sage",
+  "repo": "https://github.com/markbgsage/bgsage.git",
+  "ref": "d8325a491168062df1047ffd998f3a5dfb426a0c",
+  "license": "MPL-2.0",
+  "licenseFile": "expo-bgsage/LICENSE",
+  "usage": "Backgammon move hints and Tutor mode, including the trained model weights and bearoff database.",
+  "modified": false
+}

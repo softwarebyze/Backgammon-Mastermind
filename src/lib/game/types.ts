@@ -16,7 +16,14 @@ export type BoardPoint = {
 export type Move = {
   from: number;
   to: number;
+  /**
+   * Index into `state.remainingDice` **at the time the move was planned**. A
+   * full-turn sequence played move-by-move sees a shrinking array, so indices
+   * from a stored/foreign plan go stale — pair it with `die` where you can.
+   */
   dieIndex: number;
+  /** The pip value this move spends, so the die can still be found when the index is stale. */
+  die?: number;
 };
 
 export type GameState = {

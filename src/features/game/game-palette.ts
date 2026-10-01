@@ -16,6 +16,10 @@ export const GAME_PALETTE = {
   accent: colors.primary[400],
   accentDim: colors.primary[200],
 
+  // Guidance comparison arrows: the player's own path vs the engine's recommendation.
+  guideMine: colors.primary[400],
+  guideEngine: colors.success[400],
+
   // Primary action controls (roll dice, play again). Same gold as the home
   // "vs Computer" CTA — the board already owns the reds, so the one action
   // the player must take shouldn't compete with 12 red points.

@@ -67,6 +67,10 @@ export function useGamePreferences() {
     updatePreferences({ fastComputer });
   }, []);
 
+  const setTutorMode = useCallback((tutorMode: boolean) => {
+    updatePreferences({ tutorMode });
+  }, []);
+
   return {
     preferences,
     setShowMoveHints,
@@ -77,5 +81,6 @@ export function useGamePreferences() {
     setAutoMoveWhenForced,
     setSoundEnabled,
     setFastComputer,
+    setTutorMode,
   };
 }
