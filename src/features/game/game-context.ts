@@ -30,8 +30,6 @@ export type GameContextType = {
   clearAITimeout: () => void;
   /** Re-arm AI timers after leave-home cancelled them without changing game state. */
   resumeAIScheduling: () => void;
-  /** Skip remaining computer think/roll wait. */
-  skipAIDelay: () => void;
   /**
    * Tutor mode: revert a blundered turn to its start snapshot, trimming the
    * move log and timeline so history stays consistent. Used for "take back".

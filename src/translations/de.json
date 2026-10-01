@@ -22,8 +22,6 @@
       "redo_a11y": "Redo Move",
       "roll_dice": "Würfeln",
       "roll_dice_a11y": "Würfeln",
-      "skip_wait": "Tap to skip warten",
-      "skip_wait_a11y": "{{status}}Tap to skip warten",
       "start_new_game_a11y": "Starten Sie neues Spiel",
       "undo_a11y": "Undo Bewegung"
     },

@@ -22,8 +22,6 @@
       "redo_a11y": "Muévete.",
       "roll_dice": "Tirar los dados",
       "roll_dice_a11y": "Tirar los dados",
-      "skip_wait": "Pulsa para saltar la espera",
-      "skip_wait_a11y": "{{status}}Pulsa para saltar la espera",
       "start_new_game_a11y": "Inicio nuevo juego",
       "undo_a11y": "Muévete."
     },

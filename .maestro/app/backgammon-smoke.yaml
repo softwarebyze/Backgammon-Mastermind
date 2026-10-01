@@ -11,9 +11,10 @@ tags:
 - takeScreenshot: 01-home-loaded
 - tapOn:
     text: vs Computer
+# Auto-roll is on by default, so the roll button may already be gone.
 - extendedWaitUntil:
     visible:
-      id: roll-dice-button
+      id: point-1
     timeout: 45000
 - takeScreenshot: 02-game-board
 # Opening roll + ties + no-move auto-pass: tap while roll visible, then wait for board

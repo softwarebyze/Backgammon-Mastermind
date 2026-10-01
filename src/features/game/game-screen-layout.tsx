@@ -46,7 +46,6 @@ type Props = {
   moveLog: MoveLogEntry[];
   isComputerTurn: boolean;
   onCancelSelection: () => void;
-  onSkipComputer: () => void;
 };
 
 function GameTopChrome({
@@ -122,7 +121,6 @@ type ChromeStackProps = {
   onTopLayout: (event: LayoutChangeEvent) => void;
   onControlsLayout: (event: LayoutChangeEvent) => void;
   onCancelSelection: () => void;
-  onSkipComputer: () => void;
 };
 
 function GameChromeStack({
@@ -141,7 +139,6 @@ function GameChromeStack({
   onTopLayout,
   onControlsLayout,
   onCancelSelection,
-  onSkipComputer,
 }: ChromeStackProps) {
   return (
     <>
@@ -173,7 +170,6 @@ function GameChromeStack({
           onReset={input.handleReset}
           onGoLive={review.goLive}
           onCancelSelection={onCancelSelection}
-          onSkipComputer={onSkipComputer}
         />
       </View>
     </>
@@ -188,7 +184,6 @@ export function GameScreenLayout({
   moveLog,
   isComputerTurn,
   onCancelSelection,
-  onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
   const {
@@ -248,7 +243,6 @@ export function GameScreenLayout({
       onTopLayout={onTopLayout}
       onControlsLayout={onControlsLayout}
       onCancelSelection={onCancelSelection}
-      onSkipComputer={onSkipComputer}
     />
   );
 

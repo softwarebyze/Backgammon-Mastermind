@@ -22,8 +22,6 @@
       "redo_a11y": "Opnieuw verplaatsen",
       "roll_dice": "Gooi de dobbelstenen",
       "roll_dice_a11y": "Dobbelstenen gooien",
-      "skip_wait": "Wacht overslaan",
-      "skip_wait_a11y": "{{status}}Wacht overslaan",
       "start_new_game_a11y": "Nieuw spel starten",
       "undo_a11y": "Verplaatsen ongedaan maken"
     },

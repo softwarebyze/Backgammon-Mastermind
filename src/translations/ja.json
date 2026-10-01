@@ -22,8 +22,6 @@
       "redo_a11y": "赤尾移動",
       "roll_dice": "サイコロを振る",
       "roll_dice_a11y": "サイコロを振る",
-      "skip_wait": "タップして待機をスキップ",
-      "skip_wait_a11y": "{{status}}タップして待機をスキップ",
       "start_new_game_a11y": "新しいゲームを始める",
       "undo_a11y": "Undo 移動"
     },

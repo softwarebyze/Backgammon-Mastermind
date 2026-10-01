@@ -18,11 +18,40 @@ export type GamePreferences = {
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   showMoveHints: false,
   showDirectionOverlay: false,
-  showPointNumbers: false,
+  showPointNumbers: true,
   diceDisplayStyle: 'dots',
-  autoRoll: false,
-  autoMoveWhenForced: false,
+  autoRoll: true,
+  autoMoveWhenForced: true,
   soundEnabled: true,
-  fastComputer: false,
+  fastComputer: true,
   tutorMode: false,
 };
+
+const IMPLICIT_OFF_KEYS = [
+  'showPointNumbers',
+  'autoRoll',
+  'autoMoveWhenForced',
+  'fastComputer',
+] as const;
+
+/**
+ * Previous builds saved these four off. Flip that implicit default once so
+ * existing installs pick up the new ones. A later manual off is left alone.
+ */
+export function migrateImplicitPlayDefaults(
+  stored: Partial<GamePreferences> | null,
+  alreadyMigrated: boolean,
+): { prefs: Partial<GamePreferences>; didMigrate: boolean } {
+  if (alreadyMigrated || !stored) {
+    return { prefs: stored ?? {}, didMigrate: false };
+  }
+  const prefs = { ...stored };
+  let didMigrate = false;
+  for (const key of IMPLICIT_OFF_KEYS) {
+    if (prefs[key] === false) {
+      prefs[key] = true;
+      didMigrate = true;
+    }
+  }
+  return { prefs, didMigrate };
+}

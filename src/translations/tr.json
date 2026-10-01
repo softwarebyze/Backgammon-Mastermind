@@ -22,8 +22,6 @@
       "redo_a11y": "Redo hareket",
       "roll_dice": "Zar At",
       "roll_dice_a11y": "Zar at",
-      "skip_wait": "Beklemek için Tap",
-      "skip_wait_a11y": "{{status}}Beklemek için Tap",
       "start_new_game_a11y": "Yeni oyun başla",
       "undo_a11y": "Undo hareketsiz"
     },

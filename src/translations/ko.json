@@ -22,8 +22,6 @@
       "redo_a11y": "Redo 이동",
       "roll_dice": "주사위 굴리기",
       "roll_dice_a11y": "주사위 굴리기",
-      "skip_wait": "자주 묻는 질문",
-      "skip_wait_a11y": "{{status}}자주 묻는 질문",
       "start_new_game_a11y": "새로운 게임 시작",
       "undo_a11y": "취소 이동"
     },

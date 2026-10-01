@@ -34,7 +34,6 @@ type Props = {
   onReset: () => void;
   onGoLive?: () => void;
   onCancelSelection?: () => void;
-  onSkipComputer?: () => void;
   /** Tighter padding when dice sit beside the board in landscape. */
   compact?: boolean;
   /** Tray die edge; the layout derives it from the board's checker size. */
@@ -57,7 +56,6 @@ export function GameScreenControls({
   onReset,
   onGoLive,
   onCancelSelection,
-  onSkipComputer,
   compact = false,
   dieSize = TRAY_DIE_SIZE,
 }: Props) {
@@ -119,7 +117,6 @@ export function GameScreenControls({
           onReset={onReset}
           onGoLive={onGoLive}
           onCancelSelection={onCancelSelection}
-          onSkipComputer={onSkipComputer}
         />
       </View>
       <Text style={styles.caption}>{caption}</Text>
@@ -127,7 +124,7 @@ export function GameScreenControls({
   );
 }
 
-/* eslint-disable-next-line max-lines-per-function -- phase switch + skip/cancel slots */
+/* eslint-disable-next-line max-lines-per-function -- phase switch + cancel slot */
 function ActionControl({
   state,
   isHumanTurn,
@@ -138,7 +135,6 @@ function ActionControl({
   onReset,
   onGoLive,
   onCancelSelection,
-  onSkipComputer,
 }: {
   state: GameState;
   isHumanTurn: boolean;
@@ -149,7 +145,6 @@ function ActionControl({
   onReset: () => void;
   onGoLive?: () => void;
   onCancelSelection?: () => void;
-  onSkipComputer?: () => void;
 }) {
   if (isReviewing) {
     return (
@@ -197,7 +192,7 @@ function ActionControl({
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder onSkip={onSkipComputer} />;
+    return <View style={styles.actionSpacer} />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
@@ -216,11 +211,11 @@ function ActionControl({
   }
 
   if (state.phase === 'rolling' && isComputerTurn) {
-    return <StatusPlaceholder onSkip={onSkipComputer} />;
+    return <View style={styles.actionSpacer} />;
   }
 
   if (state.phase === 'moving' && isComputerTurn) {
-    return <StatusPlaceholder onSkip={onSkipComputer} />;
+    return <View style={styles.actionSpacer} />;
   }
 
   if (state.phase === 'no-move' && isHumanTurn) {
@@ -228,7 +223,7 @@ function ActionControl({
   }
 
   if (state.phase === 'no-move' && isComputerTurn) {
-    return <StatusPlaceholder text={translate('game.controls.no_legal_moves')} onSkip={onSkipComputer} />;
+    return <StatusPlaceholder text={translate('game.controls.no_legal_moves')} />;
   }
 
   if (state.phase === 'moving' && isHumanTurn && state.selectedPoint !== null && onCancelSelection) {
@@ -261,32 +256,10 @@ function ActionControl({
   return <View style={styles.actionSpacer} />;
 }
 
-function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => void }) {
-  const skipLabel = text
-    ? translate('game.controls.skip_wait_a11y', { status: text })
-    : translate('game.controls.skip_wait');
+function StatusPlaceholder({ text }: { text: string }) {
   return (
-    <View style={styles.statusSlot} pointerEvents="box-none">
-      {text
-        ? <Text style={styles.statusText} pointerEvents="none">{text}</Text>
-        : null}
-      {onSkip
-        ? (
-            <HoverPressable
-              accessibilityRole="button"
-              accessibilityLabel={skipLabel}
-              testID="skip-computer-button"
-              hitSlop={CONTROL_HIT_SLOP}
-              style={({ pressed, hovered }) => [styles.skipBtn, hovered && styles.skipBtnHover, pressed && styles.pressed]}
-              onPress={() => {
-                hapticLight();
-                onSkip();
-              }}
-            >
-              <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
-            </HoverPressable>
-          )
-        : null}
+    <View style={styles.statusSlot} pointerEvents="none">
+      <Text style={styles.statusText}>{text}</Text>
     </View>
   );
 }
@@ -352,9 +325,6 @@ const styles = StyleSheet.create({
   secondaryBtnHover: {
     borderColor: GAME_PALETTE.accent,
   },
-  skipBtnHover: {
-    opacity: 0.8,
-  },
   pressed: {
     opacity: 0.9,
   },
@@ -388,16 +358,6 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
     ...interFont('regular'),
-  },
-  skipBtn: {
-    marginTop: 2,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  skipHint: {
-    color: GAME_PALETTE.accentDim,
-    fontSize: 13,
-    ...interFont('medium'),
   },
   caption: {
     marginTop: 6,
