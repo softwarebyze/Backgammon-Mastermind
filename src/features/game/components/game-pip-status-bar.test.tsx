@@ -38,6 +38,16 @@ describe('gamePipStatusBar', () => {
     expect(screen.queryByText('game.strategy.tip.developing')).toBeNull();
     fireEvent.press(screen.getByTestId('strategy-line'));
     expect(screen.getByText('game.strategy.tip.developing')).toBeTruthy();
+    expect(screen.getByTestId('strategy-compare')).toBeTruthy();
+    expect(screen.getByText('🏃')).toBeTruthy();
+    expect(screen.getByText('⚔️')).toBeTruthy();
+    expect(screen.getByText('🧱')).toBeTruthy();
+    expect(screen.getByText('⚓')).toBeTruthy();
+    expect(screen.getByText('🕸️')).toBeTruthy();
+
+    fireEvent.press(screen.getByTestId('strategy-compare-emoji'));
+    fireEvent.press(screen.getByTestId('strategy-explanation-close'));
+    expect(screen.getByTestId('strategy-mark')).toBeTruthy();
   });
 
   it('labels the pip counts accessibly per player', () => {
