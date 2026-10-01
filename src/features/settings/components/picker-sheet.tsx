@@ -45,7 +45,11 @@ export function PickerSheet<T extends string>({
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={[
         styles.list,
-        { paddingBottom: Math.max(insets.bottom, 16) },
+        {
+          paddingBottom: Math.max(insets.bottom, 16),
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
       ]}
     >
       {options.map((option, index) => {

@@ -17,6 +17,7 @@ import { GRADUATION_QUIZ } from '@/lib/learn/curriculum';
 import { allLessonsComplete, isReadyToPlay } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 function LessonsIncompleteGate() {
@@ -46,6 +47,7 @@ export function GraduationScreen() {
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [correctLocked, setCorrectLocked] = useState(false);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { insets } = useLayoutMetrics();
 
   const question = GRADUATION_QUIZ[questionIndex];
   const canPlay = isReadyToPlay(progress);
@@ -135,7 +137,10 @@ export function GraduationScreen() {
     <>
       <FocusAwareStatusBar />
       <ScrollView
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[
+          styles.content,
+          contentEdgePadding(insets, { left: 24, right: 24, bottom: 40 }),
+        ]}
         style={styles.scroll}
         bounces={false}
         overScrollMode="never"
@@ -202,9 +207,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: GAME_CHROME_MAX_WIDTH,
     alignSelf: 'center',
-    paddingHorizontal: 24,
     paddingTop: 16,
-    paddingBottom: 40,
     gap: 14,
   },
   root: {

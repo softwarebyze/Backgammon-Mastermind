@@ -7,8 +7,7 @@ import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { usePostHog } from 'posthog-react-native';
 import { useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { OpeningRollCeremony } from '@/features/game/components/board/opening-roll-ceremony';
@@ -24,7 +23,8 @@ import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slo
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout, landscapeChromeColumnWidth, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, landscapeBoardPaneWidth, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Review = ReturnType<typeof useMoveReview>;
 type Input = ReturnType<typeof useGameInput>;
@@ -174,11 +174,11 @@ export function GameScreenLayout({
   onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
-  const insets = useSafeAreaInsets();
-  const { width, height } = useWindowDimensions();
-  const landscape = isLandscapeLayout(width, height);
-  const chromeWidth = landscapeChromeColumnWidth(width);
+  const { landscape, desktop, innerWidth, chromeWidth, stageMaxWidth, contentInsets } = useLayoutMetrics();
   const dimensions = useBoardDimensions();
+  const boardPaneWidth = landscape
+    ? landscapeBoardPaneWidth(innerWidth, chromeWidth)
+    : undefined;
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const state = board.boardState;
   const live = input.state!;
@@ -221,7 +221,10 @@ export function GameScreenLayout({
       style={[
         styles.root,
         landscape ? styles.rootLandscape : styles.rootPortrait,
-        { paddingBottom: insets.bottom },
+        contentInsets,
+        landscape && stageMaxWidth != null
+          ? { maxWidth: stageMaxWidth, width: '100%', alignSelf: 'center' }
+          : null,
       ]}
     >
       <FocusAwareStatusBar />
@@ -229,7 +232,11 @@ export function GameScreenLayout({
         ? null
         : <GameTopChrome state={state} onLayout={onTopLayout} />}
       <View
-        style={[styles.boardSlotHost, landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait]}
+        style={[
+          styles.boardSlotHost,
+          landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait,
+          boardPaneWidth != null ? { maxWidth: boardPaneWidth } : null,
+        ]}
         testID="game-board-slot"
         onLayout={onSlotLayout}
       >
@@ -264,7 +271,10 @@ export function GameScreenLayout({
         ? (
             <ScrollView
               style={[styles.chromeRail, { width: chromeWidth }]}
-              contentContainerStyle={styles.chromeRailContent}
+              contentContainerStyle={[
+                styles.chromeRailContent,
+                desktop ? styles.chromeRailContentTall : null,
+              ]}
               bounces={false}
               overScrollMode="never"
               keyboardShouldPersistTaps="handled"
@@ -282,6 +292,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     minHeight: 0,
+    minWidth: 0,
     backgroundColor: GAME_PALETTE.bg,
   },
   rootPortrait: {
@@ -290,6 +301,8 @@ const styles = StyleSheet.create({
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'stretch',
+    justifyContent: 'center',
+    gap: 8,
   },
   chromeColumn: {
     width: '100%',
@@ -306,7 +319,11 @@ const styles = StyleSheet.create({
   chromeRailContent: {
     flexGrow: 1,
     paddingBottom: 8,
+    paddingHorizontal: 8,
     alignItems: 'center',
+  },
+  chromeRailContentTall: {
+    justifyContent: 'center',
   },
   boardSlotHost: {
     flexGrow: 1,
@@ -323,7 +340,9 @@ const styles = StyleSheet.create({
   },
   boardSlotLandscape: {
     alignSelf: 'stretch',
-    height: '100%',
+    minWidth: 0,
+    minHeight: 0,
+    maxWidth: MAX_BOARD_WIDTH,
   },
   turnBannerWrap: {
     width: '100%',
