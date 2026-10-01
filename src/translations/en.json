@@ -22,8 +22,6 @@
       "redo_a11y": "Redo move",
       "roll_dice": "Roll Dice",
       "roll_dice_a11y": "Roll dice",
-      "skip_wait": "Tap to skip wait",
-      "skip_wait_a11y": "{{status}} Tap to skip wait",
       "start_new_game_a11y": "Start new game",
       "undo_a11y": "Undo move"
     },

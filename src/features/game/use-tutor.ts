@@ -29,6 +29,11 @@ type TrackedTurn = {
    * stays paused (see setGuidanceVerdictPending) until the verdict lands.
    */
   holdActive: boolean;
+  /**
+   * True after this ending was judged. Cleared when the player undoes back
+   * into the turn, so the replay is judged again.
+   */
+  prompted: boolean;
   /** Turn-end board + move-log length, stashed when the hold engages. */
   endBoard: number[] | null;
   endMoveLogLength: number;
@@ -36,6 +41,62 @@ type TrackedTurn = {
 
 /** Give up waiting on a stuck engine rather than freezing the game. */
 const VERDICT_PENDING_TIMEOUT_MS = 10_000;
+
+/**
+ * The prompt is up, but the player may undo back into this turn. Park the
+ * analysis until then. A held turn also releases so the next one can start.
+ */
+function parkJudgedTurn(args: {
+  entry: TrackedTurn;
+  trackedRef: { current: TrackedTurn | null };
+  retryRef: { current: TrackedTurn | null };
+  clearPendingTimeout: () => void;
+  bumpHold: () => void;
+}) {
+  const { entry, trackedRef, retryRef, clearPendingTimeout, bumpHold } = args;
+  const wasHolding = entry.holdActive;
+  entry.holdActive = false;
+  entry.prompted = true;
+  retryRef.current = entry;
+  if (trackedRef.current === entry)
+    trackedRef.current = null;
+  clearPendingTimeout();
+  setGuidanceVerdictPending(false);
+  if (wasHolding)
+    bumpHold();
+}
+
+/**
+ * "Undo last move" lands mid-turn: same dice, not a fresh turn, so no new
+ * analysis would start. Put the judged one back. Returns true when restored.
+ */
+function restoreRetriedTurn(args: {
+  retryRef: { current: TrackedTurn | null };
+  trackedRef: { current: TrackedTurn | null };
+  liveState: GameState;
+  key: string;
+  moveLogLength: number;
+}): boolean {
+  const { retryRef, trackedRef, liveState, key, moveLogLength } = args;
+  const retry = retryRef.current;
+  if (!retry)
+    return false;
+  if (moveLogLength < retry.startMoveLogLength) {
+    retryRef.current = null;
+    return false;
+  }
+  const backInTurn = retry.key === key
+    && isHumanTurn(liveState)
+    && liveState.phase === 'moving'
+    && moveLogLength <= retry.endMoveLogLength;
+  if (!backInTurn)
+    return false;
+  retry.prompted = false;
+  retry.holdActive = false;
+  trackedRef.current = retry;
+  retryRef.current = null;
+  return true;
+}
 
 function isHumanTurn(state: GameState): boolean {
   return !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
@@ -48,6 +109,54 @@ function turnKey(state: GameState): string {
 function turnJustStarted(state: GameState): boolean {
   const expectedDice = state.dice[0] === state.dice[1] ? 4 : 2;
   return state.remainingDice.length === expectedDice;
+}
+
+/** A fresh human turn just started → analyze it in the background. */
+function trackFreshTurn(args: {
+  liveState: GameState;
+  key: string;
+  trackedRef: { current: TrackedTurn | null };
+  moveLogRef: { current: MoveLogEntry[] };
+  abandonTurn: (entry: TrackedTurn) => void;
+  rememberForRetry: (entry: TrackedTurn) => void;
+}) {
+  const { liveState, key, trackedRef, moveLogRef, abandonTurn, rememberForRetry } = args;
+  // A held turn owns the pause until its verdict lands. Tracking a new turn
+  // here would overwrite it in trackedRef, orphaning the in-flight verdict
+  // and freezing the game until VERDICT_PENDING_TIMEOUT_MS. In pass-and-play
+  // the opponent's turn can start during that hold.
+  const current = trackedRef.current;
+  if ((current && current.key === key) || current?.holdActive)
+    return;
+  const entry: TrackedTurn = {
+    key,
+    player: liveState.currentPlayer,
+    analysis: null,
+    analysisPending: true,
+    startState: cloneGameState(liveState),
+    startMoveLogLength: moveLogRef.current.length,
+    holdActive: false,
+    prompted: false,
+    endBoard: null,
+    endMoveLogLength: 0,
+  };
+  trackedRef.current = entry;
+  void analyzeTutorTurn(liveState, primaryEngine).then((analysis) => {
+    if (trackedRef.current !== entry)
+      return; // turn ended mid-flight (already judged) or abandoned
+    entry.analysisPending = false;
+    if (!analysis) {
+      abandonTurn(entry);
+      return;
+    }
+    entry.analysis = analysis;
+    if (entry.holdActive && entry.endBoard) {
+      // Open the prompt before releasing the hold so play never resumes in between.
+      const { endBoard, endMoveLogLength } = entry;
+      openBlunderPrompt({ entry, endBoard, moveLog: moveLogRef.current, endMoveLogLength });
+      rememberForRetry(entry);
+    }
+  });
 }
 
 /** True while `live` is still the same moving turn the hint was asked on. */
@@ -107,19 +216,19 @@ function finishTrackedTurn(args: {
   liveState: GameState;
   tracked: TrackedTurn;
   moveLog: MoveLogEntry[];
-  trackedRef: { current: TrackedTurn | null };
   pendingTimeoutRef: { current: ReturnType<typeof setTimeout> | null };
   abandonTurn: (entry: TrackedTurn) => void;
   clearPendingTimeout: () => void;
+  rememberForRetry: (entry: TrackedTurn) => void;
 }): void {
   const {
     liveState,
     tracked,
     moveLog,
-    trackedRef,
     pendingTimeoutRef,
     abandonTurn,
     clearPendingTimeout,
+    rememberForRetry,
   } = args;
   const moveLogLength = moveLog.length;
   if (moveLogLength < tracked.startMoveLogLength) {
@@ -129,8 +238,13 @@ function finishTrackedTurn(args: {
   }
   const endBoard = primaryEngine.boardAfterTurn({ ...liveState, currentPlayer: tracked.player });
   if (tracked.analysis) {
-    trackedRef.current = null;
+    if (tracked.prompted)
+      return;
+    tracked.endMoveLogLength = moveLogLength;
     openBlunderPrompt({ entry: tracked, endBoard, moveLog, endMoveLogLength: moveLogLength });
+    // Keep the analysis. "Undo last move" returns to the middle of this
+    // turn, which is not a fresh turn, so a new analysis would never start.
+    rememberForRetry(tracked);
     return;
   }
   if (!tracked.analysisPending)
@@ -168,6 +282,8 @@ function finishTrackedTurn(args: {
 export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[]) {
   const { preferences } = useGamePreferences();
   const trackedRef = useRef<TrackedTurn | null>(null);
+  /** Judged turn kept so an undo back into it can be checked again. */
+  const retryRef = useRef<TrackedTurn | null>(null);
   const pendingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const moveLogRef = useRef(moveLog);
   moveLogRef.current = moveLog;
@@ -182,6 +298,7 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
     // An engine request can finish after the game screen is gone. Invalidate
     // its turn before it can publish a blunder prompt into the next game.
     trackedRef.current = null;
+    retryRef.current = null;
     if (pendingTimeoutRef.current !== null) {
       clearTimeout(pendingTimeoutRef.current);
       pendingTimeoutRef.current = null;
@@ -197,6 +314,11 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
       }
     };
     /** Drop the tracked turn and release any hold without judging. */
+    const bumpHold = () => {
+      // The hold blocked a later turn from being tracked. Re-run the effect
+      // so that turn starts its own analysis instead of being skipped.
+      setHoldEpoch(epoch => epoch + 1);
+    };
     const abandonTurn = (entry: TrackedTurn) => {
       const wasHolding = entry.holdActive;
       entry.holdActive = false;
@@ -205,14 +327,11 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
       }
       clearPendingTimeout();
       setGuidanceVerdictPending(false);
-      if (wasHolding) {
-        // The hold blocked a later turn from being tracked. Re-run the effect
-        // so that turn starts its own analysis instead of being skipped. Bumping
-        // an epoch is the supported way to re-fire an effect; inlining the
-        // analysis here would duplicate the bookkeeping this hook already owns.
-        // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
-        setHoldEpoch(epoch => epoch + 1);
-      }
+      if (wasHolding)
+        bumpHold();
+    };
+    const rememberForRetry = (entry: TrackedTurn) => {
+      parkJudgedTurn({ entry, trackedRef, retryRef, clearPendingTimeout, bumpHold });
     };
 
     // Hint sessions belong to one turn — drop a stale one before anything
@@ -226,6 +345,7 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
     }
 
     if (!tutorOn) {
+      retryRef.current = null;
       const tracked = trackedRef.current;
       if (tracked) {
         abandonTurn(tracked);
@@ -250,53 +370,30 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
         liveState,
         tracked,
         moveLog: moveLogRef.current,
-        trackedRef,
         pendingTimeoutRef,
         abandonTurn,
         clearPendingTimeout,
+        rememberForRetry,
       });
     }
 
-    // A fresh human turn just started → analyze it in the background.
-    if (isHumanTurn(liveState) && liveState.phase === 'moving' && turnJustStarted(liveState)) {
-      // A held turn owns the pause until its verdict lands. Tracking a new turn
-      // here would overwrite it in trackedRef, orphaning the in-flight verdict
-      // (silently dropped) and freezing the game until VERDICT_PENDING_TIMEOUT_MS.
-      // In pass-and-play the opponent's turn can start during that hold.
-      const current = trackedRef.current;
-      if ((!current || current.key !== key) && !current?.holdActive) {
-        const entry: TrackedTurn = {
-          key,
-          player: liveState.currentPlayer,
-          analysis: null,
-          analysisPending: true,
-          startState: cloneGameState(liveState),
-          startMoveLogLength: moveLogRef.current.length,
-          holdActive: false,
-          endBoard: null,
-          endMoveLogLength: 0,
-        };
-        trackedRef.current = entry;
-        void analyzeTutorTurn(liveState, primaryEngine).then((analysis) => {
-          if (trackedRef.current !== entry)
-            return; // turn ended mid-flight (already judged) or abandoned
-          entry.analysisPending = false;
-          if (!analysis) {
-            // Engine unavailable → stay silent, release any hold.
-            abandonTurn(entry);
-            return;
-          }
-          entry.analysis = analysis;
-          if (entry.holdActive && entry.endBoard) {
-            // The turn already ended while we were analyzing → judge now.
-            // Open the prompt BEFORE releasing the hold so the game can
-            // never observe an unpaused gap between the two.
-            const { endBoard, endMoveLogLength } = entry;
-            openBlunderPrompt({ entry, endBoard, moveLog: moveLogRef.current, endMoveLogLength });
-            abandonTurn(entry);
-          }
-        });
-      }
+    const backInJudgedTurn = restoreRetriedTurn({
+      retryRef,
+      trackedRef,
+      liveState,
+      key,
+      moveLogLength: moveLogRef.current.length,
+    });
+
+    if (!backInJudgedTurn && isHumanTurn(liveState) && liveState.phase === 'moving' && turnJustStarted(liveState)) {
+      trackFreshTurn({
+        liveState,
+        key,
+        trackedRef,
+        moveLogRef,
+        abandonTurn,
+        rememberForRetry,
+      });
     }
   }, [liveState, moveLog, tutorOn, holdEpoch]);
 }

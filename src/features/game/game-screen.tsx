@@ -63,7 +63,6 @@ export function GameScreen() {
     doRedo,
     historyPath,
     resumeAIScheduling,
-    skipAIDelay,
     selectPoint,
   } = useGame();
   // Tutor mode: background blunder-checking for human turns.
@@ -198,7 +197,6 @@ export function GameScreen() {
         moveLog={moveLog}
         isComputerTurn={isComputerTurn || tutorPaused}
         onCancelSelection={() => selectPoint(null)}
-        onSkipComputer={skipAIDelay}
       />
       {showReviewing && (
         <View style={styles.reviewingPill} pointerEvents="none">

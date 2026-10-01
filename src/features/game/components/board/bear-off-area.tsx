@@ -67,8 +67,8 @@ function BearOffStack({
         style={{
           position: 'absolute',
           top: 2,
-          color: '#A08060',
-          fontSize: 8,
+          color: '#B89470',
+          fontSize: 9,
           zIndex: 20,
         }}
       >
@@ -119,7 +119,7 @@ function BearOffStack({
             bottom: player === 'white' ? BEAR_OFF_PADDING : undefined,
             right: 4,
             color: '#D4A843',
-            fontSize: 8,
+            fontSize: 9,
             fontWeight: '700',
             zIndex: 30,
           }}

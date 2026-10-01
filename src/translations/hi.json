@@ -22,8 +22,6 @@
       "redo_a11y": "रेडो मूव",
       "roll_dice": "पासे फेंकें",
       "roll_dice_a11y": "पासे फेंकें",
-      "skip_wait": "रुकना",
-      "skip_wait_a11y": "{{status}}रुकना",
       "start_new_game_a11y": "नया गेम",
       "undo_a11y": "Undo चाल"
     },

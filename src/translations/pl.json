@@ -22,8 +22,6 @@
       "redo_a11y": "Cofnij ruch",
       "roll_dice": "Rzuć kośćmi",
       "roll_dice_a11y": "Rzuć kośćmi",
-      "skip_wait": "Dotknij, aby pominąć oczekiwanie",
-      "skip_wait_a11y": "{{status}}Dotknij, aby pominąć oczekiwanie",
       "start_new_game_a11y": "Rozpocznij nową grę",
       "undo_a11y": "Cofnij ruch"
     },

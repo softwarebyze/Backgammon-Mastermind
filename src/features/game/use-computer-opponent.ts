@@ -31,8 +31,6 @@ export type ComputerOpponentControls = {
   clearAITimeout: () => void;
   /** Re-arm AI timers after leave-home cancelled them (same state, no effect deps change). */
   resumeAIScheduling: () => void;
-  /** Skip remaining think/roll wait (power users). */
-  skipAIDelay: () => void;
 };
 
 /* eslint-disable max-lines-per-function -- AI turn orchestration */
@@ -50,7 +48,6 @@ export function useComputerOpponent({
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
-  const skipRef = useRef(false);
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
   // Bumped when returning to the game screen so timers re-schedule without a state change.
@@ -66,11 +63,6 @@ export function useComputerOpponent({
   }, []);
 
   const resumeAIScheduling = useCallback(() => {
-    setScheduleGen(g => g + 1);
-  }, []);
-
-  const skipAIDelay = useCallback(() => {
-    skipRef.current = true;
     setScheduleGen(g => g + 1);
   }, []);
 
@@ -91,15 +83,9 @@ export function useComputerOpponent({
     if (hasRedo)
       return clearAITimeout;
 
-    const skip = skipRef.current;
-    skipRef.current = false;
-    const delay = skip ? 0 : computerThinkDelayMs(state.phase, fast);
+    const delay = computerThinkDelayMs(state.phase, fast);
     let moveTimer: ReturnType<typeof setTimeout> | undefined;
-    if (delay === 0 && state.phase !== 'moving' && !skip) {
-      return clearAITimeout;
-    }
-    if (skip && state.phase !== 'opening-roll' && state.phase !== 'rolling'
-      && state.phase !== 'no-move' && state.phase !== 'moving') {
+    if (delay === 0 && state.phase !== 'moving') {
       return clearAITimeout;
     }
 
@@ -138,7 +124,7 @@ export function useComputerOpponent({
           setState(passTurn(prev));
           return;
         }
-        const moveDelay = skip ? 0 : computerMoveDelayMs(moveCount, fast);
+        const moveDelay = computerMoveDelayMs(moveCount, fast);
         moveTimer = setTimeout(() => {
           if (pausedRef.current)
             return;
@@ -182,5 +168,5 @@ export function useComputerOpponent({
     paused,
   ]);
 
-  return { clearAITimeout, resumeAIScheduling, skipAIDelay };
+  return { clearAITimeout, resumeAIScheduling };
 }

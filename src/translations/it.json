@@ -22,8 +22,6 @@
       "redo_a11y": "Muovetevi!",
       "roll_dice": "Lancia i dadi",
       "roll_dice_a11y": "Lancia i dadi",
-      "skip_wait": "Tocca per saltare aspettare",
-      "skip_wait_a11y": "{{status}}Tocca per saltare aspettare",
       "start_new_game_a11y": "Inizia nuovo gioco",
       "undo_a11y": "Muoversi"
     },

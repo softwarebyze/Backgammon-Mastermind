@@ -22,8 +22,6 @@
       "redo_a11y": "Refazer a jogada",
       "roll_dice": "Lançar os dados",
       "roll_dice_a11y": "Lançar os dados",
-      "skip_wait": "Toque em para ignorar a espera",
-      "skip_wait_a11y": "{{status}}Toque em para ignorar a espera",
       "start_new_game_a11y": "Iniciar um novo jogo",
       "undo_a11y": "Desfazer a jogada"
     },

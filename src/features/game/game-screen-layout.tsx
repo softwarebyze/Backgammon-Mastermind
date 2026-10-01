@@ -18,7 +18,7 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
-import { REVIEW_SLOT_HEIGHT } from '@/features/game/hooks/use-board-dimensions';
+import { REVIEW_SLOT_HEIGHT, trayDieSize, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { resolveNumberPerspective } from '@/features/game/point-numbering';
 import { useOpeningReveal } from '@/features/game/use-opening-reveal';
@@ -46,7 +46,6 @@ type Props = {
   moveLog: MoveLogEntry[];
   isComputerTurn: boolean;
   onCancelSelection: () => void;
-  onSkipComputer: () => void;
 };
 
 function GameTopChrome({
@@ -116,12 +115,12 @@ type ChromeStackProps = {
   interactionEnabled: boolean;
   compact: boolean;
   includeTop: boolean;
+  dieSize: number;
   opening: ReturnType<typeof openingTray>;
   openingText: ReturnType<typeof openingCopy>;
   onTopLayout: (event: LayoutChangeEvent) => void;
   onControlsLayout: (event: LayoutChangeEvent) => void;
   onCancelSelection: () => void;
-  onSkipComputer: () => void;
 };
 
 function GameChromeStack({
@@ -134,12 +133,12 @@ function GameChromeStack({
   interactionEnabled,
   compact,
   includeTop,
+  dieSize,
   opening,
   openingText,
   onTopLayout,
   onControlsLayout,
   onCancelSelection,
-  onSkipComputer,
 }: ChromeStackProps) {
   return (
     <>
@@ -166,11 +165,11 @@ function GameChromeStack({
           }
           opening={opening}
           compact={compact}
+          dieSize={dieSize}
           onRoll={input.handleRoll}
           onReset={input.handleReset}
           onGoLive={review.goLive}
           onCancelSelection={onCancelSelection}
-          onSkipComputer={onSkipComputer}
         />
       </View>
     </>
@@ -185,7 +184,6 @@ export function GameScreenLayout({
   moveLog,
   isComputerTurn,
   onCancelSelection,
-  onSkipComputer,
 }: Props) {
   const posthog = usePostHog();
   const {
@@ -198,6 +196,7 @@ export function GameScreenLayout({
     contentInsets,
   } = useLayoutMetrics();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
+  const dieSize = trayDieSize(useBoardDimensions().checkerSize);
   const state = board.boardState;
   const live = input.state!;
   // Point numbers are labeled from the point of view of the side whose turn
@@ -238,12 +237,12 @@ export function GameScreenLayout({
       interactionEnabled={board.interactionEnabled}
       compact={landscape}
       includeTop={landscape}
+      dieSize={dieSize}
       opening={opening}
       openingText={openingText}
       onTopLayout={onTopLayout}
       onControlsLayout={onControlsLayout}
       onCancelSelection={onCancelSelection}
-      onSkipComputer={onSkipComputer}
     />
   );
 

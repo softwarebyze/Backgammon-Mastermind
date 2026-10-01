@@ -22,8 +22,6 @@
       "redo_a11y": "Redéplacement",
       "roll_dice": "Lancer les dés",
       "roll_dice_a11y": "Lancer les dés",
-      "skip_wait": "Appuyez sur pour sauter attendre",
-      "skip_wait_a11y": "{{status}}Appuyez sur pour sauter attendre",
       "start_new_game_a11y": "Démarrer un nouveau jeu",
       "undo_a11y": "Déplacer"
     },

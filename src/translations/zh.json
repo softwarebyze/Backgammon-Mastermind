@@ -22,8 +22,6 @@
       "redo_a11y": "重做移动",
       "roll_dice": "掷骰子",
       "roll_dice_a11y": "掷骰子",
-      "skip_wait": "点击跳过等待",
-      "skip_wait_a11y": "{{status}}点击跳过等待",
       "start_new_game_a11y": "开始新游戏",
       "undo_a11y": "撤消移动"
     },

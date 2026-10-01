@@ -52,6 +52,13 @@ function whiteMovingState(): GameState {
   return s;
 }
 
+/** One die still to play — "undo last move" does not restart the turn. */
+function whiteMidTurnState(): GameState {
+  const s = whiteMovingState();
+  s.remainingDice = [1];
+  return s;
+}
+
 function blackRollingState(): GameState {
   const s = createInitialState('vs-computer');
   s.currentPlayer = 'black';
@@ -221,6 +228,33 @@ describe('tutor verdict-pending hold', () => {
     // Passing the turn judges at once — no hold, prompt opens in the same commit.
     rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
     expect(probe.pending).toBe(false);
+    expect(probe.blunderNull).toBe(false);
+  });
+});
+
+describe('tutor undo last move', () => {
+  it('catches the same blunder again after undo last move', async () => {
+    let resolveAnalysis!: (plan: never) => void;
+    planSageTurnFullMock.mockImplementation(
+      () => new Promise((resolve) => { resolveAnalysis = resolve as (plan: never) => void; }),
+    );
+
+    const { rerender, probe, onSnapshot } = renderHarness(whiteMovingState());
+    await act(async () => {
+      resolveAnalysis(blunderPlan() as never);
+    });
+    rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
+    expect(probe.blunderNull).toBe(false);
+
+    // The player undoes one checker and is mid-turn, not at a fresh turn start.
+    act(() => {
+      clearGuidance();
+    });
+    rerender(<Harness state={whiteMidTurnState()} onSnapshot={onSnapshot} />);
+    expect(probe.blunderNull).toBe(true);
+    expect(planSageTurnFullMock).toHaveBeenCalledTimes(1);
+
+    rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
     expect(probe.blunderNull).toBe(false);
   });
 });

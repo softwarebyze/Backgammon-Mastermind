@@ -6,6 +6,7 @@ import {
   MIN_LEARN_BOARD_SLOT_HEIGHT,
   MIN_LEARN_CAPTION_HEIGHT,
   resolveBoardViewport,
+  trayDieSize,
 } from '@/features/game/hooks/use-board-dimensions';
 import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
 
@@ -334,5 +335,14 @@ describe('desktop checker cap', () => {
   it('still shrinks a large-cap board to fit a short window', () => {
     const dims = fitBoardToViewport(1000, 500, { checkerCap: 48, extraHeight: 28 });
     expect(dims.boardOuterHeight + 28).toBeLessThanOrEqual(500);
+  });
+});
+
+describe('trayDieSize', () => {
+  it('keeps the phone tray die at 44 and grows it with desktop checkers', () => {
+    expect(trayDieSize(22)).toBe(44);
+    expect(trayDieSize(32)).toBe(44);
+    expect(trayDieSize(48)).toBe(64);
+    expect(trayDieSize(80)).toBe(64);
   });
 });
