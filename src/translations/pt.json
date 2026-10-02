@@ -380,6 +380,52 @@
         },
         "subtitle": "Como funciona uma curva",
         "title": "Movendo com dados"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "O branco já retirou 5 peças e as outras estão perto de casa. As pretas ainda estão espalhadas. Toca numa peça branca: o branco vai à frente porque a contagem é menor.",
+            "hint": "Procura as peças mais perto de sair.",
+            "praise": "Exato. A contagem menor do branco significa menos caminho.",
+            "title": "Quem vai à frente?"
+          },
+          "behind": {
+            "body": "A mesma posição. As peças pretas estão longe de casa e têm uma contagem muito maior. Toca numa peça preta: o preto vai atrás.",
+            "hint": "Procura as peças mais longe de casa.",
+            "praise": "Certo. Ao preto faltam muitos mais pips.",
+            "title": "Quem vai atrás?"
+          },
+          "explain": {
+            "body": "É a soma dos pontos que as tuas peças ainda têm de percorrer para sair. Cada peça conta o número do ponto: uma no 6 vale 6, uma no 13 vale 13. Menos é melhor, estás mais perto de sair. Os números aparecem em cima em cada partida, com um ponto para a cor.",
+            "title": "O que é a contagem de pips?"
+          }
+        },
+        "subtitle": "Ver quem vai à frente na corrida",
+        "title": "Contagem de pips: o marcador"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "A tua casa é forte e o adversário tem isoladas ou peças na barra. Acerta em cada isolada e fecha os pontos de casa para as deixar na barra enquanto sais. Aqui o branco tem três pontos de casa e o preto uma peça na barra.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "Isto é um jogo de muralha. Toca num ponto da muralha branca, os pontos seguidos que bloqueiam o preto.",
+            "hint": "Procura pontos seguidos com pelo menos 2 peças brancas.",
+            "praise": "Perfeito. Esse muro é a muralha. As peças de trás do preto estão presas.",
+            "title": "Encontra a muralha"
+          },
+          "prime": {
+            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que as peças de trás do preto não passam. Alonga-a um ponto de cada vez.",
+            "title": "Muralha"
+          },
+          "running": {
+            "body": "Vais à frente e não há peças isoladas ao alcance. Traz as peças para casa sem deixar isoladas. Aqui o branco vai à frente com uma casa sólida.",
+            "title": "Corrida"
+          }
+        },
+        "subtitle": "Reconhecer os seis planos clássicos",
+        "title": "Planos de jogo"
       }
     },
     "locked": "Completar a lição anterior primeiro",
@@ -402,6 +448,30 @@
         "b": "Um único verificador num ponto — pode ser atingido",
         "c": "Duas ou mais damas sobre um ponto — uma observação feita",
         "prompt": "O que é uma mancha?"
+      },
+      "pip_ahead": {
+        "a": "O teu adversário, com a contagem maior",
+        "b": "Tu, com a contagem menor",
+        "c": "Ninguém — a contagem não mede a corrida",
+        "prompt": "A tua contagem é 85 e a do adversário 102. Quem vai à frente?"
+      },
+      "pip_meaning": {
+        "a": "Os pontos que as tuas peças ainda têm de percorrer para sair",
+        "b": "Quantas peças tens no tabuleiro",
+        "c": "Quantos pontos fechaste",
+        "prompt": "O que representa a tua contagem de pips?"
+      },
+      "strat_blitz": {
+        "a": "Acertar na isolada e continuar a casa (blitz)",
+        "b": "Ignorar a isolada e correr as peças de trás",
+        "c": "Partir a casa para fazer uma âncora",
+        "prompt": "Fechaste 3 pontos de casa e o adversário tem uma isolada lá. Qual é o melhor plano?"
+      },
+      "strat_prime": {
+        "a": "Partir a muralha para atacar",
+        "b": "Manter a muralha e alongá-la — estão presos",
+        "c": "Sair o mais depressa possível",
+        "prompt": "Duas peças do adversário estão atrás da tua muralha de 5. Qual é o teu plano?"
       }
     },
     "replay": "Repetir",

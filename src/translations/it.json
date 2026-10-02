@@ -380,6 +380,52 @@
         },
         "subtitle": "Come funziona un turno",
         "title": "Spostarsi con i dadi"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "Il bianco ha portato fuori 5 pedine e le altre sono vicine a casa. Le nere sono ancora sparse. Tocca una pedina bianca: il bianco è avanti perché il conteggio è più basso.",
+            "hint": "Cerca le pedine più vicine all’uscita.",
+            "praise": "Esatto. Il conteggio più basso del bianco vuol dire meno strada.",
+            "title": "Chi è avanti?"
+          },
+          "behind": {
+            "body": "La stessa posizione. Le pedine nere sono lontane da casa e hanno un conteggio molto più alto. Tocca una pedina nera: il nero è indietro.",
+            "hint": "Cerca le pedine più lontane da casa.",
+            "praise": "Giusto. Al nero servono ancora molti pip.",
+            "title": "Chi è indietro?"
+          },
+          "explain": {
+            "body": "È la somma dei punti che le tue pedine devono ancora percorrere per uscire. Ogni pedina conta il numero del suo punto: una sul 6 vale 6, una sul 13 vale 13. Meno è meglio, sei più vicino all’uscita. I numeri stanno in alto in ogni partita, con un puntino per il colore.",
+            "title": "Che cos’è il conteggio pip?"
+          }
+        },
+        "subtitle": "Capire chi sta vincendo la corsa",
+        "title": "Conteggio pip: il punteggio"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "La tua casa è forte e l’avversario ha pedine sole o sulla barra. Colpisci ogni pedina sola e chiudi i punti di casa per tenerle sulla barra mentre esci. Qui il bianco ha tre punti di casa e il nero una pedina sulla barra.",
+            "title": "Attacco totale"
+          },
+          "identify": {
+            "body": "Questa è una partita di muro. Tocca un punto del muro bianco, i punti consecutivi che bloccano il nero.",
+            "hint": "Cerca punti consecutivi con almeno 2 pedine bianche.",
+            "praise": "Perfetto. Quel muro è il prime. Le pedine arretrate del nero sono intrappolate.",
+            "title": "Trova il muro"
+          },
+          "prime": {
+            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che le pedine arretrate del nero non possono passare. Allungalo un punto alla volta.",
+            "title": "Muro"
+          },
+          "running": {
+            "body": "Sei avanti e non ci sono pedine sole a tiro. Porta le pedine a casa senza lasciarne di sole. Qui il bianco è avanti con una casa solida.",
+            "title": "Corsa"
+          }
+        },
+        "subtitle": "Riconosci i sei piani classici",
+        "title": "Piani di gioco"
       }
     },
     "locked": "Completare la lezione precedente prima",
@@ -402,6 +448,30 @@
         "b": "Un singolo imbroglione su un punto — può essere colpito",
         "c": "Due o più pedine su un punto — un punto fatto",
         "prompt": "Che cos'è una macchia?"
+      },
+      "pip_ahead": {
+        "a": "Il tuo avversario, con il conteggio più alto",
+        "b": "Tu, con il conteggio più basso",
+        "c": "Nessuno — il conteggio non misura la corsa",
+        "prompt": "Il tuo conteggio è 85 e quello dell’avversario 102. Chi è avanti?"
+      },
+      "pip_meaning": {
+        "a": "I punti che le tue pedine devono ancora percorrere per uscire",
+        "b": "Quante pedine hai sulla scacchiera",
+        "c": "Quanti punti hai chiuso",
+        "prompt": "Cosa rappresenta il tuo conteggio pip?"
+      },
+      "strat_blitz": {
+        "a": "Colpire la pedina sola e continuare la casa (attacco)",
+        "b": "Ignorare la pedina sola e far correre quelle arretrate",
+        "c": "Rompere la casa per fare un’ancora",
+        "prompt": "Hai chiuso 3 punti di casa e l’avversario ha una pedina sola lì. Qual è il piano migliore?"
+      },
+      "strat_prime": {
+        "a": "Rompi il muro per attaccare",
+        "b": "Tieni il muro e allungalo — sono intrappolati",
+        "c": "Esci il più in fretta possibile",
+        "prompt": "Due pedine avversarie sono dietro il tuo muro di 5. Qual è il tuo piano?"
       }
     },
     "replay": "Replay",
