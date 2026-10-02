@@ -63,15 +63,7 @@ Evidence from prior PR pass: [`../review-ui/`](../review-ui/), [`../move-path-ar
 
 ## 5. Marketing / Remotion (v0.1.2)
 
-Rendered with `cd remotion && pnpm render:all`:
-
-| Asset | Path |
-|-------|------|
-| Launch hero (9:16) | [`../../marketing/v0.1.2/launch-hero.mp4`](../../marketing/v0.1.2/launch-hero.mp4) |
-| App Store preview (16:9) | [`../../marketing/v0.1.2/app-store-preview.mp4`](../../marketing/v0.1.2/app-store-preview.mp4) |
-| Social square | [`../../marketing/v0.1.2/feature-spotlight.mp4`](../../marketing/v0.1.2/feature-spotlight.mp4) |
-
-Also copied to [`../../remotion/after/`](../../remotion/after/).
+Those renders were a one-time snapshot and are no longer in the tree. Current videos are in [`../../marketing/videos/`](../../marketing/videos/).
 
 ---
 

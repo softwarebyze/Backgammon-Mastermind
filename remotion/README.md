@@ -9,6 +9,7 @@ Remotion project for launch and social marketing assets.
 | `LaunchHero` | 1080×1920 (9:16) | ~16s | TikTok, Reels, Stories |
 | `AppStorePreview` | 1920×1080 (16:9) | ~20s | YouTube, website hero |
 | `FeatureSpotlight` | 1080×1080 (1:1) | ~13s | Instagram feed, ads |
+| `TutorSpotlight` | 1080×1920 (9:16) | ~9s | Lessons, tutor, and strategy |
 
 ## Quick start
 
@@ -16,7 +17,8 @@ Remotion project for launch and social marketing assets.
 cd remotion
 pnpm install
 pnpm dev          # Remotion Studio preview
-pnpm render:all   # Render all videos to out/
+pnpm render:all   # writes out/*.mp4; CI sets REMOTION_GL=swangle
+cp out/*.mp4 ../docs/marketing/videos/
 ```
 
 ## Board & layout
@@ -35,9 +37,9 @@ Re-run after branding changes:
 cp ../assets/brand/display-logo.png ../assets/brand/icon-source.png public/
 ```
 
-## From repo root
+## From the remotion directory
 
 ```bash
-pnpm remotion:dev
-pnpm remotion:render
+pnpm dev
+pnpm render:all
 ```

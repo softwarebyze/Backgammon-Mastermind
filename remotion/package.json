@@ -30,10 +30,11 @@
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",
-    "render:all": "pnpm run render:hero && pnpm run render:preview && pnpm run render:social",
-    "render:hero": "remotion render LaunchHero out/launch-hero.mp4 --gl=angle",
-    "render:preview": "remotion render AppStorePreview out/app-store-preview.mp4 --gl=angle",
-    "render:social": "remotion render FeatureSpotlight out/feature-spotlight.mp4 --gl=angle"
+    "render:all": "pnpm run render:hero && pnpm run render:preview && pnpm run render:social && pnpm run render:tutor",
+    "render:hero": "remotion render LaunchHero out/launch-hero.mp4 --gl=${REMOTION_GL:-angle}",
+    "render:preview": "remotion render AppStorePreview out/app-store-preview.mp4 --gl=${REMOTION_GL:-angle}",
+    "render:social": "remotion render FeatureSpotlight out/feature-spotlight.mp4 --gl=${REMOTION_GL:-angle}",
+    "render:tutor": "remotion render TutorSpotlight out/tutor-spotlight.mp4 --gl=${REMOTION_GL:-angle}"
   },
   "sideEffects": [
     "*.css"

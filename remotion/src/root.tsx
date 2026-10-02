@@ -12,6 +12,10 @@ import {
   LAUNCH_HERO_DURATION,
   LaunchHero,
 } from './compositions/launch-hero';
+import {
+  TUTOR_SPOTLIGHT_DURATION,
+  TutorSpotlight,
+} from './compositions/tutor-spotlight';
 import './index.css';
 
 export const RemotionRoot: React.FC = () => {
@@ -41,6 +45,14 @@ export const RemotionRoot: React.FC = () => {
           fps={30}
           width={1080}
           height={1080}
+        />
+        <Composition
+          id="TutorSpotlight"
+          component={TutorSpotlight}
+          durationInFrames={TUTOR_SPOTLIGHT_DURATION}
+          fps={30}
+          width={1080}
+          height={1920}
         />
       </Folder>
     </>

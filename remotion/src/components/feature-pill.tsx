@@ -3,7 +3,7 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { BRAND } from '../brand/palette';
 
 type Props = {
-  icon: string;
+  icon?: string;
   title: string;
   subtitle: string;
   delay?: number;
@@ -54,7 +54,9 @@ export const FeaturePill: React.FC<Props> = ({
         minWidth: 300,
       }}
     >
-      <div style={{ fontSize: 32, width: 40, textAlign: 'center', flexShrink: 0 }}>{icon}</div>
+      {icon
+        ? <div style={{ fontSize: 22, width: 28, textAlign: 'center', flexShrink: 0, color: colors.text }}>{icon}</div>
+        : null}
       <div style={{ flex: 1 }}>
         <div
           style={{

@@ -1,5 +1,4 @@
 import { loadFont } from '@remotion/google-fonts/Inter';
-import { LightLeak } from '@remotion/light-leaks';
 import { linearTiming, TransitionSeries } from '@remotion/transitions';
 import { fade } from '@remotion/transitions/fade';
 import * as React from 'react';
@@ -19,31 +18,26 @@ const BEAT = 3 * FPS;
 const TRANSITION = 10;
 
 const FEATURES = [
-  { emoji: '💾', title: 'Resume Anytime', body: 'Games auto-save — pick up where you left off', showBoard: false },
-  { emoji: '✨', title: 'Smooth Moves', body: 'Checkers slide, captures fly to the bar', showBoard: true },
-  { emoji: '🎯', title: 'One-Tap Doubles', body: 'Use both dice in a single move when you can', showBoard: true },
-  { emoji: '🎲', title: 'Dice Roll', body: 'Shuffle animation when new dice land', showDice: true },
+  { title: 'Lessons', body: 'The rules, on the board you play on.', showBoard: true },
+  { title: 'Tutor', body: 'Stops on a blunder and shows a stronger move.', showBoard: true },
+  { title: 'Strategy', body: 'Running, blitz, priming, holding, or back game.', showBoard: true },
+  { title: 'Two ways to play', body: 'Against the computer, or pass and play.', showDice: true, showBoard: true },
 ] as const;
 
 function FeatureBeat({
-  emoji,
   title,
   body,
-  index,
   showBoard,
   showDice,
 }: {
-  emoji: string;
   title: string;
   body: string;
-  index: number;
   showBoard?: boolean;
   showDice?: boolean;
 }) {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const progress = spring({ frame, fps, config: { damping: 14, stiffness: 100 } });
-  const emojiScale = interpolate(progress, [0, 1], [0.6, 1]);
   const boardWidth = fitBoardWidth({
     videoWidth: width,
     videoHeight: height,
@@ -52,7 +46,7 @@ function FeatureBeat({
   });
 
   return (
-    <CenteredScene gap={20} padding={56} pulse={index % 2 === 0}>
+    <CenteredScene gap={20} padding={56} pulse={false}>
       {showBoard
         ? (
             <BackgammonBoard
@@ -62,18 +56,7 @@ function FeatureBeat({
               showMoveHintOn={8}
             />
           )
-        : (
-            <div
-              style={{
-                fontSize: 64,
-                transform: `scale(${emojiScale})`,
-                lineHeight: 1,
-                filter: 'drop-shadow(0 6px 20px rgba(212, 168, 67, 0.35))',
-              }}
-            >
-              {emoji}
-            </div>
-          )}
+        : null}
       <GlowText size={34}>{title}</GlowText>
       <div
         style={{
@@ -122,12 +105,11 @@ function FinalBeat() {
           fontSize: 17,
           color: BRAND.accent,
           fontFamily: 'Inter, sans-serif',
-          letterSpacing: 4,
-          fontWeight: 700,
+          fontWeight: 600,
           opacity: progress,
         }}
       >
-        FREE ON iOS & ANDROID
+        iOS and Android
       </div>
     </CenteredScene>
   );
@@ -145,13 +127,10 @@ export const FeatureSpotlight: React.FC = () => {
             />
           )}
           <TransitionSeries.Sequence durationInFrames={BEAT}>
-            <FeatureBeat {...feature} index={index} />
+            <FeatureBeat {...feature} />
           </TransitionSeries.Sequence>
         </React.Fragment>
       ))}
-      <TransitionSeries.Overlay durationInFrames={14}>
-        <LightLeak seed={99} hueShift={50} />
-      </TransitionSeries.Overlay>
       <TransitionSeries.Sequence durationInFrames={BEAT}>
         <FinalBeat />
       </TransitionSeries.Sequence>

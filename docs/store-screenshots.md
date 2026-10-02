@@ -6,11 +6,11 @@ Agents **can and should** upload App Store / Play screenshots without a human cl
 
 | Asset | Path |
 |-------|------|
-| Raw captures (undressed) | `docs/marketing/v1.0.0/app-store-screenshots/raw/` |
-| Frame manifest (layout + English headlines) | `docs/marketing/v1.0.0/screenshot-frames.json` |
-| Localized screenshot copy | `docs/marketing/v1.0.0/screenshot-localizations.json` |
-| Composed iPhone 6.9" (1320×2868) | `docs/marketing/v1.0.0/app-store-screenshots/iphone-69-*.png` |
-| Composed iPad Pro 13" (2064×2752) | `docs/marketing/v1.0.0/app-store-screenshots/ipad-13-*.png` |
+| Raw captures (undressed) | `docs/marketing/app-store-screenshots/raw/` |
+| Frame manifest (layout + English headlines) | `docs/marketing/screenshot-frames.json` |
+| Localized screenshot copy | `docs/marketing/screenshot-localizations.json` |
+| Composed iPhone 6.9" (1320×2868) | `docs/marketing/app-store-screenshots/iphone-69-*.png` |
+| Composed iPad Pro 13" (2064×2752) | `docs/marketing/app-store-screenshots/ipad-13-*.png` |
 | Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/<locale>/` |
 | Staged for Play (generated 9:16 crop) | `fastlane/metadata/android/<locale>/images/phoneScreenshots/` |
 
@@ -107,7 +107,7 @@ Android screenshots are a **9:16 crop** (1080×1920) of each localized iPhone 6.
 
 ## Obytes / fork agents
 
-1. Put composed PNGs under `docs/marketing/<version>/app-store-screenshots/`
+1. Put composed PNGs under `docs/marketing/app-store-screenshots/`
 2. Ensure Expo ASC API key is in EAS credentials (or ASC_* env)
 3. Run `pnpm screenshots:upload:ios`
 4. Confirm in App Store Connect → version → Screenshots

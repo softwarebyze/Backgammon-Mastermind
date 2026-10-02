@@ -9,7 +9,7 @@ import { Buffer } from 'node:buffer';
  * Product fills the remaining canvas at full width. No gradient overlay,
  * no gold bezel, no side letterbox, no wordmark footer.
  *
- * Reads docs/marketing/v1.0.0/screenshot-frames.json
+ * Reads docs/marketing/screenshot-frames.json
  * Writes composed PNGs at exact Apple pixel sizes.
  *
  *   node scripts/compose-store-screenshots.mjs
@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_MANIFEST = path.join(
   ROOT,
-  'docs/marketing/v1.0.0/screenshot-frames.json',
+  'docs/marketing/screenshot-frames.json',
 );
 const PNG_SIG = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
 
