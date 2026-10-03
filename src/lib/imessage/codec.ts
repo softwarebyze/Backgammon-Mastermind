@@ -31,9 +31,10 @@ export const IMESSAGE_CODEC_VERSION = 1;
 /** Opaque payload host — the URL never needs to resolve; Messages treats it as data. */
 export const IMESSAGE_URL_BASE = 'https://backgammonmastermind.game/i';
 
-// The extension's local turn is `payload.turn + 1`, so this bound needs
-// headroom above any turn a game can actually reach. Keep in sync with
-// `imMaxTurn` in targets/imessage/Sources/MessagePayload.swift.
+// Maximum *local* turn. The extension loads an accepted wire turn as
+// `turn + 1`, so the accepted wire range stops one short — otherwise the
+// maximum legal payload loads as a turn it could never encode. Keep in sync
+// with `imMaxTurn` in targets/imessage/Sources/MessagePayload.swift.
 export const IMESSAGE_MAX_TURN = 1_000_000;
 
 export const IMESSAGE_MAX_SUMMARY_LENGTH = 140;
@@ -203,8 +204,8 @@ export function decodeImessageTurn(
     return { ok: false, error: { kind: 'missing-param', param: 'turn' } };
   }
   const turn = Number(turnRaw);
-  if (!Number.isInteger(turn) || turn < 1 || turn > IMESSAGE_MAX_TURN) {
-    return fail('turn', `must be an integer in 1..${IMESSAGE_MAX_TURN}`);
+  if (!Number.isInteger(turn) || turn < 1 || turn >= IMESSAGE_MAX_TURN) {
+    return fail('turn', `must be an integer in 1..${IMESSAGE_MAX_TURN - 1}`);
   }
 
   const curRaw = params.get('cur');

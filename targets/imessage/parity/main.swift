@@ -229,16 +229,68 @@ do {
   check("grammar.rejectsUnicodeGameId", decode(unicodeGid) == nil)
   check("grammar.rejectsShortGameId", decode("https://backgammonmastermind.game/i?v=1&gid=abc&turn=3&cur=w&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x") == nil)
 
-  // Turn bound: the local turn is payload.turn + 1, so the cap needs headroom.
-  let bigTurn = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=1000000"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
-  check("grammar.acceptsMaxTurn", bigTurn != nil)
-  let overTurn = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=1000001"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
-  check("grammar.rejectsOverMaxTurn", overTurn == nil)
+  // Turn boundary is asserted below via grammar.acceptsMaxWireTurn /
+  // grammar.rejectsMaxLocalTurn, since imMaxTurn bounds the *local* turn.
+
   // The old 10_000 cap turned a legal turn 10_000 into an unencodable 10_001.
   let tenK = ImGameSession()
   tenK.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: 10_000, dice: nil, summary: "x"))
   check("turn.headroomAfterCap", tenK.turn == 10_001, "\(tenK.turn)")
   check("turn.reencodableAfterCap", tenK.outgoingPayload().url != nil)
+
+  // The accepted wire range must stop one below imMaxTurn, so the largest legal
+  // payload loads as a local turn we can still encode.
+  let maxWire = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=\(imMaxTurn - 1)"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
+  check("grammar.acceptsMaxWireTurn", maxWire != nil)
+  let overWire = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=\(imMaxTurn)"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
+  check("grammar.rejectsMaxLocalTurn", overWire == nil)
+  let atCap = ImGameSession()
+  atCap.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: imMaxTurn - 1, dice: nil, summary: "x"))
+  check("turn.maxLocalIsEncodable", atCap.turn == imMaxTurn, "\(atCap.turn)")
+  check("turn.maxLocalPayloadEncodes", atCap.outgoingPayload().url != nil)
+}
+
+// 12b. Count/dice pair parsing must match codec.ts's regexes exactly. Tested
+//     directly: going through decode() would let the 15-checker balance check
+//     reject these for an unrelated reason and the vectors would pass vacuously.
+do {
+  typealias Pair = (Int, Int)?
+  let pair = ImTurnPayload.parseCountPair
+  // COUNT_PAIR_PATTERN = /^(\d{1,2}),(\d{1,2})$/
+  check("pairs.acceptsPlain", pair("0,0") != nil)
+  check("pairs.acceptsOneDigit", pair("5,12") != nil)
+  check("pairs.rejectsEmptyField", pair("1,,2") == nil)
+  check("pairs.rejectsTrailingComma", pair("1,2,") == nil)
+  check("pairs.rejectsLeadingComma", pair(",1,2") == nil)
+  check("pairs.rejectsExtraField", pair("1,2,3") == nil)
+  check("pairs.rejectsSigned", pair("+5,2") == nil)
+  check("pairs.rejectsNegative", pair("-1,2") == nil)
+  check("pairs.rejectsSpaces", pair("5, 2") == nil)
+  check("pairs.rejectsOver15", pair("16,0") == nil)
+  check("pairs.rejectsThreeDigits", pair("100,2") == nil)
+  check("pairs.rejectsEmpty", pair("") == nil)
+
+  let dice = ImTurnPayload.parseDicePair
+  // DICE_PATTERN = /^[1-6],[1-6]$/
+  check("dice.acceptsPlain", dice("6,1") != nil)
+  check("dice.rejectsTrailingComma", dice("1,2,") == nil)
+  check("dice.rejectsSigned", dice("+1,2") == nil)
+  check("dice.rejectsEmptyField", dice("1,") == nil)
+  check("dice.rejectsZero", dice("0,1") == nil)
+  check("dice.rejectsOutOfRange", dice("1,7") == nil)
+  check("dice.rejectsExtraField", dice("1,2,3") == nil)
+
+  // JS `.length` counts UTF-16 code units; Swift's `count` counts grapheme
+  // clusters. "🏆" is one Character but two UTF-16 units, so 140 of them is 280
+  // units and must be rejected. Exercised through decode() because the limit is
+  // applied there.
+  let base = "https://backgammonmastermind.game/i?v=1&gid=Ab3dEf7hIj9K&turn=3&cur=w&pts=bf"
+    + String(repeating: ".0", count: 22) + "w2&bar=0,0&off=13,0&win=&d=&last="
+  func decode(_ q: String) -> ImTurnPayload? { try? ImTurnPayload(url: URL(string: q)!) }
+  func enc(_ s: String) -> String { s.addingPercentEncoding(withAllowedCharacters: .alphanumerics)! }
+  check("summary.utf16AllowsAtLimit", decode(base + enc(String(repeating: "a", count: 140))) != nil)
+  check("summary.utf16LengthEnforced", decode(base + enc(String(repeating: "🏆", count: 71))) == nil)
+  check("summary.utf16CountsCodeUnitsNotGraphemes", decode(base + enc(String(repeating: "🏆", count: 70))) != nil)
 }
 
 // 11. A literal "+" in the summary must survive the Swift URL round-trip.

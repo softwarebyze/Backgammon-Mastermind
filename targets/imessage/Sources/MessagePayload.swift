@@ -9,9 +9,10 @@ import Foundation
 let imCodecVersion = 1
 let imPayloadBaseURL = "https://backgammonmastermind.game/i"
 let imMaxSummaryLength = 140
-/// Upper bound on the wire `turn`. The local turn is `payload.turn + 1`, so this
-/// needs headroom above any turn a game can reach. Mirrors `turn > 1_000_000` in
-/// codec.ts — keep the two in sync.
+/// Maximum *local* turn. The wire `turn` we emit is the turn just completed, and
+/// the next payload we accept loads as `turn + 1`, so the accepted wire range has
+/// to stop one short — otherwise the maximum legal payload loads as a turn we
+/// could never encode. Mirrors `IMESSAGE_MAX_TURN` in codec.ts; keep in sync.
 let imMaxTurn = 1_000_000
 
 enum ImPayloadError: Error, Equatable {
@@ -110,11 +111,11 @@ struct ImTurnPayload: Equatable {
     }
 
     let turnRaw = try value("turn")
-    // The local turn is `payload.turn + 1`, so this bound needs headroom: a cap
-    // of exactly 10_000 made turn 10_000 overflow to an unencodable 10_001 and
-    // the game silently stopped progressing. Keep in sync with `turn` in codec.ts.
-    guard let turn = Int(turnRaw), (1 ... imMaxTurn).contains(turn) else {
-      throw ImPayloadError.invalidParam("turn", "must be an integer in 1..\(imMaxTurn)")
+    // `imMaxTurn` bounds the local turn we emit; the wire turn is one behind it
+    // because loading a payload advances to `turn + 1`. Validating against the
+    // full range let the maximum payload load as an unencodable turn.
+    guard let turn = Int(turnRaw), (1 ..< imMaxTurn).contains(turn) else {
+      throw ImPayloadError.invalidParam("turn", "must be an integer in 1..\(imMaxTurn - 1)")
     }
 
     guard let current = ImPlayer(shortCode: try value("cur")) else {
@@ -157,15 +158,16 @@ struct ImTurnPayload: Equatable {
     if diceRaw.isEmpty {
       dice = nil
     } else {
-      let parts = diceRaw.split(separator: ",").compactMap { Int($0) }
-      guard parts.count == 2, parts.allSatisfy({ (1 ... 6).contains($0) }) else {
+      guard let parsed = Self.parseDicePair(diceRaw) else {
         throw ImPayloadError.invalidParam("d", "must be \"\" or two dice 1-6")
       }
-      dice = (parts[0], parts[1])
+      dice = parsed
     }
 
     let summary = items.first(where: { $0.name == "last" })?.value ?? ""
-    guard summary.count <= imMaxSummaryLength else {
+    // JS `.length` counts UTF-16 code units; Swift's `count` counts grapheme
+    // clusters, so an emoji summary would slip past the cap on the Swift side.
+    guard summary.utf16.count <= imMaxSummaryLength else {
       throw ImPayloadError.invalidParam("last", "must be ≤ \(imMaxSummaryLength) chars")
     }
 
@@ -266,10 +268,35 @@ struct ImTurnPayload: Equatable {
     return raw.allSatisfy { asciiAlnum.contains($0) || $0 == "-" || $0 == "_" }
   }
 
-  static func parseCountPair(_ raw: String) -> (Int, Int)? {
-    let parts = raw.split(separator: ",").compactMap { Int($0) }
-    guard parts.count == 2, parts.allSatisfy({ (0 ... 15).contains($0) }) else { return nil }
-    return (parts[0], parts[1])
+static func parseCountPair(_ raw: String) -> (Int, Int)? {
+    // Mirrors COUNT_PAIR_PATTERN `/^(\d{1,2}),(\d{1,2})$/` in codec.ts. Splitting
+    // with the default `omittingEmptySubsequences: true` would accept "1,2," and
+    // `Int(_:)` accepts a leading "+", so both fields are checked as bare ASCII
+    // digits instead.
+    let parts = raw.split(separator: ",", omittingEmptySubsequences: false).map(String.init)
+    guard parts.count == 2, let first = Self.parseSmallDecimal(parts[0]),
+          let second = Self.parseSmallDecimal(parts[1]) else { return nil }
+    return (first, second)
+  }
+
+  /// 1-2 ASCII digits, no sign, no whitespace, value 0...15.
+  private static func parseSmallDecimal(_ raw: String) -> Int? {
+    guard (1 ... 2).contains(raw.count),
+          raw.allSatisfy({ $0.isASCII && $0.isNumber }),
+          let value = Int(raw), (0 ... 15).contains(value) else { return nil }
+    return value
+  }
+
+  /// Mirrors DICE_PATTERN `/^[1-6],[1-6]$/` in codec.ts.
+  static func parseDicePair(_ raw: String) -> (Int, Int)? {
+    let parts = raw.split(separator: ",", omittingEmptySubsequences: false).map(String.init)
+    guard parts.count == 2 else { return nil }
+    func die(_ part: String) -> Int? {
+      guard part.count == 1, let value = Int(part), (1 ... 6).contains(value) else { return nil }
+      return value
+    }
+    guard let first = die(parts[0]), let second = die(parts[1]) else { return nil }
+    return (first, second)
   }
 
   /// Snapshot a post-turn board into a sendable payload.
