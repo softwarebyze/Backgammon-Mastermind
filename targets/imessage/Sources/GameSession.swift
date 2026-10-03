@@ -61,7 +61,9 @@ final class ImGameSession: ObservableObject {
     board.current = payload.current
     self.board = board
     self.gameId = payload.gameId
-    self.turn = payload.winner == nil ? payload.turn + 1 : payload.turn
+// The emitted wire turn equals the local turn, so the local turn is clamped to
+    // the encodable maximum rather than advancing past it.
+    self.turn = payload.winner == nil ? min(payload.turn + 1, imMaxTurn) : payload.turn
     self.dice = nil
     self.selectedPoint = nil
     self.destinations = []

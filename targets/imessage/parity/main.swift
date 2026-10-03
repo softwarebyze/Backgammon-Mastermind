@@ -236,18 +236,24 @@ do {
   let tenK = ImGameSession()
   tenK.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: 10_000, dice: nil, summary: "x"))
   check("turn.headroomAfterCap", tenK.turn == 10_001, "\(tenK.turn)")
-  check("turn.reencodableAfterCap", tenK.outgoingPayload().url != nil)
+  // Must actually decode, not merely build a URL: `url` is assembled from
+  // queryItems without validation, so a non-nil URL says nothing about whether
+  // the peer would accept it.
+  let tenKURL = tenK.outgoingPayload().url
+  check("turn.reencodableAfterCap", tenKURL != nil && (try? ImTurnPayload(url: tenKURL!)) != nil)
 
-  // The accepted wire range must stop one below imMaxTurn, so the largest legal
-  // payload loads as a local turn we can still encode.
-  let maxWire = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=\(imMaxTurn - 1)"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
+  // The accepted wire range is exactly the emittable range: the emitted wire turn
+  // equals the local turn, so anything we can emit must also decode.
+  let maxWire = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=\(imMaxTurn)"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
   check("grammar.acceptsMaxWireTurn", maxWire != nil)
-  let overWire = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=\(imMaxTurn)"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
-  check("grammar.rejectsMaxLocalTurn", overWire == nil)
+  let overWire = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=\(imMaxTurn + 1)"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
+  check("grammar.rejectsOverMaxWireTurn", overWire == nil)
+  // Loading the maximum wire turn must not advance past what we can encode.
   let atCap = ImGameSession()
-  atCap.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: imMaxTurn - 1, dice: nil, summary: "x"))
-  check("turn.maxLocalIsEncodable", atCap.turn == imMaxTurn, "\(atCap.turn)")
-  check("turn.maxLocalPayloadEncodes", atCap.outgoingPayload().url != nil)
+  atCap.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: imMaxTurn, dice: nil, summary: "x"))
+  check("turn.localClampedToMax", atCap.turn == imMaxTurn, "\(atCap.turn)")
+  let atCapURL = atCap.outgoingPayload().url
+  check("turn.maxLocalPayloadEncodes", atCapURL != nil && (try? ImTurnPayload(url: atCapURL!)) != nil)
 }
 
 // 12b. Count/dice pair parsing must match codec.ts's regexes exactly. Tested

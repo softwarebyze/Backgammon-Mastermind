@@ -110,6 +110,18 @@ function withImessageTarget(config) {
     const developmentTeam = hostDevelopmentTeam(project, mainTargetName);
 
     if (findTargetByName(project, EXT_FOLDER)) {
+      // The target already exists, but the extension bundle id is derived from
+      // ios.bundleIdentifier — which changes per flavor. Without this, a
+      // prebuild that switches flavors (development -> preview) would keep the
+      // previous flavor's id and build or sign the wrong extension.
+      for (const build of ['Debug', 'Release']) {
+        project.updateBuildProperty(
+          'PRODUCT_BUNDLE_IDENTIFIER',
+          bundleId,
+          build,
+          `"${EXT_FOLDER}"`,
+        );
+      }
       return cfg;
     }
 

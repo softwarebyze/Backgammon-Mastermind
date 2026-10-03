@@ -9,10 +9,11 @@ import Foundation
 let imCodecVersion = 1
 let imPayloadBaseURL = "https://backgammonmastermind.game/i"
 let imMaxSummaryLength = 140
-/// Maximum *local* turn. The wire `turn` we emit is the turn just completed, and
-/// the next payload we accept loads as `turn + 1`, so the accepted wire range has
-/// to stop one short — otherwise the maximum legal payload loads as a turn we
-/// could never encode. Mirrors `IMESSAGE_MAX_TURN` in codec.ts; keep in sync.
+/// Maximum turn. The wire `turn` we emit equals the local turn we are about to
+/// play, so this has to be both the largest accepted wire turn and the largest
+/// local turn — otherwise we can emit a payload the peer would reject. Loading
+/// clamps the local turn to this value. Mirrors `IMESSAGE_MAX_TURN` in
+/// codec.ts; keep in sync.
 let imMaxTurn = 1_000_000
 
 enum ImPayloadError: Error, Equatable {
@@ -111,11 +112,8 @@ struct ImTurnPayload: Equatable {
     }
 
     let turnRaw = try value("turn")
-    // `imMaxTurn` bounds the local turn we emit; the wire turn is one behind it
-    // because loading a payload advances to `turn + 1`. Validating against the
-    // full range let the maximum payload load as an unencodable turn.
-    guard let turn = Int(turnRaw), (1 ..< imMaxTurn).contains(turn) else {
-      throw ImPayloadError.invalidParam("turn", "must be an integer in 1..\(imMaxTurn - 1)")
+    guard let turn = Int(turnRaw), (1 ... imMaxTurn).contains(turn) else {
+      throw ImPayloadError.invalidParam("turn", "must be an integer in 1..\(imMaxTurn)")
     }
 
     guard let current = ImPlayer(shortCode: try value("cur")) else {

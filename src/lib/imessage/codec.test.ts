@@ -135,15 +135,14 @@ describe('encode / decode turn', () => {
     expect(decodeImessageTurn(badTurn).ok).toBe(false);
   });
 
-  it('accepts the highest wire turn and rejects the local maximum', () => {
-    // IMESSAGE_MAX_TURN bounds the *local* turn, and the extension loads an
-    // accepted wire turn as turn + 1, so the wire range stops one short.
+  it('accepts the max turn and rejects one past it', () => {
+    // The extension emits a wire turn equal to its local turn, so the accepted
+    // range must be exactly the emittable range.
     const turn = (n: number) =>
       decodeImessageTurn(
         new URL(buildImessageUrl({ ...standardPayload(), turn: n })).search.slice(1),
       );
-    expect(turn(IMESSAGE_MAX_TURN - 1).ok).toBe(true);
-    expect(turn(IMESSAGE_MAX_TURN).ok).toBe(false);
+    expect(turn(IMESSAGE_MAX_TURN).ok).toBe(true);
     expect(turn(IMESSAGE_MAX_TURN + 1).ok).toBe(false);
   });
 });
