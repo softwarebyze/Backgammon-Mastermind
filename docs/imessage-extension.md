@@ -89,6 +89,11 @@ until then, Run the main scheme on the device, then open Messages manually.
   do dev-flavor work only until the owner confirms each flavor's team.
 - `com.backgammonmastermind.development.messages` was registered via EAS
   GraphQL `createAppleAppIdentifier` (parent = main app id, team 75M38Z9JBF).
+  Same for `.preview.messages` (preview TestFlight path).
+- The plugin pins `DEVELOPMENT_TEAM=75M38Z9JBF` on the extension target:
+  Xcode 14+ signs resource bundles by default and EAS cloud archives fail
+  with "requires a development team" without it (local builds had passed it
+  via CLI, masking the gap).
 - Xcode-managed team profiles go stale: after portal changes (new devices),
   refresh via Xcode → Settings → Accounts → Download Manual Profiles, then
   rebuild with `-allowProvisioningUpdates`. If Xcode reports devices as
