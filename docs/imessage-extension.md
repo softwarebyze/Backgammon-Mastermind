@@ -103,34 +103,135 @@ until then, Run the main scheme on the device, then open Messages manually.
   compiling), but the simulator's plugind would not index the appex in our
   testing (see Status below) — device testing is the supported path.
 
-## Status: the one remaining blocker
+## RESOLVED: the extension point identifier was wrong
 
-Everything builds, signs, installs, and launches — but the extension does not
-appear in the Messages app drawer (simulator ×2, iPhone 13 Pro Max, iPad),
-while store-signed third-party extensions (Maps, Venmo) do. No crash logs exist
-for the extension: it is never indexed/launched, not failing at runtime.
+`targets/imessage/Info.plist` declared
+`NSExtensionPointIdentifier = com.apple.messages`. **That is not a valid iMessage
+extension point.** The correct value is `com.apple.message-payload-provider`
+(Apple's docs; every shipping iMessage app; `csark0812/expo-targets` ships the
+same value at `characteristics.ts:223`).
+
+One line, and everything downstream unblocked: the extension now appears in the
+Messages drawer, launches, renders the board, rolls, validates moves, and sends
+turns between two devices.
+
+Do not trust the old "eliminated" verdict below — the supporting evidence was
+worthless. `git log --all -S 'message-payload-provider'` finds that string **only
+in this doc**, never in `targets/imessage/Info.plist` or the plugin. Since `/ios`
+is gitignored and `plugins/with-imessage-extension.js:59` re-copies
+`targets/imessage/Info.plist` on every prebuild, the earlier experiment was a
+hand-edit of the generated plist and was overwritten by the next
+`expo prebuild` before it could be observed. **Edit `targets/imessage/`, never
+`ios/`.**
+
+Corollary: the whole store-signing investigation below was chasing a phantom.
+Signing was never the reason the drawer was empty — so do **not** reach for
+`fastlane spaceauth` or EAS credential surgery to fix a missing extension.
+
+## Store signing (secondary — no longer blocking)
+
+**Root cause of "one profile missing": `com.backgammonmastermind.preview.messages`
+was never actually registered in App Store Connect.** The EAS Developer Portal API
+listed it as an app identifier, but `GET /v1/bundleIds` (ASC API) returned 38 ids
+including `…development.messages` and **not** `…preview.messages`. A
+half-registered identifier cannot be profile-bearing, which is why EAS could not
+provision it and why the earlier note "registered via EAS `createAppleAppIdentifier`"
+was misleading.
+
+Fixed from the terminal, no portal clicking, using the ASC key that
+`scripts/asc-api-key-from-eas.mjs` exports to `.cache/asc-api-key.json`:
+
+```sh
+node scripts/asc-api-key-from-eas.mjs
+fastlane sigh -a com.backgammonmastermind.preview.messages \
+  -n "BM store preview messages" --api_key_path .cache/asc-api-key.json
+```
+
+fastlane ≥2.237 `sigh` defaults to **App Store** profiles and authenticates with an
+ASC API key (it no longer needs a portal session). Before registering the id,
+`sigh` fails with `Could not find App ID with bundle identifier …`.
+
+Resulting profile: `BM store preview messages`,
+uuid `91265f72-76fc-4421-a445-9fbbb122c3f8`, `IOS_APP_STORE`,
+`get-task-allow = False`, expiring 2027-02-03, embedding EAS's own distribution
+cert `7CFD35DD0FB6AB2AA0A402D28F7F3AEF`. Bundle id `98Q8ACHVK9`.
+
+**Real, but no longer blocking: EAS never provisions extension targets.**
+With the profile present, `eas build --profile preview --platform ios` still fails
+identically:
+
+```
+No profiles for 'com.backgammonmastermind.preview.messages' were found: Xcode
+couldn't find any iOS App Development provisioning profiles matching
+'com.backgammonmastermind.preview.messages'. Automatic signing is disabled…
+(in target 'BackgammonMastermindMessages')
+```
+
+EAS resolves credentials for the main bundle id only; the appex falls through to
+Xcode with automatic signing off. This is an EAS gap for extensions injected by a
+**local config plugin** (managed plugins are covered). Xcode cannot self-heal it
+either — this machine has no Apple account signed into Xcode (no
+`~/Library/Developer/Xcode/UserData/Accounts`), so there is nothing to run
+`-allowProvisioningUpdates` against.
+
+Two devices were driven for real (see below), using ad-hoc profiles that already
+existed locally — `BM adhoc messages` for `…development.messages` and EAS's
+`*[expo] com.backgammonmastermind.development AdHoc …` for the host app, both of
+which already contained the target devices. So the TestFlight detour was never
+needed to prove the concept.
+
+If/when we do ship to the store, ways forward, cheapest first:
+
+1. **`fastlane spaceauth -u <apple id>` once** (browser Apple ID login), then
+   everything is terminal again: portal cert IDs, profiles bound to any chosen
+   certificate, and TestFlight upload. Unblocks both 1 and 2 below.
+2. **`credentialsSource: "local"` + hand-written `credentials.json`.** eas-cli's
+   `SetUpBuildCredentialsFromCredentialsJson` does iterate every target, and
+   `ensureAllTargetsAreConfigured` names the missing key. Keys are **Xcode target
+   names**, not bundle ids: `BackgammonMastermind` and `BackgammonMastermindMessages`,
+   each `{ provisioningProfilePath, distributionCertificate: { path, password } }`.
+   Needs a `.p12` whose certificate matches the profile — cert `7CFD35DD…` is
+   EAS-managed and its key is not on this machine, so this needs a second App Store
+   profile bound to the local keychain cert `09B6E1E486F18A9EC023E60C5949E8A03A34C023`.
+3. **Fully local `xcodebuild archive` → export ipa → upload via iTMSTransporter**
+   with the ASC key. Most control, most moving parts, and still needs a profile
+   bound to a locally-held certificate.
+
+## Status: solved (was "the one remaining blocker")
+
+The extension was invisible in the Messages drawer on every target tested
+(simulator ×2, iPhone 13 Pro Max, iPad). Cause: the extension point identifier in
+`targets/imessage/Info.plist` was `com.apple.messages` instead of
+`com.apple.message-payload-provider`. See the RESOLVED section above.
+
+Verified end-to-end after the fix: extension listed in the drawer → expanded
+board renders → roll 6–4 → legal-move highlighting (select a checker, green
+destinations) → move 24→18 and 24→20 → **Send turn** → bubble
+"White played 6–4 — your move, Black" inserted into the conversation → the other
+device taps the bubble and plays the other side. Sides alternate from the turn
+counter in the payload, so no per-device color assignment is needed.
 
 What was eliminated, with evidence:
 
 | Hypothesis | Verdict |
 | --- | --- |
-| Wrong extension point (`com.apple.messages`) | Eliminated: matches Apple docs, Xcode 26 template product type, and every shipping iMessage app (Backgammon Match works on the same phones). A `message-payload-provider` experiment changed nothing. |
-| Missing storyboard entry | Eliminated as sole cause: added minimal `MainInterface.storyboard` mirroring Apple's template (compiled `storyboardc` verified in the appex); drawer still empty. Kept — it matches the template. |
-| Missing icons | Eliminated as sole cause: full stickers icon set compiles (`Assets.car` + extracted PNGs verified). Kept — required for store validation. |
+| **Wrong extension point** | **THIS WAS IT.** `com.apple.messages` is not a valid iMessage extension point; `com.apple.message-payload-provider` is. The earlier "eliminated" verdict was based on an experiment that prebuild overwrote. |
+| Missing storyboard entry | Eliminated as sole cause; kept — matches Apple's template. Not required, but harmless. (expo-targets omits it entirely and uses `NSExtensionPrincipalClass`.) |
+| Missing icons | Eliminated as sole cause; kept — required for store validation. |
 | Bad bundle id / prefix | Eliminated: `com.backgammonmastermind.development.messages`, registered in portal, prefix-correct. |
-| Bad signature / profile | Eliminated as install blocker: dev + ad-hoc installs verify and launch; profiles embed correctly with all devices. |
-| `simctl`/`devicectl` install path | Open: a minimal pure-native test extension (no Expo) built from Apple's template shape is equally invisible after `simctl install`, even after reboot — suggesting direct installs don't register extensions in this environment, independent of our code. |
-| Dev/ad-hoc vs store signature filtering | Open: every visible third-party extension is store-signed. Untested: store-signed (TestFlight) install of ours. |
-| Xcode Run install path | Open: user ran to iPad; drawer still empty. (Same installd underneath, so unsurprising in hindsight.) |
+| Bad signature / profile | Eliminated: ad-hoc installs verify, launch, and now list in the drawer. |
+| Dev/ad-hoc vs store signature filtering | **Eliminated** — ad-hoc signed builds list and play fine. Store signing was never required. |
+| `simctl`/`devicectl` install path | Eliminated: both simctl and devicectl installs register the extension. The "pure-native repro also invisible" note was this same bug. |
+| Xcode Run install path | Eliminated — same root cause. |
 
-Next steps, in order:
+Remaining known gaps (not blockers):
 
-1. **Store-signed install (TestFlight).** The single highest-signal test: EAS cloud build
-   when free-plan minutes reset (Oct 1) or after a plan upgrade, then TestFlight
-   on both test phones. If the drawer lists it → dev-signing was the filter;
-   ship via the store path.
-2. **Apple DTS / Developer Forums** with the evidence bundle (working minimal
-   repro = MinMsg experiment notes above, sysdiagnose needs on-device approval).
+1. **EAS cannot provision the extension target** (see store-signing section). A
+   TestFlight build needs one of the manual paths listed there. Worth filing
+   upstream, since `expo-targets` reports having fixed EAS support in 0.2.5.
+2. **Simulators cannot demo two-device play** — no Apple Account is signed in, so
+   iMessage has no real route between them. Real devices both have iMessage
+   working, which is what we used.
 3. **Extension scheme for one-click Runs** (nice-to-have): generate a shared
    `BackgammonMastermindMessages.xcscheme` in the plugin (needs the generated
    target UUID at prebuild time) so Xcode offers Messages as host automatically.
