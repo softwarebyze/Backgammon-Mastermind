@@ -157,6 +157,10 @@ function withImessageTarget(config) {
         extTargetName,
       );
       project.updateBuildProperty('SWIFT_VERSION', '5.0', build, extTargetName);
+      // Xcode 14+ signs resource bundles (incl. extensions) by default — the
+      // target needs an explicit team or archive fails on EAS ("requires a
+      // development team"). Same team owns all flavors (see eas.json submit).
+      project.updateBuildProperty('DEVELOPMENT_TEAM', '75M38Z9JBF', build, extTargetName);
       project.updateBuildProperty('GENERATE_INFOPLIST_FILE', 'NO', build, extTargetName);
       project.updateBuildProperty(
         'ASSETCATALOG_COMPILER_APPICON_NAME',
