@@ -36,6 +36,7 @@ struct ImBoardView: View {
       pointRow(points: Array(13 ... 24))
       pointRow(points: Array(stride(from: 12, through: 1, by: -1)))
       barRow(for: session.board.current)
+      bearOffControl
       statusLine
       actionRow
     }
@@ -136,6 +137,26 @@ struct ImBoardView: View {
           canSelect: session.board.points[point].owner == session.board.current
         ) { session.tapPoint(point) }
       }
+    }
+  }
+
+  // MARK: Bear off
+
+  /// Bearing off is the one legal destination that is not a numbered point, so
+  /// it needs its own control — `pointRow` only renders 1...24 and without this
+  /// the last checker of a game can never be lifted.
+  @ViewBuilder
+  private var bearOffControl: some View {
+    if session.destinations.contains(imBearOff) {
+      Button {
+        session.tapPoint(imBearOff)
+      } label: {
+        Label("Bear off", systemImage: "arrow.up.right.circle.fill")
+          .font(.subheadline)
+          .frame(maxWidth: .infinity)
+      }
+      .buttonStyle(.borderedProminent)
+      .tint(.green)
     }
   }
 

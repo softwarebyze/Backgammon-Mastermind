@@ -158,6 +158,50 @@ do {
   check("ownership.acceptNewGame", opponent.shouldAdopt(ImGameSession().outgoingPayload(), isFromMe: false))
 }
 
+// 9. Bear off must be reachable. `imBearOff` (25) is the one legal destination
+//    that is not a numbered point, so `pointRow` (1...24) cannot render it.
+//    Regression test for "the player can never complete the game".
+do {
+  var points = Array(repeating: ImPoint.empty, count: 25)
+  points[6] = ImPoint(owner: .white, count: 1)
+  points[12] = ImPoint(owner: .black, count: 2)
+  points[8] = ImPoint(owner: .black, count: 5)
+  points[17] = ImPoint(owner: .black, count: 3)
+  points[19] = ImPoint(owner: .black, count: 5)
+  var board = ImBoard(
+    points: points, bar: [.white: 0, .black: 0],
+    off: [.white: 14, .black: 0], current: .white, remaining: [6], winner: nil)
+  check("bearoff.lastCheckerBalanced", board.isBalanced)
+
+  let bearOffs = imLegalMoves(board).filter { $0.to == imBearOff }
+  check("bearoff.moveGenerated", !bearOffs.isEmpty, "no legal bear-off from point 6 on a 6")
+
+  if let move = bearOffs.first {
+    let (next, result) = imApplyMove(board, move: move)
+    check("bearoff.countedOff", next.off[.white] == 15, "\(next.off[.white] ?? -1)")
+    check("bearoff.winnerSet", next.winner == .white, "\(String(describing: next.winner))")
+    if case .gameOver(let winner) = result {
+      check("bearoff.resultGameOver", winner == .white)
+    } else {
+      check("bearoff.resultGameOver", false, "expected .gameOver, got \(result)")
+    }
+    check("bearoff.stillBalanced", next.isBalanced)
+  }
+
+  // View wiring: bearing off has no numbered cell, so the board must expose an
+  // explicit control that calls the bear-off sentinel. Without this the final
+  // checker of any game is unreachable.
+  let boardViewPath = URL(fileURLWithPath: #filePath)
+    .deletingLastPathComponent()   // parity/
+    .deletingLastPathComponent()   // imessage/
+    .appendingPathComponent("Sources/BoardView.swift")
+  if let source = try? String(contentsOf: boardViewPath, encoding: .utf8) {
+    check("bearoff.controlWired", source.contains("tapPoint(imBearOff)"))
+  } else {
+    check("bearoff.controlWired", false, "could not read BoardView.swift at \(boardViewPath.path)")
+  }
+}
+
 if failures > 0 {
   print("\(failures) FAILURE(S)")
   exit(1)

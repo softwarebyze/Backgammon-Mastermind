@@ -296,7 +296,8 @@ payload. That trade-off is deliberate for v1.
   `scripts/imessage-parity-vectors.ts` asserted by the Foundation-only Swift
   runner in `targets/imessage/parity/main.swift` (codec round-trips incl.
   `+`/space handling, opening/bar/bear-off/doubles move generation,
-  checker-balance rejection, plus turn-ownership) — **32/32 PASS**.
+  checker-balance rejection, plus turn-ownership and bear-off reachability) —
+  **39 vectors PASS**.
   Re-run: `pnpm dlx tsx scripts/imessage-parity-vectors.ts`, then
   `xcrun swiftc targets/imessage/parity/main.swift targets/imessage/Sources/GameEngine.swift targets/imessage/Sources/MessagePayload.swift targets/imessage/Sources/GameSession.swift -o /tmp/parity && /tmp/parity`.
 

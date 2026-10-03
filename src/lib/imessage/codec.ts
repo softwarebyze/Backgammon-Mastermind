@@ -231,6 +231,12 @@ export function decodeImessageTurn(
   if (winRaw !== '' && winRaw !== 'w' && winRaw !== 'b') {
     return fail('win', 'must be "" | "w" | "b"');
   }
+  // A declared winner must actually have borne off all 15. Without this, any
+  // checker-balanced position could claim a winner and `imessagePayloadToGameState`
+  // would mark a live game game-over.
+  if (winRaw !== '' && off[shortToPlayer(winRaw)] !== TOTAL_CHECKERS) {
+    return fail('win', 'winner must have borne off all 15 checkers');
+  }
 
   const diceRaw = params.get('d') ?? '';
   let dice: [number, number] | null = null;

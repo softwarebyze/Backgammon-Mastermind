@@ -82,6 +82,18 @@ describe('encode / decode turn', () => {
     expect(decoded.ok).toBe(true);
   });
 
+  it('rejects a winner that has not borne off all 15 checkers', () => {
+    // A checker-balanced but live position claiming a winner: white says win=w
+    // while still having checkers on the board and 0 off.
+    const decoded = decodeImessageTurn(
+      new URL(buildImessageUrl({ ...standardPayload(), win: 'white' as const })).search.slice(1),
+    );
+    expect(decoded.ok).toBe(false);
+    if (!decoded.ok) {
+      expect(decoded.error).toMatchObject({ param: 'win' });
+    }
+  });
+
   it('rejects a payload where checker counts do not total 15 per side', () => {
     const payload = standardPayload();
     payload.off = { white: 15, black: 0 };
