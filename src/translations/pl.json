@@ -380,6 +380,52 @@
         },
         "subtitle": "Jak działa obrót",
         "title": "Przeprowadzka z kośćmi"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "Biały zdjął 5 pionów, reszta jest blisko domu. Czarne są wciąż rozrzucone. Dotknij białego piona: biały prowadzi, bo ma mniej pipów.",
+            "hint": "Szukaj pionów najbliżej zejścia.",
+            "praise": "Dokładnie. Niższa liczba białego to krótsza droga.",
+            "title": "Kto prowadzi?"
+          },
+          "behind": {
+            "body": "Ta sama pozycja. Czarne piony są daleko od domu i mają dużo wyższą liczbę. Dotknij czarnego piona: czarny jest z tyłu.",
+            "hint": "Szukaj pionów najdalej od domu.",
+            "praise": "Dobrze. Czarnemu brakuje jeszcze wielu pipów.",
+            "title": "Kto jest z tyłu?"
+          },
+          "explain": {
+            "body": "To suma pól, które twoje piony muszą jeszcze przejść, żeby zejść z planszy. Każdy pion dodaje numer swojego pola: na polu 6 liczy się 6, na polu 13 liczy się 13. Mniej znaczy lepiej, jesteś bliżej zejścia. Liczby są u góry w każdej partii, a kropka pokazuje kolor.",
+            "title": "Czym jest liczba pipów?"
+          }
+        },
+        "subtitle": "Naucz się czytać, kto prowadzi w wyścigu",
+        "title": "Liczba pipów: wynik wyścigu"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "Twój dom jest mocny, a przeciwnik ma samotne piony albo piony na barze. Bij każdy samotny i zamykaj pola domu, żeby jego piony zostały na barze, gdy ty schodzisz. Tu biały ma trzy pola domu, a czarny piona na barze.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "To partia na mur. Dotknij pola białego muru, kolejnych pól, które blokują czarnego.",
+            "hint": "Szukaj kolejnych pól z co najmniej 2 białymi pionami.",
+            "praise": "Idealnie. Ta ściana to mur. Tylne piony czarnego są uwięzione.",
+            "title": "Wskaż mur"
+          },
+          "prime": {
+            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, którego tylne piony czarnego nie miną. Wydłużaj go po jednym polu.",
+            "title": "Mur"
+          },
+          "running": {
+            "body": "Prowadzisz i nie ma samotnych pionów w zasięgu bicia. Sprowadź piony do domu i nie zostawiaj samotnych. Tu biały prowadzi i ma mocny dom.",
+            "title": "Wyścig"
+          }
+        },
+        "subtitle": "Rozpoznaj sześć klasycznych planów",
+        "title": "Plany gry"
       }
     },
     "locked": "Najpierw ukończ poprzednią lekcję",
@@ -402,12 +448,36 @@
         "b": "Pojedynczy sprawdzacz w punkcie - można go trafić",
         "c": "Dwa lub więcej warcaby na punkt - punkt ustalony",
         "prompt": "Co to jest plama?"
+      },
+      "pip_ahead": {
+        "a": "Przeciwnik, z wyższą liczbą",
+        "b": "Ty, z niższą liczbą",
+        "c": "Nikt — liczba pipów nie mierzy wyścigu",
+        "prompt": "Twoja liczba to 85, przeciwnika 102. Kto prowadzi w wyścigu?"
+      },
+      "pip_meaning": {
+        "a": "Pola, które twoje piony muszą jeszcze przejść, żeby zejść",
+        "b": "Ile pionów masz na planszy",
+        "c": "Ile pól już zająłeś",
+        "prompt": "Co oznacza twoja liczba pipów?"
+      },
+      "strat_blitz": {
+        "a": "Zbić samotnego i dalej budować dom (blitz)",
+        "b": "Zignorować samotnego i puścić tylne piony",
+        "c": "Rozbić dom, żeby zrobić kotwicę",
+        "prompt": "Masz 3 pola domu, a przeciwnik samotnego w twoim domu. Jaki jest najlepszy plan?"
+      },
+      "strat_prime": {
+        "a": "Rozbić mur, żeby atakować",
+        "b": "Trzymać mur i go wydłużać — są uwięzieni",
+        "c": "Schodzić jak najszybciej",
+        "prompt": "Dwa piony przeciwnika są za twoim murem z 5 pól. Jaki jest twój plan?"
       }
     },
     "replay": "Powtórz",
     "skip_to_play": "Przejdź do gry",
     "step_progress": "Krok{{current}}z{{total}}",
-    "subtitle": "Pięć krótkich lekcji - potem jesteś gotowy",
+    "subtitle": "Siedem krótkich lekcji — potem jesteś gotowy",
     "title": "Naucz się grać"
   },
   "not_found": {

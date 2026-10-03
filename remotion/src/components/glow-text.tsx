@@ -16,9 +16,9 @@ export const GlowText: React.FC<Props> = ({
   children,
   size = 48,
   delay = 0,
-  color = BRAND.accent,
-  letterSpacing = 3,
-  weight = 800,
+  color = BRAND.text,
+  letterSpacing = 0,
+  weight = 600,
   lineHeight = 1.15,
 }) => {
   const frame = useCurrentFrame();
@@ -29,9 +29,8 @@ export const GlowText: React.FC<Props> = ({
     fps,
     config: { damping: 18, stiffness: 90 },
   });
-  const y = interpolate(progress, [0, 1], [24, 0]);
+  const y = interpolate(progress, [0, 1], [12, 0]);
   const opacity = interpolate(progress, [0, 1], [0, 1]);
-  const glow = interpolate(Math.sin((frame - delay) / 18), [-1, 1], [0.25, 0.55]);
 
   return (
     <div
@@ -45,7 +44,6 @@ export const GlowText: React.FC<Props> = ({
         textAlign: 'center',
         transform: `translateY(${y}px)`,
         opacity,
-        textShadow: `0 0 32px rgba(212, 168, 67, ${glow}), 0 3px 10px rgba(0,0,0,0.45)`,
       }}
     >
       {children}

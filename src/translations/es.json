@@ -380,6 +380,52 @@
         },
         "subtitle": "Cómo funciona un giro",
         "title": "Mover con dados"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "El blanco ha sacado 5 fichas y el resto está cerca de casa. Las negras siguen repartidas. Toca cualquier ficha blanca: el blanco va delante porque su recuento es menor.",
+            "hint": "Busca las fichas más cerca de salir.",
+            "praise": "Exacto. El recuento menor del blanco significa menos camino.",
+            "title": "¿Quién va delante?"
+          },
+          "behind": {
+            "body": "La misma posición. Las fichas negras están lejos de casa y tienen un recuento mucho mayor. Toca cualquier ficha negra: el negro va detrás.",
+            "hint": "Busca las fichas más lejos de casa.",
+            "praise": "Bien. Al negro le faltan muchos más pips.",
+            "title": "¿Quién va detrás?"
+          },
+          "explain": {
+            "body": "Es la suma de puntos que tus fichas aún deben recorrer para salir. Cada ficha suma el número de su punto: una en el 6 vale 6, una en el 13 vale 13. Menos es mejor: estás más cerca de salir. Los números aparecen arriba en cada partida, con un punto que indica el color.",
+            "title": "¿Qué es el recuento de pips?"
+          }
+        },
+        "subtitle": "Aprende a ver quién va ganando la carrera",
+        "title": "Recuento de pips: el marcador"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "Tu casa es fuerte y el rival tiene sueltas o fichas en la barra. Golpea cada suelta y cierra los puntos de casa para dejar las suyas en la barra mientras tú sales. Aquí el blanco tiene tres puntos de casa y el negro una ficha en la barra.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "Esto es un juego de muralla. Toca un punto de la muralla blanca, los puntos seguidos que bloquean al negro.",
+            "hint": "Busca puntos seguidos con al menos 2 fichas blancas.",
+            "praise": "Perfecto. Ese muro es la muralla. Las fichas de atrás del negro están atrapadas.",
+            "title": "Encuentra la muralla"
+          },
+          "prime": {
+            "body": "Has hecho un muro de puntos seguidos. Los puntos marcados son una muralla de 4 que las fichas de atrás del negro no pueden pasar. Alárgala un punto cada vez.",
+            "title": "Muralla"
+          },
+          "running": {
+            "body": "Vas delante y no hay fichas sueltas a distancia de golpe. Lleva las fichas a casa sin dejar sueltas. No te compliques: corre. Aquí el blanco va delante con una casa sólida.",
+            "title": "Carrera"
+          }
+        },
+        "subtitle": "Reconoce los seis planes clásicos",
+        "title": "Planes de juego"
       }
     },
     "locked": "Completa la lección anterior primero",
@@ -402,12 +448,36 @@
         "b": "Un solo checker en un punto - se puede golpear",
         "c": "Dos o más checkers en un punto - un punto hecho",
         "prompt": "¿Qué es una mancha?"
+      },
+      "pip_ahead": {
+        "a": "Tu rival, con el recuento mayor",
+        "b": "Tú, con el recuento menor",
+        "c": "Ninguno: el recuento no mide la carrera",
+        "prompt": "Tu recuento es 85 y el de tu rival 102. ¿Quién va delante?"
+      },
+      "pip_meaning": {
+        "a": "Los puntos que tus fichas deben recorrer para salir",
+        "b": "Cuántas fichas tienes en el tablero",
+        "c": "Cuántos puntos has cerrado",
+        "prompt": "¿Qué representa tu recuento de pips?"
+      },
+      "strat_blitz": {
+        "a": "Golpear la suelta y seguir cerrando la casa (blitz)",
+        "b": "Ignorar la suelta y correr las fichas de atrás",
+        "c": "Romper la casa para hacer un ancla",
+        "prompt": "Tienes 3 puntos de casa y el rival una suelta en tu casa. ¿Cuál es el mejor plan?"
+      },
+      "strat_prime": {
+        "a": "Romper la muralla para atacar",
+        "b": "Mantener la muralla y alargarla: están atrapados",
+        "c": "Salir lo más rápido posible",
+        "prompt": "El rival tiene dos fichas atrapadas detrás de tu muralla de 5. ¿Cuál es tu plan?"
       }
     },
     "replay": "Replay",
     "skip_to_play": "Skip to play",
     "step_progress": "Paso {{current}} de {{total}}",
-    "subtitle": "Cinco lecciones cortas - entonces usted está listo",
+    "subtitle": "Siete lecciones cortas — entonces estás listo",
     "title": "Aprende a jugar"
   },
   "not_found": {

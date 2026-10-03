@@ -380,6 +380,52 @@
         },
         "subtitle": "Comment fonctionne un tour",
         "title": "Déplacement avec dés"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "Le blanc a sorti 5 pions, le reste est près de la maison. Les noirs sont encore éparpillés. Touche un pion blanc : le blanc mène, son compte est plus bas.",
+            "hint": "Cherche les pions les plus près de sortir.",
+            "praise": "Exact. Le compte plus bas du blanc veut dire moins de chemin.",
+            "title": "Qui est devant ?"
+          },
+          "behind": {
+            "body": "La même position. Les pions noirs sont loin de la maison et ont un compte bien plus haut. Touche un pion noir : le noir est derrière.",
+            "hint": "Cherche les pions les plus loin de la maison.",
+            "praise": "Bien. Le noir a encore beaucoup de pips à faire.",
+            "title": "Qui est derrière ?"
+          },
+          "explain": {
+            "body": "C’est le total des points que tes pions doivent encore parcourir pour sortir. Chaque pion compte le numéro de sa flèche : un sur la 6 compte 6, un sur la 13 compte 13. Le plus petit est le meilleur, tu es plus près de sortir. Les nombres sont en haut de l’écran, avec un point pour la couleur.",
+            "title": "Qu’est-ce que le compte de pips ?"
+          }
+        },
+        "subtitle": "Voir qui mène la course",
+        "title": "Compte de pips : le score"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "Ta maison est forte et l’adversaire a des pions isolés ou sur la barre. Frappe chaque isolé et ferme tes flèches de maison pour les garder sur la barre pendant que tu sors. Ici le blanc a trois flèches et le noir un pion sur la barre.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "C’est une partie de muraille. Touche une flèche de la prime blanche, le mur de flèches qui bloque le noir.",
+            "hint": "Cherche des flèches à la suite avec au moins 2 pions blancs.",
+            "praise": "Parfait. Ce mur est la prime. Les pions arrière du noir sont pris.",
+            "title": "Repère la muraille"
+          },
+          "prime": {
+            "body": "Tu as un mur de flèches faites à la suite, une prime. Les flèches marquées forment une prime de 4 que les pions arrière du noir ne peuvent pas passer. Allonge-la d’une flèche à la fois.",
+            "title": "Muraille"
+          },
+          "running": {
+            "body": "Tu mènes, et aucun pion isolé n’est à portée. Ramène tes pions sans en laisser d’isolés. Pas de fantaisie : cours. Ici le blanc mène avec une maison solide.",
+            "title": "Course"
+          }
+        },
+        "subtitle": "Reconnaître les six plans classiques",
+        "title": "Plans de jeu"
       }
     },
     "locked": "Compléter la leçon précédente d'abord",
@@ -402,12 +448,36 @@
         "b": "Un seul vérificateur sur un point — il peut être frappé",
         "c": "Deux contrôleurs ou plus sur un point — un point",
         "prompt": "Qu'est-ce qu'une tache ?"
+      },
+      "pip_ahead": {
+        "a": "Ton adversaire, avec le compte le plus haut",
+        "b": "Toi, avec le compte le plus bas",
+        "c": "Personne — le compte ne mesure pas la course",
+        "prompt": "Ton compte est 85, celui de l’adversaire 102. Qui mène la course ?"
+      },
+      "pip_meaning": {
+        "a": "Les points que tes pions doivent encore parcourir pour sortir",
+        "b": "Le nombre de pions que tu as sur le plateau",
+        "c": "Le nombre de flèches que tu as faites",
+        "prompt": "Que représente ton compte de pips ?"
+      },
+      "strat_blitz": {
+        "a": "Frapper l’isolé et continuer la maison (blitz)",
+        "b": "Ignorer l’isolé et faire courir les pions arrière",
+        "c": "Casser la maison pour faire une ancre",
+        "prompt": "Tu as 3 flèches de maison et l’adversaire un isolé dedans. Quel est le meilleur plan ?"
+      },
+      "strat_prime": {
+        "a": "Casser la muraille pour attaquer",
+        "b": "Garder la muraille et l’allonger — ils sont pris",
+        "c": "Sortir le plus vite possible",
+        "prompt": "Deux pions adverses sont derrière ta prime de 5. Quel est ton plan ?"
       }
     },
     "replay": "Rejouer",
     "skip_to_play": "Sauter pour jouer",
     "step_progress": "Étape {{current}} sur {{total}}",
-    "subtitle": "Cinq courtes leçons, puis vous êtes prêt",
+    "subtitle": "Sept courtes leçons — puis vous êtes prêt",
     "title": "Apprendre à jouer"
   },
   "not_found": {

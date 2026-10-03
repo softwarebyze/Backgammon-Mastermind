@@ -380,6 +380,52 @@
         },
         "subtitle": "Hoe een draai werkt",
         "title": "Bewegen met dobbelstenen"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "Wit heeft 5 stenen uitgespeeld en de rest is dicht bij huis. Zwart ligt nog verspreid. Tik een witte steen: wit ligt voor, de count is lager.",
+            "hint": "Zoek de stenen die het dichtst bij uitspelen zijn.",
+            "praise": "Precies. De lagere count van wit betekent minder weg.",
+            "title": "Wie ligt voor?"
+          },
+          "behind": {
+            "body": "Dezelfde stelling. De zwarte stenen zijn ver van huis en hebben een veel hogere count. Tik een zwarte steen: zwart ligt achter.",
+            "hint": "Zoek de stenen die het verst van huis zijn.",
+            "praise": "Goed. Zwart heeft nog veel meer pips nodig.",
+            "title": "Wie ligt achter?"
+          },
+          "explain": {
+            "body": "Het is het totaal aantal punten dat je stenen nog moeten afleggen om uit te spelen. Elke steen telt het nummer van zijn punt: een op de 6 telt 6, een op de 13 telt 13. Lager is beter, je bent dichter bij uitspelen. De getallen staan bovenin, met een stip voor de kleur.",
+            "title": "Wat is de pip count?"
+          }
+        },
+        "subtitle": "Zien wie de race leidt",
+        "title": "Pip count: de stand"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "Je huis is sterk en de tegenstander heeft blots of stenen op de bar. Sla elke blot en sluit je huispunten, zodat zijn stenen op de bar blijven terwijl jij uitspeelt. Hier heeft wit drie huispunten en zwart een steen op de bar.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "Dit is een muurspel. Tik een punt van de witte muur, de opeenvolgende punten die zwart blokkeren.",
+            "hint": "Zoek opeenvolgende punten met minstens 2 witte stenen.",
+            "praise": "Perfect. Die muur is de prime. De achterste stenen van zwart zitten vast.",
+            "title": "Vind de muur"
+          },
+          "prime": {
+            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart niet passeren. Maak hem punt voor punt langer.",
+            "title": "Muur"
+          },
+          "running": {
+            "body": "Je leidt en er liggen geen blots binnen slagbereik. Breng de stenen veilig thuis en laat geen blots liggen. Hier leidt wit met een vast huis.",
+            "title": "Race"
+          }
+        },
+        "subtitle": "De zes klassieke plannen herkennen",
+        "title": "Spelplannen"
       }
     },
     "locked": "De vorige les eerst voltooien",
@@ -402,12 +448,36 @@
         "b": "Een enkele controleer op een punt kan worden geraakt",
         "c": "Twee of meer dammen op een punt",
         "prompt": "Wat is een vlek?"
+      },
+      "pip_ahead": {
+        "a": "Je tegenstander, met de hogere count",
+        "b": "Jij, met de lagere count",
+        "c": "Niemand — de count meet de race niet",
+        "prompt": "Jouw count is 85 en die van je tegenstander 102. Wie leidt de race?"
+      },
+      "pip_meaning": {
+        "a": "De punten die je stenen nog moeten afleggen om uit te spelen",
+        "b": "Hoeveel stenen je op het bord hebt",
+        "c": "Hoeveel punten je bezet hebt",
+        "prompt": "Wat stelt je pip count voor?"
+      },
+      "strat_blitz": {
+        "a": "De blot slaan en het huis verder bouwen (blitz)",
+        "b": "De blot negeren en de achterste stenen laten rennen",
+        "c": "Het huis openbreken om een anker te maken",
+        "prompt": "Je hebt 3 huispunten en de tegenstander een blot in je huis. Wat is het beste plan?"
+      },
+      "strat_prime": {
+        "a": "De muur openbreken om aan te vallen",
+        "b": "De muur houden en verlengen — ze zitten vast",
+        "c": "Zo snel mogelijk uitspelen",
+        "prompt": "Twee stenen van de tegenstander zitten achter jouw muur van 5. Wat is je plan?"
       }
     },
     "replay": "Herspelen",
     "skip_to_play": "Afspelen overslaan",
     "step_progress": "Stap {{current}} van {{total}}",
-    "subtitle": "Vijf korte lessen en dan ben je klaar",
+    "subtitle": "Zeven korte lessen — dan ben je klaar",
     "title": "Spelen leren"
   },
   "not_found": {

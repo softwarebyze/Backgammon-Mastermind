@@ -3,7 +3,7 @@ import { Buffer } from 'node:buffer';
 /**
  * Stage store screenshots into Fastlane folder layouts from the marketing source of truth.
  *
- * Source: docs/marketing/v1.0.0/app-store-screenshots/raw/<App Store locale>/
+ * Source: docs/marketing/app-store-screenshots/raw/<App Store locale>/
  *   iphone-69-*.png  1320×2868 → APP_IPHONE_67 (iOS, copied as-is)
  *   ipad-13-*.png    2064×2752 → iPad Pro 13" slot (iOS only)
  * Play phone: 9:16 crop of the iPhone set → 1080×1920 (Play long-side ≤ 2× short-side)
@@ -24,12 +24,12 @@ import sharp from 'sharp';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const RAW_SOURCE = path.join(
   ROOT,
-  'docs/marketing/v1.0.0/app-store-screenshots/raw',
+  'docs/marketing/app-store-screenshots/raw',
 );
-const FRAMES_PATH = path.join(ROOT, 'docs/marketing/v1.0.0/screenshot-frames.json');
+const FRAMES_PATH = path.join(ROOT, 'docs/marketing/screenshot-frames.json');
 const LOCALIZATIONS_PATH = path.join(
   ROOT,
-  'docs/marketing/v1.0.0/screenshot-localizations.json',
+  'docs/marketing/screenshot-localizations.json',
 );
 const STORE_CONFIG_PATH = path.join(ROOT, 'store.config.json');
 const IOS_ROOT = path.join(ROOT, 'fastlane/screenshots');
