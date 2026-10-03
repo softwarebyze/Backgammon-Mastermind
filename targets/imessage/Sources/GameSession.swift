@@ -18,6 +18,9 @@ final class ImGameSession: ObservableObject {
   @Published private(set) var destinations: Set<Int> = []
   @Published private(set) var status: String
   @Published private(set) var sentLatestTurn: Bool = false
+  /// Whether any checker actually moved this turn. Distinguishes a genuine
+  /// no-move pass from a turn that played a checker and then got blocked.
+  private(set) var movedThisTurn: Bool = false
 
   private(set) var gameId: String
   /// The turn the local player is about to play (1-based).
@@ -63,6 +66,7 @@ final class ImGameSession: ObservableObject {
     self.selectedPoint = nil
     self.destinations = []
     self.sentLatestTurn = false
+    self.movedThisTurn = false
     if payload.winner != nil {
       self.status = payload.caption
     } else {
@@ -81,6 +85,7 @@ final class ImGameSession: ObservableObject {
     self.selectedPoint = nil
     self.destinations = []
     self.sentLatestTurn = false
+    self.movedThisTurn = false
     self.status = fresh.status
   }
 
@@ -107,6 +112,7 @@ final class ImGameSession: ObservableObject {
     guard needsRoll else { return }
     let roll = imRollDice()
     dice = roll
+    movedThisTurn = false
     board.remaining = imRemainingDice(for: roll)
     selectedPoint = nil
     destinations = []
@@ -150,6 +156,7 @@ final class ImGameSession: ObservableObject {
     guard let move = legalMoves.first(where: { $0.from == from && $0.to == to }) else { return }
     let (next, result) = imApplyMove(board, move: move)
     board = next
+    movedThisTurn = true
     selectedPoint = nil
     destinations = []
     switch result {
@@ -184,6 +191,10 @@ final class ImGameSession: ObservableObject {
   private func defaultSummary() -> String {
     if board.winner != nil { return "bore off the last checker" }
     guard let dice else { return "moved" }
+    // A non-empty remainder means the turn ended with dice unusable — but that
+    // is only a *pass* if nothing was played at all. Without this, a turn that
+    // moved a checker and then got blocked was reported as "no move".
+    if movedThisTurn { return "played \(dice.0)–\(dice.1)" }
     if board.remaining.isEmpty { return "played \(dice.0)–\(dice.1)" }
     return "rolled \(dice.0)–\(dice.1) with no move"
   }

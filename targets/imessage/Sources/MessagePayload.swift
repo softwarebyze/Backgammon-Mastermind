@@ -9,6 +9,10 @@ import Foundation
 let imCodecVersion = 1
 let imPayloadBaseURL = "https://backgammonmastermind.game/i"
 let imMaxSummaryLength = 140
+/// Upper bound on the wire `turn`. The local turn is `payload.turn + 1`, so this
+/// needs headroom above any turn a game can reach. Mirrors `turn > 1_000_000` in
+/// codec.ts — keep the two in sync.
+let imMaxTurn = 1_000_000
 
 enum ImPayloadError: Error, Equatable {
   case noQuery
@@ -106,8 +110,11 @@ struct ImTurnPayload: Equatable {
     }
 
     let turnRaw = try value("turn")
-    guard let turn = Int(turnRaw), (1 ... 10_000).contains(turn) else {
-      throw ImPayloadError.invalidParam("turn", "must be an integer in 1..10000")
+    // The local turn is `payload.turn + 1`, so this bound needs headroom: a cap
+    // of exactly 10_000 made turn 10_000 overflow to an unencodable 10_001 and
+    // the game silently stopped progressing. Keep in sync with `turn` in codec.ts.
+    guard let turn = Int(turnRaw), (1 ... imMaxTurn).contains(turn) else {
+      throw ImPayloadError.invalidParam("turn", "must be an integer in 1..\(imMaxTurn)")
     }
 
     guard let current = ImPlayer(shortCode: try value("cur")) else {
@@ -189,9 +196,16 @@ struct ImTurnPayload: Equatable {
   }
 
   var url: URL? {
-    var components = URLComponents(string: imPayloadBaseURL)
-    components?.queryItems = queryItems
-    return components?.url
+    guard var components = URLComponents(string: imPayloadBaseURL) else { return nil }
+    components.queryItems = queryItems
+    // URLComponents leaves a literal "+" unescaped, but `queryItems(from:)`
+    // decodes "+" as a space (URLSearchParams semantics), so a summary like
+    // "a+b" would round-trip as "a b". Spaces are already emitted as %20, so
+    // any bare "+" here came from a value and must be escaped as %2B.
+    if let query = components.percentEncodedQuery {
+      components.percentEncodedQuery = query.replacingOccurrences(of: "+", with: "%2B")
+    }
+    return components.url
   }
 
   // MARK: Points codec
@@ -212,21 +226,26 @@ struct ImTurnPayload: Equatable {
   static func decodePoints(_ encoded: String) -> [ImPoint]? {
     guard encoded.count == 48 else { return nil }
     let chars = Array(encoded)
+    // Mirrors POINTS_PATTERN `/^([wb.][0-9a-f]){24}$/` in codec.ts: the count
+    // digit is *lowercase* hex only. `Int(_, radix: 36)` would also accept
+    // A-F and non-ASCII digits, which the TS grammar rejects.
+    let hexDigits = Set("0123456789abcdef")
     var points = Array(repeating: ImPoint.empty, count: 25)
     for index in 1 ... 24 {
       let ownerChar = chars[(index - 1) * 2]
       let countChar = chars[(index - 1) * 2 + 1]
-      guard let count = Int(String(countChar), radix: 36), (0 ... 15).contains(count) else {
+      guard hexDigits.contains(countChar), let count = Int(String(countChar), radix: 16),
+            (0 ... 15).contains(count) else {
         return nil
       }
+      // codec.ts treats `w0` / `b0` as empty points rather than rejecting them.
+      if count == 0 { continue }
       switch ownerChar {
       case ".":
         continue
       case "w":
-        guard count > 0 else { return nil }
         points[index] = ImPoint(owner: .white, count: count)
       case "b":
-        guard count > 0 else { return nil }
         points[index] = ImPoint(owner: .black, count: count)
       default:
         return nil
@@ -239,7 +258,12 @@ struct ImTurnPayload: Equatable {
 
   static func isValidGameId(_ raw: String) -> Bool {
     guard (6 ... 24).contains(raw.count) else { return false }
-    return raw.allSatisfy { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" }
+    // Mirrors `/^[\w-]{6,24}$/` in codec.ts. JS `\w` is ASCII-only, whereas
+    // Swift's `isLetter`/`isNumber` also accept "é" and Arabic-Indic digits.
+    let asciiAlnum = Set(
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    )
+    return raw.allSatisfy { asciiAlnum.contains($0) || $0 == "-" || $0 == "_" }
   }
 
   static func parseCountPair(_ raw: String) -> (Int, Int)? {

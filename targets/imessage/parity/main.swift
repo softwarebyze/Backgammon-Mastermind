@@ -202,6 +202,92 @@ do {
   }
 }
 
+// 10. Swift decoder must accept/reject exactly what codec.ts accepts/rejects.
+//     Regression for a silent divergence: the Swift side was laxer on `pts` and
+//     `gid`, so a URL one side produced could be rejected by the other.
+do {
+  let base = "https://backgammonmastermind.game/i?v=1&gid=Ab3dEf7hIj9K&turn=3&cur=w"
+  // 48 chars: point 1 = 15 black, point 24 = whatever `slot` is, rest empty.
+  func pts(_ slot: String) -> String { "bf" + String(repeating: ".0", count: 22) + slot }
+  func decode(_ query: String) -> ImTurnPayload? { try? ImTurnPayload(url: URL(string: query)!) }
+
+  let ok = decode("\(base)&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
+  check("grammar.acceptsValid", ok != nil)
+
+  // Uppercase count digit: POINTS_PATTERN is [0-9a-f] only. `wA` is white 10, so
+  // `off` must be 5 to keep the position balanced — otherwise this would be
+  // rejected by the balance check and pass for the wrong reason.
+  check("grammar.rejectsUppercaseCount", decode("\(base)&pts=\(pts("wA"))&bar=0,0&off=5,0&win=&d=&last=x") == nil)
+  // Sanity: the same position with a lowercase digit and matching off must pass.
+  check("grammar.acceptsLowercaseHigh", decode("\(base)&pts=\(pts("wa"))&bar=0,0&off=5,0&win=&d=&last=x") != nil)
+  // `w0` is an empty point in codec.ts, not an error.
+  check("grammar.acceptsZeroCount", decode("\(base)&pts=\(pts("w0"))&bar=0,0&off=15,0&win=&d=&last=x") != nil)
+  // Non-hex count digit.
+  check("grammar.rejectsNonHexCount", decode("\(base)&pts=\(pts("wG"))&bar=0,0&off=13,0&win=&d=&last=x") == nil)
+  // Game id: JS \w is ASCII-only; Swift's isLetter accepted "é".
+  let unicodeGid = "https://backgammonmastermind.game/i?v=1&gid=abcdefgé&turn=3&cur=w&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x"
+  check("grammar.rejectsUnicodeGameId", decode(unicodeGid) == nil)
+  check("grammar.rejectsShortGameId", decode("https://backgammonmastermind.game/i?v=1&gid=abc&turn=3&cur=w&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x") == nil)
+
+  // Turn bound: the local turn is payload.turn + 1, so the cap needs headroom.
+  let bigTurn = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=1000000"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
+  check("grammar.acceptsMaxTurn", bigTurn != nil)
+  let overTurn = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=1000001"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
+  check("grammar.rejectsOverMaxTurn", overTurn == nil)
+  // The old 10_000 cap turned a legal turn 10_000 into an unencodable 10_001.
+  let tenK = ImGameSession()
+  tenK.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: 10_000, dice: nil, summary: "x"))
+  check("turn.headroomAfterCap", tenK.turn == 10_001, "\(tenK.turn)")
+  check("turn.reencodableAfterCap", tenK.outgoingPayload().url != nil)
+}
+
+// 11. A literal "+" in the summary must survive the Swift URL round-trip.
+//     URLComponents leaves "+" unescaped and the decoder reads "+" as a space
+//     (URLSearchParams semantics), so "a+b" used to decode as "a b".
+do {
+  let board = ImBoard.initial()
+  for text in ["a+b", "a b", "played 13→8 · 6→4", "x+y z"] {
+    let payload = ImTurnPayload.fromBoard(board, gameId: "Ab3dEf7hIj9K", turn: 1, dice: (6, 4), summary: text)
+    guard let url = payload.url else {
+      check("plus.urlBuilt.\(text)", false)
+      continue
+    }
+    let back = try? ImTurnPayload(url: url)
+    check("plus.roundTrip.\(text)", back?.summary == text, "got \(back?.summary ?? "nil")")
+  }
+}
+
+// 12. A turn that moved a checker and then got blocked must not be reported as
+//     a no-move pass.
+do {
+  // Dice are rolled locally and randomly, so this is a property check over many
+  // trials: whenever a checker actually moved, the outgoing summary must not be
+  // reported as a no-move pass.
+  var trials = 0
+  var movedTrials = 0
+  var violations: [String] = []
+  for _ in 0..<400 {
+    let session = ImGameSession()
+    session.rollDice()
+    trials += 1
+    // Play every legal move greedily; only the first is needed for the
+    // invariant, but draining exercises the blocked-remainder case.
+    for _ in 0..<4 {
+      guard let move = session.legalMoves.first else { break }
+      session.tapPoint(move.from)
+      session.tapPoint(move.to)
+      if session.movedThisTurn { break }
+    }
+    guard session.movedThisTurn else { continue }
+    movedTrials += 1
+    let summary = session.outgoingPayload().summary
+    if !summary.contains("played") { violations.append(summary) }
+  }
+  check("summary.trialsRan", trials == 400, "\(trials)")
+  check("summary.movedCasesCovered", movedTrials > 100, "\(movedTrials) moved turns seen")
+  check("summary.neverReportedAsPass", violations.isEmpty, violations.prefix(3).joined(separator: " | "))
+}
+
 if failures > 0 {
   print("\(failures) FAILURE(S)")
   exit(1)

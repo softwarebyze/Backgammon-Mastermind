@@ -10,6 +10,7 @@ import {
   encodePoints,
   formatImessageCaption,
   gameStateToImessagePayload,
+  IMESSAGE_MAX_TURN,
   imessagePayloadToGameState,
   parseImessageUrl,
 } from './codec';
@@ -132,6 +133,20 @@ describe('encode / decode turn', () => {
     expect(decodeImessageTurn('v=1').ok).toBe(false);
     const badTurn = `v=1&gid=${base.gid}&turn=0&cur=w&pts=${encodePoints(base.points)}&bar=0,0&off=0,0&win=&d=&last=hi`;
     expect(decodeImessageTurn(badTurn).ok).toBe(false);
+  });
+
+  it('accepts the max turn and rejects one past it', () => {
+    // The extension's local turn is payload.turn + 1, so the bound needs
+    // headroom; a cap of exactly 10_000 stalled games at turn 10_000.
+    expect(IMESSAGE_MAX_TURN).toBeGreaterThan(10_000);
+    const turn = (n: number) =>
+      decodeImessageTurn(
+        new URL(
+          buildImessageUrl({ ...standardPayload(), turn: n }),
+        ).search.slice(1),
+      );
+    expect(turn(IMESSAGE_MAX_TURN).ok).toBe(true);
+    expect(turn(IMESSAGE_MAX_TURN + 1).ok).toBe(false);
   });
 });
 

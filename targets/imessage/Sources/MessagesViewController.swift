@@ -53,6 +53,15 @@ final class MessagesViewController: MSMessagesAppViewController {
     message.senderParticipantIdentifier == conversation.localParticipantIdentifier
   }
 
+  /// `insert` only stages the message in the composer; the user can still delete
+  /// the draft. The turn is only committed once it is actually sent, so this is
+  /// where the session locks and the extension dismisses.
+  override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
+    super.didStartSending(message, conversation: conversation)
+    session.markSent()
+    dismiss()
+  }
+
   // MARK: Presentation
 
   private func presentCurrentStyle() {
@@ -117,11 +126,6 @@ final class MessagesViewController: MSMessagesAppViewController {
     layout.trailingSubcaption = session.turn > 1 ? "Game \(payload.gameId.prefix(4))" : "New game"
     message.layout = layout
 
-    conversation.insert(message) { [weak self] error in
-      if error == nil {
-        self?.session.markSent()
-        self?.dismiss()
-      }
-    }
+    conversation.insert(message, completionHandler: nil)
   }
 }

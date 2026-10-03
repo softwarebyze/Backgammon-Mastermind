@@ -87,10 +87,27 @@ function findTargetByName(project, name) {
   return null;
 }
 
+// Xcode 14+ signs resource bundles (incl. extensions) by default, so the target
+// needs an explicit team or archive fails on EAS ("requires a development team").
+// Inherit the host app's team rather than hardcoding one: a developer signing
+// the host with a different team may not own the extension's signing assets.
+const HOST_TEAM_FALLBACK = '75M38Z9JBF';
+function hostDevelopmentTeam(project, mainTargetName) {
+  for (const build of ['Release', 'Debug']) {
+    const team = project.getBuildProperty('DEVELOPMENT_TEAM', build, mainTargetName);
+    if (team) {
+      return team;
+    }
+  }
+  return HOST_TEAM_FALLBACK;
+}
+
 function withImessageTarget(config) {
   return withXcodeProject(config, (cfg) => {
     const project = cfg.modResults;
     const bundleId = extensionBundleId(cfg);
+    const mainTargetName = project.getFirstTarget().firstTarget.name;
+    const developmentTeam = hostDevelopmentTeam(project, mainTargetName);
 
     if (findTargetByName(project, EXT_FOLDER)) {
       return cfg;
@@ -138,7 +155,6 @@ function withImessageTarget(config) {
     // node-xcode resolves targets by their pbx comment, which carries quotes.
     const extTargetName = `"${EXT_FOLDER}"`;
     // Mirror release metadata from the main target so versions stay in sync.
-    const mainTargetName = project.getFirstTarget().firstTarget.name;
     for (const key of ['MARKETING_VERSION', 'CURRENT_PROJECT_VERSION', 'IPHONEOS_DEPLOYMENT_TARGET']) {
       const debug = project.getBuildProperty(key, 'Debug', mainTargetName);
       const release = project.getBuildProperty(key, 'Release', mainTargetName);
@@ -160,7 +176,7 @@ function withImessageTarget(config) {
       // Xcode 14+ signs resource bundles (incl. extensions) by default — the
       // target needs an explicit team or archive fails on EAS ("requires a
       // development team"). Same team owns all flavors (see eas.json submit).
-      project.updateBuildProperty('DEVELOPMENT_TEAM', '75M38Z9JBF', build, extTargetName);
+      project.updateBuildProperty('DEVELOPMENT_TEAM', developmentTeam, build, extTargetName);
       project.updateBuildProperty('GENERATE_INFOPLIST_FILE', 'NO', build, extTargetName);
       project.updateBuildProperty(
         'ASSETCATALOG_COMPILER_APPICON_NAME',
