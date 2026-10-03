@@ -3,6 +3,7 @@ import type { GameMode, GameState } from '@/lib/game';
 import { useCallback } from 'react';
 
 import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { bumpTutorGameGeneration } from '@/features/game/use-tutor';
 import { createInitialState } from '@/lib/game';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
 import { performResume } from '@/lib/game/resume-game';
@@ -29,6 +30,7 @@ export function useGameLifecycle({
   setState,
 }: Options) {
   const beginSession = useCallback((next: GameState) => {
+    bumpTutorGameGeneration();
     clearAITimeout();
     resetAnimation();
     clearActiveGame();
@@ -60,6 +62,7 @@ export function useGameLifecycle({
   }, [clearAITimeout, reloadMoveLog, resetTimeline, setState, state]);
 
   const resetGame = useCallback(() => {
+    bumpTutorGameGeneration();
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
