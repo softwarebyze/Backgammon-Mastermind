@@ -614,6 +614,7 @@ const styles = StyleSheet.create({
   },
   viewToggle: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 8,
     marginBottom: 12,
