@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 describe('make-preview-store-config', () => {
-  it('keeps every 1.0.2 localization within App Store text limits', () => {
+  it('keeps every localization within App Store text limits', () => {
     const canonical = JSON.parse(readFileSync('store.config.json', 'utf8')) as {
       apple: {
         version: string;
@@ -25,7 +25,7 @@ describe('make-preview-store-config', () => {
       };
     };
 
-    expect(canonical.apple.version).toBe('1.0.2');
+    expect(canonical.apple.version).toBe('1.0.3');
     expect(Object.keys(canonical.apple.info)).toHaveLength(17);
     for (const listing of Object.values(canonical.apple.info)) {
       expect([...listing.title].length).toBeLessThanOrEqual(30);

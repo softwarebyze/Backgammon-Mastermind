@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# Fetches the bgsage engine sources + production weights at a pinned commit
+# into expo-bgsage/vendor/bgsage and expo-bgsage/assets/.
+#
+# The engine C++ tree is ALSO copied to expo-bgsage/ios/vendor/bgsage:
+# CocoaPods resolves a podspec's source_files relative to the pod root
+# (expo-bgsage/ios/), so the iOS build needs the sources underneath ios/.
+# Android keeps using expo-bgsage/vendor/bgsage via CMakeLists.txt.
+#
+# Only the files the mobile build needs are checked out (sparse, blobless):
+#   - cpp/include/bgbot/*.h and the 17 engine .cpp files
+#   - the 21 unique production weight files (stage11 backgame_pair_phased)
+#   - data/bearoff_1sided.db
+#
+# The pinned commit lives in expo-bgsage/upstream.json — the single source of
+# truth shared with THIRD_PARTY_NOTICES.md (see scripts/generate-third-party-notices.ts).
+# Both env vars below are escape hatches for trying a different commit locally.
+set -euo pipefail
+
+UPSTREAM_JSON="expo-bgsage/upstream.json"
+read_json_string() {
+  # Minimal reader: pulls "key": "value" out of the flat upstream.json.
+  node -e "const d=require('./$1');const v=d['$2'];if(typeof v!=='string')process.exit(1);process.stdout.write(v)"
+}
+
+REF="${BGSAGE_REF:-$(read_json_string "$UPSTREAM_JSON" ref)}"
+REPO="${BGSAGE_REPO:-$(read_json_string "$UPSTREAM_JSON" repo)}"
+VENDOR="expo-bgsage/vendor/bgsage"
+ASSETS="expo-bgsage/assets"
+IOS_VENDOR="expo-bgsage/ios/vendor/bgsage"
+PIN_FILE="$VENDOR/.pin"
+
+# pnpm install runs this from preinstall, before it copies the file:
+# package. Skip when this checkout is already the pinned engine.
+if [[ -f "$PIN_FILE" && -f "$VENDOR/cpp/src/board.cpp" && -f "$IOS_VENDOR/cpp/src/mobile.cpp" && -f "$ASSETS/bearoff_1sided.db" ]]; then
+  PIN="$(tr -d '[:space:]' < "$PIN_FILE")"
+  ASSET_COUNT="$(ls -1 "$ASSETS" | wc -l | tr -d '[:space:]')"
+  if [[ "$PIN" == "$REF" && "$ASSET_COUNT" == "22" ]]; then
+    echo "bgsage engine already present at $REF"
+    exit 0
+  fi
+fi
+
+rm -rf "$VENDOR" "$ASSETS"
+mkdir -p "$ASSETS"
+
+git clone --filter=blob:none --sparse "$REPO" "$VENDOR"
+cd "$VENDOR"
+# NOTE: do NOT shallow-fetch the SHA — GitHub rejects fetching arbitrary SHAs.
+# A full (blobless) clone already contains the pinned commit's objects.
+git sparse-checkout set --no-cone \
+  cpp/include/bgbot/ \
+  cpp/src/board.cpp \
+  cpp/src/moves.cpp \
+  cpp/src/strategy.cpp \
+  cpp/src/pubeval.cpp \
+  cpp/src/game.cpp \
+  cpp/src/benchmark.cpp \
+  cpp/src/encoding.cpp \
+  cpp/src/neural_net.cpp \
+  cpp/src/training.cpp \
+  cpp/src/multipy.cpp \
+  cpp/src/rollout.cpp \
+  cpp/src/cube.cpp \
+  cpp/src/cube_eval.cpp \
+  cpp/src/match_equity.cpp \
+  cpp/src/bearoff.cpp \
+  cpp/src/cuda_nn_stub.cpp \
+  cpp/src/mobile.cpp \
+  models/sl_s9_purerace.weights.best \
+  models/sl_s9_race_race.weights.best \
+  models/sl_s9_race_att.weights.best \
+  models/sl_s9_race_prim.weights.best \
+  models/sl_s9_race_anch.weights.best \
+  models/sl_s9_att_race.weights.best \
+  models/sl_s9_att_att.weights.best \
+  models/sl_s9_att_prim.weights.best \
+  models/sl_s9_att_anch.weights.best \
+  models/sl_s9_prim_race.weights.best \
+  models/sl_s9_prim_att.weights.best \
+  models/sl_s9_prim_anch.weights.best \
+  models/sl_s9_anch_race.weights.best \
+  models/sl_s9_anch_att.weights.best \
+  models/sl_s11_bg_deep.weights.best \
+  models/sl_s11_bg_middle.weights.best \
+  models/sl_s11_bg_double.weights.best \
+  models/sl_s11_bg_p3.weights.best \
+  models/sl_s11_bg_containment.weights.best \
+  models/sl_s11_bg_snake.weights.best \
+  models/sl_s11_bg_massive.weights.best \
+  data/bearoff_1sided.db
+git checkout "$REF"
+for f in models/*.weights.best data/bearoff_1sided.db; do
+  cp "$f" "../../assets/$(basename "$f")"
+done
+cd - >/dev/null
+
+# iOS copy of the engine C++ tree (see header comment). Only the cpp/
+# subtree is needed: headers + sources. Weights stay in assets/ only.
+rm -rf "$IOS_VENDOR"
+mkdir -p "$IOS_VENDOR"
+cp -r "$VENDOR/cpp" "$IOS_VENDOR/cpp"
+
+echo "vendor: $(find "$VENDOR" -type f | wc -l) files"
+echo "assets: $(ls "$ASSETS" | wc -l) files, $(du -sh "$ASSETS" | cut -f1)"
+# NOTE: strip wc's padding (BSD wc on macOS pads the count, GNU does not)
+ASSET_COUNT="$(ls -1 "$ASSETS" | wc -l | tr -d '[:space:]')"
+test "$ASSET_COUNT" = "22" || { echo "expected 22 asset files, found $ASSET_COUNT"; exit 1; }
+printf '%s\n' "$REF" > "$PIN_FILE"

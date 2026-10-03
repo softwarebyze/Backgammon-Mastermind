@@ -1,14 +1,15 @@
 import type { GameState } from '@/lib/game';
-import { useEffect } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import type { OpeningTray } from '@/lib/game/opening-display';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
+
+import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import {
-  useOpeningCeremonyHandoff,
-  useOpeningCeremonyVisible,
-} from '@/features/game/opening-ceremony-gate';
+import { useGuidance } from '@/features/game/guidance-store';
+import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { isTurnStart } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
@@ -23,19 +24,23 @@ type Props = {
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing?: boolean;
-  /** Ephemeral caption override (e.g. "Roll the dice first"). */
+  /** Move-log length for hint-session staleness tracking. */
+  moveLogLength: number;
+  /** Ephemeral caption override (e.g. "Roll the dice first", opening copy). */
   captionOverride?: string | null;
+  /** Opening roll in progress / being revealed: white-left, black-right tray. */
+  opening?: OpeningTray | null;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
   onCancelSelection?: () => void;
-  onSkipComputer?: () => void;
   /** Tighter padding when dice sit beside the board in landscape. */
   compact?: boolean;
+  /** Tray die edge; the layout derives it from the board's checker size. */
+  dieSize?: number;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
-const TRAY_FADE_MS = 280;
 const CONTROL_HIT_SLOP = 16;
 
 export function GameScreenControls({
@@ -44,75 +49,67 @@ export function GameScreenControls({
   isHumanTurn,
   isComputerTurn,
   isReviewing = false,
+  moveLogLength,
   captionOverride = null,
+  opening = null,
   onRoll,
   onReset,
   onGoLive,
   onCancelSelection,
-  onSkipComputer,
   compact = false,
+  dieSize = TRAY_DIE_SIZE,
 }: Props) {
   const { preferences } = useGamePreferences();
-  const ceremonyVisible = useOpeningCeremonyVisible();
-  const handoff = useOpeningCeremonyHandoff();
+  const guidance = useGuidance();
+  const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
   const turn = getTurnDisplay(state);
   const caption = captionOverride
     ?? (isReviewing
       ? translate('game.review.viewing_hint')
-      : ceremonyVisible
-        ? ' '
-        : getActionCaption(state, turn));
-
-  const showTray = !ceremonyVisible || handoff === 'reveal' || handoff === 'measure';
-  const trayOpacity = useSharedValue(ceremonyVisible ? 0 : 1);
-
-  useEffect(() => {
-    if (!ceremonyVisible) {
-      trayOpacity.value = 1;
-      return;
-    }
-    if (handoff === 'reveal') {
-      trayOpacity.value = withTiming(1, { duration: TRAY_FADE_MS });
-      return;
-    }
-    trayOpacity.value = 0;
-  }, [ceremonyVisible, handoff, trayOpacity]);
-
-  const trayStyle = useAnimatedStyle(() => ({
-    opacity: trayOpacity.value,
-  }));
+      : getActionCaption(state, turn));
 
   const diceForTray = isReviewing ? state : liveDiceState;
-  const measuring = ceremonyVisible && (handoff === 'measure' || handoff === 'hidden');
+  const showOpening = opening !== null && !isReviewing;
 
   return (
     <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow}>
-        {showTray
+      <View style={styles.diceRow} pointerEvents="none">
+        {showOpening
           ? (
-              <Animated.View style={trayStyle} pointerEvents="none">
-                <DiceDisplay
-                  dice={measuring ? [0, 0] : diceForTray.dice}
-                  remainingDice={measuring ? [] : diceForTray.remainingDice}
-                  playerColor={diceForTray.currentPlayer}
-                  // Opening dice are [whiteDie, blackDie] — keep faces matched during fly-in.
-                  slotColors={ceremonyVisible ? ['white', 'black'] : undefined}
-                  displayStyle={preferences.diceDisplayStyle}
-                  animateRoll={!isReviewing && !ceremonyVisible}
-                  reportTraySlots={ceremonyVisible}
-                />
-              </Animated.View>
+              // Opening: each side's die in its own color; the engine hands these
+              // same two values to the winner, so nothing has to travel.
+              <DiceDisplay
+                dice={opening.dice}
+                remainingDice={opening.dice.filter(v => v !== 0)}
+                playerColor={diceForTray.currentPlayer}
+                slotColors={['white', 'black']}
+                emphasis={opening.emphasis}
+                displayStyle={preferences.diceDisplayStyle}
+                size={dieSize}
+              />
             )
-          : liveDiceState.phase === 'opening-roll'
-            ? <View style={styles.dicePlaceholder} />
-            : null}
+          : (
+              <DiceDisplay
+                dice={diceForTray.dice}
+                remainingDice={diceForTray.remainingDice}
+                playerColor={diceForTray.currentPlayer}
+                displayStyle={preferences.diceDisplayStyle}
+                animateRoll={!isReviewing}
+                size={dieSize}
+              />
+            )}
       </View>
-      <View style={styles.actionSlot} pointerEvents="auto" testID="game-action-slot">
+      <View
+        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
+        pointerEvents="auto"
+        testID="game-action-slot"
+      >
         <ActionControl
           state={state}
           isHumanTurn={isHumanTurn}
           isComputerTurn={isComputerTurn}
           isReviewing={isReviewing}
+          moveLogLength={moveLogLength}
           onRoll={() => {
             hapticLight();
             onRoll();
@@ -120,7 +117,6 @@ export function GameScreenControls({
           onReset={onReset}
           onGoLive={onGoLive}
           onCancelSelection={onCancelSelection}
-          onSkipComputer={onSkipComputer}
         />
       </View>
       <Text style={styles.caption}>{caption}</Text>
@@ -128,98 +124,98 @@ export function GameScreenControls({
   );
 }
 
-/* eslint-disable-next-line max-lines-per-function -- phase switch + skip/cancel slots */
+/* eslint-disable-next-line max-lines-per-function -- phase switch + cancel slot */
 function ActionControl({
   state,
   isHumanTurn,
   isComputerTurn,
   isReviewing,
+  moveLogLength,
   onRoll,
   onReset,
   onGoLive,
   onCancelSelection,
-  onSkipComputer,
 }: {
   state: GameState;
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing: boolean;
+  moveLogLength: number;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
   onCancelSelection?: () => void;
-  onSkipComputer?: () => void;
 }) {
   if (isReviewing) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.back_to_live')}
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onGoLive}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   if (state.phase === 'game-over') {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.play_again_a11y')}
         testID="play-again-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onReset}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   // Opening: keep the Roll Dice button (tap-anywhere on the ceremony still works).
   if (state.phase === 'opening-roll' && isHumanTurn) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <StatusPlaceholder onSkip={onSkipComputer} />;
+    return <View style={styles.actionSpacer} />;
   }
 
   if (state.phase === 'rolling' && isHumanTurn) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.roll_dice_a11y')}
         testID="roll-dice-button"
-        style={({ pressed }) => [styles.primaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
   }
 
   if (state.phase === 'rolling' && isComputerTurn) {
-    return <StatusPlaceholder onSkip={onSkipComputer} />;
+    return <View style={styles.actionSpacer} />;
   }
 
   if (state.phase === 'moving' && isComputerTurn) {
-    return <StatusPlaceholder onSkip={onSkipComputer} />;
+    return <View style={styles.actionSpacer} />;
   }
 
   if (state.phase === 'no-move' && isHumanTurn) {
@@ -227,57 +223,43 @@ function ActionControl({
   }
 
   if (state.phase === 'no-move' && isComputerTurn) {
-    return <StatusPlaceholder text={translate('game.controls.no_legal_moves')} onSkip={onSkipComputer} />;
+    return <StatusPlaceholder text={translate('game.controls.no_legal_moves')} />;
   }
 
   if (state.phase === 'moving' && isHumanTurn && state.selectedPoint !== null && onCancelSelection) {
     return (
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.cancel_a11y')}
         testID="cancel-selection-button"
         collapsable={false}
         pointerEvents="auto"
-        style={({ pressed }) => [styles.secondaryBtn, pressed && styles.pressed]}
+        style={({ pressed, hovered }) => [styles.secondaryBtn, hovered && styles.secondaryBtnHover, pressed && styles.pressed]}
         onPress={() => {
           hapticLight();
           onCancelSelection();
         }}
       >
         <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
-      </Pressable>
+      </HoverPressable>
     );
+  }
+
+  // Human turn, dice rolled: offer the Hint button at TURN START only.
+  // The engine plans a full turn from the dice just rolled. A failed
+  // analysis shows no suggestion. The blunder-review solution view still
+  // draws best-move arrows after take-back, which restores turn start.
+  if (state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
+    return <HintButton state={state} moveLogLength={moveLogLength} />;
   }
 
   return <View style={styles.actionSpacer} />;
 }
 
-function StatusPlaceholder({ text, onSkip }: { text?: string; onSkip?: () => void }) {
-  const skipLabel = text
-    ? translate('game.controls.skip_wait_a11y', { status: text })
-    : translate('game.controls.skip_wait');
+function StatusPlaceholder({ text }: { text: string }) {
   return (
-    <View style={styles.statusSlot} pointerEvents="box-none">
-      {text
-        ? <Text style={styles.statusText} pointerEvents="none">{text}</Text>
-        : null}
-      {onSkip
-        ? (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={skipLabel}
-              testID="skip-computer-button"
-              hitSlop={CONTROL_HIT_SLOP}
-              style={({ pressed }) => [styles.skipBtn, pressed && styles.pressed]}
-              onPress={() => {
-                hapticLight();
-                onSkip();
-              }}
-            >
-              <Text style={styles.skipHint}>{translate('game.controls.skip_wait')}</Text>
-            </Pressable>
-          )
-        : null}
+    <View style={styles.statusSlot} pointerEvents="none">
+      <Text style={styles.statusText}>{text}</Text>
     </View>
   );
 }
@@ -303,12 +285,19 @@ const styles = StyleSheet.create({
     minHeight: 44,
     marginBottom: 8,
   },
-  dicePlaceholder: {
-    minHeight: 44,
-  },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+    elevation: 4,
+  },
+  // The suggestion card is a label, the move, and two actions. Sharing the
+  // fixed 52px slot paints the caption through the bottom of that card.
+  actionSlotOpen: {
+    width: '100%',
+    minHeight: ACTION_SLOT_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 2,
@@ -329,11 +318,18 @@ const styles = StyleSheet.create({
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
     ...continuousRadius(12),
   },
+  primaryBtnHover: {
+    backgroundColor: GAME_PALETTE.controlHover,
+    borderColor: '#FFE0A0',
+  },
+  secondaryBtnHover: {
+    borderColor: GAME_PALETTE.accent,
+  },
   pressed: {
     opacity: 0.9,
   },
   primaryBtnText: {
-    color: GAME_PALETTE.text,
+    color: GAME_PALETTE.controlInk,
     fontSize: 16,
     ...interFont('semibold'),
   },
@@ -362,16 +358,6 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
     ...interFont('regular'),
-  },
-  skipBtn: {
-    marginTop: 2,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  skipHint: {
-    color: GAME_PALETTE.accentDim,
-    fontSize: 11,
-    ...interFont('medium'),
   },
   caption: {
     marginTop: 6,

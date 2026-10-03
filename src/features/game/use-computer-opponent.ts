@@ -13,6 +13,7 @@ import {
 } from '@/lib/game/computer-pace';
 
 type ComputerOpponentOptions = {
+  enabled: boolean;
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
   playMove: (snapshot: GameState, move: Move, playOpts?: PlayMoveOpts) => void;
@@ -22,18 +23,19 @@ type ComputerOpponentOptions = {
   /** Undo left a redo stack — don't auto-play or the AI wipes redo. */
   hasRedo: boolean;
   recordNoMove: (before: GameState, after: GameState) => void;
+  /** Tutor blunder prompt is open — pause the AI until the user chooses. */
+  paused?: boolean;
 };
 
 export type ComputerOpponentControls = {
   clearAITimeout: () => void;
   /** Re-arm AI timers after leave-home cancelled them (same state, no effect deps change). */
   resumeAIScheduling: () => void;
-  /** Skip remaining think/roll wait (power users). */
-  skipAIDelay: () => void;
 };
 
 /* eslint-disable max-lines-per-function -- AI turn orchestration */
 export function useComputerOpponent({
+  enabled,
   state,
   setState,
   playMove,
@@ -41,11 +43,13 @@ export function useComputerOpponent({
   moveCount,
   hasRedo,
   recordNoMove,
+  paused = false,
 }: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stateRef = useRef(state);
   stateRef.current = state;
-  const skipRef = useRef(false);
+  const pausedRef = useRef(paused);
+  pausedRef.current = paused;
   // Bumped when returning to the game screen so timers re-schedule without a state change.
   const [scheduleGen, setScheduleGen] = useState(0);
   const { preferences } = useGamePreferences();
@@ -62,15 +66,10 @@ export function useComputerOpponent({
     setScheduleGen(g => g + 1);
   }, []);
 
-  const skipAIDelay = useCallback(() => {
-    skipRef.current = true;
-    setScheduleGen(g => g + 1);
-  }, []);
-
   useEffect(() => {
     clearAITimeout();
 
-    if (!state)
+    if (!enabled || paused || !state)
       return clearAITimeout;
     if (state.mode !== 'vs-computer')
       return clearAITimeout;
@@ -84,18 +83,16 @@ export function useComputerOpponent({
     if (hasRedo)
       return clearAITimeout;
 
-    const skip = skipRef.current;
-    skipRef.current = false;
-    const delay = skip ? 0 : computerThinkDelayMs(state.phase, fast);
-    if (delay === 0 && state.phase !== 'moving' && !skip) {
-      return clearAITimeout;
-    }
-    if (skip && state.phase !== 'opening-roll' && state.phase !== 'rolling'
-      && state.phase !== 'no-move' && state.phase !== 'moving') {
+    const delay = computerThinkDelayMs(state.phase, fast);
+    let moveTimer: ReturnType<typeof setTimeout> | undefined;
+    if (delay === 0 && state.phase !== 'moving') {
       return clearAITimeout;
     }
 
     const runAI = () => {
+      // Failsafe: a timeout scheduled just before the pause must not fire through it.
+      if (pausedRef.current)
+        return;
       const prev = stateRef.current;
       if (!prev || prev.currentPlayer !== 'black')
         return;
@@ -127,8 +124,10 @@ export function useComputerOpponent({
           setState(passTurn(prev));
           return;
         }
-        const moveDelay = skip ? 0 : computerMoveDelayMs(moveCount, fast);
-        aiTimeoutRef.current = setTimeout(() => {
+        const moveDelay = computerMoveDelayMs(moveCount, fast);
+        moveTimer = setTimeout(() => {
+          if (pausedRef.current)
+            return;
           const latest = stateRef.current;
           if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
@@ -137,18 +136,25 @@ export function useComputerOpponent({
             durationMs: computerCheckerMoveDurationMs(fast),
           });
         }, moveDelay);
+        aiTimeoutRef.current = moveTimer;
       }
     };
 
-    if (delay === 0) {
+    const thinkTimer = delay === 0 ? null : setTimeout(runAI, delay);
+    if (thinkTimer === null)
       runAI();
-      return clearAITimeout;
-    }
+    else
+      aiTimeoutRef.current = thinkTimer;
 
-    aiTimeoutRef.current = setTimeout(runAI, delay);
-
-    return clearAITimeout;
+    return () => {
+      if (thinkTimer !== null)
+        clearTimeout(thinkTimer);
+      if (moveTimer !== undefined)
+        clearTimeout(moveTimer);
+      clearAITimeout();
+    };
   }, [
+    enabled,
     state,
     setState,
     playMove,
@@ -159,7 +165,8 @@ export function useComputerOpponent({
     clearAITimeout,
     scheduleGen,
     fast,
+    paused,
   ]);
 
-  return { clearAITimeout, resumeAIScheduling, skipAIDelay };
+  return { clearAITimeout, resumeAIScheduling };
 }

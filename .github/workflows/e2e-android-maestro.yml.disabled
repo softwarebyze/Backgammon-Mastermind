@@ -1,0 +1,132 @@
+# DISABLED — kept as a reference for a possible future Maestro Cloud trial.
+#
+# GitHub ignores workflows whose filename does not end in .yml/.yaml, so the
+# .disabled suffix is what actually stops it (GitHub Actions has no built-in
+# disable switch). While it was live it still appeared in the PR checks list
+# on every push, because the pull_request trigger fired even though the only
+# job was gated behind the android-test-maestro-cloud label.
+#
+# The active, free equivalent is e2e-android.yml (GitHub-hosted emulator,
+# no API key). Prefer improving that one over re-enabling this.
+#
+# To re-enable:  git mv .github/workflows/e2e-android-maestro.yml.disabled \
+#                     .github/workflows/e2e-android-maestro.yml
+# Then set the MAESTRO_CLOUD_API_KEY secret and label a PR
+# `android-test-maestro-cloud`, or dispatch manually.
+#
+# Maestro Cloud E2E — backgammon smoke on labeled PRs or manual dispatch.
+# Label: android-test-maestro-cloud | Secret: MAESTRO_CLOUD_API_KEY
+
+name: E2E Tests Android (Maestro Cloud)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main, master]
+    types: [opened, synchronize, reopened, labeled]
+
+concurrency:
+  group: e2e-maestro-cloud-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  maestro-cloud-configured:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'android-test-maestro-cloud')
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - id: check
+        run: |
+          if [ -n "${{ secrets.MAESTRO_CLOUD_API_KEY }}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::MAESTRO_CLOUD_API_KEY is not set — skipping Maestro Cloud (use the GitHub emulator workflow instead)."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  generate-and-test-apk:
+    needs: maestro-cloud-configured
+    if: needs.maestro-cloud-configured.outputs.enabled == 'true'
+    name: Maestro Cloud smoke (backgammon)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: Set Up JDK + Generate Test APK
+        uses: ./.github/actions/setup-jdk-generate-apk
+        with:
+          APP_ENV: preview
+
+      - name: Upload Test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-apk
+          path: ./android-test.apk
+
+      - name: Run backgammon smoke on Maestro Cloud (try 1)
+        id: maestro_try1
+        uses: mobile-dev-inc/action-maestro-cloud@v1.4.1
+        continue-on-error: true
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: ./android-test.apk
+          workspace: .maestro
+          include-tags: smoke
+          env: |
+            APP_ID=com.backgammonmastermind.preview
+
+      - name: Wait before Maestro retry
+        if: steps.maestro_try1.outcome == 'failure'
+        run: sleep 90
+
+      - name: Run backgammon smoke on Maestro Cloud (try 2)
+        id: maestro_try2
+        if: steps.maestro_try1.outcome == 'failure'
+        uses: mobile-dev-inc/action-maestro-cloud@v1.4.1
+        continue-on-error: true
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: ./android-test.apk
+          workspace: .maestro
+          include-tags: smoke
+          env: |
+            APP_ID=com.backgammonmastermind.preview
+
+      - name: Wait before final Maestro retry
+        if: steps.maestro_try1.outcome == 'failure' && steps.maestro_try2.outcome == 'failure'
+        run: sleep 90
+
+      - name: Run backgammon smoke on Maestro Cloud (try 3)
+        id: maestro_try3
+        if: steps.maestro_try1.outcome == 'failure' && steps.maestro_try2.outcome == 'failure'
+        uses: mobile-dev-inc/action-maestro-cloud@v1.4.1
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          app-file: ./android-test.apk
+          workspace: .maestro
+          include-tags: smoke
+          env: |
+            APP_ID=com.backgammonmastermind.preview
+
+      - name: Require Maestro Cloud success
+        if: |
+          steps.maestro_try1.outcome == 'failure' &&
+          (steps.maestro_try2.outcome == 'failure' || steps.maestro_try2.outcome == 'skipped') &&
+          steps.maestro_try3.outcome == 'failure'
+        run: exit 1
+
+      - name: Maestro Cloud console
+        if: always()
+        run: |
+          echo "Try 1 → ${{ steps.maestro_try1.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"
+          echo "Try 2 → ${{ steps.maestro_try2.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"
+          echo "Try 3 → ${{ steps.maestro_try3.outputs.MAESTRO_CLOUD_CONSOLE_URL }}"

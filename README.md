@@ -28,6 +28,8 @@ cp .env.example .env
 pnpm install
 ```
 
+`pnpm install` fetches the pinned bgsage engine before linking dependencies (the package is copied, not symlinked, so the sources have to be there first). A later install reuses that checkout. Ask Sage on a device needs a native rebuild after that; an EAS Update cannot add the module.
+
 Branding: replace `assets/brand/icon-source.png`, run `pnpm brand:generate` — see [assets/brand/README.md](./assets/brand/README.md) and [Expo icon/splash docs](https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/).
 
 **Dev client (first time on device):**

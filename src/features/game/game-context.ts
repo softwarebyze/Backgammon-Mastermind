@@ -14,8 +14,6 @@ export type GameContextType = {
   startFromPosition: (state: GameState) => void;
   resumeGame: () => boolean;
   resetGame: () => void;
-  /** Remount key for opening ceremony after new/reset game. */
-  ceremonyKey: number;
   doRollDice: () => void;
   doPassTurn: () => void;
   selectPoint: (point: number | null) => void;
@@ -32,8 +30,11 @@ export type GameContextType = {
   clearAITimeout: () => void;
   /** Re-arm AI timers after leave-home cancelled them without changing game state. */
   resumeAIScheduling: () => void;
-  /** Skip remaining computer think/roll wait. */
-  skipAIDelay: () => void;
+  /**
+   * Tutor mode: revert a blundered turn to its start snapshot, trimming the
+   * move log and timeline so history stays consistent. Used for "take back".
+   */
+  tutorRevertTurn: (startState: GameState, movesMade: number, onComplete?: () => void) => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

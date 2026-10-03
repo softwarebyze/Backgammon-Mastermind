@@ -1,14 +1,18 @@
 import { useMemo } from 'react';
-import { Platform, useWindowDimensions } from 'react-native';
+import { Platform } from 'react-native';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { useBoardSlotSize } from '@/features/game/hooks/board-slot-size';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
-import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { CHECKER_CAP, MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
+import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
 const BEAR_OFF_WIDTH = 38;
+/** Narrower chrome for mini boards (guidance replays) so the points stay readable. */
+const COMPACT_BAR_WIDTH = 16;
+const COMPACT_BEAR_OFF_WIDTH = 20;
 const MIDDLE_HEIGHT = 12;
 const BOARD_FRAME_WIDTH = 4;
 /**
@@ -43,11 +47,68 @@ export type BoardDimensions = {
   middleHeight: number;
 };
 
-function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
+/**
+ * Point length in checker diameters. 5.2 is the compact floor (five checkers
+ * just fit). Up to 7, points stretch to use leftover height — phone portrait
+ * used to leave ~40% of the slot empty around a squat board.
+ */
+const MIN_POINT_CHECKERS = 5.2;
+const MAX_POINT_CHECKERS = 7;
+
+/** Bar and bear-off tray as multiples of the checker once the board outgrows the phone constants. */
+const BAR_PER_CHECKER = BAR_WIDTH / CHECKER_CAP;
+const BEAR_OFF_PER_CHECKER = BEAR_OFF_WIDTH / CHECKER_CAP;
+const COLUMN_GUTTER = 4;
+
+/**
+ * Columns + bar + bear-off for a board this wide. Up to a 32px checker this is
+ * the original fixed 28/38 layout (phones and tablets unchanged); beyond it,
+ * bar and tray scale with the checker so a 48px checker still fits the bar.
+ */
+function boardColumns(boardWidth: number, cap: number) {
+  const fixedCol = (boardWidth - BAR_WIDTH - BEAR_OFF_WIDTH) / 12;
+  const fixedChecker = Math.min(fixedCol - COLUMN_GUTTER, CHECKER_CAP);
+  if (cap <= CHECKER_CAP || fixedChecker < CHECKER_CAP) {
+    return { colWidth: fixedCol, checkerSize: fixedChecker, barWidth: BAR_WIDTH, bearOffWidth: BEAR_OFF_WIDTH };
+  }
+  // boardWidth = 12·(u + gutter) + bar(u) + bearOff(u), solve for u then cap.
+  const perChecker = 12 + BAR_PER_CHECKER + BEAR_OFF_PER_CHECKER;
+  const u = Math.min(cap, (boardWidth - 12 * COLUMN_GUTTER) / perChecker);
+  const barWidth = Math.round(u * BAR_PER_CHECKER);
+  const bearOffWidth = Math.round(u * BEAR_OFF_PER_CHECKER);
+  const colWidth = (boardWidth - barWidth - bearOffWidth) / 12;
+  return { colWidth, checkerSize: Math.min(colWidth - COLUMN_GUTTER, cap), barWidth, bearOffWidth };
+}
+
+/** When `maxOuterHeight` is given, points grow toward it (never past MAX_POINT_CHECKERS). */
+function dimensionsForWidth(
+  boardOuterWidth: number,
+  options: { maxOuterHeight?: number; cap?: number; compact?: boolean } = {},
+): BoardDimensions {
+  const maxOuterHeight = options.maxOuterHeight ?? 0;
+  const cap = options.cap ?? CHECKER_CAP;
+  const compact = options.compact ?? false;
   const boardWidth = boardOuterWidth - BOARD_FRAME_WIDTH * 2;
-  const colWidth = (boardWidth - BAR_WIDTH - BEAR_OFF_WIDTH) / 12;
-  const checkerSize = Math.min(colWidth - 4, 32);
-  const pointHeight = Math.round(Math.min(160, checkerSize * 5.2));
+  const sized = compact
+    ? {
+        barWidth: COMPACT_BAR_WIDTH,
+        bearOffWidth: COMPACT_BEAR_OFF_WIDTH,
+        colWidth: (boardWidth - COMPACT_BAR_WIDTH - COMPACT_BEAR_OFF_WIDTH) / 12,
+        checkerSize: 0,
+      }
+    : boardColumns(boardWidth, cap);
+  const colWidth = sized.colWidth;
+  const barWidth = sized.barWidth;
+  const bearOffWidth = sized.bearOffWidth;
+  // Mini guidance boards clamp to a minimum so SVG radii stay positive.
+  const checkerSize = compact
+    ? Math.max(8, Math.min(colWidth - COLUMN_GUTTER, cap))
+    : sized.checkerSize;
+  const minPoint = Math.round(checkerSize * MIN_POINT_CHECKERS);
+  const roomFor = Math.floor((maxOuterHeight - BOARD_FRAME_WIDTH * 2 - MIDDLE_HEIGHT) / 2);
+  const pointHeight = compact
+    ? Math.round(Math.min(160, checkerSize * MIN_POINT_CHECKERS))
+    : Math.max(minPoint, Math.min(Math.round(checkerSize * MAX_POINT_CHECKERS), roomFor));
   const boardHeight = pointHeight * 2 + MIDDLE_HEIGHT;
   const boardOuterHeight = boardHeight + BOARD_FRAME_WIDTH * 2;
 
@@ -60,35 +121,75 @@ function dimensionsForWidth(boardOuterWidth: number): BoardDimensions {
     colWidth,
     checkerSize,
     pointHeight,
-    barWidth: BAR_WIDTH,
-    bearOffWidth: BEAR_OFF_WIDTH,
+    barWidth,
+    bearOffWidth,
     middleHeight: MIDDLE_HEIGHT,
   };
 }
 
+export type FitBoardToViewportArgs = {
+  maxOuterWidth: number;
+  maxOuterHeight: number;
+  /** e.g. point-number rails rendered inside the board frame */
+  extraHeight?: number;
+  /** narrower bar/bear-off for mini boards (guidance replays) */
+  compact?: boolean;
+  /** largest checker allowed (desktop lifts this above the phone 32) */
+  checkerCap?: number;
+};
+
 /**
  * Shrink width until the board (+ optional rails) fits in the available height.
- * @param maxOuterWidth — max board outer width for the viewport
- * @param maxOuterHeight — max board outer height for the viewport
- * @param extraHeight — e.g. point-number rails rendered inside the board frame
+ * Accepts either positional args or a single options object (guidance mini boards).
  */
 export function fitBoardToViewport(
-  maxOuterWidth: number,
-  maxOuterHeight: number,
-  extraHeight = 0,
+  maxOuterWidthOrArgs: number | FitBoardToViewportArgs,
+  maxOuterHeight = 0,
+  options: { extraHeight?: number; checkerCap?: number; compact?: boolean } = {},
 ): BoardDimensions {
-  let width = maxOuterWidth;
-  let dims = dimensionsForWidth(width);
-  // linear shrink — ~40 iterations max; switch to binary search if this gets hot
-  while (dims.boardOuterHeight + extraHeight > maxOuterHeight && width > 200) {
+  const args = typeof maxOuterWidthOrArgs === 'number'
+    ? {
+        maxOuterWidth: maxOuterWidthOrArgs,
+        maxOuterHeight,
+        extraHeight: options.extraHeight ?? 0,
+        compact: options.compact ?? false,
+        checkerCap: options.checkerCap ?? CHECKER_CAP,
+      }
+    : {
+        extraHeight: 0,
+        compact: false,
+        checkerCap: CHECKER_CAP,
+        ...maxOuterWidthOrArgs,
+      };
+  const innerHeight = args.maxOuterHeight - args.extraHeight;
+  let width = args.maxOuterWidth;
+  let dims = dimensionsForWidth(width, {
+    maxOuterHeight: innerHeight,
+    cap: args.checkerCap,
+    compact: args.compact,
+  });
+  // linear shrink — ~100 iterations max; switch to binary search if this gets hot
+  while (dims.boardOuterHeight + args.extraHeight > args.maxOuterHeight && width > 200) {
     width -= 8;
-    dims = dimensionsForWidth(width);
+    dims = dimensionsForWidth(width, {
+      maxOuterHeight: innerHeight,
+      cap: args.checkerCap,
+      compact: args.compact,
+    });
   }
   return dims;
 }
 
 /** Move-review strip is a fixed slot in GameScreenLayout. */
 export const REVIEW_SLOT_HEIGHT = 68;
+
+/** Tray die edge on phones/tablets. */
+export const TRAY_DIE_SIZE = 44;
+
+/** Tray die for a board with this checker: 44 up to a 32px checker, up to 64 with desktop checkers. */
+export function trayDieSize(checkerSize: number): number {
+  return Math.min(64, Math.max(TRAY_DIE_SIZE, Math.round(checkerSize * 1.35)));
+}
 
 export type LeftoverBoardHeightArgs = {
   screenHeight: number;
@@ -167,6 +268,14 @@ export type ResolveBoardViewportArgs = {
   slotHeight?: number;
   extraChrome?: number;
   showPointNumbers?: boolean;
+  /** Left + right safe-area insets; ignored once a slot is measured. */
+  horizontalInset?: number;
+  /** Landscape pane cap so the board cannot be 720px on a short phone. */
+  maxOuterWidthCap?: number;
+  /** Widest board for this window (720 phone/tablet, 1000 desktop). */
+  maxBoardWidth?: number;
+  /** Largest checker for this window (32 phone/tablet, 48 desktop). */
+  checkerCap?: number;
 };
 
 /**
@@ -181,16 +290,26 @@ export function resolveBoardViewport({
   slotHeight,
   extraChrome = 0,
   showPointNumbers = true,
+  horizontalInset = 0,
+  maxOuterWidthCap,
+  maxBoardWidth = MAX_BOARD_WIDTH,
+  checkerCap = CHECKER_CAP,
 }: ResolveBoardViewportArgs): BoardDimensions {
   const hasSlot = (slotWidth ?? 0) > 0 && (slotHeight ?? 0) > 0;
   const chrome = (platform === 'web' ? WEB_VERTICAL_CHROME : NATIVE_VERTICAL_CHROME) + extraChrome;
-  const widthBudget = hasSlot ? slotWidth! : screenWidth - BOARD_PADDING * 2;
-  const maxOuterWidth = Math.min(widthBudget, MAX_BOARD_WIDTH);
+  const widthBudget = hasSlot
+    ? slotWidth!
+    : screenWidth - BOARD_PADDING * 2 - horizontalInset;
+  const maxOuterWidth = Math.min(
+    widthBudget,
+    maxBoardWidth,
+    maxOuterWidthCap ?? Number.POSITIVE_INFINITY,
+  );
   const maxOuterHeight = hasSlot
     ? slotHeight!
     : Math.max(FALLBACK_MIN_OUTER_HEIGHT, screenHeight - chrome);
   const railHeight = showPointNumbers ? POINT_NUMBER_RAIL * 2 : 0;
-  return fitBoardToViewport(maxOuterWidth, maxOuterHeight, railHeight);
+  return fitBoardToViewport(maxOuterWidth, maxOuterHeight, { extraHeight: railHeight, checkerCap });
 }
 
 export function useBoardDimensions(options?: {
@@ -198,12 +317,20 @@ export function useBoardDimensions(options?: {
   /** Extra vertical chrome beyond the default game screen estimate. */
   extraChrome?: number;
 }): BoardDimensions {
-  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const {
+    width: screenWidth,
+    height: screenHeight,
+    insets,
+    boardPaneWidth: maxOuterWidthCap,
+    boardMaxWidth: maxBoardWidth,
+    checkerCap: cap,
+  } = useLayoutMetrics();
   const { preferences } = useGamePreferences();
   const slot = useBoardSlotSize();
   const showPointNumbers = options?.showPointNumbers ?? preferences.showPointNumbers;
   const extraChrome = options?.extraChrome ?? 0;
   const platform: 'web' | 'native' = Platform.OS === 'web' ? 'web' : 'native';
+  const horizontalInset = insets.left + insets.right;
 
   return useMemo(
     () =>
@@ -215,7 +342,23 @@ export function useBoardDimensions(options?: {
         slotHeight: slot.height,
         extraChrome,
         showPointNumbers,
+        horizontalInset,
+        maxOuterWidthCap,
+        maxBoardWidth,
+        checkerCap: cap,
       }),
-    [screenWidth, screenHeight, platform, slot.width, slot.height, extraChrome, showPointNumbers],
+    [
+      screenWidth,
+      screenHeight,
+      platform,
+      slot.width,
+      slot.height,
+      extraChrome,
+      showPointNumbers,
+      horizontalInset,
+      maxOuterWidthCap,
+      maxBoardWidth,
+      cap,
+    ],
   );
 }

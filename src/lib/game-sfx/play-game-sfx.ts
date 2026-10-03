@@ -56,6 +56,7 @@ type WebAudioWindow = {
 let ready = false;
 let readyPromise: Promise<void> | null = null;
 let primedGesture = false;
+
 const nativePlayers = new Map<GameSfxKind, NativePlayer>();
 const webBuffers = new Map<GameSfxKind, WebAudioBuffer>();
 const webUris = new Map<GameSfxKind, string>();
@@ -144,6 +145,9 @@ async function warmNativePlayers(): Promise<void> {
  * Safe to call from a tap handler; no-ops when already warm.
  */
 export function ensureGameSfxReady(): Promise<void> {
+  if (!loadGamePreferences().soundEnabled) {
+    return Promise.resolve();
+  }
   unlockWebAudio();
   if (ready) {
     return Promise.resolve();

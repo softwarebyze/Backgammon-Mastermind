@@ -106,7 +106,7 @@ function getRawSingleStepMoves(state: GameState): Move[] {
     for (const { value: die, index: dieIndex } of uniqueDice) {
       const to = player === 'white' ? 25 - die : die;
       if (canLandOn(state, player, to)) {
-        moves.push({ from: BAR_POINT, to, dieIndex });
+        moves.push({ from: BAR_POINT, to, dieIndex, die });
       }
     }
     return moves;
@@ -126,7 +126,7 @@ function getRawSingleStepMoves(state: GameState): Move[] {
 
       if (to >= 1 && to <= 24) {
         if (canLandOn(state, player, to)) {
-          moves.push({ from: fromPoint, to, dieIndex });
+          moves.push({ from: fromPoint, to, dieIndex, die });
         }
       }
       else if (inHome && isInHomeBoard(player, fromPoint)) {
@@ -136,10 +136,10 @@ function getRawSingleStepMoves(state: GameState): Move[] {
           = player === 'white' ? fromPoint - die < 0 : fromPoint + die > 25;
 
         if (exactExit) {
-          moves.push({ from: fromPoint, to: BEAR_OFF, dieIndex });
+          moves.push({ from: fromPoint, to: BEAR_OFF, dieIndex, die });
         }
         else if (overshot && canUseLargerDieToBearOff(state, player, fromPoint)) {
-          moves.push({ from: fromPoint, to: BEAR_OFF, dieIndex });
+          moves.push({ from: fromPoint, to: BEAR_OFF, dieIndex, die });
         }
       }
     }
@@ -490,7 +490,10 @@ function applyMovePhysical(state: GameState, move: Move): GameState {
     }
   }
 
-  next.remainingDice.splice(move.dieIndex, 1);
+  const dieToConsume = resolveDieIndex(next.remainingDice, move);
+  if (dieToConsume >= 0) {
+    next.remainingDice.splice(dieToConsume, 1);
+  }
   next.selectedPoint = null;
 
   if (next.borneOff[player] === TOTAL_CHECKERS) {
@@ -499,6 +502,31 @@ function applyMovePhysical(state: GameState, move: Move): GameState {
   }
 
   return next;
+}
+
+/**
+ * Where in the live `remainingDice` the played die should be consumed.
+ *
+ * `move.dieIndex` is an index into the dice as they stood when the move was
+ * planned*. A full-turn sequence (from the engine, a hint, or a stored compound
+ * path) is played one move at a time, so the array shrinks between steps and a
+ * planned index can point past the end — `splice` would then silently consume
+ * nothing and the turn could never finish. Prefer the die's pip value, which
+ * stays correct however far the array has shrunk, and fall back to the index only
+ * when the value is unknown. Returns -1 when the die cannot be identified, so the
+ * caller consumes nothing rather than eating the wrong die.
+ */
+function resolveDieIndex(remainingDice: number[], move: Move): number {
+  const { die, dieIndex } = move;
+  if (die != null) {
+    const byValue = remainingDice.indexOf(die);
+    if (byValue >= 0) {
+      return byValue;
+    }
+  }
+  return Number.isInteger(dieIndex) && dieIndex >= 0 && dieIndex < remainingDice.length
+    ? dieIndex
+    : -1;
 }
 
 /**
@@ -604,4 +632,13 @@ export function calculatePipCount(state: GameState, player: Player): number {
   }
   pips += state.bar[player] * 25;
   return pips;
+}
+
+/**
+ * True when no move has been played yet this turn: every granted die is
+ * still unused. Doubles grant four dice, any other roll grants two.
+ */
+export function isTurnStart(state: GameState): boolean {
+  const granted = state.dice[0] === state.dice[1] ? 4 : 2;
+  return state.remainingDice.length === granted;
 }

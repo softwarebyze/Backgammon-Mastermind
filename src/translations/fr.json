@@ -22,10 +22,20 @@
       "redo_a11y": "Redéplacement",
       "roll_dice": "Lancer les dés",
       "roll_dice_a11y": "Lancer les dés",
-      "skip_wait": "Appuyez sur pour sauter attendre",
-      "skip_wait_a11y": "{{status}}Appuyez sur pour sauter attendre",
       "start_new_game_a11y": "Démarrer un nouveau jeu",
       "undo_a11y": "Déplacer"
+    },
+    "hint": {
+      "back_to_turn": "Retour à mon tour",
+      "back_to_turn_a11y": "Retour à mon tour, fermer l’indice",
+      "button": "Indice",
+      "button_a11y": "Obtenir un indice de coup",
+      "error": "Aucun indice — touchez pour réessayer",
+      "error_a11y": "Réessayer l’indice",
+      "finding": "Recherche du meilleur coup…",
+      "play": "Jouer ce coup",
+      "play_a11y": "Jouer le coup suggéré",
+      "suggested": "Coup suggéré"
     },
     "nudge": {
       "roll_first": "Lance d'abord les dés"
@@ -66,7 +76,9 @@
       "section_board": "Plateau",
       "section_dice": "Dés",
       "sound": "Sons du jeu",
-      "sound_hint": "Dés, prises et victoires en douceur — respecte le mode silencieux"
+      "sound_hint": "Dés, prises et victoires en douceur — respecte le mode silencieux",
+      "tutor_mode": "Mode tuteur",
+      "tutor_mode_hint": "Le moteur vérifie vos coups et signale les grosses erreurs"
     },
     "review": {
       "back_to_live": "Retour à la partie en cours",
@@ -91,8 +103,44 @@
     "status": {
       "black_wins": "Les Noirs gagnent",
       "computer_wins": "L'ordinateur gagne",
+      "off_short": "sorties",
+      "pips_a11y": "{{player}} : {{pips}} pips, {{off}} sur 15 sorties",
       "white_wins": "🏆 Les Blancs gagnent !",
       "you_win": "🏆 Vous gagnez !"
+    },
+    "strategy": {
+      "close_a11y": "Fermer l'explication de la stratégie",
+      "got_it": "J'ai compris",
+      "label": {
+        "backgame": "Jeu d'attente",
+        "blitz": "Blitz",
+        "developing": "Développement",
+        "holding": "Jeu de blocage",
+        "priming": "Muraille",
+        "running": "Course"
+      },
+      "tip": {
+        "backgame": "Restez en retrait, reinforcez votre maison et attendez l'occasion tardive.",
+        "blitz": "Attaquez : frappez chaque pion isolé et fermez votre maison.",
+        "developing": "Construisez des points, battez-vous pour le 5 et restez souple.",
+        "holding": "Tenez votre ancre, restez en sécurité et attendez votre occasion de frappe.",
+        "priming": "Prolongez votre muraille point par point et capturez leurs pions arrières.",
+        "running": "Ramachez vos pions efficacement et protégez ceux qui restent en danger."
+      },
+      "why": {
+        "backgame": "Vous tenez des ancres profondes sur le {{point1}} et le {{point2}} tout en ayant {{pipGap}} points de retard dans la course.",
+        "blitz_bar": "Vous avez {{barCount}} sur la barre et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_bar_blot": "Vous avez {{barCount}} sur la barre et 1 pion isolé dans votre maison, et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_bar_blots": "Vous avez {{barCount}} sur la barre et {{blotCount}} pions isolés dans votre maison, et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_blot": "Vous avez 1 pion isolé dans votre maison et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "blitz_blots": "Vous avez {{blotCount}} pions isolés dans votre maison et vous avez déjà fait {{homeMade}} points dans votre maison.",
+        "developing": "Pas encore de muraille, d'ancre ni d'attaque sur le board — la partie se façonne.",
+        "holding": "Vous tenez une ancre sur le {{point}} avec {{pipGap}} points de retard.",
+        "priming": "Vous avez construit une muraille de {{prime}} points.",
+        "priming_anchor": "Vous avez construit une muraille de {{prime}} points avec une ancre derrière.",
+        "running_lead": "Vous menez la course {{foePips}} à {{myPips}} sans pion isolé à portée de frappe.",
+        "running_race": "Aucun contact possible — c'est une course directe pour sortir ({{myPips}} contre {{foePips}} points)."
+      }
     },
     "turn": {
       "black_is_moving": "Les noirs jouent…",
@@ -108,6 +156,63 @@
       "roll_dice": "Lancez les dés — vous jouez les {{color}}",
       "white_turn": "Au tour des blancs",
       "your_turn": "À vous de jouer"
+    },
+    "tutor": {
+      "back_to_question": "Retour à la question",
+      "back_to_question_a11y": "Revenir sans montrer la réponse",
+      "band": {
+        "big_blunder": "Grosse erreur",
+        "fine": "Correct",
+        "mistake": "Erreur",
+        "slip": "Lapsus"
+      },
+      "best": "Meilleur",
+      "best_played": "Meilleur :",
+      "compare": {
+        "best": "Meilleur",
+        "best_move": "Meilleur coup",
+        "both": "Les deux",
+        "mine": "Le mien",
+        "show_a11y": "Afficher le plateau {{label}}",
+        "start": "Début",
+        "starting_position": "Position de départ",
+        "your_move": "Votre coup",
+        "your_move_replayed": "Votre coup, rejoué"
+      },
+      "details_hide": "Masquer les détails",
+      "details_hide_a11y": "Masquer les détails",
+      "details_show": "Détails",
+      "details_show_a11y": "Afficher les détails",
+      "details_summary": "Votre coup est classé {{rank}} sur {{count}}, soit environ {{loss}} point par partie de moins que le meilleur coup.",
+      "equity_explainer": "Le moteur note chaque coup selon les points qu’il espère gagner par partie, en moyenne. Plus c’est haut, mieux c’est.",
+      "equity_pts": "{{points}} pts",
+      "keep": "Garder mon coup",
+      "keep_a11y": "Garder mon coup et continuer",
+      "meter_a11y": "Gravité de l’erreur : {{severity}}. Environ {{loss}} point perdu par partie. L’échelle suit GNU Backgammon : douteux à 0.04, mauvais à 0.08, très mauvais à 0.16.",
+      "meter_caption": "Échelle d’erreurs (GNU Backgammon)",
+      "play_best": "Jouer le meilleur coup",
+      "play_best_a11y": "Annuler mon coup et jouer le meilleur",
+      "question_body": "Votre coup est classé {{rank}} sur {{count}} façons de jouer ce lancer. En moyenne, il rapporte environ {{loss}} point par partie de moins que le meilleur coup.",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}} (le vôtre)",
+      "replay_pause_a11y": "Mettre en pause la relecture {{label}}",
+      "replay_play_a11y": "Lire la relecture {{label}}",
+      "reveal": "Montrer le meilleur coup",
+      "reveal_a11y": "Révéler le coup recommandé",
+      "rolled": "Vous avez lancé {{dice}}",
+      "show_mine": "Montrer mon coup",
+      "show_mine_a11y": "Montrer seulement mon coup, sans révéler le meilleur",
+      "take_back": "Annuler et réessayer",
+      "take_back_a11y": "Annuler tout le tour et réessayer",
+      "take_back_retry_a11y": "Annuler le coup et réessayer",
+      "title_compare": "Votre coup face au meilleur coup",
+      "title_mine": "Votre coup",
+      "turn_off": "Désactiver le tuteur",
+      "turn_off_a11y": "Désactiver le mode tuteur",
+      "undo_last": "Annuler le dernier coup",
+      "undo_last_a11y": "Annuler seulement le dernier coup et le rejouer",
+      "vs_best": "−{{delta}} vs meilleur",
+      "you_played": "Vous avez joué :"
     }
   },
   "home": {
@@ -331,6 +436,7 @@
     "link_error_title": "Impossible d'ouvrir le lien",
     "links": "Liens",
     "more": "Plus",
+    "open_source": "Mentions open source",
     "privacy": "Politique de confidentialité",
     "rate": "Noter",
     "share": "Partager",

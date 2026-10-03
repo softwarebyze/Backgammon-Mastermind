@@ -22,10 +22,20 @@
       "redo_a11y": "重做移动",
       "roll_dice": "掷骰子",
       "roll_dice_a11y": "掷骰子",
-      "skip_wait": "点击跳过等待",
-      "skip_wait_a11y": "{{status}}点击跳过等待",
       "start_new_game_a11y": "开始新游戏",
       "undo_a11y": "撤消移动"
+    },
+    "hint": {
+      "back_to_turn": "返回我的回合",
+      "back_to_turn_a11y": "返回我的回合并关闭提示",
+      "button": "提示",
+      "button_a11y": "获取走子提示",
+      "error": "找不到提示 — 点按重试",
+      "error_a11y": "重试提示",
+      "finding": "正在寻找最佳走法…",
+      "play": "走这一步",
+      "play_a11y": "走建议的一步",
+      "suggested": "建议走法"
     },
     "nudge": {
       "roll_first": "请先掷骰子"
@@ -66,7 +76,9 @@
       "section_board": "棋盘",
       "section_dice": "骰子",
       "sound": "游戏音效",
-      "sound_hint": "轻柔的骰子、击子与获胜音效——遵循静音模式"
+      "sound_hint": "轻柔的骰子、击子与获胜音效——遵循静音模式",
+      "tutor_mode": "导师模式",
+      "tutor_mode_hint": "引擎检查你的走法并标出大失误"
     },
     "review": {
       "back_to_live": "返回当前对局",
@@ -91,8 +103,44 @@
     "status": {
       "black_wins": "黑方获胜",
       "computer_wins": "电脑获胜",
+      "off_short": "已出",
+      "pips_a11y": "{{player}}：{{pips}} 点，已出 {{off}}/15",
       "white_wins": "🏆 白方获胜！",
       "you_win": "🏆 你赢了！"
+    },
+    "strategy": {
+      "close_a11y": "关闭策略说明",
+      "got_it": "明白了",
+      "label": {
+        "backgame": "后手局",
+        "blitz": "全攻",
+        "developing": "布局",
+        "holding": "防守局",
+        "priming": "Prime（墙）",
+        "running": "竞速"
+      },
+      "tip": {
+        "backgame": "稳守后手，加固自己的底仓，等待后期机会。",
+        "blitz": "进攻：打掉每一个孤子，并封住自己的底仓。",
+        "developing": "堆点、争夺 5 点，同时保持灵活。",
+        "holding": "守住锚点，稳住阵脚，等待进击的机会。",
+        "priming": "一点一点扩大你的墙，把对方的后方棋子锁住。",
+        "running": "高效地把棋子带回底仓，并保护仍有风险的棋子。"
+      },
+      "why": {
+        "backgame": "你在 {{point1}} 和 {{point2}} 都有深锚，但竞速中落后 {{pipGap}} 分。",
+        "blitz_bar": "你有 {{barCount}} 颗在 bar 上，并且已经在底仓做好了 {{homeMade}} 个点。",
+        "blitz_bar_blot": "你有 {{barCount}} 颗在 bar 上，底仓还有 1 个孤子，并且已经在底仓做好了 {{homeMade}} 个点。",
+        "blitz_bar_blots": "你有 {{barCount}} 颗在 bar 上，底仓还有 {{blotCount}} 个孤子，并且已经在底仓做好了 {{homeMade}} 个点。",
+        "blitz_blot": "你的底仓还有 1 个孤子，并且已经做好了 {{homeMade}} 个点。",
+        "blitz_blots": "你的底仓还有 {{blotCount}} 个孤子，并且已经做好了 {{homeMade}} 个点。",
+        "developing": "棋盘上还看不出墙、锚点或进攻——局面仍在成形。",
+        "holding": "你在 {{point}} 守着锚点，但落后 {{pipGap}} 分。",
+        "priming": "你建成了一道 {{prime}} 点的墙。",
+        "priming_anchor": "你建成了一道 {{prime}} 点的墙，后面还有锚点保护。",
+        "running_lead": "竞速中你以 {{foePips}} 比 {{myPips}} 领先，且没有棋子落在对方可打的范围内。",
+        "running_race": "无法接触——这是一场纯粹比谁先收完的竞速（{{myPips}} 对 {{foePips}} 分）。"
+      }
     },
     "turn": {
       "black_is_moving": "黑方正在走棋…",
@@ -108,6 +156,63 @@
       "roll_dice": "掷骰子 — 你执{{color}}",
       "white_turn": "白方回合",
       "your_turn": "你的回合"
+    },
+    "tutor": {
+      "back_to_question": "返回问题",
+      "back_to_question_a11y": "不看答案返回",
+      "band": {
+        "big_blunder": "大失误",
+        "fine": "尚可",
+        "mistake": "失误",
+        "slip": "小失误"
+      },
+      "best": "最佳",
+      "best_played": "最佳：",
+      "compare": {
+        "best": "最佳",
+        "best_move": "最佳走法",
+        "both": "两者",
+        "mine": "我的",
+        "show_a11y": "显示{{label}}棋盘",
+        "start": "起始",
+        "starting_position": "起始局面",
+        "your_move": "你的走法",
+        "your_move_replayed": "你的走法，重放"
+      },
+      "details_hide": "隐藏详情",
+      "details_hide_a11y": "隐藏详情",
+      "details_show": "详情",
+      "details_show_a11y": "显示详情",
+      "details_summary": "你的走法在{{count}}步中排第{{rank}}，平均每局比最佳走法少约{{loss}}分。",
+      "equity_explainer": "引擎按每局平均预期赢得的分数为每步评分。越高越好。",
+      "equity_pts": "{{points}}分",
+      "keep": "保留我的走法",
+      "keep_a11y": "保留我的走法并继续",
+      "meter_a11y": "失误程度：{{severity}}。每局约损失{{loss}}分。刻度遵循 GNU Backgammon：0.04 为可疑，0.08 为差，0.16 为很差。",
+      "meter_caption": "失误刻度（GNU Backgammon）",
+      "play_best": "走最佳一步",
+      "play_best_a11y": "撤回我的走法并走最佳一步",
+      "question_body": "你的走法在这一骰的{{count}}种走法中排第{{rank}}。平均每局比最佳走法少约{{loss}}分。",
+      "rank": "{{rank}}",
+      "rank_yours": "{{rank}}（你的）",
+      "replay_pause_a11y": "暂停{{label}}回放",
+      "replay_play_a11y": "播放{{label}}回放",
+      "reveal": "显示最佳走法",
+      "reveal_a11y": "揭示推荐走法",
+      "rolled": "你掷出了{{dice}}",
+      "show_mine": "显示我的走法",
+      "show_mine_a11y": "只显示我的走法，不揭示最佳走法",
+      "take_back": "撤回并重试",
+      "take_back_a11y": "撤回整个回合并重试",
+      "take_back_retry_a11y": "撤回这一步并重试",
+      "title_compare": "你的走法与最佳走法",
+      "title_mine": "你的走法",
+      "turn_off": "关闭导师",
+      "turn_off_a11y": "关闭导师模式",
+      "undo_last": "撤销上一步",
+      "undo_last_a11y": "只撤销上一步并重走",
+      "vs_best": "比最佳 −{{delta}}",
+      "you_played": "你走了："
     }
   },
   "home": {
@@ -331,6 +436,7 @@
     "link_error_title": "无法打开链接",
     "links": "链接",
     "more": "更多",
+    "open_source": "开源声明",
     "privacy": "隐私政策",
     "rate": "评分",
     "share": "分享",

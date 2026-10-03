@@ -1,6 +1,5 @@
-import type * as React from 'react';
 import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -9,21 +8,25 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { setOpeningTraySlots } from '@/features/game/opening-ceremony-gate';
+import { GAME_PALETTE } from '@/features/game/game-palette';
+import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
 
 type PlayerColor = 'white' | 'black';
 
 type Props = {
+  /** 0 in a slot = empty placeholder (opening roll before that side has rolled). */
   dice: [number, number];
   remainingDice: number[];
   playerColor: PlayerColor;
-  /** Per-slot colors (opening handoff: white die left, black die right). */
+  /** Per-slot colors (opening roll: white die left, black die right). */
   slotColors?: readonly [PlayerColor, PlayerColor];
+  /** Slot to ring with the accent (opening winner). */
+  emphasis?: 0 | 1 | null;
   displayStyle?: DiceDisplayStyle;
   /** When false, dice values update instantly (review scrub, etc.). */
   animateRoll?: boolean;
-  /** Report die centers in window coords for the opening fly-in. */
-  reportTraySlots?: boolean;
+  /** Die edge in px; scales dots, numerals and radius. Default matches the phone tray. */
+  size?: number;
 };
 
 const DOUBLE_DIE_SLOTS = ['slot-a', 'slot-b', 'slot-c', 'slot-d'] as const;
@@ -72,11 +75,12 @@ function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
     transform: [{ scale: dieScale.value }],
   }));
 
-  return { containerStyle, showDice: hasRolledDice(dice) };
+  return { containerStyle };
 }
 
-function DieDots({ value, dotColor }: { value: number; dotColor: string }) {
+function DieDots({ value, dotColor, size }: { value: number; dotColor: string; size: number }) {
   const layout = DOT_LAYOUTS[value] ?? DOT_LAYOUTS[1]!;
+  const dot = Math.round(size * 0.16);
   return (
     <View style={StyleSheet.absoluteFill}>
       {layout.map(([x, y]) => (
@@ -86,11 +90,11 @@ function DieDots({ value, dotColor }: { value: number; dotColor: string }) {
             position: 'absolute',
             left: `${x * 100}%`,
             top: `${y * 100}%`,
-            width: 7,
-            height: 7,
-            marginLeft: -3.5,
-            marginTop: -3.5,
-            borderRadius: 4,
+            width: dot,
+            height: dot,
+            marginLeft: -dot / 2,
+            marginTop: -dot / 2,
+            borderRadius: dot / 2,
             backgroundColor: dotColor,
           }}
         />
@@ -104,11 +108,15 @@ function DieFace({
   used,
   playerColor,
   displayStyle,
+  size,
+  emphasized = false,
 }: {
   value: number;
   used: boolean;
-  playerColor: 'white' | 'black';
+  playerColor: PlayerColor;
   displayStyle: DiceDisplayStyle;
+  size: number;
+  emphasized?: boolean;
 }) {
   const isWhite = playerColor === 'white';
   const bg = used
@@ -127,17 +135,20 @@ function DieFace({
     <View
       style={[
         styles.die,
+        dieBox(size),
         {
           backgroundColor: bg,
-          borderColor: border,
+          borderColor: emphasized ? GAME_PALETTE.accent : border,
+          borderWidth: emphasized ? 3 : 2,
           opacity: used ? 0.4 : 1,
         },
+        emphasized && styles.dieEmphasized,
       ]}
     >
       {displayStyle === 'dots'
-        ? <DieDots value={value} dotColor={fg} />
+        ? <DieDots value={value} dotColor={fg} size={size} />
         : (
-            <Text style={[styles.dieText, { color: fg }]}>
+            <Text style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
               {value}
             </Text>
           )}
@@ -145,15 +156,19 @@ function DieFace({
   );
 }
 
-function EmptyDiePlaceholder() {
-  return <View style={[styles.die, styles.diePlaceholder]} />;
-}
-
-function centerFromBox(x: number, y: number, size: { w: number; h: number }) {
-  if (size.w <= 0 || size.h <= 0) {
-    return null;
-  }
-  return { x: x + size.w / 2, y: y + size.h / 2 };
+/** Empty slot; tinted so the opening tray reads white-left / black-right before rolling. */
+function EmptyDiePlaceholder({ playerColor, size }: { playerColor?: PlayerColor; size: number }) {
+  return (
+    <View
+      style={[
+        styles.die,
+        dieBox(size),
+        styles.diePlaceholder,
+        playerColor === 'white' && styles.diePlaceholderWhite,
+        playerColor === 'black' && styles.diePlaceholderBlack,
+      ]}
+    />
+  );
 }
 
 function DiceFaces({
@@ -161,19 +176,17 @@ function DiceFaces({
   remainingDice,
   playerColor,
   slotColors,
+  emphasis,
   displayStyle,
-  leftRef,
-  rightRef,
-  onSlotLayout,
+  size,
 }: {
   dice: [number, number];
   remainingDice: number[];
   playerColor: PlayerColor;
   slotColors?: readonly [PlayerColor, PlayerColor];
+  emphasis?: 0 | 1 | null;
   displayStyle: DiceDisplayStyle;
-  leftRef: React.RefObject<View | null>;
-  rightRef: React.RefObject<View | null>;
-  onSlotLayout: () => void;
+  size: number;
 }) {
   const remaining = [...remainingDice];
   const diceStates = dice.map((v) => {
@@ -184,122 +197,51 @@ function DiceFaces({
     }
     return { value: v, used: true };
   });
-  const isDoubles = dice[0] === dice[1];
+  const isDoubles = dice[0] === dice[1] && dice[0] !== 0;
   const totalRemaining = remainingDice.filter(v => v === dice[0]).length;
   const leftColor = slotColors?.[0] ?? playerColor;
   const rightColor = slotColors?.[1] ?? playerColor;
 
-  if (isDoubles) {
+  if (isDoubles && !slotColors) {
     return DOUBLE_DIE_SLOTS.map((slot, slotIndex) => (
-      <View
+      <DieFace
         key={slot}
-        ref={slotIndex === 0 ? leftRef : rightRef}
-        collapsable={false}
-        onLayout={onSlotLayout}
-      >
-        <DieFace
-          value={dice[0]}
-          used={slotIndex >= totalRemaining}
-          playerColor={slotIndex === 0 ? leftColor : rightColor}
-          displayStyle={displayStyle}
-        />
-      </View>
+        value={dice[0]}
+        used={slotIndex >= totalRemaining}
+        playerColor={playerColor}
+        displayStyle={displayStyle}
+        size={size}
+      />
     ));
   }
 
   return (
     <>
-      {diceStates[0] && (
-        <View ref={leftRef} collapsable={false} onLayout={onSlotLayout}>
-          <DieFace
-            key="die-left"
-            value={diceStates[0].value}
-            used={diceStates[0].used}
-            playerColor={leftColor}
-            displayStyle={displayStyle}
-          />
-        </View>
-      )}
-      {diceStates[1] && (
-        <View ref={rightRef} collapsable={false} onLayout={onSlotLayout}>
-          <DieFace
-            key="die-right"
-            value={diceStates[1].value}
-            used={diceStates[1].used}
-            playerColor={rightColor}
-            displayStyle={displayStyle}
-          />
-        </View>
-      )}
+      {diceStates[0]!.value === 0
+        ? <EmptyDiePlaceholder playerColor={slotColors?.[0]} size={size} />
+        : (
+            <DieFace
+              value={diceStates[0]!.value}
+              used={diceStates[0]!.used}
+              playerColor={leftColor}
+              displayStyle={displayStyle}
+              size={size}
+              emphasized={emphasis === 0}
+            />
+          )}
+      {diceStates[1]!.value === 0
+        ? <EmptyDiePlaceholder playerColor={slotColors?.[1]} size={size} />
+        : (
+            <DieFace
+              value={diceStates[1]!.value}
+              used={diceStates[1]!.used}
+              playerColor={rightColor}
+              displayStyle={displayStyle}
+              size={size}
+              emphasized={emphasis === 1}
+            />
+          )}
     </>
-  );
-}
-
-function DiceDisplayAnimated({
-  dice,
-  remainingDice,
-  playerColor,
-  slotColors,
-  displayStyle = 'dots',
-  animateRoll = true,
-  reportTraySlots = false,
-}: Props) {
-  const { containerStyle, showDice } = useDiceRollAnimation(dice, animateRoll);
-  const leftRef = useRef<View>(null);
-  const rightRef = useRef<View>(null);
-  const dieA = dice[0];
-  const dieB = dice[1];
-
-  const publishSlots = useCallback(() => {
-    if (!reportTraySlots) {
-      return;
-    }
-    leftRef.current?.measureInWindow((...leftBox: number[]) => {
-      const left = centerFromBox(leftBox[0]!, leftBox[1]!, { w: leftBox[2]!, h: leftBox[3]! });
-      rightRef.current?.measureInWindow((...rightBox: number[]) => {
-        const right = centerFromBox(rightBox[0]!, rightBox[1]!, { w: rightBox[2]!, h: rightBox[3]! });
-        if (!left || !right) {
-          return;
-        }
-        setOpeningTraySlots({ left, right });
-      });
-    });
-  }, [reportTraySlots]);
-
-  useEffect(() => {
-    if (!reportTraySlots) {
-      return;
-    }
-    const id = requestAnimationFrame(publishSlots);
-    return () => cancelAnimationFrame(id);
-  }, [publishSlots, reportTraySlots, showDice, dieA, dieB]);
-
-  if (!showDice) {
-    return (
-      <Animated.View style={[styles.container, containerStyle]} onLayout={publishSlots}>
-        <View ref={leftRef} collapsable={false} onLayout={publishSlots}>
-          <EmptyDiePlaceholder />
-        </View>
-        <View ref={rightRef} collapsable={false} onLayout={publishSlots}>
-          <EmptyDiePlaceholder />
-        </View>
-      </Animated.View>
-    );
-  }
-
-  return (
-    <Animated.View style={[styles.container, containerStyle]} onLayout={publishSlots}>
-      <DiceFaces
-        dice={dice}
-        remainingDice={remainingDice}
-        playerColor={playerColor}
-        slotColors={slotColors}
-        displayStyle={displayStyle}
-        leftRef={leftRef}
-        rightRef={rightRef}
-        onSlotLayout={publishSlots}
-      />
-    </Animated.View>
   );
 }
 
@@ -308,21 +250,30 @@ export function DiceDisplay({
   remainingDice,
   playerColor,
   slotColors,
+  emphasis = null,
   displayStyle = 'dots',
   animateRoll = true,
-  reportTraySlots = false,
+  size = TRAY_DIE_SIZE,
 }: Props) {
+  const { containerStyle } = useDiceRollAnimation(dice, animateRoll);
+
   return (
-    <DiceDisplayAnimated
-      dice={dice}
-      remainingDice={remainingDice}
-      playerColor={playerColor}
-      slotColors={slotColors}
-      displayStyle={displayStyle}
-      animateRoll={animateRoll}
-      reportTraySlots={reportTraySlots}
-    />
+    <Animated.View style={[styles.container, { minHeight: size }, containerStyle]}>
+      <DiceFaces
+        dice={dice}
+        remainingDice={remainingDice}
+        playerColor={playerColor}
+        slotColors={slotColors}
+        emphasis={emphasis}
+        displayStyle={displayStyle}
+        size={size}
+      />
+    </Animated.View>
   );
+}
+
+function dieBox(size: number) {
+  return { width: size, height: size, borderRadius: Math.round(size * 0.23) };
 }
 
 const styles = StyleSheet.create({
@@ -333,9 +284,6 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   die: {
-    width: 44,
-    height: 44,
-    borderRadius: 10,
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
@@ -345,13 +293,27 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 4,
   },
+  dieEmphasized: {
+    shadowColor: GAME_PALETTE.accent,
+    shadowOpacity: 0.6,
+    shadowRadius: 6,
+  },
   diePlaceholder: {
     backgroundColor: 'rgba(80,60,40,0.25)',
     borderColor: 'rgba(90,70,50,0.35)',
     opacity: 0.5,
   },
+  diePlaceholderWhite: {
+    borderColor: '#BBA070',
+    borderStyle: 'dashed',
+    opacity: 0.7,
+  },
+  diePlaceholderBlack: {
+    borderColor: '#5050A0',
+    borderStyle: 'dashed',
+    opacity: 0.7,
+  },
   dieText: {
-    fontSize: 22,
     fontWeight: '800',
   },
 });

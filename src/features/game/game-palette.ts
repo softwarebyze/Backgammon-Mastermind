@@ -16,7 +16,15 @@ export const GAME_PALETTE = {
   accent: colors.primary[400],
   accentDim: colors.primary[200],
 
-  // Primary action controls (roll dice, confirm move)
-  control: '#8B1A1A',
-  controlBorder: '#6B2820',
+  // Guidance comparison arrows: the player's own path vs the engine's recommendation.
+  guideMine: colors.primary[400],
+  guideEngine: colors.success[400],
+
+  // Primary action controls (roll dice, play again). Same gold as the home
+  // "vs Computer" CTA — the board already owns the reds, so the one action
+  // the player must take shouldn't compete with 12 red points.
+  control: colors.primary[400],
+  controlBorder: '#F0C060',
+  controlHover: colors.primary[300],
+  controlInk: '#1E0C02',
 } as const;

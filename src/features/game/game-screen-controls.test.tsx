@@ -24,9 +24,9 @@ function renderComputerControls(phase: 'rolling' | 'moving') {
       liveDiceState={state}
       isHumanTurn={false}
       isComputerTurn
+      moveLogLength={0}
       onRoll={jest.fn()}
       onReset={jest.fn()}
-      onSkipComputer={jest.fn()}
     />,
   );
 }
@@ -37,8 +37,8 @@ describe('game screen controls', () => {
 
     expect(screen.queryAllByText(/moving/i)).toHaveLength(0);
     expect(screen.queryByText('Black is moving…')).toBeNull();
-    expect(screen.getByTestId('skip-computer-button')).toBeTruthy();
-    expect(screen.getByText('Tap to skip wait')).toBeTruthy();
+    expect(screen.queryByText('Tap to skip wait')).toBeNull();
+    expect(screen.queryByTestId('skip-computer-button')).toBeNull();
   });
 
   it('does not render two rolling strings while the computer is rolling', () => {
@@ -46,6 +46,6 @@ describe('game screen controls', () => {
 
     expect(screen.queryAllByText(/rolling/i)).toHaveLength(0);
     expect(screen.queryByText('Black is rolling…')).toBeNull();
-    expect(screen.getByTestId('skip-computer-button')).toBeTruthy();
+    expect(screen.queryByText('Tap to skip wait')).toBeNull();
   });
 });

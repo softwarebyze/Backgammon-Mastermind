@@ -11,21 +11,24 @@ const CHECKER_SIZE = 22;
 
 type Props = {
   state: GameState;
+  /** Opening-roll copy ("Who goes first?", "White goes first!") replaces the turn headline. */
+  headlineOverride?: string | null;
 };
 
-export function TurnIndicatorBanner({ state }: Props) {
+export function TurnIndicatorBanner({ state, headlineOverride = null }: Props) {
   if (state.phase === 'game-over') {
     return null;
   }
 
   const turn = getTurnDisplay(state);
   const isActive = turn.isHumanTurn;
+  const headline = headlineOverride ?? turn.headline;
 
   return (
     <View
       style={styles.bannerShell}
       accessibilityRole="text"
-      accessibilityLabel={`${turn.colorLabel}. ${turn.headline}`}
+      accessibilityLabel={`${turn.colorLabel}. ${headline}`}
     >
       <CheckerToken player={turn.player} size={CHECKER_SIZE} />
       <View style={styles.copy}>
@@ -45,7 +48,7 @@ export function TurnIndicatorBanner({ state }: Props) {
           ]}
           numberOfLines={1}
         >
-          {turn.headline}
+          {headline}
         </Text>
       </View>
     </View>

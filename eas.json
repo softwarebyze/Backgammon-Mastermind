@@ -61,6 +61,44 @@
         "POSTHOG_CLI_HOST": "https://us.posthog.com"
       }
     },
+    "development-simulator": {
+      "developmentClient": true,
+      "channel": "preview",
+      "distribution": "internal",
+      "environment": "development",
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      },
+      "android": {
+        "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "development",
+        "POSTHOG_HOST": "https://us.i.posthog.com",
+        "POSTHOG_CLI_PROJECT_ID": "507969",
+        "POSTHOG_CLI_HOST": "https://us.posthog.com"
+      }
+    },
+    "development-emulator": {
+      "developmentClient": true,
+      "channel": "preview",
+      "distribution": "internal",
+      "environment": "development",
+      "ios": {
+        "image": "latest"
+      },
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "development",
+        "POSTHOG_HOST": "https://us.i.posthog.com",
+        "POSTHOG_CLI_PROJECT_ID": "507969",
+        "POSTHOG_CLI_HOST": "https://us.posthog.com"
+      }
+    },
     "simulator": {
       "environment": "development",
       "ios": {

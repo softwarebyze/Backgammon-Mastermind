@@ -68,7 +68,7 @@ function humanHeadline(mode: GameMode, player: Player): string {
   return translate(player === 'white' ? 'game.turn.white_turn' : 'game.turn.black_turn');
 }
 
-function playerLabel(player: Player): string {
+export function playerLabel(player: Player): string {
   return translate(player === 'white' ? 'game.review.player_white' : 'game.review.player_black');
 }
 

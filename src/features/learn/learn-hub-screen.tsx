@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -23,7 +23,8 @@ import {
   isReadyToPlay,
 } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
-import { GAME_CHROME_MAX_WIDTH, isLandscapeLayout } from '@/lib/ui/game-chrome';
+import { GAME_CHROME_MAX_WIDTH, PAGE_STAGE_MAX_WIDTH } from '@/lib/ui/game-chrome';
+import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 /* eslint-disable-next-line max-lines-per-function -- hub list + skip CTA */
@@ -31,8 +32,7 @@ export function LearnHubScreen() {
   const { progress, startLearning } = useLearnProgress();
   const { startGame, state } = useGame();
   const posthog = usePostHog();
-  const { width, height } = useWindowDimensions();
-  const landscape = isLandscapeLayout(width, height);
+  const { insets, landscape } = useLayoutMetrics();
   const done = completedLessonCount(progress);
   const total = LESSON_IDS.length;
   const ready = isReadyToPlay(progress);
@@ -65,7 +65,11 @@ export function LearnHubScreen() {
       <ScrollView
         testID="learn-hub-screen"
         style={styles.scroll}
-        contentContainerStyle={[styles.content, landscape ? styles.contentLandscape : null]}
+        contentContainerStyle={[
+          styles.content,
+          landscape ? styles.contentLandscape : null,
+          contentEdgePadding(insets, { left: 24, right: 24, bottom: landscape ? 16 : 40 }),
+        ]}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
@@ -159,15 +163,12 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: GAME_CHROME_MAX_WIDTH,
     alignSelf: 'center',
-    paddingHorizontal: 24,
     paddingTop: 16,
-    paddingBottom: 40,
     gap: 12,
   },
   contentLandscape: {
-    maxWidth: 920,
+    maxWidth: PAGE_STAGE_MAX_WIDTH,
     paddingTop: 8,
-    paddingBottom: 16,
   },
   subtitle: {
     color: GAME_PALETTE.accentDim,

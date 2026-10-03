@@ -30,12 +30,13 @@ describe('prepare-store-screenshots', () => {
       'utf8',
     );
 
-    expect(source).toContain("'Noto Sans Arabic'");
-    expect(source).toContain("'Noto Sans Hebrew'");
-    expect(source).toContain("'Noto Sans Devanagari'");
-    expect(source).toContain("'Noto Sans CJK JP'");
-    expect(source).toContain("'Noto Sans CJK KR'");
-    expect(source).toContain("'Noto Sans CJK SC'");
+    expect(source).toContain('\'Noto Sans Arabic\'');
+    expect(source).toContain('\'Noto Sans Hebrew\'');
+    expect(source).toContain('\'Noto Sans Devanagari\'');
+    expect(source).toContain('\'Noto Sans CJK JP\'');
+    expect(source).toContain('\'Noto Sans CJK KR\'');
+    expect(source).toContain('\'Noto Sans CJK SC\'');
+    // eslint-disable-next-line no-template-curly-in-string -- asserting the literal placeholder in source
     expect(source).toContain('xml:lang="${language}"');
   });
 
