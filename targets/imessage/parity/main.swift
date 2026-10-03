@@ -121,6 +121,43 @@ do {
   }
 }
 
+// 8. Turn ownership: a device must never adopt its own message. Regression test
+//    for the bug where tapping your own sent bubble let one person play both
+//    sides — `outgoingPayload()` stamps `current` as the opponent to move, so
+//    adopting your own payload hands you the other player's turn.
+do {
+  let creator = ImGameSession()
+  creator.rollDice()
+  let sent = creator.outgoingPayload()
+
+  // The payload really does name the opponent as the side to move...
+  check("ownership.outgoing.namesOpponent", sent.current == .black, "\(sent.current)")
+  // ...so adopting it must be refused.
+  check("ownership.rejectOwnMessage", creator.shouldAdopt(sent, isFromMe: true) == false)
+
+  // The opponent's reply (same turn number, different device) is accepted.
+  let opponent = ImGameSession()
+  check("ownership.acceptOpponentReply", opponent.shouldAdopt(sent, isFromMe: false))
+  opponent.load(payload: sent)
+  check("ownership.replyPlaysBlack", opponent.board.current == .black)
+  check("ownership.replyAdvancesTurn", opponent.turn == creator.turn + 1, "\(opponent.turn)")
+
+  // After adopting, re-opening the same bubble must not rewind the session.
+  check("ownership.noRewindSameBubble", opponent.shouldAdopt(sent, isFromMe: false) == false)
+
+  // A creator's own payload is also refused by the opponent's device once the
+  // opponent has already moved past that turn (stale echo, not a rewind).
+  var rewound = opponent.board
+  rewound.remaining = []
+  rewound.current = .white
+  let stale = ImTurnPayload.fromBoard(
+    rewound, gameId: sent.gameId, turn: sent.turn, dice: sent.dice, summary: sent.summary)
+  check("ownership.rejectStaleTurn", opponent.shouldAdopt(stale, isFromMe: false) == false)
+
+  // A brand new game from someone else is always fair game.
+  check("ownership.acceptNewGame", opponent.shouldAdopt(ImGameSession().outgoingPayload(), isFromMe: false))
+}
+
 if failures > 0 {
   print("\(failures) FAILURE(S)")
   exit(1)

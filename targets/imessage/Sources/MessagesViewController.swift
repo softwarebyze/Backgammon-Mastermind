@@ -24,16 +24,12 @@ final class MessagesViewController: MSMessagesAppViewController {
     super.willBecomeActive(with: conversation)
     if let message = conversation.selectedMessage,
        let url = message.url,
-       let payload = try? ImTurnPayload(url: url) {
-      // Ignore the echo of the turn we just sent (keeps "waiting" state).
-      let isOwnJustSent = payload.gameId == session.gameId
-        && payload.turn == session.turn
-        && session.sentLatestTurn
-      if !isOwnJustSent {
-        session.load(payload: payload)
-      }
+       let payload = try? ImTurnPayload(url: url),
+       session.shouldAdopt(payload, isFromMe: isFromMe(message, in: conversation)) {
+      session.load(payload: payload)
     }
-    // Otherwise keep the current session (a fresh game on first launch).
+    // Otherwise keep the current session (a fresh game on first launch, or the
+    // "waiting for your opponent" state when re-opening your own last turn).
     presentCurrentStyle()
   }
 
@@ -45,9 +41,16 @@ final class MessagesViewController: MSMessagesAppViewController {
   override func didSelect(_ message: MSMessage, conversation: MSConversation) {
     super.didSelect(message, conversation: conversation)
     guard let url = message.url,
-          let payload = try? ImTurnPayload(url: url) else { return }
+          let payload = try? ImTurnPayload(url: url),
+          session.shouldAdopt(payload, isFromMe: isFromMe(message, in: conversation)) else { return }
     session.load(payload: payload)
     requestPresentationStyle(.expanded)
+  }
+
+  /// `MSMessage` has no `isFromMe`; authorship comes from the participant ids —
+  /// the local participant is this device.
+  private func isFromMe(_ message: MSMessage, in conversation: MSConversation) -> Bool {
+    message.senderParticipantIdentifier == conversation.localParticipantIdentifier
   }
 
   // MARK: Presentation

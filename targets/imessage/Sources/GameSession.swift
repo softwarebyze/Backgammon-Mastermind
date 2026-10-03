@@ -33,6 +33,25 @@ final class ImGameSession: ObservableObject {
 
   // MARK: Loading
 
+  /// Whether an inbound bubble may be adopted as the position to play next.
+  ///
+  /// Two rules, both load-bearing:
+  ///
+  /// 1. **Never adopt your own message.** `outgoingPayload()` stamps
+  ///    `current` as the *opponent* to move, so adopting your own bubble hands
+  ///    you your friend's side and lets one person play both sides.
+  /// 2. **Never rewind.** Within one game, a payload older than the turn already
+  ///    loaded is a stale echo; re-adopting it would discard a roll in progress.
+  ///
+  /// Sides still alternate by payload rather than by device (no accounts), so
+  /// the *only* thing pinning a device to one side is that it never plays its
+  /// own turns.
+  func shouldAdopt(_ payload: ImTurnPayload, isFromMe: Bool) -> Bool {
+    guard !isFromMe else { return false }
+    if payload.gameId == gameId, payload.turn < turn { return false }
+    return true
+  }
+
   /// Load an incoming message: the local player takes `payload.current`.
   func load(payload: ImTurnPayload) {
     var board = payload.toBoard()

@@ -262,6 +262,32 @@ Remaining known gaps (not blockers):
 - Icons ship in the appex (`Assets.car` verified in simulator builds), which
   satisfies iMessage App Store icon validation.
 
+## Turn ownership (who may play which side)
+
+Sides are **not** bound to a device — there are no accounts, so the position
+itself decides who moves: `ImGameSession.shouldAdopt(_:isFromMe:)` is the single
+gate, called from both `willBecomeActive` and `didSelect`.
+
+1. **Never adopt your own message.** `outgoingPayload()` stamps `current` as the
+   *opponent* to move, so adopting your own bubble hands you your friend's side.
+   `MSMessage` has **no `isFromMe`** — authorship comes from
+   `message.senderParticipantIdentifier == conversation.localParticipantIdentifier`.
+   The previous `sentLatestTurn`-based echo check let you play both sides
+   whenever the extension process had been relaunched or after "New game".
+2. **Never rewind.** Within one game, a payload older than the turn already
+   loaded is a stale echo; re-adopting it would discard a roll in progress.
+
+Regression coverage lives in the Swift parity harness (section 8). Neuter
+either guard and three checks fail:
+
+```
+ownership.rejectOwnMessage  ownership.noRewindSameBubble  ownership.rejectStaleTurn
+```
+
+This is turn discipline, **not** anti-cheat: with no accounts, whoever controls
+both devices can still play both sides, and a modified client can forge any
+payload. That trade-off is deliberate for v1.
+
 ## Verification done so far (no device needed)
 
 - `xcodebuild -target BackgammonMastermindMessages -sdk iphonesimulator build` → **BUILD SUCCEEDED**.
@@ -270,9 +296,15 @@ Remaining known gaps (not blockers):
   `scripts/imessage-parity-vectors.ts` asserted by the Foundation-only Swift
   runner in `targets/imessage/parity/main.swift` (codec round-trips incl.
   `+`/space handling, opening/bar/bear-off/doubles move generation,
-  checker-balance rejection) — **24/24 PASS**.
+  checker-balance rejection, plus turn-ownership) — **32/32 PASS**.
   Re-run: `pnpm dlx tsx scripts/imessage-parity-vectors.ts`, then
-  `swiftc targets/imessage/parity/main.swift targets/imessage/Sources/GameEngine.swift targets/imessage/Sources/MessagePayload.swift -o /tmp/parity && /tmp/parity`.
+  `xcrun swiftc targets/imessage/parity/main.swift targets/imessage/Sources/GameEngine.swift targets/imessage/Sources/MessagePayload.swift targets/imessage/Sources/GameSession.swift -o /tmp/parity && /tmp/parity`.
+
+  Use **`xcrun swiftc`**, not bare `swiftc`: this machine has Swiftly's Swift
+  5.6 first on `PATH`, and it cannot parse the Xcode 26 SDK
+  (`unknown argument: '-enable-upcoming-feature'`). The harness now also compiles
+  `GameSession.swift`, which needs Combine and so only builds against the Xcode
+  toolchain.
 
 ## Deliberate v1 limits
 
