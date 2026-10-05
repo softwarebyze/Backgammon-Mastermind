@@ -18,7 +18,9 @@ const mockCapture = jest.fn();
 let mockCanUndo = true;
 
 jest.mock('posthog-react-native', () => ({
-  usePostHog: () => ({ capture: mockCapture }),
+  usePostHog: function postHogApi() {
+    return { capture: mockCapture };
+  },
 }));
 
 jest.mock('@/features/game/use-game', () => ({
