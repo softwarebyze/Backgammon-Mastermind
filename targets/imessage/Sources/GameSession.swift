@@ -18,6 +18,10 @@ final class ImGameSession: ObservableObject {
   @Published private(set) var destinations: Set<Int> = []
   @Published private(set) var status: String
   @Published private(set) var sentLatestTurn: Bool = false
+  /// The turn has been handed to `conversation.insert` but the user has not yet
+  /// tapped send in Messages. Distinct from `sentLatestTurn`: the message is
+  /// staged in the composer, not delivered.
+  @Published private(set) var pendingSend: Bool = false
   /// Whether any checker actually moved this turn. Distinguishes a genuine
   /// no-move pass from a turn that played a checker and then got blocked.
   private(set) var movedThisTurn: Bool = false
@@ -101,9 +105,24 @@ final class ImGameSession: ObservableObject {
 
   /// True once the turn is finished and can be messaged to the opponent.
   var isTurnSendable: Bool {
-    guard !sentLatestTurn, dice != nil else { return false }
+    guard !sentLatestTurn, !pendingSend, dice != nil else { return false }
     if board.winner != nil { return true }
     return board.remaining.isEmpty || !imHasAnyLegalMove(board)
+  }
+
+  /// Why Send is unavailable, or `nil` when it is ready. Without this the
+  /// button is just a dead grey pill and reads as broken rather than pending.
+  var sendBlocker: String? {
+    // `status` already narrates the staged and sent states — repeating them here
+    // printed the same sentence twice under the board.
+    if sentLatestTurn || pendingSend { return nil }
+    if isGameOver { return nil }
+    if dice == nil { return "Roll the dice to start the turn." }
+    if !board.remaining.isEmpty {
+      let left = board.remaining.count
+      return "Play \(left) more \(left == 1 ? "die" : "dice") to finish the turn."
+    }
+    return nil
   }
 
   var legalMoves: [ImMove] { imLegalMoves(board) }
@@ -202,8 +221,24 @@ final class ImGameSession: ObservableObject {
   }
 
   func markSent() {
+    pendingSend = false
     sentLatestTurn = true
     status = "Sent! Wait for your opponent's reply."
+  }
+
+  /// The turn was handed to `conversation.insert`; it is sitting in the
+  /// composer until the user taps send.
+  func markStaged() {
+    pendingSend = true
+    status = "Turn staged — tap the blue send arrow in Messages to deliver it."
+  }
+
+  /// `conversation.insert` rejected the message. Undo the staged state so the
+  /// button comes back and the turn is not silently lost.
+  func failToStage(_ reason: String) {
+    pendingSend = false
+    sentLatestTurn = false
+    status = reason
   }
 
   // MARK: Game id

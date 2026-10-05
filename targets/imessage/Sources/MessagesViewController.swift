@@ -69,18 +69,15 @@ final class MessagesViewController: MSMessagesAppViewController {
   }
 
   private func present(style: MSMessagesAppPresentationStyle) {
-    let view: AnyView
-    if style == .compact {
-      view = AnyView(ImCompactView(summary: compactSummary) { [weak self] in
-        self?.requestPresentationStyle(.expanded)
-      })
-    } else {
-      view = AnyView(ImBoardView(
-        session: session,
-        onSend: { [weak self] in self?.sendTurn() },
-        onNewGame: { [weak self] in self?.startNewGame() }
-      ))
-    }
+    // The compact drawer renders the same playable board, just with tighter
+    // chrome — the old summary card meant a turn could only be played after
+    // expanding, which read as "it doesn't work in small mode".
+    let view = AnyView(ImBoardView(
+      session: session,
+      onSend: { [weak self] in self?.sendTurn() },
+      onNewGame: { [weak self] in self?.startNewGame() },
+      isCompact: style == .compact
+    ))
     if let hosting {
       hosting.rootView = view
     } else {
@@ -99,11 +96,6 @@ final class MessagesViewController: MSMessagesAppViewController {
     }
   }
 
-  private var compactSummary: String {
-    if session.isGameOver { return session.status }
-    return "Turn \(session.turn): \(session.status)"
-  }
-
   // MARK: Actions
 
   private func startNewGame() {
@@ -111,7 +103,13 @@ final class MessagesViewController: MSMessagesAppViewController {
   }
 
   private func sendTurn() {
-    guard let conversation = activeConversation, session.isTurnSendable else { return }
+    guard session.isTurnSendable else { return }
+    guard let conversation = activeConversation else {
+      // No active conversation: `insert` cannot be called at all. Without this
+      // the button looks like it did nothing.
+      session.failToStage("Could not find the conversation — reopen the bubble and try again.")
+      return
+    }
     let payload = session.outgoingPayload()
 
     // Keep bubbles in one thread: reuse the selected message's session.
@@ -126,6 +124,14 @@ final class MessagesViewController: MSMessagesAppViewController {
     layout.trailingSubcaption = session.turn > 1 ? "Game \(payload.gameId.prefix(4))" : "New game"
     message.layout = layout
 
-    conversation.insert(message, completionHandler: nil)
+    session.markStaged()
+    conversation.insert(message) { [weak self] error in
+      guard let self else { return }
+      // `insert` fails when the conversation is no longer active (the user
+      // backgrounded the extension mid-send). Surface it instead of dropping it.
+      if let error {
+        self.session.failToStage("Could not stage the turn: \(error.localizedDescription)")
+      }
+    }
   }
 }
