@@ -166,6 +166,10 @@ private struct ImMetrics {
 struct ImBoardView: View {
   @ObservedObject var session: ImGameSession
   var onSend: () -> Void
+  /// Staging a turn iMessage already claimed to send. Messages offers no
+  /// delivery callback, so a send can fail after the extension dismissed; this
+  /// is how the player gets the turn back out.
+  var onResend: () -> Void
   var onNewGame: () -> Void
   /// Compact keeps the chrome tight so the board still fits the short drawer.
   var isCompact: Bool = false
@@ -640,17 +644,24 @@ struct ImBoardView: View {
             .disabled(!session.canUndo)
 
           Spacer(minLength: 0)
-          Button(sendTitle) { onSend() }
-            .font(.footnote.weight(.semibold))
-            .buttonStyle(.borderedProminent)
-            .controlSize(.small)
-            .disabled(!session.isTurnSendable)
+          Button(sendTitle) {
+            if session.sentLatestTurn {
+              onResend()
+            } else {
+              onSend()
+            }
+          }
+          .font(.footnote.weight(.semibold))
+          .buttonStyle(.borderedProminent)
+          .controlSize(.small)
+          .disabled(!session.isTurnSendable && !session.canResend)
         }
       }
     }
   }
 
   private var sendTitle: String {
+    if session.sentLatestTurn { return "Send again" }
     if session.isGameOver { return "Send result" }
     return session.pendingSend ? "Staged" : "Send turn"
   }

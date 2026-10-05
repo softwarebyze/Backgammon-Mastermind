@@ -17,6 +17,11 @@ final class ImGameSession: ObservableObject {
   @Published private(set) var selectedPoint: Int?
   @Published private(set) var destinations: Set<Int> = []
   @Published private(set) var status: String
+  /// We handed our latest turn to iMessage and it has not come back. **Not** a
+  /// delivery confirmation: Messages exposes only `didStartSendingMessage` and
+  /// `didCancelSendingMessage`, so there is no callback that proves the message
+  /// arrived. The state is therefore reversible via `retrySend()` — see
+  /// `markSending()`.
   @Published private(set) var sentLatestTurn: Bool = false
   /// The turn has been handed to `conversation.insert` but the user has not yet
   /// tapped send in Messages. Distinct from `sentLatestTurn`: the message is
@@ -154,6 +159,16 @@ final class ImGameSession: ObservableObject {
     return board.remaining.isEmpty || !imHasAnyLegalMove(board)
   }
 
+  /// Whether the turn we handed to iMessage can be staged again.
+  ///
+  /// `didStartSending` is the only send callback Messages offers besides
+  /// `didCancelSending`, and neither one confirms delivery — a send can still
+  /// fail after the extension has already dismissed. Rather than leaving the
+  /// player with a dead "Sent!" state and no way to get the turn back out, the
+  /// board, dice and payload are kept intact and the same bubble can be staged
+  /// again.
+  var canResend: Bool { sentLatestTurn && !pendingSend && dice != nil }
+
   /// Why Send is unavailable, or `nil` when it is ready. Without this the
   /// button is just a dead grey pill and reads as broken rather than pending.
   var sendBlocker: String? {
@@ -271,6 +286,12 @@ final class ImGameSession: ObservableObject {
 
   /// Play a compound move: each step is a real single-die move applied in
   /// order, so dice are consumed exactly as the rules require.
+  ///
+  /// Each step is resolved through `imLegalMoves` rather than the raw move list,
+  /// so the rules that make a *first* move legal are re-checked as the chain
+  /// advances. Without that, a chain could step somewhere the rules forbid at
+  /// that depth and leave the turn in a state the opponent could not have
+  /// produced.
   private func applySequence(_ sequence: ImSequence) {
     var next = board
     // Track where the checker actually is: `sequence.to` is the final square,
@@ -281,7 +302,7 @@ final class ImGameSession: ObservableObject {
       // Resolve the die against the *current* remainder — it has shrunk since
       // the sequence was computed.
       guard let index = next.remaining.firstIndex(of: die),
-            let step = imRawSingleStepMoves(next).first(where: {
+            let step = imLegalMoves(next).first(where: {
               $0.dieIndex == index && $0.from == current
             })
       else { return }
@@ -340,11 +361,30 @@ final class ImGameSession: ObservableObject {
     return "rolled \(dice.0)–\(dice.1) with no move"
   }
 
-  func markSent() {
-    moveHistory = []
+  /// iMessage accepted the bubble and started sending it.
+  ///
+  /// Deliberately **not** irreversible. Messages has no delivery-confirmation
+  /// callback, so this is the earliest point we know anything at all; locking the
+  /// turn here meant that if the send then failed, the extension had already
+  /// dismissed, the opponent never received the turn, and the player had no way
+  /// to send it again. The board, dice and undo history are all kept, so
+  /// `retrySend()` re-stages a byte-identical payload.
+  func markSending() {
+    // `moveHistory` is intentionally preserved (unlike the old `markSent`) —
+    // `canUndo` still refuses it because `sentLatestTurn` is set, but the
+    // snapshots are what make a resend produce the same move list.
     pendingSend = false
     sentLatestTurn = true
-    status = "Sent! Wait for your opponent's reply."
+    status = "Sent! Waiting for your opponent's reply."
+  }
+
+  /// Put a turn we thought we sent back in the player's hands, because it may
+  /// never have arrived. `didCancelSending` covers the draft that was deleted
+  /// before sending; this covers the send that failed after we dismissed.
+  func retrySend() {
+    guard sentLatestTurn else { return }
+    sentLatestTurn = false
+    status = "Turn ready to send again."
   }
 
   /// The turn was handed to `conversation.insert`; it is sitting in the

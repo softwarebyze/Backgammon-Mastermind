@@ -54,11 +54,12 @@ final class MessagesViewController: MSMessagesAppViewController {
   }
 
   /// `insert` only stages the message in the composer; the user can still delete
-  /// the draft. The turn is only committed once it is actually sent, so this is
-  /// where the session locks and the extension dismisses.
+  /// the draft. The turn is only handed over once Messages reports the send
+  /// starting, and even then the state is reversible — see `ImGameSession.
+  /// markSending()` — because this callback is not a delivery confirmation.
   override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
     super.didStartSending(message, conversation: conversation)
-    session.markSent()
+    session.markSending()
     dismiss()
   }
 
@@ -83,6 +84,7 @@ final class MessagesViewController: MSMessagesAppViewController {
     let view = AnyView(ImBoardView(
       session: session,
       onSend: { [weak self] in self?.sendTurn() },
+      onResend: { [weak self] in self?.resendTurn() },
       onNewGame: { [weak self] in self?.startNewGame() },
       isCompact: style == .compact
     ))
@@ -134,12 +136,25 @@ final class MessagesViewController: MSMessagesAppViewController {
 
     session.markStaged()
     conversation.insert(message) { [weak self] error in
-      guard let self else { return }
+      guard let self, let error else { return }
       // `insert` fails when the conversation is no longer active (the user
       // backgrounded the extension mid-send). Surface it instead of dropping it.
-      if let error {
+      //
+      // The completion runs on a background queue, and `failToStage` publishes
+      // `@Published` state that SwiftUI reads, so it has to hop to main first —
+      // publishing off-thread hands `ImBoardView` an update on the wrong queue.
+      DispatchQueue.main.async {
         self.session.failToStage("Could not stage the turn: \(error.localizedDescription)")
       }
     }
+  }
+
+  /// Re-stage a turn that iMessage claimed to send but may never have delivered.
+  /// Messages gives us no delivery callback, so this is the only way back: the
+  /// session kept the board and dice, and the rebuilt payload is identical.
+  private func resendTurn() {
+    guard session.canResend else { return }
+    session.retrySend()
+    sendTurn()
   }
 }

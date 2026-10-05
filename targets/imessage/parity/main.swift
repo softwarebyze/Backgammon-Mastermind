@@ -424,7 +424,7 @@ do {
   check("cancel.pendingClearedOnLoad", r.pendingSend == false)
   check("cancel.rollableOnNewTurn", r.needsRoll)
 
-  s.markSent()
+  s.markSending()
   check("sent.notSendable", s.isTurnSendable == false)
   check("sent.noRoll", s.needsRoll == false)
   s.tapPoint(13)
@@ -583,7 +583,7 @@ do {
     // A committed turn cannot be taken back.
     session.tapPoint(chain.from)
     session.tapPoint(chain.to)
-    session.markSent()
+    session.markSending()
     check("compound.noUndoAfterSend", session.canUndo == false)
     session.undo()
     check("compound.undoNoopAfterSend", session.board.remaining.isEmpty, "remaining=\(session.board.remaining)")
@@ -631,6 +631,284 @@ do {
   let capURL = atCap.outgoingPayload().url
   check("ceiling.reencodable", capURL != nil && (try? ImTurnPayload(url: capURL!)) != nil)
   check("ceiling.decodedTurn", (try? ImTurnPayload(url: capURL!))?.turn == imMaxTurn)
+}
+
+// 17. Mandatory dice use. A move may strand the other die only when the rules
+//     force it, and `imSequences` must never offer one that does not.
+//
+//     Regression for the reported "says no legal moves when there are legal
+//     moves" sibling: `imSequences` built its steps from the raw single-step
+//     list, so it offered first moves that USBGF forbids. The player could play
+//     one, strand the other die, and send a turn the opponent could not have
+//     produced — the UI even narrated it as a pass.
+do {
+  // White: one checker on the bar, one on point 4, 13 borne off. Black blocks
+  // 22 and 2. Roll 1-2.
+  //
+  //   * enter 24 with the 1  -> the 2 is stranded (24>22 and 4>2 both blocked).
+  //     `imLegalMoves` forbids this first move.
+  //   * enter 23 with the 2  -> then 4>3 with the 1. Both dice played.
+  func blockedBarBoard() -> ImBoard {
+    var points = Array(repeating: ImPoint.empty, count: 25)
+    points[4] = ImPoint(owner: .white, count: 1)
+    points[1] = ImPoint(owner: .black, count: 2)
+    points[2] = ImPoint(owner: .black, count: 2)
+    points[22] = ImPoint(owner: .black, count: 2)
+    return ImBoard(
+      points: points, bar: [.white: 1, .black: 0],
+      off: [.white: 13, .black: 0], current: .white, remaining: [1, 2], winner: nil)
+  }
+
+  let blocked = blockedBarBoard()
+  check("mustUse.legalIsOnlyEnterWithTwo", moveKeys(imLegalMoves(blocked)).joined() == "0>23",
+        moveKeys(imLegalMoves(blocked)).joined(separator: ","))
+  // The offered destination set must not contain the move the rules forbid.
+  let offeredBar = imSequences(blocked).filter { $0.from == imBarPoint }.map(\.to)
+  check("mustUse.forbidsStrandingEntry", !offeredBar.contains(24), "\(offeredBar.sorted())")
+  check("mustUse.offersLegalEntry", offeredBar.contains(23), "\(offeredBar.sorted())")
+
+  // Every offered sequence must *begin* with a move the rules allow. This is
+  // the invariant that was violated: steps came from the raw list, so a chain
+  // could start on a filtered-out move.
+  func firstStepIsLegal(_ board: ImBoard) -> Bool {
+    let legalKeys = Set(moveKeys(imLegalMoves(board)))
+    return imSequences(board).allSatisfy { sequence in
+      guard let die = sequence.dies.first,
+            let index = board.remaining.firstIndex(of: die),
+            let step = imRawSingleStepMoves(board).first(where: {
+              $0.dieIndex == index && $0.from == sequence.from
+            })
+      else { return false }
+      return legalKeys.contains("\(step.from)>\(step.to)")
+    }
+  }
+  check("mustUse.firstStepLegal.blocked", firstStepIsLegal(blocked))
+
+  // The depth-1 destinations are exactly `imLegalMoves` — no missing (a legal
+  // move the UI hides) and none extra (an illegal one the UI offers).
+  let depthOne = Set(imSequences(blocked).filter { $0.usesDice == 1 }.map { "\($0.from)>\($0.to)" })
+  check("mustUse.depthOneMatchesLegal", depthOne == Set(moveKeys(imLegalMoves(blocked))),
+        "offered \(depthOne.sorted())")
+
+  // Randomized over positions from real played-out games: the two exact
+  // invariants that were violated, asserted on every position rather than only
+  // the hand-built one. Neither is heuristic, so neither can flake.
+  var positions = 0
+  var badFirstStep = 0
+  var badDepthOne = 0
+  var sidesSeen: Set<ImPlayer> = []
+  for _ in 0 ..< 40 {
+    let session = ImGameSession()
+    session.rollDice()
+    // Drive whole games turn by turn, sampling the position at every step so
+    // mid-turn boards (doubles, part-spent dice) are covered too. `load` keeps
+    // the payload's side, so flipping `current` here alternates the players.
+    for _ in 0 ..< 400 {
+      if session.isGameOver { break }
+      if session.board.remaining.isEmpty || session.dice == nil {
+        var next = session.board
+        next.current = next.current.opponent
+        session.load(payload: ImTurnPayload.fromBoard(
+          next, gameId: "MustUse000", turn: 7, dice: nil, summary: "x"))
+        session.rollDice()
+        continue
+      }
+      let board = session.board
+      sidesSeen.insert(board.current)
+      positions += 1
+      let legalKeys = Set(moveKeys(imLegalMoves(board)))
+      let seqs = imSequences(board)
+      for seq in seqs {
+        guard let die = seq.dies.first,
+              let index = board.remaining.firstIndex(of: die),
+              let step = imRawSingleStepMoves(board).first(where: {
+                $0.dieIndex == index && $0.from == seq.from
+              })
+        else { badFirstStep += 1; continue }
+        if !legalKeys.contains("\(step.from)>\(step.to)") { badFirstStep += 1 }
+      }
+      let depthOne = Set(seqs.filter { $0.usesDice == 1 }.map { "\($0.from)>\($0.to)" })
+      let allTargets = Set(seqs.map { "\($0.from)>\($0.to)" })
+      // Not `depthOne == legalKeys`: a destination reachable both ways is served
+      // by the longer chain, so it is absent from the single-die set on purpose.
+      // What must hold is that no legal move is *missing* from the offer.
+      if !legalKeys.isSubset(of: allTargets) { badDepthOne += 1 }
+
+      // Play on: prefer a chain, else any single-die move.
+      guard let next = seqs.first(where: { $0.usesDice > 1 }) ?? seqs.first else { break }
+      session.tapPoint(next.from)
+      guard session.destinations.contains(next.to) else { break }
+      session.tapPoint(next.to)
+    }
+  }
+  check("mustUse.positionsSampled", positions > 500, "\(positions)")
+  check("mustUse.bothSidesSampled", sidesSeen == Set(ImPlayer.allCases), "\(sidesSeen)")
+  check("mustUse.firstStepLegalRandomized", badFirstStep == 0, "\(badFirstStep) bad chains")
+  check("mustUse.noMissingLegalMovesRandomized", badDepthOne == 0, "\(badDepthOne) bad sets")
+
+  // Playing only what the UI offers must never strand a die the player could
+  // still have played from the position they reached.
+  var illegalStrands = 0
+  for _ in 0 ..< 60 {
+    let session = ImGameSession()
+    session.rollDice()
+    let before = session.board.remaining
+    for _ in 0 ..< 6 {
+      guard !session.board.remaining.isEmpty else { break }
+      guard let seq = session.sequences.first else { break }
+      session.tapPoint(seq.from)
+      guard session.destinations.contains(seq.to) else { break }
+      session.tapPoint(seq.to)
+    }
+    guard session.isTurnSendable, !session.board.remaining.isEmpty else { continue }
+    // A die left behind is only legal if the higher-die rule forced it: the
+    // position must be exhausted *and* the player must have played the higher
+    // die. Anything else means the offered moves were not the rules' choice.
+    let played = before.max() ?? 0
+    let stranded = session.board.remaining
+    if !imHasAnyLegalMove(session.board) {
+      if stranded.count == 1, let left = stranded.first, left != played {
+        continue  // higher-die rule: correct to strand the lower die
+      }
+      illegalStrands += 1
+    } else {
+      // Still playable after the turn claimed to be sendable — the send
+      // boundary disagreed with the engine.
+      illegalStrands += 1
+    }
+  }
+  check("mustUse.noIllegalStranding", illegalStrands == 0, "\(illegalStrands) bad turns")
+
+  // Session-level end-to-end on the reported position: the bar must not offer
+  // 24, and entering with the 2 must leave the 1 playable from point 4 so Send
+  // stays disabled.
+  let probe = blockedBarBoard()
+  let played = { () -> ImGameSession? in
+    for _ in 0 ..< 4000 {
+      let s = ImGameSession()
+      s.load(payload: ImTurnPayload.fromBoard(probe, gameId: "MustUse000", turn: 3,
+                                              dice: (1, 2), summary: "x"))
+      s.rollDice()
+      if let d = s.dice, d.0 == 1 || d.1 == 1, d.0 == 2 || d.1 == 2 { return s }
+    }
+    return nil
+  }()
+  if let session = played, session.board.remaining.contains(1), session.board.remaining.contains(2) {
+    session.tapPoint(imBarPoint)
+    check("mustUse.sessionBarDestinations", !session.destinations.contains(24),
+          "\(session.destinations.sorted())")
+    check("mustUse.sessionOffersTwo", session.destinations.contains(23),
+          "\(session.destinations.sorted())")
+    session.tapPoint(23)
+    check("mustUse.secondDieStillPlayable", !session.isTurnSendable,
+          "remaining \(session.board.remaining)")
+    // Point 4 with the 1 finishes the turn and only then is Send allowed.
+    session.tapPoint(4)
+    check("mustUse.offersFourAfterEntry", session.destinations.contains(3),
+          "\(session.destinations.sorted())")
+    session.tapPoint(3)
+    check("mustUse.turnSendableAfterBothDice", session.isTurnSendable,
+          "remaining \(session.board.remaining)")
+    check("mustUse.allDicePlayed", session.board.remaining.isEmpty,
+          "\(session.board.remaining)")
+  } else {
+    check("mustUse.sessionExercised.position", false, "never rolled 1-2")
+  }
+}
+
+// 18. Send lifecycle. `didStartSending` is the only send callback Messages gives
+//     us besides `didCancelSending`, and neither confirms delivery — so the
+//     state it produces has to stay reversible, or a send that fails after the
+//     extension dismissed leaves the turn unsendable forever.
+do {
+  let s = ImGameSession()
+  s.rollDice()
+  // Play the turn out through the tap path.
+  for _ in 0 ..< 8 {
+    guard !s.board.remaining.isEmpty, let seq = s.sequences.first else { break }
+    s.tapPoint(seq.from)
+    guard s.destinations.contains(seq.to) else { break }
+    s.tapPoint(seq.to)
+  }
+  guard s.isTurnSendable else {
+    check("send.turnSendable", false, "could not complete a turn")
+    exit(1)
+  }
+
+  let boardBefore = s.board
+  let diceBefore = s.dice
+  let payloadBefore = s.outgoingPayload().url
+
+  s.markSending()
+  // A send that never lands must not cost the player the turn.
+  check("send.keepsBoard", s.board == boardBefore)
+  check("send.keepsDice", s.dice.map { "\($0.0)-\($0.1)" } == diceBefore.map { "\($0.0)-\($0.1)" })
+  check("send.resendable", s.canResend)
+  // Still not a normal send — the turn is committed, not mid-play.
+  check("send.stillNotTurnSendable", s.isTurnSendable == false)
+  check("send.noRollAfterSending", s.needsRoll == false)
+  // Undo must stay refused: the bubble already went out.
+  check("send.noUndoAfterSending", s.canUndo == false)
+
+  // Retry reproduces the identical payload, so a resend cannot silently change
+  // the move list the opponent will play.
+  s.retrySend()
+  check("send.retryClearsSent", s.sentLatestTurn == false)
+  check("send.retryNotResendable", s.canResend == false)
+  check("send.retrySendable", s.isTurnSendable)
+  // The pre-send snapshots must survive: the old `markSent()` cleared
+  // `moveHistory`, so even a manual retry could not reproduce the position.
+  check("send.retryRestoresUndo", s.canUndo)
+  let payloadAfter = s.outgoingPayload().url
+  check("send.retrySamePayload", payloadAfter == payloadBefore,
+        "\(payloadBefore?.absoluteString ?? "∅") vs \(payloadAfter?.absoluteString ?? "∅")")
+
+  // A cancelled draft is still a distinct path and must not look sent.
+  s.markStaged()
+  check("send.stagedNotSent", s.sentLatestTurn == false && s.pendingSend)
+  s.failToStage("cancelled")
+  check("send.failToStageUnlocks", s.sentLatestTurn == false && s.pendingSend == false)
+
+  // `failToStage` is published from `conversation.insert`'s completion, which
+  // runs off the main thread — the controller must hop before touching state.
+  // Guard the call site so the hop cannot be dropped again.
+  let controller = try String(contentsOfFile: "targets/imessage/Sources/MessagesViewController.swift", encoding: .utf8)
+  check("send.failToStageOnMainThread",
+        controller.contains("DispatchQueue.main.async") && controller.contains("failToStage"),
+        "conversation.insert completion publishes session state")
+  check("send.noMarkSentLeftover", !controller.contains("markSent("))
+
+  // Wiring guard: the retry affordance has to actually reach the button, or the
+  // session can recover while the UI still shows a dead "Sent!".
+  let board = try String(contentsOfFile: "targets/imessage/Sources/BoardView.swift", encoding: .utf8)
+  check("send.resendWired",
+        board.contains("onResend") && board.contains("canResend")
+          && board.contains("\"Send again\""),
+        "ImBoardView must offer the retry")
+}
+
+// 19. Staged-then-sent ordering: a retry must not leave the draft flag set, and
+//     resending must not unlock a turn that a *new* position has replaced.
+do {
+  let s = ImGameSession()
+  s.rollDice()
+  for _ in 0 ..< 8 {
+    guard !s.board.remaining.isEmpty, let seq = s.sequences.first else { break }
+    s.tapPoint(seq.from)
+    guard s.destinations.contains(seq.to) else { break }
+    s.tapPoint(seq.to)
+  }
+  s.markStaged()
+  s.markSending()
+  check("order.sendingClearsStaged", s.pendingSend == false)
+  check("order.sendingSetsSent", s.sentLatestTurn)
+  check("order.resendAfterStagedSend", s.canResend)
+  // Loading an opponent reply supersedes everything about our own turn.
+  let reply = ImTurnPayload.fromBoard(
+    ImBoard.initial(), gameId: s.gameId, turn: s.turn, dice: (4, 2), summary: "played")
+  s.load(payload: reply)
+  check("order.loadClearsSent", s.sentLatestTurn == false)
+  check("order.loadClearsResend", s.canResend == false)
 }
 
 if failures > 0 {

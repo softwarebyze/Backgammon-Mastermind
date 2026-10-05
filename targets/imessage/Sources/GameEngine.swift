@@ -269,10 +269,13 @@ private func imMaxDiceUsable(_ board: ImBoard, memo: inout [String: Int]) -> Int
 
 /// USBGF: keep first moves using the most dice; if only one mixed die is
 /// usable, keep the higher. Never drops every candidate.
-func imLegalMoves(_ board: ImBoard) -> [ImMove] {
+///
+/// `memo` is the `imMaxDiceUsable` cache. It is keyed on full position identity
+/// and the search is pure, so callers walking many boards (see `imSequences`)
+/// pass one dictionary through rather than paying to rebuild it per call.
+func imLegalMoves(_ board: ImBoard, memo: inout [String: Int]) -> [ImMove] {
   let raw = imRawSingleStepMoves(board)
   guard raw.count > 1, board.remaining.count > 1 else { return raw }
-  var memo: [String: Int] = [:]
   var scored: [(move: ImMove, usage: Int, die: Int)] = []
   var maxUsage = 0
   for move in raw {
@@ -290,6 +293,11 @@ func imLegalMoves(_ board: ImBoard) -> [ImMove] {
     legal = legal.filter { $0.die == higher }
   }
   return legal.map { $0.move }
+}
+
+func imLegalMoves(_ board: ImBoard) -> [ImMove] {
+  var memo: [String: Int] = [:]
+  return imLegalMoves(board, memo: &memo)
 }
 
 /// One checker played with two or more dice in a single turn — a "compound"
@@ -316,18 +324,29 @@ struct ImSequence: Equatable {
 ///
 /// When a destination is reachable both ways the longer chain wins: it is what
 /// the player means by tapping a point that far away.
+///
+/// Steps come from `imLegalMoves` on each node's *own* board, not from the raw
+/// single-step list, and that is load-bearing in both directions:
+///
+/// - Reusing the opening step list silently missed every continuation onto a
+///   square that was empty at the start, so chains were under-found.
+/// - Offering raw moves over-offered them. A move can strand the other die when
+///   a different first move would have played both, so an offered move could be
+///   an illegal turn that ended "no more moves — send to pass". Filtering every
+///   step through `imLegalMoves` is what makes any offered chain a legal turn.
 func imSequences(_ board: ImBoard) -> [ImSequence] {
-  // The bar, when occupied, is the only legal origin — `imRawSingleStepMoves`
-  // already encodes that, so derive the origins from it rather than duplicating
-  // the rule.
-  let origins = Set(imRawSingleStepMoves(board).map(\.from))
+  // One shared memo: the search is pure and position-keyed, so re-deriving
+  // legality at every BFS node is far cheaper than rebuilding the cache per node.
+  var memo: [String: Int] = [:]
+  // Origins come from the legal move list, so a point the rules would never let
+  // this checker play from is not tappable-and-hinted either.
+  let origins = Set(imLegalMoves(board, memo: &memo).map(\.from))
   var found: [ImSequence] = []
 
   for origin in origins.sorted() {
     // Breadth-first over (position, square the checker is on, dice still in
     // hand, dice already spent by this checker). Each node re-derives its legal
-    // steps from its *own* board: reusing the opening step list silently missed
-    // every continuation onto a square that was empty at the start.
+    // steps from its *own* board.
     var queue: [(board: ImBoard, square: Int, remaining: [Int], dies: [Int])] =
       [(board, origin, board.remaining, [])]
     var head = 0
@@ -338,7 +357,7 @@ func imSequences(_ board: ImBoard) -> [ImSequence] {
         found.append(ImSequence(from: origin, to: node.square, dies: node.dies))
       }
       guard !node.remaining.isEmpty else { continue }
-      for step in imRawSingleStepMoves(node.board) where step.from == node.square {
+      for step in imLegalMoves(node.board, memo: &memo) where step.from == node.square {
         // `node.remaining` is kept in step with `node.board.remaining`, so this
         // index is valid — removing by index (not by value) is what lets doubles
         // use the same value twice.
