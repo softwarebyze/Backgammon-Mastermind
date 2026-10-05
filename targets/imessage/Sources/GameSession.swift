@@ -82,7 +82,13 @@ final class ImGameSession: ObservableObject {
     }
   }
 
+  /// Starting over while a turn is staged would leave a bubble in the composer
+  /// pointing at a game this session no longer holds, so it is refused.
   func loadNewGame() {
+    guard !pendingSend else {
+      status = "Send or delete the staged turn before starting a new game."
+      return
+    }
     let fresh = ImGameSession()
     self.board = fresh.board
     self.gameId = fresh.gameId
@@ -99,8 +105,12 @@ final class ImGameSession: ObservableObject {
 
   var isGameOver: Bool { board.winner != nil }
 
+  /// `pendingSend` is load-bearing here, not just a Send-button flag. Once a
+  /// turn is staged the bubble already announces the *opponent* is to move, so
+  /// letting the local player roll or move again would put two contradictory
+  /// claims on screen at once (staged "your move, Black" over a live White turn).
   var needsRoll: Bool {
-    board.winner == nil && board.remaining.isEmpty && !sentLatestTurn
+    board.winner == nil && board.remaining.isEmpty && !sentLatestTurn && !pendingSend
   }
 
   /// True once the turn is finished and can be messaged to the opponent.
@@ -145,7 +155,8 @@ final class ImGameSession: ObservableObject {
   }
 
   func tapPoint(_ point: Int) {
-    guard !sentLatestTurn, board.winner == nil, !board.remaining.isEmpty else { return }
+    // Locked while a turn is staged or sent — see `needsRoll`.
+    guard !sentLatestTurn, !pendingSend, board.winner == nil, !board.remaining.isEmpty else { return }
     // Tapped a highlighted destination → move.
     if destinations.contains(point), let from = selectedPoint {
       applyMove(from: from, to: point)

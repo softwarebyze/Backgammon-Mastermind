@@ -113,7 +113,9 @@ private struct ImMetrics {
   /// much length as the leftover height allows (capped like the app's 5.2...7
   /// checker-diameter range so five checkers always fit without overlapping).
   init(available: CGSize, compact: Bool) {
-    let padding: CGFloat = compact ? 12 : 20
+    // Must match the view's own padding so the board never runs under the
+    // sheet's rounded corners.
+    let clearance = ImBoardView.cornerClearance + (compact ? 0 : 4)
     let frame: CGFloat = compact ? 3 : 4
 
     // GeometryReader reports a zero (and briefly nonsensical) size on its first
@@ -124,7 +126,7 @@ private struct ImMetrics {
     let safeWidth = available.width.isFinite ? max(available.width, 200) : 320
     let safeHeight = available.height.isFinite ? max(available.height, 240) : 480
 
-    let maxWidth = max(180, min(safeWidth - padding, 560))
+    let maxWidth = max(180, min(safeWidth - clearance * 2, 560))
     let scale = min(1, maxWidth / 320)
     let barWidth = max(14, min(28 * scale, maxWidth * 0.12))
     let bearOffWidth = max(20, min(38 * scale, maxWidth * 0.16))
@@ -135,7 +137,9 @@ private struct ImMetrics {
 
     // Chrome above and below the board (header, dice, status, actions). Leave
     // it room so the frame is never clipped in the short compact drawer.
-    let verticalChrome: CGFloat = compact ? 132 : 156
+    // Padding is inside this budget too, so the content cannot overflow the
+    // explicit compact height and get clipped off the top.
+    let verticalChrome: CGFloat = compact ? 152 : 168
     let middleHeight: CGFloat = compact ? 8 : 12
     let availableBoardHeight = max(80, safeHeight - verticalChrome - frame * 2)
     let maxPoint = checkerSize * (compact ? 4.4 : 7)
@@ -170,7 +174,11 @@ struct ImBoardView: View {
   /// `GeometryReader` root has no ideal height, so Messages collapses the sheet
   /// to nothing and dismisses it. Giving compact an explicit height gives the
   /// reader something to measure and yields a playable drawer.
-  static let compactSheetHeight: CGFloat = 340
+  static let compactSheetHeight: CGFloat = 360
+
+  /// The sheet's own corner radius. Content has to clear it or the corners clip
+  /// the text sitting in them ("Roll to open" sits top-left, Roll top-right).
+  static let cornerClearance: CGFloat = 14
 
   var body: some View {
     Group {
@@ -180,11 +188,15 @@ struct ImBoardView: View {
         measured
       }
     }
+    // Anything the content does not cover is flat Messages grey, which read as a
+    // dead band under the board. Paint the whole sheet instead.
+    .background(ImTheme.frameOuter.ignoresSafeArea())
   }
 
   private var measured: some View {
     GeometryReader { geo in
       content(ImMetrics(available: geo.size, compact: isCompact))
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
   }
 
@@ -199,9 +211,10 @@ struct ImBoardView: View {
       sendHint
       actionRow
     }
-    .padding(isCompact ? 8 : 14)
+    // Pad clear of the sheet's corner radius, otherwise the corner arcs clip the
+    // text nearest them.
+    .padding(isCompact ? Self.cornerClearance : Self.cornerClearance + 4)
     .frame(maxWidth: .infinity, alignment: .top)
-    .background(ImTheme.frameOuter)
   }
 
   private func opponentOf(_ player: ImPlayer) -> ImPlayer { player.opponent }

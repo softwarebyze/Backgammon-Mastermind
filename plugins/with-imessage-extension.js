@@ -125,8 +125,32 @@ function withImessageTarget(config) {
       return cfg;
     }
 
-    const created = project.addTarget(EXT_FOLDER, 'app_extension', EXT_FOLDER, bundleId);
+    // node-xcode@3.0.1 `addTarget` has a bug on the `app_extension` path: it
+    // creates the embed "Copy Files" phase on the *host* target, but then adds
+    // the product to a phase looked up by `productFile.target`, which is the
+    // *new* target. The lookup misses, `buildPhaseObject` returns undefined, and
+    // `sources.files.push(...)` throws — prebuild dies with the target already
+    // half-written into the project. Skip that one call and wire the embed
+    // phase ourselves, which is what we want anyway (PlugIns, not Contacts).
+    const addToCopyfilesPhase = project.addToPbxCopyfilesBuildPhase.bind(project);
+    project.addToPbxCopyfilesBuildPhase = () => {};
+    let created;
+    try {
+      created = project.addTarget(EXT_FOLDER, 'app_extension', EXT_FOLDER, bundleId);
+    } finally {
+      project.addToPbxCopyfilesBuildPhase = addToCopyfilesPhase;
+    }
     const extUuid = created.uuid;
+
+    // "Embed App Extensions" on the host. dstSubfolderSpec 13 is PlugIns.
+    project.addBuildPhase(
+      [`${EXT_FOLDER}.appex`],
+      'PBXCopyFilesBuildPhase',
+      'Embed App Extensions',
+      project.getFirstTarget().uuid,
+      13,
+      '"$(CONTENTS_FOLDER_PATH)/PlugIns"',
+    );
 
     // Messages extensions are a distinct product type from generic app extensions.
     project.pbxNativeTargetSection()[extUuid].productType = `"${EXT_PRODUCT_TYPE}"`;

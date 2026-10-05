@@ -346,6 +346,60 @@ do {
   check("summary.neverReportedAsPass", violations.isEmpty, violations.prefix(3).joined(separator: " | "))
 }
 
+// 13. A staged turn must lock the local player out. Regression test for the bug
+//     where "Send turn" staged a bubble announcing the opponent was to move, but
+//     Roll and the points stayed live — so the same device could roll again and
+//     play a second turn while the staged bubble still said "your move, Black".
+//     Found by playing against your own number, where no legitimate reply exists.
+do {
+  let s = ImGameSession()
+  check("staged.startsRollable", s.needsRoll)
+  s.rollDice()
+  // Play the turn out so Send becomes legal.
+  for _ in 0..<4 {
+    guard let move = s.legalMoves.first else { break }
+    s.tapPoint(move.from)
+    s.tapPoint(move.to)
+    if s.isTurnSendable { break }
+  }
+  check("staged.reachesSendable", s.isTurnSendable)
+  let diceBefore = s.dice.map { "\($0.0)-\($0.1)" } ?? "none"
+  let pointsBefore = s.board.points
+
+  s.markStaged()
+  check("staged.notSendable", s.isTurnSendable == false)
+  // The two claims that must not coexist: a staged bubble for the opponent...
+  check("staged.noSecondRoll", s.needsRoll == false)
+  s.rollDice()
+  let diceAfter = s.dice.map { "\($0.0)-\($0.1)" } ?? "none"
+  check("staged.rollIsNoop", diceAfter == diceBefore, "\(diceAfter) vs \(diceBefore)")
+
+  // ...and a live local turn.
+  s.tapPoint(13)
+  check("staged.tapIsNoop", s.selectedPoint == nil)
+  s.tapPoint(8)
+  check("staged.tapIsNoop2", s.selectedPoint == nil && s.destinations.isEmpty)
+  check("staged.boardFrozen", s.board.points == pointsBefore)
+
+  // Starting over is refused, otherwise the composer would keep a bubble for a
+  // game this session no longer holds.
+  s.loadNewGame()
+  let diceAfterNew = s.dice.map { "\($0.0)-\($0.1)" } ?? "none"
+  check("staged.newGameRefused", s.pendingSend && diceAfterNew == diceBefore)
+
+  // A failed stage hands control back.
+  s.failToStage("nope")
+  // Recovery means the lock is gone: rollable again if the dice were spent,
+  // otherwise the unplayed dice are still there to attempt.
+  let canContinue = s.board.remaining.isEmpty ? s.needsRoll : true
+  check("staged.recovered", s.pendingSend == false && canContinue, "pending=\(s.pendingSend) remaining=\(s.board.remaining)")
+  s.markSent()
+  check("sent.notSendable", s.isTurnSendable == false)
+  check("sent.noRoll", s.needsRoll == false)
+  s.tapPoint(13)
+  check("sent.tapIsNoop", s.selectedPoint == nil)
+}
+
 if failures > 0 {
   print("\(failures) FAILURE(S)")
   exit(1)
