@@ -116,8 +116,10 @@ struct ImBoardView: View {
       header
       diceRow
       barRow(for: opponentOf(session.board.current))
+      numberRail(points: Array(13 ... 24))
       pointRow(points: Array(13 ... 24), isTop: true)
       pointRow(points: Array(stride(from: 12, through: 1, by: -1)), isTop: false)
+      numberRail(points: Array(stride(from: 12, through: 1, by: -1)))
       barRow(for: session.board.current)
       bearOffControl
       statusLine
@@ -235,6 +237,22 @@ struct ImBoardView: View {
     }
   }
 
+  /// Point numbers live in their own rail rather than inside each cell, so the
+  /// two rows can never draw over each other in the band between them. The
+  /// 22pt cell pitch and the 6pt bar groove have to match `pointRow` exactly or
+  /// the numbers drift off their points.
+  private func numberRail(points: [Int]) -> some View {
+    HStack(spacing: 2) {
+      ForEach(points, id: \.self) { point in
+        Text("\(point)")
+          .font(.system(size: 8))
+          .foregroundStyle(ImTheme.frameBevel)
+          .frame(width: 22)
+      }
+      Color.clear.frame(width: 6, height: 1)
+    }
+  }
+
   // MARK: Bear off
 
   /// Bearing off is the one legal destination that is not a numbered point, so
@@ -294,25 +312,10 @@ private struct ImPointCell: View {
 
 var body: some View {
     Button(action: onTap) {
-      VStack(spacing: 2) {
-        if isTop {
-          numberLabel
-          triangleWithCheckers
-        } else {
-          triangleWithCheckers
-          numberLabel
-        }
-      }
-      .frame(width: 22)
+      triangleWithCheckers
     }
     .buttonStyle(.plain)
     .disabled(!canSelect && !isDestination && slot.owner != nil)
-  }
-
-  private var numberLabel: some View {
-    Text("\(point)")
-      .font(.system(size: 8))
-      .foregroundStyle(ImTheme.frameBevel)
   }
 
   private var triangleWithCheckers: some View {
