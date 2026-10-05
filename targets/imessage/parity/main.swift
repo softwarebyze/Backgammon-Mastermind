@@ -911,6 +911,54 @@ do {
   check("order.loadClearsResend", s.canResend == false)
 }
 
+// 20. The compact sheet must shrink to the height Messages offers, never clip.
+//     Regression for the "New Message" compose sheet, which is much shorter than
+//     the conversation drawer: the Roll button was cut off entirely and
+//     "Send turn" was sliced in half, because the sheet sized itself from the
+//     root view's fitting size, the root forced `.frame(height: 360)`, and the
+//     content was taller than that frame — so it was centred and overflowed off
+//     both ends.
+//
+//     Two things have to hold, and neither is obvious from reading the layout:
+//       - the height is a constraint at a yieldable priority, not a SwiftUI
+//         frame (a frame reports its height whatever it is offered, so it always
+//         wins and always clips);
+//       - the board sits in a flexible slot, so the chrome's real height is
+//         never guessed at. An earlier version reserved a hard-coded
+//         `verticalChrome`, which was too small and reintroduced the overflow.
+do {
+  let board = try String(contentsOfFile: "targets/imessage/Sources/BoardView.swift", encoding: .utf8)
+  let controller = try String(contentsOfFile: "targets/imessage/Sources/MessagesViewController.swift", encoding: .utf8)
+
+  check("layout.noSwiftUIHeightFrame",
+        !board.contains(".frame(height: Self.compactSheetHeight)")
+          && !board.contains(".frame(height: compactSheetHeight)"),
+        "a SwiftUI height frame beats whatever Messages offers and clips the sheet")
+
+  check("layout.heightIsConstraint",
+        controller.contains("heightAnchor.constraint"),
+        "compact height must come from a constraint that can break")
+  check("layout.heightConstraintYields",
+        controller.contains("priority = .defaultHigh"),
+        "constraint must sit below required so a shorter sheet wins")
+  check("layout.compactHeightApplied",
+        controller.contains("applyCompactHeightConstraint(for: style)"))
+
+  // The board has to be the flexible child; otherwise the leftover-height
+  // reservation is a guess and can be too small again.
+  let boardSlotIsFlexible = board.contains("boardSpace:")
+    && board.range(of: "GeometryReader { geo in\n        board(ImMetrics(") != nil
+  check("layout.boardTakesLeftover", boardSlotIsFlexible,
+        "board must be sized from the space it was actually given")
+  check("layout.noGuessedChrome", !board.contains("let verticalChrome"),
+        "a reserved chrome estimate is what caused the clipping")
+
+  // Every dimension the metrics derive must stay clamped: a negative frame
+  // dimension traps in SwiftUI and kills the extension on launch.
+  check("layout.dimensionsClamped",
+        board.contains("width.isFinite") && board.contains("boardSpace.isFinite"))
+}
+
 if failures > 0 {
   print("\(failures) FAILURE(S)")
   exit(1)

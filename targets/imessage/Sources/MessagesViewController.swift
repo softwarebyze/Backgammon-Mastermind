@@ -17,6 +17,9 @@ import SwiftUI
 final class MessagesViewController: MSMessagesAppViewController {
   private let session = ImGameSession()
   private var hosting: UIHostingController<AnyView>?
+  /// Height request for the compact drawer. See `ImBoardView.compactSheetHeight`
+  /// for why this is a constraint rather than a SwiftUI frame.
+  private var compactHeight: NSLayoutConstraint?
 
   // MARK: Lifecycle
 
@@ -103,6 +106,39 @@ final class MessagesViewController: MSMessagesAppViewController {
         controller.view.trailingAnchor.constraint(equalTo: viewIfLoaded!.trailingAnchor),
       ])
       controller.didMove(toParent: self)
+    }
+    applyCompactHeightConstraint(for: style)
+  }
+
+  /// The compact drawer needs a height it can measure against, or Messages sizes
+  /// the sheet to nothing. But Messages also presents the extension in the
+  /// "New Message" compose sheet, which is much shorter than the conversation
+  /// drawer.
+  ///
+  /// `UILayoutPriority.defaultHigh` is the whole point: the conversation drawer
+  /// honours the request and gets a playable board, while the compose sheet's
+  /// smaller height wins, the constraint breaks, and the board — which sits in a
+  /// flexible slot — shrinks instead of being clipped off the top and bottom.
+  /// A SwiftUI `.frame(height:)` cannot do this: it reports its height whatever
+  /// it is offered, so it always wins and always clips.
+  private func applyCompactHeightConstraint(for style: MSMessagesAppPresentationStyle) {
+    guard let container = hosting?.view else { return }
+    if style == .compact {
+      if let existing = compactHeight {
+        existing.constant = ImBoardView.compactSheetHeight
+        return
+      }
+      let constraint = container.heightAnchor.constraint(
+        equalToConstant: ImBoardView.compactSheetHeight
+      )
+      // Below required so Messages can force a shorter sheet, above the default
+      // so it still wins when nothing else has an opinion.
+      constraint.priority = .defaultHigh
+      constraint.isActive = true
+      compactHeight = constraint
+    } else {
+      compactHeight?.isActive = false
+      compactHeight = nil
     }
   }
 

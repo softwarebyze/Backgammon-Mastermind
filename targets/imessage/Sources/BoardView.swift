@@ -109,22 +109,28 @@ private struct ImMetrics {
   var bearOffWidth: CGFloat
   var middleHeight: CGFloat
 
-  /// Fit 12 columns + bar + bear-off across `available`, then give the points as
-  /// much length as the leftover height allows (capped like the app's 5.2...7
+/// Fit 12 columns + bar + bear-off across `width`, then give the points as
+  /// much length as `boardSpace` allows (capped like the app's 5.2...7
   /// checker-diameter range so five checkers always fit without overlapping).
-  init(available: CGSize, compact: Bool) {
-    // Must match the view's own padding so the board never runs under the
-    // sheet's rounded corners.
+  ///
+  /// `boardSpace` is the height the board's own slot was actually given, not the
+  /// whole sheet. It used to be derived by subtracting a hard-coded
+  /// `verticalChrome` estimate from the sheet height — and that estimate was too
+  /// small, so the content was taller than the frame it was placed in and the
+  /// sheet clipped it off the top *and* bottom. Nothing here has to guess at the
+  /// chrome: the board sits in a flexible slot, so the chrome takes its natural
+  /// height first and whatever is left arrives here.
+  init(width: CGFloat, boardSpace: CGFloat, compact: Bool) {
     let clearance = ImBoardView.cornerClearance + (compact ? 0 : 4)
     let frame: CGFloat = compact ? 3 : 4
 
     // GeometryReader reports a zero (and briefly nonsensical) size on its first
-    // pass. Every dimension below is clamped to a positive minimum: a negative
-    // width reaches `.frame(width:)` and SwiftUI traps at runtime with
-    // "Invalid frame dimension (negative or non-finite)", which took down the
-    // whole extension.
-    let safeWidth = available.width.isFinite ? max(available.width, 200) : 320
-    let safeHeight = available.height.isFinite ? max(available.height, 240) : 480
+    // pass, and a flexible child can be squeezed to nothing in a short sheet.
+    // Every dimension below is clamped to a positive minimum: a negative width
+    // reaches `.frame(width:)` and SwiftUI traps at runtime with "Invalid frame
+    // dimension (negative or non-finite)", which took down the whole extension.
+    let safeWidth = width.isFinite ? max(width, 200) : 320
+    let safeBoard = boardSpace.isFinite ? max(boardSpace, Self.minBoardSpace) : 200
 
     let maxWidth = max(180, min(safeWidth - clearance * 2, 560))
     let scale = min(1, maxWidth / 320)
@@ -135,21 +141,17 @@ private struct ImMetrics {
     let colWidth = max(10, (surfaceWidth - barWidth - bearOffWidth) / 12)
     let checkerSize = max(9, min(colWidth - 4, 30))
 
-    // Chrome above and below the board (header, dice, status, actions). Leave
-    // it room so the frame is never clipped in the short compact drawer.
-    // Padding is inside this budget too, so the content cannot overflow the
-    // explicit compact height and get clipped off the top.
-    let verticalChrome: CGFloat = compact ? 152 : 168
+    // The two number rails plus the spacing between the three stacked pieces.
     let middleHeight: CGFloat = compact ? 8 : 12
-    let availableBoardHeight = max(80, safeHeight - verticalChrome - frame * 2)
+    let surfaceSpace = max(40, safeBoard - Self.railChrome)
     let maxPoint = checkerSize * (compact ? 4.4 : 7)
     let minPoint = checkerSize * 3.2
-    let pointHeight = max(minPoint, min(maxPoint, (availableBoardHeight - middleHeight) / 2))
+    let pointHeight = max(minPoint, min(maxPoint, (surfaceSpace - middleHeight) / 2))
 
     // Derive the board width from its parts so the row of halves + bar +
     // bear-off exactly fills it and can never disagree with the columns.
     self.boardWidth = colWidth * 12 + barWidth + bearOffWidth
-    self.boardHeight = pointHeight * 2 + middleHeight
+    self.boardHeight = min(pointHeight * 2 + middleHeight, surfaceSpace)
     self.colWidth = colWidth
     self.checkerSize = checkerSize
     self.pointHeight = pointHeight
@@ -158,7 +160,13 @@ private struct ImMetrics {
     self.middleHeight = middleHeight
   }
 
-  static let fallback = ImMetrics(available: CGSize(width: 320, height: 520), compact: false)
+  /// Two 11pt number rails plus the two 3pt gaps between rail / surface / rail.
+  private static let railChrome: CGFloat = 28
+  /// Floor for the board slot. Below this the points cannot be legible, so the
+  /// sheet scrolls rather than drawing a board with no height.
+  private static let minBoardSpace: CGFloat = 80
+
+  static let fallback = ImMetrics(width: 320, boardSpace: 260, compact: false)
 }
 
 // MARK: - Board
@@ -175,10 +183,21 @@ struct ImBoardView: View {
   var isCompact: Bool = false
   @State private var confirmingNewGame = false
 
-  /// The compact drawer sizes the sheet from the root view's *fitting* size. A
+  /// The compact drawer sizes the sheet from the root view's *fitting* size, and a
   /// `GeometryReader` root has no ideal height, so Messages collapses the sheet
-  /// to nothing and dismisses it. Giving compact an explicit height gives the
-  /// reader something to measure and yields a playable drawer.
+  /// to nothing and dismisses it. `MessagesViewController` therefore installs a
+  /// height constraint for the compact presentation — as a **constraint, not a
+  /// SwiftUI frame**, because Messages presents the extension in more than one
+  /// container and the tallest one is not always available: the conversation
+  /// drawer takes the full request, while the much shorter "New Message" compose
+  /// sheet clamps it. At `UILayoutPriority.defaultHigh` the constraint breaks
+  /// under pressure, the hosting view shrinks to the real height, and the board
+  /// — which lives in a flexible slot — gives way instead of being clipped.
+  ///
+  /// Do not reintroduce `.frame(height:)` here. A SwiftUI frame reports its
+  /// height regardless of the proposal, so it would win over whatever Messages
+  /// offered and clip the sheet, which is exactly the bug that put the Roll
+  /// button out of reach in the compose sheet.
   static let compactSheetHeight: CGFloat = 360
 
   /// The sheet's own corner radius. Content has to clear it or the corners clip
@@ -186,31 +205,31 @@ struct ImBoardView: View {
   static let cornerClearance: CGFloat = 14
 
   var body: some View {
-    Group {
-      if isCompact {
-        measured.frame(height: Self.compactSheetHeight)
-      } else {
-        measured
-      }
-    }
-    // Anything the content does not cover is flat Messages grey, which read as a
-    // dead band under the board. Paint the whole sheet instead.
-    .background(ImTheme.frameOuter.ignoresSafeArea())
+    measured
+      // Anything the content does not cover is flat Messages grey, which read as
+      // a dead band under the board. Paint the whole sheet instead.
+      .background(ImTheme.frameOuter.ignoresSafeArea())
   }
 
   private var measured: some View {
     GeometryReader { geo in
-      content(ImMetrics(available: geo.size, compact: isCompact))
+      content(width: geo.size.width)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
   }
 
   @ViewBuilder
-  private func content(_ m: ImMetrics) -> some View {
+  private func content(width: CGFloat) -> some View {
     VStack(spacing: isCompact ? 4 : 8) {
       if !isCompact { header }
-      diceRow(m)
-      board(m)
+diceRow()
+      // Flexible: the chrome above and below takes its natural height first and
+      // the board gets exactly what is left, so the stack can never outgrow the
+      // height Messages offered and get clipped.
+      GeometryReader { geo in
+        board(ImMetrics(width: width, boardSpace: geo.size.height, compact: isCompact))
+          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+      }
       if isCompact { compactBoardActions }
       statusLine
       sendHint
@@ -252,7 +271,7 @@ struct ImBoardView: View {
 
   // MARK: Dice / roll
 
-  private func diceRow(_ m: ImMetrics) -> some View {
+  private func diceRow() -> some View {
     HStack(spacing: 10) {
       if let dice = session.dice {
         HStack(spacing: 6) {
