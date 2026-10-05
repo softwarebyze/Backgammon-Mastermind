@@ -10,8 +10,101 @@ import Foundation
 // Turn numbering: `turn` is the turn the local player is about to play. A
 // fresh game starts at turn 1 (creator plays White). Each sent payload stamps
 // the turn just completed; loading a payload sets `turn = payload.turn + 1`.
+//
+// ## Why this is persisted
+//
+// iOS reaps the extension process shortly after `didStartSending` calls
+// `dismiss()`, which happens on *every* send. On the next launch a session built
+// only from memory assumed "new game, you are White, roll to open" — so a player
+// who had just sent their turn was prompted to roll again on a turn that was not
+// theirs, and the game was silently thrown away.
+//
+// It cannot be recovered from the conversation instead: `MSConversation` exposes
+// no message history in this SDK (only `selectedMessage`), so the newest bubble
+// is only reachable when the user taps it. Remembering is the only option.
+
+/// Where a session keeps itself between extension launches.
+protocol ImSessionStore: AnyObject {
+  func load() -> ImGameSession.Saved?
+  func save(_ saved: ImGameSession.Saved?)
+}
+
+/// `UserDefaults.standard` is private to the extension process and survives
+/// relaunch, which is exactly the lifetime that matters here.
+///
+/// **One slot, not one per conversation.** `MSConversation` exposes no stable
+/// thread identifier in this SDK — only `selectedMessage`, `localParticipantIdentifier`
+/// and `remoteParticipantIdentifiers` — and the participant UUIDs are not stable:
+/// on a simulator with no Apple ID signed in, `localParticipantIdentifier` is
+/// regenerated on every Messages launch, so a per-participant key silently loses
+/// the saved state (measured, not assumed). Depending on an identifier we do not
+/// control would break the same way on an Apple ID change or a device restore.
+///
+/// Remembering one game is the right trade because adoption always corrects it:
+/// tapping the opponent's bubble calls `load(payload:)`, which clears
+/// `sentLatestTurn`. A stale remembered state therefore self-heals the moment
+/// there is real information, while a *missing* one produces the bug this fixes —
+/// being told to roll on somebody else's turn.
+final class ImUserDefaultsSessionStore: ImSessionStore {
+  private let key: String
+  private let defaults: UserDefaults
+
+  init(key: String = "imessage.session.v1", defaults: UserDefaults = .standard) {
+    self.key = key
+    self.defaults = defaults
+  }
+
+  func load() -> ImGameSession.Saved? {
+    guard let data = defaults.data(forKey: key) else { return nil }
+    return try? JSONDecoder().decode(ImGameSession.Saved.self, from: data)
+  }
+
+  func save(_ saved: ImGameSession.Saved?) {
+    guard let saved else {
+      defaults.removeObject(forKey: key)
+      return
+    }
+    guard let data = try? JSONEncoder().encode(saved) else { return }
+    defaults.set(data, forKey: key)
+  }
+}
+
+/// For the parity harness, so constructing a session never touches the real
+/// defaults — that would make tests non-hermetic and pollute the user's state.
+final class ImMemorySessionStore: ImSessionStore {
+  private var saved: ImGameSession.Saved?
+
+  init(_ saved: ImGameSession.Saved? = nil) { self.saved = saved }
+
+  func load() -> ImGameSession.Saved? { saved }
+  func save(_ saved: ImGameSession.Saved?) { self.saved = saved }
+}
 
 final class ImGameSession: ObservableObject {
+  /// What a bare `ImGameSession()` persists to. Overridden by the parity harness.
+  static var defaultStore: ImSessionStore = ImUserDefaultsSessionStore()
+
+  /// The board encoded as a v1 turn payload URL, which already round-trips the
+  /// position, the game id, the turn and the dice — so no second serialiser is
+  /// needed and the persisted form is the same one the wire uses.
+  struct Saved: Codable, Equatable {
+    var payload: String
+    var sentLatestTurn: Bool
+    var movedThisTurn: Bool
+    var status: String
+
+    /// `pendingSend` is deliberately absent. A draft staged in the composer does
+    /// not survive the process being reaped, so restoring it would leave the turn
+    /// permanently unsendable with no `didCancelSending` callback coming to free
+    /// it. See `restore`.
+    init(payload: String, sentLatestTurn: Bool, movedThisTurn: Bool, status: String) {
+      self.payload = payload
+      self.sentLatestTurn = sentLatestTurn
+      self.movedThisTurn = movedThisTurn
+      self.status = status
+    }
+  }
+
   @Published private(set) var board: ImBoard
   @Published private(set) var dice: (Int, Int)?
   @Published private(set) var selectedPoint: Int?
@@ -35,12 +128,65 @@ final class ImGameSession: ObservableObject {
   /// The turn the local player is about to play (1-based).
   private(set) var turn: Int
 
-  init() {
-    self.board = ImBoard.initial()
-    self.gameId = Self.newGameId()
-    self.turn = 1
-    self.dice = nil
-    self.status = "New game — you are White. Roll to open."
+  private let store: ImSessionStore
+
+  init(store: ImSessionStore? = nil) {
+    self.store = store ?? Self.defaultStore
+    let state = Self.initialState(using: self.store)
+    self.board = state.board
+    self.gameId = state.gameId
+    self.turn = state.turn
+    self.dice = state.dice
+    self.sentLatestTurn = state.sentLatestTurn
+    self.movedThisTurn = state.movedThisTurn
+    self.status = state.status
+    // Never restored: `Saved` has no `pendingSend` field. See `Saved`.
+    self.pendingSend = false
+  }
+
+  private static func initialState(using store: ImSessionStore) -> (
+    board: ImBoard, gameId: String, turn: Int, dice: (Int, Int)?,
+    sentLatestTurn: Bool, movedThisTurn: Bool, status: String
+  ) {
+    if let saved = store.load(),
+       let url = URL(string: saved.payload),
+       let payload = try? ImTurnPayload(url: url) {
+      // `fromBoard` stamps `current` verbatim, so the payload's side is ours —
+      // the one to move — and `toBoard` puts it back.
+      return (
+        board: payload.toBoard(),
+        gameId: payload.gameId,
+        turn: payload.turn,
+        dice: payload.dice,
+        sentLatestTurn: saved.sentLatestTurn,
+        movedThisTurn: saved.movedThisTurn,
+        status: saved.status
+      )
+    }
+    return (
+      board: ImBoard.initial(),
+      gameId: newGameId(),
+      turn: 1,
+      dice: nil,
+      sentLatestTurn: false,
+      movedThisTurn: false,
+      status: "New game — you are White. Roll to open."
+    )
+  }
+
+  private func persist() {
+    store.save(Saved(
+      payload: ImTurnPayload.fromBoard(
+        board, gameId: gameId, turn: turn, dice: dice, summary: ""
+      ).url?.absoluteString ?? "",
+      sentLatestTurn: sentLatestTurn,
+      movedThisTurn: movedThisTurn,
+      status: status
+    ))
+  }
+
+  private func forget() {
+    store.save(nil)
   }
 
   // MARK: Loading
@@ -96,6 +242,7 @@ final class ImGameSession: ObservableObject {
       let recap = payload.summary.isEmpty ? "" : " Opponent \(payload.summary)."
       self.status = "Turn \(self.turn): you are \(side).\(recap) Roll the dice."
     }
+    persist()
   }
 
   /// Starting over while a turn is staged would leave a bubble in the composer
@@ -124,6 +271,7 @@ final class ImGameSession: ObservableObject {
     self.moveHistory = []
     self.isFreshGame = true
     self.status = fresh.status
+    forget()
   }
 
   // MARK: Derived state
@@ -239,6 +387,7 @@ final class ImGameSession: ObservableObject {
     } else {
       status = "Rolled \(roll.0)–\(roll.1): tap a highlighted checker."
     }
+    persist()
   }
 
   func tapPoint(_ point: Int) {
@@ -331,6 +480,7 @@ final class ImGameSession: ObservableObject {
       let left = next.remaining.count
       status = "Nice — \(left) \(left == 1 ? "die" : "dice") left."
     }
+    persist()
   }
 
   /// Build the outgoing payload: dice are consumed and the turn passes to the
@@ -375,7 +525,8 @@ final class ImGameSession: ObservableObject {
     // snapshots are what make a resend produce the same move list.
     pendingSend = false
     sentLatestTurn = true
-    status = "Sent! Waiting for your opponent's reply."
+    status = "Sent — it is your opponent's turn. Tap their reply to play."
+    persist()
   }
 
   /// Put a turn we thought we sent back in the player's hands, because it may
@@ -385,10 +536,18 @@ final class ImGameSession: ObservableObject {
     guard sentLatestTurn else { return }
     sentLatestTurn = false
     status = "Turn ready to send again."
+    persist()
   }
 
   /// The turn was handed to `conversation.insert`; it is sitting in the
   /// composer until the user taps send.
+  ///
+  /// Deliberately does not persist. A staged draft does not outlive the process,
+  /// so on the next launch there is no bubble to cancel and no
+  /// `didCancelSending` to free the turn. `Saved` has no `pendingSend` field for
+  /// the same reason — restoring it would wedge Send as "Staged" permanently.
+  /// The persisted board is already the finished position, so relaunching while
+  /// staged simply comes back as "Turn complete — send it", which is recoverable.
   func markStaged() {
     pendingSend = true
     status = "Turn staged — tap the blue send arrow in Messages to deliver it."
@@ -400,6 +559,7 @@ final class ImGameSession: ObservableObject {
     pendingSend = false
     sentLatestTurn = false
     status = reason
+    persist()
   }
 
   // MARK: Game id

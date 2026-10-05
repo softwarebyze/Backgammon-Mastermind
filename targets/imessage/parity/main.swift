@@ -4,6 +4,17 @@ import Foundation
 // implementation. Vectors come from scripts/imessage-parity-vectors.ts.
 // Compile: swiftc main.swift GameEngine.swift MessagePayload.swift -o parity
 
+// Sessions persist so turn ownership survives the extension process being
+// reaped. Every harness session gets its own in-memory store: sharing one would
+// leak state between tests, and using the real defaults would make the suite
+// non-hermetic and write to the developer's `UserDefaults`.
+ImGameSession.defaultStore = ImMemorySessionStore()
+
+/// A session with a clean store, optionally seeded to simulate a relaunch.
+func makeSession(_ saved: ImGameSession.Saved? = nil) -> ImGameSession {
+  ImGameSession(store: ImMemorySessionStore(saved))
+}
+
 var failures = 0
 func check(_ label: String, _ condition: Bool, _ detail: String = "") {
   if condition {
@@ -126,7 +137,7 @@ do {
 //    sides — `outgoingPayload()` stamps `current` as the opponent to move, so
 //    adopting your own payload hands you the other player's turn.
 do {
-  let creator = ImGameSession()
+  let creator = makeSession()
   creator.rollDice()
   let sent = creator.outgoingPayload()
 
@@ -136,7 +147,7 @@ do {
   check("ownership.rejectOwnMessage", creator.shouldAdopt(sent, isFromMe: true) == false)
 
   // The opponent's reply (same turn number, different device) is accepted.
-  let opponent = ImGameSession()
+  let opponent = makeSession()
   check("ownership.acceptOpponentReply", opponent.shouldAdopt(sent, isFromMe: false))
   opponent.load(payload: sent)
   check("ownership.replyPlaysBlack", opponent.board.current == .black)
@@ -155,7 +166,7 @@ do {
   check("ownership.rejectStaleTurn", opponent.shouldAdopt(stale, isFromMe: false) == false)
 
   // A brand new game from someone else is always fair game.
-  check("ownership.acceptNewGame", opponent.shouldAdopt(ImGameSession().outgoingPayload(), isFromMe: false))
+  check("ownership.acceptNewGame", opponent.shouldAdopt(makeSession().outgoingPayload(), isFromMe: false))
 }
 
 // 9. Bear off must be reachable. `imBearOff` (25) is the one legal destination
@@ -233,7 +244,7 @@ do {
   // grammar.rejectsMaxLocalTurn, since imMaxTurn bounds the *local* turn.
 
   // The old 10_000 cap turned a legal turn 10_000 into an unencodable 10_001.
-  let tenK = ImGameSession()
+  let tenK = makeSession()
   tenK.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: 10_000, dice: nil, summary: "x"))
   check("turn.headroomAfterCap", tenK.turn == 10_001, "\(tenK.turn)")
   // Must actually decode, not merely build a URL: `url` is assembled from
@@ -249,7 +260,7 @@ do {
   let overWire = decode("\(base.replacingOccurrences(of: "turn=3", with: "turn=\(imMaxTurn + 1)"))&pts=\(pts("w2"))&bar=0,0&off=13,0&win=&d=&last=x")
   check("grammar.rejectsOverMaxWireTurn", overWire == nil)
   // Loading the maximum wire turn must not advance past what we can encode.
-  let atCap = ImGameSession()
+  let atCap = makeSession()
   atCap.load(payload: ImTurnPayload.fromBoard(ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: imMaxTurn, dice: nil, summary: "x"))
   check("turn.localClampedToMax", atCap.turn == imMaxTurn, "\(atCap.turn)")
   let atCapURL = atCap.outgoingPayload().url
@@ -325,7 +336,7 @@ do {
   var movedTrials = 0
   var violations: [String] = []
   for _ in 0..<400 {
-    let session = ImGameSession()
+    let session = makeSession()
     session.rollDice()
     trials += 1
     // Play every legal move greedily; only the first is needed for the
@@ -352,7 +363,7 @@ do {
 //     play a second turn while the staged bubble still said "your move, Black".
 //     Found by playing against your own number, where no legitimate reply exists.
 do {
-  let s = ImGameSession()
+  let s = makeSession()
   check("staged.startsRollable", s.needsRoll)
   s.rollDice()
   // Play the turn out so Send becomes legal.
@@ -394,7 +405,7 @@ do {
   // One roll per turn. Spending the last die empties `board.remaining`, which
   // used to re-arm Roll for the same turn — the "roll and roll and play many
   // moves" report. `dice != nil` is what holds the turn closed.
-  let r = ImGameSession()
+  let r = makeSession()
   r.rollDice()
   for _ in 0..<4 {
     guard let move = r.sequences.first else { break }
@@ -554,7 +565,7 @@ do {
   // turn comes up (the opening position almost always has one).
   var exercised = false
   for _ in 0 ..< 60 where !exercised {
-    let session = ImGameSession()
+    let session = makeSession()
     session.rollDice()
     // `imSequences` only returns maximal chains, so every sequence here uses
     // the same number of dice. Keep rolling until a compound turn comes up.
@@ -596,7 +607,7 @@ do {
 // 16. Guards added from review: a staged draft blocks adopting a new position,
 //     a reset clears the new turn state, and the turn ceiling round-trips.
 do {
-  let s = ImGameSession()
+  let s = makeSession()
   s.rollDice()
   for _ in 0..<4 {
     guard let move = s.sequences.first else { break }
@@ -624,7 +635,7 @@ do {
 
   // The turn ceiling must round-trip: clamping to the maximum still has to
   // produce a payload the peer can decode, or the game silently stops.
-  let atCap = ImGameSession()
+  let atCap = makeSession()
   atCap.load(payload: ImTurnPayload.fromBoard(
     ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: imMaxTurn, dice: nil, summary: "x"))
   check("ceiling.clamped", atCap.turn == imMaxTurn, "\(atCap.turn)")
@@ -698,7 +709,7 @@ do {
   var badDepthOne = 0
   var sidesSeen: Set<ImPlayer> = []
   for _ in 0 ..< 40 {
-    let session = ImGameSession()
+    let session = makeSession()
     session.rollDice()
     // Drive whole games turn by turn, sampling the position at every step so
     // mid-turn boards (doubles, part-spent dice) are covered too. `load` keeps
@@ -750,7 +761,7 @@ do {
   // still have played from the position they reached.
   var illegalStrands = 0
   for _ in 0 ..< 60 {
-    let session = ImGameSession()
+    let session = makeSession()
     session.rollDice()
     let before = session.board.remaining
     for _ in 0 ..< 6 {
@@ -785,7 +796,7 @@ do {
   let probe = blockedBarBoard()
   let played = { () -> ImGameSession? in
     for _ in 0 ..< 4000 {
-      let s = ImGameSession()
+      let s = makeSession()
       s.load(payload: ImTurnPayload.fromBoard(probe, gameId: "MustUse000", turn: 3,
                                               dice: (1, 2), summary: "x"))
       s.rollDice()
@@ -821,7 +832,7 @@ do {
 //     state it produces has to stay reversible, or a send that fails after the
 //     extension dismissed leaves the turn unsendable forever.
 do {
-  let s = ImGameSession()
+  let s = makeSession()
   s.rollDice()
   // Play the turn out through the tap path.
   for _ in 0 ..< 8 {
@@ -890,7 +901,7 @@ do {
 // 19. Staged-then-sent ordering: a retry must not leave the draft flag set, and
 //     resending must not unlock a turn that a *new* position has replaced.
 do {
-  let s = ImGameSession()
+  let s = makeSession()
   s.rollDice()
   for _ in 0 ..< 8 {
     guard !s.board.remaining.isEmpty, let seq = s.sequences.first else { break }
@@ -957,6 +968,220 @@ do {
   // dimension traps in SwiftUI and kills the extension on launch.
   check("layout.dimensionsClamped",
         board.contains("width.isFinite") && board.contains("boardSpace.isFinite"))
+}
+
+// 21. Turn ownership must survive the extension process being reaped.
+//
+//     Reported as: "after I make a move and send, it prompts me to roll again".
+//     iOS reaps the extension shortly after `didStartSending` calls `dismiss()`,
+//     which happens on every send, so the next launch built a session from
+//     nothing and announced "New game — you are White. Roll to open" — on a turn
+//     that belonged to the opponent. It also threw the game away.
+//
+//     It cannot be recovered from the conversation instead: MSConversation
+//     exposes no message history in this SDK, so remembering is the only option.
+do {
+  func playATurn(_ session: ImGameSession) {
+    session.rollDice()
+    for _ in 0 ..< 8 {
+      guard !session.board.remaining.isEmpty, let seq = session.sequences.first else { break }
+      session.tapPoint(seq.from)
+      guard session.destinations.contains(seq.to) else { break }
+      session.tapPoint(seq.to)
+    }
+  }
+
+  // Fresh install: nothing remembered, so the opening prompt is correct.
+  do {
+    let s = makeSession()
+    check("persist.freshHasNoSavedState", s.sentLatestTurn == false)
+    check("persist.freshIsRollable", s.needsRoll)
+  }
+
+  // Mid-turn: relaunching must not lose the game.
+  do {
+    let store = ImMemorySessionStore()
+    let first = ImGameSession(store: store)
+    playATurn(first)
+    let gameId = first.gameId
+    let turn = first.turn
+    let board = first.board
+    let payload = first.outgoingPayload().url?.absoluteString
+
+    let relaunched = ImGameSession(store: store)
+    check("persist.midTurnKeepsGame", relaunched.gameId == gameId, relaunched.gameId)
+    check("persist.midTurnKeepsTurn", relaunched.turn == turn, "\(relaunched.turn)")
+    check("persist.midTurnKeepsBoard", relaunched.board == board)
+    check("persist.midTurnKeepsDice", relaunched.dice != nil)
+    check("persist.midTurnStillRollable", relaunched.sentLatestTurn == false)
+  }
+
+  // The reported bug: after sending, a relaunch must still know it is not our
+  // turn. `needsRoll` already consults `sentLatestTurn`; the whole point is that
+  // the flag is still set after the process is reaped.
+  do {
+    let store = ImMemorySessionStore()
+    let sender = ImGameSession(store: store)
+    playATurn(sender)
+    sender.markSending()
+    check("persist.sentWaitsForOpponent", sender.needsRoll == false)
+    let gameId = sender.gameId
+    let board = sender.board
+
+    let relaunched = ImGameSession(store: store)
+    check("persist.sentSurvivesRelaunch", relaunched.sentLatestTurn,
+          "a fresh session would prompt to roll on the opponent's turn")
+    check("persist.sentBlocksRoll", relaunched.needsRoll == false,
+          "Roll must stay disabled — it is the opponent's move")
+    check("persist.sentKeepsGame", relaunched.gameId == gameId)
+    check("persist.sentKeepsBoard", relaunched.board == board)
+    check("persist.sentSaysOpponentsTurn",
+          relaunched.status.contains("opponent"), relaunched.status)
+    check("persist.sentNoPendingSend", relaunched.pendingSend == false)
+    let diceBefore = relaunched.dice.map { "\($0.0)-\($0.1)" }
+    relaunched.rollDice()
+    check("persist.sentCannotRoll",
+          relaunched.dice.map { "\($0.0)-\($0.1)" } == diceBefore,
+          "\(String(describing: relaunched.dice))")
+    check("persist.sentCannotTapPoint", {
+      relaunched.tapPoint(13)
+      return relaunched.selectedPoint == nil
+    }())
+  }
+
+  // A resend after relaunch must rebuild the identical payload — this is the
+  // retry path that only becomes reachable now the state outlives the process.
+  do {
+    let store = ImMemorySessionStore()
+    let sender = ImGameSession(store: store)
+    playATurn(sender)
+    let before = sender.outgoingPayload().url?.absoluteString
+    sender.markSending()
+    let relaunched = ImGameSession(store: store)
+    check("persist.resendAvailable", relaunched.canResend)
+    relaunched.retrySend()
+    check("persist.resendReopens", relaunched.sentLatestTurn == false)
+    let after = relaunched.outgoingPayload().url?.absoluteString
+    check("persist.resendSamePayload", after == before, "\(before ?? "∅") vs \(after ?? "∅")")
+  }
+
+  // A draft staged in the composer must NOT come back: the bubble is gone, so
+  // restoring `pendingSend` would disable Send forever with no cancel callback.
+  do {
+    let store = ImMemorySessionStore()
+    let s = ImGameSession(store: store)
+    playATurn(s)
+    s.markStaged()
+    check("persist.stagedIsPending", s.pendingSend)
+    let relaunched = ImGameSession(store: store)
+    check("persist.stagedNotRestored", relaunched.pendingSend == false,
+          "a dead draft would wedge Send as Staged with no didCancelSending")
+    check("persist.stagedTurnRecoverable", relaunched.isTurnSendable,
+          "the finished position survives, so the turn can be sent again")
+    check("persist.noPendingSendInSavedState", {
+      // The field must not exist to be restored, not merely be ignored.
+      let encoded = try? JSONEncoder().encode(
+        ImGameSession.Saved(payload: "x", sentLatestTurn: false, movedThisTurn: false, status: "")
+      )
+      guard let json = encoded.flatMap({ try? JSONSerialization.jsonObject(with: $0) as? [String: Any] })
+      else { return false }
+      return encoded.flatMap { String(data: $0, encoding: .utf8) }?.contains("pendingSend") == false
+    }())
+  }
+
+  // Starting over must clear everything, including the remembered wait.
+  do {
+    let store = ImMemorySessionStore()
+    let s = ImGameSession(store: store)
+    playATurn(s)
+    s.markSending()
+    s.loadNewGame()
+    let relaunched = ImGameSession(store: store)
+    check("persist.newGameClearsWait", relaunched.sentLatestTurn == false)
+    check("persist.newGameIsFresh", relaunched.isFreshGame && relaunched.needsRoll)
+  }
+
+  // Adopting the opponent's reply must clear the wait — otherwise the receiving
+  // side inherits "it is your opponent's turn" and can never play.
+  do {
+    let store = ImMemorySessionStore()
+    let sender = ImGameSession(store: store)
+    playATurn(sender)
+    sender.markSending()
+    let relaunched = ImGameSession(store: store)
+    check("persist.waitBeforeReply", relaunched.sentLatestTurn)
+    let reply = ImTurnPayload.fromBoard(
+      ImBoard.initial(), gameId: relaunched.gameId, turn: relaunched.turn,
+      dice: (3, 2), summary: "played")
+    relaunched.load(payload: reply)
+    check("persist.replyClearsWait", relaunched.sentLatestTurn == false)
+    check("persist.replyNeedsRoll", relaunched.needsRoll)
+    let afterReply = ImGameSession(store: store)
+    check("persist.replySurvivesRelaunch", afterReply.needsRoll && afterReply.sentLatestTurn == false)
+  }
+
+  // Corrupt state must not brick the extension — fall back to a new game.
+  do {
+    for bad in ["", "not a url", "https://x/i?v=1&gid=%%%&turn=x"] {
+      let store = ImMemorySessionStore(
+        ImGameSession.Saved(payload: bad, sentLatestTurn: true, movedThisTurn: false, status: "s")
+      )
+      let s = ImGameSession(store: store)
+      check("persist.corruptFallsBack.\(bad.prefix(6))", s.needsRoll && s.sentLatestTurn == false)
+    }
+  }
+
+  // The harness must never touch the real defaults.
+  let harness = try String(contentsOfFile: "targets/imessage/parity/main.swift", encoding: .utf8)
+  check("persist.harnessIsolatesStore",
+        harness.contains("ImGameSession.defaultStore = ImMemorySessionStore()"),
+        "the suite would write to the developer's UserDefaults")
+  let controller = try String(contentsOfFile: "targets/imessage/Sources/MessagesViewController.swift", encoding: .utf8)
+  check("persist.oneSessionPerController",
+        controller.contains("private let session = ImGameSession()"),
+        "the controller relies on the restoring initialiser")
+
+  // There is no per-conversation scoping, deliberately. `MSConversation` has no
+  // stable thread identifier in this SDK, and its participant UUIDs are not
+  // stable either — `localParticipantIdentifier` is regenerated on every Messages
+  // launch on a simulator with no Apple ID signed in, which was measured and made
+  // a per-participant key silently lose the saved state. Depending on an
+  // identifier we do not control would break the same way on an Apple ID change
+  // or a device restore.
+  //
+  // Remembering one game is safe because adoption corrects it: tapping the
+  // opponent's bubble loads their payload, which clears `sentLatestTurn`.
+  do {
+    let controller = try String(contentsOfFile: "targets/imessage/Sources/MessagesViewController.swift", encoding: .utf8)
+    check("scope.noConversationKeying", !controller.contains("scope(for:"),
+          "the conversation key is not stable enough to key remembered state on")
+    check("scope.storeIsSingleSlot", !controller.contains("session.bind(to:"))
+  }
+
+  // A remembered "waiting" state must be corrected by real information.
+  do {
+    let store = ImMemorySessionStore()
+    let s = ImGameSession(store: store)
+    playATurn(s)
+    s.markSending()
+    let relaunched = ImGameSession(store: store)
+    check("scope.staleWaitBeforeReply", relaunched.sentLatestTurn)
+    let reply = ImTurnPayload.fromBoard(
+      ImBoard.initial(), gameId: relaunched.gameId, turn: relaunched.turn,
+      dice: (5, 4), summary: "played")
+    relaunched.load(payload: reply)
+    check("scope.replyCorrectsWait", relaunched.sentLatestTurn == false)
+    check("scope.replyIsPlayable", relaunched.needsRoll)
+    check("scope.replySurvivesRelaunch",
+      ImGameSession(store: store).sentLatestTurn == false)
+  }
+
+  // The controller must build its session before reading turn state.
+  do {
+    let controller = try String(contentsOfFile: "targets/imessage/Sources/MessagesViewController.swift", encoding: .utf8)
+    check("scope.sessionBuiltOnce", controller.contains("private let session = ImGameSession()"))
+  }
+
 }
 
 if failures > 0 {

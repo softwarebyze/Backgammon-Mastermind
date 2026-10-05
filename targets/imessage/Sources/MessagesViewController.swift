@@ -31,23 +31,9 @@ final class MessagesViewController: MSMessagesAppViewController {
        session.shouldAdopt(payload, isFromMe: isFromMe(message, in: conversation)) {
       session.load(payload: payload)
     }
-    // Otherwise keep the current session (a fresh game on first launch, or the
+    // Otherwise keep the current session (a remembered game, or the
     // "waiting for your opponent" state when re-opening your own last turn).
     presentCurrentStyle()
-  }
-
-  override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-    super.willTransition(to: presentationStyle)
-    present(style: presentationStyle)
-  }
-
-  override func didSelect(_ message: MSMessage, conversation: MSConversation) {
-    super.didSelect(message, conversation: conversation)
-    guard let url = message.url,
-          let payload = try? ImTurnPayload(url: url),
-          session.shouldAdopt(payload, isFromMe: isFromMe(message, in: conversation)) else { return }
-    session.load(payload: payload)
-    requestPresentationStyle(.expanded)
   }
 
   /// `MSMessage` has no `isFromMe`; authorship comes from the participant ids —
