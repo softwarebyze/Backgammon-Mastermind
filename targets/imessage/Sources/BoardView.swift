@@ -333,6 +333,7 @@ struct ImBoardView: View {
       isSelected: session.selectedPoint == point,
       isLegal: session.destinations.contains(point),
       canSelect: session.board.points[point].owner == session.board.current,
+      isMovable: session.isMovable(point),
       metrics: m
     ) { session.tapPoint(point) }
     .frame(width: m.colWidth, height: m.pointHeight)

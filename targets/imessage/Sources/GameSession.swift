@@ -54,6 +54,11 @@ final class ImGameSession: ObservableObject {
   /// the *only* thing pinning a device to one side is that it never plays its
   /// own turns.
   func shouldAdopt(_ payload: ImTurnPayload, isFromMe: Bool) -> Bool {
+    // A staged `MSMessage` still sits in the composer. Adopting a position
+    // under it would mean `didStartSending` later marks a turn sent for the
+    // *new* game while the bubble carries the old one, locking the new game
+    // waiting for a reply that will never come.
+    if pendingSend { return false }
     guard !isFromMe else { return false }
     if payload.gameId == gameId, payload.turn < turn { return false }
     return true
@@ -109,7 +114,10 @@ final class ImGameSession: ObservableObject {
     self.selectedPoint = nil
     self.destinations = []
     self.sentLatestTurn = false
+    self.pendingSend = false
     self.movedThisTurn = false
+    self.moveHistory = []
+    self.isFreshGame = true
     self.status = fresh.status
   }
 

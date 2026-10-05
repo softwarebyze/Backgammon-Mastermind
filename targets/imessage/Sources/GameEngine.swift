@@ -306,51 +306,61 @@ struct ImSequence: Equatable {
   var usesDice: Int { dies.count }
 }
 
-/// Every maximal same-checker chain available this turn.
+/// Every destination reachable by playing one checker with one or more dice.
 ///
-/// Only chains of the longest length found anywhere are returned, mirroring the
-/// max-usage rule in `imLegalMoves`: if one checker can take both dice, offering
-/// the single-die alternatives would let the player under-use them.
+/// Single-die moves are included deliberately. The player may always play the
+/// dice with different checkers, or one at a time, so offering only the longest
+/// chain would take that choice away — and it produced the worse bug where a
+/// source whose only option was a single die showed *no* destination at all and
+/// the UI claimed it had no legal move.
+///
+/// When a destination is reachable both ways the longer chain wins: it is what
+/// the player means by tapping a point that far away.
 func imSequences(_ board: ImBoard) -> [ImSequence] {
-  let depth = board.remaining.count
-  guard depth > 0 else { return [] }
-  let steps = imRawSingleStepMoves(board)
+  // The bar, when occupied, is the only legal origin — `imRawSingleStepMoves`
+  // already encodes that, so derive the origins from it rather than duplicating
+  // the rule.
+  let origins = Set(imRawSingleStepMoves(board).map(\.from))
+  var found: [ImSequence] = []
 
-  var best: [ImSequence] = []
-  var maxUses = 0
-
-  for first in steps {
-    func extend(_ chain: [ImMove]) {
-      if chain.count > maxUses {
-        maxUses = chain.count
-        best = []
+  for origin in origins.sorted() {
+    // Breadth-first over (position, square the checker is on, dice still in
+    // hand, dice already spent by this checker). Each node re-derives its legal
+    // steps from its *own* board: reusing the opening step list silently missed
+    // every continuation onto a square that was empty at the start.
+    var queue: [(board: ImBoard, square: Int, remaining: [Int], dies: [Int])] =
+      [(board, origin, board.remaining, [])]
+    var head = 0
+    while head < queue.count {
+      let node = queue[head]
+      head += 1
+      if !node.dies.isEmpty {
+        found.append(ImSequence(from: origin, to: node.square, dies: node.dies))
       }
-      if chain.count == maxUses, let last = chain.last {
-        let candidate = ImSequence(
-          from: first.from,
-          to: last.to,
-          dies: chain.map { board.remaining[$0.dieIndex] })
-        if !best.contains(candidate) { best.append(candidate) }
-      }
-      guard chain.count < depth, let here = chain.last?.to, here != imBearOff else { return }
-      for next in steps
-      where next.from == here && !chain.contains(where: { $0.dieIndex == next.dieIndex }) {
-        extend(chain + [next])
+      guard !node.remaining.isEmpty else { continue }
+      for step in imRawSingleStepMoves(node.board) where step.from == node.square {
+        // `node.remaining` is kept in step with `node.board.remaining`, so this
+        // index is valid — removing by index (not by value) is what lets doubles
+        // use the same value twice.
+        let die = node.remaining[step.dieIndex]
+        var remaining = node.remaining
+        remaining.remove(at: step.dieIndex)
+        queue.append((
+          imApplyPhysical(node.board, move: step), step.to, remaining, node.dies + [die]
+        ))
       }
     }
-    extend([first])
   }
 
-  // With nothing chainable, the higher die still has to be played when the
-  // lower one cannot be used at all (same rule as `imLegalMoves`).
-  if maxUses == 1,
-     let higher = board.remaining.max(),
-     let lower = board.remaining.min(),
-     higher != lower,
-     best.contains(where: { $0.dies.first == higher }) {
-    best = best.filter { $0.dies.first == higher }
+  // One entry per (source, destination), preferring the chain that spends more
+  // dice.
+  var best: [String: ImSequence] = [:]
+  for sequence in found {
+    let key = "\(sequence.from)>\(sequence.to)"
+    if let existing = best[key], existing.usesDice >= sequence.usesDice { continue }
+    best[key] = sequence
   }
-  return best
+  return best.values.sorted { ($0.from, $0.to) < ($1.from, $1.to) }
 }
 
 /// Sources the player may pick up this turn — the hint ring in the UI.

@@ -506,9 +506,27 @@ do {
     check("compound.usesRealDice", seq.dies.allSatisfy { moved.remaining.contains($0) })
     check("compound.fromOwned", seq.from == 6 || seq.from == 13 || seq.from == 24 || seq.from == 8)
   }
-  // Only maximal chains survive: a 1-die alternative must not be offered when a
-  // 2-die chain exists (otherwise the player could under-use the dice).
-  check("compound.onlyMaximal", seqs.allSatisfy { $0.usesDice == (chained.isEmpty ? 1 : 2) })
+  // Single-die moves must stay available alongside compound ones. Offering only
+  // the longest chain hid them, and a source whose sole option was one die then
+  // showed no destination at all and claimed it had no legal move.
+  let singleDie = seqs.filter { $0.usesDice == 1 }
+  check("compound.offersSingleDieToo", !singleDie.isEmpty, "\(singleDie.count) single-die")
+  check("compound.offersChains", !chained.isEmpty)
+  // Every single-die step the engine offers must be reachable in the sequence
+  // list, so no legal move can be missing from the UI.
+  let rawTargets = Set(imRawSingleStepMoves(moved).map { "\($0.from)>\($0.to)" })
+  let seqTargets = Set(seqs.map { "\($0.from)>\($0.to)" })
+  check("compound.noMissingMoves", rawTargets.isSubset(of: seqTargets),
+        "missing \(rawTargets.subtracting(seqTargets).sorted())")
+  // A source that also has a compound option must still expose every one of its
+  // single-die options — that regression is what made the UI claim "no legal
+  // move" on a point that plainly had some.
+  for source in Set(chained.map(\.from)) {
+    let rawFrom = Set(imRawSingleStepMoves(moved).filter { $0.from == source }.map(\.to))
+    let offeredFrom = Set(seqs.filter { $0.from == source }.map(\.to))
+    check("compound.keepsSingleDieOptions.\(source)", rawFrom.isSubset(of: offeredFrom),
+          "raw \(rawFrom.sorted()) offered \(offeredFrom.sorted())")
+  }
 
   // Sources reported as movable match the sequence origins.
   check("compound.movableSources", imMovableSources(moved) == Set(seqs.map(\.from)))
@@ -540,13 +558,20 @@ do {
     session.rollDice()
     // `imSequences` only returns maximal chains, so every sequence here uses
     // the same number of dice. Keep rolling until a compound turn comes up.
-    guard let chain = session.sequences.first(where: { $0.usesDice == 2 }) else { continue }
+    // Prefer a two-die roll: with doubles there are four dice, so a two-die
+    // chain correctly leaves two behind and cannot show "both dice in one tap".
+    guard let dice = session.dice, dice.0 != dice.1,
+          let chain = session.sequences.first(where: { $0.usesDice == 2 })
+    else { continue }
     let before = session.board
     session.tapPoint(chain.from)
     check("compound.selected", session.selectedPoint == chain.from)
     check("compound.destinationsIncludeTarget", session.destinations.contains(chain.to))
     session.tapPoint(chain.to)
     check("compound.oneTapBothDice", session.board.remaining.isEmpty, "\(session.board.remaining)")
+    check("compound.spentExactlyItsDice",
+          before.remaining.count - session.board.remaining.count == chain.dies.count,
+          "\(before.remaining.count) -> \(session.board.remaining.count), dies \(chain.dies)")
     check("compound.landedOnTarget", session.board.points[chain.to].owner == .white, "\(chain.to)")
     check("compound.canUndo", session.canUndo)
     check("compound.undoKeepsDice", session.dice != nil, "undo must not un-roll")
@@ -566,6 +591,46 @@ do {
   }
   check("compound.sessionExercised", exercised)
   check("compound.sawTwoDieChain", exercised)
+}
+
+// 16. Guards added from review: a staged draft blocks adopting a new position,
+//     a reset clears the new turn state, and the turn ceiling round-trips.
+do {
+  let s = ImGameSession()
+  s.rollDice()
+  for _ in 0..<4 {
+    guard let move = s.sequences.first else { break }
+    s.tapPoint(move.from)
+    s.tapPoint(move.to)
+    if s.isTurnSendable { break }
+  }
+  s.markStaged()
+  // Adopting under a staged bubble would let didStartSending mark the *new*
+  // game sent while the composer holds the old payload.
+  let other = ImTurnPayload.fromBoard(
+    ImBoard.initial(), gameId: "ParityVec01", turn: 9, dice: (2, 1), summary: "x")
+  check("guard.noAdoptWhileStaged", s.shouldAdopt(other, isFromMe: false) == false)
+  // A new game is refused while staged, so a stale draft cannot outlive it.
+  s.loadNewGame()
+  check("guard.newGameRefusedWhileStaged", s.pendingSend)
+
+  // Once unstaged, a reset clears every piece of turn state.
+  s.failToStage("cancelled")
+  s.loadNewGame()
+  check("guard.resetClearsPending", s.pendingSend == false)
+  check("guard.resetClearsHistory", s.canUndo == false)
+  check("guard.resetIsFresh", s.isFreshGame)
+  check("guard.resetRollable", s.needsRoll)
+
+  // The turn ceiling must round-trip: clamping to the maximum still has to
+  // produce a payload the peer can decode, or the game silently stops.
+  let atCap = ImGameSession()
+  atCap.load(payload: ImTurnPayload.fromBoard(
+    ImBoard.initial(), gameId: "Ab3dEf7hIj9K", turn: imMaxTurn, dice: nil, summary: "x"))
+  check("ceiling.clamped", atCap.turn == imMaxTurn, "\(atCap.turn)")
+  let capURL = atCap.outgoingPayload().url
+  check("ceiling.reencodable", capURL != nil && (try? ImTurnPayload(url: capURL!)) != nil)
+  check("ceiling.decodedTurn", (try? ImTurnPayload(url: capURL!))?.turn == imMaxTurn)
 }
 
 if failures > 0 {

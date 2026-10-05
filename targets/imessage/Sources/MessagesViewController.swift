@@ -67,7 +67,7 @@ final class MessagesViewController: MSMessagesAppViewController {
   /// the turn is unrecoverable without a new extension process.
   override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
     super.didCancelSending(message, conversation: conversation)
-    session.failToStage("Turn removed before sending — roll again or replay your dice.")
+    session.failToStage("Turn removed before sending — tap Send turn to stage it again.")
   }
 
   // MARK: Presentation
