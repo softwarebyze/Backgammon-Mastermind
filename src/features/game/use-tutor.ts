@@ -37,10 +37,28 @@ type TrackedTurn = {
   /** Turn-end board + move-log length, stashed when the hold engages. */
   endBoard: number[] | null;
   endMoveLogLength: number;
+  /** Game this turn belongs to. Stale after New Game. */
+  generation: number;
 };
 
 /** Give up waiting on a stuck engine rather than freezing the game. */
 const VERDICT_PENDING_TIMEOUT_MS = 10_000;
+
+/**
+ * Bumped when a new game starts. A tracked turn belongs to the game that
+ * started it. On the first turn both move logs are 0, so a shorter log
+ * cannot tell New Game apart from "the turn ended with no moves recorded".
+ */
+let tutorGameGeneration = 0;
+
+export function bumpTutorGameGeneration(): void {
+  tutorGameGeneration += 1;
+}
+
+/** Tests start from generation 0. */
+export function resetTutorGameGenerationForTests(): void {
+  tutorGameGeneration = 0;
+}
 
 /**
  * The prompt is up, but the player may undo back into this turn. Park the
@@ -139,11 +157,12 @@ function trackFreshTurn(args: {
     prompted: false,
     endBoard: null,
     endMoveLogLength: 0,
+    generation: tutorGameGeneration,
   };
   trackedRef.current = entry;
   void analyzeTutorTurn(liveState, primaryEngine).then((analysis) => {
-    if (trackedRef.current !== entry)
-      return; // turn ended mid-flight (already judged) or abandoned
+    if (trackedRef.current !== entry || entry.generation !== tutorGameGeneration)
+      return; // turn ended mid-flight (already judged), abandoned, or new game
     entry.analysisPending = false;
     if (!analysis) {
       abandonTurn(entry);
@@ -231,8 +250,10 @@ function finishTrackedTurn(args: {
     rememberForRetry,
   } = args;
   const moveLogLength = moveLog.length;
-  if (moveLogLength < tracked.startMoveLogLength) {
-    // New game (or rewound past the turn start): the old turn is gone.
+  if (moveLogLength < tracked.startMoveLogLength || tracked.generation !== tutorGameGeneration) {
+    // New game, or rewound past the turn start. A first turn starts at log
+    // length 0, and New Game clears the log back to 0, so the length check
+    // alone does not see it — the generation does.
     abandonTurn(tracked);
     return;
   }
@@ -362,6 +383,14 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
       return;
 
     const key = turnKey(liveState);
+    if (retryRef.current && retryRef.current.generation !== tutorGameGeneration)
+      retryRef.current = null;
+    const previousGame = trackedRef.current;
+    if (previousGame && previousGame.generation !== tutorGameGeneration) {
+      // Drop the previous game before judging. Otherwise a first-turn New
+      // Game (both logs still empty, key changed) re-arms the verdict hold.
+      abandonTurn(previousGame);
+    }
     const tracked = trackedRef.current;
 
     // The tracked turn ended (turn passed, or game over) → judge it.

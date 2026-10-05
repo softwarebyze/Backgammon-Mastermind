@@ -1,4 +1,8 @@
-import { shortcutFor } from '@/features/game/use-game-keyboard-shortcuts';
+import { rollBlockedByFocus, shortcutFor } from '@/features/game/use-game-keyboard-shortcuts';
+
+jest.mock('expo-router', () => ({
+  useFocusEffect: () => {},
+}));
 
 function key(k: string, mods: Partial<{ metaKey: boolean; ctrlKey: boolean; shiftKey: boolean; altKey: boolean }> = {}) {
   return {
@@ -32,5 +36,17 @@ describe('game keyboard shortcuts', () => {
     expect(shortcutFor(key('r', { metaKey: true }))).toBeNull(); // ⌘R = reload
     expect(shortcutFor(key('r', { altKey: true }))).toBeNull();
     expect(shortcutFor(key('q'))).toBeNull();
+  });
+
+  it('leaves Alt chords alone, including modifier-Z', () => {
+    expect(shortcutFor(key('z', { metaKey: true, altKey: true }))).toBeNull();
+    expect(shortcutFor(key('z', { ctrlKey: true, altKey: true }))).toBeNull();
+    expect(shortcutFor(key('z', { metaKey: true, shiftKey: true, altKey: true }))).toBeNull();
+  });
+
+  it('does not steal Space or Enter from a focused button', () => {
+    expect(rollBlockedByFocus(null)).toBe(false);
+    expect(rollBlockedByFocus({ closest: () => null })).toBe(false);
+    expect(rollBlockedByFocus({ closest: () => ({}) })).toBe(true);
   });
 });

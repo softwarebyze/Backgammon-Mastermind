@@ -1,10 +1,12 @@
 import type { GameState } from '@/lib/game';
-import { useEffect } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
 import { Platform } from 'react-native';
 
 type Actions = {
   state: GameState | null;
   isReviewing: boolean;
+  tutorPaused: boolean;
   canUndo: boolean;
   canRedo: boolean;
   onRoll: () => void;
@@ -21,12 +23,15 @@ export function shortcutFor(e: {
   shiftKey: boolean;
   altKey: boolean;
 }): 'roll' | 'undo' | 'redo' | 'cancel' | null {
+  if (e.altKey) {
+    return null;
+  }
   const mod = e.metaKey || e.ctrlKey;
   const key = e.key.toLowerCase();
   if (mod && key === 'z') {
     return e.shiftKey ? 'redo' : 'undo';
   }
-  if (mod || e.altKey) {
+  if (mod) {
     return null;
   }
   if (key === 'r' || key === ' ' || key === 'enter') {
@@ -44,14 +49,21 @@ export function shortcutFor(e: {
   return null;
 }
 
+/** Space/Enter already activate a focused button. Don't also roll. */
+export function rollBlockedByFocus(target: { closest?: (selector: string) => unknown } | null): boolean {
+  return Boolean(target?.closest?.('button, a, [role="button"]'));
+}
+
 /**
  * Web only: R / Space / Enter roll, Z or ⌘Z undo, Y or ⇧⌘Z redo, Esc cancels a
  * selection. Roll only fires when the human can actually roll, so a stray key
- * never triggers a phase the buttons wouldn't allow.
+ * never triggers a phase the buttons wouldn't allow. The listener follows screen
+ * focus, so opening settings does not leave the hidden game listening.
  */
 export function useGameKeyboardShortcuts({
   state,
   isReviewing,
+  tutorPaused,
   canUndo,
   canRedo,
   onRoll,
@@ -59,20 +71,26 @@ export function useGameKeyboardShortcuts({
   onRedo,
   onCancelSelection,
 }: Actions) {
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     if (Platform.OS !== 'web' || typeof window === 'undefined' || !state) {
       return;
     }
     const humanTurn = !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
-    const canRoll = humanTurn && !isReviewing
+    const canRoll = humanTurn && !isReviewing && !tutorPaused
       && (state.phase === 'rolling' || state.phase === 'opening-roll');
     const onKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
       const target = e.target as HTMLElement | null;
       if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) {
         return;
       }
       const action = shortcutFor(e);
       if (!action) {
+        return;
+      }
+      if (action === 'roll' && rollBlockedByFocus(target)) {
         return;
       }
       if (action === 'roll' && canRoll) {
@@ -94,5 +112,5 @@ export function useGameKeyboardShortcuts({
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [state, isReviewing, canUndo, canRedo, onRoll, onUndo, onRedo, onCancelSelection]);
+  }, [state, isReviewing, tutorPaused, canUndo, canRedo, onRoll, onUndo, onRedo, onCancelSelection]));
 }

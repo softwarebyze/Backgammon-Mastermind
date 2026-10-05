@@ -21,6 +21,7 @@ import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-ban
 import { useGame } from '@/features/game/use-game';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
 import {
   canContinueSavedGame,
@@ -73,6 +74,7 @@ function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolea
 /* eslint-disable max-lines-per-function -- home mode menu composition */
 export function HomeScreen() {
   const { state, startGame, resumeGame } = useGame();
+  const { preferences } = useGamePreferences();
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
   const { insets, landscape } = useLayoutMetrics();
@@ -85,10 +87,14 @@ export function HomeScreen() {
 
   const handleStart = useCallback(
     (mode: GameMode) => {
-      posthog.capture('game_started', { mode, had_saved_game: isResumableGame(state) });
+      posthog.capture('game_started', {
+        mode,
+        had_saved_game: isResumableGame(state),
+        tutor_mode: preferences.tutorMode,
+      });
       startGameFromHome(mode, state, startGame);
     },
-    [posthog, startGame, state],
+    [posthog, preferences.tutorMode, startGame, state],
   );
 
   const handleResume = useCallback(

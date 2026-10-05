@@ -1,6 +1,7 @@
 import type { GuidanceSession } from '@/features/game/guidance-store';
 
-import { useState } from 'react';
+import { usePostHog } from 'posthog-react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { AnimatedPathBoard } from '@/features/game/components/animated-path-board';
@@ -472,23 +473,91 @@ function SolutionView({
  * the best move hidden until explicitly requested. Nothing is ever auto-replaced.
  *
  */
+
+type TutorBlunderAction = 'take_back' | 'peek' | 'keep_move' | 'turn_off';
+
+/** One `tutor_blunder_shown` per guidance session, plus named modal actions. */
+function useTutorBlunderAnalytics(session: GuidanceSession | null) {
+  const posthog = usePostHog();
+  const shownId = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!session || session.kind !== 'blunder' || !session.verdict)
+      return;
+    if (shownId.current === session.id)
+      return;
+    shownId.current = session.id;
+    posthog.capture('tutor_blunder_shown', {
+      loss: session.verdict.loss,
+      played_rank: session.verdict.playedRank,
+      candidate_count: session.verdict.candidateCount,
+      mode: session.questionState.mode,
+    });
+  }, [posthog, session]);
+
+  return useCallback((action: TutorBlunderAction) => {
+    posthog.capture('tutor_blunder_action', { action });
+    if (action === 'turn_off') {
+      posthog.capture('game_preference_changed', {
+        preference: 'tutor_mode',
+        value: false,
+        source: 'blunder_modal',
+      });
+    }
+  }, [posthog]);
+}
+
+/** Analytics-backed actions. Other controls stay local to the modal. */
+function useBlunderModalActions(session: GuidanceSession | null) {
+  const game = useGame();
+  const { setTutorMode } = useGamePreferences();
+  const captureBlunderAction = useTutorBlunderAnalytics(session);
+
+  const handleTakeBack = () => {
+    if (!session || session.kind !== 'blunder')
+      return;
+    captureBlunderAction('take_back');
+    clearGuidance();
+    game.tutorRevertTurn(session.questionState, session.myMoves.length);
+  };
+  // Full reveal is the "peek": the answer was hidden until the player asked.
+  const handleRevealFull = () => {
+    captureBlunderAction('peek');
+    updateGuidance({
+      revealed: true,
+      revealMineOnly: false,
+      showMine: true,
+      showEngine: true,
+    });
+  };
+  const handleKeepMove = () => {
+    captureBlunderAction('keep_move');
+    clearGuidance();
+  };
+  const handleTurnOff = () => {
+    captureBlunderAction('turn_off');
+    clearGuidance();
+    setTutorMode(false);
+  };
+
+  return { handleTakeBack, handleRevealFull, handleKeepMove, handleTurnOff };
+}
+
 export function GuidanceModal() {
   const session = useGuidance();
   const game = useGame();
-  const { setTutorMode } = useGamePreferences();
+  const {
+    handleTakeBack,
+    handleRevealFull,
+    handleKeepMove,
+    handleTurnOff,
+  } = useBlunderModalActions(session);
 
   if (!session || session.kind !== 'blunder' || !session.verdict) {
     return null;
   }
   const verdict = session.verdict;
 
-  const revertTurn = () => {
-    game.tutorRevertTurn(session.questionState, session.myMoves.length);
-  };
-  const handleTakeBack = () => {
-    clearGuidance();
-    revertTurn();
-  };
   /** Undo just the last die move so the player can retry part of the turn. */
   const handleUndoLastMove = () => {
     clearGuidance();
@@ -496,12 +565,6 @@ export function GuidanceModal() {
   };
   // Every reveal transition writes the complete reveal state, so Back →
   // reveal can never resurrect stale toggles from an earlier view.
-  const handleRevealFull = () => updateGuidance({
-    revealed: true,
-    revealMineOnly: false,
-    showMine: true,
-    showEngine: true,
-  });
   const handleShowMine = () => updateGuidance({
     revealed: true,
     showMine: true,
@@ -510,7 +573,6 @@ export function GuidanceModal() {
   });
   const handleBackToQuestion = () =>
     updateGuidance({ revealed: false, revealMineOnly: false });
-  const handleKeepMove = () => clearGuidance();
   /**
    * One-tap apply: revert the player's turn, then animate the engine's best
    * move in its place. The modal dismisses first and the sequence starts on
@@ -529,10 +591,6 @@ export function GuidanceModal() {
         game.doMoveSequence(moves);
       });
     });
-  };
-  const handleTurnOff = () => {
-    clearGuidance();
-    setTutorMode(false);
   };
 
   return (
@@ -614,6 +672,7 @@ const styles = StyleSheet.create({
   },
   viewToggle: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     gap: 8,
     marginBottom: 12,

@@ -14,7 +14,14 @@ const mockTutorRevertTurn = jest.fn();
 const mockDoUndo = jest.fn();
 const mockDoMoveSequence = jest.fn();
 const mockSetTutorMode = jest.fn();
+const mockCapture = jest.fn();
 let mockCanUndo = true;
+
+jest.mock('posthog-react-native', () => ({
+  usePostHog: function postHogApi() {
+    return { capture: mockCapture };
+  },
+}));
 
 jest.mock('@/features/game/use-game', () => ({
   useGame: function gameApi() {
@@ -75,6 +82,7 @@ beforeEach(() => {
   mockDoUndo.mockClear();
   mockDoMoveSequence.mockClear();
   mockSetTutorMode.mockClear();
+  mockCapture.mockClear();
   mockCanUndo = true;
 });
 
@@ -391,5 +399,47 @@ describe('guidance modal reveal state', () => {
     // The new session starts on the best view, not the previous pick.
     expect(screen.getByTestId('guidance-compare-engine')).toBeTruthy();
     expect(screen.queryByTestId('guidance-compare-mine')).toBeNull();
+  });
+});
+
+describe('guidance modal analytics', () => {
+  it('records one blunder shown event and the named actions', () => {
+    renderQuestion();
+
+    expect(mockCapture).toHaveBeenCalledTimes(1);
+    expect(mockCapture).toHaveBeenCalledWith('tutor_blunder_shown', {
+      loss: 0.117,
+      played_rank: 3,
+      candidate_count: 18,
+      mode: 'vs-computer',
+    });
+
+    fireEvent.press(screen.getByTestId('guidance-reveal'));
+    expect(mockCapture).toHaveBeenCalledWith('tutor_blunder_action', { action: 'peek' });
+    expect(mockCapture.mock.calls.filter(call => call[0] === 'tutor_blunder_shown')).toHaveLength(1);
+
+    fireEvent.press(screen.getByTestId('guidance-back-to-question'));
+    fireEvent.press(screen.getByTestId('guidance-keep-move'));
+    expect(mockCapture).toHaveBeenCalledWith('tutor_blunder_action', { action: 'keep_move' });
+  });
+
+  it('turning tutor off also records the preference change', () => {
+    renderQuestion();
+    mockCapture.mockClear();
+
+    fireEvent.press(screen.getByTestId('guidance-turn-off'));
+    expect(mockCapture).toHaveBeenCalledWith('tutor_blunder_action', { action: 'turn_off' });
+    expect(mockCapture).toHaveBeenCalledWith('game_preference_changed', {
+      preference: 'tutor_mode',
+      value: false,
+      source: 'blunder_modal',
+    });
+    expect(mockSetTutorMode).toHaveBeenCalledWith(false);
+  });
+
+  it('take back is its own action', () => {
+    renderQuestion();
+    fireEvent.press(screen.getByTestId('guidance-take-back'));
+    expect(mockCapture).toHaveBeenCalledWith('tutor_blunder_action', { action: 'take_back' });
   });
 });
