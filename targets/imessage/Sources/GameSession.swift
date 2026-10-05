@@ -71,6 +71,8 @@ final class ImGameSession: ObservableObject {
     self.dice = nil
     self.selectedPoint = nil
     self.destinations = []
+    self.moveHistory = []
+    self.isFreshGame = false
     self.sentLatestTurn = false
     // An inbound position supersedes any draft still sitting in the composer;
     // leaving `pendingSend` set would leave Send disabled as "Staged" for a
@@ -88,6 +90,12 @@ final class ImGameSession: ObservableObject {
 
   /// Starting over while a turn is staged would leave a bubble in the composer
   /// pointing at a game this session no longer holds, so it is refused.
+  /// True only while this session is not yet attached to a game that exists in
+  /// the conversation — a fresh session, or one the player just reset. Once a
+  /// position has been adopted or a die rolled, starting over abandons a game
+  /// the other player can still see, so the UI has to confirm first.
+  private(set) var isFreshGame: Bool = true
+
   func loadNewGame() {
     guard !pendingSend else {
       status = "Send or delete the staged turn before starting a new game."
@@ -155,10 +163,48 @@ final class ImGameSession: ObservableObject {
 
   var legalMoves: [ImMove] { imLegalMoves(board) }
 
+  /// Pre-move state for the current turn so a checker can be taken back before
+  /// the turn is sent. Mirrors the app's undo, which steps back one move and
+  /// never un-rolls — undoing the roll would be a dice cheat.
+  private struct ImMoveSnapshot {
+    var board: ImBoard
+    var status: String
+    var movedThisTurn: Bool
+  }
+
+  private var moveHistory: [ImMoveSnapshot] = []
+
+  var canUndo: Bool {
+    !moveHistory.isEmpty && !sentLatestTurn && !pendingSend
+  }
+
+  func undo() {
+    guard canUndo, let snapshot = moveHistory.popLast() else { return }
+    board = snapshot.board
+    // Clear the selection rather than restoring it. The snapshot was taken
+    // mid-selection, so restoring it would leave the previously tapped checker
+    // "selected" — and the player's next tap would deselect it instead of
+    // picking a checker up. After an undo the dice are back and nothing is held.
+    selectedPoint = nil
+    destinations = []
+    status = snapshot.status
+    movedThisTurn = snapshot.movedThisTurn
+  }
+
+  /// Compound moves available this turn: one checker played with two or more
+  /// dice in a single tap.
+  var sequences: [ImSequence] { imSequences(board) }
+
+  /// Whether the player may pick this point up — drives the move-hint ring.
+  func isMovable(_ point: Int) -> Bool {
+    sequences.contains { $0.from == point }
+  }
+
   // MARK: Actions
 
   func rollDice() {
     guard needsRoll else { return }
+    isFreshGame = false
     let roll = imRollDice()
     dice = roll
     movedThisTurn = false
@@ -175,9 +221,14 @@ final class ImGameSession: ObservableObject {
   func tapPoint(_ point: Int) {
     // Locked while a turn is staged or sent — see `needsRoll`.
     guard !sentLatestTurn, !pendingSend, board.winner == nil, !board.remaining.isEmpty else { return }
-    // Tapped a highlighted destination → move.
+    // Tapped a highlighted destination → move. A destination may be reachable by
+    // a compound sequence (one checker, both dice) or by a single die.
     if destinations.contains(point), let from = selectedPoint {
-      applyMove(from: from, to: point)
+      if let sequence = sequences.first(where: { $0.from == from && $0.to == point }) {
+        applySequence(sequence)
+      } else if let move = legalMoves.first(where: { $0.from == from && $0.to == point }) {
+        applyMove(from: from, to: point, move: move)
+      }
       return
     }
     // (Re)select one of our checkers — or the bar.
@@ -192,7 +243,9 @@ final class ImGameSession: ObservableObject {
       return
     }
     selectedPoint = point
-    destinations = Set(legalMoves.filter { $0.from == point }.map { $0.to })
+    // Destinations come from compound sequences too, so one tap can play both
+    // dice when the rules allow it.
+    destinations = Set(sequences.filter { $0.from == point }.map(\.to))
     if destinations.isEmpty { status = "That checker has no legal move with these dice." }
   }
 
@@ -202,22 +255,52 @@ final class ImGameSession: ObservableObject {
     return board.points[point].owner == board.current
   }
 
-  private func applyMove(from: Int, to: Int) {
-    guard let move = legalMoves.first(where: { $0.from == from && $0.to == to }) else { return }
-    let (next, result) = imApplyMove(board, move: move)
+  private func applyMove(from: Int, to: Int, move: ImMove? = nil) {
+    guard let move = move ?? legalMoves.first(where: { $0.from == from && $0.to == to })
+    else { return }
+    finish(board: imApplyMove(board, move: move).board)
+  }
+
+  /// Play a compound move: each step is a real single-die move applied in
+  /// order, so dice are consumed exactly as the rules require.
+  private func applySequence(_ sequence: ImSequence) {
+    var next = board
+    // Track where the checker actually is: `sequence.to` is the final square,
+    // not the intermediate one, so a chain of three must not look for the
+    // second step at the end point.
+    var current = sequence.from
+    for die in sequence.dies {
+      // Resolve the die against the *current* remainder — it has shrunk since
+      // the sequence was computed.
+      guard let index = next.remaining.firstIndex(of: die),
+            let step = imRawSingleStepMoves(next).first(where: {
+              $0.dieIndex == index && $0.from == current
+            })
+      else { return }
+      current = step.to
+      next = imApplyPhysical(next, move: step)
+    }
+    finish(board: next)
+  }
+
+  /// Shared post-move bookkeeping: advance state and narrate the result.
+  private func finish(board next: ImBoard) {
+    moveHistory.append(ImMoveSnapshot(
+      board: board, status: status, movedThisTurn: movedThisTurn))
     board = next
+    isFreshGame = false
     movedThisTurn = true
     selectedPoint = nil
     destinations = []
-    switch result {
-    case .movesAvailable:
-      status = "Nice — \(board.remaining.count) \(board.remaining.count == 1 ? "die" : "dice") left."
-    case .noMoves:
-      status = "No more moves — send to pass the turn."
-    case .turnComplete:
-      status = "Turn complete — send it to your opponent."
-    case .gameOver(let winner):
+    if let winner = next.winner {
       status = "\(winner == .white ? "White" : "Black") wins! Send the final result."
+    } else if next.remaining.isEmpty {
+      status = "Turn complete — send it to your opponent."
+    } else if !imHasAnyLegalMove(next) {
+      status = "No more moves — send to pass the turn."
+    } else {
+      let left = next.remaining.count
+      status = "Nice — \(left) \(left == 1 ? "die" : "dice") left."
     }
   }
 
@@ -250,6 +333,7 @@ final class ImGameSession: ObservableObject {
   }
 
   func markSent() {
+    moveHistory = []
     pendingSend = false
     sentLatestTurn = true
     status = "Sent! Wait for your opponent's reply."

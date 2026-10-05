@@ -331,7 +331,7 @@ do {
     // Play every legal move greedily; only the first is needed for the
     // invariant, but draining exercises the blocked-remainder case.
     for _ in 0..<4 {
-      guard let move = session.legalMoves.first else { break }
+      guard let move = session.sequences.first else { break }
       session.tapPoint(move.from)
       session.tapPoint(move.to)
       if session.movedThisTurn { break }
@@ -357,7 +357,7 @@ do {
   s.rollDice()
   // Play the turn out so Send becomes legal.
   for _ in 0..<4 {
-    guard let move = s.legalMoves.first else { break }
+    guard let move = s.sequences.first else { break }
     s.tapPoint(move.from)
     s.tapPoint(move.to)
     if s.isTurnSendable { break }
@@ -397,7 +397,7 @@ do {
   let r = ImGameSession()
   r.rollDice()
   for _ in 0..<4 {
-    guard let move = r.legalMoves.first else { break }
+    guard let move = r.sequences.first else { break }
     r.tapPoint(move.from)
     r.tapPoint(move.to)
     if r.board.remaining.isEmpty { break }
@@ -485,6 +485,87 @@ do {
   check("owner.rejectsBadOwnerDotless", decode(url(swapOwner(4, "?"), "0,0", "")) == nil)
   // `w0` / `b0` remain accepted as empty points, as codec.ts does.
   check("owner.acceptsZeroCount", decode(url(swapOwner(4, "w"), "0,0", "")) != nil)
+}
+
+// 15. Compound moves: one checker played with both dice in a single tap, and
+//     undo stepping back a move without ever un-rolling.
+do {
+  // White 6/5 24/2 13/5 8/3 — roll 5-3 and check the chain off point 8.
+  let board = ImBoard.initial()
+  var moved = board
+  moved.current = .white
+  moved.remaining = [5, 3]
+  let seqs = imSequences(moved)
+  // 8 -> 3 with die 5, or 8 -> 5 with die 3: neither blocks the other, so the
+  // full 8-point compound move to point 0 is out of range, but 6 -> 1 (5) and
+  // 6 -> 3 (3) can chain, as can 13 -> 8 (5) but 8 is occupied by white.
+  let chained = seqs.filter { $0.usesDice == 2 }
+  check("compound.someChainExists", !chained.isEmpty, "\(seqs.count) sequences")
+  for seq in chained {
+    check("compound.sameChecker", seq.dies.count == 2)
+    check("compound.usesRealDice", seq.dies.allSatisfy { moved.remaining.contains($0) })
+    check("compound.fromOwned", seq.from == 6 || seq.from == 13 || seq.from == 24 || seq.from == 8)
+  }
+  // Only maximal chains survive: a 1-die alternative must not be offered when a
+  // 2-die chain exists (otherwise the player could under-use the dice).
+  check("compound.onlyMaximal", seqs.allSatisfy { $0.usesDice == (chained.isEmpty ? 1 : 2) })
+
+  // Sources reported as movable match the sequence origins.
+  check("compound.movableSources", imMovableSources(moved) == Set(seqs.map(\.from)))
+
+  // Engine-level: replaying a chain consumes exactly its dice and moves the
+  // checker the whole distance.
+  if let chain = chained.first {
+    var after = moved
+    var current = chain.from
+    for die in chain.dies {
+      guard let index = after.remaining.firstIndex(of: die),
+            let step = imRawSingleStepMoves(after).first(where: {
+              $0.dieIndex == index && $0.from == current
+            })
+      else { break }
+      current = step.to
+      after = imApplyPhysical(after, move: step)
+    }
+    check("compound.replayConsumesBothDice", after.remaining.isEmpty, "\(after.remaining)")
+    check("compound.replayLandsOnTarget", after.points[chain.to].owner == .white, "\(chain.to)")
+  }
+
+  // Session-level: tap a chain through the real path, then undo it. `load`
+  // does not restore `remaining`, so roll for real and retry until a compound
+  // turn comes up (the opening position almost always has one).
+  var exercised = false
+  for _ in 0 ..< 60 where !exercised {
+    let session = ImGameSession()
+    session.rollDice()
+    // `imSequences` only returns maximal chains, so every sequence here uses
+    // the same number of dice. Keep rolling until a compound turn comes up.
+    guard let chain = session.sequences.first(where: { $0.usesDice == 2 }) else { continue }
+    let before = session.board
+    session.tapPoint(chain.from)
+    check("compound.selected", session.selectedPoint == chain.from)
+    check("compound.destinationsIncludeTarget", session.destinations.contains(chain.to))
+    session.tapPoint(chain.to)
+    check("compound.oneTapBothDice", session.board.remaining.isEmpty, "\(session.board.remaining)")
+    check("compound.landedOnTarget", session.board.points[chain.to].owner == .white, "\(chain.to)")
+    check("compound.canUndo", session.canUndo)
+    check("compound.undoKeepsDice", session.dice != nil, "undo must not un-roll")
+    session.undo()
+    check("compound.undoRestoresBoard", session.board == before)
+    check("compound.undoRestoresRemaining", session.board.remaining == before.remaining)
+    check("compound.noUndoAfterUndo", session.canUndo == false)
+    check("compound.undoClearsSelection", session.selectedPoint == nil && session.destinations.isEmpty)
+    // A committed turn cannot be taken back.
+    session.tapPoint(chain.from)
+    session.tapPoint(chain.to)
+    session.markSent()
+    check("compound.noUndoAfterSend", session.canUndo == false)
+    session.undo()
+    check("compound.undoNoopAfterSend", session.board.remaining.isEmpty, "remaining=\(session.board.remaining)")
+    exercised = true
+  }
+  check("compound.sessionExercised", exercised)
+  check("compound.sawTwoDieChain", exercised)
 }
 
 if failures > 0 {

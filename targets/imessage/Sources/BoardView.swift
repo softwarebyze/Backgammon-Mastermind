@@ -169,6 +169,7 @@ struct ImBoardView: View {
   var onNewGame: () -> Void
   /// Compact keeps the chrome tight so the board still fits the short drawer.
   var isCompact: Bool = false
+  @State private var confirmingNewGame = false
 
   /// The compact drawer sizes the sheet from the root view's *fitting* size. A
   /// `GeometryReader` root has no ideal height, so Messages collapses the sheet
@@ -232,26 +233,12 @@ struct ImBoardView: View {
       }
       Spacer()
       VStack(alignment: .trailing, spacing: 1) {
-        dicePips
         Text(statusCounts)
           .font(.caption2)
           .foregroundStyle(ImTheme.bearOffLabel)
       }
     }
     .foregroundStyle(.white)
-  }
-
-  private var dicePips: some View {
-    HStack(spacing: 6) {
-      if let dice = session.dice {
-        ImDicePips(value: dice.0)
-        ImDicePips(value: dice.1)
-      } else {
-        Text("—")
-          .font(.system(size: 13, weight: .bold, design: .rounded))
-          .foregroundStyle(ImTheme.bearOffLabel)
-      }
-    }
   }
 
   private var statusCounts: String {
@@ -607,18 +594,58 @@ struct ImBoardView: View {
     }
   }
 
+  /// "New game" abandons a game the other player can still see, so it confirms
+  /// first instead of silently replacing the position. A brand-new session (or
+  /// one the player just reset) has nothing to lose and skips the prompt.
   private var actionRow: some View {
-    HStack(spacing: 10) {
-      Button("New") { onNewGame() }
-        .font(.footnote)
-        .buttonStyle(.bordered)
-        .controlSize(.small)
-      Spacer(minLength: 0)
-      Button(sendTitle) { onSend() }
-        .font(.footnote.weight(.semibold))
-        .buttonStyle(.borderedProminent)
-        .controlSize(.small)
-        .disabled(!session.isTurnSendable)
+    Group {
+      if confirmingNewGame {
+        HStack(spacing: 8) {
+          Text("Abandon this game? The thread keeps its old bubbles.")
+            .font(.system(size: 10))
+            .foregroundStyle(ImTheme.bearOffLabel)
+            .lineLimit(2)
+          Spacer(minLength: 0)
+          Button("Keep") { confirmingNewGame = false }
+            .font(.caption)
+            .buttonStyle(.bordered)
+            .controlSize(.mini)
+          Button("Start over") {
+            confirmingNewGame = false
+            onNewGame()
+          }
+          .font(.caption.weight(.semibold))
+          .buttonStyle(.borderedProminent)
+          .tint(ImTheme.pointDark.fill)
+          .controlSize(.mini)
+        }
+      } else {
+        HStack(spacing: 10) {
+          Button("New game") {
+            if session.isFreshGame {
+              onNewGame()
+            } else {
+              confirmingNewGame = true
+            }
+          }
+          .font(.footnote)
+          .buttonStyle(.bordered)
+          .controlSize(.small)
+
+          Button("Undo") { session.undo() }
+            .font(.footnote)
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .disabled(!session.canUndo)
+
+          Spacer(minLength: 0)
+          Button(sendTitle) { onSend() }
+            .font(.footnote.weight(.semibold))
+            .buttonStyle(.borderedProminent)
+            .controlSize(.small)
+            .disabled(!session.isTurnSendable)
+        }
+      }
     }
   }
 
@@ -671,6 +698,10 @@ private struct ImPointCell: View {
   var isSelected: Bool
   var isLegal: Bool
   var canSelect: Bool
+  /// Movable sources get a visible ring on their top checker. The status line
+  /// says "tap a highlighted checker", so without this the instruction points at
+  /// nothing.
+  var isMovable: Bool = false
   var metrics: ImMetrics
   var onTap: () -> Void
 
@@ -708,12 +739,13 @@ private struct ImPointCell: View {
     let visible = min(slot.count, 5)
     let step = min(metrics.checkerSize - 2, (metrics.pointHeight - metrics.checkerSize) / 4)
     return ZStack {
-      ForEach(0 ..< visible, id: \.self) { index in
+              ForEach(0 ..< visible, id: \.self) { index in
         ImCheckerDisc(
           palette: ImTheme.checker(for: slot.owner ?? .white),
           size: metrics.checkerSize,
           count: index == visible - 1 && slot.count > 5 ? slot.count : nil,
-          isSelected: isSelected && index == visible - 1
+          isSelected: isSelected && index == visible - 1,
+          showMoveHint: isMovable && index == visible - 1 && !isSelected
         )
         .offset(y: isTop
           ? CGFloat(index) * step
@@ -752,6 +784,7 @@ private struct ImCheckerDisc: View {
   var size: CGFloat
   var count: Int?
   var isSelected: Bool = false
+  var showMoveHint: Bool = false
 
   var body: some View {
     let radius = size / 2 - 2
@@ -780,6 +813,12 @@ private struct ImCheckerDisc: View {
 
       if isSelected {
         Circle().strokeBorder(ImTheme.barSelected, lineWidth: 2).padding(1)
+      }
+
+      // Move hint: a soft ring so "tap a highlighted checker" points at
+      // something. The app uses the same affordance (CheckerToken showMoveHint).
+      if showMoveHint {
+        Circle().strokeBorder(Color(hex: "#FFDCB1").opacity(0.85), lineWidth: 1.6).padding(0.5)
       }
 
       if let count {

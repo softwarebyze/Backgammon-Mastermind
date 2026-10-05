@@ -292,6 +292,72 @@ func imLegalMoves(_ board: ImBoard) -> [ImMove] {
   return legal.map { $0.move }
 }
 
+/// One checker played with two or more dice in a single turn — a "compound"
+/// move. The app allows this via drag; the extension needs it because tapping
+/// source-then-destination once per die cannot express it.
+struct ImSequence: Equatable {
+  var from: Int
+  var to: Int
+  /// Die *values* in play order, not indices: `board.remaining` shrinks as each
+  /// die is consumed, so an index recorded before the first step points at the
+  /// wrong die afterwards.
+  var dies: [Int]
+
+  var usesDice: Int { dies.count }
+}
+
+/// Every maximal same-checker chain available this turn.
+///
+/// Only chains of the longest length found anywhere are returned, mirroring the
+/// max-usage rule in `imLegalMoves`: if one checker can take both dice, offering
+/// the single-die alternatives would let the player under-use them.
+func imSequences(_ board: ImBoard) -> [ImSequence] {
+  let depth = board.remaining.count
+  guard depth > 0 else { return [] }
+  let steps = imRawSingleStepMoves(board)
+
+  var best: [ImSequence] = []
+  var maxUses = 0
+
+  for first in steps {
+    func extend(_ chain: [ImMove]) {
+      if chain.count > maxUses {
+        maxUses = chain.count
+        best = []
+      }
+      if chain.count == maxUses, let last = chain.last {
+        let candidate = ImSequence(
+          from: first.from,
+          to: last.to,
+          dies: chain.map { board.remaining[$0.dieIndex] })
+        if !best.contains(candidate) { best.append(candidate) }
+      }
+      guard chain.count < depth, let here = chain.last?.to, here != imBearOff else { return }
+      for next in steps
+      where next.from == here && !chain.contains(where: { $0.dieIndex == next.dieIndex }) {
+        extend(chain + [next])
+      }
+    }
+    extend([first])
+  }
+
+  // With nothing chainable, the higher die still has to be played when the
+  // lower one cannot be used at all (same rule as `imLegalMoves`).
+  if maxUses == 1,
+     let higher = board.remaining.max(),
+     let lower = board.remaining.min(),
+     higher != lower,
+     best.contains(where: { $0.dies.first == higher }) {
+    best = best.filter { $0.dies.first == higher }
+  }
+  return best
+}
+
+/// Sources the player may pick up this turn — the hint ring in the UI.
+func imMovableSources(_ board: ImBoard) -> Set<Int> {
+  Set(imSequences(board).map(\.from))
+}
+
 func imHasAnyLegalMove(_ board: ImBoard) -> Bool {
   !imRawSingleStepMoves(board).isEmpty
 }
