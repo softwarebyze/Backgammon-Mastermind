@@ -62,6 +62,14 @@ final class MessagesViewController: MSMessagesAppViewController {
     dismiss()
   }
 
+  /// The user deleted the staged draft instead of sending it. Without this the
+  /// session stays `pendingSend` forever and Send is permanently disabled —
+  /// the turn is unrecoverable without a new extension process.
+  override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
+    super.didCancelSending(message, conversation: conversation)
+    session.failToStage("Turn removed before sending — roll again or replay your dice.")
+  }
+
   // MARK: Presentation
 
   private func presentCurrentStyle() {

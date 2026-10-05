@@ -72,6 +72,10 @@ final class ImGameSession: ObservableObject {
     self.selectedPoint = nil
     self.destinations = []
     self.sentLatestTurn = false
+    // An inbound position supersedes any draft still sitting in the composer;
+    // leaving `pendingSend` set would leave Send disabled as "Staged" for a
+    // game this session no longer holds.
+    self.pendingSend = false
     self.movedThisTurn = false
     if payload.winner != nil {
       self.status = payload.caption
@@ -109,8 +113,22 @@ final class ImGameSession: ObservableObject {
   /// turn is staged the bubble already announces the *opponent* is to move, so
   /// letting the local player roll or move again would put two contradictory
   /// claims on screen at once (staged "your move, Black" over a live White turn).
+  /// One roll per turn. `dice == nil` is what makes this work: it is set by
+  /// `rollDice` and cleared only when a new turn is loaded (`load(payload:)`,
+  /// `loadNewGame()`). Without it, spending the last die emptied
+  /// `board.remaining` and re-armed Roll *for the same turn*, so a player could
+  /// roll and move again and again before ever sending.
+  ///
+  /// `pendingSend` is load-bearing here too. Once a turn is staged the bubble
+  /// already announces the *opponent* is to move, so letting the local player
+  /// roll or move again would put two contradictory claims on screen at once
+  /// (staged "your move, Black" over a live White turn).
   var needsRoll: Bool {
-    board.winner == nil && board.remaining.isEmpty && !sentLatestTurn && !pendingSend
+    board.winner == nil
+      && board.remaining.isEmpty
+      && dice == nil
+      && !sentLatestTurn
+      && !pendingSend
   }
 
   /// True once the turn is finished and can be messaged to the opponent.

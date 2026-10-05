@@ -389,10 +389,41 @@ do {
 
   // A failed stage hands control back.
   s.failToStage("nope")
-  // Recovery means the lock is gone: rollable again if the dice were spent,
-  // otherwise the unplayed dice are still there to attempt.
-  let canContinue = s.board.remaining.isEmpty ? s.needsRoll : true
-  check("staged.recovered", s.pendingSend == false && canContinue, "pending=\(s.pendingSend) remaining=\(s.board.remaining)")
+  check("staged.recovered", s.pendingSend == false)
+
+  // One roll per turn. Spending the last die empties `board.remaining`, which
+  // used to re-arm Roll for the same turn — the "roll and roll and play many
+  // moves" report. `dice != nil` is what holds the turn closed.
+  let r = ImGameSession()
+  r.rollDice()
+  for _ in 0..<4 {
+    guard let move = r.legalMoves.first else { break }
+    r.tapPoint(move.from)
+    r.tapPoint(move.to)
+    if r.board.remaining.isEmpty { break }
+  }
+  check("oneroll.diceSpent", r.board.remaining.isEmpty)
+  check("oneroll.notRollableAgain", r.needsRoll == false, "needsRoll=\(r.needsRoll)")
+  let ptsBefore = r.board.points
+  r.rollDice()
+  check("oneroll.rollIsNoop", r.board.points == ptsBefore)
+  check("oneroll.stillSendable", r.isTurnSendable)
+
+  // Deleting the staged draft must hand the turn back (didCancelSending).
+  r.markStaged()
+  check("cancel.lockedWhileStaged", r.isTurnSendable == false)
+  r.failToStage("removed")
+  check("cancel.unlocked", r.isTurnSendable, "pending=\(r.pendingSend)")
+
+  // Loading a new position clears a stale staged flag, so Send does not stay
+  // disabled as "Staged" for a different game.
+  r.markStaged()
+  let opponentReply = ImTurnPayload.fromBoard(
+    ImBoard.initial(), gameId: r.gameId, turn: 1, dice: (3, 1), summary: "played")
+  r.load(payload: opponentReply)
+  check("cancel.pendingClearedOnLoad", r.pendingSend == false)
+  check("cancel.rollableOnNewTurn", r.needsRoll)
+
   s.markSent()
   check("sent.notSendable", s.isTurnSendable == false)
   check("sent.noRoll", s.needsRoll == false)

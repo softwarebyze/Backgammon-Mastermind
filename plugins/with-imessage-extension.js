@@ -142,14 +142,17 @@ function withImessageTarget(config) {
     }
     const extUuid = created.uuid;
 
-    // "Embed App Extensions" on the host. dstSubfolderSpec 13 is PlugIns.
+    // "Embed App Extensions" on the host. The fifth argument is a node-xcode
+    // *target-type* key, not a dstSubfolderSpec number: pbxCopyFilesBuildPhaseObj
+    // maps it through DESTINATION_BY_TARGETTYPE (app_extension -> plugins) and
+    // then SUBFOLDERSPEC_BY_DESTINATION (plugins -> 13). Passing 13 directly
+    // leaves dstSubfolderSpec undefined and the extension is not embedded.
     project.addBuildPhase(
       [`${EXT_FOLDER}.appex`],
       'PBXCopyFilesBuildPhase',
       'Embed App Extensions',
       project.getFirstTarget().uuid,
-      13,
-      '"$(CONTENTS_FOLDER_PATH)/PlugIns"',
+      'app_extension',
     );
 
     // Messages extensions are a distinct product type from generic app extensions.
