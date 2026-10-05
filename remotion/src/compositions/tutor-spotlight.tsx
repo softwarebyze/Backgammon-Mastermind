@@ -137,4 +137,4 @@ export const TutorSpotlight: React.FC = () => {
   );
 };
 
-export const TUTOR_SPOTLIGHT_DURATION = BEAT * 3 - TRANSITION + 18;
+export const TUTOR_SPOTLIGHT_DURATION = BEAT * 3 - TRANSITION;

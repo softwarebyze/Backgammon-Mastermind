@@ -14,9 +14,11 @@ on:
     types: [published]
   workflow_dispatch:
 
+# One render lane; do not cancel in-flight jobs so a long render can finish,
+# but reject stale/outdated pushes before overwriting docs/marketing/videos.
 concurrency:
-  group: remotion-render-${{ github.event.release.tag_name || github.ref }}
-  cancel-in-progress: true
+  group: remotion-render-release
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -36,10 +38,12 @@ jobs:
 
       - name: Resolve marketing version
         id: ver
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
-          if [ -n "${{ github.event.release.tag_name }}" ]; then
-            V="${{ github.event.release.tag_name }}"
+          if [ -n "${RELEASE_TAG}" ]; then
+            V="${RELEASE_TAG}"
             V="${V#v}"
           else
             V="$(node -p "require('./package.json').version")"
@@ -88,9 +92,23 @@ jobs:
       - name: Copy assets, commit, push to main
         env:
           VERSION: ${{ steps.ver.outputs.version }}
+          SOURCE_TAG: ${{ github.event.release.tag_name }}
         working-directory: main-checkout
         run: |
           set -euo pipefail
+
+          # Reject stale renders: a release for an older tag must not overwrite
+          # videos rendered for a newer tag.
+          if [ -n "${SOURCE_TAG}" ]; then
+            git fetch origin --tags --force
+            NEWEST="$(git tag -l 'v*' | sort -V | tail -n1)"
+            if [ -n "${NEWEST}" ] && [ "${NEWEST}" != "${SOURCE_TAG}" ] \
+              && [ "$(printf '%s\n%s\n' "${SOURCE_TAG}" "${NEWEST}" | sort -V | tail -n1)" = "${NEWEST}" ]; then
+              echo "Skipping push: ${SOURCE_TAG} is older than ${NEWEST}."
+              exit 0
+            fi
+          fi
+
           DEST="docs/marketing/videos"
           mkdir -p "$DEST"
           rm -f "$DEST"/*.mp4

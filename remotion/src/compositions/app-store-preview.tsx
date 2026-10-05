@@ -206,4 +206,4 @@ export const AppStorePreview: React.FC = () => {
   );
 };
 
-export const APP_STORE_PREVIEW_DURATION = INTRO + GAMEPLAY + FEATURES + OUTRO - TRANSITION * 2 + 24;
+export const APP_STORE_PREVIEW_DURATION = INTRO + GAMEPLAY + FEATURES + OUTRO - TRANSITION * 2;
