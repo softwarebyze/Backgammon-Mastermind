@@ -266,7 +266,7 @@
     },
     "hint": "Salve.",
     "home_cta": "Impara a giocare",
-    "home_cta_progress": "{{done}}di{{total}}lezioni",
+    "home_cta_progress": "{{done}} di {{total}} lezioni",
     "home_cta_quiz": "Controllo rapido a sinistra — quindi giocare",
     "home_cta_ready": "Sei pronto — giocare un vero gioco",
     "home_cta_sub": "Lezioni interattive per principianti",

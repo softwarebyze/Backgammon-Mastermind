@@ -266,7 +266,7 @@
     },
     "hint": "ログイン",
     "home_cta": "遊ぶことを学ぶ",
-    "home_cta_progress": "{{done}}インフォメーション{{total}}レッスン",
+    "home_cta_progress": "{{done}} / {{total}} レッスン完了",
     "home_cta_quiz": "クイックチェック左 — 再生",
     "home_cta_ready": "準備完了 — 実際のゲームを再生",
     "home_cta_sub": "初心者のためのインタラクティブなレッスン",

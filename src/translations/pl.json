@@ -266,7 +266,7 @@
     },
     "hint": "Podpowiedź",
     "home_cta": "Naucz się grać",
-    "home_cta_progress": "{{done}}z{{total}}wnioski",
+    "home_cta_progress": "{{done}} z {{total}} lekcji",
     "home_cta_quiz": "Szybkie sprawdzenie w lewo - następnie grać",
     "home_cta_ready": "Jesteś gotowy - zagraj prawdziwą grę",
     "home_cta_sub": "Interaktywne lekcje dla początkujących",

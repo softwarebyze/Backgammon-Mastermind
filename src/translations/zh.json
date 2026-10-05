@@ -266,7 +266,7 @@
     },
     "hint": "提示",
     "home_cta": "学会演奏",
-    "home_cta_progress": "{{done}}页:1{{total}}经验教训",
+    "home_cta_progress": "{{done}} / {{total}} 课已完成",
     "home_cta_quiz": "快速检查左边——然后播放",
     "home_cta_ready": "你准备好了,玩个真正的游戏",
     "home_cta_sub": "初学者的互动经验教训",

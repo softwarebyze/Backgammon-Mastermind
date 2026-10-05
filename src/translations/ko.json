@@ -266,7 +266,7 @@
     },
     "hint": "사이트맵",
     "home_cta": "게임 알아보기",
-    "home_cta_progress": "{{done}}이름 *{{total}}수업 완료",
+    "home_cta_progress": "{{done}} / {{total}} 수업 완료",
     "home_cta_quiz": "빠른 체크 왼쪽 — 다음 재생",
     "home_cta_ready": "You’re ready - 실제 게임 플레이",
     "home_cta_sub": "초보자를위한 대화 형 수업",

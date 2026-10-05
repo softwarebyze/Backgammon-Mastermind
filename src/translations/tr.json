@@ -266,7 +266,7 @@
     },
     "hint": "Hint Hint",
     "home_cta": "Oynamayı Öğrenin",
-    "home_cta_progress": "{{done}}Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of{{total}}Dersler yapıldı",
+    "home_cta_progress": "{{done}} / {{total}} ders tamamlandı",
     "home_cta_quiz": "Hızlı check ayrıldı – sonra oyun oyna",
     "home_cta_ready": "Hazırsınız – gerçek bir oyun oynamak",
     "home_cta_sub": "Yeni başlayanlar için Etkileşimli dersler",

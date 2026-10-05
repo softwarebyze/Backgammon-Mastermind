@@ -266,7 +266,7 @@
     },
     "hint": "हिंट",
     "home_cta": "खेलना सीखें",
-    "home_cta_progress": "{{done}}of{{total}}पाठ किया",
+    "home_cta_progress": "{{done}} / {{total}} पाठ पूरे",
     "home_cta_quiz": "क्विक चेक बायीं - फिर प्ले",
     "home_cta_ready": "आप तैयार हैं - एक असली खेल खेलते हैं",
     "home_cta_sub": "शुरुआती के लिए इंटरएक्टिव सबक",

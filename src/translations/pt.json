@@ -266,7 +266,7 @@
     },
     "hint": "Dica",
     "home_cta": "Aprender a jogar",
-    "home_cta_progress": "{{done}}de{{total}}lições feitas",
+    "home_cta_progress": "{{done}} de {{total}} lições feitas",
     "home_cta_quiz": "Verificação rápida à esquerda - em seguida, jogar",
     "home_cta_ready": "Você está pronto — jogue um jogo real",
     "home_cta_sub": "Aulas interativas para iniciantes",

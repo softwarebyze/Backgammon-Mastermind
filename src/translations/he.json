@@ -266,7 +266,7 @@
     },
     "hint": "הינד",
     "home_cta": "למד לשחק",
-    "home_cta_progress": "{{done}}של{{total}}לקחים נעשו",
+    "home_cta_progress": "{{done}} מתוך {{total}} שיעורים",
     "home_cta_quiz": "בדיקה מהירה - לאחר מכן לשחק",
     "home_cta_ready": "אתה מוכן - לשחק משחק אמיתי",
     "home_cta_sub": "שיעורים אינטראקטיביים למתחילים",
