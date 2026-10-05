@@ -21,6 +21,69 @@ The full position (all 24 points, bar, borne-off, turn number, last-roll dice,
 summary caption) is encoded in the URL query, so either side can re-open any
 old bubble to review that position.
 
+### Send lifecycle — there is no delivery confirmation
+
+Messages exposes exactly two sending callbacks and nothing else:
+
+| Callback | Meaning |
+| --- | --- |
+| `conversation.insert(_:completionHandler:)` completion | Only that the bubble was **staged** in the composer. The user can still delete it. |
+| `didStartSending(_:conversation:)` | The user tapped send. **Optimistic** — a send can still fail afterwards. |
+| `didCancelSending(_:conversation:)` | The user deleted the staged draft. |
+
+There is **no** delivery-received or send-failed callback, so “commit the turn
+only once it is confirmed delivered” is not implementable. What the session does
+instead:
+
+- `markStaged()` → the turn is frozen (`needsRoll`, `tapPoint`, `loadNewGame` and
+  `shouldAdopt` all refuse) because the staged bubble already announces that the
+  *opponent* is to move. Allowing local play on top of that put two contradictory
+  claims on screen at once.
+- `markSending()` → keeps the board, the dice **and** the undo snapshots. It
+  deliberately does *not* clear `moveHistory`: that is what lets `retrySend()`
+  rebuild a byte-identical payload, and the button then reads **Send again**.
+  Undo stays refused while the turn is out.
+- `didCancelSending` → `failToStage`, so a deleted draft returns the turn instead
+  of wedging Send as “Staged” forever.
+
+**Known gap:** iOS tears the extension process down shortly after `dismiss()`,
+so the `markSending` → reopen window is narrow in practice. Closing it properly
+means persisting the pending turn (app-group `UserDefaults`) and reconciling it
+against the conversation on next launch — which needs a decision about staleness,
+cleanup, and what to do when the opponent *did* reply. Not built yet.
+
+Two further constraints worth knowing before touching this code:
+
+- `conversation.insert`'s completion runs on a **background queue**, and
+  `failToStage` publishes `@Published` state that SwiftUI reads. It must hop to
+  main first or `ImBoardView` gets its update on the wrong queue. There is a
+  parity guard (`send.failToStageOnMainThread`) that fails if the hop is dropped.
+- On a simulator with no signed-in Apple ID, `localParticipantIdentifier` does
+  not match, so `isFromMe` returns false and a device will adopt **its own**
+  bubble. Device testing (or signing both simulators into the same Apple ID) is
+  the supported path for two-player verification.
+
+## Dice use is enforced from the legal-move list, not the raw one
+
+`imSequences` (compound moves) and `applySequence` both go through
+`imLegalMoves` on each node's own board. This matters in both directions:
+
+- Building chains from `imRawSingleStepMoves` **under**-found them — a
+  continuation onto a square that was empty at the start was never discovered,
+  so points reported *no legal move* when they plainly had some.
+- Building them from the raw list also **over**-offered them. A move can strand
+  the other die when a different first move would have played both, so the UI
+  offered turns that USBGF forbids and narrated the result as a pass. Concretely:
+  one checker on the bar, one on point 4, Black blocking 22 and 2, roll 1–2 —
+  entering 24 with the 1 strands the 2, while entering 23 with the 2 then
+  playing 4>3 uses both.
+
+Single-die destinations stay available on purpose; depth-1 destinations are
+exactly `imLegalMoves`. The parity harness asserts both halves as exact
+invariants over 500+ positions from played-out games (`mustUse.
+firstStepLegalRandomized`, `mustUse.noMissingLegalMovesRandomized`) rather than
+by heuristic.
+
 ## Repo map
 
 | Path | What |
@@ -296,10 +359,19 @@ payload. That trade-off is deliberate for v1.
   `scripts/imessage-parity-vectors.ts` asserted by the Foundation-only Swift
   runner in `targets/imessage/parity/main.swift` (codec round-trips incl.
   `+`/space handling, opening/bar/bear-off/doubles move generation,
-  checker-balance rejection, plus turn-ownership and bear-off reachability) —
-  **81 vectors PASS**.
+  checker-balance rejection, turn-ownership and bear-off reachability,
+  compound moves through the real tap path, undo, the mandatory-dice-use
+  invariants, and the send/retry contract) — **187 assertions PASS**.
+  Stable over five consecutive runs: the suite rolls real dice, so flakiness
+  matters and a single green run is not evidence.
   Re-run: `pnpm dlx tsx scripts/imessage-parity-vectors.ts`, then
   `xcrun swiftc targets/imessage/parity/main.swift targets/imessage/Sources/GameEngine.swift targets/imessage/Sources/MessagePayload.swift targets/imessage/Sources/GameSession.swift -o /tmp/parity && /tmp/parity`.
+
+  Note the harness reads `MessagesViewController.swift` and `BoardView.swift` as
+  **text** for two wiring guards (`send.failToStageOnMainThread`,
+  `send.resendWired`), so it must be run from the repo root. Those two files are
+  otherwise not compiled by the harness — type-check them with
+  `xcrun swiftc -sdk "$(xcrun --sdk iphonesimulator --show-sdk-path)" -target arm64-apple-ios16.0-simulator -typecheck targets/imessage/Sources/*.swift`.
 
   Use **`xcrun swiftc`**, not bare `swiftc`: this machine has Swiftly's Swift
   5.6 first on `PATH`, and it cannot parse the Xcode 26 SDK
