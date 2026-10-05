@@ -416,7 +416,7 @@
             "title": "Duvarı bul"
           },
           "prime": {
-            "body": "Ardışık kapalı noktalardan bir duvar kurdun. Vurgulanan noktalar 4’lük bir duvar; siyahın gerideki pulları geçemez. Birer nokta uzat.",
+            "body": "Ardışık kapalı noktalardan bir duvar kurdun. Vurgulanan noktalar 4’lük bir duvar; siyahın gerideki pullarını kısıtlar. Birer nokta uzat.",
             "title": "Duvar"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Yarış"
           }
         },
-        "subtitle": "Altı klasik planı tanı",
+        "subtitle": "Klasik planları tanı",
         "title": "Oyun planları"
       }
     },
@@ -465,7 +465,7 @@
         "a": "Açığı kır ve evi kurmaya devam et (blitz)",
         "b": "Açığı görmezden gel ve arkadaki pulları koştur",
         "c": "Çapa yapmak için evi boz",
-        "prompt": "3 ev noktası kapattın ve rakibin evinde bir açık var. En iyi plan ne?"
+        "prompt": "3 ev noktası kapattın ve rakibinin senin evinde bir açığı var. En iyi plan ne?"
       },
       "strat_prime": {
         "a": "Saldırmak için duvarı boz",
@@ -476,8 +476,8 @@
     },
     "replay": "Replay",
     "skip_to_play": "Oynamak için Skip to play",
-    "step_progress": "Adım Adım Adım Adım Adım{{current}}Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of{{total}}",
-    "subtitle": "Yedi kısa ders — sonra hazırsınız",
+    "step_progress": "Adım {{current}} / {{total}}",
+    "subtitle": "Kısa etkileşimli dersler — sonra hazırsınız",
     "title": "Oynamayı Öğrenin"
   },
   "not_found": {

@@ -416,7 +416,7 @@
             "title": "Vind de muur"
           },
           "prime": {
-            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart niet passeren. Maak hem punt voor punt langer.",
+            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart beperkt. Maak hem punt voor punt langer.",
             "title": "Muur"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Race"
           }
         },
-        "subtitle": "De zes klassieke plannen herkennen",
+        "subtitle": "Klassieke spelplannen herkennen",
         "title": "Spelplannen"
       }
     },
@@ -477,7 +477,7 @@
     "replay": "Herspelen",
     "skip_to_play": "Afspelen overslaan",
     "step_progress": "Stap {{current}} van {{total}}",
-    "subtitle": "Zeven korte lessen — dan ben je klaar",
+    "subtitle": "Korte interactieve lessen — dan ben je klaar",
     "title": "Spelen leren"
   },
   "not_found": {

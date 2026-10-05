@@ -416,7 +416,7 @@
             "title": "Finde die Prime"
           },
           "prime": {
-            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz nicht passieren können. Verlängere sie Punkt für Punkt.",
+            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt.",
             "title": "Prime"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Rennspiel"
           }
         },
-        "subtitle": "Die sechs klassischen Pläne erkennen",
+        "subtitle": "Klassische Spielpläne erkennen",
         "title": "Spielpläne"
       }
     },
@@ -477,7 +477,7 @@
     "replay": "Wiederholung",
     "skip_to_play": "Skip zum Spielen",
     "step_progress": "Schritt {{current}} von {{total}}",
-    "subtitle": "Sieben kurze Lektionen — dann bist du bereit",
+    "subtitle": "Kurze interaktive Lektionen — dann bist du bereit",
     "title": "Lernen Sie zu spielen"
   },
   "not_found": {

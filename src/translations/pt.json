@@ -416,7 +416,7 @@
             "title": "Encontra a muralha"
           },
           "prime": {
-            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que as peças de trás do preto não passam. Alonga-a um ponto de cada vez.",
+            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que limita as peças de trás do preto. Alonga-a um ponto de cada vez.",
             "title": "Muralha"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Corrida"
           }
         },
-        "subtitle": "Reconhecer os seis planos clássicos",
+        "subtitle": "Reconhecer planos de jogo clássicos",
         "title": "Planos de jogo"
       }
     },
@@ -476,8 +476,8 @@
     },
     "replay": "Repetir",
     "skip_to_play": "Saltar para Jogar",
-    "step_progress": "Passo{{current}}de{{total}}",
-    "subtitle": "Sete aulas curtas — então você está pronto",
+    "step_progress": "Passo {{current}} de {{total}}",
+    "subtitle": "Aulas curtas e interativas — então você está pronto",
     "title": "Aprender a jogar"
   },
   "not_found": {

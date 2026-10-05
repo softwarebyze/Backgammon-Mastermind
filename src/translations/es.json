@@ -416,7 +416,7 @@
             "title": "Encuentra la muralla"
           },
           "prime": {
-            "body": "Has hecho un muro de puntos seguidos. Los puntos marcados son una muralla de 4 que las fichas de atrás del negro no pueden pasar. Alárgala un punto cada vez.",
+            "body": "Has hecho un muro de puntos seguidos. Los puntos marcados son una muralla de 4 que limita a las fichas de atrás del negro. Alárgala un punto cada vez.",
             "title": "Muralla"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Carrera"
           }
         },
-        "subtitle": "Reconoce los seis planes clásicos",
+        "subtitle": "Reconoce planes de juego clásicos",
         "title": "Planes de juego"
       }
     },
@@ -477,7 +477,7 @@
     "replay": "Replay",
     "skip_to_play": "Skip to play",
     "step_progress": "Paso {{current}} de {{total}}",
-    "subtitle": "Siete lecciones cortas — entonces estás listo",
+    "subtitle": "Lecciones cortas e interactivas — y estarás listo",
     "title": "Aprende a jugar"
   },
   "not_found": {

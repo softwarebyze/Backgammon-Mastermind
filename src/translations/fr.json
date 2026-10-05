@@ -416,7 +416,7 @@
             "title": "Repère la muraille"
           },
           "prime": {
-            "body": "Tu as un mur de flèches faites à la suite, une prime. Les flèches marquées forment une prime de 4 que les pions arrière du noir ne peuvent pas passer. Allonge-la d’une flèche à la fois.",
+            "body": "Tu as un mur de flèches faites à la suite, une prime. Les flèches marquées forment une prime de 4 qui gêne les pions arrière du noir. Allonge-la d’une flèche à la fois.",
             "title": "Muraille"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Course"
           }
         },
-        "subtitle": "Reconnaître les six plans classiques",
+        "subtitle": "Reconnaître les plans de jeu classiques",
         "title": "Plans de jeu"
       }
     },
@@ -477,7 +477,7 @@
     "replay": "Rejouer",
     "skip_to_play": "Sauter pour jouer",
     "step_progress": "Étape {{current}} sur {{total}}",
-    "subtitle": "Sept courtes leçons — puis vous êtes prêt",
+    "subtitle": "Courtes leçons interactives — puis vous êtes prêt",
     "title": "Apprendre à jouer"
   },
   "not_found": {

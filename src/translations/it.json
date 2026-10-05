@@ -416,7 +416,7 @@
             "title": "Trova il muro"
           },
           "prime": {
-            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che le pedine arretrate del nero non possono passare. Allungalo un punto alla volta.",
+            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che limita le pedine arretrate del nero. Allungalo un punto alla volta.",
             "title": "Muro"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Corsa"
           }
         },
-        "subtitle": "Riconosci i sei piani classici",
+        "subtitle": "Riconosci i piani di gioco classici",
         "title": "Piani di gioco"
       }
     },
@@ -476,8 +476,8 @@
     },
     "replay": "Replay",
     "skip_to_play": "Skip to play",
-    "step_progress": "Passo{{current}}di{{total}}",
-    "subtitle": "Sette brevi lezioni — allora sei pronto",
+    "step_progress": "Passo {{current}} di {{total}}",
+    "subtitle": "Brevi lezioni interattive — poi sei pronto",
     "title": "Impara a giocare"
   },
   "not_found": {

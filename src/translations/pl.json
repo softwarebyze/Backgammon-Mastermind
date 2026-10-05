@@ -416,7 +416,7 @@
             "title": "Wskaż mur"
           },
           "prime": {
-            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, którego tylne piony czarnego nie miną. Wydłużaj go po jednym polu.",
+            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, który ogranicza tylne piony czarnego. Wydłużaj go po jednym polu.",
             "title": "Mur"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Wyścig"
           }
         },
-        "subtitle": "Rozpoznaj sześć klasycznych planów",
+        "subtitle": "Rozpoznaj klasyczne plany gry",
         "title": "Plany gry"
       }
     },
@@ -476,8 +476,8 @@
     },
     "replay": "Powtórz",
     "skip_to_play": "Przejdź do gry",
-    "step_progress": "Krok{{current}}z{{total}}",
-    "subtitle": "Siedem krótkich lekcji — potem jesteś gotowy",
+    "step_progress": "Krok {{current}} z {{total}}",
+    "subtitle": "Krótkie interaktywne lekcje — potem jesteś gotowy",
     "title": "Naucz się grać"
   },
   "not_found": {
