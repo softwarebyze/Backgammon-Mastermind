@@ -165,6 +165,13 @@ function usePathReplay({
         await wait(1500);
         if (!alive())
           return;
+        // The end hold is part of the replay. Pausing during it must not
+        // snap back to the start until the player resumes.
+        while (pausedRef.current && alive()) {
+          await wait(200);
+        }
+        if (!alive())
+          return;
         snap = baseState;
         setDisplayState(snap);
       }

@@ -144,6 +144,7 @@ export function GameScreen() {
   useGameKeyboardShortcuts({
     state: input.state,
     isReviewing: review.isReviewing,
+    tutorPaused,
     canUndo: !review.isReviewing && canUndo,
     canRedo: !review.isReviewing && canRedo,
     onRoll: input.handleRoll,

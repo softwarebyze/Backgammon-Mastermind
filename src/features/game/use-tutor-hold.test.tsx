@@ -22,7 +22,7 @@ import {
   useGuidance,
   useGuidanceVerdictPending,
 } from './guidance-store';
-import { useTutorMode } from './use-tutor';
+import { bumpTutorGameGeneration, resetTutorGameGenerationForTests, useTutorMode } from './use-tutor';
 
 // Path-based (not virtual) mock: this is the same module instance that
 // src/features/game/engine/bgsage-engine.ts imports, so the mock reliably
@@ -133,6 +133,7 @@ afterEach(() => {
   cleanup();
   clearGuidance();
   setGuidanceVerdictPending(false);
+  resetTutorGameGenerationForTests();
   planSageTurnFullMock.mockReset();
 });
 
@@ -229,6 +230,21 @@ describe('tutor verdict-pending hold', () => {
     rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
     expect(probe.pending).toBe(false);
     expect(probe.blunderNull).toBe(false);
+  });
+
+  it('does not leave a verdict pending when New Game replaces a first turn still awaiting analysis', () => {
+    planSageTurnFullMock.mockImplementation(() => new Promise(() => {}));
+
+    const { rerender, probe, onSnapshot } = renderHarness(whiteMovingState());
+    expect(planSageTurnFullMock).toHaveBeenCalledTimes(1);
+    expect(probe.pending).toBe(false);
+
+    // First turn: startMoveLogLength is 0 and the log is still empty. New Game
+    // keeps the log empty and changes the turn key, so a shorter log cannot
+    // signal the reset. The session generation can.
+    bumpTutorGameGeneration();
+    rerender(<Harness state={createInitialState('vs-computer')} onSnapshot={onSnapshot} />);
+    expect(probe.pending).toBe(false);
   });
 });
 
