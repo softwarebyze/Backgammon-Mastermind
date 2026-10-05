@@ -431,6 +431,62 @@ do {
   check("sent.tapIsNoop", s.selectedPoint == nil)
 }
 
+// 14. Decoder parity gaps found in review: a declared winner must have borne
+//     off all 15 (mirrors codec.ts), and the point owner char must be validated
+//     before a zero count short-circuits it.
+do {
+  let decode: (String) -> ImTurnPayload? = { try? ImTurnPayload(url: URL(string: $0)!) }
+
+  /// Build a 24-pair `pts` string from point -> (owner, count).
+  func ptsString(_ spec: [Int: (Character, Int)]) -> String {
+    var out = ""
+    for point in 1...24 {
+      let (owner, count) = spec[point] ?? (".", 0)
+      out += "\(owner)\(count)"
+    }
+    return out
+  }
+
+  let opening: [Int: (Character, Int)] = [
+    24: ("w", 2), 13: ("w", 5), 8: ("w", 3), 6: ("w", 5),
+    1: ("b", 2), 12: ("b", 5), 17: ("b", 3), 19: ("b", 5),
+  ]
+  let openingPts = ptsString(opening)
+  let root = "https://backgammonmastermind.game/i?v=1&gid=Ab3dEf7hIj9K&turn=3&cur=w"
+  func url(_ pts: String, _ off: String, _ win: String) -> String {
+    "\(root)&pts=\(pts)&bar=0,0&off=\(off)&win=\(win)&d=&last=x"
+  }
+
+  // Sanity: the opening is a legal live position and decodes.
+  check("winner.openingDecodes", decode(url(openingPts, "0,0", "")) != nil)
+
+  // A live position (nobody has borne off) may not claim a winner.
+  check("winner.rejectsFalseClaim", decode(url(openingPts, "0,0", "w")) == nil)
+  check("winner.rejectsFalseClaimBlack", decode(url(openingPts, "0,0", "b")) == nil)
+  // Non-empty win value is still a grammar error.
+  check("winner.rejectsGarbage", decode(url(openingPts, "0,0", "x")) == nil)
+
+  // A genuine result: white bore off all 15, black still has 15 on the board.
+  let won: [Int: (Character, Int)] = [
+    1: ("b", 2), 12: ("b", 5), 17: ("b", 3), 19: ("b", 5),
+  ]
+  check("winner.acceptsBoreOff", decode(url(ptsString(won), "15,0", "w")) != nil)
+  // ...and the same position claiming the *loser* won is rejected.
+  check("winner.rejectsLoserClaim", decode(url(ptsString(won), "15,0", "b")) == nil)
+
+  // The point owner char must be validated before a zero count skips it:
+  // POINTS_PATTERN allows only [wb.], so `x0` / `?0` are rejected.
+  func swapOwner(_ point: Int, _ to: Character) -> String {
+    var spec = opening
+    spec[point] = (to, 0)
+    return ptsString(spec)
+  }
+  check("owner.rejectsBadOwnerZeroCount", decode(url(swapOwner(4, "x"), "0,0", "")) == nil)
+  check("owner.rejectsBadOwnerDotless", decode(url(swapOwner(4, "?"), "0,0", "")) == nil)
+  // `w0` / `b0` remain accepted as empty points, as codec.ts does.
+  check("owner.acceptsZeroCount", decode(url(swapOwner(4, "w"), "0,0", "")) != nil)
+}
+
 if failures > 0 {
   print("\(failures) FAILURE(S)")
   exit(1)

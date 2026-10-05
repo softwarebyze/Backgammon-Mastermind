@@ -150,6 +150,16 @@ struct ImTurnPayload: Equatable {
     case "b": winner = .black
     default: throw ImPayloadError.invalidParam("win", "must be \"\" | \"w\" | \"b\"")
     }
+    // A declared winner must actually have borne off all 15, matching the check
+    // in codec.ts. Without it any checker-balanced position could claim a
+    // winner and `toBoard()` would mark a live game finished.
+    if let winner {
+      // `offPair` is (white, black).
+      let winnerOff = (winner == .white) ? offPair.0 : offPair.1
+      guard winnerOff == imTotalCheckers else {
+        throw ImPayloadError.invalidParam("win", "winner must have borne off all 15 checkers")
+      }
+    }
 
     let diceRaw = items.first(where: { $0.name == "d" })?.value ?? ""
     let dice: (Int, Int)?
@@ -239,14 +249,14 @@ struct ImTurnPayload: Equatable {
         return nil
       }
       // codec.ts treats `w0` / `b0` as empty points rather than rejecting them.
-      if count == 0 { continue }
+      // The owner must be validated *first*: skipping on a zero count before the
+      // switch would accept `x0` / `?0`, which POINTS_PATTERN rejects.
       switch ownerChar {
       case ".":
         continue
-      case "w":
-        points[index] = ImPoint(owner: .white, count: count)
-      case "b":
-        points[index] = ImPoint(owner: .black, count: count)
+      case "w", "b":
+        if count == 0 { continue }
+        points[index] = ImPoint(owner: ownerChar == "w" ? .white : .black, count: count)
       default:
         return nil
       }
