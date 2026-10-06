@@ -198,6 +198,8 @@ export function GameScreen() {
         moveLog={moveLog}
         isComputerTurn={isComputerTurn || tutorPaused}
         onCancelSelection={() => selectPoint(null)}
+        canUndo={!review.isReviewing && canUndo}
+        onUndo={doUndo}
       />
       {showReviewing && (
         <View style={styles.reviewingPill} pointerEvents="none">

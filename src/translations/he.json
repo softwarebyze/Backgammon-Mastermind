@@ -12,6 +12,8 @@
       "bear_off_a11y": "דוב",
       "cancel": "ביטול",
       "cancel_a11y": "ביטול הבחירה",
+      "confirm_move": "אשר מהלך",
+      "confirm_move_a11y": "אשר את המהלך וסיים את התור",
       "leave_game_a11y": "לעזוב את המשחק ולחזור הביתה",
       "loading": "לטעון...",
       "new_game_message": "להתחיל משחק חדש?",
@@ -23,7 +25,8 @@
       "roll_dice": "הטילו קוביות",
       "roll_dice_a11y": "הטלת קוביות",
       "start_new_game_a11y": "התחל משחק חדש",
-      "undo_a11y": "Undo Move"
+      "undo_a11y": "Undo Move",
+      "undo_move": "בטל"
     },
     "hint": {
       "back_to_turn": "חזרה לתור שלי",
@@ -61,6 +64,8 @@
       "auto_move_hint": "ביצוע אוטומטי של המהלך החוקי היחיד",
       "auto_roll": "הטלת קוביות אוטומטית",
       "auto_roll_hint": "הטלה אוטומטית בתורך",
+      "confirm_move": "אשר מהלך",
+      "confirm_move_hint": "שאל לפני סיום התור כדי לבדוק או לבטל",
       "dice_display": "תצוגת קוביות",
       "dice_dots": "נקודות",
       "dice_numbers": "מספרים",

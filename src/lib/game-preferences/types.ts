@@ -13,6 +13,8 @@ export type GamePreferences = {
   fastComputer: boolean;
   /** Tutor mode: the Sage engine checks your turn and flags big blunders. */
   tutorMode: boolean;
+  /** Ask before ending a human turn so the player can review or undo. Default on. */
+  confirmMove: boolean;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -25,6 +27,7 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   soundEnabled: true,
   fastComputer: true,
   tutorMode: false,
+  confirmMove: true,
 };
 
 const IMPLICIT_OFF_KEYS = [
@@ -54,4 +57,21 @@ export function migrateImplicitPlayDefaults(
     }
   }
   return { prefs, didMigrate };
+}
+
+/**
+ * Older installs have no confirmMove key. Turn it on once for them; an explicit
+ * off (after the player toggles) is left alone.
+ */
+export function migrateConfirmMoveDefault(
+  stored: Partial<GamePreferences> | null,
+  alreadyMigrated: boolean,
+): { prefs: Partial<GamePreferences>; didMigrate: boolean } {
+  if (alreadyMigrated || !stored) {
+    return { prefs: stored ?? {}, didMigrate: false };
+  }
+  if (!Object.prototype.hasOwnProperty.call(stored, 'confirmMove')) {
+    return { prefs: { ...stored, confirmMove: true }, didMigrate: true };
+  }
+  return { prefs: stored, didMigrate: false };
 }

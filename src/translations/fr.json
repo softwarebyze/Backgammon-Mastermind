@@ -12,6 +12,8 @@
       "bear_off_a11y": "Débarrassez-vous",
       "cancel": "Annuler",
       "cancel_a11y": "Annuler la sélection",
+      "confirm_move": "Confirmer le coup",
+      "confirm_move_a11y": "Confirmer le coup et terminer le tour",
       "leave_game_a11y": "Laissez le jeu et rentrez chez vous",
       "loading": "Chargement...",
       "new_game_message": "Commencer une nouvelle partie ?",
@@ -23,7 +25,8 @@
       "roll_dice": "Lancer les dés",
       "roll_dice_a11y": "Lancer les dés",
       "start_new_game_a11y": "Démarrer un nouveau jeu",
-      "undo_a11y": "Déplacer"
+      "undo_a11y": "Déplacer",
+      "undo_move": "Annuler"
     },
     "hint": {
       "back_to_turn": "Retour à mon tour",
@@ -61,6 +64,8 @@
       "auto_move_hint": "Jouer automatiquement le seul coup légal",
       "auto_roll": "Lancer auto des dés",
       "auto_roll_hint": "Lancer automatiquement à votre tour",
+      "confirm_move": "Confirmer le coup",
+      "confirm_move_hint": "Demander avant de finir le tour pour vérifier ou annuler",
       "dice_display": "Affichage des dés",
       "dice_dots": "Points",
       "dice_numbers": "Chiffres",

@@ -12,6 +12,8 @@
       "bear_off_a11y": "¡Apártate!",
       "cancel": "Cancelar",
       "cancel_a11y": "Cancelar selección",
+      "confirm_move": "Confirmar movimiento",
+      "confirm_move_a11y": "Confirmar movimiento y terminar el turno",
       "leave_game_a11y": "Dejar juego y volver a casa",
       "loading": "Cargando...",
       "new_game_message": "¿Empezar una partida nueva?",
@@ -23,7 +25,8 @@
       "roll_dice": "Tirar los dados",
       "roll_dice_a11y": "Tirar los dados",
       "start_new_game_a11y": "Inicio nuevo juego",
-      "undo_a11y": "Muévete."
+      "undo_a11y": "Muévete.",
+      "undo_move": "Deshacer"
     },
     "hint": {
       "back_to_turn": "Volver a mi turno",
@@ -61,6 +64,8 @@
       "auto_move_hint": "Jugar automáticamente el único movimiento legal",
       "auto_roll": "Tirar los dados automáticamente",
       "auto_roll_hint": "Tirar automáticamente en tu turno",
+      "confirm_move": "Confirmar movimiento",
+      "confirm_move_hint": "Preguntar antes de terminar el turno para revisar o deshacer",
       "dice_display": "Aspecto de los dados",
       "dice_dots": "Puntos",
       "dice_numbers": "Números",

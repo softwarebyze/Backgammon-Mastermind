@@ -4,6 +4,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
+import { shouldDeferTurnEnd } from '@/lib/game-preferences/confirm-move';
 
 export type PlayMoveOpts = {
   fromAnchor?: PointAnchor;
@@ -43,6 +44,7 @@ export function createPlayMove(opts: {
   ) => {
     const gen = generationRef.current;
     commitGenRef.current = gen;
+    const applyOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
     let settled = false;
     const settle = () => {
       if (settled || generationRef.current !== gen) {
@@ -56,7 +58,7 @@ export function createPlayMove(opts: {
         playOpts?.onComplete?.(snapshot);
         return;
       }
-      const next = applyMove(snapshot, legal);
+      const next = applyMove(snapshot, legal, applyOpts);
       onMoveApplied?.(snapshot, legal, next);
       setState(next);
       setMoveAnimation(null);
@@ -67,7 +69,7 @@ export function createPlayMove(opts: {
     // applyMove is pure, so the preview matches what settle will commit.
     const legalPreview = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
     if (legalPreview) {
-      onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview));
+      onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview, applyOpts));
     }
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, {
       onFinish: settle,

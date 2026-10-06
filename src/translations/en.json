@@ -12,6 +12,8 @@
       "bear_off_a11y": "Bear off",
       "cancel": "Cancel",
       "cancel_a11y": "Cancel selection",
+      "confirm_move": "Confirm move",
+      "confirm_move_a11y": "Confirm move and end your turn",
       "leave_game_a11y": "Leave game and return home",
       "loading": "Loading…",
       "new_game_message": "Start a new game?",
@@ -23,7 +25,8 @@
       "roll_dice": "Roll Dice",
       "roll_dice_a11y": "Roll dice",
       "start_new_game_a11y": "Start new game",
-      "undo_a11y": "Undo move"
+      "undo_a11y": "Undo move",
+      "undo_move": "Undo"
     },
     "hint": {
       "back_to_turn": "Back to my turn",
@@ -61,6 +64,8 @@
       "auto_move_hint": "Play the only legal move automatically",
       "auto_roll": "Auto-roll dice",
       "auto_roll_hint": "Roll automatically on your turn",
+      "confirm_move": "Confirm move",
+      "confirm_move_hint": "Ask before ending your turn so you can review or undo",
       "dice_display": "Dice display",
       "dice_dots": "Dots",
       "dice_numbers": "Numbers",

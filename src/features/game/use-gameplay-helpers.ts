@@ -69,6 +69,10 @@ export function useGameplayHelpers({
     }
 
     if (state.phase === 'no-move') {
+      // Confirm move: leave the blocked roll on screen until the player taps Confirm.
+      if (preferences.confirmMove) {
+        return clear;
+      }
       timeoutRef.current = setTimeout(() => {
         doPassTurn();
       }, AUTO_PASS_DELAY_MS);
@@ -100,6 +104,7 @@ export function useGameplayHelpers({
     paused,
     preferences.autoRoll,
     preferences.autoMoveWhenForced,
+    preferences.confirmMove,
     doRollDice,
     doMove,
     doMoveSequence,

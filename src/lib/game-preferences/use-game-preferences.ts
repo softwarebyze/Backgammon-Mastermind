@@ -71,6 +71,10 @@ export function useGamePreferences() {
     updatePreferences({ tutorMode });
   }, []);
 
+  const setConfirmMove = useCallback((confirmMove: boolean) => {
+    updatePreferences({ confirmMove });
+  }, []);
+
   return {
     preferences,
     setShowMoveHints,
@@ -82,5 +86,6 @@ export function useGamePreferences() {
     setSoundEnabled,
     setFastComputer,
     setTutorMode,
+    setConfirmMove,
   };
 }

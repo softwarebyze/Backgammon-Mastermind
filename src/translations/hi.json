@@ -12,6 +12,8 @@
       "bear_off_a11y": "भालू बंद",
       "cancel": "रद्द करना",
       "cancel_a11y": "चयन रद्द करना",
+      "confirm_move": "चाल पुष्टि करें",
+      "confirm_move_a11y": "चाल पुष्टि करें और बारी समाप्त करें",
       "leave_game_a11y": "खेल छोड़ें और घर लौटें",
       "loading": "लोड ...",
       "new_game_message": "नया गेम शुरू करें?",
@@ -23,7 +25,8 @@
       "roll_dice": "पासे फेंकें",
       "roll_dice_a11y": "पासे फेंकें",
       "start_new_game_a11y": "नया गेम",
-      "undo_a11y": "Undo चाल"
+      "undo_a11y": "Undo चाल",
+      "undo_move": "पूर्ववत"
     },
     "hint": {
       "back_to_turn": "मेरी बारी पर लौटें",
@@ -61,6 +64,8 @@
       "auto_move_hint": "एकमात्र वैध चाल अपने आप चल दी जाती है",
       "auto_roll": "पासे अपने आप फेंकें",
       "auto_roll_hint": "आपकी बारी पर पासे अपने आप फेंके जाते हैं",
+      "confirm_move": "चाल पुष्टि करें",
+      "confirm_move_hint": "बारी खत्म करने से पहले पूछें ताकि आप देख या पूर्ववत कर सकें",
       "dice_display": "पासों का रूप",
       "dice_dots": "बिंदु",
       "dice_numbers": "अंक",
