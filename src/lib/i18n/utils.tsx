@@ -91,6 +91,17 @@ export function useSelectedLanguage() {
   return { language: language as Language, setLanguage };
 }
 
+/**
+ * Reactive `getLayoutIsRTL()` for UI that is not remounted on a language switch
+ * (e.g. header buttons). Reads the stored language so React Compiler re-renders.
+ */
+export function useLayoutIsRTL(): boolean {
+  const { language } = useSelectedLanguage();
+  if (Platform.OS !== 'web')
+    return I18nManager.isRTL;
+  return language ? RTL_LANGUAGES.has(language) : getIsRTL();
+}
+
 function LanguageKeyed({ children }: { children: ReactElement }) {
   const { language } = useSelectedLanguage();
   return <Fragment key={language ?? 'default'}>{children}</Fragment>;

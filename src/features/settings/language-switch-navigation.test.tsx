@@ -129,6 +129,8 @@ describe('language switch navigation (web)', () => {
     expect(view.getPathname()).toBe('/settings');
     expect(root).toEqual({ lang: 'ar', dir: 'rtl' });
     expect(router.canGoBack()).toBe(true);
+    // Header back chevron is not remounted; it must still mirror for RTL.
+    expect(screen.UNSAFE_getByProps({ name: 'chevron-right' })).toBeTruthy();
 
     expect(screen.getByTestId('settings-heading')).toHaveTextContent(translate('settings.title'));
     expect(screen.getByTestId('settings-heading')).not.toHaveTextContent('Settings');
@@ -141,6 +143,7 @@ describe('language switch navigation (web)', () => {
     expect(root).toEqual({ lang: 'en', dir: 'ltr' });
     expect(screen.getByTestId('settings-heading')).toHaveTextContent('Settings');
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeOnTheScreen();
+    expect(screen.UNSAFE_getByProps({ name: 'chevron-left' })).toBeTruthy();
     pressEscape();
     expect(view.getPathname()).toBe('/');
   });
