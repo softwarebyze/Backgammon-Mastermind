@@ -19,11 +19,12 @@ adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
-# Release integration: preserve every feature regression flow.
+# Preserve every release regression flow.
 maestro test \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
+  "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
