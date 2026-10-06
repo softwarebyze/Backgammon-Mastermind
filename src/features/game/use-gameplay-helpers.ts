@@ -68,8 +68,11 @@ export function useGameplayHelpers({
       return clear;
     }
 
-    if (state.phase === 'no-move') {
-      // Confirm move: leave the blocked roll on screen until the player taps Confirm.
+    // Spent turn: no-move after a blocked roll, or dice used up while Confirm
+    // held the handoff. When Confirm is off (including just toggled off), pass.
+    const spentForConfirm = state.phase === 'no-move'
+      || (state.phase === 'moving' && state.remainingDice.length === 0);
+    if (spentForConfirm) {
       if (preferences.confirmMove) {
         return clear;
       }

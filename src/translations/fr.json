@@ -25,7 +25,7 @@
       "roll_dice": "Lancer les dés",
       "roll_dice_a11y": "Lancer les dés",
       "start_new_game_a11y": "Démarrer un nouveau jeu",
-      "undo_a11y": "Déplacer",
+      "undo_a11y": "Annuler le dernier coup",
       "undo_move": "Annuler"
     },
     "hint": {

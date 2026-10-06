@@ -44,7 +44,6 @@ export function createPlayMove(opts: {
   ) => {
     const gen = generationRef.current;
     commitGenRef.current = gen;
-    const applyOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
     let settled = false;
     const settle = () => {
       if (settled || generationRef.current !== gen) {
@@ -58,6 +57,9 @@ export function createPlayMove(opts: {
         playOpts?.onComplete?.(snapshot);
         return;
       }
+      // Re-read Confirm move at land time — toggling it mid-slide must not leave
+      // a spent-dice turn with no Confirm bar and no auto-pass.
+      const applyOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
       const next = applyMove(snapshot, legal, applyOpts);
       onMoveApplied?.(snapshot, legal, next);
       setState(next);
@@ -69,7 +71,8 @@ export function createPlayMove(opts: {
     // applyMove is pure, so the preview matches what settle will commit.
     const legalPreview = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
     if (legalPreview) {
-      onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview, applyOpts));
+      const previewOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
+      onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview, previewOpts));
     }
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, {
       onFinish: settle,
