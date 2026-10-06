@@ -2,8 +2,9 @@ import { Stack } from 'expo-router';
 
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
-import { languageScreenLayout, translate, useSelectedLanguage } from '@/lib/i18n';
+import { languageScreenLayout } from '@/lib/i18n';
 import {
   homeScreenOptions,
   pickerFormSheetOptions,
@@ -15,8 +16,9 @@ import { stackEscapeHeaderOptions } from '@/lib/navigation/stack-escape-header';
 const screenLayout = languageScreenLayout(['learn']);
 
 export default function AppLayout() {
-  // Re-render on language change so translated header titles refresh in place (web).
-  useSelectedLanguage();
+  // Reactive `t` (not memoized `translate`) so header titles refresh when the
+  // language switches in place on web; React Compiler tracks it as a dependency.
+  const { t } = useTranslation();
   useEffect(() => {
     SplashScreen.hideAsync();
   }, []);
@@ -39,20 +41,20 @@ export default function AppLayout() {
       <Stack.Screen
         name="settings"
         options={{
-          ...settingsStackOptions(),
+          ...settingsStackOptions(t('settings.title')),
           ...stackEscapeHeaderOptions(),
         }}
       />
       <Stack.Screen
         name="language"
-        options={pickerFormSheetOptions(translate('settings.language'))}
+        options={pickerFormSheetOptions(t('settings.language'))}
       />
       <Stack.Screen
         name="developer"
         options={{
-          ...settingsStackOptions(),
+          ...settingsStackOptions(t('settings.title')),
           ...stackEscapeHeaderOptions(),
-          title: translate('settings.developer'),
+          title: t('settings.developer'),
           headerLargeTitle: false,
         }}
       />

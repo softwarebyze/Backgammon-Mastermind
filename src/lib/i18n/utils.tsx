@@ -106,7 +106,8 @@ type ScreenLayoutProps = { route: { name: string }; children: ReactElement };
  * those layouts subscribe via `useSelectedLanguage()` and key their own screens.
  */
 export function languageScreenLayout(nestedNavigators: readonly string[] = []) {
-  return function LanguageScreenLayout({ route, children }: ScreenLayoutProps): ReactElement {
+  // Called as a plain function by the navigator (not rendered), so no hooks here.
+  return function renderLanguageScreen({ route, children }: ScreenLayoutProps): ReactElement {
     // Native restarts on language change, so only web needs the in-place remount.
     if (Platform.OS !== 'web' || nestedNavigators.includes(route.name))
       return children;

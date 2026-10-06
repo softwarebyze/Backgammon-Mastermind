@@ -107,6 +107,8 @@ describe('language switch navigation (web)', () => {
     expect(view.getPathname()).toBe('/settings');
     expect(reload).not.toHaveBeenCalled();
     expect(screen.getByTestId('settings-heading')).toHaveTextContent('Ajustes');
+    // Header title comes from the layout's options, not the remounted body.
+    expect(screen.getByRole('heading', { name: 'Ajustes' })).toBeOnTheScreen();
     expect(screen.getByText('Idioma')).toBeOnTheScreen();
     expect(root).toEqual({ lang: 'es', dir: 'ltr' });
 
@@ -138,6 +140,7 @@ describe('language switch navigation (web)', () => {
     expect(view.getPathname()).toBe('/settings');
     expect(root).toEqual({ lang: 'en', dir: 'ltr' });
     expect(screen.getByTestId('settings-heading')).toHaveTextContent('Settings');
+    expect(screen.getByRole('heading', { name: 'Settings' })).toBeOnTheScreen();
     pressEscape();
     expect(view.getPathname()).toBe('/');
   });
