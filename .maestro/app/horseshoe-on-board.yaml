@@ -16,7 +16,7 @@ tags:
       id: point-1
     timeout: 45000
 - tapOn:
-    id: game-settings-button
+    text: Settings
 - extendedWaitUntil:
     visible: Direction overlay
     timeout: 15000
@@ -48,6 +48,6 @@ tags:
                 timeout: 5000
 - extendedWaitUntil:
     visible:
-      id: point-1
+      id: direction-overlay
     timeout: 90000
 - takeScreenshot: horseshoe-on-board
