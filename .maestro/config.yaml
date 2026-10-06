@@ -6,6 +6,7 @@ flows:
   - app/game-settings-gear.yaml
   - app/auto-move-bear-off-bar.yaml
   - app/auto-move-bear-off.yaml
+  - app/reduced-motion.yaml
 
 excludeTags:
   - util

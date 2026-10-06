@@ -30,6 +30,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
   "${WORKSPACE}/.maestro/app/auto-move-bear-off-bar.yaml" \
   "${WORKSPACE}/.maestro/app/auto-move-bear-off.yaml" \
+  "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \

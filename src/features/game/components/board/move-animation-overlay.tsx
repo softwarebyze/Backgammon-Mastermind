@@ -13,6 +13,7 @@ import Animated, {
   Easing,
   runOnJS,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
@@ -94,7 +95,8 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
 }
 
 function CheckerSlideOverlay({ animation, dimensions }: Props) {
-  const progress = useSharedValue(0);
+  const reducedMotion = useReducedMotion();
+  const progress = useSharedValue(reducedMotion ? 1 : 0);
   const onFinishRef = useRef(animation.onFinish);
   onFinishRef.current = animation.onFinish;
   const finishedRef = useRef(false);
@@ -119,6 +121,11 @@ function CheckerSlideOverlay({ animation, dimensions }: Props) {
       finishedRef.current = true;
       onFinishRef.current();
     };
+
+    if (reducedMotion) {
+      finish();
+      return;
+    }
 
     const duration = animation.durationMs ?? CHECKER_MOVE_DURATION_MS;
     // Reanimated can cancel without calling the callback (remount, interrupt).
@@ -150,7 +157,11 @@ function CheckerSlideOverlay({ animation, dimensions }: Props) {
       clearTimeout(backup);
       cancelAnimation(progress);
     };
-  }, [animation.durationMs, key, progress]);
+  }, [animation.durationMs, key, progress, reducedMotion]);
+
+  if (reducedMotion) {
+    return null;
+  }
 
   return (
     <>
