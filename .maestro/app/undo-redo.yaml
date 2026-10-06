@@ -29,6 +29,7 @@ tags:
 - assertVisible:
     id: redo-button
     enabled: false
+- assertVisible: 'Point 8, 3 white checkers'
 - takeScreenshot: 01-before-move
 # Play 8 -> 5 with the 3.
 - tapOn:
@@ -40,6 +41,8 @@ tags:
       id: undo-button
       enabled: true
     timeout: 15000
+- assertVisible: 'Point 8, 2 white checkers'
+- assertVisible: 'Point 5, 1 white checker'
 - takeScreenshot: 02-after-move
 - tapOn:
     id: undo-button
@@ -54,6 +57,8 @@ tags:
       id: undo-button
       enabled: false
     timeout: 15000
+- assertVisible: 'Point 8, 3 white checkers'
+- assertVisible: Point 5
 - takeScreenshot: 03-after-undo
 - tapOn:
     id: redo-button
@@ -67,4 +72,6 @@ tags:
       id: redo-button
       enabled: false
     timeout: 15000
+- assertVisible: 'Point 8, 2 white checkers'
+- assertVisible: 'Point 5, 1 white checker'
 - takeScreenshot: 04-after-redo
