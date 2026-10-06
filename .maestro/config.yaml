@@ -1,6 +1,7 @@
 flows:
   - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
+  - app/game-settings-gear.yaml
 
 excludeTags:
   - util
