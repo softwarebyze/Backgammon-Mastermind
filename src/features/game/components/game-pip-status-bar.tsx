@@ -102,10 +102,10 @@ function StrategyChipB({ strategyKey, label, a11y, tutorOn, onPress }: ChipProps
       <Text style={styles.chipBLabel} numberOfLines={1}>{label}</Text>
       {tutorOn && (
         <View style={styles.chipBTutorTag} testID="tutor-on-indicator">
-          <Text style={styles.chipBTutorTagText}>{translate('game.tutor.tag')}</Text>
+          <Text style={styles.chipBTutorTagText}>TUTOR</Text>
         </View>
       )}
-      <Text style={styles.chipBWhy}>{translate('game.strategy.why_link')}</Text>
+      <Text style={styles.chipBWhy}>Why?</Text>
     </HoverPressable>
   );
 }
@@ -147,7 +147,7 @@ export function GamePipStatusBar({ state }: Props) {
   }
 
   const tutorOn = preferences.tutorMode;
-  const a11y = `${label}. ${why} ${tip}${tutorOn ? ` ${translate('game.tutor.on_a11y')}` : ''}`;
+  const a11y = `${label}. ${why} ${tip}${tutorOn ? ' Tutor mode is on.' : ''}`;
   const open = () => setShowExplanation(true);
 
   return (

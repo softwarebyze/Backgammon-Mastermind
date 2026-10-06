@@ -1,7 +1,6 @@
 import type { GameState, Move, Player } from '@/lib/game/types';
 
 import { applyMoveSequence, calculatePipCount } from '@/lib/game';
-import { translate } from '@/lib/i18n';
 
 type Shape = {
   blots: number;
@@ -58,20 +57,21 @@ export function blunderKeyPoint(args: {
   const bestHits = best.opponentOnBar > before.opponentOnBar;
   const mineHits = mine.opponentOnBar > before.opponentOnBar;
   if (bestHits && !mineHits) {
-    return translate('game.tutor.key_point.hit', { pips: best.opponentPips - mine.opponentPips });
+    const pips = best.opponentPips - mine.opponentPips;
+    return `The best move hits a blot, sending that checker back ${pips} pips.`;
   }
   const bestMakes = diff(best.points, before.points);
   const mineMakes = diff(mine.points, before.points);
   if (bestMakes.length > 0 && mineMakes.length === 0) {
-    return translate('game.tutor.key_point.makes_point', { point: bestMakes[0] });
+    return `The best move makes the ${bestMakes[0]}-point; yours leaves it open.`;
   }
   const mineBreaks = diff(before.points, mine.points);
   const bestBreaks = diff(before.points, best.points);
   if (mineBreaks.length > 0 && bestBreaks.length === 0) {
-    return translate('game.tutor.key_point.breaks_point', { point: mineBreaks[0] });
+    return `Your move gives up the ${mineBreaks[0]}-point; the best move keeps it.`;
   }
   if (mine.blots > best.blots) {
-    return translate('game.tutor.key_point.blots', { mine: mine.blots, best: best.blots });
+    return `Your move leaves ${mine.blots} checkers alone; the best move leaves ${best.blots}.`;
   }
-  return translate('game.tutor.key_point.rank', { rank: playedRank, count: candidateCount });
+  return `Your move ranked ${playedRank} of ${candidateCount} ways to play this roll.`;
 }

@@ -73,7 +73,7 @@ export function BlunderNudgeFlow() {
           <View style={styles.nudgeCopy}>
             <Text style={styles.nudgeTitle} numberOfLines={1}>{blunderSeverity(verdict.loss)}</Text>
             <Text style={styles.nudgeSub} numberOfLines={1}>
-              {translate('game.tutor.loss_pts', { points: formatPoints(-verdict.loss) })}
+              {`${formatPoints(-verdict.loss)} pts`}
             </Text>
           </View>
           <Pressable
@@ -83,7 +83,7 @@ export function BlunderNudgeFlow() {
             onPress={openSheet}
             style={({ pressed }) => [styles.nudgeBtn, pressed && styles.pressed]}
           >
-            <Text style={styles.nudgeBtnText}>{translate('game.tutor.see_why')}</Text>
+            <Text style={styles.nudgeBtnText}>See why</Text>
           </Pressable>
           <Pressable
             accessibilityRole="button"

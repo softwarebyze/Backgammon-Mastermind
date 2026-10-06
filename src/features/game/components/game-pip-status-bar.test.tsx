@@ -67,7 +67,7 @@ describe('gamePipStatusBar status chip', () => {
 
     expect(screen.getByTestId('tutor-on-indicator')).toBeTruthy();
     expect(screen.getByTestId('pip-pair')).toBeTruthy();
-    expect(screen.getByLabelText(/game\.tutor\.on_a11y/)).toBeTruthy();
+    expect(screen.getByLabelText(/Tutor mode is on/)).toBeTruthy();
   });
 });
 

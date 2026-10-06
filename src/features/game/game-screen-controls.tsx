@@ -86,7 +86,7 @@ export function GameScreenControls({
     ?? (isReviewing
       ? translate('game.review.viewing_hint')
       : awaitingConfirm && variants.confirm !== 'today'
-        ? translate(variants.confirm === 'b' ? 'game.controls.confirm_caption_dice' : 'game.controls.confirm_caption')
+        ? (variants.confirm === 'b' ? 'Tap the dice to end your turn' : 'Confirm to end your turn')
         : getActionCaption(state, turn));
 
   const diceForTray = isReviewing ? state : liveDiceState;
@@ -210,7 +210,7 @@ function DiceTrayShell({ asConfirm, onConfirm, children }: { asConfirm: boolean;
       <View style={styles.diceConfirmBadge} pointerEvents="none">
         <Feather name="check" size={14} color={GAME_PALETTE.controlInk} />
       </View>
-      <Text style={styles.diceConfirmLabel} pointerEvents="none">{translate('game.controls.confirm')}</Text>
+      <Text style={styles.diceConfirmLabel} pointerEvents="none">Confirm</Text>
     </HoverPressable>
   );
 }
@@ -414,7 +414,7 @@ function ConfirmButtonA({ noMove, onConfirm }: { noMove: boolean; onConfirm: () 
       ]),
     ]).start();
   }, [scale, ring]);
-  const label = noMove ? translate('game.controls.end_turn') : translate('game.controls.confirm');
+  const label = noMove ? 'End turn' : 'Confirm';
   return (
     <Animated.View style={[styles.confirmAWrap, { transform: [{ scale }] }]} testID="confirm-move-bar">
       <Animated.View
@@ -424,7 +424,7 @@ function ConfirmButtonA({ noMove, onConfirm }: { noMove: boolean; onConfirm: () 
       <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.confirm_move_a11y')}
-        accessibilityHint={Platform.OS === 'web' ? translate('game.controls.confirm_key_hint') : undefined}
+        accessibilityHint={Platform.OS === 'web' ? 'Press Enter to confirm' : undefined}
         testID="confirm-move-button"
         style={({ pressed, hovered }) => [
           styles.primaryBtn,

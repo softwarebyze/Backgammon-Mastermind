@@ -46,7 +46,7 @@ export function BlunderHeadline({ session, verdict, align = 'center' }: {
     <View style={styles.headline}>
       <View style={[styles.titleRow, align === 'left' && styles.titleRowLeft]}>
         <Text style={styles.title} testID="blunder-title">{blunderSeverity(verdict.loss)}</Text>
-        <Text style={styles.loss}>{translate('game.tutor.loss_pts', { points: formatPoints(-verdict.loss) })}</Text>
+        <Text style={styles.loss}>{`${formatPoints(-verdict.loss)} pts`}</Text>
       </View>
       <Text style={[styles.keyPoint, { textAlign }]} testID="blunder-key-point">{key}</Text>
     </View>
@@ -152,7 +152,7 @@ export function BlunderActions({ session, handlers, row = false }: {
       style={({ pressed }) => [styles.btn, styles.btnPrimary, styles.flex, pressed && styles.pressed]}
     >
       <View style={[styles.pillDot, { backgroundColor: GAME_PALETTE.guideEngine }]} />
-      <Text style={styles.btnPrimaryLabel}>{translate('game.tutor.play_best_short')}</Text>
+      <Text style={styles.btnPrimaryLabel}>Play best</Text>
     </Pressable>
   );
   const keepMine = (primary: boolean) => (
@@ -235,7 +235,7 @@ export function BlunderMore({ session, verdict, onTurnOff }: {
         style={styles.moreToggle}
       >
         <Text style={styles.moreToggleText}>
-          {open ? `${translate('game.tutor.details_hide')} ▾` : `${translate('game.tutor.more')} ${isRTL ? '◂' : '▸'}`}
+          {open ? `${translate('game.tutor.details_hide')} ▾` : `More ${isRTL ? '◂' : '▸'}`}
         </Text>
       </Pressable>
       {open && (
