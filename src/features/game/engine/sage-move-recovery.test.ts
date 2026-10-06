@@ -138,3 +138,41 @@ describe('sage move recovery', () => {
     ]);
   });
 });
+
+describe('sage bear-off recovery', () => {
+  it('brings the last checker home before bearing off', () => {
+    const state = createPositionState({
+      currentPlayer: 'white',
+      dice: [5, 6],
+      placements: [
+        { point: 12, player: 'white', count: 1 },
+        { point: 6, player: 'white', count: 3 },
+        { point: 5, player: 'white', count: 3 },
+        { point: 4, player: 'white', count: 3 },
+        { point: 3, player: 'white', count: 3 },
+        { point: 2, player: 'white', count: 2 },
+        { point: 23, player: 'black', count: 2 },
+      ],
+    });
+    expectRecovered(state, [
+      { from: 12, to: 6 },
+      { from: 5, to: 25 },
+    ]);
+  });
+
+  it('plays both dice when an earlier step already matches the end board', () => {
+    const state = createPositionState({
+      currentPlayer: 'white',
+      dice: [4, 1],
+      placements: [
+        { point: 3, player: 'white', count: 1 },
+        { point: 2, player: 'white', count: 1 },
+        { point: 19, player: 'black', count: 2 },
+      ],
+    });
+    expectRecovered(state, [
+      { from: 3, to: 2 },
+      { from: 2, to: 25 },
+    ]);
+  });
+});
