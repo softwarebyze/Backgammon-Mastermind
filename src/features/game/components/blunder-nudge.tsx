@@ -59,7 +59,13 @@ export function BlunderNudgeFlow() {
     <>
       {!sheetOpen && (
         <View
-          style={[styles.nudge, { top: insets.top + 8, right: insets.right + 12 }]}
+          // Board corner, clear of the header icons and the pip pair.
+          style={[
+            styles.nudge,
+            landscape
+              ? { top: insets.top + 8, left: insets.left + 12 }
+              : { top: 52, left: 12 },
+          ]}
           accessibilityRole="alert"
           testID="guidance-modal"
         >

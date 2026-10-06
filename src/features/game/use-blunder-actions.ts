@@ -8,10 +8,10 @@ import { useGame } from '@/features/game/use-game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
 
-export type TutorBlunderAction = 'take_back' | 'peek' | 'keep_move' | 'turn_off' | 'play_best' | 'nudge_opened';
+type TutorBlunderAction = 'take_back' | 'peek' | 'keep_move' | 'turn_off' | 'play_best' | 'nudge_opened';
 
 /** One `tutor_blunder_shown` per guidance session, plus named actions. */
-export function useTutorBlunderAnalytics(session: GuidanceSession | null) {
+function useTutorBlunderAnalytics(session: GuidanceSession | null) {
   const posthog = usePostHog();
   const shownId = useRef<number | null>(null);
 

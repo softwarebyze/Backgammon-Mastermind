@@ -61,19 +61,38 @@ export function setS1VariantsForTests(v: Partial<S1Variants> | null) {
   override = v;
 }
 
-export function getS1Variants(): S1Variants {
-  let base = TODAY;
-  if (Platform.OS === 'web' && typeof window !== 'undefined') {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('s1') === 'rec')
-      base = RECOMMENDED;
-    base = {
-      status: pick(params, 'status', base.status),
-      banner: pick(params, 'banner', base.banner),
-      tutor: pick(params, 'tutor', base.tutor),
-      confirm: pick(params, 'confirm', base.confirm),
-      header: pick(params, 'header', base.header),
-    };
+const STORAGE_KEY = 's1-variants';
+const KEYS: (keyof S1Variants)[] = ['status', 'banner', 'tutor', 'confirm', 'header'];
+
+/** Query string wins and is remembered for the session, so in-app navigation keeps the variant. */
+function readWebVariants(): S1Variants {
+  const params = new URLSearchParams(window.location.search);
+  const requested = params.has('s1') || KEYS.some(k => params.has(k));
+  if (!requested) {
+    try {
+      const saved = window.sessionStorage.getItem(STORAGE_KEY);
+      if (saved)
+        return { ...TODAY, ...(JSON.parse(saved) as Partial<S1Variants>) };
+    }
+    catch {}
+    return TODAY;
   }
+  const base = params.get('s1') === 'rec' ? RECOMMENDED : TODAY;
+  const resolved: S1Variants = {
+    status: pick(params, 'status', base.status),
+    banner: pick(params, 'banner', base.banner),
+    tutor: pick(params, 'tutor', base.tutor),
+    confirm: pick(params, 'confirm', base.confirm),
+    header: pick(params, 'header', base.header),
+  };
+  try {
+    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(resolved));
+  }
+  catch {}
+  return resolved;
+}
+
+export function getS1Variants(): S1Variants {
+  const base = Platform.OS === 'web' && typeof window !== 'undefined' ? readWebVariants() : TODAY;
   return override ? { ...base, ...override } : base;
 }
