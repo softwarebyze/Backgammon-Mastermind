@@ -19,12 +19,13 @@ adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
-# Both flows share one install and one recording; the junit report covers the
-# whole run so a failure in either flow fails the job.
 maestro test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+<<<<<<< HEAD
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
+=======
+>>>>>>> 54d98f5 (chore(pr): drop Maestro preset from undo alignment PR)
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
