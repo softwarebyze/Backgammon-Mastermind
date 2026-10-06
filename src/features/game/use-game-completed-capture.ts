@@ -6,16 +6,24 @@ import { useCallback, useEffect, useRef } from 'react';
  * Fires `game_completed` once per game, from the game provider (always
  * mounted) rather than from a screen effect. Only a live move that ends the
  * game arms the capture, so resuming a finished game for review or redoing
- * the winning move never counts as another completion.
+ * the winning move never counts as another completion. A game counts once:
+ * undoing out of game-over and winning again is the same game, so the guard
+ * only resets when `resetForNewGame` is called.
  */
 export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
   const posthog = usePostHog();
   const armedRef = useRef(false);
+  const completedRef = useRef(state?.phase === 'game-over');
 
   const noteMoveApplied = useCallback((before: GameState, after: GameState) => {
-    if (before.phase !== 'game-over' && after.phase === 'game-over') {
+    if (!completedRef.current && before.phase !== 'game-over' && after.phase === 'game-over') {
       armedRef.current = true;
     }
+  }, []);
+
+  const resetForNewGame = useCallback(() => {
+    armedRef.current = false;
+    completedRef.current = false;
   }, []);
 
   useEffect(() => {
@@ -27,6 +35,7 @@ export function useGameCompletedCapture(state: GameState | null, moveCount: numb
       return;
     }
     armedRef.current = false;
+    completedRef.current = true;
     posthog.capture('game_completed', {
       mode: state.mode,
       winner: state.winner,
@@ -34,5 +43,5 @@ export function useGameCompletedCapture(state: GameState | null, moveCount: numb
     });
   }, [posthog, state, moveCount]);
 
-  return noteMoveApplied;
+  return { noteMoveApplied, resetForNewGame };
 }

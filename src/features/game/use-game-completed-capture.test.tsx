@@ -34,7 +34,7 @@ describe('useGameCompletedCapture', () => {
       { initialProps: { state: before, count: 100 } },
     );
 
-    result.current(before, after);
+    result.current.noteMoveApplied(before, after);
     rerender({ state: after, count: 101 });
     rerender({ state: after, count: 101 });
 
@@ -58,9 +58,25 @@ describe('useGameCompletedCapture', () => {
       (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
       { initialProps: { state: before, count: 100 } },
     );
-    result.current(before, after);
+    result.current.noteMoveApplied(before, after);
     rerender({ state: after, count: 101 });
     rerender({ state: before, count: 100 });
+    rerender({ state: after, count: 101 });
+
+    expect(mockCapture).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not capture again when the player undoes out of game-over and wins again', () => {
+    const before = movingState();
+    const after = overState();
+    const { result, rerender } = renderHook(
+      (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
+      { initialProps: { state: before, count: 100 } },
+    );
+    result.current.noteMoveApplied(before, after);
+    rerender({ state: after, count: 101 });
+    rerender({ state: before, count: 100 });
+    result.current.noteMoveApplied(before, after);
     rerender({ state: after, count: 101 });
 
     expect(mockCapture).toHaveBeenCalledTimes(1);
@@ -73,10 +89,11 @@ describe('useGameCompletedCapture', () => {
       (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
       { initialProps: { state: before, count: 100 } },
     );
-    result.current(before, after);
+    result.current.noteMoveApplied(before, after);
     rerender({ state: after, count: 101 });
     rerender({ state: before, count: 0 });
-    result.current(before, after);
+    result.current.resetForNewGame();
+    result.current.noteMoveApplied(before, after);
     rerender({ state: after, count: 90 });
 
     expect(mockCapture).toHaveBeenCalledTimes(2);

@@ -41,7 +41,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const replayBaselineRef = useRef(replayBaseline);
   replayBaselineRef.current = replayBaseline;
   const { timeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
-  const noteMoveApplied = useGameCompletedCapture(state, moveLog.length);
+  const { noteMoveApplied, resetForNewGame } = useGameCompletedCapture(state, moveLog.length);
   const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
     recordMove(snapshot, move, next);
     recordTimelineMove(snapshot, next);
@@ -121,6 +121,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetTimeline,
     clearTimeline,
     setState,
+    onNewGame: resetForNewGame,
   });
   useRestoreGameTimeline({ enabled: active, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
   useGameplayHelpers({
