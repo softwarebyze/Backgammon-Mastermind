@@ -4,6 +4,10 @@ appId: ${APP_ID}
 tags:
   - pull-request
 ---
+# Let Android finish removing the previous game task before clearing/relaunching.
+- stopApp
+- waitForAnimationToEnd:
+    timeout: 5000
 - launchApp:
     clearState: true
 - extendedWaitUntil:

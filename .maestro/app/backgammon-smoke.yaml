@@ -32,6 +32,7 @@ tags:
           commands:
             - tapOn:
                 id: roll-dice-button
+                optional: true
       - runFlow:
           when:
             visible:
