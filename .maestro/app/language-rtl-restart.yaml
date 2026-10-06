@@ -28,9 +28,9 @@ tags:
 # Release builds call RNRestart; some builds may show a restart confirm.
 - runFlow:
     when:
-      visible: ".*(?i)restart.*"
+      visible: '.*(?i)restart.*'
     commands:
-      - tapOn: ".*(?i)restart.*"
+      - tapOn: '.*(?i)restart.*'
 - takeScreenshot: lang-02-after-pick-ar
 # Ensure a cold relaunch so I18nManager.isRTL is applied (MMKV language kept).
 - stopApp
