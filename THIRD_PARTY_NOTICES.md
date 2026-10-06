@@ -532,7 +532,7 @@ An SPDX label alone does not complete attribution. Review upstream notices for
 any of these packages included in the distributed application:
 - @expo/devcert@1.2.1
 - @expo/sdk-runtime-versions@1.0.0
-- @expo/ui@57.0.21
+- @expo/ui@57.0.22
 - @expo/ws-tunnel@2.0.0
 - @expo/xcpretty@4.4.4
 - @posthog/core@1.43.1
@@ -568,9 +568,9 @@ any of these packages included in the distributed application:
 - cliui@8.0.1
 - deepmerge@4.3.1
 - emoji-regex@8.0.0
-- expo-router@57.0.24
+- expo-router@57.0.25
 - expo-structured-headers@57.0.1
-- expo-updates@57.0.24
+- expo-updates@57.0.25
 - fb-dotslash@0.5.8
 - fb-watchman@2.0.2
 - hermes-compiler@250829098.0.17
@@ -2709,7 +2709,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/cli@57.0.27
+### @expo/cli@57.0.28
 
 Declared license: MIT
 
@@ -2765,7 +2765,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/config@57.0.9
+### @expo/config@57.0.10
 
 Declared license: MIT
 
@@ -2793,7 +2793,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/config-plugins@57.0.9
+### @expo/config-plugins@57.0.10
 
 Declared license: MIT
 
@@ -3023,6 +3023,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
+### @expo/image-utils@0.11.6
+
+Declared license: MIT
+
+<pre>
+The MIT License (MIT)
+
+Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre>
+
 ### @expo/inline-modules@0.1.7
 
 Declared license: MIT
@@ -3164,7 +3192,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/metro-config@57.0.12
+### @expo/metro-config@57.0.13
 
 Declared license: MIT
 
@@ -3192,7 +3220,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/metro-file-map@57.0.3
+### @expo/metro-file-map@57.0.4
 
 Declared license: MIT
 
@@ -3332,7 +3360,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/prebuild-config@57.0.16
+### @expo/prebuild-config@57.0.17
 
 Declared license: MIT
 
@@ -3388,7 +3416,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/router-server@57.0.11
+### @expo/require-utils@57.0.6
+
+Declared license: MIT
+
+<pre>
+The MIT License (MIT)
+
+Copyright (c) 2025-present 650 Industries, Inc. (aka Expo)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre>
+
+### @expo/router-server@57.0.12
 
 Declared license: MIT
 
@@ -3506,7 +3562,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/ui@57.0.21
+### @expo/ui@57.0.22
 
 Declared license: MIT
 
@@ -7469,7 +7525,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### babel-preset-expo@57.0.13
+### babel-preset-expo@57.0.14
 
 Declared license: MIT
 
@@ -10469,7 +10525,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </pre>
 
-### expo@57.0.26
+### expo@57.0.27
 
 Declared license: MIT
 
@@ -10525,7 +10581,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-asset@57.0.18
+### expo-asset@57.0.19
 
 Declared license: MIT
 
@@ -10609,7 +10665,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-constants@57.0.20
+### expo-constants@57.0.21
 
 Declared license: MIT
 
@@ -10805,7 +10861,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-eas-client@57.0.4
+### expo-eas-client@57.0.5
 
 Declared license: MIT
 
@@ -11029,7 +11085,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-linking@57.0.11
+### expo-linking@57.0.12
 
 Declared license: MIT
 
@@ -11113,7 +11169,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-modules-autolinking@57.0.13
+### expo-modules-autolinking@57.0.14
 
 Declared license: MIT
 
@@ -11141,7 +11197,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-modules-core@57.0.20
+### expo-modules-core@57.0.21
 
 Declared license: MIT
 
@@ -11197,7 +11253,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-router@57.0.24
+### expo-router@57.0.25
 
 Declared license: MIT
 
@@ -11349,7 +11405,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-updates@57.0.24
+### expo-updates@57.0.25
 
 Declared license: MIT
 
