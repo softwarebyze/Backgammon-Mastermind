@@ -25,8 +25,14 @@ export const translate = memoize(
     options ? key + JSON.stringify(options) : key,
 );
 
+/** Drop memoized strings so the next render picks up the active i18n language. */
+export function clearTranslateCache(): void {
+  translate.cache?.clear?.();
+}
+
 export function changeLanguage(lang: Language) {
   i18n.changeLanguage(lang);
+  clearTranslateCache();
   I18nManager.forceRTL(RTL_LANGUAGES.has(lang));
   if (Platform.OS === 'ios' || Platform.OS === 'android') {
     if (__DEV__)
@@ -34,12 +40,15 @@ export function changeLanguage(lang: Language) {
     else RNRestart.restart();
   }
   else if (Platform.OS === 'web') {
-    window.location.reload();
+    // Defer so MMKV flushes and we don't race picker dismiss navigation.
+    globalThis.queueMicrotask(() => {
+      globalThis.location?.reload();
+    });
   }
 }
 
 export function useSelectedLanguage() {
-  const [language, setLang] = useMMKVString(LOCAL);
+  const [language, setLang] = useMMKVString(LOCAL, storage);
 
   const setLanguage = useCallback(
     (lang: Language) => {

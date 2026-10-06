@@ -2,6 +2,7 @@ import type { PickerOption } from './components/picker-sheet';
 
 import type { Language } from '@/lib/i18n';
 
+import { Platform } from 'react-native';
 import { LANGUAGE_NAMES, SUPPORTED_LANGUAGES, useSelectedLanguage } from '@/lib/i18n';
 import { PickerSheet } from './components/picker-sheet';
 
@@ -18,6 +19,7 @@ export function LanguagePickerScreen() {
       options={options}
       selectedValue={language}
       onSelect={setLanguage}
+      dismissOnSelect={Platform.OS !== 'web'}
     />
   );
 }
