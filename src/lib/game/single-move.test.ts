@@ -1,5 +1,6 @@
 import { BEAR_OFF, createInitialState } from './constants';
-import { applyDiceRoll } from './moves';
+import { createPositionState } from './create-position';
+import { applyDiceRoll, getLegalMoves } from './moves';
 import {
   getForcedLegalMove,
   getForcedTurnSequence,
@@ -106,5 +107,51 @@ describe('single-move helpers', () => {
     };
 
     expect(getSingleDestinationSequence(state, 10)).toBeNull();
+  });
+});
+
+describe('last checker on the 1 point', () => {
+  const rolls: Array<[number, number]> = [];
+  for (let a = 1; a <= 6; a++) {
+    for (let b = 1; b <= 6; b++) {
+      rolls.push([a, b]);
+    }
+  }
+
+  function lastCheckerState(player: 'white' | 'black', dice: [number, number]) {
+    return createPositionState({
+      placements: [{ point: player === 'white' ? 1 : 24, player, count: 1 }],
+      borneOff: { [player]: 14 },
+      currentPlayer: player,
+      dice,
+    });
+  }
+
+  it.each(rolls)('is forced for white on %i-%i, including high rolls', (a, b) => {
+    const state = lastCheckerState('white', [a, b]);
+    expect(state.phase).toBe('moving');
+    expect(getForcedLegalMove(state)).toMatchObject({ from: 1, to: BEAR_OFF });
+  });
+
+  it.each(rolls)('is forced for black on %i-%i, including high rolls', (a, b) => {
+    const state = lastCheckerState('black', [a, b]);
+    expect(state.phase).toBe('moving');
+    expect(getForcedLegalMove(state)).toMatchObject({ from: 24, to: BEAR_OFF });
+  });
+
+  it('spends the higher die first so a 6-5 is one legal move, not two', () => {
+    const state = lastCheckerState('white', [5, 6]);
+    expect(getLegalMoves(state)).toHaveLength(1);
+    expect(getLegalMoves(state)[0]).toMatchObject({ die: 6 });
+  });
+
+  it('forces the whole turn when a second checker shares the 1 point outcome', () => {
+    const state = lastCheckerState('white', [6, 5]);
+    state.points[2] = { player: 'white', count: 1 };
+    state.borneOff.white = 13;
+    expect(getForcedLegalMove(state)).toBeNull();
+    const sequence = getForcedTurnSequence(state);
+    expect(sequence).toHaveLength(2);
+    expect(sequence!.every(m => m.to === BEAR_OFF)).toBe(true);
   });
 });

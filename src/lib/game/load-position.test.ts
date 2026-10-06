@@ -89,10 +89,11 @@ describe('parsePositionJson', () => {
 });
 
 describe('position loader presets', () => {
-  it('exposes the two #155 bar 1–2 audit boards', () => {
+  it('exposes the #155 bar 1–2 audit boards and the bear-off QA board', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
+      'bear-off-last-checker-6-5',
     ]);
   });
 
@@ -106,5 +107,15 @@ describe('position loader presets', () => {
   it('#155 higher-die: only bar→23 when neither leftover die plays', () => {
     const state = loadPositionPreset(preset('issue-155-bar-1-2-higher-die'));
     expect(barDestinations(state)).toEqual([23]);
+  });
+});
+
+describe('bear-off last checker preset', () => {
+  it('is a single forced bear-off with the higher die', () => {
+    const state = loadPositionPreset(preset('bear-off-last-checker-6-5'));
+    expect(state.phase).toBe('moving');
+    const moves = getLegalMoves(state);
+    expect(moves).toHaveLength(1);
+    expect(moves[0]).toMatchObject({ from: 1, die: 6 });
   });
 });
