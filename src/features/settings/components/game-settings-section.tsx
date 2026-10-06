@@ -1,13 +1,14 @@
 import { usePostHog } from 'posthog-react-native';
 import * as React from 'react';
+import { use } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Text } from '@/components/ui';
+import { Text } from '@/components/ui/text';
 import { GamePreferencesPanel } from '@/features/game/components/game-preferences-panel';
+import { GameContext } from '@/features/game/game-context';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { getS1Variants } from '@/features/game/s1-prototype';
-import { useGame } from '@/features/game/use-game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
 import { translate } from '@/lib/i18n';
@@ -92,7 +93,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
         }}
         showHints={showHints}
       />
-      <NewGameInSettings />
+      {getS1Variants().header === 'slim' ? <NewGameInSettings /> : null}
     </View>
   );
 }
@@ -100,12 +101,15 @@ export function GameSettingsSection({ showHints = false }: Props) {
 /**
  * S1-I prototype: with the slim header, New game leaves the header and lives
  * here, in the options sheet, because it is rare and destructive.
+ * Mounted only for that variant. Reads the game context without throwing,
+ * so standalone Settings (no provider, or no game in progress) still renders.
  */
 function NewGameInSettings() {
   const posthog = usePostHog();
-  const { state, resetGame } = useGame();
-  if (getS1Variants().header !== 'slim' || !state)
+  const game = use(GameContext);
+  if (!game?.state)
     return null;
+  const { state, resetGame } = game;
   return (
     <Pressable
       accessibilityRole="button"
