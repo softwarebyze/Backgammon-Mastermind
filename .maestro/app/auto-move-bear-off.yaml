@@ -1,0 +1,29 @@
+# Regression for "auto-move on, one checker left on the 1 point, high roll, nothing
+# moves": loads a lone white checker on the 1 point with a 6-5 via the Developer
+# position loader and expects auto-move (on by default) to bear it off and win.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-bear-off-last-checker-6-5
+    timeout: 60000
+- takeScreenshot: 01-developer-presets
+- tapOn:
+    id: developer-preset-bear-off-last-checker-6-5
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- takeScreenshot: 02-lone-checker-before-auto-move
+- extendedWaitUntil:
+    visible: '.*You Win!.*'
+    timeout: 15000
+- takeScreenshot: 03-auto-move-bore-off

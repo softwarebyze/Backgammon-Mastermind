@@ -1,0 +1,31 @@
+# Bar + home forced entry must not leave the turn stuck when auto-move is on.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-bar-then-home-forced-2-1
+    timeout: 60000
+- takeScreenshot: 01-developer-bar-preset
+- tapOn:
+    id: developer-preset-bar-then-home-forced-2-1
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- takeScreenshot: 02-after-load
+# The entered checker must have actually traversed to point 22.
+# Initial White/Your turn labels cannot satisfy this assertion.
+- extendedWaitUntil:
+    visible: 'Point 22, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Point 1, 1 white checker'
+- assertNotVisible: '.*You Win!.*'
+- takeScreenshot: 03-after-auto-move

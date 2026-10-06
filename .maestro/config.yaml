@@ -4,6 +4,8 @@ flows:
   - app/undo-redo.yaml
   - app/settings-no-fast-mode.yaml
   - app/game-settings-gear.yaml
+  - app/auto-move-bear-off-bar.yaml
+  - app/auto-move-bear-off.yaml
 
 excludeTags:
   - util

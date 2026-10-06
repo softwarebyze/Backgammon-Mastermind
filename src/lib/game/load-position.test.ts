@@ -6,7 +6,8 @@ import {
   POSITION_JSON_ERRORS,
   POSITION_LOADER_PRESETS,
 } from './load-position';
-import { getLegalMoves } from './moves';
+import { applyMove, getLegalMoves } from './moves';
+import { getForcedLegalMove, getForcedTurnSequence } from './single-move';
 
 function preset(id: string) {
   const found = POSITION_LOADER_PRESETS.find(item => item.id === id);
@@ -89,11 +90,13 @@ describe('parsePositionJson', () => {
 });
 
 describe('position loader presets', () => {
-  it('exposes the #155 bar 1–2 audit boards and the E2E undo/redo board', () => {
+  it('exposes the #155 bar boards plus a bar+home forced QA preset', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
       'e2e-undo-redo-3-1',
+      'bar-then-home-forced-2-1',
+      'bear-off-last-checker-6-5',
     ]);
   });
 
@@ -113,5 +116,38 @@ describe('position loader presets', () => {
   it('#155 higher-die: only bar→23 when neither leftover die plays', () => {
     const state = loadPositionPreset(preset('issue-155-bar-1-2-higher-die'));
     expect(barDestinations(state)).toEqual([23]);
+  });
+
+  it('bar-then-home-forced-2-1: white on bar and the 1 point', () => {
+    const state = loadPositionPreset(preset('bar-then-home-forced-2-1'));
+    expect(state.bar.white).toBe(1);
+    expect(state.mode).toBe('vs-human');
+    expect(state.phase).toBe('moving');
+    expect(barDestinations(state).length).toBeGreaterThan(0);
+  });
+});
+
+describe('auto-move QA preset outcomes', () => {
+  it.each([
+    ['bar-then-home-forced-2-1', false],
+    ['bear-off-last-checker-6-5', true],
+  ] as const)('completes the forced sequence for %s', (id, wins) => {
+    let state = loadPositionPreset(preset(id));
+    const single = getForcedLegalMove(state);
+    const sequence = single ? [single] : getForcedTurnSequence(state);
+    expect(sequence).not.toBeNull();
+    for (const move of sequence!) {
+      const legal = getLegalMoves(state).find(m => m.from === move.from && m.to === move.to)!;
+      state = applyMove(state, legal);
+    }
+    if (wins) {
+      expect(state.winner).toBe('white');
+      expect(state.phase).toBe('game-over');
+    }
+    else {
+      expect(state.bar.white).toBe(0);
+      expect(state.points[22]).toEqual({ player: 'white', count: 1 });
+      expect(state.winner).toBeNull();
+    }
   });
 });
