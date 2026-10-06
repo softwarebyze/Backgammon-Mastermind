@@ -74,16 +74,19 @@ export function rollBlockedByFocus(target: FocusTarget): boolean {
 
 /**
  * While the Confirm bar is up, Space/Enter should confirm even if a board
- * point (also a button) still has focus after tapping. Only skip when the
- * Confirm or Undo control itself is focused — those already handle the key,
- * and firing the shortcut too would double-activate.
+ * point (also a button) still has focus after tapping. Skip when some other
+ * interactive control is focused — Confirm/Undo already handle the key (don't
+ * double-fire), and Leave/settings/etc. must not be stolen into a confirm.
  */
 export function confirmBlockedByFocus(target: FocusTarget): boolean {
-  return Boolean(
-    target?.closest?.(
-      '[data-testid="confirm-move-button"], [data-testid="undo-move-button"]',
-    ),
-  );
+  if (!target?.closest) {
+    return false;
+  }
+  // Focus left on the board after spending dice — still confirm.
+  if (target.closest('[data-testid="board-view"]')) {
+    return false;
+  }
+  return Boolean(target.closest('button, a, [role="button"]'));
 }
 
 /** Skip when the browser already handled it, key-repeat, or a text field has focus. */

@@ -30,10 +30,16 @@ function key(
   };
 }
 
-/** Mimic a board point: matches generic button selectors, not Confirm/Undo. */
+/**
+ * Mimic focus on a board point: inside board-view, and also a button
+ * (so roll would still be blocked).
+ */
 function boardPointTarget() {
   return {
     closest: (selector: string) => {
+      if (selector === '[data-testid="board-view"]') {
+        return {};
+      }
       if (selector === 'button, a, [role="button"]') {
         return {};
       }
@@ -42,13 +48,12 @@ function boardPointTarget() {
   };
 }
 
-/** Mimic Confirm or Undo: matches the confirm-bar button selector. */
-function confirmBarButtonTarget(which: 'confirm' | 'undo') {
-  const id = which === 'confirm' ? 'confirm-move-button' : 'undo-move-button';
+/** Mimic Confirm, Undo, Leave, etc. — interactive, but not on the board. */
+function chromeButtonTarget() {
   return {
     closest: (selector: string) => {
-      if (selector.includes(`[data-testid="${id}"]`)) {
-        return {};
+      if (selector === '[data-testid="board-view"]') {
+        return null;
       }
       if (selector === 'button, a, [role="button"]') {
         return {};
@@ -115,9 +120,8 @@ describe('game keyboard shortcuts', () => {
     expect(confirmBlockedByFocus(point)).toBe(false);
   });
 
-  it('does not double-fire when Confirm or Undo is focused', () => {
-    expect(confirmBlockedByFocus(confirmBarButtonTarget('confirm'))).toBe(true);
-    expect(confirmBlockedByFocus(confirmBarButtonTarget('undo'))).toBe(true);
+  it('does not steal confirm from Confirm, Undo, or other chrome buttons', () => {
+    expect(confirmBlockedByFocus(chromeButtonTarget())).toBe(true);
     expect(confirmBlockedByFocus(null)).toBe(false);
   });
 
