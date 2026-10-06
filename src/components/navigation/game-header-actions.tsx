@@ -89,6 +89,7 @@ export function GameHeaderActions({
       <HeaderIcon
         name="sliders"
         label={translate('settings.title')}
+        testID="game-settings-button"
         onPress={onOptions}
       />
       <HeaderIcon

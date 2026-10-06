@@ -19,9 +19,10 @@ adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
-# Smoke + native RTL language restart (screenshots land in maestro-visual-report).
+# Release integration: preserve every feature regression flow.
 maestro test \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+  "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
