@@ -1,11 +1,17 @@
 import type { GameState } from '@/lib/game';
 
+import { settingProperties } from '@/lib/analytics/settings-analytics';
+import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
 import { renderHook } from '@/lib/test-utils';
 
 import { useGameCompletedCapture } from './use-game-completed-capture';
 
 const mockCapture = jest.fn();
+let mockPreferences = { ...DEFAULT_GAME_PREFERENCES };
+jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
+  useGamePreferences: () => ({ preferences: mockPreferences }),
+}));
 
 jest.mock('posthog-react-native', () => ({
   usePostHog: function postHogApi() {
@@ -23,9 +29,28 @@ function overState(): GameState {
   return { ...movingState(), phase: 'game-over', winner: 'white' };
 }
 
-beforeEach(() => mockCapture.mockClear());
+beforeEach(() => {
+  mockCapture.mockClear();
+  mockPreferences = { ...DEFAULT_GAME_PREFERENCES };
+});
 
 describe('useGameCompletedCapture', () => {
+  it('captures preferences in force at completion from the provider', () => {
+    const before = movingState();
+    const after = overState();
+    const { result, rerender } = renderHook(
+      (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
+      { initialProps: { state: before, count: 100 } },
+    );
+    mockPreferences = { ...mockPreferences, autoRoll: false, tutorMode: true };
+    result.current.noteMoveApplied(before, after);
+    rerender({ state: after, count: 101 });
+    expect(mockCapture).toHaveBeenCalledWith('game_completed', expect.objectContaining({
+      pref_auto_roll: false,
+      pref_tutor_mode: true,
+    }));
+  });
+
   it('captures once when a move ends the game, with the final move count', () => {
     const before = movingState();
     const after = overState();
@@ -43,6 +68,7 @@ describe('useGameCompletedCapture', () => {
       mode: 'vs-computer',
       winner: 'white',
       move_count: 101,
+      ...settingProperties(DEFAULT_GAME_PREFERENCES),
     });
   });
 

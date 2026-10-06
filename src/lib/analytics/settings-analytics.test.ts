@@ -98,10 +98,8 @@ describe('gameplay setting properties', () => {
     });
   });
 
-  it('is spread onto game_started and game_completed', () => {
+  it('is spread onto game_started', () => {
     const home = readFileSync(join(__dirname, '../../features/game/home-screen.tsx'), 'utf8');
-    const layout = readFileSync(join(__dirname, '../../features/game/game-screen-layout.tsx'), 'utf8');
     expect(home).toMatch(/capture\('game_started', \{[\s\S]*\.\.\.settingProperties\(preferences\)/);
-    expect(layout).toMatch(/capture\('game_completed', \{[\s\S]*\.\.\.settingProperties\(preferences\)/);
   });
 });
