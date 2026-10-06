@@ -1,0 +1,47 @@
+# Native: picking Arabic forces I18nManager RTL + app restart.
+# Screenshots prove Settings LTR → post-pick Arabic → post-restart RTL layout.
+appId: ${APP_ID}
+tags:
+  - settings
+  - i18n
+  - rtl
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn:
+    text: Settings
+- extendedWaitUntil:
+    visible: Language
+    timeout: 15000
+- takeScreenshot: lang-01-settings-en
+- tapOn:
+    text: Language
+- extendedWaitUntil:
+    visible: العربية
+    timeout: 15000
+- tapOn:
+    text: العربية
+# Release builds call RNRestart; some builds may show a restart confirm.
+- runFlow:
+    when:
+      visible: ".*(?i)restart.*"
+    commands:
+      - tapOn: ".*(?i)restart.*"
+- takeScreenshot: lang-02-after-pick-ar
+# Ensure a cold relaunch so I18nManager.isRTL is applied (MMKV language kept).
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible: ضد الكمبيوتر
+    timeout: 90000
+- tapOn:
+    text: إعدادات
+- extendedWaitUntil:
+    visible: لغة
+    timeout: 15000
+- takeScreenshot: lang-03-after-restart-ar-rtl
