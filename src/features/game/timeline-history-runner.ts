@@ -33,6 +33,12 @@ type HistoryAnimCtx = {
   finishHistoryAnim: () => void;
   /** Shared with playMove so interrupted undo/redo still commits. */
   armAnimationFinish: (onFinish: () => void) => () => void;
+  /**
+   * Confirm-hold Undo: skip the post-undo historyPath flash. That overlay draws
+   * the undone ply (often to an empty point) and looks mis-anchored after the
+   * confirm bar leaves; hold arrows already update/clear from moveLog.
+   */
+  suppressHistoryPath?: boolean;
 };
 
 export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
@@ -115,7 +121,12 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
   }
 
   const settle = ctx.armAnimationFinish(commitUndo);
-  ctx.setHistoryPath(step.path);
+  if (ctx.suppressHistoryPath) {
+    ctx.setHistoryPath(null);
+  }
+  else {
+    ctx.setHistoryPath(step.path);
+  }
   ctx.setMoveAnimation({ ...step.frame, onFinish: settle });
   return true;
 }

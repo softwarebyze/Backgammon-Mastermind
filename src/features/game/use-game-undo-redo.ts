@@ -30,6 +30,8 @@ type Options = {
   popLastMove: () => MoveLogEntry | null;
   restoreMove: (entry: MoveLogEntry) => void;
   gameMode: GameState['mode'] | undefined;
+  /** When true at undo time, skip the dashed historyPath flash (confirm-hold). */
+  shouldSuppressHistoryPath?: () => boolean;
 };
 
 /** Live undo/redo — animates like review scrubbing, then commits timeline + move log. */
@@ -46,6 +48,7 @@ export function useGameUndoRedo(options: Options) {
     popLastMove,
     restoreMove,
     gameMode,
+    shouldSuppressHistoryPath,
   } = options;
 
   // vs-computer: undo rewinds trailing AI moves and lands on the human's own
@@ -101,6 +104,7 @@ export function useGameUndoRedo(options: Options) {
     setHistoryPath,
     finishHistoryAnim,
     armAnimationFinish,
+    suppressHistoryPath: shouldSuppressHistoryPath?.() === true,
   }), [
     armAnimationFinish,
     finishHistoryAnim,
@@ -111,6 +115,7 @@ export function useGameUndoRedo(options: Options) {
     setMoveAnimation,
     setState,
     setTimeline,
+    shouldSuppressHistoryPath,
   ]);
 
   const doUndo = useCallback(() => {

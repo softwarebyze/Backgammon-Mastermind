@@ -34,6 +34,7 @@ export function deriveGameBoardPresentation(
   else if (historyPath) {
     // Keep arrow after the checker lands, then soft-fade (see undo/redo hold).
     // Wins over confirm-hold arrows so undo/redo doesn't double-draw a path.
+    // Confirm-hold Undo suppresses historyPath entirely (see timeline-history-runner).
     pathSegments = [{ entry: historyPath.entry, beforeState: historyPath.beforeState, active: true }];
     if (!boardAnimation) {
       pathFadeOutMs = 650;
