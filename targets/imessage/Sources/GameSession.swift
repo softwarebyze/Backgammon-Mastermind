@@ -89,6 +89,14 @@ final class ImGameSession: ObservableObject {
   /// needed and the persisted form is the same one the wire uses.
   struct Saved: Codable, Equatable {
     var payload: String
+    /// Dice still in hand this turn.
+    ///
+    /// Stored separately because the payload URL cannot carry it: a wire payload
+    /// describes a *completed* turn, so `toBoard()` always comes back with
+    /// `remaining` empty. Dropping it made a mid-turn relaunch inconsistent —
+    /// `isTurnSendable` reads `remaining.isEmpty` and would have offered Send on
+    /// a turn whose dice were never played.
+    var remaining: [Int]
     var sentLatestTurn: Bool
     var movedThisTurn: Bool
     var status: String
@@ -97,8 +105,15 @@ final class ImGameSession: ObservableObject {
     /// not survive the process being reaped, so restoring it would leave the turn
     /// permanently unsendable with no `didCancelSending` callback coming to free
     /// it. See `restore`.
-    init(payload: String, sentLatestTurn: Bool, movedThisTurn: Bool, status: String) {
+    init(
+      payload: String,
+      remaining: [Int] = [],
+      sentLatestTurn: Bool,
+      movedThisTurn: Bool,
+      status: String
+    ) {
       self.payload = payload
+      self.remaining = remaining
       self.sentLatestTurn = sentLatestTurn
       self.movedThisTurn = movedThisTurn
       self.status = status
@@ -152,9 +167,12 @@ final class ImGameSession: ObservableObject {
        let url = URL(string: saved.payload),
        let payload = try? ImTurnPayload(url: url) {
       // `fromBoard` stamps `current` verbatim, so the payload's side is ours —
-      // the one to move — and `toBoard` puts it back.
+      // the one to move — and `toBoard` puts it back. `remaining` comes from the
+      // saved field, not from the payload; see `Saved.remaining`.
+      var restored = payload.toBoard()
+      restored.remaining = saved.remaining
       return (
-        board: payload.toBoard(),
+        board: restored,
         gameId: payload.gameId,
         turn: payload.turn,
         dice: payload.dice,
@@ -179,6 +197,7 @@ final class ImGameSession: ObservableObject {
       payload: ImTurnPayload.fromBoard(
         board, gameId: gameId, turn: turn, dice: dice, summary: ""
       ).url?.absoluteString ?? "",
+      remaining: board.remaining,
       sentLatestTurn: sentLatestTurn,
       movedThisTurn: movedThisTurn,
       status: status
@@ -360,6 +379,11 @@ final class ImGameSession: ObservableObject {
     destinations = []
     status = snapshot.status
     movedThisTurn = snapshot.movedThisTurn
+    // Every state change has to be persisted, not just the ones that advance the
+    // turn. Undo rewinds the board, so without this the *pre-undo* position is
+    // what survives a process reap — and a later relaunch would happily send a
+    // move the player had already taken back.
+    persist()
   }
 
   /// Compound moves available this turn: one checker played with two or more

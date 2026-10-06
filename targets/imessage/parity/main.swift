@@ -1131,6 +1131,43 @@ do {
     }
   }
 
+  // Undo must persist too. It rewinds the board, so if it does not, the
+  // *pre-undo* position is what survives a process reap — and a later relaunch
+  // will happily send a move the player already took back.
+  do {
+    let store = ImMemorySessionStore()
+    let s = ImGameSession(store: store)
+    s.rollDice()
+    guard let first = s.sequences.first(where: { !$0.dies.isEmpty }) else {
+      check("persist.undoPersists", false, "no legal first move"); exit(1)
+    }
+    s.tapPoint(first.from)
+    guard s.destinations.contains(first.to) else {
+      check("persist.undoPersists", false, "destination not offered"); exit(1)
+    }
+    s.tapPoint(first.to)
+    let afterMove = s.board
+    check("persist.undoMovedSomething", s.canUndo)
+    s.undo()
+    let afterUndo = s.board
+    check("persist.undoActuallyRewound", afterUndo != afterMove)
+
+    let relaunched = ImGameSession(store: store)
+    check("persist.undoPersists", relaunched.board == afterUndo,
+          "relaunching after an undo must not resurrect the reverted move")
+    check("persist.undoPersistsNotMoved", relaunched.board != afterMove)
+    // Unplayed dice must survive the relaunch. They are not in the payload URL —
+    // a wire payload describes a completed turn, so `toBoard` always returns
+    // `remaining` empty — and losing them made `isTurnSendable` true, offering
+    // Send on a turn whose dice were never played.
+    check("persist.undoKeepsRemaining", !relaunched.board.remaining.isEmpty,
+          "unplayed dice were lost across the relaunch")
+    check("persist.undoMidTurnNotSendable", !relaunched.isTurnSendable,
+          "Send must not go live on an unfinished turn")
+    check("persist.undoStillPlayable", !relaunched.sequences.isEmpty,
+          "the undone position must still have legal moves")
+  }
+
   // The harness must never touch the real defaults.
   let harness = try String(contentsOfFile: "targets/imessage/parity/main.swift", encoding: .utf8)
   check("persist.harnessIsolatesStore",
