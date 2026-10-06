@@ -7,6 +7,7 @@ flows:
   - app/auto-move-bear-off-bar.yaml
   - app/auto-move-bear-off.yaml
   - app/reduced-motion.yaml
+  - app/hebrew-undo-redo.yaml
 
 excludeTags:
   - util

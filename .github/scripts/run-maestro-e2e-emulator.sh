@@ -24,6 +24,11 @@ maestro test \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
+# Preserve every release regression flow.
+maestro test \
+  "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+  "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
+  "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
@@ -31,6 +36,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/auto-move-bear-off-bar.yaml" \
   "${WORKSPACE}/.maestro/app/auto-move-bear-off.yaml" \
   "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
+  "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
