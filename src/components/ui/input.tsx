@@ -1,9 +1,10 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes */
 import type { TextInputProps } from 'react-native';
 import * as React from 'react';
-import { I18nManager, TextInput as NTextInput, StyleSheet, View } from 'react-native';
+import { TextInput as NTextInput, StyleSheet, View } from 'react-native';
 import { tv } from 'tailwind-variants';
 
+import { getLayoutIsRTL } from '@/lib/i18n';
 import colors from './colors';
 import { Text } from './text';
 
@@ -91,8 +92,8 @@ export function Input({ ref, ...props }: NInputProps & { ref?: React.Ref<NTextIn
         onFocus={onFocus}
         {...inputProps}
         style={StyleSheet.flatten([
-          { writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr' },
-          { textAlign: I18nManager.isRTL ? 'right' : 'left' },
+          { writingDirection: getLayoutIsRTL() ? 'rtl' : 'ltr' },
+          { textAlign: getLayoutIsRTL() ? 'right' : 'left' },
           inputProps.style,
         ])}
       />

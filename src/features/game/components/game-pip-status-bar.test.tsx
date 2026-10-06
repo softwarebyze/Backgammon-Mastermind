@@ -5,6 +5,8 @@ import { GamePipStatusBar } from './game-pip-status-bar';
 import { StrategyMark } from './strategy-icon';
 
 jest.mock('@/lib/i18n', () => ({
+  getIsRTL: () => false,
+  getLayoutIsRTL: () => false,
   translate: (key: string) => key,
 }));
 
