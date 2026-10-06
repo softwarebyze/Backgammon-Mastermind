@@ -8,7 +8,7 @@ set -euo pipefail
 WORKSPACE="${1:?workspace root required}"
 APP_PATH="${2:?simulator .app path required}"
 APP_ID="${3:-com.backgammonmastermind.preview}"
-OUT_ROOT="${WORKSPACE}/.maestro-ios-output"
+OUT_ROOT="${WORKSPACE}/maestro-ios-output"
 
 mkdir -p "$OUT_ROOT"
 
@@ -42,6 +42,12 @@ for kind in iPhone iPad; do
   xcrun simctl bootstatus "$udid" -b
   xcrun simctl install "$udid" "$APP_PATH"
 
+  # Keep startup failures reviewable even when the first assertion never passes.
+  xcrun simctl spawn "$udid" log stream --level debug --style compact \
+    --predicate 'process == "BackgammonMastermind"' > "$out/app.log" 2>&1 &
+  log_pid=$!
+  xcrun simctl io "$udid" recordVideo "$out/e2e-recording.mp4" > "$out/recording.log" 2>&1 &
+  record_pid=$!
   rc=0
   maestro --device "$udid" test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
     -e "APP_ID=${APP_ID}" \
@@ -51,6 +57,11 @@ for kind in iPhone iPad; do
     --debug-output "$out" \
     --flatten-debug-output \
     || rc=$?
+
+  kill -INT "$record_pid" 2>/dev/null || true
+  wait "$record_pid" 2>/dev/null || true
+  kill "$log_pid" 2>/dev/null || true
+  wait "$log_pid" 2>/dev/null || true
 
   # Fallback screenshot so a failed flow still shows where the app was.
   [ "$rc" -eq 0 ] || xcrun simctl io "$udid" screenshot "$out/failure-final-state.png" || true
