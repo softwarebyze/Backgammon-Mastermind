@@ -25,7 +25,7 @@
       "roll_dice": "Tirar los dados",
       "roll_dice_a11y": "Tirar los dados",
       "start_new_game_a11y": "Inicio nuevo juego",
-      "undo_a11y": "Muévete.",
+      "undo_a11y": "Deshacer movimiento",
       "undo_move": "Deshacer"
     },
     "hint": {
