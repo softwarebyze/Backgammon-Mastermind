@@ -62,9 +62,33 @@ export function shortcutFor(
   return null;
 }
 
-/** Space/Enter already activate a focused button. Don't also roll/confirm. */
+/** Space/Enter already activate a focused button. Don't also roll. */
 export function rollBlockedByFocus(target: { closest?: (selector: string) => unknown } | null): boolean {
   return Boolean(target?.closest?.('button, a, [role="button"]'));
+}
+
+type FocusTarget = { closest?: (selector: string) => unknown } | null;
+
+/**
+ * Enter confirms whenever the confirm bar is up, even if focus stayed on
+ * Live (or any other game control) after turn history. Space still activates
+ * the focused button. Dialog and alert buttons keep Enter.
+ */
+export function shortcutSuppressedByFocus(
+  action: 'roll' | 'confirm' | 'undo' | 'redo' | 'cancel' | null,
+  event: { key: string },
+  target: FocusTarget,
+): boolean {
+  if (action !== 'roll' && action !== 'confirm') {
+    return false;
+  }
+  if (!rollBlockedByFocus(target)) {
+    return false;
+  }
+  if (action === 'confirm' && event.key.toLowerCase() === 'enter') {
+    return Boolean(target?.closest?.('[role="dialog"], [role="alertdialog"], [role="alert"]'));
+  }
+  return true;
 }
 
 /** Skip when the browser already handled it, key-repeat, or a text field has focus. */
@@ -83,8 +107,9 @@ export function shouldIgnoreShortcutKeydown(e: {
 /**
  * Web only: R / Space / Enter roll (Space/Enter confirm while the confirm bar
  * is up), Z or ⌘Z undo, Y or ⇧⌘Z redo, Esc cancels a selection. Roll only
- * fires when the human can actually roll. Ignores key repeat so holding Enter
- * can't double-confirm. The listener follows screen focus.
+ * fires when the human can actually roll. Enter still confirms when focus
+ * stayed on another control, such as Live after turn history. Ignores key
+ * repeat so holding Enter can't double-confirm. The listener follows screen focus.
  */
 export function useGameKeyboardShortcuts({
   state,
@@ -120,11 +145,12 @@ export function useGameKeyboardShortcuts({
       if (!action) {
         return;
       }
-      if ((action === 'roll' || action === 'confirm') && rollBlockedByFocus(target)) {
+      if (shortcutSuppressedByFocus(action, e, target)) {
         return;
       }
       if (action === 'confirm' && confirmReady) {
         e.preventDefault();
+        e.stopPropagation();
         onConfirm();
       }
       else if (action === 'roll' && canRoll) {
@@ -144,8 +170,9 @@ export function useGameKeyboardShortcuts({
         onCancelSelection();
       }
     };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    // Capture so Enter confirms before a focused control (Live) handles the key.
+    window.addEventListener('keydown', onKeyDown, true);
+    return () => window.removeEventListener('keydown', onKeyDown, true);
   }, [
     state,
     isReviewing,

@@ -1,6 +1,7 @@
 import {
   rollBlockedByFocus,
   shortcutFor,
+  shortcutSuppressedByFocus,
   shouldIgnoreShortcutKeydown,
 } from '@/features/game/use-game-keyboard-shortcuts';
 
@@ -70,6 +71,25 @@ describe('game keyboard shortcuts', () => {
     expect(rollBlockedByFocus(null)).toBe(false);
     expect(rollBlockedByFocus({ closest: () => null })).toBe(false);
     expect(rollBlockedByFocus({ closest: () => ({}) })).toBe(true);
+  });
+
+  it('confirms on Enter even when focus stayed on Live', () => {
+    const liveButton = {
+      closest: (selector: string) => selector.includes('role="button"') ? {} : null,
+    };
+    expect(shortcutSuppressedByFocus('confirm', key('Enter'), liveButton)).toBe(false);
+    expect(shortcutSuppressedByFocus('confirm', key(' '), liveButton)).toBe(true);
+    expect(shortcutSuppressedByFocus('roll', key('Enter'), liveButton)).toBe(true);
+    expect(shortcutSuppressedByFocus('confirm', key('Enter'), null)).toBe(false);
+  });
+
+  it('leaves Enter to a focused dialog button', () => {
+    const dialogButton = {
+      closest: (selector: string) => (
+        selector.includes('role="button"') || selector.includes('role="alert"') ? {} : null
+      ),
+    };
+    expect(shortcutSuppressedByFocus('confirm', key('Enter'), dialogButton)).toBe(true);
   });
 
   it('ignores key repeat and already-handled events', () => {
