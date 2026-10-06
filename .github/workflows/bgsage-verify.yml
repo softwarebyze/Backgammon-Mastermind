@@ -4,6 +4,8 @@
 #   screen and asserts the engine's actual move output.
 # - iOS: Expo prebuild + xcodebuild for the iOS simulator (compiles the
 #   Swift/ObjC++ bridge + engine for real). No signing, no EAS, no Apple creds.
+#   The Release build is then run through the Maestro smoke flow on an iPhone
+#   and an iPad simulator; screenshots upload as `maestro-visual-report-ios`.
 
 name: bgsage native verify
 
@@ -207,5 +209,35 @@ jobs:
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -destination "platform=iOS Simulator,id=$DEVICE_UDID" \
+            -configuration Release \
             -derivedDataPath "$RUNNER_TEMP/bgsage-dd" \
             build
+        env:
+          # Release embeds the JS bundle (no Metro / dev-client launcher), so
+          # the Maestro step below can launch the app straight to the home screen.
+          EXPO_NO_DOTENV: '1'
+          APP_ENV: preview
+          EXPO_PUBLIC_APP_ENV: preview
+          CI: 'true'
+
+      - name: Install Maestro
+        run: |
+          npm run install-maestro
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Run backgammon smoke on iPhone + iPad simulators
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: '1'
+        run: |
+          APP=$(ls -d "$RUNNER_TEMP"/bgsage-dd/Build/Products/Release-iphonesimulator/*.app | head -1)
+          echo "app: $APP"
+          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview
+
+      - name: Upload iOS Maestro screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-visual-report-ios
+          path: .maestro-ios-output/**
+          if-no-files-found: warn
+          retention-days: 14
