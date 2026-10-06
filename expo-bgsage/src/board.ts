@@ -125,7 +125,10 @@ export function decomposePlayerOnRollBoard(
   for (const order of orders) {
     let nodes = 0;
     const dfs = (w: number[], di: number, seq: RawMove[]): boolean => {
-      if (boardEq(w, newB) && (!best || seq.length > best.length)) {
+      // Longer sequences win. A one-die bear-off can match for either die of a
+      // non-double; the rules require the higher die when both are legal.
+      const higherSingle = best !== null && best.length === 1 && seq.length === 1 && seq[0].die > best[0].die;
+      if (boardEq(w, newB) && (!best || seq.length > best.length || higherSingle)) {
         best = seq;
         if (seq.length === order.length)
           return true;
