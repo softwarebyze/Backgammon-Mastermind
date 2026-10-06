@@ -15,6 +15,8 @@ export const GAME_PALETTE = {
   // Accents used for header icons, links, etc.
   accent: colors.primary[400],
   accentDim: colors.primary[200],
+  /** Pressed fill for quiet pills (strategy chip, turn history). */
+  pillPressedFill: 'rgba(255, 196, 153, 0.14)',
 
   // Guidance comparison arrows: the player's own path vs the engine's recommendation.
   guideMine: colors.primary[400],

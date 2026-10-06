@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.accentDim,
   },
   chipAPressed: {
-    backgroundColor: 'rgba(255, 196, 153, 0.14)',
+    backgroundColor: GAME_PALETTE.pillPressedFill,
     borderColor: GAME_PALETTE.accent,
   },
   chipALabel: {
