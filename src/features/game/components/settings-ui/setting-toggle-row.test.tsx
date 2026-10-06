@@ -5,7 +5,6 @@ import { Switch, Text } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { cleanup, screen, setup } from '@/lib/test-utils';
 
-import { FastComputerIcon } from './fast-computer-icon';
 import { SettingToggleRow } from './setting-toggle-row';
 import { SoundIcon } from './sound-icon';
 
@@ -130,37 +129,6 @@ describe('sound icon', () => {
 
     expect(UNSAFE_getByType(Feather).props).toEqual(expect.objectContaining({
       name: 'volume-x',
-      color: GAME_PALETTE.textMuted,
-    }));
-  });
-});
-
-describe('fast computer icon', () => {
-  it('uses accent when on and muted when off', () => {
-    const on = setup(
-      <SettingToggleRow
-        icon={<FastComputerIcon size={32} active />}
-        label="Fast computer"
-        value={true}
-        onChange={jest.fn()}
-      />,
-    );
-    expect(on.UNSAFE_getByType(Feather).props).toEqual(expect.objectContaining({
-      name: 'fast-forward',
-      color: GAME_PALETTE.accent,
-    }));
-    on.unmount();
-
-    const off = setup(
-      <SettingToggleRow
-        icon={<FastComputerIcon size={32} active={false} />}
-        label="Fast computer"
-        value={false}
-        onChange={jest.fn()}
-      />,
-    );
-    expect(off.UNSAFE_getByType(Feather).props).toEqual(expect.objectContaining({
-      name: 'fast-forward',
       color: GAME_PALETTE.textMuted,
     }));
   });

@@ -1,3 +1,4 @@
+import { checkerTravelDurationMs } from '@/features/game/checker-travel';
 import {
   animationKey,
   buildMoveAnimationFrame,
@@ -29,7 +30,7 @@ describe('buildMoveAnimationFrame', () => {
     expect(frame.destStackCount).toBe(destStackCount(state, 4, state.currentPlayer));
     expect(frame.player).toBe('white');
     expect(frame.fromAnchor).toBeUndefined();
-    expect(frame.durationMs).toBeUndefined();
+    expect(frame.durationMs).toBe(checkerTravelDurationMs({ from: 8, to: 4, pace: 'human' }));
   });
 
   it('keeps an optional release anchor for drag handoff', () => {

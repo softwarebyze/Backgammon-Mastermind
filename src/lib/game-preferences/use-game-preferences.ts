@@ -63,10 +63,6 @@ export function useGamePreferences() {
     updatePreferences({ soundEnabled });
   }, []);
 
-  const setFastComputer = useCallback((fastComputer: boolean) => {
-    updatePreferences({ fastComputer });
-  }, []);
-
   const setTutorMode = useCallback((tutorMode: boolean) => {
     updatePreferences({ tutorMode });
   }, []);
@@ -80,7 +76,6 @@ export function useGamePreferences() {
     setAutoRoll,
     setAutoMoveWhenForced,
     setSoundEnabled,
-    setFastComputer,
     setTutorMode,
   };
 }

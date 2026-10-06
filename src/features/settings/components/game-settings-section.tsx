@@ -24,7 +24,6 @@ export function GameSettingsSection({ showHints = false }: Props) {
     setAutoRoll,
     setAutoMoveWhenForced,
     setSoundEnabled,
-    setFastComputer,
     setTutorMode,
   } = useGamePreferences();
 
@@ -70,10 +69,6 @@ export function GameSettingsSection({ showHints = false }: Props) {
           if (value) {
             void ensureGameSfxReady();
           }
-        }}
-        onFastComputerChange={(value) => {
-          trackPreference('fast_computer', value);
-          setFastComputer(value);
         }}
         onTutorModeChange={(value) => {
           trackPreference('tutor_mode', value);

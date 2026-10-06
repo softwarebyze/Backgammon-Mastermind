@@ -66,8 +66,6 @@
       "dice_numbers": "Zahlen",
       "direction_overlay": "Richtungsanzeige",
       "direction_overlay_hint": "Hufeisen-Pfad auf dem Brett",
-      "fast_computer": "Schneller Computer",
-      "fast_computer_hint": "Kürzere Wartezeiten auf Computerrollen und -bewegungen. Sie können auch auf Skip Wait tippen.",
       "move_hints": "Zughinweise",
       "move_hints_hint": "Goldener Punkt neben Feldern, von denen du ziehen kannst",
       "point_numbers": "Feldnummern",

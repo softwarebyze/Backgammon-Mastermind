@@ -2,19 +2,20 @@ import type { GamePreferences } from './types';
 
 import { getItem, setItem } from '@/lib/storage';
 import { migrateDiceDisplayToDots } from './dice-display-migration';
-import { DEFAULT_GAME_PREFERENCES, migrateImplicitPlayDefaults } from './types';
+import { DEFAULT_GAME_PREFERENCES, migrateImplicitPlayDefaults, omitRetiredPreferences } from './types';
 
 const STORAGE_KEY = 'GAME_PREFERENCES';
 const DICE_DOTS_MIGRATION_KEY = 'GAME_PREFERENCES_DICE_DOTS_V1';
 const PLAY_DEFAULTS_MIGRATION_KEY = 'GAME_PREFERENCES_PLAY_DEFAULTS_V1';
 
 export function loadGamePreferences(): GamePreferences {
-  const stored = getItem<Partial<GamePreferences>>(STORAGE_KEY);
+  const stored = getItem<Partial<GamePreferences> & { fastComputer?: boolean }>(STORAGE_KEY);
   const diceMigrated = getItem<boolean>(DICE_DOTS_MIGRATION_KEY) === true;
   const playDefaultsMigrated = getItem<boolean>(PLAY_DEFAULTS_MIGRATION_KEY) === true;
-  const { prefs: dicePrefs, didMigrate: didDice } = migrateDiceDisplayToDots(stored, diceMigrated);
+  const { prefs: stripped, didStrip } = omitRetiredPreferences(stored);
+  const { prefs: dicePrefs, didMigrate: didDice } = migrateDiceDisplayToDots(stripped, diceMigrated);
   const { prefs, didMigrate: didPlayDefaults } = migrateImplicitPlayDefaults(dicePrefs, playDefaultsMigrated);
-  if (didDice || didPlayDefaults) {
+  if (didDice || didPlayDefaults || didStrip) {
     if (didDice)
       void setItem(DICE_DOTS_MIGRATION_KEY, true);
     if (didPlayDefaults)

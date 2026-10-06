@@ -66,8 +66,6 @@
       "dice_numbers": "数字",
       "direction_overlay": "方向指引",
       "direction_overlay_hint": "在棋盘上显示马蹄形路线",
-      "fast_computer": "快速计算机",
-      "fast_computer_hint": "更短的等待在电脑卷和移动。 您也可以跳跃等待 。",
       "move_hints": "走子提示",
       "move_hints_hint": "可移动的点位旁显示金色圆点",
       "point_numbers": "点位编号",

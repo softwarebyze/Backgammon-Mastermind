@@ -1,5 +1,5 @@
 import { migrateDiceDisplayToDots } from './dice-display-migration';
-import { DEFAULT_GAME_PREFERENCES, migrateImplicitPlayDefaults } from './types';
+import { DEFAULT_GAME_PREFERENCES, migrateImplicitPlayDefaults, omitRetiredPreferences } from './types';
 
 describe('dice display migration', () => {
   it('switches leftover numbers default to dots once', () => {
@@ -31,7 +31,7 @@ describe('dice display migration', () => {
 });
 
 describe('play defaults', () => {
-  it('ships point numbers, auto roll, auto move, and fast computer on', () => {
+  it('ships point numbers, auto roll, and auto move on', () => {
     expect(DEFAULT_GAME_PREFERENCES).toMatchObject({
       showMoveHints: false,
       showDirectionOverlay: false,
@@ -40,9 +40,9 @@ describe('play defaults', () => {
       autoRoll: true,
       autoMoveWhenForced: true,
       soundEnabled: true,
-      fastComputer: true,
       tutorMode: false,
     });
+    expect(DEFAULT_GAME_PREFERENCES).not.toHaveProperty('fastComputer');
   });
 
   it('flips a save that still has the old off defaults', () => {
@@ -50,7 +50,6 @@ describe('play defaults', () => {
       showPointNumbers: false,
       autoRoll: false,
       autoMoveWhenForced: false,
-      fastComputer: false,
       soundEnabled: false,
     }, false);
     expect(didMigrate).toBe(true);
@@ -58,18 +57,37 @@ describe('play defaults', () => {
       showPointNumbers: true,
       autoRoll: true,
       autoMoveWhenForced: true,
-      fastComputer: true,
       soundEnabled: false,
     });
   });
 
   it('leaves a later manual off alone', () => {
     const { prefs, didMigrate } = migrateImplicitPlayDefaults({
-      fastComputer: false,
       autoRoll: false,
     }, true);
     expect(didMigrate).toBe(false);
-    expect(prefs.fastComputer).toBe(false);
     expect(prefs.autoRoll).toBe(false);
+  });
+});
+
+describe('retired fast computer preference', () => {
+  it('ignores a stored fast-mode on or off', () => {
+    for (const fastComputer of [true, false]) {
+      const { prefs, didStrip } = omitRetiredPreferences({
+        fastComputer,
+        soundEnabled: false,
+        autoMoveWhenForced: true,
+      });
+      expect(didStrip).toBe(true);
+      expect(prefs).not.toHaveProperty('fastComputer');
+      expect(prefs.soundEnabled).toBe(false);
+      expect(prefs.autoMoveWhenForced).toBe(true);
+    }
+  });
+
+  it('leaves a save that never had the toggle', () => {
+    const { prefs, didStrip } = omitRetiredPreferences({ autoRoll: false });
+    expect(didStrip).toBe(false);
+    expect(prefs).toEqual({ autoRoll: false });
   });
 });

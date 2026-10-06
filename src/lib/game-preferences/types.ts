@@ -9,8 +9,6 @@ export type GamePreferences = {
   autoMoveWhenForced: boolean;
   /** Soft game one-shots (dice, hits, win). Default on; respects silent switch. */
   soundEnabled: boolean;
-  /** Shorter computer think/move delays for power users. */
-  fastComputer: boolean;
   /** Tutor mode: the Sage engine checks your turn and flags big blunders. */
   tutorMode: boolean;
 };
@@ -23,7 +21,6 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   autoRoll: true,
   autoMoveWhenForced: true,
   soundEnabled: true,
-  fastComputer: true,
   tutorMode: false,
 };
 
@@ -31,7 +28,6 @@ const IMPLICIT_OFF_KEYS = [
   'showPointNumbers',
   'autoRoll',
   'autoMoveWhenForced',
-  'fastComputer',
 ] as const;
 
 /**
@@ -54,4 +50,18 @@ export function migrateImplicitPlayDefaults(
     }
   }
   return { prefs, didMigrate };
+}
+
+/**
+ * `fastComputer` used to pick between two paces. The pace is now fixed, so a
+ * stored true or false is dropped and never applied.
+ */
+export function omitRetiredPreferences(
+  stored: (Partial<GamePreferences> & { fastComputer?: boolean }) | null,
+): { prefs: Partial<GamePreferences>; didStrip: boolean } {
+  if (!stored || !('fastComputer' in stored)) {
+    return { prefs: stored ?? {}, didStrip: false };
+  }
+  const { fastComputer: _retired, ...prefs } = stored;
+  return { prefs, didStrip: true };
 }

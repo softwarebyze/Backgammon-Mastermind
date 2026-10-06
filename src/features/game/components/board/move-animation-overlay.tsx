@@ -18,6 +18,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { getCheckerAnchor } from '@/features/game/board-point-layout';
+import { CHECKER_TRAVEL_EASE } from '@/features/game/checker-travel';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import {
   animationKey,
@@ -131,7 +132,12 @@ function CheckerSlideOverlay({ animation, dimensions }: Props) {
       1,
       {
         duration,
-        easing: Easing.out(Easing.cubic),
+        easing: Easing.bezier(
+          CHECKER_TRAVEL_EASE.x1,
+          CHECKER_TRAVEL_EASE.y1,
+          CHECKER_TRAVEL_EASE.x2,
+          CHECKER_TRAVEL_EASE.y2,
+        ),
       },
       (didFinish) => {
         if (didFinish) {
