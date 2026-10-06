@@ -2,7 +2,9 @@ import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
 import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
   withSequence,
   withTiming,
@@ -50,11 +52,18 @@ function hasRolledDice(dice: [number, number]): boolean {
 
 /** Gentle settle pulse on a new roll — no flashing random values. */
 function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
+  const reducedMotion = useReducedMotion();
   const lastKey = useRef<string | null>(null);
   const dieScale = useSharedValue(1);
 
   useEffect(() => {
     const key = diceKey(dice);
+    if (reducedMotion) {
+      cancelAnimation(dieScale);
+      dieScale.value = 1;
+      lastKey.current = key;
+      return;
+    }
     if (!hasRolledDice(dice)) {
       lastKey.current = null;
       dieScale.value = 1;
@@ -69,13 +78,13 @@ function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
       withTiming(1.08, { duration: 160 }),
       withTiming(1, { duration: 220 }),
     );
-  }, [dice, animateRoll, dieScale]);
+  }, [dice, animateRoll, dieScale, reducedMotion]);
 
   const containerStyle = useAnimatedStyle(() => ({
     transform: [{ scale: dieScale.value }],
   }));
 
-  return { containerStyle };
+  return { containerStyle, reducedMotion };
 }
 
 function DieDots({ value, dotColor, size }: { value: number; dotColor: string; size: number }) {
@@ -255,10 +264,10 @@ export function DiceDisplay({
   animateRoll = true,
   size = TRAY_DIE_SIZE,
 }: Props) {
-  const { containerStyle } = useDiceRollAnimation(dice, animateRoll);
+  const { containerStyle, reducedMotion } = useDiceRollAnimation(dice, animateRoll);
 
   return (
-    <Animated.View style={[styles.container, { minHeight: size }, containerStyle]}>
+    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, containerStyle]}>
       <DiceFaces
         dice={dice}
         remainingDice={remainingDice}
