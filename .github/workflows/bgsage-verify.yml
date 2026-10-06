@@ -129,7 +129,7 @@ jobs:
           retention-days: 14
 
   ios:
-    name: iOS — simulator compile check
+    name: iOS — release simulator smoke
     # macos-26 = Xcode 26 / Swift 6.2 (GA Feb 2026). Required: expo-modules-jsi
     # declares swift-tools-version 6.2 and uses 6.2-only compiler features.
     runs-on: macos-26
@@ -241,6 +241,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: maestro-visual-report-ios
-          path: .maestro-ios-output/**
+          path: maestro-ios-output/**
           if-no-files-found: warn
           retention-days: 14
