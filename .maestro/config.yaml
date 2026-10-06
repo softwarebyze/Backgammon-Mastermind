@@ -1,8 +1,12 @@
 flows:
   - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
+<<<<<<< HEAD
   - app/game-settings-gear.yaml
   - app/settings-no-fast-mode.yaml
+=======
+  - app/android-back-closes-settings.yaml
+>>>>>>> 66487cf (fix(android): scope game hardware back handler to screen focus)
 
 excludeTags:
   - util
