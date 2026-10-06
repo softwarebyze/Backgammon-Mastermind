@@ -1,8 +1,8 @@
-# Generates a debug APK for Maestro E2E (embedded JS bundle via debuggableVariants=[]).
-# Output: ./android-test.apk (from android/app/build/outputs/apk/debug/app-debug.apk)
+# Generates a preview Release APK for Maestro E2E (embedded JS, no Metro runtime).
+# Output: ./android-test.apk (from android/app/build/outputs/apk/release/app-release.apk)
 
 name: 'Setup JDK + GRADLE + Generate APK'
-description: Prebuild native project and assemble a debug APK for E2E
+description: Prebuild native project and assemble a preview Release APK for E2E
 inputs:
   APP_ENV:
     description: 'APP_ENV (one of): development, preview, production'
@@ -25,7 +25,7 @@ runs:
 
     - name: Prebuild native project (E2E — no expo-dev-client)
       run: |
-        # The debug APK embeds its JS bundle and runs without Metro. Leaving
+        # The Release APK embeds its JS bundle and runs without Metro. Leaving
         # expo-dev-client linked here makes its launcher cast the production
         # Expo Updates controller to UpdatesDevLauncherInterface and crash
         # before React starts, so omit the dev client from this CI-only build.
@@ -71,13 +71,6 @@ runs:
         gradle-version: wrapper
         cache-read-only: false
 
-    - name: Build debug test APK (embedded JS bundle)
-      working-directory: android
-      run: |
-        chmod +x ./gradlew
-        ./gradlew assembleDebug --no-daemon --build-cache --stacktrace
-      shell: bash
-
-    - name: Copy test APK to workspace root
-      run: cp android/app/build/outputs/apk/debug/app-debug.apk ./android-test.apk
+    - name: Build preview Release test APK (embedded JS, no Metro)
+      run: bash .github/scripts/assemble-android-test-apk.sh "$GITHUB_WORKSPACE"
       shell: bash
