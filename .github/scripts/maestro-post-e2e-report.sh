@@ -51,7 +51,7 @@ fi
 [[ -f "$REPORT_XML" ]] && cp "$REPORT_XML" "$BUNDLE_DIR/report.xml"
 [[ -f "$RECORDING" ]] && cp "$RECORDING" "$BUNDLE_DIR/e2e-recording.mp4"
 
-mapfile -t screenshots < <(find "$BUNDLE_DIR" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
+mapfile -t screenshots < <(find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
 
 URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
 # A failed publish must not reuse URLs left by an earlier run.
@@ -90,7 +90,7 @@ html_path="$BUNDLE_DIR/index.html"
   if ((${#screenshots[@]} > 0)); then
     echo '<section><h2>Screenshots</h2>'
     for img in "${screenshots[@]}"; do
-      base=$(basename "$img")
+      base=${img#"$BUNDLE_DIR"/}
       echo "<figure><img src=\"${base}\" alt=\"${base}\"/><figcaption>${base}</figcaption></figure>"
     done
     echo '</section>'
@@ -130,7 +130,7 @@ html_path="$BUNDLE_DIR/index.html"
         echo "_(${#screenshots[@]} total — remaining in artifact bundle)_"
         break
       fi
-      base=$(basename "$img")
+      base=${img#"$BUNDLE_DIR"/}
       echo "<details open><summary>${base}</summary>"
       if [[ -n "$SCREENSHOT_BASE_URL" ]]; then
         echo ""
@@ -164,7 +164,7 @@ html_path="$BUNDLE_DIR/index.html"
       echo "### Screenshots"
       echo ""
       for img in "${screenshots[@]}"; do
-        base=$(basename "$img")
+        base=${img#"$BUNDLE_DIR"/}
         echo "**${base}**"
         echo ""
         echo "![${base}](${comment_base}/${base})"
