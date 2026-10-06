@@ -10,6 +10,9 @@ it('builds and copies the Release APK without a Metro-dependent debug runtime', 
     mkdirSync(join(fixture, 'android'));
     writeFileSync(join(fixture, 'android/gradlew'), `#!/bin/sh
 [ "$1" = assembleRelease ] || exit 42
+case "$*" in *kotlin.compiler.execution.strategy=in-process*) ;; *) exit 43 ;; esac
+case "$*" in *MaxMetaspaceSize=1024m*) ;; *) exit 44 ;; esac
+case "$*" in *--max-workers=2*) ;; *) exit 45 ;; esac
 mkdir -p app/build/outputs/apk/release
 printf 'release bundle' > app/build/outputs/apk/release/app-release.apk
 `, { mode: 0o755 });
