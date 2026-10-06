@@ -1,7 +1,22 @@
+import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { GameState } from '@/lib/game';
 import { act, renderHook } from '@testing-library/react-native';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
 import { createInitialState } from '@/lib/game';
+
+const DIMS: BoardDimensions = {
+  boardWidth: 400,
+  boardHeight: 200,
+  boardFrameWidth: 4,
+  boardOuterWidth: 408,
+  boardOuterHeight: 208,
+  colWidth: 28,
+  checkerSize: 24,
+  pointHeight: 94,
+  barWidth: 28,
+  bearOffWidth: 38,
+  middleHeight: 12,
+};
 
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(() => Promise.resolve()),
@@ -67,6 +82,41 @@ describe('useBoardPlayInput drag across a turn change', () => {
     });
     expect(actions.doMove).not.toHaveBeenCalled();
     expect(actions.doMoveSequence).not.toHaveBeenCalled();
+    expect(result.current.dragFrom).toBeNull();
+  });
+
+  it('does not revive the drag when the next turn rolls the same dice', () => {
+    const state = whiteMoving();
+    const { result, rerender, actions } = setup({ state, isAnimating: false, isHumanTurn: true });
+
+    act(() => {
+      result.current.handleDragStart(24, 10, 20);
+    });
+    expect(result.current.dragFrom).toBe(24);
+
+    const computerTurn: GameState = {
+      ...state,
+      currentPlayer: 'black',
+      dice: [6, 2],
+      remainingDice: [6, 2],
+      selectedPoint: null,
+    };
+    rerender({ state: computerTurn, isAnimating: false, isHumanTurn: false });
+    expect(result.current.dragFrom).toBeNull();
+
+    // Same phase, player, and dice as the drag started with. The key string matches;
+    // the gesture must still be dead.
+    const nextTurn: GameState = { ...whiteMoving(), dice: [3, 5], remainingDice: [3, 5] };
+    rerender({ state: nextTurn, isAnimating: false, isHumanTurn: true });
+    expect(result.current.dragFrom).toBeNull();
+    actions.selectPoint.mockClear();
+    act(() => {
+      result.current.setBoardDimensions(DIMS);
+      result.current.handleDragEnd(12, 40);
+    });
+    expect(actions.doMove).not.toHaveBeenCalled();
+    expect(actions.doMoveSequence).not.toHaveBeenCalled();
+    expect(actions.selectPoint).not.toHaveBeenCalled();
     expect(result.current.dragFrom).toBeNull();
   });
 

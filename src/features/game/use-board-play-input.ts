@@ -77,12 +77,20 @@ export function useBoardPlayInput({
   /**
    * A drag belongs to one turn. Auto-move can end the turn under a held finger, and the
    * disabled pan never finalizes, so a drag stamped with an older key is dead.
+   * The key string can come back (the next turn rolls the same dice), so the gesture
+   * is dropped on the change itself and cannot match again.
    */
   const dragTurnKey = `${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}|${isHumanTurn}`;
   const dragTurnKeyRef = useRef(dragTurnKey);
-  dragTurnKeyRef.current = dragTurnKey;
   const dragRef = useRef<{ key: string; from: number } | null>(null);
   const [drag, setDrag] = useState<{ key: string; from: number } | null>(null);
+  const [dragTurnKeySeen, setDragTurnKeySeen] = useState(dragTurnKey);
+  if (dragTurnKeySeen !== dragTurnKey) {
+    setDragTurnKeySeen(dragTurnKey);
+    dragRef.current = null;
+    setDrag(null);
+  }
+  dragTurnKeyRef.current = dragTurnKey;
   const dragFrom = drag?.key === dragTurnKey ? drag.from : null;
   const liveDragFrom = useCallback(() => {
     const current = dragRef.current;
