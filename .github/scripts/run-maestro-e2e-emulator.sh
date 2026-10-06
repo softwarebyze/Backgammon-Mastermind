@@ -21,6 +21,7 @@ RECORD_PID=$!
 MAESTRO_EXIT=0
 # Preserve every release regression flow.
 maestro test \
+  "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
