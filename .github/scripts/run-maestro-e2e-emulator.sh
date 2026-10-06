@@ -27,6 +27,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
+  "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \

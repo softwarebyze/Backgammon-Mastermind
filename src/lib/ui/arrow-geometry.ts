@@ -57,8 +57,8 @@ export function buildArrowhead(
 
 /** Arrowhead sizes for the horseshoe direction overlay. */
 export const HORSESHOE_ARROW = {
-  white: { length: 9, halfWidth: 5 },
-  black: { length: 9, halfWidth: 5 },
+  white: { length: 16, halfWidth: 9 },
+  black: { length: 16, halfWidth: 9 },
 } as const;
 
 function buildHorseshoeArrowhead({
@@ -76,11 +76,17 @@ function buildHorseshoeArrowhead({
   return buildArrowhead({ x: rightX, y: topY }, { x: 1, y: 0 }, head);
 }
 
+type HorseshoeArrowheadOpts = { player?: 'white' | 'black' } & ArrowheadStyle;
+
 /** Arrowhead for the horseshoe direction overlay (path ends along outer edge, east). */
 export function horseshoeArrowhead(
   width: number,
   height: number,
-  player: 'white' | 'black' = 'white',
+  playerOrOpts: 'white' | 'black' | HorseshoeArrowheadOpts = 'white',
 ): Arrowhead {
-  return buildHorseshoeArrowhead({ width, height, player });
+  if (typeof playerOrOpts === 'string') {
+    return buildHorseshoeArrowhead({ width, height, player: playerOrOpts });
+  }
+  const { player = 'white', ...style } = playerOrOpts;
+  return buildHorseshoeArrowhead({ width, height, player, ...style });
 }
