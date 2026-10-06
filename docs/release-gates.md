@@ -2,45 +2,23 @@
 
 Process for shipping without regressions. **Do not** mirror live store status here — that lives in [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) and [Milestones](https://github.com/softwarebyze/Backgammon-Mastermind/milestones).
 
-Two tracks. **Track A first** (stores). **Track B** only after A is done, or explicitly parallelized **without** touching gameplay.
+The current release scope and progress live in [#159](https://github.com/softwarebyze/Backgammon-Mastermind/issues/159) and the [v1.1.0 milestone](https://github.com/softwarebyze/Backgammon-Mastermind/milestone/1). Treat those as the sprint plan; this document defines the promotion gates.
 
-| Track | Milestone | Meta issue |
-|-------|-----------|------------|
-| **A — Store parity** | [Store parity — Play + version sync](https://github.com/softwarebyze/Backgammon-Mastermind/milestone/2) | [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) Play upload |
-| **B — Correctness** | [v1.1.0 — Correctness & resilience](https://github.com/softwarebyze/Backgammon-Mastermind/milestone/1) | [#159](https://github.com/softwarebyze/Backgammon-Mastermind/issues/159) |
+## v1.1.0 — correctness and resilience
 
----
+The dice legality, saved-game recovery, pnpm overrides, startup, and Expo SDK 57 implementation work has landed. SDK QA closure remains tracked on [#157](https://github.com/softwarebyze/Backgammon-Mastermind/issues/157). Do not restart that historical implementation sequence.
 
-## Track A — stores first
+Complete the scoped gameplay fixes and their regression flows, Confirm move and Tutor integration, reduced motion, and native evidence. Choose the Tutor design before promoting its draft prototype to production. Analytics and other optional work should not delay mandatory correctness and accessibility gates.
 
-Metadata, screenshots, version sync, and store submit only. **No game rules, Learn, or Expo SDK changes.**
+The path is: validated PRs → integrated main QA → synchronized marketing version bump → native build → TestFlight → owner sign-off before production promotion.
 
-1. Play Console app + content rating. Fastlane screenshot upload needs GH secret `GOOGLE_SERVICE_ACCOUNT_BASE64`; EAS Android submit needs EAS secret `GOOGLE_SERVICE_ACCOUNT` (separate). Secret inventory lives on [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) — do not duplicate it here.
-2. Stage Android phone screenshots from existing marketing captures → Actions **Upload Store Screenshots** (android)
-3. Actions **EAS Production Build and Submit (Android)** — only when Play Console is ready; do not start this from a docs-only PR
-4. Keep `package.json` `"version"` and `store.config.json` `apple.version` matching the live App Store marketing version
-
-Confirm live ASC versions with `pnpm asc:status` (read-only; needs Expo / ASC key). Listing copy still ships via [`store.config.json` + `metadata:push*`](./eas-metadata.md), not ad-hoc ASC scripts.
-
----
-
-## Track B — v1.1.0 correctness
-
-Strict order (do not skip ahead):
-
-1. [#155](https://github.com/softwarebyze/Backgammon-Mastermind/issues/155) Dice max-usage + higher-die — **tests first**, then engine
-2. [#156](https://github.com/softwarebyze/Backgammon-Mastermind/issues/156) Saved-game validate/recover — **tests first**
-3. [#158](https://github.com/softwarebyze/Backgammon-Mastermind/issues/158) pnpm 10 overrides/patches reliability
-4. [#153](https://github.com/softwarebyze/Backgammon-Mastermind/pull/153) Startup/perf — rebase on `main` after 155/156, review, merge only if CI green
-5. [#157](https://github.com/softwarebyze/Backgammon-Mastermind/issues/157) Expo SDK 57 — **last**; highest blast radius
-
-Never merge Expo 57 in the same PR as rules/engine changes.
+Google Play parity stays on [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) and its separate [milestone](https://github.com/softwarebyze/Backgammon-Mastermind/milestone/2). It is not a v1.1.0 TestFlight gate. Confirm current store state before closing that tracker.
 
 ---
 
 ## Hard gates
 
-Required before promoting **1.1.0** (TestFlight or production). Track A still needs `pnpm check-all` on every PR; the rest of this list is the 1.1.0 promotion bar.
+Required before promoting **1.1.0** (TestFlight or production). Every PR needs `pnpm check-all`; the rest of this list is the 1.1.0 promotion bar.
 
 | Gate | How |
 |------|-----|
