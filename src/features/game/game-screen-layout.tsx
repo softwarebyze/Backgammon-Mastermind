@@ -44,6 +44,8 @@ type Props = {
   moveLog: MoveLogEntry[];
   isComputerTurn: boolean;
   onCancelSelection: () => void;
+  canUndo?: boolean;
+  onUndo?: () => void;
 };
 
 function GameTopChrome({
@@ -119,6 +121,8 @@ type ChromeStackProps = {
   onTopLayout: (event: LayoutChangeEvent) => void;
   onControlsLayout: (event: LayoutChangeEvent) => void;
   onCancelSelection: () => void;
+  canUndo: boolean;
+  onUndo?: () => void;
 };
 
 function GameChromeStack({
@@ -137,6 +141,8 @@ function GameChromeStack({
   onTopLayout,
   onControlsLayout,
   onCancelSelection,
+  canUndo,
+  onUndo,
 }: ChromeStackProps) {
   return (
     <>
@@ -168,6 +174,9 @@ function GameChromeStack({
           onReset={input.handleReset}
           onGoLive={review.goLive}
           onCancelSelection={onCancelSelection}
+          onConfirmMove={input.handleConfirmMove}
+          onUndoMove={onUndo}
+          canUndoMove={canUndo}
         />
       </View>
     </>
@@ -182,6 +191,8 @@ export function GameScreenLayout({
   moveLog,
   isComputerTurn,
   onCancelSelection,
+  canUndo = false,
+  onUndo,
 }: Props) {
   const {
     landscape,
@@ -227,6 +238,8 @@ export function GameScreenLayout({
       onTopLayout={onTopLayout}
       onControlsLayout={onControlsLayout}
       onCancelSelection={onCancelSelection}
+      canUndo={canUndo}
+      onUndo={onUndo}
     />
   );
 

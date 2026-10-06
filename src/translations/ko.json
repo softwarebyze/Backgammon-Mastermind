@@ -12,6 +12,8 @@
       "bear_off_a11y": "곰 륙",
       "cancel": "취소",
       "cancel_a11y": "자주 묻는 질문",
+      "confirm_move": "수 확정",
+      "confirm_move_a11y": "수를 확정하고 턴을 종료",
       "leave_game_a11y": "게임 및 반환 홈",
       "loading": "로드 중 ...",
       "new_game_message": "새 게임을 시작할까요?",
@@ -23,7 +25,8 @@
       "roll_dice": "주사위 굴리기",
       "roll_dice_a11y": "주사위 굴리기",
       "start_new_game_a11y": "새로운 게임 시작",
-      "undo_a11y": "취소 이동"
+      "undo_a11y": "취소 이동",
+      "undo_move": "실행 취소"
     },
     "hint": {
       "back_to_turn": "내 차례로 돌아가기",
@@ -61,6 +64,8 @@
       "auto_move_hint": "유일한 가능 수를 자동으로 둡니다",
       "auto_roll": "주사위 자동 굴리기",
       "auto_roll_hint": "내 차례에 자동으로 굴립니다",
+      "confirm_move": "수 확정",
+      "confirm_move_hint": "턴이 끝나기 전에 확인해 검토하거나 취소할 수 있습니다",
       "dice_display": "주사위 표시",
       "dice_dots": "점",
       "dice_numbers": "숫자",

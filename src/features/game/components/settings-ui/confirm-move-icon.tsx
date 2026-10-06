@@ -1,0 +1,20 @@
+import Feather from '@expo/vector-icons/Feather';
+import * as React from 'react';
+import { View } from 'react-native';
+
+import { GAME_PALETTE } from '@/features/game/game-palette';
+
+type Props = {
+  size?: number;
+  active?: boolean;
+};
+
+/** Check mark — confirm move setting */
+export function ConfirmMoveIcon({ size = 32, active = false }: Props) {
+  const color = active ? GAME_PALETTE.accent : GAME_PALETTE.textMuted;
+  return (
+    <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+      <Feather name="check-circle" size={size * 0.62} color={color} />
+    </View>
+  );
+}
