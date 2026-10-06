@@ -1,23 +1,18 @@
-## What does this do?
+## Summary
 
-<!---
-_Describe what your changes **do**; did you add a $COOL_FEATURE? Write about it here._
--->
+<!-- What changed, and why. Keep it short. -->
 
-## Why did you do this?
+## Validation and evidence
 
-<!---
-_**Why** did you make these changes? This is your opportunity to provide the rationale that drove the design of your solution._
--->
+- [ ] `pnpm check-all` passes
+- [ ] Regression tests cover the changed logic (bug tests fail without the fix)
+- [ ] Maestro covers the feature when reachable in the app
+- [ ] Screenshots are attached for visual changes
+- [ ] A recording demonstrates changed gestures, animations or flows
+- [ ] Keyboard and accessibility checked where applicable
+- [ ] Relevant platforms checked: iPhone, iPad, Android, web (iMessage only for extension changes)
+- [ ] Strings translated and RTL checked where applicable
 
-## Who/what does this impact?
-
-<!---
-_Does your code affect something downstream? Are there side effects people should know about? Tag any developers that should be kept abreast of this change._
--->
-
-## How did you test this?
-
-<!---
-_How did you test your change? Document it here._
--->
+<!-- For each change: Fixed/Added <thing> + screenshot/recording link.
+     Use CI's visual artifact and verify that the recording link opens.
+     Do not add files under docs/pr-evidence/. -->
