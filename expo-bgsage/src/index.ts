@@ -12,6 +12,7 @@ import { rankCubelessCandidates } from './rank-candidates';
 
 export type { SageBoardPoint, SageGameState, SageMove, SagePlayer } from './board';
 export { decomposePlayerOnRollBoard, gameStateToSageBoard, sageBoardToMoves, SageEngineError } from './board';
+export { flipSageBoard, rescoreWithLookahead } from './lookahead';
 
 // Lazily resolved so that importing this module never throws when the native
 // side isn't linked (e.g. Expo Go) — only actual engine calls fail. Callers
