@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 import Svg, { Path, Polygon } from 'react-native-svg';
 
 import { buildHorseshoePath } from '@/lib/game/horseshoe-path';
@@ -67,17 +68,20 @@ function HorseshoeLane({ width, height, player, stroke }: LaneProps) {
 /** One quiet lane for the player whose turn is currently active. */
 export function DirectionOverlay({ width, height, player }: Props) {
   return (
-    <Svg
-      width={width}
-      height={height}
-      style={{ position: 'absolute', top: 0, left: 0, zIndex: 20, pointerEvents: 'none' }}
+    <View
+      testID="direction-overlay"
+      collapsable={false}
+      pointerEvents="none"
+      style={{ position: 'absolute', top: 0, left: 0, zIndex: 20 }}
     >
-      <HorseshoeLane
-        width={width}
-        height={height}
-        player={player}
-        stroke={PLAYER_STROKE[player]}
-      />
-    </Svg>
+      <Svg width={width} height={height}>
+        <HorseshoeLane
+          width={width}
+          height={height}
+          player={player}
+          stroke={PLAYER_STROKE[player]}
+        />
+      </Svg>
+    </View>
   );
 }
