@@ -1,5 +1,6 @@
 flows:
   - app/backgammon-smoke.yaml
+  - app/settings-no-fast-mode.yaml
 
 excludeTags:
   - util
