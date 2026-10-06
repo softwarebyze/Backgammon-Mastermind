@@ -211,10 +211,13 @@ jobs:
             -destination "platform=iOS Simulator,id=$DEVICE_UDID" \
             -configuration Release \
             -derivedDataPath "$RUNNER_TEMP/bgsage-dd" \
+            ONLY_ACTIVE_ARCH=YES \
             build
         env:
           # Release embeds the JS bundle (no Metro / dev-client launcher), so
           # the Maestro step below can launch the app straight to the home screen.
+          # ONLY_ACTIVE_ARCH=YES keeps Release to the runner's arm64 slice like
+          # Debug does; the x86_64 slice fails on the engine's AVX code.
           EXPO_NO_DOTENV: '1'
           APP_ENV: preview
           EXPO_PUBLIC_APP_ENV: preview
