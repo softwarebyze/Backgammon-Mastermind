@@ -7,22 +7,31 @@ type Actions = {
   state: GameState | null;
   isReviewing: boolean;
   tutorPaused: boolean;
+  /** Confirm bar is up — Space/Enter confirm instead of rolling. */
+  canConfirm: boolean;
   canUndo: boolean;
   canRedo: boolean;
   onRoll: () => void;
+  onConfirm: () => void;
   onUndo: () => void;
   onRedo: () => void;
   onCancelSelection: () => void;
 };
 
-/** Which shortcut a keydown maps to, or null. Pure, so it's unit-testable. */
-export function shortcutFor(e: {
+type ShortcutEvent = {
   key: string;
   metaKey: boolean;
   ctrlKey: boolean;
   shiftKey: boolean;
   altKey: boolean;
-}): 'roll' | 'undo' | 'redo' | 'cancel' | null {
+  repeat?: boolean;
+};
+
+/** Which shortcut a keydown maps to, or null. Pure, so it's unit-testable. */
+export function shortcutFor(
+  e: ShortcutEvent,
+  opts?: { awaitingConfirm?: boolean },
+): 'roll' | 'confirm' | 'undo' | 'redo' | 'cancel' | null {
   if (e.altKey) {
     return null;
   }
@@ -34,7 +43,11 @@ export function shortcutFor(e: {
   if (mod) {
     return null;
   }
-  if (key === 'r' || key === ' ' || key === 'enter') {
+  // Space / Enter: confirm while the bar is up, otherwise roll.
+  if (key === ' ' || key === 'enter') {
+    return opts?.awaitingConfirm ? 'confirm' : 'roll';
+  }
+  if (key === 'r') {
     return 'roll';
   }
   if (key === 'z') {
@@ -49,24 +62,39 @@ export function shortcutFor(e: {
   return null;
 }
 
-/** Space/Enter already activate a focused button. Don't also roll. */
+/** Space/Enter already activate a focused button. Don't also roll/confirm. */
 export function rollBlockedByFocus(target: { closest?: (selector: string) => unknown } | null): boolean {
   return Boolean(target?.closest?.('button, a, [role="button"]'));
 }
 
+/** Skip when the browser already handled it, key-repeat, or a text field has focus. */
+export function shouldIgnoreShortcutKeydown(e: {
+  defaultPrevented: boolean;
+  repeat: boolean;
+  target: { tagName?: string } | null;
+}): boolean {
+  if (e.defaultPrevented || e.repeat) {
+    return true;
+  }
+  const tag = e.target?.tagName;
+  return Boolean(tag && ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag));
+}
+
 /**
- * Web only: R / Space / Enter roll, Z or ⌘Z undo, Y or ⇧⌘Z redo, Esc cancels a
- * selection. Roll only fires when the human can actually roll, so a stray key
- * never triggers a phase the buttons wouldn't allow. The listener follows screen
- * focus, so opening settings does not leave the hidden game listening.
+ * Web only: R / Space / Enter roll (Space/Enter confirm while the confirm bar
+ * is up), Z or ⌘Z undo, Y or ⇧⌘Z redo, Esc cancels a selection. Roll only
+ * fires when the human can actually roll. Ignores key repeat so holding Enter
+ * can't double-confirm. The listener follows screen focus.
  */
 export function useGameKeyboardShortcuts({
   state,
   isReviewing,
   tutorPaused,
+  canConfirm,
   canUndo,
   canRedo,
   onRoll,
+  onConfirm,
   onUndo,
   onRedo,
   onCancelSelection,
@@ -78,22 +106,28 @@ export function useGameKeyboardShortcuts({
     const humanTurn = !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
     const canRoll = humanTurn && !isReviewing && !tutorPaused
       && (state.phase === 'rolling' || state.phase === 'opening-roll');
+    const confirmReady = canConfirm && !isReviewing && !tutorPaused && humanTurn;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.defaultPrevented) {
+      if (shouldIgnoreShortcutKeydown({
+        defaultPrevented: e.defaultPrevented,
+        repeat: e.repeat,
+        target: e.target as HTMLElement | null,
+      })) {
         return;
       }
       const target = e.target as HTMLElement | null;
-      if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) {
-        return;
-      }
-      const action = shortcutFor(e);
+      const action = shortcutFor(e, { awaitingConfirm: confirmReady });
       if (!action) {
         return;
       }
-      if (action === 'roll' && rollBlockedByFocus(target)) {
+      if ((action === 'roll' || action === 'confirm') && rollBlockedByFocus(target)) {
         return;
       }
-      if (action === 'roll' && canRoll) {
+      if (action === 'confirm' && confirmReady) {
+        e.preventDefault();
+        onConfirm();
+      }
+      else if (action === 'roll' && canRoll) {
         e.preventDefault();
         onRoll();
       }
@@ -112,5 +146,17 @@ export function useGameKeyboardShortcuts({
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [state, isReviewing, tutorPaused, canUndo, canRedo, onRoll, onUndo, onRedo, onCancelSelection]));
+  }, [
+    state,
+    isReviewing,
+    tutorPaused,
+    canConfirm,
+    canUndo,
+    canRedo,
+    onRoll,
+    onConfirm,
+    onUndo,
+    onRedo,
+    onCancelSelection,
+  ]));
 }

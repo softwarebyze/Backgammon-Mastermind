@@ -25,6 +25,8 @@ import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
 import { useTutorMode } from '@/features/game/use-tutor';
+import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
@@ -51,6 +53,7 @@ function useDelayedTrue(value: boolean, delayMs: number): boolean {
 export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
+  const { preferences } = useGamePreferences();
   const input = useGameInput();
   const {
     moveAnimation,
@@ -141,13 +144,19 @@ export function GameScreen() {
     confirmLeaveGame: leaveGame,
   });
 
+  const canConfirmMove = !!input.state
+    && !review.isReviewing
+    && !tutorPaused
+    && isAwaitingMoveConfirm(input.state, preferences.confirmMove);
   useGameKeyboardShortcuts({
     state: input.state,
     isReviewing: review.isReviewing,
     tutorPaused,
+    canConfirm: canConfirmMove,
     canUndo: !review.isReviewing && canUndo,
     canRedo: !review.isReviewing && canRedo,
     onRoll: input.handleRoll,
+    onConfirm: input.handleConfirmMove,
     onUndo: doUndo,
     onRedo: doRedo,
     onCancelSelection: () => selectPoint(null),

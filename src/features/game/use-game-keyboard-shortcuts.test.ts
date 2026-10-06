@@ -1,26 +1,48 @@
-import { rollBlockedByFocus, shortcutFor } from '@/features/game/use-game-keyboard-shortcuts';
+import {
+  rollBlockedByFocus,
+  shortcutFor,
+  shouldIgnoreShortcutKeydown,
+} from '@/features/game/use-game-keyboard-shortcuts';
 
 jest.mock('expo-router', () => ({
   useFocusEffect: () => {},
 }));
 
-function key(k: string, mods: Partial<{ metaKey: boolean; ctrlKey: boolean; shiftKey: boolean; altKey: boolean }> = {}) {
+function key(
+  k: string,
+  mods: Partial<{
+    metaKey: boolean;
+    ctrlKey: boolean;
+    shiftKey: boolean;
+    altKey: boolean;
+    repeat: boolean;
+  }> = {},
+) {
   return {
     key: k,
     metaKey: false,
     ctrlKey: false,
     shiftKey: false,
     altKey: false,
+    repeat: false,
     ...mods,
   };
 }
 
 describe('game keyboard shortcuts', () => {
-  it('rolls on R, Space, and Enter', () => {
+  it('rolls on R, Space, and Enter when not awaiting confirm', () => {
     expect(shortcutFor(key('r'))).toBe('roll');
     expect(shortcutFor(key('R'))).toBe('roll');
     expect(shortcutFor(key(' '))).toBe('roll');
     expect(shortcutFor(key('Enter'))).toBe('roll');
+  });
+
+  it('maps Space and Enter to confirm while awaiting confirm, but keeps R as roll', () => {
+    expect(shortcutFor(key(' '), { awaitingConfirm: true })).toBe('confirm');
+    expect(shortcutFor(key('Enter'), { awaitingConfirm: true })).toBe('confirm');
+    expect(shortcutFor(key('r'), { awaitingConfirm: true })).toBe('roll');
+    expect(shortcutFor(key(' '), { awaitingConfirm: false })).toBe('roll');
+    expect(shortcutFor(key('Enter'), { awaitingConfirm: false })).toBe('roll');
   });
 
   it('undoes on Z / ⌘Z / Ctrl+Z and redoes on Y / ⇧⌘Z', () => {
@@ -48,5 +70,41 @@ describe('game keyboard shortcuts', () => {
     expect(rollBlockedByFocus(null)).toBe(false);
     expect(rollBlockedByFocus({ closest: () => null })).toBe(false);
     expect(rollBlockedByFocus({ closest: () => ({}) })).toBe(true);
+  });
+
+  it('ignores key repeat and already-handled events', () => {
+    expect(shouldIgnoreShortcutKeydown({
+      defaultPrevented: false,
+      repeat: true,
+      target: null,
+    })).toBe(true);
+    expect(shouldIgnoreShortcutKeydown({
+      defaultPrevented: true,
+      repeat: false,
+      target: null,
+    })).toBe(true);
+    expect(shouldIgnoreShortcutKeydown({
+      defaultPrevented: false,
+      repeat: false,
+      target: null,
+    })).toBe(false);
+  });
+
+  it('ignores keydowns while a text field is focused', () => {
+    expect(shouldIgnoreShortcutKeydown({
+      defaultPrevented: false,
+      repeat: false,
+      target: { tagName: 'INPUT' },
+    })).toBe(true);
+    expect(shouldIgnoreShortcutKeydown({
+      defaultPrevented: false,
+      repeat: false,
+      target: { tagName: 'TEXTAREA' },
+    })).toBe(true);
+    expect(shouldIgnoreShortcutKeydown({
+      defaultPrevented: false,
+      repeat: false,
+      target: { tagName: 'DIV' },
+    })).toBe(false);
   });
 });
