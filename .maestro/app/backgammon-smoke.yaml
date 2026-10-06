@@ -6,11 +6,11 @@ tags:
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: vs Computer
+    visible: Play against the computer
     timeout: 90000
 - takeScreenshot: 01-home-loaded
 - tapOn:
-    text: vs Computer
+    text: Play against the computer
 # Auto-roll is on by default, so the roll button may already be gone.
 - extendedWaitUntil:
     visible:
