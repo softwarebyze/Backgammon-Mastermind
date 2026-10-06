@@ -10,6 +10,8 @@ import {
   getPostHogPersonContext,
   isPostHogProjectToken,
 } from '@/lib/analytics/posthog-context';
+import { bindSettingsAnalytics } from '@/lib/analytics/settings-analytics';
+import { loadGamePreferences } from '@/lib/game-preferences/storage';
 
 const extra = Constants.expoConfig?.extra as {
   posthogProjectToken?: string;
@@ -96,3 +98,5 @@ void posthog.register({
   device_os_version: Device.osVersion ?? null,
   device_model: Device.modelName ?? null,
 });
+
+bindSettingsAnalytics(posthog, loadGamePreferences());
