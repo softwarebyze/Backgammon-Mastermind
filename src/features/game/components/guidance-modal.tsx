@@ -5,7 +5,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { AnimatedPathBoard } from '@/features/game/components/animated-path-board';
+import { BlunderCompactModal } from '@/features/game/components/blunder-compact-modal';
 import { BlunderMeter } from '@/features/game/components/blunder-meter';
+import { BlunderNudgeFlow } from '@/features/game/components/blunder-nudge';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import {
   blunderDetailsSummary,
@@ -20,6 +22,7 @@ import {
   updateGuidance,
   useGuidance,
 } from '@/features/game/guidance-store';
+import { getS1Variants } from '@/features/game/s1-prototype';
 import { useGame } from '@/features/game/use-game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
@@ -544,6 +547,17 @@ function useBlunderModalActions(session: GuidanceSession | null) {
 }
 
 export function GuidanceModal() {
+  const variant = getS1Variants().tutor;
+  if (variant === 'a')
+    return <BlunderNudgeFlow />;
+  if (variant === 'b')
+    return null; // inline card in the controls slot (see GameScreenControls)
+  if (variant === 'c')
+    return <BlunderCompactModal />;
+  return <GuidanceModalToday />;
+}
+
+function GuidanceModalToday() {
   const session = useGuidance();
   const game = useGame();
   const {

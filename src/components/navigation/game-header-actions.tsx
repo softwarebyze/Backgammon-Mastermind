@@ -4,6 +4,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { getS1Variants } from '@/features/game/s1-prototype';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 
@@ -91,13 +92,15 @@ export function GameHeaderActions({
         label={translate('settings.title')}
         onPress={onOptions}
       />
-      <HeaderIcon
-        name="refresh-cw"
-        label={translate('game.controls.start_new_game_a11y')}
-        testID="reset-game-button"
-        onPress={onReset}
-        dim
-      />
+      {getS1Variants().header === 'today' && (
+        <HeaderIcon
+          name="refresh-cw"
+          label={translate('game.controls.start_new_game_a11y')}
+          testID="reset-game-button"
+          onPress={onReset}
+          dim
+        />
+      )}
     </View>
   );
 }

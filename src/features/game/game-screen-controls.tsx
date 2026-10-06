@@ -1,15 +1,20 @@
+import type { S1Variants } from '@/features/game/s1-prototype';
 import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, Platform, StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
+import { BlunderInlineCard } from '@/features/game/components/blunder-inline-card';
+import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 
 import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { getS1Variants } from '@/features/game/s1-prototype';
 import { isTurnStart } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -71,19 +76,33 @@ export function GameScreenControls({
 }: Props) {
   const { preferences } = useGamePreferences();
   const guidance = useGuidance();
+  const variants = getS1Variants();
   const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
+  const blunderInline = variants.tutor === 'b' && guidance?.kind === 'blunder' && !!guidance.verdict;
   const turn = getTurnDisplay(state);
+  const awaitingConfirm = isHumanTurn && !isReviewing && !!onConfirmMove
+    && isAwaitingMoveConfirm(state, preferences.confirmMove);
   const caption = captionOverride
     ?? (isReviewing
       ? translate('game.review.viewing_hint')
-      : getActionCaption(state, turn));
+      : awaitingConfirm && variants.confirm !== 'today'
+        ? translate(variants.confirm === 'b' ? 'game.controls.confirm_caption_dice' : 'game.controls.confirm_caption')
+        : getActionCaption(state, turn));
 
   const diceForTray = isReviewing ? state : liveDiceState;
   const showOpening = opening !== null && !isReviewing;
+  // Confirm option B: the spent dice are the Confirm control.
+  const diceConfirm = awaitingConfirm && variants.confirm === 'b' && !blunderInline;
 
   return (
     <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow} pointerEvents="none">
+      <DiceTrayShell
+        asConfirm={diceConfirm}
+        onConfirm={() => {
+          hapticLight();
+          onConfirmMove?.();
+        }}
+      >
         {showOpening
           ? (
               // Opening: each side's die in its own color; the engine hands these
@@ -108,33 +127,91 @@ export function GameScreenControls({
                 size={dieSize}
               />
             )}
-      </View>
+      </DiceTrayShell>
       <View
-        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
+        style={hintCardOpen || blunderInline ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"
         testID="game-action-slot"
       >
-        <ActionControl
-          state={state}
-          isHumanTurn={isHumanTurn}
-          isComputerTurn={isComputerTurn}
-          isReviewing={isReviewing}
-          moveLogLength={moveLogLength}
-          confirmMoveEnabled={preferences.confirmMove}
-          onRoll={() => {
-            hapticLight();
-            onRoll();
-          }}
-          onReset={onReset}
-          onGoLive={onGoLive}
-          onCancelSelection={onCancelSelection}
-          onConfirmMove={onConfirmMove}
-          onUndoMove={onUndoMove}
-          canUndoMove={canUndoMove}
-        />
+        {blunderInline
+          ? <BlunderInlineCard />
+          : (
+              <ActionControl
+                state={state}
+                isHumanTurn={isHumanTurn}
+                isComputerTurn={isComputerTurn}
+                isReviewing={isReviewing}
+                moveLogLength={moveLogLength}
+                confirmMoveEnabled={preferences.confirmMove}
+                onRoll={() => {
+                  hapticLight();
+                  onRoll();
+                }}
+                onReset={onReset}
+                onGoLive={onGoLive}
+                onCancelSelection={onCancelSelection}
+                onConfirmMove={onConfirmMove}
+                onUndoMove={onUndoMove}
+                canUndoMove={canUndoMove}
+                confirmVariant={variants.confirm}
+              />
+            )}
       </View>
-      <Text style={styles.caption}>{caption}</Text>
+      {variants.banner === 'merged' && !blunderInline
+        ? <MergedCaption state={state} caption={caption} isReviewing={isReviewing} />
+        : <Text style={styles.caption}>{caption}</Text>}
     </View>
+  );
+}
+
+/**
+ * S1-I: the turn banner folded into the caption line. The checker token
+ * carries whose turn it is; the text is the action caption, or the banner
+ * headline when the caption would be blank (opponent rolling/moving).
+ */
+function MergedCaption({ state, caption, isReviewing }: { state: GameState; caption: string; isReviewing: boolean }) {
+  const turn = getTurnDisplay(state);
+  const text = caption.trim().length > 0 ? caption : turn.headline;
+  if (state.phase === 'game-over' || state.phase === 'opening-roll')
+    return <Text style={styles.caption}>{text}</Text>;
+  return (
+    <View style={styles.mergedCaption} accessibilityRole="text" accessibilityLabel={`${turn.colorLabel}. ${text}`} testID="merged-caption">
+      {!isReviewing && <CheckerToken player={turn.player} size={14} flat />}
+      <Text style={[styles.mergedCaptionText, turn.isWaiting && styles.mergedCaptionWaiting]} numberOfLines={2}>
+        {text}
+      </Text>
+    </View>
+  );
+}
+
+/**
+ * Confirm option B: the dice tray doubles as the Confirm control once the
+ * dice are spent. A gold ring + check badge marks the state; the tray keeps
+ * its place, so no new element appears.
+ */
+function DiceTrayShell({ asConfirm, onConfirm, children }: { asConfirm: boolean; onConfirm: () => void; children: React.ReactNode }) {
+  if (!asConfirm)
+    return <View style={styles.diceRow} pointerEvents="none">{children}</View>;
+  return (
+    <HoverPressable
+      accessibilityRole="button"
+      accessibilityLabel={translate('game.controls.confirm_move_a11y')}
+      testID="confirm-move-button"
+      onPress={onConfirm}
+      hitSlop={CONTROL_HIT_SLOP}
+      style={({ pressed, hovered }) => [
+        styles.diceRow,
+        styles.diceConfirm,
+        hovered && styles.primaryBtnHover,
+        pressed && styles.pressed,
+      ]}
+    >
+      <View pointerEvents="none" style={styles.diceConfirmInner}>{children}</View>
+      <View style={styles.diceConfirmBadge} pointerEvents="none">
+        <Feather name="check" size={14} color={GAME_PALETTE.controlInk} />
+      </View>
+      <Text style={styles.diceConfirmLabel} pointerEvents="none">{translate('game.controls.confirm')}</Text>
+    </HoverPressable>
   );
 }
 
@@ -153,6 +230,7 @@ function ActionControl({
   onConfirmMove,
   onUndoMove,
   canUndoMove,
+  confirmVariant,
 }: {
   state: GameState;
   isHumanTurn: boolean;
@@ -167,6 +245,7 @@ function ActionControl({
   onConfirmMove?: () => void;
   onUndoMove?: () => void;
   canUndoMove: boolean;
+  confirmVariant: S1Variants['confirm'];
 }) {
   if (isReviewing) {
     return (
@@ -246,6 +325,21 @@ function ActionControl({
     && onConfirmMove
     && isAwaitingMoveConfirm(state, confirmMoveEnabled)
   ) {
+    if (confirmVariant === 'a') {
+      return (
+        <ConfirmButtonA
+          noMove={state.phase === 'no-move'}
+          onConfirm={() => {
+            hapticLight();
+            onConfirmMove();
+          }}
+        />
+      );
+    }
+    if (confirmVariant === 'b') {
+      // The dice tray is the control (see DiceTrayShell); keep the slot quiet.
+      return <View style={styles.actionSpacer} />;
+    }
     return (
       <ConfirmMoveBar
         canUndo={canUndoMove}
@@ -300,6 +394,57 @@ function ActionControl({
   }
 
   return <View style={styles.actionSpacer} />;
+}
+
+/**
+ * Confirm option A: one gold button in the same slot and geometry as Roll
+ * Dice, so the thumb lands on the same spot every turn (roll → move →
+ * confirm). Undo stays in the header. A single soft settle-in on mount says
+ * "something changed here" without a looping pulse.
+ */
+function ConfirmButtonA({ noMove, onConfirm }: { noMove: boolean; onConfirm: () => void }) {
+  const scale = useRef(new Animated.Value(0.94)).current;
+  const ring = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.parallel([
+      Animated.spring(scale, { toValue: 1, useNativeDriver: true, speed: 18, bounciness: 9 }),
+      Animated.sequence([
+        Animated.timing(ring, { toValue: 1, duration: 120, useNativeDriver: true }),
+        Animated.timing(ring, { toValue: 0, duration: 650, useNativeDriver: true }),
+      ]),
+    ]).start();
+  }, [scale, ring]);
+  const label = noMove ? translate('game.controls.end_turn') : translate('game.controls.confirm');
+  return (
+    <Animated.View style={[styles.confirmAWrap, { transform: [{ scale }] }]} testID="confirm-move-bar">
+      <Animated.View
+        pointerEvents="none"
+        style={[styles.confirmARing, { opacity: ring, transform: [{ scale: ring.interpolate({ inputRange: [0, 1], outputRange: [1.08, 1] }) }] }]}
+      />
+      <HoverPressable
+        accessibilityRole="button"
+        accessibilityLabel={translate('game.controls.confirm_move_a11y')}
+        accessibilityHint={Platform.OS === 'web' ? translate('game.controls.confirm_key_hint') : undefined}
+        testID="confirm-move-button"
+        style={({ pressed, hovered }) => [
+          styles.primaryBtn,
+          styles.confirmA,
+          hovered && styles.primaryBtnHover,
+          pressed && styles.pressed,
+        ]}
+        onPress={onConfirm}
+        hitSlop={CONTROL_HIT_SLOP}
+      >
+        <Feather name="check" size={20} color={GAME_PALETTE.controlInk} />
+        <Text style={styles.primaryBtnText}>{label}</Text>
+        {Platform.OS === 'web' && (
+          <View style={styles.keycap} pointerEvents="none">
+            <Text style={styles.keycapText}>↵</Text>
+          </View>
+        )}
+      </HoverPressable>
+    </Animated.View>
+  );
 }
 
 function ConfirmMoveBar({
@@ -461,6 +606,94 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
     ...interFont('regular'),
+  },
+  // S1 prototypes -------------------------------------------------------
+  mergedCaption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 7,
+    marginTop: 6,
+    minHeight: 20,
+    paddingHorizontal: 8,
+  },
+  mergedCaptionText: {
+    color: GAME_PALETTE.text,
+    fontSize: 14,
+    textAlign: 'center',
+    flexShrink: 1,
+    ...interFont('medium'),
+  },
+  mergedCaptionWaiting: {
+    color: GAME_PALETTE.textMuted,
+  },
+  confirmAWrap: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  confirmARing: {
+    position: 'absolute',
+    left: '50%',
+    marginLeft: -140,
+    width: 280,
+    height: ACTION_SLOT_HEIGHT,
+    borderWidth: 2,
+    borderColor: GAME_PALETTE.controlBorder,
+    ...continuousRadius(14),
+  },
+  confirmA: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    width: '100%',
+    maxWidth: 280,
+    paddingHorizontal: 24,
+  },
+  keycap: {
+    position: 'absolute',
+    right: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(30, 12, 2, 0.35)',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 5,
+  },
+  keycapText: {
+    color: GAME_PALETTE.controlInk,
+    opacity: 0.75,
+    fontSize: 11,
+    ...interFont('semibold'),
+  },
+  diceConfirm: {
+    alignSelf: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    backgroundColor: GAME_PALETTE.control,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.controlBorder,
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+    gap: 10,
+    ...continuousRadius(14),
+  },
+  diceConfirmInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    opacity: 0.9,
+  },
+  diceConfirmBadge: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: 'rgba(30, 12, 2, 0.14)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  diceConfirmLabel: {
+    color: GAME_PALETTE.controlInk,
+    fontSize: 16,
+    ...interFont('semibold'),
   },
   confirmRow: {
     flexDirection: 'row',
