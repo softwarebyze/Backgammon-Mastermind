@@ -27,6 +27,11 @@ type ShortcutEvent = {
   repeat?: boolean;
 };
 
+type FocusTarget = {
+  closest?: (selector: string) => unknown;
+  tagName?: string;
+} | null;
+
 /** Which shortcut a keydown maps to, or null. Pure, so it's unit-testable. */
 export function shortcutFor(
   e: ShortcutEvent,
@@ -62,9 +67,23 @@ export function shortcutFor(
   return null;
 }
 
-/** Space/Enter already activate a focused button. Don't also roll/confirm. */
-export function rollBlockedByFocus(target: { closest?: (selector: string) => unknown } | null): boolean {
+/** Space/Enter already activate a focused button. Don't also roll. */
+export function rollBlockedByFocus(target: FocusTarget): boolean {
   return Boolean(target?.closest?.('button, a, [role="button"]'));
+}
+
+/**
+ * While the Confirm bar is up, Space/Enter should confirm even if a board
+ * point (also a button) still has focus after tapping. Only skip when the
+ * Confirm or Undo control itself is focused — those already handle the key,
+ * and firing the shortcut too would double-activate.
+ */
+export function confirmBlockedByFocus(target: FocusTarget): boolean {
+  return Boolean(
+    target?.closest?.(
+      '[data-testid="confirm-move-button"], [data-testid="undo-move-button"]',
+    ),
+  );
 }
 
 /** Skip when the browser already handled it, key-repeat, or a text field has focus. */
@@ -120,7 +139,10 @@ export function useGameKeyboardShortcuts({
       if (!action) {
         return;
       }
-      if ((action === 'roll' || action === 'confirm') && rollBlockedByFocus(target)) {
+      if (action === 'roll' && rollBlockedByFocus(target)) {
+        return;
+      }
+      if (action === 'confirm' && confirmBlockedByFocus(target)) {
         return;
       }
       if (action === 'confirm' && confirmReady) {

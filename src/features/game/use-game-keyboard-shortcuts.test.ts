@@ -1,4 +1,5 @@
 import {
+  confirmBlockedByFocus,
   rollBlockedByFocus,
   shortcutFor,
   shouldIgnoreShortcutKeydown,
@@ -26,6 +27,34 @@ function key(
     altKey: false,
     repeat: false,
     ...mods,
+  };
+}
+
+/** Mimic a board point: matches generic button selectors, not Confirm/Undo. */
+function boardPointTarget() {
+  return {
+    closest: (selector: string) => {
+      if (selector === 'button, a, [role="button"]') {
+        return {};
+      }
+      return null;
+    },
+  };
+}
+
+/** Mimic Confirm or Undo: matches the confirm-bar button selector. */
+function confirmBarButtonTarget(which: 'confirm' | 'undo') {
+  const id = which === 'confirm' ? 'confirm-move-button' : 'undo-move-button';
+  return {
+    closest: (selector: string) => {
+      if (selector.includes(`[data-testid="${id}"]`)) {
+        return {};
+      }
+      if (selector === 'button, a, [role="button"]') {
+        return {};
+      }
+      return null;
+    },
   };
 }
 
@@ -66,10 +95,30 @@ describe('game keyboard shortcuts', () => {
     expect(shortcutFor(key('z', { metaKey: true, shiftKey: true, altKey: true }))).toBeNull();
   });
 
-  it('does not steal Space or Enter from a focused button', () => {
+  it('does not steal Space or Enter from a focused button when rolling', () => {
     expect(rollBlockedByFocus(null)).toBe(false);
     expect(rollBlockedByFocus({ closest: () => null })).toBe(false);
     expect(rollBlockedByFocus({ closest: () => ({}) })).toBe(true);
+  });
+
+  it('allows Enter confirm when a board point is focused with the bar up', () => {
+    const point = boardPointTarget();
+    expect(shortcutFor(key('Enter'), { awaitingConfirm: true })).toBe('confirm');
+    expect(confirmBlockedByFocus(point)).toBe(false);
+    // Roll would still be blocked — points are buttons — but confirm is not.
+    expect(rollBlockedByFocus(point)).toBe(true);
+  });
+
+  it('allows Space confirm when a board point is focused with the bar up', () => {
+    const point = boardPointTarget();
+    expect(shortcutFor(key(' '), { awaitingConfirm: true })).toBe('confirm');
+    expect(confirmBlockedByFocus(point)).toBe(false);
+  });
+
+  it('does not double-fire when Confirm or Undo is focused', () => {
+    expect(confirmBlockedByFocus(confirmBarButtonTarget('confirm'))).toBe(true);
+    expect(confirmBlockedByFocus(confirmBarButtonTarget('undo'))).toBe(true);
+    expect(confirmBlockedByFocus(null)).toBe(false);
   });
 
   it('ignores key repeat and already-handled events', () => {
