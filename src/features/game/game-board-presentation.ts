@@ -10,11 +10,18 @@ type ReviewSlice = {
   pathSegments: PathSegment[];
 };
 
+type LivePathOverlays = {
+  historyPath: HistoryPathOverlay | null;
+  /** Confirm-hold turn arrows; ignored while reviewing or undo/redo path is up. */
+  confirmHoldSegments?: PathSegment[];
+};
+
 export function deriveGameBoardPresentation(
   review: ReviewSlice,
   moveAnimation: MoveAnimationFrame | null,
-  historyPath: HistoryPathOverlay | null,
+  livePaths: LivePathOverlays,
 ) {
+  const { historyPath, confirmHoldSegments = [] } = livePaths;
   const boardState = review.displayState;
   const boardAnimation = review.isReviewing ? review.reviewAnimation : moveAnimation;
   const interactionEnabled = !review.isReviewing;
@@ -26,10 +33,14 @@ export function deriveGameBoardPresentation(
   }
   else if (historyPath) {
     // Keep arrow after the checker lands, then soft-fade (see undo/redo hold).
+    // Wins over confirm-hold arrows so undo/redo doesn't double-draw a path.
     pathSegments = [{ entry: historyPath.entry, beforeState: historyPath.beforeState, active: true }];
     if (!boardAnimation) {
       pathFadeOutMs = 650;
     }
+  }
+  else if (confirmHoldSegments.length > 0) {
+    pathSegments = confirmHoldSegments;
   }
 
   return {

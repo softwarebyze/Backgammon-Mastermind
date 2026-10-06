@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
+import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
@@ -180,6 +181,16 @@ export function GameScreen() {
     return unsubscribe;
   }, [navigation, leaveGame, allowLeaveRef]);
 
+  const confirmHoldSegments = useMemo(
+    () => confirmHoldPathSegments({
+      awaitingConfirm: canConfirmMove,
+      replayBaseline,
+      moveLog,
+      currentPlayer: input.state?.currentPlayer,
+    }),
+    [canConfirmMove, replayBaseline, moveLog, input.state?.currentPlayer],
+  );
+
   if (!input.state || !review.displayState) {
     return (
       <View style={[styles.root, styles.center]}>
@@ -189,7 +200,10 @@ export function GameScreen() {
     );
   }
 
-  const board = deriveGameBoardPresentation(review, moveAnimation, historyPath);
+  const board = deriveGameBoardPresentation(review, moveAnimation, {
+    historyPath,
+    confirmHoldSegments,
+  });
   const state = board.boardState!;
   const isComputerTurn = state.mode === 'vs-computer' && state.currentPlayer === 'black';
   // Pause interaction while the blunder prompt is open or a verdict is pending.
