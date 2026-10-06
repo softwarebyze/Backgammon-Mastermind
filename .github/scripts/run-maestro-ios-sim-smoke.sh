@@ -10,6 +10,10 @@ APP_PATH="${2:?simulator .app path required}"
 APP_ID="${3:-com.backgammonmastermind.preview}"
 OUT_ROOT="${WORKSPACE}/maestro-ios-output"
 
+# Cold iOS CI simulators can take longer than Maestro's 120-second default
+# to start XCTest. Keep this separate from app assertion timeouts.
+export MAESTRO_DRIVER_STARTUP_TIMEOUT="${MAESTRO_DRIVER_STARTUP_TIMEOUT:-300000}"
+
 mkdir -p "$OUT_ROOT"
 
 # Newest available simulator whose name contains $1 ("iPhone" / "iPad").
