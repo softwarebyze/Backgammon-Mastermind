@@ -17,10 +17,14 @@ describe('stackEscapeHeaderOptionsFor', () => {
     expect(options.headerLeft).toBeUndefined();
   });
 
-  it('uses a regular headerLeft on native, not the system back control', () => {
-    const options = stackEscapeHeaderOptionsFor('ios');
-    expect(options.headerBackVisible).toBe(false);
-    expect(typeof options.headerLeft).toBe('function');
-    expect(options.header).toBeUndefined();
+  it('omits a header chevron on native mobile', () => {
+    for (const os of ['ios', 'android'] as const) {
+      const options = stackEscapeHeaderOptionsFor(os);
+      expect(options.headerBackVisible).toBe(false);
+      expect(options.header).toBeUndefined();
+      const headerLeft = options.headerLeft as unknown as () => unknown;
+      expect(typeof headerLeft).toBe('function');
+      expect(headerLeft()).toBeNull();
+    }
   });
 });

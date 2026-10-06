@@ -90,6 +90,7 @@ export function GameHeaderActions({
       <HeaderIcon
         name="sliders"
         label={translate('settings.title')}
+        testID="game-header-options"
         onPress={onOptions}
       />
       {getS1Variants().header === 'today' && (

@@ -17,6 +17,18 @@ tags:
       id: point-1
     timeout: 45000
 - takeScreenshot: 02-game-board
+- tapOn:
+    id: game-header-options
+- extendedWaitUntil:
+    visible: Game
+    timeout: 15000
+- assertNotVisible:
+    id: stack-escape-button
+- back
+- extendedWaitUntil:
+    visible:
+      id: strategy-line
+    timeout: 15000
 - assertVisible:
     id: strategy-line
 # Opening roll + ties + confirm-move (on by default): tap roll / confirm when shown

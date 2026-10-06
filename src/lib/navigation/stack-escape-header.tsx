@@ -2,7 +2,6 @@ import type { NativeStackNavigationOptions } from 'expo-router';
 import { Platform } from 'react-native';
 
 import { AlwaysOnEscapeHeader } from '@/components/navigation/always-on-escape-header';
-import { StackEscapeButton } from '@/components/navigation/stack-escape-button';
 
 type EscapeHeaderOptions = Pick<
   NativeStackNavigationOptions,
@@ -12,8 +11,8 @@ type EscapeHeaderOptions = Pick<
 /**
  * Leading chevron that native-stack will not drop when the stack is empty
  * (refresh on /settings, /learn, …). Web uses a JS header so the back slot
- * is not gated on `canGoBack`. Native uses headerLeft with headerBackVisible
- * false so it is a regular left item, not the system back button.
+ * is not gated on `canGoBack`. Native mobile omits a header chevron and relies
+ * on platform back (Android hardware back, iOS edge swipe where enabled).
  */
 export function stackEscapeHeaderOptionsFor(os: typeof Platform.OS): EscapeHeaderOptions {
   if (os === 'web') {
@@ -22,9 +21,10 @@ export function stackEscapeHeaderOptionsFor(os: typeof Platform.OS): EscapeHeade
       header: props => <AlwaysOnEscapeHeader {...props} />,
     };
   }
+  // iOS/Android: no custom back chevron — use the system back gesture / hardware back.
   return {
     headerBackVisible: false,
-    headerLeft: () => <StackEscapeButton />,
+    headerLeft: () => null,
   };
 }
 

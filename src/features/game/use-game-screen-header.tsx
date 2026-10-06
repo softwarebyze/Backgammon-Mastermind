@@ -1,5 +1,6 @@
 import type { GameState } from '@/lib/game';
 import { useLayoutEffect } from 'react';
+import { Platform } from 'react-native';
 
 import { GameHeaderActions } from '@/components/navigation/game-header-actions';
 import { GameHomeButton } from '@/components/navigation/game-home-button';
@@ -38,7 +39,10 @@ export function useGameScreenHeader({
     navigation.setOptions({
       title: '',
       headerBackVisible: false,
-      headerLeft: () => <GameHomeButton onPress={confirmLeaveGame} />,
+      // Android leave is the hardware back button; avoid a duplicate header glyph.
+      headerLeft: Platform.OS === 'android'
+        ? () => null
+        : () => <GameHomeButton onPress={confirmLeaveGame} />,
       headerRight: () => (
         <GameHeaderActions
           canUndo={canUndo}
