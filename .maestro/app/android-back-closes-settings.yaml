@@ -15,13 +15,14 @@ tags:
     visible:
       id: point-1
     timeout: 45000
+- takeScreenshot: settings-back-01-game-board
 - tapOn:
     id: game-settings-button
 - extendedWaitUntil:
     visible:
       id: stack-escape-button
     timeout: 10000
-- takeScreenshot: 01-settings-open-from-game
+- takeScreenshot: settings-back-02-settings-open
 - pressKey: back
 - extendedWaitUntil:
     visible:
@@ -30,4 +31,4 @@ tags:
 - assertVisible:
     id: point-1
 - assertNotVisible: vs Computer
-- takeScreenshot: 02-back-returned-to-game
+- takeScreenshot: settings-back-03-back-to-game

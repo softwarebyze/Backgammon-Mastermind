@@ -19,10 +19,12 @@ adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
-maestro test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+maestro test \
+  "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
+  "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
