@@ -1,23 +1,11 @@
-## What does this do?
+## Summary
 
-<!---
-_Describe what your changes **do**; did you add a $COOL_FEATURE? Write about it here._
--->
+<!-- What changed, and why. Keep it short. -->
 
-## Why did you do this?
+## Checklist
 
-<!---
-_**Why** did you make these changes? This is your opportunity to provide the rationale that drove the design of your solution._
--->
-
-## Who/what does this impact?
-
-<!---
-_Does your code affect something downstream? Are there side effects people should know about? Tag any developers that should be kept abreast of this change._
--->
-
-## How did you test this?
-
-<!---
-_How did you test your change? Document it here._
--->
+- [ ] Keyboard support (where it applies)
+- [ ] Accessibility (labels, roles, contrast, screen reader)
+- [ ] Tested on all platforms: iPhone, iPad, Android, web, iMessage extension
+- [ ] i18n: strings translated, checked in RTL
+- [ ] Tests are useful and run
