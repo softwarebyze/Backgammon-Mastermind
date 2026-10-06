@@ -5,7 +5,7 @@ import { Platform, StyleSheet, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 
 type Props = {
   canUndo?: boolean;
@@ -72,16 +72,17 @@ export function GameHeaderActions({
   onOptions,
   onReset,
 }: Props) {
+  const rtl = useLayoutIsRTL();
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: GAP }}>
       <HeaderIcon
-        name="corner-up-left"
+        name={rtl ? 'corner-up-right' : 'corner-up-left'}
         label={translate('game.controls.undo_a11y')}
         disabled={!canUndo || !onUndo}
         onPress={() => onUndo?.()}
       />
       <HeaderIcon
-        name="corner-up-right"
+        name={rtl ? 'corner-up-left' : 'corner-up-right'}
         label={translate('game.controls.redo_a11y')}
         disabled={!canRedo || !onRedo}
         onPress={() => onRedo?.()}

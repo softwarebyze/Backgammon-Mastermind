@@ -23,6 +23,7 @@ MAESTRO_EXIT=0
 maestro test \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
+  "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
