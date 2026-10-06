@@ -21,9 +21,11 @@ tags:
       id: point-1
     timeout: 45000
 - takeScreenshot: 02-after-load
-# Forced entry consumes the turn; white does not win this turn.
-# Assert the game is still interactive (Roll / status) and not frozen mid-move.
+# The entered checker must have actually traversed to point 22.
+# Initial White/Your turn labels cannot satisfy this assertion.
 - extendedWaitUntil:
-    visible: '.*(Roll|Black|White|Your turn|Computer).*'
+    visible: 'Point 22, 1 white checker'
     timeout: 15000
+- assertVisible: 'Point 1, 1 white checker'
+- assertNotVisible: '.*You Win!.*'
 - takeScreenshot: 03-after-auto-move

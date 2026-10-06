@@ -72,6 +72,20 @@ export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
       bar: { white: 1 },
       borneOff: { white: 13, black: 0 },
       dice: [2, 1],
+      mode: 'vs-human',
+    },
+  },
+  {
+    id: 'bear-off-last-checker-6-5',
+    label: 'Bear-off last checker, 6–5',
+    description: 'One white checker on the 1 point; auto-move should bear it off.',
+    options: {
+      placements: [
+        { point: 1, player: 'white', count: 1 },
+        { point: 24, player: 'black', count: 2 },
+      ],
+      borneOff: { white: 14, black: 13 },
+      dice: [6, 5],
       mode: 'vs-computer',
     },
   },

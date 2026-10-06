@@ -1,5 +1,7 @@
 flows:
   - app/backgammon-smoke.yaml
+  - app/auto-move-bear-off-bar.yaml
+  - app/auto-move-bear-off.yaml
 
 excludeTags:
   - util

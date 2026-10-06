@@ -20,6 +20,8 @@ RECORD_PID=$!
 
 MAESTRO_EXIT=0
 maestro test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+  "${WORKSPACE}/.maestro/app/auto-move-bear-off-bar.yaml" \
+  "${WORKSPACE}/.maestro/app/auto-move-bear-off.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
