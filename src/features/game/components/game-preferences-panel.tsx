@@ -5,7 +5,6 @@ import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-i
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
 import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
-import { FastComputerIcon } from '@/features/game/components/settings-ui/fast-computer-icon';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
 import { PointNumbersIcon } from '@/features/game/components/settings-ui/point-numbers-icon';
@@ -26,7 +25,6 @@ type Props = {
   onAutoRollChange: (value: boolean) => void;
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
-  onFastComputerChange: (value: boolean) => void;
   onTutorModeChange: (value: boolean) => void;
   onConfirmMoveChange: (value: boolean) => void;
   showHints?: boolean;
@@ -41,7 +39,6 @@ export function GamePreferencesPanel({
   onAutoRollChange,
   onAutoMoveWhenForcedChange,
   onSoundEnabledChange,
-  onFastComputerChange,
   onTutorModeChange,
   onConfirmMoveChange,
   showHints = false,
@@ -116,15 +113,6 @@ export function GamePreferencesPanel({
           value={preferences.soundEnabled}
           onChange={onSoundEnabledChange}
           testID="setting-toggle-sound"
-        />
-        <View style={styles.divider} />
-        <SettingToggleRow
-          icon={<FastComputerIcon size={32} active={preferences.fastComputer} />}
-          label={translate('game.preferences.fast_computer')}
-          hint={showHints ? translate('game.preferences.fast_computer_hint') : undefined}
-          value={preferences.fastComputer}
-          onChange={onFastComputerChange}
-          testID="setting-toggle-fast-computer"
         />
       </View>
 

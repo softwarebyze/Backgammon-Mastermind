@@ -1,43 +1,42 @@
 import {
-  COMPUTER_CHECKER_MOVE_DURATION_MS,
-  computerCheckerMoveDurationMs,
+  computerAnticipationMs,
   computerMoveDelayMs,
   computerThinkDelayMs,
-  FAST_COMPUTER_CHECKER_MOVE_DURATION_MS,
-  FAST_COMPUTER_MOVE_DELAY_MS,
-  FAST_OPENING_FIRST_MOVE_GRACE_MS,
   OPENING_REVEAL_MS,
 } from './computer-pace';
 
 describe('computer pace', () => {
-  it('gives the human time to see a normal computer roll', () => {
-    expect(computerThinkDelayMs('rolling', false)).toBeGreaterThanOrEqual(1200);
+  it('lets the dice be read without the old slow-mode stare', () => {
+    const roll = computerThinkDelayMs('rolling');
+    expect(roll).toBeGreaterThan(350);
+    expect(roll).toBeLessThan(800);
   });
 
-  it('gives the human a moving beat before the first checker slides', () => {
-    expect(computerThinkDelayMs('moving', false)).toBeGreaterThanOrEqual(500);
-    expect(computerThinkDelayMs('moving', true)).toBeLessThan(computerThinkDelayMs('moving', false));
+  it('uses a short banner beat, shorter than the old fast-mode think', () => {
+    expect(computerThinkDelayMs('moving')).toBeLessThan(140);
+    expect(computerThinkDelayMs('moving')).toBeGreaterThan(0);
   });
 
-  it('slides computer checkers slower than a skipped wait would imply', () => {
-    expect(computerCheckerMoveDurationMs(false)).toBe(COMPUTER_CHECKER_MOVE_DURATION_MS);
-    expect(computerCheckerMoveDurationMs(true)).toBe(FAST_COMPUTER_CHECKER_MOVE_DURATION_MS);
-    expect(computerCheckerMoveDurationMs(false)).toBeGreaterThan(computerCheckerMoveDurationMs(true));
-  });
-
-  it('shortens delays when fast computer is on', () => {
-    expect(computerThinkDelayMs('rolling', true)).toBeLessThan(computerThinkDelayMs('rolling', false));
-    expect(computerMoveDelayMs(3, true)).toBe(FAST_COMPUTER_MOVE_DELAY_MS);
+  it('keeps the gap between computer checkers shorter than the old fast-mode gap plus think', () => {
+    // Old fast mode stacked 140ms think + 180ms gap = 320ms of dead time.
+    expect(computerAnticipationMs(3)).toBeLessThan(320);
+    expect(computerMoveDelayMs(3)).toBeLessThan(180);
   });
 
   it('never moves the computer\'s first checker while the opening reveal is on screen', () => {
-    expect(computerMoveDelayMs(0, false)).toBeGreaterThan(OPENING_REVEAL_MS);
-    expect(computerMoveDelayMs(0, true)).toBe(FAST_OPENING_FIRST_MOVE_GRACE_MS);
-    expect(FAST_OPENING_FIRST_MOVE_GRACE_MS).toBeGreaterThan(OPENING_REVEAL_MS);
+    expect(computerMoveDelayMs(0)).toBeGreaterThan(OPENING_REVEAL_MS);
+    // Old slow mode added 400ms after the reveal. Stay close to the reveal.
+    expect(computerMoveDelayMs(0) - OPENING_REVEAL_MS).toBeLessThan(200);
   });
 
   it('rolls the computer\'s opening die quickly so both dice land together', () => {
-    expect(computerThinkDelayMs('opening-roll', false)).toBeLessThan(computerThinkDelayMs('rolling', false));
-    expect(computerThinkDelayMs('opening-roll', false)).toBeLessThan(600);
+    expect(computerThinkDelayMs('opening-roll')).toBeLessThan(computerThinkDelayMs('rolling'));
+    expect(computerThinkDelayMs('opening-roll')).toBeLessThan(600);
+  });
+
+  it('gives a no-move beat that can be read and is not the old 1600ms wait', () => {
+    const noMove = computerThinkDelayMs('no-move');
+    expect(noMove).toBeGreaterThan(400);
+    expect(noMove).toBeLessThan(1000);
   });
 });
