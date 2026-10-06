@@ -3,6 +3,7 @@ flows:
   - app/android-back-closes-settings.yaml
   - app/undo-redo.yaml
   - app/settings-no-fast-mode.yaml
+  - app/game-settings-gear.yaml
 
 excludeTags:
   - util

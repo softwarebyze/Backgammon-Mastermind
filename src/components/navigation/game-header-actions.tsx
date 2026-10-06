@@ -89,7 +89,7 @@ export function GameHeaderActions({
         onPress={() => onRedo?.()}
       />
       <HeaderIcon
-        name="sliders"
+        name="settings"
         label={translate('settings.title')}
         testID="game-settings-button"
         onPress={onOptions}

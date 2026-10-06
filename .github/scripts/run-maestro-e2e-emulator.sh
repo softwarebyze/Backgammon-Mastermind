@@ -26,6 +26,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
+  "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
