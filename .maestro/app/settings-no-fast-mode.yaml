@@ -12,8 +12,12 @@ tags:
 - tapOn:
     id: open-settings-button
 - extendedWaitUntil:
-    visible: Game sounds
+    visible: Move hints
     timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Dice display
+    direction: DOWN
 - assertNotVisible: Fast computer
 - assertVisible: Auto-roll dice
 - assertVisible: Auto-move when forced
