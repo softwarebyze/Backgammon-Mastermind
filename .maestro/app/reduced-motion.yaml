@@ -14,9 +14,10 @@ tags:
     visible:
       id: developer-json-input
     timeout: 60000
-- tapOn:
+- longPressOn:
     id: developer-json-input
-- eraseText: 2000
+- tapOn: (?i)select all
+- eraseText: 1
 - inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
 - hideKeyboard
 - tapOn:
