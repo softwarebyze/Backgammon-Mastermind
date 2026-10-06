@@ -71,8 +71,6 @@
       "dice_numbers": "숫자",
       "direction_overlay": "진행 방향 표시",
       "direction_overlay_hint": "보드 위 말굽 모양 경로",
-      "fast_computer": "빠른 컴퓨터",
-      "fast_computer_hint": "Shorter는 컴퓨터 롤과 움직임을 기다립니다. 당신은 또한 Skip 대기를 탭 할 수 있습니다.",
       "move_hints": "이동 힌트",
       "move_hints_hint": "이동 가능한 포인트 옆에 금색 점 표시",
       "point_numbers": "포인트 번호",

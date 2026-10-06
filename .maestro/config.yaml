@@ -2,6 +2,7 @@ flows:
   - app/backgammon-smoke.yaml
   - app/android-back-closes-settings.yaml
   - app/undo-redo.yaml
+  - app/settings-no-fast-mode.yaml
 
 excludeTags:
   - util

@@ -1,11 +1,17 @@
 import type { PointAnchor } from '@/features/game/board-point-layout';
+import type { MovePace } from '@/features/game/checker-travel';
 import type { BoardPoint, GameState, Move, Player } from '@/lib/game/types';
 import { bearOffTokenSize } from '@/features/game/bear-off-layout';
+import { checkerTravelDurationMs } from '@/features/game/checker-travel';
 import { opponent } from '@/lib/game';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
-/** Duration of the checker slide animation. */
-export const CHECKER_MOVE_DURATION_MS = 360;
+/**
+ * Fallback slide length when a frame has no duration. Real slides use
+ * `checkerTravelDurationMs` (distance-based). This stays at the long end so a
+ * missing duration cannot commit the move before a computer slide finishes.
+ */
+export const CHECKER_MOVE_DURATION_MS = 620;
 
 export type CheckerSlide = {
   from: number;
@@ -93,7 +99,9 @@ function buildCaptureSlide(snapshot: GameState, move: Move): CheckerSlide | unde
 export type BuildMoveAnimationOpts = {
   onFinish: () => void;
   fromAnchor?: PointAnchor;
+  /** Explicit length. Review scrubbing sets this; otherwise travel is paced by distance. */
   durationMs?: number;
+  pace?: MovePace;
 };
 
 export function buildMoveAnimationFrame(
@@ -112,7 +120,11 @@ export function buildMoveAnimationFrame(
     destStackCount: destStackCount(snapshot, move.to, snapshot.currentPlayer),
     capture: buildCaptureSlide(snapshot, move),
     fromAnchor: opts.fromAnchor,
-    durationMs: opts.durationMs,
+    durationMs: opts.durationMs ?? checkerTravelDurationMs({
+      from: move.from,
+      to: move.to,
+      pace: opts.pace,
+    }),
     onFinish: opts.onFinish,
   };
 }

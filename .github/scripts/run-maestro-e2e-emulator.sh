@@ -25,6 +25,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
+  "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \

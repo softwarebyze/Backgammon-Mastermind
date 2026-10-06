@@ -10,6 +10,8 @@ export type PlayMoveOpts = {
   fromAnchor?: PointAnchor;
   onComplete?: (next: GameState) => void;
   durationMs?: number;
+  /** Computer slides are paced slower than a human tap. Default is human. */
+  pace?: 'human' | 'computer';
 };
 
 export function createPlayMove(opts: {
@@ -78,6 +80,7 @@ export function createPlayMove(opts: {
       onFinish: settle,
       fromAnchor: playOpts?.fromAnchor,
       durationMs: playOpts?.durationMs,
+      pace: playOpts?.pace,
     }));
   };
 }

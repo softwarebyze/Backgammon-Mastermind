@@ -9,6 +9,7 @@ import { translate } from '@/lib/i18n';
 export function SettingsHeaderButton() {
   return (
     <HeaderButton
+      testID="open-settings-button"
       accessibilityLabel={translate('settings.title')}
       onPress={() => {
         hapticLight();

@@ -1,0 +1,20 @@
+appId: ${APP_ID}
+tags:
+  - smoke
+  - pull-request
+---
+# Fast computer was a settings toggle. Pace is now one default, so the row is gone.
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn:
+    id: open-settings-button
+- extendedWaitUntil:
+    visible: Game sounds
+    timeout: 20000
+- assertNotVisible: Fast computer
+- assertVisible: Auto-roll dice
+- assertVisible: Auto-move when forced
+- takeScreenshot: settings-no-fast-mode
