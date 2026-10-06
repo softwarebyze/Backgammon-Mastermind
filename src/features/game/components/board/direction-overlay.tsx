@@ -33,14 +33,14 @@ function HorseshoeLane({ width, height, player, stroke }: LaneProps) {
   const d = buildHorseshoePath(width, height, player);
   const head = horseshoeArrowhead(width, height, player);
   const trimmed = pathToArrowBase(d, head.lineEnd);
-  const strokeWidth = 2.2;
+  const strokeWidth = 3.8;
 
   return (
     <>
       <Path
         d={trimmed}
         stroke={HALO}
-        strokeWidth={strokeWidth + 1.4}
+        strokeWidth={strokeWidth + 2.4}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -57,7 +57,7 @@ function HorseshoeLane({ width, height, player, stroke }: LaneProps) {
         points={head.polygonPoints}
         fill={stroke}
         stroke={HALO}
-        strokeWidth={0.8}
+        strokeWidth={1.4}
         strokeLinejoin="round"
       />
     </>
