@@ -89,10 +89,11 @@ describe('parsePositionJson', () => {
 });
 
 describe('position loader presets', () => {
-  it('exposes the two #155 bar 1–2 audit boards', () => {
+  it('exposes the #155 bar 1–2 audit boards and the E2E undo/redo board', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
+      'e2e-undo-redo-3-1',
     ]);
   });
 
@@ -101,6 +102,12 @@ describe('position loader presets', () => {
     expect(state.phase).toBe('moving');
     expect(state.mode).toBe('vs-human');
     expect(barDestinations(state)).toEqual([23]);
+  });
+
+  it('the E2E undo/redo board deals a fixed 3–1 with the 8→5 move the Maestro flow plays', () => {
+    const state = loadPositionPreset(preset('e2e-undo-redo-3-1'));
+    expect(state).toMatchObject({ phase: 'moving', mode: 'vs-human', currentPlayer: 'white', dice: [3, 1] });
+    expect(getLegalMoves(state).some(m => m.from === 8 && m.to === 5)).toBe(true);
   });
 
   it('#155 higher-die: only bar→23 when neither leftover die plays', () => {
