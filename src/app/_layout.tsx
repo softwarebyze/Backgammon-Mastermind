@@ -15,6 +15,7 @@ import { ConfirmDialogHost } from '@/components/ui/confirm-dialog';
 import { getThemeConfig } from '@/components/ui/use-theme-config';
 import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
+import { setAnalyticsScreen } from '@/lib/analytics/settings-analytics';
 import { initAppTheme } from '@/lib/init-app-theme';
 import { useAppFonts } from '@/lib/ui/use-app-fonts';
 import '@/lib/ignore-known-logs';
@@ -58,6 +59,7 @@ export default function RootLayout() {
         previous_screen: previousPathname.current ?? null,
         ...params,
       });
+      setAnalyticsScreen(pathname);
       previousPathname.current = pathname;
     }
   }, [pathname, params]);
