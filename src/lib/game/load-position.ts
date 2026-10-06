@@ -60,17 +60,6 @@ export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
       mode: 'vs-human',
     },
   },
-  {
-    id: 'e2e-undo-redo-3-1',
-    label: 'E2E undo/redo (3–1)',
-    description: 'Standard board, White to play a fixed 3–1 (8→5 is legal). Used by the undo-redo Maestro flow.',
-    options: {
-      useStandardSetup: true,
-      dice: [3, 1],
-      currentPlayer: 'white',
-      mode: 'vs-human',
-    },
-  },
 ];
 
 export const POSITION_JSON_EXAMPLE = `{

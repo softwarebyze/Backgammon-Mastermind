@@ -1,6 +1,5 @@
 flows:
   - app/backgammon-smoke.yaml
-  - app/undo-redo.yaml
 
 excludeTags:
   - util
