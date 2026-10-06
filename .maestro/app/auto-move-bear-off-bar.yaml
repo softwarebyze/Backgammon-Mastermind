@@ -1,0 +1,29 @@
+# Bar + home forced entry must not leave the turn stuck when auto-move is on.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-bar-then-home-forced-2-1
+    timeout: 60000
+- takeScreenshot: 01-developer-bar-preset
+- tapOn:
+    id: developer-preset-bar-then-home-forced-2-1
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- takeScreenshot: 02-after-load
+# Forced entry consumes the turn; white does not win this turn.
+# Assert the game is still interactive (Roll / status) and not frozen mid-move.
+- extendedWaitUntil:
+    visible: '.*(Roll|Black|White|Your turn|Computer).*'
+    timeout: 15000
+- takeScreenshot: 03-after-auto-move

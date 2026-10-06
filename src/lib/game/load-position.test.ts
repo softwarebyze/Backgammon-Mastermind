@@ -89,10 +89,11 @@ describe('parsePositionJson', () => {
 });
 
 describe('position loader presets', () => {
-  it('exposes the two #155 bar 1–2 audit boards', () => {
+  it('exposes the #155 bar boards plus a bar+home forced QA preset', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
+      'bar-then-home-forced-2-1',
     ]);
   });
 
@@ -106,5 +107,12 @@ describe('position loader presets', () => {
   it('#155 higher-die: only bar→23 when neither leftover die plays', () => {
     const state = loadPositionPreset(preset('issue-155-bar-1-2-higher-die'));
     expect(barDestinations(state)).toEqual([23]);
+  });
+
+  it('bar-then-home-forced-2-1: white on bar and the 1 point', () => {
+    const state = loadPositionPreset(preset('bar-then-home-forced-2-1'));
+    expect(state.bar.white).toBe(1);
+    expect(state.phase).toBe('moving');
+    expect(barDestinations(state).length).toBeGreaterThan(0);
   });
 });

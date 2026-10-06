@@ -60,6 +60,21 @@ export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
       mode: 'vs-human',
     },
   },
+  {
+    id: 'bar-then-home-forced-2-1',
+    label: 'Bar + home checker, 2–1',
+    description: 'White on bar and the 1 point; forced entry then 23→22. Must not stick.',
+    options: {
+      placements: [
+        { point: 1, player: 'white', count: 1 },
+        { point: 13, player: 'black', count: 15 },
+      ],
+      bar: { white: 1 },
+      borneOff: { white: 13, black: 0 },
+      dice: [2, 1],
+      mode: 'vs-computer',
+    },
+  },
 ];
 
 export const POSITION_JSON_EXAMPLE = `{
