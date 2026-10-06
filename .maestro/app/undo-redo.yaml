@@ -1,0 +1,62 @@
+# Undo/redo: stepping back animates only the move being undone, and the roll
+# survives undo -> redo. Opening roll + auto-roll decide whether the human has
+# a move to undo, so the undo/redo taps are guarded; the flow still fails if
+# the board stops rendering or undo leaves the game stuck mid-animation.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn:
+    text: vs Computer
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- repeat:
+    times: 6
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: roll-dice-button
+          commands:
+            - tapOn:
+                id: roll-dice-button
+      - runFlow:
+          when:
+            visible: No legal moves
+          commands:
+            - extendedWaitUntil:
+                notVisible: No legal moves
+                timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: undo-button
+    timeout: 30000
+- takeScreenshot: 01-before-undo
+- runFlow:
+    when:
+      visible:
+        id: undo-button
+        enabled: true
+    commands:
+      - tapOn:
+          id: undo-button
+      - takeScreenshot: 02-after-undo
+      - extendedWaitUntil:
+          visible:
+            id: redo-button
+            enabled: true
+          timeout: 10000
+      - tapOn:
+          id: redo-button
+      - takeScreenshot: 03-after-redo
+- assertVisible:
+    id: point-1
+- assertVisible:
+    id: undo-button

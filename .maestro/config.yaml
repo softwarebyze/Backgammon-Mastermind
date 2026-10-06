@@ -2,6 +2,7 @@ flows:
   - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
   - app/game-settings-gear.yaml
+  - app/undo-redo.yaml
 
 excludeTags:
   - util
