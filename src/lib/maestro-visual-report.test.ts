@@ -18,7 +18,7 @@ it('renders nested Maestro screenshots without losing their flow paths', () => {
       encoding: 'utf8',
       env: {
         ...process.env,
-        HOME: fixture,
+        MAESTRO_FALLBACK_OUTPUT_DIR: join(fixture, 'fallback'),
         GITHUB_TOKEN: '',
         GITHUB_WORKSPACE: fixture,
         MAESTRO_OUTPUT_DIR: output,

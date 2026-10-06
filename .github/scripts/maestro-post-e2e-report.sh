@@ -41,8 +41,9 @@ copy_tree() {
 
 copy_tree "$OUTPUT_DIR"
 # Fallback: default Maestro test output location on the runner
-if [[ -d "$HOME/.maestro/tests" ]]; then
-  find "$HOME/.maestro/tests" -type f \( -name '*.png' -o -name '*.jpg' -o -name '*.mp4' -o -name '*.json' -o -name 'maestro.log' \) -print0 2>/dev/null \
+FALLBACK_OUTPUT_DIR="${MAESTRO_FALLBACK_OUTPUT_DIR:-$HOME/.maestro/tests}"
+if [[ -d "$FALLBACK_OUTPUT_DIR" ]]; then
+  find "$FALLBACK_OUTPUT_DIR" -type f \( -name '*.png' -o -name '*.jpg' -o -name '*.mp4' -o -name '*.json' -o -name 'maestro.log' \) -print0 2>/dev/null \
     | while IFS= read -r -d '' file; do
       cp -a "$file" "$BUNDLE_DIR/" 2>/dev/null || true
     done
