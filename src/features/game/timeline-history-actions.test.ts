@@ -170,7 +170,9 @@ describe('blocked rolls in history', () => {
     expect(committed.timeline?.cursor).toBe(0);
     expect(committed.timeline?.redoMoves.map(m => m.player)).toEqual(['white', 'black', 'black']);
   });
+});
 
+describe('undo animation completion and paths', () => {
   it('animated undo arms the shared finish watchdog', () => {
     const baseline = movingWhiteState();
     const move = getLegalMoves(baseline)[0]!;
@@ -243,6 +245,7 @@ describe('blocked rolls in history', () => {
       },
       finishHistoryAnim: () => {},
       armAnimationFinish: onFinish => onFinish,
+      getLiveState: () => null,
       suppressHistoryPath: true,
     });
 

@@ -71,7 +71,6 @@ describe('play defaults', () => {
       autoRoll: false,
     }, true);
     expect(didMigrate).toBe(false);
-    expect(prefs.fastComputer).toBe(false);
     expect(prefs.autoRoll).toBe(false);
   });
 });

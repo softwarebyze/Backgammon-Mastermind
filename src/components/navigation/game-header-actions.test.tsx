@@ -29,7 +29,6 @@ it('provides Hebrew undo and redo labels rather than the English fallback', () =
   expect(he.game.controls.redo_a11y).toBe('ביצוע המהלך מחדש');
 });
 
-
 it('uses the Settings gear and opens Settings through its accessible button', () => {
   layoutRTL.mockReturnValue(false);
   const onOptions = jest.fn();

@@ -16,6 +16,8 @@ import { loadPersistedGame } from '@/lib/game/persistence';
 
 import { getForcedLegalMove, getForcedTurnSequence } from '@/lib/game/single-move';
 
+jest.mock('posthog-react-native', () => ({ usePostHog: () => ({ capture: jest.fn() }) }));
+
 jest.mock('@/lib/game-preferences/use-game-preferences', () => ({ useGamePreferences: jest.fn() }));
 jest.mock('@/lib/game-sfx/play-game-sfx', () => ({ playGameSfx: jest.fn(), playGameSfxSequence: jest.fn() }));
 jest.mock('@/lib/game/persistence', () => ({
@@ -301,7 +303,7 @@ describe('provider bear-off / auto-move sweep', () => {
     it.each([[6, 5], [1, 2], [6, 6], [3, 3]] as Array<[number, number]>)(
       'aI finishes the game on %i-%i',
       (a, b) => {
-        mockPrefs({ autoMoveWhenForced: true, autoRoll: false, fastComputer: true });
+        mockPrefs({ autoMoveWhenForced: true, autoRoll: false });
         const state = createPositionState({
           placements: [
             { point: 24, player: 'black', count: 1 },

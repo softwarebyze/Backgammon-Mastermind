@@ -9,7 +9,6 @@ export type GamePreferences = {
   autoMoveWhenForced: boolean;
   /** Soft game one-shots (dice, hits, win). Default on; respects silent switch. */
   soundEnabled: boolean;
-  /** Shorter computer think/move delays for power users. */
   /** Tutor mode: the Sage engine checks your turn and flags big blunders. */
   tutorMode: boolean;
   /** Ask before ending a human turn so the player can review or undo. Default on. */
@@ -35,7 +34,7 @@ const IMPLICIT_OFF_KEYS = [
 ] as const;
 
 /**
- * Previous builds saved these four off. Flip that implicit default once so
+ * Previous builds saved these three off. Flip that implicit default once so
  * existing installs pick up the new ones. A later manual off is left alone.
  */
 export function migrateImplicitPlayDefaults(
