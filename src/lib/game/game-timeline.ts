@@ -1,6 +1,7 @@
 import type { MoveLogEntry } from './move-log';
 import type { GameState } from './types';
-import { mergeSnapshotIntoState } from './move-log';
+import { isNoMoveLogEntry, mergeSnapshotIntoState } from './move-log';
+import { passTurn } from './moves';
 
 export type GameTimeline = {
   /** snapshots[0] = start; snapshots[i] = board after i moves */
@@ -61,16 +62,28 @@ export function pushTimelineSnapshot(
   };
 }
 
+/**
+ * Step back one ply. `liveState` is what is actually on the board now; it can
+ * be ahead of the stored snapshot (e.g. a fresh roll nobody has moved on yet),
+ * so it replaces the snapshot that redo will return to — otherwise redo would
+ * drop the roll the player already saw.
+ */
 export function undoTimeline(
   timeline: GameTimeline,
   undoneMove: MoveLogEntry,
+  liveState?: GameState | null,
 ): GameTimeline {
   if (!canUndoTimeline(timeline)) {
     return timeline;
   }
-  const current = currentTimelineState(timeline);
+  let snapshots = timeline.snapshots;
+  if (liveState) {
+    snapshots = [...snapshots];
+    snapshots[timeline.cursor] = cloneGameState(liveState);
+  }
+  const current = snapshots[timeline.cursor]!;
   return {
-    snapshots: timeline.snapshots,
+    snapshots,
     cursor: timeline.cursor - 1,
     redo: [cloneGameState(current), ...timeline.redo],
     redoMoves: [undoneMove, ...timeline.redoMoves],
@@ -95,6 +108,27 @@ export function peekRedoMove(timeline: GameTimeline): MoveLogEntry | null {
   return timeline.redoMoves[0] ?? null;
 }
 
+/**
+ * Board before `entry` was played. Mid-turn that is simply the previous
+ * snapshot; at a turn boundary the stored snapshot has no dice yet, so the
+ * roll is restored from the log — undoing the first move of a turn must hand
+ * back the same roll, never ask the player to roll again.
+ */
+function boardBeforeEntry(previous: GameState, entry: MoveLogEntry): GameState {
+  const noMove = isNoMoveLogEntry(entry);
+  if (!noMove && previous.phase === 'moving' && previous.currentPlayer === entry.player) {
+    return previous;
+  }
+  const [a, b] = entry.dice;
+  return {
+    ...previous,
+    currentPlayer: entry.player,
+    dice: [a, b],
+    remainingDice: a === b ? [a, a, a, a] : [a, b],
+    phase: noMove ? 'no-move' : 'moving',
+  };
+}
+
 /** Rebuild snapshot stack from persisted move log (for resume). */
 export function rebuildTimelineFromLog(
   baseline: GameState,
@@ -114,7 +148,10 @@ export function rebuildTimelineFromLog(
     }
     const previous = snapshots[snapshots.length - 1]!;
     const next = mergeSnapshotIntoState(previous, entry.after);
-    snapshots.push(cloneGameState(next));
+    snapshots[snapshots.length - 1] = cloneGameState(boardBeforeEntry(previous, entry));
+    // A blocked roll is logged before the pass; the live timeline records the
+    // board after the pass, so rebuild it the same way.
+    snapshots.push(cloneGameState(isNoMoveLogEntry(entry) ? passTurn(next) : next));
   }
 
   if (snapshots.length === 1) {

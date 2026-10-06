@@ -15,6 +15,7 @@ import {
   redoTimeline,
   undoTimeline,
 } from '@/lib/game/game-timeline';
+import { isNoMoveLogEntry } from '@/lib/game/move-log';
 import { stateAtPly } from '@/lib/game/move-replay';
 
 export type HistoryPathOverlay = {
@@ -37,34 +38,68 @@ export function isHumanHistoryStep(
 }
 
 /**
- * vs-computer: undo rewinds trailing AI moves automatically, so it's available
- * whenever the human has any move to return to.
+ * Undo needs a real move to return to. Blocked rolls ("no move") are stepped
+ * over, and vs-computer undo also rewinds the AI, so it is available whenever
+ * the human has any actual move to return to.
  */
 export function hasUndoableHumanMove(
   mode: GameState['mode'] | undefined,
   moveLog: MoveLogEntry[],
 ): boolean {
-  if (mode !== 'vs-computer') {
-    return true;
+  return moveLog.some(entry =>
+    !isNoMoveLogEntry(entry) && (mode !== 'vs-computer' || entry.player === 'white'),
+  );
+}
+
+/** Blocked rolls at the end of the log, which undo steps over with the move before them. */
+export function countTrailingNoMoves(moveLog: MoveLogEntry[]): number {
+  let count = 0;
+  for (let i = moveLog.length - 1; i >= 0 && isNoMoveLogEntry(moveLog[i]!); i--) {
+    count++;
   }
-  return moveLog.some(entry => entry.player === 'white');
+  return count;
+}
+
+/**
+ * Pop `count` log entries (newest first) and rewind the timeline one ply per
+ * entry. `liveState` only applies to the first ply: it is the board the
+ * player is looking at right now.
+ */
+export function undoMany(
+  timeline: GameTimeline,
+  count: number,
+  opts: { popLastMove: () => MoveLogEntry | null; liveState?: GameState | null },
+): { nextTimeline: GameTimeline; nextState: GameState } | null {
+  const { popLastMove, liveState } = opts;
+  let nextTimeline = timeline;
+  let live = liveState;
+  let undone = 0;
+  for (let i = 0; i < count && canUndoTimeline(nextTimeline); i++) {
+    const entry = popLastMove();
+    if (!entry) {
+      break;
+    }
+    nextTimeline = undoTimeline(nextTimeline, entry, live);
+    live = null;
+    undone++;
+  }
+  return undone > 0
+    ? { nextTimeline, nextState: currentTimelineState(nextTimeline) }
+    : null;
 }
 
 export function undoInstant(
   timeline: GameTimeline,
   popLastMove: () => MoveLogEntry | null,
+  liveState?: GameState | null,
 ): { nextTimeline: GameTimeline; nextState: GameState } | null {
-  if (!canUndoTimeline(timeline)) {
-    return null;
-  }
-  const undoneMove = popLastMove();
-  if (!undoneMove) {
-    return null;
-  }
-  const nextTimeline = undoTimeline(timeline, undoneMove);
-  return { nextTimeline, nextState: currentTimelineState(nextTimeline) };
+  return undoMany(timeline, 1, { popLastMove, liveState });
 }
 
+/**
+ * Redo one entry, plus any blocked rolls right after it: a pass is not a
+ * move the player can step onto, so redo carries them along.
+ */
 export function redoInstant(
   timeline: GameTimeline,
   restoreMove: (entry: MoveLogEntry) => void,
@@ -77,7 +112,15 @@ export function redoInstant(
     return null;
   }
   restoreMove(moveEntry);
-  const nextTimeline = redoTimeline(timeline);
+  let nextTimeline = redoTimeline(timeline);
+  for (
+    let next = peekRedoMove(nextTimeline);
+    next && isNoMoveLogEntry(next);
+    next = peekRedoMove(nextTimeline)
+  ) {
+    restoreMove(next);
+    nextTimeline = redoTimeline(nextTimeline);
+  }
   return { nextTimeline, nextState: currentTimelineState(nextTimeline), entry: moveEntry };
 }
 
