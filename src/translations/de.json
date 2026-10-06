@@ -380,6 +380,52 @@
         },
         "subtitle": "Wie ein Turn funktioniert",
         "title": "Umzug mit Würfeln"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "Weiß hat 5 Steine auswürfelt, der Rest ist nah am Haus. Schwarz ist noch über das Brett verteilt. Tippe einen weißen Stein: Weiß führt, weil der Pip-Count niedriger ist.",
+            "hint": "Such die Steine, die dem Auswürfeln am nächsten sind.",
+            "praise": "Genau! Der niedrigere Pip-Count von Weiß bedeutet weniger Weg.",
+            "title": "Wer liegt vorn?"
+          },
+          "behind": {
+            "body": "Dieselbe Stellung. Die schwarzen Steine sind weit vom Haus und haben einen viel höheren Pip-Count. Tippe einen schwarzen Stein: Schwarz liegt zurück.",
+            "hint": "Such die Steine, die am weitesten vom Haus sind.",
+            "praise": "Richtig! Schwarz braucht noch viel mehr Pips.",
+            "title": "Wer liegt zurück?"
+          },
+          "explain": {
+            "body": "Der Pip-Count ist die Summe der Punkte, die deine Steine noch bis zum Auswürfeln reisen müssen. Jeder Stein zählt seine Punktzahl: einer auf dem 6-Punkt zählt 6, einer auf dem 13-Punkt zählt 13. Weniger ist besser, du bist näher am Ziel. Die Zahlen stehen oben im Spiel, ein Punkt zeigt, welche Zahl zu welcher Farbe gehört.",
+            "title": "Was ist der Pip-Count?"
+          }
+        },
+        "subtitle": "Erkennen, wer das Rennen führt",
+        "title": "Pip-Count: der Spielstand"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "Dein Haus ist stark, der Gegner hat Blots oder Steine auf der Bar. Schlage jeden Blot und schließe deine Hauspunkte, damit seine Steine auf der Bar festsitzen, während du auswürfelst. Hier hat Weiß drei Hauspunkte und Schwarz einen Stein auf der Bar.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "Das ist ein Prime-Spiel. Tippe einen Punkt der weißen Prime, der Mauer aus aufeinanderfolgenden Punkten, die Schwarz sperrt.",
+            "hint": "Such aufeinanderfolgende Punkte mit mindestens 2 weißen Steinen.",
+            "praise": "Perfekt! Diese Mauer ist die Prime. Die hinteren Steine von Schwarz sitzen fest.",
+            "title": "Finde die Prime"
+          },
+          "prime": {
+            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt.",
+            "title": "Prime"
+          },
+          "running": {
+            "body": "Du führst, und keine Blots liegen in Schlagweite. Bring die Steine sicher nach Hause und lass keine Blots liegen. Nicht tricksen, einfach rennen. Hier führt Weiß mit einem festen Haus.",
+            "title": "Rennspiel"
+          }
+        },
+        "subtitle": "Klassische Spielpläne erkennen",
+        "title": "Spielpläne"
       }
     },
     "locked": "Beende zuerst die vorherige Lektion",
@@ -402,12 +448,36 @@
         "b": "Ein einzelner Checker an einem Punkt - er kann getroffen werden",
         "c": "Zwei oder mehr Checker an einem Punkt — ein gemachter Punkt",
         "prompt": "Was ist ein Blot?"
+      },
+      "pip_ahead": {
+        "a": "Dein Gegner, mit dem höheren Count",
+        "b": "Du, mit dem niedrigeren Count",
+        "c": "Keiner — der Pip-Count misst das Rennen nicht",
+        "prompt": "Dein Pip-Count ist 85, der deines Gegners 102. Wer führt im Rennen?"
+      },
+      "pip_meaning": {
+        "a": "Die Punkte, die deine Steine noch bis zum Auswürfeln reisen müssen",
+        "b": "Wie viele Steine du auf dem Brett hast",
+        "c": "Wie viele Punkte du besetzt hast",
+        "prompt": "Was bedeutet dein Pip-Count?"
+      },
+      "strat_blitz": {
+        "a": "Den Blot schlagen und das Haus weiter bauen (Blitz)",
+        "b": "Den Blot ignorieren und die hinteren Steine rennen lassen",
+        "c": "Das Haus aufbrechen, um einen Anker zu machen",
+        "prompt": "Du hast 3 Hauspunkte, der Gegner einen Blot in deinem Haus. Was ist der beste Plan?"
+      },
+      "strat_prime": {
+        "a": "Die Prime aufbrechen und angreifen",
+        "b": "Die Prime halten und verlängern — sie sitzen fest",
+        "c": "So schnell wie möglich auswürfeln",
+        "prompt": "Zwei Steine des Gegners sitzen hinter deiner 5er-Prime. Was ist dein Plan?"
       }
     },
     "replay": "Wiederholung",
     "skip_to_play": "Skip zum Spielen",
     "step_progress": "Schritt {{current}} von {{total}}",
-    "subtitle": "Fünf kurze Lektionen - dann bist du bereit",
+    "subtitle": "Kurze interaktive Lektionen — dann bist du bereit",
     "title": "Lernen Sie zu spielen"
   },
   "not_found": {

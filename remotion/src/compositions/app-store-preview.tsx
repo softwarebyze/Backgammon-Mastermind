@@ -1,13 +1,10 @@
 import { loadFont } from '@remotion/google-fonts/Inter';
-import { LightLeak } from '@remotion/light-leaks';
 import { linearTiming, TransitionSeries } from '@remotion/transitions';
 import { fade } from '@remotion/transitions/fade';
-import { wipe } from '@remotion/transitions/wipe';
 import { Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 
 import { BRAND } from '../brand/palette';
 import { BackgammonBoard } from '../components/backgammon-board';
-import { CalloutBadge } from '../components/callout-badge';
 import { DiceRoll } from '../components/dice-roll';
 import { GlowText } from '../components/glow-text';
 import { CenteredScene, SplitScene } from '../components/scene-layout';
@@ -43,30 +40,28 @@ function IntroScene() {
               width: 96,
               height: 96,
               borderRadius: 22,
-              border: `2px solid ${BRAND.accent}`,
-              boxShadow: '0 8px 28px rgba(0,0,0,0.4)',
             }}
           />
-          <GlowText size={48} letterSpacing={4}>
-            BACKGAMMON
+          <GlowText size={44} weight={650}>
+            Backgammon Mastermind
           </GlowText>
         </div>
         <div
           style={{
-            fontSize: 30,
-            color: BRAND.text,
+            fontSize: 26,
+            color: BRAND.textMuted,
             fontFamily: 'Inter, sans-serif',
             fontWeight: 400,
-            lineHeight: 1.45,
+            lineHeight: 1.4,
             opacity: interpolate(progress, [0.25, 1], [0, 1], {
               extrapolateLeft: 'clamp',
               extrapolateRight: 'clamp',
             }),
           }}
         >
-          The backgammon app built for
+          Learn on the board.
           <br />
-          <span style={{ color: BRAND.accent, fontWeight: 700 }}>players who want to improve.</span>
+          Then play a real game.
         </div>
       </div>
       <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -82,13 +77,6 @@ function GameplayScene() {
   const boardWidth = fitBoardWidth({ videoWidth: width, videoHeight: height, maxWidthRatio: 0.78, maxHeightRatio: 0.62 });
   const titleProgress = spring({ frame: frame - 12, fps, config: { damping: 14, stiffness: 100 } });
 
-  const callouts = [
-    { label: 'Smart move hints', left: '8%', top: '18%' },
-    { label: 'Direction overlay', right: '8%', top: '22%' },
-    { label: 'Pip count tracker', left: '10%', bottom: '16%' },
-    { label: 'Resume saved games', right: '10%', bottom: '18%' },
-  ];
-
   return (
     <CenteredScene gap={0} padding={48} pulse={false}>
       <div
@@ -99,7 +87,7 @@ function GameplayScene() {
           transform: `translateY(${interpolate(titleProgress, [0, 1], [12, 0])}px)`,
         }}
       >
-        <GlowText size={36}>Beautiful. Intuitive. Fast.</GlowText>
+        <GlowText size={28}>A live board</GlowText>
       </div>
 
       <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
@@ -110,21 +98,6 @@ function GameplayScene() {
         />
         <DiceRoll size={Math.round(boardWidth * 0.08)} die1={6} die2={1} />
       </div>
-
-      {callouts.map((c, i) => (
-        <div
-          key={c.label}
-          style={{
-            position: 'absolute',
-            left: 'left' in c ? c.left : undefined,
-            right: 'right' in c ? c.right : undefined,
-            top: 'top' in c ? c.top : undefined,
-            bottom: 'bottom' in c ? c.bottom : undefined,
-          }}
-        >
-          <CalloutBadge label={c.label} delay={16 + i * 10} />
-        </div>
-      ))}
     </CenteredScene>
   );
 }
@@ -135,44 +108,40 @@ function ModesScene() {
 
   return (
     <CenteredScene gap={40} padding={64}>
-      <GlowText size={34}>Two ways to play</GlowText>
-      <div style={{ display: 'flex', gap: 40, justifyContent: 'center', width: '100%' }}>
+      <GlowText size={28}>Two ways to play</GlowText>
+      <div style={{ display: 'flex', gap: 28, justifyContent: 'center', width: '100%' }}>
         <div
           style={{
             flex: 1,
             maxWidth: cardMax,
-            padding: 36,
-            borderRadius: 22,
-            backgroundColor: BRAND.accent,
-            border: `2px solid ${BRAND.accentBright}`,
-            textAlign: 'center',
+            padding: '32px 28px',
+            borderRadius: 16,
+            backgroundColor: BRAND.surface,
+            border: `1px solid ${BRAND.surfaceBorder}`,
           }}
         >
-          <div style={{ fontSize: 52, marginBottom: 16 }}>🤖</div>
-          <div style={{ fontSize: 30, fontWeight: 800, color: BRAND.bg, fontFamily: 'Inter, sans-serif' }}>
-            vs Computer
+          <div style={{ fontSize: 26, fontWeight: 650, color: BRAND.text, fontFamily: 'Inter, sans-serif' }}>
+            Computer
           </div>
-          <div style={{ fontSize: 17, color: '#4A2A10', marginTop: 10, fontFamily: 'Inter, sans-serif' }}>
-            Practice against AI anytime
+          <div style={{ fontSize: 16, color: BRAND.textMuted, marginTop: 8, fontFamily: 'Inter, sans-serif', lineHeight: 1.4 }}>
+            A full game, with a tutor if you blunder.
           </div>
         </div>
         <div
           style={{
             flex: 1,
             maxWidth: cardMax,
-            padding: 36,
-            borderRadius: 22,
+            padding: '32px 28px',
+            borderRadius: 16,
             backgroundColor: BRAND.surface,
-            border: `2px solid ${BRAND.surfaceBorder}`,
-            textAlign: 'center',
+            border: `1px solid ${BRAND.surfaceBorder}`,
           }}
         >
-          <div style={{ fontSize: 52, marginBottom: 16 }}>👥</div>
-          <div style={{ fontSize: 30, fontWeight: 800, color: BRAND.accent, fontFamily: 'Inter, sans-serif' }}>
-            2 Players
+          <div style={{ fontSize: 26, fontWeight: 650, color: BRAND.text, fontFamily: 'Inter, sans-serif' }}>
+            Pass and play
           </div>
-          <div style={{ fontSize: 17, color: BRAND.accentDim, marginTop: 10, fontFamily: 'Inter, sans-serif' }}>
-            Pass & play on one device
+          <div style={{ fontSize: 16, color: BRAND.textMuted, marginTop: 8, fontFamily: 'Inter, sans-serif', lineHeight: 1.4 }}>
+            Two players on one device.
           </div>
         </div>
       </div>
@@ -192,41 +161,19 @@ function OutroScene() {
         style={{
           width: 128,
           height: 128,
-          borderRadius: 26,
-          border: `3px solid ${BRAND.accent}`,
-          transform: `scale(${interpolate(progress, [0, 1], [0.75, 1])})`,
-          boxShadow: '0 0 64px rgba(212, 168, 67, 0.5)',
+          borderRadius: 28,
+          transform: `scale(${interpolate(progress, [0, 1], [0.92, 1])})`,
         }}
       />
-      <GlowText size={40}>Backgammon Mastermind</GlowText>
+      <GlowText size={36}>Backgammon Mastermind</GlowText>
       <div
         style={{
-          fontSize: 22,
+          fontSize: 18,
           color: BRAND.textMuted,
           fontFamily: 'Inter, sans-serif',
-          letterSpacing: 2,
         }}
       >
-        Available on iOS & Android
-      </div>
-      <div style={{ display: 'flex', gap: 20, marginTop: 8, opacity: progress }}>
-        {['App Store', 'Google Play'].map(store => (
-          <div
-            key={store}
-            style={{
-              padding: '14px 36px',
-              borderRadius: 14,
-              backgroundColor: BRAND.surface,
-              border: `1px solid ${BRAND.surfaceBorder}`,
-              color: BRAND.text,
-              fontSize: 17,
-              fontWeight: 600,
-              fontFamily: 'Inter, sans-serif',
-            }}
-          >
-            {store}
-          </div>
-        ))}
+        iOS and Android
       </div>
     </CenteredScene>
   );
@@ -239,15 +186,12 @@ export const AppStorePreview: React.FC = () => {
         <IntroScene />
       </TransitionSeries.Sequence>
       <TransitionSeries.Transition
-        presentation={wipe({ direction: 'from-left' })}
+        presentation={fade()}
         timing={linearTiming({ durationInFrames: TRANSITION })}
       />
       <TransitionSeries.Sequence durationInFrames={GAMEPLAY}>
         <GameplayScene />
       </TransitionSeries.Sequence>
-      <TransitionSeries.Overlay durationInFrames={20}>
-        <LightLeak seed={7} hueShift={35} />
-      </TransitionSeries.Overlay>
       <TransitionSeries.Sequence durationInFrames={FEATURES}>
         <ModesScene />
       </TransitionSeries.Sequence>
@@ -262,4 +206,4 @@ export const AppStorePreview: React.FC = () => {
   );
 };
 
-export const APP_STORE_PREVIEW_DURATION = INTRO + GAMEPLAY + FEATURES + OUTRO - TRANSITION * 2 + 24;
+export const APP_STORE_PREVIEW_DURATION = INTRO + GAMEPLAY + FEATURES + OUTRO - TRANSITION * 2;

@@ -14,8 +14,9 @@
 | [screenmap.md](./screenmap.md) | Screenmap CI (iOS + Android maps on PRs) |
 | [android-play-release.md](./android-play-release.md) | Play Console setup, Fastlane screenshots, EAS prod Android submit |
 | [roadmap.md](./roadmap.md) | Long-horizon product vision (M0–M6) — not the sprint board |
-| [remotion/](./remotion/) | Marketing video compositions |
-| [marketing/](./marketing/), [evidence/](./evidence/) | Versioned assets / QA screenshots |
+| [../remotion/README.md](../remotion/README.md) | Marketing video compositions |
+| [marketing/](./marketing/) | Current store screenshots and videos |
+| [evidence/](./evidence/) | QA screenshots |
 | [obytes-template-playbook.md](./obytes-template-playbook.md) | Fork / CI / EAS notes from the template |
 | [archive/](./archive/) | Frozen historical notes (do not update for status) |
 

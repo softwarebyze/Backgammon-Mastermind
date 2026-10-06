@@ -416,7 +416,7 @@
             "title": "Spot the prime"
           },
           "prime": {
-            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that black's back checkers cannot pass. Extend your prime one point at a time and trap their checkers behind it.",
+            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it.",
             "title": "Priming Game"
           },
           "running": {
@@ -424,7 +424,7 @@
             "title": "Running Game"
           }
         },
-        "subtitle": "Recognize the six classic game plans",
+        "subtitle": "Recognize classic game plans",
         "title": "Game Strategies"
       }
     },
@@ -477,7 +477,7 @@
     "replay": "Replay",
     "skip_to_play": "Skip to play",
     "step_progress": "Step {{current}} of {{total}}",
-    "subtitle": "Five short lessons — then you’re ready",
+    "subtitle": "Short interactive lessons — then you’re ready",
     "title": "Learn to play"
   },
   "not_found": {

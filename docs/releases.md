@@ -106,7 +106,7 @@ pnpm screenshots:upload:ios   # Fastlane deliver — agents OK
 ### 7. GitHub Release
 
 - Actions → **New GitHub Release** (on tag) or edit draft
-- Attach: `docs/marketing/v0.1.1/*.mp4`, link evidence folder
+- Attach: `docs/marketing/videos/*.mp4`
 - List closed issues (#25–#33, #39, etc.)
 
 ---
@@ -126,25 +126,20 @@ pnpm screenshots:upload:ios   # Fastlane deliver — agents OK
 
 **Automatic (preferred):** publishing a GitHub Release (tag → [New GitHub Release](../.github/workflows/new-github-release.yml)) triggers [Remotion Render (Release Assets)](../.github/workflows/remotion-render-release.yml). That workflow:
 
-1. Renders `LaunchHero`, `AppStorePreview`, and `FeatureSpotlight` from `remotion/`
-2. Writes `docs/remotion/after/*.mp4` and `docs/marketing/v{version}/*.mp4` (+ README)
+1. Renders every video in `remotion` `pnpm render:all` (`REMOTION_GL=swangle` on GitHub runners)
+2. Replaces `docs/marketing/videos/*.mp4` with that set
 3. Commits and pushes to `main`
 
-You can also run it manually: Actions → **Remotion Render (Release Assets)** → Run workflow (optional version input).
+You can also run it manually: Actions → **Remotion Render (Release Assets)** → Run workflow.
 
 **Manual (local):**
 
 ```bash
-# Remotion (hero, App Store preview, social square)
 cd remotion && pnpm install && pnpm render:all
-cp out/*.mp4 ../docs/remotion/after/
-mkdir -p ../docs/marketing/v0.1.3 && cp out/*.mp4 ../docs/marketing/v0.1.3/
-
-# Live app captures (web + iOS simulator)
-# See docs/marketing/v0.1.1/README.md
+cp out/*.mp4 ../docs/marketing/videos/
 ```
 
-> CI uses `--gl=swangle` (no GPU on GitHub runners). Local scripts keep `--gl=angle`. See [Remotion GL options](https://www.remotion.dev/docs/gl-options).
+> CI sets `REMOTION_GL=swangle` (no GPU on GitHub runners). Local `pnpm render:all` keeps `--gl=angle`. See [Remotion GL options](https://www.remotion.dev/docs/gl-options).
 
 ---
 
@@ -168,6 +163,6 @@ Full first-submission checklist: [production-checklist.md](./production-checklis
 - [android-play-release.md](./android-play-release.md) — Play Console, Fastlane, EAS Android submit
 - [production-checklist.md](./production-checklist.md) — first App Store / Play submission
 - [docs/evidence/](./evidence/) — before/after QA screenshots
-- [docs/remotion/README.md](./remotion/README.md) — video compositions
+- [remotion/README.md](../remotion/README.md) — video compositions
 - [docs/roadmap.md](./roadmap.md) — long-horizon product vision
 - [docs/README.md](./README.md) — docs index

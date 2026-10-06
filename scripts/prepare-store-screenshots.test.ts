@@ -3,12 +3,12 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { join } from 'node:path';
 
 const ROOT = process.cwd();
-const RAW_SOURCE = join(ROOT, 'docs/marketing/v1.0.0/app-store-screenshots/raw');
+const RAW_SOURCE = join(ROOT, 'docs/marketing/app-store-screenshots/raw');
 const FRAMES = JSON.parse(
-  readFileSync(join(ROOT, 'docs/marketing/v1.0.0/screenshot-frames.json'), 'utf8'),
+  readFileSync(join(ROOT, 'docs/marketing/screenshot-frames.json'), 'utf8'),
 ) as { frames: Array<{ device: string; source: string; dest: string }> };
 const LOCALIZATIONS = JSON.parse(
-  readFileSync(join(ROOT, 'docs/marketing/v1.0.0/screenshot-localizations.json'), 'utf8'),
+  readFileSync(join(ROOT, 'docs/marketing/screenshot-localizations.json'), 'utf8'),
 ) as Record<string, { appLanguage: string; playLocale: string }>;
 const IOS_ROOT = join(ROOT, 'fastlane/screenshots');
 const PLAY_ROOT = join(ROOT, 'fastlane/metadata/android');

@@ -266,7 +266,7 @@
     },
     "hint": "Hint Hint",
     "home_cta": "Oynamayı Öğrenin",
-    "home_cta_progress": "{{done}}Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of{{total}}Dersler yapıldı",
+    "home_cta_progress": "{{done}} / {{total}} ders tamamlandı",
     "home_cta_quiz": "Hızlı check ayrıldı – sonra oyun oyna",
     "home_cta_ready": "Hazırsınız – gerçek bir oyun oynamak",
     "home_cta_sub": "Yeni başlayanlar için Etkileşimli dersler",
@@ -380,6 +380,52 @@
         },
         "subtitle": "Bir dönüş nasıl çalışır",
         "title": "dice ile hareket edin"
+      },
+      "pip_count": {
+        "steps": {
+          "ahead": {
+            "body": "Beyaz 5 pul çıkardı, kalanı eve yakın. Siyah pullar hâlâ dağınık. Bir beyaz pula dokun: beyaz önde, çünkü pip sayısı daha düşük.",
+            "hint": "Çıkmaya en yakın pulları ara.",
+            "praise": "Aynen. Beyazın düşük sayısı daha kısa yol demek.",
+            "title": "Kim önde?"
+          },
+          "behind": {
+            "body": "Aynı konum. Siyah pullar evden uzak ve sayıları çok daha yüksek. Bir siyah pula dokun: siyah geride.",
+            "hint": "Evden en uzak pulları ara.",
+            "praise": "Doğru. Siyahın çıkması için çok daha fazla pip gerek.",
+            "title": "Kim geride?"
+          },
+          "explain": {
+            "body": "Pullarının çıkmak için daha gideceği noktaların toplamıdır. Her pul bulunduğu noktanın numarasını ekler: 6. noktadaki 6, 13. noktadaki 13 sayılır. Az olan iyidir, çıkmaya daha yakınsındır. Sayılar her oyunda üstte görünür, nokta hangi rengin sayısı olduğunu gösterir.",
+            "title": "Pip sayısı nedir?"
+          }
+        },
+        "subtitle": "Yarışta kimin önde olduğunu okumayı öğren",
+        "title": "Pip sayısı: yarış skoru"
+      },
+      "strategies": {
+        "steps": {
+          "blitz": {
+            "body": "Evin güçlü ve rakibin açık pulları ya da barda pulları var. Her açığı kır ve ev noktalarını kapat ki sen çıkarken onunkiler barda kalsın. Burada beyazın üç ev noktası var, siyahın barda bir pulu var.",
+            "title": "Blitz"
+          },
+          "identify": {
+            "body": "Bu bir duvar oyunu. Siyahı tutan beyaz duvarın, ardışık noktalardan birine dokun.",
+            "hint": "En az 2 beyaz pulu olan ardışık noktaları ara.",
+            "praise": "Mükemmel. O duvar prime. Siyahın gerideki pulları kapalı.",
+            "title": "Duvarı bul"
+          },
+          "prime": {
+            "body": "Ardışık kapalı noktalardan bir duvar kurdun. Vurgulanan noktalar 4’lük bir duvar; siyahın gerideki pullarını kısıtlar. Birer nokta uzat.",
+            "title": "Duvar"
+          },
+          "running": {
+            "body": "Öndesin ve vuruş menzilinde açık pul yok. Pulları güvenle eve getir, açık bırakma. Burada beyaz önde ve evi sağlam.",
+            "title": "Yarış"
+          }
+        },
+        "subtitle": "Klasik planları tanı",
+        "title": "Oyun planları"
       }
     },
     "locked": "Önceki dersi ilk önce tamamlayın",
@@ -402,12 +448,36 @@
         "b": "Bir noktada tek bir çeker – vurulabilir",
         "c": "Bir noktada iki veya daha fazla kontrol - bir nokta",
         "prompt": "Bir blot nedir?"
+      },
+      "pip_ahead": {
+        "a": "Rakibin, daha yüksek sayıyla",
+        "b": "Sen, daha düşük sayıyla",
+        "c": "Hiçbiri — pip sayısı yarışı ölçmez",
+        "prompt": "Senin sayın 85, rakibinki 102. Yarışta kim önde?"
+      },
+      "pip_meaning": {
+        "a": "Pullarının çıkmak için daha gideceği noktaların toplamı",
+        "b": "Tahtadaki pul sayın",
+        "c": "Kapattığın nokta sayısı",
+        "prompt": "Pip sayın neyi gösterir?"
+      },
+      "strat_blitz": {
+        "a": "Açığı kır ve evi kurmaya devam et (blitz)",
+        "b": "Açığı görmezden gel ve arkadaki pulları koştur",
+        "c": "Çapa yapmak için evi boz",
+        "prompt": "3 ev noktası kapattın ve rakibinin senin evinde bir açığı var. En iyi plan ne?"
+      },
+      "strat_prime": {
+        "a": "Saldırmak için duvarı boz",
+        "b": "Duvarı tut ve uzat — kapalılar",
+        "c": "Olabildiğince çabuk çık",
+        "prompt": "Rakibin iki pulu 5’lik duvarının arkasında. Planın ne?"
       }
     },
     "replay": "Replay",
     "skip_to_play": "Oynamak için Skip to play",
-    "step_progress": "Adım Adım Adım Adım Adım{{current}}Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of Of{{total}}",
-    "subtitle": "Beş kısa ders – sonra hazırsınız",
+    "step_progress": "Adım {{current}} / {{total}}",
+    "subtitle": "Kısa etkileşimli dersler — sonra hazırsınız",
     "title": "Oynamayı Öğrenin"
   },
   "not_found": {

@@ -12,10 +12,10 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const ROOT = process.cwd();
-const MANIFEST_PATH = join(ROOT, 'docs/marketing/v1.0.0/screenshot-frames.json');
+const MANIFEST_PATH = join(ROOT, 'docs/marketing/screenshot-frames.json');
 const LOCALIZATIONS_PATH = join(
   ROOT,
-  'docs/marketing/v1.0.0/screenshot-localizations.json',
+  'docs/marketing/screenshot-localizations.json',
 );
 const SCRIPT = join(ROOT, 'scripts/compose-store-screenshots.mjs');
 const PNG_1X1 = Buffer.from(
@@ -85,7 +85,7 @@ describe('screenshot-frames manifest', () => {
       'Learn to play backgammon',
       'Pass & play offline',
       'Play against the computer',
-      'Five interactive lessons',
+      'Interactive lessons',
       undefined,
     ]);
     for (const frame of manifest.frames) {
@@ -141,7 +141,7 @@ describe('screenshot-frames manifest', () => {
 });
 
 describe('screenshot localizations', () => {
-  it('provides store copy for every 1.0.2 App Store locale', () => {
+  it('provides store copy for every App Store locale', () => {
     const copy = JSON.parse(readFileSync(LOCALIZATIONS_PATH, 'utf8')) as Record<
       string,
       { appLanguage: string; playLocale: string; learn: string[]; pass: string[]; passSub: string; computer: string[]; lessons: string[] }
