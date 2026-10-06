@@ -1,10 +1,17 @@
 /**
  * @jest-environment jsdom
  */
+import type { ReactNode } from 'react';
+import type * as ReactNative from 'react-native';
 import { act } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Pressable, View } from 'react-native-web';
 import { attachGameKeyboardShortcuts } from '@/features/game/use-game-keyboard-shortcuts';
+
+// The real web renderer (react-dom + RN-web), not the native jest preset.
+// Neither ships types here, so borrow RN's component types for RN-web.
+const { createRoot } = jest.requireActual<{
+  createRoot: (el: Element) => { render: (node: ReactNode) => void; unmount: () => void };
+}>('react-dom/client');
+const { Pressable, View } = jest.requireActual<typeof ReactNative>('react-native-web');
 
 jest.mock('expo-router', () => ({
   useFocusEffect: () => {},
