@@ -1,9 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import type TranslateOptions from 'i18next';
+import type { ReactElement } from 'react';
 import type { Language, resources } from './resources';
 import type { RecursiveKeyOf } from './types';
 import i18n from 'i18next';
 import memoize from 'lodash.memoize';
-import { useCallback } from 'react';
+import { Fragment, useCallback } from 'react';
 import { I18nManager, NativeModules, Platform } from 'react-native';
 
 import { useMMKVString } from 'react-native-mmkv';
@@ -30,20 +32,47 @@ export function clearTranslateCache(): void {
   translate.cache?.clear?.();
 }
 
+/** Whether the active i18n language reads right-to-left. Live, so web picks it up without a reload. */
+export function getIsRTL(): boolean {
+  // i18next reports 'rtl' before a language is set; treat "no language" as LTR.
+  return !!i18n.language && i18n.dir() === 'rtl';
+}
+
+/**
+ * Layout direction for direction-sensitive styles. Native applies `I18nManager`
+ * after a restart; react-native-web stubs `I18nManager`, so web follows the
+ * active language (and the `<html dir>` set by `applyWebDocumentLanguage`).
+ */
+export function getLayoutIsRTL(): boolean {
+  return Platform.OS === 'web' ? getIsRTL() : I18nManager.isRTL;
+}
+
+/**
+ * react-native-web ignores `I18nManager`; layout direction comes from the DOM.
+ * Setting `<html lang dir>` flips flex rows, `start`/`end` insets, and text.
+ */
+export function applyWebDocumentLanguage(lang: Language): void {
+  if (Platform.OS !== 'web' || typeof document === 'undefined')
+    return;
+  const root = document.documentElement;
+  root.lang = lang;
+  root.dir = RTL_LANGUAGES.has(lang) ? 'rtl' : 'ltr';
+}
+
 export function changeLanguage(lang: Language) {
   i18n.changeLanguage(lang);
   clearTranslateCache();
+  if (Platform.OS === 'web') {
+    // Switch in place: a reload would wipe expo-router history (no back button).
+    // Screens remount via `languageScreenLayout`, keyed on the stored language.
+    applyWebDocumentLanguage(lang);
+    return;
+  }
   I18nManager.forceRTL(RTL_LANGUAGES.has(lang));
   if (Platform.OS === 'ios' || Platform.OS === 'android') {
     if (__DEV__)
       NativeModules.DevSettings.reload();
     else RNRestart.restart();
-  }
-  else if (Platform.OS === 'web') {
-    // Defer so MMKV flushes and we don't race picker dismiss navigation.
-    globalThis.queueMicrotask(() => {
-      globalThis.location?.reload();
-    });
   }
 }
 
@@ -60,4 +89,27 @@ export function useSelectedLanguage() {
   );
 
   return { language: language as Language, setLanguage };
+}
+
+function LanguageKeyed({ children }: { children: ReactElement }) {
+  const { language } = useSelectedLanguage();
+  return <Fragment key={language ?? 'default'}>{children}</Fragment>;
+}
+
+type ScreenLayoutProps = { route: { name: string }; children: ReactElement };
+
+/**
+ * Build a Stack `screenLayout` that remounts screen content when the language
+ * changes, so `translate()` output refreshes in place on web. Navigator state
+ * (history, back button) is untouched because only screen bodies are keyed.
+ * Pass route names that host a nested navigator so their history survives;
+ * those layouts subscribe via `useSelectedLanguage()` and key their own screens.
+ */
+export function languageScreenLayout(nestedNavigators: readonly string[] = []) {
+  return function LanguageScreenLayout({ route, children }: ScreenLayoutProps): ReactElement {
+    // Native restarts on language change, so only web needs the in-place remount.
+    if (Platform.OS !== 'web' || nestedNavigators.includes(route.name))
+      return children;
+    return <LanguageKeyed>{children}</LanguageKeyed>;
+  };
 }

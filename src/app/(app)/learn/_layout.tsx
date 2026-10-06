@@ -1,12 +1,16 @@
 import { Stack } from 'expo-router';
 
-import { translate } from '@/lib/i18n';
+import { languageScreenLayout, translate, useSelectedLanguage } from '@/lib/i18n';
 import { learnStackOptions } from '@/lib/navigation/native-stack-options';
 import { stackEscapeHeaderOptions } from '@/lib/navigation/stack-escape-header';
 
+const screenLayout = languageScreenLayout();
+
 export default function LearnLayout() {
+  // Re-render on language change so translated header titles refresh in place (web).
+  useSelectedLanguage();
   return (
-    <Stack>
+    <Stack screenLayout={screenLayout}>
       <Stack.Screen
         name="index"
         options={{

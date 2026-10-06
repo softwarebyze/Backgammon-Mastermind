@@ -16,7 +16,8 @@ let capturedDimensions: BoardDimensions | null = null;
 
 jest.mock('@/lib/i18n', () => ({
   ...jest.requireActual('@/lib/i18n'),
-  isRTL: true,
+  getIsRTL: () => true,
+  getLayoutIsRTL: () => true,
 }));
 
 jest.mock('@/features/game/components/board/board-view', () => ({

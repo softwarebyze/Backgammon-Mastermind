@@ -8,7 +8,7 @@ import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy } from '@/features/game/strategy';
 import { calculatePipCount } from '@/lib/game';
-import { isRTL, translate } from '@/lib/i18n';
+import { getIsRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -64,7 +64,7 @@ export function GamePipStatusBar({ state }: Props) {
             <StrategyMark strategy={strategy.key} size={18} />
           </View>
           <Text style={styles.strategyText}>{label}</Text>
-          <Text style={styles.chevron}>{isRTL ? '◂' : '▸'}</Text>
+          <Text style={styles.chevron}>{getIsRTL() ? '◂' : '▸'}</Text>
         </Pressable>
         <View style={styles.pips}>
           <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
