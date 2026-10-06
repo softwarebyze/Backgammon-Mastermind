@@ -22,9 +22,12 @@ tags:
 - extendedWaitUntil:
     visible: Game
     timeout: 15000
+- assertVisible:
+    id: stack-escape-label
 - assertNotVisible:
+    id: stack-escape-chevron
+- tapOn:
     id: stack-escape-button
-- back
 - extendedWaitUntil:
     visible:
       id: strategy-line

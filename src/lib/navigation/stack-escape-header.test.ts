@@ -17,14 +17,12 @@ describe('stackEscapeHeaderOptionsFor', () => {
     expect(options.headerLeft).toBeUndefined();
   });
 
-  it('omits a header chevron on native mobile', () => {
+  it('uses a text stack escape on native mobile, not the system back control', () => {
     for (const os of ['ios', 'android'] as const) {
       const options = stackEscapeHeaderOptionsFor(os);
       expect(options.headerBackVisible).toBe(false);
       expect(options.header).toBeUndefined();
-      const headerLeft = options.headerLeft as unknown as () => unknown;
-      expect(typeof headerLeft).toBe('function');
-      expect(headerLeft()).toBeNull();
+      expect(typeof options.headerLeft).toBe('function');
     }
   });
 });

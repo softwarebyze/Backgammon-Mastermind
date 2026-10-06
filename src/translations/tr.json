@@ -485,6 +485,12 @@
     "subtitle": "Kısa etkileşimli dersler — sonra hazırsınız",
     "title": "Oynamayı Öğrenin"
   },
+  "navigation": {
+    "back": "Geri",
+    "back_a11y": "Geri dön",
+    "home": "Ana sayfa",
+    "home_a11y": "Ana sayfaya git"
+  },
   "not_found": {
     "body": "Bu sayfa Backgammon Mastermind'in bir parçası değildir. Bir oyun öğrenmek ya da başlamak için ev.",
     "heading": "Tahtanın dışı",

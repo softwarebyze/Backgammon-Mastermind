@@ -485,6 +485,12 @@
     "subtitle": "短いインタラクティブレッスンで準備完了",
     "title": "遊ぶことを学ぶ"
   },
+  "navigation": {
+    "back": "戻る",
+    "back_a11y": "戻る",
+    "home": "ホーム",
+    "home_a11y": "ホームへ"
+  },
   "not_found": {
     "body": "このページは Backgammon Mastermind の一部ではありません。 ゲームを学ぶか、または開始するために家を向けて下さい。",
     "heading": "ボードの外です",

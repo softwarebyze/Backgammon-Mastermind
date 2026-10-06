@@ -485,6 +485,12 @@
     "subtitle": "Korte interactieve lessen — dan ben je klaar",
     "title": "Spelen leren"
   },
+  "navigation": {
+    "back": "Terug",
+    "back_a11y": "Ga terug",
+    "home": "Home",
+    "home_a11y": "Naar home"
+  },
   "not_found": {
     "body": "Die pagina hoort niet bij Backgammon Mastermind. Ga naar huis om te leren of een spel te beginnen.",
     "heading": "Buiten het bord",
