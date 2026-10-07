@@ -15,10 +15,31 @@ adb shell settings put global transition_animation_scale 0
 adb shell settings put global animator_duration_scale 0
 adb install -r "${WORKSPACE}/android-test.apk"
 
+python3 "${WORKSPACE}/.github/scripts/held-drag-input-bridge.test.py"
+
 RECORD_STOP="$MAESTRO_OUT/recording.stop"
 rm -f "$RECORD_STOP"
 bash "${WORKSPACE}/.github/scripts/record-android-screen.sh" "$MAESTRO_OUT" "$RECORD_STOP" &
 RECORD_PID=$!
+
+# Fixed-input localhost bridge is used only by the held-drag flow. No app hook.
+python3 "${WORKSPACE}/.github/scripts/held-drag-input-bridge.py" > "$MAESTRO_OUT/held-drag-input-bridge.log" 2>&1 &
+BRIDGE_PID=$!
+trap 'touch "$RECORD_STOP"; kill "$BRIDGE_PID" 2>/dev/null || true' EXIT
+BRIDGE_READY=0
+for attempt in 1 2 3 4 5; do
+  if curl -fsS http://127.0.0.1:8099/ready > /dev/null; then
+    BRIDGE_READY=1
+    break
+  fi
+  sleep 1
+done
+if [[ "$BRIDGE_READY" != 1 ]]; then
+  echo "::error::Held-drag input bridge did not start"
+  touch "$RECORD_STOP"
+  wait "$RECORD_PID" || true
+  exit 1
+fi
 
 MAESTRO_EXIT=0
 # Preserve every release regression flow.

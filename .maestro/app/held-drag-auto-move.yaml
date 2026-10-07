@@ -47,15 +47,10 @@ tags:
 - tapOn:
     id: point-24
 - takeScreenshot: held-drag-01-selected-first-move
-# Avoid waiting for the first animation to settle before starting the pan.
-- tapOn:
-    id: point-21
-    waitToSettleTimeoutMs: 0
-- swipe:
-    start: 52%, 58%
-    end: 90%, 45%
-    duration: 5000
-    waitToSettleTimeoutMs: 0
+# The localhost bridge sends real Android inputs without Maestro's hierarchy
+# fetch between the tap and pan. The CI runner owns and stops that bridge.
+# It uses only fixed inputs; recording must still show lift BEFORE handoff.
+- runScript: ../utils/held-drag-input.js
 - extendedWaitUntil:
     visible: ".*Black's turn.*"
     timeout: 15000
