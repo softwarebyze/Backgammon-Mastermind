@@ -20,6 +20,7 @@ RECORD_PID=$!
 
 MAESTRO_EXIT=0
 maestro test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+  "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
