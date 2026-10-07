@@ -128,6 +128,11 @@ const appPlugins: ExpoConfig['plugins'] = [
     },
   ],
   ['react-native-edge-to-edge'],
+  // Removes dev-launcher-only local network permissions from store builds.
+  // expo-dev-launcher ships its own strip phase, but it runs before the app's
+  // Info.plist exists and silently no-ops; see
+  // docs/expo-dev-client-store-builds.md.
+  './plugins/with-dev-client-plist-keys',
   // Native symbol / Hermes map hooks. TestFlight crashes still need a new binary.
   // posthog-react-native/expo wraps the Xcode "Bundle React Native" phase with
   // posthog-xcode.sh. That script is pnpm-patched so a missing posthog-cli or
