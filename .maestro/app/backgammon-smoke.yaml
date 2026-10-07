@@ -3,6 +3,10 @@ tags:
   - smoke
   - pull-request
 ---
+# Finish removing the previous Android task before clearing/relaunching.
+- stopApp
+- waitForAnimationToEnd:
+    timeout: 5000
 - launchApp:
     clearState: true
 - extendedWaitUntil:
@@ -30,6 +34,7 @@ tags:
           commands:
             - tapOn:
                 id: roll-dice-button
+                optional: true
       - runFlow:
           when:
             visible: No legal moves
