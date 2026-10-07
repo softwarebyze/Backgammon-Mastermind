@@ -1,0 +1,85 @@
+# Enable the real iOS accessibility policy before launching the preview app.
+# This runs last so normal-motion feature evidence stays in the earlier flows.
+appId: ${APP_ID}
+tags:
+  - ios
+  - pull-request
+---
+- launchApp:
+    appId: com.apple.Preferences
+- scrollUntilVisible:
+    element:
+      text: Accessibility
+    direction: DOWN
+    timeout: 30000
+- tapOn: Accessibility
+- extendedWaitUntil:
+    visible: Motion
+    timeout: 20000
+- tapOn: Motion
+- extendedWaitUntil:
+    visible: Reduce Motion
+    timeout: 20000
+- runFlow:
+    when:
+      visible:
+        text: Reduce Motion
+        checked: false
+    commands:
+      - tapOn:
+          text: Reduce Motion
+          checked: false
+- assertVisible:
+    text: Reduce Motion
+    checked: true
+- takeScreenshot: ios-reduced-motion-01-system-enabled
+- stopApp
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: Play against the computer
+    timeout: 90000
+# Navigate within the preview app: the external URL handoff can return Home
+# after the preceding language flow restarts the native application.
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Load position.*
+    direction: DOWN
+- tapOn: Load position.*
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-e2e-undo-redo-3-1
+    timeout: 60000
+- tapOn:
+    id: developer-preset-e2e-undo-redo-3-1
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 20000
+- assertVisible: White pip count 167
+- extendedWaitUntil:
+    visible:
+      id: dice-display-reduced-motion
+    timeout: 15000
+- takeScreenshot: ios-reduced-motion-02-fixed-roll
+- tapOn:
+    point: ${POINT_8}
+- tapOn:
+    point: ${POINT_5}
+# A compound 8→4 also enables Undo; the pip count rejects that false positive.
+- extendedWaitUntil:
+    visible: White pip count 164
+    timeout: 15000
+- assertNotVisible:
+    id: confirm-move-button
+- assertVisible: Undo move
+- takeScreenshot: ios-reduced-motion-03-move-committed
+- tapOn: Undo move
+- extendedWaitUntil:
+    visible: White pip count 167
+    timeout: 15000
+- assertVisible:
+    id: undo-button
+    enabled: false
+- takeScreenshot: ios-reduced-motion-04-undo-restored
