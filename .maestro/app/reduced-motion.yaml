@@ -10,9 +10,11 @@ tags:
     visible: vs Computer
     timeout: 90000
 - openLink: backgammonmastermind.preview://developer
-- extendedWaitUntil:
-    visible:
+# Other release features add presets above the JSON fixture field.
+- scrollUntilVisible:
+    element:
       id: developer-json-input
+    direction: DOWN
     timeout: 60000
 - longPressOn:
     id: developer-json-input
