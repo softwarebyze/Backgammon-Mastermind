@@ -27,8 +27,9 @@ tags:
       id: game-board-slot
     timeout: 20000
 - assertVisible: White pip count 167
-- assertNotVisible:
-    id: direction-overlay
+# The decorative pointerEvents=none SVG is omitted from iOS AX. Inspect this
+# baseline and the final recording/image; a missing ID cannot verify rendering.
+- takeScreenshot: ios-horseshoe-01-off
 - tapOn: Settings
 - extendedWaitUntil:
     visible: Direction overlay
@@ -38,7 +39,7 @@ tags:
     id: stack-escape-button
 - extendedWaitUntil:
     visible:
-      id: direction-overlay
+      id: game-board-slot
     timeout: 15000
 - assertVisible: White pip count 167
 - takeScreenshot: ios-horseshoe-on-board

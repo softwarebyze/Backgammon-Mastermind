@@ -45,15 +45,15 @@ tags:
       text: Language.*
     direction: UP
 - tapOn: Language.*
-# iPad form-sheet AX includes offscreen rows. Scroll inside the actual sheet
-# before trusting scrollUntilVisible; an offscreen tap dismissed it previously.
+# iPad AX includes offscreen rows. Expand the form sheet by its observed grabber
+# before selecting Hebrew; a swipe within the list did not reliably reveal it.
 - runFlow:
     when:
       true: ${DEVICE_KIND === 'iPad'}
     commands:
       - swipe:
-          start: 50%, 68%
-          end: 50%, 54%
+          start: 50%, 48%
+          end: 50%, 25%
           duration: 600
 - scrollUntilVisible:
     element:
