@@ -78,8 +78,16 @@ export function rollBlockedByFocus(target: FocusTarget): boolean {
  * interactive control is focused — Confirm/Undo already handle the key (don't
  * double-fire), and Leave/settings/etc. must not be stolen into a confirm.
  */
-export function confirmBlockedByFocus(target: FocusTarget): boolean {
+export function confirmBlockedByFocus(target: FocusTarget, key?: string): boolean {
   if (!target?.closest) {
+    return false;
+  }
+  if (target.closest('[role="dialog"], [role="alertdialog"], [role="alert"]')) {
+    return true;
+  }
+  // Preserve the Tutor prototype's Enter shortcut after returning to Live.
+  // Space and all other chrome controls retain their own keyboard handling.
+  if (key?.toLowerCase() === 'enter' && target.closest('[data-testid="history-live-button"]')) {
     return false;
   }
   // Focus left on the board after spending dice — still confirm.
@@ -140,7 +148,7 @@ export function attachGameKeyboardShortcuts(
     if (shouldIgnoreShortcutKeydown({ defaultPrevented: e.defaultPrevented, repeat: e.repeat, target })) {
       return;
     }
-    if (shortcutFor(e, { awaitingConfirm: true }) !== 'confirm' || confirmBlockedByFocus(target)) {
+    if (shortcutFor(e, { awaitingConfirm: true }) !== 'confirm' || confirmBlockedByFocus(target, e.key)) {
       return;
     }
     e.preventDefault();

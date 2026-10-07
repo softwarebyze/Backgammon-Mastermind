@@ -135,6 +135,7 @@ export function MoveReviewTurnStrip({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.live')}
+        testID="history-live-button"
         accessibilityState={{ selected: !isReviewing }}
         onPress={() => {
           if (isReviewing) {

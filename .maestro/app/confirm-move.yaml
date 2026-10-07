@@ -64,6 +64,12 @@ tags:
 - assertVisible: 'Point 6, 4 white checkers'
 - assertNotVisible: ".*Black's turn.*"
 - takeScreenshot: confirm-03-held-turn
+# Returning to Live must retain the pending Confirm turn.
+- tapOn:
+    id: history-live-button
+- assertVisible:
+    id: confirm-move-button
+- assertNotVisible: ".*Black's turn.*"
 - tapOn: Undo move
 - extendedWaitUntil:
     visible: 'Point 6, 5 white checkers'

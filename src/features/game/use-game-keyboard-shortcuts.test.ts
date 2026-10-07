@@ -161,3 +161,18 @@ describe('game keyboard shortcuts', () => {
     })).toBe(false);
   });
 });
+
+it('preserves Enter after Live without stealing Space or dialog buttons', () => {
+  const live = { closest: (selector: string) => (
+    selector === '[data-testid="history-live-button"]'
+    || selector === 'button, a, [role="button"]'
+      ? {}
+      : null
+  ) };
+  expect(confirmBlockedByFocus(live, 'Enter')).toBe(false);
+  expect(confirmBlockedByFocus(live, ' ')).toBe(true);
+  expect(rollBlockedByFocus(live)).toBe(true);
+  const dialogLive = { closest: () => ({}) };
+  expect(confirmBlockedByFocus(dialogLive, 'Enter')).toBe(true);
+  expect(confirmBlockedByFocus(chromeButtonTarget(), 'Enter')).toBe(true);
+});
