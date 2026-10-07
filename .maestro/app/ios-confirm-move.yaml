@@ -24,14 +24,27 @@ tags:
     visible:
       id: game-board-slot
     timeout: 20000
+- assertVisible: White pip count 167
 - takeScreenshot: ios-confirm-01-fixed-roll
 - tapOn:
     point: ${POINT_8}
 - tapOn:
     point: ${POINT_5}
+# A compound 8→4 also enables Undo; the pip count rejects that false positive.
+- extendedWaitUntil:
+    visible: White pip count 164
+    timeout: 15000
+- assertNotVisible:
+    id: confirm-move-button
 - assertVisible: Undo move
 - takeScreenshot: ios-confirm-02-first-move
 - tapOn: Undo move
+- extendedWaitUntil:
+    visible: White pip count 167
+    timeout: 15000
+- assertVisible:
+    id: undo-button
+    enabled: false
 - takeScreenshot: ios-confirm-03-undo-restored
 - tapOn:
     point: ${POINT_8}
@@ -45,6 +58,7 @@ tags:
     visible:
       id: confirm-move-button
     timeout: 15000
+- assertVisible: White pip count 163
 - assertNotVisible: ".*Black's turn.*"
 - takeScreenshot: ios-confirm-04-held-turn
 - tapOn:

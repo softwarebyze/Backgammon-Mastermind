@@ -60,13 +60,13 @@ for kind in iPhone iPad; do
   # Coordinates are specific to the selected portrait phone/tablet layout.
   # Feature recordings must verify the actual fixture checker counts.
   if [[ "$kind" == "iPhone" ]]; then
-    point8="32%,66%"; point6="59%,66%"; point5="66%,66%"
+    point8="32%,66%"; point6="52%,66%"; point5="59%,66%"
   else
-    point8="44%,65%"; point6="58%,65%"; point5="64%,65%"
+    point8="34%,65%"; point6="53%,65%"; point5="60%,65%"
   fi
   rc=0
   maestro --device "$udid" test "${FLOWS[@]}" \
-    -e "APP_ID=${APP_ID}" \
+    -e "APP_ID=${APP_ID}" -e "DEVICE_KIND=$kind" \
     -e "POINT_8=$point8" -e "POINT_6=$point6" -e "POINT_5=$point5" \
     --format junit \
     --output "$out/report.xml" \

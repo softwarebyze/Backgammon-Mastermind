@@ -45,10 +45,21 @@ tags:
       text: Language.*
     direction: UP
 - tapOn: Language.*
+# iPad form-sheet AX includes offscreen rows. Scroll inside the actual sheet
+# before trusting scrollUntilVisible; an offscreen tap dismissed it previously.
+- runFlow:
+    when:
+      true: ${DEVICE_KIND === 'iPad'}
+    commands:
+      - swipe:
+          start: 50%, 68%
+          end: 50%, 54%
+          duration: 600
 - scrollUntilVisible:
     element:
       text: עברית
     direction: DOWN
+- takeScreenshot: ios-settings-04-hebrew-option
 - tapOn: עברית
 # Language selection restarts the native app. Let that restart finish before
 # exercising an additional cold launch, otherwise it races RNRestart.
