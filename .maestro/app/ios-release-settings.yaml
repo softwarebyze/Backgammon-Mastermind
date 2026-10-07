@@ -35,3 +35,32 @@ tags:
       id: game-board-slot
     timeout: 20000
 - takeScreenshot: ios-settings-03-game-restored
+# Verify persisted language and mirrored Undo/Redo labels after a cold relaunch.
+- tapOn: Settings
+- extendedWaitUntil:
+    visible: Move hints
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Language
+    direction: UP
+- tapOn: Language
+- scrollUntilVisible:
+    element:
+      text: עברית
+    direction: DOWN
+- tapOn: עברית
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible: משחק נגד המחשב
+    timeout: 90000
+- tapOn: משחק נגד המחשב
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertVisible: ביטול המהלך
+- assertVisible: ביצוע המהלך מחדש
+- takeScreenshot: ios-settings-04-hebrew-undo-redo
