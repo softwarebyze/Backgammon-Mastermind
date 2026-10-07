@@ -7,11 +7,20 @@ tags:
 ---
 - launchApp:
     appId: com.apple.Preferences
+# Return to a known row first: a fast downward search can skip Accessibility
+# on the narrow Settings list and leave the iPhone at the bottom.
+- scrollUntilVisible:
+    element:
+      text: General
+    direction: UP
+    timeout: 60000
+    speed: 20
 - scrollUntilVisible:
     element:
       text: Accessibility
     direction: DOWN
-    timeout: 30000
+    timeout: 60000
+    speed: 20
 - tapOn: Accessibility
 - extendedWaitUntil:
     visible: Motion
@@ -23,14 +32,19 @@ tags:
 - runFlow:
     when:
       visible:
-        text: Reduce Motion
+        id: REDUCE_MOTION
+        text: '0'
         checked: false
     commands:
       - tapOn:
-          text: Reduce Motion
+          id: REDUCE_MOTION
+          text: '0'
           checked: false
+          # The AX row includes the label; its centre does not toggle UISwitch.
+          point: '94%,50%'
 - assertVisible:
-    text: Reduce Motion
+    id: REDUCE_MOTION
+    text: '1'
     checked: true
 - takeScreenshot: ios-reduced-motion-01-system-enabled
 - stopApp
