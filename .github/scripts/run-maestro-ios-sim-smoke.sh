@@ -9,6 +9,11 @@ WORKSPACE="${1:?workspace root required}"
 APP_PATH="${2:?simulator .app path required}"
 APP_ID="${3:-com.backgammonmastermind.preview}"
 OUT_ROOT="${WORKSPACE}/maestro-ios-output"
+FLOWS=("${WORKSPACE}/.maestro/app/backgammon-smoke.yaml")
+# Optional explicit feature flow, run on both devices in the same report/video.
+if [[ -n "${4:-}" ]]; then
+  FLOWS+=("$4")
+fi
 
 # Cold iOS CI simulators can take longer than Maestro's 120-second default
 # to start XCTest. Keep this separate from app assertion timeouts.
@@ -53,7 +58,7 @@ for kind in iPhone iPad; do
   xcrun simctl io "$udid" recordVideo "$out/e2e-recording.mp4" > "$out/recording.log" 2>&1 &
   record_pid=$!
   rc=0
-  maestro --device "$udid" test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+  maestro --device "$udid" test "${FLOWS[@]}" \
     -e "APP_ID=${APP_ID}" \
     --format junit \
     --output "$out/report.xml" \
