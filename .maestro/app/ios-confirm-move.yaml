@@ -16,9 +16,9 @@ tags:
 - tapOn: Settings
 - scrollUntilVisible:
     element:
-      text: Load position
+      text: Load position.*
     direction: DOWN
-- tapOn: Load position
+- tapOn: Load position.*
 - extendedWaitUntil:
     visible:
       id: developer-preset-e2e-undo-redo-3-1

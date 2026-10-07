@@ -27,7 +27,7 @@ fs.appendFileSync(process.env.FLOW_CALLS, JSON.stringify(args.filter(arg => arg.
 fs.writeFileSync(args[args.indexOf('--output') + 1], '<testsuite failures="1"/>');
 process.exit(1);
 `, { mode: 0o755 });
-    const result = spawnSync('bash', [script, fixture, 'fixture.app', 'com.test.release', join(fixture, 'settings.yaml'), join(fixture, 'confirm.yaml')], {
+    const result = spawnSync('bash', [script, fixture, 'fixture.app', 'com.test.release', join(fixture, 'settings.yaml'), join(fixture, 'confirm.yaml'), join(fixture, 'arabic.yaml')], {
       encoding: 'utf8',
       env: { ...process.env, PATH: `${fixture}:${process.env.PATH}`, CALLS: join(fixture, 'calls'), FLOW_CALLS: join(fixture, 'flows'), MAESTRO_DRIVER_STARTUP_TIMEOUT: '' },
       timeout: 10000,
@@ -35,13 +35,14 @@ process.exit(1);
     expect(result.status).toBe(1);
     expect(readFileSync(join(fixture, 'calls'), 'utf8')).toBe('phone:300000\ntablet:300000\n');
     const flows = readFileSync(join(fixture, 'flows'), 'utf8').trim().split('\n').map(line => JSON.parse(line) as string[]);
-    expect(flows).toEqual([[join(fixture, '.maestro/app/backgammon-smoke.yaml'), join(fixture, 'settings.yaml'), join(fixture, 'confirm.yaml')], [join(fixture, '.maestro/app/backgammon-smoke.yaml'), join(fixture, 'settings.yaml'), join(fixture, 'confirm.yaml')]]);
+    expect(flows).toEqual([[join(fixture, '.maestro/app/backgammon-smoke.yaml'), join(fixture, 'settings.yaml'), join(fixture, 'confirm.yaml'), join(fixture, 'arabic.yaml')], [join(fixture, '.maestro/app/backgammon-smoke.yaml'), join(fixture, 'settings.yaml'), join(fixture, 'confirm.yaml'), join(fixture, 'arabic.yaml')]]);
     for (const device of ['iphone', 'ipad']) {
       expect(readFileSync(join(fixture, 'maestro-ios-output', device, 'failure-final-state.png'), 'utf8')).toBe('failure image');
       expect(readFileSync(join(fixture, 'maestro-ios-output', device, 'report.xml'), 'utf8')).toContain('failures="1"');
     }
     const workflow = readFileSync(join(__dirname, '../../.github/workflows/bgsage-verify.yml'), 'utf8');
     expect(workflow).toContain('path: maestro-ios-output/**');
+    expect(workflow).toContain('$GITHUB_WORKSPACE/.maestro/app/ios-arabic-restart.yaml');
   }
   finally {
     rmSync(fixture, { recursive: true, force: true });

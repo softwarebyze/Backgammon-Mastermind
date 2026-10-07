@@ -1,0 +1,43 @@
+# Verify Arabic selection and persisted native RTL after two launches.
+appId: ${APP_ID}
+tags:
+  - ios
+  - i18n
+  - rtl
+  - pull-request
+---
+- stopApp
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: Play against the computer
+    timeout: 90000
+- tapOn: Settings
+- extendedWaitUntil:
+    visible: Move hints
+    timeout: 20000
+- tapOn: Language.*
+- extendedWaitUntil:
+    visible: العربية
+    timeout: 15000
+- takeScreenshot: ios-arabic-01-language-option
+- tapOn: العربية
+# Finish RNRestart before testing an additional cold launch.
+- extendedWaitUntil:
+    visible: العب ضد الكمبيوتر
+    timeout: 90000
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible: العب ضد الكمبيوتر
+    timeout: 90000
+- takeScreenshot: ios-arabic-02-persisted-home
+- tapOn: العب ضد الكمبيوتر
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertVisible: تراجع عن الحركة
+- assertVisible: إعادة الحركة
+- takeScreenshot: ios-arabic-03-rtl-board
