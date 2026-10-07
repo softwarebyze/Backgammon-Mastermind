@@ -234,6 +234,15 @@ jobs:
         run: |
           APP=$(ls -d "$RUNNER_TEMP"/bgsage-dd/Build/Products/Release-iphonesimulator/*.app | head -1)
           echo "app: $APP"
+          # Validate the compiled Release plist, not just the prebuild config.
+          python3 - "$APP/Info.plist" <<'PYCODE'
+          import plistlib, sys
+          with open(sys.argv[1], 'rb') as source:
+              plist = plistlib.load(source)
+          assert '_expo._tcp' not in plist.get('NSBonjourServices', []), 'dev Bonjour service in Release app'
+          assert not plist.get('NSLocalNetworkUsageDescription', '').startswith('Expo Dev Launcher'), 'dev network description in Release app'
+          print('Compiled Release plist: dev-launcher network keys absent')
+          PYCODE
           bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "$GITHUB_WORKSPACE/.maestro/app/ios-release-settings.yaml"
 
       - name: Upload iOS Maestro screenshots
