@@ -27,6 +27,11 @@ type ShortcutEvent = {
   repeat?: boolean;
 };
 
+type FocusTarget = {
+  closest?: (selector: string) => unknown;
+  tagName?: string;
+} | null;
+
 /** Which shortcut a keydown maps to, or null. Pure, so it's unit-testable. */
 export function shortcutFor(
   e: ShortcutEvent,
@@ -63,32 +68,33 @@ export function shortcutFor(
 }
 
 /** Space/Enter already activate a focused button. Don't also roll. */
-export function rollBlockedByFocus(target: { closest?: (selector: string) => unknown } | null): boolean {
+export function rollBlockedByFocus(target: FocusTarget): boolean {
   return Boolean(target?.closest?.('button, a, [role="button"]'));
 }
 
-type FocusTarget = { closest?: (selector: string) => unknown } | null;
-
 /**
- * Enter confirms whenever the confirm bar is up, even if focus stayed on
- * Live (or any other game control) after turn history. Space still activates
- * the focused button. Dialog and alert buttons keep Enter.
+ * While the Confirm bar is up, Space/Enter should confirm even if a board
+ * point (also a button) still has focus after tapping. Skip when some other
+ * interactive control is focused — Confirm/Undo already handle the key (don't
+ * double-fire), and Leave/settings/etc. must not be stolen into a confirm.
  */
-export function shortcutSuppressedByFocus(
-  action: 'roll' | 'confirm' | 'undo' | 'redo' | 'cancel' | null,
-  event: { key: string },
-  target: FocusTarget,
-): boolean {
-  if (action !== 'roll' && action !== 'confirm') {
+export function confirmBlockedByFocus(target: FocusTarget, key?: string): boolean {
+  if (!target?.closest) {
     return false;
   }
-  if (!rollBlockedByFocus(target)) {
+  if (target.closest('[role="dialog"], [role="alertdialog"], [role="alert"]')) {
+    return true;
+  }
+  // Preserve the Tutor prototype's Enter shortcut after returning to Live.
+  // Space and all other chrome controls retain their own keyboard handling.
+  if (key?.toLowerCase() === 'enter' && target.closest('[data-testid="history-live-button"]')) {
     return false;
   }
-  if (action === 'confirm' && event.key.toLowerCase() === 'enter') {
-    return Boolean(target?.closest?.('[role="dialog"], [role="alertdialog"], [role="alert"]'));
+  // Focus left on the board after spending dice — still confirm.
+  if (target.closest('[data-testid="board-view"]')) {
+    return false;
   }
-  return true;
+  return Boolean(target.closest('button, a, [role="button"]'));
 }
 
 /** Skip when the browser already handled it, key-repeat, or a text field has focus. */
@@ -104,12 +110,94 @@ export function shouldIgnoreShortcutKeydown(e: {
   return Boolean(tag && ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag));
 }
 
+type ShortcutConfig = {
+  canRoll: boolean;
+  /** Confirm bar is up and the human may confirm right now. */
+  confirmReady: boolean;
+  canUndo: boolean;
+  canRedo: boolean;
+  hasSelection: boolean;
+  onRoll: () => void;
+  onConfirm: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  onCancelSelection: () => void;
+};
+
+/**
+ * Wire the game shortcuts onto `win`; returns the cleanup. Split from the hook
+ * so tests can drive it with real DOM events.
+ *
+ * Confirm (Space/Enter while the bar is up) listens in the capture phase.
+ * Board points are RN-web Pressables rendered as `<button>`: their keydown
+ * handler calls stopPropagation() at the React root, so a bubble listener on
+ * window never sees the key, and the browser then "clicks" the focused point
+ * instead. Capturing lets confirm run first; preventDefault + stopPropagation
+ * keep the point from also being pressed. Everything else stays on bubble so
+ * a focused control's own handling still wins.
+ */
+export function attachGameKeyboardShortcuts(
+  win: Pick<Window, 'addEventListener' | 'removeEventListener'>,
+  config: ShortcutConfig,
+): () => void {
+  const onKeyDownCapture = (e: KeyboardEvent) => {
+    if (!config.confirmReady) {
+      return;
+    }
+    const target = e.target as HTMLElement | null;
+    if (shouldIgnoreShortcutKeydown({ defaultPrevented: e.defaultPrevented, repeat: e.repeat, target })) {
+      return;
+    }
+    if (shortcutFor(e, { awaitingConfirm: true }) !== 'confirm' || confirmBlockedByFocus(target, e.key)) {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    config.onConfirm();
+  };
+  const onKeyDown = (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement | null;
+    if (shouldIgnoreShortcutKeydown({ defaultPrevented: e.defaultPrevented, repeat: e.repeat, target })) {
+      return;
+    }
+    const action = shortcutFor(e, { awaitingConfirm: config.confirmReady });
+    // Confirm is handled (or deliberately left to the focused control) in capture.
+    if (!action || action === 'confirm') {
+      return;
+    }
+    if (action === 'roll' && rollBlockedByFocus(target)) {
+      return;
+    }
+    if (action === 'roll' && config.canRoll) {
+      e.preventDefault();
+      config.onRoll();
+    }
+    else if (action === 'undo' && config.canUndo) {
+      e.preventDefault();
+      config.onUndo();
+    }
+    else if (action === 'redo' && config.canRedo) {
+      e.preventDefault();
+      config.onRedo();
+    }
+    else if (action === 'cancel' && config.hasSelection) {
+      e.preventDefault();
+      config.onCancelSelection();
+    }
+  };
+  win.addEventListener('keydown', onKeyDownCapture, true);
+  win.addEventListener('keydown', onKeyDown);
+  return () => {
+    win.removeEventListener('keydown', onKeyDownCapture, true);
+    win.removeEventListener('keydown', onKeyDown);
+  };
+}
+
 /**
  * Web only: R / Space / Enter roll (Space/Enter confirm while the confirm bar
  * is up), Z or ⌘Z undo, Y or ⇧⌘Z redo, Esc cancels a selection. Roll only
- * fires when the human can actually roll. Enter still confirms when focus
- * stayed on another control, such as Live after turn history. Ignores key
- * repeat so holding Enter can't double-confirm. The listener follows screen focus.
+ * fires when the human can actually roll. Ignores key repeat so holding Enter
+ * can't double-confirm. The listener follows screen focus.
  */
 export function useGameKeyboardShortcuts({
   state,
@@ -129,50 +217,19 @@ export function useGameKeyboardShortcuts({
       return;
     }
     const humanTurn = !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
-    const canRoll = humanTurn && !isReviewing && !tutorPaused
-      && (state.phase === 'rolling' || state.phase === 'opening-roll');
-    const confirmReady = canConfirm && !isReviewing && !tutorPaused && humanTurn;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (shouldIgnoreShortcutKeydown({
-        defaultPrevented: e.defaultPrevented,
-        repeat: e.repeat,
-        target: e.target as HTMLElement | null,
-      })) {
-        return;
-      }
-      const target = e.target as HTMLElement | null;
-      const action = shortcutFor(e, { awaitingConfirm: confirmReady });
-      if (!action) {
-        return;
-      }
-      if (shortcutSuppressedByFocus(action, e, target)) {
-        return;
-      }
-      if (action === 'confirm' && confirmReady) {
-        e.preventDefault();
-        e.stopPropagation();
-        onConfirm();
-      }
-      else if (action === 'roll' && canRoll) {
-        e.preventDefault();
-        onRoll();
-      }
-      else if (action === 'undo' && canUndo) {
-        e.preventDefault();
-        onUndo();
-      }
-      else if (action === 'redo' && canRedo) {
-        e.preventDefault();
-        onRedo();
-      }
-      else if (action === 'cancel' && state.selectedPoint !== null) {
-        e.preventDefault();
-        onCancelSelection();
-      }
-    };
-    // Capture so Enter confirms before a focused control (Live) handles the key.
-    window.addEventListener('keydown', onKeyDown, true);
-    return () => window.removeEventListener('keydown', onKeyDown, true);
+    return attachGameKeyboardShortcuts(window, {
+      canRoll: humanTurn && !isReviewing && !tutorPaused
+        && (state.phase === 'rolling' || state.phase === 'opening-roll'),
+      confirmReady: canConfirm && !isReviewing && !tutorPaused && humanTurn,
+      canUndo,
+      canRedo,
+      hasSelection: state.selectedPoint !== null,
+      onRoll,
+      onConfirm,
+      onUndo,
+      onRedo,
+      onCancelSelection,
+    });
   }, [
     state,
     isReviewing,

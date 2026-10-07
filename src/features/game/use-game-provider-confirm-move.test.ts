@@ -93,6 +93,31 @@ describe('provider confirm move on', () => {
     expect(held.dice).toEqual(dice);
   });
 
+  it('undo from confirm-hold does not leave a lingering historyPath arrow', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    act(() => {
+      result.current.startGame('vs-human');
+    });
+    playOpening(result);
+
+    spendAllDice(result);
+    expect(result.current.state?.remainingDice).toEqual([]);
+    expect(result.current.historyPath).toBeNull();
+
+    act(() => {
+      result.current.doUndo();
+    });
+    // Mid-animation must not flash the undone ply as a dashed arrow.
+    expect(result.current.historyPath).toBeNull();
+    finishAnimation(result);
+
+    const afterUndo = result.current.state!;
+    expect(afterUndo.phase).toBe('moving');
+    expect(afterUndo.remainingDice.length).toBeGreaterThan(0);
+    // And after the checker lands, still no mis-anchored undo trail.
+    expect(result.current.historyPath).toBeNull();
+  });
+
   it('confirm ends the turn; undo restores a checker', () => {
     const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {

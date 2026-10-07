@@ -1,4 +1,5 @@
 flows:
+  - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
 
 excludeTags:

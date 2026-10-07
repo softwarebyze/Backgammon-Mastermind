@@ -146,6 +146,7 @@ export function MoveReviewTurnStrip({
       <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.live')}
+        testID="history-live-button"
         accessibilityState={{ selected: !isReviewing }}
         onPress={() => {
           if (isReviewing) {

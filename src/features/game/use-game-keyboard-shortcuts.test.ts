@@ -1,7 +1,7 @@
 import {
+  confirmBlockedByFocus,
   rollBlockedByFocus,
   shortcutFor,
-  shortcutSuppressedByFocus,
   shouldIgnoreShortcutKeydown,
 } from '@/features/game/use-game-keyboard-shortcuts';
 
@@ -27,6 +27,39 @@ function key(
     altKey: false,
     repeat: false,
     ...mods,
+  };
+}
+
+/**
+ * Mimic focus on a board point: inside board-view, and also a button
+ * (so roll would still be blocked).
+ */
+function boardPointTarget() {
+  return {
+    closest: (selector: string) => {
+      if (selector === '[data-testid="board-view"]') {
+        return {};
+      }
+      if (selector === 'button, a, [role="button"]') {
+        return {};
+      }
+      return null;
+    },
+  };
+}
+
+/** Mimic Confirm, Undo, Leave, etc. — interactive, but not on the board. */
+function chromeButtonTarget() {
+  return {
+    closest: (selector: string) => {
+      if (selector === '[data-testid="board-view"]') {
+        return null;
+      }
+      if (selector === 'button, a, [role="button"]') {
+        return {};
+      }
+      return null;
+    },
   };
 }
 
@@ -67,29 +100,29 @@ describe('game keyboard shortcuts', () => {
     expect(shortcutFor(key('z', { metaKey: true, shiftKey: true, altKey: true }))).toBeNull();
   });
 
-  it('does not steal Space or Enter from a focused button', () => {
+  it('does not steal Space or Enter from a focused button when rolling', () => {
     expect(rollBlockedByFocus(null)).toBe(false);
     expect(rollBlockedByFocus({ closest: () => null })).toBe(false);
     expect(rollBlockedByFocus({ closest: () => ({}) })).toBe(true);
   });
 
-  it('confirms on Enter even when focus stayed on Live', () => {
-    const liveButton = {
-      closest: (selector: string) => selector.includes('role="button"') ? {} : null,
-    };
-    expect(shortcutSuppressedByFocus('confirm', key('Enter'), liveButton)).toBe(false);
-    expect(shortcutSuppressedByFocus('confirm', key(' '), liveButton)).toBe(true);
-    expect(shortcutSuppressedByFocus('roll', key('Enter'), liveButton)).toBe(true);
-    expect(shortcutSuppressedByFocus('confirm', key('Enter'), null)).toBe(false);
+  it('allows Enter confirm when a board point is focused with the bar up', () => {
+    const point = boardPointTarget();
+    expect(shortcutFor(key('Enter'), { awaitingConfirm: true })).toBe('confirm');
+    expect(confirmBlockedByFocus(point)).toBe(false);
+    // Roll would still be blocked — points are buttons — but confirm is not.
+    expect(rollBlockedByFocus(point)).toBe(true);
   });
 
-  it('leaves Enter to a focused dialog button', () => {
-    const dialogButton = {
-      closest: (selector: string) => (
-        selector.includes('role="button"') || selector.includes('role="alert"') ? {} : null
-      ),
-    };
-    expect(shortcutSuppressedByFocus('confirm', key('Enter'), dialogButton)).toBe(true);
+  it('allows Space confirm when a board point is focused with the bar up', () => {
+    const point = boardPointTarget();
+    expect(shortcutFor(key(' '), { awaitingConfirm: true })).toBe('confirm');
+    expect(confirmBlockedByFocus(point)).toBe(false);
+  });
+
+  it('does not steal confirm from Confirm, Undo, or other chrome buttons', () => {
+    expect(confirmBlockedByFocus(chromeButtonTarget())).toBe(true);
+    expect(confirmBlockedByFocus(null)).toBe(false);
   });
 
   it('ignores key repeat and already-handled events', () => {
@@ -127,4 +160,19 @@ describe('game keyboard shortcuts', () => {
       target: { tagName: 'DIV' },
     })).toBe(false);
   });
+});
+
+it('preserves Enter after Live without stealing Space or dialog buttons', () => {
+  const live = { closest: (selector: string) => (
+    selector === '[data-testid="history-live-button"]'
+    || selector === 'button, a, [role="button"]'
+      ? {}
+      : null
+  ) };
+  expect(confirmBlockedByFocus(live, 'Enter')).toBe(false);
+  expect(confirmBlockedByFocus(live, ' ')).toBe(true);
+  expect(rollBlockedByFocus(live)).toBe(true);
+  const dialogLive = { closest: () => ({}) };
+  expect(confirmBlockedByFocus(dialogLive, 'Enter')).toBe(true);
+  expect(confirmBlockedByFocus(chromeButtonTarget(), 'Enter')).toBe(true);
 });
