@@ -11,8 +11,8 @@ APP_ID="${3:-com.backgammonmastermind.preview}"
 OUT_ROOT="${WORKSPACE}/maestro-ios-output"
 FLOWS=("${WORKSPACE}/.maestro/app/backgammon-smoke.yaml")
 # Optional explicit feature flow, run on both devices in the same report/video.
-if [[ -n "${4:-}" ]]; then
-  FLOWS+=("$4")
+if (( $# > 3 )); then
+  FLOWS+=("${@:4}")
 fi
 
 # Cold iOS CI simulators can take longer than Maestro's 120-second default
@@ -57,9 +57,17 @@ for kind in iPhone iPad; do
   log_pid=$!
   xcrun simctl io "$udid" recordVideo "$out/e2e-recording.mp4" > "$out/recording.log" 2>&1 &
   record_pid=$!
+  # Coordinates are specific to the selected portrait phone/tablet layout.
+  # Feature recordings must verify the actual fixture checker counts.
+  if [[ "$kind" == "iPhone" ]]; then
+    point8="32%,66%"; point6="59%,66%"; point5="66%,66%"
+  else
+    point8="44%,65%"; point6="58%,65%"; point5="64%,65%"
+  fi
   rc=0
   maestro --device "$udid" test "${FLOWS[@]}" \
     -e "APP_ID=${APP_ID}" \
+    -e "POINT_8=$point8" -e "POINT_6=$point6" -e "POINT_5=$point5" \
     --format junit \
     --output "$out/report.xml" \
     --test-output-dir "$out" \

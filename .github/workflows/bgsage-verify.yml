@@ -243,7 +243,7 @@ jobs:
           assert not plist.get('NSLocalNetworkUsageDescription', '').startswith('Expo Dev Launcher'), 'dev network description in Release app'
           print('Compiled Release plist: dev-launcher network keys absent')
           PYCODE
-          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "$GITHUB_WORKSPACE/.maestro/app/ios-release-settings.yaml"
+          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "$GITHUB_WORKSPACE/.maestro/app/ios-release-settings.yaml" "$GITHUB_WORKSPACE/.maestro/app/ios-confirm-move.yaml"
 
       - name: Upload iOS Maestro screenshots
         if: always()

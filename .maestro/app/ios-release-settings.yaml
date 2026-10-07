@@ -42,9 +42,9 @@ tags:
     timeout: 20000
 - scrollUntilVisible:
     element:
-      text: Language
+      text: Language.*
     direction: UP
-- tapOn: Language
+- tapOn: Language.*
 - scrollUntilVisible:
     element:
       text: עברית
