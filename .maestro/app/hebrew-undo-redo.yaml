@@ -6,6 +6,10 @@ tags:
   - rtl
   - pull-request
 ---
+# Finish removing the previous Android task before clearing/relaunching.
+- stopApp
+- waitForAnimationToEnd:
+    timeout: 5000
 - launchApp:
     clearState: true
 - extendedWaitUntil:
@@ -15,6 +19,10 @@ tags:
 - assertVisible: Undo move
 - assertVisible: Redo move
 - takeScreenshot: undo-redo-01-english
+# Finish removing the previous Android task before clearing/relaunching.
+- stopApp
+- waitForAnimationToEnd:
+    timeout: 5000
 - launchApp:
     clearState: true
 - extendedWaitUntil:
