@@ -1,0 +1,44 @@
+# Use the fixed human 3/1 roll to expose the overlay without random opening rolls.
+appId: ${APP_ID}
+tags:
+  - ios
+  - pull-request
+---
+- stopApp
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: Play against the computer
+    timeout: 90000
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Load position.*
+    direction: DOWN
+- tapOn: Load position.*
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-e2e-undo-redo-3-1
+    timeout: 60000
+- tapOn:
+    id: developer-preset-e2e-undo-redo-3-1
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 20000
+- assertVisible: White pip count 167
+- assertNotVisible:
+    id: direction-overlay
+- tapOn: Settings
+- extendedWaitUntil:
+    visible: Direction overlay
+    timeout: 15000
+- tapOn: Direction overlay.*
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: direction-overlay
+    timeout: 15000
+- assertVisible: White pip count 167
+- takeScreenshot: ios-horseshoe-on-board

@@ -65,6 +65,12 @@ tags:
     timeout: 15000
 - assertVisible: White pip count 163
 - assertNotVisible: ".*Black's turn.*"
+- tapOn:
+    id: history-live-button
+- assertVisible:
+    id: confirm-move-button
+- assertVisible: White pip count 163
+- assertNotVisible: ".*Black's turn.*"
 - takeScreenshot: ios-confirm-04-held-turn
 - tapOn:
     id: confirm-move-button
