@@ -4,6 +4,10 @@ tags:
   - pull-request
 ---
 # Fast computer was a settings toggle. Pace is now one default, so the row is gone.
+# Finish removing the previous Android task before clearing/relaunching.
+- stopApp
+- waitForAnimationToEnd:
+    timeout: 5000
 - launchApp:
     clearState: true
 - extendedWaitUntil:
