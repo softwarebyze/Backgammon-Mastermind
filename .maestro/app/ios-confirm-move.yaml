@@ -11,9 +11,14 @@ tags:
 - extendedWaitUntil:
     visible: Play against the computer
     timeout: 90000
-- openLink: backgammonmastermind.preview://developer
-# iOS asks permission before handing a custom URL back to the app.
-- tapOn: Open
+# Navigate within the preview app: the external URL handoff can return Home
+# after the preceding language flow restarts the native application.
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Load position
+    direction: DOWN
+- tapOn: Load position
 - extendedWaitUntil:
     visible:
       id: developer-preset-e2e-undo-redo-3-1
