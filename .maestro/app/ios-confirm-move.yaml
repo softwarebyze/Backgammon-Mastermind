@@ -12,19 +12,14 @@ tags:
     visible: Play against the computer
     timeout: 90000
 - openLink: backgammonmastermind.preview://developer
-- scrollUntilVisible:
-    element:
-      id: developer-json-input
-    direction: DOWN
+# iOS asks permission before handing a custom URL back to the app.
+- tapOn: Open
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-e2e-undo-redo-3-1
     timeout: 60000
-- longPressOn:
-    id: developer-json-input
-- tapOn: (?i)select all
-- eraseText: 1
-- inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
-- hideKeyboard
 - tapOn:
-    id: developer-load-json
+    id: developer-preset-e2e-undo-redo-3-1
 - extendedWaitUntil:
     visible:
       id: game-board-slot

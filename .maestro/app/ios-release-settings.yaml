@@ -50,6 +50,11 @@ tags:
       text: עברית
     direction: DOWN
 - tapOn: עברית
+# Language selection restarts the native app. Let that restart finish before
+# exercising an additional cold launch, otherwise it races RNRestart.
+- extendedWaitUntil:
+    visible: משחק נגד המחשב
+    timeout: 90000
 - stopApp
 - launchApp:
     clearState: false
@@ -57,6 +62,11 @@ tags:
     visible: משחק נגד המחשב
     timeout: 90000
 - tapOn: משחק נגד המחשב
+# A saved session exists from the Settings roundtrip above.
+- extendedWaitUntil:
+    visible: המשך
+    timeout: 15000
+- tapOn: המשך
 - extendedWaitUntil:
     visible:
       id: game-board-slot
