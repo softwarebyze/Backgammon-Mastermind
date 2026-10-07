@@ -5,6 +5,7 @@ flows:
   - app/undo-redo.yaml
   - app/settings-no-fast-mode.yaml
   - app/fixed-pace-gameplay.yaml
+  - app/held-drag-auto-move.yaml
   - app/game-settings-gear.yaml
   - app/auto-move-bear-off-bar.yaml
   - app/auto-move-bear-off.yaml

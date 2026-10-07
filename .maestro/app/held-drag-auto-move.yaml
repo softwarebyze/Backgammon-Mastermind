@@ -1,0 +1,65 @@
+# #208: lift another checker during a manual move, then keep the finger down
+# through the remaining forced move and turn handoff. Review recording for the
+# lifted checker BEFORE Black starts; final counts alone do not prove the race.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn:
+    id: open-settings-button
+- scrollUntilVisible:
+    element:
+      id: setting-toggle-confirm-move
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    id: setting-toggle-confirm-move
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"placements":[{"point":6,"player":"white","count":1},{"point":24,"player":"white","count":1},{"point":4,"player":"black","count":2},{"point":20,"player":"black","count":2},{"point":13,"player":"black","count":11}],"borneOff":{"white":13},"dice":[3,1],"mode":"vs-human"}'
+# Scroll to the action rather than blindly sending Back: a stylus keyboard
+# can already be dismissed, and Back would leave Developer instead.
+- scrollUntilVisible:
+    element:
+      id: developer-load-json
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible: White pip count 30
+    timeout: 15000
+- assertVisible: 'Point 24, 1 white checker'
+- assertVisible: 'Point 6, 1 white checker'
+- tapOn:
+    id: point-24
+- takeScreenshot: held-drag-01-selected-first-move
+# Avoid waiting for the first animation to settle before starting the pan.
+- tapOn:
+    id: point-21
+    waitToSettleTimeoutMs: 0
+- swipe:
+    start: 52%, 58%
+    end: 90%, 45%
+    duration: 5000
+    waitToSettleTimeoutMs: 0
+- extendedWaitUntil:
+    visible: ".*Black's turn.*"
+    timeout: 15000
+- assertVisible: White pip count 26
+- assertVisible: 'Point 21, 1 white checker'
+- assertVisible: 'Point 5, 1 white checker'
+- takeScreenshot: held-drag-02-handoff-after-held-finger
