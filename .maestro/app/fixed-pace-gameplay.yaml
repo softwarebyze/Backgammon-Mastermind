@@ -1,0 +1,69 @@
+# Actual human/computer checker travel, in addition to the Settings removal gate.
+# Review the recording for motion; exact durations/curves are regression-tested.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"currentPlayer":"black","mode":"vs-computer"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible: Black pip count 163
+    timeout: 60000
+- assertVisible: 'Point 20, 2 black checkers'
+- assertVisible: 'Point 17, 2 black checkers'
+- assertVisible: 'Point 19, 4 black checkers'
+- assertVisible: White pip count 167
+- takeScreenshot: fixed-pace-01-computer-turn-complete
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 15000
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible: White pip count 164
+    timeout: 15000
+- takeScreenshot: fixed-pace-02-human-three-pip-hop
+- tapOn:
+    id: point-6
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible: White pip count 163
+    timeout: 15000
+- assertVisible: 'Point 5, 2 white checkers'
+- assertVisible:
+    id: confirm-move-button
+- takeScreenshot: fixed-pace-03-human-one-pip-hop

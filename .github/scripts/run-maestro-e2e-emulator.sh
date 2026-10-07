@@ -29,6 +29,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
+  "${WORKSPACE}/.maestro/app/fixed-pace-gameplay.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
   "${WORKSPACE}/.maestro/app/auto-move-bear-off-bar.yaml" \
