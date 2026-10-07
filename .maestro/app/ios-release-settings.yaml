@@ -1,0 +1,37 @@
+# iOS feature QA uses the shared board group; point IDs are Android-only.
+appId: ${APP_ID}
+tags:
+  - ios
+  - pull-request
+---
+- stopApp
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: Play against the computer
+    timeout: 90000
+- tapOn: Play against the computer
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- takeScreenshot: ios-settings-01-game-gear
+- tapOn: Settings
+- extendedWaitUntil:
+    visible: Move hints
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: Dice display
+    direction: DOWN
+- assertNotVisible: Fast computer
+- assertVisible: Auto-roll dice
+- assertVisible: Auto-move when forced
+- takeScreenshot: ios-settings-02-fixed-pace
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 20000
+- takeScreenshot: ios-settings-03-game-restored

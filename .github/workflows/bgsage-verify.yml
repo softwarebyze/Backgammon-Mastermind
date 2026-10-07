@@ -234,7 +234,7 @@ jobs:
         run: |
           APP=$(ls -d "$RUNNER_TEMP"/bgsage-dd/Build/Products/Release-iphonesimulator/*.app | head -1)
           echo "app: $APP"
-          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview
+          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "$GITHUB_WORKSPACE/.maestro/app/ios-release-settings.yaml"
 
       - name: Upload iOS Maestro screenshots
         if: always()
