@@ -1,6 +1,8 @@
 import type { GameState } from '@/lib/game';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useRef } from 'react';
+import { settingProperties } from '@/lib/analytics/settings-analytics';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
 /**
  * Fires `game_completed` once per game, from the game provider (always
@@ -12,6 +14,7 @@ import { useCallback, useEffect, useRef } from 'react';
  */
 export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
   const posthog = usePostHog();
+  const { preferences } = useGamePreferences();
   const armedRef = useRef(false);
   const completedRef = useRef(state?.phase === 'game-over');
 
@@ -40,8 +43,9 @@ export function useGameCompletedCapture(state: GameState | null, moveCount: numb
       mode: state.mode,
       winner: state.winner,
       move_count: moveCount,
+      ...settingProperties(preferences),
     });
-  }, [posthog, state, moveCount]);
+  }, [posthog, state, moveCount, preferences]);
 
   return { noteMoveApplied, resetForNewGame };
 }
