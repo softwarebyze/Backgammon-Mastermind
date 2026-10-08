@@ -96,6 +96,20 @@ global.window = {};
 // @ts-expect-error
 global.window = global;
 
+// Product default for confirmMove is ON. Turn-flow / undo provider tests still
+// expect today's auto-end unless they opt in — keep the test baseline off.
+jest.mock('@/lib/game-preferences/storage', () => {
+  const actual = jest.requireActual('@/lib/game-preferences/storage');
+  const { DEFAULT_GAME_PREFERENCES } = jest.requireActual('@/lib/game-preferences/types');
+  return {
+    ...actual,
+    loadGamePreferences: jest.fn(() => ({
+      ...DEFAULT_GAME_PREFERENCES,
+      confirmMove: false,
+    })),
+  };
+});
+
 // Mock expo-audio (native module) so provider-level tests can import the SFX chain.
 jest.mock('expo-audio', () => ({
   createAudioPlayer: jest.fn(() => ({

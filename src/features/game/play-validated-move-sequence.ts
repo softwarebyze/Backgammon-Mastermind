@@ -12,6 +12,7 @@ import {
 } from '@/features/game/animated-move-sequence';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { moveSequenceInvolvesHit } from '@/lib/game';
+import { shouldDeferTurnEnd } from '@/lib/game-preferences/confirm-move';
 
 type PlayMove = (
   snapshot: GameState,
@@ -69,14 +70,18 @@ export function playValidatedMoveSequence(opts: {
       }
       settled = true;
       finishOnceRef.current = null;
-      setState(applyResolvedSequence(snapshot, moves, onMoveApplied));
+      setState(applyResolvedSequence(snapshot, moves, {
+        onMoveApplied,
+        applyOpts: shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined,
+      }));
       setMoveAnimation(null);
       setSequenceActive(false);
     };
     setSequenceActive(true);
     finishOnceRef.current = settle;
     // Immediate audio feedback for the whole glide: play each step's SFX now.
-    const steps = resolveSequenceSteps(snapshot, moves);
+    const applyOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
+    const steps = resolveSequenceSteps(snapshot, moves, applyOpts);
     if (steps) {
       for (const step of steps) {
         onMoveStarted?.(step.before, step.legal, step.after);

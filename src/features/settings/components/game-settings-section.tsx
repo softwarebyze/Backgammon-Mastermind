@@ -26,6 +26,7 @@ export function GameSettingsSection({ showHints = false }: Props) {
     setSoundEnabled,
     setFastComputer,
     setTutorMode,
+    setConfirmMove,
   } = useGamePreferences();
 
   const trackPreference = React.useCallback(
@@ -78,6 +79,10 @@ export function GameSettingsSection({ showHints = false }: Props) {
         onTutorModeChange={(value) => {
           trackPreference('tutor_mode', value);
           setTutorMode(value);
+        }}
+        onConfirmMoveChange={(value) => {
+          trackPreference('confirm_move', value);
+          setConfirmMove(value);
         }}
         showHints={showHints}
       />

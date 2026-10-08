@@ -11,7 +11,7 @@ jest.mock('@/lib/game-sfx/play-game-sfx', () => ({ playGameSfx: jest.fn() }));
 beforeEach(() => {
   jest.useFakeTimers();
   jest.mocked(useGamePreferences).mockReturnValue({
-    preferences: { ...DEFAULT_GAME_PREFERENCES, autoRoll: true },
+    preferences: { ...DEFAULT_GAME_PREFERENCES, autoRoll: true, confirmMove: false },
   } as ReturnType<typeof useGamePreferences>);
 });
 
@@ -72,4 +72,73 @@ it('pauses human auto-roll off the board and resumes on return', () => {
   rerender({ enabled: true });
   act(() => jest.advanceTimersByTime(1000));
   expect(doRollDice).toHaveBeenCalledTimes(1);
+});
+
+it('holds a blocked roll instead of auto-passing when confirmMove is on', () => {
+  jest.mocked(useGamePreferences).mockReturnValue({
+    preferences: { ...DEFAULT_GAME_PREFERENCES, autoRoll: false, confirmMove: true },
+  } as ReturnType<typeof useGamePreferences>);
+  const doPassTurn = jest.fn();
+  const state = createInitialState('vs-human');
+  state.phase = 'no-move';
+  state.dice = [6, 6];
+  state.remainingDice = [6, 6, 6, 6];
+  renderHook(() => useGameplayHelpers({
+    enabled: true,
+    state,
+    isAnimating: false,
+    hasRedo: false,
+    doRollDice: jest.fn(),
+    doMove: jest.fn(),
+    doMoveSequence: jest.fn(),
+    doPassTurn,
+  }));
+  act(() => jest.advanceTimersByTime(5000));
+  expect(doPassTurn).not.toHaveBeenCalled();
+});
+
+it('auto-passes a blocked roll when confirmMove is off', () => {
+  jest.mocked(useGamePreferences).mockReturnValue({
+    preferences: { ...DEFAULT_GAME_PREFERENCES, autoRoll: false, confirmMove: false },
+  } as ReturnType<typeof useGamePreferences>);
+  const doPassTurn = jest.fn();
+  const state = createInitialState('vs-human');
+  state.phase = 'no-move';
+  state.dice = [6, 6];
+  state.remainingDice = [6, 6, 6, 6];
+  renderHook(() => useGameplayHelpers({
+    enabled: true,
+    state,
+    isAnimating: false,
+    hasRedo: false,
+    doRollDice: jest.fn(),
+    doMove: jest.fn(),
+    doMoveSequence: jest.fn(),
+    doPassTurn,
+  }));
+  act(() => jest.advanceTimersByTime(1000));
+  expect(doPassTurn).toHaveBeenCalledTimes(1);
+});
+
+it('turning confirmMove off passes a spent-dice hold', () => {
+  jest.mocked(useGamePreferences).mockReturnValue({
+    preferences: { ...DEFAULT_GAME_PREFERENCES, autoRoll: false, confirmMove: false },
+  } as ReturnType<typeof useGamePreferences>);
+  const doPassTurn = jest.fn();
+  const state = createInitialState('vs-human');
+  state.phase = 'moving';
+  state.dice = [3, 5];
+  state.remainingDice = [];
+  renderHook(() => useGameplayHelpers({
+    enabled: true,
+    state,
+    isAnimating: false,
+    hasRedo: false,
+    doRollDice: jest.fn(),
+    doMove: jest.fn(),
+    doMoveSequence: jest.fn(),
+    doPassTurn,
+  }));
+  act(() => jest.advanceTimersByTime(1000));
+  expect(doPassTurn).toHaveBeenCalledTimes(1);
 });

@@ -14,6 +14,8 @@ import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 import { useMoveLog } from '@/features/game/use-move-log';
 import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
 import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
+import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
+import { loadGamePreferences } from '@/lib/game-preferences/storage';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
 import { loadPersistedGame } from '@/lib/game/persistence';
@@ -81,6 +83,9 @@ export function useGameProviderValue(active: boolean): GameContextType {
     popLastMove,
     restoreMove,
     gameMode: state?.mode,
+    shouldSuppressHistoryPath: () => (
+      state != null && isAwaitingMoveConfirm(state, loadGamePreferences().confirmMove)
+    ),
   });
   const { clearAITimeout, resumeAIScheduling } = useComputerOpponent({
     enabled: active,
