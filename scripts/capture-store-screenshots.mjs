@@ -111,7 +111,6 @@ const PREFS = {
   autoRoll: false,
   autoMoveWhenForced: false,
   soundEnabled: false,
-  fastComputer: true,
 };
 
 /** Seed browser storage for a deterministic screenshot scene. */

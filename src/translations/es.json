@@ -71,8 +71,6 @@
       "dice_numbers": "Números",
       "direction_overlay": "Guía de dirección",
       "direction_overlay_hint": "Recorrido en herradura sobre el tablero",
-      "fast_computer": "Computación rápida",
-      "fast_computer_hint": "Espera más corto en rollos de computadora y se mueve. También puede pulsar Skip wait.",
       "move_hints": "Pistas de movimiento",
       "move_hints_hint": "Punto dorado junto a las casillas desde las que puedes mover",
       "point_numbers": "Números de casilla",

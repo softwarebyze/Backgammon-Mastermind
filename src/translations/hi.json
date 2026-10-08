@@ -71,8 +71,6 @@
       "dice_numbers": "अंक",
       "direction_overlay": "दिशा मार्गदर्शक",
       "direction_overlay_hint": "बोर्ड पर घोड़े की नाल जैसा रास्ता",
-      "fast_computer": "फास्ट कंप्यूटर",
-      "fast_computer_hint": "कंप्यूटर रोल और चाल पर कम प्रतीक्षा करता है। आप भी दबा सकते हैं।",
       "move_hints": "चाल संकेत",
       "move_hints_hint": "जिन जगहों से चल सकते हैं उनके पास सुनहरा बिंदु",
       "point_numbers": "पॉइंट संख्याएँ",

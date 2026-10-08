@@ -6,6 +6,7 @@ import {
   DEFAULT_GAME_PREFERENCES,
   migrateConfirmMoveDefault,
   migrateImplicitPlayDefaults,
+  omitRetiredPreferences,
 } from './types';
 
 const STORAGE_KEY = 'GAME_PREFERENCES';
@@ -14,11 +15,12 @@ const PLAY_DEFAULTS_MIGRATION_KEY = 'GAME_PREFERENCES_PLAY_DEFAULTS_V1';
 const CONFIRM_MOVE_MIGRATION_KEY = 'GAME_PREFERENCES_CONFIRM_MOVE_V1';
 
 export function loadGamePreferences(): GamePreferences {
-  const stored = getItem<Partial<GamePreferences>>(STORAGE_KEY);
+  const stored = getItem<Partial<GamePreferences> & { fastComputer?: boolean }>(STORAGE_KEY);
   const diceMigrated = getItem<boolean>(DICE_DOTS_MIGRATION_KEY) === true;
   const playDefaultsMigrated = getItem<boolean>(PLAY_DEFAULTS_MIGRATION_KEY) === true;
   const confirmMoveMigrated = getItem<boolean>(CONFIRM_MOVE_MIGRATION_KEY) === true;
-  const { prefs: dicePrefs, didMigrate: didDice } = migrateDiceDisplayToDots(stored, diceMigrated);
+  const { prefs: stripped, didStrip } = omitRetiredPreferences(stored);
+  const { prefs: dicePrefs, didMigrate: didDice } = migrateDiceDisplayToDots(stripped, diceMigrated);
   const { prefs: playPrefs, didMigrate: didPlayDefaults } = migrateImplicitPlayDefaults(
     dicePrefs,
     playDefaultsMigrated,
@@ -27,7 +29,7 @@ export function loadGamePreferences(): GamePreferences {
     playPrefs,
     confirmMoveMigrated,
   );
-  if (didDice || didPlayDefaults || didConfirmMove) {
+  if (didDice || didPlayDefaults || didConfirmMove || didStrip) {
     if (didDice)
       void setItem(DICE_DOTS_MIGRATION_KEY, true);
     if (didPlayDefaults)

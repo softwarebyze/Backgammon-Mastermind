@@ -5,7 +5,8 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { getForcedLegalMove, getForcedTurnSequence } from '@/lib/game/single-move';
 
 const AUTO_ROLL_DELAY_MS = 400;
-const AUTO_MOVE_DELAY_MS = 300;
+/** Short anticipation before a forced checker. The slide itself carries the motion. */
+const AUTO_MOVE_DELAY_MS = 160;
 const AUTO_PASS_DELAY_MS = 500;
 
 function isHumanTurn(state: GameState): boolean {
