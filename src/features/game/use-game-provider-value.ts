@@ -5,6 +5,7 @@ import { useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
+import { useGameCompletedCapture } from '@/features/game/use-game-completed-capture';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
 import { useGameLifecycle } from '@/features/game/use-game-lifecycle';
 import { useGameSelectPoint } from '@/features/game/use-game-select-point';
@@ -40,10 +41,12 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const replayBaselineRef = useRef(replayBaseline);
   replayBaselineRef.current = replayBaseline;
   const { timeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
+  const { noteMoveApplied, resetForNewGame } = useGameCompletedCapture(state, moveLog.length);
   const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
     recordMove(snapshot, move, next);
     recordTimelineMove(snapshot, next);
-  }, [recordMove, recordTimelineMove]);
+    noteMoveApplied(snapshot, next);
+  }, [recordMove, recordTimelineMove, noteMoveApplied]);
   /**
    * Move SFX plays when the animation begins (~20ms after tap), not at the
    * ~360ms landing — the old settle-time trigger felt "late", especially the
@@ -118,6 +121,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetTimeline,
     clearTimeline,
     setState,
+    onNewGame: resetForNewGame,
   });
   useRestoreGameTimeline({ enabled: active, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
   useGameplayHelpers({

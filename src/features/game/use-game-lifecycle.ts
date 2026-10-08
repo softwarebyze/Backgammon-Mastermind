@@ -17,6 +17,7 @@ type Options = {
   resetTimeline: (initial: GameState) => void;
   clearTimeline: () => void;
   setState: Dispatch<SetStateAction<GameState | null>>;
+  onNewGame?: () => void;
 };
 
 export function useGameLifecycle({
@@ -28,9 +29,11 @@ export function useGameLifecycle({
   resetTimeline,
   clearTimeline,
   setState,
+  onNewGame,
 }: Options) {
   const beginSession = useCallback((next: GameState) => {
     bumpTutorGameGeneration();
+    onNewGame?.();
     clearAITimeout();
     resetAnimation();
     clearActiveGame();
@@ -41,7 +44,7 @@ export function useGameLifecycle({
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);
-  }, [clearAITimeout, resetAnimation, resetMoveLog, clearTimeline, resetTimeline, setState]);
+  }, [onNewGame, clearAITimeout, resetAnimation, resetMoveLog, clearTimeline, resetTimeline, setState]);
 
   const startGame = useCallback((mode: GameMode) => {
     beginSession(createInitialState(mode));
@@ -63,6 +66,7 @@ export function useGameLifecycle({
 
   const resetGame = useCallback(() => {
     bumpTutorGameGeneration();
+    onNewGame?.();
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
@@ -75,7 +79,7 @@ export function useGameLifecycle({
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);
-  }, [clearAITimeout, resetAnimation, resetMoveLog, resetTimeline, setState, state]);
+  }, [onNewGame, clearAITimeout, resetAnimation, resetMoveLog, resetTimeline, setState, state]);
 
   return { startGame, startFromPosition, resumeGame, resetGame };
 }
