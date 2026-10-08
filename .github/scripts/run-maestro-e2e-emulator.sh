@@ -20,12 +20,8 @@ RECORD_PID=$!
 
 MAESTRO_EXIT=0
 maestro test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
-<<<<<<< HEAD
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
-  "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
-=======
->>>>>>> 54d98f5 (chore(pr): drop Maestro preset from undo alignment PR)
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \

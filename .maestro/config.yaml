@@ -1,11 +1,7 @@
 flows:
   - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
-<<<<<<< HEAD
   - app/game-settings-gear.yaml
-  - app/undo-redo.yaml
-=======
->>>>>>> 54d98f5 (chore(pr): drop Maestro preset from undo alignment PR)
 
 excludeTags:
   - util

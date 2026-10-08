@@ -245,6 +245,7 @@ describe('undo animation completion and paths', () => {
       },
       finishHistoryAnim: () => {},
       armAnimationFinish: onFinish => onFinish,
+      getLiveState: () => null,
       suppressHistoryPath: true,
     });
 
