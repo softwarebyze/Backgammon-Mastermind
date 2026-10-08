@@ -18,6 +18,7 @@ import { canRedoTimeline, canUndoTimeline, peekRedoMove } from '@/lib/game/game-
 export type { HistoryPathOverlay } from '@/features/game/timeline-history-actions';
 
 type Options = {
+  state: GameState | null;
   timeline: GameTimeline | null;
   setTimeline: Dispatch<SetStateAction<GameTimeline | null>>;
   setState: Dispatch<SetStateAction<GameState | null>>;
@@ -37,6 +38,7 @@ type Options = {
 /** Live undo/redo — animates like review scrubbing, then commits timeline + move log. */
 export function useGameUndoRedo(options: Options) {
   const {
+    state,
     timeline,
     setTimeline,
     setState,
@@ -63,6 +65,9 @@ export function useGameUndoRedo(options: Options) {
   timelineRef.current = timeline;
   const moveLogRef = useRef(moveLog);
   moveLogRef.current = moveLog;
+  const stateRef = useRef(state);
+  stateRef.current = state;
+  const getLiveState = useCallback(() => stateRef.current, []);
   const pathClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const finishHistoryAnim = useCallback(() => {
@@ -96,6 +101,7 @@ export function useGameUndoRedo(options: Options) {
     moveLog: moveLogRef.current,
     replayBaseline,
     gameMode,
+    getLiveState,
     popLastMove,
     restoreMove,
     setTimeline,
@@ -109,6 +115,7 @@ export function useGameUndoRedo(options: Options) {
     armAnimationFinish,
     finishHistoryAnim,
     gameMode,
+    getLiveState,
     popLastMove,
     replayBaseline,
     restoreMove,

@@ -63,13 +63,19 @@ export function useMoveLog(liveState: GameState | null) {
     }));
   }, [commitLog, ensureBaseline]);
 
-  const recordNoMove = useCallback((before: GameState, after: GameState) => {
+  /** Returns whether a new entry was logged (a blocked tail of a played turn adds none). */
+  const recordNoMove = useCallback((before: GameState, after: GameState): boolean => {
     ensureBaseline(before);
-    commitLog(appendNoMoveLogEntry(logRef.current, {
+    const next = appendNoMoveLogEntry(logRef.current, {
       player: before.currentPlayer,
       dice: before.dice,
       after,
-    }));
+    });
+    if (next === logRef.current) {
+      return false;
+    }
+    commitLog(next);
+    return true;
   }, [commitLog, ensureBaseline]);
 
   const resetMoveLog = useCallback(() => {

@@ -15,6 +15,7 @@ import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 import { useMoveLog } from '@/features/game/use-move-log';
 import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
 import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
+import { passTurn } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
@@ -48,6 +49,15 @@ export function useGameProviderValue(active: boolean): GameContextType {
     noteMoveApplied(snapshot, next);
   }, [recordMove, recordTimelineMove, noteMoveApplied]);
   /**
+   * A blocked roll gets one log entry and one timeline ply, like a move, so
+   * undo's cursor and the move log never drift apart.
+   */
+  const handleNoMoveRecorded = useCallback((before: GameState) => {
+    if (recordNoMove(before, before)) {
+      recordTimelineMove(before, passTurn(before));
+    }
+  }, [recordNoMove, recordTimelineMove]);
+  /**
    * Move SFX plays when the animation begins (~20ms after tap), not at the
    * ~360ms landing — the old settle-time trigger felt "late", especially the
    * bear-off sound. `next` is a pure applyMove preview, identical to what
@@ -75,6 +85,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
+    state,
     timeline,
     setTimeline,
     setState,
@@ -98,14 +109,14 @@ export function useGameProviderValue(active: boolean): GameContextType {
     isAnimating,
     moveCount: moveLog.length,
     hasRedo: canRedo,
-    recordNoMove,
+    recordNoMove: handleNoMoveRecorded,
     paused: tutorPaused,
   });
   const { doPassTurn, doRollDice } = useGameDiceActions({
     state,
     setState,
     isAnimating,
-    recordNoMove,
+    recordNoMove: handleNoMoveRecorded,
   });
   const resetAllAnimation = useCallback(() => {
     resetAnimation();
