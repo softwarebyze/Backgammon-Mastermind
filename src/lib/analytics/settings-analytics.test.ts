@@ -91,7 +91,6 @@ describe('gameplay setting properties', () => {
       pref_auto_roll: true,
       pref_auto_move_when_forced: true,
       pref_sound_enabled: true,
-      pref_fast_computer: true,
       pref_tutor_mode: false,
       pref_confirm_move: true,
       pref_tutor_strictness: 'big',
