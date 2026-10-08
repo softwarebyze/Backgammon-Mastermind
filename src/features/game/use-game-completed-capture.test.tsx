@@ -9,9 +9,12 @@ import { useGameCompletedCapture } from './use-game-completed-capture';
 
 const mockCapture = jest.fn();
 let mockPreferences = { ...DEFAULT_GAME_PREFERENCES };
-jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
-  useGamePreferences: () => ({ preferences: mockPreferences }),
-}));
+jest.mock('@/lib/game-preferences/use-game-preferences', () => {
+  function readMockPreferences() {
+    return { preferences: mockPreferences };
+  }
+  return { useGamePreferences: readMockPreferences };
+});
 
 jest.mock('posthog-react-native', () => ({
   usePostHog: function postHogApi() {
