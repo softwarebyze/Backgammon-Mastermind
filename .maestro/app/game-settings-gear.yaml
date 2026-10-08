@@ -1,0 +1,29 @@
+# Open and close Settings through the game's gear; screenshots show its glyph.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn: vs Computer
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- takeScreenshot: gear-01-game-header
+- tapOn: Settings
+- extendedWaitUntil:
+    visible:
+      id: stack-escape-button
+    timeout: 15000
+- takeScreenshot: gear-02-settings
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 15000
+- takeScreenshot: gear-03-return-to-game
