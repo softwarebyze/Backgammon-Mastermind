@@ -485,6 +485,12 @@
     "subtitle": "짧은 인터랙티브 수업 — 그다음 준비됩니다",
     "title": "게임 알아보기"
   },
+  "navigation": {
+    "back": "뒤로",
+    "back_a11y": "뒤로 가기",
+    "home": "홈",
+    "home_a11y": "홈으로"
+  },
   "not_found": {
     "body": "그 페이지는 Backgammon Mastermind의 일부가 아닙니다. 머리는 배우거나 게임을 시작합니다.",
     "heading": "보드 밖입니다",

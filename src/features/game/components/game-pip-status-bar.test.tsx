@@ -1,4 +1,6 @@
+import { setS1VariantsForTests } from '@/features/game/s1-prototype';
 import { createInitialState } from '@/lib/game/constants';
+
 import { cleanup, fireEvent, render, screen } from '@/lib/test-utils';
 
 import { GamePipStatusBar } from './game-pip-status-bar';
@@ -15,11 +17,15 @@ jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
       showMoveHints: false,
       showDirectionOverlay: false,
       showPointNumbers: false,
+      tutorMode: true,
     },
   }),
 }));
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  setS1VariantsForTests(null);
+});
 
 describe('gamePipStatusBar', () => {
   it('shows the opening strategy and 167/167 pip counts', () => {
@@ -51,6 +57,17 @@ describe('gamePipStatusBar', () => {
 
     expect(screen.getByLabelText('game.review.player_white pip count 167')).toBeTruthy();
     expect(screen.getByLabelText('game.review.player_black pip count 167')).toBeTruthy();
+  });
+});
+
+describe('gamePipStatusBar status chip', () => {
+  it('puts the tutor-on mark inside the chip and drops the stray pip dots', () => {
+    setS1VariantsForTests({ status: 'a' });
+    render(<GamePipStatusBar state={createInitialState('vs-computer')} />);
+
+    expect(screen.getByTestId('tutor-on-indicator')).toBeTruthy();
+    expect(screen.getByTestId('pip-pair')).toBeTruthy();
+    expect(screen.getByLabelText(/Tutor mode is on/)).toBeTruthy();
   });
 });
 

@@ -138,6 +138,29 @@ describe('game keyboard shortcuts on RN-web DOM', () => {
     expect(down.defaultPrevented).toBe(false);
   });
 
+  it('confirms on Enter after Live without activating Live again', () => {
+    const live = document.createElement('button');
+    live.setAttribute('data-testid', 'history-live-button');
+    document.body.appendChild(live);
+    const activate = jest.fn();
+    live.addEventListener('keydown', activate);
+    try {
+      const cfg = config();
+      detach = attachGameKeyboardShortcuts(window, cfg);
+      focus(live);
+      const down = press(live, 'Enter');
+      expect(cfg.onConfirm).toHaveBeenCalledTimes(1);
+      expect(down.defaultPrevented).toBe(true);
+      expect(activate).not.toHaveBeenCalled();
+      press(live, ' ');
+      expect(cfg.onConfirm).toHaveBeenCalledTimes(1);
+      expect(activate).toHaveBeenCalledTimes(1);
+    }
+    finally {
+      live.remove();
+    }
+  });
+
   it('does not roll from a focused point when the bar is not up', () => {
     const cfg = config({ confirmReady: false, canRoll: true });
     detach = attachGameKeyboardShortcuts(window, cfg);

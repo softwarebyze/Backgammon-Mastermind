@@ -485,6 +485,12 @@
     "subtitle": "Aulas curtas e interativas — então você está pronto",
     "title": "Aprender a jogar"
   },
+  "navigation": {
+    "back": "Voltar",
+    "back_a11y": "Voltar",
+    "home": "Início",
+    "home_a11y": "Ir para o início"
+  },
   "not_found": {
     "body": "Essa página não faz parte do Backgammon Mastermind. Vá para casa para aprender ou começar um jogo.",
     "heading": "Fora do tabuleiro",

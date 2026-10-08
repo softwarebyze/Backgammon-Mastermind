@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { Platform } from 'react-native';
 
 import { cleanup, screen, setup } from '@/lib/test-utils';
 
@@ -65,5 +66,13 @@ describe('stack escape button', () => {
     await user.press(screen.getByTestId('stack-escape-button'));
     expect(mockedRouter.replace).toHaveBeenCalledWith('/');
     expect(mockedRouter.back).not.toHaveBeenCalled();
+  });
+
+  it('shows a text label on native instead of a chevron glyph', () => {
+    mockedRouter.canGoBack.mockReturnValue(true);
+    Object.defineProperty(Platform, 'OS', { configurable: true, value: 'ios' });
+    setup(<StackEscapeButton />);
+    expect(screen.getByTestId('stack-escape-label')).toBeTruthy();
+    expect(screen.queryByTestId('stack-escape-chevron')).toBeNull();
   });
 });

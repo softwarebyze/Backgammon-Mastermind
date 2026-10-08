@@ -1,12 +1,14 @@
 import type { MoveLogEntry, MoveLogTurn } from '@/lib/game/move-log';
 import { useEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { isNoMoveLogEntry, turnsForReviewStrip, unusedDiceInTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { continuousRadius } from '@/lib/ui/native-styles';
 
 const CHIP_HEIGHT = 28;
 const CHIP_GAP = 6;
@@ -27,6 +29,18 @@ function turnStartPly(turn: MoveLogTurn): number {
   return turn.endPly - turn.moves.length + 1;
 }
 
+/** Same hover and press as the strategy chip: accent border, then a warm fill. */
+function historyChipStyle(opts: { focused?: boolean; live?: boolean; liveActive?: boolean }) {
+  return ({ pressed, hovered }: { pressed: boolean; hovered: boolean }) => [
+    styles.chip,
+    opts.live && styles.liveChip,
+    opts.focused && styles.chipFocused,
+    opts.liveActive && styles.liveChipActive,
+    hovered && styles.chipHover,
+    pressed && (opts.liveActive ? styles.liveChipPressed : styles.chipPressed),
+  ];
+}
+
 function TurnChip({
   turn,
   focused,
@@ -42,15 +56,12 @@ function TurnChip({
   const unused = unusedDiceInTurn(turn);
   const noMove = turn.moves.length === 1 && turn.moves[0] && isNoMoveLogEntry(turn.moves[0]);
   return (
-    <Pressable
+    <HoverPressable
       accessibilityRole="button"
       accessibilityLabel={translate('game.review.turn_a11y', { turn: turn.turnIndex, player: playerLabel })}
       accessibilityState={{ selected: focused }}
       onPress={onPress}
-      style={[
-        styles.chip,
-        focused && styles.chipFocused,
-      ]}
+      style={historyChipStyle({ focused })}
     >
       <View
         style={[
@@ -64,7 +75,7 @@ function TurnChip({
       {(noMove || unused > 0) && (
         <Text style={styles.unusedMark}>{noMove ? '×' : `-${unused}`}</Text>
       )}
-    </Pressable>
+    </HoverPressable>
   );
 }
 
@@ -104,7 +115,7 @@ export function MoveReviewTurnStrip({
       contentContainerStyle={styles.timeline}
       style={styles.timelineScroll}
     >
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.opening')}
         accessibilityState={{ selected: isReviewing && focusedPly === 0 }}
@@ -113,12 +124,12 @@ export function MoveReviewTurnStrip({
           onJumpToPly(0);
         }}
         hitSlop={4}
-        style={[styles.chip, isReviewing && focusedPly === 0 && styles.chipFocused]}
+        style={historyChipStyle({ focused: isReviewing && focusedPly === 0 })}
       >
         <Text style={[styles.chipText, isReviewing && focusedPly === 0 && styles.chipTextFocused]}>
           {translate('game.review.start')}
         </Text>
-      </Pressable>
+      </HoverPressable>
 
       {turns.map((turn, idx) => (
         <TurnChip
@@ -132,9 +143,10 @@ export function MoveReviewTurnStrip({
         />
       ))}
 
-      <Pressable
+      <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.live')}
+        testID="history-live-button"
         accessibilityState={{ selected: !isReviewing }}
         onPress={() => {
           if (isReviewing) {
@@ -142,12 +154,12 @@ export function MoveReviewTurnStrip({
             onGoLive();
           }
         }}
-        style={[styles.chip, styles.liveChip, !isReviewing && styles.liveChipActive]}
+        style={historyChipStyle({ live: true, liveActive: !isReviewing })}
       >
         <Text style={[styles.chipText, !isReviewing ? styles.liveTextActive : styles.liveText]}>
           {translate('game.review.live_short')}
         </Text>
-      </Pressable>
+      </HoverPressable>
     </ScrollView>
   );
 }
@@ -172,10 +184,17 @@ const styles = StyleSheet.create({
     gap: 5,
     height: CHIP_HEIGHT,
     paddingHorizontal: 10,
-    borderRadius: CHIP_HEIGHT / 2,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: GAME_PALETTE.surfaceBorder,
     backgroundColor: GAME_PALETTE.surface,
+    ...continuousRadius(999),
+  },
+  chipHover: {
+    borderColor: GAME_PALETTE.accentDim,
+  },
+  chipPressed: {
+    backgroundColor: GAME_PALETTE.pillPressedFill,
+    borderColor: GAME_PALETTE.accent,
   },
   chipFocused: {
     borderColor: GAME_PALETTE.accent,
@@ -215,6 +234,10 @@ const styles = StyleSheet.create({
   },
   liveChipActive: {
     backgroundColor: GAME_PALETTE.accent,
+  },
+  liveChipPressed: {
+    backgroundColor: GAME_PALETTE.controlHover,
+    borderColor: GAME_PALETTE.accent,
   },
   liveText: { color: GAME_PALETTE.accent },
   liveTextActive: { color: '#2A1A08' },

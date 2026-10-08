@@ -485,6 +485,12 @@
     "subtitle": "Short interactive lessons — then you’re ready",
     "title": "Learn to play"
   },
+  "navigation": {
+    "back": "Back",
+    "back_a11y": "Go back",
+    "home": "Home",
+    "home_a11y": "Go to home"
+  },
   "not_found": {
     "body": "That page isn't part of Backgammon Mastermind. Head home to learn or start a game.",
     "heading": "Off the board",

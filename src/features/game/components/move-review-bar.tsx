@@ -1,7 +1,8 @@
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import Feather from '@expo/vector-icons/Feather';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { MoveReviewTurnStrip } from '@/features/game/components/move-review-turn-strip';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
@@ -66,16 +67,17 @@ export function MoveReviewBar({
               </Text>
               {canReplay && onToggleReplay
                 ? (
-                    <Pressable
+                    <HoverPressable
                       accessibilityRole="button"
                       accessibilityLabel={isLooping
                         ? translate('game.review.pause_replay')
                         : translate('game.review.replay')}
                       onPress={onToggleReplay}
-                      style={({ pressed }) => [
+                      style={({ pressed, hovered }) => [
                         styles.replayBtn,
                         isLooping && styles.replayBtnActive,
-                        pressed && styles.navBtnPressed,
+                        hovered && styles.chipHover,
+                        pressed && (isLooping ? styles.livePressed : styles.chipPressed),
                       ]}
                       hitSlop={8}
                     >
@@ -89,7 +91,7 @@ export function MoveReviewBar({
                           ? translate('game.review.pause_replay')
                           : translate('game.review.replay')}
                       </Text>
-                    </Pressable>
+                    </HoverPressable>
                   )
                 : null}
             </View>
@@ -135,15 +137,16 @@ function NavButton({
   label: string;
 }) {
   return (
-    <Pressable
+    <HoverPressable
       accessibilityRole="button"
       accessibilityLabel={label}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
+      style={({ pressed, hovered }) => [
         styles.navBtn,
         disabled && styles.navBtnDisabled,
-        pressed && !disabled && styles.navBtnPressed,
+        !disabled && hovered && styles.chipHover,
+        !disabled && pressed && styles.chipPressed,
       ]}
     >
       <Feather
@@ -151,7 +154,7 @@ function NavButton({
         size={26}
         color={disabled ? GAME_PALETTE.textMuted : GAME_PALETTE.accent}
       />
-    </Pressable>
+    </HoverPressable>
   );
 }
 
@@ -226,5 +229,15 @@ const styles = StyleSheet.create({
     ...continuousRadius(10),
   },
   navBtnDisabled: { opacity: 0.4 },
-  navBtnPressed: { opacity: 0.88 },
+  chipHover: {
+    borderColor: GAME_PALETTE.accentDim,
+  },
+  chipPressed: {
+    backgroundColor: GAME_PALETTE.pillPressedFill,
+    borderColor: GAME_PALETTE.accent,
+  },
+  livePressed: {
+    backgroundColor: GAME_PALETTE.controlHover,
+    borderColor: GAME_PALETTE.accent,
+  },
 });

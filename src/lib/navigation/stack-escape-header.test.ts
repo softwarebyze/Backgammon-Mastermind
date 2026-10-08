@@ -17,10 +17,12 @@ describe('stackEscapeHeaderOptionsFor', () => {
     expect(options.headerLeft).toBeUndefined();
   });
 
-  it('uses a regular headerLeft on native, not the system back control', () => {
-    const options = stackEscapeHeaderOptionsFor('ios');
-    expect(options.headerBackVisible).toBe(false);
-    expect(typeof options.headerLeft).toBe('function');
-    expect(options.header).toBeUndefined();
+  it('uses a text stack escape on native mobile, not the system back control', () => {
+    for (const os of ['ios', 'android'] as const) {
+      const options = stackEscapeHeaderOptionsFor(os);
+      expect(options.headerBackVisible).toBe(false);
+      expect(options.header).toBeUndefined();
+      expect(typeof options.headerLeft).toBe('function');
+    }
   });
 });

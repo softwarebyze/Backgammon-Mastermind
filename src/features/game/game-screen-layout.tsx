@@ -21,6 +21,7 @@ import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { REVIEW_SLOT_HEIGHT, trayDieSize, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { resolveNumberPerspective } from '@/features/game/point-numbering';
+import { getS1Variants } from '@/features/game/s1-prototype';
 import { useOpeningReveal } from '@/features/game/use-opening-reveal';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
 import { openingCopy, openingTray } from '@/lib/game/opening-display';
@@ -59,12 +60,17 @@ function GameTopChrome({
   headline: string | null;
   onLayout: (event: LayoutChangeEvent) => void;
 }) {
+  // S1-I prototype: the turn banner folds into the dice caption (see
+  // GameScreenControls), except during the opening ceremony which owns its copy.
+  const showBanner = getS1Variants().banner === 'today' || headline !== null;
   return (
     <View style={styles.chromeColumn} onLayout={onLayout}>
       <GamePipStatusBar state={state} />
-      <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} headlineOverride={headline} />
-      </View>
+      {showBanner && (
+        <View style={styles.turnBannerWrap}>
+          <TurnIndicatorBanner state={state} headlineOverride={headline} />
+        </View>
+      )}
     </View>
   );
 }

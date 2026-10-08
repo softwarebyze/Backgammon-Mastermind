@@ -12,8 +12,8 @@ type EscapeHeaderOptions = Pick<
 /**
  * Leading chevron that native-stack will not drop when the stack is empty
  * (refresh on /settings, /learn, …). Web uses a JS header so the back slot
- * is not gated on `canGoBack`. Native uses headerLeft with headerBackVisible
- * false so it is a regular left item, not the system back button.
+ * is not gated on `canGoBack`. Native mobile uses a text escape control (no
+ * chevron glyph) that still calls goBackOrHome when the stack is empty.
  */
 export function stackEscapeHeaderOptionsFor(os: typeof Platform.OS): EscapeHeaderOptions {
   if (os === 'web') {
