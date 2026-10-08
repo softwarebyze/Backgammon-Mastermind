@@ -69,6 +69,7 @@ describe('game screen controls', () => {
   });
 });
 
+/* eslint-disable max-lines-per-function -- grouped confirm-bar scenarios */
 describe('confirm move bar', () => {
   it('shows Confirm move and Undo when confirm is on and dice are spent', () => {
     mockPrefs.confirmMove = true;
@@ -146,6 +147,46 @@ describe('confirm move bar', () => {
 
     expect(screen.queryByTestId('confirm-move-button')).toBeNull();
     expect(screen.queryByTestId('undo-move-button')).toBeNull();
+  });
+
+  it('passes a held turn when confirm is turned off mid-hold', () => {
+    mockPrefs.confirmMove = true;
+    const state = awaitingConfirmState();
+    const onConfirmMove = jest.fn();
+
+    const view = setup(
+      <GameScreenControls
+        state={state}
+        liveDiceState={state}
+        isHumanTurn
+        isComputerTurn={false}
+        moveLogLength={2}
+        onRoll={jest.fn()}
+        onReset={jest.fn()}
+        onConfirmMove={onConfirmMove}
+        onUndoMove={jest.fn()}
+        canUndoMove
+      />,
+    );
+
+    expect(screen.getByTestId('confirm-move-button')).toBeOnTheScreen();
+    mockPrefs.confirmMove = false;
+    view.rerender(
+      <GameScreenControls
+        state={state}
+        liveDiceState={state}
+        isHumanTurn
+        isComputerTurn={false}
+        moveLogLength={2}
+        onRoll={jest.fn()}
+        onReset={jest.fn()}
+        onConfirmMove={onConfirmMove}
+        onUndoMove={jest.fn()}
+        canUndoMove
+      />,
+    );
+    expect(onConfirmMove).toHaveBeenCalledTimes(1);
+    expect(screen.queryByTestId('confirm-move-button')).toBeNull();
   });
 
   it('never shows the confirm bar on a computer turn', () => {

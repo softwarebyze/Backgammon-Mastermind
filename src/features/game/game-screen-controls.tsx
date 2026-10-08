@@ -1,6 +1,7 @@
 import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
@@ -168,6 +169,22 @@ function ActionControl({
   onUndoMove?: () => void;
   canUndoMove: boolean;
 }) {
+  const prevConfirmEnabled = useRef(confirmMoveEnabled);
+  useEffect(() => {
+    const wasEnabled = prevConfirmEnabled.current;
+    prevConfirmEnabled.current = confirmMoveEnabled;
+    if (
+      wasEnabled
+      && !confirmMoveEnabled
+      && onConfirmMove
+      && !isReviewing
+      && isHumanTurn
+      && isAwaitingMoveConfirm(state, true)
+    ) {
+      onConfirmMove();
+    }
+  }, [confirmMoveEnabled, state, isHumanTurn, isReviewing, onConfirmMove]);
+
   if (isReviewing) {
     return (
       <HoverPressable

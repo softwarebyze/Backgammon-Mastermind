@@ -34,7 +34,8 @@ tags:
     visible: 'Point 5, 1 white checker'
     timeout: 15000
 - takeScreenshot: confirm-01-first-move
-- tapOn: Undo move
+- tapOn:
+    id: undo-move-button
 - extendedWaitUntil:
     visible: 'Point 8, 3 white checkers'
     timeout: 15000
@@ -60,7 +61,8 @@ tags:
 - assertVisible: 'Point 6, 4 white checkers'
 - assertNotVisible: ".*Black's turn.*"
 - takeScreenshot: confirm-03-held-turn
-- tapOn: Undo move
+- tapOn:
+    id: undo-move-button
 - extendedWaitUntil:
     visible: 'Point 6, 5 white checkers'
     timeout: 15000
