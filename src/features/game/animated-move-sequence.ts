@@ -2,10 +2,11 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { PointAnchor } from '@/features/game/board-point-layout';
 import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
-import type { GameState, Move } from '@/lib/game';
+import type { ApplyMoveOptions, GameState, Move } from '@/lib/game';
 
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves, moveSequenceInvolvesHit } from '@/lib/game';
+import { shouldDeferTurnEnd } from '@/lib/game-preferences/confirm-move';
 
 /** One checker continuing (13/10 then 10/9), not two separate plays. */
 export function isSingleCheckerPath(moves: Move[]): boolean {
@@ -20,15 +21,19 @@ export function isSingleCheckerPath(moves: Move[]): boolean {
 export function resolveSequenceSteps(
   snapshot: GameState,
   moves: Move[],
+  applyOpts?: ApplyMoveOptions,
 ): { legal: Move; before: GameState; after: GameState }[] | null {
   const steps: { legal: Move; before: GameState; after: GameState }[] = [];
   let snap = snapshot;
-  for (const planned of moves) {
+  for (let i = 0; i < moves.length; i++) {
+    const planned = moves[i]!;
     const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
     if (!legal) {
       return null;
     }
-    const after = applyMove(snap, legal);
+    // Only the last step may defer turn end — intermediate dice still remain.
+    const opts = i === moves.length - 1 ? applyOpts : undefined;
+    const after = applyMove(snap, legal, opts);
     steps.push({ legal, before: snap, after });
     snap = after;
   }
@@ -38,14 +43,17 @@ export function resolveSequenceSteps(
 export function applyResolvedSequence(
   snapshot: GameState,
   moves: Move[],
-  onMoveApplied: ((before: GameState, move: Move, after: GameState) => void) | undefined,
+  opts?: {
+    onMoveApplied?: (before: GameState, move: Move, after: GameState) => void;
+    applyOpts?: ApplyMoveOptions;
+  },
 ): GameState {
-  const steps = resolveSequenceSteps(snapshot, moves);
+  const steps = resolveSequenceSteps(snapshot, moves, opts?.applyOpts);
   if (!steps) {
     return snapshot;
   }
   for (const step of steps) {
-    onMoveApplied?.(step.before, step.legal, step.after);
+    opts?.onMoveApplied?.(step.before, step.legal, step.after);
   }
   return steps[steps.length - 1]?.after ?? snapshot;
 }
@@ -84,7 +92,10 @@ export function runMoveSequence(
         if (!ctx.isCommitLive()) {
           return;
         }
-        const next = applyResolvedSequence(snapshot, moves, ctx.onMoveApplied);
+        const next = applyResolvedSequence(snapshot, moves, {
+          onMoveApplied: ctx.onMoveApplied,
+          applyOpts: shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined,
+        });
         ctx.setState(next);
         ctx.setMoveAnimation(null);
         ctx.setSequenceActive(false);

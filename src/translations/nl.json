@@ -12,6 +12,8 @@
       "bear_off_a11y": "Afhouden",
       "cancel": "Annuleren",
       "cancel_a11y": "Selectie annuleren",
+      "confirm_move": "Zet bevestigen",
+      "confirm_move_a11y": "Zet bevestigen en beurt beëindigen",
       "leave_game_a11y": "Verlaat het spel en keer terug naar huis",
       "loading": "Laden...",
       "new_game_message": "Een nieuw spel starten?",
@@ -23,7 +25,8 @@
       "roll_dice": "Gooi de dobbelstenen",
       "roll_dice_a11y": "Dobbelstenen gooien",
       "start_new_game_a11y": "Nieuw spel starten",
-      "undo_a11y": "Verplaatsen ongedaan maken"
+      "undo_a11y": "Verplaatsen ongedaan maken",
+      "undo_move": "Ongedaan maken"
     },
     "hint": {
       "back_to_turn": "Terug naar mijn beurt",
@@ -61,6 +64,8 @@
       "auto_move_hint": "De enige legale zet automatisch spelen",
       "auto_roll": "Automatisch gooien",
       "auto_roll_hint": "Automatisch gooien als jij aan de beurt bent",
+      "confirm_move": "Zet bevestigen",
+      "confirm_move_hint": "Vraag voordat je beurt eindigt zodat je kunt controleren of ongedaan maken",
       "dice_display": "Weergave dobbelstenen",
       "dice_dots": "Stippen",
       "dice_numbers": "Cijfers",

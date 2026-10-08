@@ -4,6 +4,7 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
+import { shouldDeferTurnEnd } from '@/lib/game-preferences/confirm-move';
 
 export type PlayMoveOpts = {
   fromAnchor?: PointAnchor;
@@ -56,7 +57,10 @@ export function createPlayMove(opts: {
         playOpts?.onComplete?.(snapshot);
         return;
       }
-      const next = applyMove(snapshot, legal);
+      // Re-read Confirm move at land time — toggling it mid-slide must not leave
+      // a spent-dice turn with no Confirm bar and no auto-pass.
+      const applyOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
+      const next = applyMove(snapshot, legal, applyOpts);
       onMoveApplied?.(snapshot, legal, next);
       setState(next);
       setMoveAnimation(null);
@@ -67,7 +71,8 @@ export function createPlayMove(opts: {
     // applyMove is pure, so the preview matches what settle will commit.
     const legalPreview = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
     if (legalPreview) {
-      onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview));
+      const previewOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
+      onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview, previewOpts));
     }
     setMoveAnimation(buildMoveAnimationFrame(snapshot, move, {
       onFinish: settle,

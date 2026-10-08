@@ -12,6 +12,8 @@
       "bear_off_a11y": "Trzymaj się.",
       "cancel": "Anuluj",
       "cancel_a11y": "Anuluj zaznaczenie",
+      "confirm_move": "Potwierdź ruch",
+      "confirm_move_a11y": "Potwierdź ruch i zakończ turę",
       "leave_game_a11y": "Zostaw grę i wróć do domu",
       "loading": "Ładowanie...",
       "new_game_message": "Rozpocząć nową grę?",
@@ -23,7 +25,8 @@
       "roll_dice": "Rzuć kośćmi",
       "roll_dice_a11y": "Rzuć kośćmi",
       "start_new_game_a11y": "Rozpocznij nową grę",
-      "undo_a11y": "Cofnij ruch"
+      "undo_a11y": "Cofnij ruch",
+      "undo_move": "Cofnij"
     },
     "hint": {
       "back_to_turn": "Wróć do mojej tury",
@@ -61,6 +64,8 @@
       "auto_move_hint": "Automatycznie wykonuje jedyny możliwy ruch",
       "auto_roll": "Automatyczny rzut kośćmi",
       "auto_roll_hint": "Rzuca automatycznie w twojej turze",
+      "confirm_move": "Potwierdź ruch",
+      "confirm_move_hint": "Zapytaj przed końcem tury, by sprawdzić lub cofnąć",
       "dice_display": "Wygląd kości",
       "dice_dots": "Oczka",
       "dice_numbers": "Liczby",

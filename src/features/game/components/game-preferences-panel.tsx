@@ -3,6 +3,7 @@ import type { GamePreferences } from '@/lib/game-preferences/types';
 import { StyleSheet, View } from 'react-native';
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
+import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { FastComputerIcon } from '@/features/game/components/settings-ui/fast-computer-icon';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
@@ -27,6 +28,7 @@ type Props = {
   onSoundEnabledChange: (value: boolean) => void;
   onFastComputerChange: (value: boolean) => void;
   onTutorModeChange: (value: boolean) => void;
+  onConfirmMoveChange: (value: boolean) => void;
   showHints?: boolean;
 };
 
@@ -41,6 +43,7 @@ export function GamePreferencesPanel({
   onSoundEnabledChange,
   onFastComputerChange,
   onTutorModeChange,
+  onConfirmMoveChange,
   showHints = false,
 }: Props) {
   return (
@@ -95,6 +98,15 @@ export function GamePreferencesPanel({
           hint={showHints ? translate('game.preferences.auto_move_hint') : undefined}
           value={preferences.autoMoveWhenForced}
           onChange={onAutoMoveWhenForcedChange}
+        />
+        <View style={styles.divider} />
+        <SettingToggleRow
+          icon={<ConfirmMoveIcon size={32} active={preferences.confirmMove} />}
+          label={translate('game.preferences.confirm_move')}
+          hint={showHints ? translate('game.preferences.confirm_move_hint') : undefined}
+          value={preferences.confirmMove}
+          onChange={onConfirmMoveChange}
+          testID="setting-toggle-confirm-move"
         />
         <View style={styles.divider} />
         <SettingToggleRow

@@ -12,6 +12,8 @@
       "bear_off_a11y": "ベアオフ",
       "cancel": "キャンセル",
       "cancel_a11y": "キャンセル選択",
+      "confirm_move": "手を確定",
+      "confirm_move_a11y": "手を確定してターンを終了",
       "leave_game_a11y": "ゲームを離れ、帰宅",
       "loading": "ローディング...",
       "new_game_message": "新しいゲームを始めますか？",
@@ -23,7 +25,8 @@
       "roll_dice": "サイコロを振る",
       "roll_dice_a11y": "サイコロを振る",
       "start_new_game_a11y": "新しいゲームを始める",
-      "undo_a11y": "Undo 移動"
+      "undo_a11y": "Undo 移動",
+      "undo_move": "取り消す"
     },
     "hint": {
       "back_to_turn": "自分の手番に戻る",
@@ -61,6 +64,8 @@
       "auto_move_hint": "唯一の合法手を自動的にプレイします",
       "auto_roll": "サイコロを自動で振る",
       "auto_roll_hint": "自分の番に自動的に振ります",
+      "confirm_move": "手を確定",
+      "confirm_move_hint": "ターン終了前に確認して、見直したり取り消したりできます",
       "dice_display": "サイコロの表示",
       "dice_dots": "ドット",
       "dice_numbers": "数字",

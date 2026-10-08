@@ -58,6 +58,9 @@ export function useGameInput() {
     doPassTurn();
   }, [doPassTurn]);
 
+  /** Confirm move setting: same as pass once dice/moves are spent. */
+  const handleConfirmMove = handlePassTurn;
+
   const handleRoll = useCallback(() => {
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium));
     posthog.capture('dice_rolled', { mode: state?.mode ?? null, phase: state?.phase ?? null });
@@ -104,6 +107,7 @@ export function useGameInput() {
     handleBoardPress,
     handleRoll,
     handlePassTurn,
+    handleConfirmMove,
     handleReset,
     handleBack,
   };

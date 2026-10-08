@@ -25,14 +25,21 @@ export function useGameDiceActions({
   recordNoMove,
 }: DiceActionsArgs) {
   const doPassTurn = useCallback(() => {
-    if (isAnimating || !state || state.phase !== 'no-move') {
+    if (isAnimating || !state) {
       return;
     }
     if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
       return;
     }
+    const awaitingConfirm = state.phase === 'no-move'
+      || (state.phase === 'moving' && state.remainingDice.length === 0);
+    if (!awaitingConfirm) {
+      return;
+    }
     // Snapshot before pass so history keeps the blocked roll.
-    recordNoMove(state, state);
+    if (state.phase === 'no-move') {
+      recordNoMove(state, state);
+    }
     setState(passTurn(state));
   }, [isAnimating, recordNoMove, setState, state]);
 

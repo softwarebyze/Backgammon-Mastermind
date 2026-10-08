@@ -68,7 +68,14 @@ export function useGameplayHelpers({
       return clear;
     }
 
-    if (state.phase === 'no-move') {
+    // Spent turn: no-move after a blocked roll, or dice used up while Confirm
+    // held the handoff. When Confirm is off (including just toggled off), pass.
+    const spentForConfirm = state.phase === 'no-move'
+      || (state.phase === 'moving' && state.remainingDice.length === 0);
+    if (spentForConfirm) {
+      if (preferences.confirmMove) {
+        return clear;
+      }
       timeoutRef.current = setTimeout(() => {
         doPassTurn();
       }, AUTO_PASS_DELAY_MS);
@@ -100,6 +107,7 @@ export function useGameplayHelpers({
     paused,
     preferences.autoRoll,
     preferences.autoMoveWhenForced,
+    preferences.confirmMove,
     doRollDice,
     doMove,
     doMoveSequence,

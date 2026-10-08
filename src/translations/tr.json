@@ -12,6 +12,8 @@
       "bear_off_a11y": "Ayık Ayı",
       "cancel": "Cancel Cancel Cancel Cancel",
       "cancel_a11y": "İptal seçimi",
+      "confirm_move": "Hamleyi onayla",
+      "confirm_move_a11y": "Hamleyi onayla ve turu bitir",
       "leave_game_a11y": "Oyun bırak ve eve geri dön",
       "loading": "Yükleniyor...",
       "new_game_message": "Yeni oyun başlatılsın mı?",
@@ -23,7 +25,8 @@
       "roll_dice": "Zar At",
       "roll_dice_a11y": "Zar at",
       "start_new_game_a11y": "Yeni oyun başla",
-      "undo_a11y": "Undo hareketsiz"
+      "undo_a11y": "Undo hareketsiz",
+      "undo_move": "Geri al"
     },
     "hint": {
       "back_to_turn": "Sırama dön",
@@ -61,6 +64,8 @@
       "auto_move_hint": "Tek geçerli hamleyi otomatik oynar",
       "auto_roll": "Zarı otomatik at",
       "auto_roll_hint": "Sıra sende olduğunda otomatik zar atar",
+      "confirm_move": "Hamleyi onayla",
+      "confirm_move_hint": "Tur bitmeden sor ki gözden geçirebilesin veya geri alabilesin",
       "dice_display": "Zar görünümü",
       "dice_dots": "Noktalar",
       "dice_numbers": "Sayılar",
