@@ -23,6 +23,7 @@ if (args[1] === 'upload') {
 if (args[1] === 'create') process.exit(process.env.FAIL_CREATE ? 1 : 0);
 if (args[1] === 'view') {
   if (args.includes('--json')) {
+    if (!args.at(-1).endsWith('.url')) process.exit(1);
     if (process.env.FAIL_QUERY) process.exit(1);
     console.log('https://github.com/test/repo/releases/download/e2e-evidence/run-123-attempt-2.mp4');
   } else if (process.env.FAIL_CREATE) process.exit(1);
