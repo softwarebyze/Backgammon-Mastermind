@@ -227,8 +227,9 @@ describe('confirm move bar', () => {
 describe('hint card', () => {
   // The controls sit under the board in portrait; the board slot gets
   // whatever height they leave. If opening the hint card makes the controls
-  // taller, the board shrinks and jumps every time the hint is toggled.
-  it('keeps the controls the same height when the hint card opens', () => {
+  // taller, the board shrinks and jumps every time the hint is toggled. The
+  // action slot reserves the open card's height up front instead.
+  it('reserves the open card height in portrait, before and after the card opens', () => {
     const state = createInitialState('vs-human');
     state.phase = 'moving';
     state.dice = [3, 1];
@@ -246,9 +247,12 @@ describe('hint card', () => {
       />,
     );
     const slotStyle = () => StyleSheet.flatten(screen.getByTestId('game-action-slot').props.style);
-    const closedHeight = slotStyle().height;
-    expect(closedHeight).toBeGreaterThan(0);
     expect(screen.getByTestId('hint-button')).toBeOnTheScreen();
+    const closed = slotStyle();
+    // Room for the whole card while it is still closed, and no fixed
+    // height that would clip it.
+    expect(closed.height).toBeUndefined();
+    expect(closed.minHeight).toBeGreaterThanOrEqual(108);
 
     act(() => {
       showGuidance({
@@ -264,10 +268,8 @@ describe('hint card', () => {
     });
 
     expect(screen.getByTestId('hint-result')).toBeOnTheScreen();
-    expect(slotStyle().height).toBe(closedHeight);
-    expect(slotStyle().minHeight).toBeUndefined();
-    // The card overlays the slot (and the caption under it) instead of
-    // pushing the layout.
-    expect(StyleSheet.flatten(screen.getByTestId('hint-result').props.style).position).toBe('absolute');
+    expect(slotStyle()).toEqual(closed);
+    // The card is laid out in the flow as before, not overlaid.
+    expect(StyleSheet.flatten(screen.getByTestId('hint-result').props.style).position).toBeUndefined();
   });
 });

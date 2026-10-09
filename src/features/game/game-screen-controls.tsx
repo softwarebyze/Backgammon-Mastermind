@@ -49,6 +49,13 @@ type Props = {
 };
 
 const ACTION_SLOT_HEIGHT = 52;
+/**
+ * Height of the open hint card (label, move, Play / Back row). In portrait
+ * the board gets whatever height the controls leave, so the action slot
+ * always reserves this much: opening or closing the hint then never resizes
+ * or moves the board.
+ */
+const HINT_CARD_HEIGHT = 108;
 const CONTROL_HIT_SLOP = 16;
 
 export function GameScreenControls({
@@ -111,7 +118,13 @@ export function GameScreenControls({
             )}
       </View>
       <View
-        style={styles.actionSlot}
+        style={
+          compact
+            // Landscape keeps the controls in the side rail, beside the
+            // board, so the card can grow there without touching the board.
+            ? (hintCardOpen ? styles.actionSlotOpen : styles.actionSlot)
+            : [styles.actionSlotOpen, styles.actionSlotReserved]
+        }
         pointerEvents="auto"
         testID="game-action-slot"
       >
@@ -134,9 +147,7 @@ export function GameScreenControls({
           canUndoMove={canUndoMove}
         />
       </View>
-      {/* Keep the caption's height while the hint card covers it, so the
-          controls never change height and the board slot above stays put. */}
-      <Text style={[styles.caption, hintCardOpen && styles.captionHidden]}>{caption}</Text>
+      <Text style={styles.caption}>{caption}</Text>
     </View>
   );
 }
@@ -407,6 +418,19 @@ const styles = StyleSheet.create({
     zIndex: 2,
     elevation: 4,
   },
+  // The suggestion card is a label, the move, and two actions. Sharing the
+  // fixed 52px slot paints the caption through the bottom of that card.
+  actionSlotOpen: {
+    width: '100%',
+    minHeight: ACTION_SLOT_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+    elevation: 4,
+  },
+  actionSlotReserved: {
+    minHeight: HINT_CARD_HEIGHT,
+  },
   actionSpacer: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',
@@ -462,9 +486,6 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
     ...interFont('regular'),
-  },
-  captionHidden: {
-    opacity: 0,
   },
   caption: {
     marginTop: 6,
