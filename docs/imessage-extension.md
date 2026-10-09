@@ -153,7 +153,8 @@ until then, Run the main scheme on the device, then open Messages manually.
 - `com.backgammonmastermind.development.messages` was registered via EAS
   GraphQL `createAppleAppIdentifier` (parent = main app id, team 75M38Z9JBF).
   Same for `.preview.messages` (preview TestFlight path).
-- The plugin pins `DEVELOPMENT_TEAM=75M38Z9JBF` on the extension target:
+- The plugin sets `DEVELOPMENT_TEAM` on the extension target (copied from the
+  host target, falling back to `75M38Z9JBF`):
   Xcode 14+ signs resource bundles by default and EAS cloud archives fail
   with "requires a development team" without it (local builds had passed it
   via CLI, masking the gap).
