@@ -96,6 +96,17 @@ describe('prepare-store-screenshots', () => {
       expect([...fullDescription].length).toBeLessThanOrEqual(4000);
     }
 
+    // iMessage-app screenshots: 4 iPhone (1206×2622) + 4 iPad (2064×2752) per locale.
+    for (const appleLocale of Object.keys(LOCALIZATIONS)) {
+      const dir = join(IOS_ROOT, 'iMessage', appleLocale);
+      const sizes = readdirSync(dir)
+        .filter(name => name.endsWith('.png'))
+        .map(name => pngSize(join(dir, name)));
+      expect(sizes.filter(({ width, height }) => width === 1206 && height === 2622)).toHaveLength(4);
+      expect(sizes.filter(({ width, height }) => width === 2064 && height === 2752)).toHaveLength(4);
+      expect(sizes).toHaveLength(8);
+    }
+
     expect(
       readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-05-home.png')).equals(
         readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-05-home.png')),

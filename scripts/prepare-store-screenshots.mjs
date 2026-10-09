@@ -6,6 +6,10 @@ import { Buffer } from 'node:buffer';
  * Source: docs/marketing/app-store-screenshots/raw/<App Store locale>/
  *   iphone-69-*.png  1320×2868 → APP_IPHONE_67 (iOS, copied as-is)
  *   ipad-13-*.png    2064×2752 → iPad Pro 13" slot (iOS only)
+ * iMessage app (iOS only): docs/marketing/app-store-screenshots/imessage/*.png
+ *   iPhone 1206×2622 → IMESSAGE_APP_IPHONE_61, iPad 2064×2752 → IMESSAGE_APP_IPAD_PRO_3GEN_129.
+ *   The extension UI is English-only, so every locale gets the same set, staged as
+ *   fastlane/screenshots/iMessage/<locale>/ (Fastlane deliver's iMessage layout).
  * Play phone: 9:16 crop of the iPhone set → 1080×1920 (Play long-side ≤ 2× short-side)
  * iOS:    fastlane/screenshots/<App Store locale>/
  * Play:   fastlane/metadata/android/<Play locale>/images/phoneScreenshots/
@@ -32,7 +36,12 @@ const LOCALIZATIONS_PATH = path.join(
   'docs/marketing/screenshot-localizations.json',
 );
 const STORE_CONFIG_PATH = path.join(ROOT, 'store.config.json');
+const IMESSAGE_SOURCE = path.join(
+  ROOT,
+  'docs/marketing/app-store-screenshots/imessage',
+);
 const IOS_ROOT = path.join(ROOT, 'fastlane/screenshots');
+const IMESSAGE_DIR = 'iMessage';
 const PLAY_ROOT = path.join(ROOT, 'fastlane/metadata/android');
 
 const PLAY_PHONE = { width: 1080, height: 1920 };
@@ -234,6 +243,31 @@ function stagePlayListing(appleLocale, playLocale, storeInfo) {
   fs.writeFileSync(path.join(dir, 'full_description.txt'), `${info.description}\n`);
 }
 
+/**
+ * Stage the iMessage-app screenshots for every locale. Deliver's
+ * `overwrite_screenshots` deletes every screenshot set in an uploaded locale,
+ * including iMessage ones, so they must be part of the same staged tree.
+ */
+function stageImessage(locales) {
+  const root = path.join(IOS_ROOT, IMESSAGE_DIR);
+  fs.rmSync(root, { recursive: true, force: true });
+  if (!fs.existsSync(IMESSAGE_SOURCE))
+    throw new Error(`Missing iMessage screenshot source: ${IMESSAGE_SOURCE}`);
+  const files = fs.readdirSync(IMESSAGE_SOURCE).filter(name => name.toLowerCase().endsWith('.png')).sort();
+  if (files.length === 0)
+    throw new Error(`No iMessage screenshots in ${IMESSAGE_SOURCE}`);
+  let count = 0;
+  for (const locale of locales) {
+    const out = path.join(root, locale);
+    ensureDir(out);
+    for (const file of files) {
+      fs.copyFileSync(path.join(IMESSAGE_SOURCE, file), path.join(out, file));
+      count += 1;
+    }
+  }
+  return count;
+}
+
 /** Generate localized Apple and Google Play screenshot staging trees. */
 async function main() {
   if (!fs.existsSync(RAW_SOURCE)) {
@@ -249,7 +283,7 @@ async function main() {
   const storeInfo = JSON.parse(fs.readFileSync(STORE_CONFIG_PATH, 'utf8')).apple.info;
   const appleLocales = new Set(Object.keys(localizations));
   const playLocales = new Set(Object.values(localizations).map(copy => copy.playLocale));
-  pruneLocaleDirectories(IOS_ROOT, appleLocales);
+  pruneLocaleDirectories(IOS_ROOT, new Set([...appleLocales, IMESSAGE_DIR]));
   pruneLocaleDirectories(PLAY_ROOT, playLocales);
 
   let iosCount = 0;
@@ -284,6 +318,9 @@ async function main() {
       }
     }
   }
+
+  const imessageCount = stageImessage([...appleLocales]);
+  iosCount += imessageCount;
 
   console.log(`Staged ${iosCount} iOS / ${playCount} Play screenshots across ${Object.keys(localizations).length} locales →`);
   console.log(`  iOS:  ${path.relative(ROOT, IOS_ROOT)}/<locale> (Apple pixel sizes)`);
