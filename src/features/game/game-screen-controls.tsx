@@ -1,5 +1,7 @@
 import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
+import Feather from '@expo/vector-icons/Feather';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
@@ -10,6 +12,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
 import { isTurnStart } from '@/lib/game';
+import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
@@ -34,6 +37,11 @@ type Props = {
   onReset: () => void;
   onGoLive?: () => void;
   onCancelSelection?: () => void;
+  /** Confirm move: end the held turn. */
+  onConfirmMove?: () => void;
+  /** Confirm move: undo the last checker (reuses live undo). */
+  onUndoMove?: () => void;
+  canUndoMove?: boolean;
   /** Tighter padding when dice sit beside the board in landscape. */
   compact?: boolean;
   /** Tray die edge; the layout derives it from the board's checker size. */
@@ -56,6 +64,9 @@ export function GameScreenControls({
   onReset,
   onGoLive,
   onCancelSelection,
+  onConfirmMove,
+  onUndoMove,
+  canUndoMove = false,
   compact = false,
   dieSize = TRAY_DIE_SIZE,
 }: Props) {
@@ -110,6 +121,7 @@ export function GameScreenControls({
           isComputerTurn={isComputerTurn}
           isReviewing={isReviewing}
           moveLogLength={moveLogLength}
+          confirmMoveEnabled={preferences.confirmMove}
           onRoll={() => {
             hapticLight();
             onRoll();
@@ -117,6 +129,9 @@ export function GameScreenControls({
           onReset={onReset}
           onGoLive={onGoLive}
           onCancelSelection={onCancelSelection}
+          onConfirmMove={onConfirmMove}
+          onUndoMove={onUndoMove}
+          canUndoMove={canUndoMove}
         />
       </View>
       <Text style={styles.caption}>{caption}</Text>
@@ -131,21 +146,45 @@ function ActionControl({
   isComputerTurn,
   isReviewing,
   moveLogLength,
+  confirmMoveEnabled,
   onRoll,
   onReset,
   onGoLive,
   onCancelSelection,
+  onConfirmMove,
+  onUndoMove,
+  canUndoMove,
 }: {
   state: GameState;
   isHumanTurn: boolean;
   isComputerTurn: boolean;
   isReviewing: boolean;
   moveLogLength: number;
+  confirmMoveEnabled: boolean;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
   onCancelSelection?: () => void;
+  onConfirmMove?: () => void;
+  onUndoMove?: () => void;
+  canUndoMove: boolean;
 }) {
+  const prevConfirmEnabled = useRef(confirmMoveEnabled);
+  useEffect(() => {
+    const wasEnabled = prevConfirmEnabled.current;
+    prevConfirmEnabled.current = confirmMoveEnabled;
+    if (
+      wasEnabled
+      && !confirmMoveEnabled
+      && onConfirmMove
+      && !isReviewing
+      && isHumanTurn
+      && isAwaitingMoveConfirm(state, true)
+    ) {
+      onConfirmMove();
+    }
+  }, [confirmMoveEnabled, state, isHumanTurn, isReviewing, onConfirmMove]);
+
   if (isReviewing) {
     return (
       <HoverPressable
@@ -218,6 +257,30 @@ function ActionControl({
     return <View style={styles.actionSpacer} />;
   }
 
+  if (
+    isHumanTurn
+    && !isReviewing
+    && onConfirmMove
+    && isAwaitingMoveConfirm(state, confirmMoveEnabled)
+  ) {
+    return (
+      <ConfirmMoveBar
+        canUndo={canUndoMove}
+        onConfirm={() => {
+          hapticLight();
+          onConfirmMove();
+        }}
+        onUndo={() => {
+          if (!canUndoMove || !onUndoMove) {
+            return;
+          }
+          hapticLight();
+          onUndoMove();
+        }}
+      />
+    );
+  }
+
   if (state.phase === 'no-move' && isHumanTurn) {
     return <StatusPlaceholder text={translate('game.controls.no_legal_moves')} />;
   }
@@ -254,6 +317,55 @@ function ActionControl({
   }
 
   return <View style={styles.actionSpacer} />;
+}
+
+function ConfirmMoveBar({
+  canUndo,
+  onConfirm,
+  onUndo,
+}: {
+  canUndo: boolean;
+  onConfirm: () => void;
+  onUndo: () => void;
+}) {
+  return (
+    <View style={styles.confirmRow} testID="confirm-move-bar">
+      <HoverPressable
+        accessibilityRole="button"
+        accessibilityLabel={translate('game.controls.undo_a11y')}
+        accessibilityState={{ disabled: !canUndo }}
+        disabled={!canUndo}
+        testID="undo-move-button"
+        style={({ pressed, hovered }) => [
+          styles.undoBtn,
+          !canUndo && styles.undoBtnDisabled,
+          canUndo && hovered && styles.secondaryBtnHover,
+          pressed && canUndo && styles.pressed,
+        ]}
+        onPress={onUndo}
+        hitSlop={CONTROL_HIT_SLOP}
+      >
+        <Text style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
+          {translate('game.controls.undo_move')}
+        </Text>
+      </HoverPressable>
+      <HoverPressable
+        accessibilityRole="button"
+        accessibilityLabel={translate('game.controls.confirm_move_a11y')}
+        testID="confirm-move-button"
+        style={({ pressed, hovered }) => [
+          styles.confirmBtn,
+          hovered && styles.primaryBtnHover,
+          pressed && styles.pressed,
+        ]}
+        onPress={onConfirm}
+        hitSlop={CONTROL_HIT_SLOP}
+      >
+        <Feather name="check" size={18} color={GAME_PALETTE.controlInk} />
+        <Text style={styles.primaryBtnText}>{translate('game.controls.confirm_move')}</Text>
+      </HoverPressable>
+    </View>
+  );
 }
 
 function StatusPlaceholder({ text }: { text: string }) {
@@ -366,5 +478,47 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'center',
     ...interFont('regular'),
+  },
+  confirmRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    width: '100%',
+  },
+  undoBtn: {
+    backgroundColor: GAME_PALETTE.bg,
+    borderWidth: 1.5,
+    borderColor: 'rgba(232, 224, 208, 0.45)',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    minWidth: 96,
+    alignItems: 'center',
+    ...continuousRadius(12),
+  },
+  undoBtnDisabled: {
+    opacity: 0.4,
+  },
+  undoBtnText: {
+    color: GAME_PALETTE.accent,
+    fontSize: 16,
+    ...interFont('semibold'),
+  },
+  undoBtnTextDisabled: {
+    color: GAME_PALETTE.textMuted,
+  },
+  confirmBtn: {
+    backgroundColor: GAME_PALETTE.control,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.controlBorder,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    minWidth: 180,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+    ...continuousRadius(12),
   },
 });

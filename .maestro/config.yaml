@@ -1,5 +1,9 @@
 flows:
+  - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
+  - app/game-settings-gear.yaml
+  - app/settings-no-fast-mode.yaml
+  - app/android-back-closes-settings.yaml
   - app/hebrew-undo-redo.yaml
 
 excludeTags:

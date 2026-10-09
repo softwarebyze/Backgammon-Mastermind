@@ -1,0 +1,90 @@
+# Confirm holds a spent roll; Undo restores the board before handoff.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- openLink: backgammonmastermind.preview://developer
+# Other release features add presets above the JSON fixture field.
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 15000
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible: 'Point 5, 1 white checker'
+    timeout: 15000
+- takeScreenshot: confirm-01-first-move
+# Undo mid-sequence goes through the header timeline undo. The confirm bar's
+# `undo-move-button` only exists once the roll is fully spent (remainingDice === 0),
+# so it is asserted later at confirm-04 instead.
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 15000
+- assertVisible: Point 5
+# Inspect this frame/recording for the final undo-path cleanup in #205.
+- takeScreenshot: confirm-02-undo-path-cleared
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible: 'Point 5, 1 white checker'
+    timeout: 15000
+- tapOn:
+    id: point-6
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible:
+      id: confirm-move-button
+    timeout: 15000
+- assertVisible: 'Point 5, 2 white checkers'
+- assertVisible: 'Point 6, 4 white checkers'
+- assertNotVisible: ".*Black's turn.*"
+- takeScreenshot: confirm-03-held-turn
+- tapOn:
+    id: undo-move-button
+- extendedWaitUntil:
+    visible: 'Point 6, 5 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 5, 1 white checker'
+- assertNotVisible:
+    id: confirm-move-button
+- takeScreenshot: confirm-04-undo-before-confirm
+- tapOn:
+    id: point-6
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible:
+      id: confirm-move-button
+    timeout: 15000
+- tapOn:
+    id: confirm-move-button
+- extendedWaitUntil:
+    visible: ".*Black's turn.*"
+    timeout: 15000
+- assertVisible: 'Point 5, 2 white checkers'
+- takeScreenshot: confirm-05-turn-handed-off

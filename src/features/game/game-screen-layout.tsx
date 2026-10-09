@@ -5,8 +5,6 @@ import type { useGameInput } from '@/features/game/use-game-input';
 import type { useMoveReview } from '@/features/game/use-move-review';
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
-import { usePostHog } from 'posthog-react-native';
-import { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -46,6 +44,8 @@ type Props = {
   moveLog: MoveLogEntry[];
   isComputerTurn: boolean;
   onCancelSelection: () => void;
+  canUndo?: boolean;
+  onUndo?: () => void;
 };
 
 function GameTopChrome({
@@ -121,6 +121,8 @@ type ChromeStackProps = {
   onTopLayout: (event: LayoutChangeEvent) => void;
   onControlsLayout: (event: LayoutChangeEvent) => void;
   onCancelSelection: () => void;
+  canUndo: boolean;
+  onUndo?: () => void;
 };
 
 function GameChromeStack({
@@ -139,6 +141,8 @@ function GameChromeStack({
   onTopLayout,
   onControlsLayout,
   onCancelSelection,
+  canUndo,
+  onUndo,
 }: ChromeStackProps) {
   return (
     <>
@@ -170,6 +174,9 @@ function GameChromeStack({
           onReset={input.handleReset}
           onGoLive={review.goLive}
           onCancelSelection={onCancelSelection}
+          onConfirmMove={input.handleConfirmMove}
+          onUndoMove={onUndo}
+          canUndoMove={canUndo}
         />
       </View>
     </>
@@ -184,8 +191,9 @@ export function GameScreenLayout({
   moveLog,
   isComputerTurn,
   onCancelSelection,
+  canUndo = false,
+  onUndo,
 }: Props) {
-  const posthog = usePostHog();
   const {
     landscape,
     desktop,
@@ -212,19 +220,6 @@ export function GameScreenLayout({
   const opening = openingTray(live, reveal);
   const openingText = openingCopy(live, reveal);
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
-  const prevPhaseRef = useRef<string | undefined>(undefined);
-
-  useEffect(() => {
-    const currentPhase = input.state?.phase;
-    if (currentPhase === 'game-over' && prevPhaseRef.current !== 'game-over') {
-      posthog.capture('game_completed', {
-        mode: input.state?.mode ?? null,
-        winner: input.state?.winner ?? null,
-        move_count: moveLog.length,
-      });
-    }
-    prevPhaseRef.current = currentPhase;
-  }, [posthog, input.state, moveLog.length]);
 
   const chrome = (
     <GameChromeStack
@@ -243,6 +238,8 @@ export function GameScreenLayout({
       onTopLayout={onTopLayout}
       onControlsLayout={onControlsLayout}
       onCancelSelection={onCancelSelection}
+      canUndo={canUndo}
+      onUndo={onUndo}
     />
   );
 

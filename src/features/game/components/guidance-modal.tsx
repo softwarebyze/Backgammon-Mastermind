@@ -497,13 +497,6 @@ function useTutorBlunderAnalytics(session: GuidanceSession | null) {
 
   return useCallback((action: TutorBlunderAction) => {
     posthog.capture('tutor_blunder_action', { action });
-    if (action === 'turn_off') {
-      posthog.capture('game_preference_changed', {
-        preference: 'tutor_mode',
-        value: false,
-        source: 'blunder_modal',
-      });
-    }
   }, [posthog]);
 }
 

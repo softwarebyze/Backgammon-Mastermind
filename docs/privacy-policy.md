@@ -10,7 +10,7 @@ Backgammon Mastermind is a local board game. Gameplay runs on your device. We us
 
 ### Product analytics (PostHog)
 
-When the app can reach the network, we send anonymous usage events (for example: screens opened, a game started, Learn to Play progress, dice rolled). Events are processed by [PostHog](https://posthog.com/) so we can see feature usage and fix problems.
+When the app can reach the network, we send anonymous usage events (for example: screens opened, a game started, Learn to Play progress, dice rolled, a setting changed). Events are processed by [PostHog](https://posthog.com/) so we can see feature usage and fix problems.
 
 These events are not used for advertising. We do not ask for your name, email, or payment details inside the app. Analytics may include device/app metadata that PostHog collects by default (such as app version and platform).
 

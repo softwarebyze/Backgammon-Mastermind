@@ -250,8 +250,25 @@ export function passTurn(state: GameState): GameState {
   };
 }
 
-function finishMovingTurn(state: GameState): GameState {
+export type ApplyMoveOptions = {
+  /**
+   * When true, spending the last die (or leaving no legal moves) does not hand
+   * the turn to the opponent — the board stays on this player so Confirm move
+   * can review. Default false keeps today's auto-pass behavior.
+   */
+  deferTurnEnd?: boolean;
+};
+
+function finishMovingTurn(state: GameState, deferTurnEnd = false): GameState {
   if (state.remainingDice.length === 0) {
+    if (deferTurnEnd) {
+      return {
+        ...state,
+        phase: 'moving',
+        selectedPoint: null,
+        legalMovesForSelected: [],
+      };
+    }
     return passTurn(state);
   }
   if (!hasAnyLegalMove(state)) {
@@ -531,13 +548,14 @@ function resolveDieIndex(remainingDice: number[], move: Move): number {
 
 /**
  * Apply a move and return the next game state.
- * Automatically advances the turn when no dice remain or no moves are available.
+ * Automatically advances the turn when no dice remain or no moves are available,
+ * unless `deferTurnEnd` holds the turn for Confirm move.
  */
-export function applyMove(state: GameState, move: Move): GameState {
+export function applyMove(state: GameState, move: Move, opts?: ApplyMoveOptions): GameState {
   const next = applyMovePhysical(state, move);
   if (next.phase === 'game-over')
     return next;
-  return finishMovingTurn(next);
+  return finishMovingTurn(next, opts?.deferTurnEnd === true);
 }
 
 /** Roll two dice (pure, does not mutate state). */
