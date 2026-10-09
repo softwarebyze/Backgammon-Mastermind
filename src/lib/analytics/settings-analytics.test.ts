@@ -93,6 +93,7 @@ describe('gameplay setting properties', () => {
       pref_sound_enabled: true,
       pref_tutor_mode: false,
       pref_confirm_move: true,
+      pref_computer_level: 'classic',
       pref_tutor_strictness: 'big',
     });
   });
