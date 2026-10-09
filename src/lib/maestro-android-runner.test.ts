@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join } from 'node:path';
 
@@ -19,8 +19,12 @@ const args = process.argv.slice(2);
 if (args[1] === 'screenrecord') require('node:child_process').execFileSync('/bin/sleep', ['0.1']);
 if (args[0] === 'pull') fs.writeFileSync(args.at(-1), 'video');
 `, { mode: 0o755 });
+    // Like real ffmpeg, write the output file (the last argument).
     writeFileSync(join(fixture, 'ffmpeg'), `#!/usr/bin/env node
-require('node:fs').writeFileSync(process.env.JOIN_CALL, JSON.stringify(process.argv.slice(2)));
+const fs = require('node:fs');
+const args = process.argv.slice(2);
+fs.writeFileSync(process.env.JOIN_CALL, JSON.stringify(args));
+fs.writeFileSync(args.at(-1), 'joined');
 `, { mode: 0o755 });
     writeFileSync(join(fixture, 'maestro'), `#!/usr/bin/env node
 const fs = require('node:fs');
@@ -39,7 +43,10 @@ require('node:child_process').execFileSync('/bin/sleep', ['0.3']);
     const calls = readFileSync(join(fixture, 'calls'), 'utf8').trim().split('\n').map(line => JSON.parse(line) as string[]);
     expect(calls).toHaveLength(1);
     const joinArgs = JSON.parse(readFileSync(join(fixture, 'join-call'), 'utf8')) as string[];
-    expect(joinArgs).toEqual(expect.arrayContaining(['concat', join(fixture, '.maestro-ci-output/recordings/concat.txt'), join(fixture, 'e2e-recording.mp4')]));
+    // ffmpeg joins into a temporary file, which is then moved to the final name.
+    expect(joinArgs).toEqual(expect.arrayContaining(['concat', join(fixture, '.maestro-ci-output/recordings/concat.txt'), join(fixture, 'e2e-recording.partial.mp4')]));
+    expect(readFileSync(join(fixture, 'e2e-recording.mp4'), 'utf8')).toBe('joined');
+    expect(existsSync(join(fixture, 'e2e-recording.partial.mp4'))).toBe(false);
     const args = calls[0]!;
     const flows = args.filter(arg => arg.endsWith('.yaml')).map(arg => basename(arg));
     expect(new Set(flows).size).toBe(flows.length);
