@@ -1,12 +1,19 @@
+import { StyleSheet } from 'react-native';
+import { clearGuidance, showGuidance } from '@/features/game/guidance-store';
 import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
-import { cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
+import { act, cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 
 import { GameScreenControls } from './game-screen-controls';
 
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),
   hapticSelection: jest.fn(),
+}));
+
+jest.mock('@/features/game/use-game', () => ({
+  // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock must keep the real hook's export name
+  useGame: () => ({ isAnimating: false, doMoveSequence: jest.fn() }),
 }));
 
 const mockPrefs = { ...DEFAULT_GAME_PREFERENCES, confirmMove: false };
@@ -18,6 +25,7 @@ jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
 
 afterEach(() => {
   cleanup();
+  clearGuidance();
   Object.assign(mockPrefs, { ...DEFAULT_GAME_PREFERENCES, confirmMove: false });
 });
 
@@ -213,5 +221,53 @@ describe('confirm move bar', () => {
     );
 
     expect(screen.queryByTestId('confirm-move-button')).toBeNull();
+  });
+});
+
+describe('hint card', () => {
+  // The controls sit under the board in portrait; the board slot gets
+  // whatever height they leave. If opening the hint card makes the controls
+  // taller, the board shrinks and jumps every time the hint is toggled.
+  it('keeps the controls the same height when the hint card opens', () => {
+    const state = createInitialState('vs-human');
+    state.phase = 'moving';
+    state.dice = [3, 1];
+    state.remainingDice = [3, 1];
+
+    setup(
+      <GameScreenControls
+        state={state}
+        liveDiceState={state}
+        isHumanTurn
+        isComputerTurn={false}
+        moveLogLength={0}
+        onRoll={jest.fn()}
+        onReset={jest.fn()}
+      />,
+    );
+    const slotStyle = () => StyleSheet.flatten(screen.getByTestId('game-action-slot').props.style);
+    const closedHeight = slotStyle().height;
+    expect(closedHeight).toBeGreaterThan(0);
+    expect(screen.getByTestId('hint-button')).toBeOnTheScreen();
+
+    act(() => {
+      showGuidance({
+        kind: 'hint',
+        questionState: state,
+        myMoves: [],
+        engineMoves: [{ from: 8, to: 5, dieIndex: 0, die: 3 }, { from: 6, to: 5, dieIndex: 1, die: 1 }],
+        revealed: true,
+        showMine: false,
+        showEngine: true,
+        hintMoveLogLength: 0,
+      });
+    });
+
+    expect(screen.getByTestId('hint-result')).toBeOnTheScreen();
+    expect(slotStyle().height).toBe(closedHeight);
+    expect(slotStyle().minHeight).toBeUndefined();
+    // The card overlays the slot (and the caption under it) instead of
+    // pushing the layout.
+    expect(StyleSheet.flatten(screen.getByTestId('hint-result').props.style).position).toBe('absolute');
   });
 });

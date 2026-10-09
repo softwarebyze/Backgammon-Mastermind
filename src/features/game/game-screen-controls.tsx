@@ -111,7 +111,7 @@ export function GameScreenControls({
             )}
       </View>
       <View
-        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
+        style={styles.actionSlot}
         pointerEvents="auto"
         testID="game-action-slot"
       >
@@ -134,7 +134,9 @@ export function GameScreenControls({
           canUndoMove={canUndoMove}
         />
       </View>
-      <Text style={styles.caption}>{caption}</Text>
+      {/* Keep the caption's height while the hint card covers it, so the
+          controls never change height and the board slot above stays put. */}
+      <Text style={[styles.caption, hintCardOpen && styles.captionHidden]}>{caption}</Text>
     </View>
   );
 }
@@ -405,16 +407,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
     elevation: 4,
   },
-  // The suggestion card is a label, the move, and two actions. Sharing the
-  // fixed 52px slot paints the caption through the bottom of that card.
-  actionSlotOpen: {
-    width: '100%',
-    minHeight: ACTION_SLOT_HEIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 2,
-    elevation: 4,
-  },
   actionSpacer: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',
@@ -470,6 +462,9 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
     ...interFont('regular'),
+  },
+  captionHidden: {
+    opacity: 0,
   },
   caption: {
     marginTop: 6,

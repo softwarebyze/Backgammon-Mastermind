@@ -74,9 +74,10 @@ function HintResult({ session, onPlay, onDismiss }: {
 }) {
   return (
     <View style={styles.resultWrap} testID="hint-result">
-      <Text style={styles.resultLabel}>{translate('game.hint.suggested')}</Text>
-      <Text style={styles.resultText} numberOfLines={2}>
-        {formatHintNotation(session.engineMoves)}
+      <Text style={styles.resultLine} numberOfLines={1}>
+        <Text style={styles.resultLabel}>{translate('game.hint.suggested')}</Text>
+        {'  '}
+        <Text style={styles.resultText}>{formatHintNotation(session.engineMoves)}</Text>
       </Text>
       <View style={styles.resultActions}>
         <Pressable
@@ -253,16 +254,24 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.85,
   },
+  // Overlays the action slot and the caption under it instead of growing the
+  // controls: taller controls shrink the board slot, so the board would
+  // resize every time the hint opens or closes.
   resultWrap: {
-    width: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
     backgroundColor: GAME_PALETTE.surface,
     borderWidth: 1,
     borderColor: GAME_PALETTE.accentDim,
-    paddingHorizontal: 14,
-    paddingTop: 12,
-    paddingBottom: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     alignItems: 'center',
     ...continuousRadius(12),
+  },
+  resultLine: {
+    textAlign: 'center',
   },
   resultLabel: {
     color: GAME_PALETTE.textMuted,
@@ -271,9 +280,7 @@ const styles = StyleSheet.create({
   },
   resultText: {
     color: GAME_PALETTE.text,
-    fontSize: 17,
-    marginTop: 2,
-    textAlign: 'center',
+    fontSize: 16,
     ...interFont('semibold'),
   },
   resultActions: {
@@ -281,12 +288,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    marginTop: 10,
+    marginTop: 4,
   },
   playBtn: {
     backgroundColor: GAME_PALETTE.accent,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 18,
+    paddingVertical: 7,
     ...continuousRadius(10),
   },
   playBtnText: {
@@ -296,7 +303,7 @@ const styles = StyleSheet.create({
   },
   dismissBtn: {
     paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingVertical: 7,
   },
   dismissText: {
     color: GAME_PALETTE.textMuted,
