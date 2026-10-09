@@ -210,6 +210,23 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   extra: {
     eas: {
       projectId: EAS_PROJECT_ID,
+      // Declares the iMessage extension (added by plugins/with-imessage-extension)
+      // so EAS CLI sets up a provisioning profile for it too. Without this, EAS
+      // only signs the main app and the build fails with "No profiles for
+      // '<bundle id>.messages' were found".
+      // https://docs.expo.dev/build-reference/app-extensions/
+      build: {
+        experimental: {
+          ios: {
+            appExtensions: [
+              {
+                targetName: 'BackgammonMastermindMessages',
+                bundleIdentifier: `${Env.EXPO_PUBLIC_BUNDLE_ID}.messages`,
+              },
+            ],
+          },
+        },
+      },
     },
     posthogProjectToken: process.env.POSTHOG_PROJECT_TOKEN,
     posthogHost: process.env.POSTHOG_HOST || 'https://us.i.posthog.com',
