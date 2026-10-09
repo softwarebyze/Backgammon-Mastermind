@@ -1,7 +1,7 @@
 import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
@@ -10,7 +10,7 @@ import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
-import { TRAY_DIE_SIZE, useSpareBoardHeight } from '@/features/game/hooks/use-board-dimensions';
+import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
 import { isTurnStart } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -49,35 +49,6 @@ type Props = {
 };
 
 const ACTION_SLOT_HEIGHT = 52;
-/**
- * Height of the open hint card (label, move, Play / Back row). In portrait
- * the board gets whatever height the controls leave, so the action slot
- * reserves this much up front where the board has height to spare: opening
- * or closing the hint then never resizes or moves the board.
- */
-const HINT_CARD_HEIGHT = 108;
-const MAX_HINT_RESERVE = HINT_CARD_HEIGHT - ACTION_SLOT_HEIGHT;
-
-/**
- * Extra height (0 to 56) the closed action slot reserves for the hint card:
- * only what the board doesn't use, so the closed board is never smaller than
- * without the reserve. Short phones get 0 and keep the full-size board.
- */
-function useHintCardReserve(enabled: boolean, hintCardOpen: boolean): number {
-  // Slot height the board leaves unused at the current reserve, so the
-  // current reserve plus this is the most it can take without shrinking the
-  // board. Each new value comes from a layout that already used `reserve`.
-  const spare = useSpareBoardHeight();
-  const [reserve, setReserve] = useState(0);
-  const [seenSpare, setSeenSpare] = useState<number | null>(null);
-  // An open card taller than the reserve squeezes the slot, so keep the
-  // reserve while the card is open and re-measure once it closes.
-  if (spare !== seenSpare && !hintCardOpen) {
-    setSeenSpare(spare);
-    setReserve(enabled ? Math.max(0, Math.min(MAX_HINT_RESERVE, reserve + spare)) : 0);
-  }
-  return enabled ? reserve : 0;
-}
 const CONTROL_HIT_SLOP = 16;
 
 export function GameScreenControls({
@@ -102,7 +73,6 @@ export function GameScreenControls({
   const { preferences } = useGamePreferences();
   const guidance = useGuidance();
   const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
-  const hintReserve = useHintCardReserve(!compact, hintCardOpen);
   const turn = getTurnDisplay(state);
   const caption = captionOverride
     ?? (isReviewing
@@ -141,13 +111,7 @@ export function GameScreenControls({
             )}
       </View>
       <View
-        style={
-          compact
-            // Landscape keeps the controls in the side rail, beside the
-            // board, so the card can grow there without touching the board.
-            ? (hintCardOpen ? styles.actionSlotOpen : styles.actionSlot)
-            : [styles.actionSlotOpen, { minHeight: ACTION_SLOT_HEIGHT + hintReserve }]
-        }
+        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"
         testID="game-action-slot"
       >

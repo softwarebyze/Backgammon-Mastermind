@@ -6,7 +6,6 @@ import {
   MIN_LEARN_BOARD_SLOT_HEIGHT,
   MIN_LEARN_CAPTION_HEIGHT,
   resolveBoardViewport,
-  spareBoardHeight,
   trayDieSize,
 } from '@/features/game/hooks/use-board-dimensions';
 import { MAX_BOARD_WIDTH } from '@/lib/ui/game-chrome';
@@ -345,24 +344,5 @@ describe('trayDieSize', () => {
     expect(trayDieSize(32)).toBe(44);
     expect(trayDieSize(48)).toBe(64);
     expect(trayDieSize(80)).toBe(64);
-  });
-});
-
-describe('spareBoardHeight', () => {
-  const phone = { screenWidth: 390, screenHeight: 844, platform: 'web' as const, slotWidth: 390 };
-  const size = (slotHeight: number) => {
-    const dims = resolveBoardViewport({ ...phone, slotHeight });
-    return [dims.boardOuterWidth, dims.boardOuterHeight];
-  };
-
-  it('is exactly the height the board can lose without changing size', () => {
-    const spare = spareBoardHeight({ ...phone, slotHeight: 500 });
-    expect(spare).toBeGreaterThan(0);
-    expect(size(500 - spare)).toEqual(size(500));
-    expect(size(500 - spare - 1)).not.toEqual(size(500));
-  });
-
-  it('is not positive when the board is height-limited', () => {
-    expect(spareBoardHeight({ ...phone, slotHeight: 280 })).toBeLessThanOrEqual(0);
   });
 });
