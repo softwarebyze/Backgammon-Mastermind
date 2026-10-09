@@ -36,9 +36,15 @@ wait "$RECORD_PID" || echo "::warning::Recording segment collection failed"
 # Each Android screenrecord ends after 300 seconds. Join all captured segments,
 # retaining the individual files in the artifact if joining fails.
 if [[ -s "$MAESTRO_OUT/recordings/concat.txt" ]]; then
-  ffmpeg -y -f concat -safe 0 -i "$MAESTRO_OUT/recordings/concat.txt" \
-    -c copy "${WORKSPACE}/e2e-recording.mp4" \
-    || echo "::warning::Recording join failed; inspect recordings/ in the artifact"
+  # Join into a temporary file so a failed join never leaves a publishable recording.
+  JOINED="${WORKSPACE}/e2e-recording.partial.mp4"
+  if ffmpeg -y -f concat -safe 0 -i "$MAESTRO_OUT/recordings/concat.txt" \
+    -c copy "$JOINED"; then
+    mv "$JOINED" "${WORKSPACE}/e2e-recording.mp4"
+  else
+    rm -f "$JOINED"
+    echo "::warning::Recording join failed; inspect recordings/ in the artifact"
+  fi
 fi
 
 exit "$MAESTRO_EXIT"
