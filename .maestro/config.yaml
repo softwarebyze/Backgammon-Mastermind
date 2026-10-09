@@ -3,6 +3,7 @@ flows:
   - app/backgammon-smoke.yaml
   - app/game-settings-gear.yaml
   - app/settings-no-fast-mode.yaml
+  - app/android-back-closes-settings.yaml
 
 excludeTags:
   - util
