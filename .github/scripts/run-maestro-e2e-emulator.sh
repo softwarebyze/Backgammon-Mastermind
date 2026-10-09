@@ -19,6 +19,7 @@ adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
+# Smoke + regression flows + native RTL language restart (screenshots land in maestro-visual-report).
 maestro test \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
@@ -26,6 +27,8 @@ maestro test \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
+  "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
+  "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
