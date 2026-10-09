@@ -47,8 +47,12 @@ describe('android submit track', () => {
   it('takes the submit profile from the track input', () => {
     for (const job of jobs) {
       expect(job.env?.SUBMIT_PROFILE).toBe('${{ inputs.track }}'); // eslint-disable-line no-template-curly-in-string
-      for (const step of job.steps)
+      for (const step of job.steps) {
         expect(step.env?.SUBMIT_PROFILE).toBeUndefined();
+        // No step may reassign it in shell (`SUBMIT_PROFILE=…`, `export …`,
+        // or `echo "SUBMIT_PROFILE=…" >> $GITHUB_ENV`).
+        expect(step.run ?? '').not.toMatch(/(?<![\w$])SUBMIT_PROFILE\s*=/);
+      }
     }
   });
 
