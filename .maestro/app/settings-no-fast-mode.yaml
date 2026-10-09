@@ -4,11 +4,11 @@ tags:
   - pull-request
 ---
 # Fast computer was a settings toggle. Pace is now one default, so the row is gone.
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - tapOn:
     id: open-settings-button
 - extendedWaitUntil:
