@@ -19,11 +19,11 @@
       "no_legal_moves": "אין מהלכים אפשריים…",
       "play_again": "שחקו שוב",
       "play_again_a11y": "לשחק שוב",
-      "redo_a11y": "Redo Move",
+      "redo_a11y": "ביצוע המהלך מחדש",
       "roll_dice": "הטילו קוביות",
       "roll_dice_a11y": "הטלת קוביות",
       "start_new_game_a11y": "התחל משחק חדש",
-      "undo_a11y": "Undo Move"
+      "undo_a11y": "ביטול המהלך"
     },
     "hint": {
       "back_to_turn": "חזרה לתור שלי",

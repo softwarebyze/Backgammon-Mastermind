@@ -1,0 +1,39 @@
+# Capture the directional undo/redo affordances in English and Hebrew.
+appId: ${APP_ID}
+tags:
+  - settings
+  - i18n
+  - rtl
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn: vs Computer
+- assertVisible: Undo move
+- assertVisible: Redo move
+- takeScreenshot: undo-redo-01-english
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn: Settings
+- tapOn: Language
+- scrollUntilVisible:
+    element:
+      text: עברית
+    direction: DOWN
+- tapOn: עברית
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible: נגד המחשב
+    timeout: 90000
+- tapOn: נגד המחשב
+- assertVisible: ביטול המהלך
+- assertVisible: ביצוע המהלך מחדש
+- takeScreenshot: undo-redo-02-hebrew-rtl
