@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { clearGuidance, showGuidance } from '@/features/game/guidance-store';
+import { clearBoardSlotSize, setBoardSlotSize } from '@/features/game/hooks/board-slot-size';
+import { resolveBoardViewport } from '@/features/game/hooks/use-board-dimensions';
 import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
@@ -9,6 +11,12 @@ import { GameScreenControls } from './game-screen-controls';
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),
   hapticSelection: jest.fn(),
+}));
+
+jest.mock('react-native-safe-area-context', () => ({
+  ...jest.requireActual('react-native-safe-area-context'),
+  // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock must keep the real hook's export name
+  useSafeAreaInsets: () => ({ top: 0, right: 0, bottom: 0, left: 0 }),
 }));
 
 jest.mock('@/features/game/use-game', () => ({
@@ -228,13 +236,17 @@ describe('hint card', () => {
   // The controls sit under the board in portrait; the board slot gets
   // whatever height they leave. If opening the hint card makes the controls
   // taller, the board shrinks and jumps every time the hint is toggled. The
-  // action slot reserves the open card's height up front instead.
-  it('reserves the open card height in portrait, before and after the card opens', () => {
+  // action slot reserves the open card's height up front, but only out of
+  // height the board doesn't use.
+  afterEach(() => {
+    clearBoardSlotSize();
+  });
+
+  function renderControls() {
     const state = createInitialState('vs-human');
     state.phase = 'moving';
     state.dice = [3, 1];
     state.remainingDice = [3, 1];
-
     setup(
       <GameScreenControls
         state={state}
@@ -246,15 +258,7 @@ describe('hint card', () => {
         onReset={jest.fn()}
       />,
     );
-    const slotStyle = () => StyleSheet.flatten(screen.getByTestId('game-action-slot').props.style);
-    expect(screen.getByTestId('hint-button')).toBeOnTheScreen();
-    const closed = slotStyle();
-    // Room for the whole card while it is still closed, and no fixed
-    // height that would clip it.
-    expect(closed.height).toBeUndefined();
-    expect(closed.minHeight).toBeGreaterThanOrEqual(108);
-
-    act(() => {
+    const openHint = () => act(() => {
       showGuidance({
         kind: 'hint',
         questionState: state,
@@ -266,10 +270,45 @@ describe('hint card', () => {
         hintMoveLogLength: 0,
       });
     });
+    return { openHint };
+  }
+  const slotStyle = () => StyleSheet.flatten(screen.getByTestId('game-action-slot').props.style);
+  const slotHeight = () => {
+    const style = slotStyle();
+    return Math.max(Number(style.height ?? 0), Number(style.minHeight ?? 0));
+  };
+
+  it('reserves the open card height when the board has room to spare', () => {
+    act(() => setBoardSlotSize({ width: 360, height: 600 }));
+    const { openHint } = renderControls();
+    expect(screen.getByTestId('hint-button')).toBeOnTheScreen();
+    const closed = slotStyle();
+    // Room for the whole card while it is still closed, and no fixed
+    // height that would clip it.
+    expect(closed.height).toBeUndefined();
+    expect(closed.minHeight).toBeGreaterThanOrEqual(108);
+
+    openHint();
 
     expect(screen.getByTestId('hint-result')).toBeOnTheScreen();
     expect(slotStyle()).toEqual(closed);
     // The card is laid out in the flow as before, not overlaid.
     expect(StyleSheet.flatten(screen.getByTestId('hint-result').props.style).position).toBeUndefined();
+  });
+
+  it('keeps the closed slot at its normal height when the board needs every pixel', () => {
+    // Short phone: the board is height-limited, so any reserve would shrink
+    // it. The closed board keeps its full size, as without the hint card.
+    act(() => setBoardSlotSize({ width: 360, height: 260 }));
+    renderControls();
+    expect(slotHeight()).toBe(52);
+  });
+
+  it('reserves only the spare height when the board can give up part of the card', () => {
+    const spare = 20;
+    const natural = resolveBoardViewport({ screenWidth: 360, screenHeight: 2000, platform: 'web', slotWidth: 360, slotHeight: 2000 });
+    act(() => setBoardSlotSize({ width: 360, height: natural.boardOuterHeight + 36 + spare }));
+    renderControls();
+    expect(slotHeight()).toBe(52 + spare);
   });
 });

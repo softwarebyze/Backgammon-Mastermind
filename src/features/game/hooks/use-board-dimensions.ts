@@ -312,11 +312,26 @@ export function resolveBoardViewport({
   return fitBoardToViewport(maxOuterWidth, maxOuterHeight, { extraHeight: railHeight, checkerCap });
 }
 
-export function useBoardDimensions(options?: {
+/**
+ * Slot height the board leaves unused: positive once it is already at its
+ * full width and full point length, so taking up to this much height away
+ * would not change its size. Zero or negative when the board is
+ * height-limited.
+ */
+export function spareBoardHeight(args: ResolveBoardViewportArgs): number {
+  const slotHeight = args.slotHeight ?? 0;
+  if ((args.slotWidth ?? 0) <= 0 || slotHeight <= 0) {
+    return 0;
+  }
+  const natural = resolveBoardViewport({ ...args, slotHeight: Number.MAX_SAFE_INTEGER });
+  const railHeight = (args.showPointNumbers ?? true) ? POINT_NUMBER_RAIL * 2 : 0;
+  return slotHeight - natural.boardOuterHeight - railHeight;
+}
+
+function useBoardViewportArgs(options?: {
   showPointNumbers?: boolean;
-  /** Extra vertical chrome beyond the default game screen estimate. */
   extraChrome?: number;
-}): BoardDimensions {
+}): ResolveBoardViewportArgs {
   const {
     width: screenWidth,
     height: screenHeight,
@@ -333,20 +348,19 @@ export function useBoardDimensions(options?: {
   const horizontalInset = insets.left + insets.right;
 
   return useMemo(
-    () =>
-      resolveBoardViewport({
-        screenWidth,
-        screenHeight,
-        platform,
-        slotWidth: slot.width,
-        slotHeight: slot.height,
-        extraChrome,
-        showPointNumbers,
-        horizontalInset,
-        maxOuterWidthCap,
-        maxBoardWidth,
-        checkerCap: cap,
-      }),
+    () => ({
+      screenWidth,
+      screenHeight,
+      platform,
+      slotWidth: slot.width,
+      slotHeight: slot.height,
+      extraChrome,
+      showPointNumbers,
+      horizontalInset,
+      maxOuterWidthCap,
+      maxBoardWidth,
+      checkerCap: cap,
+    }),
     [
       screenWidth,
       screenHeight,
@@ -361,4 +375,19 @@ export function useBoardDimensions(options?: {
       cap,
     ],
   );
+}
+
+/** Live `spareBoardHeight` for the game board slot. */
+export function useSpareBoardHeight(): number {
+  const args = useBoardViewportArgs();
+  return useMemo(() => spareBoardHeight(args), [args]);
+}
+
+export function useBoardDimensions(options?: {
+  showPointNumbers?: boolean;
+  /** Extra vertical chrome beyond the default game screen estimate. */
+  extraChrome?: number;
+}): BoardDimensions {
+  const args = useBoardViewportArgs(options);
+  return useMemo(() => resolveBoardViewport(args), [args]);
 }
