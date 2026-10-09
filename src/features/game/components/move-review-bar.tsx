@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { MoveReviewTurnStrip } from '@/features/game/components/move-review-turn-strip';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -50,6 +50,9 @@ export function MoveReviewBar({
   onGoLive,
   onToggleReplay,
 }: Props) {
+  // Row order already mirrors in RTL (back sits on the right); flip the glyphs
+  // so back points right and forward points left, like the header undo/redo.
+  const rtl = useLayoutIsRTL();
   if (liveIndex === 0) {
     return <View style={styles.placeholder} />;
   }
@@ -98,7 +101,7 @@ export function MoveReviewBar({
 
       <View style={styles.row}>
         <NavButton
-          icon="chevron-left"
+          icon={rtl ? 'chevron-right' : 'chevron-left'}
           disabled={!canStepBack}
           onPress={onStepBack}
           label={translate('game.review.previous')}
@@ -113,7 +116,7 @@ export function MoveReviewBar({
           onGoLive={onGoLive}
         />
         <NavButton
-          icon="chevron-right"
+          icon={rtl ? 'chevron-left' : 'chevron-right'}
           disabled={!canStepForward}
           onPress={onStepForward}
           label={translate('game.review.next')}
