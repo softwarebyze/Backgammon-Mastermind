@@ -438,9 +438,17 @@ Remaining known gaps (not blockers):
 
 - The plugin derives `<app-id>.messages` per flavor automatically
   (development / preview / production — nothing extra to code).
-- **Store/TestFlight builds: use the local path above, not EAS.** EAS provisions
-  the host bundle id only; the appex falls through to Xcode with automatic
-  signing off and fails with "No profiles for '<app-id>.messages' were found".
+- **EAS cloud builds:** `app.config.ts` declares the extension in
+  `extra.eas.build.experimental.ios.appExtensions`
+  ([Expo docs](https://docs.expo.dev/build-reference/app-extensions/)). Without
+  it EAS provisions the host bundle id only, and the appex fails with
+  "No profiles for '<app-id>.messages' were found".
+- **One-time per flavor:** EAS has no credentials for `<app-id>.messages` yet,
+  and `--non-interactive` (CI) builds cannot create them. Run
+  `EXPO_PUBLIC_APP_ENV=<flavor> eas credentials -p ios`, pick the profile, sign
+  in to Apple, then Build Credentials → set up all required credentials (reuse
+  the existing distribution certificate). After that, CI builds sign both targets.
+- Until that is done, use the local path above for Store/TestFlight builds.
 - The `<app-id>.messages` bundle id must be registered in App Store Connect
   Identifiers. Both preview ids are (`…preview`, `…preview.messages`), as are the
   production-side `com.backgammonmastermind` and
