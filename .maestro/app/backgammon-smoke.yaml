@@ -7,11 +7,11 @@ tags:
 - stopApp
 - waitForAnimationToEnd:
     timeout: 5000
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - takeScreenshot: 01-home-loaded
 - tapOn:
     text: vs Computer

@@ -1,0 +1,19 @@
+# Launch the app and wait for the home screen, relaunching if it never appears.
+# Android can kill the process while data is cleared, leaving the app stuck on
+# launch. Each attempt force-stops the app, launches it (clearing state when
+# CLEAR_STATE is true) and asserts HOME_TEXT is visible; after 3 failed attempts
+# the flow fails.
+# Env: CLEAR_STATE (true|false), HOME_TEXT (text on the home screen).
+appId: ${APP_ID}
+tags:
+  - util
+---
+- retry:
+    maxRetries: 2
+    commands:
+      - stopApp
+      - launchApp:
+          clearState: ${CLEAR_STATE}
+      - extendedWaitUntil:
+          visible: ${HOME_TEXT}
+          timeout: 45000

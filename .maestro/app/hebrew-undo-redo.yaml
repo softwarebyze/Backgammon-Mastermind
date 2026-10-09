@@ -6,28 +6,20 @@ tags:
   - rtl
   - pull-request
 ---
-# Android can kill the process while clearing data and leave the app stuck on
-# launch; relaunch up to twice if the home screen does not appear.
-- retry:
-    maxRetries: 2
-    commands:
-      - launchApp:
-          clearState: true
-      - extendedWaitUntil:
-          visible: vs Computer
-          timeout: 60000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - tapOn: vs Computer
 - assertVisible: Undo move
 - assertVisible: Redo move
 - takeScreenshot: undo-redo-01-english
-- retry:
-    maxRetries: 2
-    commands:
-      - launchApp:
-          clearState: true
-      - extendedWaitUntil:
-          visible: vs Computer
-          timeout: 60000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - tapOn: Settings
 - tapOn: Language
 - scrollUntilVisible:
@@ -36,14 +28,11 @@ tags:
     direction: DOWN
 - tapOn: עברית
 - stopApp
-- retry:
-    maxRetries: 2
-    commands:
-      - launchApp:
-          clearState: false
-      - extendedWaitUntil:
-          visible: נגד המחשב
-          timeout: 60000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'false'
+      HOME_TEXT: נגד המחשב
 - tapOn: נגד המחשב
 - assertVisible: ביטול המהלך
 - assertVisible: ביצוע המהלך מחדש
