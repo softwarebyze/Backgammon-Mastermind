@@ -13,6 +13,10 @@ Agents **can and should** upload App Store / Play screenshots without a human cl
 | Composed iPad Pro 13" (2064×2752) | `docs/marketing/app-store-screenshots/ipad-13-*.png` |
 | Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/<locale>/` |
 | Staged for Play (generated 9:16 crop) | `fastlane/metadata/android/<locale>/images/phoneScreenshots/` |
+| iMessage-app screenshots (English, all locales) | `docs/marketing/app-store-screenshots/imessage/` (4× iPhone 1206×2622 → `IMESSAGE_APP_IPHONE_61`, 4× iPad 2064×2752 → `IMESSAGE_APP_IPAD_PRO_3GEN_129`) |
+| Staged iMessage sets (generated, gitignored) | `fastlane/screenshots/iMessage/<locale>/` |
+
+The app has an iMessage extension, so App Store Connect requires iMessage-app screenshots for iPhone with Dynamic Island (medium display) and iPad 13-inch before a version can be added for review. They are real iOS simulator captures of the Messages drawer, dressed with the same brand band. `pnpm screenshots:prepare` stages them for every locale; `overwrite_screenshots` in the Fastlane lane replaces all screenshot sets in a locale, so they must stay in the staged tree or a re-upload deletes them.
 
 Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel sizes), then dress with screenshots compose. Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot). iPad 2064×2752 maps to the 13" slot.
 
