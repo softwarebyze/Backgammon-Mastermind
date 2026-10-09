@@ -42,3 +42,12 @@ appId: ${APP_ID}
     text: SAGE OK
 - assertVisible:
     text: 17/20 19/20
+# Prototype computer levels: pick Expert (bgsage 2-ply) below the lab result.
+- scrollUntilVisible:
+    element:
+      id: computer-level-expert
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: computer-level-expert
+- takeScreenshot: 04-computer-level-expert

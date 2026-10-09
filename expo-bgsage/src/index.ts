@@ -4,24 +4,15 @@
 // src/lib/game/types.ts (Player, BoardPoint, Move, GameState). They are
 // declared locally so this module doesn't depend on the host app; the app's
 // GameState and Move are assignable to these.
+import type { SageGameState, SageMove } from './board';
 import { requireNativeModule } from 'expo-modules-core';
 import { Platform } from 'react-native';
+import { gameStateToSageBoard, sageBoardToMoves, SageEngineError } from './board';
 import { rankCubelessCandidates } from './rank-candidates';
 
-export type SagePlayer = 'white' | 'black';
-export type SageBoardPoint = { player: SagePlayer | null; count: number };
-export type SageGameState = {
-  /** Index 0 unused; indices 1..24 are the board points. */
-  points: SageBoardPoint[];
-  bar: Record<SagePlayer, number>;
-  currentPlayer: SagePlayer;
-  dice: [number, number];
-  remainingDice: number[];
-};
-/** from: 0 = bar, 1..24 = point. to: 1..24 = point, 25 = bear off. */
-export type SageMove = { from: number; to: number; dieIndex: number };
-
-export class SageEngineError extends Error {}
+export type { SageBoardPoint, SageGameState, SageMove, SagePlayer } from './board';
+export { decomposePlayerOnRollBoard, gameStateToSageBoard, sageBoardToMoves, SageEngineError } from './board';
+export { flipSageBoard, rescoreWithLookahead } from './lookahead';
 
 // Lazily resolved so that importing this module never throws when the native
 // side isn't linked (e.g. Expo Go) — only actual engine calls fail. Callers
@@ -60,128 +51,6 @@ async function engineApi(): Promise<SageEngineApi> {
   return cachedApi;
 }
 
-// ---- board conversion: Mastermind <-> bgsage player-on-roll 26-array ----
-function sageIdx(appPoint: number, p: SagePlayer): number {
-  return p === 'white' ? appPoint : 25 - appPoint;
-}
-function appPoint(sage: number, p: SagePlayer): number {
-  return p === 'white' ? sage : 25 - sage;
-}
-
-/** Mastermind GameState -> bgsage board[26] (index 0 = opp bar, 25 = my bar). */
-export function gameStateToSageBoard(state: SageGameState): number[] {
-  const P = state.currentPlayer;
-  const opp: SagePlayer = P === 'white' ? 'black' : 'white';
-  const b = Array.from({ length: 26 }, () => 0);
-  for (let i = 1; i <= 24; i++) {
-    const pt = state.points[i];
-    if (!pt || !pt.player || pt.count === 0)
-      continue;
-    b[sageIdx(i, P)] = pt.player === P ? pt.count : -pt.count;
-  }
-  b[25] = state.bar[P];
-  b[0] = state.bar[opp];
-  return b;
-}
-
-// ---- move decomposition: engine's resulting board -> individual moves ----
-type RawMove = { from: number; to: number; die: number };
-function boardEq(a: number[], b: number[]): boolean {
-  for (let i = 0; i < 26; i++) {
-    if (a[i] !== b[i])
-      return false;
-  }
-  return true;
-}
-function singleMoves(w: number[], d: number): { from: number; to: number }[] {
-  const moves: { from: number; to: number }[] = [];
-  const fromBar = w[25] > 0;
-  const sources: number[] = fromBar ? [25] : [];
-  if (!fromBar) {
-    for (let i = 1; i <= 24; i++) {
-      if (w[i] > 0)
-        sources.push(i);
-    }
-  }
-  for (const from of sources) {
-    if (from === 25) {
-      const to = 25 - d;
-      if (w[to] >= -1)
-        moves.push({ from, to });
-    }
-    else {
-      const to = from - d;
-      if (to >= 1) {
-        if (w[to] >= -1)
-          moves.push({ from, to });
-      }
-      else if (from <= d) {
-        let higher = false;
-        for (let k = from + 1; k <= 24; k++) {
-          if (w[k] > 0) {
-            higher = true;
-            break;
-          }
-        }
-        if (from === d || !higher)
-          moves.push({ from, to: 0 });
-      }
-    }
-  }
-  return moves;
-}
-function applySingle(w: number[], m: { from: number; to: number }): number[] {
-  const n = w.slice();
-  n[m.from]--;
-  if (m.to !== 0) {
-    if (n[m.to] === -1) {
-      n[m.to] = 1;
-      n[0]++;
-    }
-    else {
-      n[m.to]++;
-    }
-  }
-  return n;
-}
-
-/**
- * Recover the player-on-roll moves that turn `oldB` into `newB`.
- * Boards are bgsage 26-arrays (index 0 = opponent bar, 25 = player bar,
- * 0 as a move destination = bear off). Returns null when no legal sequence
- * of `dice` reaches the end board.
- */
-export function decomposePlayerOnRollBoard(
-  oldB: number[],
-  newB: number[],
-  dice: number[],
-): RawMove[] | null {
-  const orders
-    = dice.length === 2 && dice[0] !== dice[1] ? [[dice[0], dice[1]], [dice[1], dice[0]]] : [dice.slice()];
-  for (const order of orders) {
-    let nodes = 0;
-    const dfs = (w: number[], di: number, seq: RawMove[]): RawMove[] | null => {
-      if (boardEq(w, newB))
-        return seq;
-      if (di >= order.length || ++nodes > 300000)
-        return null;
-      const cands = singleMoves(w, order[di]);
-      if (cands.length === 0)
-        return dfs(w, di + 1, seq);
-      for (const m of cands) {
-        const r = dfs(applySingle(w, m), di + 1, seq.concat([{ from: m.from, to: m.to, die: order[di] }]));
-        if (r)
-          return r;
-      }
-      return null;
-    };
-    const r = dfs(oldB.slice(), 0, []);
-    if (r)
-      return r;
-  }
-  return null;
-}
-
 // ---- public API ----
 export type SageTurnCandidate = {
   /** Resulting board (bgsage 26-array, player-on-roll perspective). */
@@ -208,9 +77,23 @@ export type SageTurnPlan = {
  * be decomposed. Callers offer no hint and the tutor stays silent.
  */
 export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Promise<SageTurnPlan> {
-  const P = state.currentPlayer;
-  const board = gameStateToSageBoard(state);
-  const [d1, d2] = state.dice;
+  const candidates = await analyzeSageBoard(gameStateToSageBoard(state), state.dice[0], state.dice[1], ply);
+  const moves = sageBoardToMoves(state, candidates[0].board);
+  return { moves, equity: candidates[0].equity, candidates };
+}
+
+/**
+ * Every legal candidate for the player on roll of a raw bgsage board,
+ * best-first by cubeless equity. Throws SageEngineError like planSageTurnFull.
+ */
+// Positional on purpose: matches the native module's analyzeCheckers.
+// eslint-disable-next-line max-params
+export async function analyzeSageBoard(
+  board: number[],
+  d1: number,
+  d2: number,
+  ply: 1 | 2,
+): Promise<SageTurnCandidate[]> {
   let raw: string;
   try {
     raw = await (await engineApi()).analyzeCheckers(board, d1, d2, ply);
@@ -222,32 +105,15 @@ export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Pr
   if (json.error || !json.moves || json.moves.length === 0) {
     throw new SageEngineError(`sage returned no moves: ${json.error ?? String(raw).slice(0, 120)}`);
   }
-  const candidates = rankCubelessCandidates(json.moves.map(
+  // The app has no doubling cube, so tutor loss and the suggested play use
+  // cubeless equity. The native engine orders its JSON by cubeful equity;
+  // those rankings can differ. Keep every learner-facing result consistent.
+  return rankCubelessCandidates(json.moves.map(
     (m: { board: number[]; cubeless_equity: number }) => ({
       board: m.board,
       equity: Number(m.cubeless_equity),
     }),
   ));
-  // The app has no doubling cube, so tutor loss and the suggested play use
-  // cubeless equity. The native engine orders its JSON by cubeful equity;
-  // those rankings can differ. Keep every learner-facing result consistent.
-  const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
-  const seq = decomposePlayerOnRollBoard(board, candidates[0].board, dice);
-  if (!seq)
-    throw new SageEngineError('could not decompose sage result into moves');
-  const used = Array.from({ length: state.remainingDice.length }, () => false);
-  const moves = seq.map((m) => {
-    const j = state.remainingDice.findIndex((v, k) => !used[k] && v === m.die);
-    if (j === -1)
-      throw new SageEngineError('die mismatch while mapping sage move');
-    used[j] = true;
-    return {
-      from: m.from === 25 ? 0 : appPoint(m.from, P),
-      to: m.to === 0 ? 25 : appPoint(m.to, P),
-      dieIndex: j,
-    };
-  });
-  return { moves, equity: candidates[0].equity, candidates };
 }
 
 /**

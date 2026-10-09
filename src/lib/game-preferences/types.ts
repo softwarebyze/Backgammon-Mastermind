@@ -1,3 +1,5 @@
+import type { ComputerLevel } from '@/features/game/engine/sage-difficulty';
+
 export type DiceDisplayStyle = 'numbers' | 'dots';
 
 export type GamePreferences = {
@@ -13,6 +15,8 @@ export type GamePreferences = {
   tutorMode: boolean;
   /** Ask before ending a human turn so the player can review or undo. Default on. */
   confirmMove: boolean;
+  /** Computer opponent strength: the heuristic AI ('classic') or a bgsage level. */
+  computerLevel: ComputerLevel;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -25,6 +29,7 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   soundEnabled: true,
   tutorMode: false,
   confirmMove: true,
+  computerLevel: 'classic',
 };
 
 const IMPLICIT_OFF_KEYS = [

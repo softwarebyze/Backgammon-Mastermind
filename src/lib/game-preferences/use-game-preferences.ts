@@ -1,4 +1,5 @@
 import type { DiceDisplayStyle, GamePreferences } from './types';
+import type { ComputerLevel } from '@/features/game/engine/sage-difficulty';
 
 import { useCallback, useSyncExternalStore } from 'react';
 
@@ -76,6 +77,10 @@ export function useGamePreferences() {
     updatePreferences({ confirmMove });
   }, []);
 
+  const setComputerLevel = useCallback((computerLevel: ComputerLevel) => {
+    updatePreferences({ computerLevel });
+  }, []);
+
   return {
     preferences,
     setShowMoveHints,
@@ -87,5 +92,6 @@ export function useGamePreferences() {
     setSoundEnabled,
     setTutorMode,
     setConfirmMove,
+    setComputerLevel,
   };
 }

@@ -3,7 +3,11 @@ import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { planSageComputerTurn } from '@/features/game/computer-turn';
+import { isSageLevel } from '@/features/game/engine/sage-difficulty';
+import { nextPlannedMove } from '@/features/game/planned-move';
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 import {
   computerMoveDelayMs,
@@ -50,6 +54,10 @@ export function useComputerOpponent({
   pausedRef.current = paused;
   // Bumped when returning to the game screen so timers re-schedule without a state change.
   const [scheduleGen, setScheduleGen] = useState(0);
+  const { preferences } = useGamePreferences();
+  const level = preferences.computerLevel;
+  // Remaining steps of the current sage-planned turn, played one per effect run.
+  const sagePlanRef = useRef<Move[]>([]);
 
   const clearAITimeout = useCallback(() => {
     if (aiTimeoutRef.current !== null) {
@@ -81,6 +89,7 @@ export function useComputerOpponent({
 
     const delay = computerThinkDelayMs(state.phase);
     let moveTimer: ReturnType<typeof setTimeout> | undefined;
+    let cancelled = false;
     if (delay === 0 && state.phase !== 'moving') {
       return clearAITimeout;
     }
@@ -92,6 +101,9 @@ export function useComputerOpponent({
       const prev = stateRef.current;
       if (!prev || prev.currentPlayer !== 'black')
         return;
+
+      if (prev.phase !== 'moving')
+        sagePlanRef.current = [];
 
       if (prev.phase === 'opening-roll' || prev.phase === 'rolling') {
         setState((current) => {
@@ -114,23 +126,45 @@ export function useComputerOpponent({
       }
 
       if (prev.phase === 'moving') {
-        const move = getAIMove(prev);
-        if (!move) {
-          recordNoMove(prev, prev);
-          setState(passTurn(prev));
-          return;
-        }
-        const moveDelay = computerMoveDelayMs(moveCount);
-        moveTimer = setTimeout(() => {
-          if (pausedRef.current)
-            return;
-          const latest = stateRef.current;
-          if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
+        const play = (move: Move | null) => {
+          if (!move) {
+            recordNoMove(prev, prev);
+            setState(passTurn(prev));
             return;
           }
-          playMove(latest, move, { pace: 'computer' });
-        }, moveDelay);
-        aiTimeoutRef.current = moveTimer;
+          const moveDelay = computerMoveDelayMs(moveCount);
+          moveTimer = setTimeout(() => {
+            if (pausedRef.current)
+              return;
+            const latest = stateRef.current;
+            if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
+              return;
+            }
+            playMove(latest, move, { pace: 'computer' });
+          }, moveDelay);
+          aiTimeoutRef.current = moveTimer;
+        };
+
+        if (!isSageLevel(level)) {
+          play(getAIMove(prev));
+          return;
+        }
+        const planned = nextPlannedMove(prev, sagePlanRef.current);
+        if (planned) {
+          sagePlanRef.current = sagePlanRef.current.slice(1);
+          play(planned);
+          return;
+        }
+        planSageComputerTurn(prev, level)
+          // Engine unavailable (Expo Go, failed WASM load, native budget): keep playing.
+          .catch(() => [] as Move[])
+          .then((moves) => {
+            if (cancelled || stateRef.current !== prev || pausedRef.current)
+              return;
+            const first = nextPlannedMove(prev, moves);
+            sagePlanRef.current = first ? moves.slice(1) : [];
+            play(first ?? getAIMove(prev));
+          });
       }
     };
 
@@ -141,6 +175,7 @@ export function useComputerOpponent({
       aiTimeoutRef.current = thinkTimer;
 
     return () => {
+      cancelled = true;
       if (thinkTimer !== null)
         clearTimeout(thinkTimer);
       if (moveTimer !== undefined)
@@ -158,6 +193,7 @@ export function useComputerOpponent({
     recordNoMove,
     clearAITimeout,
     scheduleGen,
+    level,
     paused,
   ]);
 

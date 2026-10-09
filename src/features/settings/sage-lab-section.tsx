@@ -7,9 +7,11 @@ import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/ui';
+import { COMPUTER_LEVELS } from '@/features/game/engine/sage-difficulty';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { SettingsContainer } from '@/features/settings/components/settings-container';
-import { hapticLight } from '@/lib/haptics';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { hapticLight, hapticSelection } from '@/lib/haptics';
 import { interFont } from '@/lib/ui/fonts';
 
 /** Standard opening, black (the computer's color) to move with 3-1. */
@@ -36,6 +38,39 @@ function openingBlack31(): SageGameState {
     dice: [3, 1],
     remainingDice: [3, 1],
   };
+}
+
+function ComputerLevelPicker() {
+  const { preferences, setComputerLevel } = useGamePreferences();
+  return (
+    <View style={styles.levelBlock}>
+      <Text style={styles.title}>Computer level (prototype)</Text>
+      <Text style={styles.blurb}>
+        Classic is the heuristic AI. The Sage levels are all 1-ply; Beginner
+        through Advanced mix in less noise, and Expert plays the top move.
+      </Text>
+      <View style={styles.levelRow}>
+        {COMPUTER_LEVELS.map((level) => {
+          const selected = preferences.computerLevel === level;
+          return (
+            <Pressable
+              key={level}
+              testID={`computer-level-${level}`}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: selected }}
+              onPress={() => {
+                hapticSelection();
+                setComputerLevel(level);
+              }}
+              style={[styles.levelChip, selected && styles.levelChipSelected]}
+            >
+              <Text style={[styles.levelLabel, selected && styles.levelLabelSelected]}>{level}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
+  );
 }
 
 export function SageLabSection() {
@@ -109,6 +144,7 @@ export function SageLabSection() {
               </View>
             )
           : null}
+        <ComputerLevelPicker />
       </View>
     </SettingsContainer>
   );
@@ -149,6 +185,35 @@ const styles = StyleSheet.create({
     ...interFont('medium'),
     fontSize: 14,
     color: GAME_PALETTE.text,
+  },
+  levelBlock: {
+    gap: 8,
+    paddingTop: 8,
+  },
+  levelRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  levelChip: {
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.surfaceBorder,
+    borderRadius: 999,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  levelChipSelected: {
+    backgroundColor: GAME_PALETTE.accent,
+    borderColor: GAME_PALETTE.accent,
+  },
+  levelLabel: {
+    ...interFont('medium'),
+    fontSize: 13,
+    color: GAME_PALETTE.text,
+    textTransform: 'capitalize',
+  },
+  levelLabelSelected: {
+    color: '#1E0C02',
   },
   resultBlock: {
     gap: 2,
