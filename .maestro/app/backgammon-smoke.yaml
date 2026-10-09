@@ -6,15 +6,17 @@ tags:
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: vs Computer
+    visible: Play against the computer
     timeout: 90000
 - takeScreenshot: 01-home-loaded
 - tapOn:
-    text: vs Computer
+    text: Play against the computer
+# iOS exposes the board as one accessibility group; individual point IDs are
+# Android-only in this hierarchy. Wait for the shared game board slot.
 # Auto-roll is on by default, so the roll button may already be gone.
 - extendedWaitUntil:
     visible:
-      id: point-1
+      id: game-board-slot
     timeout: 45000
 - takeScreenshot: 02-game-board
 - assertVisible:
@@ -46,9 +48,9 @@ tags:
                 timeout: 5000
 - extendedWaitUntil:
     visible:
-      id: point-1
+      id: game-board-slot
     timeout: 90000
 - takeScreenshot: 03-after-opening
 - assertVisible:
-    id: point-1
+    id: game-board-slot
 - takeScreenshot: 04-smoke-complete
