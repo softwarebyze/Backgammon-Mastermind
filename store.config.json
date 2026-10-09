@@ -47,7 +47,7 @@
           "offline",
           "classic"
         ],
-        "releaseNotes": "Version 1.0.3 adds a tutor for blunders, strategy marks on the status line, faster computer play by default, and a clearer header.",
+        "releaseNotes": "Play backgammon with a friend over iMessage. New: Confirm move lets you review your move before your turn ends. Undo now animates correctly and never changes your roll. Settings now sit behind a gear icon. Plus RTL and accessibility fixes.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -69,7 +69,7 @@
           "backgammon",
           "nard"
         ],
-        "releaseNotes": "يضيف الإصدار 1.0.3 دعم 17 لغة داخل التطبيق وعلى App Store، ودليل اتجاه أكثر هدوءًا بلون اللاعب الحالي، ولقطات شاشة محدّثة تعرض كل ميزة كاملة.",
+        "releaseNotes": "العب الطاولة مع صديق عبر iMessage. جديد: تأكيد الحركة يتيح لك مراجعة حركتك قبل انتهاء دورك. التراجع يعمل الآن بشكل صحيح ولا يغيّر رميك. الإعدادات الآن خلف أيقونة الترس. إضافةً إلى إصلاحات الاتجاه وإمكانية الوصول.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -91,7 +91,7 @@
           "Tavla",
           "Nard"
         ],
-        "releaseNotes": "Version 1.0.3 bietet 17-sprachige Unterstützung in der App und im App Store, eine leisere, spielerfarbene Anleitung und aktualisierte Screenshots, die jede Funktion vollständig anzeigen.",
+        "releaseNotes": "Backgammon mit einem Freund über iMessage spielen. Neu: „Bewegung bestätigen“ prüft deinen Zug, bevor er endet. Rückgängig animiert jetzt korrekt und ändert deinen Wurf nie. Einstellungen liegen jetzt hinter einem Zahnradsymbol. Dazu RTL- und Barrierefreiheits-Fixes.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -113,7 +113,7 @@
           "offline",
           "tavla"
         ],
-        "releaseNotes": "Έκδοση 1.0.3 προσθέτει 17-γλώσσα υποστήριξη στην εφαρμογή και App Store, ένα πιο ήσυχο παίκτη-χρωματισμένο οδηγό κατεύθυνσης, και ανανεωμένα στιγμιότυπα οθόνης που δείχνουν κάθε χαρακτηριστικό εντελώς.",
+        "releaseNotes": "Παίξτε τάβλι με έναν φίλο μέσω iMessage. Νέο: Επιβεβαίωση κίνησης σας επιτρέπει να ελέγξετε την κίνησή σας πριν τελειώσει η σειρά σας. Η αναίρεση κινείται πλέον σωστά και δεν αλλάζει ποτέ τη ρίψη. Οι ρυθμίσεις βρίσκονται πλέον πίσω από ένα εικονίδιο γρανατειού. Επιπλέον διορθώσεις RTL και προσβασιμότητας.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -135,7 +135,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Versión 1.0.3 añade soporte de 17 idiomas en la aplicación y App Store, una guía de dirección más silenciosa de color de jugador, y capturas de pantalla refrescadas que muestran cada característica completamente.",
+        "releaseNotes": "Juega al backgammon con un amigo por iMessage. Nuevo: Confirmar movimiento te permite revisar tu jugada antes de que termine tu turno. Deshacer ahora se anima correctamente y nunca cambia tu tirada. Los ajustes están ahora detrás de un icono de engranaje. Además, correcciones de RTL y accesibilidad.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -157,7 +157,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "La version 1.0.3 ajoute un support 17 langues dans l'application et l'App Store, un guide de direction plus silencieux et des captures d'écran rafraîchies qui montrent toutes les fonctionnalités.",
+        "releaseNotes": "Jouez au backgammon avec un ami via iMessage. Nouveau : Confirmer le coup vous permet de vérifier votre coup avant la fin de votre tour. Annuler s'anime désormais correctement et ne modifie jamais votre lancer. Les réglages se trouvent derrière une icône d'engrenage. Plus des corrections RTL et d'accessibilité.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -179,7 +179,7 @@
           "אופליין",
           "tavla"
         ],
-        "releaseNotes": "גרסה 1.0.3 מוסיפה תמיכה בשפה 17 באפליקציית ו- App Store, מדריך צבעוני יותר לשחקן, וצילומי מסך רעננות המציגים כל תכונה.",
+        "releaseNotes": "שחקו שש־בש עם חבר דרך iMessage. חדש: אישור המהלך מאפשר לבדוק את המהלך לפני שהתור מסתיים. ביטול הפעולה מונפש כעת בצורה נכונה ולא משנה את ההטלה שלך. ההגדרות נמצאות כעת מאחורי סמל גלגל השיננים. בנוסף תיקוני RTL ונגישות.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -201,7 +201,7 @@
           "ऑफ़लाइन",
           "tavla"
         ],
-        "releaseNotes": "संस्करण 1.0.3 ऐप और ऐप स्टोर में 17-भाषा समर्थन जोड़ता है, एक शांत खिलाड़ी रंग की दिशा गाइड और ताज़ा स्क्रीनशॉट जो प्रत्येक सुविधा को पूरी तरह से दिखाते हैं।",
+        "releaseNotes": "iMessage के ज़रिए किसी दोस्त के साथ बैकगैमौन खेलें। नया: अपनी बारी समाप्त होने से पहले अपना चाल देखने के लिए चाल की पुष्टि करें। अब अनडू सही तरीके से चलता है और आपका रोल कभी नहीं बदलता। सेटिंग्स अब एक गियर आइकन के पीछे हैं। साथ ही RTL और सुगम्यता सुधार।",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -223,7 +223,7 @@
           "tavola",
           "nard"
         ],
-        "releaseNotes": "La versione 1.0.3 aggiunge il supporto in 17 lingue nell'app e nell'App Store, una guida in direzione color giocatore più silenziosa, e gli screenshot rinfrescati che mostrano ogni funzione completamente.",
+        "releaseNotes": "Goca a backgammon con un amico via iMessage. Novità: Conferma mossa ti permette di controllare la tua mossa prima che il turno finisca. Annulla ora si anima correttamente e non cambia mai il tuo lancio. Le impostazioni si trovano ora dietro un'icona a ingranaggio. Più correzioni RTL e accessibilità.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -245,7 +245,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "バージョン1.0.3は、アプリとApp Storeで17の言語サポート、より静かなプレーヤーカラーの方向ガイド、各機能が完全に表示されたスクリーンショットを追加します。",
+        "releaseNotes": "iMessage で友達とバックギャモンを遊べます。新機能: 自分の番が終わする前に、自分の手を 확인할 수 있습니다。取り消しが正しくアニメーションするようになり、ロールが変わらなくなりました。設定は歯車アイコンの背面にあります。RTL とアクセシビリティの修正も追加。",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -267,7 +267,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "버전 1.0.3는 앱 및 앱 스토어, 조용한 플레이어 색 방향 가이드 및 각 기능을 완전히 보여주는 재생 된 스크린 샷을 추가합니다.",
+        "releaseNotes": "iMessage로 친구와 백개먼을 플레이하세요. 새로운 기능: 턴이 끝나기 전에 내 수를 검토할 수 있습니다. 실행 취소가 이제 올바르게 애니메이션되며, 굴림 결과가 절대 바뀌지 않습니다. 설정은 이제 톱니바퀴 아이콘 뒤에 있습니다. RTL 및 접근성 개선도 포함.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -289,7 +289,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Versie 1.0.3 voegt 17-taal ondersteuning in de app en App Store, een stillere speler-gekleurde richting gids, en vernieuwde screenshots die elke functie volledig tonen.",
+        "releaseNotes": "Speel backgammon met een vriend via iMessage. Nieuw: Zet bevestigen laat je je zet bekijken voordat je beurt eindigt. Ongedaan maken animeert nu correct en verandert nooit je dooitzet. Instellingen staan nu achter een tandwiel-icoon. Plus RTL- en toegankelijkheidsverbeteringen.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -311,7 +311,7 @@
           "tryktrak",
           "nard"
         ],
-        "releaseNotes": "Wersja 1.0.3 dodaje 17-językowe wsparcie w aplikacji i App Store, cichszy poradnik kierunku barwy gracza, i odświeżone zrzuty ekranu, które pokazują każdą funkcję całkowicie.",
+        "releaseNotes": "Graj w backgammona ze znajomym przez iMessage. Nowość: Potwierdź ruch pozwala sprawdzić Twój ruch, zanim skończy się Twoja kolej. Cofanie animuje się teraz poprawnie i nigdy nie zmienia Twojego rzutu. Ustawienia są teraz pod ikoną koła zębatego. W tym poprawki RTL i dostępności.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -333,7 +333,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "A versão 1.0.3 adiciona suporte em 17 idiomas no aplicativo e App Store, um guia de direção mais silencioso e atualizado que mostra cada recurso completamente.",
+        "releaseNotes": "Jogue gamão com um amigo pelo iMessage. Novo: Confirmar jogada permite rever a sua jogada antes de terminar o seu turno. Anular agora anima corretamente e nunca altera a tiragem. As configurações estão agora atrás de um ícone de engrenagem. Mais correções de RTL e acessibilidade.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -355,7 +355,7 @@
           "офлайн",
           "tavla"
         ],
-        "releaseNotes": "В версии 1.0.3 добавлена поддержка 17 языков в приложении и App Store, более тихий гид по направлению для игроков и обновленные скриншоты, которые полностью отображают каждую функцию.",
+        "releaseNotes": "Играйте в нарды с другом через iMessage. Новое: подтверждение хода позволяет проверить ход до конца вашего тура. Отмена теперь анимируется правильно и никогда не меняет бросок. Настройки теперь под значком шестерёнки. Также исправления RTL и доступности.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -377,7 +377,7 @@
           "çevrimdışı",
           "nard"
         ],
-        "releaseNotes": "Version 1.0.3, uygulama ve App Store'da 17 dil desteği ekler, sessiz bir oyuncu renkli yön rehberi ve her özelliği tamamen gösteren ekran görüntüleri yeniler.",
+        "releaseNotes": "iMessage üzerinden bir arkadaşınla tavla oyna. Yeni: Hamle onaylama, hamleni turun bitmeden önce gözden geçirmenizi sağlar. Geri alma artık doğru animasyonla çalışır ve zarınızı asla değiştirmez. Ayarlar artık bir dişlisyon simgesinin arkasında. Ayrıca RTL ve erişilebilirlik düzeltmeleri.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -399,7 +399,7 @@
           "离线",
           "tavla"
         ],
-        "releaseNotes": "1.0.3版本在App和App Store中增加了17种语言支持,这是比较安静的玩家色彩方向指南,并刷新了显示每个特性的截图.",
+        "releaseNotes": "通过 iMessage 与朋友玩双陆棋。全新功能：在你的回合结束前确认并检查你的棋步。撤销现在能正确播放动画，且绝不会改变你的掷骰结果。设置现在位于齿轮图标之后。还有 RTL 和无障碍方面的改进。",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
