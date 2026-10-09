@@ -123,11 +123,17 @@ Only dispatch when Play Console + secrets are ready. Do **not** start this from 
 pnpm build:production:android
 # or: EXPO_PUBLIC_APP_ENV=production eas build --profile production --platform android
 
-# After build finishes
-EXPO_PUBLIC_APP_ENV=production eas submit --platform android --profile production --latest
+# After build finishes: internal testing track (default)
+EXPO_PUBLIC_APP_ENV=production eas submit --platform android --profile internal --latest
 # or with build id:
+EXPO_PUBLIC_APP_ENV=production eas submit --platform android --profile internal --id <BUILD_ID>
+
+# Public production track (explicit public release): same commands with --profile production
+EXPO_PUBLIC_APP_ENV=production eas submit --platform android --profile production --latest
 EXPO_PUBLIC_APP_ENV=production eas submit --platform android --profile production --id <BUILD_ID>
 ```
+
+To retry a submit from CI instead, dispatch **EAS Production Build and Submit (Android)** with `submit_existing_build_id` set; the `track` input (default `internal`, or `production`) picks the profile.
 
 There is also Actions → **EAS Production Build** (iOS + Android binaries without the Android-only auto-submit workflow). For Play, prefer the dedicated Android workflow above when you want build+submit in one click.
 
@@ -151,8 +157,9 @@ Ship tracking for the first Play upload: [#160](https://github.com/softwarebyze/
 | Goal | Action |
 |------|--------|
 | Upload Play screenshots + listing text | Actions → **Upload Store Screenshots** → `android` |
-| Build AAB + auto-submit to Play | Actions → **EAS Production Build and Submit (Android)** |
-| Submit latest production AAB only | `pnpm submit:production:android` |
+| Build AAB + auto-submit to Play | Actions → **EAS Production Build and Submit (Android)** (`track`: `internal` default, or `production`) |
+| Submit latest production AAB to internal testing | `EXPO_PUBLIC_APP_ENV=production eas submit --platform android --profile internal --latest` |
+| Submit latest production AAB to the public production track | `pnpm submit:production:android` |
 | Local screenshot upload | `PLAY_JSON_KEY_PATH=… pnpm screenshots:upload:android` |
 
 ---
