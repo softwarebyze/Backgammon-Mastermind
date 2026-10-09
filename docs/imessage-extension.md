@@ -219,11 +219,13 @@ uuid `91265f72-76fc-4421-a445-9fbbb122c3f8`, `IOS_APP_STORE`,
 `get-task-allow = False`, expiring 2027-02-03, embedding EAS's own distribution
 cert `7CFD35DD0FB6AB2AA0A402D28F7F3AEF`. Bundle id `98Q8ACHVK9`.
 
-**Real, and now bypassed rather than fixed: EAS still never provisions extension
-targets. See "SOLVED: shipping to TestFlight" below for the local path that does
-work — the short version is that the profiles were fine and only the certificate
-needed to be local.**
-With the profile present, `eas build --profile preview --platform ios` still fails
+**Historical (before the `appExtensions` declaration): EAS did not provision the
+extension target, so this was bypassed rather than fixed. See "SOLVED: shipping to
+TestFlight" below for the local path that does work — the short version is that the
+profiles were fine and only the certificate needed to be local. The likely fix is
+now in place (see "EAS / TestFlight runbook"), but it is not yet confirmed by a
+cloud build.**
+At the time, with the profile present, `eas build --profile preview --platform ios` still fails
 identically:
 
 ```
@@ -233,9 +235,10 @@ couldn't find any iOS App Development provisioning profiles matching
 (in target 'BackgammonMastermindMessages')
 ```
 
-EAS resolves credentials for the main bundle id only; the appex falls through to
-Xcode with automatic signing off. This is an EAS gap for extensions injected by a
-**local config plugin** (managed plugins are covered). Xcode cannot self-heal it
+EAS resolved credentials for the main bundle id only; the appex fell through to
+Xcode with automatic signing off. The cause: an extension injected by a **local
+config plugin** is invisible to EAS unless the app config declares it in
+`extra.eas.build.experimental.ios.appExtensions` (managed plugins are covered). Xcode cannot self-heal it
 either — this machine has no Apple account signed into Xcode (no
 `~/Library/Developer/Xcode/UserData/Accounts`), so there is nothing to run
 `-allowProvisioningUpdates` against.
@@ -409,9 +412,11 @@ What was eliminated, with evidence:
 
 Remaining known gaps (not blockers):
 
-1. **EAS cannot provision the extension target** (see store-signing section). A
-   TestFlight build needs one of the manual paths listed there. Worth filing
-   upstream, since `expo-targets` reports having fixed EAS support in 0.2.5.
+1. **EAS provisioning of the extension target is unconfirmed.** EAS used to
+   provision only the host app (see store-signing section, historical). The
+   `appExtensions` declaration plus one-time extension credentials (see "EAS /
+   TestFlight runbook") should fix it, but no cloud build has passed yet. Until
+   one does, a TestFlight build should use the local path as the fallback.
 2. **Simulators cannot demo two-device play** — no Apple Account is signed in, so
    iMessage has no real route between them. Real devices both have iMessage
    working, which is what we used.
@@ -448,7 +453,9 @@ Remaining known gaps (not blockers):
   `EXPO_PUBLIC_APP_ENV=<flavor> eas credentials -p ios`, pick the profile, sign
   in to Apple, then Build Credentials → set up all required credentials (reuse
   the existing distribution certificate). After that, CI builds sign both targets.
-- Until that is done, use the local path above for Store/TestFlight builds.
+- **Not yet validated:** no EAS cloud iOS build has passed with the declaration
+  and extension credentials. Until one does, keep the local path above as the
+  fallback for Store/TestFlight builds.
 - The `<app-id>.messages` bundle id must be registered in App Store Connect
   Identifiers. Both preview ids are (`…preview`, `…preview.messages`), as are the
   production-side `com.backgammonmastermind` and
