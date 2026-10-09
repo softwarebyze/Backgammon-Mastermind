@@ -114,6 +114,13 @@
     }
   },
   "submit": {
+    "internal": {
+      "android": {
+        "serviceAccountKeyPath": ".cache/google-service-account.json",
+        "track": "internal",
+        "releaseStatus": "completed"
+      }
+    },
     "preview": {
       "ios": {
         "ascAppId": "6781121420",
