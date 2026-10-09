@@ -5,6 +5,7 @@ import { useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
+import { useGameCompletedCapture } from '@/features/game/use-game-completed-capture';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
 import { useGameLifecycle } from '@/features/game/use-game-lifecycle';
 import { useGameSelectPoint } from '@/features/game/use-game-select-point';
@@ -14,6 +15,9 @@ import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 import { useMoveLog } from '@/features/game/use-move-log';
 import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
 import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
+import { passTurn } from '@/lib/game';
+import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
+import { loadGamePreferences } from '@/lib/game-preferences/storage';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
 import { loadPersistedGame } from '@/lib/game/persistence';
@@ -38,10 +42,21 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const replayBaselineRef = useRef(replayBaseline);
   replayBaselineRef.current = replayBaseline;
   const { timeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
+  const { noteMoveApplied, resetForNewGame } = useGameCompletedCapture(state, moveLog.length);
   const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
     recordMove(snapshot, move, next);
     recordTimelineMove(snapshot, next);
-  }, [recordMove, recordTimelineMove]);
+    noteMoveApplied(snapshot, next);
+  }, [recordMove, recordTimelineMove, noteMoveApplied]);
+  /**
+   * A blocked roll gets one log entry and one timeline ply, like a move, so
+   * undo's cursor and the move log never drift apart.
+   */
+  const handleNoMoveRecorded = useCallback((before: GameState) => {
+    if (recordNoMove(before, before)) {
+      recordTimelineMove(before, passTurn(before));
+    }
+  }, [recordNoMove, recordTimelineMove]);
   /**
    * Move SFX plays when the animation begins (~20ms after tap), not at the
    * ~360ms landing — the old settle-time trigger felt "late", especially the
@@ -70,6 +85,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
   const selectPoint = useGameSelectPoint(setState, isAnimating);
   const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
+    state,
     timeline,
     setTimeline,
     setState,
@@ -81,6 +97,9 @@ export function useGameProviderValue(active: boolean): GameContextType {
     popLastMove,
     restoreMove,
     gameMode: state?.mode,
+    shouldSuppressHistoryPath: () => (
+      state != null && isAwaitingMoveConfirm(state, loadGamePreferences().confirmMove)
+    ),
   });
   const { clearAITimeout, resumeAIScheduling } = useComputerOpponent({
     enabled: active,
@@ -90,14 +109,14 @@ export function useGameProviderValue(active: boolean): GameContextType {
     isAnimating,
     moveCount: moveLog.length,
     hasRedo: canRedo,
-    recordNoMove,
+    recordNoMove: handleNoMoveRecorded,
     paused: tutorPaused,
   });
   const { doPassTurn, doRollDice } = useGameDiceActions({
     state,
     setState,
     isAnimating,
-    recordNoMove,
+    recordNoMove: handleNoMoveRecorded,
   });
   const resetAllAnimation = useCallback(() => {
     resetAnimation();
@@ -113,6 +132,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetTimeline,
     clearTimeline,
     setState,
+    onNewGame: resetForNewGame,
   });
   useRestoreGameTimeline({ enabled: active, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
   useGameplayHelpers({

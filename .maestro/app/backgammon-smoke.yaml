@@ -23,9 +23,9 @@ tags:
 - takeScreenshot: 02-game-board
 - assertVisible:
     id: strategy-line
-# Opening roll + ties + no-move auto-pass: tap while roll visible, then wait for board
+# Opening roll + ties + confirm-move (on by default): tap roll / confirm when shown
 - repeat:
-    times: 6
+    times: 8
     commands:
       - runFlow:
           when:
@@ -35,6 +35,13 @@ tags:
             - tapOn:
                 id: roll-dice-button
                 optional: true
+      - runFlow:
+          when:
+            visible:
+              id: confirm-move-button
+          commands:
+            - tapOn:
+                id: confirm-move-button
       - runFlow:
           when:
             visible: No legal moves

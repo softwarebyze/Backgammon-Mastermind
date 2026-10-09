@@ -74,8 +74,28 @@ export function useBoardPlayInput({
     setPreview({ key: turnKey, target });
   }, [turnKey]);
 
-  const dragFromRef = useRef<number | null>(null);
-  const [dragFrom, setDragFrom] = useState<number | null>(null);
+  /**
+   * A drag belongs to one turn. Auto-move can end the turn under a held finger, and the
+   * disabled pan never finalizes, so a drag stamped with an older key is dead.
+   * The key string can come back (the next turn rolls the same dice), so the gesture
+   * is dropped on the change itself and cannot match again.
+   */
+  const dragTurnKey = `${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}|${isHumanTurn}`;
+  const dragTurnKeyRef = useRef(dragTurnKey);
+  const dragRef = useRef<{ key: string; from: number } | null>(null);
+  const [drag, setDrag] = useState<{ key: string; from: number } | null>(null);
+  const [dragTurnKeySeen, setDragTurnKeySeen] = useState(dragTurnKey);
+  if (dragTurnKeySeen !== dragTurnKey) {
+    setDragTurnKeySeen(dragTurnKey);
+    dragRef.current = null;
+    setDrag(null);
+  }
+  dragTurnKeyRef.current = dragTurnKey;
+  const dragFrom = drag?.key === dragTurnKey ? drag.from : null;
+  const liveDragFrom = useCallback(() => {
+    const current = dragRef.current;
+    return current?.key === dragTurnKeyRef.current ? current.from : null;
+  }, []);
   /** Point newly selected on this touch-down — swallow the matching tap so it doesn't re-select. */
   const touchSelectedFromRef = useRef<number | null>(null);
   /**
@@ -143,9 +163,9 @@ export function useBoardPlayInput({
     = inputNudge === 'roll' && needsRollFirst(state?.phase) ? 'roll' : null;
 
   const endDrag = useCallback(() => {
-    dragFromRef.current = null;
+    dragRef.current = null;
     previewTargetRef.current = null;
-    setDragFrom(null);
+    setDrag(null);
     setPreviewTarget(null);
   }, [setPreviewTarget]);
 
@@ -329,26 +349,27 @@ export function useBoardPlayInput({
       return;
     }
     touchSelectedFromRef.current = null;
-    dragFromRef.current = from;
+    const next = { key: dragTurnKeyRef.current, from };
+    dragRef.current = next;
     previewTargetRef.current = null;
     if (!isAnimating && s.selectedPoint !== from) {
       selectPoint(from);
     }
-    setDragFrom(from);
+    setDrag(next);
   }, [isAnimating, isHumanTurn, canDrag, selectPoint]);
 
   const handleDragMove = useCallback((boardX: number, boardY: number) => {
-    const from = dragFromRef.current;
+    const from = liveDragFrom();
     const s = stateRef.current;
     const dims = boardDimsRef.current;
     if (!s || from === null || !dims) {
       return;
     }
     setPreviewTargetIfChanged(previewFromDrag({ state: s, from, boardX, boardY, dims }));
-  }, [setPreviewTargetIfChanged]);
+  }, [liveDragFrom, setPreviewTargetIfChanged]);
 
   const handleDragEnd = useCallback((boardX: number, boardY: number) => {
-    const from = dragFromRef.current;
+    const from = liveDragFrom();
     const s = stateRef.current;
     const dims = boardDimsRef.current;
     if (!s || from === null || !canDrag || !dims) {
@@ -378,7 +399,7 @@ export function useBoardPlayInput({
       return;
     }
     playResolvedDrag(resolved, fromAnchor);
-  }, [canDrag, isAnimating, playResolvedDrag, selectPoint, endDrag]);
+  }, [canDrag, isAnimating, liveDragFrom, playResolvedDrag, selectPoint, endDrag]);
 
   const handleDragCancel = useCallback(() => {
     endDrag();

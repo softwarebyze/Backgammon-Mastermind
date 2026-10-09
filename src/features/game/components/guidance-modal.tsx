@@ -23,7 +23,7 @@ import {
 import { useGame } from '@/features/game/use-game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
-import { isRTL, translate } from '@/lib/i18n';
+import { getIsRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -55,7 +55,7 @@ function DetailsSection({ session }: { session: GuidanceSession }) {
         <Text style={styles.detailsToggleText}>
           {open
             ? `${translate('game.tutor.details_hide')} ▾`
-            : `${translate('game.tutor.details_show')} ${isRTL ? '◂' : '▸'}`}
+            : `${translate('game.tutor.details_show')} ${getIsRTL() ? '◂' : '▸'}`}
         </Text>
       </Pressable>
       {open && (
@@ -497,13 +497,6 @@ function useTutorBlunderAnalytics(session: GuidanceSession | null) {
 
   return useCallback((action: TutorBlunderAction) => {
     posthog.capture('tutor_blunder_action', { action });
-    if (action === 'turn_off') {
-      posthog.capture('game_preference_changed', {
-        preference: 'tutor_mode',
-        value: false,
-        source: 'blunder_modal',
-      });
-    }
   }, [posthog]);
 }
 

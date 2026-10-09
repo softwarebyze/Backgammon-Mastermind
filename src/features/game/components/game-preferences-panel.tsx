@@ -3,8 +3,8 @@ import type { GamePreferences } from '@/lib/game-preferences/types';
 import { StyleSheet, View } from 'react-native';
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
+import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
-import { FastComputerIcon } from '@/features/game/components/settings-ui/fast-computer-icon';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
 import { PointNumbersIcon } from '@/features/game/components/settings-ui/point-numbers-icon';
@@ -25,8 +25,8 @@ type Props = {
   onAutoRollChange: (value: boolean) => void;
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
-  onFastComputerChange: (value: boolean) => void;
   onTutorModeChange: (value: boolean) => void;
+  onConfirmMoveChange: (value: boolean) => void;
   showHints?: boolean;
 };
 
@@ -39,8 +39,8 @@ export function GamePreferencesPanel({
   onAutoRollChange,
   onAutoMoveWhenForcedChange,
   onSoundEnabledChange,
-  onFastComputerChange,
   onTutorModeChange,
+  onConfirmMoveChange,
   showHints = false,
 }: Props) {
   return (
@@ -98,21 +98,21 @@ export function GamePreferencesPanel({
         />
         <View style={styles.divider} />
         <SettingToggleRow
+          icon={<ConfirmMoveIcon size={32} active={preferences.confirmMove} />}
+          label={translate('game.preferences.confirm_move')}
+          hint={showHints ? translate('game.preferences.confirm_move_hint') : undefined}
+          value={preferences.confirmMove}
+          onChange={onConfirmMoveChange}
+          testID="setting-toggle-confirm-move"
+        />
+        <View style={styles.divider} />
+        <SettingToggleRow
           icon={<SoundIcon size={32} active={preferences.soundEnabled} />}
           label={translate('game.preferences.sound')}
           hint={showHints ? translate('game.preferences.sound_hint') : undefined}
           value={preferences.soundEnabled}
           onChange={onSoundEnabledChange}
           testID="setting-toggle-sound"
-        />
-        <View style={styles.divider} />
-        <SettingToggleRow
-          icon={<FastComputerIcon size={32} active={preferences.fastComputer} />}
-          label={translate('game.preferences.fast_computer')}
-          hint={showHints ? translate('game.preferences.fast_computer_hint') : undefined}
-          value={preferences.fastComputer}
-          onChange={onFastComputerChange}
-          testID="setting-toggle-fast-computer"
         />
       </View>
 

@@ -423,17 +423,12 @@ describe('guidance modal analytics', () => {
     expect(mockCapture).toHaveBeenCalledWith('tutor_blunder_action', { action: 'keep_move' });
   });
 
-  it('turning tutor off also records the preference change', () => {
+  it('turning tutor off records the blunder action and updates preferences', () => {
     renderQuestion();
     mockCapture.mockClear();
 
     fireEvent.press(screen.getByTestId('guidance-turn-off'));
     expect(mockCapture).toHaveBeenCalledWith('tutor_blunder_action', { action: 'turn_off' });
-    expect(mockCapture).toHaveBeenCalledWith('game_preference_changed', {
-      preference: 'tutor_mode',
-      value: false,
-      source: 'blunder_modal',
-    });
     expect(mockSetTutorMode).toHaveBeenCalledWith(false);
   });
 

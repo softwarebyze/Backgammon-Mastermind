@@ -12,11 +12,22 @@ on:
         required: true
         default: false
         type: boolean
+      track:
+        description: 'Google Play track to submit to. internal = testers only; production = public release'
+        required: true
+        default: internal
+        type: choice
+        options:
+          - internal
+          - production
 
 jobs:
   Build:
-    name: Build production Android and submit to Google Play
+    name: Build production Android and submit to Google Play (${{ inputs.track }})
     runs-on: ubuntu-latest
+    env:
+      # Submit profile in eas.json: "internal" or "production".
+      SUBMIT_PROFILE: ${{ inputs.track }}
     steps:
       - name: Check for EXPO_TOKEN
         run: |
@@ -52,7 +63,7 @@ jobs:
           printf '%s' "$GOOGLE_SERVICE_ACCOUNT_BASE64" | base64 -d > .cache/google-service-account.json
           chmod 600 .cache/google-service-account.json
 
-      - name: ⏱️ EAS Build (AAB) and auto-submit to Google Play
+      - name: ⏱️ EAS Build (AAB) and auto-submit to Google Play (${{ inputs.track }})
         if: ${{ inputs.submit_existing_build_id == '' && inputs.build_locally == false }}
         run: |
           EXPO_PUBLIC_APP_ENV=production eas build \
@@ -60,12 +71,21 @@ jobs:
             --profile production \
             --non-interactive \
             --no-wait \
-            --auto-submit \
-            --message "Build production (Android)"
+            --auto-submit-with-profile "$SUBMIT_PROFILE" \
+            --message "Build production (Android, ${SUBMIT_PROFILE} track)"
         shell: bash
 
       - name: 🏗️ Build production AAB locally
         if: ${{ inputs.submit_existing_build_id == '' && inputs.build_locally }}
+        env:
+          POSTHOG_CLI_API_KEY: ${{ secrets.POSTHOG_CLI_API_KEY }}
+          POSTHOG_CLI_PROJECT_ID: '507969'
+          POSTHOG_CLI_HOST: https://us.posthog.com
+          GITHUB_ACTIONS: 'true'
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
         run: |
           EXPO_PUBLIC_APP_ENV=production eas build \
             --platform android \
@@ -81,7 +101,7 @@ jobs:
         run: |
           EXPO_PUBLIC_APP_ENV=production eas submit \
             --platform android \
-            --profile production \
+            --profile "$SUBMIT_PROFILE" \
             --path ./backgammon-mastermind.aab \
             --non-interactive \
             --no-wait
@@ -92,7 +112,7 @@ jobs:
         run: |
           EXPO_PUBLIC_APP_ENV=production eas submit \
             --platform android \
-            --profile production \
+            --profile "$SUBMIT_PROFILE" \
             --id "${{ inputs.submit_existing_build_id }}" \
             --non-interactive \
             --no-wait

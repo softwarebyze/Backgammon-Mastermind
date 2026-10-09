@@ -4,10 +4,8 @@ import type { GameState, Move } from '@/lib/game';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
-import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 import {
-  computerCheckerMoveDurationMs,
   computerMoveDelayMs,
   computerThinkDelayMs,
 } from '@/lib/game/computer-pace';
@@ -52,8 +50,6 @@ export function useComputerOpponent({
   pausedRef.current = paused;
   // Bumped when returning to the game screen so timers re-schedule without a state change.
   const [scheduleGen, setScheduleGen] = useState(0);
-  const { preferences } = useGamePreferences();
-  const fast = preferences.fastComputer;
 
   const clearAITimeout = useCallback(() => {
     if (aiTimeoutRef.current !== null) {
@@ -83,7 +79,7 @@ export function useComputerOpponent({
     if (hasRedo)
       return clearAITimeout;
 
-    const delay = computerThinkDelayMs(state.phase, fast);
+    const delay = computerThinkDelayMs(state.phase);
     let moveTimer: ReturnType<typeof setTimeout> | undefined;
     if (delay === 0 && state.phase !== 'moving') {
       return clearAITimeout;
@@ -124,7 +120,7 @@ export function useComputerOpponent({
           setState(passTurn(prev));
           return;
         }
-        const moveDelay = computerMoveDelayMs(moveCount, fast);
+        const moveDelay = computerMoveDelayMs(moveCount);
         moveTimer = setTimeout(() => {
           if (pausedRef.current)
             return;
@@ -132,9 +128,7 @@ export function useComputerOpponent({
           if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
-          playMove(latest, move, {
-            durationMs: computerCheckerMoveDurationMs(fast),
-          });
+          playMove(latest, move, { pace: 'computer' });
         }, moveDelay);
         aiTimeoutRef.current = moveTimer;
       }
@@ -164,7 +158,6 @@ export function useComputerOpponent({
     recordNoMove,
     clearAITimeout,
     scheduleGen,
-    fast,
     paused,
   ]);
 

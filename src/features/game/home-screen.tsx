@@ -21,6 +21,7 @@ import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-ban
 import { useGame } from '@/features/game/use-game';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
+import { settingProperties } from '@/lib/analytics/settings-analytics';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
 import {
@@ -91,10 +92,11 @@ export function HomeScreen() {
         mode,
         had_saved_game: isResumableGame(state),
         tutor_mode: preferences.tutorMode,
+        ...settingProperties(preferences),
       });
       startGameFromHome(mode, state, startGame);
     },
-    [posthog, preferences.tutorMode, startGame, state],
+    [posthog, preferences, startGame, state],
   );
 
   const handleResume = useCallback(

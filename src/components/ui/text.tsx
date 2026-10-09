@@ -1,10 +1,10 @@
 import type { TextProps, TextStyle } from 'react-native';
 import type { TxKeyPath } from '@/lib/i18n';
 import * as React from 'react';
-import { I18nManager, Text as NNText, StyleSheet } from 'react-native';
+import { Text as NNText, StyleSheet } from 'react-native';
 
 import { twMerge } from 'tailwind-merge';
-import { translate } from '@/lib/i18n';
+import { getLayoutIsRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
@@ -32,7 +32,7 @@ export function Text({
     () =>
       StyleSheet.flatten([
         {
-          writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr',
+          writingDirection: getLayoutIsRTL() ? 'rtl' : 'ltr',
           ...interFont('regular'),
         },
         style,

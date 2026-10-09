@@ -1,9 +1,10 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
+import { AppState, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
+import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
@@ -25,8 +26,11 @@ import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
 import { useTutorMode } from '@/features/game/use-tutor';
+import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { translate } from '@/lib/i18n';
+import { useHardwareBackPress } from '@/lib/navigation/use-hardware-back-press';
 import { interFont } from '@/lib/ui/fonts';
 
 /* eslint-disable max-lines-per-function -- screen composes all game slices */
@@ -51,6 +55,7 @@ function useDelayedTrue(value: boolean, delayMs: number): boolean {
 export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
+  const { preferences } = useGamePreferences();
   const input = useGameInput();
   const {
     moveAnimation,
@@ -141,22 +146,25 @@ export function GameScreen() {
     confirmLeaveGame: leaveGame,
   });
 
+  const canConfirmMove = !!input.state
+    && !review.isReviewing
+    && !tutorPaused
+    && isAwaitingMoveConfirm(input.state, preferences.confirmMove);
   useGameKeyboardShortcuts({
     state: input.state,
     isReviewing: review.isReviewing,
     tutorPaused,
+    canConfirm: canConfirmMove,
     canUndo: !review.isReviewing && canUndo,
     canRedo: !review.isReviewing && canRedo,
     onRoll: input.handleRoll,
+    onConfirm: input.handleConfirmMove,
     onUndo: doUndo,
     onRedo: doRedo,
     onCancelSelection: () => selectPoint(null),
   });
 
-  useEffect(() => {
-    const subscription = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    return () => subscription.remove();
-  }, [handleBackPress]);
+  useHardwareBackPress(handleBackPress);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (event) => {
@@ -171,6 +179,16 @@ export function GameScreen() {
     return unsubscribe;
   }, [navigation, leaveGame, allowLeaveRef]);
 
+  const confirmHoldSegments = useMemo(
+    () => confirmHoldPathSegments({
+      awaitingConfirm: canConfirmMove,
+      replayBaseline,
+      moveLog,
+      currentPlayer: input.state?.currentPlayer,
+    }),
+    [canConfirmMove, replayBaseline, moveLog, input.state?.currentPlayer],
+  );
+
   if (!input.state || !review.displayState) {
     return (
       <View style={[styles.root, styles.center]}>
@@ -180,7 +198,10 @@ export function GameScreen() {
     );
   }
 
-  const board = deriveGameBoardPresentation(review, moveAnimation, historyPath);
+  const board = deriveGameBoardPresentation(review, moveAnimation, {
+    historyPath,
+    confirmHoldSegments,
+  });
   const state = board.boardState!;
   const isComputerTurn = state.mode === 'vs-computer' && state.currentPlayer === 'black';
   // Pause interaction while the blunder prompt is open or a verdict is pending.
@@ -198,6 +219,8 @@ export function GameScreen() {
         moveLog={moveLog}
         isComputerTurn={isComputerTurn || tutorPaused}
         onCancelSelection={() => selectPoint(null)}
+        canUndo={!review.isReviewing && canUndo}
+        onUndo={doUndo}
       />
       {showReviewing && (
         <View style={styles.reviewingPill} pointerEvents="none">

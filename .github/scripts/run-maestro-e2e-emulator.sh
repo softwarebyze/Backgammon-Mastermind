@@ -21,7 +21,16 @@ bash "${WORKSPACE}/.github/scripts/record-android-screen.sh" "$MAESTRO_OUT" "$RE
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
-maestro test "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+# Smoke + regression flows + native RTL language restart (screenshots land in maestro-visual-report).
+maestro test \
+  "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
+  "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
+  "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
+  "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
+  "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
+  "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
+  "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
+  "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
