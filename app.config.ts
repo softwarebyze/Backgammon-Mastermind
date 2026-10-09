@@ -132,10 +132,18 @@ const appPlugins: ExpoConfig['plugins'] = [
   ],
   ['react-native-edge-to-edge'],
   // Native symbol / Hermes map hooks. TestFlight crashes still need a new binary.
-  // posthog-react-native/expo wraps the Xcode "Bundle React Native" phase with
-  // posthog-xcode.sh. That script is pnpm-patched so a missing posthog-cli or
-  // CLI token skips sourcemap upload instead of failing EAS Run fastlane.
-  ['posthog-react-native/expo', { skipOnConflict: true }],
+  // The dotenv file supplies POSTHOG_CLI_* credentials for local native builds;
+  // EAS builds provide the same keys directly as environment variables.
+  // @posthog/cli is a devDependency so the Xcode/Gradle upload scripts find it
+  // in node_modules/.bin on every builder (fail-closed upstream, no skip patch).
+  [
+    'posthog-react-native/expo',
+    {
+      dotenvFile: '.env',
+      skipOnConflict: true,
+      uploadNativeSymbols: { includeSource: true },
+    },
+  ],
 ];
 
 export default ({ config }: ConfigContext): ExpoConfig => ({

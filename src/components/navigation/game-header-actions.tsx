@@ -77,12 +77,14 @@ export function GameHeaderActions({
       <HeaderIcon
         name="corner-up-left"
         label={translate('game.controls.undo_a11y')}
+        testID="header-undo-button"
         disabled={!canUndo || !onUndo}
         onPress={() => onUndo?.()}
       />
       <HeaderIcon
         name="corner-up-right"
         label={translate('game.controls.redo_a11y')}
+        testID="header-redo-button"
         disabled={!canRedo || !onRedo}
         onPress={() => onRedo?.()}
       />
