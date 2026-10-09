@@ -98,9 +98,11 @@ EXPO_PUBLIC_APP_ENV=production eas build \
   --profile production \
   --non-interactive \
   --no-wait \
-  --auto-submit \
-  --message "Build production (Android)"
+  --auto-submit-with-profile internal \
+  --message "Build production (Android, internal track)"
 ```
+
+The **`track`** input picks the `eas.json` submit profile. It defaults to `internal`, so the upload reaches internal testers only. Choose `production` only for a public release.
 
 Requires: `EXPO_TOKEN` (GitHub) + `GOOGLE_SERVICE_ACCOUNT` (EAS).
 
