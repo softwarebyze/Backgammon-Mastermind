@@ -48,8 +48,28 @@ for kind in iPhone iPad; do
   mkdir -p "$out"
   echo "::group::Maestro smoke on $name ($udid)"
   xcrun simctl boot "$udid" 2>/dev/null || true
-  xcrun simctl bootstatus "$udid" -b
-  xcrun simctl install "$udid" "$APP_PATH"
+  setup_rc=0
+  if ! xcrun simctl bootstatus "$udid" -b 2>"$out/bootstatus.err"; then
+    {
+      echo "simctl bootstatus failed for $name ($udid)"
+      cat "$out/bootstatus.err" 2>/dev/null || true
+    } >"$out/setup-error.txt"
+    setup_rc=1
+  elif ! xcrun simctl install "$udid" "$APP_PATH" 2>"$out/install.err"; then
+    {
+      echo "simctl install failed for $name ($udid)"
+      cat "$out/install.err" 2>/dev/null || true
+    } >"$out/setup-error.txt"
+    setup_rc=1
+  fi
+  if [ "$setup_rc" -ne 0 ]; then
+    echo "$name" > "$out/device.txt"
+    echo "::error::Simulator setup failed on $name"
+    xcrun simctl shutdown "$udid" || true
+    echo "::endgroup::"
+    STATUS=1
+    continue
+  fi
 
   # Keep startup failures reviewable even when the first assertion never passes.
   xcrun simctl spawn "$udid" log stream --level debug --style compact \

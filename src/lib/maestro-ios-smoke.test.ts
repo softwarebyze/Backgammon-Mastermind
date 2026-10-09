@@ -47,3 +47,44 @@ process.exit(1);
     rmSync(fixture, { recursive: true, force: true });
   }
 });
+
+it('continues to the second device when simctl setup fails on the first', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'ios-smoke-setup-'));
+  try {
+    writeFileSync(join(fixture, 'xcrun'), `#!/usr/bin/env node
+const fs = require('node:fs');
+const args = process.argv.slice(2);
+if (args.includes('list')) console.log(JSON.stringify({devices: {
+  'com.apple.CoreSimulator.SimRuntime.iOS-26-0': [
+    {udid: 'phone', name: 'iPhone test'}, {udid: 'tablet', name: 'iPad test'}
+  ]
+}}));
+if (args.includes('bootstatus') && args.includes('phone')) {
+  console.error('boot timed out');
+  process.exit(1);
+}
+if (args.includes('screenshot')) fs.writeFileSync(args.at(-1), 'failure image');
+if (args.includes('recordVideo')) fs.writeFileSync(args.at(-1), 'recording');
+`, { mode: 0o755 });
+    writeFileSync(join(fixture, 'maestro'), `#!/usr/bin/env node
+const fs = require('node:fs');
+const args = process.argv.slice(2);
+fs.appendFileSync(process.env.CALLS, args[args.indexOf('--device') + 1] + '\\n');
+fs.writeFileSync(args[args.indexOf('--output') + 1], '<testsuite failures="0"/>');
+process.exit(0);
+`, { mode: 0o755 });
+    const result = spawnSync('bash', [script, fixture, 'fixture.app'], {
+      encoding: 'utf8',
+      env: { ...process.env, PATH: `${fixture}:${process.env.PATH}`, CALLS: join(fixture, 'calls') },
+      timeout: 10000,
+    });
+    expect(result.status).toBe(1);
+    expect(readFileSync(join(fixture, 'maestro-ios-output', 'iphone', 'setup-error.txt'), 'utf8')).toContain('bootstatus failed');
+    expect(readFileSync(join(fixture, 'maestro-ios-output', 'iphone', 'bootstatus.err'), 'utf8')).toContain('boot timed out');
+    expect(readFileSync(join(fixture, 'calls'), 'utf8')).toBe('tablet\n');
+    expect(readFileSync(join(fixture, 'maestro-ios-output', 'ipad', 'report.xml'), 'utf8')).toContain('failures="0"');
+  }
+  finally {
+    rmSync(fixture, { recursive: true, force: true });
+  }
+});
