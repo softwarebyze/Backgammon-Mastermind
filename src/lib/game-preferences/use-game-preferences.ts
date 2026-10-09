@@ -1,6 +1,9 @@
 import type { DiceDisplayStyle, GamePreferences } from './types';
 
 import { useCallback, useSyncExternalStore } from 'react';
+
+import { trackSettingsChange } from '@/lib/analytics/settings-analytics';
+
 import { loadGamePreferences, saveGamePreferences } from './storage';
 
 let cached = loadGamePreferences();
@@ -22,9 +25,11 @@ function getSnapshot(): GamePreferences {
 }
 
 function updatePreferences(patch: Partial<GamePreferences>) {
+  const previous = cached;
   cached = { ...cached, ...patch };
   saveGamePreferences(cached);
   emitChange();
+  trackSettingsChange(previous, cached);
 }
 
 /** Patch prefs outside of React (e.g. learn graduation → beginner aids). */
@@ -63,12 +68,12 @@ export function useGamePreferences() {
     updatePreferences({ soundEnabled });
   }, []);
 
-  const setFastComputer = useCallback((fastComputer: boolean) => {
-    updatePreferences({ fastComputer });
-  }, []);
-
   const setTutorMode = useCallback((tutorMode: boolean) => {
     updatePreferences({ tutorMode });
+  }, []);
+
+  const setConfirmMove = useCallback((confirmMove: boolean) => {
+    updatePreferences({ confirmMove });
   }, []);
 
   return {
@@ -80,7 +85,7 @@ export function useGamePreferences() {
     setAutoRoll,
     setAutoMoveWhenForced,
     setSoundEnabled,
-    setFastComputer,
     setTutorMode,
+    setConfirmMove,
   };
 }

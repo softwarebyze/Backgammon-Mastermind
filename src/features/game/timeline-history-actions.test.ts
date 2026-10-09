@@ -2,6 +2,7 @@ import type { GameState } from '@/lib/game';
 import {
   buildRedoHistoryStep,
   buildUndoHistoryStep,
+  countTrailingNoMoves,
   hasUndoableHumanMove,
   isHumanHistoryStep,
   undoInstant,
@@ -110,6 +111,22 @@ describe('vs-computer history gating', () => {
     expect(hasUndoableHumanMove('vs-computer', [black])).toBe(false);
     expect(hasUndoableHumanMove('vs-human', [black])).toBe(true);
   });
+});
+
+describe('blocked rolls in history', () => {
+  it('hasUndoableHumanMove ignores blocked rolls', () => {
+    const noMove = { ply: 1, player: 'white' as const, dice: [4, 2] as [number, number], from: -1, to: -1 };
+    expect(hasUndoableHumanMove('vs-human', [noMove])).toBe(false);
+    expect(hasUndoableHumanMove('vs-computer', [noMove])).toBe(false);
+  });
+
+  it('countTrailingNoMoves counts only the blocked rolls at the end of the log', () => {
+    const move = { ply: 1, player: 'white' as const, dice: [4, 2] as [number, number], from: 13, to: 9 };
+    const noMove = { ...move, ply: 2, from: -1, to: -1 };
+    expect(countTrailingNoMoves([move, noMove, { ...noMove, ply: 3 }])).toBe(2);
+    expect(countTrailingNoMoves([noMove, move])).toBe(0);
+    expect(countTrailingNoMoves([])).toBe(0);
+  });
 
   it('vs-computer undo rewinds trailing AI moves down to the human move', () => {
     const base = createInitialState('vs-computer');
@@ -133,6 +150,7 @@ describe('vs-computer history gating', () => {
       moveLog: [...log],
       replayBaseline: null,
       gameMode: 'vs-computer',
+      getLiveState: () => null,
       popLastMove: () => logState.pop() ?? null,
       restoreMove: () => {},
       setTimeline: (t) => {
@@ -152,7 +170,9 @@ describe('vs-computer history gating', () => {
     expect(committed.timeline?.cursor).toBe(0);
     expect(committed.timeline?.redoMoves.map(m => m.player)).toEqual(['white', 'black', 'black']);
   });
+});
 
+describe('undo animation completion and paths', () => {
   it('animated undo arms the shared finish watchdog', () => {
     const baseline = movingWhiteState();
     const move = getLegalMoves(baseline)[0]!;
@@ -174,6 +194,7 @@ describe('vs-computer history gating', () => {
       moveLog: log,
       replayBaseline,
       gameMode: 'vs-human',
+      getLiveState: () => null,
       popLastMove: () => log[0] ?? null,
       restoreMove: () => {},
       setTimeline: () => {},
@@ -192,5 +213,43 @@ describe('vs-computer history gating', () => {
 
     expect(armed).toBe(true);
     expect(frameOnFinish).toEqual(expect.any(Function));
+  });
+
+  it('suppressHistoryPath skips the undo trail overlay', () => {
+    const baseline = movingWhiteState();
+    const move = getLegalMoves(baseline)[0]!;
+    const after = applyMove(baseline, move);
+    const log = appendMoveLogEntry([], {
+      player: baseline.currentPlayer,
+      dice: baseline.dice,
+      move,
+      after,
+    });
+    const replayBaseline = deriveReplayBaseline(after, log);
+    let timeline = createTimeline(baseline);
+    timeline = pushTimelineSnapshot(timeline, baseline, after);
+
+    const paths: unknown[] = [];
+    runAnimatedUndo({
+      timeline,
+      moveLog: log,
+      replayBaseline,
+      gameMode: 'vs-human',
+      popLastMove: () => log[0] ?? null,
+      restoreMove: () => {},
+      setTimeline: () => {},
+      setState: () => {},
+      setMoveAnimation: () => {},
+      setHistoryPath: (v) => {
+        paths.push(typeof v === 'function' ? v(null) : v);
+      },
+      finishHistoryAnim: () => {},
+      armAnimationFinish: onFinish => onFinish,
+      getLiveState: () => null,
+      suppressHistoryPath: true,
+    });
+
+    expect(paths.length).toBeGreaterThan(0);
+    expect(paths.every(p => p == null)).toBe(true);
   });
 });

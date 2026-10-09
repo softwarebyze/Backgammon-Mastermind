@@ -32,6 +32,13 @@ Pod::Spec.new do |s|
     'CLANG_CXX_LIBRARY' => 'libc++',
     # Mirror upstream per-arch optimization (arm64 device + simulator).
     'OTHER_CPLUSPLUSFLAGS' => '-O3 -funsafe-math-optimizations -fno-math-errno -funroll-loops',
+    # vendor/bgsage/cpp/src/neural_net.cpp uses AVX/FMA intrinsics directly
+    # (`__m256`, `_mm256_*`). arm64 has these in the base ISA, but the x86_64
+    # slice needs them enabled explicitly or it fails to compile with
+    # "always_inline function '_mm256_set1_ps' requires target feature 'avx'" —
+    # which broke every Release simulator build (arm64 + x86_64). Scoped to
+    # x86_64 so arm64 keeps its existing (empty) flag set.
+    'OTHER_CPLUSPLUSFLAGS[arch=x86_64]' => '$(inherited) -mavx2 -mfma',
   }
   s.dependency 'ExpoModulesCore'
 end

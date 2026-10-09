@@ -1,4 +1,4 @@
-import { getPostHogPersonContext, isPostHogProjectToken } from './posthog-context';
+import { getAnalyticsSurface, getPostHogPersonContext, isPostHogProjectToken } from './posthog-context';
 
 describe('getPostHogPersonContext', () => {
   it('prefers native version and build over Expo config', () => {
@@ -12,6 +12,7 @@ describe('getPostHogPersonContext', () => {
     })).toEqual({
       app_env: 'preview',
       platform: 'ios',
+      surface: 'app',
       app_version: '1.0.1',
       build_number: '42',
     });
@@ -25,6 +26,7 @@ describe('getPostHogPersonContext', () => {
     })).toEqual({
       app_env: 'development',
       platform: 'ios',
+      surface: 'app',
       app_version: '1.0.0',
       build_number: '9',
     });
@@ -37,6 +39,15 @@ describe('getPostHogPersonContext', () => {
       configVersion: '1.0.0',
       androidVersionCode: 12,
     }).build_number).toBe('12');
+  });
+});
+
+describe('surface', () => {
+  it('maps native platforms to app and web to web', () => {
+    expect(getAnalyticsSurface('ios')).toBe('app');
+    expect(getAnalyticsSurface('android')).toBe('app');
+    expect(getAnalyticsSurface('web')).toBe('web');
+    expect(getPostHogPersonContext({ platform: 'web' }).surface).toBe('web');
   });
 });
 

@@ -18,6 +18,7 @@ import { canRedoTimeline, canUndoTimeline, peekRedoMove } from '@/lib/game/game-
 export type { HistoryPathOverlay } from '@/features/game/timeline-history-actions';
 
 type Options = {
+  state: GameState | null;
   timeline: GameTimeline | null;
   setTimeline: Dispatch<SetStateAction<GameTimeline | null>>;
   setState: Dispatch<SetStateAction<GameState | null>>;
@@ -30,11 +31,14 @@ type Options = {
   popLastMove: () => MoveLogEntry | null;
   restoreMove: (entry: MoveLogEntry) => void;
   gameMode: GameState['mode'] | undefined;
+  /** When true at undo time, skip the dashed historyPath flash (confirm-hold). */
+  shouldSuppressHistoryPath?: () => boolean;
 };
 
 /** Live undo/redo — animates like review scrubbing, then commits timeline + move log. */
 export function useGameUndoRedo(options: Options) {
   const {
+    state,
     timeline,
     setTimeline,
     setState,
@@ -46,6 +50,7 @@ export function useGameUndoRedo(options: Options) {
     popLastMove,
     restoreMove,
     gameMode,
+    shouldSuppressHistoryPath,
   } = options;
 
   // vs-computer: undo rewinds trailing AI moves and lands on the human's own
@@ -60,6 +65,9 @@ export function useGameUndoRedo(options: Options) {
   timelineRef.current = timeline;
   const moveLogRef = useRef(moveLog);
   moveLogRef.current = moveLog;
+  const stateRef = useRef(state);
+  stateRef.current = state;
+  const getLiveState = useCallback(() => stateRef.current, []);
   const pathClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const finishHistoryAnim = useCallback(() => {
@@ -93,6 +101,7 @@ export function useGameUndoRedo(options: Options) {
     moveLog: moveLogRef.current,
     replayBaseline,
     gameMode,
+    getLiveState,
     popLastMove,
     restoreMove,
     setTimeline,
@@ -101,16 +110,19 @@ export function useGameUndoRedo(options: Options) {
     setHistoryPath,
     finishHistoryAnim,
     armAnimationFinish,
+    suppressHistoryPath: shouldSuppressHistoryPath?.() === true,
   }), [
     armAnimationFinish,
     finishHistoryAnim,
     gameMode,
+    getLiveState,
     popLastMove,
     replayBaseline,
     restoreMove,
     setMoveAnimation,
     setState,
     setTimeline,
+    shouldSuppressHistoryPath,
   ]);
 
   const doUndo = useCallback(() => {

@@ -2,9 +2,18 @@
  * Super-properties attached to every PostHog event so TestFlight crashes
  * can be sliced by env / platform / binary without hardcoding a token.
  */
+
+/** Where the event came from; extend when quest / iMessage clients ship. */
+export type AnalyticsSurface = 'app' | 'web' | 'quest' | 'imessage';
+
+export function getAnalyticsSurface(platform: string): AnalyticsSurface {
+  return platform === 'web' ? 'web' : 'app';
+}
+
 export type PostHogPersonContext = {
   app_env: string;
   platform: string;
+  surface: AnalyticsSurface;
   app_version: string;
   build_number: string | null;
 };
@@ -33,6 +42,7 @@ export function getPostHogPersonContext(input: {
   return {
     app_env: input.appEnv || 'development',
     platform: input.platform,
+    surface: getAnalyticsSurface(input.platform),
     app_version,
     build_number,
   };

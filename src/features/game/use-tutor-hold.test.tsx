@@ -52,6 +52,12 @@ function whiteMovingState(): GameState {
   return s;
 }
 
+/** Dice spent but turn not handed off yet (confirm-move hold). */
+function whiteAwaitingConfirmState(): GameState {
+  const s = whiteMovingState();
+  s.remainingDice = [];
+  return s;
+}
 /** One die still to play — "undo last move" does not restart the turn. */
 function whiteMidTurnState(): GameState {
   const s = whiteMovingState();
@@ -308,5 +314,29 @@ describe('tutor verdict-pending hold in pass-and-play', () => {
 
     expect(probe.blunderNull).toBe(false);
     expect(probe.pending).toBe(false);
+  });
+});
+
+describe('tutor with confirm-move hold', () => {
+  it('does not judge while dice are spent but the turn is still held for Confirm', async () => {
+    let resolveAnalysis!: (plan: never) => void;
+    planSageTurnFullMock.mockImplementation(
+      () => new Promise((resolve) => { resolveAnalysis = resolve as (plan: never) => void; }),
+    );
+
+    const { rerender, probe, onSnapshot } = renderHarness(whiteMovingState());
+    await act(async () => {
+      resolveAnalysis(blunderPlan() as never);
+    });
+    expect(probe.blunderNull).toBe(true);
+
+    // Confirm move: last die spent, same player/dice — turn key unchanged.
+    rerender(<Harness state={whiteAwaitingConfirmState()} onSnapshot={onSnapshot} />);
+    expect(probe.blunderNull).toBe(true);
+    expect(probe.pending).toBe(false);
+
+    // Player taps Confirm → opponent to roll → tutor judges now.
+    rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
+    expect(probe.blunderNull).toBe(false);
   });
 });

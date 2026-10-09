@@ -9,12 +9,12 @@ type Props = {
   active?: boolean;
 };
 
-/** Fast-forward — skip computer wait. Off is idle (muted), not still “on”. */
-export function FastComputerIcon({ size = 32, active = false }: Props) {
+/** Check mark — confirm move setting */
+export function ConfirmMoveIcon({ size = 32, active = false }: Props) {
   const color = active ? GAME_PALETTE.accent : GAME_PALETTE.textMuted;
   return (
     <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
-      <Feather name="fast-forward" size={size * 0.81} color={color} />
+      <Feather name="check-circle" size={size * 0.62} color={color} />
     </View>
   );
 }
