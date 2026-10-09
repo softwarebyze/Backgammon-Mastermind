@@ -24,7 +24,13 @@ if (args[1] === 'create') process.exit(process.env.FAIL_CREATE ? 1 : 0);
 if (args[1] === 'view') {
   if (args.includes('--json')) {
     if (process.env.FAIL_QUERY) process.exit(1);
-    console.log('https://github.com/test/repo/releases/download/e2e-evidence/run-123-attempt-2.mp4');
+    // Same shape as \`gh release view --json assets\`: the download link is \`url\`.
+    const assets = { assets: [
+      { name: 'other.mp4', url: 'https://github.com/test/repo/releases/download/e2e-evidence/other.mp4' },
+      { name: 'run-123-attempt-2.mp4', url: 'https://github.com/test/repo/releases/download/e2e-evidence/run-123-attempt-2.mp4' },
+    ] };
+    const jq = args[args.indexOf('--jq') + 1];
+    process.stdout.write(require('node:child_process').execFileSync('jq', ['-r', jq], { input: JSON.stringify(assets) }));
   } else if (process.env.FAIL_CREATE) process.exit(1);
 }
 `, { mode: 0o755 });
@@ -59,7 +65,7 @@ it('uploads the actual per-attempt filename and preserves one recording in the b
     bytes: 'fixture recording',
   });
   expect(readdirSync(fixture).filter(name => name.endsWith('.mp4'))).toEqual(['e2e-recording.mp4']);
-  expect(readFileSync(join(fixture, 'urls.env'), 'utf8')).toContain('run-123-attempt-2.mp4');
+  expect(readFileSync(join(fixture, 'urls.env'), 'utf8')).toContain('MAESTRO_VIDEO_URL=https://github.com/test/repo/releases/download/e2e-evidence/run-123-attempt-2.mp4\n');
   const calls = readFileSync(join(fixture, 'calls.jsonl'), 'utf8').trim().split('\n').map(line => JSON.parse(line) as string[]);
   const uploadedPath = calls.find(args => args[1] === 'upload')?.[3];
   expect(uploadedPath).toBeDefined();

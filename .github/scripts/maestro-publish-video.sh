@@ -54,8 +54,10 @@ if ! gh release upload "$TAG" "$STAGING_DIR/$ASSET" --repo "$REPO" --clobber; th
 fi
 
 # Use GitHub's returned asset URL rather than predicting a successful upload.
+# `gh release view --json assets` exposes the download link as `url` (there is
+# no `browser_download_url` field, unlike the REST API).
 DOWNLOAD_URL=$(gh release view "$TAG" --repo "$REPO" --json assets \
-  --jq ".assets[] | select(.name == \"${ASSET}\") | .browser_download_url") || DOWNLOAD_URL=""
+  --jq ".assets[] | select(.name == \"${ASSET}\") | .url") || DOWNLOAD_URL=""
 echo "::endgroup::"
 if [[ -z "$DOWNLOAD_URL" ]]; then
   echo "::warning::Uploaded recording URL unavailable — use the artifact."
