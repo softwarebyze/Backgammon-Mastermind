@@ -123,7 +123,7 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 | **EAS Metadata Push** | Manual | Push `store.config.json` (+ generated preview title) |
 | **Upload Store Screenshots** | Manual (ios/android) | Fastlane deliver (iOS ASC key via EAS) / supply (Play key via `GOOGLE_SERVICE_ACCOUNT_BASE64`) |
 | **EAS Submit Production iOS** | Manual | Retry submit of latest (or given) production iOS build |
-| **EAS Production Build and Submit (Android)** | Manual | Build AAB + auto-submit to Google Play (production track) |
+| **EAS Production Build and Submit (Android)** | Manual | Build AAB + auto-submit to Google Play (`track` input: internal by default, production selectable) |
 | **Knip / Expo Doctor / React Doctor** | PR / path filters | Unused exports + dependency health |
 
 **TestFlight trigger (no local EXPO_TOKEN needed for agents):** Actions → **EAS QA Build (Android & IOS) (EAS)** on the merged (or this) branch. Preview iOS auto-submits to ASC `6781121420`. Optionally dispatch **EAS Submit Preview iOS (TestFlight)** if a preview IPA already exists.
