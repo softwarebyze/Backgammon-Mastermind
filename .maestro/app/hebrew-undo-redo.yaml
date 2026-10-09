@@ -6,20 +6,20 @@ tags:
   - rtl
   - pull-request
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - tapOn: vs Computer
 - assertVisible: Undo move
 - assertVisible: Redo move
 - takeScreenshot: undo-redo-01-english
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - tapOn: Settings
 - tapOn: Language
 - scrollUntilVisible:
@@ -28,11 +28,11 @@ tags:
     direction: DOWN
 - tapOn: עברית
 - stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible: נגד המחשב
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'false'
+      HOME_TEXT: נגד המחשב
 - tapOn: נגד המחשב
 - assertVisible: ביטול המהלך
 - assertVisible: ביצוע המהלך מחדש

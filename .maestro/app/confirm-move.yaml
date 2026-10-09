@@ -3,11 +3,11 @@ appId: ${APP_ID}
 tags:
   - pull-request
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - openLink: backgammonmastermind.preview://developer
 # Other release features add presets above the JSON fixture field.
 - scrollUntilVisible:

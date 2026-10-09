@@ -4,11 +4,11 @@ tags:
   - i18n
   - pull-request
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - tapOn:
     text: Settings
 - extendedWaitUntil:

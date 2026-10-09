@@ -15,7 +15,9 @@ adb shell settings put global transition_animation_scale 0
 adb shell settings put global animator_duration_scale 0
 adb install -r "${WORKSPACE}/android-test.apk"
 
-adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
+RECORD_STOP="$MAESTRO_OUT/recording.stop"
+rm -f "$RECORD_STOP"
+bash "${WORKSPACE}/.github/scripts/record-android-screen.sh" "$MAESTRO_OUT" "$RECORD_STOP" &
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
@@ -37,8 +39,21 @@ maestro test \
   --flatten-debug-output \
   || MAESTRO_EXIT=$?
 
+touch "$RECORD_STOP"
 adb shell pkill -2 screenrecord 2>/dev/null || true
-sleep 2
-adb pull /sdcard/e2e-recording.mp4 "${WORKSPACE}/e2e-recording.mp4" 2>/dev/null || true
+wait "$RECORD_PID" || echo "::warning::Recording segment collection failed"
+# Each Android screenrecord ends after 300 seconds. Join all captured segments,
+# retaining the individual files in the artifact if joining fails.
+if [[ -s "$MAESTRO_OUT/recordings/concat.txt" ]]; then
+  # Join into a temporary file so a failed join never leaves a publishable recording.
+  JOINED="${WORKSPACE}/e2e-recording.partial.mp4"
+  if ffmpeg -y -f concat -safe 0 -i "$MAESTRO_OUT/recordings/concat.txt" \
+    -c copy "$JOINED"; then
+    mv "$JOINED" "${WORKSPACE}/e2e-recording.mp4"
+  else
+    rm -f "$JOINED"
+    echo "::warning::Recording join failed; inspect recordings/ in the artifact"
+  fi
+fi
 
 exit "$MAESTRO_EXIT"

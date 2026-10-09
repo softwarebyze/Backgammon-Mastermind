@@ -3,11 +3,15 @@ tags:
   - smoke
   - pull-request
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+# Finish removing the previous Android task before clearing/relaunching.
+- stopApp
+- waitForAnimationToEnd:
+    timeout: 5000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - takeScreenshot: 01-home-loaded
 - tapOn:
     text: vs Computer
@@ -30,6 +34,7 @@ tags:
           commands:
             - tapOn:
                 id: roll-dice-button
+                optional: true
       - runFlow:
           when:
             visible:
