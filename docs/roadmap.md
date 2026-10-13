@@ -1,6 +1,6 @@
 # Product roadmap (long horizon)
 
-Vision map (M0–M6). **Not** the sprint board — that is [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (and [Releases](https://github.com/softwarebyze/Backgammon-Mastermind/releases) for what already shipped).
+Vision map (M0–M6). **Not** the sprint board — that is [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (and [Releases](https://github.com/softwarebyze/Backgammon-Mastermind/releases) for what already shipped). **Last updated: 2026-10-12** (v1.1.0 shipped 2026-10-10 — shipped markers below were backfilled then; anything without a marker is still aspirational).
 
 Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-explained) and the chess.com bar for post-game analysis.
 
@@ -29,11 +29,11 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Knip unused-export CI | `.github/workflows/knip.yml` + `knip.json` | Done |
 | React Doctor advisory CI | `.github/workflows/react-doctor.yml` (#41) | Done |
 | Bundle size delta on PR | `size-limit` or `@expo/bundle-analyzer` workflow | Planned |
-| Screenshot diff CI (iPad, web, phone) | Argent / Percy + tablet landscape | Planned |
-| Maestro recordings per release | `.maestro/app/` flows + artifact upload | 🟡 In progress |
+| Screenshot diff CI (iPad, web, phone) | Screenmap maps/diffs run on every PR (`screenmap-pr.yml`) — iOS + Android done; web/Playwright half still open (#87) | 🟡 Partial |
+| Maestro recordings per release | `.maestro/app/` flows + artifact upload + rolling "E2E evidence" pre-release | Done |
 | Perf regression (Flashlight / Sentry Performance) | Baseline on game screen | Planned |
-| PostHog events schema | `src/lib/analytics/` | Planned |
-| EAS metadata + Remotion launch videos | `eas metadata` + `remotion/` + GHA | Planned |
+| PostHog events schema | `src/lib/analytics/` (#122; `game_completed`/`setting_changed` in #207/#212) | Done |
+| EAS metadata + Remotion launch videos | `eas metadata` + `remotion/` + GHA (#107) | Done |
 | `pnpm check-all` in PR template | Already partial | Done |
 
 ---
@@ -64,7 +64,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | **Game logic unit tests** (`moves.ts`, pip count, bear-off, animation layout) | various | Done |
 | **Dice roll shuffle animation** | #40 | Done |
 | **Blocked bar dice visibility** | #43 | Done (#56) |
-| **Landscape** layout pass + screenshot | Planned | |
+| **Landscape** layout pass + screenshot | Done (#170, #178, #185) | |
 
 ---
 
@@ -100,7 +100,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Item | Notes |
 |------|-------|
 | Shareable screens / deep links | Viral puzzle of the day |
-| Remotion marketing assets | GHA renders on release |
+| Remotion marketing assets | **Done** — GHA renders on every GitHub release (#107, #111) |
 | Social automation | Optional GHA → buffer |
 | Deep design review pass | Motion, sound, haptics, turn transitions |
 | Support flow improvements | In-app help, FAQ |
@@ -112,9 +112,9 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Item | Notes |
 |------|-------|
 | Apple Watch companion | Pip count, turn notify |
-| iMessage extension | Challenge friend |
+| iMessage extension | **Shipped v1.1.0** — playable two-device game over iMessage (#200, #254) |
 | **Board photo setup** | Vision camera + [BackgammonCV](https://github.com/christiancorro/BackgammonCV) hologram overlay |
-| Web desktop layout | Centered board, keyboard shortcuts |
+| Web desktop layout | **Shipped** — 1000px board, hover states, keyboard shortcuts (#185, #186, #196) |
 
 ---
 

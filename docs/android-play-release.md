@@ -5,7 +5,7 @@ Canonical how-to for shipping **Google Play** for Backgammon Mastermind. CI uplo
 **Do not** put service-account JSON, private keys, or token values in this file or in PRs. Secret **names** only — inventory lives on [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160).
 
 First-time store checklist: [production-checklist.md](./production-checklist.md).  
-Track A gates: [release-gates.md](./release-gates.md).
+Release gates: [release-gates.md](./release-gates.md).
 
 ---
 
@@ -169,6 +169,6 @@ Ship tracking for the first Play upload: [#160](https://github.com/softwarebyze/
 - [store-screenshots.md](./store-screenshots.md) — Fastlane paths and Play 9:16 crop notes
 - [releases.md](./releases.md) — overall release flow
 - [production-checklist.md](./production-checklist.md) — first App Store / Play submission
-- [release-gates.md](./release-gates.md) — Track A (Play) vs Track B
+- [release-gates.md](./release-gates.md) — human promotion gates
 - [ios-testing-and-store.md](./ios-testing-and-store.md) — iOS / TestFlight counterpart
 - [eas-metadata.md](./eas-metadata.md) — App Store listing only (not Play)

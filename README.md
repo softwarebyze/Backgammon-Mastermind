@@ -53,12 +53,13 @@ pnpm android  # Android emulator
 
 ## CI secrets (GitHub Actions)
 
-Before EAS preview/build or Maestro Cloud E2E workflows will run, add these **repository secrets**:
+Before EAS preview/build workflows will run, add this **repository secret**:
 
 | Secret | Where to get it |
 |--------|-----------------|
 | `EXPO_TOKEN` | [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens) |
-| `MAESTRO_CLOUD_API_KEY` | [Maestro Cloud CI integration](https://cloud.mobile.dev/ci-integration/github-actions#add-your-api-key-secret) |
+
+Android E2E runs on a GitHub-hosted emulator (`e2e-android.yml`) and needs no extra secret. (The Maestro Cloud workflow is disabled — `e2e-android-maestro.yml.disabled` — so `MAESTRO_CLOUD_API_KEY` is not required.)
 
 **GitHub:** repo **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
 
@@ -81,7 +82,7 @@ Standard **dev client + EAS Update** flow (see [playbook](./docs/obytes-template
 1. **One-time:** install the [Android development build from EAS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) (APK)
 2. **Every PR:** scan the **EAS Update QR**
 
-CI rebuilds **both** dev clients when native deps or branding change (`.github/workflows/dev-client.yml`). JS-only PRs only need the QR.
+On native/branding path changes CI rebuilds the **Android** dev client automatically (the iOS job is `workflow_dispatch`-only in `.github/workflows/dev-client.yml`). JS-only PRs only need the QR.
 
 ## ✍️ Documentation
 

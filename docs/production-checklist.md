@@ -1,12 +1,8 @@
 # Production Readiness Checklist
 
-Use this before the first App Store / Play Store submission.
+> **Status: first submission is long done.** The app has been live on the App Store since v1.0.0 (2026-07-17) and is currently at **v1.1.0** (shipped 2026-10-10); Google Play upload landed in #160. This doc now serves as the **standing readiness checklist for each production release** plus the record of one-time setup. For repeat releases use **[releases.md](./releases.md)**; for what may ship when use **[release-gates.md](./release-gates.md)** (CI is the automated bar; the human gates are device smoke, version sync, and owner sign-off).
 
-**Ship process:** see **[docs/releases.md](./releases.md)** for TestFlight / version bump / marketing steps.
-
-**Release gates:** **[release-gates.md](./release-gates.md)** — Track A (Play + version sync, no gameplay) vs Track B (v1.1.0 correctness). Hard gates (`check-all`, Expo Doctor, Maestro, dice matrix, save recovery, device smoke) live there, not as a second checklist here.
-
-**Last updated:** 2026-08-28 — first production release: PR #150 merged (stable SDK 56), production iOS build auto-submitting, metadata + screenshots pushed.
+**Last updated:** 2026-10-12 — v1.1.0 shipped to the App Store (build 14) on 2026-10-10; SDK 57; 17 locales live; Play upload working (internal track by default, #255).
 
 ## CI: what runs on every PR?
 
@@ -17,7 +13,7 @@ Use this before the first App Store / Play Store submission.
 | **Tests (Jest)** | Yes | ✅ Required |
 | **Knip** | Yes | ✅ Unused-export check (also in `pnpm check-all`) |
 | **EAS Update Preview** | Yes | ✅ (`EXPO_TOKEN` configured) — Expo QR comment only |
-| **Expo Doctor** | When deps / native config change | ✅ 21/22 on SDK 56.0.20 — the sole SDK 56 Hermes V1 memory advisory is a narrow, documented release exception; SDK 57 upgrade tracked separately |
+| **Expo Doctor** | When deps / native config change | ✅ SDK 57 (upgrade shipped in #157) |
 | **React Doctor** | Advisory | ✅ |
 | **Dev Client rebuild** | Native / branding path changes | ✅ |
 | **E2E (Maestro)** | Auto on `src/**` / `.maestro/**` changes + every push to `main` | ✅ |
@@ -45,12 +41,12 @@ Use this before the first App Store / Play Store submission.
 
 | Step | Status | Action |
 | ---- | ------ | ------ |
-| 1. Version bump | Done | **v1.0.1** in `package.json` / `store.config.json` (matches live ASC; EAS build numbers stay remote) |
-| 2. iOS dev client | Done | Rebuild when native deps / display name / `CFBundleDisplayName` change (this ship: spaced name) |
-| 3. Device QA | Partial | v0.1.x TestFlight done — **re-playtest** the preview binary from this ship |
-| 4. Preview build (TestFlight) | Ready to dispatch | Preview ASC **`6781121420`** (`com.backgammonmastermind.preview`) named **Backgammon Mastermind Preview** |
-| 5. Submit to stores | iOS TestFlight via preview; production pending | Preview TF: [6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) · Prod: [6792138473](https://appstoreconnect.apple.com/apps/6792138473/appstore) |
-| 6. Production build | In progress | Rebuilt + auto-submitting from `main` (sdk-56 stable candidate, PR #150 merged) to production ASC `6792138473` |
+| 1. Version bump | Done | **v1.1.0** in `package.json` / `store.config.json` (matches live ASC; EAS build numbers stay remote) |
+| 2. iOS dev client | Done | Rebuild when native deps / display name / `CFBundleDisplayName` change |
+| 3. Device QA | Per release | Device smoke on the release build before promoting — see [release-gates.md](./release-gates.md) |
+| 4. Preview build (TestFlight) | Per release | Preview ASC **`6781121420`** (`com.backgammonmastermind.preview`) named **Backgammon Mastermind Preview** |
+| 5. Submit to stores | Per release | Preview TF: [6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) · Prod: [6792138473](https://appstoreconnect.apple.com/apps/6792138473/appstore) |
+| 6. Production build | Done (1.1.0) | **EAS Production Build and Submit (iOS)** / **(Android)** from `main` → production ASC `6792138473`. ⚠️ The release-triggered **EAS QA Build** failed on the v1.1.0 release (iOS distribution certificate not validated for non-interactive builds) — fix credentials before the next release. |
 
 ## Store listing requirements
 
@@ -58,15 +54,15 @@ Use this before the first App Store / Play Store submission.
 - [x] **App Store Connect API key** — via EAS credentials for `eas metadata` / submit
 - [x] `pnpm metadata:push` — preview ASC (`6781121420`); generates `store.preview.config.json` with title **Backgammon Mastermind Preview**
 - [x] `pnpm metadata:push:production` — production ASC (`6792138473`)
-- [x] App Store screenshots matching shipped UI (Learn in app) — 5× iPhone 6.9" (1320×2868) + 5× iPad Pro 13" (2064×2752) uploaded to production `1.0.0` via `Upload Store Screenshots` GHA (Fastlane deliver) — [store-screenshots.md](./store-screenshots.md)
-- [ ] Google Play Console app record + screenshots + description (setup steps in [store-screenshots.md](./store-screenshots.md); listing text + screenshots staged in `fastlane/metadata/android/` and uploaded by the `Upload Store Screenshots` GHA)
+- [x] App Store screenshots matching shipped UI (Learn in app) — 5× iPhone 6.9" (1320×2868) + 5× iPad Pro 13" (2064×2752) uploaded via `Upload Store Screenshots` GHA (Fastlane deliver) — [store-screenshots.md](./store-screenshots.md); 17 locales complete as of v1.1.0 (iMessage-app shots pending in #258)
+- [x] Google Play Console app record + screenshots + description — first upload landed (#160, 2026-10-09); CI submits to the **internal** track by default (#255), listing text staged in `fastlane/metadata/android/`
 - [x] Privacy policy — https://backgammon-mastermind.vercel.app/privacy/
 - [x] Terms of service — hosted `/terms/`
 - [x] Pricing — Paid Up Front **$4.99** USD (ASC Pricing UI)
 - [x] Marketing / privacy URLs — in store config; sync with metadata push
-- [ ] Privacy nutrition labels — declare analytics (PostHog product interaction) in ASC UI
+- [x] Privacy nutrition labels — declared in ASC UI (required to pass review; app live since v1.0.0) — confirm PostHog product-interaction label is still accurate after #240
 - [x] iOS age rating — via store config → `apple.advisory` + metadata push (4+)
-- [ ] Google Play content rating questionnaire
+- [x] Google Play content rating questionnaire — required for the #160 Play upload
 - [x] Production ASC app — `com.backgammonmastermind` / Apple ID `6792138473`
 - [x] Export compliance — `ITSAppUsesNonExemptEncryption: false` in `app.config.ts`
 
@@ -76,38 +72,37 @@ Use this before the first App Store / Play Store submission.
 | ------ | ------------ | ----------- |
 | `EXPO_TOKEN` | EAS preview, QA, production | ✅ |
 | App Store Connect API key | `metadata:push` / `metadata:pull` | ✅ (EAS credentials) |
-| `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E only | Optional |
+| `MAESTRO_CLOUD_API_KEY` | Maestro Cloud E2E — **not used**; the Cloud workflow is disabled (`e2e-android-maestro.yml.disabled`), E2E runs on the GitHub emulator | Not needed |
 | `GH_TOKEN` | New App Version workflow | Optional |
 | `GOOGLE_SERVICE_ACCOUNT_BASE64` (GH secret) | Fastlane supply — Android screenshots + listing text | See [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) (GH vs EAS are separate) |
 | `GOOGLE_SERVICE_ACCOUNT` (EAS secret) | EAS submit — Android AAB → Google Play | See [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) |
 
 ## Post-launch
 
-- [ ] **New GitHub Release** workflow after production build is validated
+- [x] **New GitHub Release** workflow after production build is validated (every tag incl. v1.1.0 has one)
 - [ ] Monitor EAS Update channels (`preview`, `production`)
 
-## Current status summary
+## Current status summary (as of v1.1.0, 2026-10-10)
 
 | Item | Status |
 | ---- | ------ |
 | Core gameplay + prefs UI | Done |
 | Turn indicator (white/black clarity) | Done |
-| Learn to Play | **Kept** — praise waits for Continue; horseshoe shows both directions |
-| Branding / dev client (SDK 56) | Done — display name **Backgammon Mastermind** (native rebuild) |
+| Learn to Play | Kept and shipped — praise waits for Continue; horseshoe shows both directions |
+| Branding / dev client (SDK 57) | Done — display name **Backgammon Mastermind** |
 | Unit tests | Done (`pnpm test`) |
 | Maestro E2E + PR screenshot publish | Done |
 | Hosted privacy / terms | Done (#129) |
-| Error tracking (PostHog exceptions) | **This ship (slim)** — ErrorBoundary + autocapture + env token + `@posthog/react-native-plugin` (native crashes). Do **not** also install archived `posthog-react-native-session-replay` (CocoaPods `PostHog` ~> 3.58 vs ~> 3.69). `posthog-xcode.sh` is patched so missing `posthog-cli` / CLI token **skips** sourcemap upload instead of failing EAS Run fastlane. Full [#130](https://github.com/softwarebyze/Backgammon-Mastermind/pull/130) dump still deferred |
-
-| Full 17-language i18n | **Not this ship** — [#141](https://github.com/softwarebyze/Backgammon-Mastermind/pull/141) |
-| **App Store screenshots** | Done — production 1.0.0 (iPhone 6.9" + iPad 13") via GHA |
-| **Google Play first upload** | Ready to build+submit once Play Console app + service account exist (`GOOGLE_SERVICE_ACCOUNT_BASE64` GH secret, `GOOGLE_SERVICE_ACCOUNT` EAS secret) |
-| Production binary | Building + auto-submitting from main (SDK 56 stable) |
-| Submit for App Review | Blocked on **privacy nutrition labels** (binary + screenshots on ASC) |
+| Error tracking (PostHog exceptions) | Done — ErrorBoundary + autocapture + native crash plugin; sourcemaps upload fixed in #240. Session replay / full dump (#130) still deferred |
+| 17-language i18n | Shipped (v1.0.2+); remaining polish tracked in #140, #244, #245 |
+| App Store screenshots | Done — iPhone 6.9" + iPad 13", all 17 locales |
+| Google Play first upload | Done (#160) — internal track by default (#255) |
+| Production binary | v1.1.0 live (App Store build 14, 2026-10-10) |
+| Open follow-ups | iOS EAS credentials for release-triggered QA builds (see Versioning table); iMessage store screenshots (#258); Play production promotion not verified |
 
 ## Automation vs one-time setup
 
-Most release steps are **already wired as GitHub Actions** — they use `workflow_dispatch` (or release tags) so you click a button instead of running EAS locally. The **first** App Store / Play submission still needs a few one-time account setup items that cannot be scripted.
+Most release steps are **already wired as GitHub Actions** — they use `workflow_dispatch` (or release tags) so you click a button instead of running EAS locally. One-time store setup is **done** (both stores live); the remaining one-off items are recorded under "One-time only" below for reference.
 
 ### Already automated (Actions tab)
 
@@ -115,7 +110,7 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 | -------- | ------- | ------------ |
 | **EAS QA Build (Android & IOS) (EAS)** | Manual, or **automatically on GitHub Release** | Preview builds; iOS uses `AUTO_SUBMIT: true` → TestFlight |
 | **EAS Submit Preview iOS (TestFlight)** | Manual | Submit latest (or given) preview IPA to TestFlight |
-| **EAS Production Build** | Manual | Store binaries (Android + iOS) |
+| **EAS Production Build and Submit (iOS)** | Manual | Store binary + auto-submit to App Store Connect |
 | **New App Version** | Manual (patch/minor/major) | Bump version, tag, push → triggers release flow |
 | **New GitHub Release** | Auto on new tag | Draft release notes |
 | **E2E (Maestro)** | Auto on `src/**` changes + push to `main` | Smoke test + PR screenshots |
@@ -133,7 +128,7 @@ Most release steps are **already wired as GitHub Actions** — they use `workflo
 1. Actions → **New App Version** (pick patch/minor/major)
 2. That creates a tag → **New GitHub Release** runs
 3. Release published → **EAS QA Build** runs automatically (`AUTO_SUBMIT` on iOS preview)
-4. After QA on device → Actions → **EAS Production Build**
+4. After QA on device → Actions → **EAS Production Build and Submit (iOS)** / **(Android)**
 5. Metadata: Actions → **EAS Metadata Push** (`preview` or `production`)
 6. Submit production: `pnpm submit:production:ios` (sets `EXPO_PUBLIC_APP_ENV=production` — do not rely on a development `.env`)
 
@@ -152,7 +147,7 @@ Full how-to: [eas-metadata.md](./eas-metadata.md).
 
 Avoid one-off App Store Connect API / JWT scripts for shipping.
 
-### One-time only (you, first submission)
+### One-time only (already done — kept for reference)
 
 | Item | Why manual |
 | ---- | ---------- |
@@ -164,14 +159,13 @@ Avoid one-off App Store Connect API / JWT scripts for shipping.
 | **Privacy nutrition labels** | ASC UI |
 | **Screenshots matching final UI** | Upload via `Upload Store Screenshots` GHA (already done for 1.0.0) |
 
-## Suggested order from here
+## Open follow-ups (as of 2026-10-12)
 
-1. ✅ This TestFlight-shareable PR merged (Learn stays; do **not** merge #139 remove-Learn / #141 i18n dump)
-2. ✅ Production iOS build + auto-submit dispatched from `main` (`EAS Production Build and Submit (iOS)`)
-3. ✅ Production metadata pushed (`metadata:push:production`) + screenshots uploaded (iPhone 6.9" + iPad 13")
-4. **Privacy nutrition labels** in ASC (PostHog product interaction) — last App Store gate agents can't fully automate yet
-5. Confirm the submitted binary is on ASC → **Submit for App Review** on production `6792138473` / v1.0.1
-6. Google Play — Console app (`com.backgammonmastermind`) → service account → `GOOGLE_SERVICE_ACCOUNT_BASE64` + `GOOGLE_SERVICE_ACCOUNT` secrets → content rating/declaration → Actions **EAS Production Build and Submit (Android)** + **Upload Store Screenshots (android)**
-7. Full PostHog dump (#130 privacy/docs/source-map CI) still deferred; this ship only wires exceptions
+The first submission list above is historical — everything in it shipped. Remaining work:
+
+1. **Fix iOS EAS credentials** — the release-triggered **EAS QA Build** failed on the v1.1.0 release ("Distribution Certificate is not validated for non-interactive builds"). Every future release auto-fires this workflow, so fix before cutting v1.1.1.
+2. **iMessage-app store screenshots** (#258, open) — ASC needed these for the 1.1.0 review; images uploaded manually, PR pending.
+3. **Google Play production promotion** — CI defaults to the internal track (#255). Verify whether 1.1.0 is (or should be) promoted to Play production.
+4. Full PostHog dump (#130 privacy/docs/source-map CI) still deferred; sourcemap upload itself landed in #240.
 
 See also: [ios-testing-and-store.md](./ios-testing-and-store.md), [eas-metadata.md](./eas-metadata.md), [releases.md](./releases.md)

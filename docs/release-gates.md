@@ -1,6 +1,6 @@
 # Release gates
 
-What ships when lives in [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) and [Milestones](https://github.com/softwarebyze/Backgammon-Mastermind/milestones) — not here. Current release scope and progress: [#159](https://github.com/softwarebyze/Backgammon-Mastermind/issues/159) and the [v1.1.0 milestone](https://github.com/softwarebyze/Backgammon-Mastermind/milestone/1).
+What ships when lives in [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) and [Milestones](https://github.com/softwarebyze/Backgammon-Mastermind/milestones) — not here. Forward scope lives in the **Post-1.1.0 milestone**. (v1.1.0 shipped 2026-10-10; its milestone and #159 are historical.)
 
 ## Automated bar
 
@@ -11,10 +11,10 @@ CI is the enforcer — lint, type-check, Jest, knip, Expo Doctor, Android Maestr
 Required before promoting to TestFlight or production:
 
 - **Device smoke** on a release build (iPhone; iPad too if UI was touched): vs Computer + 2-player, Resume, Learn to Play.
-- **Marketing version bump**: `package.json` `"version"` + `store.config.json` `apple.version` + matching git tag (`v1.0.1`). EAS remote build numbers (`CFBundleVersion` / `versionCode`) stay managed by EAS — do not bump them by hand. How-to: [releases.md](./releases.md).
+- **Marketing version bump**: `package.json` `"version"` + `store.config.json` `apple.version` + matching git tag (`v1.1.0`). EAS remote build numbers (`CFBundleVersion` / `versionCode`) stay managed by EAS — do not bump them by hand. How-to: [releases.md](./releases.md).
 - **Owner sign-off** before any production promotion.
 
-Google Play parity stays on [#160](https://github.com/softwarebyze/Backgammon-Mastermind/issues/160) and its separate [milestone](https://github.com/softwarebyze/Backgammon-Mastermind/milestone/2). It is not a TestFlight gate.
+Google Play is set up and shipping (#160 closed; CI submits to the internal track by default per #255). Play promotion is **not** a TestFlight gate.
 
 ## PR discipline
 

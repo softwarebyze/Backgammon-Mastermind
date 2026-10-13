@@ -14,8 +14,12 @@
 | [screenmap.md](./screenmap.md) | Screenmap CI (iOS + Android maps on PRs) |
 | [android-play-release.md](./android-play-release.md) | Play Console setup, Fastlane screenshots, EAS prod Android submit |
 | [roadmap.md](./roadmap.md) | Long-horizon product vision (M0–M6) — not the sprint board |
+| [imessage-extension.md](./imessage-extension.md) | iMessage two-device game — architecture + ship notes |
+| [design-audit.md](./design-audit.md) | Historical (2026-05-21) quality bar — principles only, statuses stale |
+| [audits/](./audits/) | Point-in-time engineering audits (e.g. 2026-09-06 startup/quality) |
+| [tutor-guidance/](./tutor-guidance/) | Tutor guidance design notes |
 | [../remotion/README.md](../remotion/README.md) | Marketing video compositions |
-| [marketing/](./marketing/) | Current store screenshots and videos |
+| [marketing/](./marketing/) | Current store screenshots, videos, and the [marketing plan](./marketing/PLAN.md) |
 | [evidence/](./evidence/) | QA screenshots |
 | [obytes-template-playbook.md](./obytes-template-playbook.md) | Fork / CI / EAS notes from the template |
 | [archive/](./archive/) | Frozen historical notes (do not update for status) |

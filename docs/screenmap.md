@@ -29,9 +29,9 @@ The Android APK is the same Maestro e2e build: it **omits expo-dev-client**. If 
 
 Anthropic is optional. Workflows omit `agent_provider` / `agent_api_key`.
 
-## Avoid EAS iOS quota (until Thu 1 Oct 2026)
+## Avoid EAS iOS quota
 
-Cloud iOS builds on the Expo Free plan are exhausted. Prefer a local simulator `.app`.
+Cloud iOS builds on the Expo Free plan have been exhausted before (an earlier quota window ended 1 Oct 2026 — check current allowance before relying on it). Prefer a local simulator `.app`.
 
 ### One-time on a Mac
 
@@ -67,7 +67,7 @@ Do **not** commit the `.app` or zip.
 
 Actions → **screenmap · store iOS simulator app** → paste an HTTPS URL to the zip. That uploads artifact `screenmap-ios-app` and updates the same release tag.
 
-CI looks for the release first, then the latest successful `screenmap-ios-app` artifact. If neither exists, iOS falls back to `EXPO_TOKEN` + EAS (blocked on Free-plan quota until October).
+CI looks for the release first, then the latest successful `screenmap-ios-app` artifact. If neither exists, iOS falls back to `EXPO_TOKEN` + EAS (may be blocked if the Free-plan iOS quota is exhausted — check your allowance).
 
 ## After merge to main
 

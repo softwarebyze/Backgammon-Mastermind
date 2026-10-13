@@ -37,6 +37,8 @@ After `eas init --id <your-project-id>`:
 
 Stock Obytes workflows expect **two repository secrets**. Without them, EAS builds/previews and Maestro Cloud E2E will fail or be skipped.
 
+> **In this fork:** only `EXPO_TOKEN` is required. The Maestro Cloud workflow is disabled (`e2e-android-maestro.yml.disabled`) and E2E runs on the GitHub-hosted emulator (`e2e-android.yml`), so `MAESTRO_CLOUD_API_KEY` is unused unless you re-enable it. Everything below is upstream-template reference.
+
 
 | Secret                  | Used by                                                                       | Get the value                                                                                                                               |
 | ----------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -481,7 +483,7 @@ PR workflow uses `eas update --auto --environment preview`. Matching channel let
 | ----------- | --- |
 | `preview.yml` with `qr-target: dev-build` | Correct QR type when `expo-dev-client` is installed |
 | Rely on Expo preview QR comment (+ EAS development builds page) | Closes the "QR does nothing" confusion for new reviewers |
-| `dev-client.yml` on path-filtered push | Dev client stays current (**Android + iOS**) without manual `eas build` |
+| `dev-client.yml` on path-filtered push | Dev client stays current (**Android on push; iOS via manual dispatch**) without manual `eas build` |
 | `development.channel: preview` in `eas.json` | Dev client ↔ PR updates share channel |
 | README "Previewing PRs" blurb | Points to EAS builds + PR flow |
 | Lowercase URL schemes in `env.ts` | Required for EAS Update publish — [see bug section](#url-scheme-casing-template-bug--breaks-eas-update) |
