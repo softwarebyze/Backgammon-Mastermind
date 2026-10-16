@@ -82,7 +82,7 @@ Standard **dev client + EAS Update** flow (see [playbook](./docs/obytes-template
 1. **One-time:** install the [Android development build from EAS](https://expo.dev/projects/7ec6600a-8b02-4714-acc1-08385effa4c9/builds?profile=development) (APK)
 2. **Every PR:** scan the **EAS Update QR**
 
-On native/branding path changes CI rebuilds the **Android** dev client automatically (the iOS job is `workflow_dispatch`-only in `.github/workflows/dev-client.yml`). JS-only PRs only need the QR.
+PRs never rebuild the dev client. `.github/workflows/dev-client.yml` rebuilds the **Android** dev client automatically only after native or branding changes land on `main` (or `obytes`); iOS is manual (`workflow_dispatch`). So a PR that changes native code needs a manual dev-client build before you can review it on device; JS-only PRs only need the QR.
 
 ## ✍️ Documentation
 

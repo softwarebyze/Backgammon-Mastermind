@@ -148,7 +148,8 @@ cp out/*.mp4 ../docs/marketing/videos/
 After TestFlight sign-off:
 
 1. Actions → **EAS Production Build and Submit (iOS)** and **EAS Production Build and Submit (Android)**
-2. Submit production builds via `eas submit` production profiles
+2. iOS: the workflow submits the build to App Store Connect itself. Run `pnpm submit:production:ios` only if that submission step failed.
+   Android: the workflow submits to the Play **internal** track by default. Run `pnpm submit:production:android` when you want the build on the public **production** track.
 3. Complete ASC content rating + review questionnaire (first time only)
 4. Promote build to App Store review
 

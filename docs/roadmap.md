@@ -64,7 +64,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | **Game logic unit tests** (`moves.ts`, pip count, bear-off, animation layout) | various | Done |
 | **Dice roll shuffle animation** | #40 | Done |
 | **Blocked bar dice visibility** | #43 | Done (#56) |
-| **Landscape** layout pass + screenshot | Done (#170, #178, #185) | |
+| **Landscape** layout pass + screenshot | #170, #178, #185 | Done |
 
 ---
 
