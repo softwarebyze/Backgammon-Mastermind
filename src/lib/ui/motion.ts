@@ -11,13 +11,14 @@ const EASE_OUT = cubicBezier(0.23, 1, 0.32, 1);
  * - `backdrop`: the dimmed layer behind a dialog. Opacity only.
  * - `dialog`: a centered dialog. Grows from 96% (never from 0), centered.
  * - `card`: an inline card that replaces a button. Rises 6px into place.
+ *   It can show every turn, so it stays near the 150ms press-feedback budget.
  */
 type Entrance = 'backdrop' | 'dialog' | 'card';
 
 const SPECS: Record<Entrance, { durationMs: number; scale?: number; translateY?: number }> = {
   backdrop: { durationMs: 200 },
   dialog: { durationMs: 220, scale: 0.96 },
-  card: { durationMs: 180, translateY: 6 },
+  card: { durationMs: 150, translateY: 6 },
 };
 
 function buildEntrance(kind: Entrance, reducedMotion: boolean): CSSAnimationProperties {

@@ -62,5 +62,5 @@ it('fades the suggested-move card in when the hint arrives', async () => {
   render(<HintButton state={state} moveLogLength={0} />);
   fireEvent.press(screen.getByTestId('hint-button'));
   const card = await screen.findByTestId('hint-result');
-  expect(StyleSheet.flatten(card.props.style)).toMatchObject({ animationDuration: '180ms' });
+  expect(StyleSheet.flatten(card.props.style)).toMatchObject({ animationDuration: '150ms' });
 });
