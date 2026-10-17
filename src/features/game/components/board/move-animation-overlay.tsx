@@ -24,6 +24,7 @@ import {
   animationKey,
   CHECKER_MOVE_DURATION_MS,
   checkerRenderSize,
+  checkerSlideTransform,
 } from '@/features/game/move-animation';
 
 type SlideLayerProps = {
@@ -50,26 +51,22 @@ function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerPr
     player: slide.player,
   });
 
-  const style = useAnimatedStyle(() => {
-    const t = progress.value;
-    const size = fromSize + (toSize - fromSize) * t;
-    const cx = from.x + (to.x - from.x) * t;
-    const cy = from.y + (to.y - from.y) * t;
-
-    return {
-      position: 'absolute' as const,
-      left: cx - fromSize / 2,
-      top: cy - fromSize / 2,
-      width: fromSize,
-      height: fromSize,
-      transform: [{ scale: size / fromSize }],
-      zIndex,
-      elevation: zIndex,
-    };
-  });
+  // Position and size are fixed at the source; only the transform animates.
+  const style = useAnimatedStyle(() => ({
+    transform: checkerSlideTransform({ from, to, fromSize, toSize, t: progress.value }),
+  }));
+  const placement = {
+    position: 'absolute' as const,
+    left: from.x - fromSize / 2,
+    top: from.y - fromSize / 2,
+    width: fromSize,
+    height: fromSize,
+    zIndex,
+    elevation: zIndex,
+  };
 
   return (
-    <Animated.View style={style} pointerEvents="none">
+    <Animated.View style={[placement, style]} pointerEvents="none">
       <CheckerToken flat player={slide.player} size={fromSize} />
     </Animated.View>
   );

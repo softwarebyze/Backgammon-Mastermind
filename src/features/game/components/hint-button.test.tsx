@@ -1,5 +1,6 @@
 import type { EngineHint } from '@/features/game/engine-hint';
 
+import { StyleSheet } from 'react-native';
 import { getEngineHint } from '@/features/game/engine-hint';
 import { clearGuidance, getGuidance } from '@/features/game/guidance-store';
 import { createInitialState } from '@/lib/game/constants';
@@ -44,4 +45,22 @@ it('drops an engine answer that arrives after the hint screen unmounts', async (
     });
   });
   expect(getGuidance()).toBeNull();
+});
+
+it('fades the suggested-move card in when the hint arrives', async () => {
+  getEngineHintMock.mockResolvedValue({
+    moves: [{ from: 8, to: 5, dieIndex: 0 }],
+    notation: '8/5',
+    ms: 1,
+    engineId: 'bgsage',
+  });
+  const state = createInitialState('vs-computer');
+  state.phase = 'moving';
+  state.dice = [3, 1];
+  state.remainingDice = [3, 1];
+
+  render(<HintButton state={state} moveLogLength={0} />);
+  fireEvent.press(screen.getByTestId('hint-button'));
+  const card = await screen.findByTestId('hint-result');
+  expect(StyleSheet.flatten(card.props.style)).toMatchObject({ animationDuration: '180ms' });
 });

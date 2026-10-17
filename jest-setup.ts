@@ -18,6 +18,7 @@ jest.mock('react-native-reanimated', () => {
       ScrollView: View,
       createAnimatedComponent: (component: any) => component,
     },
+    useReducedMotion: jest.fn(() => false),
     useSharedValue: jest.fn(() => ({ value: 0 })),
     useAnimatedStyle: jest.fn(fn => fn()),
     withTiming: jest.fn(value => value),
@@ -49,6 +50,7 @@ jest.mock('react-native-reanimated', () => {
     SlideInRight: { duration: jest.fn(() => ({})) },
     Layout: {},
     Keyframe: jest.fn(),
+    cubicBezier: jest.fn((...points: number[]) => `cubic-bezier(${points.join(', ')})`),
   };
 });
 

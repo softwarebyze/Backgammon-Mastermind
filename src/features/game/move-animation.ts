@@ -42,6 +42,28 @@ export type MoveAnimationFrame = {
   onFinish: () => void;
 };
 
+/**
+ * Transform for a checker slide at progress `t` (0 to 1). The proxy sits
+ * still at the source and only its transform moves, so each frame stays on
+ * the fast path (no layout pass for the board) on iOS, Android and web.
+ * The translate runs first, so the scale grows the checker about its center.
+ */
+export function checkerSlideTransform(opts: {
+  from: PointAnchor;
+  to: PointAnchor;
+  fromSize: number;
+  toSize: number;
+  t: number;
+}) {
+  'worklet';
+  const { from, to, fromSize, toSize, t } = opts;
+  return [
+    { translateX: (to.x - from.x) * t },
+    { translateY: (to.y - from.y) * t },
+    { scale: (fromSize + (toSize - fromSize) * t) / fromSize },
+  ];
+}
+
 export function checkerRenderSize(checkerSize: number, pointIndex: number): number {
   if (pointIndex === BEAR_OFF) {
     return bearOffTokenSize(checkerSize);

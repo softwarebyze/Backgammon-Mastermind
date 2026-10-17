@@ -3,6 +3,7 @@ import type { GuidanceSession } from '@/features/game/guidance-store';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { AnimatedPathBoard } from '@/features/game/components/animated-path-board';
 import { BlunderMeter } from '@/features/game/components/blunder-meter';
@@ -25,6 +26,7 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { hapticLight } from '@/lib/haptics';
 import { getIsRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { useEntranceAnimation } from '@/lib/ui/motion';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 /** Collapsible "why" details: rank recap + top alternatives, labeled. */
@@ -545,6 +547,11 @@ export function GuidanceModal() {
     handleKeepMove,
     handleTurnOff,
   } = useBlunderModalActions(session);
+  // The prompt interrupts play, so it fades in instead of popping. It closes
+  // instantly: whatever the player chose (take back, play best) animates on
+  // the board next and should not wait for the dialog.
+  const backdropEntrance = useEntranceAnimation('backdrop');
+  const dialogEntrance = useEntranceAnimation('dialog');
 
   if (!session || session.kind !== 'blunder' || !session.verdict) {
     return null;
@@ -594,7 +601,16 @@ export function GuidanceModal() {
       onRequestClose={handleKeepMove}
     >
       <View style={styles.scrim}>
-        <View style={styles.card} accessibilityRole="alert" testID="guidance-modal">
+        <Animated.View
+          pointerEvents="none"
+          style={[StyleSheet.absoluteFill, styles.backdrop, backdropEntrance]}
+          testID="guidance-modal-backdrop"
+        />
+        <Animated.View
+          style={[styles.card, dialogEntrance]}
+          accessibilityRole="alert"
+          testID="guidance-modal"
+        >
           <ScrollView
             style={styles.cardScroll}
             contentContainerStyle={styles.cardScrollContent}
@@ -624,7 +640,7 @@ export function GuidanceModal() {
                   />
                 )}
           </ScrollView>
-        </View>
+        </Animated.View>
       </View>
     </Modal>
   );
@@ -633,10 +649,12 @@ export function GuidanceModal() {
 const styles = StyleSheet.create({
   scrim: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 24,
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0,0,0,0.6)',
   },
   card: {
     width: '100%',

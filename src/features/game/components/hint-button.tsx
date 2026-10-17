@@ -4,6 +4,7 @@ import type { GameState } from '@/lib/game/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { getEngineHint } from '@/features/game/engine-hint';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { formatHintNotation } from '@/features/game/guidance-copy';
@@ -17,6 +18,7 @@ import { cloneGameState } from '@/lib/game/snapshot';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { useEntranceAnimation } from '@/lib/ui/motion';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
@@ -72,8 +74,11 @@ function HintResult({ session, onPlay, onDismiss }: {
   onPlay: () => void;
   onDismiss: () => void;
 }) {
+  // The card replaces the Hint button in place. A short rise ties the two
+  // together instead of the suggestion popping in.
+  const entrance = useEntranceAnimation('card');
   return (
-    <View style={styles.resultWrap} testID="hint-result">
+    <Animated.View style={[styles.resultWrap, entrance]} testID="hint-result">
       <Text style={styles.resultLabel}>{translate('game.hint.suggested')}</Text>
       <Text style={styles.resultText} numberOfLines={2}>
         {formatHintNotation(session.engineMoves)}
@@ -98,7 +103,7 @@ function HintResult({ session, onPlay, onDismiss }: {
           <Text style={styles.dismissText}>{translate('game.hint.back_to_turn')}</Text>
         </Pressable>
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
