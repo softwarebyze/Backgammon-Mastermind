@@ -40,12 +40,24 @@ sys.exit('no available ' + kind + ' simulator')
 
 STATUS=0
 for kind in iPhone iPad; do
-  line=$(pick_device "$kind")
-  udid=${line%%$'\t'*}
-  name=${line#*$'\t'}
   slug=$(echo "$kind" | tr '[:upper:]' '[:lower:]')
   out="$OUT_ROOT/$slug"
   mkdir -p "$out"
+  # Create the device dir before selection so a pick_device failure still
+  # lands diagnostics in the uploaded maestro-visual-report-ios artifact,
+  # and the other device still gets tested.
+  if ! line=$(pick_device "$kind" 2>"$out/pick-device.err"); then
+    {
+      echo "Simulator selection failed for $kind"
+      cat "$out/pick-device.err" 2>/dev/null || true
+    } >"$out/setup-error.txt"
+    echo "$kind" >"$out/device.txt"
+    echo "::error::Simulator selection failed for $kind"
+    STATUS=1
+    continue
+  fi
+  udid=${line%%$'\t'*}
+  name=${line#*$'\t'}
   echo "::group::Maestro smoke on $name ($udid)"
   xcrun simctl boot "$udid" 2>/dev/null || true
   setup_rc=0
