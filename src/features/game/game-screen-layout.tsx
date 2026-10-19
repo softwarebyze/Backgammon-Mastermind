@@ -5,6 +5,7 @@ import type { useGameInput } from '@/features/game/use-game-input';
 import type { useMoveReview } from '@/features/game/use-move-review';
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
+import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
@@ -16,6 +17,8 @@ import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-b
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
+import { useGuidance } from '@/features/game/guidance-store';
+import { hintCardChrome } from '@/features/game/hint-card-chrome';
 import { REVIEW_SLOT_HEIGHT, trayDieSize, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { resolveNumberPerspective } from '@/features/game/point-numbering';
@@ -71,13 +74,19 @@ function GameReviewSlot({
   review,
   moveLog,
   state,
+  hidden = false,
 }: {
   review: Review;
   moveLog: MoveLogEntry[];
   state: GameState;
+  hidden?: boolean;
 }) {
   return (
-    <View style={[styles.reviewSlot, styles.chromeColumn]} pointerEvents="box-none">
+    <View
+      style={[styles.reviewSlot, styles.chromeColumn, hidden && styles.reviewSlotHidden]}
+      pointerEvents="box-none"
+      testID="game-review-slot"
+    >
       <MoveReviewBar
         viewIndex={review.viewIndex}
         liveIndex={review.liveIndex}
@@ -144,16 +153,38 @@ function GameChromeStack({
   canUndo,
   onUndo,
 }: ChromeStackProps) {
+  const guidance = useGuidance();
+  const [closedControlsHeight, setClosedControlsHeight] = useState(0);
+  const layout = hintCardChrome({
+    hintCardOpen: guidance?.kind === 'hint' && guidance.revealed,
+    portrait: !compact,
+    closedControlsHeight,
+  });
+  const fixedControls = layout.controlsHeight !== null;
+  const handleControlsLayout = useCallback((event: LayoutChangeEvent) => {
+    // While the card is open the controls are pinned to closed + strip
+    // height, so the chrome around the board is unchanged: nothing to publish.
+    if (fixedControls) {
+      return;
+    }
+    setClosedControlsHeight(event.nativeEvent.layout.height);
+    onControlsLayout(event);
+  }, [fixedControls, onControlsLayout]);
   return (
     <>
       {includeTop
         ? <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />
         : null}
-      <GameReviewSlot review={review} moveLog={moveLog} state={state} />
+      <GameReviewSlot review={review} moveLog={moveLog} state={state} hidden={layout.hideReview} />
       <View
-        style={[styles.controlsLayer, styles.chromeColumn]}
+        style={[
+          styles.controlsLayer,
+          styles.chromeColumn,
+          fixedControls && { height: layout.controlsHeight!, justifyContent: 'flex-end' },
+        ]}
         pointerEvents="box-none"
-        onLayout={onControlsLayout}
+        onLayout={handleControlsLayout}
+        testID="game-controls-layer"
       >
         <GameScreenControls
           state={state}
@@ -373,6 +404,9 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     overflow: 'hidden',
     zIndex: 1,
+  },
+  reviewSlotHidden: {
+    display: 'none',
   },
   tutorSlot: {
     ...StyleSheet.absoluteFill,

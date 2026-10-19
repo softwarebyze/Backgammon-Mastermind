@@ -1,0 +1,34 @@
+# Android hardware back from Settings (opened from an active game) must close
+# Settings and return to the same game, not leave the game for Home.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn:
+    text: vs Computer
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- takeScreenshot: settings-back-01-game-board
+- tapOn:
+    id: game-settings-button
+- extendedWaitUntil:
+    visible:
+      id: stack-escape-button
+    timeout: 10000
+- takeScreenshot: settings-back-02-settings-open
+- pressKey: back
+- extendedWaitUntil:
+    visible:
+      id: reset-game-button
+    timeout: 10000
+- assertVisible:
+    id: point-1
+- assertNotVisible: vs Computer
+- takeScreenshot: settings-back-03-back-to-game

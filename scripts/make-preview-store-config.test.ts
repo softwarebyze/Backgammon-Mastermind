@@ -25,7 +25,11 @@ describe('make-preview-store-config', () => {
       };
     };
 
-    expect(canonical.apple.version).toBe('1.0.3');
+    const pkg = JSON.parse(readFileSync('package.json', 'utf8')) as { version: string };
+
+    // Read the version from package.json rather than hardcoding it, so a release
+    // bump does not have to touch this file and go stale.
+    expect(canonical.apple.version).toBe(pkg.version);
     expect(Object.keys(canonical.apple.info)).toHaveLength(17);
     for (const listing of Object.values(canonical.apple.info)) {
       expect([...listing.title].length).toBeLessThanOrEqual(30);

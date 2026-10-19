@@ -29,4 +29,16 @@ describe('arrow-geometry', () => {
     expect(Math.max(...xs) - Math.min(...xs)).toBeCloseTo(HORSESHOE_ARROW.black.length);
     expect(lineEnd.x).toBeCloseTo(Math.max(...xs) - HORSESHOE_ARROW.black.length);
   });
+
+  it('horseshoeArrowhead accepts compact style overrides for small icons', () => {
+    const { polygonPoints } = horseshoeArrowhead(32, 32, { player: 'white', length: 5, halfWidth: 3 });
+    const xs = polygonPoints.split(' ').map(p => Number(p.split(',')[0]));
+    expect(Math.max(...xs) - Math.min(...xs)).toBeCloseTo(5);
+  });
+
+  it('keeps HORSESHOE_ARROW sizes bold enough to read on phone boards', () => {
+    expect(HORSESHOE_ARROW.white.length).toBeGreaterThanOrEqual(14);
+    expect(HORSESHOE_ARROW.white.halfWidth).toBeGreaterThanOrEqual(8);
+    expect(HORSESHOE_ARROW.white).toEqual(HORSESHOE_ARROW.black);
+  });
 });

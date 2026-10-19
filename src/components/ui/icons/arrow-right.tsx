@@ -3,7 +3,7 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-import { isRTL } from '@/lib/i18n';
+import { getIsRTL } from '@/lib/i18n';
 
 export function ArrowRight({ color = '#CCC', style, ...props }: SvgProps) {
   return (
@@ -15,7 +15,7 @@ export function ArrowRight({ color = '#CCC', style, ...props }: SvgProps) {
       {...props}
       style={StyleSheet.flatten([
         style,
-        { transform: [{ scaleX: isRTL ? -1 : 1 }] },
+        { transform: [{ scaleX: getIsRTL() ? -1 : 1 }] },
       ])}
     >
       <Path

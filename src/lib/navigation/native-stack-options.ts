@@ -52,9 +52,11 @@ export const gamePlayScreenOptions: NativeStackNavigationOptions = {
   contentStyle: { backgroundColor: GAME_PALETTE.bg },
 };
 
-export function settingsStackOptions(): NativeStackNavigationOptions {
+export function settingsStackOptions(
+  title: string = translate('settings.title'),
+): NativeStackNavigationOptions {
   return {
-    title: translate('settings.title'),
+    title,
     headerShown: true,
     headerStyle: { backgroundColor: GAME_PALETTE.bg },
     headerTintColor: GAME_PALETTE.accent,

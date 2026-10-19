@@ -1,0 +1,53 @@
+# Capture the direction/horseshoe overlay on an active game board for visual QA.
+# Opens Settings from a live game, enables Direction overlay, returns, and screenshots.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn:
+    text: vs Computer
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- tapOn:
+    text: Settings
+- extendedWaitUntil:
+    visible: Direction overlay
+    timeout: 15000
+- tapOn:
+    text: Direction overlay
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 15000
+# Overlay is hidden during opening-roll — roll through like smoke does.
+- repeat:
+    times: 6
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: roll-dice-button
+          commands:
+            - tapOn:
+                id: roll-dice-button
+      - runFlow:
+          when:
+            visible: No legal moves
+          commands:
+            - extendedWaitUntil:
+                notVisible: No legal moves
+                timeout: 5000
+- extendedWaitUntil:
+    visible:
+      id: direction-overlay
+    timeout: 90000
+- takeScreenshot: horseshoe-on-board

@@ -6,7 +6,7 @@ What’s already shipped: [GitHub Releases](https://github.com/softwarebyze/Back
 What’s next: [open issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (look for a `Release: v…` epic if one exists).
 
 First-time store setup: [production-checklist.md](./production-checklist.md).  
-**What may ship when:** [release-gates.md](./release-gates.md) (Track A stores vs Track B correctness; hard gates).
+**What may ship when:** [release-gates.md](./release-gates.md) (human promotion gates; scope lives in GitHub Issues/Milestones).
 
 ---
 
@@ -158,7 +158,7 @@ Full first-submission checklist: [production-checklist.md](./production-checklis
 
 ## Related docs
 
-- [release-gates.md](./release-gates.md) — Track A vs Track B, hard gates, one-concern-per-PR
+- [release-gates.md](./release-gates.md) — human promotion gates, PR discipline
 - [ios-testing-and-store.md](./ios-testing-and-store.md) — dev client, TestFlight, metadata
 - [android-play-release.md](./android-play-release.md) — Play Console, Fastlane, EAS Android submit
 - [production-checklist.md](./production-checklist.md) — first App Store / Play submission

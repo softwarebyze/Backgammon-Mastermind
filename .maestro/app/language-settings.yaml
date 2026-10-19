@@ -1,0 +1,27 @@
+appId: ${APP_ID}
+tags:
+  - settings
+  - i18n
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- tapOn:
+    text: Settings
+- extendedWaitUntil:
+    visible: Language
+    timeout: 15000
+- tapOn:
+    text: Language
+- extendedWaitUntil:
+    visible: Español
+    timeout: 15000
+- tapOn:
+    text: Español
+- extendedWaitUntil:
+    visible: Contra el ordenador
+    timeout: 90000
+- takeScreenshot: language-es-home

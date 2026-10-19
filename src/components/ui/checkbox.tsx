@@ -3,7 +3,6 @@ import { MotiView } from 'moti';
 import * as React from 'react';
 import { useCallback } from 'react';
 import {
-  I18nManager,
   Pressable,
 
   View,
@@ -11,6 +10,7 @@ import {
 import Svg, { Path } from 'react-native-svg';
 
 import colors from '@/components/ui/colors';
+import { getLayoutIsRTL } from '@/lib/i18n';
 
 import { Text } from './text';
 
@@ -232,7 +232,7 @@ export function SwitchIcon({ checked = false }: IconProps) {
           right: 0,
         }}
         animate={{
-          translateX: I18nManager.isRTL ? translateX : -translateX,
+          translateX: getLayoutIsRTL() ? translateX : -translateX,
         }}
         transition={{ translateX: { overshootClamping: true } }}
       />

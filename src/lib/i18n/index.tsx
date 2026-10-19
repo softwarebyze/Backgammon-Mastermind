@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
 
 import { isSupportedLanguage, resources } from './resources';
-import { getLanguage } from './utils';
+import { applyWebDocumentLanguage, getLanguage } from './utils';
 
 export * from './resources';
 export * from './utils';
@@ -25,9 +25,11 @@ i18n.use(initReactI18next).init({
 });
 
 // Is it a RTL language?
-export const isRTL: boolean = i18n.dir() === 'rtl';
+const isRTL: boolean = i18n.dir() === 'rtl';
 
 I18nManager.allowRTL(isRTL);
 I18nManager.forceRTL(isRTL);
+if (isSupportedLanguage(i18n.language))
+  applyWebDocumentLanguage(i18n.language);
 
 export default i18n;

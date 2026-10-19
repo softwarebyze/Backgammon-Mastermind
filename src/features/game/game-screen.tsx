@@ -1,7 +1,7 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AppState, BackHandler, StyleSheet, Text, View } from 'react-native';
+import { AppState, StyleSheet, Text, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
@@ -30,6 +30,7 @@ import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { translate } from '@/lib/i18n';
+import { useHardwareBackPress } from '@/lib/navigation/use-hardware-back-press';
 import { interFont } from '@/lib/ui/fonts';
 
 /* eslint-disable max-lines-per-function -- screen composes all game slices */
@@ -163,10 +164,7 @@ export function GameScreen() {
     onCancelSelection: () => selectPoint(null),
   });
 
-  useEffect(() => {
-    const subscription = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    return () => subscription.remove();
-  }, [handleBackPress]);
+  useHardwareBackPress(handleBackPress);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (event) => {

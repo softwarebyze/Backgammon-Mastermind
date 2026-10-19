@@ -116,6 +116,9 @@ const appPlugins: ExpoConfig['plugins'] = [
   'expo-router',
   'expo-status-bar',
   'expo-updates',
+  // iMessage extension (turn-based play over Messages). Sources live in
+  // targets/imessage/; see docs/imessage-extension.md.
+  './plugins/with-imessage-extension',
   ['app-icon-badge', appIconBadgeConfig],
   [
     'expo-build-properties',
@@ -129,10 +132,18 @@ const appPlugins: ExpoConfig['plugins'] = [
   ],
   ['react-native-edge-to-edge'],
   // Native symbol / Hermes map hooks. TestFlight crashes still need a new binary.
-  // posthog-react-native/expo wraps the Xcode "Bundle React Native" phase with
-  // posthog-xcode.sh. That script is pnpm-patched so a missing posthog-cli or
-  // CLI token skips sourcemap upload instead of failing EAS Run fastlane.
-  ['posthog-react-native/expo', { skipOnConflict: true }],
+  // The dotenv file supplies POSTHOG_CLI_* credentials for local native builds;
+  // EAS builds provide the same keys directly as environment variables.
+  // @posthog/cli is a devDependency so the Xcode/Gradle upload scripts find it
+  // in node_modules/.bin on every builder (fail-closed upstream, no skip patch).
+  [
+    'posthog-react-native/expo',
+    {
+      dotenvFile: '.env',
+      skipOnConflict: true,
+      uploadNativeSymbols: { includeSource: true },
+    },
+  ],
 ];
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
@@ -199,6 +210,23 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   extra: {
     eas: {
       projectId: EAS_PROJECT_ID,
+      // Declares the iMessage extension (added by plugins/with-imessage-extension)
+      // so EAS CLI sets up a provisioning profile for it too. Without this, EAS
+      // only signs the main app and the build fails with "No profiles for
+      // '<bundle id>.messages' were found".
+      // https://docs.expo.dev/build-reference/app-extensions/
+      build: {
+        experimental: {
+          ios: {
+            appExtensions: [
+              {
+                targetName: 'BackgammonMastermindMessages',
+                bundleIdentifier: `${Env.EXPO_PUBLIC_BUNDLE_ID}.messages`,
+              },
+            ],
+          },
+        },
+      },
     },
     posthogProjectToken: process.env.POSTHOG_PROJECT_TOKEN,
     posthogHost: process.env.POSTHOG_HOST || 'https://us.i.posthog.com',

@@ -4,8 +4,8 @@
 
 Every user-visible change ships with all three, or it is not done:
 
-1. **Unit / regression tests** for the logic you touched. If the change is a
-   bug fix, the test must fail without the fix.
+1. **Unit tests** for the logic you touched. Only correctness bugs (game
+   rules, saved-game recovery, undo) need a fail-without-the-fix test.
 2. **A Maestro flow covering the feature**, when the change is reachable in the
    app UI. Add or extend `.maestro/app/*.yaml`. Web-only UI still needs a
    Maestro flow if the same screen is reachable on iOS/Android.

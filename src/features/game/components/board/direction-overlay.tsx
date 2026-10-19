@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 import Svg, { Path, Polygon } from 'react-native-svg';
 
 import { buildHorseshoePath } from '@/lib/game/horseshoe-path';
@@ -33,14 +34,14 @@ function HorseshoeLane({ width, height, player, stroke }: LaneProps) {
   const d = buildHorseshoePath(width, height, player);
   const head = horseshoeArrowhead(width, height, player);
   const trimmed = pathToArrowBase(d, head.lineEnd);
-  const strokeWidth = 2.2;
+  const strokeWidth = 3.8;
 
   return (
     <>
       <Path
         d={trimmed}
         stroke={HALO}
-        strokeWidth={strokeWidth + 1.4}
+        strokeWidth={strokeWidth + 2.4}
         fill="none"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -57,7 +58,7 @@ function HorseshoeLane({ width, height, player, stroke }: LaneProps) {
         points={head.polygonPoints}
         fill={stroke}
         stroke={HALO}
-        strokeWidth={0.8}
+        strokeWidth={1.4}
         strokeLinejoin="round"
       />
     </>
@@ -67,17 +68,20 @@ function HorseshoeLane({ width, height, player, stroke }: LaneProps) {
 /** One quiet lane for the player whose turn is currently active. */
 export function DirectionOverlay({ width, height, player }: Props) {
   return (
-    <Svg
-      width={width}
-      height={height}
-      style={{ position: 'absolute', top: 0, left: 0, zIndex: 20, pointerEvents: 'none' }}
+    <View
+      testID="direction-overlay"
+      collapsable={false}
+      pointerEvents="none"
+      style={{ position: 'absolute', top: 0, left: 0, zIndex: 20 }}
     >
-      <HorseshoeLane
-        width={width}
-        height={height}
-        player={player}
-        stroke={PLAYER_STROKE[player]}
-      />
-    </Svg>
+      <Svg width={width} height={height}>
+        <HorseshoeLane
+          width={width}
+          height={height}
+          player={player}
+          stroke={PLAYER_STROKE[player]}
+        />
+      </Svg>
+    </View>
   );
 }

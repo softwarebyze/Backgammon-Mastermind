@@ -34,8 +34,11 @@ tags:
     visible: 'Point 5, 1 white checker'
     timeout: 15000
 - takeScreenshot: confirm-01-first-move
+# Undo mid-sequence goes through the header timeline undo. The confirm bar's
+# `undo-move-button` only exists once the roll is fully spent (remainingDice === 0),
+# so it is asserted later at confirm-04 instead.
 - tapOn:
-    id: undo-move-button
+    id: header-undo-button
 - extendedWaitUntil:
     visible: 'Point 8, 3 white checkers'
     timeout: 15000

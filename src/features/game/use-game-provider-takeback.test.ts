@@ -56,6 +56,14 @@ function makeMove(result: { current: Provider }) {
 }
 
 describe('provider tutor take-back', () => {
+  beforeEach(() => {
+    // Exercise the take-back contract, not the chance of five tied openings.
+    let roll = 0;
+    jest.spyOn(Math, 'random').mockImplementation(() => (++roll % 2 ? 0.2 : 0.6));
+  });
+
+  afterEach(() => jest.restoreAllMocks());
+
   it('take-back restores turn-start and the board is immediately interactive', () => {
     const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
