@@ -183,6 +183,14 @@ jobs:
         env:
           CI: 'true'
 
+      # Release runs PostHog's hermes clone + dSYM upload, which fail closed
+      # without POSTHOG_CLI_API_KEY. This job has none (throwaway simulator
+      # build). Soften the upload scripts when the key is empty; EAS store
+      # builds inject the key and never run this step. Same idea as
+      # assemble-android-test-apk.sh on #237.
+      - name: Skip PostHog uploads without an API key
+        run: bash .github/scripts/skip-posthog-ios-upload-when-unkeyed.sh "$GITHUB_WORKSPACE"
+
       - name: Build for iOS simulator (compile check)
         run: |
           cd ios
