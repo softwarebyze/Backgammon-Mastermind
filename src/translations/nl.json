@@ -246,13 +246,16 @@
     "vs_computer_sub": "Speel tegen de computer"
   },
   "learn": {
+    "back": "Terug",
     "back_to_hub": "Alle lessen",
     "continue": "Doorgaan",
     "feedback": {
+      "correct_title": "Juist!",
       "hint_nudge": "Heb je een zetje nodig? Zoek naar de gemarkeerde plekken.",
       "illegal": "Probeer een gemarkeerd punt of tik op Hint.",
       "legal_but_wrong": "Dat is legaal in een echt spel hier, probeer de beweging die dit idee leert.",
-      "move_progress": "Mooi. {{done}} van {{needed}} zetten gedaan."
+      "move_progress": "Mooi. {{done}} van {{needed}} zetten gedaan.",
+      "try_again_title": "Niet helemaal"
     },
     "graduation": {
       "body": "Je kent het doel, het bord, hoe het werkt, slaat en afgaat. Een snelle controle en dan je eerste echte spel.",
@@ -273,7 +276,10 @@
     "home_cta_quiz": "Snel controleren links en dan afspelen",
     "home_cta_ready": "Je bent klaar om een echt spel te spelen",
     "home_cta_sub": "Interactieve lessen voor beginners",
+    "hub_intro_done": "Alle lessen gedaan. Je bent klaar voor een echt potje.",
+    "hub_intro_start": "Nieuw hier? Begin met het bord — de eerste les duurt ongeveer 2 minuten.",
     "lesson_complete": "Les voltooid!",
+    "lesson_complete_body": "Goed gedaan met {{title}}. De volgende les bouwt hierop voort.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +410,7 @@
           }
         },
         "subtitle": "Zien wie de race leidt",
-        "title": "Pip count: de stand"
+        "title": "Pip-telling"
       },
       "strategies": {
         "steps": {
@@ -428,7 +434,7 @@
           }
         },
         "subtitle": "Klassieke spelplannen herkennen",
-        "title": "Spelplannen"
+        "title": "Strategieën"
       }
     },
     "locked": "De vorige les eerst voltooien",
@@ -479,6 +485,7 @@
     },
     "replay": "Herspelen",
     "skip_to_play": "Afspelen overslaan",
+    "start": "Start",
     "step_progress": "Stap {{current}} van {{total}}",
     "subtitle": "Korte interactieve lessen — dan ben je klaar",
     "title": "Spelen leren"

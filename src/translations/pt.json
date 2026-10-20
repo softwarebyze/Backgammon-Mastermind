@@ -246,13 +246,16 @@
     "vs_computer_sub": "Jogue contra o computador"
   },
   "learn": {
+    "back": "Voltar",
     "back_to_hub": "Todas as lições",
     "continue": "Continuar",
     "feedback": {
+      "correct_title": "Certo!",
       "hint_nudge": "Precisas de um empurrão? Procure os pontos destacados.",
       "illegal": "Tente um ponto destacado — ou toque em Dica.",
       "legal_but_wrong": "Isso é legal em um jogo real — aqui, tente o movimento que ensina esta idéia.",
-      "move_progress": "Boa...{{done}}de{{needed}}movimentos feitos."
+      "move_progress": "Boa...{{done}}de{{needed}}movimentos feitos.",
+      "try_again_title": "Quase"
     },
     "graduation": {
       "body": "Sabes qual é o objectivo, o tabuleiro, como é que se transforma no trabalho, bater e aguentar. Uma verificação rápida — então seu primeiro jogo real.",
@@ -273,7 +276,10 @@
     "home_cta_quiz": "Verificação rápida à esquerda - em seguida, jogar",
     "home_cta_ready": "Você está pronto — jogue um jogo real",
     "home_cta_sub": "Aulas interativas para iniciantes",
+    "hub_intro_done": "Todas as lições concluídas. Está pronto para um jogo a sério.",
+    "hub_intro_start": "É novo por aqui? Comece pelo tabuleiro — a primeira lição leva cerca de 2 minutos.",
     "lesson_complete": "Lição completa!",
+    "lesson_complete_body": "Bom trabalho em {{title}}. A próxima lição parte daqui.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +410,7 @@
           }
         },
         "subtitle": "Ver quem vai à frente na corrida",
-        "title": "Contagem de pips: o marcador"
+        "title": "Contagem de pips"
       },
       "strategies": {
         "steps": {
@@ -428,7 +434,7 @@
           }
         },
         "subtitle": "Reconhecer planos de jogo clássicos",
-        "title": "Planos de jogo"
+        "title": "Estratégias"
       }
     },
     "locked": "Completar a lição anterior primeiro",
@@ -479,6 +485,7 @@
     },
     "replay": "Repetir",
     "skip_to_play": "Saltar para Jogar",
+    "start": "Começar",
     "step_progress": "Passo {{current}} de {{total}}",
     "subtitle": "Aulas curtas e interativas — então você está pronto",
     "title": "Aprender a jogar"

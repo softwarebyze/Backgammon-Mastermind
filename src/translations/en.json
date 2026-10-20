@@ -246,13 +246,16 @@
     "vs_computer_sub": "Play against the computer"
   },
   "learn": {
+    "back": "Back",
     "back_to_hub": "All lessons",
     "continue": "Continue",
     "feedback": {
+      "correct_title": "Correct!",
       "hint_nudge": "Need a nudge? Look for the highlighted spots.",
       "illegal": "Try a highlighted point — or tap Hint.",
       "legal_but_wrong": "That’s legal in a real game — here, try the move that teaches this idea.",
-      "move_progress": "Nice — {{done}} of {{needed}} moves done."
+      "move_progress": "Nice — {{done}} of {{needed}} moves done.",
+      "try_again_title": "Not quite"
     },
     "graduation": {
       "body": "You know the goal, the board, how turns work, hitting, and bearing off. A quick check — then your first real game.",
@@ -273,7 +276,10 @@
     "home_cta_quiz": "Quick check left — then play",
     "home_cta_ready": "You’re ready — play a real game",
     "home_cta_sub": "Interactive lessons for beginners",
+    "hub_intro_done": "Every lesson done. You’re ready for a real game.",
+    "hub_intro_start": "New here? Start with the board — the first lesson takes about 2 minutes.",
     "lesson_complete": "Lesson complete!",
+    "lesson_complete_body": "Nice work on {{title}}. The next lesson builds on this one.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +410,7 @@
           }
         },
         "subtitle": "Learn to read who's winning the race",
-        "title": "Pip Count: The Race Score"
+        "title": "Pip count"
       },
       "strategies": {
         "steps": {
@@ -428,7 +434,7 @@
           }
         },
         "subtitle": "Recognize classic game plans",
-        "title": "Game Strategies"
+        "title": "Game strategies"
       }
     },
     "locked": "Complete the previous lesson first",
@@ -479,6 +485,7 @@
     },
     "replay": "Replay",
     "skip_to_play": "Skip to play",
+    "start": "Start",
     "step_progress": "Step {{current}} of {{total}}",
     "subtitle": "Short interactive lessons — then you’re ready",
     "title": "Learn to play"

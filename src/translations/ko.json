@@ -246,13 +246,16 @@
     "vs_computer_sub": "컴퓨터와 대결"
   },
   "learn": {
+    "back": "뒤로",
     "back_to_hub": "모든 수업",
     "continue": "계속하기",
     "feedback": {
+      "correct_title": "정답!",
       "hint_nudge": "판결이 필요합니까? 명소를 찾아보세요.",
       "illegal": "강조된 포인트를 사용하거나 Hint를 탭합니다.",
       "legal_but_wrong": "그것은 진짜 게임에서 법적 - 여기에, 이 아이디어를 가르치는 움직임을 시도.",
-      "move_progress": "좋은 —{{done}}이름 *{{needed}}수행하다."
+      "move_progress": "좋은 —{{done}}이름 *{{needed}}수행하다.",
+      "try_again_title": "아쉬워요"
     },
     "graduation": {
       "body": "목표를 알고, 보드, 어떻게 작업을 회전, 타격, 그리고 떨어져 베어링. 빠른 체크 — 당신의 첫번째 진짜 게임.",
@@ -273,7 +276,10 @@
     "home_cta_quiz": "빠른 체크 왼쪽 — 다음 재생",
     "home_cta_ready": "You’re ready - 실제 게임 플레이",
     "home_cta_sub": "초보자를위한 대화 형 수업",
+    "hub_intro_done": "모든 레슨을 마쳤어요. 이제 실제 대국을 해 보세요.",
+    "hub_intro_start": "처음이신가요? 보드부터 시작하세요. 첫 레슨은 약 2분이면 끝납니다.",
     "lesson_complete": "수업 완료!",
+    "lesson_complete_body": "{{title}} 잘했어요. 다음 레슨은 이 내용을 이어갑니다.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +410,7 @@
           }
         },
         "subtitle": "누가 경주에서 앞서는 읽기",
-        "title": "핍 수: 경주의 점수"
+        "title": "핍 계산"
       },
       "strategies": {
         "steps": {
@@ -428,7 +434,7 @@
           }
         },
         "subtitle": "기본 계획을 구분하기",
-        "title": "게임 계획"
+        "title": "전략"
       }
     },
     "locked": "이전 수업을 완료",
@@ -479,6 +485,7 @@
     },
     "replay": "지원하다",
     "skip_to_play": "공지사항",
+    "start": "시작",
     "step_progress": "{{total}}단계 중 {{current}}단계",
     "subtitle": "짧은 인터랙티브 수업 — 그다음 준비됩니다",
     "title": "게임 알아보기"

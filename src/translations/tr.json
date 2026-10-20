@@ -246,13 +246,16 @@
     "vs_computer_sub": "Bilgisayara karşı oyna"
   },
   "learn": {
+    "back": "Geri",
     "back_to_hub": "Tüm dersler",
     "continue": "Devam etmeye devam et",
     "feedback": {
+      "correct_title": "Doğru!",
       "hint_nudge": "Bir nudgea mı ihtiyacınız var? vurgulanan noktalara bakın.",
       "illegal": "Bir vurgu noktası deneyin - ya da Hint tapın.",
       "legal_but_wrong": "Bu gerçek bir oyunda yasal - burada, bu fikri öğreten hareketi deneyin.",
-      "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı."
+      "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı.",
+      "try_again_title": "Tam değil"
     },
     "graduation": {
       "body": "Hedefi biliyorsun, yönetim kurulu, nasıl çalışır, vurup duruyorsunuz. Hızlı bir kontrol - sonra ilk gerçek oyun.",
@@ -273,7 +276,10 @@
     "home_cta_quiz": "Hızlı check ayrıldı – sonra oyun oyna",
     "home_cta_ready": "Hazırsınız – gerçek bir oyun oynamak",
     "home_cta_sub": "Yeni başlayanlar için Etkileşimli dersler",
+    "hub_intro_done": "Tüm dersler tamam. Gerçek bir oyuna hazırsın.",
+    "hub_intro_start": "İlk kez mi? Tahtayla başla — ilk ders yaklaşık 2 dakika sürer.",
     "lesson_complete": "Azon tamam!",
+    "lesson_complete_body": "{{title}} harika gitti. Sonraki ders bunun üzerine kurulu.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +410,7 @@
           }
         },
         "subtitle": "Yarışta kimin önde olduğunu okumayı öğren",
-        "title": "Pip sayısı: yarış skoru"
+        "title": "Pip sayımı"
       },
       "strategies": {
         "steps": {
@@ -428,7 +434,7 @@
           }
         },
         "subtitle": "Klasik planları tanı",
-        "title": "Oyun planları"
+        "title": "Stratejiler"
       }
     },
     "locked": "Önceki dersi ilk önce tamamlayın",
@@ -479,6 +485,7 @@
     },
     "replay": "Replay",
     "skip_to_play": "Oynamak için Skip to play",
+    "start": "Başla",
     "step_progress": "Adım {{current}} / {{total}}",
     "subtitle": "Kısa etkileşimli dersler — sonra hazırsınız",
     "title": "Oynamayı Öğrenin"

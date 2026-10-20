@@ -1,5 +1,6 @@
 import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonId } from '@/lib/learn/curriculum';
+import Feather from '@expo/vector-icons/Feather';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
@@ -92,11 +93,24 @@ function LessonScreenBody({
   });
   const dimensions = useBoardDimensions({ showPointNumbers });
   const completedEventRef = useRef(false);
+  const captionScrollRef = useRef<ScrollView>(null);
 
   const { setBoardDimensions } = session;
   useEffect(() => {
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
+
+  // Praise can land below the fold on short screens; keep it visible long
+  // enough to read instead of letting it slide out of the caption viewport.
+  useEffect(() => {
+    if (!session.feedback) {
+      return;
+    }
+    const handle = setTimeout(() => {
+      captionScrollRef.current?.scrollToEnd({ animated: true });
+    }, 60);
+    return () => clearTimeout(handle);
+  }, [session.feedback]);
 
   useEffect(() => {
     if (!isLastStepComplete(session.stepComplete, session.stepIndex, session.totalSteps)) {
@@ -178,10 +192,8 @@ function LessonScreenBody({
       titleKey={session.step.titleKey}
       bodyKey={session.step.bodyKey}
       feedback={session.feedback}
-      stepLabel={translate('learn.step_progress', {
-        current: session.stepIndex + 1,
-        total: session.totalSteps,
-      })}
+      stepIndex={session.stepIndex}
+      totalSteps={session.totalSteps}
       compact={landscape || (captionMaxHeight != null && captionMaxHeight < 160)}
     />
   );
@@ -204,25 +216,65 @@ function LessonScreenBody({
 
       {showCompleteBanner
         ? (
-            <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
+            <View testID="learn-lesson-complete" style={styles.completeCard}>
+              <View style={styles.completeIcon}>
+                <Feather name="award" size={20} color="#4ADE80" />
+              </View>
+              <View style={styles.completeText}>
+                <Text style={styles.completeTitle}>
+                  {translate('learn.lesson_complete')}
+                </Text>
+                <Text style={styles.completeBody}>
+                  {translate('learn.lesson_complete_body', {
+                    title: translate(lesson.titleKey as TxKeyPath),
+                  })}
+                </Text>
+              </View>
+            </View>
           )
         : null}
 
-      <Pressable
-        key="learn-primary-cta"
-        testID="learn-primary-cta"
-        accessibilityRole="button"
-        accessibilityLabel={primaryLabel}
-        style={({ pressed }) => [
-          ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
-          pressed && styles.pressed,
-        ]}
-        onPress={onPrimary}
-      >
-        <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
-          {primaryLabel}
-        </Text>
-      </Pressable>
+      <View style={styles.footerActions}>
+        <Pressable
+          key="learn-back"
+          testID="learn-back"
+          accessibilityRole="button"
+          accessibilityLabel={translate('learn.back')}
+          accessibilityState={{ disabled: !session.canGoBack }}
+          disabled={!session.canGoBack}
+          hitSlop={8}
+          style={({ pressed }) => [
+            styles.backBtn,
+            !session.canGoBack && styles.backBtnDisabled,
+            pressed && styles.pressed,
+          ]}
+          onPress={session.back}
+        >
+          <Feather name="chevron-left" size={18} color={GAME_PALETTE.accentDim} />
+          <Text style={styles.backLabel}>{translate('learn.back')}</Text>
+        </Pressable>
+
+        <Pressable
+          key="learn-primary-cta"
+          testID="learn-primary-cta"
+          accessibilityRole="button"
+          accessibilityLabel={primaryLabel}
+          style={({ pressed }) => [
+            ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
+            pressed && styles.pressed,
+          ]}
+          onPress={onPrimary}
+        >
+          <Feather
+            name={ctaKind === 'hint' ? 'info' : 'arrow-right'}
+            size={18}
+            color={ctaKind === 'hint' ? GAME_PALETTE.accentDim : GAME_PALETTE.bg}
+          />
+          <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
+            {primaryLabel}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 
@@ -236,6 +288,7 @@ function LessonScreenBody({
       onLayout={onTopLayout}
     >
       <ScrollView
+        ref={captionScrollRef}
         style={captionMaxHeight != null ? { maxHeight: captionMaxHeight } : undefined}
         contentContainerStyle={styles.captionScrollContent}
         bounces={false}
@@ -310,6 +363,7 @@ function LessonScreenBody({
           ? (
               <View style={[styles.sidePanel, { width: chromeWidth }]}>
                 <ScrollView
+                  ref={captionScrollRef}
                   style={styles.captionScroll}
                   contentContainerStyle={styles.captionScrollContent}
                   bounces={false}
@@ -394,15 +448,70 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 8,
   },
-  completeBanner: {
-    color: '#A0D080',
+  footerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    minWidth: 96,
+  },
+  backBtnDisabled: {
+    opacity: 0.3,
+  },
+  backLabel: {
+    color: GAME_PALETTE.accentDim,
     fontSize: 15,
-    marginBottom: 8,
+    ...interFont('semibold'),
+  },
+  completeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    width: '100%',
+    maxWidth: 420,
+    marginBottom: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    backgroundColor: 'rgba(74, 222, 128, 0.10)',
+    borderWidth: 1,
+    borderColor: 'rgba(74, 222, 128, 0.35)',
+    ...continuousRadius(14),
+  },
+  completeIcon: {
+    width: 36,
+    height: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 18,
+    backgroundColor: 'rgba(74, 222, 128, 0.16)',
+  },
+  completeText: {
+    flex: 1,
+    gap: 2,
+  },
+  completeTitle: {
+    color: '#4ADE80',
+    fontSize: 15,
     ...interFont('bold'),
+  },
+  completeBody: {
+    color: GAME_PALETTE.text,
+    fontSize: 12,
+    lineHeight: 17,
+    ...interFont('regular'),
   },
   primaryBtn: {
     marginTop: 4,
     backgroundColor: GAME_PALETTE.accent,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
     paddingVertical: 16,
     paddingHorizontal: 24,
     minWidth: 180,
@@ -414,6 +523,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 1.5,
     borderColor: 'rgba(232, 224, 208, 0.35)',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
     paddingVertical: 14,
     paddingHorizontal: 24,
     minWidth: 180,

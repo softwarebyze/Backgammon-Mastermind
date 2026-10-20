@@ -246,13 +246,16 @@
     "vs_computer_sub": "Gioca contro il computer"
   },
   "learn": {
+    "back": "Indietro",
     "back_to_hub": "Tutti i corsi",
     "continue": "Continua",
     "feedback": {
+      "correct_title": "Esatto!",
       "hint_nudge": "Hai bisogno di una bomba? Cerca i punti evidenziati.",
       "illegal": "Prova un punto evidenziato — o tocca Hint.",
       "legal_but_wrong": "Questo è legale in un gioco reale — qui, provare la mossa che insegna questa idea.",
-      "move_progress": "Nizza —{{done}}di{{needed}}mosse fatte."
+      "move_progress": "Nizza —{{done}}di{{needed}}mosse fatte.",
+      "try_again_title": "Non proprio"
     },
     "graduation": {
       "body": "Conosci l'obiettivo, il consiglio, come si trasforma il lavoro, il colpo e il movimento. Un controllo rapido — allora il tuo primo gioco reale.",
@@ -273,7 +276,10 @@
     "home_cta_quiz": "Controllo rapido a sinistra — quindi giocare",
     "home_cta_ready": "Sei pronto — giocare un vero gioco",
     "home_cta_sub": "Lezioni interattive per principianti",
+    "hub_intro_done": "Hai completato tutte le lezioni. Sei pronto per una partita vera.",
+    "hub_intro_start": "Sei nuovo? Inizia dalla scacchiera: la prima lezione dura circa 2 minuti.",
     "lesson_complete": "Lezione completa!",
+    "lesson_complete_body": "Ottimo lavoro con {{title}}. La prossima lezione parte da qui.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +410,7 @@
           }
         },
         "subtitle": "Capire chi sta vincendo la corsa",
-        "title": "Conteggio pip: il punteggio"
+        "title": "Conteggio dei pip"
       },
       "strategies": {
         "steps": {
@@ -428,7 +434,7 @@
           }
         },
         "subtitle": "Riconosci i piani di gioco classici",
-        "title": "Piani di gioco"
+        "title": "Strategie"
       }
     },
     "locked": "Completare la lezione precedente prima",
@@ -479,6 +485,7 @@
     },
     "replay": "Replay",
     "skip_to_play": "Skip to play",
+    "start": "Inizia",
     "step_progress": "Passo {{current}} di {{total}}",
     "subtitle": "Brevi lezioni interattive — poi sei pronto",
     "title": "Impara a giocare"
