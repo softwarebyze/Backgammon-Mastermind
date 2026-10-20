@@ -27,6 +27,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
+  "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   -e "APP_ID=${APP_ID}" \
