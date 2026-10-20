@@ -6,6 +6,11 @@ tags:
   - rtl
   - pull-request
 ---
+# `clearState` clears app data *before* stopping the app. When the previous flow
+# left the app in the foreground, Android tears the old task down while the new
+# process is starting and kills it ("start not valid, killing pid=…"), leaving a
+# splash screen for the full 90s timeout. Stopping first removes the race.
+- stopApp
 - launchApp:
     clearState: true
 - extendedWaitUntil:
@@ -15,6 +20,7 @@ tags:
 - assertVisible: Undo move
 - assertVisible: Redo move
 - takeScreenshot: undo-redo-01-english
+- stopApp
 - launchApp:
     clearState: true
 - extendedWaitUntil:
