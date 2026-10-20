@@ -25,12 +25,11 @@ Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel size
 ```sh
 pnpm screenshots:prepare          # render all 17 localized sets → Apple + Play folders
 pnpm screenshots:asc-key          # Expo session → .cache/asc-api-key.json (gitignored)
-node scripts/dedupe-asc-screenshots.mjs # dry-run duplicate check against production ASC
 pnpm screenshots:upload:ios       # prepare + key + bundle exec fastlane deliver (screenshots only)
 pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH; PLAY_PACKAGE_NAME is optional
 ```
 
-Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.239.0**). First time: `bundle install`.
+Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.237.0**). First time: `bundle install`.
 
 Localized headline rendering uses script-specific Noto fonts in CI. On macOS,
 the generator also falls back to the equivalent bundled system families
@@ -56,14 +55,7 @@ pnpm screenshots:upload:ios
 
 ## Quirk (Fastlane + ASC processing)
 
-`deliver` sometimes retries while Apple is still processing and creates duplicates (capped at 10 slots). The iOS lane now finishes by running a guarded ASC API cleanup: it compares remote checksums with the composed source, refuses to touch unknown or missing assets, and deletes only repeated copies. A clean set is exactly the composed files under `docs/marketing/…/app-store-screenshots/` (currently **10**: 5 iPhone + 5 iPad).
-
-To audit or repair without uploading again:
-
-```sh
-node scripts/dedupe-asc-screenshots.mjs         # dry run
-node scripts/dedupe-asc-screenshots.mjs --apply # delete exact duplicates
-```
+`deliver` sometimes retries while Apple is still processing and creates duplicates (capped at 10 slots). To audit or repair, compare remote screenshots against the composed source under `docs/marketing/…/app-store-screenshots/` (currently **10**: 5 iPhone + 5 iPad) in the ASC UI and delete repeated copies there — the old guarded ASC API cleanup script (`scripts/dedupe-asc-screenshots.mjs`) no longer exists in this repo.
 
 Apple locks screenshots after a version is submitted and approved. For a live
 `READY_FOR_SALE` version, create the next app version, upload the clean set while

@@ -13,7 +13,7 @@ Before any metadata push, confirm `store.config.json` → `apple.review.phone` i
 | Path | Best for | Command |
 | ---- | -------- | ------- |
 | **Dev client** (recommended) | Daily testing on your iPhone with OTA JS updates | `pnpm build:development:ios` |
-| **TestFlight** | Beta testers, pre-release QA | `pnpm build:preview:ios` then `eas submit --platform ios --profile preview` |
+| **TestFlight** | Beta testers, pre-release QA | `pnpm build:preview:ios` then `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
 | **Simulator** | CI / quick UI checks | `eas build --profile simulator --platform ios` |
 
 ### Dev client (your iPhone)

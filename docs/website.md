@@ -21,13 +21,15 @@ Opening `/game` (etc.) on Vercel returned `NOT_FOUND`. Root `/` worked. EAS Host
 
 **Do not** spin up a second repo yet. Same domain, same deploy:
 
-1. **Now (done):** hosted privacy/terms + working deep links.
-2. **Next:** a web-only **landing** at `/` (or `/welcome`) that sells the product:
+1. **Done:** hosted privacy/terms + working deep links.
+2. **Next (not built yet):** a web-only **landing** at `/` (or `/welcome`) that sells the product:
    - Brand + one sentence
-   - Short demo (Remotion clip or “Play in browser”)
-   - App Store / Play CTAs (when live)
+   - Short demo (Remotion clip — the mid-game turn-by-turn review is the hero feature) or "Play in browser"
+   - **App Store + Google Play CTAs — both stores are live now** (App Store since v1.0.0, July 2026; Play via #160). Link with `EXPO_PUBLIC_APP_STORE_ID` / store config.
    - Link into the real app (`/play` or keep current home as `/app`)
-3. Native app keeps today’s home screen; only **web** gets the marketing shell.
+3. Native app keeps today's home screen; only **web** gets the marketing shell.
+
+The Instagram (`@backgammonmastermind`) exists but has zero posts as of 2026-10-12 — the landing page and the Instagram should launch from the same asset set (Remotion renders in `docs/marketing/videos/`, store screenshots in `docs/marketing/app-store-screenshots/`). See [marketing/PLAN.md](./marketing/PLAN.md).
 
 Why this beats a separate marketing site right now: one deploy, one domain for App Store `marketingUrl` + privacy URL, playable demo is the product itself (best conversion).
 

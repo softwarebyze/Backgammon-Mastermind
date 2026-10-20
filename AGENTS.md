@@ -12,7 +12,7 @@ Every user-visible change ships with all three, or it is not done:
 3. **Evidence on the PR** — screenshot for visual changes, a screen recording
    when a gesture/animation/flow is involved. Attach to the PR; see below.
 
-`pnpm check-all` (lint + type-check + translations + jest + knip) must pass
+`pnpm check-all` (lint + type-check + type-check:scripts + translations + jest + knip) must pass
 before you open or update the PR. Prefer it over running the individual steps.
 
 ## PR evidence (always)
@@ -82,7 +82,7 @@ pnpm type-check    # tsc --noemit
 pnpm test          # Jest unit tests
 pnpm knip          # unused exports (also CI)
 pnpm notices       # regenerate THIRD_PARTY_NOTICES.md (a test fails if stale)
-pnpm check-all     # lint + type-check + lint:translations + test + knip
+pnpm check-all     # lint + type-check + type-check:scripts + lint:translations + test + knip
 ```
 
 Scripts under `scripts/*.ts` are build/CI tooling, not app code. They run via
