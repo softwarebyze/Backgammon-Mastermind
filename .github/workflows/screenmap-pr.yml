@@ -95,6 +95,7 @@ jobs:
         uses: ./.github/actions/setup-jdk-generate-apk
         with:
           APP_ENV: development
+          APK_VARIANT: debug
       - name: Use GitHub-hosted Android SDK
         run: |
           set -euo pipefail
@@ -117,7 +118,7 @@ jobs:
           auto_baseline: "true"
           flows_pr: "false"
           app_path: android-test.apk
-          # no expo_token — this APK is the Maestro e2e debug build (no expo-dev-client)
+          # Screenmap requires a Metro-connected dev client; Maestro uses Release.
           # Agent optional — uncomment when ANTHROPIC_API_KEY is set:
           # agent_provider: claude
           # agent_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
