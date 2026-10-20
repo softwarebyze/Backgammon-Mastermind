@@ -13,7 +13,10 @@ if [[ -z "$posthog_key" && -f "$WORKSPACE/.env" ]]; then
 fi
 if [[ -z "$posthog_key" && -f app/build.gradle ]]; then
   echo "No POSTHOG_CLI_API_KEY: skipping PostHog uploads for this test APK"
-  sed -i -e '/posthog\.gradle/d' -e 's/uploadNativeSymbols = true/uploadNativeSymbols = false/' app/build.gradle
+  # `-i.bak` works on both GNU and BSD sed; plain `-i -e` reads "-e" as the
+  # backup suffix on macOS and fails.
+  sed -i.bak -e '/posthog\.gradle/d' -e 's/uploadNativeSymbols = true/uploadNativeSymbols = false/' app/build.gradle
+  rm -f app/build.gradle.bak
 fi
 # Avoid a second Kotlin JVM inheriting the old 512 MiB metaspace ceiling.
 ./gradlew assembleRelease --no-daemon --build-cache --stacktrace --max-workers=2 \
