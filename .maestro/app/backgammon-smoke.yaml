@@ -11,10 +11,10 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - takeScreenshot: 01-home-loaded
 - tapOn:
-    text: vs Computer
+    text: Play against the computer
 # Auto-roll is on by default, so the roll button may already be gone.
 - extendedWaitUntil:
     visible:
