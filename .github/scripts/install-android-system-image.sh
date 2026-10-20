@@ -8,6 +8,12 @@ API_LEVEL="${1:-34}"
 TARGET="${2:-google_apis}"
 ARCH="${3:-x86_64}"
 PKG="system-images;android-${API_LEVEL};${TARGET};${ARCH}"
+PACKAGES=("$PKG")
+# Screenmap installs all three in one sdkmanager call. Warm them here so its
+# setup step does not hide a download failure in /tmp/sdkmanager.log.
+if [[ "${INSTALL_EMULATOR_TOOLS:-false}" == true ]]; then
+  PACKAGES+=(platform-tools emulator)
+fi
 
 SDKROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-}}"
 if [[ -z "$SDKROOT" ]]; then
@@ -37,7 +43,7 @@ for attempt in 1 2 3; do
   echo "Installing $PKG (attempt $attempt/3)..."
   clear_sdk_download_cache
   yes | "$SDKMANAGER" --licenses >/dev/null || true
-  if "$SDKMANAGER" --install "$PKG"; then
+  if "$SDKMANAGER" --install "${PACKAGES[@]}"; then
     echo "System image ready: $PKG"
     exit 0
   fi

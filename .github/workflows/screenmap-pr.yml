@@ -108,6 +108,10 @@ jobs:
           echo "$sdk/emulator" >> "$GITHUB_PATH"
           echo "Android SDK: $sdk"
           ls "$sdk"
+      - name: Pre-install Screenmap Android SDK packages (retry)
+        env:
+          INSTALL_EMULATOR_TOOLS: 'true'
+        run: bash .github/scripts/install-android-system-image.sh 34 google_apis x86_64
       - name: Screenmap Android (in-CI Gradle APK, no EAS)
         id: map
         uses: aleqsio/screenmap@c54219e4088965593a0cc4b2ce27251d2ce6321c

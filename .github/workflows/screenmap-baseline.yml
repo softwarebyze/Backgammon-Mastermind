@@ -111,6 +111,10 @@ jobs:
           echo "$sdk/emulator" >> "$GITHUB_PATH"
           echo "Android SDK: $sdk"
           ls "$sdk"
+      - name: Pre-install Screenmap Android SDK packages (retry)
+        env:
+          INSTALL_EMULATOR_TOOLS: 'true'
+        run: bash .github/scripts/install-android-system-image.sh 34 google_apis x86_64
       - name: Screenmap Android (in-CI Gradle APK, no EAS)
         id: map
         uses: aleqsio/screenmap@c54219e4088965593a0cc4b2ce27251d2ce6321c
@@ -121,7 +125,7 @@ jobs:
           flows_pr: "false"
           full: ${{ inputs.full }}
           app_path: android-test.apk
-          # no expo_token — Maestro e2e debug APK (no expo-dev-client)
+          # Screenmap uses a Debug dev client connected to Metro.
           # Agent optional — uncomment when ANTHROPIC_API_KEY is set:
           # agent_provider: claude
           # agent_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
