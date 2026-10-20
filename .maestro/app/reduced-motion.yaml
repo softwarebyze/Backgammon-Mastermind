@@ -1,0 +1,46 @@
+# Android CI disables animator_duration_scale before these flows, enabling
+# the system reduced-motion policy. Verify the policy and real move commits.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: vs Computer
+    timeout: 90000
+- openLink: backgammonmastermind.preview://developer
+# Other release features add presets above the JSON fixture field.
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible:
+      id: dice-display-reduced-motion
+    timeout: 15000
+- assertVisible: 'Point 8, 3 white checkers'
+- takeScreenshot: reduced-motion-01-fixed-roll
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible: 'Point 5, 1 white checker'
+    timeout: 5000
+- assertVisible: 'Point 8, 2 white checkers'
+- takeScreenshot: reduced-motion-02-move-committed
+- tapOn: Undo move
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 5000
+- takeScreenshot: reduced-motion-03-undo-committed
