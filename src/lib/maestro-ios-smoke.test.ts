@@ -125,4 +125,3 @@ process.exit(0);
     rmSync(fixture, { recursive: true, force: true });
   }
 });
-
