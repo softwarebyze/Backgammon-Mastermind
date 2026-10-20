@@ -131,6 +131,11 @@ const appPlugins: ExpoConfig['plugins'] = [
     },
   ],
   ['react-native-edge-to-edge'],
+  // Removes dev-launcher-only local network permissions from store builds.
+  // expo-dev-launcher ships its own strip phase, but it runs before the app's
+  // Info.plist exists and silently no-ops; see
+  // docs/expo-dev-client-store-builds.md.
+  './plugins/with-dev-client-plist-keys',
   // Native symbol / Hermes map hooks. TestFlight crashes still need a new binary.
   // The dotenv file supplies POSTHOG_CLI_* credentials for local native builds;
   // EAS builds provide the same keys directly as environment variables.
