@@ -254,7 +254,7 @@
       "hint_nudge": "Precisas de um empurrão? Procure os pontos destacados.",
       "illegal": "Tente um ponto destacado — ou toque em Dica.",
       "legal_but_wrong": "Isso é legal em um jogo real — aqui, tente o movimento que ensina esta idéia.",
-      "move_progress": "Boa...{{done}}de{{needed}}movimentos feitos.",
+      "move_progress": "Boa — {{done}} de {{needed}} movimentos feitos.",
       "try_again_title": "Quase"
     },
     "graduation": {

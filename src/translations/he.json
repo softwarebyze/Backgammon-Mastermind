@@ -254,7 +254,7 @@
       "hint_nudge": "זקוקים ל-Nudge? חפשו את המקומות המודגשים.",
       "illegal": "נסו נקודה מודגשת – או הקש על הינד.",
       "legal_but_wrong": "זה חוקי במשחק אמיתי – כאן, נסו את המהלך שמלמד את הרעיון הזה.",
-      "move_progress": "נחמד -{{done}}של{{needed}}מהלכים עושים.",
+      "move_progress": "יפה — {{done}} מתוך {{needed}} מהלכים בוצעו.",
       "try_again_title": "לא בדיוק"
     },
     "graduation": {

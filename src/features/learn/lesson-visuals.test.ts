@@ -1,8 +1,20 @@
 import { LESSON_IDS } from '@/lib/learn/curriculum';
 
-import { lessonVisual } from './lesson-visuals';
+import { lessonNavigationIcons, lessonVisual } from './lesson-visuals';
 
 describe('lessonVisual', () => {
+  it('points forward along the reading direction and back in the opposite direction', () => {
+    expect(lessonNavigationIcons(false)).toEqual({
+      back: 'chevron-left',
+      next: 'arrow-right',
+      start: 'chevron-right',
+    });
+    expect(lessonNavigationIcons(true)).toEqual({
+      back: 'chevron-right',
+      next: 'arrow-left',
+      start: 'chevron-left',
+    });
+  });
   it('gives every lesson a unique icon and a hex tint', () => {
     const visuals = LESSON_IDS.map(lessonVisual);
 

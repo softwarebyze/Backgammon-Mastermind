@@ -254,7 +254,7 @@
       "hint_nudge": "판결이 필요합니까? 명소를 찾아보세요.",
       "illegal": "강조된 포인트를 사용하거나 Hint를 탭합니다.",
       "legal_but_wrong": "그것은 진짜 게임에서 법적 - 여기에, 이 아이디어를 가르치는 움직임을 시도.",
-      "move_progress": "좋은 —{{done}}이름 *{{needed}}수행하다.",
+      "move_progress": "좋아요 — {{needed}}수 중 {{done}}수를 완료했어요.",
       "try_again_title": "아쉬워요"
     },
     "graduation": {

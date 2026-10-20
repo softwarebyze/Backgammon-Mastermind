@@ -4,8 +4,8 @@ import Feather from '@expo/vector-icons/Feather';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { lessonVisual } from '@/features/learn/lesson-visuals';
-import { translate } from '@/lib/i18n';
+import { lessonNavigationIcons, lessonVisual } from '@/features/learn/lesson-visuals';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -18,6 +18,7 @@ type Props = {
 
 export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
   const visual = lessonVisual(lesson.id);
+  const icons = lessonNavigationIcons(useLayoutIsRTL());
 
   return (
     <Pressable
@@ -70,7 +71,7 @@ export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
           ? (
               <View style={styles.stateChip}>
                 <Text style={styles.stateLabel}>{translate('learn.start')}</Text>
-                <Feather name="chevron-right" size={16} color={GAME_PALETTE.accent} />
+                <Feather name={icons.start} size={16} color={GAME_PALETTE.accent} />
               </View>
             )
           : null}

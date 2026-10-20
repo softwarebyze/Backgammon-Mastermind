@@ -4,6 +4,7 @@ import { cleanup, screen, setup } from '@/lib/test-utils';
 import { LessonRow } from './lesson-row';
 
 jest.mock('@/lib/i18n', () => ({
+  useLayoutIsRTL: jest.fn().mockReturnValue(false),
   translate: (key: string, options?: Record<string, unknown>) =>
     options ? `${key}:${JSON.stringify(options)}` : key,
 }));

@@ -17,11 +17,12 @@ import {
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
 import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
+import { lessonNavigationIcons } from '@/features/learn/lesson-visuals';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
 import { isLastStepComplete } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
@@ -84,6 +85,7 @@ function LessonScreenBody({
   diceDisplayStyle: 'numbers' | 'dots';
 }) {
   const session = useLessonSession(lesson);
+  const icons = lessonNavigationIcons(useLayoutIsRTL());
   const posthog = usePostHog();
   const { insets, landscape, chromeWidth, boardPaneWidth, boardMaxWidth, stageMaxWidth } = useLayoutMetrics();
   const showPointNumbers = session.aids?.showPointNumbers ?? false;
@@ -250,7 +252,7 @@ function LessonScreenBody({
           ]}
           onPress={session.back}
         >
-          <Feather name="chevron-left" size={18} color={GAME_PALETTE.accentDim} />
+          <Feather name={icons.back} size={18} color={GAME_PALETTE.accentDim} />
           <Text style={styles.backLabel}>{translate('learn.back')}</Text>
         </Pressable>
 
@@ -266,7 +268,7 @@ function LessonScreenBody({
           onPress={onPrimary}
         >
           <Feather
-            name={ctaKind === 'hint' ? 'info' : 'arrow-right'}
+            name={ctaKind === 'hint' ? 'info' : icons.next}
             size={18}
             color={ctaKind === 'hint' ? GAME_PALETTE.accentDim : GAME_PALETTE.bg}
           />

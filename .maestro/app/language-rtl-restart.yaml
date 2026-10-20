@@ -45,3 +45,25 @@ tags:
     visible: لغة
     timeout: 15000
 - takeScreenshot: lang-03-after-restart-ar-rtl
+# Learn navigation glyphs must follow the native RTL layout after restart.
+- tapOn:
+    id: stack-escape-button
+- tapOn: تعلّم اللعب
+- extendedWaitUntil:
+    visible:
+      id: learn-progress-ring
+    timeout: 15000
+- takeScreenshot: lang-04-learn-hub-rtl
+- tapOn:
+    id: learn-lesson-row-goal-board
+- extendedWaitUntil:
+    visible:
+      id: learn-primary-cta
+    timeout: 15000
+- takeScreenshot: lang-05-learn-continue-rtl
+- tapOn:
+    id: learn-primary-cta
+- tapOn:
+    id: learn-back
+- assertVisible: الخطوة 1 من 3
+- takeScreenshot: lang-06-learn-back-rtl

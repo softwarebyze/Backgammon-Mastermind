@@ -254,7 +254,7 @@
       "hint_nudge": "Hai bisogno di una bomba? Cerca i punti evidenziati.",
       "illegal": "Prova un punto evidenziato — o tocca Hint.",
       "legal_but_wrong": "Questo è legale in un gioco reale — qui, provare la mossa che insegna questa idea.",
-      "move_progress": "Nizza —{{done}}di{{needed}}mosse fatte.",
+      "move_progress": "Bene — {{done}} mosse su {{needed}} completate.",
       "try_again_title": "Non proprio"
     },
     "graduation": {

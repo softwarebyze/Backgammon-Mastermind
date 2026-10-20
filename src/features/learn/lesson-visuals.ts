@@ -28,3 +28,12 @@ const LESSON_VISUALS: Record<LessonId, LessonVisual> = {
 export function lessonVisual(id: LessonId): LessonVisual {
   return LESSON_VISUALS[id];
 }
+
+/** Icon glyphs do not inherit React Native's automatic RTL layout mirroring. */
+export function lessonNavigationIcons(rtl: boolean) {
+  return {
+    back: rtl ? 'chevron-right' as const : 'chevron-left' as const,
+    next: rtl ? 'arrow-left' as const : 'arrow-right' as const,
+    start: rtl ? 'chevron-left' as const : 'chevron-right' as const,
+  };
+}

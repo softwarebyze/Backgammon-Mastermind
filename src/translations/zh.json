@@ -254,7 +254,7 @@
       "hint_nudge": "需要一击吗? 寻找突出的斑点。",
       "illegal": "尝试一个突出的点——或磁带提示.",
       "legal_but_wrong": "这在真正的游戏中是合法的。 在这里,试试教这个想法的动作。",
-      "move_progress": "不错...{{done}}页:1{{needed}}移动完成。",
+      "move_progress": "不错——已完成 {{done}}/{{needed}} 步。",
       "try_again_title": "还差一点"
     },
     "graduation": {

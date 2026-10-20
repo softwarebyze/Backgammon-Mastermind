@@ -23,6 +23,7 @@ export function LearnProgressRing({ done, total, size = 68 }: Props) {
   return (
     <View
       testID="learn-progress-ring"
+      accessible
       accessibilityRole="progressbar"
       accessibilityLabel={translate('learn.home_cta_progress', { done: shown, total })}
       accessibilityValue={{ min: 0, max: total, now: shown }}

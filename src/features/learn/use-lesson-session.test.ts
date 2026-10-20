@@ -3,7 +3,7 @@ import { LESSONS } from '@/lib/learn/curriculum';
 import { useLessonSession } from './use-lesson-session';
 
 jest.mock('posthog-react-native', () => ({
-  usePostHog: () => ({ capture: jest.fn() }),
+  usePostHog: jest.fn().mockReturnValue({ capture: jest.fn() }),
 }));
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),

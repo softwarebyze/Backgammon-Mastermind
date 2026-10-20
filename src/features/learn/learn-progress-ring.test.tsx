@@ -14,6 +14,7 @@ describe('learnProgressRing', () => {
     setup(<LearnProgressRing done={3} total={7} />);
 
     const ring = screen.getByTestId('learn-progress-ring');
+    expect(ring.props.accessible).toBe(true);
     expect(ring.props.accessibilityRole).toBe('progressbar');
     expect(ring.props.accessibilityValue).toEqual({ min: 0, max: 7, now: 3 });
   });
