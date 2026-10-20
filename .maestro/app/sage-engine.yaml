@@ -3,11 +3,11 @@
 # Expected: black plays 8/5 6/5 in black-relative terms = app moves 17/20 19/20.
 appId: ${APP_ID}
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - takeScreenshot: 01-home
 # Deep-link straight to the developer screen (preview scheme).
 - openLink: backgammonmastermind.preview://developer

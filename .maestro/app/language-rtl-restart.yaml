@@ -7,11 +7,11 @@ tags:
   - rtl
   - pull-request
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
 - tapOn:
     text: Settings
 - extendedWaitUntil:
@@ -34,11 +34,11 @@ tags:
 - takeScreenshot: lang-02-after-pick-ar
 # Ensure a cold relaunch so I18nManager.isRTL is applied (MMKV language kept).
 - stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible: ضد الكمبيوتر
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'false'
+      HOME_TEXT: ضد الكمبيوتر
 - tapOn:
     text: إعدادات
 - extendedWaitUntil:
