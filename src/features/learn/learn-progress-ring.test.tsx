@@ -17,6 +17,7 @@ describe('learnProgressRing', () => {
     expect(ring.props.accessible).toBe(true);
     expect(ring.props.accessibilityRole).toBe('progressbar');
     expect(ring.props.accessibilityValue).toEqual({ min: 0, max: 7, now: 3 });
+    expect(screen.getByText('3/7')).toBeTruthy();
   });
 
   it('clamps progress when more lessons than expected are completed', () => {

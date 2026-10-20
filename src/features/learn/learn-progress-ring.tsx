@@ -56,10 +56,12 @@ export function LearnProgressRing({ done, total, size = 68 }: Props) {
           : null}
       </Svg>
       <View style={[styles.center, { width: size, height: size }]}>
-        <Text style={styles.count}>{shown}</Text>
-        <Text style={styles.of}>
-          /
-          {total}
+        <Text style={styles.count}>
+          {shown}
+          <Text style={styles.of}>
+            /
+            {total}
+          </Text>
         </Text>
       </View>
     </View>
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   count: {
+    writingDirection: 'ltr',
     color: GAME_PALETTE.text,
     fontSize: 20,
     ...interFont('bold'),
@@ -83,7 +86,6 @@ const styles = StyleSheet.create({
   of: {
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
-    marginTop: 6,
     ...interFont('medium'),
   },
 });
