@@ -133,3 +133,102 @@ describe('useBoardPlayInput drag across a turn change', () => {
     expect(result.current.dragFrom).toBe(24);
   });
 });
+
+describe('useBoardPlayInput rapid follow-up taps', () => {
+  /** One die is still in flight: `remainingDice` is what the settled state will hold. */
+  function midAnimation(remaining: number[]): GameState {
+    return { ...whiteMoving(), remainingDice: remaining };
+  }
+
+  it('plays a different checker tapped while another move animates', () => {
+    const state = midAnimation([5]);
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(13);
+    });
+    expect(actions.doMove).not.toHaveBeenCalled();
+
+    rerender({ state, isAnimating: false, isHumanTurn: true });
+    expect(actions.doMove).toHaveBeenCalledTimes(1);
+    expect(actions.doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 13, to: 8, die: 5 }));
+  });
+
+  it('auto-plays a checker whose only destination is known once the move settles', () => {
+    const state = midAnimation([3, 5]);
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(6);
+    });
+    rerender({ state, isAnimating: false, isHumanTurn: true });
+
+    expect(actions.doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 6, to: 3 }));
+  });
+
+  it('clears the selection when the selected point is tapped during animation', () => {
+    const state: GameState = { ...midAnimation([5]), selectedPoint: 8 };
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(8);
+    });
+    rerender({ state, isAnimating: false, isHumanTurn: true });
+
+    expect(actions.selectPoint).toHaveBeenCalledWith(null);
+    expect(actions.doMove).not.toHaveBeenCalled();
+  });
+
+  it('drains queued taps in order across consecutive settles', () => {
+    const state = midAnimation([3, 5]);
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(6);
+      result.current.handlePointPress(13);
+    });
+    rerender({ state, isAnimating: false, isHumanTurn: true });
+
+    expect(actions.doMove).toHaveBeenCalledTimes(1);
+    expect(actions.doMove).toHaveBeenLastCalledWith(expect.objectContaining({ from: 6, to: 3 }));
+
+    rerender({ state: midAnimation([5]), isAnimating: true, isHumanTurn: true });
+    rerender({ state: midAnimation([5]), isAnimating: false, isHumanTurn: true });
+
+    expect(actions.doMove).toHaveBeenCalledTimes(2);
+    expect(actions.doMove).toHaveBeenLastCalledWith(expect.objectContaining({ from: 13, to: 8 }));
+  });
+
+  it('drops queued taps when the turn ended before they replay', () => {
+    const state = midAnimation([5]);
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(13);
+    });
+    rerender({
+      state: { ...createInitialState('vs-computer'), currentPlayer: 'black', phase: 'rolling' },
+      isAnimating: false,
+      isHumanTurn: false,
+    });
+
+    expect(actions.doMove).not.toHaveBeenCalled();
+    expect(actions.selectPoint).not.toHaveBeenCalled();
+  });
+
+  it('lets a board press cancel queued taps during animation', () => {
+    const state = midAnimation([5]);
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(13);
+      // The first board press belongs to the same native tap and is swallowed.
+      result.current.handleBoardPress();
+      // A deliberate tap on the board background cancels the queued input.
+      result.current.handleBoardPress();
+    });
+    rerender({ state, isAnimating: false, isHumanTurn: true });
+
+    expect(actions.doMove).not.toHaveBeenCalled();
+  });
+});
