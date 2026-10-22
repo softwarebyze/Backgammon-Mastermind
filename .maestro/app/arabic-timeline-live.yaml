@@ -1,0 +1,84 @@
+# RTL timeline regression: the Live chip must stay reachable once enough turns
+# overflow the horizontal strip. Hints play a whole turn, so this creates a
+# deterministic log without depending on random dice or board taps.
+appId: ${APP_ID}
+tags:
+  - i18n
+  - rtl
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    text: Settings
+- extendedWaitUntil:
+    visible: Language
+    timeout: 15000
+- tapOn:
+    text: Language
+- extendedWaitUntil:
+    visible: العربية
+    timeout: 15000
+- tapOn:
+    text: العربية
+- runFlow:
+    when:
+      visible: '.*(?i)restart.*'
+    commands:
+      - tapOn: '.*(?i)restart.*'
+- stopApp
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'false'
+      HOME_TEXT: ضد الكمبيوتر
+# Local two-player keeps every turn waiting for the hint instead of the engine.
+- tapOn:
+    text: لاعبان
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- takeScreenshot: timeline-01-arabic-empty
+- repeat:
+    times: 9
+    commands:
+      - runFlow:
+          when:
+            visible:
+              id: roll-dice-button
+          commands:
+            - tapOn:
+                id: roll-dice-button
+      - runFlow:
+          when:
+            visible:
+              id: hint-button
+          commands:
+            - tapOn:
+                id: hint-button
+            - extendedWaitUntil:
+                visible:
+                  id: hint-result
+                timeout: 45000
+            - tapOn:
+                id: hint-play-move
+            - extendedWaitUntil:
+                notVisible:
+                  id: hint-result
+                timeout: 15000
+      - runFlow:
+          when:
+            visible:
+              id: confirm-move-button
+          commands:
+            - tapOn:
+                id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: timeline-live-chip
+    timeout: 15000
+- takeScreenshot: timeline-02-rtl-live-visible
