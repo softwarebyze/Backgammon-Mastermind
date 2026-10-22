@@ -505,9 +505,8 @@ export function useBoardPlayInput({
       return;
     }
     if (isAnimatingRef.current) {
-      if (live.selectedPoint !== null) {
-        enqueueInput({ kind: 'dest', to: BEAR_OFF });
-      }
+      // Resolve against the selection in effect when the queue drains.
+      enqueueInput({ kind: 'dest', to: BEAR_OFF });
       return;
     }
     if (live.selectedPoint === null) {
