@@ -1,7 +1,6 @@
 import type { GuidanceSession } from '../guidance-store';
 
 import { StyleSheet } from 'react-native';
-
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, render, screen, within } from '@/lib/test-utils';
 
