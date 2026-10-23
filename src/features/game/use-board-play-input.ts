@@ -57,6 +57,11 @@ type UseBoardPlayInputArgs = {
   isHumanTurn: boolean;
   /** When false, pre-roll taps are ignored (lessons lock dice). Default true. */
   enableRollNudge?: boolean;
+  /**
+   * When false, a tutor prompt or move review owns the board: ignore taps and
+   * drop queued input instead of replaying it under the overlay. Default true.
+   */
+  interactionEnabled?: boolean;
   actions: BoardPlayActions;
   /** Optional analytics hook — omitted in Learn (uses its own events). */
   onMoveMade?: (inputType: BoardMoveInputType) => void;
@@ -72,6 +77,7 @@ export function useBoardPlayInput({
   isAnimating,
   isHumanTurn,
   enableRollNudge = true,
+  interactionEnabled = true,
   actions,
   onMoveMade,
 }: UseBoardPlayInputArgs) {
@@ -129,6 +135,13 @@ export function useBoardPlayInput({
     queueTurnKeyRef.current = queueTurnKey;
     queuedInputsRef.current = [];
   }
+  const interactionEnabledRef = useRef(interactionEnabled);
+  interactionEnabledRef.current = interactionEnabled;
+  // A prompt or review may open in the same commit the slide settles. Drop the
+  // queue immediately so the drain effect cannot replay it under the overlay.
+  if (!interactionEnabled) {
+    queuedInputsRef.current = [];
+  }
   const wasAnimatingRef = useRef(false);
   const isAnimatingRef = useRef(isAnimating);
   isAnimatingRef.current = isAnimating;
@@ -141,12 +154,14 @@ export function useBoardPlayInput({
   const canInteract = !!state
     && state.phase === 'moving'
     && !isAnimating
-    && isHumanTurn;
+    && isHumanTurn
+    && interactionEnabled;
 
   /** Drag may start while another checker is still sliding; drop queues until settle. */
   const canDrag = !!state
     && state.phase === 'moving'
-    && isHumanTurn;
+    && isHumanTurn
+    && interactionEnabled;
 
   const nudgeRoll = useCallback(() => {
     if (!enableRollNudge) {
@@ -259,7 +274,12 @@ export function useBoardPlayInput({
 
   const drainQueuedInputs = useCallback(() => {
     const s = stateRef.current;
-    if (!s || s.phase !== 'moving' || !isHumanTurnRef.current) {
+    if (
+      !s
+      || s.phase !== 'moving'
+      || !isHumanTurnRef.current
+      || !interactionEnabledRef.current
+    ) {
       clearQueuedInputs();
       return;
     }
@@ -267,7 +287,12 @@ export function useBoardPlayInput({
     let selection = s.selectedPoint;
     while (queuedInputsRef.current.length > 0) {
       const live = stateRef.current;
-      if (!live || live.phase !== 'moving' || !isHumanTurnRef.current) {
+      if (
+        !live
+        || live.phase !== 'moving'
+        || !isHumanTurnRef.current
+        || !interactionEnabledRef.current
+      ) {
         clearQueuedInputs();
         return;
       }
@@ -282,8 +307,14 @@ export function useBoardPlayInput({
         if (resolved) {
           playResolvedDrag(resolved, input.fromAnchor);
         }
-        else if (live.selectedPoint !== null) {
-          selectPoint(null);
+        else {
+          if (live.selectedPoint !== null) {
+            selectPoint(null);
+          }
+          // The board moved on while this drag was held. Anything queued behind
+          // it was aimed at the same pre-settle position, so do not let it
+          // resurface after an unrelated animation later in the turn.
+          clearQueuedInputs();
         }
         return;
       }
@@ -298,6 +329,9 @@ export function useBoardPlayInput({
             resolved.kind === 'single' ? [resolved.move] : resolved.moves,
             'bear_off',
           );
+        }
+        else {
+          clearQueuedInputs();
         }
         return;
       }
@@ -329,7 +363,7 @@ export function useBoardPlayInput({
       }
 
       const live = stateRef.current;
-      if (!live || !isHumanTurnRef.current) {
+      if (!live || !isHumanTurnRef.current || !interactionEnabledRef.current) {
         return;
       }
       if (needsRollFirst(live.phase)) {
@@ -370,7 +404,13 @@ export function useBoardPlayInput({
 
   const handlePointPressIn = useCallback(
     (pointIndex: number) => {
-      if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
+      if (
+        !interactionEnabled
+        || !state
+        || state.phase !== 'moving'
+        || state.selectedPoint === null
+        || isAnimating
+      ) {
         return;
       }
       const isSingle = state.legalMovesForSelected.some(m => m.to === pointIndex);
@@ -379,7 +419,7 @@ export function useBoardPlayInput({
         setPreviewTarget(pointIndex);
       }
     },
-    [state, isAnimating, setPreviewTarget],
+    [interactionEnabled, state, isAnimating, setPreviewTarget],
   );
 
   const handlePointPressOut = useCallback(() => {
@@ -501,7 +541,12 @@ export function useBoardPlayInput({
 
   const handleBearOffPress = useCallback(() => {
     const live = stateRef.current;
-    if (!live || !isHumanTurnRef.current || live.phase !== 'moving') {
+    if (
+      !live
+      || !isHumanTurnRef.current
+      || !interactionEnabledRef.current
+      || live.phase !== 'moving'
+    ) {
       return;
     }
     if (isAnimatingRef.current) {
@@ -525,7 +570,7 @@ export function useBoardPlayInput({
 
   const handleBarPress = useCallback(() => {
     const live = stateRef.current;
-    if (!live || !isHumanTurnRef.current) {
+    if (!live || !isHumanTurnRef.current || !interactionEnabledRef.current) {
       return;
     }
     if (needsRollFirst(live.phase)) {

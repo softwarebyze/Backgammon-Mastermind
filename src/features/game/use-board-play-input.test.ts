@@ -1,8 +1,10 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { GameState } from '@/lib/game';
 import { act, renderHook } from '@testing-library/react-native';
+import { getCheckerAnchor } from '@/features/game/board-point-layout';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
 import { createInitialState } from '@/lib/game';
+import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
 const DIMS: BoardDimensions = {
   boardWidth: 400,
@@ -26,7 +28,12 @@ jest.mock('expo-haptics', () => ({
   NotificationFeedbackType: { Warning: 'warning' },
 }));
 
-type Props = { state: GameState; isAnimating: boolean; isHumanTurn: boolean };
+type Props = {
+  state: GameState;
+  isAnimating: boolean;
+  isHumanTurn: boolean;
+  interactionEnabled?: boolean;
+};
 
 function whiteMoving(): GameState {
   return {
@@ -36,6 +43,11 @@ function whiteMoving(): GameState {
     dice: [3, 5],
     remainingDice: [3, 5],
   };
+}
+
+/** One die is still in flight: `remainingDice` is what the settled state will hold. */
+function midAnimation(remaining: number[]): GameState {
+  return { ...whiteMoving(), remainingDice: remaining };
 }
 
 function setup(initial: Props) {
@@ -135,11 +147,6 @@ describe('useBoardPlayInput drag across a turn change', () => {
 });
 
 describe('useBoardPlayInput rapid follow-up taps', () => {
-  /** One die is still in flight: `remainingDice` is what the settled state will hold. */
-  function midAnimation(remaining: number[]): GameState {
-    return { ...whiteMoving(), remainingDice: remaining };
-  }
-
   it('plays a different checker tapped while another move animates', () => {
     const state = midAnimation([5]);
     const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
@@ -229,6 +236,123 @@ describe('useBoardPlayInput rapid follow-up taps', () => {
     });
     rerender({ state, isAnimating: false, isHumanTurn: true });
 
+    expect(actions.doMove).not.toHaveBeenCalled();
+  });
+});
+
+describe('useBoardPlayInput queued input gating', () => {
+  it('ignores taps while a prompt owns the board', () => {
+    const state = midAnimation([5]);
+    const { result, rerender, actions } = setup({
+      state,
+      isAnimating: true,
+      isHumanTurn: true,
+      interactionEnabled: false,
+    });
+
+    act(() => {
+      result.current.handlePointPress(13);
+      result.current.handleBearOffPress();
+      result.current.handleBarPress();
+    });
+    rerender({ state, isAnimating: false, isHumanTurn: true, interactionEnabled: false });
+
+    expect(actions.doMove).not.toHaveBeenCalled();
+    expect(actions.selectPoint).not.toHaveBeenCalled();
+  });
+
+  it('does not replay a queued tap when the settle opens a prompt', () => {
+    const state = midAnimation([5]);
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(13);
+    });
+    // The verdict lands in the same commit that ends the slide: the tap must
+    // not play under the review/prompt.
+    rerender({ state, isAnimating: false, isHumanTurn: true, interactionEnabled: false });
+    expect(actions.doMove).not.toHaveBeenCalled();
+
+    // Re-enabling later must not resurrect the dropped input.
+    rerender({ state, isAnimating: false, isHumanTurn: true, interactionEnabled: true });
+    expect(actions.doMove).not.toHaveBeenCalled();
+    expect(actions.selectPoint).not.toHaveBeenCalled();
+  });
+});
+
+describe('useBoardPlayInput queued destination and drag', () => {
+  it('bears off from a selection queued during the previous move', () => {
+    const base = whiteMoving();
+    const state: GameState = {
+      ...base,
+      dice: [3, 4],
+      remainingDice: [3, 4],
+      selectedPoint: null,
+      points: base.points.map((point, index) => (index === 4
+        ? { player: 'white' as const, count: 1 }
+        : { player: null, count: 0 })),
+    };
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handlePointPress(4);
+      result.current.handleBearOffPress();
+    });
+    rerender({ state, isAnimating: false, isHumanTurn: true });
+
+    // With one checker and 3+4, USBGF max-dice plays 4→1 then bears off 1.
+    expect(actions.doMoveSequence).toHaveBeenCalledWith([
+      expect.objectContaining({ from: 4, to: 1, die: 3 }),
+      expect.objectContaining({ from: 1, to: BEAR_OFF, die: 4 }),
+    ]);
+  });
+
+  it('re-enters from the bar when the bar is tapped during animation', () => {
+    const state: GameState = { ...midAnimation([5]), bar: { white: 1, black: 0 } };
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true });
+
+    act(() => {
+      result.current.handleBarPress();
+    });
+    rerender({ state, isAnimating: false, isHumanTurn: true });
+
+    expect(actions.doMove).toHaveBeenCalledWith(
+      expect.objectContaining({ from: BAR_POINT, to: 20, die: 5 }),
+    );
+  });
+
+  it('clears later queued taps when a queued drag no longer resolves', () => {
+    const animating: GameState = midAnimation([3, 5]);
+    const settled: GameState = midAnimation([5]);
+    const { result, rerender, actions } = setup({
+      state: animating,
+      isAnimating: true,
+      isHumanTurn: true,
+    });
+
+    act(() => {
+      result.current.setBoardDimensions(DIMS);
+      result.current.handleDragStart(24, 0, 0);
+    });
+    const dropOn21 = getCheckerAnchor({
+      pointIndex: 21,
+      dims: DIMS,
+      stackCount: 1,
+      player: 'white',
+    });
+    act(() => {
+      // 24 → 21 is legal with the in-flight 3 but not with the remaining 5.
+      result.current.handleDragEnd(dropOn21.x, dropOn21.y);
+      result.current.handlePointPress(13);
+    });
+
+    rerender({ state: settled, isAnimating: false, isHumanTurn: true });
+    expect(actions.doMove).not.toHaveBeenCalled();
+
+    // A later, unrelated slide in the same turn must not resurface the tap
+    // that was queued behind the dead drag.
+    rerender({ state: settled, isAnimating: true, isHumanTurn: true });
+    rerender({ state: settled, isAnimating: false, isHumanTurn: true });
     expect(actions.doMove).not.toHaveBeenCalled();
   });
 });

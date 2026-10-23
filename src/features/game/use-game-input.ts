@@ -12,7 +12,7 @@ function triggerHaptic(fn: () => Promise<void>) {
   void fn().catch(() => {});
 }
 
-export function useGameInput() {
+export function useGameInput({ interactionEnabled = true }: { interactionEnabled?: boolean } = {}) {
   const posthog = usePostHog();
   const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
 
@@ -49,6 +49,7 @@ export function useGameInput() {
     state,
     isAnimating,
     isHumanTurn,
+    interactionEnabled,
     actions,
     onMoveMade,
   });
