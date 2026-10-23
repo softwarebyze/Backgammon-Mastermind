@@ -31,22 +31,23 @@ export function BlunderMeter({ loss }: { loss: number }) {
       }
       style={styles.wrap}
     >
-      <View style={styles.track}>
-        {BLUNDER_BANDS.map((band, i) => (
-          <View
-            key={band.id}
-            style={[
-              styles.segment,
-              { flex: band.flex, backgroundColor: band.color },
-              i === 0 && styles.segmentFirst,
-              i === BLUNDER_BANDS.length - 1 && styles.segmentLast,
-            ]}
-          />
-        ))}
-        <View
-          testID="guidance-blunder-needle"
-          style={[styles.needle, { left: `${position}%` }]}
-        />
+      <View testID="guidance-blunder-track" style={styles.track}>
+        {/* The rounded clip owns the corners, so the outer ends stay round in RTL. */}
+        <View testID="guidance-blunder-bands" style={styles.bands}>
+          {BLUNDER_BANDS.map(band => (
+            <View
+              key={band.id}
+              style={[styles.segment, { flex: band.flex, backgroundColor: band.color }]}
+            />
+          ))}
+        </View>
+        {/* A row like the bands, so the needle mirrors with them in RTL. */}
+        <View pointerEvents="none" testID="guidance-blunder-needle-row" style={styles.needleRow}>
+          <View testID="guidance-blunder-needle-offset" style={{ width: `${position}%` }} />
+          <View style={styles.needleAnchor}>
+            <View testID="guidance-blunder-needle" style={styles.needle} />
+          </View>
+        </View>
       </View>
       <View style={styles.labels}>
         {BLUNDER_BANDS.map((band, i) => (
@@ -78,29 +79,35 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   track: {
-    flexDirection: 'row',
     height: 10,
+  },
+  bands: {
+    flexDirection: 'row',
+    height: '100%',
     ...continuousRadius(5),
-    overflow: 'visible',
+    overflow: 'hidden',
     backgroundColor: 'rgba(0, 0, 0, 0.35)',
   },
   segment: {
     height: '100%',
   },
-  segmentFirst: {
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
+  needleRow: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
   },
-  segmentLast: {
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
+  // Zero-width column: the 12pt needle centers on the offset's end edge.
+  needleAnchor: {
+    width: 0,
+    alignItems: 'center',
   },
   needle: {
-    position: 'absolute',
-    top: -9,
+    marginTop: -9,
     width: 0,
     height: 0,
-    marginLeft: -6,
     borderLeftWidth: 6,
     borderRightWidth: 6,
     borderTopWidth: 8,
