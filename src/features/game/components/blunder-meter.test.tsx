@@ -42,7 +42,7 @@ describe('blunder meter', () => {
       render(<BlunderMeter loss={0.3} />);
       const offset = screen.getByTestId('guidance-blunder-needle-offset');
       const needleRow = screen.getByTestId('guidance-blunder-needle-row');
-      const track = screen.getByTestId('guidance-blunder-track');
+      const track = screen.getByTestId('guidance-blunder-bands');
       expect(StyleSheet.flatten(needleRow.props.style).flexDirection).toBe('row');
       expect(StyleSheet.flatten(track.props.style).flexDirection).toBe('row');
       // Measured from the row start, never from a physical edge.
@@ -50,6 +50,19 @@ describe('blunder meter', () => {
       const needle = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle').props.style);
       for (const prop of ['left', 'right', 'marginLeft', 'marginRight'] as const)
         expect(needle).not.toHaveProperty(prop);
+    });
+
+    it('rounds the outer ends of the bar, not the ends of single bands', () => {
+      render(<BlunderMeter loss={0.1} />);
+      const bands = screen.getByTestId('guidance-blunder-bands');
+      expect(StyleSheet.flatten(bands.props.style)).toMatchObject({ borderRadius: 5, overflow: 'hidden' });
+      const sideRadii = ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius', 'borderRadius'] as const;
+      expect(bands.children).toHaveLength(BLUNDER_BANDS.length);
+      for (const segment of bands.children as (typeof bands)[]) {
+        const style = StyleSheet.flatten(segment.props.style);
+        for (const prop of sideRadii)
+          expect(style).not.toHaveProperty(prop);
+      }
     });
   });
 

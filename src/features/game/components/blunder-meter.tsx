@@ -32,17 +32,15 @@ export function BlunderMeter({ loss }: { loss: number }) {
       style={styles.wrap}
     >
       <View testID="guidance-blunder-track" style={styles.track}>
-        {BLUNDER_BANDS.map((band, i) => (
-          <View
-            key={band.id}
-            style={[
-              styles.segment,
-              { flex: band.flex, backgroundColor: band.color },
-              i === 0 && styles.segmentFirst,
-              i === BLUNDER_BANDS.length - 1 && styles.segmentLast,
-            ]}
-          />
-        ))}
+        {/* The rounded clip owns the corners, so the outer ends stay round in RTL. */}
+        <View testID="guidance-blunder-bands" style={styles.bands}>
+          {BLUNDER_BANDS.map(band => (
+            <View
+              key={band.id}
+              style={[styles.segment, { flex: band.flex, backgroundColor: band.color }]}
+            />
+          ))}
+        </View>
         {/* A row like the bands, so the needle mirrors with them in RTL. */}
         <View pointerEvents="none" testID="guidance-blunder-needle-row" style={styles.needleRow}>
           <View testID="guidance-blunder-needle-offset" style={{ width: `${position}%` }} />
@@ -81,22 +79,17 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   track: {
-    flexDirection: 'row',
     height: 10,
+  },
+  bands: {
+    flexDirection: 'row',
+    height: '100%',
     ...continuousRadius(5),
-    overflow: 'visible',
+    overflow: 'hidden',
     backgroundColor: 'rgba(0, 0, 0, 0.35)',
   },
   segment: {
     height: '100%',
-  },
-  segmentFirst: {
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-  segmentLast: {
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
   },
   needleRow: {
     position: 'absolute',
