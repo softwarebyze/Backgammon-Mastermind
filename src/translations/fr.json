@@ -280,6 +280,7 @@
     "hub_intro_start": "Nouveau ? Commence par le plateau — la première leçon dure environ 2 minutes.",
     "lesson_complete": "Leçon terminée!",
     "lesson_complete_body": "Bien joué pour {{title}}. La leçon suivante s’appuie sur celle-ci.",
+    "lesson_complete_body_last": "Bien joué pour {{title}}. Vous avez terminé toutes les leçons : faites la vérification rapide, puis jouez votre première partie.",
     "lessons": {
       "bearing_off": {
         "steps": {

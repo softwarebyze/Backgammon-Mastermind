@@ -16,7 +16,7 @@ import {
 } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
-import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
+import { learnCompleteBodyKey, learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
 import { lessonNavigationIcons } from '@/features/learn/lesson-visuals';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
@@ -227,7 +227,7 @@ function LessonScreenBody({
                   {translate('learn.lesson_complete')}
                 </Text>
                 <Text style={styles.completeBody}>
-                  {translate('learn.lesson_complete_body', {
+                  {translate(learnCompleteBodyKey(nextLessonId), {
                     title: translate(lesson.titleKey as TxKeyPath),
                   })}
                 </Text>

@@ -280,6 +280,7 @@
     "hub_intro_start": "Neu hier? Fang mit dem Brett an — die erste Lektion dauert etwa 2 Minuten.",
     "lesson_complete": "Lektion komplett!",
     "lesson_complete_body": "Gut gemacht bei {{title}}. Die nächste Lektion baut darauf auf.",
+    "lesson_complete_body_last": "Gut gemacht bei {{title}}. Das waren alle Lektionen – jetzt noch die Schnellprüfung, dann geht’s ins erste Spiel.",
     "lessons": {
       "bearing_off": {
         "steps": {

@@ -280,6 +280,7 @@
     "hub_intro_start": "İlk kez mi? Tahtayla başla — ilk ders yaklaşık 2 dakika sürer.",
     "lesson_complete": "Azon tamam!",
     "lesson_complete_body": "{{title}} harika gitti. Sonraki ders bunun üzerine kurulu.",
+    "lesson_complete_body_last": "{{title}} harika gitti. Tüm dersler tamamlandı — şimdi kısa bir kontrol, ardından ilk oyun.",
     "lessons": {
       "bearing_off": {
         "steps": {

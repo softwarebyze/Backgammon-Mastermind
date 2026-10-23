@@ -280,6 +280,7 @@
     "hub_intro_start": "처음이신가요? 보드부터 시작하세요. 첫 레슨은 약 2분이면 끝납니다.",
     "lesson_complete": "수업 완료!",
     "lesson_complete_body": "{{title}} 잘했어요. 다음 레슨은 이 내용을 이어갑니다.",
+    "lesson_complete_body_last": "{{title}} 잘했어요. 모든 레슨을 마쳤어요. 빠른 체크를 하고 첫 게임을 시작해 보세요.",
     "lessons": {
       "bearing_off": {
         "steps": {

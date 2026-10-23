@@ -280,6 +280,7 @@
     "hub_intro_start": "Sei nuovo? Inizia dalla scacchiera: la prima lezione dura circa 2 minuti.",
     "lesson_complete": "Lezione completa!",
     "lesson_complete_body": "Ottimo lavoro con {{title}}. La prossima lezione parte da qui.",
+    "lesson_complete_body_last": "Ottimo lavoro con {{title}}. Hai completato tutte le lezioni: fai il controllo rapido, poi gioca la tua prima partita.",
     "lessons": {
       "bearing_off": {
         "steps": {

@@ -280,6 +280,7 @@
     "hub_intro_start": "पहली बार? बोर्ड से शुरू करें — पहला पाठ लगभग 2 मिनट का है।",
     "lesson_complete": "पाठ पूरा!",
     "lesson_complete_body": "{{title}} में बढ़िया काम। अगला पाठ इसी पर आगे बढ़ता है।",
+    "lesson_complete_body_last": "{{title}} में बढ़िया काम। आपने सभी पाठ पूरे कर लिए — अब क्विक चेक दें, फिर अपना पहला गेम खेलें।",
     "lessons": {
       "bearing_off": {
         "steps": {

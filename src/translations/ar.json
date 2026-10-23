@@ -280,6 +280,7 @@
     "hub_intro_start": "أول مرة هنا؟ ابدأ باللوحة — الدرس الأول يستغرق دقيقتين تقريبًا.",
     "lesson_complete": "اكتمل الدرس!",
     "lesson_complete_body": "عمل رائع في {{title}}. الدرس التالي يبني على هذا.",
+    "lesson_complete_body_last": "عمل رائع في {{title}}. أنهيت كل الدروس — أجرِ التحقق السريع، ثم العب أول مباراة لك.",
     "lessons": {
       "bearing_off": {
         "steps": {

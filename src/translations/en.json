@@ -280,6 +280,7 @@
     "hub_intro_start": "New here? Start with the board — the first lesson takes about 2 minutes.",
     "lesson_complete": "Lesson complete!",
     "lesson_complete_body": "Nice work on {{title}}. The next lesson builds on this one.",
+    "lesson_complete_body_last": "Nice work on {{title}}. That’s every lesson — take the quick check, then play your first game.",
     "lessons": {
       "bearing_off": {
         "steps": {

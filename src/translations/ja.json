@@ -280,6 +280,7 @@
     "hub_intro_start": "はじめての方はボードから。最初のレッスンは約2分です。",
     "lesson_complete": "レッスン完了!",
     "lesson_complete_body": "{{title}}、お見事。次のレッスンはこの続きです。",
+    "lesson_complete_body_last": "{{title}}、お見事。これで全レッスン完了です。クイックチェックを済ませたら、初めての対局へ。",
     "lessons": {
       "bearing_off": {
         "steps": {

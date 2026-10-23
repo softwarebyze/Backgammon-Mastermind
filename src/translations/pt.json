@@ -280,6 +280,7 @@
     "hub_intro_start": "É novo por aqui? Comece pelo tabuleiro — a primeira lição leva cerca de 2 minutos.",
     "lesson_complete": "Lição completa!",
     "lesson_complete_body": "Bom trabalho em {{title}}. A próxima lição parte daqui.",
+    "lesson_complete_body_last": "Bom trabalho em {{title}}. Você concluiu todas as lições — faça a verificação rápida e depois jogue sua primeira partida.",
     "lessons": {
       "bearing_off": {
         "steps": {

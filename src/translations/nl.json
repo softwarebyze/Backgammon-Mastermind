@@ -280,6 +280,7 @@
     "hub_intro_start": "Nieuw hier? Begin met het bord — de eerste les duurt ongeveer 2 minuten.",
     "lesson_complete": "Les voltooid!",
     "lesson_complete_body": "Goed gedaan met {{title}}. De volgende les bouwt hierop voort.",
+    "lesson_complete_body_last": "Goed gedaan met {{title}}. Dat waren alle lessen — doe de snelle check en speel dan je eerste partij.",
     "lessons": {
       "bearing_off": {
         "steps": {

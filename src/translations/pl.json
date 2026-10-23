@@ -280,6 +280,7 @@
     "hub_intro_start": "Pierwszy raz? Zacznij od planszy — pierwsza lekcja trwa około 2 minut.",
     "lesson_complete": "Lekcja zakończona!",
     "lesson_complete_body": "Świetna robota: {{title}}. Następna lekcja opiera się na tej.",
+    "lesson_complete_body_last": "Świetna robota: {{title}}. To już wszystkie lekcje — zrób szybki sprawdzian, a potem zagraj pierwszą partię.",
     "lessons": {
       "bearing_off": {
         "steps": {

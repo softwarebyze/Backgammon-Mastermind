@@ -280,6 +280,7 @@
     "hub_intro_start": "פעם ראשונה? התחל מהלוח — השיעור הראשון נמשך בערך 2 דקות.",
     "lesson_complete": "שיעור שלם!",
     "lesson_complete_body": "עבודה יפה ב{{title}}. השיעור הבא ממשיך מכאן.",
+    "lesson_complete_body_last": "עבודה יפה ב{{title}}. סיימת את כל השיעורים — נשארה רק בדיקה מהירה, ואז המשחק הראשון שלך.",
     "lessons": {
       "bearing_off": {
         "steps": {

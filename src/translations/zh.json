@@ -280,6 +280,7 @@
     "hub_intro_start": "第一次来？从棋盘开始——第一课大约需要 2 分钟。",
     "lesson_complete": "课程完成!",
     "lesson_complete_body": "{{title}} 做得很好。下一课会在此基础上继续。",
+    "lesson_complete_body_last": "{{title}} 做得很好。所有课程都已完成——先做个快速检查，然后开始你的第一局。",
     "lessons": {
       "bearing_off": {
         "steps": {

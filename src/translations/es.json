@@ -280,6 +280,7 @@
     "hub_intro_start": "¿Primera vez? Empieza por el tablero: la primera lección dura unos 2 minutos.",
     "lesson_complete": "Lección completa!",
     "lesson_complete_body": "Buen trabajo en {{title}}. La siguiente lección se apoya en esta.",
+    "lesson_complete_body_last": "Buen trabajo en {{title}}. Ya completaste todas las lecciones: haz la prueba rápida y luego juega tu primera partida.",
     "lessons": {
       "bearing_off": {
         "steps": {
