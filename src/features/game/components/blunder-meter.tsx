@@ -31,7 +31,7 @@ export function BlunderMeter({ loss }: { loss: number }) {
       }
       style={styles.wrap}
     >
-      <View style={styles.track}>
+      <View testID="guidance-blunder-track" style={styles.track}>
         {BLUNDER_BANDS.map((band, i) => (
           <View
             key={band.id}
@@ -43,10 +43,13 @@ export function BlunderMeter({ loss }: { loss: number }) {
             ]}
           />
         ))}
-        <View
-          testID="guidance-blunder-needle"
-          style={[styles.needle, { left: `${position}%` }]}
-        />
+        {/* A row like the bands, so the needle mirrors with them in RTL. */}
+        <View pointerEvents="none" testID="guidance-blunder-needle-row" style={styles.needleRow}>
+          <View testID="guidance-blunder-needle-offset" style={{ width: `${position}%` }} />
+          <View style={styles.needleAnchor}>
+            <View testID="guidance-blunder-needle" style={styles.needle} />
+          </View>
+        </View>
       </View>
       <View style={styles.labels}>
         {BLUNDER_BANDS.map((band, i) => (
@@ -95,12 +98,23 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
   },
-  needle: {
+  needleRow: {
     position: 'absolute',
-    top: -9,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+  },
+  // Zero-width column: the 12pt needle centers on the offset's end edge.
+  needleAnchor: {
+    width: 0,
+    alignItems: 'center',
+  },
+  needle: {
+    marginTop: -9,
     width: 0,
     height: 0,
-    marginLeft: -6,
     borderLeftWidth: 6,
     borderRightWidth: 6,
     borderTopWidth: 8,
