@@ -1,0 +1,46 @@
+# A second checker tapped while the first move is still animating must still
+# play. The preset deals 3-1 on the standard setup; tap 8 -> 5 with the 3, then
+# queue 6 -> 5 with the 1 before the first slide lands.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-e2e-undo-redo-3-1
+    timeout: 60000
+- tapOn:
+    id: developer-preset-e2e-undo-redo-3-1
+- extendedWaitUntil:
+    visible:
+      id: point-8
+    timeout: 45000
+- assertVisible: 'Point 8, 3 white checkers'
+- assertVisible: 'Point 6, 5 white checkers'
+- takeScreenshot: rapid-01-before-move
+# Tap 8 -> 5 and do not wait for the checker to land.
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-5
+    waitToSettleTimeoutMs: 0
+# Follow up with 6 -> 5 while 8 -> 5 is still sliding. A source tap with a
+# single destination auto-plays once the first slide lands. The element-relative
+# point skips Maestro's ~750ms Android pre-tap settle wait; without it the tap
+# lands after the slide and no queueing happens.
+- tapOn:
+    id: point-6
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- extendedWaitUntil:
+    visible: 'Point 6, 4 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 5, 2 white checkers'
+- assertVisible: 'Point 8, 2 white checkers'
+- takeScreenshot: rapid-02-after-queued-taps

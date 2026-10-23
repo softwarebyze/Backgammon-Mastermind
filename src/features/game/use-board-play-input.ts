@@ -1,5 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { PendingDragDrop } from '@/features/game/pending-drag-drop';
+import type { BoardTapResolution } from '@/features/game/resolve-board-tap';
 import type { AnimatedMoveOpts } from '@/features/game/use-animated-moves';
 import type { GameState, Move } from '@/lib/game';
 import * as Haptics from 'expo-haptics';
@@ -12,6 +13,7 @@ import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { dragReleaseAnchor } from '@/features/game/drag-overlay-offset';
 import { resolveFatFingerDrop } from '@/features/game/hit-test-board';
 import { resolvePendingDragDrop } from '@/features/game/pending-drag-drop';
+import { resolveBoardTap } from '@/features/game/resolve-board-tap';
 import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
 import { getSingleDestinationSequence } from '@/lib/game/single-move';
 import { translate } from '@/lib/i18n';
@@ -22,6 +24,18 @@ function triggerHaptic(fn: () => Promise<void>) {
 }
 
 type InputNudge = 'roll' | null;
+
+/**
+ * Inputs captured while a move animation owns the board. Replayed in order when
+ * it settles, so a fast player can keep tapping through their turn.
+ */
+type QueuedInput
+  = | { kind: 'point'; point: number }
+    | { kind: 'dest'; to: number }
+    | { kind: 'drag'; from: number; to: number; fromAnchor: PendingDragDrop['fromAnchor'] };
+
+/** Enough for any legal turn; guards against a stuck pointer flooding the queue. */
+const MAX_QUEUED_INPUTS = 12;
 
 const NUDGE_MS = 2200;
 
@@ -43,6 +57,11 @@ type UseBoardPlayInputArgs = {
   isHumanTurn: boolean;
   /** When false, pre-roll taps are ignored (lessons lock dice). Default true. */
   enableRollNudge?: boolean;
+  /**
+   * When false, a tutor prompt or move review owns the board: ignore taps and
+   * drop queued input instead of replaying it under the overlay. Default true.
+   */
+  interactionEnabled?: boolean;
   actions: BoardPlayActions;
   /** Optional analytics hook — omitted in Learn (uses its own events). */
   onMoveMade?: (inputType: BoardMoveInputType) => void;
@@ -58,6 +77,7 @@ export function useBoardPlayInput({
   isAnimating,
   isHumanTurn,
   enableRollNudge = true,
+  interactionEnabled = true,
   actions,
   onMoveMade,
 }: UseBoardPlayInputArgs) {
@@ -107,8 +127,26 @@ export function useBoardPlayInput({
   const stateRef = useRef(state);
   stateRef.current = state;
   const boardDimsRef = useRef<BoardDimensions | null>(null);
-  const pendingDropRef = useRef<PendingDragDrop | null>(null);
+  const queuedInputsRef = useRef<QueuedInput[]>([]);
+  /** A queued input belongs to one roll — never replay it into a new turn or game. */
+  const queueTurnKey = `${state?.mode}|${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}`;
+  const queueTurnKeyRef = useRef(queueTurnKey);
+  if (queueTurnKeyRef.current !== queueTurnKey) {
+    queueTurnKeyRef.current = queueTurnKey;
+    queuedInputsRef.current = [];
+  }
+  const interactionEnabledRef = useRef(interactionEnabled);
+  interactionEnabledRef.current = interactionEnabled;
+  // A prompt or review may open in the same commit the slide settles. Drop the
+  // queue immediately so the drain effect cannot replay it under the overlay.
+  if (!interactionEnabled) {
+    queuedInputsRef.current = [];
+  }
   const wasAnimatingRef = useRef(false);
+  const isAnimatingRef = useRef(isAnimating);
+  isAnimatingRef.current = isAnimating;
+  const isHumanTurnRef = useRef(isHumanTurn);
+  isHumanTurnRef.current = isHumanTurn;
   const [inputNudge, setInputNudge] = useState<InputNudge>(null);
   const nudgeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -116,12 +154,14 @@ export function useBoardPlayInput({
   const canInteract = !!state
     && state.phase === 'moving'
     && !isAnimating
-    && isHumanTurn;
+    && isHumanTurn
+    && interactionEnabled;
 
   /** Drag may start while another checker is still sliding; drop queues until settle. */
   const canDrag = !!state
     && state.phase === 'moving'
-    && isHumanTurn;
+    && isHumanTurn
+    && interactionEnabled;
 
   const nudgeRoll = useCallback(() => {
     if (!enableRollNudge) {
@@ -194,48 +234,146 @@ export function useBoardPlayInput({
     }
   }, [doMove, doMoveSequence]);
 
-  // After an in-flight move commits, play any drop that was queued during the slide.
-  useEffect(() => {
-    if (wasAnimatingRef.current && !isAnimating) {
-      const pending = pendingDropRef.current;
-      pendingDropRef.current = null;
-      const s = stateRef.current;
-      if (pending && s && s.phase === 'moving' && isHumanTurn) {
-        const resolved = resolvePendingDragDrop(s, pending);
+  const enqueueInput = useCallback((input: QueuedInput) => {
+    if (queuedInputsRef.current.length >= MAX_QUEUED_INPUTS) {
+      return;
+    }
+    queuedInputsRef.current.push(input);
+  }, []);
+
+  const clearQueuedInputs = useCallback(() => {
+    queuedInputsRef.current = [];
+  }, []);
+
+  /** Replay one queued input against the settled board; returns true while the turn continues. */
+  const applyBoardTap = useCallback((
+    action: BoardTapResolution,
+    selection: number | null,
+  ): { selection: number | null; stop: boolean } => {
+    switch (action.type) {
+      case 'nudge':
+        nudgeRoll();
+        return { selection, stop: true };
+      case 'clear':
+        if (selection !== null) {
+          selectPoint(null);
+        }
+        return { selection: null, stop: false };
+      case 'noop':
+        triggerHaptic(() => Haptics.selectionAsync());
+        return { selection, stop: false };
+      case 'select':
+        triggerHaptic(() => Haptics.selectionAsync());
+        selectPoint(action.point);
+        return { selection: action.point, stop: false };
+      case 'play':
+        playTapSequence(action.sequence);
+        return { selection, stop: true };
+    }
+  }, [nudgeRoll, playTapSequence, selectPoint]);
+
+  const drainQueuedInputs = useCallback(() => {
+    const s = stateRef.current;
+    if (
+      !s
+      || s.phase !== 'moving'
+      || !isHumanTurnRef.current
+      || !interactionEnabledRef.current
+    ) {
+      clearQueuedInputs();
+      return;
+    }
+
+    let selection = s.selectedPoint;
+    while (queuedInputsRef.current.length > 0) {
+      const live = stateRef.current;
+      if (
+        !live
+        || live.phase !== 'moving'
+        || !isHumanTurnRef.current
+        || !interactionEnabledRef.current
+      ) {
+        clearQueuedInputs();
+        return;
+      }
+      const input = queuedInputsRef.current.shift()!;
+
+      if (input.kind === 'drag') {
+        const resolved = resolvePendingDragDrop(live, {
+          from: input.from,
+          to: input.to,
+          fromAnchor: input.fromAnchor,
+        });
         if (resolved) {
-          playResolvedDrag(resolved, pending.fromAnchor);
+          playResolvedDrag(resolved, input.fromAnchor);
         }
         else {
-          triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+          if (live.selectedPoint !== null) {
+            selectPoint(null);
+          }
+          // The board moved on while this drag was held. Anything queued behind
+          // it was aimed at the same pre-settle position, so do not let it
+          // resurface after an unrelated animation later in the turn.
+          clearQueuedInputs();
         }
+        return;
+      }
+
+      if (input.kind === 'dest') {
+        if (selection === null) {
+          continue;
+        }
+        const resolved = resolveDragMove(live, selection, input.to);
+        if (resolved) {
+          playTapSequence(
+            resolved.kind === 'single' ? [resolved.move] : resolved.moves,
+            'bear_off',
+          );
+        }
+        else {
+          clearQueuedInputs();
+        }
+        return;
+      }
+
+      const action = resolveBoardTap(live, selection, input.point);
+      const next = applyBoardTap(action, selection);
+      selection = next.selection;
+      if (next.stop) {
+        return;
       }
     }
+  }, [applyBoardTap, clearQueuedInputs, playResolvedDrag, playTapSequence, selectPoint]);
+
+  // After an in-flight move commits, replay queued taps, drops, and selections in order.
+  useEffect(() => {
+    if (wasAnimatingRef.current && !isAnimating) {
+      drainQueuedInputs();
+    }
     wasAnimatingRef.current = isAnimating;
-  }, [isAnimating, isHumanTurn, playResolvedDrag]);
+  }, [isAnimating, drainQueuedInputs]);
 
   const handlePointPress = useCallback(
     (pointIndex: number) => {
       // Touch-down already selected this source; stale `state` would select again and flicker.
-      if (touchSelectedFromRef.current === pointIndex) {
+      const swallowTouchSelection = touchSelectedFromRef.current === pointIndex;
+      if (swallowTouchSelection) {
         touchSelectedFromRef.current = null;
         ignoreNextBoardPressRef.current = true;
-        const live = stateRef.current;
-        if (live && !isAnimating && isHumanTurn && live.phase === 'moving') {
-          const sequence = getSingleDestinationSequence(live, pointIndex);
-          if (sequence) {
-            playTapSequence(sequence);
-          }
-        }
+      }
+
+      const live = stateRef.current;
+      if (!live || !isHumanTurnRef.current || !interactionEnabledRef.current) {
         return;
       }
-      if (!state || isAnimating) {
-        return;
-      }
-      if (!isHumanTurn) {
-        return;
-      }
-      if (needsRollFirst(state.phase)) {
+      if (needsRollFirst(live.phase)) {
         nudgeRoll();
+        return;
+      }
+      // The wrapping board Pressable sees this tap too; always swallow its clear.
+      ignoreNextBoardPressRef.current = true;
+      if (isAnimatingRef.current) {
+        enqueueInput({ kind: 'point', point: pointIndex });
         return;
       }
       if (!canInteract) {
@@ -243,40 +381,36 @@ export function useBoardPlayInput({
       }
 
       setPreviewTarget(null);
-      ignoreNextBoardPressRef.current = true;
 
-      if (state.selectedPoint !== null) {
-        if (state.selectedPoint === pointIndex) {
-          selectPoint(null);
-          return;
-        }
-        const move = state.legalMovesForSelected.find(m => m.to === pointIndex);
-        if (move) {
-          playTapSequence([move]);
-          return;
-        }
-        const sequence = findMoveSequence(state, state.selectedPoint, pointIndex);
+      if (swallowTouchSelection && live.phase === 'moving') {
+        const sequence = getSingleDestinationSequence(live, pointIndex);
         if (sequence) {
           playTapSequence(sequence);
-          return;
         }
-      }
-
-      const onlyDest = getSingleDestinationSequence(state, pointIndex);
-      if (onlyDest) {
-        playTapSequence(onlyDest);
         return;
       }
 
-      triggerHaptic(() => Haptics.selectionAsync());
-      selectPoint(pointIndex);
+      applyBoardTap(resolveBoardTap(live, live.selectedPoint, pointIndex), live.selectedPoint);
     },
-    [state, isAnimating, isHumanTurn, canInteract, playTapSequence, selectPoint, setPreviewTarget, nudgeRoll],
+    [
+      applyBoardTap,
+      canInteract,
+      enqueueInput,
+      nudgeRoll,
+      playTapSequence,
+      setPreviewTarget,
+    ],
   );
 
   const handlePointPressIn = useCallback(
     (pointIndex: number) => {
-      if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
+      if (
+        !interactionEnabled
+        || !state
+        || state.phase !== 'moving'
+        || state.selectedPoint === null
+        || isAnimating
+      ) {
         return;
       }
       const isSingle = state.legalMovesForSelected.some(m => m.to === pointIndex);
@@ -285,7 +419,7 @@ export function useBoardPlayInput({
         setPreviewTarget(pointIndex);
       }
     },
-    [state, isAnimating, setPreviewTarget],
+    [interactionEnabled, state, isAnimating, setPreviewTarget],
   );
 
   const handlePointPressOut = useCallback(() => {
@@ -379,15 +513,15 @@ export function useBoardPlayInput({
     const target = resolveFatFingerDrop({ x: boardX, y: boardY, state: s, from, dims });
     if (target === null || target === from) {
       endDrag();
-      if (!isAnimating) {
+      if (!isAnimatingRef.current) {
         selectPoint(null);
       }
       return;
     }
     const fromAnchor = dragReleaseAnchor(boardX, boardY, dims.checkerSize);
-    if (isAnimating) {
+    if (isAnimatingRef.current) {
       // State still has the in-flight die — re-resolve after settle.
-      pendingDropRef.current = { from, to: target, fromAnchor };
+      enqueueInput({ kind: 'drag', from, to: target, fromAnchor });
       endDrag();
       return;
     }
@@ -399,48 +533,67 @@ export function useBoardPlayInput({
       return;
     }
     playResolvedDrag(resolved, fromAnchor);
-  }, [canDrag, isAnimating, liveDragFrom, playResolvedDrag, selectPoint, endDrag]);
+  }, [canDrag, enqueueInput, liveDragFrom, playResolvedDrag, selectPoint, endDrag]);
 
   const handleDragCancel = useCallback(() => {
     endDrag();
   }, [endDrag]);
 
   const handleBearOffPress = useCallback(() => {
-    if (!state || state.phase !== 'moving' || state.selectedPoint === null || isAnimating) {
+    const live = stateRef.current;
+    if (
+      !live
+      || !isHumanTurnRef.current
+      || !interactionEnabledRef.current
+      || live.phase !== 'moving'
+    ) {
       return;
     }
-    const move = state.legalMovesForSelected.find(m => m.to === BEAR_OFF);
+    if (isAnimatingRef.current) {
+      // Resolve against the selection in effect when the queue drains.
+      enqueueInput({ kind: 'dest', to: BEAR_OFF });
+      return;
+    }
+    if (live.selectedPoint === null) {
+      return;
+    }
+    const move = live.legalMovesForSelected.find(m => m.to === BEAR_OFF);
     if (move) {
       playTapSequence([move], 'bear_off');
       return;
     }
-    const sequence = findMoveSequence(state, state.selectedPoint, BEAR_OFF);
+    const sequence = findMoveSequence(live, live.selectedPoint, BEAR_OFF);
     if (sequence) {
       playTapSequence(sequence, 'bear_off');
     }
-  }, [state, playTapSequence, isAnimating]);
+  }, [enqueueInput, playTapSequence]);
 
   const handleBarPress = useCallback(() => {
-    if (!state || isAnimating || !isHumanTurn) {
+    const live = stateRef.current;
+    if (!live || !isHumanTurnRef.current || !interactionEnabledRef.current) {
       return;
     }
-    if (needsRollFirst(state.phase)) {
+    if (needsRollFirst(live.phase)) {
       nudgeRoll();
       return;
     }
     if (!canInteract) {
+      if (isAnimatingRef.current && live.bar[live.currentPlayer] > 0) {
+        ignoreNextBoardPressRef.current = true;
+        enqueueInput({ kind: 'point', point: 0 });
+      }
       return;
     }
-    if (state.bar[state.currentPlayer] === 0) {
+    if (live.bar[live.currentPlayer] === 0) {
       return;
     }
 
     ignoreNextBoardPressRef.current = true;
 
-    if (state.selectedPoint === 0) {
+    if (live.selectedPoint === 0) {
       if (touchSelectedFromRef.current === 0) {
         touchSelectedFromRef.current = null;
-        const onlyDest = getSingleDestinationSequence(state, 0);
+        const onlyDest = getSingleDestinationSequence(live, 0);
         if (onlyDest) {
           playTapSequence(onlyDest);
         }
@@ -450,12 +603,12 @@ export function useBoardPlayInput({
       return;
     }
 
-    const barMoves = getLegalMoves(state).filter(m => m.from === 0);
+    const barMoves = getLegalMoves(live).filter(m => m.from === 0);
     if (barMoves.length === 0) {
       return;
     }
 
-    const onlyDest = getSingleDestinationSequence(state, 0);
+    const onlyDest = getSingleDestinationSequence(live, 0);
     if (onlyDest) {
       playTapSequence(onlyDest);
       return;
@@ -463,23 +616,31 @@ export function useBoardPlayInput({
 
     triggerHaptic(() => Haptics.selectionAsync());
     selectPoint(0);
-  }, [state, isAnimating, isHumanTurn, canInteract, playTapSequence, selectPoint, nudgeRoll]);
+  }, [canInteract, enqueueInput, nudgeRoll, playTapSequence, selectPoint]);
 
   const handleBoardPress = useCallback(() => {
     if (ignoreNextBoardPressRef.current) {
       ignoreNextBoardPressRef.current = false;
       return;
     }
-    if (!state || state.phase !== 'moving' || isAnimating) {
+    const live = stateRef.current;
+    if (!live) {
+      return;
+    }
+    if (isAnimatingRef.current) {
+      clearQueuedInputs();
+      return;
+    }
+    if (live.phase !== 'moving') {
       return;
     }
     setPreviewTarget(null);
     selectPoint(null);
-  }, [state, selectPoint, isAnimating, setPreviewTarget]);
+  }, [clearQueuedInputs, selectPoint, setPreviewTarget]);
 
   const clearPendingDrop = useCallback(() => {
-    pendingDropRef.current = null;
-  }, []);
+    clearQueuedInputs();
+  }, [clearQueuedInputs]);
 
   return {
     previewTarget,
