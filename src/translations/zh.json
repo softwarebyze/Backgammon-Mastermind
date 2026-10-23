@@ -246,13 +246,16 @@
     "vs_computer_sub": "与电脑对战"
   },
   "learn": {
+    "back": "返回",
     "back_to_hub": "所有教训",
     "continue": "继续",
     "feedback": {
+      "correct_title": "正确！",
       "hint_nudge": "需要一击吗? 寻找突出的斑点。",
       "illegal": "尝试一个突出的点——或磁带提示.",
       "legal_but_wrong": "这在真正的游戏中是合法的。 在这里,试试教这个想法的动作。",
-      "move_progress": "不错...{{done}}页:1{{needed}}移动完成。"
+      "move_progress": "不错——已完成 {{done}}/{{needed}} 步。",
+      "try_again_title": "还差一点"
     },
     "graduation": {
       "body": "你知道目标,董事会, 如何转动工作,击球,和轴承离开。 快速检查,然后你的第一个真正的游戏。",
@@ -273,7 +276,11 @@
     "home_cta_quiz": "快速检查左边——然后播放",
     "home_cta_ready": "你准备好了,玩个真正的游戏",
     "home_cta_sub": "初学者的互动经验教训",
+    "hub_intro_done": "所有课程都完成了。可以开始真正的对局了。",
+    "hub_intro_start": "第一次来？从棋盘开始——第一课大约需要 2 分钟。",
     "lesson_complete": "课程完成!",
+    "lesson_complete_body": "{{title}} 做得很好。下一课会在此基础上继续。",
+    "lesson_complete_body_last": "{{title}} 做得很好。所有课程都已完成——先做个快速检查，然后开始你的第一局。",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +411,7 @@
           }
         },
         "subtitle": "学会看谁在比赛中领先",
-        "title": "点数：比赛分数"
+        "title": "点数计算"
       },
       "strategies": {
         "steps": {
@@ -428,7 +435,7 @@
           }
         },
         "subtitle": "认出经典计划",
-        "title": "对局计划"
+        "title": "策略"
       }
     },
     "locked": "先完成上一课",
@@ -479,6 +486,7 @@
     },
     "replay": "重播",
     "skip_to_play": "跳过播放",
+    "start": "开始",
     "step_progress": "第 {{current}} 步，共 {{total}} 步",
     "subtitle": "简短的互动课程——然后你就准备好了",
     "title": "学会演奏"

@@ -246,13 +246,16 @@
     "vs_computer_sub": "Jouez contre l’ordinateur"
   },
   "learn": {
+    "back": "Retour",
     "back_to_hub": "Toutes les leçons",
     "continue": "Continuer",
     "feedback": {
+      "correct_title": "Correct !",
       "hint_nudge": "Besoin d'un coup de pouce ? Cherchez les endroits surlignés.",
       "illegal": "Essayez un point surligné — ou appuyez sur Conseil.",
       "legal_but_wrong": "C'est légal dans un vrai jeu — ici, essayez le mouvement qui enseigne cette idée.",
-      "move_progress": "Bien — {{done}} mouvements sur {{needed}} effectués."
+      "move_progress": "Bien — {{done}} mouvements sur {{needed}} effectués.",
+      "try_again_title": "Pas tout à fait"
     },
     "graduation": {
       "body": "Tu connais le but, le conseil, comment tourne le travail, frappe et recule. Une vérification rapide — puis votre premier vrai jeu.",
@@ -273,7 +276,11 @@
     "home_cta_quiz": "Cochez à gauche — puis jouez",
     "home_cta_ready": "Vous êtes prêt — jouer un vrai jeu",
     "home_cta_sub": "Cours interactifs pour débutants",
+    "hub_intro_done": "Toutes les leçons terminées. Tu es prêt pour une vraie partie.",
+    "hub_intro_start": "Nouveau ? Commence par le plateau — la première leçon dure environ 2 minutes.",
     "lesson_complete": "Leçon terminée!",
+    "lesson_complete_body": "Bien joué pour {{title}}. La leçon suivante s’appuie sur celle-ci.",
+    "lesson_complete_body_last": "Bien joué pour {{title}}. Vous avez terminé toutes les leçons : faites la vérification rapide, puis jouez votre première partie.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +411,7 @@
           }
         },
         "subtitle": "Voir qui mène la course",
-        "title": "Compte de pips : le score"
+        "title": "Comptage des pips"
       },
       "strategies": {
         "steps": {
@@ -428,7 +435,7 @@
           }
         },
         "subtitle": "Reconnaître les plans de jeu classiques",
-        "title": "Plans de jeu"
+        "title": "Stratégies"
       }
     },
     "locked": "Compléter la leçon précédente d'abord",
@@ -479,6 +486,7 @@
     },
     "replay": "Rejouer",
     "skip_to_play": "Sauter pour jouer",
+    "start": "Commencer",
     "step_progress": "Étape {{current}} sur {{total}}",
     "subtitle": "Courtes leçons interactives — puis vous êtes prêt",
     "title": "Apprendre à jouer"

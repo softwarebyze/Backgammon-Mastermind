@@ -246,13 +246,16 @@
     "vs_computer_sub": "Zagraj przeciwko komputerowi"
   },
   "learn": {
+    "back": "Wstecz",
     "back_to_hub": "Wszystkie lekcje",
     "continue": "Kontynuuj",
     "feedback": {
+      "correct_title": "Dobrze!",
       "hint_nudge": "Potrzebujesz kuksańca? Szukaj zaznaczonych miejsc.",
       "illegal": "Wypróbuj zaznaczony punkt - lub dotknij podpowiedzi.",
       "legal_but_wrong": "To jest legalne w prawdziwej grze - tutaj, spróbuj ruchu, który uczy ten pomysł.",
-      "move_progress": "Nieźle.{{done}}z{{needed}}Wykonane ruchy."
+      "move_progress": "Nieźle — wykonano {{done}} z {{needed}} ruchów.",
+      "try_again_title": "Niezupełnie"
     },
     "graduation": {
       "body": "Znasz cel, tablicę, jak się obraca, uderza i odjeżdża. Szybkie sprawdzenie - potem twoja pierwsza prawdziwa gra.",
@@ -273,7 +276,11 @@
     "home_cta_quiz": "Szybkie sprawdzenie w lewo - następnie grać",
     "home_cta_ready": "Jesteś gotowy - zagraj prawdziwą grę",
     "home_cta_sub": "Interaktywne lekcje dla początkujących",
+    "hub_intro_done": "Wszystkie lekcje ukończone. Czas na prawdziwą partię.",
+    "hub_intro_start": "Pierwszy raz? Zacznij od planszy — pierwsza lekcja trwa około 2 minut.",
     "lesson_complete": "Lekcja zakończona!",
+    "lesson_complete_body": "Świetna robota: {{title}}. Następna lekcja opiera się na tej.",
+    "lesson_complete_body_last": "Świetna robota: {{title}}. To już wszystkie lekcje — zrób szybki sprawdzian, a potem zagraj pierwszą partię.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +411,7 @@
           }
         },
         "subtitle": "Naucz się czytać, kto prowadzi w wyścigu",
-        "title": "Liczba pipów: wynik wyścigu"
+        "title": "Liczenie pipów"
       },
       "strategies": {
         "steps": {
@@ -428,7 +435,7 @@
           }
         },
         "subtitle": "Rozpoznaj klasyczne plany gry",
-        "title": "Plany gry"
+        "title": "Strategie"
       }
     },
     "locked": "Najpierw ukończ poprzednią lekcję",
@@ -479,6 +486,7 @@
     },
     "replay": "Powtórz",
     "skip_to_play": "Przejdź do gry",
+    "start": "Zacznij",
     "step_progress": "Krok {{current}} z {{total}}",
     "subtitle": "Krótkie interaktywne lekcje — potem jesteś gotowy",
     "title": "Naucz się grać"

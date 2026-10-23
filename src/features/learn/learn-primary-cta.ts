@@ -39,3 +39,12 @@ export function learnPrimaryCtaKey(kind: LearnPrimaryKind):
       return 'learn.continue';
   }
 }
+
+/** Completion-card copy: the final lesson points to the quiz, not a next lesson. */
+export function learnCompleteBodyKey(nextLessonId: LessonId | 'graduation' | null):
+  | 'learn.lesson_complete_body'
+  | 'learn.lesson_complete_body_last' {
+  return nextLessonId === 'graduation'
+    ? 'learn.lesson_complete_body_last'
+    : 'learn.lesson_complete_body';
+}
