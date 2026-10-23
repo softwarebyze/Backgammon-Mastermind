@@ -2,16 +2,12 @@
 # Output: ./android-test.apk (from android/app/build/outputs/apk/release/app-release.apk)
 
 name: 'Setup JDK + GRADLE + Generate APK'
-description: Build an embedded Release APK for Maestro or a Metro Debug APK for Screenmap
+description: Prebuild native project and assemble a preview Release APK for E2E
 inputs:
   APP_ENV:
     description: 'APP_ENV (one of): development, preview, production'
     required: true
     default: preview
-  APK_VARIANT:
-    description: 'release (embedded JS, no dev client) or debug (Metro and dev client)'
-    required: false
-    default: release
 
 runs:
   using: composite
@@ -27,17 +23,13 @@ runs:
       run: pnpm brand:generate
       shell: bash
 
-    - name: Prebuild native project
+    - name: Prebuild native project (E2E — no expo-dev-client)
       run: |
         # The Release APK embeds its JS bundle and runs without Metro. Leaving
         # expo-dev-client linked here makes its launcher cast the production
         # Expo Updates controller to UpdatesDevLauncherInterface and crash
         # before React starts, so omit the dev client from this CI-only build.
-        case "${{ inputs.APK_VARIANT }}" in
-          release) pnpm remove expo-dev-client ;;
-          debug) ;; # Screenmap connects the dev client to Metro.
-          *) echo "::error::APK_VARIANT must be release or debug"; exit 1 ;;
-        esac
+        pnpm remove expo-dev-client
         # app-icon-badge + Android icon generation can intermittently fail with
         # "Could not find MIME for Buffer <null>" on a cold CI checkout.
         for attempt in 1 2 3; do
@@ -67,9 +59,8 @@ runs:
           # object causes a ClassCastException while configuring the Android build.
           sed -i '/^react {/i ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native").absolutePath\n' "$APP_GRADLE"
         fi
-        # Screenmap needs Debug to request JS from Metro. Maestro's Release
-        # build embeds JS and must continue to run independently of Metro.
-        if [ "${{ inputs.APK_VARIANT }}" = release ] && ! grep -q 'debuggableVariants = \[\]' "$APP_GRADLE"; then
+        # Embed the JS bundle in the debug APK so Maestro can run without Metro.
+        if ! grep -q 'debuggableVariants = \[\]' "$APP_GRADLE"; then
           sed -i '/bundleCommand = "export:embed"/a\    debuggableVariants = []' "$APP_GRADLE"
         fi
       shell: bash
@@ -80,6 +71,6 @@ runs:
         gradle-version: wrapper
         cache-read-only: false
 
-    - name: Build test APK
-      run: bash .github/scripts/assemble-android-test-apk.sh "$GITHUB_WORKSPACE" "${{ inputs.APK_VARIANT }}"
+    - name: Build preview Release test APK (embedded JS, no Metro)
+      run: bash .github/scripts/assemble-android-test-apk.sh "$GITHUB_WORKSPACE"
       shell: bash
