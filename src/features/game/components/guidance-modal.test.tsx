@@ -1,10 +1,13 @@
 import type { GuidanceSession } from '../guidance-store';
 
+import { StyleSheet } from 'react-native';
+
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, render, screen, within } from '@/lib/test-utils';
 
 import { clearGuidance, getGuidance, showGuidance } from '../guidance-store';
 import { GuidanceModal } from './guidance-modal';
+import { CARD_GUTTER } from './guidance-modal-layout';
 
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),
@@ -116,6 +119,16 @@ describe('guidance modal question', () => {
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
     expect(screen.getByTestId('guidance-keep-move')).toBeTruthy();
     expect(screen.getByTestId('guidance-turn-off')).toBeTruthy();
+  });
+
+  it('keeps the side gutter inside the scroll view so its clip edge clears the buttons', () => {
+    renderQuestion();
+
+    const card = screen.getByTestId('guidance-modal');
+    expect(StyleSheet.flatten(card.props.style)).not.toHaveProperty('padding');
+    expect(StyleSheet.flatten(card.props.style)).not.toHaveProperty('paddingHorizontal');
+    const scroll = screen.getByTestId('guidance-modal-scroll');
+    expect(StyleSheet.flatten(scroll.props.contentContainerStyle)).toMatchObject({ paddingHorizontal: CARD_GUTTER });
   });
 
   it('show my move reveals only the player path; the best move stays hidden', () => {
