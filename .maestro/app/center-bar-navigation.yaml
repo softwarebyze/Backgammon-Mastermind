@@ -27,6 +27,10 @@ tags:
 - extendedWaitUntil:
     visible: 'Bar, 7 white checkers, 6 black checkers'
     timeout: 45000
+- assertVisible:
+    id: pip-count-black
+- assertVisible:
+    id: pip-count-white
 - takeScreenshot: 01-center-bar-portrait
 - assertNotVisible: '.*[▸◂].*'
 - tapOn:
@@ -78,7 +82,7 @@ tags:
     id: game-board-slot
 - tapOn:
     id: reset-game-button
-- assertVisible: 'Start a new game? Your current game will be replaced.'
+- assertVisible: Start a new game? Your current game will be replaced.
 - tapOn: Cancel
 - tapOn:
     id: leave-game-button

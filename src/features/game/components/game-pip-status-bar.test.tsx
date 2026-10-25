@@ -37,6 +37,20 @@ describe('gamePipStatusBar', () => {
     expect(screen.getAllByText('167')).toHaveLength(2);
   });
 
+  it('orders the pip counts like the fixed board sides: black above white', () => {
+    const state = createInitialState('vs-human');
+    state.points[24].count = 1;
+    state.borneOff.white = 1;
+    render(<GamePipStatusBar state={state} />);
+
+    const counts = screen.getAllByLabelText(/pip count/);
+    expect(counts.map(count => count.props.accessibilityLabel)).toEqual([
+      'game.review.player_black pip count 167',
+      'game.review.player_white pip count 143',
+    ]);
+    expect(screen.queryByText('–')).toBeNull();
+  });
+
   it('tapping the strategy pill reveals the one-line tip', () => {
     const state = createInitialState('vs-computer');
     render(<GamePipStatusBar state={state} />);

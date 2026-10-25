@@ -60,21 +60,14 @@ export function GamePipStatusBar({ state }: Props) {
           style={styles.strategyRow}
           testID="strategy-line"
         >
-          <View testID="strategy-mark">
+          <View testID="strategy-mark" style={styles.strategyMark}>
             <StrategyMark strategy={strategy.key} size={18} />
           </View>
           <Text style={styles.strategyText}>{label}</Text>
         </Pressable>
-        <View style={styles.pips}>
-          <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
-            {whitePips}
-          </Text>
-          <Text style={styles.pipDivider}>–</Text>
-          <View style={[styles.pipDot, { backgroundColor: '#2A2A2E' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
-            {blackPips}
-          </Text>
+        <View style={styles.pips} testID="pip-counts">
+          <PlayerPips player="black" count={blackPips} />
+          <PlayerPips player="white" count={whitePips} />
         </View>
       </View>
       <Modal
@@ -107,6 +100,21 @@ export function GamePipStatusBar({ state }: Props) {
           </Pressable>
         </Pressable>
       </Modal>
+    </View>
+  );
+}
+
+function PlayerPips({ player, count }: { player: 'black' | 'white'; count: number }) {
+  return (
+    <View style={styles.pipRow}>
+      <View style={[styles.pipDot, { backgroundColor: player === 'black' ? '#2A2A2E' : '#E8E0D0' }]} />
+      <Text
+        testID={`pip-count-${player}`}
+        style={styles.pipText}
+        accessibilityLabel={`${translate(`game.review.player_${player}`)} pip count ${count}`}
+      >
+        {count}
+      </Text>
     </View>
   );
 }
@@ -144,20 +152,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 16,
   },
   strategyRow: {
+    flex: 1,
+    minWidth: 0,
+    minHeight: 44,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     paddingVertical: 4,
   },
+  strategyMark: {
+    flexShrink: 0,
+  },
   strategyText: {
+    flexShrink: 1,
+    lineHeight: 16,
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
     letterSpacing: 0.3,
     ...interFont('medium'),
   },
   pips: {
+    flexShrink: 0,
+    minWidth: 44,
+    gap: 4,
+  },
+  pipRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -169,12 +191,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(232, 224, 208, 0.4)',
   },
-  pipDivider: {
-    color: GAME_PALETTE.textMuted,
-    opacity: 0.5,
-    fontSize: 11,
-  },
   pipText: {
+    lineHeight: 16,
     color: GAME_PALETTE.textMuted,
     opacity: 0.85,
     fontSize: 12,
