@@ -102,3 +102,111 @@ tags:
 - assertVisible: 'Point 13, 4 white checkers'
 - assertVisible: 'Point 8, 4 white checkers'
 - takeScreenshot: dice-order-06-fast-follow-up
+# Drag is independent of displayed order. On the CI portrait board, RIGHT
+# from a bottom-row point ends at 90% screen width, in the bear-off tray.
+- runFlow:
+    file: ../utils/dice-order-drag-position.yaml
+    env:
+      POSITION_JSON: '{"placements":[{"point":3,"player":"white","count":15},{"point":24,"player":"black","count":15}],"dice":[3,1],"mode":"vs-human"}'
+- swipe:
+    from:
+      id: point-3
+    direction: RIGHT
+    duration: 900
+- extendedWaitUntil:
+    visible: 'Point 3, 14 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 3, 14 white checkers'
+- assertNotVisible:
+    id: confirm-move-button
+- takeScreenshot: dice-order-07-drag-leading-die
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible: 'Point 3, 15 white checkers'
+    timeout: 15000
+- tapOn:
+    id: swap-dice-button
+# Leading die is now 1; dragging 3→off still spends the 3. An accidental
+# release tap would move another checker and make Confirm visible.
+- swipe:
+    from:
+      id: point-3
+    direction: RIGHT
+    duration: 900
+- extendedWaitUntil:
+    visible: 'Point 3, 14 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 3, 14 white checkers'
+- assertNotVisible:
+    id: confirm-move-button
+- takeScreenshot: dice-order-08-drag-other-die-swapped
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible: 'Point 3, 15 white checkers'
+    timeout: 15000
+# Far outside any legal destination: board and dice stay unchanged.
+- swipe:
+    from:
+      id: point-3
+    direction: LEFT
+    duration: 900
+- assertVisible: 'Point 3, 15 white checkers'
+- assertVisible:
+    id: swap-dice-button
+- takeScreenshot: dice-order-09-invalid-drop
+- runFlow:
+    file: ../utils/dice-order-drag-position.yaml
+    env:
+      POSITION_JSON: '{"placements":[{"point":4,"player":"white","count":15},{"point":24,"player":"black","count":15}],"dice":[3,1],"mode":"vs-human"}'
+- tapOn:
+    id: swap-dice-button
+- swipe:
+    from:
+      id: point-4
+    direction: RIGHT
+    duration: 900
+- extendedWaitUntil:
+    visible: 'Point 4, 14 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 4, 14 white checkers'
+- assertVisible:
+    id: confirm-move-button
+- takeScreenshot: dice-order-10-drag-compound-swapped
+# RTL retains the board's physical geometry; the dice reading edge reverses.
+- openLink: backgammonmastermind.preview://settings
+- scrollUntilVisible:
+    element:
+      text: Language
+    direction: UP
+- tapOn: Language
+- scrollUntilVisible:
+    element:
+      text: עברית
+    direction: DOWN
+- tapOn: עברית
+- stopApp
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'false'
+      HOME_TEXT: נגד המחשב
+- runFlow:
+    file: ../utils/dice-order-drag-position.yaml
+    env:
+      POSITION_JSON: '{"placements":[{"point":4,"player":"white","count":15},{"point":24,"player":"black","count":15}],"dice":[3,1],"mode":"vs-human"}'
+- tapOn:
+    id: swap-dice-button
+- swipe:
+    from:
+      id: point-4
+    direction: RIGHT
+    duration: 900
+- extendedWaitUntil:
+    visible: 'Point 4, 14 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 4, 14 white checkers'
+- assertVisible:
+    id: confirm-move-button
+- takeScreenshot: dice-order-11-drag-compound-rtl

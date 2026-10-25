@@ -1,0 +1,28 @@
+# Load a small home-board fixture with room for either die and a compound move.
+# Called by dice-order.yaml after enabling the setting.
+appId: ${APP_ID}
+tags:
+  - util
+---
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '${POSITION_JSON}'
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: developer-load-json
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible:
+      id: swap-dice-button
+    timeout: 15000
