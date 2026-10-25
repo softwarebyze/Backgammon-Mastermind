@@ -166,14 +166,16 @@ function CheckerSlideOverlay({ animation, dimensions }: Props) {
 
   return (
     <>
-      <CheckerSlideLayer
-        testID={`checker-flight-${key}`}
-        slide={moverSlide}
-        progress={progress}
-        dimensions={dimensions}
-        zIndex={100}
-      />
-      {animation.capture && (
+      {!animation.hidden && (
+        <CheckerSlideLayer
+          testID={`checker-flight-${key}`}
+          slide={moverSlide}
+          progress={progress}
+          dimensions={dimensions}
+          zIndex={100}
+        />
+      )}
+      {animation.capture && !animation.capture.hidden && (
         <CheckerSlideLayer
           slide={animation.capture}
           progress={progress}

@@ -45,3 +45,103 @@ tags:
 - assertVisible: 'Point 5, 2 white checkers'
 - assertVisible: 'Point 8, 2 white checkers'
 - takeScreenshot: rapid-03-after-overlapping-taps
+# Two Undo taps must both commit while their independent take-back flights run.
+- tapOn:
+    id: header-undo-button
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- tapOn:
+    id: header-undo-button
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- takeScreenshot: rapid-04-double-undo-flights
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 6, 5 white checkers'
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- assertVisible:
+    id: header-redo-button
+    enabled: true
+- takeScreenshot: rapid-05-after-double-undo
+# Redo must have the same rapid-input behavior.
+- tapOn:
+    id: header-redo-button
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- tapOn:
+    id: header-redo-button
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- takeScreenshot: rapid-06-double-redo-flights
+- extendedWaitUntil:
+    visible: 'Point 5, 2 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 8, 2 white checkers'
+- assertVisible: 'Point 6, 4 white checkers'
+- assertVisible:
+    id: header-redo-button
+    enabled: false
+- takeScreenshot: rapid-07-after-double-redo
+
+# A hit followed immediately by another move of that checker must retain the
+# captured sibling overlay. Undo both steps and restore the blot as well.
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+# Match the proven multiline replacement used by confirm-move.yaml: a tap
+# can put the cursor at the beginning, where backward deletion clears nothing.
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"placements":[{"point":6,"player":"white","count":1},{"point":8,"player":"white","count":14},{"point":3,"player":"black","count":1},{"point":19,"player":"black","count":14}],"dice":[3,1],"mode":"vs-human"}'
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: developer-load-json
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible: 'Point 3, 1 black checker'
+    timeout: 15000
+- takeScreenshot: rapid-08-before-hit
+- tapOn:
+    id: point-6
+- tapOn:
+    id: point-3
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- tapOn:
+    id: point-3
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- takeScreenshot: rapid-09-hit-continuation-flights
+- extendedWaitUntil:
+    visible: 'Point 2, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Bar, 1 black checker'
+- takeScreenshot: rapid-10-after-hit-continuation
+- tapOn:
+    id: header-undo-button
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- tapOn:
+    id: header-undo-button
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- takeScreenshot: rapid-11-capture-restore-flights
+- extendedWaitUntil:
+    visible: 'Point 3, 1 black checker'
+    timeout: 15000
+- assertVisible: 'Point 6, 1 white checker'
+- assertVisible:
+    text: Bar
+- takeScreenshot: rapid-12-after-capture-restore

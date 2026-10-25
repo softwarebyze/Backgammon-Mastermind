@@ -56,14 +56,19 @@ export function useAnimatedMoves(
   const { onMoveApplied, onMoveStarted } = callbacks;
   const stateRef = useRef(state);
   stateRef.current = state;
+  const commitState = useCallback<Dispatch<SetStateAction<GameState | null>>>((update) => {
+    const next = typeof update === 'function' ? update(stateRef.current) : update;
+    stateRef.current = next;
+    setState(next);
+  }, [setState]);
   const moveState = useMemo(() => ({
     read: () => stateRef.current,
     commit: (next: GameState) => {
       stateRef.current = next;
-      setState(next);
+      commitState(next);
     },
-  }), [setState]);
-  const { frames, hasPending, start, reset, afterFlights } = useConcurrentMoves(moveState, callbacks);
+  }), [commitState]);
+  const { frames, hasPending, start, reset, afterFlights, addHistoryFrame, cancelPending } = useConcurrentMoves(moveState, callbacks);
   useEffect(() => reset, [reset]);
   const [moveAnimation, setMoveAnimation] = useState<MoveAnimationFrame | null>(null);
   const [sequenceActive, setSequenceActive] = useState(false);
@@ -98,12 +103,12 @@ export function useAnimatedMoves(
       generationRef,
       commitGenRef,
       finishOnceRef,
-      setState,
+      setState: commitState,
       setMoveAnimation,
       onMoveApplied,
       onMoveStarted,
     })(snapshot, move, playOpts);
-  }, [setState, onMoveApplied, onMoveStarted]);
+  }, [commitState, onMoveApplied, onMoveStarted]);
 
   const playMoveSequence = useCallback((
     snapshot: GameState,
@@ -124,13 +129,13 @@ export function useAnimatedMoves(
       playMove,
       onMoveApplied,
       onMoveStarted,
-      setState,
+      setState: commitState,
       setMoveAnimation,
       setSequenceActive,
       isCommitLive,
       fromAnchor: playOpts?.fromAnchor,
     });
-  }, [isCommitLive, playMove, onMoveApplied, onMoveStarted, setState]);
+  }, [isCommitLive, playMove, onMoveApplied, onMoveStarted, commitState]);
 
   const doMove = useCallback((move: Move, playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;
@@ -163,9 +168,25 @@ export function useAnimatedMoves(
     playMoveSequence(snapshot, moves, playOpts);
   }, [playMoveSequence, start, afterFlights]);
 
+  const prepareHistory = useCallback(() => {
+    // Complete the current legacy leg before rewinding it, then invalidate any
+    // chained legs. Committed flights keep their own visual-only lifetimes.
+    finishOnceRef.current?.();
+    generationRef.current++;
+    commitGenRef.current = generationRef.current;
+    finishOnceRef.current = null;
+    isAnimatingRef.current = false;
+    setMoveAnimation(null);
+    setSequenceActive(false);
+    cancelPending();
+  }, [cancelPending]);
+
   return {
+    prepareHistory,
     moveAnimation: moveAnimation ?? (frames.length ? { ...frames[0]!, parallel: frames, inputBlocked: hasPending } : null),
     getMoveState: moveState.read,
+    commitHistoryState: moveState.commit,
+    addHistoryFrame,
     isAnimating: moveAnimation !== null || sequenceActive || frames.length > 0,
     resetAnimation,
     armAnimationFinish,

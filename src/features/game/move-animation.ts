@@ -14,6 +14,9 @@ import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 export const CHECKER_MOVE_DURATION_MS = 620;
 
 export type CheckerSlide = {
+  hidden?: boolean;
+  consumesArrival?: boolean;
+  consumesArrivalOf?: string;
   from: number;
   to: number;
   player: Player;
@@ -24,9 +27,13 @@ export type CheckerSlide = {
 };
 
 export type MoveAnimationFrame = {
+  /** This mover has continued; its sibling capture may still occupy its slot. */
+  hidden?: boolean;
   id?: number;
   waitFor?: number;
+  waitForIds?: number[];
   consumesArrival?: boolean;
+  consumesArrivalOf?: string;
   inputBlocked?: boolean;
   /** Logical state already includes these in-flight checkers. */
   committed?: boolean;
@@ -199,19 +206,34 @@ export function displayCommittedCount(
   if (!animation?.committed || player === null) {
     return count;
   }
-  let arriving = 0;
-  for (const frame of animation.parallel ?? [animation]) {
-    if (frame.player === player) {
-      if (frame.from === point && frame.consumesArrival) {
-        arriving = Math.max(0, arriving - 1);
+  const arrivals = new Set<string>();
+  const consumed = new Set<string>();
+  let legacyDepartures = 0;
+  for (const [index, frame] of (animation.parallel ?? [animation]).entries()) {
+    const slides = [
+      { slide: frame, key: `${frame.id ?? index}-mover` },
+      ...(frame.capture ? [{ slide: frame.capture, key: `${frame.id ?? index}-capture` }] : []),
+    ];
+    for (const { slide, key } of slides) {
+      if (slide.hidden || slide.player !== player) {
+        continue;
       }
-      if (frame.to === point) {
-        arriving++;
+      if (slide.to === point) {
+        arrivals.add(key);
       }
-    }
-    if (frame.capture?.player === player && frame.capture.to === point) {
-      arriving++;
+      if (slide.from === point && slide.consumesArrival) {
+        if (slide.consumesArrivalOf) {
+          consumed.add(slide.consumesArrivalOf);
+        }
+        else {
+          legacyDepartures++;
+        }
+      }
     }
   }
+  for (const key of consumed) {
+    arrivals.delete(key);
+  }
+  const arriving = Math.max(0, arrivals.size - legacyDepartures);
   return Math.max(0, count - arriving);
 }
