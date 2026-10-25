@@ -94,9 +94,12 @@ tags:
       id: developer-json-input
     direction: DOWN
     timeout: 60000
-- tapOn:
+# Match the proven multiline replacement used by confirm-move.yaml: a tap
+# can put the cursor at the beginning, where backward deletion clears nothing.
+- longPressOn:
     id: developer-json-input
-- eraseText: 500
+- tapOn: (?i)select all
+- eraseText: 1
 - inputText: '{"placements":[{"point":6,"player":"white","count":1},{"point":8,"player":"white","count":14},{"point":3,"player":"black","count":1},{"point":19,"player":"black","count":14}],"dice":[3,1],"mode":"vs-human"}'
 - hideKeyboard
 - scrollUntilVisible:
