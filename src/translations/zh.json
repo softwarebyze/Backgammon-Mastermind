@@ -42,7 +42,7 @@
       "suggested": "建议走法"
     },
     "nudge": {
-      "dice_order": "此棋子无法使用第一个未用的骰子。请交换骰子或选择其他棋子。",
+      "dice_order": "此棋子没有合法走法。请选择其他棋子。",
       "roll_first": "请先掷骰子"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "走子提示",
       "move_hints_hint": "可移动的点位旁显示金色圆点",
       "move_in_dice_order": "按骰子顺序移动",
-      "move_in_dice_order_hint": "点击棋子，使用第一个未用的骰子移动。交换骰子可更改顺序。",
+      "move_in_dice_order_hint": "点击棋子时优先使用第一个未用的骰子；若不可行，则使用另一个可合法移动的骰子。交换骰子可更改优先顺序。",
       "point_numbers": "点位编号",
       "point_numbers_hint": "在棋盘上显示1–24编号",
       "section_automation": "自动化",

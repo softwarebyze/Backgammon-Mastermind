@@ -42,7 +42,7 @@
       "suggested": "Vorgeschlagener Zug"
     },
     "nudge": {
-      "dice_order": "Dieser Stein kann den ersten ungenutzten Würfel nicht nutzen. Tausche die Würfel oder wähle einen anderen Stein.",
+      "dice_order": "Dieser Stein hat keinen legalen Zug. Wähle einen anderen Stein.",
       "roll_first": "Würfle zuerst"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Zughinweise",
       "move_hints_hint": "Goldener Punkt neben Feldern, von denen du ziehen kannst",
       "move_in_dice_order": "In Würfelreihenfolge ziehen",
-      "move_in_dice_order_hint": "Tippe auf einen Stein, um den ersten ungenutzten Würfel zu spielen. Tausche die Würfel, um die Reihenfolge zu ändern.",
+      "move_in_dice_order_hint": "Tippe auf einen Stein, um den ersten ungenutzten Würfel zu bevorzugen, sonst den anderen, falls erlaubt. Tausche die Würfel, um die Priorität zu ändern.",
       "point_numbers": "Feldnummern",
       "point_numbers_hint": "Beschriftung 1–24 auf dem Brett anzeigen",
       "section_automation": "Automatisierung",

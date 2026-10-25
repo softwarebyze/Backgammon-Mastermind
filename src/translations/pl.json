@@ -42,7 +42,7 @@
       "suggested": "Sugerowany ruch"
     },
     "nudge": {
-      "dice_order": "Ten pionek nie może użyć pierwszej niewykorzystanej kości. Zamień kości lub wybierz inny pionek.",
+      "dice_order": "Ten pionek nie ma legalnego ruchu. Wybierz inny pionek.",
       "roll_first": "Najpierw rzuć kośćmi"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Podpowiedzi ruchów",
       "move_hints_hint": "Złota kropka przy polach, z których możesz się ruszyć",
       "move_in_dice_order": "Ruch według kolejności kości",
-      "move_in_dice_order_hint": "Dotknij pionka, aby użyć pierwszej niewykorzystanej kości. Zamień kości, aby zmienić kolejność.",
+      "move_in_dice_order_hint": "Dotknij pionka, aby preferować pierwszą niewykorzystaną kość lub użyć drugiej, jeśli ruch jest legalny. Zamień kości, aby zmienić preferencję.",
       "point_numbers": "Numery pól",
       "point_numbers_hint": "Pokaż etykiety 1–24 na planszy",
       "section_automation": "Automatyzacja",

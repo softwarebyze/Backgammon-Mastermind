@@ -42,7 +42,7 @@
       "suggested": "Jugada sugerida"
     },
     "nudge": {
-      "dice_order": "Esta ficha no puede usar el primer dado sin gastar. Intercambia los dados o elige otra ficha.",
+      "dice_order": "Esta ficha no tiene ningún movimiento legal. Elige otra ficha.",
       "roll_first": "Primero tira los dados"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Pistas de movimiento",
       "move_hints_hint": "Punto dorado junto a las casillas desde las que puedes mover",
       "move_in_dice_order": "Mover en orden de dados",
-      "move_in_dice_order_hint": "Toca una ficha para usar el primer dado sin gastar. Intercambia los dados para cambiar el orden.",
+      "move_in_dice_order_hint": "Toca una ficha para dar preferencia al primer dado sin gastar, o usar el otro si es legal. Intercambia los dados para cambiar la preferencia.",
       "point_numbers": "Números de casilla",
       "point_numbers_hint": "Mostrar etiquetas 1–24 en el tablero",
       "section_automation": "Automatización",

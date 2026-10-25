@@ -42,7 +42,7 @@
       "suggested": "제안된 수"
     },
     "nudge": {
-      "dice_order": "이 말은 첫 번째 미사용 주사위를 쓸 수 없습니다. 주사위 순서를 바꾸거나 다른 말을 선택하세요.",
+      "dice_order": "이 말에는 가능한 합법적 이동이 없습니다. 다른 말을 선택하세요.",
       "roll_first": "먼저 주사위를 굴리세요"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "이동 힌트",
       "move_hints_hint": "이동 가능한 포인트 옆에 금색 점 표시",
       "move_in_dice_order": "주사위 순서대로 이동",
-      "move_in_dice_order_hint": "말을 누르면 첫 번째 미사용 주사위로 이동합니다. 주사위를 바꾸면 순서가 변경됩니다.",
+      "move_in_dice_order_hint": "말을 누르면 첫 번째 미사용 주사위를 우선 사용하고, 불가능하면 합법적인 다른 주사위를 사용합니다. 주사위를 바꾸면 우선순위가 변경됩니다.",
       "point_numbers": "포인트 번호",
       "point_numbers_hint": "보드에 1–24 라벨 표시",
       "section_automation": "자동화",

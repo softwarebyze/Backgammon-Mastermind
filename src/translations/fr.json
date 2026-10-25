@@ -42,7 +42,7 @@
       "suggested": "Coup suggéré"
     },
     "nudge": {
-      "dice_order": "Ce pion ne peut pas utiliser le premier dé inutilisé. Inversez les dés ou choisissez un autre pion.",
+      "dice_order": "Ce pion n’a aucun coup légal. Choisissez un autre pion.",
       "roll_first": "Lance d'abord les dés"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Indices de coup",
       "move_hints_hint": "Point doré près des flèches d'où vous pouvez jouer",
       "move_in_dice_order": "Jouer dans l’ordre des dés",
-      "move_in_dice_order_hint": "Touchez un pion pour jouer le premier dé inutilisé. Inversez les dés pour changer l’ordre.",
+      "move_in_dice_order_hint": "Touchez un pion pour privilégier le premier dé inutilisé, ou utiliser l’autre si le coup est légal. Inversez les dés pour changer la préférence.",
       "point_numbers": "Numéros des flèches",
       "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
       "section_automation": "Automatisation",

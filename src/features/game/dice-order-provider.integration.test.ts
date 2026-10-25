@@ -198,11 +198,6 @@ it.each([false, true])('enforces bar priority and hits only a blot with swapped=
   act(() => result.current.input.handleDragStart(8, 0, 0));
   expect(result.current.input.dragFrom).toBeNull();
   expect(boardSnapshot(result.current.game.state)).toEqual(before);
-  if (reversed) {
-    act(() => result.current.input.handleBarPress());
-    expect(result.current.input.inputNudge).toBe('dice-order');
-    expect(boardSnapshot(result.current.game.state)).toEqual(before);
-  }
   startDrag(result, 0);
   expect(result.current.game.state?.legalMovesForSelected).toMatchObject([{ from: 0, to: 22, die: 3 }]);
   const target = getCheckerAnchor({ pointIndex: 22, dims });
@@ -236,7 +231,7 @@ it.each([[false, false], [false, true], [true, false], [true, true]])('allows ex
   expect(result.current.game.moveLog).toMatchObject([{ from: 4, to: 25, after: { remainingDice: [reversed ? 4 : 6] } }]);
 });
 
-it.each([false, true])('refuses the displayed lower die when maximum-use/higher-die requires the other die (higher-only=%s)', (higherOnly) => {
+it.each([false, true])('uses the legal other die when maximum-use/higher-die excludes the preferred lower die (higher-only=%s)', (higherOnly) => {
   const position = createPositionState({ mode: 'vs-human', dice: [1, 2], bar: { white: 1 }, placements: [
     { point: 6, player: 'white', count: 14 },
     { point: 22, player: 'black', count: 2 },
@@ -245,16 +240,7 @@ it.each([false, true])('refuses the displayed lower die when maximum-use/higher-
     { point: 19, player: 'black', count: higherOnly ? 9 : 11 },
   ] });
   const { result } = setup(position);
-  const before = boardSnapshot(result.current.game.state);
   act(() => result.current.input.handleBarPress());
-  expect(result.current.input.inputNudge).toBe('dice-order');
-  expect(boardSnapshot(result.current.game.state)).toEqual(before);
-  expect(result.current.game.moveLog).toEqual([]);
-  expect(result.current.game.moveAnimation).toBeNull();
-  act(() => {
-    result.current.order.swapDice();
-    result.current.input.handleBarPress();
-  });
   settle(result);
   expect(result.current.input.inputNudge).toBeNull();
   expect(result.current.game.state?.bar.white).toBe(0);
@@ -279,4 +265,50 @@ it('drags a compound move through the legal intermediate when the other path is 
   expect(result.current.game.state?.points[5]).toEqual({ player: 'black', count: 2 });
   expect(result.current.game.state?.points[4]).toEqual({ player: 'white', count: 1 });
   expect(result.current.game.state?.remainingDice).toEqual([]);
+});
+
+it.each([false, true])('commits fallback synchronously for rapid taps and restores it with Undo/Redo (concurrent=%s)', (concurrent) => {
+  const { result } = setup(createPositionState({ useStandardSetup: true, dice: [5, 4], mode: 'vs-human' }), false, concurrent);
+  act(() => result.current.input.handlePointPress(6));
+  if (!concurrent)
+    settle(result);
+  expect(result.current.game.getMoveState?.()?.remainingDice).toEqual([5]);
+  expect(result.current.order.displayedDice).toEqual([5, 4]);
+  expect(result.current.input.inputNudge).toBeNull();
+  // No animation finish or React render between these follow-up taps.
+  act(() => {
+    result.current.input.handlePointPress(13);
+    result.current.input.handlePointPress(13);
+  });
+  settle(result);
+  expect(result.current.game.state?.points[2]).toEqual({ player: 'white', count: 1 });
+  expect(result.current.game.state?.points[13].count).toBe(4);
+  expect(result.current.game.state?.points[8].count).toBe(4);
+  expect(result.current.game.state?.remainingDice).toEqual([]);
+  expect(result.current.game.moveLog.map(move => [move.from, move.to])).toEqual([[6, 2], [13, 8]]);
+  act(() => result.current.game.doUndo());
+  settle(result);
+  expect(result.current.game.state?.remainingDice).toEqual([5]);
+  act(() => result.current.game.doUndo());
+  settle(result);
+  expect(result.current.game.state?.points[6].count).toBe(5);
+  expect(result.current.game.state?.remainingDice).toEqual([5, 4]);
+  act(() => result.current.game.doRedo());
+  settle(result);
+  expect(result.current.game.state?.points[2].count).toBe(1);
+  expect(result.current.game.state?.remainingDice).toEqual([5]);
+  expect(result.current.order.displayedDice).toEqual([5, 4]);
+});
+
+it('accepts the fallback and next checker in the same React batch without reusing four', () => {
+  const { result } = setup(createPositionState({ useStandardSetup: true, dice: [5, 4], mode: 'vs-human' }));
+  act(() => {
+    result.current.input.handlePointPress(6);
+    result.current.input.handlePointPress(13);
+    result.current.input.handlePointPress(13);
+  });
+  settle(result);
+  expect(result.current.game.moveLog.map(move => [move.from, move.to])).toEqual([[6, 2], [13, 8]]);
+  expect(result.current.game.state?.remainingDice).toEqual([]);
+  expect(result.current.order.displayedDice).toEqual([5, 4]);
 });

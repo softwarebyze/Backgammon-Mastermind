@@ -42,7 +42,7 @@
       "suggested": "Önerilen hamle"
     },
     "nudge": {
-      "dice_order": "Bu pul ilk kullanılmamış zarı kullanamaz. Zarları değiştirin veya başka bir pul seçin.",
+      "dice_order": "Bu pulun yasal hamlesi yok. Başka bir pul seçin.",
       "roll_first": "Önce zarları at"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Hamle ipuçları",
       "move_hints_hint": "Taş oynatabileceğin hanelerin yanında altın nokta",
       "move_in_dice_order": "Zar sırasına göre oyna",
-      "move_in_dice_order_hint": "İlk kullanılmamış zarı oynamak için bir pula dokunun. Sırayı değiştirmek için zarları değiştirin.",
+      "move_in_dice_order_hint": "Bir pula dokununca ilk kullanılmamış zar tercih edilir; mümkün değilse diğer yasal zar kullanılır. Tercihi değiştirmek için zarları değiştirin.",
       "point_numbers": "Hane numaraları",
       "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
       "section_automation": "Otomasyon",

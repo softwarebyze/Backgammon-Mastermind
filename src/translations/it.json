@@ -42,7 +42,7 @@
       "suggested": "Mossa suggerita"
     },
     "nudge": {
-      "dice_order": "Questa pedina non può usare il primo dado non utilizzato. Scambia i dadi o scegli un’altra pedina.",
+      "dice_order": "Questa pedina non ha mosse legali. Scegli un’altra pedina.",
       "roll_first": "Prima lancia i dadi"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Suggerimenti di mossa",
       "move_hints_hint": "Punto dorato accanto alle punte da cui puoi muovere",
       "move_in_dice_order": "Muovi in ordine di dadi",
-      "move_in_dice_order_hint": "Tocca una pedina per usare il primo dado non utilizzato. Scambia i dadi per cambiare l’ordine.",
+      "move_in_dice_order_hint": "Tocca una pedina per preferire il primo dado non utilizzato, oppure usare l’altro se consentito. Scambia i dadi per cambiare la preferenza.",
       "point_numbers": "Numeri delle punte",
       "point_numbers_hint": "Mostra le etichette 1–24 sul tavoliere",
       "section_automation": "Automazione",

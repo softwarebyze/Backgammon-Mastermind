@@ -1,4 +1,4 @@
-# Opt-in checker taps spend the displayed leading die. Includes swap, guidance,
+# Opt-in checker taps prefer the displayed leading legal die. Includes swap, guidance,
 # persistence through navigation, Undo/Redo, confirm hold and fast follow-up.
 appId: ${APP_ID}
 tags:
@@ -66,7 +66,7 @@ tags:
 - tapOn:
     id: confirm-move-button
 # A fresh fixture returns to original order. Leading five is blocked from 6;
-# no silent substitution of the legal three is allowed.
+# the legal three plays without a swap, leaving five available.
 - openLink: backgammonmastermind.preview://developer
 - scrollUntilVisible:
     element:
@@ -86,14 +86,12 @@ tags:
     timeout: 15000
 - tapOn:
     id: point-6
-- assertVisible: 'Point 6, 5 white checkers'
-- assertVisible: This checker cannot use the first unspent die. Swap dice or choose another checker.
-- takeScreenshot: dice-order-05-blocked-guidance
-- tapOn:
-    id: swap-dice-button
-- tapOn:
-    id: point-6
-    waitToSettleTimeoutMs: 0
+- extendedWaitUntil:
+    visible: 'Point 3, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Point 6, 4 white checkers'
+- assertNotVisible: This checker has no legal move. Choose another checker.
+- takeScreenshot: dice-order-05-legal-fallback
 - tapOn:
     id: point-13
     point: '50%,50%'

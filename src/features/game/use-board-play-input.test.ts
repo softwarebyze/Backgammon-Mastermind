@@ -368,16 +368,16 @@ describe('dice order checker taps', () => {
     expect(actions.selectPoint).not.toHaveBeenCalled();
   });
 
-  it('keeps state and selection unchanged when only the other die is playable', () => {
+  it('uses the other legal die without changing selection when the leading die is blocked', () => {
     const state = { ...whiteMoving(), dice: [5, 3] as [number, number], selectedPoint: 13 };
     const before = JSON.stringify(state);
     const { result, actions } = setup({ state, isAnimating: false, isHumanTurn: true, moveInDiceOrder: true });
-    // 6→1 is blocked; 6→3 would be legal, but must never be substituted.
+    // 6→1 is blocked; use the legal 6→3 instead.
     act(() => result.current.handlePointPress(6));
-    expect(actions.doMove).not.toHaveBeenCalled();
+    expect(actions.doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 6, to: 3, die: 3 }));
     expect(actions.selectPoint).not.toHaveBeenCalled();
     expect(JSON.stringify(state)).toBe(before);
-    expect(result.current.inputNudge).toBe('dice-order');
+    expect(result.current.inputNudge).toBeNull();
   });
 
   it('uses a synchronous swap for the next tap and clears guidance on success', () => {

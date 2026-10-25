@@ -42,7 +42,7 @@
       "suggested": "Voorgestelde zet"
     },
     "nudge": {
-      "dice_order": "Deze schijf kan de eerste ongebruikte dobbelsteen niet gebruiken. Wissel de dobbelstenen of kies een andere schijf.",
+      "dice_order": "Deze schijf heeft geen geldige zet. Kies een andere schijf.",
       "roll_first": "Gooi eerst de dobbelstenen"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Zethints",
       "move_hints_hint": "Gouden stip naast punten waarvandaan je kunt zetten",
       "move_in_dice_order": "Verplaatsen in dobbelsteenvolgorde",
-      "move_in_dice_order_hint": "Tik op een schijf om de eerste ongebruikte dobbelsteen te spelen. Wissel de dobbelstenen om de volgorde te wijzigen.",
+      "move_in_dice_order_hint": "Tik op een schijf om de eerste ongebruikte dobbelsteen voorrang te geven, of de andere te gebruiken als dat mag. Wissel de dobbelstenen om de voorkeur te wijzigen.",
       "point_numbers": "Puntnummers",
       "point_numbers_hint": "Labels 1–24 op het bord tonen",
       "section_automation": "Automatisering",

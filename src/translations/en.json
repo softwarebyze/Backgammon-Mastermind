@@ -42,7 +42,7 @@
       "suggested": "Suggested move"
     },
     "nudge": {
-      "dice_order": "This checker cannot use the first unspent die. Swap dice or choose another checker.",
+      "dice_order": "This checker has no legal move. Choose another checker.",
       "roll_first": "Roll the dice first"
     },
     "opening": {
@@ -76,7 +76,7 @@
       "move_hints": "Move hints",
       "move_hints_hint": "Gold dot beside points you can move from",
       "move_in_dice_order": "Move in dice order",
-      "move_in_dice_order_hint": "Tap a checker to play the leading unspent die. Swap the dice to change which plays first.",
+      "move_in_dice_order_hint": "Tap a checker to prefer the leading unspent die, or use the other die if legal. Swap dice to change the preference.",
       "point_numbers": "Point numbers",
       "point_numbers_hint": "Show 1–24 labels on the board",
       "section_automation": "Automation",

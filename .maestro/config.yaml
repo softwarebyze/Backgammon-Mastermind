@@ -9,6 +9,7 @@ flows:
   - app/hebrew-undo-redo.yaml
   - app/rapid-follow-up-input.yaml
   - app/dice-order.yaml
+  - app/dice-order-fallback.yaml
 
 excludeTags:
   - util

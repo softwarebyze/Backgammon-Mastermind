@@ -1,0 +1,65 @@
+# A blocked preferred five falls back to four, preserves five and supports Undo/Redo.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      id: setting-toggle-dice-order
+    direction: DOWN
+- tapOn:
+    id: setting-toggle-dice-order
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: UP
+- tapOn: Auto-roll dice
+- tapOn: Auto-move when forced
+- takeScreenshot: dice-order-fallback-00-enabled
+- tapOn:
+    id: stack-escape-button
+- runFlow:
+    file: ../utils/dice-order-drag-position.yaml
+    env:
+      POSITION_JSON: '{"useStandardSetup":true,"dice":[5,4],"mode":"vs-human"}'
+- takeScreenshot: dice-order-fallback-01-before
+- tapOn:
+    id: point-6
+- extendedWaitUntil:
+    visible: 'Point 2, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Point 6, 4 white checkers'
+- assertNotVisible: This checker has no legal move. Choose another checker.
+- takeScreenshot: dice-order-fallback-02-four-played
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible: 'Point 6, 5 white checkers'
+    timeout: 15000
+- tapOn:
+    id: header-redo-button
+- extendedWaitUntil:
+    visible: 'Point 2, 1 white checker'
+    timeout: 15000
+# Only five remains; this checker has no legal move, while 13 can still use five.
+- tapOn:
+    id: point-6
+- assertVisible: This checker has no legal move. Choose another checker.
+- assertVisible: 'Point 6, 4 white checkers'
+- takeScreenshot: dice-order-fallback-03-no-legal-move
+- tapOn:
+    id: point-13
+- extendedWaitUntil:
+    visible:
+      id: confirm-move-button
+    timeout: 15000
+- assertVisible: 'Point 8, 4 white checkers'
+- assertVisible: 'Point 13, 4 white checkers'
+- assertNotVisible: This checker has no legal move. Choose another checker.
+- takeScreenshot: dice-order-fallback-04-five-still-available
