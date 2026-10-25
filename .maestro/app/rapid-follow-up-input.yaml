@@ -89,15 +89,21 @@ tags:
 # A hit followed immediately by another move of that checker must retain the
 # captured sibling overlay. Undo both steps and restore the blot as well.
 - openLink: backgammonmastermind.preview://developer
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: developer-json-input
-    timeout: 15000
+    direction: DOWN
+    timeout: 60000
 - tapOn:
     id: developer-json-input
 - eraseText: 500
 - inputText: '{"placements":[{"point":6,"player":"white","count":1},{"point":8,"player":"white","count":14},{"point":3,"player":"black","count":1},{"point":19,"player":"black","count":14}],"dice":[3,1],"mode":"vs-human"}'
 - hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: developer-load-json
+    direction: DOWN
+    timeout: 15000
 - tapOn:
     id: developer-load-json
 - extendedWaitUntil:
