@@ -58,7 +58,7 @@ tags:
 - extendedWaitUntil:
     visible: 'Bar, 6 white checkers, 6 black checkers'
     timeout: 15000
-- setOrientation: LANDSCAPE
+- setOrientation: LANDSCAPE_LEFT
 - assertVisible:
     id: leave-game-button
 - assertVisible:
