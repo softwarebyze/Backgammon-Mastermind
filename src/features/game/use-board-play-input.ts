@@ -44,6 +44,7 @@ function needsRollFirst(phase: string | undefined): boolean {
 }
 
 type BoardPlayActions = {
+  getMoveState?: () => GameState | null;
   selectPoint: (point: number | null) => void;
   doMove: (move: Move, opts?: AnimatedMoveOpts) => void;
   doMoveSequence: (moves: Move[], opts?: AnimatedMoveOpts) => void;
@@ -57,6 +58,7 @@ type UseBoardPlayInputArgs = {
   isHumanTurn: boolean;
   /** When false, pre-roll taps are ignored (lessons lock dice). Default true. */
   enableRollNudge?: boolean;
+  concurrentMoves?: boolean;
   /**
    * When false, a tutor prompt or move review owns the board: ignore taps and
    * drop queued input instead of replaying it under the overlay. Default true.
@@ -77,11 +79,21 @@ export function useBoardPlayInput({
   isAnimating,
   isHumanTurn,
   enableRollNudge = true,
+  concurrentMoves = false,
   interactionEnabled = true,
   actions,
   onMoveMade,
 }: UseBoardPlayInputArgs) {
-  const { selectPoint, doMove, doMoveSequence } = actions;
+  const stateRef = useRef(state);
+  stateRef.current = state;
+  const { selectPoint: selectAction, doMove, doMoveSequence, getMoveState } = actions;
+  const selectPoint = useCallback((point: number | null) => {
+    selectAction(point);
+    if (concurrentMoves && stateRef.current) {
+      const live = stateRef.current;
+      stateRef.current = { ...live, selectedPoint: point, legalMovesForSelected: point === null ? [] : getLegalMoves(live).filter(m => m.from === point) };
+    }
+  }, [selectAction, concurrentMoves]);
   const onMoveMadeRef = useRef(onMoveMade);
   onMoveMadeRef.current = onMoveMade;
   const turnKey = `${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}|${isAnimating}`;
@@ -124,8 +136,7 @@ export function useBoardPlayInput({
    */
   const ignoreNextBoardPressRef = useRef(false);
   const previewTargetRef = useRef<number | null>(null);
-  const stateRef = useRef(state);
-  stateRef.current = state;
+
   const boardDimsRef = useRef<BoardDimensions | null>(null);
   const queuedInputsRef = useRef<QueuedInput[]>([]);
   /** A queued input belongs to one roll — never replay it into a new turn or game. */
@@ -214,30 +225,52 @@ export function useBoardPlayInput({
     fromAnchor: PendingDragDrop['fromAnchor'],
   ) => {
     // Own the input immediately, before React publishes the animation prop.
-    isAnimatingRef.current = true;
+    isAnimatingRef.current = !concurrentMoves;
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
     onMoveMadeRef.current?.('drag');
     if (resolved.kind === 'single') {
-      doMove(resolved.move, { fromAnchor });
+      doMove(resolved.move, { fromAnchor, ...(concurrentMoves ? { concurrent: true } : {}) });
     }
     else {
-      doMoveSequence(resolved.moves, { fromAnchor });
+      doMoveSequence(resolved.moves, { fromAnchor, ...(concurrentMoves ? { concurrent: true } : {}) });
     }
-  }, [doMove, doMoveSequence]);
+    if (concurrentMoves && getMoveState) {
+      const next = getMoveState();
+      // A compound capture keeps its ordered landing choreography.
+      isAnimatingRef.current = next === stateRef.current;
+      stateRef.current = next;
+    }
+  }, [doMove, doMoveSequence, concurrentMoves, getMoveState]);
 
   const playTapSequence = useCallback((sequence: Move[], inputType: BoardMoveInputType = 'tap') => {
     // A second pointer event can arrive before the animation state rerenders.
     // Resolve it after this move commits instead of against the old board.
-    isAnimatingRef.current = true;
+    isAnimatingRef.current = !concurrentMoves;
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
     onMoveMadeRef.current?.(inputType);
     if (sequence.length === 1) {
-      doMove(sequence[0]!);
+      if (concurrentMoves) {
+        doMove(sequence[0]!, { concurrent: true });
+      }
+      else {
+        doMove(sequence[0]!);
+      }
     }
     else {
-      doMoveSequence(sequence);
+      if (concurrentMoves) {
+        doMoveSequence(sequence, { concurrent: true });
+      }
+      else {
+        doMoveSequence(sequence);
+      }
     }
-  }, [doMove, doMoveSequence]);
+    if (concurrentMoves && getMoveState) {
+      const next = getMoveState();
+      // A compound capture keeps its ordered landing choreography.
+      isAnimatingRef.current = next === stateRef.current;
+      stateRef.current = next;
+    }
+  }, [doMove, doMoveSequence, concurrentMoves, getMoveState]);
 
   const enqueueInput = useCallback((input: QueuedInput) => {
     if (queuedInputsRef.current.length >= MAX_QUEUED_INPUTS) {

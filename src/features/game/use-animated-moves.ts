@@ -4,14 +4,17 @@ import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPlayMove } from '@/features/game/create-play-move';
 import { playValidatedMoveSequence } from '@/features/game/play-validated-move-sequence';
 import { useAnimationWatchdogs } from '@/features/game/use-animation-watchdogs';
+import { useConcurrentMoves } from '@/features/game/use-concurrent-moves';
 
 export type { MoveAnimationFrame } from '@/features/game/move-animation';
 
 export type AnimatedMoveOpts = {
+  /** Human input can advance logically while earlier visual flights are running. */
+  concurrent?: boolean;
   fromAnchor?: PointAnchor;
 };
 
@@ -44,6 +47,7 @@ function armFinish(refs: FinishRefs, onFinish: () => void): () => void {
   return settle;
 }
 
+// eslint-disable-next-line max-lines-per-function -- legacy choreography plus independent human flights
 export function useAnimatedMoves(
   state: GameState | null,
   setState: Dispatch<SetStateAction<GameState | null>>,
@@ -52,6 +56,15 @@ export function useAnimatedMoves(
   const { onMoveApplied, onMoveStarted } = callbacks;
   const stateRef = useRef(state);
   stateRef.current = state;
+  const moveState = useMemo(() => ({
+    read: () => stateRef.current,
+    commit: (next: GameState) => {
+      stateRef.current = next;
+      setState(next);
+    },
+  }), [setState]);
+  const { frames, hasPending, start, reset, afterFlights } = useConcurrentMoves(moveState, callbacks);
+  useEffect(() => reset, [reset]);
   const [moveAnimation, setMoveAnimation] = useState<MoveAnimationFrame | null>(null);
   const [sequenceActive, setSequenceActive] = useState(false);
   const generationRef = useRef(0);
@@ -62,12 +75,13 @@ export function useAnimatedMoves(
   const isCommitLive = useCallback(() => commitGenRef.current === generationRef.current, []);
 
   const resetAnimation = useCallback(() => {
+    reset();
     generationRef.current += 1;
     commitGenRef.current = generationRef.current;
     finishOnceRef.current = null;
     setMoveAnimation(null);
     setSequenceActive(false);
-  }, []);
+  }, [reset]);
 
   const armAnimationFinish = useCallback((onFinish: () => void) =>
     armFinish({ generationRef, commitGenRef, finishOnceRef }, onFinish), []);
@@ -79,6 +93,7 @@ export function useAnimatedMoves(
     move: Move,
     playOpts?: PlayMoveOpts,
   ) => {
+    isAnimatingRef.current = true;
     createPlayMove({
       generationRef,
       commitGenRef,
@@ -95,6 +110,8 @@ export function useAnimatedMoves(
     moves: Move[],
     playOpts?: AnimatedMoveOpts,
   ) => {
+    const wasAnimating = isAnimatingRef.current;
+    isAnimatingRef.current = true;
     const gen = generationRef.current;
     commitGenRef.current = gen;
     playValidatedMoveSequence({
@@ -103,7 +120,7 @@ export function useAnimatedMoves(
       gen,
       generationRef,
       finishOnceRef,
-      isAnimating: isAnimatingRef.current,
+      isAnimating: wasAnimating,
       playMove,
       onMoveApplied,
       onMoveStarted,
@@ -117,23 +134,39 @@ export function useAnimatedMoves(
 
   const doMove = useCallback((move: Move, playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;
+    if (playOpts?.concurrent && !isAnimatingRef.current && start([move], playOpts)) {
+      return;
+    }
     if (!snapshot || snapshot.phase !== 'moving' || isAnimatingRef.current) {
       return;
     }
     playMove(snapshot, move, playOpts);
-  }, [playMove]);
+  }, [playMove, start]);
 
   const doMoveSequence = useCallback((moves: Move[], playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;
+    if (playOpts?.concurrent && !isAnimatingRef.current) {
+      if (start(moves, playOpts)) {
+        return;
+      }
+      afterFlights(() => {
+        const live = stateRef.current;
+        if (live?.phase === 'moving') {
+          playMoveSequence(live, moves, playOpts);
+        }
+      });
+      return;
+    }
     if (!snapshot || snapshot.phase !== 'moving' || isAnimatingRef.current) {
       return;
     }
     playMoveSequence(snapshot, moves, playOpts);
-  }, [playMoveSequence]);
+  }, [playMoveSequence, start, afterFlights]);
 
   return {
-    moveAnimation,
-    isAnimating: moveAnimation !== null || sequenceActive,
+    moveAnimation: moveAnimation ?? (frames.length ? { ...frames[0]!, parallel: frames, inputBlocked: hasPending } : null),
+    getMoveState: moveState.read,
+    isAnimating: moveAnimation !== null || sequenceActive || frames.length > 0,
     resetAnimation,
     armAnimationFinish,
     setMoveAnimation,

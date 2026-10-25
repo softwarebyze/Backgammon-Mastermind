@@ -14,14 +14,14 @@ function triggerHaptic(fn: () => Promise<void>) {
 
 export function useGameInput({ interactionEnabled = true }: { interactionEnabled?: boolean } = {}) {
   const posthog = usePostHog();
-  const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating } = useGame();
+  const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating, moveAnimation, getMoveState } = useGame();
 
   const isHumanTurn = !!state
     && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
 
   const actions = useMemo(
-    () => ({ selectPoint, doMove, doMoveSequence }),
-    [selectPoint, doMove, doMoveSequence],
+    () => ({ selectPoint, doMove, doMoveSequence, getMoveState }),
+    [selectPoint, doMove, doMoveSequence, getMoveState],
   );
 
   const onMoveMade = useCallback((inputType: 'tap' | 'drag' | 'bear_off') => {
@@ -47,7 +47,8 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
     clearPendingDrop,
   } = useBoardPlayInput({
     state,
-    isAnimating,
+    isAnimating: isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked),
+    concurrentMoves: true,
     isHumanTurn,
     interactionEnabled,
     actions,

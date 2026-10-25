@@ -1,6 +1,6 @@
 # A second checker tapped while the first move is still animating must still
 # play. The preset deals 3-1 on the standard setup; tap 8 -> 5 with the 3, then
-# queue 6 -> 5 with the 1 before the first slide lands.
+# start 6 -> 5 with the 1 before the first slide lands.
 appId: ${APP_ID}
 tags:
   - pull-request
@@ -31,16 +31,17 @@ tags:
     id: point-5
     waitToSettleTimeoutMs: 0
 # Follow up with 6 -> 5 while 8 -> 5 is still sliding. A source tap with a
-# single destination auto-plays once the first slide lands. The element-relative
+# single destination auto-plays immediately, overlapping the first slide. The element-relative
 # point skips Maestro's ~750ms Android pre-tap settle wait; without it the tap
-# lands after the slide and no queueing happens.
+# lands after the slide and no overlap happens.
 - tapOn:
     id: point-6
     point: '50%,50%'
     waitToSettleTimeoutMs: 0
+- takeScreenshot: rapid-02-overlapping-flight
 - extendedWaitUntil:
     visible: 'Point 6, 4 white checkers'
     timeout: 15000
 - assertVisible: 'Point 5, 2 white checkers'
 - assertVisible: 'Point 8, 2 white checkers'
-- takeScreenshot: rapid-02-after-queued-taps
+- takeScreenshot: rapid-03-after-overlapping-taps

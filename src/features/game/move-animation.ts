@@ -24,6 +24,13 @@ export type CheckerSlide = {
 };
 
 export type MoveAnimationFrame = {
+  id?: number;
+  waitFor?: number;
+  consumesArrival?: boolean;
+  inputBlocked?: boolean;
+  /** Logical state already includes these in-flight checkers. */
+  committed?: boolean;
+  parallel?: MoveAnimationFrame[];
   from: number;
   to: number;
   player: Player;
@@ -135,6 +142,10 @@ export function displayPointDuringAnimation(
   point: BoardPoint,
   animation: MoveAnimationFrame | null,
 ): BoardPoint {
+  if (animation?.committed) {
+    const count = displayCommittedCount({ point: pointIndex, player: point.player, count: point.count }, animation);
+    return { player: count > 0 ? point.player : null, count };
+  }
   if (animation?.capture?.from === pointIndex) {
     return { player: null, count: 0 };
   }
@@ -154,6 +165,9 @@ export function displayBarCountDuringAnimation(
   count: number,
   animation: MoveAnimationFrame | null,
 ): number {
+  if (animation?.committed) {
+    return displayCommittedCount({ point: BAR_POINT, player, count }, animation);
+  }
   if (animation?.from === BAR_POINT && animation.player === player) {
     return animation.sourceDisplayCount;
   }
@@ -165,11 +179,39 @@ export function displayBarCountDuringAnimation(
 
 /** Selection/legal tints are hidden while a checker slides to avoid a color snap at landing. */
 export function isBoardHighlightActive(animation: MoveAnimationFrame | null): boolean {
-  return animation === null;
+  return animation === null || animation.committed === true;
 }
 
 export function animationKey(frame: MoveAnimationFrame): string {
+  if (frame.id !== undefined) {
+    return `flight-${frame.id}`;
+  }
   const capture = frame.capture ? `-cap-${frame.capture.player}` : '';
   // Stack height distinguishes a second checker leaving the same point (6/4, 6/4).
   return `${frame.from}-${frame.to}-${frame.player}-${frame.sourceStackCount}${capture}`;
+}
+
+/** Hide arrivals until they land. Later departures cancel matching pending arrivals. */
+export function displayCommittedCount(
+  { point, player, count }: { point: number; player: Player | null; count: number },
+  animation: MoveAnimationFrame | null,
+): number {
+  if (!animation?.committed || player === null) {
+    return count;
+  }
+  let arriving = 0;
+  for (const frame of animation.parallel ?? [animation]) {
+    if (frame.player === player) {
+      if (frame.from === point && frame.consumesArrival) {
+        arriving = Math.max(0, arriving - 1);
+      }
+      if (frame.to === point) {
+        arriving++;
+      }
+    }
+    if (frame.capture?.player === player && frame.capture.to === point) {
+      arriving++;
+    }
+  }
+  return Math.max(0, count - arriving);
 }

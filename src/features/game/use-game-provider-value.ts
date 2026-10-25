@@ -71,6 +71,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     isAnimating,
     doMove,
     doMoveSequence,
+    getMoveState,
     playMove,
     resetAnimation,
     armAnimationFinish,
@@ -83,7 +84,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
    * everything. (Hint sessions never pause: the player keeps playing.)
    */
   const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
-  const selectPoint = useGameSelectPoint(setState, isAnimating);
+  const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
   const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
     timeline,
@@ -238,6 +239,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     selectPoint,
     doMove,
     doMoveSequence,
+    getMoveState,
     doUndo,
     doRedo,
     canUndo,
