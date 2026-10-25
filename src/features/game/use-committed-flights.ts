@@ -4,6 +4,19 @@ import { useCallback, useRef, useState } from 'react';
 import { countAtPoint, displayCommittedCount } from '@/features/game/move-animation';
 import { BEAR_OFF } from '@/lib/game/constants';
 
+// A capture and mover share a finish time, but have independent arrivals.
+function retireConsumed(frame: MoveAnimationFrame, consumed: Set<string>): MoveAnimationFrame {
+  return {
+    ...frame,
+    hidden: frame.hidden || consumed.has(`${frame.id}-mover`),
+    capture: frame.capture && { ...frame.capture, hidden: frame.capture.hidden || consumed.has(`${frame.id}-capture`) },
+  };
+}
+
+function hasVisibleSlide(frame: MoveAnimationFrame) {
+  return !frame.hidden || (frame.capture && !frame.capture.hidden);
+}
+
 /** Visual-only flights: logical history is already committed before these land. */
 
 export function useCommittedFlights(onIdle: () => void) {
@@ -39,7 +52,7 @@ export function useCommittedFlights(onIdle: () => void) {
         ? live.current.flatMap(frame => [
             { frame, slide: frame, key: `${frame.id}-mover` },
             ...(frame.capture ? [{ frame, slide: frame.capture, key: `${frame.id}-capture` }] : []),
-          ]).findLast(({ slide: candidate, key }) => candidate.to === slide.from && candidate.player === slide.player && !consumed.current.has(key))
+          ]).findLast(({ slide: candidate, key }) => !candidate.hidden && candidate.to === slide.from && candidate.player === slide.player && !consumed.current.has(key))
         : undefined;
       const arrival = slot?.frame;
       if (slot) {
@@ -51,7 +64,7 @@ export function useCommittedFlights(onIdle: () => void) {
       // A landed overlay may be retained to reserve a stack slot. Once it is
       // consumed its slot must disappear, otherwise it duplicates the departure.
       if (arrival && landed.current.has(arrival.id!)) {
-        live.current = live.current.filter(frame => frame.id !== arrival.id);
+        live.current = live.current.map(frame => frame.id === arrival.id ? retireConsumed(frame, consumed.current) : frame).filter(hasVisibleSlide);
       }
       return {
         ...slide,
@@ -73,7 +86,10 @@ export function useCommittedFlights(onIdle: () => void) {
       landed.current.add(id);
       const children = live.current.filter(frame => frame.waitForIds?.includes(id));
       if (children.length) {
-        live.current = live.current.filter(frame => frame.id !== id).map((frame) => {
+        live.current = live.current.map((frame) => {
+          if (frame.id === id) {
+            return retireConsumed(frame, consumed.current);
+          }
           if (!frame.waitForIds?.includes(id)) {
             return frame;
           }
@@ -82,7 +98,7 @@ export function useCommittedFlights(onIdle: () => void) {
             timers.current.set(frame.id!, setTimeout(frame.onFinish, (frame.durationMs ?? 620) + 160));
           }
           return { ...frame, waitForIds, waitFor: waitForIds[0] };
-        });
+        }).filter(hasVisibleSlide);
       }
       if (live.current.every(frame => landed.current.has(frame.id!))) {
         live.current = [];

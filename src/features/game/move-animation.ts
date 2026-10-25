@@ -14,6 +14,7 @@ import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 export const CHECKER_MOVE_DURATION_MS = 620;
 
 export type CheckerSlide = {
+  hidden?: boolean;
   consumesArrival?: boolean;
   consumesArrivalOf?: string;
   from: number;
@@ -26,6 +27,8 @@ export type CheckerSlide = {
 };
 
 export type MoveAnimationFrame = {
+  /** This mover has continued; its sibling capture may still occupy its slot. */
+  hidden?: boolean;
   id?: number;
   waitFor?: number;
   waitForIds?: number[];
@@ -212,7 +215,7 @@ export function displayCommittedCount(
       ...(frame.capture ? [{ slide: frame.capture, key: `${frame.id ?? index}-capture` }] : []),
     ];
     for (const { slide, key } of slides) {
-      if (slide.player !== player) {
+      if (slide.hidden || slide.player !== player) {
         continue;
       }
       if (slide.to === point) {
