@@ -213,6 +213,8 @@ export function useBoardPlayInput({
     resolved: NonNullable<ReturnType<typeof resolveDragMove>>,
     fromAnchor: PendingDragDrop['fromAnchor'],
   ) => {
+    // Own the input immediately, before React publishes the animation prop.
+    isAnimatingRef.current = true;
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
     onMoveMadeRef.current?.('drag');
     if (resolved.kind === 'single') {
@@ -224,6 +226,9 @@ export function useBoardPlayInput({
   }, [doMove, doMoveSequence]);
 
   const playTapSequence = useCallback((sequence: Move[], inputType: BoardMoveInputType = 'tap') => {
+    // A second pointer event can arrive before the animation state rerenders.
+    // Resolve it after this move commits instead of against the old board.
+    isAnimatingRef.current = true;
     triggerHaptic(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
     onMoveMadeRef.current?.(inputType);
     if (sequence.length === 1) {
