@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
 import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
+import { DiceOrderIcon } from '@/features/game/components/settings-ui/dice-order-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
@@ -120,7 +121,7 @@ export function GamePreferencesPanel({
 
       <View style={styles.card}>
         <SettingToggleRow
-          icon={<AutoMoveIcon size={32} active={preferences.moveInDiceOrder} />}
+          icon={<DiceOrderIcon size={32} active={preferences.moveInDiceOrder} />}
           label={translate('game.preferences.move_in_dice_order')}
           hint={translate('game.preferences.move_in_dice_order_hint')}
           value={preferences.moveInDiceOrder}

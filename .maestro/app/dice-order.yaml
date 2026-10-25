@@ -14,8 +14,11 @@ tags:
     element:
       id: setting-toggle-dice-order
     direction: DOWN
+- assertVisible: Move in dice order
+- takeScreenshot: dice-order-icon-off
 - tapOn:
     id: setting-toggle-dice-order
+- takeScreenshot: dice-order-icon-on
 - scrollUntilVisible:
     element:
       text: Auto-roll dice
@@ -192,6 +195,19 @@ tags:
     env:
       CLEAR_STATE: 'false'
       HOME_TEXT: נגד המחשב
+- openLink: backgammonmastermind.preview://settings
+- scrollUntilVisible:
+    element:
+      id: setting-toggle-dice-order
+    direction: DOWN
+- assertVisible:
+    id: setting-toggle-dice-order
+- takeScreenshot: dice-order-icon-rtl-on
+- tapOn:
+    id: setting-toggle-dice-order
+- takeScreenshot: dice-order-icon-rtl-off
+- tapOn:
+    id: setting-toggle-dice-order
 - runFlow:
     file: ../utils/dice-order-drag-position.yaml
     env:
