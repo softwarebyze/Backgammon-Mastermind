@@ -39,17 +39,30 @@ it.each([false, true])('keeps a captured checker visible when the mover continue
   const animation = { ...result.current.frames[0]!, parallel: result.current.frames };
   // The bar checker is represented by the capture overlay, exactly once.
   expect(displayBarCountDuringAnimation('black', 1, animation)).toBe(0);
-  act(() => result.current.reset());
+  // Keep the capture reserved until the last outstanding flight settles.
+  act(() => result.current.frames.find(f => f.from === 3 && f.to === 2)!.onFinish());
+  expect(result.current.frames.find(f => f.id === parent.id)?.capture?.hidden).not.toBe(true);
+  act(() => result.current.frames.find(f => f.from === 19)!.onFinish());
+  expect(result.current.frames).toEqual([]);
+  expect(displayBarCountDuringAnimation('black', 1, null)).toBe(1);
 });
 
-it('retains the reverse mover when a restored capture continues along its earlier path', () => {
+it.each([false, true])('retains the reverse mover when a restored capture continues (parent already landed=%s)', (landed) => {
   const { result } = renderHook(() => useCommittedFlights(() => {}));
-  act(() => result.current.add({ ...slide(3, 6), capture: slide(0, 3, 'black') }, before));
+  act(() => {
+    result.current.add({ ...slide(3, 6), capture: slide(0, 3, 'black') }, before);
+    result.current.add(slide(19, 20, 'black'), before);
+  });
   const restore = result.current.frames[0]!;
+  if (landed) {
+    act(() => restore.onFinish());
+  }
   const restored = { ...before, points: before.points.map(p => ({ ...p })) };
   act(() => result.current.add(slide(3, 2, 'black'), restored));
-  expect(result.current.frames.at(-1)!.waitFor).toBe(restore.id);
-  act(() => restore.onFinish());
+  if (!landed) {
+    expect(result.current.frames.at(-1)!.waitFor).toBe(restore.id);
+    act(() => restore.onFinish());
+  }
   const retained = result.current.frames.find(f => f.id === restore.id)!;
   expect(retained.hidden).not.toBe(true);
   expect(retained.capture?.hidden).toBe(true);
