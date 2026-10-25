@@ -25,6 +25,7 @@
       "roll_dice": "Lancer les dés",
       "roll_dice_a11y": "Lancer les dés",
       "start_new_game_a11y": "Démarrer un nouveau jeu",
+      "swap_dice": "Inverser les dés",
       "undo_a11y": "Annuler le dernier coup",
       "undo_move": "Annuler"
     },
@@ -41,6 +42,7 @@
       "suggested": "Coup suggéré"
     },
     "nudge": {
+      "dice_order": "Ce pion ne peut pas utiliser le premier dé inutilisé. Inversez les dés ou choisissez un autre pion.",
       "roll_first": "Lance d'abord les dés"
     },
     "opening": {
@@ -73,6 +75,8 @@
       "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
       "move_hints": "Indices de coup",
       "move_hints_hint": "Point doré près des flèches d'où vous pouvez jouer",
+      "move_in_dice_order": "Jouer dans l’ordre des dés",
+      "move_in_dice_order_hint": "Touchez un pion pour jouer le premier dé inutilisé. Inversez les dés pour changer l’ordre.",
       "point_numbers": "Numéros des flèches",
       "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
       "section_automation": "Automatisation",

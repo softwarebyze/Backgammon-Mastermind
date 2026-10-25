@@ -72,6 +72,10 @@ export function useGamePreferences() {
     updatePreferences({ tutorMode });
   }, []);
 
+  const setMoveInDiceOrder = useCallback((moveInDiceOrder: boolean) => {
+    updatePreferences({ moveInDiceOrder });
+  }, []);
+
   const setConfirmMove = useCallback((confirmMove: boolean) => {
     updatePreferences({ confirmMove });
   }, []);
@@ -87,5 +91,6 @@ export function useGamePreferences() {
     setSoundEnabled,
     setTutorMode,
     setConfirmMove,
+    setMoveInDiceOrder,
   };
 }

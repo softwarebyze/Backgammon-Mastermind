@@ -25,6 +25,7 @@ type Props = {
   /** Slot to ring with the accent (opening winner). */
   emphasis?: 0 | 1 | null;
   displayStyle?: DiceDisplayStyle;
+  leadingRTL?: boolean;
   /** When false, dice values update instantly (review scrub, etc.). */
   animateRoll?: boolean;
   /** Die edge in px; scales dots, numerals and radius. Default matches the phone tray. */
@@ -188,9 +189,11 @@ function DiceFaces({
   emphasis,
   displayStyle,
   size,
+  orderedUse,
 }: {
   dice: [number, number];
   remainingDice: number[];
+  orderedUse: boolean;
   playerColor: PlayerColor;
   slotColors?: readonly [PlayerColor, PlayerColor];
   emphasis?: 0 | 1 | null;
@@ -216,7 +219,7 @@ function DiceFaces({
       <DieFace
         key={slot}
         value={dice[0]}
-        used={slotIndex >= totalRemaining}
+        used={orderedUse ? slotIndex < 4 - totalRemaining : slotIndex >= totalRemaining}
         playerColor={playerColor}
         displayStyle={displayStyle}
         size={size}
@@ -261,15 +264,17 @@ export function DiceDisplay({
   slotColors,
   emphasis = null,
   displayStyle = 'dots',
+  leadingRTL,
   animateRoll = true,
   size = TRAY_DIE_SIZE,
 }: Props) {
   const { containerStyle, reducedMotion } = useDiceRollAnimation(dice, animateRoll);
 
   return (
-    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, containerStyle]}>
+    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, leadingRTL !== undefined && { direction: 'ltr', flexDirection: leadingRTL ? 'row-reverse' : 'row' }, containerStyle]}>
       <DiceFaces
         dice={dice}
+        orderedUse={leadingRTL !== undefined}
         remainingDice={remainingDice}
         playerColor={playerColor}
         slotColors={slotColors}

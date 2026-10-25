@@ -25,6 +25,7 @@
       "roll_dice": "주사위 굴리기",
       "roll_dice_a11y": "주사위 굴리기",
       "start_new_game_a11y": "새로운 게임 시작",
+      "swap_dice": "주사위 순서 바꾸기",
       "undo_a11y": "취소 이동",
       "undo_move": "실행 취소"
     },
@@ -41,6 +42,7 @@
       "suggested": "제안된 수"
     },
     "nudge": {
+      "dice_order": "이 말은 첫 번째 미사용 주사위를 쓸 수 없습니다. 주사위 순서를 바꾸거나 다른 말을 선택하세요.",
       "roll_first": "먼저 주사위를 굴리세요"
     },
     "opening": {
@@ -73,6 +75,8 @@
       "direction_overlay_hint": "보드 위 말굽 모양 경로",
       "move_hints": "이동 힌트",
       "move_hints_hint": "이동 가능한 포인트 옆에 금색 점 표시",
+      "move_in_dice_order": "주사위 순서대로 이동",
+      "move_in_dice_order_hint": "말을 누르면 첫 번째 미사용 주사위로 이동합니다. 주사위를 바꾸면 순서가 변경됩니다.",
       "point_numbers": "포인트 번호",
       "point_numbers_hint": "보드에 1–24 라벨 표시",
       "section_automation": "자동화",

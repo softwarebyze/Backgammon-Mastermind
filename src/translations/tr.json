@@ -25,6 +25,7 @@
       "roll_dice": "Zar At",
       "roll_dice_a11y": "Zar at",
       "start_new_game_a11y": "Yeni oyun başla",
+      "swap_dice": "Zarları değiştir",
       "undo_a11y": "Undo hareketsiz",
       "undo_move": "Geri al"
     },
@@ -41,6 +42,7 @@
       "suggested": "Önerilen hamle"
     },
     "nudge": {
+      "dice_order": "Bu pul ilk kullanılmamış zarı kullanamaz. Zarları değiştirin veya başka bir pul seçin.",
       "roll_first": "Önce zarları at"
     },
     "opening": {
@@ -73,6 +75,8 @@
       "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
       "move_hints": "Hamle ipuçları",
       "move_hints_hint": "Taş oynatabileceğin hanelerin yanında altın nokta",
+      "move_in_dice_order": "Zar sırasına göre oyna",
+      "move_in_dice_order_hint": "İlk kullanılmamış zarı oynamak için bir pula dokunun. Sırayı değiştirmek için zarları değiştirin.",
       "point_numbers": "Hane numaraları",
       "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
       "section_automation": "Otomasyon",

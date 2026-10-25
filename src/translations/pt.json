@@ -25,6 +25,7 @@
       "roll_dice": "Lançar os dados",
       "roll_dice_a11y": "Lançar os dados",
       "start_new_game_a11y": "Iniciar um novo jogo",
+      "swap_dice": "Trocar dados",
       "undo_a11y": "Desfazer a jogada",
       "undo_move": "Desfazer"
     },
@@ -41,6 +42,7 @@
       "suggested": "Jogada sugerida"
     },
     "nudge": {
+      "dice_order": "Esta peça não pode usar o primeiro dado não utilizado. Troque os dados ou escolha outra peça.",
       "roll_first": "Lance os dados primeiro"
     },
     "opening": {
@@ -73,6 +75,8 @@
       "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
       "move_hints": "Dicas de movimento",
       "move_hints_hint": "Ponto dourado ao lado das casas de onde você pode mover",
+      "move_in_dice_order": "Mover na ordem dos dados",
+      "move_in_dice_order_hint": "Toque numa peça para usar o primeiro dado não utilizado. Troque os dados para mudar a ordem.",
       "point_numbers": "Números das casas",
       "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
       "section_automation": "Automação",

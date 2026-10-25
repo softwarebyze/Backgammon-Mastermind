@@ -26,6 +26,7 @@ type Props = {
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
   onTutorModeChange: (value: boolean) => void;
+  onMoveInDiceOrderChange: (value: boolean) => void;
   onConfirmMoveChange: (value: boolean) => void;
   showHints?: boolean;
 };
@@ -41,6 +42,7 @@ export function GamePreferencesPanel({
   onSoundEnabledChange,
   onTutorModeChange,
   onConfirmMoveChange,
+  onMoveInDiceOrderChange,
   showHints = false,
 }: Props) {
   return (
@@ -113,6 +115,17 @@ export function GamePreferencesPanel({
           value={preferences.soundEnabled}
           onChange={onSoundEnabledChange}
           testID="setting-toggle-sound"
+        />
+      </View>
+
+      <View style={styles.card}>
+        <SettingToggleRow
+          icon={<AutoMoveIcon size={32} active={preferences.moveInDiceOrder} />}
+          label={translate('game.preferences.move_in_dice_order')}
+          hint={translate('game.preferences.move_in_dice_order_hint')}
+          value={preferences.moveInDiceOrder}
+          onChange={onMoveInDiceOrderChange}
+          testID="setting-toggle-dice-order"
         />
       </View>
 

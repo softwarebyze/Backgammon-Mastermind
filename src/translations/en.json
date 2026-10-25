@@ -25,6 +25,7 @@
       "roll_dice": "Roll Dice",
       "roll_dice_a11y": "Roll dice",
       "start_new_game_a11y": "Start new game",
+      "swap_dice": "Swap dice",
       "undo_a11y": "Undo move",
       "undo_move": "Undo"
     },
@@ -41,6 +42,7 @@
       "suggested": "Suggested move"
     },
     "nudge": {
+      "dice_order": "This checker cannot use the first unspent die. Swap dice or choose another checker.",
       "roll_first": "Roll the dice first"
     },
     "opening": {
@@ -73,6 +75,8 @@
       "direction_overlay_hint": "Horseshoe path on the board",
       "move_hints": "Move hints",
       "move_hints_hint": "Gold dot beside points you can move from",
+      "move_in_dice_order": "Move in dice order",
+      "move_in_dice_order_hint": "Tap a checker to play the leading unspent die. Swap the dice to change which plays first.",
       "point_numbers": "Point numbers",
       "point_numbers_hint": "Show 1–24 labels on the board",
       "section_automation": "Automation",

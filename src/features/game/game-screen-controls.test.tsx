@@ -4,6 +4,9 @@ import { cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 
 import { GameScreenControls } from './game-screen-controls';
 
+jest.mock('./components/hint-button', () => ({ HintButton: () => null }));
+jest.mock('@expo/vector-icons/Feather', () => () => null);
+
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),
   hapticSelection: jest.fn(),
@@ -213,5 +216,33 @@ describe('confirm move bar', () => {
     );
 
     expect(screen.queryByTestId('confirm-move-button')).toBeNull();
+  });
+});
+
+describe('dice order swap control', () => {
+  it.each([
+    { dice: [3, 1], remainingDice: [3, 1], disabled: false },
+    { dice: [3, 1], remainingDice: [1], disabled: true },
+    { dice: [2, 2], remainingDice: [2, 2, 2, 2], disabled: true },
+  ])('disables swap only for doubles or one remaining die: %j', ({ dice, remainingDice, disabled }) => {
+    mockPrefs.moveInDiceOrder = true;
+    const state = { ...awaitingConfirmState(), dice: dice as [number, number], remainingDice };
+    const onSwapDice = jest.fn();
+    setup(<GameScreenControls state={state} liveDiceState={state} displayedDice={[dice[1]!, dice[0]!]} onSwapDice={onSwapDice} isHumanTurn isComputerTurn={false} moveLogLength={0} onRoll={jest.fn()} onReset={jest.fn()} />);
+    const button = screen.getByTestId('swap-dice-button');
+    if (disabled) {
+      expect(button).toBeDisabled();
+    }
+    else {
+      expect(button).toBeEnabled();
+      fireEvent.press(button);
+      expect(onSwapDice).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it('keeps swap hidden with the default preference', () => {
+    const state = { ...awaitingConfirmState(), remainingDice: [3, 5] };
+    setup(<GameScreenControls state={state} liveDiceState={state} isHumanTurn isComputerTurn={false} moveLogLength={0} onRoll={jest.fn()} onReset={jest.fn()} />);
+    expect(screen.queryByTestId('swap-dice-button')).toBeNull();
   });
 });

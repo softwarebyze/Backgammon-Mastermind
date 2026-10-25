@@ -2,7 +2,7 @@ import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
 import { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { I18nManager, StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
@@ -22,6 +22,8 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
+  displayedDice?: [number, number];
+  onSwapDice?: () => void;
   /** Live dice/phase for tray + ceremony handoff (ignore review scrub). */
   liveDiceState: GameState;
   isHumanTurn: boolean;
@@ -54,6 +56,8 @@ const CONTROL_HIT_SLOP = 16;
 export function GameScreenControls({
   state,
   liveDiceState,
+  displayedDice,
+  onSwapDice,
   isHumanTurn,
   isComputerTurn,
   isReviewing = false,
@@ -101,7 +105,8 @@ export function GameScreenControls({
             )
           : (
               <DiceDisplay
-                dice={diceForTray.dice}
+                dice={preferences.moveInDiceOrder && !isReviewing ? displayedDice ?? diceForTray.dice : diceForTray.dice}
+                leadingRTL={preferences.moveInDiceOrder ? I18nManager.isRTL : undefined}
                 remainingDice={diceForTray.remainingDice}
                 playerColor={diceForTray.currentPlayer}
                 displayStyle={preferences.diceDisplayStyle}
@@ -110,6 +115,23 @@ export function GameScreenControls({
               />
             )}
       </View>
+      {preferences.moveInDiceOrder && !isReviewing && !showOpening && isHumanTurn && state.phase === 'moving' && state.remainingDice.length > 0 && (
+        <HoverPressable
+          accessibilityRole="button"
+          accessibilityLabel={translate('game.controls.swap_dice')}
+          accessibilityState={{ disabled: state.dice[0] === state.dice[1] || state.remainingDice.length < 2 }}
+          disabled={state.dice[0] === state.dice[1] || state.remainingDice.length < 2}
+          testID="swap-dice-button"
+          onPress={() => {
+            hapticLight();
+            onSwapDice?.();
+          }}
+          style={({ pressed, hovered }) => [styles.swapBtn, hovered && styles.secondaryBtnHover, pressed && styles.pressed, (state.dice[0] === state.dice[1] || state.remainingDice.length < 2) && styles.undoBtnDisabled]}
+        >
+          <Feather name="repeat" size={16} color={GAME_PALETTE.accent} />
+          <Text style={styles.swapText}>{translate('game.controls.swap_dice')}</Text>
+        </HoverPressable>
+      )}
       <View
         style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"
@@ -390,6 +412,19 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingHorizontal: 12,
   },
+  swapBtn: {
+    minHeight: 44,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 16,
+    marginBottom: 4,
+    borderWidth: 1,
+    borderColor: GAME_PALETTE.surfaceBorder,
+    ...continuousRadius(12),
+  },
+  swapText: { color: GAME_PALETTE.accent, fontSize: 14, ...interFont('semibold') },
   diceRow: {
     flexDirection: 'row',
     alignItems: 'center',

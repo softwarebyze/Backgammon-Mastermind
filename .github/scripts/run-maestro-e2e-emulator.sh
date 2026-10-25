@@ -31,6 +31,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \
+  "${WORKSPACE}/.maestro/app/dice-order.yaml" \
   "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \

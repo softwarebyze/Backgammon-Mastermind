@@ -1,0 +1,104 @@
+# Opt-in checker taps spend the displayed leading die. Includes swap, guidance,
+# persistence through navigation, Undo/Redo, confirm hold and fast follow-up.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      id: setting-toggle-dice-order
+    direction: DOWN
+- tapOn:
+    id: setting-toggle-dice-order
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: UP
+- tapOn: Auto-roll dice
+- tapOn: Auto-move when forced
+- takeScreenshot: dice-order-01-setting-enabled
+- tapOn:
+    id: stack-escape-button
+- openLink: backgammonmastermind.preview://developer
+- tapOn:
+    id: developer-preset-e2e-undo-redo-3-1
+- extendedWaitUntil:
+    visible:
+      id: swap-dice-button
+    timeout: 45000
+- takeScreenshot: dice-order-02-leading-three
+- tapOn:
+    id: swap-dice-button
+- takeScreenshot: dice-order-03-leading-one
+- tapOn:
+    id: point-8
+- extendedWaitUntil:
+    visible: 'Point 7, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Point 8, 2 white checkers'
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 15000
+- tapOn:
+    id: header-redo-button
+- extendedWaitUntil:
+    visible: 'Point 7, 1 white checker'
+    timeout: 15000
+- tapOn:
+    id: point-13
+- extendedWaitUntil:
+    visible:
+      id: confirm-move-button
+    timeout: 15000
+- assertVisible: 'Point 10, 1 white checker'
+- takeScreenshot: dice-order-04-confirm-hold
+- tapOn:
+    id: confirm-move-button
+# A fresh fixture returns to original order. Leading five is blocked from 6;
+# no silent substitution of the legal three is allowed.
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[5,3],"mode":"vs-human"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible:
+      id: point-6
+    timeout: 15000
+- tapOn:
+    id: point-6
+- assertVisible: 'Point 6, 5 white checkers'
+- assertVisible: This checker cannot use the first unspent die. Swap dice or choose another checker.
+- takeScreenshot: dice-order-05-blocked-guidance
+- tapOn:
+    id: swap-dice-button
+- tapOn:
+    id: point-6
+    waitToSettleTimeoutMs: 0
+- tapOn:
+    id: point-13
+    point: '50%,50%'
+    waitToSettleTimeoutMs: 0
+- extendedWaitUntil:
+    visible: 'Point 3, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Point 6, 4 white checkers'
+- assertVisible: 'Point 13, 4 white checkers'
+- assertVisible: 'Point 8, 4 white checkers'
+- takeScreenshot: dice-order-06-fast-follow-up
