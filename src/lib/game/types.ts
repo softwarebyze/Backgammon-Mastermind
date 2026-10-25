@@ -14,6 +14,8 @@ export type BoardPoint = {
  * dieIndex: which index in remainingDice was consumed
  */
 export type Move = {
+  /** Shared by all dice legs accepted from one user action. */
+  actionId?: string;
   from: number;
   to: number;
   /**

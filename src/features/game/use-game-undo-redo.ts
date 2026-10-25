@@ -125,8 +125,8 @@ export function useGameUndoRedo(options: Options) {
     shouldSuppressHistoryPath,
   ]);
 
-  const doUndo = useCallback(() => {
-    if (!canUndo || !canRunUndo(timelineRef.current, isAnimating)) {
+  const doUndo = useCallback((cancelCommittedFlights = false) => {
+    if (!canUndo || !canRunUndo(timelineRef.current, isAnimating && !cancelCommittedFlights)) {
       return;
     }
     runAnimatedUndo(animCtx());

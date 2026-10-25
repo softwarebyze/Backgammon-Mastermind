@@ -65,7 +65,15 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
   // move is popped as well — the intermediate snapshots are black-to-move
   // states that would wake the AI.
   const autoRewound = countTrailingAutoRewound(moveLog, ctx.gameMode);
-  const needsBatch = ctx.gameMode === 'vs-computer' && autoRewound > 0;
+  const lastIndex = moveLog.length - autoRewound - 1;
+  const actionId = moveLog[lastIndex]?.actionId;
+  let actionLength = 1;
+  if (actionId != null) {
+    while (moveLog[lastIndex - actionLength]?.actionId === actionId) {
+      actionLength++;
+    }
+  }
+  const needsBatch = actionLength > 1 || (ctx.gameMode === 'vs-computer' && autoRewound > 0);
 
   // The log can hold nothing but passes and AI moves: nothing real to undo.
   if (autoRewound >= moveLog.length || autoRewound >= timeline.cursor) {
@@ -75,7 +83,7 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
   // A multi-move rewind commits in one batch (no animation): animating the
   // final step would briefly show a black-to-move board and trigger the AI.
   if (needsBatch || !replayBaseline) {
-    const result = undoMany(timeline, autoRewound + 1, { popLastMove, liveState: getLiveState() });
+    const result = undoMany(timeline, autoRewound + actionLength, { popLastMove, liveState: getLiveState() });
     if (result) {
       setTimeline(result.nextTimeline);
       setState(result.nextState);
@@ -149,6 +157,20 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
   const moveEntry = peekRedoMove(timeline);
   if (!moveEntry) {
     return false;
+  }
+
+  if (moveEntry.actionId && timeline.redoMoves[1]?.actionId === moveEntry.actionId) {
+    let next = timeline;
+    while (peekRedoMove(next)?.actionId === moveEntry.actionId) {
+      const result = redoInstant(next, restoreMove);
+      if (!result) {
+        break;
+      }
+      next = result.nextTimeline;
+      setState(result.nextState);
+    }
+    setTimeline(next);
+    return true;
   }
 
   if (!replayBaseline) {

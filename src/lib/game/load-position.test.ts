@@ -6,7 +6,7 @@ import {
   POSITION_JSON_ERRORS,
   POSITION_LOADER_PRESETS,
 } from './load-position';
-import { getLegalMoves } from './moves';
+import { getLegalMoves, getReachableDestinations } from './moves';
 
 function preset(id: string) {
   const found = POSITION_LOADER_PRESETS.find(item => item.id === id);
@@ -93,6 +93,7 @@ describe('position loader presets', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
+      'e2e-tutor-compound-3-1',
       'e2e-undo-redo-3-1',
     ]);
   });
@@ -102,6 +103,14 @@ describe('position loader presets', () => {
     expect(state.phase).toBe('moving');
     expect(state.mode).toBe('vs-human');
     expect(barDestinations(state)).toEqual([23]);
+  });
+
+  it('the E2E tutor board makes 6→3→2 a legal two-die compound', () => {
+    const state = loadPositionPreset(preset('e2e-tutor-compound-3-1'));
+    expect(state).toMatchObject({ phase: 'moving', mode: 'vs-human', currentPlayer: 'white', dice: [3, 1] });
+    expect(state.points[6]).toEqual({ player: 'white', count: 15 });
+    expect(state.points[1]).toEqual({ player: 'black', count: 15 });
+    expect(getReachableDestinations(state, 6).get(2)).toHaveLength(2);
   });
 
   it('the E2E undo/redo board deals a fixed 3–1 with the 8→5 move the Maestro flow plays', () => {

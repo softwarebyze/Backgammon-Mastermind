@@ -63,7 +63,7 @@ export function createPlayMove(opts: {
       // a spent-dice turn with no Confirm bar and no auto-pass.
       const applyOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
       const next = applyMove(snapshot, legal, applyOpts);
-      onMoveApplied?.(snapshot, legal, next);
+      onMoveApplied?.(snapshot, { ...legal, actionId: move.actionId }, next);
       setState(next);
       setMoveAnimation(null);
       playOpts?.onComplete?.(next);
