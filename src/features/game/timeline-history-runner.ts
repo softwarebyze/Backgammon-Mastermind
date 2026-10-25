@@ -40,6 +40,8 @@ type HistoryAnimCtx = {
    * confirm bar leaves; hold arrows already update/clear from moveLog.
    */
   suppressHistoryPath?: boolean;
+  /** Live input commits history synchronously; review retains settle-time semantics. */
+  startCommittedFrame?: (frame: MoveAnimationFrame, before: GameState) => void;
 };
 
 /** vs-computer rewinds past the AI's moves as well as blocked rolls. */
@@ -55,6 +57,34 @@ function countTrailingAutoRewound(moveLog: MoveLogEntry[], mode: GameState['mode
   return count;
 }
 
+/** Commit a compound as one input, while each checker leg keeps its own flight. */
+function undoCommittedAction(ctx: HistoryAnimCtx, count: number) {
+  let timeline = ctx.timeline;
+  let before = ctx.getLiveState();
+  for (let i = 0; i < count; i++) {
+    const step = buildUndoHistoryStep({
+      replayBaseline: ctx.replayBaseline!,
+      moveLog: ctx.moveLog,
+      undoPly: timeline.cursor,
+      onFinish: () => {},
+    });
+    const result = undoMany(timeline, 1, { popLastMove: ctx.popLastMove, liveState: before });
+    if (!result) {
+      break;
+    }
+    if (step?.frame && before) {
+      ctx.startCommittedFrame!(step.frame, before);
+    }
+    timeline = result.nextTimeline;
+    before = result.nextState;
+  }
+  ctx.setTimeline(timeline);
+  if (before) {
+    ctx.setState(before);
+  }
+}
+
+// eslint-disable-next-line max-lines-per-function -- grouped live history and legacy settle-time review
 export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
   const { replayBaseline, popLastMove, setTimeline, setState, finishHistoryAnim, getLiveState } = ctx;
   const { timeline, moveLog } = ctx;
@@ -80,8 +110,13 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
-  // A multi-move rewind commits in one batch (no animation): animating the
-  // final step would briefly show a black-to-move board and trigger the AI.
+  // Human compounds commit as one input and retain each visual checker leg.
+  if (actionLength > 1 && autoRewound === 0 && replayBaseline && ctx.startCommittedFrame) {
+    undoCommittedAction(ctx, actionLength);
+    return true;
+  }
+
+  // AI rewinds stay atomic: intermediate black-to-move states would wake AI.
   if (needsBatch || !replayBaseline) {
     const result = undoMany(timeline, autoRewound + actionLength, { popLastMove, liveState: getLiveState() });
     if (result) {
@@ -141,6 +176,20 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
+  if (ctx.startCommittedFrame) {
+    const before = getLiveState();
+    const result = undoMany(timeline, passes + 1, { popLastMove, liveState: before });
+    if (result) {
+      setTimeline(result.nextTimeline);
+      setState(result.nextState);
+      ctx.setHistoryPath(ctx.suppressHistoryPath ? null : step.path);
+      if (before) {
+        ctx.startCommittedFrame({ ...step.frame, onFinish: () => {} }, before);
+      }
+    }
+    return true;
+  }
+
   const settle = ctx.armAnimationFinish(commitUndo);
   if (ctx.suppressHistoryPath) {
     ctx.setHistoryPath(null);
@@ -161,11 +210,22 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
 
   if (moveEntry.actionId && timeline.redoMoves[1]?.actionId === moveEntry.actionId) {
     let next = timeline;
+    let before = ctx.getLiveState();
+    let log = moveLog;
     while (peekRedoMove(next)?.actionId === moveEntry.actionId) {
+      const entry = peekRedoMove(next)!;
+      const step = replayBaseline && ctx.startCommittedFrame
+        ? buildRedoHistoryStep({ replayBaseline, moveLog: log, moveEntry: entry, cursor: next.cursor, onFinish: () => {} })
+        : null;
       const result = redoInstant(next, restoreMove);
       if (!result) {
         break;
       }
+      if (step?.frame && before) {
+        ctx.startCommittedFrame!(step.frame, before);
+      }
+      before = result.nextState;
+      log = [...log, entry];
       next = result.nextTimeline;
       setState(result.nextState);
     }
@@ -210,6 +270,20 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
     if (result) {
       setTimeline(result.nextTimeline);
       setState(result.nextState);
+    }
+    return true;
+  }
+
+  if (ctx.startCommittedFrame) {
+    const before = ctx.getLiveState();
+    const result = redoInstant(timeline, restoreMove);
+    if (result) {
+      setTimeline(result.nextTimeline);
+      setState(result.nextState);
+      ctx.setHistoryPath(step.path);
+      if (before) {
+        ctx.startCommittedFrame({ ...step.frame, onFinish: () => {} }, before);
+      }
     }
     return true;
   }

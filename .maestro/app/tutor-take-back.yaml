@@ -91,3 +91,23 @@ tags:
     id: guidance-modal
 - assertNotVisible: 'Point 2, 1 white checker'
 - takeScreenshot: 05-after-repeated-take-back
+
+# Reverse the grouped redo before it lands. Stale forward finishes cannot
+# resurrect a leg after the action has already been undone.
+- tapOn:
+    id: header-redo-button
+    waitToSettleTimeoutMs: 0
+- tapOn:
+    id: header-undo-button
+    waitToSettleTimeoutMs: 0
+- extendedWaitUntil:
+    visible: 'Point 6, 15 white checkers'
+    timeout: 15000
+- assertNotVisible: 'Point 2, 1 white checker'
+- assertNotVisible: 'Point 3, 1 white checker'
+- assertNotVisible:
+    id: guidance-modal
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- takeScreenshot: 06-after-rapid-grouped-undo

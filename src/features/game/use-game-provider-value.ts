@@ -32,6 +32,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     recordNoMove,
     resetMoveLog,
     reloadMoveLog,
+    getMoveLog,
     popLastMove,
     restoreMove,
   } = useMoveLog(state);
@@ -41,7 +42,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   moveLogRef.current = moveLog;
   const replayBaselineRef = useRef(replayBaseline);
   replayBaselineRef.current = replayBaseline;
-  const { timeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
+  const { timeline, getTimeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
   const { noteMoveApplied, resetForNewGame } = useGameCompletedCapture(state, moveLog.length);
   const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
     recordMove(snapshot, move, next);
@@ -72,6 +73,9 @@ export function useGameProviderValue(active: boolean): GameContextType {
     doMove,
     doMoveSequence,
     getMoveState,
+    commitHistoryState,
+    addHistoryFrame,
+    prepareHistory,
     playMove,
     resetAnimation,
     armAnimationFinish,
@@ -87,6 +91,12 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
   const { doUndo: undoHistory, doRedo: redoHistory, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
+    getTimeline,
+    getMoveLog,
+    getMoveState,
+    commitHistoryState,
+    startCommittedFrame: addHistoryFrame,
+    prepareHistory,
     timeline,
     setTimeline,
     setState,
@@ -126,26 +136,20 @@ export function useGameProviderValue(active: boolean): GameContextType {
   // All entry points (header, confirm bar, keyboard and tutor) share this path.
   // An unavailable undo must leave the current guidance intact.
   const doUndo = useCallback(() => {
-    const cancelFlights = !!moveAnimation?.committed && !moveAnimation.inputBlocked;
-    if (!canUndo || (isAnimating && !cancelFlights)) {
+    if (!undoHistory()) {
       return;
-    }
-    if (cancelFlights) {
-      resetAllAnimation();
     }
     clearAITimeout();
     clearGuidance();
     setGuidanceVerdictPending(false);
-    undoHistory(cancelFlights);
-  }, [canUndo, isAnimating, moveAnimation, resetAllAnimation, clearAITimeout, undoHistory]);
+  }, [clearAITimeout, undoHistory]);
   const doRedo = useCallback(() => {
-    if (!canRedo || isAnimating) {
+    if (!redoHistory()) {
       return;
     }
     clearGuidance();
     setGuidanceVerdictPending(false);
-    redoHistory();
-  }, [canRedo, isAnimating, redoHistory]);
+  }, [redoHistory]);
   usePersistActiveGame(state, moveLog, replayBaseline);
   const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,

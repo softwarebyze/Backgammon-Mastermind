@@ -19,6 +19,12 @@ export type { HistoryPathOverlay } from '@/features/game/timeline-history-action
 
 type Options = {
   state: GameState | null;
+  prepareHistory?: () => void;
+  getTimeline?: () => GameTimeline | null;
+  getMoveLog?: () => MoveLogEntry[];
+  getMoveState?: () => GameState | null;
+  commitHistoryState?: (next: GameState) => void;
+  startCommittedFrame?: (frame: MoveAnimationFrame, before: GameState) => void;
   timeline: GameTimeline | null;
   setTimeline: Dispatch<SetStateAction<GameTimeline | null>>;
   setState: Dispatch<SetStateAction<GameState | null>>;
@@ -35,10 +41,17 @@ type Options = {
   shouldSuppressHistoryPath?: () => boolean;
 };
 
-/** Live undo/redo — animates like review scrubbing, then commits timeline + move log. */
+/** Live history commits on input; independently keyed flights only change visuals. */
+// eslint-disable-next-line max-lines-per-function -- synchronous history mirrors and legacy review compatibility
 export function useGameUndoRedo(options: Options) {
   const {
     state,
+    prepareHistory,
+    getMoveState,
+    getMoveLog,
+    getTimeline,
+    commitHistoryState,
+    startCommittedFrame,
     timeline,
     setTimeline,
     setState,
@@ -67,7 +80,24 @@ export function useGameUndoRedo(options: Options) {
   moveLogRef.current = moveLog;
   const stateRef = useRef(state);
   stateRef.current = state;
-  const getLiveState = useCallback(() => stateRef.current, []);
+  const getLiveState = useCallback(() => getMoveState?.() ?? stateRef.current, [getMoveState]);
+  const readTimeline = useCallback(() => getTimeline?.() ?? timelineRef.current, [getTimeline]);
+  const readLog = useCallback(() => getMoveLog?.() ?? moveLogRef.current, [getMoveLog]);
+  const commitTimeline = useCallback<Options['setTimeline']>((update) => {
+    const next = typeof update === 'function' ? update(readTimeline()) : update;
+    timelineRef.current = next;
+    setTimeline(next);
+  }, [readTimeline, setTimeline]);
+  const commitState = useCallback<Options['setState']>((update) => {
+    const next = typeof update === 'function' ? update(getLiveState()) : update;
+    stateRef.current = next;
+    if (next && commitHistoryState) {
+      commitHistoryState(next);
+    }
+    else {
+      setState(next);
+    }
+  }, [getLiveState, commitHistoryState, setState]);
   const pathClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const finishHistoryAnim = useCallback(() => {
@@ -97,15 +127,23 @@ export function useGameUndoRedo(options: Options) {
   }, []);
 
   const animCtx = useCallback(() => ({
-    timeline: timelineRef.current!,
-    moveLog: moveLogRef.current,
-    replayBaseline,
+    timeline: readTimeline()!,
+    moveLog: readLog(),
+    replayBaseline: replayBaseline ?? readTimeline()?.snapshots[0] ?? null,
     gameMode,
     getLiveState,
-    popLastMove,
-    restoreMove,
-    setTimeline,
-    setState,
+    popLastMove: () => {
+      const entry = popLastMove();
+      moveLogRef.current = moveLogRef.current.slice(0, -1);
+      return entry;
+    },
+    restoreMove: (entry: MoveLogEntry) => {
+      restoreMove(entry);
+      moveLogRef.current = [...moveLogRef.current, entry];
+    },
+    setTimeline: commitTimeline,
+    setState: commitState,
+    startCommittedFrame,
     setMoveAnimation,
     setHistoryPath,
     finishHistoryAnim,
@@ -113,6 +151,11 @@ export function useGameUndoRedo(options: Options) {
     suppressHistoryPath: shouldSuppressHistoryPath?.() === true,
   }), [
     armAnimationFinish,
+    commitState,
+    commitTimeline,
+    startCommittedFrame,
+    readLog,
+    readTimeline,
     finishHistoryAnim,
     gameMode,
     getLiveState,
@@ -120,24 +163,41 @@ export function useGameUndoRedo(options: Options) {
     replayBaseline,
     restoreMove,
     setMoveAnimation,
-    setState,
-    setTimeline,
     shouldSuppressHistoryPath,
   ]);
 
-  const doUndo = useCallback((cancelCommittedFlights = false) => {
-    if (!canUndo || !canRunUndo(timelineRef.current, isAnimating && !cancelCommittedFlights)) {
-      return;
+  const doUndo = useCallback(() => {
+    prepareHistory?.();
+    const live = readTimeline();
+    if (!canRunUndo(live, false) || !hasUndoableHumanMove(gameMode, readLog())
+      || (isAnimating && !startCommittedFrame)) {
+      return false;
     }
-    runAnimatedUndo(animCtx());
-  }, [animCtx, canUndo, isAnimating]);
+    clearHistoryPath();
+    return runAnimatedUndo(animCtx());
+  }, [animCtx, clearHistoryPath, gameMode, isAnimating, prepareHistory, startCommittedFrame, readLog, readTimeline]);
 
   const doRedo = useCallback(() => {
-    if (!canRedo || !canRunRedo(timelineRef.current, isAnimating)) {
-      return;
+    prepareHistory?.();
+    const live = readTimeline();
+    if (!canRunRedo(live, false) || !isHumanHistoryStep(gameMode, peekRedoMove(live))
+      || (isAnimating && !startCommittedFrame)) {
+      return false;
     }
-    runAnimatedRedo(animCtx());
-  }, [animCtx, canRedo, isAnimating]);
+    clearHistoryPath();
+    return runAnimatedRedo(animCtx());
+  }, [animCtx, clearHistoryPath, gameMode, isAnimating, prepareHistory, startCommittedFrame, readTimeline]);
+
+  useEffect(() => {
+    if (!isAnimating && historyPath) {
+      pathClearTimerRef.current = setTimeout(() => setHistoryPath(null), 700);
+      return () => {
+        if (pathClearTimerRef.current !== null) {
+          clearTimeout(pathClearTimerRef.current);
+        }
+      };
+    }
+  }, [historyPath, isAnimating]);
 
   return { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath };
 }
