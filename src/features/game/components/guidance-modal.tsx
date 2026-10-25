@@ -118,8 +118,6 @@ function ActionButton({
 function QuestionView({
   verdict,
   onTakeBack,
-  onUndoLastMove,
-  canUndoLastMove,
   onRevealFull,
   onShowMine,
   onKeepMove,
@@ -127,8 +125,6 @@ function QuestionView({
 }: {
   verdict: NonNullable<GuidanceSession['verdict']>;
   onTakeBack: () => void;
-  onUndoLastMove: () => void;
-  canUndoLastMove: boolean;
   onRevealFull: () => void;
   onShowMine: () => void;
   onKeepMove: () => void;
@@ -151,16 +147,6 @@ function QuestionView({
           style={styles.btnPrimary}
           labelStyle={styles.btnPrimaryLabel}
         />
-        {canUndoLastMove && (
-          <ActionButton
-            label={translate('game.tutor.undo_last')}
-            a11y={translate('game.tutor.undo_last_a11y')}
-            testID="guidance-undo-last-move"
-            onPress={onUndoLastMove}
-            style={styles.btnSecondary}
-            labelStyle={styles.btnSecondaryLabel}
-          />
-        )}
         <ActionButton
           label={translate('game.tutor.reveal')}
           a11y={translate('game.tutor.reveal_a11y')}
@@ -511,7 +497,7 @@ function useBlunderModalActions(session: GuidanceSession | null) {
       return;
     captureBlunderAction('take_back');
     clearGuidance();
-    game.tutorRevertTurn(session.questionState, session.myMoves.length);
+    game.doUndo();
   };
   // Full reveal is the "peek": the answer was hidden until the player asked.
   const handleRevealFull = () => {
@@ -551,11 +537,6 @@ export function GuidanceModal() {
   }
   const verdict = session.verdict;
 
-  /** Undo just the last die move so the player can retry part of the turn. */
-  const handleUndoLastMove = () => {
-    clearGuidance();
-    game.doUndo();
-  };
   // Every reveal transition writes the complete reveal state, so Back →
   // reveal can never resurrect stale toggles from an earlier view.
   const handleShowMine = () => updateGuidance({
@@ -605,8 +586,6 @@ export function GuidanceModal() {
                   <QuestionView
                     verdict={verdict}
                     onTakeBack={handleTakeBack}
-                    onUndoLastMove={handleUndoLastMove}
-                    canUndoLastMove={game.canUndo ?? false}
                     onRevealFull={handleRevealFull}
                     onShowMine={handleShowMine}
                     onKeepMove={handleKeepMove}

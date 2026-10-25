@@ -206,14 +206,12 @@
       "show_mine": "显示我的走法",
       "show_mine_a11y": "只显示我的走法，不揭示最佳走法",
       "take_back": "撤回并重试",
-      "take_back_a11y": "撤回整个回合并重试",
+      "take_back_a11y": "撤回这一步并重试",
       "take_back_retry_a11y": "撤回这一步并重试",
       "title_compare": "你的走法与最佳走法",
       "title_mine": "你的走法",
       "turn_off": "关闭导师",
       "turn_off_a11y": "关闭导师模式",
-      "undo_last": "撤销上一步",
-      "undo_last_a11y": "只撤销上一步并重走",
       "vs_best": "比最佳 −{{delta}}",
       "you_played": "你走了："
     }

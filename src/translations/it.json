@@ -206,14 +206,12 @@
       "show_mine": "Mostra la mia mossa",
       "show_mine_a11y": "Mostra solo la mia mossa, senza rivelare la migliore",
       "take_back": "Annulla e riprova",
-      "take_back_a11y": "Annulla tutto il turno e riprova",
+      "take_back_a11y": "Annulla la mossa e riprova",
       "take_back_retry_a11y": "Annulla la mossa e riprova",
       "title_compare": "La tua mossa contro la migliore",
       "title_mine": "La tua mossa",
       "turn_off": "Disattiva il tutor",
       "turn_off_a11y": "Disattiva la modalità tutor",
-      "undo_last": "Annulla l’ultima mossa",
-      "undo_last_a11y": "Annulla solo l’ultima mossa e rigiocala",
       "vs_best": "−{{delta}} rispetto alla migliore",
       "you_played": "Hai giocato:"
     }

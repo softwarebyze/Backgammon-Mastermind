@@ -64,6 +64,7 @@ const moveLogEntrySchema = z.object({
   from: z.number().int(),
   to: z.number().int(),
   hit: z.boolean().optional(),
+  actionId: z.string().min(1).optional(),
   after: replaySnapshotSchema.optional(),
 });
 

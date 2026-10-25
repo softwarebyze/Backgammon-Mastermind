@@ -206,14 +206,12 @@
       "show_mine": "Pokaż mój ruch",
       "show_mine_a11y": "Pokaż tylko mój ruch, bez odkrywania najlepszego",
       "take_back": "Cofnij i spróbuj ponownie",
-      "take_back_a11y": "Cofnij całą turę i spróbuj ponownie",
+      "take_back_a11y": "Cofnij ruch i spróbuj ponownie",
       "take_back_retry_a11y": "Cofnij ruch i spróbuj ponownie",
       "title_compare": "Twój ruch wobec najlepszego",
       "title_mine": "Twój ruch",
       "turn_off": "Wyłącz tutora",
       "turn_off_a11y": "Wyłącz tryb tutora",
-      "undo_last": "Cofnij ostatni ruch",
-      "undo_last_a11y": "Cofnij tylko ostatni ruch i zagraj go ponownie",
       "vs_best": "−{{delta}} względem najlepszego",
       "you_played": "Zagrałeś:"
     }

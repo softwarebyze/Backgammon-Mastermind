@@ -206,14 +206,12 @@
       "show_mine": "내 수 보기",
       "show_mine_a11y": "최선의 수를 공개하지 않고 내 수만 보기",
       "take_back": "취소하고 다시 시도",
-      "take_back_a11y": "차례 전체를 취소하고 다시 시도",
+      "take_back_a11y": "수를 취소하고 다시 시도",
       "take_back_retry_a11y": "수를 취소하고 다시 시도",
       "title_compare": "당신의 수와 최선의 수",
       "title_mine": "당신의 수",
       "turn_off": "튜터 끄기",
       "turn_off_a11y": "튜터 모드 끄기",
-      "undo_last": "마지막 수 취소",
-      "undo_last_a11y": "마지막 수만 취소하고 다시 두기",
       "vs_best": "최선 대비 −{{delta}}",
       "you_played": "둔 수:"
     }

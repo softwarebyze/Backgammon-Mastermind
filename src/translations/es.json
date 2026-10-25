@@ -206,14 +206,12 @@
       "show_mine": "Mostrar mi jugada",
       "show_mine_a11y": "Mostrar solo mi jugada, sin revelar la mejor",
       "take_back": "Deshacer y reintentar",
-      "take_back_a11y": "Deshacer todo el turno e intentarlo de nuevo",
+      "take_back_a11y": "Deshacer la jugada e intentarlo de nuevo",
       "take_back_retry_a11y": "Deshacer la jugada e intentarlo de nuevo",
       "title_compare": "Tu jugada frente a la mejor",
       "title_mine": "Tu jugada",
       "turn_off": "Apagar el tutor",
       "turn_off_a11y": "Apagar el modo tutor",
-      "undo_last": "Deshacer la última jugada",
-      "undo_last_a11y": "Deshacer solo la última jugada y repetirla",
       "vs_best": "−{{delta}} frente a la mejor",
       "you_played": "Jugaste:"
     }

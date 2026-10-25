@@ -1,7 +1,7 @@
 import type { GameContextType } from '@/features/game/game-context';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useRef, useState } from 'react';
-import { useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { clearGuidance, setGuidanceVerdictPending, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
@@ -85,7 +85,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
    */
   const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
   const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
-  const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
+  const { doUndo: undoHistory, doRedo: redoHistory, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
     timeline,
     setTimeline,
@@ -123,6 +123,29 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetAnimation();
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
+  // All entry points (header, confirm bar, keyboard and tutor) share this path.
+  // An unavailable undo must leave the current guidance intact.
+  const doUndo = useCallback(() => {
+    const cancelFlights = !!moveAnimation?.committed && !moveAnimation.inputBlocked;
+    if (!canUndo || (isAnimating && !cancelFlights)) {
+      return;
+    }
+    if (cancelFlights) {
+      resetAllAnimation();
+    }
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+    undoHistory(cancelFlights);
+  }, [canUndo, isAnimating, moveAnimation, resetAllAnimation, clearAITimeout, undoHistory]);
+  const doRedo = useCallback(() => {
+    if (!canRedo || isAnimating) {
+      return;
+    }
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+    redoHistory();
+  }, [canRedo, isAnimating, redoHistory]);
   usePersistActiveGame(state, moveLog, replayBaseline);
   const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,

@@ -34,7 +34,7 @@ export function resolveSequenceSteps(
     // Only the last step may defer turn end — intermediate dice still remain.
     const opts = i === moves.length - 1 ? applyOpts : undefined;
     const after = applyMove(snap, legal, opts);
-    steps.push({ legal, before: snap, after });
+    steps.push({ legal: { ...legal, actionId: planned.actionId }, before: snap, after });
     snap = after;
   }
   return steps;
@@ -110,7 +110,7 @@ export function runMoveSequence(
       ctx.setSequenceActive(false);
       return;
     }
-    ctx.playMove(snap, legal, {
+    ctx.playMove(snap, { ...legal, actionId: planned.actionId }, {
       fromAnchor: index === 0 ? ctx.fromAnchor : undefined,
       onComplete: (next) => {
         if (!ctx.isCommitLive()) {
