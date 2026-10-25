@@ -88,50 +88,52 @@ export function GameScreenControls({
 
   return (
     <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow} pointerEvents="none">
-        {showOpening
-          ? (
+      <View style={[styles.trayRow, compact && styles.trayRowCompact]} testID="game-dice-tray">
+        <View style={[styles.diceRow, compact && styles.diceRowCompact]} pointerEvents="none">
+          {showOpening
+            ? (
               // Opening: each side's die in its own color; the engine hands these
               // same two values to the winner, so nothing has to travel.
-              <DiceDisplay
-                dice={opening.dice}
-                remainingDice={opening.dice.filter(v => v !== 0)}
-                playerColor={diceForTray.currentPlayer}
-                slotColors={['white', 'black']}
-                emphasis={opening.emphasis}
-                displayStyle={preferences.diceDisplayStyle}
-                size={dieSize}
-              />
-            )
-          : (
-              <DiceDisplay
-                dice={preferences.moveInDiceOrder && !isReviewing ? displayedDice ?? diceForTray.dice : diceForTray.dice}
-                leadingRTL={preferences.moveInDiceOrder ? I18nManager.isRTL : undefined}
-                remainingDice={diceForTray.remainingDice}
-                playerColor={diceForTray.currentPlayer}
-                displayStyle={preferences.diceDisplayStyle}
-                animateRoll={!isReviewing}
-                size={dieSize}
-              />
-            )}
+                <DiceDisplay
+                  dice={opening.dice}
+                  remainingDice={opening.dice.filter(v => v !== 0)}
+                  playerColor={diceForTray.currentPlayer}
+                  slotColors={['white', 'black']}
+                  emphasis={opening.emphasis}
+                  displayStyle={preferences.diceDisplayStyle}
+                  size={dieSize}
+                />
+              )
+            : (
+                <DiceDisplay
+                  dice={preferences.moveInDiceOrder && !isReviewing ? displayedDice ?? diceForTray.dice : diceForTray.dice}
+                  leadingRTL={preferences.moveInDiceOrder ? I18nManager.isRTL : undefined}
+                  remainingDice={diceForTray.remainingDice}
+                  playerColor={diceForTray.currentPlayer}
+                  displayStyle={preferences.diceDisplayStyle}
+                  animateRoll={!isReviewing}
+                  size={dieSize}
+                />
+              )}
+        </View>
+        {preferences.moveInDiceOrder && !isReviewing && !showOpening && isHumanTurn && state.phase === 'moving' && state.remainingDice.length > 0 && (
+          <HoverPressable
+            accessibilityRole="button"
+            accessibilityLabel={translate('game.controls.swap_dice')}
+            accessibilityState={{ disabled: state.dice[0] === state.dice[1] || state.remainingDice.length < 2 }}
+            disabled={state.dice[0] === state.dice[1] || state.remainingDice.length < 2}
+            testID="swap-dice-button"
+            onPress={() => {
+              hapticLight();
+              onSwapDice?.();
+            }}
+            style={({ pressed, hovered }) => [styles.swapBtn, compact && styles.swapBtnCompact, hovered && styles.secondaryBtnHover, pressed && styles.pressed, (state.dice[0] === state.dice[1] || state.remainingDice.length < 2) && styles.undoBtnDisabled]}
+          >
+            <Feather name="repeat" size={16} color={GAME_PALETTE.accent} />
+            <Text style={styles.swapText}>{translate('game.controls.swap_dice')}</Text>
+          </HoverPressable>
+        )}
       </View>
-      {preferences.moveInDiceOrder && !isReviewing && !showOpening && isHumanTurn && state.phase === 'moving' && state.remainingDice.length > 0 && (
-        <HoverPressable
-          accessibilityRole="button"
-          accessibilityLabel={translate('game.controls.swap_dice')}
-          accessibilityState={{ disabled: state.dice[0] === state.dice[1] || state.remainingDice.length < 2 }}
-          disabled={state.dice[0] === state.dice[1] || state.remainingDice.length < 2}
-          testID="swap-dice-button"
-          onPress={() => {
-            hapticLight();
-            onSwapDice?.();
-          }}
-          style={({ pressed, hovered }) => [styles.swapBtn, hovered && styles.secondaryBtnHover, pressed && styles.pressed, (state.dice[0] === state.dice[1] || state.remainingDice.length < 2) && styles.undoBtnDisabled]}
-        >
-          <Feather name="repeat" size={16} color={GAME_PALETTE.accent} />
-          <Text style={styles.swapText}>{translate('game.controls.swap_dice')}</Text>
-        </HoverPressable>
-      )}
       <View
         style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"
@@ -419,19 +421,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     paddingHorizontal: 16,
-    marginBottom: 4,
     borderWidth: 1,
     borderColor: GAME_PALETTE.surfaceBorder,
     ...continuousRadius(12),
   },
+  swapBtnCompact: { marginBottom: 4 },
   swapText: { color: GAME_PALETTE.accent, fontSize: 14, ...interFont('semibold') },
+  // Swap shares the dice row in portrait. A separate row made hiding
+  // Confirm add 48px of chrome and shrink the measured board slot.
+  trayRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    marginBottom: 8,
+  },
+  // The narrow landscape rail scrolls independently of the board.
+  trayRowCompact: {
+    flexDirection: 'column',
+    gap: 0,
+    marginBottom: 0,
+  },
   diceRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 44,
-    marginBottom: 8,
   },
+  diceRowCompact: { marginBottom: 8 },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',

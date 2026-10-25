@@ -25,6 +25,7 @@ MAESTRO_EXIT=0
 maestro test \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
+  "${WORKSPACE}/.maestro/app/board-measurement-stability.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
