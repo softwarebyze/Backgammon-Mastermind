@@ -28,7 +28,10 @@ describe('gamePipStatusBar', () => {
     const state = createInitialState('vs-computer');
     render(<GamePipStatusBar state={state} />);
 
-    expect(screen.getByTestId('strategy-line')).toBeTruthy();
+    expect(screen.getByTestId('strategy-line')).toHaveProp('accessibilityRole', 'button');
+    expect(screen.queryByText('▸')).toBeNull();
+    expect(screen.queryByText('◂')).toBeNull();
+    expect(screen.getByTestId('strategy-mark')).toBeTruthy();
     expect(screen.getByText('game.strategy.label.developing')).toBeTruthy();
     // Both race pip counts render (opening position: 167 each).
     expect(screen.getAllByText('167')).toHaveLength(2);

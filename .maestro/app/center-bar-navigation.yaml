@@ -1,0 +1,92 @@
+# Both overflowing bar stacks, entry animation, undo/redo, strategy explanation,
+# and all navigation controls after rotating into the compact landscape rail.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+# Overflowing bar turns have a forced result; disable its automatic playback
+# so this flow can explicitly test selecting and entering a checker.
+- openLink: backgammonmastermind.preview://settings
+- scrollUntilVisible:
+    element: Auto-move when forced
+    direction: DOWN
+    timeout: 15000
+- tapOn: Auto-move when forced
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-e2e-center-bar
+    timeout: 60000
+- tapOn:
+    id: developer-preset-e2e-center-bar
+- extendedWaitUntil:
+    visible: 'Bar, 7 white checkers, 6 black checkers'
+    timeout: 45000
+- takeScreenshot: 01-center-bar-portrait
+- assertNotVisible: '.*[▸◂].*'
+- tapOn:
+    id: strategy-line
+- assertVisible:
+    id: strategy-explanation
+- takeScreenshot: 02-strategy-explanation
+- tapOn:
+    id: strategy-explanation-close
+- tapOn:
+    id: board-bar
+- tapOn:
+    id: point-24
+- extendedWaitUntil:
+    visible: 'Bar, 6 white checkers, 6 black checkers'
+    timeout: 15000
+- takeScreenshot: 03-after-bar-entry
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible: 'Bar, 7 white checkers, 6 black checkers'
+    timeout: 15000
+- tapOn:
+    id: header-redo-button
+- extendedWaitUntil:
+    visible: 'Bar, 6 white checkers, 6 black checkers'
+    timeout: 15000
+- setOrientation: LANDSCAPE
+- assertVisible:
+    id: leave-game-button
+- assertVisible:
+    id: header-undo-button
+- assertVisible:
+    id: header-redo-button
+- assertVisible:
+    id: game-settings-button
+- assertVisible:
+    id: reset-game-button
+- takeScreenshot: 04-center-bar-landscape-navigation
+- tapOn:
+    id: game-settings-button
+- extendedWaitUntil:
+    visible:
+      id: stack-escape-button
+    timeout: 15000
+- tapOn:
+    id: stack-escape-button
+- assertVisible:
+    id: game-board-slot
+- tapOn:
+    id: reset-game-button
+- assertVisible: 'Start a new game? Your current game will be replaced.'
+- tapOn: Cancel
+- tapOn:
+    id: leave-game-button
+- extendedWaitUntil:
+    visible: Resume Game
+    timeout: 15000
+- tapOn: Resume Game
+- assertVisible:
+    id: board-bar
+- takeScreenshot: 05-center-bar-resumed
+- setOrientation: PORTRAIT
