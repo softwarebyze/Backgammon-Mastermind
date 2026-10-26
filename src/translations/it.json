@@ -14,6 +14,7 @@
       "cancel_a11y": "Annulla selezione",
       "confirm_move": "Conferma mossa",
       "confirm_move_a11y": "Conferma la mossa e termina il turno",
+      "dice_order_a11y": "Dadi: {{first}}, poi {{second}}",
       "leave_game_a11y": "Lasciare gioco e tornare a casa",
       "loading": "Caricamento...",
       "new_game_message": "Iniziare una nuova partita?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "Lancia i dadi",
       "start_new_game_a11y": "Inizia nuovo gioco",
       "swap_dice": "Scambia dadi",
+      "swap_dice_hint": "Cambia quale dado si gioca per primo.",
       "undo_a11y": "Annulla la mossa",
       "undo_move": "Annulla"
     },

@@ -14,6 +14,7 @@
       "cancel_a11y": "Cancelar selección",
       "confirm_move": "Confirmar movimiento",
       "confirm_move_a11y": "Confirmar movimiento y terminar el turno",
+      "dice_order_a11y": "Dados: {{first}}, luego {{second}}",
       "leave_game_a11y": "Dejar juego y volver a casa",
       "loading": "Cargando...",
       "new_game_message": "¿Empezar una partida nueva?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "Tirar los dados",
       "start_new_game_a11y": "Inicio nuevo juego",
       "swap_dice": "Intercambiar dados",
+      "swap_dice_hint": "Cambia qué dado se juega primero.",
       "undo_a11y": "Deshacer movimiento",
       "undo_move": "Deshacer"
     },

@@ -14,6 +14,7 @@
       "cancel_a11y": "ביטול הבחירה",
       "confirm_move": "אשר מהלך",
       "confirm_move_a11y": "אשר את המהלך וסיים את התור",
+      "dice_order_a11y": "קוביות: {{first}}, ואז {{second}}",
       "leave_game_a11y": "לעזוב את המשחק ולחזור הביתה",
       "loading": "לטעון...",
       "new_game_message": "להתחיל משחק חדש?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "הטלת קוביות",
       "start_new_game_a11y": "התחל משחק חדש",
       "swap_dice": "החלפת קוביות",
+      "swap_dice_hint": "מחליף איזו קובייה משוחקת ראשונה.",
       "undo_a11y": "ביטול המהלך",
       "undo_move": "בטל"
     },

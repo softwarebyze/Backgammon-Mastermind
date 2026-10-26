@@ -14,6 +14,7 @@
       "cancel_a11y": "キャンセル選択",
       "confirm_move": "手を確定",
       "confirm_move_a11y": "手を確定してターンを終了",
+      "dice_order_a11y": "サイコロ: {{first}}、次に {{second}}",
       "leave_game_a11y": "ゲームを離れ、帰宅",
       "loading": "ローディング...",
       "new_game_message": "新しいゲームを始めますか？",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "サイコロを振る",
       "start_new_game_a11y": "新しいゲームを始める",
       "swap_dice": "サイコロを入れ替え",
+      "swap_dice_hint": "先に使うサイコロを入れ替えます。",
       "undo_a11y": "Undo 移動",
       "undo_move": "取り消す"
     },

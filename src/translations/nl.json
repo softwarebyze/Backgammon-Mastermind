@@ -14,6 +14,7 @@
       "cancel_a11y": "Selectie annuleren",
       "confirm_move": "Zet bevestigen",
       "confirm_move_a11y": "Zet bevestigen en beurt beëindigen",
+      "dice_order_a11y": "Dobbelstenen: {{first}}, dan {{second}}",
       "leave_game_a11y": "Verlaat het spel en keer terug naar huis",
       "loading": "Laden...",
       "new_game_message": "Een nieuw spel starten?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "Dobbelstenen gooien",
       "start_new_game_a11y": "Nieuw spel starten",
       "swap_dice": "Dobbelstenen wisselen",
+      "swap_dice_hint": "Wisselt welke dobbelsteen eerst wordt gespeeld.",
       "undo_a11y": "Verplaatsen ongedaan maken",
       "undo_move": "Ongedaan maken"
     },

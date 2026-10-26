@@ -220,29 +220,50 @@ describe('confirm move bar', () => {
 });
 
 describe('dice order swap control', () => {
-  it.each([
-    { dice: [3, 1], remainingDice: [3, 1], disabled: false },
-    { dice: [3, 1], remainingDice: [1], disabled: true },
-    { dice: [2, 2], remainingDice: [2, 2, 2, 2], disabled: true },
-  ])('disables swap only for doubles or one remaining die: %j', ({ dice, remainingDice, disabled }) => {
+  function swapHarness(dice: [number, number], remainingDice: number[], extra: { isHumanTurn?: boolean } = {}) {
     mockPrefs.moveInDiceOrder = true;
-    const state = { ...awaitingConfirmState(), dice: dice as [number, number], remainingDice };
+    const state = { ...awaitingConfirmState(), dice, remainingDice };
     const onSwapDice = jest.fn();
-    setup(<GameScreenControls state={state} liveDiceState={state} displayedDice={[dice[1]!, dice[0]!]} onSwapDice={onSwapDice} isHumanTurn isComputerTurn={false} moveLogLength={0} onRoll={jest.fn()} onReset={jest.fn()} />);
-    const button = screen.getByTestId('swap-dice-button');
-    if (disabled) {
-      expect(button).toBeDisabled();
-    }
-    else {
-      expect(button).toBeEnabled();
-      fireEvent.press(button);
-      expect(onSwapDice).toHaveBeenCalledTimes(1);
-    }
+    setup(<GameScreenControls state={state} liveDiceState={state} displayedDice={[dice[1], dice[0]]} onSwapDice={onSwapDice} isHumanTurn={extra.isHumanTurn ?? true} isComputerTurn={!(extra.isHumanTurn ?? true)} moveLogLength={0} onRoll={jest.fn()} onReset={jest.fn()} />);
+    return onSwapDice;
+  }
+
+  it('swaps from the button and from tapping the dice, which read as one labelled button', () => {
+    const onSwapDice = swapHarness([3, 1], [3, 1]);
+    fireEvent.press(screen.getByTestId('swap-dice-button'));
+    expect(onSwapDice).toHaveBeenCalledTimes(1);
+    const dice = screen.getByRole('button', { name: 'Dice: 1, then 3' });
+    expect(dice).toHaveProp('accessibilityHint', 'Swaps which die is played first.');
+    expect(dice).toHaveProp('focusable', true);
+    fireEvent.press(dice);
+    expect(onSwapDice).toHaveBeenCalledTimes(2);
   });
 
-  it('keeps swap hidden with the default preference', () => {
+  it.each([
+    { name: 'doubles', dice: [2, 2] as [number, number], remainingDice: [2, 2, 2, 2] },
+    { name: 'one die left', dice: [3, 1] as [number, number], remainingDice: [1] },
+  ])('hides Swap and makes the dice inert on $name', ({ dice, remainingDice }) => {
+    const onSwapDice = swapHarness(dice, remainingDice);
+    expect(screen.queryByTestId('swap-dice-button')).toBeNull();
+    expect(screen.getByTestId('swap-dice-slot')).toBeOnTheScreen();
+    expect(screen.queryByRole('button', { name: /^Dice:/ })).toBeNull();
+    const target = screen.getByTestId('dice-swap-target');
+    expect(target).toHaveProp('pointerEvents', 'none');
+    fireEvent.press(target);
+    expect(onSwapDice).not.toHaveBeenCalled();
+  });
+
+  it('keeps the dice inert on the computer\'s turn', () => {
+    swapHarness([3, 1], [3, 1], { isHumanTurn: false });
+    expect(screen.queryByTestId('swap-dice-button')).toBeNull();
+    expect(screen.getByTestId('dice-swap-target')).toHaveProp('pointerEvents', 'none');
+  });
+
+  it('keeps swap and its reserved slot absent with the default preference', () => {
     const state = { ...awaitingConfirmState(), remainingDice: [3, 5] };
     setup(<GameScreenControls state={state} liveDiceState={state} isHumanTurn isComputerTurn={false} moveLogLength={0} onRoll={jest.fn()} onReset={jest.fn()} />);
     expect(screen.queryByTestId('swap-dice-button')).toBeNull();
+    expect(screen.queryByTestId('swap-dice-slot')).toBeNull();
+    expect(screen.getByTestId('dice-swap-target')).toHaveProp('pointerEvents', 'none');
   });
 });

@@ -14,6 +14,7 @@
       "cancel_a11y": "자주 묻는 질문",
       "confirm_move": "수 확정",
       "confirm_move_a11y": "수를 확정하고 턴을 종료",
+      "dice_order_a11y": "주사위: {{first}}, 다음 {{second}}",
       "leave_game_a11y": "게임 및 반환 홈",
       "loading": "로드 중 ...",
       "new_game_message": "새 게임을 시작할까요?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "주사위 굴리기",
       "start_new_game_a11y": "새로운 게임 시작",
       "swap_dice": "주사위 순서 바꾸기",
+      "swap_dice_hint": "먼저 사용할 주사위를 바꿉니다.",
       "undo_a11y": "취소 이동",
       "undo_move": "실행 취소"
     },

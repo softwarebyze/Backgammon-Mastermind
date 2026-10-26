@@ -36,8 +36,9 @@ tags:
       id: swap-dice-button
     timeout: 45000
 - takeScreenshot: dice-order-02-leading-three
+# Tapping the dice swaps them, same as the Swap button.
 - tapOn:
-    id: swap-dice-button
+    id: dice-swap-target
 - takeScreenshot: dice-order-03-leading-one
 - tapOn:
     id: point-8

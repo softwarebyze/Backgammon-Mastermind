@@ -14,6 +14,7 @@
       "cancel_a11y": "Auswahl abbrechen",
       "confirm_move": "Zug bestätigen",
       "confirm_move_a11y": "Zug bestätigen und Zug beenden",
+      "dice_order_a11y": "Würfel: {{first}}, dann {{second}}",
       "leave_game_a11y": "Spiel verlassen und nach Hause zurückkehren",
       "loading": "Beladung...",
       "new_game_message": "Neues Spiel starten?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "Würfeln",
       "start_new_game_a11y": "Starten Sie neues Spiel",
       "swap_dice": "Würfel tauschen",
+      "swap_dice_hint": "Tauscht, welcher Würfel zuerst gespielt wird.",
       "undo_a11y": "Undo Bewegung",
       "undo_move": "Rückgängig"
     },

@@ -14,6 +14,7 @@
       "cancel_a11y": "İptal seçimi",
       "confirm_move": "Hamleyi onayla",
       "confirm_move_a11y": "Hamleyi onayla ve turu bitir",
+      "dice_order_a11y": "Zarlar: {{first}}, sonra {{second}}",
       "leave_game_a11y": "Oyun bırak ve eve geri dön",
       "loading": "Yükleniyor...",
       "new_game_message": "Yeni oyun başlatılsın mı?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "Zar at",
       "start_new_game_a11y": "Yeni oyun başla",
       "swap_dice": "Zarları değiştir",
+      "swap_dice_hint": "Önce oynanacak zarı değiştirir.",
       "undo_a11y": "Undo hareketsiz",
       "undo_move": "Geri al"
     },

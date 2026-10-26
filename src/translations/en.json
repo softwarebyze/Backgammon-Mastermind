@@ -14,6 +14,7 @@
       "cancel_a11y": "Cancel selection",
       "confirm_move": "Confirm move",
       "confirm_move_a11y": "Confirm move and end your turn",
+      "dice_order_a11y": "Dice: {{first}}, then {{second}}",
       "leave_game_a11y": "Leave game and return home",
       "loading": "Loading…",
       "new_game_message": "Start a new game?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "Roll dice",
       "start_new_game_a11y": "Start new game",
       "swap_dice": "Swap dice",
+      "swap_dice_hint": "Swaps which die is played first.",
       "undo_a11y": "Undo move",
       "undo_move": "Undo"
     },

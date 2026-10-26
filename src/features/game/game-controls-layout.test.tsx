@@ -34,29 +34,32 @@ function controls(remainingDice: number[], compact = false) {
 }
 
 describe('dice-order controls composition', () => {
-  it('shares the portrait dice row rather than taking board height when Confirm is hidden', () => {
+  it('centers Swap under the dice in a slot that keeps its height when Swap or Confirm comes and goes', () => {
     const { rerender } = setup(controls([3, 1]));
     const tray = screen.getByTestId('game-dice-tray');
-    expect(tray).toHaveStyle({ flexDirection: 'row', alignItems: 'center' });
-    expect(within(tray).getByTestId('dice-display')).toBeOnTheScreen();
-    expect(within(tray).getByTestId('swap-dice-button')).toBeOnTheScreen();
+    expect(tray).toHaveStyle({ flexDirection: 'column', alignItems: 'center' });
+    const slot = within(tray).getByTestId('swap-dice-slot');
+    expect(slot).toHaveStyle({ height: 32, alignItems: 'center' });
+    expect(within(slot).getByTestId('swap-dice-button')).toBeOnTheScreen();
     expect(screen.getByTestId('game-action-slot')).toHaveStyle({ height: 52 });
 
     rerender(controls([]));
     expect(screen.getByTestId('confirm-move-button')).toBeOnTheScreen();
     expect(screen.queryByTestId('swap-dice-button')).toBeNull();
-    expect(screen.getByTestId('game-dice-tray')).toHaveStyle({ flexDirection: 'row' });
+    expect(screen.getByTestId('swap-dice-slot')).toHaveStyle({ height: 32 });
     expect(screen.getByTestId('game-action-slot')).toHaveStyle({ height: 52 });
 
     rerender(controls([1]));
     expect(screen.queryByTestId('confirm-move-button')).toBeNull();
-    expect(within(screen.getByTestId('game-dice-tray')).getByTestId('swap-dice-button')).toBeDisabled();
+    expect(screen.queryByTestId('swap-dice-button')).toBeNull();
+    expect(screen.getByTestId('swap-dice-slot')).toHaveStyle({ height: 32 });
     expect(screen.getByTestId('game-action-slot')).toHaveStyle({ height: 52 });
   });
 
-  it('stacks the tray in the narrow landscape rail, which scrolls beside the board', () => {
+  it('stacks Swap under the dice in the narrow landscape rail too', () => {
     setup(controls([3, 1], true));
-    expect(screen.getByTestId('game-dice-tray')).toHaveStyle({ flexDirection: 'column' });
-    expect(within(screen.getByTestId('game-dice-tray')).getByTestId('swap-dice-button')).toBeOnTheScreen();
+    const tray = screen.getByTestId('game-dice-tray');
+    expect(tray).toHaveStyle({ flexDirection: 'column' });
+    expect(within(within(tray).getByTestId('swap-dice-slot')).getByTestId('swap-dice-button')).toBeOnTheScreen();
   });
 });

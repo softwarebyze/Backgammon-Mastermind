@@ -14,6 +14,7 @@
       "cancel_a11y": "Anuluj zaznaczenie",
       "confirm_move": "Potwierdź ruch",
       "confirm_move_a11y": "Potwierdź ruch i zakończ turę",
+      "dice_order_a11y": "Kości: {{first}}, potem {{second}}",
       "leave_game_a11y": "Zostaw grę i wróć do domu",
       "loading": "Ładowanie...",
       "new_game_message": "Rozpocząć nową grę?",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "Rzuć kośćmi",
       "start_new_game_a11y": "Rozpocznij nową grę",
       "swap_dice": "Zamień kości",
+      "swap_dice_hint": "Zmienia, która kość jest grana jako pierwsza.",
       "undo_a11y": "Cofnij ruch",
       "undo_move": "Cofnij"
     },

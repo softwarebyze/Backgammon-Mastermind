@@ -14,6 +14,7 @@
       "cancel_a11y": "إلغاء التحديد",
       "confirm_move": "تأكيد الحركة",
       "confirm_move_a11y": "تأكيد الحركة وإنهاء الدور",
+      "dice_order_a11y": "النرد: {{first}} ثم {{second}}",
       "leave_game_a11y": "مغادرة اللعبة والعودة للرئيسية",
       "loading": "جارٍ التحميل…",
       "new_game_message": "بدء لعبة جديدة؟",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "ارمِ النرد",
       "start_new_game_a11y": "بدء لعبة جديدة",
       "swap_dice": "تبديل النرد",
+      "swap_dice_hint": "يبدّل النرد الذي يُلعب أولاً.",
       "undo_a11y": "تراجع عن الحركة",
       "undo_move": "تراجع"
     },

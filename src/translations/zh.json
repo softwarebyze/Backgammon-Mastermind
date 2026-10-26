@@ -14,6 +14,7 @@
       "cancel_a11y": "取消选择",
       "confirm_move": "确认走子",
       "confirm_move_a11y": "确认走子并结束回合",
+      "dice_order_a11y": "骰子：先 {{first}}，后 {{second}}",
       "leave_game_a11y": "离开游戏回家",
       "loading": "正在装入...",
       "new_game_message": "开始新对局？",
@@ -26,6 +27,7 @@
       "roll_dice_a11y": "掷骰子",
       "start_new_game_a11y": "开始新游戏",
       "swap_dice": "交换骰子",
+      "swap_dice_hint": "交换先使用的骰子。",
       "undo_a11y": "撤消移动",
       "undo_move": "撤销"
     },
