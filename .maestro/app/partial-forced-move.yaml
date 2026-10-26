@@ -1,0 +1,44 @@
+# #309: six is mandatory even though the other die still offers choices.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-issue-309-entry
+    direction: DOWN
+    timeout: 60000
+- tapOn:
+    id: developer-preset-issue-309-entry
+- extendedWaitUntil:
+    visible: 'Point 1, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Point 7, 1 white checker'
+- assertVisible: 'Point 6, 4 white checkers'
+- takeScreenshot: forced-01-six-played-one-still-optional
+# Undo must hold the original board rather than immediately auto-replay.
+- tapOn: Undo move
+- extendedWaitUntil:
+    visible: 'Point 7, 2 white checkers'
+    timeout: 10000
+- takeScreenshot: forced-02-undo-held
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-issue-309-bear-off
+    direction: DOWN
+    timeout: 60000
+- tapOn:
+    id: developer-preset-issue-309-bear-off
+- extendedWaitUntil:
+    visible: 'Point 6, 3 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 5, 3 white checkers'
+- assertVisible: 'Point 1, 1 white checker'
+- takeScreenshot: forced-03-six-borne-off-five-still-optional

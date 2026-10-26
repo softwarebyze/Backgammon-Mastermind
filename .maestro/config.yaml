@@ -8,6 +8,7 @@ flows:
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml
   - app/rapid-follow-up-input.yaml
+  - app/partial-forced-move.yaml
 
 excludeTags:
   - util

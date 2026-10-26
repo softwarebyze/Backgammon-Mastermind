@@ -4,6 +4,7 @@ import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
 import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { createInitialState } from '@/lib/game/constants';
+import { loadPositionPreset, POSITION_LOADER_PRESETS } from '@/lib/game/load-position';
 
 jest.mock('@/lib/game-preferences/use-game-preferences', () => ({ useGamePreferences: jest.fn() }));
 jest.mock('@/lib/game-sfx/play-game-sfx', () => ({ playGameSfx: jest.fn() }));
@@ -142,3 +143,30 @@ it('turning confirmMove off passes a spent-dice hold', () => {
   act(() => jest.advanceTimersByTime(1000));
   expect(doPassTurn).toHaveBeenCalledTimes(1);
 });
+
+it('automatically plays the forced six while keeping the optional die for the player', () => {
+  const state = loadPositionPreset(POSITION_LOADER_PRESETS.find(p => p.id === 'issue-309-entry')!);
+  const doMove = jest.fn();
+  const doMoveSequence = jest.fn();
+  renderHook(() => useGameplayHelpers({ enabled: true, state, isAnimating: false, hasRedo: false, doRollDice: jest.fn(), doMove, doMoveSequence, doPassTurn: jest.fn() }));
+  act(() => jest.advanceTimersByTime(160));
+  expect(doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 7, to: 1, die: 6 }));
+  expect(doMoveSequence).not.toHaveBeenCalled();
+});
+
+it.each(['disabled', 'redo', 'paused', 'animation', 'preference'])(
+  'does not auto-play a partial forced die while blocked by %s',
+  (reason) => {
+    const state = loadPositionPreset(POSITION_LOADER_PRESETS.find(p => p.id === 'issue-309-entry')!);
+    if (reason === 'preference') {
+      jest.mocked(useGamePreferences).mockReturnValue({ preferences: {
+        ...DEFAULT_GAME_PREFERENCES,
+        autoMoveWhenForced: false,
+      } } as ReturnType<typeof useGamePreferences>);
+    }
+    const doMove = jest.fn();
+    renderHook(() => useGameplayHelpers({ enabled: reason !== 'disabled', state, isAnimating: reason === 'animation', hasRedo: reason === 'redo', paused: reason === 'paused', doRollDice: jest.fn(), doMove, doMoveSequence: jest.fn(), doPassTurn: jest.fn() }));
+    act(() => jest.advanceTimersByTime(1000));
+    expect(doMove).not.toHaveBeenCalled();
+  },
+);

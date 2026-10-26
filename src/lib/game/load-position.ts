@@ -71,6 +71,52 @@ export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
       mode: 'vs-human',
     },
   },
+  {
+    id: 'issue-309-entry',
+    label: 'Forced six, optional one',
+    description: '#309 user screenshot: auto-play the mandatory six and keep the other die optional.',
+    options: {
+      placements: [
+        { point: 7, player: 'white', count: 2 },
+        { point: 6, player: 'white', count: 4 },
+        { point: 5, player: 'white', count: 3 },
+        { point: 3, player: 'white', count: 3 },
+        { point: 2, player: 'white', count: 3 },
+        { point: 9, player: 'black', count: 1 },
+        { point: 20, player: 'black', count: 3 },
+        { point: 22, player: 'black', count: 5 },
+        { point: 23, player: 'black', count: 3 },
+        { point: 24, player: 'black', count: 2 },
+      ],
+      bar: { black: 1 },
+      borneOff: { white: 0 },
+      dice: [1, 6],
+      mode: 'vs-human',
+    },
+  },
+  {
+    id: 'issue-309-bear-off',
+    label: 'Forced six, optional five',
+    description: '#309 user screenshot: auto-play the mandatory six and keep the other die optional.',
+    options: {
+      placements: [
+        { point: 6, player: 'white', count: 4 },
+        { point: 5, player: 'white', count: 3 },
+        { point: 3, player: 'white', count: 3 },
+        { point: 2, player: 'white', count: 3 },
+        { point: 1, player: 'white', count: 1 },
+        { point: 9, player: 'black', count: 1 },
+        { point: 20, player: 'black', count: 3 },
+        { point: 22, player: 'black', count: 5 },
+        { point: 23, player: 'black', count: 3 },
+        { point: 24, player: 'black', count: 2 },
+      ],
+      bar: { black: 1 },
+      borneOff: { white: 1 },
+      dice: [5, 6],
+      mode: 'vs-human',
+    },
+  },
 ];
 
 export const POSITION_JSON_EXAMPLE = `{
