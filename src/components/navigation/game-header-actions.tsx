@@ -8,6 +8,7 @@ import { hapticLight } from '@/lib/haptics';
 import { translate, useLayoutIsRTL } from '@/lib/i18n';
 
 type Props = {
+  compact?: boolean;
   canUndo?: boolean;
   canRedo?: boolean;
   onUndo?: () => void;
@@ -65,6 +66,7 @@ function HeaderIcon({
 
 /** Always reserve undo+redo slots so the header never layout-shifts. */
 export function GameHeaderActions({
+  compact = false,
   canUndo = false,
   canRedo = false,
   onUndo,
@@ -74,7 +76,7 @@ export function GameHeaderActions({
 }: Props) {
   const rtl = useLayoutIsRTL();
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: GAP }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: compact ? 0 : GAP }}>
       <HeaderIcon
         name={rtl ? 'corner-up-right' : 'corner-up-left'}
         label={translate('game.controls.undo_a11y')}

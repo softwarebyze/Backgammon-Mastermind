@@ -28,10 +28,27 @@ describe('gamePipStatusBar', () => {
     const state = createInitialState('vs-computer');
     render(<GamePipStatusBar state={state} />);
 
-    expect(screen.getByTestId('strategy-line')).toBeTruthy();
+    expect(screen.getByTestId('strategy-line')).toHaveProp('accessibilityRole', 'button');
+    expect(screen.queryByText('▸')).toBeNull();
+    expect(screen.queryByText('◂')).toBeNull();
+    expect(screen.getByTestId('strategy-mark')).toBeTruthy();
     expect(screen.getByText('game.strategy.label.developing')).toBeTruthy();
     // Both race pip counts render (opening position: 167 each).
     expect(screen.getAllByText('167')).toHaveLength(2);
+  });
+
+  it('orders the pip counts like the fixed board sides: black above white', () => {
+    const state = createInitialState('vs-human');
+    state.points[24].count = 1;
+    state.borneOff.white = 1;
+    render(<GamePipStatusBar state={state} />);
+
+    const counts = screen.getAllByLabelText(/pip count/);
+    expect(counts.map(count => count.props.accessibilityLabel)).toEqual([
+      'game.review.player_black pip count 167',
+      'game.review.player_white pip count 143',
+    ]);
+    expect(screen.queryByText('–')).toBeNull();
   });
 
   it('tapping the strategy pill reveals the one-line tip', () => {

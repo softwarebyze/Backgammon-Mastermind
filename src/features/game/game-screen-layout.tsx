@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import type { PathSegment } from '@/features/game/components/board/move-path-overlay';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
@@ -41,6 +42,7 @@ type Board = {
 };
 
 type Props = {
+  navigationControls: ReactNode;
   board: Board;
   review: Review;
   input: Input;
@@ -216,6 +218,7 @@ function GameChromeStack({
 
 /* eslint-disable-next-line max-lines-per-function -- portrait vs landscape chrome composition */
 export function GameScreenLayout({
+  navigationControls,
   board,
   review,
   input,
@@ -227,12 +230,12 @@ export function GameScreenLayout({
 }: Props) {
   const {
     landscape,
-    desktop,
     chromeWidth,
     boardPaneWidth,
     boardMaxWidth,
     stageMaxWidth,
     contentInsets,
+    insets,
   } = useLayoutMetrics();
   const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
   const dieSize = trayDieSize(useBoardDimensions().checkerSize);
@@ -280,6 +283,7 @@ export function GameScreenLayout({
         styles.root,
         landscape ? styles.rootLandscape : styles.rootPortrait,
         contentInsets,
+        { paddingTop: insets.top },
         landscape && stageMaxWidth != null
           ? { maxWidth: stageMaxWidth, width: '100%', alignSelf: 'center' }
           : null,
@@ -288,7 +292,12 @@ export function GameScreenLayout({
       <FocusAwareStatusBar />
       {landscape
         ? null
-        : <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />}
+        : (
+            <>
+              {navigationControls}
+              <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />
+            </>
+          )}
       <View
         style={[
           styles.boardSlotHost,
@@ -319,15 +328,15 @@ export function GameScreenLayout({
         ? (
             <ScrollView
               style={[styles.chromeRail, { width: chromeWidth }]}
-              contentContainerStyle={[
-                styles.chromeRailContent,
-                desktop ? styles.chromeRailContentTall : null,
-              ]}
+              contentContainerStyle={styles.chromeRailContent}
               bounces={false}
               overScrollMode="never"
               keyboardShouldPersistTaps="handled"
               testID="game-landscape-chrome"
             >
+              <View style={{ alignSelf: 'stretch', marginHorizontal: -8 }}>
+                {navigationControls}
+              </View>
               {chrome}
             </ScrollView>
           )
@@ -369,9 +378,6 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingHorizontal: 8,
     alignItems: 'center',
-  },
-  chromeRailContentTall: {
-    justifyContent: 'center',
   },
   boardSlotHost: {
     flexGrow: 1,

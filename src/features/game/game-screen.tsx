@@ -134,7 +134,7 @@ export function GameScreen() {
     router.push('/settings');
   }, [posthog, input.state?.mode]);
 
-  useGameScreenHeader({
+  const navigationControls = useGameScreenHeader({
     navigation,
     state: input.state,
     canUndo: !review.isReviewing && canUndo,
@@ -213,6 +213,7 @@ export function GameScreen() {
   return (
     <View style={styles.screenWrap}>
       <GameScreenLayout
+        navigationControls={navigationControls}
         board={{ ...board, boardState: previewState ?? state, interactionEnabled }}
         review={review}
         input={input}

@@ -6,6 +6,7 @@ import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import { barStackLayout } from '@/features/game/bar-stack-layout';
 import { BAR_POINT } from '@/lib/game/constants';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
@@ -59,8 +60,8 @@ function BarHinge({ width, height }: { width: number; height: number }) {
 type StackProps = {
   count: number;
   player: Player;
-  justify: 'flex-start' | 'flex-end';
-  halfHeight: number;
+  boardHeight: number;
+  middleHeight: number;
   checkerSize: number;
   isDragging: boolean;
   isSelected?: boolean;
@@ -69,40 +70,31 @@ type StackProps = {
 function BarStack({
   count,
   player,
-  justify,
-  halfHeight,
+  boardHeight,
+  middleHeight,
   checkerSize,
   isDragging,
   isSelected = false,
 }: StackProps) {
-  const small = checkerSize * 0.88;
-  const visible = Math.min(count, 4);
+  const { size, centers } = barStackLayout({ boardHeight, middleHeight, checkerSize, count, player });
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
   }));
 
   if (count === 0) {
-    return <View style={{ height: halfHeight }} />;
+    return null;
   }
 
   return (
-    <View
-      style={{
-        height: halfHeight,
-        alignItems: 'center',
-        justifyContent: justify,
-        paddingVertical: 6,
-        gap: 2,
-      }}
-    >
-      {Array.from({ length: visible }, (_, i) => {
-        const isTopChecker = i === visible - 1;
-        const token = <CheckerToken player={player} size={small} isSelected={isTopChecker && isSelected} />;
+    <View pointerEvents="none" style={{ position: 'absolute', top: 0, width: '100%', height: boardHeight }}>
+      {centers.map((center, i) => {
+        const isTopChecker = i === centers.length - 1;
+        const token = <CheckerToken player={player} size={size} showCount={isTopChecker && count > centers.length ? count : undefined} isSelected={isTopChecker && isSelected} />;
         if (!isTopChecker) {
-          return <View key={i}>{token}</View>;
+          return <View key={i} style={{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }}>{token}</View>;
         }
         return (
-          <Animated.View key={i} style={topDragStyle}>
+          <Animated.View key={i} style={[{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }, topDragStyle]}>
             {token}
           </Animated.View>
         );
@@ -149,6 +141,7 @@ export function BarArea({
 
   const pressable = (
     <Pressable
+      testID="board-bar"
       accessibilityRole="button"
       accessibilityLabel={
         `Bar${whiteCount > 0 ? `, ${whiteCount} white ${whiteCount === 1 ? 'checker' : 'checkers'}` : ''}`
@@ -167,31 +160,42 @@ export function BarArea({
         width: barWidth,
         height: boardHeight,
         backgroundColor: BOARD_THEME.bar.surface,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
-        borderWidth: isBarSelected ? 2 : 0,
-        borderColor: isBarSelected ? '#FFD700' : 'rgba(0,0,0,0.45)',
         alignItems: 'center',
         opacity: pressed ? 0.8 : 1,
       })}
     >
+      <View
+        pointerEvents="none"
+        style={{
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderWidth: isBarSelected ? 2 : 1,
+          borderColor: isBarSelected ? '#FFD700' : 'rgba(0,0,0,0.45)',
+          zIndex: 2,
+        }}
+      />
       <BarStack
         count={blackCount}
         player="black"
-        justify="flex-start"
-        halfHeight={halfHeight}
+        boardHeight={boardHeight}
+        middleHeight={middleHeight}
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'black'}
         isSelected={isBarSelected && currentPlayer === 'black'}
       />
 
-      <BarHinge width={barWidth} height={middleHeight} />
+      <View pointerEvents="none" style={{ position: 'absolute', top: halfHeight }}>
+        <BarHinge width={barWidth} height={middleHeight} />
+      </View>
 
       <BarStack
         count={whiteCount}
         player="white"
-        justify="flex-end"
-        halfHeight={halfHeight}
+        boardHeight={boardHeight}
+        middleHeight={middleHeight}
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'white'}
         isSelected={isBarSelected && currentPlayer === 'white'}
