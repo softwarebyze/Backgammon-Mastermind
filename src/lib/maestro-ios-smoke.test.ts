@@ -42,6 +42,7 @@ process.exit(1);
     }
     const workflow = readFileSync(join(__dirname, '../../.github/workflows/bgsage-verify.yml'), 'utf8');
     expect(workflow).toContain('path: maestro-ios-output/**');
+    expect(workflow).toContain('"$GITHUB_WORKSPACE/.maestro/app/position-preview-ios.yaml"');
   }
   finally {
     rmSync(fixture, { recursive: true, force: true });

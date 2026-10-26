@@ -1,0 +1,53 @@
+# iOS groups the board accessibility children. Capture the editor on both
+# iPhone and iPad without relying on Android-only individual point targets.
+appId: ${APP_ID}
+tags:
+  - ios
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- scrollUntilVisible:
+    element:
+      id: position-setup-button
+    direction: DOWN
+- tapOn:
+    id: position-setup-button
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- assertVisible: Standard setup
+- assertVisible: Empty board
+- takeScreenshot: position-ios-01-editor
+- scrollUntilVisible:
+    element:
+      id: position-empty
+    direction: UP
+- tapOn:
+    id: position-empty
+- scrollUntilVisible:
+    element:
+      text: 'Borne off: White 15 · Black 15'
+    direction: DOWN
+- assertVisible: 'Borne off: White 15 · Black 15'
+- takeScreenshot: position-ios-02-empty
+- scrollUntilVisible:
+    element:
+      id: position-standard
+    direction: UP
+- tapOn:
+    id: position-standard
+- scrollUntilVisible:
+    element:
+      text: 'Borne off: White 0 · Black 0'
+    direction: DOWN
+- assertVisible: 'Borne off: White 0 · Black 0'
+- runScript: ../utils/position-link.js
+- openLink: ${output.sharedPositionLink}
+- extendedWaitUntil:
+    visible: This shared position is ready to explore.*
+    timeout: 30000
+- takeScreenshot: position-ios-03-shared
