@@ -3,6 +3,7 @@ import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
 import { useEffect, useRef } from 'react';
 import { I18nManager, StyleSheet, Text, View } from 'react-native';
+import { useReducedMotion } from 'react-native-reanimated';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
@@ -52,8 +53,6 @@ type Props = {
 
 const ACTION_SLOT_HEIGHT = 52;
 const CONTROL_HIT_SLOP = 16;
-/** 32pt pill + slop = 44pt target without growing the reserved row. */
-const SWAP_HIT_SLOP = { top: 6, bottom: 6, left: 8, right: 8 };
 
 export function GameScreenControls({
   state,
@@ -155,6 +154,7 @@ function DiceTray({ state, diceState, displayedDice, onSwapDice, isHumanTurn, is
     && state.phase === 'moving'
     && state.dice[0] !== state.dice[1]
     && state.remainingDice.length === 2;
+  const reducedMotion = useReducedMotion();
   const swap = () => {
     hapticLight();
     onSwapDice?.();
@@ -162,8 +162,8 @@ function DiceTray({ state, diceState, displayedDice, onSwapDice, isHumanTurn, is
 
   return (
     <View style={[styles.trayRow, diceOrderOn && styles.trayRowWithSwap, compact && styles.trayRowCompact]} testID="game-dice-tray">
-      {/* One element in every phase so the roll animation never remounts;
-          it only becomes a button while a swap is possible. */}
+      {/* One element in every phase so the roll animation never remounts. While
+          a swap is possible, the dice and the Swap label under them are one button. */}
       <HoverPressable
         testID="dice-swap-target"
         accessible={canSwap}
@@ -176,54 +176,51 @@ function DiceTray({ state, diceState, displayedDice, onSwapDice, isHumanTurn, is
           : undefined}
         accessibilityHint={canSwap ? translate('game.controls.swap_dice_hint') : undefined}
         onPress={swap}
-        style={({ pressed }) => [styles.diceRow, compact && styles.diceRowCompact, canSwap && pressed && styles.dicePressed]}
+        style={({ pressed }) => [
+          styles.swapTarget,
+          canSwap && pressed && (reducedMotion ? styles.swapPressedReduced : styles.swapPressed),
+        ]}
       >
-        {showOpening
-          ? (
-            // Opening: each side's die in its own color; the engine hands these
-            // same two values to the winner, so nothing has to travel.
-              <DiceDisplay
-                dice={opening.dice}
-                remainingDice={opening.dice.filter(v => v !== 0)}
-                playerColor={diceState.currentPlayer}
-                slotColors={['white', 'black']}
-                emphasis={opening.emphasis}
-                displayStyle={preferences.diceDisplayStyle}
-                size={dieSize}
-              />
-            )
-          : (
-              <DiceDisplay
-                dice={trayDice}
-                leadingRTL={diceOrderOn ? I18nManager.isRTL : undefined}
-                remainingDice={diceState.remainingDice}
-                playerColor={diceState.currentPlayer}
-                displayStyle={preferences.diceDisplayStyle}
-                animateRoll={!isReviewing}
-                size={dieSize}
-              />
-            )}
-      </HoverPressable>
-      {/* Reserved whenever the setting is on, so showing or hiding Swap
-          never changes the measured controls and so never resizes the board. */}
-      {diceOrderOn && (
-        <View style={[styles.swapSlot, compact && styles.swapSlotCompact]} testID="swap-dice-slot">
-          {canSwap && (
-            <HoverPressable
-              accessibilityRole="button"
-              accessibilityLabel={translate('game.controls.swap_dice')}
-              accessibilityHint={translate('game.controls.swap_dice_hint')}
-              testID="swap-dice-button"
-              hitSlop={SWAP_HIT_SLOP}
-              onPress={swap}
-              style={({ pressed, hovered }) => [styles.swapBtn, hovered && styles.secondaryBtnHover, pressed && styles.pressed]}
-            >
-              <Feather name="repeat" size={14} color={GAME_PALETTE.accent} />
-              <Text style={styles.swapText}>{translate('game.controls.swap_dice')}</Text>
-            </HoverPressable>
-          )}
+        <View style={[styles.diceRow, compact && styles.diceRowCompact]}>
+          {showOpening
+            ? (
+              // Opening: each side's die in its own color; the engine hands these
+              // same two values to the winner, so nothing has to travel.
+                <DiceDisplay
+                  dice={opening.dice}
+                  remainingDice={opening.dice.filter(v => v !== 0)}
+                  playerColor={diceState.currentPlayer}
+                  slotColors={['white', 'black']}
+                  emphasis={opening.emphasis}
+                  displayStyle={preferences.diceDisplayStyle}
+                  size={dieSize}
+                />
+              )
+            : (
+                <DiceDisplay
+                  dice={trayDice}
+                  leadingRTL={diceOrderOn ? I18nManager.isRTL : undefined}
+                  remainingDice={diceState.remainingDice}
+                  playerColor={diceState.currentPlayer}
+                  displayStyle={preferences.diceDisplayStyle}
+                  animateRoll={!isReviewing}
+                  size={dieSize}
+                />
+              )}
         </View>
-      )}
+        {/* Reserved whenever the setting is on, so showing or hiding Swap
+            never changes the measured controls and so never resizes the board. */}
+        {diceOrderOn && (
+          <View style={[styles.swapSlot, compact && styles.swapSlotCompact]} testID="swap-dice-slot">
+            {canSwap && (
+              <View style={styles.swapLabel} testID="swap-dice-button">
+                <Feather name="repeat" size={12} color={GAME_PALETTE.accent} />
+                <Text style={styles.swapText}>{translate('game.controls.swap_dice')}</Text>
+              </View>
+            )}
+          </View>
+        )}
+      </HoverPressable>
     </View>
   );
 }
@@ -479,26 +476,21 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingHorizontal: 12,
   },
-  // Swap sits centered under the dice in a fixed-height slot (see JSX).
+  // A plain text label centered under the dice; the whole tray is the button.
+  // Padding (not hitSlop, which web ignores) widens the target; the matching
+  // negative margin keeps it from adding height. Nothing extends down into Hint.
+  swapTarget: { alignItems: 'center', paddingHorizontal: 24, paddingTop: 8, marginTop: -8 },
+  swapPressed: { opacity: 0.85, transform: [{ scale: 0.97 }] },
+  swapPressedReduced: { opacity: 0.7 },
   swapSlot: {
-    height: 32,
+    height: 18,
     marginTop: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  swapSlotCompact: { marginTop: 0, marginBottom: 4 },
-  swapBtn: {
-    height: 32,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-    paddingHorizontal: 14,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.surfaceBorder,
-    ...continuousRadius(16),
-  },
-  swapText: { color: GAME_PALETTE.accent, fontSize: 13, ...interFont('semibold') },
+  swapSlotCompact: { marginBottom: 4 },
+  swapLabel: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  swapText: { color: GAME_PALETTE.accent, fontSize: 13, lineHeight: 18, ...interFont('semibold') },
   trayRow: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -515,7 +507,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 44,
   },
-  dicePressed: { opacity: 0.8, transform: [{ scale: 0.97 }] },
   diceRowCompact: { marginBottom: 8 },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,

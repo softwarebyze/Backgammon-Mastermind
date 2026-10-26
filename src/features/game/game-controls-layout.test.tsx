@@ -39,20 +39,20 @@ describe('dice-order controls composition', () => {
     const tray = screen.getByTestId('game-dice-tray');
     expect(tray).toHaveStyle({ flexDirection: 'column', alignItems: 'center' });
     const slot = within(tray).getByTestId('swap-dice-slot');
-    expect(slot).toHaveStyle({ height: 32, alignItems: 'center' });
+    expect(slot).toHaveStyle({ height: 18, alignItems: 'center' });
     expect(within(slot).getByTestId('swap-dice-button')).toBeOnTheScreen();
     expect(screen.getByTestId('game-action-slot')).toHaveStyle({ height: 52 });
 
     rerender(controls([]));
     expect(screen.getByTestId('confirm-move-button')).toBeOnTheScreen();
     expect(screen.queryByTestId('swap-dice-button')).toBeNull();
-    expect(screen.getByTestId('swap-dice-slot')).toHaveStyle({ height: 32 });
+    expect(screen.getByTestId('swap-dice-slot')).toHaveStyle({ height: 18 });
     expect(screen.getByTestId('game-action-slot')).toHaveStyle({ height: 52 });
 
     rerender(controls([1]));
     expect(screen.queryByTestId('confirm-move-button')).toBeNull();
     expect(screen.queryByTestId('swap-dice-button')).toBeNull();
-    expect(screen.getByTestId('swap-dice-slot')).toHaveStyle({ height: 32 });
+    expect(screen.getByTestId('swap-dice-slot')).toHaveStyle({ height: 18 });
     expect(screen.getByTestId('game-action-slot')).toHaveStyle({ height: 52 });
   });
 

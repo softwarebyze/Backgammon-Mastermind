@@ -1,3 +1,4 @@
+import { within } from '@testing-library/react-native';
 import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
 import { cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
@@ -228,11 +229,14 @@ describe('dice order swap control', () => {
     return onSwapDice;
   }
 
-  it('swaps from the button and from tapping the dice, which read as one labelled button', () => {
+  it('makes the dice and the Swap label under them one labelled button', () => {
     const onSwapDice = swapHarness([3, 1], [3, 1]);
+    const dice = screen.getByRole('button', { name: 'Dice: 1, then 3' });
+    expect(within(dice).getByTestId('swap-dice-button')).toBeOnTheScreen();
+    expect(within(dice).getByTestId('dice-display')).toBeOnTheScreen();
+    expect(screen.getAllByRole('button').filter(button => within(button).queryByTestId('swap-dice-button'))).toEqual([dice]);
     fireEvent.press(screen.getByTestId('swap-dice-button'));
     expect(onSwapDice).toHaveBeenCalledTimes(1);
-    const dice = screen.getByRole('button', { name: 'Dice: 1, then 3' });
     expect(dice).toHaveProp('accessibilityHint', 'Swaps which die is played first.');
     expect(dice).toHaveProp('focusable', true);
     fireEvent.press(dice);
