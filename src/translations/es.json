@@ -44,7 +44,7 @@
       "suggested": "Jugada sugerida"
     },
     "nudge": {
-      "dice_order": "Esta ficha no tiene ningún movimiento legal. Elige otra ficha.",
+      "dice_order": "Esta ficha no tiene jugada legal.",
       "roll_first": "Primero tira los dados"
     },
     "opening": {

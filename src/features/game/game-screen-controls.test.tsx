@@ -3,6 +3,7 @@ import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
 import { cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 
+import { diceSwapLabel } from './dice-swap-label';
 import { GameScreenControls } from './game-screen-controls';
 
 jest.mock('./components/hint-button', () => ({ HintButton: () => null }));
@@ -269,5 +270,12 @@ describe('dice order swap control', () => {
     expect(screen.queryByTestId('swap-dice-button')).toBeNull();
     expect(screen.queryByTestId('swap-dice-slot')).toBeNull();
     expect(screen.getByTestId('dice-swap-target')).toHaveProp('pointerEvents', 'none');
+  });
+});
+
+describe('diceSwapLabel', () => {
+  it('folds the hint into the label on web, where RN-web drops accessibilityHint', () => {
+    expect(diceSwapLabel([3, 1], 'web')).toBe('Dice: 3, then 1. Swaps which die is played first.');
+    expect(diceSwapLabel([3, 1], 'ios')).toBe('Dice: 3, then 1');
   });
 });

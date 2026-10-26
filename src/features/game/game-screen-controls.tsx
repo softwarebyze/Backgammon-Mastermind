@@ -7,8 +7,9 @@ import { useReducedMotion } from 'react-native-reanimated';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
-
 import { HintButton } from '@/features/game/components/hint-button';
+
+import { diceSwapLabel } from '@/features/game/dice-swap-label';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
@@ -171,9 +172,7 @@ function DiceTray({ state, diceState, displayedDice, onSwapDice, isHumanTurn, is
         disabled={!canSwap}
         pointerEvents={canSwap ? 'auto' : 'none'}
         accessibilityRole={canSwap ? 'button' : undefined}
-        accessibilityLabel={canSwap
-          ? translate('game.controls.dice_order_a11y', { first: trayDice[0], second: trayDice[1] })
-          : undefined}
+        accessibilityLabel={canSwap ? diceSwapLabel(trayDice) : undefined}
         accessibilityHint={canSwap ? translate('game.controls.swap_dice_hint') : undefined}
         onPress={swap}
         style={({ pressed }) => [

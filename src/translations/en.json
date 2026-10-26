@@ -44,7 +44,7 @@
       "suggested": "Suggested move"
     },
     "nudge": {
-      "dice_order": "This checker has no legal move. Choose another checker.",
+      "dice_order": "No legal move for this checker.",
       "roll_first": "Roll the dice first"
     },
     "opening": {

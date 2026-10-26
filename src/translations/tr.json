@@ -44,7 +44,7 @@
       "suggested": "Önerilen hamle"
     },
     "nudge": {
-      "dice_order": "Bu pulun yasal hamlesi yok. Başka bir pul seçin.",
+      "dice_order": "Bu pulun yasal hamlesi yok.",
       "roll_first": "Önce zarları at"
     },
     "opening": {

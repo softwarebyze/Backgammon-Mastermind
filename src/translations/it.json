@@ -44,7 +44,7 @@
       "suggested": "Mossa suggerita"
     },
     "nudge": {
-      "dice_order": "Questa pedina non ha mosse legali. Scegli un’altra pedina.",
+      "dice_order": "Nessuna mossa legale per questa pedina.",
       "roll_first": "Prima lancia i dadi"
     },
     "opening": {

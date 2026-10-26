@@ -44,7 +44,7 @@
       "suggested": "Coup suggéré"
     },
     "nudge": {
-      "dice_order": "Ce pion n’a aucun coup légal. Choisissez un autre pion.",
+      "dice_order": "Aucun coup légal pour ce pion.",
       "roll_first": "Lance d'abord les dés"
     },
     "opening": {

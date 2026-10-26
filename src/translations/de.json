@@ -44,7 +44,7 @@
       "suggested": "Vorgeschlagener Zug"
     },
     "nudge": {
-      "dice_order": "Dieser Stein hat keinen legalen Zug. Wähle einen anderen Stein.",
+      "dice_order": "Kein legaler Zug für diesen Stein.",
       "roll_first": "Würfle zuerst"
     },
     "opening": {

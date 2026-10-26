@@ -44,7 +44,7 @@
       "suggested": "Jogada sugerida"
     },
     "nudge": {
-      "dice_order": "Esta peça não tem nenhuma jogada legal. Escolha outra peça.",
+      "dice_order": "Esta peça não tem jogada legal.",
       "roll_first": "Lance os dados primeiro"
     },
     "opening": {

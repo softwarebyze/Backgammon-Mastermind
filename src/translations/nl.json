@@ -44,7 +44,7 @@
       "suggested": "Voorgestelde zet"
     },
     "nudge": {
-      "dice_order": "Deze schijf heeft geen geldige zet. Kies een andere schijf.",
+      "dice_order": "Geen geldige zet voor deze schijf.",
       "roll_first": "Gooi eerst de dobbelstenen"
     },
     "opening": {

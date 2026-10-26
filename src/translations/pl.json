@@ -44,7 +44,7 @@
       "suggested": "Sugerowany ruch"
     },
     "nudge": {
-      "dice_order": "Ten pionek nie ma legalnego ruchu. Wybierz inny pionek.",
+      "dice_order": "Ten pionek nie ma legalnego ruchu.",
       "roll_first": "Najpierw rzuć kośćmi"
     },
     "opening": {

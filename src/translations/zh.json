@@ -44,7 +44,7 @@
       "suggested": "建议走法"
     },
     "nudge": {
-      "dice_order": "此棋子没有合法走法。请选择其他棋子。",
+      "dice_order": "此棋子没有合法走法。",
       "roll_first": "请先掷骰子"
     },
     "opening": {

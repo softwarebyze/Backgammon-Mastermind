@@ -35,7 +35,7 @@ tags:
     visible: 'Point 2, 1 white checker'
     timeout: 15000
 - assertVisible: 'Point 6, 4 white checkers'
-- assertNotVisible: This checker has no legal move. Choose another checker.
+- assertNotVisible: No legal move for this checker.
 - takeScreenshot: dice-order-fallback-02-four-played
 - tapOn:
     id: header-undo-button
@@ -50,7 +50,7 @@ tags:
 # Only five remains; this checker has no legal move, while 13 can still use five.
 - tapOn:
     id: point-6
-- assertVisible: This checker has no legal move. Choose another checker.
+- assertVisible: No legal move for this checker.
 - assertVisible: 'Point 6, 4 white checkers'
 - takeScreenshot: dice-order-fallback-03-no-legal-move
 - tapOn:
@@ -61,5 +61,5 @@ tags:
     timeout: 15000
 - assertVisible: 'Point 8, 4 white checkers'
 - assertVisible: 'Point 13, 4 white checkers'
-- assertNotVisible: This checker has no legal move. Choose another checker.
+- assertNotVisible: No legal move for this checker.
 - takeScreenshot: dice-order-fallback-04-five-still-available
