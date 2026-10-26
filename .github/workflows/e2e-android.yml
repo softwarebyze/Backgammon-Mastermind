@@ -40,6 +40,7 @@ jobs:
               - 'env.ts'
               - 'package.json'
               - 'pnpm-lock.yaml'
+              - '.github/workflows/e2e-android.yml'
               - '.github/actions/setup-jdk-generate-apk/**'
               - '.github/scripts/run-maestro-e2e-emulator.sh'
               - '.github/scripts/install-android-system-image.sh'
@@ -100,8 +101,26 @@ jobs:
       - name: Install Maestro
         run: npm run install-maestro
 
+      # ffmpeg only joins recording segments; the run script warns if it is
+      # missing. A slow Ubuntu mirror once held this step for 29 minutes, so
+      # bound each attempt and let the smoke test run without it.
       - name: Install recording tools
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+        timeout-minutes: 8
+        continue-on-error: true
+        run: |
+          if command -v ffmpeg >/dev/null; then
+            echo "ffmpeg already installed"
+            exit 0
+          fi
+          apt_opts=(-q -o Acquire::Retries=2 -o Acquire::http::Timeout=20 -o Acquire::https::Timeout=20 -o DPkg::Lock::Timeout=60)
+          for attempt in 1 2; do
+            if sudo timeout 60 apt-get "${apt_opts[@]}" update \
+              && sudo timeout 150 apt-get "${apt_opts[@]}" install -y --no-install-recommends ffmpeg; then
+              exit 0
+            fi
+            echo "::warning::ffmpeg install attempt $attempt failed or timed out"
+          done
+          echo "::warning::ffmpeg unavailable; recording segments will not be joined"
 
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
