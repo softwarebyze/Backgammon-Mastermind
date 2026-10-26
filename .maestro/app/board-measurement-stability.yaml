@@ -71,7 +71,9 @@ tags:
 - assertVisible: 'Point 5, 1 white checker'
 - assertNotVisible:
     id: confirm-move-button
-- assertVisible:
+# Only one die remains after this Undo; Swap stays hidden but its layout
+# slot remains reserved, so the board must keep the same dimensions.
+- assertNotVisible:
     id: swap-dice-button
 - takeScreenshot: board-stability-04-undo-before-confirm
 - tapOn:
