@@ -246,13 +246,16 @@
     "vs_computer_sub": "コンピューターと対戦"
   },
   "learn": {
+    "back": "戻る",
     "back_to_hub": "すべてのレッスン",
     "continue": "続ける",
     "feedback": {
+      "correct_title": "正解！",
       "hint_nudge": "ナッジが必要ですか? ハイライトされたスポットを探します。",
       "illegal": "ハイライトされたポイントを試してみてください。ヒントをタップします。",
       "legal_but_wrong": "それは本当のゲームで法的です。ここに、このアイデアを教えている動きを試してください。",
-      "move_progress": "ニース —{{done}}インフォメーション{{needed}}動く。"
+      "move_progress": "いいですね — {{needed}}手のうち{{done}}手が完了しました。",
+      "try_again_title": "おしい"
     },
     "graduation": {
       "body": "ゴール、ボード、ターンワーク、ヒット、およびベアリングオフを知ることができます。 クイックチェック — あなたの最初の本当のゲーム。",
@@ -273,7 +276,11 @@
     "home_cta_quiz": "クイックチェック左 — 再生",
     "home_cta_ready": "準備完了 — 実際のゲームを再生",
     "home_cta_sub": "初心者のためのインタラクティブなレッスン",
+    "hub_intro_done": "すべてのレッスン完了。実際の対局へどうぞ。",
+    "hub_intro_start": "はじめての方はボードから。最初のレッスンは約2分です。",
     "lesson_complete": "レッスン完了!",
+    "lesson_complete_body": "{{title}}、お見事。次のレッスンはこの続きです。",
+    "lesson_complete_body_last": "{{title}}、お見事。これで全レッスン完了です。クイックチェックを済ませたら、初めての対局へ。",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +411,7 @@
           }
         },
         "subtitle": "どちらがレースでリードしているか読む",
-        "title": "ピップ数: レースの得点"
+        "title": "ピップ数"
       },
       "strategies": {
         "steps": {
@@ -428,7 +435,7 @@
           }
         },
         "subtitle": "基本方針を見分ける",
-        "title": "ゲームの方針"
+        "title": "戦略"
       }
     },
     "locked": "前回のレッスンを完了",
@@ -479,6 +486,7 @@
     },
     "replay": "リプレイ",
     "skip_to_play": "プレイする",
+    "start": "はじめる",
     "step_progress": "ステップ {{current}} / {{total}}",
     "subtitle": "短いインタラクティブレッスンで準備完了",
     "title": "遊ぶことを学ぶ"

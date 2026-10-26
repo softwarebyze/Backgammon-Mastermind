@@ -5,6 +5,7 @@ flows:
   - app/settings-no-fast-mode.yaml
   - app/android-back-closes-settings.yaml
   - app/undo-redo.yaml
+  - app/learn-to-play.yaml
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml
 

@@ -246,13 +246,16 @@
     "vs_computer_sub": "Juega contra el ordenador"
   },
   "learn": {
+    "back": "Atrás",
     "back_to_hub": "Todas las lecciones",
     "continue": "Continuar",
     "feedback": {
+      "correct_title": "¡Correcto!",
       "hint_nudge": "¿Necesitas un codazo? Busque los puntos destacados.",
       "illegal": "Pruebe un punto destacado — o toque Hint.",
       "legal_but_wrong": "Eso es legal en un juego real — aquí, prueba el movimiento que enseña esta idea.",
-      "move_progress": "Bien: {{done}} de {{needed}} movimientos completados."
+      "move_progress": "Bien: {{done}} de {{needed}} movimientos completados.",
+      "try_again_title": "Casi"
     },
     "graduation": {
       "body": "Conoces el objetivo, el tablero, cómo se convierte en trabajo, golpes y desmantelamiento. Un cheque rápido — luego tu primer juego real.",
@@ -273,7 +276,11 @@
     "home_cta_quiz": "Cheque rápido a la izquierda - luego jugar",
     "home_cta_ready": "Estás listo - jugar un juego real",
     "home_cta_sub": "Clases interactivas para principiantes",
+    "hub_intro_done": "Todas las lecciones completadas. Ya puedes jugar una partida de verdad.",
+    "hub_intro_start": "¿Primera vez? Empieza por el tablero: la primera lección dura unos 2 minutos.",
     "lesson_complete": "Lección completa!",
+    "lesson_complete_body": "Buen trabajo en {{title}}. La siguiente lección se apoya en esta.",
+    "lesson_complete_body_last": "Buen trabajo en {{title}}. Ya completaste todas las lecciones: haz la prueba rápida y luego juega tu primera partida.",
     "lessons": {
       "bearing_off": {
         "steps": {
@@ -404,7 +411,7 @@
           }
         },
         "subtitle": "Aprende a ver quién va ganando la carrera",
-        "title": "Recuento de pips: el marcador"
+        "title": "Recuento de pips"
       },
       "strategies": {
         "steps": {
@@ -428,7 +435,7 @@
           }
         },
         "subtitle": "Reconoce planes de juego clásicos",
-        "title": "Planes de juego"
+        "title": "Estrategias"
       }
     },
     "locked": "Completa la lección anterior primero",
@@ -479,6 +486,7 @@
     },
     "replay": "Replay",
     "skip_to_play": "Skip to play",
+    "start": "Empezar",
     "step_progress": "Paso {{current}} de {{total}}",
     "subtitle": "Lecciones cortas e interactivas — y estarás listo",
     "title": "Aprende a jugar"

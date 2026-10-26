@@ -7,6 +7,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
+import { LearnProgressRing } from '@/features/learn/learn-progress-ring';
 import { LessonRow } from '@/features/learn/lesson-row';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { enableBeginnerGameAids } from '@/lib/game-preferences/beginner-aids';
@@ -59,6 +60,12 @@ export function LearnHubScreen() {
     });
   }, [posthog, startGame, state]);
 
+  const intro = done === 0
+    ? translate('learn.hub_intro_start')
+    : lessonsDone
+      ? translate('learn.hub_intro_done')
+      : translate('learn.home_cta_progress', { done, total });
+
   return (
     <>
       <FocusAwareStatusBar />
@@ -74,19 +81,11 @@ export function LearnHubScreen() {
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.subtitle}>{translate('learn.subtitle')}</Text>
-
-        <View style={styles.progressRow}>
-          <Text style={styles.progressLabel}>
-            {translate('learn.home_cta_progress', { done, total })}
-          </Text>
-          <View style={styles.progressTrack}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${Math.round((done / total) * 100)}%` },
-              ]}
-            />
+        <View style={styles.hero} testID="learn-hero">
+          <LearnProgressRing done={done} total={total} />
+          <View style={styles.heroText}>
+            <Text style={styles.heroTitle}>{translate('learn.subtitle')}</Text>
+            <Text style={styles.heroBody}>{intro}</Text>
           </View>
         </View>
 
@@ -164,34 +163,37 @@ const styles = StyleSheet.create({
     maxWidth: GAME_CHROME_MAX_WIDTH,
     alignSelf: 'center',
     paddingTop: 16,
-    gap: 12,
+    gap: 14,
   },
   contentLandscape: {
     maxWidth: PAGE_STAGE_MAX_WIDTH,
     paddingTop: 8,
   },
-  subtitle: {
-    color: GAME_PALETTE.accentDim,
-    fontSize: 14,
-    ...interFont('regular'),
+  hero: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 18,
+    backgroundColor: 'rgba(255, 137, 51, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 196, 153, 0.22)',
+    ...continuousRadius(20),
   },
-  progressRow: {
-    gap: 8,
-    marginBottom: 4,
+  heroText: {
+    flex: 1,
+    gap: 4,
   },
-  progressTrack: {
-    height: 8,
-    backgroundColor: GAME_PALETTE.surface,
-    overflow: 'hidden',
-    ...continuousRadius(8),
+  heroTitle: {
+    color: GAME_PALETTE.text,
+    fontSize: 15,
+    lineHeight: 21,
+    ...interFont('semibold'),
   },
-  progressFill: {
-    height: '100%',
-    backgroundColor: GAME_PALETTE.accent,
-  },
-  progressLabel: {
-    color: GAME_PALETTE.textMuted,
-    fontSize: 12,
+  heroBody: {
+    color: GAME_PALETTE.accent,
+    fontSize: 13,
+    lineHeight: 18,
     ...interFont('medium'),
   },
   list: {
@@ -208,7 +210,7 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   primaryBtn: {
-    marginTop: 12,
+    marginTop: 8,
     backgroundColor: GAME_PALETTE.accent,
     paddingVertical: 16,
     alignItems: 'center',
@@ -220,7 +222,7 @@ const styles = StyleSheet.create({
     ...interFont('bold'),
   },
   secondaryBtn: {
-    marginTop: 4,
+    marginTop: 2,
     paddingVertical: 14,
     alignItems: 'center',
   },
