@@ -1,8 +1,10 @@
 import type { LessonFeedback } from '@/features/learn/use-lesson-session';
 import type { TxKeyPath } from '@/lib/i18n';
 import Feather from '@expo/vector-icons/Feather';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import { AccessibilityInfo, Platform, StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { noBreakHyphens } from '@/features/learn/no-break-hyphens';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
@@ -14,28 +16,49 @@ type Props = {
   stepIndex: number;
   totalSteps: number;
   compact?: boolean;
+  /**
+   * Final step done: one success card replaces the per-step "Correct!" card,
+   * carrying the step's praise plus the next-lesson line.
+   */
+  completion?: { title: string; body: string } | null;
 };
 
 const FEEDBACK_STYLES = {
   praise: {
     color: '#4ADE80',
-    surface: 'rgba(74, 222, 128, 0.12)',
+    surface: 'rgba(74, 222, 128, 0.08)',
+    border: 'rgba(74, 222, 128, 0.28)',
     icon: 'check-circle' as const,
     titleKey: 'learn.feedback.correct_title' as TxKeyPath,
   },
   hint: {
     color: GAME_PALETTE.accent,
-    surface: 'rgba(255, 137, 51, 0.12)',
+    surface: 'rgba(255, 137, 51, 0.08)',
+    border: 'rgba(255, 137, 51, 0.30)',
     icon: 'info' as const,
     titleKey: 'learn.hint' as TxKeyPath,
   },
   soft: {
     color: GAME_PALETTE.accentDim,
-    surface: 'rgba(255, 196, 153, 0.10)',
+    surface: 'rgba(255, 196, 153, 0.07)',
+    border: 'rgba(255, 196, 153, 0.26)',
     icon: 'alert-circle' as const,
     titleKey: 'learn.feedback.try_again_title' as TxKeyPath,
   },
 } as const;
+
+/**
+ * VoiceOver ignores accessibilityLiveRegion (Android) and aria-live (web), so
+ * iOS announces new coach feedback explicitly.
+ */
+function useAnnounceOnIOS(message: string | null) {
+  useEffect(() => {
+    if (Platform.OS !== 'ios' || !message) {
+      return;
+    }
+    AccessibilityInfo.announceForAccessibility(message);
+  }, [message]);
+}
 
 export function CoachCaption({
   titleKey,
@@ -44,8 +67,32 @@ export function CoachCaption({
   stepIndex,
   totalSteps,
   compact = false,
+  completion = null,
 }: Props) {
   const tone = feedback ? FEEDBACK_STYLES[feedback.tone] : null;
+  const feedbackBody = feedback
+    ? noBreakHyphens(translate(feedback.messageKey, feedback.messageOptions))
+    : null;
+  const card = completion
+    ? {
+        testID: 'learn-lesson-complete',
+        style: FEEDBACK_STYLES.praise,
+        icon: 'award' as const,
+        title: completion.title,
+        body: feedback?.tone === 'praise' ? feedbackBody : null,
+        footnote: noBreakHyphens(completion.body),
+      }
+    : feedback && tone
+      ? {
+          testID: 'learn-feedback',
+          style: tone,
+          icon: tone.icon,
+          title: translate(tone.titleKey),
+          body: feedbackBody,
+          footnote: null,
+        }
+      : null;
+  useAnnounceOnIOS(card ? [card.title, card.body, card.footnote].filter(Boolean).join(' ') : null);
 
   return (
     <View style={[styles.root, compact && styles.rootCompact]}>
@@ -71,24 +118,27 @@ export function CoachCaption({
         {translate(titleKey as TxKeyPath)}
       </Text>
       <Text style={[styles.body, compact && styles.bodyCompact]}>
-        {translate(bodyKey as TxKeyPath)}
+        {noBreakHyphens(translate(bodyKey as TxKeyPath))}
       </Text>
 
-      {feedback && tone
+      {card
         ? (
             <View
-              testID="learn-feedback"
+              testID={card.testID}
               accessibilityLiveRegion="polite"
-              style={[styles.feedback, { backgroundColor: tone.surface, borderColor: tone.color }]}
+              style={[styles.feedback, { backgroundColor: card.style.surface, borderColor: card.style.border }]}
             >
-              <Feather name={tone.icon} size={18} color={tone.color} style={styles.feedbackIcon} />
+              <Feather name={card.icon} size={18} color={card.style.color} style={styles.feedbackIcon} />
               <View style={styles.feedbackText}>
-                <Text style={[styles.feedbackTitle, { color: tone.color }]}>
-                  {translate(tone.titleKey)}
+                <Text style={[styles.feedbackTitle, { color: card.style.color }]}>
+                  {card.title}
                 </Text>
-                <Text style={styles.feedbackBody}>
-                  {translate(feedback.messageKey, feedback.messageOptions)}
-                </Text>
+                {card.body
+                  ? <Text style={styles.feedbackBody}>{card.body}</Text>
+                  : null}
+                {card.footnote
+                  ? <Text style={styles.feedbackFootnote}>{card.footnote}</Text>
+                  : null}
               </View>
             </View>
           )
@@ -175,9 +225,8 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    borderLeftWidth: 3,
-    overflow: 'hidden',
-    ...continuousRadius(10),
+    borderWidth: 1,
+    ...continuousRadius(12),
   },
   feedbackIcon: {
     marginTop: 1,
@@ -187,9 +236,8 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   feedbackTitle: {
-    fontSize: 12,
-    letterSpacing: 0.6,
-    textTransform: 'uppercase',
+    fontSize: 14,
+    lineHeight: 19,
     ...interFont('bold'),
   },
   feedbackBody: {
@@ -197,5 +245,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     ...interFont('medium'),
+  },
+  feedbackFootnote: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
+    ...interFont('regular'),
   },
 });

@@ -4,7 +4,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
@@ -17,6 +17,7 @@ import {
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
 import { learnCompleteBodyKey, learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
+import { learnCaptionReserve, lessonUsesDice } from '@/features/learn/lesson-layout';
 import { lessonNavigationIcons } from '@/features/learn/lesson-visuals';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
@@ -29,6 +30,10 @@ import { interFont } from '@/lib/ui/fonts';
 import { LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
+
+/** Hint and Continue share one height so the footer never resizes. */
+const CTA_HEIGHT = 54;
+const RESERVED_DICE: [number, number] = [1, 2];
 
 type Props = {
   lessonId: LessonId;
@@ -94,6 +99,12 @@ function LessonScreenBody({
     minBoardHeight: landscape ? 0 : MIN_LEARN_BOARD_SLOT_HEIGHT,
   });
   const dimensions = useBoardDimensions({ showPointNumbers });
+  const { fontScale } = useWindowDimensions();
+  // Portrait: the caption gets a fixed-height slot (feedback and the
+  // completion card appear inside it), and the footer never changes height,
+  // so the board slot — and the board — stay the same size on every step.
+  const captionHeight = landscape ? undefined : learnCaptionReserve({ fontScale, captionMaxHeight });
+  const reserveDiceRow = lessonUsesDice(lesson);
   const completedEventRef = useRef(false);
   const captionScrollRef = useRef<ScrollView>(null);
 
@@ -188,6 +199,14 @@ function LessonScreenBody({
   const showDice = session.state.dice[0] !== 0 || session.state.dice[1] !== 0;
   const showCompleteBanner
     = session.stepComplete && session.stepIndex >= session.totalSteps - 1;
+  const completion = showCompleteBanner
+    ? {
+        title: translate('learn.lesson_complete'),
+        body: translate(learnCompleteBodyKey(nextLessonId), {
+          title: translate(lesson.titleKey as TxKeyPath),
+        }),
+      }
+    : null;
 
   const caption = (
     <CoachCaption
@@ -196,7 +215,8 @@ function LessonScreenBody({
       feedback={session.feedback}
       stepIndex={session.stepIndex}
       totalSteps={session.totalSteps}
-      compact={landscape || (captionMaxHeight != null && captionMaxHeight < 160)}
+      compact={landscape || (captionHeight != null && captionHeight < 160)}
+      completion={completion}
     />
   );
 
@@ -214,27 +234,26 @@ function LessonScreenBody({
               />
             </View>
           )
-        : null}
-
-      {showCompleteBanner
-        ? (
-            <View testID="learn-lesson-complete" style={styles.completeCard}>
-              <View style={styles.completeIcon}>
-                <Feather name="award" size={20} color="#4ADE80" />
+        : reserveDiceRow
+          ? (
+              // Same height as the dice so the footer (and board) never resize
+              // between steps with and without dice.
+              <View
+                style={[styles.diceRow, styles.diceReserve]}
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                pointerEvents="none"
+              >
+                <DiceDisplay
+                  dice={RESERVED_DICE}
+                  remainingDice={RESERVED_DICE}
+                  playerColor="white"
+                  displayStyle={diceDisplayStyle}
+                  animateRoll={false}
+                />
               </View>
-              <View style={styles.completeText}>
-                <Text style={styles.completeTitle}>
-                  {translate('learn.lesson_complete')}
-                </Text>
-                <Text style={styles.completeBody}>
-                  {translate(learnCompleteBodyKey(nextLessonId), {
-                    title: translate(lesson.titleKey as TxKeyPath),
-                  })}
-                </Text>
-              </View>
-            </View>
-          )
-        : null}
+            )
+          : null}
 
       <View style={styles.footerActions}>
         <Pressable
@@ -284,14 +303,14 @@ function LessonScreenBody({
     <View
       style={[
         styles.captionHost,
-        captionMaxHeight != null ? { maxHeight: captionMaxHeight } : null,
+        captionHeight != null ? { height: captionHeight } : null,
       ]}
       testID="learn-caption-host"
       onLayout={onTopLayout}
     >
       <ScrollView
         ref={captionScrollRef}
-        style={captionMaxHeight != null ? { maxHeight: captionMaxHeight } : undefined}
+        style={styles.captionScroll}
         contentContainerStyle={styles.captionScrollContent}
         bounces={false}
         overScrollMode="never"
@@ -405,7 +424,7 @@ const styles = StyleSheet.create({
   captionHost: {
     width: '100%',
     flexGrow: 0,
-    flexShrink: 1,
+    flexShrink: 0,
     minHeight: 0,
   },
   captionScroll: {
@@ -450,6 +469,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 8,
   },
+  diceReserve: {
+    opacity: 0,
+  },
   footerActions: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -471,43 +493,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     ...interFont('semibold'),
   },
-  completeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    width: '100%',
-    maxWidth: 420,
-    marginBottom: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    backgroundColor: 'rgba(74, 222, 128, 0.10)',
-    borderWidth: 1,
-    borderColor: 'rgba(74, 222, 128, 0.35)',
-    ...continuousRadius(14),
-  },
-  completeIcon: {
-    width: 36,
-    height: 36,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 18,
-    backgroundColor: 'rgba(74, 222, 128, 0.16)',
-  },
-  completeText: {
-    flex: 1,
-    gap: 2,
-  },
-  completeTitle: {
-    color: '#4ADE80',
-    fontSize: 15,
-    ...interFont('bold'),
-  },
-  completeBody: {
-    color: GAME_PALETTE.text,
-    fontSize: 12,
-    lineHeight: 17,
-    ...interFont('regular'),
-  },
   primaryBtn: {
     marginTop: 4,
     backgroundColor: GAME_PALETTE.accent,
@@ -517,6 +502,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 24,
     minWidth: 180,
+    minHeight: CTA_HEIGHT,
     alignItems: 'center',
     ...continuousRadius(14),
   },
@@ -531,6 +517,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 24,
     minWidth: 180,
+    minHeight: CTA_HEIGHT,
     alignItems: 'center',
     ...continuousRadius(14),
   },

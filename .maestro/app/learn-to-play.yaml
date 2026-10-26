@@ -53,12 +53,13 @@ tags:
 # Anchored regex: the body copy also contains the word "bar".
 - tapOn:
     text: ^Bar$
+# The completion card replaces the per-step "Correct!" card — one success surface.
 - extendedWaitUntil:
     visible:
-      id: learn-feedback
+      id: learn-lesson-complete
     timeout: 15000
-- assertVisible:
-    id: learn-lesson-complete
+- assertNotVisible:
+    id: learn-feedback
 - takeScreenshot: 05-lesson-complete
 - tapOn:
     id: learn-primary-cta
