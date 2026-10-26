@@ -1,4 +1,5 @@
 flows:
+  - app/board-measurement-stability.yaml
   - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
   - app/game-settings-gear.yaml
@@ -8,6 +9,8 @@ flows:
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml
   - app/rapid-follow-up-input.yaml
+  - app/dice-order.yaml
+  - app/dice-order-fallback.yaml
 
 excludeTags:
   - util

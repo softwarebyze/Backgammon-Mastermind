@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
 import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
+import { DiceOrderIcon } from '@/features/game/components/settings-ui/dice-order-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
@@ -26,6 +27,7 @@ type Props = {
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
   onTutorModeChange: (value: boolean) => void;
+  onMoveInDiceOrderChange: (value: boolean) => void;
   onConfirmMoveChange: (value: boolean) => void;
   showHints?: boolean;
 };
@@ -41,6 +43,7 @@ export function GamePreferencesPanel({
   onSoundEnabledChange,
   onTutorModeChange,
   onConfirmMoveChange,
+  onMoveInDiceOrderChange,
   showHints = false,
 }: Props) {
   return (
@@ -113,6 +116,17 @@ export function GamePreferencesPanel({
           value={preferences.soundEnabled}
           onChange={onSoundEnabledChange}
           testID="setting-toggle-sound"
+        />
+      </View>
+
+      <View style={styles.card}>
+        <SettingToggleRow
+          icon={<DiceOrderIcon size={32} active={preferences.moveInDiceOrder} />}
+          label={translate('game.preferences.move_in_dice_order')}
+          hint={translate('game.preferences.move_in_dice_order_hint')}
+          value={preferences.moveInDiceOrder}
+          onChange={onMoveInDiceOrderChange}
+          testID="setting-toggle-dice-order"
         />
       </View>
 

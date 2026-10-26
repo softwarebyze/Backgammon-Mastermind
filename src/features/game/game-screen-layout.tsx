@@ -189,6 +189,8 @@ function GameChromeStack({
         <GameScreenControls
           state={state}
           liveDiceState={live}
+          displayedDice={input.displayedDice}
+          onSwapDice={input.swapDice}
           isHumanTurn={!isComputerTurn && interactionEnabled}
           isComputerTurn={isComputerTurn}
           isReviewing={review.isReviewing}
@@ -196,7 +198,9 @@ function GameChromeStack({
           captionOverride={
             input.inputNudge === 'roll'
               ? translate('game.nudge.roll_first')
-              : openingText?.caption ?? null
+              : input.inputNudge === 'dice-order'
+                ? translate('game.nudge.dice_order')
+                : openingText?.caption ?? null
           }
           opening={opening}
           compact={compact}

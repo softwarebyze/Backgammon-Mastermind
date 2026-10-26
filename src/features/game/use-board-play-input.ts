@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AccessibilityInfo } from 'react-native';
 
+import { diceOrderMove } from '@/features/game/dice-order';
 import { validateDragStart } from '@/features/game/drag-input';
 import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { dragReleaseAnchor } from '@/features/game/drag-overlay-offset';
@@ -23,7 +24,7 @@ function triggerHaptic(fn: () => Promise<void>) {
   void fn().catch(() => {});
 }
 
-type InputNudge = 'roll' | null;
+type InputNudge = 'roll' | 'dice-order' | null;
 
 /**
  * Inputs captured while a move animation owns the board. Replayed in order when
@@ -59,6 +60,8 @@ type UseBoardPlayInputArgs = {
   /** When false, pre-roll taps are ignored (lessons lock dice). Default true. */
   enableRollNudge?: boolean;
   concurrentMoves?: boolean;
+  moveInDiceOrder?: boolean;
+  diceOrderReversed?: { current: boolean };
   /**
    * When false, a tutor prompt or move review owns the board: ignore taps and
    * drop queued input instead of replaying it under the overlay. Default true.
@@ -80,6 +83,8 @@ export function useBoardPlayInput({
   isHumanTurn,
   enableRollNudge = true,
   concurrentMoves = false,
+  moveInDiceOrder = false,
+  diceOrderReversed,
   interactionEnabled = true,
   actions,
   onMoveMade,
@@ -211,7 +216,9 @@ export function useBoardPlayInput({
 
   // Don't show a stale roll nudge after dice are already rolled.
   const activeNudge: InputNudge
-    = inputNudge === 'roll' && needsRollFirst(state?.phase) ? 'roll' : null;
+    = inputNudge === 'roll' && needsRollFirst(state?.phase)
+      ? 'roll'
+      : inputNudge === 'dice-order' && state?.phase === 'moving' ? 'dice-order' : null;
 
   const endDrag = useCallback(() => {
     dragRef.current = null;
@@ -271,6 +278,25 @@ export function useBoardPlayInput({
       stateRef.current = next;
     }
   }, [doMove, doMoveSequence, concurrentMoves, getMoveState]);
+
+  const playDiceOrderTap = useCallback((live: GameState, point: number) => {
+    const move = diceOrderMove(live, point, diceOrderReversed?.current ?? false);
+    if (move) {
+      setInputNudge(null);
+      playTapSequence([move]);
+      return;
+    }
+    // Empty/opponent points are not checker taps. An unavailable own checker
+    // leaves the board, selection and dice untouched, including mandatory rules.
+    const own = point === 0
+      ? live.bar[live.currentPlayer] > 0
+      : live.points[point]?.player === live.currentPlayer && live.points[point]?.count > 0;
+    if (own && live.remainingDice.length > 0) {
+      setInputNudge('dice-order');
+      AccessibilityInfo.announceForAccessibility(translate('game.nudge.dice_order'));
+      triggerHaptic(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning));
+    }
+  }, [diceOrderReversed, playTapSequence]);
 
   const enqueueInput = useCallback((input: QueuedInput) => {
     if (queuedInputsRef.current.length >= MAX_QUEUED_INPUTS) {
@@ -374,6 +400,10 @@ export function useBoardPlayInput({
         return;
       }
 
+      if (moveInDiceOrder) {
+        playDiceOrderTap(live, input.point);
+        return;
+      }
       const action = resolveBoardTap(live, selection, input.point);
       const next = applyBoardTap(action, selection);
       selection = next.selection;
@@ -381,7 +411,7 @@ export function useBoardPlayInput({
         return;
       }
     }
-  }, [applyBoardTap, clearQueuedInputs, playResolvedDrag, playTapSequence, selectPoint]);
+  }, [applyBoardTap, clearQueuedInputs, playResolvedDrag, playTapSequence, selectPoint, moveInDiceOrder, playDiceOrderTap]);
 
   // After an in-flight move commits, replay queued taps, drops, and selections in order.
   useEffect(() => {
@@ -420,6 +450,11 @@ export function useBoardPlayInput({
 
       setPreviewTarget(null);
 
+      if (moveInDiceOrder) {
+        playDiceOrderTap(live, pointIndex);
+        return;
+      }
+
       if (swallowTouchSelection && live.phase === 'moving') {
         const sequence = getSingleDestinationSequence(live, pointIndex);
         if (sequence) {
@@ -432,6 +467,8 @@ export function useBoardPlayInput({
     },
     [
       applyBoardTap,
+      moveInDiceOrder,
+      playDiceOrderTap,
       canInteract,
       enqueueInput,
       nudgeRoll,
@@ -468,7 +505,7 @@ export function useBoardPlayInput({
   /** Touch-down: select so legal destinations show before the pan min-distance. */
   const handleDragAttempt = useCallback((from: number) => {
     const s = stateRef.current;
-    if (!s || !isHumanTurn) {
+    if (moveInDiceOrder || !s || !isHumanTurn) {
       return;
     }
     if (needsRollFirst(s.phase)) {
@@ -502,7 +539,7 @@ export function useBoardPlayInput({
       selectPoint(from);
     }
     triggerHaptic(() => Haptics.selectionAsync());
-  }, [isAnimating, isHumanTurn, canDrag, selectPoint, nudgeRoll]);
+  }, [isAnimating, isHumanTurn, canDrag, selectPoint, nudgeRoll, moveInDiceOrder]);
 
   /** Pan activated (past min-distance) — lift the checker overlay. */
   const handleDragStart = useCallback((from: number, _boardX: number, _boardY: number) => {
@@ -628,6 +665,11 @@ export function useBoardPlayInput({
 
     ignoreNextBoardPressRef.current = true;
 
+    if (moveInDiceOrder) {
+      playDiceOrderTap(live, 0);
+      return;
+    }
+
     if (live.selectedPoint === 0) {
       if (touchSelectedFromRef.current === 0) {
         touchSelectedFromRef.current = null;
@@ -654,7 +696,7 @@ export function useBoardPlayInput({
 
     triggerHaptic(() => Haptics.selectionAsync());
     selectPoint(0);
-  }, [canInteract, enqueueInput, nudgeRoll, playTapSequence, selectPoint]);
+  }, [canInteract, enqueueInput, nudgeRoll, playTapSequence, selectPoint, moveInDiceOrder, playDiceOrderTap]);
 
   const handleBoardPress = useCallback(() => {
     if (ignoreNextBoardPressRef.current) {

@@ -4,8 +4,9 @@ import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { ApplyMoveOptions, GameState, Move } from '@/lib/game';
 
+import { resolveLegalMove } from '@/features/game/create-play-move';
 import { buildMoveAnimationFrame } from '@/features/game/move-animation';
-import { applyMove, getLegalMoves, moveSequenceInvolvesHit } from '@/lib/game';
+import { applyMove, moveSequenceInvolvesHit } from '@/lib/game';
 import { shouldDeferTurnEnd } from '@/lib/game-preferences/confirm-move';
 
 /** One checker continuing (13/10 then 10/9), not two separate plays. */
@@ -27,7 +28,7 @@ export function resolveSequenceSteps(
   let snap = snapshot;
   for (let i = 0; i < moves.length; i++) {
     const planned = moves[i]!;
-    const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
+    const legal = resolveLegalMove(snap, planned, snapshot.remainingDice);
     if (!legal) {
       return null;
     }
@@ -105,7 +106,7 @@ export function runMoveSequence(
   }
   const playFromIndex = (snap: GameState, index: number) => {
     const planned = moves[index]!;
-    const legal = getLegalMoves(snap).find(m => m.from === planned.from && m.to === planned.to);
+    const legal = resolveLegalMove(snap, planned, snapshot.remainingDice);
     if (!legal) {
       ctx.setSequenceActive(false);
       return;

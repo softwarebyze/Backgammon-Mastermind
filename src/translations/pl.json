@@ -14,6 +14,7 @@
       "cancel_a11y": "Anuluj zaznaczenie",
       "confirm_move": "Potwierdź ruch",
       "confirm_move_a11y": "Potwierdź ruch i zakończ turę",
+      "dice_order_a11y": "Kości: {{first}}, potem {{second}}",
       "leave_game_a11y": "Zostaw grę i wróć do domu",
       "loading": "Ładowanie...",
       "new_game_message": "Rozpocząć nową grę?",
@@ -25,6 +26,8 @@
       "roll_dice": "Rzuć kośćmi",
       "roll_dice_a11y": "Rzuć kośćmi",
       "start_new_game_a11y": "Rozpocznij nową grę",
+      "swap_dice": "Zamień kości",
+      "swap_dice_hint": "Zmienia, która kość jest grana jako pierwsza.",
       "undo_a11y": "Cofnij ruch",
       "undo_move": "Cofnij"
     },
@@ -41,6 +44,7 @@
       "suggested": "Sugerowany ruch"
     },
     "nudge": {
+      "dice_order": "Ten pionek nie ma legalnego ruchu.",
       "roll_first": "Najpierw rzuć kośćmi"
     },
     "opening": {
@@ -73,6 +77,8 @@
       "direction_overlay_hint": "Trasa w kształcie podkowy na planszy",
       "move_hints": "Podpowiedzi ruchów",
       "move_hints_hint": "Złota kropka przy polach, z których możesz się ruszyć",
+      "move_in_dice_order": "Ruch według kolejności kości",
+      "move_in_dice_order_hint": "Dotknij pionka, aby preferować pierwszą niewykorzystaną kość lub użyć drugiej, jeśli ruch jest legalny. Zamień kości, aby zmienić preferencję.",
       "point_numbers": "Numery pól",
       "point_numbers_hint": "Pokaż etykiety 1–24 na planszy",
       "section_automation": "Automatyzacja",

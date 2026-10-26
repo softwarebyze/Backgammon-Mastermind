@@ -14,6 +14,7 @@
       "cancel_a11y": "ביטול הבחירה",
       "confirm_move": "אשר מהלך",
       "confirm_move_a11y": "אשר את המהלך וסיים את התור",
+      "dice_order_a11y": "קוביות: {{first}}, ואז {{second}}",
       "leave_game_a11y": "לעזוב את המשחק ולחזור הביתה",
       "loading": "לטעון...",
       "new_game_message": "להתחיל משחק חדש?",
@@ -25,6 +26,8 @@
       "roll_dice": "הטילו קוביות",
       "roll_dice_a11y": "הטלת קוביות",
       "start_new_game_a11y": "התחל משחק חדש",
+      "swap_dice": "החלפת קוביות",
+      "swap_dice_hint": "מחליף איזו קובייה משוחקת ראשונה.",
       "undo_a11y": "ביטול המהלך",
       "undo_move": "בטל"
     },
@@ -41,6 +44,7 @@
       "suggested": "מהלך מוצע"
     },
     "nudge": {
+      "dice_order": "אין מהלך חוקי לאבן הזו.",
       "roll_first": "קודם הטילו את הקוביות"
     },
     "opening": {
@@ -73,6 +77,8 @@
       "direction_overlay_hint": "מסלול בצורת פרסה על הלוח",
       "move_hints": "רמזי מהלכים",
       "move_hints_hint": "נקודה זהובה ליד משבצות שמהן אפשר לזוז",
+      "move_in_dice_order": "הזזה לפי סדר הקוביות",
+      "move_in_dice_order_hint": "הקשה על אבן מעדיפה את הקובייה הראשונה שלא נוצלה מימין, או את האחרת אם המהלך חוקי. החליפו קוביות לשינוי ההעדפה.",
       "point_numbers": "מספרי משבצות",
       "point_numbers_hint": "הצגת תוויות 1–24 על הלוח",
       "section_automation": "אוטומציה",

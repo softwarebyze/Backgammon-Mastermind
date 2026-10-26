@@ -1,0 +1,91 @@
+# Dice-order Swap must not add a portrait row when Confirm disappears.
+# CI screenshots/video cover moving -> confirm -> Undo -> confirm -> pass.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      id: setting-toggle-dice-order
+    direction: DOWN
+- tapOn:
+    id: setting-toggle-dice-order
+- tapOn:
+    id: stack-escape-button
+- openLink: backgammonmastermind.preview://developer
+- tapOn:
+    id: developer-preset-e2e-undo-redo-3-1
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 15000
+- assertVisible:
+    id: swap-dice-button
+- assertNotVisible:
+    id: confirm-move-button
+- takeScreenshot: board-stability-00-moving
+- tapOn:
+    id: point-8
+- extendedWaitUntil:
+    visible: 'Point 5, 1 white checker'
+    timeout: 15000
+- takeScreenshot: board-stability-01-first-move
+# Undo mid-sequence goes through the header timeline undo. The confirm bar's
+# `undo-move-button` only exists once the roll is fully spent (remainingDice === 0),
+# so it is asserted later at board-stability-04 instead.
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible: 'Point 8, 3 white checkers'
+    timeout: 15000
+- assertVisible: Point 5
+# The full-width board should remain in the same position after Undo.
+- takeScreenshot: board-stability-02-undo-path-cleared
+- tapOn:
+    id: point-8
+- extendedWaitUntil:
+    visible: 'Point 5, 1 white checker'
+    timeout: 15000
+- tapOn:
+    id: point-6
+- extendedWaitUntil:
+    visible:
+      id: confirm-move-button
+    timeout: 15000
+- assertVisible: 'Point 5, 2 white checkers'
+- assertVisible: 'Point 6, 4 white checkers'
+- assertNotVisible: ".*Black's turn.*"
+- assertNotVisible:
+    id: swap-dice-button
+- takeScreenshot: board-stability-03-held-turn
+- tapOn:
+    id: undo-move-button
+- extendedWaitUntil:
+    visible: 'Point 6, 5 white checkers'
+    timeout: 15000
+- assertVisible: 'Point 5, 1 white checker'
+- assertNotVisible:
+    id: confirm-move-button
+# Only one die remains after this Undo; Swap stays hidden but its layout
+# slot remains reserved, so the board must keep the same dimensions.
+- assertNotVisible:
+    id: swap-dice-button
+- takeScreenshot: board-stability-04-undo-before-confirm
+- tapOn:
+    id: point-6
+- extendedWaitUntil:
+    visible:
+      id: confirm-move-button
+    timeout: 15000
+- tapOn:
+    id: confirm-move-button
+- extendedWaitUntil:
+    visible: ".*Black's turn.*"
+    timeout: 15000
+- assertVisible: 'Point 5, 2 white checkers'
+- takeScreenshot: board-stability-05-turn-handed-off

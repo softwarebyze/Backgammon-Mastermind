@@ -14,6 +14,7 @@
       "cancel_a11y": "Annulla selezione",
       "confirm_move": "Conferma mossa",
       "confirm_move_a11y": "Conferma la mossa e termina il turno",
+      "dice_order_a11y": "Dadi: {{first}}, poi {{second}}",
       "leave_game_a11y": "Lasciare gioco e tornare a casa",
       "loading": "Caricamento...",
       "new_game_message": "Iniziare una nuova partita?",
@@ -25,6 +26,8 @@
       "roll_dice": "Lancia i dadi",
       "roll_dice_a11y": "Lancia i dadi",
       "start_new_game_a11y": "Inizia nuovo gioco",
+      "swap_dice": "Scambia dadi",
+      "swap_dice_hint": "Cambia quale dado si gioca per primo.",
       "undo_a11y": "Annulla la mossa",
       "undo_move": "Annulla"
     },
@@ -41,6 +44,7 @@
       "suggested": "Mossa suggerita"
     },
     "nudge": {
+      "dice_order": "Nessuna mossa legale per questa pedina.",
       "roll_first": "Prima lancia i dadi"
     },
     "opening": {
@@ -73,6 +77,8 @@
       "direction_overlay_hint": "Percorso a ferro di cavallo sul tavoliere",
       "move_hints": "Suggerimenti di mossa",
       "move_hints_hint": "Punto dorato accanto alle punte da cui puoi muovere",
+      "move_in_dice_order": "Muovi in ordine di dadi",
+      "move_in_dice_order_hint": "Tocca una pedina per preferire il primo dado non utilizzato, oppure usare l’altro se consentito. Scambia i dadi per cambiare la preferenza.",
       "point_numbers": "Numeri delle punte",
       "point_numbers_hint": "Mostra le etichette 1–24 sul tavoliere",
       "section_automation": "Automazione",

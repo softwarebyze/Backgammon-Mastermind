@@ -14,6 +14,7 @@
       "cancel_a11y": "Cancelar selección",
       "confirm_move": "Confirmar movimiento",
       "confirm_move_a11y": "Confirmar movimiento y terminar el turno",
+      "dice_order_a11y": "Dados: {{first}}, luego {{second}}",
       "leave_game_a11y": "Dejar juego y volver a casa",
       "loading": "Cargando...",
       "new_game_message": "¿Empezar una partida nueva?",
@@ -25,6 +26,8 @@
       "roll_dice": "Tirar los dados",
       "roll_dice_a11y": "Tirar los dados",
       "start_new_game_a11y": "Inicio nuevo juego",
+      "swap_dice": "Intercambiar dados",
+      "swap_dice_hint": "Cambia qué dado se juega primero.",
       "undo_a11y": "Deshacer movimiento",
       "undo_move": "Deshacer"
     },
@@ -41,6 +44,7 @@
       "suggested": "Jugada sugerida"
     },
     "nudge": {
+      "dice_order": "Esta ficha no tiene jugada legal.",
       "roll_first": "Primero tira los dados"
     },
     "opening": {
@@ -73,6 +77,8 @@
       "direction_overlay_hint": "Recorrido en herradura sobre el tablero",
       "move_hints": "Pistas de movimiento",
       "move_hints_hint": "Punto dorado junto a las casillas desde las que puedes mover",
+      "move_in_dice_order": "Mover en orden de dados",
+      "move_in_dice_order_hint": "Toca una ficha para dar preferencia al primer dado sin gastar, o usar el otro si es legal. Intercambia los dados para cambiar la preferencia.",
       "point_numbers": "Números de casilla",
       "point_numbers_hint": "Mostrar etiquetas 1–24 en el tablero",
       "section_automation": "Automatización",

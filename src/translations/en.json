@@ -14,6 +14,7 @@
       "cancel_a11y": "Cancel selection",
       "confirm_move": "Confirm move",
       "confirm_move_a11y": "Confirm move and end your turn",
+      "dice_order_a11y": "Dice: {{first}}, then {{second}}",
       "leave_game_a11y": "Leave game and return home",
       "loading": "Loading…",
       "new_game_message": "Start a new game?",
@@ -25,6 +26,8 @@
       "roll_dice": "Roll Dice",
       "roll_dice_a11y": "Roll dice",
       "start_new_game_a11y": "Start new game",
+      "swap_dice": "Swap dice",
+      "swap_dice_hint": "Swaps which die is played first.",
       "undo_a11y": "Undo move",
       "undo_move": "Undo"
     },
@@ -41,6 +44,7 @@
       "suggested": "Suggested move"
     },
     "nudge": {
+      "dice_order": "No legal move for this checker.",
       "roll_first": "Roll the dice first"
     },
     "opening": {
@@ -73,6 +77,8 @@
       "direction_overlay_hint": "Horseshoe path on the board",
       "move_hints": "Move hints",
       "move_hints_hint": "Gold dot beside points you can move from",
+      "move_in_dice_order": "Move in dice order",
+      "move_in_dice_order_hint": "Tap a checker to prefer the leading unspent die, or use the other die if legal. Swap dice to change the preference.",
       "point_numbers": "Point numbers",
       "point_numbers_hint": "Show 1–24 labels on the board",
       "section_automation": "Automation",

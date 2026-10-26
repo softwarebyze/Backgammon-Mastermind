@@ -14,6 +14,7 @@
       "cancel_a11y": "İptal seçimi",
       "confirm_move": "Hamleyi onayla",
       "confirm_move_a11y": "Hamleyi onayla ve turu bitir",
+      "dice_order_a11y": "Zarlar: {{first}}, sonra {{second}}",
       "leave_game_a11y": "Oyun bırak ve eve geri dön",
       "loading": "Yükleniyor...",
       "new_game_message": "Yeni oyun başlatılsın mı?",
@@ -25,6 +26,8 @@
       "roll_dice": "Zar At",
       "roll_dice_a11y": "Zar at",
       "start_new_game_a11y": "Yeni oyun başla",
+      "swap_dice": "Zarları değiştir",
+      "swap_dice_hint": "Önce oynanacak zarı değiştirir.",
       "undo_a11y": "Undo hareketsiz",
       "undo_move": "Geri al"
     },
@@ -41,6 +44,7 @@
       "suggested": "Önerilen hamle"
     },
     "nudge": {
+      "dice_order": "Bu pulun yasal hamlesi yok.",
       "roll_first": "Önce zarları at"
     },
     "opening": {
@@ -73,6 +77,8 @@
       "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
       "move_hints": "Hamle ipuçları",
       "move_hints_hint": "Taş oynatabileceğin hanelerin yanında altın nokta",
+      "move_in_dice_order": "Zar sırasına göre oyna",
+      "move_in_dice_order_hint": "Bir pula dokununca ilk kullanılmamış zar tercih edilir; mümkün değilse diğer yasal zar kullanılır. Tercihi değiştirmek için zarları değiştirin.",
       "point_numbers": "Hane numaraları",
       "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
       "section_automation": "Otomasyon",

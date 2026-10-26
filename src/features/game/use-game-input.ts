@@ -5,7 +5,9 @@ import { useCallback, useMemo } from 'react';
 
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
+import { useDiceOrder } from '@/features/game/use-dice-order';
 import { useGame } from '@/features/game/use-game';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
 function triggerHaptic(fn: () => Promise<void>) {
@@ -15,6 +17,9 @@ function triggerHaptic(fn: () => Promise<void>) {
 export function useGameInput({ interactionEnabled = true }: { interactionEnabled?: boolean } = {}) {
   const posthog = usePostHog();
   const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating, moveAnimation, getMoveState } = useGame();
+
+  const { preferences } = useGamePreferences();
+  const { displayedDice, reversedRef, swapDice } = useDiceOrder(state);
 
   const isHumanTurn = !!state
     && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
@@ -49,6 +54,8 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
     state,
     isAnimating: isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked),
     concurrentMoves: true,
+    moveInDiceOrder: preferences.moveInDiceOrder,
+    diceOrderReversed: reversedRef,
     isHumanTurn,
     interactionEnabled,
     actions,
@@ -92,6 +99,8 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
 
   return {
     state,
+    displayedDice,
+    swapDice,
     previewTarget,
     dragFrom,
     setBoardDimensions,

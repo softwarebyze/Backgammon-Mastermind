@@ -33,6 +33,8 @@ type Props = {
   isAnimating: boolean;
   isHumanTurn: boolean;
   interactionEnabled?: boolean;
+  moveInDiceOrder?: boolean;
+  diceOrderReversed?: { current: boolean };
 };
 
 function whiteMoving(): GameState {
@@ -354,5 +356,59 @@ describe('useBoardPlayInput queued destination and drag', () => {
     rerender({ state: settled, isAnimating: true, isHumanTurn: true });
     rerender({ state: settled, isAnimating: false, isHumanTurn: true });
     expect(actions.doMove).not.toHaveBeenCalled();
+  });
+});
+
+describe('dice order checker taps', () => {
+  it('plays one leading die immediately without selecting a destination', () => {
+    const { result, actions } = setup({ state: whiteMoving(), isAnimating: false, isHumanTurn: true, moveInDiceOrder: true });
+    act(() => result.current.handlePointPress(13));
+    expect(actions.doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 13, to: 10, die: 3 }));
+    expect(actions.doMoveSequence).not.toHaveBeenCalled();
+    expect(actions.selectPoint).not.toHaveBeenCalled();
+  });
+
+  it('uses the other legal die without changing selection when the leading die is blocked', () => {
+    const state = { ...whiteMoving(), dice: [5, 3] as [number, number], selectedPoint: 13 };
+    const before = JSON.stringify(state);
+    const { result, actions } = setup({ state, isAnimating: false, isHumanTurn: true, moveInDiceOrder: true });
+    // 6→1 is blocked; use the legal 6→3 instead.
+    act(() => result.current.handlePointPress(6));
+    expect(actions.doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 6, to: 3, die: 3 }));
+    expect(actions.selectPoint).not.toHaveBeenCalled();
+    expect(JSON.stringify(state)).toBe(before);
+    expect(result.current.inputNudge).toBeNull();
+  });
+
+  it('uses a synchronous swap for the next tap and clears guidance on success', () => {
+    const reversed = { current: false };
+    const state = { ...whiteMoving(), dice: [5, 3] as [number, number] };
+    const { result, actions } = setup({ state, isAnimating: false, isHumanTurn: true, moveInDiceOrder: true, diceOrderReversed: reversed });
+    act(() => result.current.handlePointPress(6));
+    act(() => {
+      reversed.current = true;
+      result.current.handlePointPress(6);
+    });
+    expect(actions.doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 6, to: 3, die: 3 }));
+    expect(result.current.inputNudge).toBeNull();
+  });
+
+  it('replays an animating bar tap with the leading unspent die', () => {
+    const state = { ...whiteMoving(), bar: { white: 1, black: 0 } };
+    const { result, rerender, actions } = setup({ state, isAnimating: true, isHumanTurn: true, moveInDiceOrder: true });
+    act(() => result.current.handleBarPress());
+    rerender({ state, isAnimating: false, isHumanTurn: true, moveInDiceOrder: true });
+    expect(actions.doMove).toHaveBeenCalledWith(expect.objectContaining({ from: 0, to: 22, die: 3 }));
+  });
+
+  it('drops pending dice-order input when a tutor verdict owns the board', () => {
+    const props = { state: whiteMoving(), isAnimating: true, isHumanTurn: true, moveInDiceOrder: true };
+    const { result, rerender, actions } = setup(props);
+    act(() => result.current.handlePointPress(13));
+    rerender({ ...props, isAnimating: false, interactionEnabled: false });
+    rerender({ ...props, isAnimating: false, interactionEnabled: true });
+    expect(actions.doMove).not.toHaveBeenCalled();
+    act(() => result.current.handlePointPress(13));
+    expect(actions.doMove).toHaveBeenCalledTimes(1);
   });
 });

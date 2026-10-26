@@ -19,6 +19,12 @@ tags:
       text: Dice display
     direction: DOWN
 - assertNotVisible: Fast computer
+# The dice-order row makes this section taller on short phones. Bring the
+# preferences back into view before asserting their visibility.
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: UP
 - assertVisible: Auto-roll dice
 - assertVisible: Auto-move when forced
 - takeScreenshot: settings-no-fast-mode

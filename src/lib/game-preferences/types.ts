@@ -13,6 +13,8 @@ export type GamePreferences = {
   tutorMode: boolean;
   /** Ask before ending a human turn so the player can review or undo. Default on. */
   confirmMove: boolean;
+  /** Tap a checker to spend the leading displayed unspent die. Default off. */
+  moveInDiceOrder: boolean;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -25,6 +27,7 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   soundEnabled: true,
   tutorMode: false,
   confirmMove: true,
+  moveInDiceOrder: false,
 };
 
 const IMPLICIT_OFF_KEYS = [
