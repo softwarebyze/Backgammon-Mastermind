@@ -50,6 +50,14 @@ export default function AppLayout() {
         options={pickerFormSheetOptions(t('settings.language'))}
       />
       <Stack.Screen
+        name="position"
+        options={{
+          ...settingsStackOptions(t('positions.title')),
+          ...stackEscapeHeaderOptions(),
+          headerLargeTitle: false,
+        }}
+      />
+      <Stack.Screen
         name="developer"
         options={{
           ...settingsStackOptions(t('settings.title')),

@@ -1,0 +1,106 @@
+# Public setup/import/export, local bookmarks, and play from a position.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- scrollUntilVisible:
+    element:
+      id: position-setup-button
+    direction: DOWN
+- tapOn:
+    id: position-setup-button
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- assertVisible: 'Point 6, 5 white checkers'
+- tapOn:
+    id: point-6
+- scrollUntilVisible:
+    element:
+      id: position-remove
+    direction: DOWN
+- tapOn:
+    id: position-remove
+- takeScreenshot: position-01-editor
+# Save the edited board and verify it survives a real relaunch.
+- scrollUntilVisible:
+    element:
+      id: position-save-name
+    direction: DOWN
+- tapOn:
+    id: position-save-name
+- inputText: My saved position
+- hideKeyboard
+- tapOn:
+    id: position-save
+- assertVisible: My saved position
+- stopApp
+- launchApp
+- openLink: backgammonmastermind.preview://position
+- scrollUntilVisible:
+    element:
+      text: My saved position
+    direction: DOWN
+- tapOn: My saved position
+- takeScreenshot: position-02-saved
+# Load a known public GNU ID through the consumer importer.
+- scrollUntilVisible:
+    element:
+      id: position-import-toggle
+    direction: UP
+- tapOn:
+    id: position-import-toggle
+- scrollUntilVisible:
+    element:
+      id: position-import-input
+    direction: DOWN
+- tapOn:
+    id: position-import-input
+- inputText: 4HPwATDgc/ABMA:QYkqASAAIAAA
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: position-import-load
+    direction: DOWN
+- tapOn:
+    id: position-import-load
+- scrollUntilVisible:
+    element:
+      id: position-export-xgid
+    direction: UP
+- tapOn:
+    id: position-export-xgid
+- scrollUntilVisible:
+    element:
+      id: position-export-output
+    direction: DOWN
+- assertVisible:
+    id: position-export-output
+- tapOn:
+    id: position-copy
+- takeScreenshot: position-03-export
+- scrollUntilVisible:
+    element:
+      id: position-play
+    direction: UP
+- tapOn:
+    id: position-play
+- extendedWaitUntil:
+    visible:
+      id: header-undo-button
+    timeout: 30000
+- assertVisible: 'Point 6, 5 white checkers'
+- takeScreenshot: position-04-play
+# A malformed shared link is an error preview, never a replacement game.
+- openLink: backgammonmastermind.preview://position?data=invalid
+- extendedWaitUntil:
+    visible:
+      id: position-error
+    timeout: 30000
+- takeScreenshot: position-05-invalid-share

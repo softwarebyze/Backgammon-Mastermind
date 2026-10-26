@@ -6,7 +6,7 @@ import { I18nManager, StyleSheet } from 'react-native';
 
 import { resolveBoardViewport } from '@/features/game/hooks/use-board-dimensions';
 import { createInitialState } from '@/lib/game/constants';
-import { cleanup, render, screen } from '@/lib/test-utils';
+import { cleanup, fireEvent, render, screen } from '@/lib/test-utils';
 
 import { BoardView } from './board-view';
 
@@ -51,4 +51,24 @@ describe('board view layout direction', () => {
     const style = StyleSheet.flatten(screen.getByTestId('board-view').props.style);
     expect(style.direction).toBe('ltr');
   });
+});
+
+it('setup selects the exact empty point rather than a nearby playable source', () => {
+  const onPointPress = jest.fn();
+  render(
+    <BoardView
+      state={createInitialState('vs-human')}
+      dimensions={resolveBoardViewport({ screenWidth: 402, screenHeight: 874, platform: 'native' })}
+      previewTarget={null}
+      moveAnimation={null}
+      editMode
+      onPointPress={onPointPress}
+      onPointPressIn={() => {}}
+      onPointPressOut={() => {}}
+      onBarPress={() => {}}
+      onBearOffPress={() => {}}
+    />,
+  );
+  fireEvent.press(screen.getByTestId('point-5'));
+  expect(onPointPress).toHaveBeenCalledWith(5);
 });

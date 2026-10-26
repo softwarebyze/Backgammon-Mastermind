@@ -312,6 +312,9 @@ export function HomeScreen() {
                 : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
             </View>
           </HoverPressable>
+          <HoverPressable accessibilityRole="button" testID="position-setup-button" onPress={() => router.push('/position')} style={{ minHeight: 44, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: GAME_PALETTE.accent, ...interFont('medium'), fontSize: 15 }}>{translate('positions.setup')}</Text>
+          </HoverPressable>
         </View>
       </ScrollView>
     </>

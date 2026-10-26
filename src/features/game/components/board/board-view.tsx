@@ -79,6 +79,8 @@ type Props = {
   onBarPress: () => void;
   onBearOffPress: () => void;
   interactionEnabled?: boolean;
+  /** Setup editor: target the exact point, without gameplay fat-finger remapping. */
+  editMode?: boolean;
   isReviewing?: boolean;
   /** Optional overrides for learn mode (does not persist preferences). */
   aidsOverride?: BoardAidsOverride;
@@ -107,6 +109,7 @@ export function BoardView({
   onBarPress,
   onBearOffPress,
   interactionEnabled = true,
+  editMode = false,
   isReviewing = false,
   aidsOverride,
   emphasisPoints,
@@ -151,11 +154,11 @@ export function BoardView({
   } = dimensions;
 
   const legalTargets = useMemo(() => {
-    if (!showHighlights || state.selectedPoint === null) {
+    if (editMode || !showHighlights || state.selectedPoint === null) {
       return new Set<number>();
     }
     return new Set(getReachableDestinations(state, state.selectedPoint).keys());
-  }, [showHighlights, state]);
+  }, [editMode, showHighlights, state]);
 
   const movableSources = useMemo(() => {
     if (!showLiveHints || !showHighlights || !showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
@@ -198,6 +201,11 @@ export function BoardView({
     if (!interactionEnabled) {
       return;
     }
+    if (editMode) {
+      if (geometricIndex >= 1 && geometricIndex <= 24)
+        onPointPress(geometricIndex);
+      return;
+    }
     const resolved = remapTapIndex({
       state,
       pointIndex: geometricIndex,
@@ -216,7 +224,7 @@ export function BoardView({
   };
 
   const dispatchFatFingerPressIn = (geometricIndex: number) => {
-    if (!interactionEnabled) {
+    if (editMode || !interactionEnabled) {
       return;
     }
     const resolved = remapTapIndex({

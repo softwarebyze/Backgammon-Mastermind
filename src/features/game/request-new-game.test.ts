@@ -35,6 +35,7 @@ describe('shouldConfirmNewGame', () => {
     expect(shouldConfirmNewGame('home', live)).toBe(true);
     expect(shouldConfirmNewGame('learn', live)).toBe(true);
     expect(shouldConfirmNewGame('reset', live)).toBe(true);
+    expect(shouldConfirmNewGame('position', live)).toBe(true);
   });
 
   it('does not confirm Play Again after game-over', () => {
