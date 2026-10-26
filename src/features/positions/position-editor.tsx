@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { translate } from '@/lib/i18n';
 import { editCheckers, newPosition } from '@/lib/positions/position';
-import { PositionAction, styles } from './position-controls';
+import { PositionAction } from './position-controls';
+import { styles } from './position-styles';
 
 export function PositionEditor({ position: p, location, onLocation, onChange }: {
   position: Position;

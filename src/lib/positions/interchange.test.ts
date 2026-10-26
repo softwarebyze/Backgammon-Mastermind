@@ -81,3 +81,8 @@ describe('position interchange', () => {
     expect(() => parseGnuid('4HPwATDgc/ABMA:cAkAAAAAAAAg')).toThrow();
   });
 });
+
+it('imports labeled GNU clipboard text and rejects a malformed labeled Match ID', () => {
+  expect(importPosition('GNU Backgammon Position ID: 4HPwATDgc/ABMA\nMatch ID: QYkqASAAIAAA')).toEqual(parseGnuid(gnu));
+  expect(() => importPosition('Position ID: 4HPwATDgc/ABMA\nMatch ID: invalid')).toThrow();
+});

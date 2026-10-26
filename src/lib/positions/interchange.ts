@@ -26,8 +26,10 @@ export function importPosition(input: string): Position {
   const xgLine = raw.match(/^XGID=[a-o-]{26}:\S+/im);
   if (xgLine)
     return parseXgid(xgLine[0]);
-  const gnuPosition = raw.match(/Position[ -]?ID\s*:\s*([\w+/]{14})/i);
-  const gnuMatch = raw.match(/Match[ -]?ID\s*:\s*([\w+/]{12})/i);
+  const gnuPosition = raw.match(/Position[ -]?ID\s*:\s*([\w+/]{14})(?![\w+/])/i);
+  const gnuMatch = raw.match(/Match[ -]?ID\s*:\s*([\w+/]{12})(?![\w+/])/i);
+  if (gnuPosition && /Match[ -]?ID\s*:/i.test(raw) && !gnuMatch)
+    throw new PositionFormatError('format');
   if (gnuPosition)
     return parseGnuid(`${gnuPosition[1]}${gnuMatch ? `:${gnuMatch[1]}` : ''}`);
   if (/^XGID=/i.test(raw) || /^[a-o-]{26}:/i.test(raw))

@@ -12,10 +12,12 @@ import { newPosition, positionFromGame, positionGame, validatePosition } from '@
 import { deleteSavedPosition, loadSavedPositions, savePosition } from '@/lib/positions/saved-positions';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
-import { PositionAction, PositionSection, styles } from './position-controls';
+import { PositionAction, PositionSection } from './position-controls';
 import { PositionDetails } from './position-details';
 import { PositionEditor } from './position-editor';
-import { positionError, PositionExchange } from './position-exchange';
+import { positionError } from './position-errors';
+import { PositionExchange } from './position-exchange';
+import { styles } from './position-styles';
 
 function initialPosition(data: string | string[] | undefined): { position: Position; error: string } {
   if (data === undefined)

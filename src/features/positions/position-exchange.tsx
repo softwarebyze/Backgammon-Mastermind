@@ -4,15 +4,11 @@ import { useState } from 'react';
 import { Platform, Text, TextInput, View } from 'react-native';
 import { translate } from '@/lib/i18n';
 import { exportPosition, importPosition, positionLink } from '@/lib/positions/interchange';
-import { PositionFormatError } from '@/lib/positions/position';
 import { exportXgid } from '@/lib/positions/xgid';
-import { PositionAction, PositionSection, styles } from './position-controls';
+import { PositionAction, PositionSection } from './position-controls';
+import { positionError } from './position-errors';
+import { styles } from './position-styles';
 import { sharePosition } from './share-position';
-
-export function positionError(error: unknown): string {
-  const code = error instanceof PositionFormatError ? error.code : 'format';
-  return translate(`positions.error_${code}`);
-}
 
 export function PositionExchange({ position, onImport }: { position: Position; onImport: (p: Position) => void }) {
   const [input, setInput] = useState('');

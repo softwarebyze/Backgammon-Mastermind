@@ -97,10 +97,29 @@ tags:
     timeout: 30000
 - assertVisible: 'Point 6, 5 white checkers'
 - takeScreenshot: position-04-play
+# Open a valid shared preview while a game exists; merely opening it must not
+# start a new game. Choosing Play then Cancel must retain the workspace.
+- runScript: ../utils/position-link.js
+- openLink: ${output.sharedPositionLink}
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- takeScreenshot: position-05-shared-preview
+- scrollUntilVisible:
+    element:
+      id: position-play
+    direction: DOWN
+- tapOn:
+    id: position-play
+- assertVisible: Game in progress
+- tapOn: Cancel
+- assertVisible:
+    id: position-screen
 # A malformed shared link is an error preview, never a replacement game.
 - openLink: backgammonmastermind.preview://position?data=invalid
 - extendedWaitUntil:
     visible:
       id: position-error
     timeout: 30000
-- takeScreenshot: position-05-invalid-share
+- takeScreenshot: position-06-invalid-share

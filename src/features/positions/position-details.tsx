@@ -2,7 +2,8 @@ import type { Position } from '@/lib/positions/position';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { translate } from '@/lib/i18n';
-import { PositionAction, PositionNumber, PositionSection, styles } from './position-controls';
+import { PositionAction, PositionNumber, PositionSection } from './position-controls';
+import { styles } from './position-styles';
 
 export function PositionDetails({ position: p, onChange }: { position: Position; onChange: (p: Position) => void }) {
   const [expanded, setExpanded] = useState(false);
