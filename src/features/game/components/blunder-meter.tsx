@@ -7,6 +7,8 @@ import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
+const NEEDLE_HALF_WIDTH = 6;
+
 /**
  * A visual blunder scale: a segmented bar in the standard GNU Backgammon
  * bands with a needle marking the player's equity loss. Beginner words
@@ -41,12 +43,17 @@ export function BlunderMeter({ loss }: { loss: number }) {
             />
           ))}
         </View>
-        {/* A row like the bands, so the needle mirrors with them in RTL. */}
+        {/*
+          A row like the bands, so the needle mirrors with them in RTL. Neither
+          side of the needle gets narrower than half the needle, so at either
+          end the whole needle stays over the bar.
+        */}
         <View pointerEvents="none" testID="guidance-blunder-needle-row" style={styles.needleRow}>
-          <View testID="guidance-blunder-needle-offset" style={{ width: `${position}%` }} />
+          <View testID="guidance-blunder-needle-offset" style={[styles.needleOffset, { width: `${position}%` }]} />
           <View style={styles.needleAnchor}>
             <View testID="guidance-blunder-needle" style={styles.needle} />
           </View>
+          <View testID="guidance-blunder-needle-rest" style={styles.needleRest} />
         </View>
       </View>
       <View style={styles.labels}>
@@ -99,6 +106,15 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: 'row',
   },
+  // Shrinks only when the rest's minimum would push the needle past the end.
+  needleOffset: {
+    flexShrink: 1,
+    minWidth: NEEDLE_HALF_WIDTH,
+  },
+  needleRest: {
+    flexGrow: 1,
+    minWidth: NEEDLE_HALF_WIDTH,
+  },
   // Zero-width column: the 12pt needle centers on the offset's end edge.
   needleAnchor: {
     width: 0,
@@ -108,8 +124,8 @@ const styles = StyleSheet.create({
     marginTop: -9,
     width: 0,
     height: 0,
-    borderLeftWidth: 6,
-    borderRightWidth: 6,
+    borderLeftWidth: NEEDLE_HALF_WIDTH,
+    borderRightWidth: NEEDLE_HALF_WIDTH,
     borderTopWidth: 8,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',

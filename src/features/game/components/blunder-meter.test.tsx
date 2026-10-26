@@ -18,16 +18,23 @@ describe('blunder meter', () => {
     ]);
   });
 
+  // Share of the bar on each side of the needle, from the row start.
+  function needleSplit() {
+    const offset = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle-offset').props.style);
+    const rest = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle-rest').props.style);
+    return { offset, rest };
+  }
+
   it('positions the needle proportionally to the loss', () => {
     render(<BlunderMeter loss={0.15} />);
-    const offset = screen.getByTestId('guidance-blunder-needle-offset');
-    expect(StyleSheet.flatten(offset.props.style).width).toBe('50%');
+    const { offset, rest } = needleSplit();
+    expect(offset.width).toBe('50%');
+    expect(rest.flexGrow).toBe(1);
   });
 
   it('clamps huge losses to the end of the bar', () => {
     render(<BlunderMeter loss={1.5} />);
-    const offset = screen.getByTestId('guidance-blunder-needle-offset');
-    expect(StyleSheet.flatten(offset.props.style).width).toBe('100%');
+    expect(needleSplit().offset.width).toBe('100%');
   });
 
   describe.each([
@@ -50,6 +57,22 @@ describe('blunder meter', () => {
       const needle = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle').props.style);
       for (const prop of ['left', 'right', 'marginLeft', 'marginRight'] as const)
         expect(needle).not.toHaveProperty(prop);
+    });
+
+    it.each([0, 1.5])('keeps the whole needle over the bar at a loss of %p', (loss) => {
+      render(<BlunderMeter loss={loss} />);
+      const needle = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle').props.style);
+      const halfNeedle = Math.max(needle.borderLeftWidth as number, needle.borderRightWidth as number);
+      // Neither side of the needle can collapse past half its width, so the
+      // needle's center stays at least that far from both ends of the row.
+      // At 100% the offset is the side that gives way.
+      const { offset, rest } = needleSplit();
+      expect(offset.minWidth).toBeGreaterThanOrEqual(halfNeedle);
+      expect(rest.minWidth).toBeGreaterThanOrEqual(halfNeedle);
+      expect(offset.flexShrink).toBeGreaterThan(0);
+      expect(rest.flexShrink ?? 0).toBe(0);
+      expect(StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle-row').props.style))
+        .toMatchObject({ left: 0, right: 0 });
     });
 
     it('rounds the outer ends of the bar, not the ends of single bands', () => {
