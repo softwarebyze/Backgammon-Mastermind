@@ -21,19 +21,50 @@ const TOP_RIGHT = [19, 20, 21, 22, 23, 24];
 const BOT_LEFT = [12, 11, 10, 9, 8, 7];
 const BOT_RIGHT = [6, 5, 4, 3, 2, 1];
 
-function NumberCell({ value, width }: { value: number; width: number }) {
+type PointLabel = {
+  /** Physical point 1–24, fixed regardless of perspective. */
+  point: number;
+  /** Label shown at that point for the current perspective. */
+  value: number;
+};
+
+function NumberCell({
+  side,
+  point,
+  value,
+  width,
+}: PointLabel & { side: 'top' | 'bottom'; width: number }) {
   return (
-    <Text style={[styles.label, { width }]}>
+    <Text
+      // The value is part of the id so E2E can assert the label at a fixed
+      // physical point when the perspective flips.
+      testID={`point-number-${side}-${point}-${value}`}
+      style={[styles.label, { width }]}
+    >
       {value}
     </Text>
   );
 }
 
-function PointHalf({ indices, colWidth }: { indices: number[]; colWidth: number }) {
+function PointHalf({
+  side,
+  labels,
+  colWidth,
+}: {
+  side: 'top' | 'bottom';
+  labels: PointLabel[];
+  colWidth: number;
+}) {
   return (
     <View style={styles.half}>
-      {indices.map(value => (
-        <NumberCell key={value} value={value} width={colWidth} />
+      {labels.map(({ point, value }) => (
+        <NumberCell
+          key={point}
+          side={side}
+          point={point}
+          value={value}
+          width={colWidth}
+        />
       ))}
     </View>
   );
@@ -46,10 +77,21 @@ export function PointNumberRail({ side, dimensions, perspective = 'white' }: Pro
   const right = side === 'top' ? TOP_RIGHT : BOT_RIGHT;
 
   return (
-    <View style={[styles.rail, { height: POINT_NUMBER_RAIL, width: boardWidth }]}>
-      <PointHalf indices={left.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
+    <View
+      testID={`point-number-rail-${side}`}
+      style={[styles.rail, { height: POINT_NUMBER_RAIL, width: boardWidth }]}
+    >
+      <PointHalf
+        side={side}
+        labels={left.map(point => ({ point, value: pointNumberLabel(point, perspective) }))}
+        colWidth={colWidth}
+      />
       <View style={{ width: barWidth }} />
-      <PointHalf indices={right.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
+      <PointHalf
+        side={side}
+        labels={right.map(point => ({ point, value: pointNumberLabel(point, perspective) }))}
+        colWidth={colWidth}
+      />
       <View style={{ width: bearOffWidth }} />
     </View>
   );

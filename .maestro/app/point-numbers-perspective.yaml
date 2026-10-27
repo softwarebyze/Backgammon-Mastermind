@@ -1,0 +1,89 @@
+# Point numbers follow the player to act in pass-and-play, and honor the
+# existing show/hide preference. A loaded position pins the turn so the
+# assertions do not depend on the opening roll.
+appId: ${APP_ID}
+tags:
+  - pull-request
+  - point-numbers
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+# Black to act: black's ace-point is physical 24, so the top-right rail reads 1.
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Developer
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"currentPlayer":"black","mode":"vs-human"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible:
+      id: point-number-top-24-1
+    timeout: 45000
+- assertVisible:
+    id: point-number-rail-top
+- assertVisible:
+    id: point-number-bottom-1-24
+- assertVisible: ".*Black's turn.*"
+- takeScreenshot: point-numbers-01-black-to-act
+# White to act: the same physical points read white's way.
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Developer
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"currentPlayer":"white","mode":"vs-human"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible:
+      id: point-number-top-24-24
+    timeout: 45000
+- assertVisible:
+    id: point-number-bottom-1-1
+- takeScreenshot: point-numbers-02-white-to-act
+# The existing Point numbers preference still removes both rails.
+- tapOn: Settings
+- extendedWaitUntil:
+    visible:
+      id: stack-escape-button
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: Point numbers
+    direction: DOWN
+    timeout: 30000
+- tapOn: Point numbers
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 15000
+- assertNotVisible:
+    id: point-number-rail-top
+- assertNotVisible:
+    id: point-number-rail-bottom
+- takeScreenshot: point-numbers-03-hidden

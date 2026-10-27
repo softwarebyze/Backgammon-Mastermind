@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react-native';
-import { Text } from 'react-native';
+import { render, screen } from '@testing-library/react-native';
+import { I18nManager, Text } from 'react-native';
 
 import { pointNumberLabel, resolveNumberPerspective } from '@/features/game/point-numbering';
 
@@ -80,6 +80,10 @@ describe('pointNumberRail', () => {
       .map(String);
   }
 
+  afterEach(() => {
+    I18nManager.forceRTL(false);
+  });
+
   it('renders white-oriented numbers by default', () => {
     expect(renderedLabels('top', 'white')).toEqual(
       ['13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
@@ -94,6 +98,27 @@ describe('pointNumberRail', () => {
     // ace-point (physical 24) is labeled 1.
     expect(renderedLabels('top', 'black')).toEqual(
       ['12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1'],
+    );
+    expect(renderedLabels('bottom', 'black')).toEqual(
+      ['13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
+    );
+  });
+
+  it('keeps the label at each physical point addressable for E2E', () => {
+    render(
+      <PointNumberRail side="top" dimensions={{ ...DIMENSIONS }} perspective="black" />,
+    );
+
+    // Physical 24 is black's ace-point, so it reads 1; physical 19 reads 6.
+    expect(screen.getByTestId('point-number-top-24-1').props.children).toBe(1);
+    expect(screen.getByTestId('point-number-top-19-6').props.children).toBe(6);
+  });
+
+  it('does not mirror the strip order when the locale is RTL', () => {
+    I18nManager.forceRTL(true);
+
+    expect(renderedLabels('top', 'white')).toEqual(
+      ['13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
     );
     expect(renderedLabels('bottom', 'black')).toEqual(
       ['13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
