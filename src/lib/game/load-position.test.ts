@@ -6,7 +6,7 @@ import {
   POSITION_JSON_ERRORS,
   POSITION_LOADER_PRESETS,
 } from './load-position';
-import { getLegalMoves } from './moves';
+import { applyDiceRoll, applyMove, getLegalMoves, passTurn } from './moves';
 
 function preset(id: string) {
   const found = POSITION_LOADER_PRESETS.find(item => item.id === id);
@@ -91,6 +91,7 @@ describe('parsePositionJson', () => {
 describe('position loader presets', () => {
   it('exposes the #155 bar 1–2 audit boards and the E2E undo/redo board', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
+      'e2e-match-undo-floor',
       'e2e-match-cube',
       'e2e-match-final',
       'issue-155-bar-1-2-both-dice',
@@ -116,4 +117,21 @@ describe('position loader presets', () => {
     const state = loadPositionPreset(preset('issue-155-bar-1-2-higher-die'));
     expect(barDestinations(state)).toEqual([23]);
   });
+});
+
+it('the match undo-floor fixture blocks every Black roll after White plays 8→7 and 8→6', () => {
+  let state = loadPositionPreset(preset('e2e-match-undo-floor'));
+  for (const to of [7, 6]) {
+    const move = getLegalMoves(state).find(m => m.from === 8 && m.to === to);
+    expect(move).toBeDefined();
+    state = applyMove(state, move!);
+  }
+  if (state.currentPlayer === 'white')
+    state = passTurn(state);
+  expect(state.currentPlayer).toBe('black');
+  for (let a = 1; a <= 6; a++) {
+    for (let b = a; b <= 6; b++) {
+      expect(applyDiceRoll(state, [a, b]).phase).toBe('no-move');
+    }
+  }
 });

@@ -65,3 +65,45 @@ describe('provider match binding decisions', () => {
     expect(result.current.moveLog).toHaveLength(0);
   });
 });
+
+// Reviewer counterexample: the pass belongs to the binding roll, while the
+// checker move before it belongs to the previous turn.
+it.each([false, true])('does not undo across accepted cube + blocked roll (cold resume: %s)', (resume) => {
+  let utils = renderHook(() => useGameProviderValue(true));
+  const state = createPositionState({ mode: 'vs-human', match: createMatch(5), dice: [3, 4], placements: [{ point: 1, player: 'white', count: 2 }, { point: 2, player: 'white', count: 2 }, { point: 6, player: 'white', count: 11 }, { point: 24, player: 'black', count: 14 }], bar: { black: 1 } });
+  act(() => utils.result.current.startFromPosition(state));
+  for (const to of [3, 2]) {
+    act(() => utils.result.current.doMove(getLegalMoves(utils.result.current.state!).find(m => m.from === 6 && m.to === to)!));
+    act(() => utils.result.current.moveAnimation?.onFinish?.());
+  }
+  if (utils.result.current.state!.phase === 'moving')
+    act(() => utils.result.current.doPassTurn());
+  act(() => utils.result.current.matchAction!('offer'));
+  act(() => utils.result.current.matchAction!('accept'));
+  const random = jest.spyOn(Math, 'random').mockReturnValue(0.01);
+  act(() => utils.result.current.doRollDice());
+  random.mockRestore();
+  expect(utils.result.current.state!.phase).toBe('no-move');
+  act(() => utils.result.current.doPassTurn());
+  if (resume) {
+    utils.unmount();
+    utils = renderHook(() => useGameProviderValue(true));
+    act(() => {
+      expect(utils.result.current.resumeGame()).toBe(true);
+    });
+  }
+  expect(utils.result.current.moveLog).toHaveLength(3);
+  expect(utils.result.current.state!.match!.undoFloor).toBe(2);
+  expect(utils.result.current.state!.match!.cube).toEqual({ value: 2, owner: 'white' });
+  expect(utils.result.current.canUndo).toBe(false);
+  const before = utils.result.current.state;
+  const log = utils.result.current.moveLog;
+  act(() => utils.result.current.doUndo());
+  act(() => utils.result.current.moveAnimation?.onFinish?.());
+  expect(utils.result.current.state).toBe(before);
+  expect(utils.result.current.moveLog).toEqual(log);
+  expect(utils.result.current.moveAnimation).toBeNull();
+  expect(utils.result.current.historyPath).toBeNull();
+  expect(utils.result.current.canRedo).toBe(false);
+  utils.unmount();
+});

@@ -6,14 +6,15 @@ import type { GameTimeline } from '@/lib/game/game-timeline';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { hasUndoableHumanMove, isHumanHistoryStep } from '@/features/game/timeline-history-actions';
+import { isHumanHistoryStep } from '@/features/game/timeline-history-actions';
 import {
   canRunRedo,
   canRunUndo,
+  canUndoHistory,
   runAnimatedRedo,
   runAnimatedUndo,
 } from '@/features/game/timeline-history-runner';
-import { canRedoTimeline, canUndoTimeline, peekRedoMove } from '@/lib/game/game-timeline';
+import { canRedoTimeline, peekRedoMove } from '@/lib/game/game-timeline';
 
 export type { HistoryPathOverlay } from '@/features/game/timeline-history-actions';
 
@@ -55,9 +56,7 @@ export function useGameUndoRedo(options: Options) {
 
   // vs-computer: undo rewinds trailing AI moves and lands on the human's own
   // move; redo only replays human moves (the live AI replays its own turn).
-  const matchUndoAllowed = !state?.match || (!state.match.pendingOffer && timeline != null && timeline.cursor > state.match.undoFloor);
-  const canUndo = matchUndoAllowed && timeline != null && canUndoTimeline(timeline)
-    && hasUndoableHumanMove(gameMode, moveLog);
+  const canUndo = canUndoHistory({ timeline, moveLog, state, gameMode });
   const canRedo = !state?.match?.pendingOffer && timeline != null && canRedoTimeline(timeline)
     && isHumanHistoryStep(gameMode, peekRedoMove(timeline));
 

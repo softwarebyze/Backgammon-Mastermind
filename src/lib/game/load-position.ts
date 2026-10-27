@@ -28,6 +28,7 @@ export const POSITION_JSON_ERRORS = {
  * Same fixtures as `moves.test.ts` so QA can inspect them on the live board.
  */
 export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
+  { id: 'e2e-match-undo-floor', label: 'E2E match undo floor', description: 'White plays 8→7 and 8→6, then Black can double but every roll is blocked.', options: { placements: [...[1, 2, 3, 4, 5, 6].map(point => ({ point, player: 'white' as const, count: 2 })), { point: 8, player: 'white', count: 3 }, { point: 24, player: 'black', count: 14 }], bar: { black: 1 }, dice: [1, 2], mode: 'vs-human', match: createMatch(5) } },
   { id: 'e2e-match-cube', label: 'E2E match cube', description: '3-point match, White one checker from winning a single.', options: { placements: [{ point: 1, player: 'white', count: 1 }, { point: 24, player: 'black', count: 14 }], borneOff: { white: 14, black: 1 }, mode: 'vs-human', match: createMatch(3) } },
   { id: 'e2e-match-final', label: 'E2E match final', description: 'Crawford game at 2–1, White one checker from winning the match.', options: { placements: [{ point: 1, player: 'white', count: 1 }, { point: 24, player: 'black', count: 14 }], borneOff: { white: 14, black: 1 }, mode: 'vs-human', match: { ...createMatch(3), score: { white: 2, black: 1 }, crawford: true, crawfordPlayed: true, gameNumber: 3 } } },
   {

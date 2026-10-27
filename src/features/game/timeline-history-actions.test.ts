@@ -7,9 +7,10 @@ import {
   isHumanHistoryStep,
   undoInstant,
 } from '@/features/game/timeline-history-actions';
-import { runAnimatedUndo } from '@/features/game/timeline-history-runner';
+import { canUndoHistory, runAnimatedUndo } from '@/features/game/timeline-history-runner';
 import { createInitialState } from '@/lib/game/constants';
 import { createTimeline, pushTimelineSnapshot } from '@/lib/game/game-timeline';
+import { createMatch } from '@/lib/game/match';
 import { appendMoveLogEntry } from '@/lib/game/move-log';
 import { deriveReplayBaseline } from '@/lib/game/move-replay';
 import { applyMove, getLegalMoves } from '@/lib/game/moves';
@@ -251,5 +252,47 @@ describe('undo animation completion and paths', () => {
 
     expect(paths.length).toBeGreaterThan(0);
     expect(paths.every(p => p == null)).toBe(true);
+  });
+});
+
+describe('complete undo destination', () => {
+  it.each(['vs-human', 'vs-computer'] as const)('guards every mutation before a multi-entry %s rewind', (mode) => {
+    const base = movingWhiteState();
+    const states = [base];
+    let timeline = createTimeline(base);
+    const log = [
+      { ply: 1, player: 'white' as const, dice: base.dice, from: 6, to: 5 },
+      { ply: 2, player: 'white' as const, dice: base.dice, from: 6, to: 4 },
+      { ply: 3, player: 'black' as const, dice: base.dice, from: mode === 'vs-human' ? -1 : 13, to: mode === 'vs-human' ? -1 : 15 },
+      { ply: 4, player: 'white' as const, dice: base.dice, from: -1, to: -1 },
+    ];
+    for (const _entry of log) {
+      const next = { ...base };
+      timeline = pushTimelineSnapshot(timeline, states[states.length - 1]!, next);
+      states.push(next);
+    }
+    const mutate = jest.fn();
+    const live = { ...base, match: { ...createMatch(5), undoFloor: 2 } };
+    const ctx = {
+      timeline,
+      moveLog: log,
+      replayBaseline: base,
+      gameMode: mode,
+      getLiveState: () => live,
+      popLastMove: mutate,
+      restoreMove: mutate,
+      setTimeline: mutate,
+      setState: mutate,
+      setMoveAnimation: mutate,
+      setHistoryPath: mutate,
+      finishHistoryAnim: mutate,
+      armAnimationFinish: mutate,
+    };
+    expect(canUndoHistory({ timeline, moveLog: log, state: live, gameMode: mode })).toBe(false);
+    expect(runAnimatedUndo(ctx)).toBe(false);
+    expect(mutate).not.toHaveBeenCalled();
+    // Removing 2 passes (or AI move + pass) and the human move lands at ply 1.
+    live.match.undoFloor = 1;
+    expect(canUndoHistory({ timeline, moveLog: log, state: live, gameMode: mode })).toBe(true);
   });
 });

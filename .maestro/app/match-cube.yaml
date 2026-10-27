@@ -110,3 +110,61 @@ tags:
     id: match-drop
 - assertVisible: White 1  –  Black 0
 - takeScreenshot: match-06-drop
+# A blocked roll must never carry Undo across the accepted-cube/revealed-roll floor.
+- openLink: backgammonmastermind.preview://developer
+- tapOn:
+    id: developer-preset-e2e-match-undo-floor
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-7
+- tapOn:
+    id: point-8
+- runFlow:
+    when:
+      visible:
+        id: confirm-move-button
+    commands:
+      - tapOn:
+          id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: match-double
+    timeout: 15000
+- tapOn:
+    id: match-double
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 2 · White
+- tapOn:
+    id: roll-dice-button
+- runFlow:
+    when:
+      visible:
+        id: confirm-move-button
+    commands:
+      - tapOn:
+          id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: roll-dice-button
+    timeout: 15000
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- assertVisible: Cube 2 · White
+- takeScreenshot: match-07-blocked-roll-undo-floor
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- assertVisible: Cube 2 · White
+- takeScreenshot: match-08-resumed-undo-floor

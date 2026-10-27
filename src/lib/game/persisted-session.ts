@@ -3,6 +3,7 @@ import type { BoardPoint, GamePhase, GameState, Player } from './types';
 import { z } from 'zod';
 
 import { TOTAL_CHECKERS } from './constants';
+import { canOfferDouble } from './match';
 
 const PERSISTED_SESSION_VERSION = 1;
 
@@ -194,7 +195,7 @@ export function gameStateInvariantError(state: GameState): string | null {
   if (countCheckers(state, 'black') !== TOTAL_CHECKERS) {
     return 'black must have exactly 15 checkers';
   }
-  if (state.match && (state.mode !== 'vs-human' || (state.match.pendingOffer && (state.phase !== 'rolling' || state.match.pendingOffer !== state.currentPlayer || state.match.crawford || state.match.result)) || (!!state.match.result !== (state.phase === 'game-over')))) {
+  if (state.match && (state.mode !== 'vs-human' || (state.match.pendingOffer && (state.match.pendingOffer !== state.currentPlayer || !canOfferDouble({ ...state, match: { ...state.match, pendingOffer: null } }))) || (!!state.match.result !== (state.phase === 'game-over')))) {
     return 'invalid match phase or pending cube offer';
   }
   return diceError(state.dice, state.remainingDice)
