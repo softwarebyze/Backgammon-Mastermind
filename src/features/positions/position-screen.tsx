@@ -12,7 +12,7 @@ import { deleteSavedPosition, loadSavedPositions, savePosition } from '@/lib/pos
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
 import { PositionBoardEditor } from './position-board-editor';
-import { PositionAction, PositionSection } from './position-controls';
+import { PositionAction, PositionDisclosure } from './position-controls';
 import { PositionDetails } from './position-details';
 import { positionError } from './position-errors';
 import { PositionExchange } from './position-exchange';
@@ -45,6 +45,7 @@ function PositionWorkspace({ data }: { data?: string }) {
   const [saved, setSaved] = useState(loadSavedPositions);
   const [name, setName] = useState('');
   const [notice, setNotice] = useState('');
+  const [setupOpen, setSetupOpen] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-human');
@@ -97,62 +98,67 @@ function PositionWorkspace({ data }: { data?: string }) {
         {!!data && <Text style={styles.caption}>{translate('positions.shared_intro')}</Text>}
         <PositionBoardEditor position={position} dimensions={dims} location={location} onLocation={setLocation} onChange={change} />
         {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
-        <View style={styles.row}>
-          <PositionAction
-            label={translate('positions.standard')}
-            testID="position-standard"
-            onPress={() => {
-              change(newPosition());
-              setLocation(null);
-            }}
-          />
-          <PositionAction
-            label={translate('positions.empty')}
-            testID="position-empty"
-            onPress={() => {
-              change(newPosition(true));
-              setLocation(null);
-            }}
-          />
-          <PositionAction
-            label={translate('positions.current')}
-            testID="position-current"
-            disabled={!state}
-            onPress={() => {
-              if (state) {
-                change(positionFromGame(state));
-                setLocation(null);
-                setNotice(translate('positions.snapshot_hint'));
-              }
-            }}
-          />
-        </View>
-        <PositionAction label={translate('positions.turn_dice')} testID="position-details-toggle" selected={detailsOpen} onPress={() => setDetailsOpen(!detailsOpen)} />
-        {detailsOpen && <PositionDetails position={position} onChange={change} />}
-        {!valid && <Text accessibilityRole="alert" style={styles.error}>{validationError}</Text>}
-        <PositionSection title={translate('positions.play')}>
-          <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
+        <View style={styles.playPanel}>
           <View style={styles.row}>
-            <PositionAction label={translate('positions.pass_play')} selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
-            <PositionAction label={translate('positions.computer')} selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
-            <PositionAction label={translate('positions.play')} testID="position-play" primary disabled={!valid || position.borneOff.white === 15 || position.borneOff.black === 15} onPress={play} />
+            <PositionAction label={translate('positions.pass_play')} symbol="users" selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
+            <PositionAction label={translate('positions.computer')} symbol="cpu" selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
           </View>
-        </PositionSection>
-        <PositionExchange
-          key={JSON.stringify(position)}
-          position={position}
-          onImport={(p) => {
-            change(p);
-            setLocation(null);
-          }}
-        />
-        <PositionAction label={translate('positions.saved')} testID="position-saved-toggle" selected={savedOpen} onPress={() => setSavedOpen(!savedOpen)} />
-        {savedOpen && (
-          <PositionSection title={translate('positions.saved')}>
+          <PositionAction label={translate('positions.play')} symbol="play" testID="position-play" primary disabled={!valid || position.borneOff.white === 15 || position.borneOff.black === 15} onPress={play} />
+          <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
+        </View>
+        <View style={styles.toolList}>
+          <PositionDisclosure label={translate('positions.board_setup')} summary={translate('positions.board_setup_hint')} symbol="grid" testID="position-setup-toggle" open={setupOpen} onPress={() => setSetupOpen(!setupOpen)}>
+            <View style={styles.row}>
+              <PositionAction
+                label={translate('positions.standard')}
+                testID="position-standard"
+                symbol="refresh-cw"
+                onPress={() => {
+                  change(newPosition());
+                  setLocation(null);
+                }}
+              />
+              <PositionAction
+                label={translate('positions.empty')}
+                testID="position-empty"
+                symbol="trash-2"
+                onPress={() => {
+                  change(newPosition(true));
+                  setLocation(null);
+                }}
+              />
+              <PositionAction
+                label={translate('positions.current')}
+                testID="position-current"
+                symbol="crosshair"
+                disabled={!state}
+                onPress={() => {
+                  if (state) {
+                    change(positionFromGame(state));
+                    setLocation(null);
+                    setNotice(translate('positions.snapshot_hint'));
+                  }
+                }}
+              />
+            </View>
+          </PositionDisclosure>
+          <PositionDisclosure label={translate('positions.turn_dice')} summary={`${translate(`positions.${position.currentPlayer}_turn`)} · ${position.dice[0] || position.dice[1] ? position.dice.join(' / ') : translate('positions.roll_later')}`} symbol="sliders" testID="position-details-toggle" open={detailsOpen} onPress={() => setDetailsOpen(!detailsOpen)}>
+            <PositionDetails position={position} onChange={change} />
+          </PositionDisclosure>
+          <PositionExchange
+            key={JSON.stringify(position)}
+            position={position}
+            onImport={(p) => {
+              change(p);
+              setLocation(null);
+            }}
+          />
+          <PositionDisclosure label={translate('positions.saved')} summary={translate('positions.saved_summary', { count: saved.length })} symbol="bookmark" testID="position-saved-toggle" open={savedOpen} onPress={() => setSavedOpen(!savedOpen)}>
             <Text style={styles.caption}>{translate('positions.saved_hint')}</Text>
             <TextInput testID="position-save-name" accessibilityLabel={translate('positions.name')} placeholder={translate('positions.name')} placeholderTextColor="#CBB8A7" value={name} maxLength={80} onChangeText={setName} style={styles.input} />
             <PositionAction
               label={translate('positions.save')}
+              symbol="bookmark"
               testID="position-save"
               disabled={!valid}
               onPress={() => {
@@ -174,11 +180,12 @@ function PositionWorkspace({ data }: { data?: string }) {
                     setName(entry.name);
                   }}
                 />
-                <PositionAction label={translate('positions.delete')} onPress={() => setSaved(deleteSavedPosition(entry.id))} />
+                <PositionAction symbol="trash-2" label={translate('positions.delete')} onPress={() => setSaved(deleteSavedPosition(entry.id))} />
               </View>
             ))}
-          </PositionSection>
-        )}
+          </PositionDisclosure>
+        </View>
+        {!valid && <Text accessibilityRole="alert" style={styles.error}>{validationError}</Text>}
         {!!notice && <Text accessibilityLiveRegion="polite" style={styles.caption}>{notice}</Text>}
       </ScrollView>
     </>

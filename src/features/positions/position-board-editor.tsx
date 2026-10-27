@@ -113,14 +113,14 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
             }}
           />
         ))}
-        <Text style={styles.caption}>{translate('positions.off_counts', position.borneOff)}</Text>
+        <PositionAction symbol="sliders" iconOnly label={translate('positions.fine_tune')} testID="position-fine-tune" selected={fine} onPress={() => setFine(!fine)} />
       </View>
+      <Text style={styles.caption}>{translate('positions.off_counts', position.borneOff)}</Text>
       <View style={styles.board}>
         <BoardView state={board} dimensions={dimensions} previewTarget={null} moveAnimation={null} editMode stackEditor={editor} onPointPress={point => editor.onAdjust(point, 1)} onPointPressIn={() => {}} onPointPressOut={() => {}} onBarPress={() => editor.onAdjust(0, 1)} onBearOffPress={() => {}} aidsOverride={{ showPointNumbers: true, showMoveHints: false, showDirectionOverlay: false }} />
       </View>
       <Text style={styles.caption}>{translate('positions.drag_hint')}</Text>
       {blocked && position.borneOff[blocked] === 0 && <Text testID="position-no-checkers" accessibilityLiveRegion="polite" style={styles.caption}>{translate('positions.no_checkers', { player: translate(`positions.${blocked}`) })}</Text>}
-      <PositionAction label={translate('positions.fine_tune')} testID="position-fine-tune" selected={fine} onPress={() => setFine(!fine)} />
       {fine && <PositionEditor position={position} location={location} color={color} onLocation={onLocation} onChange={onChange} />}
     </View>
   );

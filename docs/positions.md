@@ -33,6 +33,18 @@ without installing the app. Web shares stay on the current origin (including
 PR previews); native shares use the production website. Native custom-scheme
 links can also open the position route.
 
+## Interface direction
+
+The incumbent board, brown/orange palette and Inter remain the visual authority.
+The workspace prioritizes the board and White/Black checker selector. A sliders
+icon opens exact count controls. Play has one filled orange button, with compact
+icon-and-label player modes and the checker-play limitation alongside it.
+Secondary Board setup, Turn and dice, Exchange and Saved positions use
+left-aligned icon-led disclosure rows, summaries and expansion chevrons. Presets
+live inside Board setup rather than competing with the main action. Disclosure
+state and selected state are exposed to screen readers; icons supplement labels.
+Android controls retain 48dp targets, iOS controls at least 44pt.
+
 ## Format and play boundaries
 
 The position document preserves cube, cube owner, scores, match length,

@@ -29,6 +29,15 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
+      TARGET_ID: position-setup-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-setup-toggle
+- takeScreenshot: position-tools-01-setup
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
       TARGET_ID: position-empty
       START_Y: '80%'
       END_Y: '25%'

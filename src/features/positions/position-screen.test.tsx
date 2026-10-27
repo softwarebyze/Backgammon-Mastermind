@@ -102,3 +102,21 @@ it('gives a whitespace-only saved name the translated untitled label', () => {
   fireEvent.press(screen.getByTestId('position-save'));
   expect(screen.getByRole('button', { name: 'positions.untitled' })).toBeTruthy();
 });
+
+it('starts with icon-led tools collapsed and keeps presets and play modes reachable', () => {
+  render(<PositionScreen />);
+  expect(screen.queryByTestId('position-standard')).toBeNull();
+  expect(screen.queryByTestId('position-die-0')).toBeNull();
+  expect(screen.queryByTestId('position-save-name')).toBeNull();
+  expect(screen.getByTestId('position-setup-toggle').props.accessibilityState.expanded).toBe(false);
+  fireEvent.press(screen.getByTestId('position-setup-toggle'));
+  expect(screen.getByTestId('position-setup-toggle').props.accessibilityState.expanded).toBe(true);
+  fireEvent.press(screen.getByTestId('position-empty'));
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('0');
+  expect(screen.getByTestId('position-play')).toBeDisabled();
+  fireEvent.press(screen.getByTestId('position-standard'));
+  fireEvent.press(screen.getByRole('button', { name: 'positions.computer' }));
+  fireEvent.press(screen.getByTestId('position-play'));
+  jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
+  expect(start).toHaveBeenCalledWith(expect.objectContaining({ mode: 'vs-computer' }));
+});

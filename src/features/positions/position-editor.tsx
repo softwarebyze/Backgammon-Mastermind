@@ -33,9 +33,9 @@ export function PositionEditor({ position: p, location, color, onLocation, onCha
         <>
           <Text testID="position-selected" style={styles.heading}>{typeof location === 'number' ? translate('positions.point_count', { point: location, count }) : `${translate(`positions.${side}_bar`)} · ${count}`}</Text>
           <View style={styles.row}>
-            <PositionAction label={translate('positions.remove')} testID="position-remove" disabled={!count} onPress={() => edit(-1)} />
-            <PositionAction label={translate('positions.add')} testID="position-add" disabled={!p.borneOff[side]} onPress={() => edit(1)} />
-            <PositionAction label={translate('positions.empty_point')} testID="position-empty-point" disabled={!count} onPress={() => edit(-count)} />
+            <PositionAction symbol="minus" label={translate('positions.remove')} testID="position-remove" disabled={!count} onPress={() => edit(-1)} />
+            <PositionAction symbol="plus" label={translate('positions.add')} testID="position-add" disabled={!p.borneOff[side]} onPress={() => edit(1)} />
+            <PositionAction symbol="trash-2" label={translate('positions.empty_point')} testID="position-empty-point" disabled={!count} onPress={() => edit(-count)} />
           </View>
         </>
       )}

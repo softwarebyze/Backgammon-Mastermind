@@ -2,14 +2,14 @@ import type { Position } from '@/lib/positions/position';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { translate } from '@/lib/i18n';
-import { PositionAction, PositionNumber, PositionSection } from './position-controls';
+import { PositionAction, PositionNumber } from './position-controls';
 import { styles } from './position-styles';
 
 export function PositionDetails({ position: p, onChange }: { position: Position; onChange: (p: Position) => void }) {
   const [expanded, setExpanded] = useState(false);
   const context = (patch: Partial<Position['context']>) => onChange({ ...p, context: { ...p.context, ...patch } });
   return (
-    <PositionSection title={translate('positions.turn_dice')}>
+    <View style={{ gap: 12 }}>
       <View style={styles.row}>
         {(['white', 'black'] as const).map(player => (
           <PositionAction
@@ -42,7 +42,7 @@ export function PositionDetails({ position: p, onChange }: { position: Position;
         ))}
         <PositionAction label={translate('positions.clear_dice')} onPress={() => onChange({ ...p, dice: [0, 0] })} />
       </View>
-      <PositionAction label={translate('positions.match_details')} onPress={() => setExpanded(!expanded)} selected={expanded} />
+      <PositionAction symbol="plus-square" label={translate('positions.match_details')} onPress={() => setExpanded(!expanded)} selected={expanded} />
       {expanded && (
         <>
           <Text style={styles.caption}>{translate('positions.context_hint')}</Text>
@@ -67,6 +67,6 @@ export function PositionDetails({ position: p, onChange }: { position: Position;
           </View>
         </>
       )}
-    </PositionSection>
+    </View>
   );
 }

@@ -18,7 +18,10 @@ The confirmed editing interaction is the board and a White/Black selector:
 press location sets the initial stack size, then dragging increases or decreases
 its checker stack. A blocked addition gives subtle haptic and visible feedback
 when the selected colour has no checkers left. Secondary
-forms should stay out of the initial editing workspace.
+forms should stay out of the initial editing workspace. The user rejected a
+wall of equally weighted text buttons. The board remains dominant; tools use
+compact icon-led disclosure rows, selected controls use restrained outlines,
+and Play is the single filled orange action.
 
 ## Product Purpose
 
