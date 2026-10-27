@@ -18,10 +18,22 @@ tags:
 - tapOn:
     text: Settings
 - extendedWaitUntil:
-    visible: Direction overlay
+    visible:
+      id: stack-escape-button
     timeout: 15000
+# The difficulty picker can fill the initial Settings viewport.
+- scrollUntilVisible:
+    element:
+      text: Direction overlay
+    direction: DOWN
+- assertVisible:
+    text: Direction overlay
+    checked: false
 - tapOn:
     text: Direction overlay
+- assertVisible:
+    text: Direction overlay
+    checked: true
 - tapOn:
     id: stack-escape-button
 - extendedWaitUntil:

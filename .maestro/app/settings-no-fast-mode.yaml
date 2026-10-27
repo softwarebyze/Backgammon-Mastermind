@@ -12,13 +12,40 @@ tags:
 - tapOn:
     id: open-settings-button
 - extendedWaitUntil:
-    visible: Move hints
+    visible:
+      id: stack-escape-button
     timeout: 20000
+# Difficulty occupies the first viewport on small Android screens.
+- scrollUntilVisible:
+    element:
+      text: Move hints
+    direction: DOWN
+- assertVisible:
+    text: Move hints
+    checked: false
+- tapOn: Move hints
+- assertVisible:
+    text: Move hints
+    checked: true
+- tapOn: Move hints
+- assertVisible:
+    text: Move hints
+    checked: false
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- assertVisible: Auto-roll dice
+- scrollUntilVisible:
+    element:
+      text: Auto-move when forced
+    direction: DOWN
+- assertVisible: Auto-move when forced
+- assertNotVisible: Fast computer
 - scrollUntilVisible:
     element:
       text: Dice display
     direction: DOWN
 - assertNotVisible: Fast computer
-- assertVisible: Auto-roll dice
-- assertVisible: Auto-move when forced
+- assertVisible: Dice display
 - takeScreenshot: settings-no-fast-mode
