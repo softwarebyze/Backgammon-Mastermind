@@ -6,8 +6,10 @@ available for QA.
 
 - Start from the standard board, an empty board, or the current game.
 - Choose White or Black above the board. Press a point and drag toward the
-  centre to increase its stack, or toward the edge to decrease it. A tap adds
-  one checker. The stroke stays on its starting point even when the pointer
+  centre to increase its stack, or toward the edge to decrease it. The initial
+  press sets the stack size from the checker slot touched (nearest the outer
+  edge means one checker). A blocked addition gives one light haptic per stroke
+  and an accessible message when that colour has no checkers left. The stroke stays on its starting point even when the pointer
   crosses another point; cancellation restores the starting position.
 - The bar supports the same gesture for the selected colour. Stacks support
   up to 15 checkers, limited by the available off-tray checkers. Painting over

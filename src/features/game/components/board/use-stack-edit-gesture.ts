@@ -3,7 +3,7 @@ import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS, useSharedValue } from 'react-native-reanimated';
 
 export type StackEditHandlers = {
-  onStart: (point: number) => void;
+  onStart: (point: number, localY: number) => void;
   onDelta: (point: number, steps: number) => void;
   onEnd: (point: number, tap: boolean, steps?: number) => void;
   onCancel: () => void;
@@ -20,7 +20,7 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
   const finalX = useSharedValue(0);
   const finalY = useSharedValue(0);
   const callbacks = useMemo(() => ({
-    start: () => latest.current?.onStart(point),
+    start: (y: number) => latest.current?.onStart(point, y),
     move: (value: number) => latest.current?.onDelta(point, value),
     end: (tap: boolean, steps: number) => latest.current?.onEnd(point, tap, steps),
     cancel: () => latest.current?.onCancel(),
@@ -36,7 +36,7 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
       originY.value = event.absoluteY;
       finalX.value = event.absoluteX;
       finalY.value = event.absoluteY;
-      runOnJS(callbacks.start)();
+      runOnJS(callbacks.start)(event.y);
     })
     .onUpdate((event) => {
       finalX.value = event.absoluteX;

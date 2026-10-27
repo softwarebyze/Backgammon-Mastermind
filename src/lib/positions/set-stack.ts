@@ -33,3 +33,10 @@ export function setPositionStack(p: Position, location: PositionLocation, color:
 export function stackDragCount(initial: number, steps: number, top: boolean): number {
   return Math.max(0, Math.min(15, initial + (top ? steps : -steps)));
 }
+
+/** The checker centre nearest the press, measured inward from the outer edge. */
+export function stackPressCount(distance: number, checkerSize: number, spacing = checkerSize - 2): number {
+  if (!Number.isFinite(distance) || checkerSize <= 0 || spacing <= 0)
+    return 1;
+  return Math.max(1, Math.min(15, 1 + Math.round((distance - checkerSize / 2) / spacing)));
+}

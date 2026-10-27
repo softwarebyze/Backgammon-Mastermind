@@ -2,18 +2,42 @@ appId: ${APP_ID}
 tags:
   - util
 ---
+# The initial touch chooses a checker slot, rather than always adding one.
+- tapOn:
+    id: point-6
+    point: '50%, 95%'
+- assertVisible: 'Point 6, 1 white checker, selected'
+- tapOn:
+    id: point-6
+    point: '50%, 50%'
+- assertVisible: 'Point 6, [2-9] white checkers, selected'
+- takeScreenshot: position-press-01-count
+- tapOn:
+    id: point-6
+    point: '50%, 95%'
+- assertVisible: 'Point 6, 1 white checker, selected'
 - swipe:
     from:
       id: point-6
+      point: '50%, 95%'
     direction: UP
     duration: 900
 - swipe:
     from:
       id: point-6
+      point: '50%, 95%'
     direction: UP
     duration: 900
 - assertVisible: 'Point 6, 15 white checkers, selected'
 - takeScreenshot: position-drag-01-white
+# All white checkers are used. This blocked press must keep the empty point
+# unchanged and provide visible feedback; haptic timing is unit/device checked.
+- tapOn:
+    id: point-7
+    point: '50%, 95%'
+- assertVisible: No White checkers left to place.
+- assertVisible: 'Point 7, selected'
+- takeScreenshot: position-press-02-exhausted
 - swipe:
     from:
       id: point-6

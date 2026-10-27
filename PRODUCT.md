@@ -15,7 +15,9 @@ backgammon position, see it on a board, try playing from it, or share it with
 someone else. No account or developer access is required for this workflow.
 
 The confirmed editing interaction is the board and a White/Black selector:
-press and drag on a point to increase or decrease its checker stack. Secondary
+press location sets the initial stack size, then dragging increases or decreases
+its checker stack. A blocked addition gives subtle haptic and visible feedback
+when the selected colour has no checkers left. Secondary
 forms should stay out of the initial editing workspace.
 
 ## Product Purpose

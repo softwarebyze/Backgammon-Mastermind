@@ -31,7 +31,8 @@ type Manager = Parameters<NonNullable<Handlers['onTouchesUp']>>[1];
 it('uses the release coordinates for a fast drag that crosses a point in a single move', () => {
   const callbacks = { onStart: jest.fn(), onDelta: jest.fn(), onEnd: jest.fn(), onCancel: jest.fn(), onAdjust: jest.fn() };
   const { result } = renderHook(() => useStackEditGesture(6, 20, callbacks));
-  result.current.handlers.onBegin!({ absoluteX: 100, absoluteY: 300 } as Begin);
+  result.current.handlers.onBegin!({ absoluteX: 100, absoluteY: 300, y: 27 } as Begin);
+  expect(callbacks.onStart).toHaveBeenCalledWith(6, 27);
   // RNGH web can retain the last in-bounds pan coordinates on a single jump.
   result.current.handlers.onTouchesUp!({ changedTouches: [{ absoluteX: 100, absoluteY: 100 }] } as Touches, {} as Manager);
   result.current.handlers.onEnd!({ absoluteX: 100, absoluteY: 300, translationY: 0 } as Begin, true);

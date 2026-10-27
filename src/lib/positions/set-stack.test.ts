@@ -1,5 +1,5 @@
 import { newPosition, validatePosition } from './position';
-import { setPositionStack, stackDragCount } from './set-stack';
+import { setPositionStack, stackDragCount, stackPressCount } from './set-stack';
 
 it('builds and reduces a stack while conserving both checker pools', () => {
   const empty = newPosition(true);
@@ -52,4 +52,17 @@ it('uses the same inward/outward gesture on both board halves, including zero an
 it.each([0, 25, 1.5, Number.NaN])('ignores an invalid point %s', (point) => {
   const p = newPosition();
   expect(setPositionStack(p, point, 'white', 2)).toBe(p);
+});
+
+it('maps a press to the visible checker centres and clamps off-board distances', () => {
+  expect(stackPressCount(0, 20)).toBe(1);
+  expect(stackPressCount(10, 20)).toBe(1);
+  expect(stackPressCount(28, 20)).toBe(2);
+  expect(stackPressCount(46, 20)).toBe(3);
+  expect(stackPressCount(82, 20)).toBe(5);
+  expect(stackPressCount(1000, 20)).toBe(15);
+  expect(stackPressCount(-40, 20)).toBe(1);
+  expect(stackPressCount(Number.NaN, 20)).toBe(1);
+  // Bar checkers have their own diameter, padding and gap.
+  expect(stackPressCount(8.8 + 2 * 19.6, 17.6, 19.6)).toBe(3);
 });
