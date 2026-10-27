@@ -15,6 +15,7 @@ import {
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
+import { HomeMatchOptions } from '@/features/game/components/home-match-options';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
@@ -182,6 +183,7 @@ export function HomeScreen() {
         </View>
 
         <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
+          <HomeMatchOptions />
           {showRecovery && (
             <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
           )}

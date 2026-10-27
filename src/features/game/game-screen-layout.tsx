@@ -12,6 +12,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { GameBoardSection } from '@/features/game/components/game-board-section';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { GuidanceModal } from '@/features/game/components/guidance-modal';
+import { MatchStatusBar } from '@/features/game/components/match-status-bar';
 import { MoveReviewBar } from '@/features/game/components/move-review-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
@@ -62,6 +63,7 @@ function GameTopChrome({
 }) {
   return (
     <View style={styles.chromeColumn} onLayout={onLayout}>
+      <MatchStatusBar state={state} />
       <GamePipStatusBar state={state} />
       <View style={styles.turnBannerWrap}>
         <TurnIndicatorBanner state={state} headlineOverride={headline} />

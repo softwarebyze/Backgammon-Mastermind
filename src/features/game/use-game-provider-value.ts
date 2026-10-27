@@ -20,6 +20,7 @@ import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
+import { acceptDouble, dropDouble, nextMatchGame, offerDouble } from '@/lib/game/match';
 import { loadPersistedGame } from '@/lib/game/persistence';
 
 /* eslint-disable max-lines-per-function -- provider composes all game slices */
@@ -117,6 +118,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     setState,
     isAnimating,
     recordNoMove: handleNoMoveRecorded,
+    moveCount: moveLog.length,
   });
   const resetAllAnimation = useCallback(() => {
     resetAnimation();
@@ -225,7 +227,24 @@ export function useGameProviderValue(active: boolean): GameContextType {
     armAnimationFinish,
   ]);
 
+  const matchAction = useCallback((action: 'offer' | 'accept' | 'drop' | 'next') => {
+    if (!state?.match || isAnimating || canRedo)
+      return;
+    if (action === 'next') {
+      const next = nextMatchGame(state);
+      if (next !== state)
+        startFromPosition(next);
+      return;
+    }
+    setState(prev => !prev
+      ? prev
+      : action === 'offer'
+        ? offerDouble(prev, moveLog.length)
+        : action === 'accept' ? acceptDouble(prev) : dropDouble(prev));
+  }, [state, isAnimating, canRedo, startFromPosition, moveLog.length]);
+
   return {
+    matchAction,
     state,
     moveLog,
     replayBaseline,

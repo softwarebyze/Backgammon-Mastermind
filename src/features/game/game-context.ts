@@ -14,6 +14,7 @@ export type GameContextType = {
   startFromPosition: (state: GameState) => void;
   resumeGame: () => boolean;
   resetGame: () => void;
+  matchAction?: (action: 'offer' | 'accept' | 'drop' | 'next') => void;
   doRollDice: () => void;
   doPassTurn: () => void;
   selectPoint: (point: number | null) => void;

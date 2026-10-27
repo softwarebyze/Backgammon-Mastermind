@@ -91,6 +91,8 @@ describe('parsePositionJson', () => {
 describe('position loader presets', () => {
   it('exposes the #155 bar 1–2 audit boards and the E2E undo/redo board', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
+      'e2e-match-cube',
+      'e2e-match-final',
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
       'e2e-undo-redo-3-1',

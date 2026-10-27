@@ -61,6 +61,7 @@ export function useGameplayHelpers({
 
     if (
       preferences.autoRoll
+      && !state.match
       && (state.phase === 'rolling' || state.phase === 'opening-roll')
     ) {
       timeoutRef.current = setTimeout(() => {

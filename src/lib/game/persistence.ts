@@ -165,7 +165,7 @@ export function discardQuarantinedSession(): void {
 }
 
 export function isResumableGame(state: GameState | null | undefined): boolean {
-  return state != null && state.phase !== 'game-over';
+  return state != null && (state.phase !== 'game-over' || (!!state.match && !state.match.winner));
 }
 
 export function isReviewableGame(state: GameState | null | undefined): boolean {

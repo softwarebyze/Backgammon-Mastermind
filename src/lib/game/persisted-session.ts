@@ -32,7 +32,21 @@ const openingRollsSchema = z.object({
   black: z.number().nullable(),
 });
 
+const matchSchema = z.object({
+  length: z.union([z.literal(3), z.literal(5)]),
+  score: playerCountSchema,
+  cube: z.object({ value: z.number().int().positive().refine(n => Number.isSafeInteger(n) && Math.log2(n) % 1 === 0), owner: z.enum(['white', 'black', 'center']) }),
+  pendingOffer: playerSchema.nullable(),
+  crawford: z.boolean(),
+  crawfordPlayed: z.boolean(),
+  gameNumber: z.number().int().positive(),
+  winner: playerSchema.nullable(),
+  result: z.object({ winner: playerSchema, points: z.number().int().positive(), kind: z.enum(['single', 'gammon', 'backgammon', 'drop']) }).nullable(),
+  undoFloor: z.number().int().nonnegative(),
+});
+
 const replaySnapshotSchema = z.object({
+  match: matchSchema.optional(),
   points: z.array(boardPointSchema).length(25),
   bar: playerCountSchema,
   borneOff: playerCountSchema,
@@ -43,6 +57,7 @@ const replaySnapshotSchema = z.object({
 });
 
 const gameStateSchema = z.object({
+  match: matchSchema.optional(),
   points: z.array(boardPointSchema).length(25),
   bar: playerCountSchema,
   borneOff: playerCountSchema,
@@ -179,6 +194,9 @@ export function gameStateInvariantError(state: GameState): string | null {
   if (countCheckers(state, 'black') !== TOTAL_CHECKERS) {
     return 'black must have exactly 15 checkers';
   }
+  if (state.match && (state.mode !== 'vs-human' || (state.match.pendingOffer && (state.phase !== 'rolling' || state.match.pendingOffer !== state.currentPlayer || state.match.crawford || state.match.result)) || (!!state.match.result !== (state.phase === 'game-over')))) {
+    return 'invalid match phase or pending cube offer';
+  }
   return diceError(state.dice, state.remainingDice)
     ?? phaseWinnerError(state.phase, state.winner)
     ?? selectedPointError(state.selectedPoint)
@@ -188,6 +206,7 @@ export function gameStateInvariantError(state: GameState): string | null {
 function hydrateGameState(raw: z.infer<typeof gameStateSchema>): GameState {
   return {
     ...raw,
+    ...(raw.match ? { match: raw.match } : {}),
     points: raw.points.map(point => ({ ...point })),
     bar: { ...raw.bar },
     borneOff: { ...raw.borneOff },
@@ -210,6 +229,7 @@ function hydrateMoveLog(entries: z.infer<typeof moveLogEntrySchema>[]): MoveLogE
 
 function hydrateSnapshot(raw: z.infer<typeof replaySnapshotSchema>): ReplaySnapshot {
   return {
+    ...(raw.match ? { match: raw.match } : {}),
     points: raw.points.map(point => ({ ...point })),
     bar: { ...raw.bar },
     borneOff: { ...raw.borneOff },

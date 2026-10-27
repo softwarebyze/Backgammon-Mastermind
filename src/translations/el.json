@@ -40,6 +40,31 @@
       "play_a11y": "Παίξε την προτεινόμενη κίνηση",
       "suggested": "Προτεινόμενη κίνηση"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Pass & play with the doubling cube. Computer matches and cube advice are not available yet.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Ρίξε πρώτα τα ζάρια"
     },

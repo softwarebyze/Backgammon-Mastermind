@@ -2,6 +2,7 @@ import type { CreatePositionOptions, PointPlacement } from './create-position';
 import type { GameMode, GameState, Player } from './types';
 
 import { createPositionState } from './create-position';
+import { createMatch } from './match';
 
 export type PositionLoaderPreset = {
   id: string;
@@ -27,6 +28,8 @@ export const POSITION_JSON_ERRORS = {
  * Same fixtures as `moves.test.ts` so QA can inspect them on the live board.
  */
 export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
+  { id: 'e2e-match-cube', label: 'E2E match cube', description: '3-point match, White one checker from winning a single.', options: { placements: [{ point: 1, player: 'white', count: 1 }, { point: 24, player: 'black', count: 14 }], borneOff: { white: 14, black: 1 }, mode: 'vs-human', match: createMatch(3) } },
+  { id: 'e2e-match-final', label: 'E2E match final', description: 'Crawford game at 2–1, White one checker from winning the match.', options: { placements: [{ point: 1, player: 'white', count: 1 }, { point: 24, player: 'black', count: 14 }], borneOff: { white: 14, black: 1 }, mode: 'vs-human', match: { ...createMatch(3), score: { white: 2, black: 1 }, crawford: true, crawfordPlayed: true, gameNumber: 3 } } },
   {
     id: 'issue-155-bar-1-2-both-dice',
     label: '#155 bar 1–2 (both dice)',

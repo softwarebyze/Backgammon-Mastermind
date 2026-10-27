@@ -1,4 +1,5 @@
 flows:
+  - app/match-cube.yaml
   - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
   - app/game-settings-gear.yaml

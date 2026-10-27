@@ -8,6 +8,7 @@ import { HoverPressable } from '@/components/ui/hover-pressable';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 
 import { HintButton } from '@/features/game/components/hint-button';
+import { MatchControls } from '@/features/game/components/match-controls';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
@@ -111,7 +112,7 @@ export function GameScreenControls({
             )}
       </View>
       <View
-        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
+        style={hintCardOpen || !!state.match ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"
         testID="game-action-slot"
       >
@@ -134,7 +135,7 @@ export function GameScreenControls({
           canUndoMove={canUndoMove}
         />
       </View>
-      <Text style={styles.caption}>{caption}</Text>
+      <Text style={styles.caption}>{state.match ? translate('game.match.advice_note') : caption}</Text>
     </View>
   );
 }
@@ -197,6 +198,10 @@ function ActionControl({
         <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
       </HoverPressable>
     );
+  }
+
+  if (state.match && (state.phase === 'rolling' || state.phase === 'game-over')) {
+    return <MatchControls state={state} onRoll={onRoll} onReset={onReset} />;
   }
 
   if (state.phase === 'game-over') {
@@ -312,7 +317,7 @@ function ActionControl({
   // The engine plans a full turn from the dice just rolled. A failed
   // analysis shows no suggestion. The blunder-review solution view still
   // draws best-move arrows after take-back, which restores turn start.
-  if (state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
+  if (!state.match && state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
     return <HintButton state={state} moveLogLength={moveLogLength} />;
   }
 
