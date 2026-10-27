@@ -10,6 +10,7 @@ import {
   setAnalyticsScreen,
   settingProperties,
   trackSettingsChange,
+  trackSettingsReset,
 } from './settings-analytics';
 
 const capture = jest.fn();
@@ -74,6 +75,31 @@ describe('setting_changed', () => {
     trackSettingsChange({}, { note: 'x'.repeat(40), nested: { a: 1 } });
     expect(capture).not.toHaveBeenCalled();
     expect(register).not.toHaveBeenCalled();
+  });
+});
+
+describe('settings_reset', () => {
+  it('records one event with the number of changed keys', () => {
+    trackSettingsReset(
+      { showMoveHints: false, autoRoll: true },
+      { showMoveHints: true, autoRoll: true },
+    );
+
+    expect(capture).toHaveBeenCalledTimes(1);
+    expect(capture).toHaveBeenCalledWith('settings_reset', {
+      changed_count: 1,
+      source_screen: '/settings',
+    });
+  });
+
+  it('records a zero count when the player was already on defaults', () => {
+    const defaults = { ...DEFAULT_GAME_PREFERENCES };
+    trackSettingsReset(defaults, defaults);
+
+    expect(capture).toHaveBeenCalledWith('settings_reset', {
+      changed_count: 0,
+      source_screen: '/settings',
+    });
   });
 });
 
