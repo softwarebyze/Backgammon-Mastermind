@@ -1,6 +1,9 @@
+import type { ComputerLevel } from '@/features/game/engine/sage-difficulty';
+
 export type DiceDisplayStyle = 'numbers' | 'dots';
 
 export type GamePreferences = {
+  computerLevel: ComputerLevel;
   showMoveHints: boolean;
   showDirectionOverlay: boolean;
   showPointNumbers: boolean;
@@ -16,6 +19,7 @@ export type GamePreferences = {
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
+  computerLevel: 'classic',
   showMoveHints: false,
   showDirectionOverlay: false,
   showPointNumbers: true,

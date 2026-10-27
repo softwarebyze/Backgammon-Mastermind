@@ -146,3 +146,8 @@ export async function analyzeCube(
     args: [cubeValue, cubeOwner, ply],
   });
 }
+
+/** Load weights and create the engine without analyzing a position. */
+export async function warmEngine(): Promise<void> {
+  await getEngine();
+}

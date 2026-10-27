@@ -1,3 +1,5 @@
+import type * as PreferenceStorage from './storage';
+import { storage } from '@/lib/storage';
 import { migrateDiceDisplayToDots } from './dice-display-migration';
 import {
   DEFAULT_GAME_PREFERENCES,
@@ -5,6 +7,8 @@ import {
   migrateImplicitPlayDefaults,
   omitRetiredPreferences,
 } from './types';
+
+const { loadGamePreferences, saveGamePreferences } = jest.requireActual<typeof PreferenceStorage>('./storage');
 
 describe('dice display migration', () => {
   it('switches leftover numbers default to dots once', () => {
@@ -125,5 +129,18 @@ describe('retired fast computer preference', () => {
     const { prefs, didStrip } = omitRetiredPreferences({ autoRoll: false });
     expect(didStrip).toBe(false);
     expect(prefs).toEqual({ autoRoll: false });
+  });
+});
+
+describe('computer difficulty persistence', () => {
+  it('keeps the original opponent for older saves and rejects unknown level ids', () => {
+    for (const computerLevel of [undefined, 'expert', null, 7]) {
+      storage.set('GAME_PREFERENCES', JSON.stringify({ computerLevel, tutorMode: true }));
+      expect(loadGamePreferences()).toMatchObject({ computerLevel: 'classic', tutorMode: true });
+    }
+  });
+  it.each(['classic', 'easy', 'medium', 'hard'] as const)('round trips %s without changing tutor settings', (computerLevel) => {
+    saveGamePreferences({ ...DEFAULT_GAME_PREFERENCES, computerLevel, tutorMode: true });
+    expect(loadGamePreferences()).toMatchObject({ computerLevel, tutorMode: true });
   });
 });

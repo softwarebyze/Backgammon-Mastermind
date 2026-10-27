@@ -1,4 +1,5 @@
 import type { GamePreferences } from './types';
+import { isComputerLevel } from '@/features/game/engine/sage-difficulty';
 
 import { getItem, setItem } from '@/lib/storage';
 import { migrateDiceDisplayToDots } from './dice-display-migration';
@@ -25,10 +26,11 @@ export function loadGamePreferences(): GamePreferences {
     dicePrefs,
     playDefaultsMigrated,
   );
-  const { prefs, didMigrate: didConfirmMove } = migrateConfirmMoveDefault(
+  const { prefs: migratedPrefs, didMigrate: didConfirmMove } = migrateConfirmMoveDefault(
     playPrefs,
     confirmMoveMigrated,
   );
+  const prefs = { ...migratedPrefs, computerLevel: isComputerLevel(migratedPrefs.computerLevel) ? migratedPrefs.computerLevel : DEFAULT_GAME_PREFERENCES.computerLevel };
   if (didDice || didPlayDefaults || didConfirmMove || didStrip) {
     if (didDice)
       void setItem(DICE_DOTS_MIGRATION_KEY, true);

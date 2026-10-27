@@ -28,6 +28,20 @@
       "undo_a11y": "Undo Bewegung",
       "undo_move": "Rückgängig"
     },
+    "difficulty": {
+      "classic": "Klassisch",
+      "classic_description": "Bisheriger Gegner · kein Engine-Download",
+      "easy": "Leicht",
+      "easy_description": "Sage · häufiger nachsichtige Züge",
+      "fallback": "Für diesen Zug Klassisch; Sage nicht verfügbar.",
+      "hard": "Schwer",
+      "hard_description": "Sage · wählt immer den bestbewerteten Zug",
+      "hint": "Gilt für neue und fortgesetzte Spiele. Tutor-Hinweise bleiben unverändert.",
+      "medium": "Mittel",
+      "medium_description": "Sage · seltener nachsichtige Züge",
+      "opponent": "Computer: {{level}}",
+      "title": "Computerstärke"
+    },
     "hint": {
       "back_to_turn": "Zurück zu meinem Zug",
       "back_to_turn_a11y": "Zurück zu meinem Zug, Hinweis schließen",

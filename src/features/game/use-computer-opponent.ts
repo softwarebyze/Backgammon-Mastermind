@@ -1,14 +1,19 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { GameState, Move } from '@/lib/game';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { warmSageEngine } from 'expo-bgsage';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
+
 import {
   computerMoveDelayMs,
   computerThinkDelayMs,
 } from '@/lib/game/computer-pace';
+import { setComputerEngineFallback } from './computer-engine-status';
+import { createComputerMovePlanner } from './computer-move';
 
 type ComputerOpponentOptions = {
   enabled: boolean;
@@ -44,6 +49,13 @@ export function useComputerOpponent({
   paused = false,
 }: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { preferences: { computerLevel } } = useGamePreferences();
+  useEffect(() => {
+    if (enabled && computerLevel !== 'classic')
+      void warmSageEngine().catch(() => undefined);
+  }, [enabled, computerLevel]);
+  const planner = useRef(createComputerMovePlanner());
+  const generation = useRef(0);
   const stateRef = useRef(state);
   stateRef.current = state;
   const pausedRef = useRef(paused);
@@ -52,6 +64,7 @@ export function useComputerOpponent({
   const [scheduleGen, setScheduleGen] = useState(0);
 
   const clearAITimeout = useCallback(() => {
+    generation.current++;
     if (aiTimeoutRef.current !== null) {
       clearTimeout(aiTimeoutRef.current);
       aiTimeoutRef.current = null;
@@ -85,7 +98,8 @@ export function useComputerOpponent({
       return clearAITimeout;
     }
 
-    const runAI = () => {
+    const scheduledGeneration = generation.current;
+    const runAI = async () => {
       // Failsafe: a timeout scheduled just before the pause must not fire through it.
       if (pausedRef.current)
         return;
@@ -114,7 +128,13 @@ export function useComputerOpponent({
       }
 
       if (prev.phase === 'moving') {
-        const move = getAIMove(prev);
+        const level = computerLevel;
+        const { move, fallback } = level === 'classic'
+          ? { move: getAIMove(prev), fallback: false }
+          : await planner.current(prev, level);
+        if (generation.current !== scheduledGeneration || pausedRef.current || stateRef.current !== prev)
+          return;
+        setComputerEngineFallback(fallback);
         if (!move) {
           recordNoMove(prev, prev);
           setState(passTurn(prev));
@@ -136,7 +156,7 @@ export function useComputerOpponent({
 
     const thinkTimer = delay === 0 ? null : setTimeout(runAI, delay);
     if (thinkTimer === null)
-      runAI();
+      void runAI();
     else
       aiTimeoutRef.current = thinkTimer;
 
@@ -149,6 +169,7 @@ export function useComputerOpponent({
     };
   }, [
     enabled,
+    computerLevel,
     state,
     setState,
     playMove,

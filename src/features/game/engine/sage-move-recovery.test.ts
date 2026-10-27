@@ -138,3 +138,76 @@ describe('sage move recovery', () => {
     ]);
   });
 });
+
+describe('sage single-die recovery', () => {
+  it('bears off with the higher die when either die reaches the same board', () => {
+    const state = createPositionState({
+      currentPlayer: 'white',
+      dice: [5, 6],
+      placements: [
+        { point: 1, player: 'white', count: 1 },
+        { point: 24, player: 'black', count: 1 },
+      ],
+    });
+    const start = sageBoard(state, 'white');
+    const end = sageBoard(play(state, [{ from: 1, to: 25 }]), 'white');
+    // Lower die first, the order that used to stick: both 5-off and 6-off
+    // match this board, and the rules require the 6.
+    expect(decomposePlayerOnRollBoard(start, end, [5, 6])).toEqual([
+      { from: 1, to: 0, die: 6 },
+    ]);
+  });
+
+  it('keeps the lower die when the higher one cannot be played', () => {
+    const state = createPositionState({
+      currentPlayer: 'white',
+      dice: [1, 3],
+      placements: [
+        { point: 4, player: 'white', count: 1 },
+        { point: 1, player: 'black', count: 2 },
+        { point: 24, player: 'black', count: 1 },
+      ],
+    });
+    const start = sageBoard(state, 'white');
+    const end = sageBoard(play(state, [{ from: 4, to: 3 }]), 'white');
+    expect(decomposePlayerOnRollBoard(start, end, [1, 3])?.[0]?.die).toBe(1);
+  });
+});
+
+describe('sage bear-off recovery', () => {
+  it('brings the last checker home before bearing off', () => {
+    const state = createPositionState({
+      currentPlayer: 'white',
+      dice: [5, 6],
+      placements: [
+        { point: 12, player: 'white', count: 1 },
+        { point: 6, player: 'white', count: 3 },
+        { point: 5, player: 'white', count: 3 },
+        { point: 4, player: 'white', count: 3 },
+        { point: 3, player: 'white', count: 3 },
+        { point: 2, player: 'white', count: 2 },
+        { point: 23, player: 'black', count: 2 },
+      ],
+    });
+    expectRecovered(state, [
+      { from: 12, to: 6 },
+      { from: 5, to: 25 },
+    ]);
+  });
+
+  it('plays both dice when an earlier step already matches the end board', () => {
+    const state = createPositionState({
+      currentPlayer: 'white',
+      dice: [4, 1],
+      placements: [
+        { point: 3, player: 'white', count: 1 },
+        { point: 2, player: 'white', count: 1 },
+        { point: 19, player: 'black', count: 2 },
+      ],
+    });
+    expectRecovered(state, [
+      { from: 3, to: 2 },
+      { from: 2, to: 25 },
+    ]);
+  });
+});

@@ -28,6 +28,20 @@
       "undo_a11y": "Undo hareketsiz",
       "undo_move": "Geri al"
     },
+    "difficulty": {
+      "classic": "Klasik",
+      "classic_description": "Özgün rakip · motor indirme gerektirmez",
+      "easy": "Kolay",
+      "easy_description": "Sage · daha bağışlayıcı hamle seçimleri",
+      "fallback": "Bu tur Klasik kullanılıyor; Sage kullanılamıyor.",
+      "hard": "Zor",
+      "hard_description": "Sage · her zaman en iyi değerlendirdiği turu seçer",
+      "hint": "Yeni ve devam eden oyunlarda geçerlidir. Eğitmen değişmez.",
+      "medium": "Orta",
+      "medium_description": "Sage · daha az bağışlayıcı hamle seçimi",
+      "opponent": "Bilgisayar: {{level}}",
+      "title": "Bilgisayar zorluğu"
+    },
     "hint": {
       "back_to_turn": "Sırama dön",
       "back_to_turn_a11y": "Sırama dön ve ipucunu kapat",

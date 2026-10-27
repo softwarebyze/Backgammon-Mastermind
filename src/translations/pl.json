@@ -28,6 +28,20 @@
       "undo_a11y": "Cofnij ruch",
       "undo_move": "Cofnij"
     },
+    "difficulty": {
+      "classic": "Klasyczny",
+      "classic_description": "Pierwotny przeciwnik · bez pobierania silnika",
+      "easy": "Łatwy",
+      "easy_description": "Sage · bardziej wyrozumiałe wybory ruchów",
+      "fallback": "Klasyczny w tej turze; Sage niedostępny.",
+      "hard": "Trudny",
+      "hard_description": "Sage · zawsze wybiera najwyżej ocenioną turę",
+      "hint": "Dotyczy nowych i wznowionych gier. Wskazówki tutora bez zmian.",
+      "medium": "Średni",
+      "medium_description": "Sage · mniej wyrozumiałych wyborów",
+      "opponent": "Komputer: {{level}}",
+      "title": "Poziom komputera"
+    },
     "hint": {
       "back_to_turn": "Wróć do mojej tury",
       "back_to_turn_a11y": "Wróć do mojej tury i zamknij podpowiedź",

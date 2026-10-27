@@ -28,6 +28,20 @@
       "undo_a11y": "Verplaatsen ongedaan maken",
       "undo_move": "Ongedaan maken"
     },
+    "difficulty": {
+      "classic": "Klassiek",
+      "classic_description": "Oorspronkelijke tegenstander · geen enginedownload",
+      "easy": "Makkelijk",
+      "easy_description": "Sage · vaker vergevingsgezinde zetten",
+      "fallback": "Klassiek voor deze beurt; Sage niet beschikbaar.",
+      "hard": "Moeilijk",
+      "hard_description": "Sage · kiest altijd zijn best beoordeelde beurt",
+      "hint": "Voor nieuwe en hervatte partijen. De tutor blijft ongewijzigd.",
+      "medium": "Gemiddeld",
+      "medium_description": "Sage · minder vergevingsgezinde zetten",
+      "opponent": "Computer: {{level}}",
+      "title": "Computerniveau"
+    },
     "hint": {
       "back_to_turn": "Terug naar mijn beurt",
       "back_to_turn_a11y": "Terug naar mijn beurt, hint sluiten",

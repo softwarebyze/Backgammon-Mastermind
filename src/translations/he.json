@@ -28,6 +28,20 @@
       "undo_a11y": "ביטול המהלך",
       "undo_move": "בטל"
     },
+    "difficulty": {
+      "classic": "קלאסי",
+      "classic_description": "היריב המקורי · ללא הורדת מנוע",
+      "easy": "קל",
+      "easy_description": "Sage · בחירות מהלכים סלחניות יותר",
+      "fallback": "קלאסי בתור הזה; Sage אינו זמין.",
+      "hard": "קשה",
+      "hard_description": "Sage · תמיד בוחר בתור המדורג ראשון",
+      "hint": "חל על משחקים חדשים ומשחקים שהמשכת. ההדרכה אינה משתנה.",
+      "medium": "בינוני",
+      "medium_description": "Sage · פחות בחירות סלחניות",
+      "opponent": "מחשב: {{level}}",
+      "title": "רמת המחשב"
+    },
     "hint": {
       "back_to_turn": "חזרה לתור שלי",
       "back_to_turn_a11y": "חזרה לתור שלי וסגירת הרמז",

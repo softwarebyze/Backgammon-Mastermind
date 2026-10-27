@@ -28,6 +28,20 @@
       "undo_a11y": "Undo 移動",
       "undo_move": "取り消す"
     },
+    "difficulty": {
+      "classic": "クラシック",
+      "classic_description": "従来の相手 · エンジンのダウンロード不要",
+      "easy": "かんたん",
+      "easy_description": "Sage · 手加減した手を多く選択",
+      "fallback": "このターンはクラシック。Sageを利用できません。",
+      "hard": "むずかしい",
+      "hard_description": "Sage · 常に最上位の手順を選択",
+      "hint": "新規・再開した対局に適用。チューターの助言は変わりません。",
+      "medium": "ふつう",
+      "medium_description": "Sage · 手加減した手を少なく選択",
+      "opponent": "コンピューター：{{level}}",
+      "title": "コンピューターの強さ"
+    },
     "hint": {
       "back_to_turn": "自分の手番に戻る",
       "back_to_turn_a11y": "自分の手番に戻り、ヒントを閉じる",

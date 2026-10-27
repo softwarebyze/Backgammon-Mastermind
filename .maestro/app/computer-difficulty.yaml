@@ -1,0 +1,61 @@
+# Difficulty persists across process restart and applies to a playable computer turn.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn: Settings
+- extendedWaitUntil:
+    visible:
+      id: computer-level-classic
+    timeout: 15000
+- takeScreenshot: difficulty-01-default-classic
+- tapOn:
+    id: computer-level-easy
+- tapOn:
+    id: computer-level-medium
+- tapOn:
+    id: computer-level-hard
+- takeScreenshot: difficulty-02-hard-selected
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible: '.*Computer: Hard.*'
+    timeout: 45000
+- tapOn: Settings
+- assertVisible:
+    id: computer-level-hard
+    checked: true
+- takeScreenshot: difficulty-03-persisted
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"currentPlayer":"black","mode":"vs-computer"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+# Wait for the computer to finish its legal turn; white now has a roll/action.
+- extendedWaitUntil:
+    visible: '.*Your turn.*'
+    timeout: 60000
+- assertVisible: '.*Computer: Hard.*'
+- takeScreenshot: difficulty-04-computer-played
+- tapOn: Settings
+- tapOn:
+    id: computer-level-classic
+- tapOn:
+    id: stack-escape-button
+- assertVisible: '.*Computer: Classic.*'
+- takeScreenshot: difficulty-05-changed-during-game

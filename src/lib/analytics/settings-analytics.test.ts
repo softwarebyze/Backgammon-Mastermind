@@ -52,6 +52,12 @@ describe('setting_changed', () => {
     }));
   });
 
+  it('tracks difficulty changes through the persisted preferences path', () => {
+    patchGamePreferences({ computerLevel: 'hard' });
+    expect(capture).toHaveBeenCalledWith('setting_changed', { key: 'computer_level', old_value: 'classic', new_value: 'hard', source_screen: '/settings' });
+    expect(register).toHaveBeenCalledWith(expect.objectContaining({ pref_computer_level: 'hard' }));
+  });
+
   it('does not fire when the value is unchanged', () => {
     patchGamePreferences({ tutorMode: false });
     expect(capture).not.toHaveBeenCalled();
@@ -84,6 +90,7 @@ describe('gameplay setting properties', () => {
       confirmMove: true,
       tutorStrictness: 'big',
     })).toEqual({
+      pref_computer_level: 'classic',
       pref_show_move_hints: false,
       pref_show_direction_overlay: false,
       pref_show_point_numbers: true,
