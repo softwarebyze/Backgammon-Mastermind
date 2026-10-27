@@ -47,6 +47,12 @@ tags:
 - assertVisible: 'Borne off: White 0 · Black 0'
 - runScript: ../utils/position-link.js
 - openLink: ${output.sharedPositionLink}
+# iOS asks for consent the first time this simulator opens the app by link.
+- runFlow:
+    when:
+      visible: Open
+    commands:
+      - tapOn: Open
 - extendedWaitUntil:
     visible: This shared position is ready to explore.*
     timeout: 30000

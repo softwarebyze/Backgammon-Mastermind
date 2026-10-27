@@ -34,8 +34,10 @@ tags:
             visible:
               id: roll-dice-button
           commands:
+            # Auto-roll can finish between the visibility check and the tap.
             - tapOn:
                 id: roll-dice-button
+                optional: true
       - runFlow:
           when:
             visible:
