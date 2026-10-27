@@ -53,7 +53,25 @@ tags:
       visible: Open
     commands:
       - tapOn: Open
-- extendedWaitUntil:
-    visible: This shared position is ready to explore.*
-    timeout: 30000
+- launchApp:
+    stopApp: false
+# After returning through iOS's link prompt, XCTest can retain the previous
+# accessibility snapshot. Scrolling refreshes it and verifies the payload's
+# actual roll instead of relying only on a changed caption.
+- scrollUntilVisible:
+    element:
+      id: position-die-0
+    direction: DOWN
+- assertVisible:
+    id: position-die-0
+    text: '5'
+- assertVisible:
+    id: position-die-1
+    text: '2'
+- scrollUntilVisible:
+    element:
+      id: position-standard
+    direction: UP
+- assertVisible:
+    id: position-screen
 - takeScreenshot: position-ios-03-shared

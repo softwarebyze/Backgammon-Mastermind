@@ -65,3 +65,8 @@ round trips, malformed inputs, saved-board recovery, and active-game isolation.
 `.maestro/app/position-setup.yaml` exercises the production entry point, exact
 point editing, save/relaunch/reopen, GNU import, XG export/copy, starting play,
 and malformed shared links. It is registered in the Android evidence run.
+
+`.maestro/app/position-preview-ios.yaml` runs alongside the smoke flow on
+iPhone and iPad. It captures standard and empty boards, opens a shared position
+through the first-use iOS confirmation, and checks the imported dice before
+capturing the shared preview. Flow results and captures are attached to CI runs.
