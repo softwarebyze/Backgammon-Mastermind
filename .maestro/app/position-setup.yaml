@@ -106,6 +106,10 @@ tags:
       END_Y: '25%'
 - tapOn:
     id: position-saved-toggle
+- scrollUntilVisible:
+    element:
+      text: My saved position
+    direction: DOWN
 - tapOn: My saved position
 - takeScreenshot: position-02-saved
 # Load a known public GNU ID through the consumer importer.
