@@ -7,12 +7,15 @@ import { createMatchGame } from '@/lib/game/match';
 import { HomeScreen } from './home-screen';
 
 jest.mock('expo-router', () => ({ router: { replace: jest.fn(), push: jest.fn() } }));
-jest.mock('posthog-react-native', () => ({ usePostHog: () => ({ capture: jest.fn() }) }));
+jest.mock('posthog-react-native', () => ({ usePostHog: jest.fn().mockReturnValue({ capture: jest.fn() }) }));
 jest.mock('@/components/ui', () => ({ FocusAwareStatusBar: () => null }));
 jest.mock('@/features/game/use-game', () => ({ useGame: jest.fn() }));
 jest.mock('@/lib/ui/layout-metrics', () => ({
   ...jest.requireActual('@/lib/ui/layout-metrics'),
-  useLayoutMetrics: () => ({ insets: { left: 0, right: 0, bottom: 0 }, landscape: false }),
+  useLayoutMetrics: jest.fn().mockReturnValue({
+    insets: { left: 0, right: 0, bottom: 0 },
+    landscape: false,
+  }),
 }));
 jest.mock('@expo/vector-icons/Feather', () => 'Feather');
 jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn() }));
