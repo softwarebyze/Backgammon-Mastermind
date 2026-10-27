@@ -228,7 +228,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   ]);
 
   const matchAction = useCallback((action: 'offer' | 'accept' | 'drop' | 'next') => {
-    if (!state?.match || isAnimating || canRedo)
+    if (!state?.match || isAnimating || canRedo || tutorPaused)
       return;
     if (action === 'next') {
       const next = nextMatchGame(state);
@@ -236,12 +236,38 @@ export function useGameProviderValue(active: boolean): GameContextType {
         startFromPosition(next);
       return;
     }
+    if (state.mode === 'vs-computer' && (action === 'offer' ? state.currentPlayer !== 'white' : state.match.pendingOffer !== 'black'))
+      return;
     setState(prev => !prev
       ? prev
       : action === 'offer'
         ? offerDouble(prev, moveLog.length)
         : action === 'accept' ? acceptDouble(prev) : dropDouble(prev));
-  }, [state, isAnimating, canRedo, startFromPosition, moveLog.length]);
+  }, [state, isAnimating, canRedo, tutorPaused, startFromPosition, moveLog.length]);
+
+  // These are the public human entry points. The AI uses playMove directly;
+  // rejecting Black here also protects hint/board callers from playing for it.
+  const humanCanPlay = active && !tutorPaused && !!state && !state.match?.pendingOffer
+    && (state.mode !== 'vs-computer' || state.currentPlayer === 'white');
+  // Tutor guidance retains callbacks across a rewind. Read eligibility and
+  // actions at invocation time so a previously paused render cannot veto replay.
+  const humanActionsRef = useRef({ humanCanPlay, doMove, doMoveSequence, selectPoint });
+  humanActionsRef.current = { humanCanPlay, doMove, doMoveSequence, selectPoint };
+  const humanMove = useCallback((...args: Parameters<typeof doMove>) => {
+    const latest = humanActionsRef.current;
+    if (latest.humanCanPlay)
+      latest.doMove(...args);
+  }, []);
+  const humanMoveSequence = useCallback((...args: Parameters<typeof doMoveSequence>) => {
+    const latest = humanActionsRef.current;
+    if (latest.humanCanPlay)
+      latest.doMoveSequence(...args);
+  }, []);
+  const humanSelectPoint = useCallback((point: number | null) => {
+    const latest = humanActionsRef.current;
+    if (latest.humanCanPlay)
+      latest.selectPoint(point);
+  }, []);
 
   return {
     matchAction,
@@ -254,9 +280,9 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetGame,
     doRollDice,
     doPassTurn,
-    selectPoint,
-    doMove,
-    doMoveSequence,
+    selectPoint: humanSelectPoint,
+    doMove: humanMove,
+    doMoveSequence: humanMoveSequence,
     doUndo,
     doRedo,
     canUndo,

@@ -28,9 +28,12 @@ tags:
 - takeScreenshot: match-00-new-local-match
 - openLink: backgammonmastermind.preview://developer
 - extendedWaitUntil:
-    visible:
-      id: developer-preset-e2e-match-cube
+    visible: Audit presets
     timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
 - tapOn:
     id: developer-preset-e2e-match-cube
 - assertVisible: Cube 1 · Center
@@ -101,6 +104,10 @@ tags:
 - takeScreenshot: match-04-crawford
 # Finish a match at match point, then start another at 0–0.
 - openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-final
+    direction: DOWN
 - tapOn:
     id: developer-preset-e2e-match-final
 - assertNotVisible:
@@ -120,6 +127,10 @@ tags:
 - assertVisible: White 0  –  Black 0
 # A fresh fixture exercises dropping at the old cube value.
 - openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
 - tapOn:
     id: developer-preset-e2e-match-cube
 - tapOn:
@@ -130,6 +141,10 @@ tags:
 - takeScreenshot: match-06-drop
 # A blocked roll must never carry Undo across the accepted-cube/revealed-roll floor.
 - openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-undo-floor
+    direction: DOWN
 - tapOn:
     id: developer-preset-e2e-match-undo-floor
 - tapOn:

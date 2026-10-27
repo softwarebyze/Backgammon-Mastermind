@@ -49,3 +49,21 @@ it.each([3, 5] as const)('still starts a local %s-point match from home', (lengt
   expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(length));
   expect(router.replace).toHaveBeenCalledWith('/game');
 });
+
+it.each([3, 5] as const)('starts a %s-point computer match with human White', (length) => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('match-mode-vs-computer'));
+  expect(screen.getByTestId('match-mode-vs-computer').props.accessibilityState).toEqual({ checked: true });
+  fireEvent.press(screen.getByTestId(`start-match-${length}`));
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(length, 'vs-computer'));
+  expect(router.replace).toHaveBeenCalledWith('/game');
+});
+
+it('switches back to local match without starting until a length is chosen', () => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('match-mode-vs-computer'));
+  fireEvent.press(screen.getByTestId('match-mode-vs-human'));
+  expect(useGame().startFromPosition).not.toHaveBeenCalled();
+  fireEvent.press(screen.getByTestId('start-match-3'));
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(3, 'vs-human'));
+});

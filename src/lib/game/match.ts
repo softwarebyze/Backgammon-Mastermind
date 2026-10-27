@@ -1,4 +1,4 @@
-import type { GameState, Player } from './types';
+import type { GameMode, GameState, Player } from './types';
 import { createInitialState } from './constants';
 
 export type MatchState = {
@@ -19,14 +19,14 @@ export function createMatch(length: 3 | 5): MatchState {
   return { length, score: { white: 0, black: 0 }, cube: { value: 1, owner: 'center' }, pendingOffer: null, crawford: false, crawfordPlayed: false, gameNumber: 1, winner: null, result: null, undoFloor: 0 };
 }
 
-export function createMatchGame(length: 3 | 5): GameState {
-  return { ...createInitialState('vs-human'), match: createMatch(length) };
+export function createMatchGame(length: 3 | 5, mode: GameMode = 'vs-human'): GameState {
+  return { ...createInitialState(mode), match: createMatch(length) };
 }
 
 /** USBGF Ruling Guide 4.4: before own roll, acceptor owns, Crawford and dead cubes. */
 export function canOfferDouble(state: GameState): boolean {
   const m = state.match;
-  return !!m && state.mode === 'vs-human' && state.phase === 'rolling' && !m.pendingOffer
+  return !!m && state.phase === 'rolling' && !m.pendingOffer
     && !m.winner && !m.result && !m.crawford
     && (m.cube.owner === 'center' || m.cube.owner === state.currentPlayer)
     && m.score[state.currentPlayer] + m.cube.value < m.length;
@@ -80,5 +80,5 @@ export function nextMatchGame(state: GameState): GameState {
     return state;
   const crawford = !m.crawfordPlayed && (m.score.white === m.length - 1 || m.score.black === m.length - 1);
   // Every game uses the normal opening roll; previous game winner has no privilege.
-  return { ...createInitialState('vs-human'), match: { ...m, cube: { value: 1, owner: 'center' }, pendingOffer: null, result: null, gameNumber: m.gameNumber + 1, crawford, crawfordPlayed: m.crawfordPlayed || crawford, undoFloor: 0 } };
+  return { ...createInitialState(state.mode), match: { ...m, cube: { value: 1, owner: 'center' }, pendingOffer: null, result: null, gameNumber: m.gameNumber + 1, crawford, crawfordPlayed: m.crawfordPlayed || crawford, undoFloor: 0 } };
 }

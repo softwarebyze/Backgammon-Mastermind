@@ -5,10 +5,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
+import { computerCubeAction } from '@/lib/game/computer-cube';
 import {
   computerMoveDelayMs,
   computerThinkDelayMs,
 } from '@/lib/game/computer-pace';
+import { acceptDouble, dropDouble, offerDouble } from '@/lib/game/match';
 
 type ComputerOpponentOptions = {
   enabled: boolean;
@@ -44,6 +46,7 @@ export function useComputerOpponent({
   paused = false,
 }: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const generationRef = useRef(0);
   const stateRef = useRef(state);
   stateRef.current = state;
   const pausedRef = useRef(paused);
@@ -52,6 +55,7 @@ export function useComputerOpponent({
   const [scheduleGen, setScheduleGen] = useState(0);
 
   const clearAITimeout = useCallback(() => {
+    generationRef.current++;
     if (aiTimeoutRef.current !== null) {
       clearTimeout(aiTimeoutRef.current);
       aiTimeoutRef.current = null;
@@ -69,7 +73,7 @@ export function useComputerOpponent({
       return clearAITimeout;
     if (state.mode !== 'vs-computer')
       return clearAITimeout;
-    if (state.currentPlayer !== 'black')
+    if (state.currentPlayer !== 'black' && state.match?.pendingOffer !== 'white')
       return clearAITimeout;
     if (state.phase === 'game-over')
       return clearAITimeout;
@@ -79,6 +83,7 @@ export function useComputerOpponent({
     if (hasRedo)
       return clearAITimeout;
 
+    const generation = generationRef.current;
     const delay = computerThinkDelayMs(state.phase);
     let moveTimer: ReturnType<typeof setTimeout> | undefined;
     if (delay === 0 && state.phase !== 'moving') {
@@ -87,22 +92,36 @@ export function useComputerOpponent({
 
     const runAI = () => {
       // Failsafe: a timeout scheduled just before the pause must not fire through it.
-      if (pausedRef.current)
+      if (pausedRef.current || generationRef.current !== generation)
         return;
       const prev = stateRef.current;
-      if (!prev || prev.currentPlayer !== 'black')
+      if (prev !== state || !prev || (prev.currentPlayer !== 'black' && prev.match?.pendingOffer !== 'white'))
+        return;
+
+      const cubeAction = computerCubeAction(prev);
+      if (cubeAction) {
+        setState(current => current !== prev
+          ? current
+          : cubeAction === 'offer'
+            ? offerDouble(current, moveCount)
+            : cubeAction === 'accept' ? acceptDouble(current) : dropDouble(current));
+        return;
+      }
+      // Wait for the human to answer the computer's offer.
+      if (prev.match?.pendingOffer)
         return;
 
       if (prev.phase === 'opening-roll' || prev.phase === 'rolling') {
         setState((current) => {
-          if (!current || current.currentPlayer !== 'black')
+          if (current !== prev || current.currentPlayer !== 'black')
             return current;
           if (current.phase === 'opening-roll') {
             playGameSfx('roll');
             return applyOpeningDieRoll(current, rollOpeningDie());
           }
           playGameSfx('roll');
-          return applyDiceRoll(current, rollDice());
+          const rolled = applyDiceRoll(current, rollDice());
+          return rolled.match ? { ...rolled, match: { ...rolled.match, undoFloor: moveCount } } : rolled;
         });
         return;
       }
@@ -122,10 +141,10 @@ export function useComputerOpponent({
         }
         const moveDelay = computerMoveDelayMs(moveCount);
         moveTimer = setTimeout(() => {
-          if (pausedRef.current)
+          if (pausedRef.current || generationRef.current !== generation)
             return;
           const latest = stateRef.current;
-          if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
+          if (latest !== prev || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
           playMove(latest, move, { pace: 'computer' });

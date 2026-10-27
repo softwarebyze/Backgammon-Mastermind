@@ -2,16 +2,19 @@ import type { GameState } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { matchPlayer } from '@/features/game/match-copy';
 import { useGame } from '@/features/game/use-game';
 import { canOfferDouble } from '@/lib/game/match';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
-export function MatchControls({ state, onRoll, onReset }: { state: GameState; onRoll: () => void; onReset: () => void }) {
+export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerTurn }: { state: GameState; onRoll: () => void; onReset: () => void; isHumanTurn: boolean; isComputerTurn: boolean }) {
   const { matchAction, isAnimating, canRedo } = useGame();
   const m = state.match!;
   const blocked = isAnimating || canRedo;
+  // The offerer remains currentPlayer while the other side answers the cube.
+  const humanDecision = state.mode !== 'vs-computer' || m.pendingOffer === 'black';
+  if (state.phase !== 'game-over' && (m.pendingOffer ? !humanDecision : !isHumanTurn || isComputerTurn))
+    return null;
   const button = (id: string, label: string, onPress: () => void) => {
     const secondary = id === 'match-double' || id === 'match-drop';
     return (
@@ -24,15 +27,12 @@ export function MatchControls({ state, onRoll, onReset }: { state: GameState; on
         onPress={onPress}
         style={({ pressed, hovered }) => [styles.button, secondary && styles.secondary, hovered && styles.hover, (pressed || blocked) && styles.dim]}
       >
-        <Text style={[styles.buttonText, secondary && styles.secondaryText]}>{label}</Text>
+        <Text style={[styles.buttonText, secondary && styles.secondaryText]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>{label}</Text>
       </HoverPressable>
     );
   };
   return (
     <View style={styles.wrap}>
-      {m.pendingOffer
-        ? <Text style={styles.note}>{translate('game.match.offer', { player: matchPlayer(m.pendingOffer), opponent: matchPlayer(m.pendingOffer === 'white' ? 'black' : 'white'), value: m.cube.value * 2, points: m.cube.value })}</Text>
-        : state.phase === 'rolling' && <Text style={styles.note}>{translate('game.match.roll_note')}</Text>}
       <View style={styles.row}>
         {m.pendingOffer
           ? (
@@ -54,10 +54,9 @@ export function MatchControls({ state, onRoll, onReset }: { state: GameState; on
   );
 }
 const styles = StyleSheet.create({
-  wrap: { width: '100%', gap: 8, alignItems: 'center' },
-  row: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'center' },
-  note: { color: GAME_PALETTE.textMuted, fontSize: 13, textAlign: 'center', ...interFont('regular') },
-  button: { minHeight: 48, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 12, borderRadius: 12, backgroundColor: GAME_PALETTE.control },
+  wrap: { width: '100%', alignItems: 'center' },
+  row: { width: '100%', flexDirection: 'row', gap: 10, justifyContent: 'center' },
+  button: { minHeight: 48, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, flexShrink: 1, borderRadius: 12, backgroundColor: GAME_PALETTE.control },
   secondary: { backgroundColor: GAME_PALETTE.bg, borderWidth: 1, borderColor: GAME_PALETTE.accent },
   hover: { opacity: 0.85 },
   dim: { opacity: 0.5 },

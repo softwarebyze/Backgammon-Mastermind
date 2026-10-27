@@ -32,12 +32,12 @@ describe('match cube rules', () => {
     const redouble = acceptDouble(offerDouble({ ...accepted, currentPlayer: 'black' }, 9));
     expect(redouble.match?.cube).toEqual({ value: 4, owner: 'white' });
   });
-  it('forbids opening, post-roll, Crawford, computer, completed and dead-cube offers', () => {
+  it('forbids opening, post-roll, Crawford, completed and dead-cube offers', () => {
     const state = preRoll();
     expect(canOfferDouble(state)).toBe(true);
     expect(canOfferDouble(createMatchGame(5))).toBe(false);
     expect(canOfferDouble(applyDiceRoll(state, [3, 1]))).toBe(false);
-    expect(canOfferDouble({ ...state, mode: 'vs-computer' })).toBe(false);
+    expect(canOfferDouble({ ...state, mode: 'vs-computer' })).toBe(true);
     expect(canOfferDouble({ ...state, match: { ...state.match!, crawford: true } })).toBe(false);
     const dead = { ...state, match: { ...state.match!, score: { white: 4, black: 0 } } };
     expect(canOfferDouble(dead)).toBe(false);
@@ -146,4 +146,38 @@ describe('match recovery and history', () => {
     expect(currentTimelineState(restored).match).toEqual(next.match);
     expect(currentTimelineState(undoTimeline(restored, log[0]!)).match).toEqual(before.match);
   });
+});
+
+it('preserves computer mode through Crawford, post-Crawford and a match win', () => {
+  let state = { ...finishing('black'), mode: 'vs-computer' as const };
+  state.match = { ...state.match!, length: 3, cube: { value: 2, owner: 'white' } };
+  const crawford = nextMatchGame(win(state));
+  expect(crawford.mode).toBe('vs-computer');
+  expect(crawford.match?.crawford).toBe(true);
+  const post = nextMatchGame(win({ ...finishing('white'), mode: 'vs-computer', match: crawford.match }));
+  expect(post.mode).toBe('vs-computer');
+  expect(post.match?.crawford).toBe(false);
+  expect(post.match?.crawfordPlayed).toBe(true);
+  expect(canOfferDouble({ ...post, phase: 'rolling', currentPlayer: 'white' })).toBe(true);
+  expect(canOfferDouble({ ...post, phase: 'rolling', currentPlayer: 'black' })).toBe(false);
+  state = { ...finishing('black'), mode: 'vs-computer', match: post.match };
+  const won = win(state);
+  expect(won.match?.winner).toBe('black');
+  expect(nextMatchGame(won)).toBe(won);
+});
+
+it.each(['white', 'black'] as const)('recovers computer %s offers, takes, drops, results and Crawford without losing mode', (offerer) => {
+  const rolling = { ...preRoll(), mode: 'vs-computer' as const, currentPlayer: offerer };
+  const offered = offerDouble(rolling, 0);
+  const dropped = dropDouble(offered);
+  const crawford = nextMatchGame({ ...dropped, match: { ...dropped.match!, length: 3, score: { white: 2, black: 0 } } });
+  for (const state of [offered, acceptDouble(offered), dropped, crawford]) {
+    const parsed = parsePersistedSessionValue(JSON.parse(JSON.stringify(makePersistedSession({ state, moveLog: [], replayBaseline: rolling }))));
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.session.state).toEqual(state);
+      expect(parsed.session.state.mode).toBe('vs-computer');
+      expect(parsed.session.replayBaseline?.mode).toBe('vs-computer');
+    }
+  }
 });

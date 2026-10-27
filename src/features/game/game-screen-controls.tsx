@@ -12,6 +12,7 @@ import { MatchControls } from '@/features/game/components/match-controls';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { matchPlayer } from '@/features/game/match-copy';
 import { isTurnStart } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -84,8 +85,8 @@ export function GameScreenControls({
   const showOpening = opening !== null && !isReviewing;
 
   return (
-    <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow} pointerEvents="none">
+    <View style={[styles.controls, compact && styles.controlsCompact, state.match && styles.matchControls]} testID="game-controls">
+      <View style={[styles.diceRow, state.match && styles.matchDiceRow]} pointerEvents="none" testID="game-dice-tray">
         {showOpening
           ? (
               // Opening: each side's die in its own color; the engine hands these
@@ -112,7 +113,7 @@ export function GameScreenControls({
             )}
       </View>
       <View
-        style={hintCardOpen || !!state.match ? styles.actionSlotOpen : styles.actionSlot}
+        style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"
         testID="game-action-slot"
       >
@@ -135,7 +136,11 @@ export function GameScreenControls({
           canUndoMove={canUndoMove}
         />
       </View>
-      <Text style={styles.caption}>{state.match ? translate('game.match.advice_note') : caption}</Text>
+      <Text style={[styles.caption, state.match && styles.matchCaption]} numberOfLines={state.match ? 2 : 1} testID="game-action-caption" accessibilityLiveRegion="polite">
+        {state.match?.pendingOffer
+          ? translate('game.match.offer', { player: matchPlayer(state.match.pendingOffer), opponent: matchPlayer(state.match.pendingOffer === 'white' ? 'black' : 'white'), value: state.match.cube.value * 2, points: state.match.cube.value })
+          : caption}
+      </Text>
     </View>
   );
 }
@@ -200,8 +205,8 @@ function ActionControl({
     );
   }
 
-  if (state.match && (state.phase === 'rolling' || state.phase === 'game-over')) {
-    return <MatchControls state={state} onRoll={onRoll} onReset={onReset} />;
+  if (state.match && (state.match.pendingOffer || state.phase === 'rolling' || state.phase === 'game-over')) {
+    return <MatchControls state={state} onRoll={onRoll} onReset={onReset} isHumanTurn={isHumanTurn} isComputerTurn={isComputerTurn} />;
   }
 
   if (state.phase === 'game-over') {
@@ -484,6 +489,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...interFont('regular'),
   },
+  // Two lines for cube decisions without making the match footer taller.
+  matchControls: {
+    paddingTop: 4,
+    paddingBottom: 4,
+  },
+  matchDiceRow: {
+    marginBottom: 4,
+  },
+  matchCaption: {
+    height: 32,
+    minHeight: 32,
+    lineHeight: 16,
+    marginTop: 4,
+    fontSize: 12,
+  },
   confirmRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -516,9 +536,10 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.control,
     borderWidth: 1,
     borderColor: GAME_PALETTE.controlBorder,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     paddingVertical: 14,
-    minWidth: 180,
+    minWidth: 0,
+    flexShrink: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

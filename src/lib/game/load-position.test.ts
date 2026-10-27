@@ -1,3 +1,4 @@
+import { computerCubeAction } from './computer-cube';
 import { BAR_POINT } from './constants';
 import { createPositionState } from './create-position';
 import {
@@ -6,6 +7,7 @@ import {
   POSITION_JSON_ERRORS,
   POSITION_LOADER_PRESETS,
 } from './load-position';
+import { dropDouble, nextMatchGame, offerDouble } from './match';
 import { applyDiceRoll, applyMove, getLegalMoves, passTurn } from './moves';
 
 function preset(id: string) {
@@ -91,6 +93,9 @@ describe('parsePositionJson', () => {
 describe('position loader presets', () => {
   it('exposes the #155 bar 1–2 audit boards and the E2E undo/redo board', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
+      'e2e-computer-match-offer',
+      'e2e-computer-match-take',
+      'e2e-computer-match-drop',
       'e2e-match-undo-floor',
       'e2e-match-cube',
       'e2e-match-final',
@@ -134,4 +139,20 @@ it('the match undo-floor fixture blocks every Black roll after White plays 8→7
       expect(applyDiceRoll(state, [a, b]).phase).toBe('no-move');
     }
   }
+});
+
+describe('computer match QA presets', () => {
+  it('offers from the computer side and reaches Crawford after a drop', () => {
+    const state = loadPositionPreset(preset('e2e-computer-match-offer'));
+    expect(computerCubeAction(state)).toBe('offer');
+    const dropped = dropDouble(offerDouble(state, 0));
+    expect(dropped.match?.score.black).toBe(2);
+    const next = nextMatchGame(dropped);
+    expect(next.mode).toBe('vs-computer');
+    expect(next.match?.crawford).toBe(true);
+  });
+  it.each([['take', 'accept'], ['drop', 'drop']] as const)('provides a deterministic computer %s response', (id, action) => {
+    const state = loadPositionPreset(preset(`e2e-computer-match-${id}`));
+    expect(computerCubeAction(offerDouble(state, 0))).toBe(action);
+  });
 });

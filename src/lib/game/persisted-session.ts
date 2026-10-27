@@ -195,7 +195,7 @@ export function gameStateInvariantError(state: GameState): string | null {
   if (countCheckers(state, 'black') !== TOTAL_CHECKERS) {
     return 'black must have exactly 15 checkers';
   }
-  if (state.match && (state.mode !== 'vs-human' || (state.match.pendingOffer && (state.match.pendingOffer !== state.currentPlayer || !canOfferDouble({ ...state, match: { ...state.match, pendingOffer: null } }))) || (!!state.match.result !== (state.phase === 'game-over')))) {
+  if (state.match && ((state.match.pendingOffer && (state.match.pendingOffer !== state.currentPlayer || !canOfferDouble({ ...state, match: { ...state.match, pendingOffer: null } }))) || (!!state.match.result !== (state.phase === 'game-over')))) {
     return 'invalid match phase or pending cube offer';
   }
   return diceError(state.dice, state.remainingDice)

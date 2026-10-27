@@ -76,7 +76,7 @@ export function useGameLifecycle({
     if (!state) {
       return;
     }
-    const next = state.match ? createMatchGame(state.match.length) : createInitialState(state.mode);
+    const next = state.match ? createMatchGame(state.match.length, state.mode) : createInitialState(state.mode);
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);

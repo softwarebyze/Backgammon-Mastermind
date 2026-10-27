@@ -63,11 +63,16 @@ function GameTopChrome({
 }) {
   return (
     <View style={styles.chromeColumn} onLayout={onLayout}>
-      <MatchStatusBar state={state} />
-      <GamePipStatusBar state={state} />
-      <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} headlineOverride={headline} />
-      </View>
+      {state.match
+        ? <MatchStatusBar state={state} headline={headline} />
+        : (
+            <>
+              <GamePipStatusBar state={state} />
+              <View style={styles.turnBannerWrap}>
+                <TurnIndicatorBanner state={state} headlineOverride={headline} />
+              </View>
+            </>
+          )}
     </View>
   );
 }
