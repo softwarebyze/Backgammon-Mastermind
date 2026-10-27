@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   heading: { ...interFont('semibold'), color: palette.text, fontSize: 19 },
   caption: { ...interFont('regular'), color: '#CBB8A7', fontSize: 14, lineHeight: 21 },
   row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 8 },
-  button: { borderRadius: 10, backgroundColor: palette.surface, paddingHorizontal: 14, minWidth: 48, minHeight: Platform.OS === 'android' ? 48 : 44, justifyContent: 'center', alignItems: 'center' },
+  button: { borderRadius: 10, backgroundColor: palette.surface, paddingHorizontal: 14, minWidth: 48, minHeight: Platform.OS === 'android' ? 48 : 44, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 8 },
   buttonText: { ...interFont('medium'), color: palette.accent, fontSize: 14, textAlign: 'center' },
   active: { backgroundColor: palette.control },
   activeText: { color: palette.controlInk },

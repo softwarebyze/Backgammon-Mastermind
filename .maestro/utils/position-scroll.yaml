@@ -1,0 +1,19 @@
+# Scroll outside the editable board so gestures cannot change a checker stack.
+appId: ${APP_ID}
+tags:
+  - util
+---
+- repeat:
+    times: 12
+    commands:
+      - runFlow:
+          when:
+            notVisible:
+              id: ${TARGET_ID}
+          commands:
+            - swipe:
+                start: 99%, ${START_Y}
+                end: 99%, ${END_Y}
+                duration: 350
+- assertVisible:
+    id: ${TARGET_ID}

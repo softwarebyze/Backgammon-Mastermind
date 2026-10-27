@@ -1,3 +1,4 @@
+import type { StackEditHandlers } from './use-stack-edit-gesture';
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Player } from '@/lib/game/types';
@@ -81,6 +82,7 @@ type Props = {
   interactionEnabled?: boolean;
   /** Setup editor: target the exact point, without gameplay fat-finger remapping. */
   editMode?: boolean;
+  stackEditor?: StackEditHandlers;
   isReviewing?: boolean;
   /** Optional overrides for learn mode (does not persist preferences). */
   aidsOverride?: BoardAidsOverride;
@@ -110,6 +112,7 @@ export function BoardView({
   onBearOffPress,
   interactionEnabled = true,
   editMode = false,
+  stackEditor,
   isReviewing = false,
   aidsOverride,
   emphasisPoints,
@@ -253,6 +256,7 @@ export function BoardView({
     return (
       <PointColumn
         key={idx}
+        stackEditor={editMode ? stackEditor : undefined}
         pointIndex={idx}
         point={point}
         isTop={isTop}
@@ -343,6 +347,7 @@ export function BoardView({
         />
 
         <BarArea
+          stackEditor={editMode ? stackEditor : undefined}
           whiteCount={barWhite}
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}

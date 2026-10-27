@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+- swipe:
+    from:
+      id: point-6
+    direction: UP
+    duration: 900
+- swipe:
+    from:
+      id: point-6
+    direction: UP
+    duration: 900
+- assertVisible: 'Point 6, 15 white checkers, selected'
+- takeScreenshot: position-drag-01-white
+- swipe:
+    from:
+      id: point-6
+    direction: DOWN
+    duration: 900
+- assertVisible: 'Point 6, selected'
+- tapOn:
+    id: position-paint-black
+- swipe:
+    from:
+      id: point-13
+    direction: DOWN
+    duration: 900
+- assertVisible: 'Point 13, 15 black checkers, selected'
+- takeScreenshot: position-drag-02-black
+- tapOn:
+    id: position-paint-white

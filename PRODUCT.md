@@ -14,6 +14,10 @@ The confirmed audience for Positions is anyone who wants to recreate a
 backgammon position, see it on a board, try playing from it, or share it with
 someone else. No account or developer access is required for this workflow.
 
+The confirmed editing interaction is the board and a White/Black selector:
+press and drag on a point to increase or decrease its checker stack. Secondary
+forms should stay out of the initial editing workspace.
+
 ## Product Purpose
 
 Public position setup connects visual board editing, import/export with

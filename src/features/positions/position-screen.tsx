@@ -3,7 +3,6 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
-import { BoardView } from '@/features/game/components/board/board-view';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
@@ -12,9 +11,9 @@ import { newPosition, positionFromGame, positionGame, validatePosition } from '@
 import { deleteSavedPosition, loadSavedPositions, savePosition } from '@/lib/positions/saved-positions';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
+import { PositionBoardEditor } from './position-board-editor';
 import { PositionAction, PositionSection } from './position-controls';
 import { PositionDetails } from './position-details';
-import { PositionEditor } from './position-editor';
 import { positionError } from './position-errors';
 import { PositionExchange } from './position-exchange';
 import { styles } from './position-styles';
@@ -46,6 +45,8 @@ function PositionWorkspace({ data }: { data?: string }) {
   const [saved, setSaved] = useState(loadSavedPositions);
   const [name, setName] = useState('');
   const [notice, setNotice] = useState('');
+  const [savedOpen, setSavedOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-human');
   const { width } = useWindowDimensions();
   const { insets } = useLayoutMetrics();
@@ -73,7 +74,6 @@ function PositionWorkspace({ data }: { data?: string }) {
     valid = false;
     validationError = positionError(err);
   }
-  const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), selectedPoint: typeof location === 'number' ? location : null };
   const play = () => {
     try {
       const next = positionGame(position, mode);
@@ -94,7 +94,8 @@ function PositionWorkspace({ data }: { data?: string }) {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.content, { paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
       >
-        <Text style={styles.caption}>{translate(data ? 'positions.shared_intro' : 'positions.intro')}</Text>
+        {!!data && <Text style={styles.caption}>{translate('positions.shared_intro')}</Text>}
+        <PositionBoardEditor position={position} dimensions={dims} location={location} onLocation={setLocation} onChange={change} />
         {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
         <View style={styles.row}>
           <PositionAction
@@ -126,11 +127,8 @@ function PositionWorkspace({ data }: { data?: string }) {
             }}
           />
         </View>
-        <View style={styles.board}>
-          <BoardView state={board} dimensions={dims} previewTarget={null} moveAnimation={null} editMode onPointPress={setLocation} onPointPressIn={() => {}} onPointPressOut={() => {}} onBarPress={() => {}} onBearOffPress={() => {}} aidsOverride={{ showPointNumbers: true, showMoveHints: false, showDirectionOverlay: false }} />
-        </View>
-        <PositionEditor position={position} location={location} onLocation={setLocation} onChange={change} />
-        <PositionDetails position={position} onChange={change} />
+        <PositionAction label={translate('positions.turn_dice')} testID="position-details-toggle" selected={detailsOpen} onPress={() => setDetailsOpen(!detailsOpen)} />
+        {detailsOpen && <PositionDetails position={position} onChange={change} />}
         {!valid && <Text accessibilityRole="alert" style={styles.error}>{validationError}</Text>}
         <PositionSection title={translate('positions.play')}>
           <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
@@ -148,36 +146,39 @@ function PositionWorkspace({ data }: { data?: string }) {
             setLocation(null);
           }}
         />
-        <PositionSection title={translate('positions.saved')}>
-          <Text style={styles.caption}>{translate('positions.saved_hint')}</Text>
-          <TextInput testID="position-save-name" accessibilityLabel={translate('positions.name')} placeholder={translate('positions.name')} placeholderTextColor="#CBB8A7" value={name} maxLength={80} onChangeText={setName} style={styles.input} />
-          <PositionAction
-            label={translate('positions.save')}
-            testID="position-save"
-            disabled={!valid}
-            onPress={() => {
-              try {
-                setSaved(savePosition(name || translate('positions.untitled'), position));
-                setNotice(translate('positions.saved_notice'));
-              }
-              catch (err) { setError(positionError(err)); }
-            }}
-          />
-          {!saved.length && <Text style={styles.caption}>{translate('positions.no_saved')}</Text>}
-          {saved.map(entry => (
-            <View style={styles.savedRow} key={entry.id}>
-              <PositionAction
-                label={entry.name}
-                onPress={() => {
-                  change(entry.position);
-                  setLocation(null);
-                  setName(entry.name);
-                }}
-              />
-              <PositionAction label={translate('positions.delete')} onPress={() => setSaved(deleteSavedPosition(entry.id))} />
-            </View>
-          ))}
-        </PositionSection>
+        <PositionAction label={translate('positions.saved')} testID="position-saved-toggle" selected={savedOpen} onPress={() => setSavedOpen(!savedOpen)} />
+        {savedOpen && (
+          <PositionSection title={translate('positions.saved')}>
+            <Text style={styles.caption}>{translate('positions.saved_hint')}</Text>
+            <TextInput testID="position-save-name" accessibilityLabel={translate('positions.name')} placeholder={translate('positions.name')} placeholderTextColor="#CBB8A7" value={name} maxLength={80} onChangeText={setName} style={styles.input} />
+            <PositionAction
+              label={translate('positions.save')}
+              testID="position-save"
+              disabled={!valid}
+              onPress={() => {
+                try {
+                  setSaved(savePosition(name || translate('positions.untitled'), position));
+                  setNotice(translate('positions.saved_notice'));
+                }
+                catch (err) { setError(positionError(err)); }
+              }}
+            />
+            {!saved.length && <Text style={styles.caption}>{translate('positions.no_saved')}</Text>}
+            {saved.map(entry => (
+              <View style={styles.savedRow} key={entry.id}>
+                <PositionAction
+                  label={entry.name}
+                  onPress={() => {
+                    change(entry.position);
+                    setLocation(null);
+                    setName(entry.name);
+                  }}
+                />
+                <PositionAction label={translate('positions.delete')} onPress={() => setSaved(deleteSavedPosition(entry.id))} />
+              </View>
+            ))}
+          </PositionSection>
+        )}
         {!!notice && <Text accessibilityLiveRegion="polite" style={styles.caption}>{notice}</Text>}
       </ScrollView>
     </>

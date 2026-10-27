@@ -8,31 +8,78 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: vs Computer
-- scrollUntilVisible:
-    element:
-      id: position-setup-button
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-setup-button
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-setup-button
 - extendedWaitUntil:
     visible:
       id: position-screen
     timeout: 30000
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-empty
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-empty
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- runFlow: ../utils/position-drag.yaml
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-standard
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-standard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-paint-white
 - assertVisible: 'Point 6, 5 white checkers'
 - tapOn:
     id: point-6
-- scrollUntilVisible:
-    element:
-      id: position-remove
-    direction: DOWN
+- tapOn:
+    id: position-fine-tune
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-remove
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-remove
 - takeScreenshot: position-01-editor
 # Save the edited board and verify it survives a real relaunch.
-- scrollUntilVisible:
-    element:
-      id: position-save-name
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-saved-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-saved-toggle
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-save-name
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-save-name
 - inputText: My saved position
@@ -43,52 +90,78 @@ tags:
 - stopApp
 - launchApp
 - openLink: backgammonmastermind.preview://position
-- scrollUntilVisible:
-    element:
-      text: My saved position
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-saved-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-saved-toggle
 - tapOn: My saved position
 - takeScreenshot: position-02-saved
 # Load a known public GNU ID through the consumer importer.
-- scrollUntilVisible:
-    element:
-      id: position-import-toggle
-    direction: UP
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-exchange-toggle
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-exchange-toggle
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-toggle
+      START_Y: '25%'
+      END_Y: '80%'
 - tapOn:
     id: position-import-toggle
-- scrollUntilVisible:
-    element:
-      id: position-import-input
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-input
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-import-input
 - inputText: 4HPwATDgc/ABMA:QYkqASAAIAAA
 - hideKeyboard
-- scrollUntilVisible:
-    element:
-      id: position-import-load
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-load
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-import-load
-- scrollUntilVisible:
-    element:
-      id: position-export-xgid
-    direction: UP
+- tapOn:
+    id: position-exchange-toggle
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-export-xgid
+      START_Y: '25%'
+      END_Y: '80%'
 - tapOn:
     id: position-export-xgid
-- scrollUntilVisible:
-    element:
-      id: position-export-output
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-export-output
+      START_Y: '80%'
+      END_Y: '25%'
 - assertVisible:
     id: position-export-output
 - tapOn:
     id: position-copy
 - takeScreenshot: position-03-export
-- scrollUntilVisible:
-    element:
-      id: position-play
-    direction: UP
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-play
+      START_Y: '25%'
+      END_Y: '80%'
 - tapOn:
     id: position-play
 - extendedWaitUntil:
@@ -106,10 +179,12 @@ tags:
       id: position-screen
     timeout: 30000
 - takeScreenshot: position-05-shared-preview
-- scrollUntilVisible:
-    element:
-      id: position-play
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-play
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-play
 - assertVisible: Game in progress

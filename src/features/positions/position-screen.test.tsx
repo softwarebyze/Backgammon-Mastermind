@@ -29,9 +29,12 @@ beforeEach(() => {
 
 it('editing, saving and exporting a position never replaces the active game', () => {
   render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('position-fine-tune'));
   fireEvent.press(screen.getByTestId('test-board-point'));
   fireEvent.press(screen.getByTestId('position-remove'));
+  fireEvent.press(screen.getByTestId('position-saved-toggle'));
   fireEvent.press(screen.getByTestId('position-save'));
+  fireEvent.press(screen.getByTestId('position-exchange-toggle'));
   fireEvent.press(screen.getByTestId('position-export-xgid'));
   expect(screen.getByTestId('position-export-output').props.value).toContain('XGID=');
   expect(start).not.toHaveBeenCalled();
@@ -54,6 +57,7 @@ it('opens a shared preview without replacing a game, then uses confirmation on P
 
 it('shows invalid import errors without modifying or replacing the board', () => {
   render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('position-exchange-toggle'));
   fireEvent.press(screen.getByTestId('position-import-toggle'));
   fireEvent.changeText(screen.getByTestId('position-import-input'), '{bad json');
   fireEvent.press(screen.getByTestId('position-import-load'));
@@ -64,6 +68,8 @@ it('shows invalid import errors without modifying or replacing the board', () =>
 
 it('keeps a half-entered roll editable without crashing board editing', () => {
   render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('position-details-toggle'));
+  fireEvent.press(screen.getByTestId('position-fine-tune'));
   fireEvent.changeText(screen.getByTestId('position-die-0'), '3');
   expect(screen.getByTestId('position-play')).toBeDisabled();
   fireEvent.press(screen.getByTestId('test-board-point'));

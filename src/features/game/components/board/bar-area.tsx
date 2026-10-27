@@ -1,3 +1,4 @@
+import type { StackEditHandlers } from './use-stack-edit-gesture';
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { Player } from '@/lib/game/types';
 import { useId, useMemo } from 'react';
@@ -9,6 +10,7 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { BAR_POINT } from '@/lib/game/constants';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
+import { StackEditTarget } from './stack-edit-target';
 import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 type DragHandlers = {
@@ -20,6 +22,7 @@ type DragHandlers = {
 };
 
 type Props = {
+  stackEditor?: StackEditHandlers;
   whiteCount: number;
   blackCount: number;
   currentPlayer: Player;
@@ -97,7 +100,7 @@ function BarStack({
     >
       {Array.from({ length: visible }, (_, i) => {
         const isTopChecker = i === visible - 1;
-        const token = <CheckerToken player={player} size={small} isSelected={isTopChecker && isSelected} />;
+        const token = <CheckerToken player={player} size={small} showCount={isTopChecker && count > 4 ? count : undefined} isSelected={isTopChecker && isSelected} />;
         if (!isTopChecker) {
           return <View key={i}>{token}</View>;
         }
@@ -112,6 +115,7 @@ function BarStack({
 }
 
 export function BarArea({
+  stackEditor,
   whiteCount,
   blackCount,
   currentPlayer,
@@ -149,14 +153,18 @@ export function BarArea({
 
   const pressable = (
     <Pressable
-      accessibilityRole="button"
+      testID={stackEditor ? 'position-board-bar' : undefined}
+      accessibilityRole={stackEditor ? 'adjustable' : 'button'}
+      accessibilityValue={stackEditor ? { min: 0, max: 30, now: whiteCount + blackCount } : undefined}
+      accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : undefined}
+      onAccessibilityAction={event => stackEditor?.onAdjust(BAR_POINT, event.nativeEvent.actionName === 'decrement' ? -1 : 1)}
       accessibilityLabel={
         `Bar${whiteCount > 0 ? `, ${whiteCount} white ${whiteCount === 1 ? 'checker' : 'checkers'}` : ''}`
         + `${blackCount > 0 ? `, ${blackCount} black ${blackCount === 1 ? 'checker' : 'checkers'}` : ''}`
       }
       accessible
-      pointerEvents={dragEnabled ? 'box-only' : 'auto'}
-      onPress={dragEnabled
+      pointerEvents={dragEnabled || stackEditor ? 'box-only' : 'auto'}
+      onPress={dragEnabled || stackEditor
         ? undefined
         : (e) => {
             // Parent board Pressable clears selection; stop bubble on web.
@@ -198,6 +206,10 @@ export function BarArea({
       />
     </Pressable>
   );
+
+  if (stackEditor) {
+    return <StackEditTarget point={BAR_POINT} checkerSize={checkerSize} editor={stackEditor}>{pressable}</StackEditTarget>;
+  }
 
   if (dragEnabled && barGesture) {
     return (

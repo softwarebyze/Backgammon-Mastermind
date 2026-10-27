@@ -5,9 +5,17 @@ is available in production on web, iOS and Android; the developer loader stays
 available for QA.
 
 - Start from the standard board, an empty board, or the current game.
-- Select a point, then add/remove checkers. Removed checkers return to the
-  borne-off tray. Select a bar button to edit that player's bar. Each player
-  always has 15 checkers across the board, bar and off tray.
+- Choose White or Black above the board. Press a point and drag toward the
+  centre to increase its stack, or toward the edge to decrease it. A tap adds
+  one checker. The stroke stays on its starting point even when the pointer
+  crosses another point; cancellation restores the starting position.
+- The bar supports the same gesture for the selected colour. Stacks support
+  up to 15 checkers, limited by the available off-tray checkers. Painting over
+  the other colour returns that stack to its own tray. Each player always has
+  15 checkers across the board, bar and off tray.
+- **Adjust counts** provides button controls, and screen readers can increment
+  or decrement points and the bar. Turn/dice, import/export, and saved positions
+  are expandable so the initial workspace focuses on the board.
 - Set the player on roll and two dice, or leave both dice at zero to roll later.
 - Import XGID, GNU Position ID with optional Match ID, labeled GNU clipboard
   text, legacy developer position JSON, or a shared position link.
@@ -63,7 +71,7 @@ Unit tests include the published starting-position/Match ID and XG help
 examples, asymmetric external positions, player perspective, bar/off counts,
 round trips, malformed inputs, saved-board recovery, and active-game isolation.
 `.maestro/app/position-setup.yaml` exercises the production entry point, exact
-point editing, save/relaunch/reopen, GNU import, XG export/copy, starting play,
+direct stack dragging in both colours, precise count controls, save/relaunch/reopen, GNU import, XG export/copy, starting play,
 and malformed shared links. It is registered in the Android evidence run.
 
 `.maestro/app/position-preview-ios.yaml` runs alongside the smoke flow on

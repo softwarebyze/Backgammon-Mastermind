@@ -9,41 +9,54 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: Play against the computer
-- scrollUntilVisible:
-    element:
-      id: position-setup-button
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-setup-button
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-setup-button
 - extendedWaitUntil:
     visible:
       id: position-screen
     timeout: 30000
-- assertVisible: Standard setup
-- assertVisible: Empty board
+- assertVisible:
+    id: position-paint-white
+- assertVisible:
+    id: position-paint-black
 - takeScreenshot: position-ios-01-editor
-- scrollUntilVisible:
-    element:
-      id: position-empty
-    direction: UP
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-empty
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-empty
-- scrollUntilVisible:
-    element:
-      text: 'Borne off: White 15 · Black 15'
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
 - assertVisible: 'Borne off: White 15 · Black 15'
 - takeScreenshot: position-ios-02-empty
-- scrollUntilVisible:
-    element:
-      id: position-standard
-    direction: UP
+- runFlow: ../utils/position-drag.yaml
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-standard
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-standard
-- scrollUntilVisible:
-    element:
-      text: 'Borne off: White 0 · Black 0'
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
 - assertVisible: 'Borne off: White 0 · Black 0'
 - runScript: ../utils/position-link.js
 - openLink: ${output.sharedPositionLink}
@@ -55,23 +68,35 @@ tags:
       - tapOn: Open
 - launchApp:
     stopApp: false
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-details-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-details-toggle
 # After returning through iOS's link prompt, XCTest can retain the previous
 # accessibility snapshot. Scrolling refreshes it and verifies the payload's
 # actual roll instead of relying only on a changed caption.
-- scrollUntilVisible:
-    element:
-      id: position-die-0
-    direction: DOWN
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-die-0
+      START_Y: '80%'
+      END_Y: '25%'
 - assertVisible:
     id: position-die-0
     text: '5'
 - assertVisible:
     id: position-die-1
     text: '2'
-- scrollUntilVisible:
-    element:
-      id: position-standard
-    direction: UP
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
 - assertVisible:
     id: position-screen
 - takeScreenshot: position-ios-03-shared

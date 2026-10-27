@@ -2,12 +2,13 @@ import type { ReactNode } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { styles } from './position-styles';
 
-export function PositionAction({ label, onPress, selected, disabled, testID, primary = false }: {
+export function PositionAction({ label, onPress, selected, disabled, testID, icon, primary = false }: {
   label: string;
   onPress: () => void;
   selected?: boolean;
   disabled?: boolean;
   testID?: string;
+  icon?: ReactNode;
   primary?: boolean;
 }) {
   return (
@@ -20,6 +21,7 @@ export function PositionAction({ label, onPress, selected, disabled, testID, pri
       onPress={onPress}
       style={({ pressed }) => [styles.button, (selected || primary) && styles.active, disabled && styles.disabled, pressed && styles.pressed]}
     >
+      {icon}
       <Text style={[styles.buttonText, (selected || primary) && styles.activeText]}>{label}</Text>
     </Pressable>
   );
