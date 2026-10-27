@@ -27,6 +27,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
+  "${WORKSPACE}/.maestro/app/settings-search-reset.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \

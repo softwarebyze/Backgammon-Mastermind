@@ -49,6 +49,7 @@ export function SettingToggleRow({ icon, label, hint, value, onChange, testID }:
     <Pressable
       accessibilityRole="switch"
       accessibilityState={{ checked: value }}
+      aria-checked={value}
       accessibilityLabel={label}
       accessibilityHint={hint}
       testID={rowTestId}

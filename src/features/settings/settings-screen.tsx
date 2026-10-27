@@ -1,6 +1,8 @@
+import type { SettingsSearchId } from './settings-search';
+
 import Env from 'env';
 import { usePostHog } from 'posthog-react-native';
-import { useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
 
 import {
@@ -22,15 +24,173 @@ import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
 import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
+import { RestoreDefaultsItem } from './components/restore-defaults-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
+import { SettingsNoResults } from './components/settings-no-results';
+import { SettingsSearchField } from './components/settings-search-field';
 import { DeveloperItem } from './developer-item';
 import { isDeveloperToolsEnabled } from './developer-tools-gate';
+import { getVisibleSettings } from './settings-search';
+
+type VisibilityProps = {
+  isVisible: (id: SettingsSearchId) => boolean;
+};
+
+type ExternalActionProps = {
+  runExternalAction: (action: () => Promise<void>) => void;
+};
+
+type AnalyticsCapture = {
+  capture: (event: string) => void;
+};
+
+function AboutSection({ isVisible, runExternalAction }: VisibilityProps & ExternalActionProps) {
+  return (
+    <SettingsContainer title="settings.about">
+      {isVisible('version')
+        ? (
+            <SettingsItem
+              text="settings.version"
+              value={Env.EXPO_PUBLIC_VERSION}
+            />
+          )
+        : null}
+      {isVisible('openSource')
+        ? (
+            <SettingsItem
+              text="settings.open_source"
+              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.openSource))}
+            />
+          )
+        : null}
+    </SettingsContainer>
+  );
+}
+
+function SupportSection({
+  isVisible,
+  runExternalAction,
+  posthog,
+  iconColor,
+}: VisibilityProps & ExternalActionProps & { posthog: AnalyticsCapture; iconColor: string }) {
+  return (
+    <SettingsContainer title="settings.support_us">
+      {isVisible('share')
+        ? (
+            <SettingsItem
+              text="settings.share"
+              icon={<Share color={iconColor} />}
+              onPress={() => {
+                posthog.capture('app_share_initiated');
+                runExternalAction(shareApp);
+              }}
+            />
+          )
+        : null}
+      {isVisible('rate')
+        ? (
+            <SettingsItem
+              text="settings.rate"
+              icon={<Rate color={iconColor} />}
+              onPress={() => {
+                posthog.capture('rate_app_initiated');
+                runExternalAction(openStoreListing);
+              }}
+            />
+          )
+        : null}
+      {isVisible('support')
+        ? (
+            <SettingsItem
+              text="settings.support"
+              icon={<Support color={iconColor} />}
+              onPress={() => {
+                posthog.capture('support_opened');
+                runExternalAction(() => openExternalUrl(APP_LINKS.support));
+              }}
+            />
+          )
+        : null}
+    </SettingsContainer>
+  );
+}
+
+function LinksSection({ isVisible, runExternalAction, iconColor }: VisibilityProps & ExternalActionProps & { iconColor: string }) {
+  return (
+    <SettingsContainer title="settings.links">
+      {isVisible('privacy')
+        ? (
+            <SettingsItem
+              text="settings.privacy"
+              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.privacy))}
+            />
+          )
+        : null}
+      {isVisible('terms')
+        ? (
+            <SettingsItem
+              text="settings.terms"
+              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.terms))}
+            />
+          )
+        : null}
+      {isVisible('github')
+        ? (
+            <SettingsItem
+              text="settings.github"
+              icon={<Github color={iconColor} />}
+              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.github))}
+            />
+          )
+        : null}
+      {isVisible('website')
+        ? (
+            <SettingsItem
+              text="settings.website"
+              icon={<Website color={iconColor} />}
+              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.website))}
+            />
+          )
+        : null}
+    </SettingsContainer>
+  );
+}
+
+function DeveloperSection({ isVisible }: VisibilityProps) {
+  return (
+    <SettingsContainer title="settings.developer">
+      {isVisible('developerOpen') ? <DeveloperItem /> : null}
+    </SettingsContainer>
+  );
+}
+
+function ResetSection({ isVisible }: VisibilityProps) {
+  return (
+    <SettingsContainer title="settings.reset">
+      {isVisible('restoreDefaults') ? <RestoreDefaultsItem /> : null}
+    </SettingsContainer>
+  );
+}
 
 export function SettingsScreen() {
   const posthog = usePostHog();
   const { insets } = useLayoutMetrics();
   const iconColor = colors.neutral[400];
+  const [query, setQuery] = useState('');
+  const trimmedQuery = query.trim();
+  const developerToolsEnabled = isDeveloperToolsEnabled();
+
+  const visibleSettings = useMemo(
+    () => getVisibleSettings(query, { includeDeveloper: developerToolsEnabled }),
+    [developerToolsEnabled, query],
+  );
+  const noResults = trimmedQuery.length > 0 && visibleSettings.size === 0;
+  const isVisible = useCallback(
+    (id: SettingsSearchId) => visibleSettings.has(id),
+    [visibleSettings],
+  );
+  const clearSearch = useCallback(() => setQuery(''), []);
 
   const runExternalAction = useCallback(async (action: () => Promise<void>) => {
     try {
@@ -56,78 +216,42 @@ export function SettingsScreen() {
         ]}
       >
         <View className="px-4" style={styles.page}>
-          <SettingsContainer title="settings.general">
-            <LanguageItem />
-          </SettingsContainer>
+          <SettingsSearchField
+            value={query}
+            onChangeText={setQuery}
+            onClear={clearSearch}
+          />
 
-          <GameSettingsSection showHints />
+          {noResults
+            ? <SettingsNoResults query={trimmedQuery} onClear={clearSearch} />
+            : (
+                <>
+                  <SettingsContainer title="settings.general">
+                    {isVisible('language') ? <LanguageItem /> : null}
+                  </SettingsContainer>
 
-          <SettingsContainer title="settings.about">
-            <SettingsItem
-              text="settings.version"
-              value={Env.EXPO_PUBLIC_VERSION}
-            />
-            <SettingsItem
-              text="settings.open_source"
-              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.openSource))}
-            />
-          </SettingsContainer>
+                  <GameSettingsSection showHints isVisibleSetting={isVisible} />
 
-          <SettingsContainer title="settings.support_us">
-            <SettingsItem
-              text="settings.share"
-              icon={<Share color={iconColor} />}
-              onPress={() => {
-                posthog.capture('app_share_initiated');
-                runExternalAction(shareApp);
-              }}
-            />
-            <SettingsItem
-              text="settings.rate"
-              icon={<Rate color={iconColor} />}
-              onPress={() => {
-                posthog.capture('rate_app_initiated');
-                runExternalAction(openStoreListing);
-              }}
-            />
-            <SettingsItem
-              text="settings.support"
-              icon={<Support color={iconColor} />}
-              onPress={() => {
-                posthog.capture('support_opened');
-                runExternalAction(() => openExternalUrl(APP_LINKS.support));
-              }}
-            />
-          </SettingsContainer>
+                  <AboutSection isVisible={isVisible} runExternalAction={runExternalAction} />
 
-          <SettingsContainer title="settings.links">
-            <SettingsItem
-              text="settings.privacy"
-              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.privacy))}
-            />
-            <SettingsItem
-              text="settings.terms"
-              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.terms))}
-            />
-            <SettingsItem
-              text="settings.github"
-              icon={<Github color={iconColor} />}
-              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.github))}
-            />
-            <SettingsItem
-              text="settings.website"
-              icon={<Website color={iconColor} />}
-              onPress={() => runExternalAction(() => openExternalUrl(APP_LINKS.website))}
-            />
-          </SettingsContainer>
+                  <SupportSection
+                    isVisible={isVisible}
+                    runExternalAction={runExternalAction}
+                    posthog={posthog}
+                    iconColor={iconColor}
+                  />
 
-          {isDeveloperToolsEnabled()
-            ? (
-                <SettingsContainer title="settings.developer">
-                  <DeveloperItem />
-                </SettingsContainer>
-              )
-            : null}
+                  <LinksSection
+                    isVisible={isVisible}
+                    runExternalAction={runExternalAction}
+                    iconColor={iconColor}
+                  />
+
+                  {developerToolsEnabled ? <DeveloperSection isVisible={isVisible} /> : null}
+
+                  <ResetSection isVisible={isVisible} />
+                </>
+              )}
         </View>
       </ScrollView>
     </>
