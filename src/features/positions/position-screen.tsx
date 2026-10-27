@@ -157,7 +157,7 @@ function PositionWorkspace({ data }: { data?: string }) {
               disabled={!valid}
               onPress={() => {
                 try {
-                  setSaved(savePosition(name || translate('positions.untitled'), position));
+                  setSaved(savePosition(name.trim() || translate('positions.untitled'), position));
                   setNotice(translate('positions.saved_notice'));
                 }
                 catch (err) { setError(positionError(err)); }

@@ -82,6 +82,14 @@ tags:
       END_Y: '25%'
 - tapOn:
     id: position-save-name
+- inputText: '   '
+- hideKeyboard
+- tapOn:
+    id: position-save
+- assertVisible: Untitled position
+- tapOn:
+    id: position-save-name
+- eraseText
 - inputText: My saved position
 - hideKeyboard
 - tapOn:

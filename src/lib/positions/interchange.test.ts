@@ -80,6 +80,16 @@ describe('position interchange', () => {
     expect(parseGnuid(exportGnuid(p))).toEqual(p);
     expect(() => parseGnuid('4HPwATDgc/ABMA:cAkAAAAAAAAg')).toThrow();
   });
+
+  it('preserves rolled dice with a pending double in GNU and JSON but refuses lossy XG export', () => {
+    const p = newPosition();
+    p.dice = [6, 2];
+    p.context.doubleAction = 'D';
+    p.context.turnOwner = 'black';
+    expect(parseGnuid(exportGnuid(p))).toEqual(p);
+    expect(importPosition(exportPosition(p, 'JSON'))).toEqual(p);
+    expect(() => exportXgid(p)).toThrow('conversion');
+  });
 });
 
 it('imports labeled GNU clipboard text and rejects a malformed labeled Match ID', () => {

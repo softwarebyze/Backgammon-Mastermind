@@ -4,6 +4,8 @@ import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
 import { createInitialState } from '@/lib/game/constants';
 import { newPosition } from '@/lib/positions/position';
+import { setRawString } from '@/lib/storage';
+import { PositionDetails } from './position-details';
 import { PositionScreen } from './position-screen';
 
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(() => Promise.resolve(true)) }));
@@ -23,6 +25,7 @@ jest.mock('@/features/game/components/board/board-view', () => {
 const start = jest.fn();
 beforeEach(() => {
   jest.clearAllMocks();
+  setRawString('SAVED_POSITIONS_V1', '[]');
   jest.mocked(useLocalSearchParams).mockReturnValue({});
   jest.mocked(useGame).mockReturnValue({ state: createInitialState('vs-human'), startFromPosition: start } as unknown as ReturnType<typeof useGame>);
 });
@@ -77,4 +80,25 @@ it('keeps a half-entered roll editable without crashing board editing', () => {
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
   fireEvent.changeText(screen.getByTestId('position-die-1'), '1');
   expect(screen.getByTestId('position-play')).toBeEnabled();
+});
+
+it('preserves imported action context when the selected turn is pressed', () => {
+  const p = newPosition();
+  p.context.doubleAction = 'D';
+  p.context.turnOwner = 'black';
+  p.context.resignation = 2;
+  const change = jest.fn();
+  render(<PositionDetails position={p} onChange={change} />);
+  fireEvent.press(screen.getByTestId('position-turn-white'));
+  expect(change).not.toHaveBeenCalled();
+  fireEvent.press(screen.getByTestId('position-turn-black'));
+  expect(change).toHaveBeenCalledWith(expect.objectContaining({ currentPlayer: 'black', context: expect.objectContaining({ doubleAction: '', resignation: 0, turnOwner: 'black' }) }));
+});
+
+it('gives a whitespace-only saved name the translated untitled label', () => {
+  render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('position-saved-toggle'));
+  fireEvent.changeText(screen.getByTestId('position-save-name'), '   ');
+  fireEvent.press(screen.getByTestId('position-save'));
+  expect(screen.getByRole('button', { name: 'positions.untitled' })).toBeTruthy();
 });

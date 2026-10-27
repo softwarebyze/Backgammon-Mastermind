@@ -12,7 +12,16 @@ export function PositionDetails({ position: p, onChange }: { position: Position;
     <PositionSection title={translate('positions.turn_dice')}>
       <View style={styles.row}>
         {(['white', 'black'] as const).map(player => (
-          <PositionAction key={player} label={translate(`positions.${player}_turn`)} selected={p.currentPlayer === player} testID={`position-turn-${player}`} onPress={() => onChange({ ...p, currentPlayer: player, context: { ...p.context, turnOwner: player, doubleAction: '', resignation: 0 } })} />
+          <PositionAction
+            key={player}
+            label={translate(`positions.${player}_turn`)}
+            selected={p.currentPlayer === player}
+            testID={`position-turn-${player}`}
+            onPress={() => {
+              if (p.currentPlayer !== player)
+                onChange({ ...p, currentPlayer: player, context: { ...p.context, turnOwner: player, doubleAction: '', resignation: 0 } });
+            }}
+          />
         ))}
       </View>
       <Text style={styles.caption}>{translate('positions.dice_hint')}</Text>

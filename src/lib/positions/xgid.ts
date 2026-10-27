@@ -44,7 +44,7 @@ export function exportXgid(position: Position): string {
   const p = validatePosition(position);
   const c = p.context;
   const expectedTurn = c.doubleAction === 'D' || c.doubleAction === 'R' ? (p.currentPlayer === 'white' ? 'black' : 'white') : p.currentPlayer;
-  if (c.resignation || c.gameState !== 1 || c.turnOwner !== expectedTurn)
+  if (c.resignation || c.gameState !== 1 || c.turnOwner !== expectedTurn || (c.doubleAction && p.dice[0]))
     throw new PositionFormatError('conversion');
   const token = (n: number, white: boolean) => n ? String.fromCharCode((white ? 64 : 96) + n) : '-';
   const board = token(p.bar.black, false) + p.points.slice(1).map(point => token(point.count, point.player === 'white')).join('') + token(p.bar.white, true);
