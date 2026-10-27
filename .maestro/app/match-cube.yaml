@@ -8,6 +8,24 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: Play against the computer
+# Keep the existing single-game entry visible at launch, then verify the
+# match choices remain reachable below it on compact Android screens.
+- takeScreenshot: match-00-home-single-games
+- scrollUntilVisible:
+    element:
+      id: start-match-3
+    direction: DOWN
+- assertVisible:
+    id: start-match-5
+- takeScreenshot: match-00-home-match-options
+- tapOn:
+    id: start-match-3
+- extendedWaitUntil:
+    visible: Cube 1 · Center
+    timeout: 45000
+- assertVisible:
+    id: match-score
+- takeScreenshot: match-00-new-local-match
 - openLink: backgammonmastermind.preview://developer
 - extendedWaitUntil:
     visible:

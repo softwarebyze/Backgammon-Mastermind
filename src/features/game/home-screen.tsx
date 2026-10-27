@@ -183,7 +183,6 @@ export function HomeScreen() {
         </View>
 
         <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
-          <HomeMatchOptions />
           {showRecovery && (
             <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
           )}
@@ -314,6 +313,7 @@ export function HomeScreen() {
                 : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
             </View>
           </HoverPressable>
+          <HomeMatchOptions />
         </View>
       </ScrollView>
     </>
