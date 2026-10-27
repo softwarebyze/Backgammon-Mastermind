@@ -51,6 +51,7 @@ tags:
       END_Y: '80%'
 - assertVisible: 'Borne off: White 15 · Black 15'
 - takeScreenshot: position-ios-02-empty
+- runFlow: ../utils/position-bar.yaml
 - runFlow: ../utils/position-drag.yaml
 - runFlow:
     file: ../utils/position-scroll.yaml

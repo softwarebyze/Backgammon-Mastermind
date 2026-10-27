@@ -6,11 +6,10 @@ import { editCheckers, newPosition } from '@/lib/positions/position';
 import { PositionAction } from './position-controls';
 import { styles } from './position-styles';
 
-export function PositionEditor({ position: p, location, color, onLocation, onChange }: {
+export function PositionEditor({ position: p, location, color, onChange }: {
   position: Position;
   location: PositionLocation | null;
   color: Player;
-  onLocation: (location: PositionLocation | null) => void;
   onChange: (p: Position) => void;
 }) {
   const owner = typeof location === 'string' ? location === 'white-bar' ? 'white' : 'black' : location ? p.points[location]!.player : null;
@@ -25,10 +24,6 @@ export function PositionEditor({ position: p, location, color, onLocation, onCha
   return (
     <View style={{ gap: 10 }}>
       <Text style={styles.caption}>{translate('positions.edit_hint')}</Text>
-      <View style={styles.row}>
-        {(['white', 'black'] as const).map(player => <PositionAction key={player} testID={`position-bar-${player}`} label={`${translate(`positions.${player}_bar`)} · ${p.bar[player]}`} selected={location === `${player}-bar`} onPress={() => onLocation(`${player}-bar`)} />)}
-        <Text style={styles.caption}>{translate('positions.off_counts', p.borneOff)}</Text>
-      </View>
       {location !== null && (
         <>
           <Text testID="position-selected" style={styles.heading}>{typeof location === 'number' ? translate('positions.point_count', { point: location, count }) : `${translate(`positions.${side}_bar`)} · ${count}`}</Text>

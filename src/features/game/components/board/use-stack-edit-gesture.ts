@@ -26,33 +26,44 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
     cancel: () => latest.current?.onCancel(),
   }), [point]);
   const enabled = !!handlers;
-  return useMemo(() => Gesture.Pan()
+  return useMemo(() => Gesture.Manual()
     .enabled(enabled)
-    .minDistance(0)
-    .maxPointers(1)
-    .onBegin((event) => {
+    .shouldCancelWhenOutside(false)
+    .onTouchesDown((event, manager) => {
+      if (event.numberOfTouches !== 1) {
+        manager.fail();
+        return;
+      }
+      const touch = event.changedTouches[0];
+      if (!touch)
+        return;
       quantum.value = 0;
-      originX.value = event.absoluteX;
-      originY.value = event.absoluteY;
-      finalX.value = event.absoluteX;
-      finalY.value = event.absoluteY;
-      runOnJS(callbacks.start)(event.y);
+      originX.value = touch.absoluteX;
+      originY.value = touch.absoluteY;
+      finalX.value = touch.absoluteX;
+      finalY.value = touch.absoluteY;
+      manager.activate();
+      runOnJS(callbacks.start)(touch.y);
     })
-    .onUpdate((event) => {
-      finalX.value = event.absoluteX;
-      finalY.value = event.absoluteY;
-      const value = Math.trunc((event.absoluteY - originY.value) / step);
+    .onTouchesMove((event) => {
+      const touch = event.changedTouches[0];
+      if (!touch)
+        return;
+      finalX.value = touch.absoluteX;
+      finalY.value = touch.absoluteY;
+      const value = Math.trunc((touch.absoluteY - originY.value) / step);
       if (value !== quantum.value) {
         quantum.value = value;
         runOnJS(callbacks.move)(value);
       }
     })
-    .onTouchesUp((event) => {
+    .onTouchesUp((event, manager) => {
       const touch = event.changedTouches[0];
       if (touch) {
         finalX.value = touch.absoluteX;
         finalY.value = touch.absoluteY;
       }
+      manager.end();
     })
     .onEnd((_event, success) => {
       if (!success)

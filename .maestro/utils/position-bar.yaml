@@ -1,0 +1,45 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+# The bar uses the same direct editing gesture as a point, with no count menu.
+- tapOn:
+    id: position-board-bar
+    point: '50%, 98%'
+- assertVisible: 'Bar, 1 white checker'
+- tapOn:
+    id: position-board-bar
+    point: '50%, 80%'
+- assertVisible: 'Bar, [2-9] white checkers'
+- takeScreenshot: position-bar-01-white
+- swipe:
+    from:
+      id: position-board-bar
+      point: '50%, 80%'
+    direction: DOWN
+    duration: 900
+- assertVisible:
+    id: position-board-bar
+    text: Bar
+- tapOn:
+    id: position-paint-black
+- tapOn:
+    id: position-board-bar
+    point: '50%, 2%'
+- assertVisible: 'Bar, 1 black checker'
+- tapOn:
+    id: position-board-bar
+    point: '50%, 20%'
+- assertVisible: 'Bar, [2-9] black checkers'
+- takeScreenshot: position-bar-02-black
+- swipe:
+    from:
+      id: position-board-bar
+      point: '50%, 20%'
+    direction: UP
+    duration: 900
+- assertVisible:
+    id: position-board-bar
+    text: Bar
+- tapOn:
+    id: position-paint-white

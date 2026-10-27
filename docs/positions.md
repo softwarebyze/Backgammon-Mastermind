@@ -11,7 +11,8 @@ available for QA.
   edge means one checker). A blocked addition gives one light haptic per stroke
   and an accessible message when that colour has no checkers left. The stroke stays on its starting point even when the pointer
   crosses another point; cancellation restores the starting position.
-- The bar supports the same gesture for the selected colour. Stacks support
+- Tap or drag directly on the bar for the selected colour; no separate bar
+  menu is needed. Exact count controls operate on the selected board point or bar. Stacks support
   up to 15 checkers, limited by the available off-tray checkers. Painting over
   the other colour returns that stack to its own tray. Each player always has
   15 checkers across the board, bar and off tray.

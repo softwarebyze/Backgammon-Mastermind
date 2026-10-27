@@ -43,6 +43,7 @@ tags:
       TARGET_ID: position-paint-white
       START_Y: '25%'
       END_Y: '80%'
+- runFlow: ../utils/position-bar.yaml
 - runFlow: ../utils/position-drag.yaml
 - runFlow:
     file: ../utils/position-scroll.yaml

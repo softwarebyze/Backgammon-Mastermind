@@ -100,3 +100,29 @@ it('only signals exhaustion when an addition is blocked, not when reducing or ma
   expect(change.mock.lastCall![0].points[6].count).toBe(2);
   expect(hapticLight).not.toHaveBeenCalled();
 });
+
+it('edits both bar stacks directly with press location, reversible dragging and cancellation', () => {
+  const p = newPosition(true);
+  const change = jest.fn();
+  const selected = jest.fn();
+  render(<PositionBoardEditor position={p} dimensions={dims} location={null} onLocation={selected} onChange={change} />);
+  const small = dims.checkerSize * 0.88;
+  const third = 6 + small / 2 + 2 * (small + 2);
+  act(() => mockEditor.onStart(0, dims.boardHeight - third));
+  expect(selected).toHaveBeenLastCalledWith('white-bar');
+  expect(change.mock.lastCall![0].bar).toEqual({ white: 3, black: 0 });
+  act(() => mockEditor.onDelta(0, -2));
+  expect(change.mock.lastCall![0].bar.white).toBe(5);
+  act(() => mockEditor.onDelta(0, 2));
+  expect(change.mock.lastCall![0].bar.white).toBe(1);
+  act(() => mockEditor.onCancel());
+  expect(change.mock.lastCall![0]).toBe(p);
+  fireEvent.press(screen.getByTestId('position-paint-black'));
+  act(() => mockEditor.onStart(0, third));
+  expect(selected).toHaveBeenLastCalledWith('black-bar');
+  expect(change.mock.lastCall![0].bar).toEqual({ white: 0, black: 3 });
+  act(() => mockEditor.onDelta(0, 2));
+  act(() => mockEditor.onEnd(0, false, 2));
+  expect(change.mock.lastCall![0].bar.black).toBe(5);
+  expect(change.mock.lastCall![0].borneOff.black).toBe(10);
+});

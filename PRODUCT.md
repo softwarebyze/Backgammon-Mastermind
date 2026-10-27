@@ -16,7 +16,8 @@ someone else. No account or developer access is required for this workflow.
 
 The confirmed editing interaction is the board and a White/Black selector:
 press location sets the initial stack size, then dragging increases or decreases
-its checker stack. A blocked addition gives subtle haptic and visible feedback
+its checker stack. The bar uses that same direct interaction for the selected
+colour; it does not need a separate selection menu. A blocked addition gives subtle haptic and visible feedback
 when the selected colour has no checkers left. Secondary
 forms should stay out of the initial editing workspace. The user rejected a
 wall of equally weighted text buttons. The board remains dominant; tools use

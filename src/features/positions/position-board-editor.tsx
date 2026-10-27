@@ -96,7 +96,7 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
       },
     };
   }, []);
-  const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), selectedPoint: typeof location === 'number' ? location : null };
+  const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: color, selectedPoint: typeof location === 'number' ? location : location ? 0 : null };
   return (
     <View style={{ gap: 12, alignSelf: 'center', width: dimensions.boardOuterWidth }}>
       <View style={styles.row}>
@@ -121,7 +121,7 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
       </View>
       <Text style={styles.caption}>{translate('positions.drag_hint')}</Text>
       {blocked && position.borneOff[blocked] === 0 && <Text testID="position-no-checkers" accessibilityLiveRegion="polite" style={styles.caption}>{translate('positions.no_checkers', { player: translate(`positions.${blocked}`) })}</Text>}
-      {fine && <PositionEditor position={position} location={location} color={color} onLocation={onLocation} onChange={onChange} />}
+      {fine && <PositionEditor position={position} location={location} color={color} onChange={onChange} />}
     </View>
   );
 }
