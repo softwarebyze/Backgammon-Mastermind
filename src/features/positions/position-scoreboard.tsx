@@ -1,12 +1,13 @@
 import type { Player } from '@/lib/game/types';
 import type { Position } from '@/lib/positions/position';
 import Feather from '@expo/vector-icons/Feather';
-import { InputAccessoryView, Keyboard, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Keyboard, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { styles } from './position-styles';
+import { ScoreKeyboardAccessory } from './score-keyboard-accessory';
 
 /** Editable flip-scorecard material shared visually with match play in PR #325. */
 export function PositionScoreboard({ position: p, onChange }: { position: Position; onChange: (p: Position) => void }) {
@@ -34,15 +35,7 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
         </View>
         <ScoreCard player="black" score={p.context.scores.black} onChange={score => setScore('black', score)} />
       </View>
-      {Platform.OS === 'ios' && (
-        <InputAccessoryView nativeID="position-score-keyboard" backgroundColor={GAME_PALETTE.surface}>
-          <View style={scoreStyles.keyboardBar}>
-            <Pressable testID="position-score-done" accessibilityRole="button" accessibilityLabel={translate('positions.done')} onPress={Keyboard.dismiss} style={({ pressed }) => [scoreStyles.done, pressed && styles.pressed]}>
-              <Text style={scoreStyles.doneText}>{translate('positions.done')}</Text>
-            </Pressable>
-          </View>
-        </InputAccessoryView>
-      )}
+      <ScoreKeyboardAccessory />
     </View>
   );
 }
@@ -87,9 +80,6 @@ function ScoreInput({ label, testID, value, onChange, dark = false, target = fal
 }
 
 const scoreStyles = StyleSheet.create({
-  keyboardBar: { flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 12, borderTopWidth: 1, borderTopColor: GAME_PALETTE.surfaceBorder },
-  done: { minWidth: 64, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
-  doneText: { ...interFont('semibold'), fontSize: 16, color: GAME_PALETTE.accent },
   board: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', gap: 12 },
   player: { flex: 1, maxWidth: 120, alignItems: 'center', gap: 10 },
   name: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 6, minHeight: 24 },
