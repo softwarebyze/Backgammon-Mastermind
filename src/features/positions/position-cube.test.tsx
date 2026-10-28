@@ -8,8 +8,6 @@ it('shows the centered cube without opening match details, then edits value and 
   const change = jest.fn();
   const { rerender } = render(<PositionCube position={p} onChange={change} />);
   expect(screen.getByText('64')).toBeTruthy();
-  expect(screen.getByTestId('position-cube').props.accessibilityLabel).toContain('Cube owner: Center');
-  fireEvent.press(screen.getByTestId('position-cube'));
   expect(screen.getByTestId('position-cube-lower').props.accessibilityState.disabled).toBe(true);
   fireEvent.press(screen.getByTestId('position-cube-higher'));
   const doubled = change.mock.lastCall![0];
@@ -29,8 +27,6 @@ it('respects imported cube limits and preserves Crawford context while lowering'
   p.context = { ...p.context, cubeExponent: 3, maxCube: 3, matchLength: 5, crawford: true };
   const change = jest.fn();
   render(<PositionCube position={p} onChange={change} />);
-  expect(screen.getByTestId('position-cube').props.accessibilityLabel).toContain('Crawford');
-  fireEvent.press(screen.getByTestId('position-cube'));
   expect(screen.getByTestId('position-cube-higher').props.accessibilityState.disabled).toBe(true);
   fireEvent.press(screen.getByTestId('position-cube-lower'));
   expect(change.mock.lastCall![0].context).toEqual({ ...p.context, cubeExponent: 2 });

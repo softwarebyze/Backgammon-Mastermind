@@ -5,13 +5,12 @@ import { Platform, Text, TextInput, View } from 'react-native';
 import { translate } from '@/lib/i18n';
 import { exportPosition, importPosition, positionLink } from '@/lib/positions/interchange';
 import { exportXgid } from '@/lib/positions/xgid';
-import { PositionAction, PositionDisclosure } from './position-controls';
+import { PositionAction } from './position-controls';
 import { positionError } from './position-errors';
 import { styles } from './position-styles';
 import { sharePosition } from './share-position';
 
-export function PositionExchange({ position, onImport, onCurrent }: { position: Position; onImport: (p: Position) => void; onCurrent?: () => void }) {
-  const [toolsOpen, setToolsOpen] = useState(false);
+export function PositionExchange({ position, onImport, onCurrent, open }: { open: boolean; position: Position; onImport: (p: Position) => void; onCurrent?: () => void }) {
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
   const [output, setOutput] = useState('');
@@ -41,8 +40,10 @@ export function PositionExchange({ position, onImport, onCurrent }: { position: 
       setOutput('');
     }
   };
+  if (!open)
+    return null;
   return (
-    <PositionDisclosure label={translate('positions.exchange')} summary="XGID · GNU ID · JSON" symbol="share-2" testID="position-exchange-toggle" open={toolsOpen} onPress={() => setToolsOpen(!toolsOpen)}>
+    <View style={styles.detailPanel}>
       <View style={styles.row}>
         {onCurrent && <PositionAction symbol="crosshair" label={translate('positions.current')} testID="position-current" onPress={onCurrent} />}
         <PositionAction symbol="download" label={translate('positions.import')} testID="position-import-toggle" onPress={() => setExpanded(!expanded)} selected={expanded} />
@@ -88,6 +89,6 @@ export function PositionExchange({ position, onImport, onCurrent }: { position: 
       )}
       {!!notice && <Text accessibilityLiveRegion="polite" style={styles.caption}>{notice}</Text>}
       {!!error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
-    </PositionDisclosure>
+    </View>
   );
 }

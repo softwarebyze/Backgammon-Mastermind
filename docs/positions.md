@@ -17,12 +17,12 @@ available for QA.
   the other colour returns that stack to its own tray. Each player always has
   15 checkers across the board, bar and off tray.
 - Selecting a point or bar shows minus / clear / plus controls beside that
-  stack: above the board for top points, below for bottom points. The reserved
-  space keeps the board still during a stroke. Screen readers can also adjust
+  stack: above the board for top points, below for bottom points. The controls appear after release, so adding their row cannot move the
+  board under an active finger; empty control bands take no space. Screen readers can also adjust
   points and the bar directly.
 - Standard setup and Clear board stay visible above the board. The standard
   preset uses a text label without an icon. Current-game capture is in Exchange.
-- Both dice stay visible beside the colour selector. Tap either die and choose
+- Both dice stay visible in the compact strip immediately below the board. Tap either die and choose
   a face from 1 to 6; clearing dice is visible beside the player-on-roll controls.
 - Set the player on roll and two dice, or leave both dice at zero to roll later.
 - Import XGID, GNU Position ID with optional Match ID, labeled GNU clipboard
@@ -47,7 +47,7 @@ and White/Black checker selector with visible editable die faces. Selecting a
 point or bar places exact minus / clear / plus controls beside it, clamped to
 the board edges. There is no sliders button or hidden preset/dice dropdown.
 Play remains the single filled orange action. Exchange and Saved positions
-retain icon-led disclosure rows; the cube stays visible as an ivory face with ownership, and opens direct halve/double/reset and owner controls. Match metadata remains secondary.
+use compact toolbar actions. The cube stays visible as an ivory face with an owner checker, and opens direct halve/double/reset and owner controls. Match metadata remains secondary.
 Controls expose selected/expanded states and accessible labels. Android targets
 are at least 48dp, iOS at least 44pt. Palette, board assets and Inter stay intact.
 
@@ -113,12 +113,12 @@ position document continues preserving full cube and match context for exchange.
 ### Editable scoreboard
 
 White and Black scores appear as ivory/dark scorecards beside a central match
-target, using the scorecard material from PR #325. Each numeral is directly
-editable with a numeric keyboard. Zero target is labeled Money game. Match scores
+target, using the scorecard material from PR #325. A compact two-colour score summary stays visible beside the dice and cube.
+Tapping it opens the scorecards and match target; each numeral is editable with a numeric keyboard. Zero target is labeled Money game. Match scores
 are capped at the target, and shortening the match clamps both scores so the
 position remains valid. Changing the target resets incompatible rule flags.
 Imported cube context and the opposite player's score survive score edits.
-Match rules remain behind the secondary disclosure; scores are always displayed.
+Match rules live in that same focused editor; scores are always displayed in the summary.
 
 ### Stack editing and quiet board workspace
 
@@ -140,3 +140,18 @@ The iOS score number pad uses React Native’s built-in Done toolbar, with its l
 keeps the entered values; dragging the workspace can also dismiss the keyboard.
 The native flow explicitly presses Done rather than relying on a Return key that
 the number pad does not provide.
+
+### Compact object workspace (XG reference revision)
+
+The arrival view is a single working area: checker colour and always-visible
+Standard setup / Clear board above the board, then a compact strip containing
+the player on roll, both dice, doubling cube/owner, and two-colour score summary.
+Tapping an object reveals only that object's editor below the strip. Close returns to the board
+without keeping the form open; it closes without discarding edits. No permanent turn form, full-width cube row,
+score form, rule disclosure, or empty stack-control bands occupy the idle view.
+
+Import/share, Saved, and Play share the next compact row. Play opens the mode
+choice and checker-play limitations before the actual start action and existing
+active-game replacement confirmation. Exchange drafts survive closing/reopening
+the tool. The position editor remains a scrolling, responsive native workspace;
+long translations and large text can wrap rather than shrink touch targets.

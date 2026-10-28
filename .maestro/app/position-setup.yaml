@@ -21,6 +21,17 @@ tags:
       id: position-screen
     timeout: 30000
 - assertVisible:
+    id: position-score-toggle
+- assertVisible:
+    id: position-cube
+- assertNotVisible:
+    id: position-match-length
+- assertNotVisible:
+    id: position-cube-higher
+- assertNotVisible:
+    id: position-start
+- takeScreenshot: position-compact-workspace
+- assertVisible:
     id: position-standard
 - assertVisible:
     id: position-empty
@@ -275,6 +286,14 @@ tags:
       END_Y: '80%'
 - tapOn:
     id: position-play
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-start
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-start
 - extendedWaitUntil:
     visible:
       id: header-undo-button
@@ -298,6 +317,14 @@ tags:
       END_Y: '25%'
 - tapOn:
     id: position-play
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-start
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-start
 - assertVisible: Game in progress
 - tapOn: Cancel
 - assertVisible:

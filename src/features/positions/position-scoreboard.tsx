@@ -1,6 +1,5 @@
 import type { Player } from '@/lib/game/types';
 import type { Position } from '@/lib/positions/position';
-import Feather from '@expo/vector-icons/Feather';
 import { Keyboard, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -21,10 +20,6 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
   } });
   return (
     <View testID="position-scoreboard" style={{ gap: 12 }}>
-      <View style={styles.row}>
-        <Text style={styles.disclosureTitle}>{translate('positions.match_score')}</Text>
-        <Feather name="edit-3" size={15} color={GAME_PALETTE.accentDim} accessible={false} />
-      </View>
       <View style={scoreStyles.board}>
         <ScoreCard player="white" score={p.context.scores.white} onChange={score => setScore('white', score)} />
         <View style={scoreStyles.target}>

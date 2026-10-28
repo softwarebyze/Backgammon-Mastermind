@@ -82,3 +82,13 @@ text. It relies on the existing board/trays and contextual joined stack strip.
 The strip combines decrement, count/clear, and increment without a separate point
 label or X button. Editing an occupied point retains its checker colour until
 it is empty; subsequent additions use the selected colour, even within one drag.
+
+
+The user's XG screenshots establish the hierarchy for the latest revision:
+board and directly editable game objects, with focused controls only when an
+object is selected. The idle workspace has one compact setup row, the board,
+one dice/turn/cube/score strip, and a compact action row. Full forms are secondary.
+Empty exact-control bands must not reserve space; reveal the selected stack's
+controls after release to keep the board stationary during dragging. Standard
+setup stays text-only and visible beside Clear board. Scores remain visible as
+small player-coloured scorecards and expand into the editable match scoreboard.

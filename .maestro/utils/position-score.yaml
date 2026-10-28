@@ -5,9 +5,13 @@ tags:
 - runFlow:
     file: position-scroll.yaml
     env:
-      TARGET_ID: position-match-length
+      TARGET_ID: position-score-toggle
       START_Y: '80%'
       END_Y: '25%'
+- tapOn:
+    id: position-score-toggle
+- assertVisible:
+    id: position-match-length
 - tapOn:
     id: position-match-length
 - eraseText
@@ -33,3 +37,11 @@ tags:
     id: position-match-length
     text: '5'
 - takeScreenshot: position-editable-scoreboard
+
+- tapOn:
+    id: position-detail-done
+- assertNotVisible:
+    id: position-match-length
+- assertVisible:
+    id: position-score-toggle
+- takeScreenshot: position-compact-score-summary

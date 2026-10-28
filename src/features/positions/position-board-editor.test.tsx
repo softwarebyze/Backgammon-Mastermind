@@ -113,7 +113,7 @@ it('edits both bar stacks directly with press location, reversible dragging and 
   const small = dims.checkerSize * 0.88;
   const third = 6 + small / 2 + 2 * (small + 2);
   act(() => mockEditor.onStart(0, dims.boardHeight - third));
-  expect(selected).toHaveBeenLastCalledWith('white-bar');
+  expect(selected).not.toHaveBeenCalled();
   expect(change.mock.lastCall![0].bar).toEqual({ white: 3, black: 0 });
   act(() => mockEditor.onDelta(0, -2));
   expect(change.mock.lastCall![0].bar.white).toBe(5);
@@ -122,8 +122,9 @@ it('edits both bar stacks directly with press location, reversible dragging and 
   act(() => mockEditor.onCancel());
   expect(change.mock.lastCall![0]).toBe(p);
   fireEvent.press(screen.getByTestId('position-paint-black'));
+  selected.mockClear();
   act(() => mockEditor.onStart(0, third));
-  expect(selected).toHaveBeenLastCalledWith('black-bar');
+  expect(selected).not.toHaveBeenCalled();
   expect(change.mock.lastCall![0].bar).toEqual({ white: 0, black: 3 });
   act(() => mockEditor.onDelta(0, 2));
   act(() => mockEditor.onEnd(0, false, 2));
@@ -199,15 +200,28 @@ it('resizes the touched occupied bar with the other colour selected, then switch
   act(() => mockEditor.onAdjust(0, 1));
   expect(change.mock.lastCall![0].bar).toEqual({ white: 2, black: 4 });
   const small = dims.checkerSize * 0.88;
+  selected.mockClear();
   act(() => mockEditor.onStart(0, 6 + small / 2 + 2 * (small + 2)));
-  expect(selected).toHaveBeenLastCalledWith('black-bar');
+  expect(selected).not.toHaveBeenCalled();
   act(() => mockEditor.onDelta(0, 1));
   expect(change.mock.lastCall![0].bar).toEqual({ white: 2, black: 4 });
   act(() => mockEditor.onDelta(0, -3));
   expect(change.mock.lastCall![0].bar).toEqual({ white: 2, black: 0 });
   act(() => mockEditor.onDelta(0, -2));
   expect(change.mock.lastCall![0].bar).toEqual({ white: 3, black: 0 });
-  expect(selected).toHaveBeenLastCalledWith('white-bar');
+  expect(selected).not.toHaveBeenCalled();
   act(() => mockEditor.onCancel());
   expect(change.mock.lastCall![0]).toBe(p);
+});
+
+it('defers selection layout until release so a new control row cannot shift an active drag', () => {
+  const select = jest.fn();
+  render(<PositionBoardEditor position={newPosition(true)} dimensions={dims} location={null} onLocation={select} onChange={jest.fn()} />);
+  expect(screen.queryByTestId('position-controls-top')).toBeNull();
+  expect(screen.queryByTestId('position-controls-bottom')).toBeNull();
+  act(() => mockEditor.onStart(13, yForCount(2, true)));
+  act(() => mockEditor.onDelta(13, 1));
+  expect(select).not.toHaveBeenCalled();
+  act(() => mockEditor.onEnd(13, false, 1));
+  expect(select).toHaveBeenLastCalledWith(13);
 });

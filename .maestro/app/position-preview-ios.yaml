@@ -27,6 +27,17 @@ tags:
     id: position-paint-black
 - takeScreenshot: position-ios-01-editor
 - assertVisible:
+    id: position-score-toggle
+- assertVisible:
+    id: position-cube
+- assertNotVisible:
+    id: position-match-length
+- assertNotVisible:
+    id: position-cube-higher
+- assertNotVisible:
+    id: position-start
+- takeScreenshot: position-compact-workspace
+- assertVisible:
     id: position-standard
 - assertVisible:
     id: position-empty

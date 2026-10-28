@@ -14,7 +14,7 @@ jest.mock('@/features/game/use-game', () => ({ useGame: jest.fn() }));
 jest.mock('@/features/game/request-new-game', () => ({ requestReplaceActiveGame: jest.fn() }));
 jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key }));
 jest.mock('@/components/ui', () => ({ FocusAwareStatusBar: () => null }));
-jest.mock('@/lib/ui/layout-metrics', () => ({ useLayoutMetrics: () => ({ insets: { top: 0, bottom: 0, left: 0, right: 0 } }), contentEdgePadding: () => ({}) }));
+jest.mock('@/lib/ui/layout-metrics', () => ({ useLayoutMetrics: jest.fn(() => ({ insets: { top: 0, bottom: 0, left: 0, right: 0 } })), contentEdgePadding: () => ({}) }));
 jest.mock('@/features/game/components/board/board-view', () => {
   const { Pressable, Text } = require('react-native');
   return ({
@@ -51,6 +51,7 @@ it('opens a shared preview without replacing a game, then uses confirmation on P
   expect(screen.getByText('positions.shared_intro')).toBeTruthy();
   expect(start).not.toHaveBeenCalled();
   fireEvent.press(screen.getByTestId('position-play'));
+  fireEvent.press(screen.getByTestId('position-start'));
   expect(requestReplaceActiveGame).toHaveBeenCalledWith(expect.objectContaining({ source: 'position', onReplace: expect.any(Function) }));
   expect(start).not.toHaveBeenCalled();
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
@@ -81,6 +82,7 @@ it('edits visible die faces without a keyboard or invalid half roll', () => {
   fireEvent.press(screen.getByTestId('position-remove'));
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
   fireEvent.press(screen.getByTestId('position-play'));
+  fireEvent.press(screen.getByTestId('position-start'));
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [3, 2] }));
 });
@@ -91,7 +93,8 @@ it('preserves imported action context when the selected turn is pressed', () => 
   p.context.turnOwner = 'black';
   p.context.resignation = 2;
   const change = jest.fn();
-  render(<PositionDetails position={p} onChange={change} />);
+  render(<PositionDetails position={p} onChange={change} editing="turn" onEdit={jest.fn()} />);
+  fireEvent.press(screen.getByTestId('position-turn'));
   fireEvent.press(screen.getByTestId('position-turn-white'));
   expect(change).not.toHaveBeenCalled();
   fireEvent.press(screen.getByTestId('position-turn-black'));
@@ -118,8 +121,9 @@ it('keeps presets and dice visible while exchange and saved tools stay collapsed
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('0');
   expect(screen.getByTestId('position-play')).toBeDisabled();
   fireEvent.press(screen.getByTestId('position-standard'));
-  fireEvent.press(screen.getByRole('button', { name: 'positions.computer' }));
   fireEvent.press(screen.getByTestId('position-play'));
+  fireEvent.press(screen.getByRole('button', { name: 'positions.computer' }));
+  fireEvent.press(screen.getByTestId('position-start'));
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ mode: 'vs-computer' }));
 });
@@ -133,8 +137,30 @@ it('retains an open import draft through board edits while clearing stale export
   expect(screen.getByTestId('position-export-output')).toBeTruthy();
   fireEvent.press(screen.getByTestId('test-board-point'));
   fireEvent.press(screen.getByTestId('position-remove'));
-  expect(screen.getByTestId('position-exchange-toggle').props.accessibilityState.expanded).toBe(true);
+  expect(screen.getByTestId('position-exchange-toggle').props.accessibilityState.selected).toBe(true);
   expect(screen.getByTestId('position-import-input').props.value).toBe('a position I am still pasting');
   expect(screen.queryByTestId('position-export-output')).toBeNull();
+  expect(start).not.toHaveBeenCalled();
+});
+
+it('keeps object summaries visible and opens only the chosen detail editor', () => {
+  render(<PositionScreen />);
+  expect(screen.getByTestId('position-object-dock')).toBeTruthy();
+  expect(screen.getByTestId('position-score-toggle')).toBeTruthy();
+  expect(screen.queryByTestId('position-match-length')).toBeNull();
+  expect(screen.queryByTestId('position-cube-higher')).toBeNull();
+  expect(screen.queryByTestId('position-start')).toBeNull();
+  fireEvent.press(screen.getByTestId('position-score-toggle'));
+  fireEvent.changeText(screen.getByTestId('position-match-length'), '7');
+  fireEvent.changeText(screen.getByTestId('position-score-white'), '3');
+  fireEvent.press(screen.getByTestId('position-cube'));
+  expect(screen.queryByTestId('position-match-length')).toBeNull();
+  expect(screen.getByTestId('position-cube-higher')).toBeTruthy();
+  fireEvent.press(screen.getByTestId('position-detail-done'));
+  expect(screen.queryByTestId('position-detail-panel')).toBeNull();
+  expect(screen.getByTestId('position-score-toggle').props.accessibilityLabel).toContain('3 – 0');
+  fireEvent.press(screen.getByTestId('position-score-toggle'));
+  expect(screen.getByTestId('position-match-length').props.value).toBe('7');
+  expect(screen.getByTestId('position-score-white').props.value).toBe('3');
   expect(start).not.toHaveBeenCalled();
 });

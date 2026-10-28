@@ -16,7 +16,6 @@ export function usePositionStackEditor(props: {
   onLocation: (location: PositionLocation | null) => void;
   onChange: (p: Position) => void;
   onBlocked: (color: Player | null) => void;
-  onTouch: () => void;
 }) {
   const latest = useRef(props);
   latest.current = props;
@@ -68,7 +67,6 @@ export function usePositionStackEditor(props: {
     return {
       onStart: (point, y) => {
         const start = snapshot(point, y);
-        latest.current.onTouch();
         drag.current = start;
         latest.current.onBlocked(null);
         latest.current.onLocation(start.location);
@@ -100,7 +98,6 @@ export function usePositionStackEditor(props: {
         latest.current.onBlocked(null);
       },
       onAdjust: (point, delta) => {
-        latest.current.onTouch();
         latest.current.onBlocked(null);
         const start = snapshot(point);
         latest.current.onLocation(start.location);
