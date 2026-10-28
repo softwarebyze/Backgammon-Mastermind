@@ -6,8 +6,7 @@ tags:
     when:
       platform: iOS
     commands:
-      - assertVisible:
-          id: position-score-done
+      - assertVisible: Done
       - assertVisible:
           id: position-match-length
       - assertVisible:
@@ -15,8 +14,7 @@ tags:
       - assertVisible:
           id: position-score-black
       - takeScreenshot: position-score-keyboard
-      - tapOn:
-          id: position-score-done
+      - tapOn: Done
 - runFlow:
     when:
       platform: Android

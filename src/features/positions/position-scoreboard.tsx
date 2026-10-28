@@ -7,7 +7,6 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { styles } from './position-styles';
-import { ScoreKeyboardAccessory } from './score-keyboard-accessory';
 
 /** Editable flip-scorecard material shared visually with match play in PR #325. */
 export function PositionScoreboard({ position: p, onChange }: { position: Position; onChange: (p: Position) => void }) {
@@ -35,7 +34,6 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
         </View>
         <ScoreCard player="black" score={p.context.scores.black} onChange={score => setScore('black', score)} />
       </View>
-      <ScoreKeyboardAccessory />
     </View>
   );
 }
@@ -64,7 +62,7 @@ function ScoreInput({ label, testID, value, onChange, dark = false, target = fal
       testID={testID}
       accessibilityLabel={label}
       keyboardType="number-pad"
-      inputAccessoryViewID={Platform.OS === 'ios' ? 'position-score-keyboard' : undefined}
+      inputAccessoryViewButtonLabel={Platform.OS === 'ios' ? translate('positions.done') : undefined}
       returnKeyType="done"
       onSubmitEditing={Keyboard.dismiss}
       selectTextOnFocus

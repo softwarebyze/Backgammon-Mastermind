@@ -42,11 +42,11 @@ it('supports money scores and clears scores with an empty numeric field', () => 
   expect(change.mock.lastCall![0].context.scores.white).toBe(0);
 });
 
-it('provides a Done action for the numeric keyboard without changing the position', () => {
+it('dismisses the keyboard on score submission without changing the position', () => {
   const dismiss = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => {});
   const change = jest.fn();
   render(<PositionScoreboard position={newPosition()} onChange={change} />);
-  fireEvent.press(screen.getByTestId('position-score-done'));
+  fireEvent(screen.getByTestId('position-match-length'), 'submitEditing');
   expect(dismiss).toHaveBeenCalledTimes(1);
   expect(change).not.toHaveBeenCalled();
   dismiss.mockRestore();

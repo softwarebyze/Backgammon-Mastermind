@@ -136,7 +136,7 @@ Occupied bar stacks follow the touched half's owner too. Crossing zero transfers
 subsequent additions to the selected colour's bar without losing checkers already
 there; the gesture keeps its original direction and cancellation restores both bars.
 
-The iOS score number pad has a Done accessory above the keyboard. Dismissing it
+The iOS score number pad uses React Native’s built-in Done toolbar, with its localized button label and no custom accessory ID. Dismissing it
 keeps the entered values; dragging the workspace can also dismiss the keyboard.
 The native flow explicitly presses Done rather than relying on a Return key that
 the number pad does not provide.
