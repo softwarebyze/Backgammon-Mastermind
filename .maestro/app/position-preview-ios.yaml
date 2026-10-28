@@ -85,8 +85,8 @@ tags:
     file: ../utils/position-scroll.yaml
     env:
       TARGET_ID: position-empty
-      START_Y: '80%'
-      END_Y: '25%'
+      START_Y: '25%'
+      END_Y: '80%'
 - tapOn:
     id: position-empty
 - runFlow:
