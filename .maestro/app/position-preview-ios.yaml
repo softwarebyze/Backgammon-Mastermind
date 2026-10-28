@@ -96,7 +96,6 @@ tags:
       TARGET_ID: position-paint-white
       START_Y: '25%'
       END_Y: '80%'
-- assertVisible: 'Borne off: White 15 · Black 15'
 - takeScreenshot: position-ios-02-empty
 - runFlow: ../utils/position-bar.yaml
 - runFlow: ../utils/position-drag.yaml
@@ -114,7 +113,6 @@ tags:
       TARGET_ID: position-paint-white
       START_Y: '25%'
       END_Y: '80%'
-- assertVisible: 'Borne off: White 0 · Black 0'
 - runScript: ../utils/position-link.js
 - openLink: ${output.sharedPositionLink}
 # iOS asks for consent the first time this simulator opens the app by link.

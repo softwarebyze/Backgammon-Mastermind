@@ -12,19 +12,23 @@ it('builds and reduces a stack while conserving both checker pools', () => {
   expect(validatePosition(reduced)).toEqual(reduced);
 });
 
-it('paints the selected color and returns the replaced stack to its pool', () => {
+it('retains a stack owner until empty, then uses the selected color for new checkers', () => {
   const white = setPositionStack(newPosition(true), 13, 'white', 5);
-  const black = setPositionStack(white, 13, 'black', 3);
+  const reduced = setPositionStack(white, 13, 'black', 3);
+  expect(reduced.points[13]).toEqual({ player: 'white', count: 3 });
+  expect(reduced.borneOff).toEqual({ white: 12, black: 15 });
+  const empty = setPositionStack(reduced, 13, 'black', 0);
+  const black = setPositionStack(empty, 13, 'black', 3);
   expect(black.points[13]).toEqual({ player: 'black', count: 3 });
   expect(black.borneOff).toEqual({ white: 15, black: 12 });
   expect(white.points[13]!.count).toBe(5);
 });
 
-it('caps a stack at available checkers and does not erase an opponent when no paint is available', () => {
+it('caps stacks at their owner’s available checkers', () => {
   const p = setPositionStack(newPosition(true), 13, 'white', 12);
   expect(setPositionStack(p, 6, 'white', 15).points[6]!.count).toBe(3);
   const standard = newPosition();
-  expect(setPositionStack(standard, 1, 'white', 1)).toEqual(standard);
+  expect(setPositionStack(standard, 1, 'white', 1).points[1]).toEqual({ player: 'black', count: 1 });
   expect(setPositionStack(standard, 1, 'white', 0).borneOff.black).toBe(2);
 });
 

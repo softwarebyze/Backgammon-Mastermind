@@ -110,6 +110,28 @@ tags:
     id: position-paint-white
 - assertVisible: 'Point 6, 5 white checkers'
 - tapOn:
+    id: position-paint-black
+- tapOn:
+    id: point-6
+    point: '50%, 95%'
+- assertVisible: 'Point 6, 1 white checker, selected'
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-add
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-add
+- assertVisible: 'Point 6, 2 white checkers, selected'
+- takeScreenshot: position-existing-owner
+- tapOn:
+    id: position-empty-point
+- tapOn:
+    id: position-add
+- assertVisible: 'Point 6, 1 black checker, selected'
+- takeScreenshot: position-owner-after-empty
+- tapOn:
     id: point-6
 - runFlow:
     file: ../utils/position-scroll.yaml

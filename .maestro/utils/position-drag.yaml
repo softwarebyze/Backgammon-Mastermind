@@ -31,11 +31,10 @@ tags:
 - assertVisible: 'Point 6, 15 white checkers, selected'
 - takeScreenshot: position-drag-01-white
 # All white checkers are used. This blocked press must keep the empty point
-# unchanged and provide visible feedback; haptic timing is unit/device checked.
+# unchanged; haptic and accessibility feedback are covered by unit tests.
 - tapOn:
     id: point-7
     point: '50%, 95%'
-- assertVisible: No White checkers left to place.
 - assertVisible: 'Point 7, selected'
 - takeScreenshot: position-press-02-exhausted
 - swipe:

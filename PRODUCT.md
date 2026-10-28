@@ -17,7 +17,7 @@ someone else. No account or developer access is required for this workflow.
 The confirmed editing interaction is the board and a White/Black selector:
 press location sets the initial stack size, then dragging increases or decreases
 its checker stack. The bar uses that same direct interaction for the selected
-colour; it does not need a separate selection menu. A blocked addition gives subtle haptic and visible feedback
+colour; it does not need a separate selection menu. A blocked addition gives subtle haptic and screen-reader feedback
 when the selected colour has no checkers left. Standard setup and Clear board stay above the board. Dice stay visible and
 are edited by tapping a die and choosing a face. Selecting a stack reveals
 minus / clear / plus immediately beside its board edge, with no sliders button.
@@ -76,3 +76,9 @@ Match scores are a visible, editable scoreboard with player-coloured scorecards
 and a central match target, following the match-play branch's flip-card material.
 Tap the numerals to edit. Shortening a match clamps scores to its target; rules
 remain secondary. Zero match length continues to mean a money game.
+
+The board workspace has no ambient borne-off summary or gesture instruction
+text. It relies on the existing board/trays and contextual joined stack strip.
+The strip combines decrement, count/clear, and increment without a separate point
+label or X button. Editing an occupied point retains its checker colour until
+it is empty; subsequent additions use the selected colour, even within one drag.

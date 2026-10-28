@@ -119,3 +119,19 @@ are capped at the target, and shortening the match clamps both scores so the
 position remains valid. Changing the target resets incompatible rule flags.
 Imported cube context and the opposite player's score survive score edits.
 Match rules remain behind the secondary disclosure; scores are always displayed.
+
+### Stack editing and quiet board workspace
+
+An occupied point keeps its checker colour while its count changes, regardless
+of the paint selector. After it reaches zero, additions use the selected colour.
+A drag crossing zero uses an empty base so reversing it cannot resurrect the old
+colour; cancelling restores the original position and both checker pools.
+Accessibility adjustments and contextual controls follow the same ownership
+rule. The contextual controls are one joined decrement/count-and-clear/increment
+strip; no separate point label, ambient off-count summary, or drag instruction
+text surrounds the board. Exhaustion gives one light haptic per stroke and a
+screen-reader announcement, without adding another visible paragraph.
+
+Occupied bar stacks follow the touched half's owner too. Crossing zero transfers
+subsequent additions to the selected colour's bar without losing checkers already
+there; the gesture keeps its original direction and cancellation restores both bars.

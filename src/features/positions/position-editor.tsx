@@ -1,20 +1,22 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
-import { Text, View } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
+import { Pressable, Text, View } from 'react-native';
+import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { editCheckers, newPosition } from '@/lib/positions/position';
 import { positionControlAnchor } from './position-control-anchor';
-import { PositionAction } from './position-controls';
 import { styles } from './position-styles';
 
 /** Contextual controls stay outside the board, beside the selected stack. */
-export function PositionEditor({ position: p, location, color, dimensions, onChange }: {
+export function PositionEditor({ position: p, location, color, dimensions, onChange, onLocation }: {
   position: Position;
   location: PositionLocation;
   color: Player;
   dimensions: BoardDimensions;
   onChange: (p: Position) => void;
+  onLocation: (location: PositionLocation) => void;
 }) {
   const owner = typeof location === 'string' ? location === 'white-bar' ? 'white' : 'black' : p.points[location]!.player;
   const side = owner ?? color;
@@ -22,14 +24,22 @@ export function PositionEditor({ position: p, location, color, dimensions, onCha
   const edit = (delta: number) => {
     const edited = editCheckers({ ...p, dice: [0, 0], context: newPosition().context }, location, side, delta);
     onChange({ ...edited, dice: p.dice, context: p.context });
+    if (typeof location === 'string' && edited.bar[side] === 0)
+      onLocation(`${color}-bar`);
   };
   return (
     <View testID="position-point-controls" style={[styles.pointControls, { left: positionControlAnchor(location, dimensions).left }]}>
-      <Text testID="position-selected" style={styles.pointControlLabel}>{typeof location === 'number' ? translate('positions.point_short', { point: location, count }) : `${translate(`positions.${side}_bar`)} · ${count}`}</Text>
-      <View style={{ flexDirection: 'row', gap: 4 }}>
-        <PositionAction symbol="minus" iconOnly label={translate('positions.remove')} testID="position-remove" disabled={!count} onPress={() => edit(-1)} />
-        <PositionAction symbol="x" iconOnly label={translate('positions.empty_point')} testID="position-empty-point" disabled={!count} onPress={() => edit(-count)} />
-        <PositionAction symbol="plus" iconOnly label={translate('positions.add')} testID="position-add" disabled={!p.borneOff[side]} onPress={() => edit(1)} />
+      <View style={styles.stackControls}>
+        <Pressable testID="position-remove" accessibilityRole="button" accessibilityLabel={translate('positions.remove')} accessibilityState={{ disabled: !count }} disabled={!count} onPress={() => edit(-1)} style={({ pressed }) => [styles.stackStep, !count && styles.disabled, pressed && styles.pressed]}>
+          <Feather name="minus" size={18} color={GAME_PALETTE.text} accessible={false} />
+        </Pressable>
+        <Pressable testID="position-empty-point" accessibilityRole="button" accessibilityLabel={`${translate('positions.empty_point')}, ${count}`} accessibilityState={{ disabled: !count }} disabled={!count} onPress={() => edit(-count)} style={({ pressed }) => [styles.stackClear, !count && styles.disabled, pressed && styles.pressed]}>
+          <Text style={styles.stackCount}>{count}</Text>
+          <Feather name="trash-2" size={13} color={GAME_PALETTE.accentDim} accessible={false} />
+        </Pressable>
+        <Pressable testID="position-add" accessibilityRole="button" accessibilityLabel={translate('positions.add')} accessibilityState={{ disabled: !p.borneOff[side] }} disabled={!p.borneOff[side]} onPress={() => edit(1)} style={({ pressed }) => [styles.stackStep, !p.borneOff[side] && styles.disabled, pressed && styles.pressed]}>
+          <Feather name="plus" size={18} color={GAME_PALETTE.text} accessible={false} />
+        </Pressable>
       </View>
     </View>
   );

@@ -6,11 +6,12 @@ import { useMemo, useRef } from 'react';
 import { hapticLight } from '@/lib/haptics';
 import { setPositionStack, stackDragCount, stackPressCount } from '@/lib/positions/set-stack';
 
-type Drag = { position: Position; location: PositionLocation; color: Player; count: number; top: boolean; notified: boolean };
+type Drag = { rollback: Position; position: Position; location: PositionLocation; color: Player; count: number; offset: number; top: boolean; notified: boolean };
 
 export function usePositionStackEditor(props: {
   position: Position;
   color: Player;
+  location: PositionLocation | null;
   dimensions: BoardDimensions;
   onLocation: (location: PositionLocation | null) => void;
   onChange: (p: Position) => void;
@@ -21,34 +22,52 @@ export function usePositionStackEditor(props: {
   latest.current = props;
   const drag = useRef<Drag | null>(null);
   const editor = useMemo<StackEditHandlers>(() => {
-    const snapshot = (point: number): Drag => {
-      const { position: p, color: side } = latest.current;
+    const snapshot = (point: number, y?: number): Drag => {
+      const { position: p, color, location, dimensions } = latest.current;
+      const touchedBar = y !== undefined && y < dimensions.boardHeight / 2 ? 'black' : 'white';
+      const barSide = y !== undefined
+        ? p.bar[touchedBar] > 0 ? touchedBar : color
+        : location === 'black-bar' ? 'black' : location === 'white-bar' ? 'white' : color;
+      const side = point === 0 ? barSide : p.points[point]!.player ?? color;
       return {
+        offset: 0,
+        rollback: p,
         position: p,
         color: side,
         location: point === 0 ? `${side}-bar` : point,
-        count: point === 0 ? p.bar[side] : p.points[point]!.player === side ? p.points[point]!.count : 0,
+        count: point === 0 ? p.bar[side] : p.points[point]!.count,
         top: point === 0 ? side === 'black' : point >= 13,
         notified: false,
       };
     };
     const apply = (start: Drag, count: number, requested = count): Position => {
-      const next = setPositionStack(start.position, start.location, start.color, count);
+      const next = setPositionStack(start.position, start.location, start.color, count + start.offset);
       const placed = typeof start.location === 'number'
         ? next.points[start.location]!.player === start.color ? next.points[start.location]!.count : 0
-        : next.bar[start.color];
+        : next.bar[start.color] - start.offset;
       if (requested > placed && next.borneOff[start.color] === 0 && !start.notified) {
         start.notified = true;
         latest.current.onBlocked(start.color);
         hapticLight();
       }
       latest.current.onChange(next);
+      if (placed === 0 && count <= 0) {
+        // Crossing zero commits an empty base for this stroke. Reversing adds
+        // the selected colour instead of resurrecting the old stack.
+        start.position = next;
+        start.color = latest.current.color;
+        if (typeof start.location === 'string') {
+          start.location = `${start.color}-bar`;
+          start.offset = next.bar[start.color];
+          latest.current.onLocation(start.location);
+        }
+      }
       return next;
     };
     const move = (start: Drag, steps: number) => apply(start, stackDragCount(start.count, steps, start.top), start.count + (start.top ? steps : -steps));
     return {
       onStart: (point, y) => {
-        const start = snapshot(point);
+        const start = snapshot(point, y);
         latest.current.onTouch();
         drag.current = start;
         latest.current.onBlocked(null);
@@ -76,7 +95,7 @@ export function usePositionStackEditor(props: {
       },
       onCancel: () => {
         if (drag.current)
-          latest.current.onChange(drag.current.position);
+          latest.current.onChange(drag.current.rollback);
         drag.current = null;
         latest.current.onBlocked(null);
       },
