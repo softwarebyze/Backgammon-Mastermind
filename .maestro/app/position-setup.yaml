@@ -111,6 +111,12 @@ tags:
 - assertVisible: 'Point 6, 5 white checkers'
 - tapOn:
     id: position-paint-black
+# The standard board has no spare Black checkers. Free one before testing
+# adding Black after clearing the White stack.
+- tapOn:
+    id: point-1
+    point: '50%, 95%'
+- assertVisible: 'Point 1, 1 black checker, selected'
 - tapOn:
     id: point-6
     point: '50%, 95%'
