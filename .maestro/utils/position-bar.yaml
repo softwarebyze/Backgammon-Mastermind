@@ -11,6 +11,13 @@ tags:
     id: position-board-bar
     point: '50%, 80%'
 - assertVisible: 'Bar, [2-9] white checkers'
+# On short phones the controls below the board can be below the fold.
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-remove
+      START_Y: '80%'
+      END_Y: '25%'
 - assertVisible:
     id: position-remove
 - assertVisible:
@@ -27,6 +34,12 @@ tags:
 - assertVisible:
     id: position-board-bar
     text: Bar
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-black
+      START_Y: '25%'
+      END_Y: '80%'
 - tapOn:
     id: position-paint-black
 - tapOn:
@@ -37,6 +50,12 @@ tags:
     id: position-board-bar
     point: '50%, 20%'
 - assertVisible: 'Bar, [2-9] black checkers'
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-remove
+      START_Y: '25%'
+      END_Y: '80%'
 - assertVisible:
     id: position-remove
 - takeScreenshot: position-bar-02-black
