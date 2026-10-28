@@ -8,18 +8,36 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: Play against the computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- tapOn: Auto-roll dice
+- tapOn:
+    id: stack-escape-button
 # Keep the existing single-game entry visible at launch, then verify the
 # match choices remain reachable below it on compact Android screens.
 - takeScreenshot: match-00-home-single-games
+- tapOn:
+    id: home-opponent-vs-human
+- tapOn:
+    id: home-format-match
 - scrollUntilVisible:
     element:
-      id: start-match-3
+      id: home-match-length-3
     direction: DOWN
 - assertVisible:
-    id: start-match-5
-- takeScreenshot: match-00-home-match-options
+    id: home-match-length-5
 - tapOn:
-    id: start-match-3
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: match-cube-home-match-options
+- tapOn:
+    id: home-start-game
 - extendedWaitUntil:
     visible: Cube 1 · Center
     timeout: 45000

@@ -1,14 +1,20 @@
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import Feather from '@expo/vector-icons/Feather';
+import { use } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-
 import { MoveReviewTurnStrip } from '@/features/game/components/move-review-turn-strip';
+
+import { GameContext } from '@/features/game/game-context';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
+  cubeEvents?: CubeHistoryEvent[];
+  selectedCubeEventId?: number | null;
+  onJumpToCubeEvent?: (id: number) => void;
   viewIndex: number;
   liveIndex: number;
   isReviewing: boolean;
@@ -32,6 +38,9 @@ type Props = {
 const BAR_HEIGHT = 68;
 
 export function MoveReviewBar({
+  cubeEvents: suppliedEvents,
+  selectedCubeEventId,
+  onJumpToCubeEvent,
   viewIndex,
   liveIndex,
   isReviewing,
@@ -53,7 +62,9 @@ export function MoveReviewBar({
   // Row order already mirrors in RTL (back sits on the right); flip the glyphs
   // so back points right and forward points left, like the header undo/redo.
   const rtl = useLayoutIsRTL();
-  if (liveIndex === 0) {
+  const contextEvents = use(GameContext)?.cubeEvents;
+  const cubeEvents = suppliedEvents ?? contextEvents ?? [];
+  if (liveIndex === 0 && cubeEvents.length === 0) {
     return <View style={styles.placeholder} />;
   }
 
@@ -107,6 +118,9 @@ export function MoveReviewBar({
           label={translate('game.review.previous')}
         />
         <MoveReviewTurnStrip
+          cubeEvents={cubeEvents}
+          selectedCubeEventId={selectedCubeEventId}
+          onJumpToCubeEvent={onJumpToCubeEvent}
           viewIndex={viewIndex}
           isReviewing={isReviewing}
           moveLog={moveLog}

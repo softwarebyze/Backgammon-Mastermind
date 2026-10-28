@@ -15,6 +15,7 @@ import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 
 type Props = {
+  cubeClearance?: number;
   whiteBorneOff: number;
   blackBorneOff: number;
   isLegalTarget: boolean;
@@ -27,6 +28,7 @@ type Props = {
 };
 
 type StackProps = {
+  cubeClearance: number;
   count: number;
   player: Player;
   halfHeight: number;
@@ -37,6 +39,7 @@ type StackProps = {
 };
 
 function BearOffStack({
+  cubeClearance,
   count,
   player,
   halfHeight,
@@ -46,7 +49,7 @@ function BearOffStack({
   isTargetSide,
 }: StackProps) {
   const tokenSize = bearOffTokenSize(checkerSize);
-  const maxVisible = maxBearOffVisibleSlots(halfHeight, tokenSize);
+  const maxVisible = maxBearOffVisibleSlots(halfHeight, tokenSize, cubeClearance);
   const visible = Math.min(count, maxVisible);
   const overflow = count - visible;
   const showTarget = isLegalTarget && isTargetSide;
@@ -100,6 +103,7 @@ function BearOffStack({
             position: 'absolute',
             left: (width - tokenSize) / 2,
             top: bearOffSlotTopInSection({
+              clearance: cubeClearance,
               halfHeight,
               tokenSize,
               visibleCount: visible,
@@ -133,6 +137,7 @@ function BearOffStack({
 }
 
 export function BearOffArea({
+  cubeClearance = 0,
   whiteBorneOff,
   blackBorneOff,
   isLegalTarget,
@@ -167,6 +172,7 @@ export function BearOffArea({
       }}
     >
       <BearOffStack
+        cubeClearance={cubeClearance}
         count={blackBorneOff}
         player="black"
         halfHeight={halfHeight}
@@ -189,6 +195,7 @@ export function BearOffArea({
       />
 
       <BearOffStack
+        cubeClearance={cubeClearance}
         count={whiteBorneOff}
         player="white"
         halfHeight={halfHeight}

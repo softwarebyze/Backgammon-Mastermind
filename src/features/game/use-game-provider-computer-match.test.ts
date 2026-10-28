@@ -1,6 +1,7 @@
 import type { GameState } from '@/lib/game';
 import { clearGuidance, setGuidanceVerdictPending, showGuidance } from '@/features/game/guidance-store';
 import { createPositionState, getLegalMoves } from '@/lib/game';
+import { patchGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { computerThinkDelayMs } from '@/lib/game/computer-pace';
 import { acceptDouble, createMatch, createMatchGame, dropDouble, offerDouble } from '@/lib/game/match';
 import { clearActiveGame, loadPersistedGame, savePersistedSession } from '@/lib/game/persistence';
@@ -21,6 +22,7 @@ function think() {
 
 beforeEach(() => {
   jest.useFakeTimers();
+  patchGamePreferences({ autoRoll: false });
   clearActiveGame();
   setGuidanceVerdictPending(false);
 });
@@ -46,6 +48,9 @@ it.each([['even', 'accept'], ['white', 'drop']] as const)('automatically answers
   expect(result.current.canUndo).toBe(false);
   think();
   expect(result.current.state?.match?.pendingOffer).toBeNull();
+  expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer', answer]);
+  act(() => jest.advanceTimersByTime(100));
+  expect(result.current.cubeEvents).toHaveLength(2);
   if (answer === 'accept') {
     expect(result.current.state?.match?.cube).toEqual({ value: 2, owner: 'black' });
     expect(result.current.state?.currentPlayer).toBe('white');
@@ -65,11 +70,13 @@ it('offers as Black before rolling, waits for the human, then rolls with White o
   expect(result.current.state).toBe(initial);
   think();
   expect(result.current.state?.match?.pendingOffer).toBe('black');
+  expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer']);
   const pending = result.current.state;
   act(() => result.current.doRollDice());
   act(() => result.current.doPassTurn());
   act(() => jest.advanceTimersByTime(5000));
   expect(result.current.state).toBe(pending);
+  expect(result.current.cubeEvents).toHaveLength(1);
   act(() => result.current.matchAction!('accept'));
   expect(result.current.state?.match?.cube).toEqual({ value: 2, owner: 'white' });
   think();

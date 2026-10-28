@@ -1,8 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { router } from 'expo-router';
-
+import { usePostHog } from 'posthog-react-native';
+import { Alert } from 'react-native';
 import { useGame } from '@/features/game/use-game';
+
 import { createMatchGame } from '@/lib/game/match';
+import { hasQuarantinedSession } from '@/lib/game/persistence';
 
 import { HomeScreen } from './home-screen';
 
@@ -18,6 +21,10 @@ jest.mock('@/lib/ui/layout-metrics', () => ({
   }),
 }));
 jest.mock('@expo/vector-icons/Feather', () => 'Feather');
+jest.mock('@/lib/game/persistence', () => ({
+  ...jest.requireActual('@/lib/game/persistence'),
+  hasQuarantinedSession: jest.fn().mockReturnValue(false),
+}));
 jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn() }));
 
 beforeEach(() => {
@@ -30,40 +37,130 @@ beforeEach(() => {
   } as unknown as ReturnType<typeof useGame>);
 });
 
-it('keeps single-game actions ahead of match options in the scrollable home menu', () => {
+it('offers one opponent choice and a clear default single-game start', () => {
   render(<HomeScreen />);
-  const names = screen.getAllByRole('button').map(button => button.props.accessibilityLabel);
-  expect(names).toEqual([
-    'Learn to play',
-    'Play against the computer',
-    'Play with two players locally',
-    '3 points',
-    '5 points',
-  ]);
-  expect(screen.getByTestId('home-screen')).toBeOnTheScreen();
-});
-
-it.each([3, 5] as const)('still starts a local %s-point match from home', (length) => {
-  render(<HomeScreen />);
-  fireEvent.press(screen.getByTestId(`start-match-${length}`));
-  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(length));
+  expect(screen.getAllByRole('radio')).toHaveLength(4);
+  expect(screen.getAllByText('vs Computer')).toHaveLength(1);
+  expect(screen.getAllByText('2 Players')).toHaveLength(1);
+  expect(screen.getByTestId('home-opponent-vs-computer').props.accessibilityState).toEqual({ checked: true });
+  expect(screen.getByTestId('home-format-single').props.accessibilityState).toEqual({ checked: true });
+  expect(screen.queryByTestId('home-match-length-3')).toBeNull();
+  expect(useGame().startGame).not.toHaveBeenCalled();
+  fireEvent.press(screen.getByRole('button', { name: 'Start game' }));
+  expect(useGame().startGame).toHaveBeenCalledWith('vs-computer');
   expect(router.replace).toHaveBeenCalledWith('/game');
 });
 
-it.each([3, 5] as const)('starts a %s-point computer match with human White', (length) => {
+it.each(['vs-human', 'vs-computer'] as const)('starts a %s single game only after Start', (mode) => {
   render(<HomeScreen />);
-  fireEvent.press(screen.getByTestId('match-mode-vs-computer'));
-  expect(screen.getByTestId('match-mode-vs-computer').props.accessibilityState).toEqual({ checked: true });
-  fireEvent.press(screen.getByTestId(`start-match-${length}`));
-  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(length, 'vs-computer'));
-  expect(router.replace).toHaveBeenCalledWith('/game');
-});
-
-it('switches back to local match without starting until a length is chosen', () => {
-  render(<HomeScreen />);
-  fireEvent.press(screen.getByTestId('match-mode-vs-computer'));
-  fireEvent.press(screen.getByTestId('match-mode-vs-human'));
+  fireEvent.press(screen.getByTestId(`home-opponent-${mode}`));
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  fireEvent.press(screen.getByTestId('home-match-length-5'));
+  fireEvent.press(screen.getByTestId('home-format-single'));
+  expect(screen.queryByTestId('home-match-length-5')).toBeNull();
+  expect(useGame().startGame).not.toHaveBeenCalled();
   expect(useGame().startFromPosition).not.toHaveBeenCalled();
-  fireEvent.press(screen.getByTestId('start-match-3'));
-  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(3, 'vs-human'));
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  expect(useGame().startGame).toHaveBeenCalledWith(mode);
+  expect(useGame().startFromPosition).not.toHaveBeenCalled();
+});
+
+it.each([
+  ['vs-human', 3],
+  ['vs-human', 5],
+  ['vs-computer', 3],
+  ['vs-computer', 5],
+] as const)('starts a %s %s-point match only after Start', (mode, length) => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId(`home-opponent-${mode}`));
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  expect(screen.getByTestId('home-match-length-3').props.accessibilityState).toEqual({ checked: true });
+  fireEvent.press(screen.getByTestId(`home-match-length-${length}`));
+  expect(useGame().startFromPosition).not.toHaveBeenCalled();
+  fireEvent.press(screen.getByRole('button', { name: `Start ${length}-point match` }));
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(length, mode));
+  expect(useGame().startGame).not.toHaveBeenCalled();
+  expect(router.replace).toHaveBeenCalledWith('/game');
+  expect(usePostHog().capture).toHaveBeenCalledWith('game_started', expect.objectContaining({ mode, match_length: length }));
+});
+
+it('preserves opponent and length when changing formats', () => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-opponent-vs-human'));
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  fireEvent.press(screen.getByTestId('home-match-length-5'));
+  fireEvent.press(screen.getByTestId('home-format-single'));
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  expect(screen.getByTestId('home-opponent-vs-human').props.accessibilityState).toEqual({ checked: true });
+  expect(screen.getByTestId('home-match-length-5').props.accessibilityState).toEqual({ checked: true });
+});
+
+it.each(['single', 'match'] as const)('cancels %s replacement without mutation or navigation, then confirms selected setup', (format) => {
+  const state = createMatchGame(3);
+  jest.mocked(useGame).mockReturnValue({ ...useGame(), state });
+  const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-opponent-vs-human'));
+  fireEvent.press(screen.getByTestId(`home-format-${format}`));
+  if (format === 'match')
+    fireEvent.press(screen.getByTestId('home-match-length-5'));
+  expect(alert).not.toHaveBeenCalled();
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  let buttons = alert.mock.calls[0][2]!;
+  buttons.find(button => button.style === 'cancel')?.onPress?.();
+  expect(useGame().startGame).not.toHaveBeenCalled();
+  expect(useGame().startFromPosition).not.toHaveBeenCalled();
+  expect(router.replace).not.toHaveBeenCalled();
+  expect(usePostHog().capture).not.toHaveBeenCalledWith('game_started', expect.anything());
+  expect(screen.getByTestId('home-opponent-vs-human').props.accessibilityState).toEqual({ checked: true });
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  buttons = alert.mock.calls[1][2]!;
+  buttons.find(button => button.style === 'destructive')?.onPress?.();
+  if (format === 'match')
+    expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(5, 'vs-human'));
+  else
+    expect(useGame().startGame).toHaveBeenCalledWith('vs-human');
+  expect(router.replace).toHaveBeenCalledWith('/game');
+  alert.mockRestore();
+});
+
+it('keeps Resume and Learn reachable without starting a new game', () => {
+  jest.mocked(useGame).mockReturnValue({ ...useGame(), state: createMatchGame(3) });
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('resume-game-button'));
+  expect(router.replace).toHaveBeenCalledWith('/game');
+  expect(useGame().startGame).not.toHaveBeenCalled();
+  fireEvent.press(screen.getByRole('button', { name: 'Learn to play' }));
+  expect(router.push).toHaveBeenCalled();
+});
+
+it('retains review of a completed game', () => {
+  const state = { ...createMatchGame(3), phase: 'game-over' as const, match: undefined, winner: 'white' as const };
+  jest.mocked(useGame).mockReturnValue({ ...useGame(), state });
+  render(<HomeScreen />);
+  expect(screen.queryByTestId('resume-game-button')).toBeNull();
+  fireEvent.press(screen.getByTestId('review-last-game-button'));
+  expect(router.replace).toHaveBeenCalledWith('/game');
+  expect(useGame().startGame).not.toHaveBeenCalled();
+});
+
+it('retains dismissible saved-game recovery', () => {
+  jest.mocked(hasQuarantinedSession).mockReturnValueOnce(true);
+  render(<HomeScreen />);
+  expect(screen.getByTestId('saved-game-recovery-banner')).toBeOnTheScreen();
+  fireEvent.press(screen.getByTestId('saved-game-recovery-dismiss'));
+  expect(screen.queryByTestId('saved-game-recovery-banner')).toBeNull();
+  expect(screen.getByTestId('home-start-game')).toBeOnTheScreen();
+});
+
+it('continues the existing game from the replacement dialog without starting the setup', () => {
+  jest.mocked(useGame).mockReturnValue({ ...useGame(), state: createMatchGame(3) });
+  const alert = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  alert.mock.calls[0][2]?.find(button => button.text === 'Continue')?.onPress?.();
+  expect(router.replace).toHaveBeenCalledWith('/game');
+  expect(useGame().startGame).not.toHaveBeenCalled();
+  expect(useGame().startFromPosition).not.toHaveBeenCalled();
+  alert.mockRestore();
 });

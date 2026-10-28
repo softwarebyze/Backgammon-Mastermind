@@ -1,4 +1,7 @@
 flows:
+  - app/home-game-setup.yaml
+  - app/match-board-presentation.yaml
+  - app/cube-history-autoroll.yaml
   - app/match-cube.yaml
   - app/computer-match.yaml
   - app/match-polish.yaml

@@ -76,10 +76,9 @@ export function GameScreenControls({
   const guidance = useGuidance();
   const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
   const turn = getTurnDisplay(state);
-  const caption = captionOverride
-    ?? (isReviewing
-      ? translate('game.review.viewing_hint')
-      : getActionCaption(state, turn));
+  const caption = isReviewing
+    ? translate('game.review.viewing_hint')
+    : captionOverride ?? getActionCaption(state, turn);
 
   const diceForTray = isReviewing ? state : liveDiceState;
   const showOpening = opening !== null && !isReviewing;
@@ -137,7 +136,7 @@ export function GameScreenControls({
         />
       </View>
       <Text style={[styles.caption, state.match && styles.matchCaption]} numberOfLines={state.match ? 2 : 1} testID="game-action-caption" accessibilityLiveRegion="polite">
-        {state.match?.pendingOffer
+        {!isReviewing && state.match?.pendingOffer
           ? translate('game.match.offer', { player: matchPlayer(state.match.pendingOffer), opponent: matchPlayer(state.match.pendingOffer === 'white' ? 'black' : 'white'), value: state.match.cube.value * 2, points: state.match.cube.value })
           : caption}
       </Text>
@@ -196,6 +195,7 @@ function ActionControl({
       <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.back_to_live')}
+        testID="review-back-to-live-button"
         style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onGoLive}
         hitSlop={CONTROL_HIT_SLOP}

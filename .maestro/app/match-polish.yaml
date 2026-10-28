@@ -10,12 +10,33 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: Play against the computer
+- tapOn: Settings
 - scrollUntilVisible:
     element:
-      id: start-match-3
+      text: Auto-roll dice
     direction: DOWN
+- tapOn: Auto-roll dice
 - tapOn:
-    id: start-match-3
+    id: stack-escape-button
+- tapOn:
+    id: home-opponent-vs-human
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-3
+    direction: DOWN
+- assertVisible:
+    id: home-match-length-5
+- tapOn:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: match-polish-home-match-options
+- tapOn:
+    id: home-start-game
 - extendedWaitUntil:
     visible:
       id: match-score

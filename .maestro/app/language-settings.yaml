@@ -8,7 +8,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - tapOn:
     text: Settings
 - extendedWaitUntil:

@@ -1,0 +1,101 @@
+# Parent registers this flow. CI supplies the recording and screenshot gallery.
+# Compare board-view bounds across offers, confirm, history, results and rotation.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- tapOn: Auto-roll dice
+- tapOn:
+    id: stack-escape-button
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-cube
+- assertVisible:
+    id: match-score
+- assertVisible:
+    id: board-cube-slot
+- assertVisible:
+    id: pip-count-black
+- assertVisible:
+    id: pip-count-white
+- assertVisible:
+    id: strategy-line
+- takeScreenshot: match-board-01-centered
+- tapOn:
+    id: strategy-line
+- assertVisible:
+    id: strategy-explanation
+- tapOn:
+    id: strategy-explanation-close
+- tapOn:
+    id: match-double
+- assertVisible: 'White offers a double.*'
+- assertNotVisible:
+    id: roll-dice-button
+- takeScreenshot: match-board-02-offered
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 2 · Black
+- takeScreenshot: match-board-03-owned
+- tapOn: Previous turn
+- assertVisible:
+    text: 'Reviewing.*'
+- takeScreenshot: match-board-03-history
+- tapOn:
+    id: review-back-to-live-button
+- setOrientation: LANDSCAPE_LEFT
+- assertVisible:
+    id: board-view
+- assertVisible:
+    id: pip-count-black
+- assertVisible:
+    id: pip-count-white
+- takeScreenshot: match-board-04-landscape
+- setOrientation: PORTRAIT
+- tapOn:
+    id: roll-dice-button
+- runFlow:
+    when:
+      notVisible:
+        id: match-next
+    commands:
+      - tapOn:
+          id: point-1
+      - tapOn: Bear off
+- runFlow:
+    when:
+      visible:
+        id: confirm-move-button
+    commands:
+      - takeScreenshot: match-board-05-confirm
+      - tapOn:
+          id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: White 2  –  Black 0
+- takeScreenshot: match-board-06-result
+- tapOn:
+    id: match-next
+- assertVisible: Cube 1 · Center. Crawford game · no doubling
+- assertVisible:
+    id: match-score
+- takeScreenshot: match-board-07-crawford

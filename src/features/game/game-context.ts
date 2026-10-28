@@ -2,12 +2,15 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { HistoryPathOverlay } from '@/features/game/timeline-history-actions';
 import type { AnimatedMoveOpts } from '@/features/game/use-animated-moves';
 import type { GameMode, GameState, Move } from '@/lib/game';
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { createContext } from 'react';
 
 export type GameContextType = {
+  setReviewing?: (reviewing: boolean) => void;
   state: GameState | null;
   moveLog: MoveLogEntry[];
+  cubeEvents?: CubeHistoryEvent[];
   replayBaseline: GameState | null;
   startGame: (mode: GameMode) => void;
   /** Dev/QA: start a playable session from an arbitrary board (skips opening ceremony). */

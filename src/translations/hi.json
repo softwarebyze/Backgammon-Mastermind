@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "मैच लक्ष्य"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "चालू गेम पर लौटें",
+      "cube_accept": "{{player}} स्वीकार करता है · क्यूब {{value}}",
+      "cube_drop": "{{player}} मना करता है",
+      "cube_offer": "{{player}} दोगुना करने की पेशकश करता है",
       "live": "चालू गेम",
       "live_short": "लाइव",
       "move_a11y": "चाल {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "पिछला गेम देखें",
     "review_a11y": "पूरा हुआ गेम देखें",
     "review_sub": "देखें कि पिछला गेम कैसे खत्म हुआ",
+    "setup": {
+      "format": "खेल",
+      "length": "मैच की लंबाई",
+      "match": "मैच",
+      "opponent": "प्रतिद्वंद्वी",
+      "single": "एकल खेल",
+      "start_match": "{{length}} अंकों का मैच शुरू करें",
+      "start_single": "खेल शुरू करें"
+    },
     "subtitle": "बोर्ड पर महारत — एक चाल एक बार में",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 खिलाड़ी",

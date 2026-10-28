@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "Αγώνας στους"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Επιστροφή στο τρέχον παιχνίδι",
+      "cube_accept": "{{player}} δέχεται · Κύβος {{value}}",
+      "cube_drop": "{{player}} απορρίπτει",
+      "cube_offer": "{{player}} προτείνει διπλασιασμό",
       "live": "Τρέχον παιχνίδι",
       "live_short": "Live",
       "move_a11y": "Κίνηση {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "Προβολή τελευταίου παιχνιδιού",
     "review_a11y": "Προβολή ολοκληρωμένου παιχνιδιού",
     "review_sub": "Δες πώς τελείωσε το τελευταίο παιχνίδι",
+    "setup": {
+      "format": "Παιχνίδι",
+      "length": "Διάρκεια αγώνα",
+      "match": "Αγώνας",
+      "opponent": "Αντίπαλος",
+      "single": "Μονό παιχνίδι",
+      "start_match": "Έναρξη αγώνα {{length}} πόντων",
+      "start_single": "Έναρξη παιχνιδιού"
+    },
     "subtitle": "Κατάκτησε το ταμπλό — κίνηση την κίνηση",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 παίκτες",

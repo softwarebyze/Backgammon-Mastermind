@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "目標点"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "対局に戻る",
+      "cube_accept": "{{player}}がテイク · キューブ{{value}}",
+      "cube_drop": "{{player}}がパス",
+      "cube_offer": "{{player}}がダブルを提案",
       "live": "進行中の対局",
       "live_short": "ライブ",
       "move_a11y": "ムーブ{{ply}}、{{player}}",
@@ -262,6 +268,15 @@
     "review": "前回のゲームを見る",
     "review_a11y": "終了したゲームを見る",
     "review_sub": "前回のゲームの結末を確認",
+    "setup": {
+      "format": "対戦形式",
+      "length": "マッチの目標点",
+      "match": "マッチ",
+      "opponent": "対戦相手",
+      "single": "単発ゲーム",
+      "start_match": "{{length}}ポイントマッチ開始",
+      "start_single": "ゲーム開始"
+    },
     "subtitle": "一手ずつ、ボードを極める",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2人プレイ",

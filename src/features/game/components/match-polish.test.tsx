@@ -3,6 +3,7 @@ import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { createMatchGame } from '@/lib/game/match';
 import { cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 import { MatchControls } from './match-controls';
+import { MatchCube } from './match-cube';
 import { MatchScorecard } from './match-scorecard';
 import { MatchStatusBar } from './match-status-bar';
 import { WinConfettiOverlay } from './win-confetti-overlay';
@@ -53,27 +54,30 @@ it('blocks cube decisions during animation', () => {
   expect(mockAction).not.toHaveBeenCalled();
 });
 
-it('renders scores, pips, centered 64 face, pending double and accepted owner', () => {
+it('renders compact scores and an accessible summary', () => {
   const state = createMatchGame(3);
   const view = setup(<MatchStatusBar state={state} />);
   expect(screen.getByTestId('match-score')).toHaveProp('accessibilityLabel', 'White 0  –  Black 0');
   expect(screen.getByTestId('match-score')).toHaveProp('accessible', true);
   expect(screen.getByTestId('match-score')).toHaveProp('accessibilityHint', 'White: 167 pips, 0 of 15 borne off. Black: 167 pips, 0 of 15 borne off');
+  expect(screen.getByTestId('match-target')).toBeOnTheScreen();
+  expect(screen.queryByTestId('match-cube')).toBeNull();
+  expect(screen.queryByTestId('pip-count-white')).toBeNull();
+  view.rerender(<MatchCube cube={state.match!.cube} />);
   expect(screen.getByText('64')).toBeOnTheScreen();
-  expect(screen.getByTestId('pip-count-white')).toHaveTextContent('167');
-  view.rerender(<MatchStatusBar state={{ ...state, match: { ...state.match!, pendingOffer: 'white' } }} />);
+  view.rerender(<MatchCube cube={state.match!.cube} pendingOffer="white" />);
   expect(screen.getByTestId('match-cube-pending-white')).toBeOnTheScreen();
   expect(screen.getByText('2')).toBeOnTheScreen();
   expect(screen.getByTestId('match-cube')).toHaveProp('accessibilityLabel', 'White offers a double to 2. Black: accept or drop. Dropping concedes 1.');
-  view.rerender(<MatchStatusBar state={{ ...state, match: { ...state.match!, cube: { value: 2, owner: 'black' } } }} />);
+  view.rerender(<MatchCube cube={{ value: 2, owner: 'black' }} />);
   expect(screen.getByTestId('match-cube-owner-black')).toBeOnTheScreen();
   expect(screen.getByTestId('match-cube')).toHaveProp('accessibilityLabel', 'Cube 2 · Black');
 });
 
 it('updates score without animation and suppresses confetti with Reduced Motion', () => {
   jest.mocked(useReducedMotion).mockReturnValue(true);
-  const view = setup(<MatchScorecard player="white" score={0} pips={167} active />);
-  view.rerender(<MatchScorecard player="white" score={2} pips={0} active />);
+  const view = setup(<MatchScorecard player="white" score={0} active />);
+  view.rerender(<MatchScorecard player="white" score={2} active />);
   expect(screen.getByTestId('match-score-white')).toHaveTextContent('2');
   expect(withTiming).not.toHaveBeenCalled();
   view.rerender(<WinConfettiOverlay burstKey={1} />);

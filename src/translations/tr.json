@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "Hedef puan"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Canlı oyuna dön",
+      "cube_accept": "{{player}} kabul ediyor · Küp {{value}}",
+      "cube_drop": "{{player}} reddediyor",
+      "cube_offer": "{{player}} ikiye katlamayı öneriyor",
       "live": "Canlı oyun",
       "live_short": "Canlı",
       "move_a11y": "Hamle {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "Son oyunu incele",
     "review_a11y": "Tamamlanan oyunu incele",
     "review_sub": "Son oyunun nasıl bittiğini görün",
+    "setup": {
+      "format": "Oyun",
+      "length": "Maç uzunluğu",
+      "match": "Maç",
+      "opponent": "Rakip",
+      "single": "Tek oyun",
+      "start_match": "{{length}} sayılık maçı başlat",
+      "start_single": "Oyunu başlat"
+    },
     "subtitle": "Tahtaya hükmet — hamle hamle",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 Oyuncu",

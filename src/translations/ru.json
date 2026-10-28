@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "Матч до"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Вернуться к текущей игре",
+      "cube_accept": "{{player}} принимает · Куб {{value}}",
+      "cube_drop": "{{player}} отказывается",
+      "cube_offer": "{{player}} предлагает удвоение",
       "live": "Текущая игра",
       "live_short": "Игра",
       "move_a11y": "Ход {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "Посмотреть последнюю игру",
     "review_a11y": "Посмотреть завершённую игру",
     "review_sub": "Посмотрите, чем закончилась последняя игра",
+    "setup": {
+      "format": "Игра",
+      "length": "Длина матча",
+      "match": "Матч",
+      "opponent": "Соперник",
+      "single": "Одна игра",
+      "start_match": "Начать матч до {{length}} очков",
+      "start_single": "Начать игру"
+    },
     "subtitle": "Покоряйте доску — ход за ходом",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 игрока",

@@ -49,3 +49,37 @@ it.each([false, true])('points timeline back and forward the reading direction w
   fireEvent.press(forward);
   expect(onStepForward).toHaveBeenCalledTimes(1);
 });
+
+it('shows cube-only history and selects events through review callbacks', () => {
+  const { createPositionState } = jest.requireActual('@/lib/game');
+  const { createMatch, offerDouble } = jest.requireActual('@/lib/game/match');
+  const { appendCubeHistoryEvent } = jest.requireActual('@/lib/game/cube-history');
+  const before = createPositionState({ useStandardSetup: true, match: createMatch(5) });
+  const cubeEvents = appendCubeHistoryEvent([], 'offer', before, offerDouble(before, 0), 0);
+  const onJumpToCubeEvent = jest.fn();
+  const onJumpToPly = jest.fn();
+  render(
+    <MoveReviewBar
+      viewIndex={0}
+      liveIndex={0}
+      isReviewing
+      moveLog={[]}
+      cubeEvents={cubeEvents}
+      selectedCubeEventId={1}
+      onJumpToCubeEvent={onJumpToCubeEvent}
+      focusedPly={0}
+      positionLabel={null}
+      canStepBack
+      canStepForward
+      onStepBack={jest.fn()}
+      onStepForward={jest.fn()}
+      onJumpToPly={onJumpToPly}
+      onGoLive={jest.fn()}
+    />,
+  );
+  const chip = screen.getByTestId('history-cube-1');
+  expect(chip.props.accessibilityState.selected).toBe(true);
+  fireEvent.press(chip);
+  expect(onJumpToCubeEvent).toHaveBeenCalledWith(1);
+  expect(onJumpToPly).not.toHaveBeenCalled();
+});

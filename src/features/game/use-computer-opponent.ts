@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { GameState, Move } from '@/lib/game';
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
@@ -25,6 +26,7 @@ type ComputerOpponentOptions = {
   recordNoMove: (before: GameState, after: GameState) => void;
   /** Tutor blunder prompt is open — pause the AI until the user chooses. */
   paused?: boolean;
+  recordCubeEvent?: (kind: CubeHistoryEvent['kind'], before: GameState, after: GameState) => void;
 };
 
 export type ComputerOpponentControls = {
@@ -44,6 +46,7 @@ export function useComputerOpponent({
   hasRedo,
   recordNoMove,
   paused = false,
+  recordCubeEvent,
 }: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const generationRef = useRef(0);
@@ -100,11 +103,13 @@ export function useComputerOpponent({
 
       const cubeAction = computerCubeAction(prev);
       if (cubeAction) {
-        setState(current => current !== prev
-          ? current
-          : cubeAction === 'offer'
-            ? offerDouble(current, moveCount)
-            : cubeAction === 'accept' ? acceptDouble(current) : dropDouble(current));
+        const next = cubeAction === 'offer'
+          ? offerDouble(prev, moveCount)
+          : cubeAction === 'accept' ? acceptDouble(prev) : dropDouble(prev);
+        if (next !== prev) {
+          recordCubeEvent?.(cubeAction, prev, next);
+          setState(next);
+        }
         return;
       }
       // Wait for the human to answer the computer's offer.
@@ -175,6 +180,7 @@ export function useComputerOpponent({
     moveCount,
     hasRedo,
     recordNoMove,
+    recordCubeEvent,
     clearAITimeout,
     scheduleGen,
     paused,

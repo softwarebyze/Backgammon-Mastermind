@@ -1,0 +1,231 @@
+# One opponent selection, then format and optional length, then explicit Start.
+# Each fresh launch isolates all six start combinations from replacement dialogs.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-human
+- assertNotVisible:
+    id: game-board-slot
+- tapOn:
+    id: home-format-single
+- assertNotVisible:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: home-setup-vs-human-single-selection
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertNotVisible:
+    id: match-score
+- takeScreenshot: home-setup-vs-human-single-started
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-human
+- assertNotVisible:
+    id: game-board-slot
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-3
+    direction: DOWN
+- tapOn:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: home-setup-vs-human-3-selection
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertVisible: Match to 3 · Game 1
+- assertVisible:
+    id: match-score
+- takeScreenshot: home-setup-vs-human-3-started
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-human
+- assertNotVisible:
+    id: game-board-slot
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-5
+    direction: DOWN
+- tapOn:
+    id: home-match-length-5
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: home-setup-vs-human-5-selection
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertVisible: Match to 5 · Game 1
+- assertVisible:
+    id: match-score
+- takeScreenshot: home-setup-vs-human-5-started
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-computer
+- assertNotVisible:
+    id: game-board-slot
+- tapOn:
+    id: home-format-single
+- assertNotVisible:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: home-setup-vs-computer-single-selection
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertNotVisible:
+    id: match-score
+- takeScreenshot: home-setup-vs-computer-single-started
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-computer
+- assertNotVisible:
+    id: game-board-slot
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-3
+    direction: DOWN
+- tapOn:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: home-setup-vs-computer-3-selection
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertVisible: Match to 3 · Game 1
+- assertVisible:
+    id: match-score
+- takeScreenshot: home-setup-vs-computer-3-started
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-computer
+- assertNotVisible:
+    id: game-board-slot
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-5
+    direction: DOWN
+- tapOn:
+    id: home-match-length-5
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: home-setup-vs-computer-5-selection
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertVisible: Match to 5 · Game 1
+- assertVisible:
+    id: match-score
+- takeScreenshot: home-setup-vs-computer-5-started
+# Cold launch preserves the last computer five-point match. Cancelling a
+# replacement must keep setup on Home and the saved match available to resume.
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'false'
+      HOME_TEXT: Play against the computer
+- assertVisible:
+    id: resume-game-button
+- tapOn:
+    id: home-opponent-vs-human
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-3
+    direction: DOWN
+- tapOn:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
+- assertVisible: New game
+- takeScreenshot: home-setup-replace-confirmation
+- tapOn: Cancel
+- assertVisible:
+    id: home-start-game
+- assertNotVisible:
+    id: game-board-slot
+- takeScreenshot: home-setup-replacement-cancelled
+- scrollUntilVisible:
+    element:
+      id: resume-game-button
+    direction: UP
+- tapOn:
+    id: resume-game-button
+- extendedWaitUntil:
+    visible: Match to 5 · Game 1
+    timeout: 45000
+- takeScreenshot: home-setup-original-match-preserved

@@ -15,8 +15,13 @@ tags:
 - takeScreenshot: 01-home-loaded
 - tapOn:
     text: Play against the computer
-# iOS exposes the board as one accessibility group; individual point IDs are
-# Android-only in this hierarchy. Wait for the shared game board slot.
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
+# Wait for the shared game board slot. Individual points remain accessible.
 # Auto-roll is on by default, so the roll button may already be gone.
 - extendedWaitUntil:
     visible:

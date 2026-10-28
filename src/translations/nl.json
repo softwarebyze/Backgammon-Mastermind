@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "Match tot"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Terug naar het lopende spel",
+      "cube_accept": "{{player}} accepteert · Kubus {{value}}",
+      "cube_drop": "{{player}} past",
+      "cube_offer": "{{player}} biedt verdubbeling aan",
       "live": "Lopend spel",
       "live_short": "Live",
       "move_a11y": "Zet {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "Laatste spel bekijken",
     "review_a11y": "Voltooid spel bekijken",
     "review_sub": "Bekijk hoe het laatste spel eindigde",
+    "setup": {
+      "format": "Spel",
+      "length": "Matchlengte",
+      "match": "Match",
+      "opponent": "Tegenstander",
+      "single": "Eén spel",
+      "start_match": "Match tot {{length}} punten starten",
+      "start_single": "Spel starten"
+    },
     "subtitle": "Beheers het bord — zet voor zet",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 spelers",

@@ -1,9 +1,10 @@
+import type { CubeHistoryEvent } from './cube-history';
 import type { MoveLogEntry, ReplaySnapshot } from './move-log';
 import type { BoardPoint, GamePhase, GameState, Player } from './types';
 import { z } from 'zod';
 
 import { TOTAL_CHECKERS } from './constants';
-import { canOfferDouble } from './match';
+import { acceptDouble, canOfferDouble, dropDouble, offerDouble } from './match';
 
 const PERSISTED_SESSION_VERSION = 1;
 
@@ -83,7 +84,17 @@ const moveLogEntrySchema = z.object({
   after: replaySnapshotSchema.optional(),
 });
 
+const cubeHistoryEventSchema = z.object({
+  id: z.number().int().positive(),
+  kind: z.enum(['offer', 'accept', 'drop']),
+  player: playerSchema,
+  afterPly: z.number().int().nonnegative(),
+  before: gameStateSchema,
+  after: gameStateSchema,
+});
+
 const persistedSessionSchema = z.object({
+  cubeEvents: z.array(cubeHistoryEventSchema).optional(),
   version: z.literal(PERSISTED_SESSION_VERSION),
   state: gameStateSchema,
   moveLog: z.array(moveLogEntrySchema),
@@ -91,6 +102,7 @@ const persistedSessionSchema = z.object({
 });
 
 export type PersistedSession = {
+  cubeEvents?: CubeHistoryEvent[];
   version: typeof PERSISTED_SESSION_VERSION;
   state: GameState;
   moveLog: MoveLogEntry[];
@@ -246,6 +258,24 @@ function invariantErrorForSession(session: PersistedSession): string | null {
   if (stateError) {
     return stateError;
   }
+  let priorId = 0;
+  let priorPly = 0;
+  for (const event of session.cubeEvents ?? []) {
+    if (event.id <= priorId || event.afterPly < priorPly || event.afterPly > session.moveLog.length)
+      return 'invalid cube history order';
+    if (gameStateInvariantError(event.before) || gameStateInvariantError(event.after))
+      return 'invalid cube history state';
+    const expected = event.kind === 'offer'
+      ? offerDouble(event.before, event.afterPly)
+      : event.kind === 'accept' ? acceptDouble(event.before) : dropDouble(event.before);
+    const actor = event.kind === 'offer'
+      ? event.before.currentPlayer
+      : event.before.match?.pendingOffer === 'white' ? 'black' : 'white';
+    if (expected === event.before || actor !== event.player || JSON.stringify(expected) !== JSON.stringify(event.after))
+      return 'invalid cube history transition';
+    priorId = event.id;
+    priorPly = event.afterPly;
+  }
   if (session.replayBaseline) {
     return gameStateInvariantError(session.replayBaseline);
   }
@@ -269,6 +299,11 @@ export function parsePersistedSessionValue(value: unknown): SessionParseResult {
     return { ok: false, error: 'session shape is invalid' };
   }
   const session: PersistedSession = {
+    cubeEvents: parsed.data.cubeEvents?.map(event => ({
+      ...event,
+      before: hydrateGameState(event.before),
+      after: hydrateGameState(event.after),
+    })),
     version: PERSISTED_SESSION_VERSION,
     state: hydrateGameState(parsed.data.state),
     moveLog: hydrateMoveLog(parsed.data.moveLog),
@@ -301,12 +336,14 @@ export function parseLegacyMoveLog(value: unknown): MoveLogEntry[] | null {
 }
 
 export function makePersistedSession(parts: {
+  cubeEvents?: CubeHistoryEvent[];
   state: GameState;
   moveLog: MoveLogEntry[];
   replayBaseline: GameState | null;
 }): PersistedSession {
   return {
     version: PERSISTED_SESSION_VERSION,
+    cubeEvents: parts.cubeEvents,
     state: parts.state,
     moveLog: parts.moveLog,
     replayBaseline: parts.replayBaseline,

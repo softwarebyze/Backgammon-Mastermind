@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "目标分数"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "返回当前对局",
+      "cube_accept": "{{player}}接受 · 倍数骰{{value}}",
+      "cube_drop": "{{player}}拒绝",
+      "cube_offer": "{{player}}提议加倍",
       "live": "当前对局",
       "live_short": "对局",
       "move_a11y": "第{{ply}}步，{{player}}",
@@ -262,6 +268,15 @@
     "review": "回顾上一局",
     "review_a11y": "回顾已结束的游戏",
     "review_sub": "查看上一局如何结束",
+    "setup": {
+      "format": "对局形式",
+      "length": "目标分数",
+      "match": "比赛",
+      "opponent": "对手",
+      "single": "单局游戏",
+      "start_match": "开始 {{length}} 分赛",
+      "start_single": "开始游戏"
+    },
     "subtitle": "步步为营，掌控棋盘",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "双人对战",

@@ -10,7 +10,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - openLink: backgammonmastermind.preview://developer
 - extendedWaitUntil:
     visible: Audit presets

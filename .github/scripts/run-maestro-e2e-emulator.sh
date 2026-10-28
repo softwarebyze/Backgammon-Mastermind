@@ -23,6 +23,9 @@ RECORD_PID=$!
 MAESTRO_EXIT=0
 # Smoke + regression flows + native RTL language restart (screenshots land in maestro-visual-report).
 maestro test \
+  "${WORKSPACE}/.maestro/app/home-game-setup.yaml" \
+  "${WORKSPACE}/.maestro/app/match-board-presentation.yaml" \
+  "${WORKSPACE}/.maestro/app/cube-history-autoroll.yaml" \
   "${WORKSPACE}/.maestro/app/match-cube.yaml" \
   "${WORKSPACE}/.maestro/app/computer-match.yaml" \
   "${WORKSPACE}/.maestro/app/match-polish.yaml" \

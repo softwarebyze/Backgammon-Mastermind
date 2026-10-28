@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "المباراة إلى"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "العودة للعب المباشر",
+      "cube_accept": "{{player}} يقبل · مكعب {{value}}",
+      "cube_drop": "{{player}} يرفض",
+      "cube_offer": "{{player}} يعرض المضاعفة",
       "live": "اللعب المباشر",
       "live_short": "مباشر",
       "move_a11y": "حركة {{ply}}، {{player}}",
@@ -262,6 +268,15 @@
     "review": "مراجعة آخر لعبة",
     "review_a11y": "مراجعة اللعبة المكتملة",
     "review_sub": "شاهد كيف انتهت اللعبة السابقة",
+    "setup": {
+      "format": "اللعب",
+      "length": "طول المباراة",
+      "match": "مباراة بالنقاط",
+      "opponent": "المنافس",
+      "single": "لعبة واحدة",
+      "start_match": "بدء مباراة من {{length}} نقاط",
+      "start_single": "بدء اللعبة"
+    },
     "subtitle": "أتقن اللوحة — حركة تلو الأخرى",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "لاعبان",

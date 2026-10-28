@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "Match to"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Back to live game",
+      "cube_accept": "{{player}} takes · Cube {{value}}",
+      "cube_drop": "{{player}} drops",
+      "cube_offer": "{{player}} offers double",
       "live": "Live game",
       "live_short": "Live",
       "move_a11y": "Move {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "Review last game",
     "review_a11y": "Review completed game",
     "review_sub": "See how the last game ended",
+    "setup": {
+      "format": "Play",
+      "length": "Match length",
+      "match": "Match",
+      "opponent": "Opponent",
+      "single": "Single game",
+      "start_match": "Start {{length}}-point match",
+      "start_single": "Start game"
+    },
     "subtitle": "Master the board — one move at a time",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 Players",

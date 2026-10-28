@@ -1,3 +1,4 @@
+import type { CubeHistoryEvent } from './cube-history';
 import type { MoveLogEntry } from './move-log';
 import type { PersistedSession } from './persisted-session';
 import type { GameState } from './types';
@@ -124,6 +125,7 @@ export function loadPersistedSession(): PersistedSession | null {
 }
 
 export function savePersistedSession(parts: {
+  cubeEvents?: CubeHistoryEvent[];
   state: GameState;
   moveLog: MoveLogEntry[];
   replayBaseline: GameState | null;
@@ -176,6 +178,7 @@ export function saveActiveGame(state: GameState): void {
   const existing = loadPersistedSession();
   savePersistedSession({
     state,
+    cubeEvents: existing?.cubeEvents,
     moveLog: existing?.moveLog ?? [],
     replayBaseline: existing?.replayBaseline ?? null,
   });
@@ -196,6 +199,7 @@ export function saveReplayBaseline(state: GameState): void {
   }
   savePersistedSession({
     state: existing.state,
+    cubeEvents: existing.cubeEvents,
     moveLog: existing.moveLog,
     replayBaseline: state,
   });

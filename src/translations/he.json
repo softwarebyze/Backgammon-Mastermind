@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "משחק עד"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "חזרה למשחק החי",
+      "cube_accept": "{{player}} מקבל · קוביית הכפלה {{value}}",
+      "cube_drop": "{{player}} מסרב",
+      "cube_offer": "{{player}} מציע להכפיל",
       "live": "משחק חי",
       "live_short": "חי",
       "move_a11y": "מהלך {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "צפייה במשחק האחרון",
     "review_a11y": "צפייה במשחק שהסתיים",
     "review_sub": "לראות איך המשחק האחרון הסתיים",
+    "setup": {
+      "format": "משחק",
+      "length": "יעד נקודות",
+      "match": "משחק לנקודות",
+      "opponent": "יריב",
+      "single": "משחק בודד",
+      "start_match": "התחלת משחק ל־{{length}} נקודות",
+      "start_single": "התחלת משחק"
+    },
     "subtitle": "לשלוט בלוח — מהלך אחר מהלך",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 שחקנים",

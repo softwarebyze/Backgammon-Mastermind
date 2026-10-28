@@ -27,7 +27,7 @@ export function useGameDiceActions({
   moveCount = 0,
 }: DiceActionsArgs) {
   const doPassTurn = useCallback(() => {
-    if (isAnimating || !state) {
+    if (isAnimating || !state || state.match?.pendingOffer) {
       return;
     }
     if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {

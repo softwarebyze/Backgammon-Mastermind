@@ -45,6 +45,9 @@
       "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
       "backgammon": "backgammon",
       "black": "Black",
+      "board": {
+        "match_to": "Partida a"
+      },
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
@@ -111,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Volver a la partida en curso",
+      "cube_accept": "{{player}} acepta · Cubo {{value}}",
+      "cube_drop": "{{player}} rechaza",
+      "cube_offer": "{{player}} ofrece doblar",
       "live": "Partida en curso",
       "live_short": "En vivo",
       "move_a11y": "Movimiento {{ply}}, {{player}}",
@@ -262,6 +268,15 @@
     "review": "Revisar la última partida",
     "review_a11y": "Revisar la partida terminada",
     "review_sub": "Mira cómo terminó la última partida",
+    "setup": {
+      "format": "Partida",
+      "length": "Puntos del encuentro",
+      "match": "Encuentro",
+      "opponent": "Oponente",
+      "single": "Partida única",
+      "start_match": "Iniciar encuentro a {{length}} puntos",
+      "start_single": "Iniciar partida"
+    },
     "subtitle": "Domina el tablero — movimiento a movimiento",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 jugadores",
