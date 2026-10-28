@@ -59,10 +59,11 @@ tags:
 - assertVisible:
     id: match-score-numeral-black
     text: '0'
-- scrollUntilVisible:
-    element:
-      id: history-cube-1
-    direction: LEFT
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-1
+      DIRECTION: RIGHT
 - tapOn:
     id: history-cube-1
 - assertVisible: White 0  –  Black 0
@@ -71,10 +72,11 @@ tags:
 - assertNotVisible:
     id: match-next
 - takeScreenshot: cube-history-02-review-offer
-- scrollUntilVisible:
-    element:
-      id: history-cube-2
-    direction: RIGHT
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-2
+      DIRECTION: LEFT
 - tapOn:
     id: history-cube-2
 - assertVisible: White 0  –  Black 0
@@ -95,17 +97,19 @@ tags:
 - tapOn:
     id: match-drop
 - assertVisible: White 1  –  Black 0
-- scrollUntilVisible:
-    element:
-      id: history-cube-1
-    direction: LEFT
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-1
+      DIRECTION: RIGHT
 - tapOn:
     id: history-cube-1
 - assertVisible: White 0  –  Black 0
-- scrollUntilVisible:
-    element:
-      id: history-cube-2
-    direction: RIGHT
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-2
+      DIRECTION: LEFT
 - tapOn:
     id: history-cube-2
 - assertVisible: White 1  –  Black 0

@@ -78,6 +78,7 @@ it('shows cube-only history and selects events through review callbacks', () => 
     />,
   );
   const chip = screen.getByTestId('history-cube-1');
+  expect(screen.getByTestId('history-turn-strip')).toHaveProp('horizontal', true);
   expect(chip.props.accessibilityState.selected).toBe(true);
   fireEvent.press(chip);
   expect(onJumpToCubeEvent).toHaveBeenCalledWith(1);

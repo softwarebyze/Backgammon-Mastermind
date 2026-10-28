@@ -112,6 +112,7 @@ export function MoveReviewTurnStrip({
   return (
     <ScrollView
       ref={scrollRef}
+      testID="history-turn-strip"
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.timeline}

@@ -119,5 +119,8 @@ it.each(['white', 'black'] as const)('keeps the %s score outside the transformed
   expect(numeral).toHaveTextContent('2');
   const leaf = screen.getByTestId(`match-score-leaf-${player}`);
   expect(leaf.findAll(node => node === numeral)).toHaveLength(0);
+  expect(leaf).not.toHaveStyle({ backgroundColor: player === 'white' ? '#E8E0D0' : '#3C3028' });
+  expect(leaf).toHaveStyle({ zIndex: 0 });
+  expect(numeral).toHaveStyle({ zIndex: 1 });
   expect(screen.getByTestId(`match-score-${player}`)).toHaveTextContent('2');
 });

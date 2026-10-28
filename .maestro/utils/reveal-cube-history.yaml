@@ -1,0 +1,19 @@
+# Horizontal history is below the board, not at the screen's swipe center.
+# Anchor every swipe to the strip; RIGHT reveals older entries, LEFT newer ones.
+appId: ${APP_ID}
+---
+- repeat:
+    times: 6
+    commands:
+      - runFlow:
+          when:
+            notVisible:
+              id: ${EVENT_ID}
+          commands:
+            - swipe:
+                from:
+                  id: history-turn-strip
+                direction: ${DIRECTION}
+                duration: 400
+- assertVisible:
+    id: ${EVENT_ID}
