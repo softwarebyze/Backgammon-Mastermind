@@ -30,35 +30,15 @@ tags:
 - takeScreenshot: 02-game-board
 - assertVisible:
     id: strategy-line
-# Opening roll + ties + confirm-move (on by default): tap roll / confirm when shown
-- repeat:
-    times: 8
-    commands:
-      - runFlow:
-          when:
-            visible:
-              id: roll-dice-button
-          commands:
-            - tapOn:
-                id: roll-dice-button
-      - runFlow:
-          when:
-            visible:
-              id: confirm-move-button
-          commands:
-            - tapOn:
-                id: confirm-move-button
-      - runFlow:
-          when:
-            visible: No legal moves
-          commands:
-            - extendedWaitUntil:
-                notVisible: No legal moves
-                timeout: 5000
+# Default Auto-roll owns the opening (including ties and Black's first turn).
+# Wait for the stable human moving phase; a manual Roll tap races the timer.
 - extendedWaitUntil:
     visible:
-      id: game-board-slot
+      id: game-action-caption
+      text: Move your white checkers
     timeout: 90000
+- assertVisible:
+    id: game-dice-tray
 - takeScreenshot: 03-after-opening
 - assertVisible:
     id: game-board-slot
