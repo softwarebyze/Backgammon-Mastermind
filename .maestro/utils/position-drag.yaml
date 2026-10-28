@@ -28,6 +28,10 @@ tags:
       point: '50%, 95%'
     direction: UP
     duration: 900
+# Swipe distance maps to checker slots, so a tall iPad point can stop one
+# checker short. Add tops it off (and refreshes iOS's accessibility snapshot).
+- tapOn:
+    id: position-add
 - assertVisible: 'Point 6, 15 white checkers, selected'
 - takeScreenshot: position-drag-01-white
 # All white checkers are used. This blocked press must keep the empty point
