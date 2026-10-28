@@ -1,5 +1,5 @@
 import type { Position } from '@/lib/positions/position';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { DieFace, EmptyDiePlaceholder } from '@/features/game/components/board/dice-display';
 import { translate } from '@/lib/i18n';
 import { styles } from './position-styles';
@@ -17,12 +17,7 @@ export function PositionDice({ position: p, editing, onEdit }: {
           <Pressable key={index} testID={`position-die-${index}`} accessibilityRole="button" accessibilityLabel={`${translate(index === 0 ? 'positions.die_one' : 'positions.die_two')}: ${p.dice[index] || translate('positions.roll_later')}`} accessibilityState={{ expanded: editing === index }} onPress={() => onEdit(editing === index ? null : index)} style={({ pressed }) => [styles.dieButton, editing === index && styles.active, pressed && styles.pressed]}>
             {p.dice[index] > 0
               ? <DieFace value={p.dice[index]} used={false} playerColor={p.currentPlayer} displayStyle="dots" size={36} />
-              : (
-                  <View>
-                    <EmptyDiePlaceholder playerColor={p.currentPlayer} size={36} />
-                    <Text style={styles.unsetDie}>–</Text>
-                  </View>
-                )}
+              : <EmptyDiePlaceholder playerColor={p.currentPlayer} size={36} />}
           </Pressable>
         ))}
       </View>

@@ -15,7 +15,6 @@ export const styles = StyleSheet.create({
   diceEditor: { position: 'relative', zIndex: 20 },
   dieButton: { minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
   dicePicker: { flexDirection: 'row', backgroundColor: palette.surface, borderRadius: 10 },
-  unsetDie: { ...interFont('medium'), position: 'absolute', alignSelf: 'center', top: 6, color: palette.text, fontSize: 18 },
   pointControlBand: { height: 76, position: 'relative', justifyContent: 'center' },
   pointControls: { position: 'absolute', top: 2, width: 152, gap: 4 },
   pointControlLabel: { ...interFont('medium'), fontSize: 13, lineHeight: 19, color: palette.text },

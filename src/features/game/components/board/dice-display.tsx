@@ -154,30 +154,22 @@ export function DieFace({
         emphasized && styles.dieEmphasized,
       ]}
     >
-      {displayStyle === 'dots'
-        ? <DieDots value={value} dotColor={fg} size={size} />
-        : (
-            <Text style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
-              {value}
-            </Text>
-          )}
+      {value === 0
+        ? <Text accessible={false} style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.58) }]}>?</Text>
+        : displayStyle === 'dots'
+          ? <DieDots value={value} dotColor={fg} size={size} />
+          : (
+              <Text style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
+                {value}
+              </Text>
+            )}
     </View>
   );
 }
 
-/** Empty slot; tinted so the opening tray reads white-left / black-right before rolling. */
-export function EmptyDiePlaceholder({ playerColor, size }: { playerColor?: PlayerColor; size: number }) {
-  return (
-    <View
-      style={[
-        styles.die,
-        dieBox(size),
-        styles.diePlaceholder,
-        playerColor === 'white' && styles.diePlaceholderWhite,
-        playerColor === 'black' && styles.diePlaceholderBlack,
-      ]}
-    />
-  );
+/** Unrolled dice retain their solid face and colour, with an unknown value. */
+export function EmptyDiePlaceholder({ playerColor = 'white', size }: { playerColor?: PlayerColor; size: number }) {
+  return <DieFace value={0} used={false} playerColor={playerColor} displayStyle="dots" size={size} />;
 }
 
 function DiceFaces({
@@ -227,7 +219,7 @@ function DiceFaces({
   return (
     <>
       {diceStates[0]!.value === 0
-        ? <EmptyDiePlaceholder playerColor={slotColors?.[0]} size={size} />
+        ? <EmptyDiePlaceholder playerColor={leftColor} size={size} />
         : (
             <DieFace
               value={diceStates[0]!.value}
@@ -239,7 +231,7 @@ function DiceFaces({
             />
           )}
       {diceStates[1]!.value === 0
-        ? <EmptyDiePlaceholder playerColor={slotColors?.[1]} size={size} />
+        ? <EmptyDiePlaceholder playerColor={rightColor} size={size} />
         : (
             <DieFace
               value={diceStates[1]!.value}
@@ -306,21 +298,6 @@ const styles = StyleSheet.create({
     shadowColor: GAME_PALETTE.accent,
     shadowOpacity: 0.6,
     shadowRadius: 6,
-  },
-  diePlaceholder: {
-    backgroundColor: 'rgba(80,60,40,0.25)',
-    borderColor: 'rgba(90,70,50,0.35)',
-    opacity: 0.5,
-  },
-  diePlaceholderWhite: {
-    borderColor: '#BBA070',
-    borderStyle: 'dashed',
-    opacity: 0.7,
-  },
-  diePlaceholderBlack: {
-    borderColor: '#5050A0',
-    borderStyle: 'dashed',
-    opacity: 0.7,
   },
   dieText: {
     fontWeight: '800',

@@ -21,7 +21,7 @@ available for QA.
   space keeps the board still during a stroke. Screen readers can also adjust
   points and the bar directly.
 - Standard setup and Clear board stay visible above the board. The standard
-  preset uses a board-layout icon. Current-game capture is in Exchange.
+  preset uses a miniature backgammon board icon. Current-game capture is in Exchange.
 - Both dice stay visible beside the colour selector. Tap either die and choose
   a face from 1 to 6; clearing dice is visible beside the player-on-roll controls.
 - Set the player on roll and two dice, or leave both dice at zero to roll later.
@@ -47,7 +47,7 @@ and White/Black checker selector with visible editable die faces. Selecting a
 point or bar places exact minus / clear / plus controls beside it, clamped to
 the board edges. There is no sliders button or hidden preset/dice dropdown.
 Play remains the single filled orange action. Exchange and Saved positions
-retain icon-led disclosure rows; cube and match metadata remains secondary.
+retain icon-led disclosure rows; the cube stays visible as an ivory face with ownership, and opens direct halve/double/reset and owner controls. Match metadata remains secondary.
 Controls expose selected/expanded states and accessible labels. Android targets
 are at least 48dp, iOS at least 44pt. Palette, board assets and Inter stay intact.
 
@@ -98,3 +98,14 @@ and malformed shared links. It is registered in the Android evidence run.
 iPhone and iPad. It captures standard and empty boards, opens a shared position
 through the first-use iOS confirmation, and checks the imported dice before
 capturing the shared preview. Flow results and captures are attached to CI runs.
+
+### Cube and dice visual compatibility
+
+The standard preset uses a miniature backgammon board. Unset dice use the same
+solid player-coloured face as rolled dice with a question mark; this applies to
+the game opening tray too. No dashed die borders remain. The position cube uses
+the ivory face, centered 64 convention, ownership and Crawford dimming from
+`feat/272-match-cube` (PR #325). `DoublingCubeFace` is a presentation-only primitive
+for sharing that treatment when the branches combine. This branch does not
+change the match engine or remove the existing checker-play limitation. The
+position document continues preserving full cube and match context for exchange.

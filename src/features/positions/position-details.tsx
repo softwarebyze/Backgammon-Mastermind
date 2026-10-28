@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { translate } from '@/lib/i18n';
 import { PositionAction, PositionNumber } from './position-controls';
+import { PositionCube } from './position-cube';
 import { styles } from './position-styles';
 
 export function PositionDetails({ position: p, onChange }: { position: Position; onChange: (p: Position) => void }) {
@@ -26,18 +27,14 @@ export function PositionDetails({ position: p, onChange }: { position: Position;
         ))}
         <PositionAction symbol="x" iconOnly label={translate('positions.clear_dice')} testID="position-clear-dice" onPress={() => onChange({ ...p, dice: [0, 0] })} />
       </View>
+      <PositionCube position={p} onChange={onChange} />
       <PositionAction symbol="plus-square" label={translate('positions.match_details')} onPress={() => setExpanded(!expanded)} selected={expanded} />
       {expanded && (
         <>
           <Text style={styles.caption}>{translate('positions.context_hint')}</Text>
           <View style={styles.row}>
-            <PositionNumber label={translate('positions.cube_exponent')} value={p.context.cubeExponent} max={15} onChange={cubeExponent => context({ cubeExponent })} />
             <PositionNumber label={translate('positions.match_length')} value={p.context.matchLength} onChange={matchLength => context({ matchLength, crawford: false, jacoby: false, beavers: false })} />
             {(['white', 'black'] as const).map(player => <PositionNumber key={player} label={translate(`positions.${player}_score`)} value={p.context.scores[player]} onChange={value => context({ scores: { ...p.context.scores, [player]: value } })} />)}
-          </View>
-          <Text style={styles.caption}>{translate('positions.cube_owner')}</Text>
-          <View style={styles.row}>
-            {([null, 'white', 'black'] as const).map(owner => <PositionAction key={owner ?? 'center'} label={translate(owner ? `positions.${owner}` : 'positions.center')} selected={p.context.cubeOwner === owner} onPress={() => context({ cubeOwner: owner })} />)}
           </View>
           <View style={styles.row}>
             {p.context.matchLength > 0

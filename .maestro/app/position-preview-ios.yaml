@@ -46,6 +46,44 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
+      TARGET_ID: position-cube
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-cube
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-cube-higher
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-cube-higher
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-cube-owner-black
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-cube-owner-black
+- assertVisible:
+    id: position-cube
+    text: 'Doubling cube: 2. Cube owner: Black'
+- takeScreenshot: position-visual-cube
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-cube-reset
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-cube-reset
+- tapOn:
+    id: position-cube
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
       TARGET_ID: position-empty
       START_Y: '80%'
       END_Y: '25%'
