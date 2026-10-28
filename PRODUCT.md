@@ -18,8 +18,10 @@ The confirmed editing interaction is the board and a White/Black selector:
 press location sets the initial stack size, then dragging increases or decreases
 its checker stack. The bar uses that same direct interaction for the selected
 colour; it does not need a separate selection menu. A blocked addition gives subtle haptic and visible feedback
-when the selected colour has no checkers left. Secondary
-forms should stay out of the initial editing workspace. The user rejected a
+when the selected colour has no checkers left. Standard setup and Clear board stay above the board. Dice stay visible and
+are edited by tapping a die and choosing a face. Selecting a stack reveals
+minus / clear / plus immediately beside its board edge, with no sliders button.
+Other secondary forms stay out of the initial editing workspace. The user rejected a
 wall of equally weighted text buttons. The board remains dominant; tools use
 compact icon-led disclosure rows, selected controls use restrained outlines,
 and Play is the single filled orange action.

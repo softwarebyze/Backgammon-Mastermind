@@ -11,6 +11,12 @@ tags:
     id: position-board-bar
     point: '50%, 80%'
 - assertVisible: 'Bar, [2-9] white checkers'
+- assertVisible:
+    id: position-remove
+- assertVisible:
+    id: position-empty-point
+- assertVisible:
+    id: position-add
 - takeScreenshot: position-bar-01-white
 - swipe:
     from:
@@ -31,6 +37,8 @@ tags:
     id: position-board-bar
     point: '50%, 20%'
 - assertVisible: 'Bar, [2-9] black checkers'
+- assertVisible:
+    id: position-remove
 - takeScreenshot: position-bar-02-black
 - swipe:
     from:

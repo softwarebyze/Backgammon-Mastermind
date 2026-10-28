@@ -112,7 +112,7 @@ function DieDots({ value, dotColor, size }: { value: number; dotColor: string; s
   );
 }
 
-function DieFace({
+export function DieFace({
   value,
   used,
   playerColor,
@@ -166,7 +166,7 @@ function DieFace({
 }
 
 /** Empty slot; tinted so the opening tray reads white-left / black-right before rolling. */
-function EmptyDiePlaceholder({ playerColor, size }: { playerColor?: PlayerColor; size: number }) {
+export function EmptyDiePlaceholder({ playerColor, size }: { playerColor?: PlayerColor; size: number }) {
   return (
     <View
       style={[

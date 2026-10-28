@@ -20,15 +20,23 @@ tags:
     visible:
       id: position-screen
     timeout: 30000
-- runFlow:
-    file: ../utils/position-scroll.yaml
-    env:
-      TARGET_ID: position-setup-toggle
-      START_Y: '80%'
-      END_Y: '25%'
+- assertVisible:
+    id: position-standard
+- assertVisible:
+    id: position-empty
+- assertVisible:
+    id: position-die-0
+- assertNotVisible:
+    id: position-fine-tune
 - tapOn:
-    id: position-setup-toggle
-- takeScreenshot: position-tools-01-setup
+    id: position-die-0
+- tapOn:
+    id: position-dice-value-6
+- tapOn:
+    id: position-die-1
+- tapOn:
+    id: position-dice-value-2
+- takeScreenshot: position-visible-presets-dice
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
@@ -64,8 +72,6 @@ tags:
 - assertVisible: 'Point 6, 5 white checkers'
 - tapOn:
     id: point-6
-- tapOn:
-    id: position-fine-tune
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:

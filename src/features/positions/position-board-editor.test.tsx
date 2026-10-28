@@ -1,5 +1,5 @@
 import type { StackEditHandlers } from '@/features/game/components/board/use-stack-edit-gesture';
-import { act, fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { hapticLight } from '@/lib/haptics';
 import { newPosition } from '@/lib/positions/position';
@@ -125,4 +125,18 @@ it('edits both bar stacks directly with press location, reversible dragging and 
   act(() => mockEditor.onEnd(0, false, 2));
   expect(change.mock.lastCall![0].bar.black).toBe(5);
   expect(change.mock.lastCall![0].borneOff.black).toBe(10);
+});
+
+it('places exact controls above top points and below bottom points without a settings toggle', () => {
+  const p = newPosition();
+  const change = jest.fn();
+  const { rerender } = render(<PositionBoardEditor position={p} dimensions={dims} location={13} onLocation={jest.fn()} onChange={change} />);
+  expect(within(screen.getByTestId('position-controls-top')).getByTestId('position-remove')).toBeTruthy();
+  expect(screen.queryByTestId('position-fine-tune')).toBeNull();
+  fireEvent.press(screen.getByTestId('position-remove'));
+  expect(change.mock.lastCall![0].points[13].count).toBe(4);
+  rerender(<PositionBoardEditor position={p} dimensions={dims} location={6} onLocation={jest.fn()} onChange={change} />);
+  expect(within(screen.getByTestId('position-controls-bottom')).getByTestId('position-empty-point')).toBeTruthy();
+  fireEvent.press(screen.getByTestId('position-empty-point'));
+  expect(change.mock.lastCall![0].points[6].count).toBe(0);
 });

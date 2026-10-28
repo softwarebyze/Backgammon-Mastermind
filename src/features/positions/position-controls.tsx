@@ -4,7 +4,7 @@ import { Pressable, Text, TextInput, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { styles } from './position-styles';
 
-export function PositionAction({ label, onPress, selected, disabled, testID, icon, primary = false, symbol, iconOnly = false }: {
+export function PositionAction({ label, onPress, selected, disabled, testID, icon, primary = false, symbol, iconOnly = false, compact = false }: {
   label: string;
   onPress: () => void;
   selected?: boolean;
@@ -12,6 +12,7 @@ export function PositionAction({ label, onPress, selected, disabled, testID, ico
   testID?: string;
   icon?: ReactNode;
   primary?: boolean;
+  compact?: boolean;
   iconOnly?: boolean;
   symbol?: React.ComponentProps<typeof Feather>['name'];
 }) {
@@ -23,7 +24,7 @@ export function PositionAction({ label, onPress, selected, disabled, testID, ico
       accessibilityLabel={label}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [styles.button, primary && styles.primaryButton, selected && styles.active, primary && styles.primary, disabled && styles.disabled, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.button, compact && styles.compactButton, primary && styles.primaryButton, selected && styles.active, primary && styles.primary, disabled && styles.disabled, pressed && styles.pressed]}
     >
       {symbol && <Feather name={symbol} size={18} color={primary ? GAME_PALETTE.controlInk : GAME_PALETTE.text} accessible={false} />}
       {icon}

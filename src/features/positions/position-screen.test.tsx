@@ -32,7 +32,6 @@ beforeEach(() => {
 
 it('editing, saving and exporting a position never replaces the active game', () => {
   render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('position-fine-tune'));
   fireEvent.press(screen.getByTestId('test-board-point'));
   fireEvent.press(screen.getByTestId('position-remove'));
   fireEvent.press(screen.getByTestId('position-saved-toggle'));
@@ -69,17 +68,21 @@ it('shows invalid import errors without modifying or replacing the board', () =>
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('5');
 });
 
-it('keeps a half-entered roll editable without crashing board editing', () => {
+it('edits visible die faces without a keyboard or invalid half roll', () => {
   render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('position-details-toggle'));
-  fireEvent.press(screen.getByTestId('position-fine-tune'));
-  fireEvent.changeText(screen.getByTestId('position-die-0'), '3');
-  expect(screen.getByTestId('position-play')).toBeDisabled();
+  fireEvent.press(screen.getByTestId('position-die-0'));
+  fireEvent.press(screen.getByTestId('position-dice-value-3'));
+  expect(screen.getByTestId('position-die-0').props.accessibilityLabel).toBe('positions.die_one: 3');
+  expect(screen.getByTestId('position-die-1').props.accessibilityLabel).toBe('positions.die_two: 1');
+  expect(screen.getByTestId('position-play')).toBeEnabled();
+  fireEvent.press(screen.getByTestId('position-die-1'));
+  fireEvent.press(screen.getByTestId('position-dice-value-2'));
   fireEvent.press(screen.getByTestId('test-board-point'));
   fireEvent.press(screen.getByTestId('position-remove'));
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
-  fireEvent.changeText(screen.getByTestId('position-die-1'), '1');
-  expect(screen.getByTestId('position-play')).toBeEnabled();
+  fireEvent.press(screen.getByTestId('position-play'));
+  jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
+  expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [3, 2] }));
 });
 
 it('preserves imported action context when the selected turn is pressed', () => {
@@ -103,14 +106,14 @@ it('gives a whitespace-only saved name the translated untitled label', () => {
   expect(screen.getByRole('button', { name: 'positions.untitled' })).toBeTruthy();
 });
 
-it('starts with icon-led tools collapsed and keeps presets and play modes reachable', () => {
+it('keeps presets and dice visible while exchange and saved tools stay collapsed', () => {
   render(<PositionScreen />);
-  expect(screen.queryByTestId('position-standard')).toBeNull();
-  expect(screen.queryByTestId('position-die-0')).toBeNull();
+  expect(screen.getByTestId('position-standard')).toBeTruthy();
+  expect(screen.getByTestId('position-empty')).toBeTruthy();
+  expect(screen.getByTestId('position-die-0')).toBeTruthy();
   expect(screen.queryByTestId('position-save-name')).toBeNull();
-  expect(screen.getByTestId('position-setup-toggle').props.accessibilityState.expanded).toBe(false);
-  fireEvent.press(screen.getByTestId('position-setup-toggle'));
-  expect(screen.getByTestId('position-setup-toggle').props.accessibilityState.expanded).toBe(true);
+  expect(screen.queryByTestId('position-fine-tune')).toBeNull();
+  expect(screen.queryByTestId('position-setup-toggle')).toBeNull();
   fireEvent.press(screen.getByTestId('position-empty'));
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('0');
   expect(screen.getByTestId('position-play')).toBeDisabled();

@@ -10,7 +10,7 @@ import { positionError } from './position-errors';
 import { styles } from './position-styles';
 import { sharePosition } from './share-position';
 
-export function PositionExchange({ position, onImport }: { position: Position; onImport: (p: Position) => void }) {
+export function PositionExchange({ position, onImport, onCurrent }: { position: Position; onImport: (p: Position) => void; onCurrent?: () => void }) {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
@@ -36,6 +36,7 @@ export function PositionExchange({ position, onImport }: { position: Position; o
   return (
     <PositionDisclosure label={translate('positions.exchange')} summary="XGID · GNU ID · JSON" symbol="share-2" testID="position-exchange-toggle" open={toolsOpen} onPress={() => setToolsOpen(!toolsOpen)}>
       <View style={styles.row}>
+        {onCurrent && <PositionAction symbol="crosshair" label={translate('positions.current')} testID="position-current" onPress={onCurrent} />}
         <PositionAction symbol="download" label={translate('positions.import')} testID="position-import-toggle" onPress={() => setExpanded(!expanded)} selected={expanded} />
         <PositionAction symbol="share-2" label={translate('positions.share')} testID="position-share" onPress={() => runExport('link')} />
         <PositionAction symbol="upload" label="XGID" onPress={() => runExport('XGID')} testID="position-export-xgid" />

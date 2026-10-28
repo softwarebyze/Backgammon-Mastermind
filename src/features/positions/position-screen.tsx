@@ -45,9 +45,7 @@ function PositionWorkspace({ data }: { data?: string }) {
   const [saved, setSaved] = useState(loadSavedPositions);
   const [name, setName] = useState('');
   const [notice, setNotice] = useState('');
-  const [setupOpen, setSetupOpen] = useState(false);
   const [savedOpen, setSavedOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false);
   const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-human');
   const { width } = useWindowDimensions();
   const { insets } = useLayoutMetrics();
@@ -96,7 +94,29 @@ function PositionWorkspace({ data }: { data?: string }) {
         contentContainerStyle={[styles.content, { paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
       >
         {!!data && <Text style={styles.caption}>{translate('positions.shared_intro')}</Text>}
+        <View style={[styles.row, { width: dims.boardOuterWidth, alignSelf: 'center' }]}>
+          <PositionAction
+            label={translate('positions.standard')}
+            testID="position-standard"
+            symbol="layout"
+            onPress={() => {
+              change(newPosition());
+              setLocation(null);
+            }}
+          />
+          <PositionAction
+            label={translate('positions.empty')}
+            testID="position-empty"
+            symbol="trash-2"
+            onPress={() => {
+              change(newPosition(true));
+              setLocation(null);
+            }}
+          />
+
+        </View>
         <PositionBoardEditor position={position} dimensions={dims} location={location} onLocation={setLocation} onChange={change} />
+        <PositionDetails position={position} onChange={change} />
         {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
         <View style={styles.playPanel}>
           <View style={styles.row}>
@@ -107,47 +127,16 @@ function PositionWorkspace({ data }: { data?: string }) {
           <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
         </View>
         <View style={styles.toolList}>
-          <PositionDisclosure label={translate('positions.board_setup')} summary={translate('positions.board_setup_hint')} symbol="grid" testID="position-setup-toggle" open={setupOpen} onPress={() => setSetupOpen(!setupOpen)}>
-            <View style={styles.row}>
-              <PositionAction
-                label={translate('positions.standard')}
-                testID="position-standard"
-                symbol="refresh-cw"
-                onPress={() => {
-                  change(newPosition());
-                  setLocation(null);
-                }}
-              />
-              <PositionAction
-                label={translate('positions.empty')}
-                testID="position-empty"
-                symbol="trash-2"
-                onPress={() => {
-                  change(newPosition(true));
-                  setLocation(null);
-                }}
-              />
-              <PositionAction
-                label={translate('positions.current')}
-                testID="position-current"
-                symbol="crosshair"
-                disabled={!state}
-                onPress={() => {
-                  if (state) {
-                    change(positionFromGame(state));
-                    setLocation(null);
-                    setNotice(translate('positions.snapshot_hint'));
-                  }
-                }}
-              />
-            </View>
-          </PositionDisclosure>
-          <PositionDisclosure label={translate('positions.turn_dice')} summary={`${translate(`positions.${position.currentPlayer}_turn`)} · ${position.dice[0] || position.dice[1] ? position.dice.join(' / ') : translate('positions.roll_later')}`} symbol="sliders" testID="position-details-toggle" open={detailsOpen} onPress={() => setDetailsOpen(!detailsOpen)}>
-            <PositionDetails position={position} onChange={change} />
-          </PositionDisclosure>
           <PositionExchange
             key={JSON.stringify(position)}
             position={position}
+            onCurrent={state
+              ? () => {
+                  change(positionFromGame(state));
+                  setLocation(null);
+                  setNotice(translate('positions.snapshot_hint'));
+                }
+              : undefined}
             onImport={(p) => {
               change(p);
               setLocation(null);

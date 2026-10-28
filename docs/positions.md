@@ -16,9 +16,14 @@ available for QA.
   up to 15 checkers, limited by the available off-tray checkers. Painting over
   the other colour returns that stack to its own tray. Each player always has
   15 checkers across the board, bar and off tray.
-- **Adjust counts** provides button controls, and screen readers can increment
-  or decrement points and the bar. Turn/dice, import/export, and saved positions
-  are expandable so the initial workspace focuses on the board.
+- Selecting a point or bar shows minus / clear / plus controls beside that
+  stack: above the board for top points, below for bottom points. The reserved
+  space keeps the board still during a stroke. Screen readers can also adjust
+  points and the bar directly.
+- Standard setup and Clear board stay visible above the board. The standard
+  preset uses a board-layout icon. Current-game capture is in Exchange.
+- Both dice stay visible beside the colour selector. Tap either die and choose
+  a face from 1 to 6; clearing dice is visible beside the player-on-roll controls.
 - Set the player on roll and two dice, or leave both dice at zero to roll later.
 - Import XGID, GNU Position ID with optional Match ID, labeled GNU clipboard
   text, legacy developer position JSON, or a shared position link.
@@ -37,14 +42,14 @@ links can also open the position route.
 ## Interface direction
 
 The incumbent board, brown/orange palette and Inter remain the visual authority.
-The workspace prioritizes the board and White/Black checker selector. A sliders
-icon opens exact count controls. Play has one filled orange button, with compact
-icon-and-label player modes and the checker-play limitation alongside it.
-Secondary Board setup, Turn and dice, Exchange and Saved positions use
-left-aligned icon-led disclosure rows, summaries and expansion chevrons. Presets
-live inside Board setup rather than competing with the main action. Disclosure
-state and selected state are exposed to screen readers; icons supplement labels.
-Android controls retain 48dp targets, iOS controls at least 44pt.
+The workspace prioritizes the board, persistent Standard setup / Clear board,
+and White/Black checker selector with visible editable die faces. Selecting a
+point or bar places exact minus / clear / plus controls beside it, clamped to
+the board edges. There is no sliders button or hidden preset/dice dropdown.
+Play remains the single filled orange action. Exchange and Saved positions
+retain icon-led disclosure rows; cube and match metadata remains secondary.
+Controls expose selected/expanded states and accessible labels. Android targets
+are at least 48dp, iOS at least 44pt. Palette, board assets and Inter stay intact.
 
 ## Format and play boundaries
 

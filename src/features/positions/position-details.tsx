@@ -14,6 +14,7 @@ export function PositionDetails({ position: p, onChange }: { position: Position;
         {(['white', 'black'] as const).map(player => (
           <PositionAction
             key={player}
+            compact
             label={translate(`positions.${player}_turn`)}
             selected={p.currentPlayer === player}
             testID={`position-turn-${player}`}
@@ -23,24 +24,7 @@ export function PositionDetails({ position: p, onChange }: { position: Position;
             }}
           />
         ))}
-      </View>
-      <Text style={styles.caption}>{translate('positions.dice_hint')}</Text>
-      <View style={styles.row}>
-        {([0, 1] as const).map(index => (
-          <PositionNumber
-            key={index}
-            label={translate(index === 0 ? 'positions.die_one' : 'positions.die_two')}
-            value={p.dice[index]}
-            max={6}
-            testID={`position-die-${index}`}
-            onChange={(value) => {
-              const dice: [number, number] = [...p.dice];
-              dice[index] = value;
-              onChange({ ...p, dice });
-            }}
-          />
-        ))}
-        <PositionAction label={translate('positions.clear_dice')} onPress={() => onChange({ ...p, dice: [0, 0] })} />
+        <PositionAction symbol="x" iconOnly label={translate('positions.clear_dice')} testID="position-clear-dice" onPress={() => onChange({ ...p, dice: [0, 0] })} />
       </View>
       <PositionAction symbol="plus-square" label={translate('positions.match_details')} onPress={() => setExpanded(!expanded)} selected={expanded} />
       {expanded && (

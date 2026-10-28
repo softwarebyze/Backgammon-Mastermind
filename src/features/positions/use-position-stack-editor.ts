@@ -1,0 +1,93 @@
+import type { StackEditHandlers } from '@/features/game/components/board/use-stack-edit-gesture';
+import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import type { Player } from '@/lib/game/types';
+import type { Position, PositionLocation } from '@/lib/positions/position';
+import { useMemo, useRef } from 'react';
+import { hapticLight } from '@/lib/haptics';
+import { setPositionStack, stackDragCount, stackPressCount } from '@/lib/positions/set-stack';
+
+type Drag = { position: Position; location: PositionLocation; color: Player; count: number; top: boolean; notified: boolean };
+
+export function usePositionStackEditor(props: {
+  position: Position;
+  color: Player;
+  dimensions: BoardDimensions;
+  onLocation: (location: PositionLocation | null) => void;
+  onChange: (p: Position) => void;
+  onBlocked: (color: Player | null) => void;
+  onTouch: () => void;
+}) {
+  const latest = useRef(props);
+  latest.current = props;
+  const drag = useRef<Drag | null>(null);
+  const editor = useMemo<StackEditHandlers>(() => {
+    const snapshot = (point: number): Drag => {
+      const { position: p, color: side } = latest.current;
+      return {
+        position: p,
+        color: side,
+        location: point === 0 ? `${side}-bar` : point,
+        count: point === 0 ? p.bar[side] : p.points[point]!.player === side ? p.points[point]!.count : 0,
+        top: point === 0 ? side === 'black' : point >= 13,
+        notified: false,
+      };
+    };
+    const apply = (start: Drag, count: number, requested = count): Position => {
+      const next = setPositionStack(start.position, start.location, start.color, count);
+      const placed = typeof start.location === 'number'
+        ? next.points[start.location]!.player === start.color ? next.points[start.location]!.count : 0
+        : next.bar[start.color];
+      if (requested > placed && next.borneOff[start.color] === 0 && !start.notified) {
+        start.notified = true;
+        latest.current.onBlocked(start.color);
+        hapticLight();
+      }
+      latest.current.onChange(next);
+      return next;
+    };
+    const move = (start: Drag, steps: number) => apply(start, stackDragCount(start.count, steps, start.top), start.count + (start.top ? steps : -steps));
+    return {
+      onStart: (point, y) => {
+        const start = snapshot(point);
+        latest.current.onTouch();
+        drag.current = start;
+        latest.current.onBlocked(null);
+        latest.current.onLocation(start.location);
+        const d = latest.current.dimensions;
+        const height = point === 0 ? d.boardHeight : d.pointHeight;
+        const distance = start.top ? y : height - y;
+        const count = point === 0
+          ? stackPressCount(distance - 6, d.checkerSize * 0.88, d.checkerSize * 0.88 + 2)
+          : stackPressCount(distance, d.checkerSize, Math.min(d.checkerSize - 2, (d.pointHeight - d.checkerSize) / 4));
+        const next = apply(start, count);
+        start.count = point === 0 ? next.bar[start.color] : next.points[point]!.player === start.color ? next.points[point]!.count : 0;
+      },
+      onDelta: (_point, steps) => {
+        const start = drag.current;
+        if (start)
+          move(start, steps);
+      },
+      onEnd: (_point, tap, steps) => {
+        if (drag.current && !tap && steps !== undefined) {
+          const start = drag.current;
+          move(start, steps);
+        }
+        drag.current = null;
+      },
+      onCancel: () => {
+        if (drag.current)
+          latest.current.onChange(drag.current.position);
+        drag.current = null;
+        latest.current.onBlocked(null);
+      },
+      onAdjust: (point, delta) => {
+        latest.current.onTouch();
+        latest.current.onBlocked(null);
+        const start = snapshot(point);
+        latest.current.onLocation(start.location);
+        apply(start, start.count + delta);
+      },
+    };
+  }, []);
+  return editor;
+}
