@@ -98,6 +98,7 @@ function PositionWorkspace({ data }: { data?: string }) {
           <PositionAction
             label={translate('positions.standard')}
             testID="position-standard"
+            compact
             symbol="layout"
             onPress={() => {
               change(newPosition());
@@ -107,6 +108,7 @@ function PositionWorkspace({ data }: { data?: string }) {
           <PositionAction
             label={translate('positions.empty')}
             testID="position-empty"
+            compact
             symbol="trash-2"
             onPress={() => {
               change(newPosition(true));
