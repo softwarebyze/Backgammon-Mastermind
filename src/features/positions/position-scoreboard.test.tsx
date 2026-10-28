@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
+import { Keyboard } from 'react-native';
 import { newPosition, validatePosition } from '@/lib/positions/position';
 import { PositionScoreboard } from './position-scoreboard';
 
@@ -39,4 +40,14 @@ it('supports money scores and clears scores with an empty numeric field', () => 
   expect(change.mock.lastCall![0].context.scores.black).toBe(32767);
   fireEvent.changeText(screen.getByTestId('position-score-white'), '');
   expect(change.mock.lastCall![0].context.scores.white).toBe(0);
+});
+
+it('provides a Done action for the numeric keyboard without changing the position', () => {
+  const dismiss = jest.spyOn(Keyboard, 'dismiss').mockImplementation(() => {});
+  const change = jest.fn();
+  render(<PositionScoreboard position={newPosition()} onChange={change} />);
+  fireEvent.press(screen.getByTestId('position-score-done'));
+  expect(dismiss).toHaveBeenCalledTimes(1);
+  expect(change).not.toHaveBeenCalled();
+  dismiss.mockRestore();
 });

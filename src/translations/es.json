@@ -517,6 +517,7 @@
     "dice_hint": "Use two values from 1 to 6, or leave both at 0 to roll when play begins.",
     "die_one": "First die",
     "die_two": "Second die",
+    "done": "Done",
     "drag_hint": "Press a point or the bar where the last checker should sit. Drag inward to add, outward to remove.",
     "edit_hint": "Select a point or the bar on the board, then adjust its count here.",
     "empty": "Clear board",

@@ -12,17 +12,17 @@ tags:
     id: position-match-length
 - eraseText
 - inputText: '5'
-- hideKeyboard
+- runFlow: position-score-dismiss.yaml
 - tapOn:
     id: position-score-white
 - eraseText
 - inputText: '3'
-- hideKeyboard
+- runFlow: position-score-dismiss.yaml
 - tapOn:
     id: position-score-black
 - eraseText
 - inputText: '2'
-- hideKeyboard
+- runFlow: position-score-dismiss.yaml
 - assertVisible:
     id: position-score-white
     text: '3'

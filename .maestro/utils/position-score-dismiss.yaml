@@ -1,0 +1,24 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible:
+          id: position-score-done
+      - assertVisible:
+          id: position-match-length
+      - assertVisible:
+          id: position-score-white
+      - assertVisible:
+          id: position-score-black
+      - takeScreenshot: position-score-keyboard
+      - tapOn:
+          id: position-score-done
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - hideKeyboard
