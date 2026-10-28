@@ -67,7 +67,7 @@ Position work must preserve that identity.
 - Keep local bookmarks distinct from links that anyone can open.
 - Extend the existing board and interaction language.
 
-Positions uses a miniature board for Standard setup, solid question-mark faces
+Standard setup uses its text label without an icon. Positions uses solid question-mark faces
 for unset dice (shared with the game), and a visible ivory doubling cube with
 ownership and direct value controls. Cube appearance follows PR #325's match
 work; the position editor does not introduce a competing match engine.

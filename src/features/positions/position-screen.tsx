@@ -17,7 +17,6 @@ import { PositionDetails } from './position-details';
 import { positionError } from './position-errors';
 import { PositionExchange } from './position-exchange';
 import { styles } from './position-styles';
-import { StandardSetupIcon } from './standard-setup-icon';
 
 function initialPosition(data: string | string[] | undefined): { position: Position; error: string } {
   if (data === undefined)
@@ -101,7 +100,6 @@ function PositionWorkspace({ data }: { data?: string }) {
             label={translate('positions.standard')}
             testID="position-standard"
             compact
-            icon={<StandardSetupIcon />}
             onPress={() => {
               change(newPosition());
               setLocation(null);
