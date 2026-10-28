@@ -3,6 +3,7 @@ import {
   animationKey,
   buildMoveAnimationFrame,
   checkerRenderSize,
+  checkerSlideTransform,
   countAtPoint,
   destStackCount,
   displayBarCountDuringAnimation,
@@ -173,5 +174,37 @@ describe('countAtPoint', () => {
     const state = createInitialState('vs-human');
     expect(countAtPoint(state, BAR_POINT, 'white')).toBe(0);
     expect(countAtPoint(state, 24, 'white')).toBeGreaterThan(0);
+  });
+});
+
+describe('checkerSlideTransform', () => {
+  const from = { x: 40, y: 200 };
+  const to = { x: 160, y: 20 };
+
+  /** Where the proxy's center lands, given it is placed centered on `from`. */
+  function centerAt(t: number) {
+    const [dx, dy] = checkerSlideTransform({ from, to, fromSize: 30, toSize: 24, t });
+    return { x: from.x + (dx as { translateX: number }).translateX, y: from.y + (dy as { translateY: number }).translateY };
+  }
+
+  it('starts at the source at full size', () => {
+    expect(centerAt(0)).toEqual({ x: 40, y: 200 });
+    const [, , scale] = checkerSlideTransform({ from, to, fromSize: 30, toSize: 24, t: 0 });
+    expect(scale).toEqual({ scale: 1 });
+  });
+
+  it('lands centered on the destination at the destination size', () => {
+    expect(centerAt(1)).toEqual(to);
+    const [, , scale] = checkerSlideTransform({ from, to, fromSize: 30, toSize: 24, t: 1 });
+    expect(scale).toEqual({ scale: 0.8 });
+  });
+
+  it('follows the same straight path the old left/top slide did', () => {
+    expect(centerAt(0.5)).toEqual({ x: 100, y: 110 });
+  });
+
+  it('translates before scaling so the checker grows about its center', () => {
+    const keys = checkerSlideTransform({ from, to, fromSize: 30, toSize: 24, t: 0.5 }).map(step => Object.keys(step)[0]);
+    expect(keys).toEqual(['translateX', 'translateY', 'scale']);
   });
 });
