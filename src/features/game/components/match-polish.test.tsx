@@ -111,3 +111,13 @@ it('reserves the same compact controls footprint across every match phase', () =
   expect(screen.getByTestId('game-action-caption')).toHaveTextContent(/White offers a double/);
   expect(screen.queryByText(/hints and tutor are off/)).toBeNull();
 });
+
+it.each(['white', 'black'] as const)('keeps the %s score outside the transformed leaf after a score/active change', (player) => {
+  const view = setup(<MatchScorecard player={player} score={0} active />);
+  view.rerender(<MatchScorecard player={player} score={2} active={false} />);
+  const numeral = screen.getByTestId(`match-score-numeral-${player}`);
+  expect(numeral).toHaveTextContent('2');
+  const leaf = screen.getByTestId(`match-score-leaf-${player}`);
+  expect(leaf.findAll(node => node === numeral)).toHaveLength(0);
+  expect(screen.getByTestId(`match-score-${player}`)).toHaveTextContent('2');
+});

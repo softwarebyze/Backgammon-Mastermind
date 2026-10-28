@@ -92,6 +92,12 @@ tags:
       id: match-next
     timeout: 15000
 - assertVisible: White 2  –  Black 0
+- assertVisible:
+    id: match-score-numeral-white
+    text: '2'
+- assertVisible:
+    id: match-score-numeral-black
+    text: '0'
 - takeScreenshot: match-board-06-result
 - tapOn:
     id: match-next

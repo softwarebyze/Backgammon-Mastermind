@@ -6,7 +6,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { matchPlayer } from '@/features/game/match-copy';
 import { interFont } from '@/lib/ui/fonts';
 
-/** The numeral switches discretely; only its physical leaf moves. */
+/** Keep scores outside the transformed/clipped leaf so Android always paints them. */
 export function MatchScorecard({ player, score, active }: { player: Player; score: number; active: boolean }) {
   const reducedMotion = useReducedMotion();
   const previous = useRef(score);
@@ -22,12 +22,14 @@ export function MatchScorecard({ player, score, active }: { player: Player; scor
   const flip = useAnimatedStyle(() => ({ transform: [{ perspective: 500 }, { rotateX: `${angle.value}deg` }] }));
   return (
     <View style={styles.player} accessibilityLabel={`${matchPlayer(player)} ${score}`} accessible>
-      <Animated.View style={[styles.card, active && styles.activeCard, player === 'black' && styles.darkCard, flip]} testID={`match-score-${player}`}>
-        <Text style={[styles.score, player === 'black' && styles.lightInk]}>{score}</Text>
-        <View style={styles.seam} />
-        <View style={[styles.hinge, styles.leftHinge]} />
-        <View style={[styles.hinge, styles.rightHinge]} />
-      </Animated.View>
+      <View style={[styles.card, active && styles.activeCard, player === 'black' && styles.darkCard]} testID={`match-score-${player}`}>
+        <Animated.View pointerEvents="none" style={[styles.leaf, player === 'black' && styles.darkCard, flip]} testID={`match-score-leaf-${player}`}>
+          <View style={styles.seam} />
+          <View style={[styles.hinge, styles.leftHinge]} />
+          <View style={[styles.hinge, styles.rightHinge]} />
+        </Animated.View>
+        <Text testID={`match-score-numeral-${player}`} style={[styles.score, player === 'black' && styles.lightInk]}>{score}</Text>
+      </View>
     </View>
   );
 }
@@ -35,6 +37,7 @@ const styles = StyleSheet.create({
   activeCard: { borderWidth: 2, borderColor: GAME_PALETTE.accent },
   player: { flexDirection: 'row', alignItems: 'center', gap: 7 },
   card: { width: 42, height: 48, borderRadius: 5, backgroundColor: '#E8E0D0', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
+  leaf: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, borderRadius: 5, backgroundColor: '#E8E0D0' },
   darkCard: { backgroundColor: '#3C3028' },
   score: { color: GAME_PALETTE.bg, fontSize: 30, lineHeight: 40, fontVariant: ['tabular-nums'], ...interFont('semibold') },
   lightInk: { color: '#F5F0E8' },

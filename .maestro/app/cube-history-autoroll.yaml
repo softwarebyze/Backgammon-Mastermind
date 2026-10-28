@@ -53,6 +53,16 @@ tags:
       id: match-next
     timeout: 15000
 - assertVisible: White 2  –  Black 0
+- assertVisible:
+    id: match-score-numeral-white
+    text: '2'
+- assertVisible:
+    id: match-score-numeral-black
+    text: '0'
+- scrollUntilVisible:
+    element:
+      id: history-cube-1
+    direction: LEFT
 - tapOn:
     id: history-cube-1
 - assertVisible: White 0  –  Black 0
@@ -61,6 +71,10 @@ tags:
 - assertNotVisible:
     id: match-next
 - takeScreenshot: cube-history-02-review-offer
+- scrollUntilVisible:
+    element:
+      id: history-cube-2
+    direction: RIGHT
 - tapOn:
     id: history-cube-2
 - assertVisible: White 0  –  Black 0
@@ -81,9 +95,17 @@ tags:
 - tapOn:
     id: match-drop
 - assertVisible: White 1  –  Black 0
+- scrollUntilVisible:
+    element:
+      id: history-cube-1
+    direction: LEFT
 - tapOn:
     id: history-cube-1
 - assertVisible: White 0  –  Black 0
+- scrollUntilVisible:
+    element:
+      id: history-cube-2
+    direction: RIGHT
 - tapOn:
     id: history-cube-2
 - assertVisible: White 1  –  Black 0
