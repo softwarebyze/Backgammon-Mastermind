@@ -123,3 +123,18 @@ it('keeps presets and dice visible while exchange and saved tools stay collapsed
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ mode: 'vs-computer' }));
 });
+
+it('retains an open import draft through board edits while clearing stale exports', () => {
+  render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('position-exchange-toggle'));
+  fireEvent.press(screen.getByTestId('position-import-toggle'));
+  fireEvent.changeText(screen.getByTestId('position-import-input'), 'a position I am still pasting');
+  fireEvent.press(screen.getByTestId('position-export-xgid'));
+  expect(screen.getByTestId('position-export-output')).toBeTruthy();
+  fireEvent.press(screen.getByTestId('test-board-point'));
+  fireEvent.press(screen.getByTestId('position-remove'));
+  expect(screen.getByTestId('position-exchange-toggle').props.accessibilityState.expanded).toBe(true);
+  expect(screen.getByTestId('position-import-input').props.value).toBe('a position I am still pasting');
+  expect(screen.queryByTestId('position-export-output')).toBeNull();
+  expect(start).not.toHaveBeenCalled();
+});

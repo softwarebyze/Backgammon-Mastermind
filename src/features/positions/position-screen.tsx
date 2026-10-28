@@ -130,7 +130,6 @@ function PositionWorkspace({ data }: { data?: string }) {
         </View>
         <View style={styles.toolList}>
           <PositionExchange
-            key={JSON.stringify(position)}
             position={position}
             onCurrent={state
               ? () => {

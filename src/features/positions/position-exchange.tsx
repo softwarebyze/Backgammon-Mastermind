@@ -17,6 +17,14 @@ export function PositionExchange({ position, onImport, onCurrent }: { position: 
   const [output, setOutput] = useState('');
   const [notice, setNotice] = useState('');
   const [expanded, setExpanded] = useState(false);
+  const [previousPosition, setPreviousPosition] = useState(position);
+  // Reset position-specific results before rendering while retaining the draft.
+  if (previousPosition !== position) {
+    setPreviousPosition(position);
+    setOutput('');
+    setError('');
+    setNotice('');
+  }
   const origin = Platform.OS === 'web' && typeof window !== 'undefined' ? window.location.origin : undefined;
   const runExport = (format: 'XGID' | 'GNUID' | 'JSON' | 'link') => {
     try {

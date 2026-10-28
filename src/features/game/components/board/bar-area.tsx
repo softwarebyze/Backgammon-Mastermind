@@ -155,7 +155,7 @@ export function BarArea({
     <Pressable
       testID={stackEditor ? 'position-board-bar' : undefined}
       accessibilityRole={stackEditor ? 'adjustable' : 'button'}
-      accessibilityValue={stackEditor ? { min: 0, max: 30, now: whiteCount + blackCount } : undefined}
+      accessibilityValue={stackEditor ? { min: 0, max: 15, now: currentPlayer === 'white' ? whiteCount : blackCount } : undefined}
       accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : undefined}
       onAccessibilityAction={event => stackEditor?.onAdjust(BAR_POINT, event.nativeEvent.actionName === 'decrement' ? -1 : 1)}
       accessibilityLabel={

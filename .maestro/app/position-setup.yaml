@@ -155,6 +155,24 @@ tags:
     id: position-import-input
 - inputText: 4HPwATDgc/ABMA:QYkqASAAIAAA
 - hideKeyboard
+# A board edit must preserve the open importer and pasted draft.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-standard
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-standard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-input
+      START_Y: '80%'
+      END_Y: '25%'
+- assertVisible:
+    id: position-import-input
+    text: '4HPwATDgc/ABMA:QYkqASAAIAAA'
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
@@ -163,8 +181,6 @@ tags:
       END_Y: '25%'
 - tapOn:
     id: position-import-load
-- tapOn:
-    id: position-exchange-toggle
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
