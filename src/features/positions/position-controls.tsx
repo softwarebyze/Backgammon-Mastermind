@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Feather from '@expo/vector-icons/Feather';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { styles } from './position-styles';
 
@@ -30,32 +30,6 @@ export function PositionAction({ label, onPress, selected, disabled, testID, ico
       {icon}
       {!iconOnly && <Text style={[styles.buttonText, primary && styles.activeText]}>{label}</Text>}
     </Pressable>
-  );
-}
-
-export function PositionNumber({ label, value, onChange, max = 32767, testID }: {
-  label: string;
-  value: number;
-  onChange: (value: number) => void;
-  max?: number;
-  testID?: string;
-}) {
-  return (
-    <View style={styles.number}>
-      <Text style={styles.caption}>{label}</Text>
-      <TextInput
-        accessibilityLabel={label}
-        testID={testID}
-        keyboardType="number-pad"
-        selectTextOnFocus
-        value={String(value)}
-        onChangeText={(text) => {
-          if (/^\d{0,5}$/.test(text))
-            onChange(Math.min(max, Number(text)));
-        }}
-        style={styles.numberInput}
-      />
-    </View>
   );
 }
 

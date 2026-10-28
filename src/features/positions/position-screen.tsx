@@ -91,6 +91,7 @@ function PositionWorkspace({ data }: { data?: string }) {
         testID="position-screen"
         style={styles.root}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.content, { paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
       >

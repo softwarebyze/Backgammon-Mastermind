@@ -1,0 +1,35 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-match-length
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-match-length
+- eraseText
+- inputText: '5'
+- hideKeyboard
+- tapOn:
+    id: position-score-white
+- eraseText
+- inputText: '3'
+- hideKeyboard
+- tapOn:
+    id: position-score-black
+- eraseText
+- inputText: '2'
+- hideKeyboard
+- assertVisible:
+    id: position-score-white
+    text: '3'
+- assertVisible:
+    id: position-score-black
+    text: '2'
+- assertVisible:
+    id: position-match-length
+    text: '5'
+- takeScreenshot: position-editable-scoreboard

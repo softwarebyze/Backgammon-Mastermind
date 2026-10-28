@@ -109,3 +109,13 @@ the ivory face, centered 64 convention, ownership and Crawford dimming from
 for sharing that treatment when the branches combine. This branch does not
 change the match engine or remove the existing checker-play limitation. The
 position document continues preserving full cube and match context for exchange.
+
+### Editable scoreboard
+
+White and Black scores appear as ivory/dark scorecards beside a central match
+target, using the scorecard material from PR #325. Each numeral is directly
+editable with a numeric keyboard. Zero target is labeled Money game. Match scores
+are capped at the target, and shortening the match clamps both scores so the
+position remains valid. Changing the target resets incompatible rule flags.
+Imported cube context and the opposite player's score survive score edits.
+Match rules remain behind the secondary disclosure; scores are always displayed.

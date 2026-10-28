@@ -81,6 +81,7 @@ tags:
     id: position-cube-reset
 - tapOn:
     id: position-cube
+- runFlow: ../utils/position-score.yaml
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:

@@ -33,8 +33,6 @@ export const styles = StyleSheet.create({
   pressed: { opacity: 0.7 },
   disabled: { opacity: 0.35 },
   input: { ...interFont('regular'), color: palette.text, backgroundColor: palette.surface, padding: 12, minHeight: 48, borderRadius: 10, fontSize: 16, textAlignVertical: 'top' },
-  number: { width: 104, gap: 4 },
-  numberInput: { width: '100%', ...interFont('medium'), color: palette.text, fontSize: 17, backgroundColor: palette.surface, minHeight: Platform.OS === 'android' ? 48 : 44, paddingHorizontal: 12, borderRadius: 8 },
   error: { ...interFont('regular'), color: '#FFBCAD', fontSize: 14, lineHeight: 21 },
   board: { alignItems: 'center' },
   savedRow: { flexDirection: 'row', alignItems: 'center', gap: 8, flexWrap: 'wrap' },

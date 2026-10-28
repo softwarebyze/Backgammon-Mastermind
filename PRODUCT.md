@@ -71,3 +71,8 @@ Positions uses a miniature board for Standard setup, solid question-mark faces
 for unset dice (shared with the game), and a visible ivory doubling cube with
 ownership and direct value controls. Cube appearance follows PR #325's match
 work; the position editor does not introduce a competing match engine.
+
+Match scores are a visible, editable scoreboard with player-coloured scorecards
+and a central match target, following the match-play branch's flip-card material.
+Tap the numerals to edit. Shortening a match clamps scores to its target; rules
+remain secondary. Zero match length continues to mean a money game.
