@@ -64,15 +64,20 @@ function BearOffStack({
       }}
     >
       <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.7}
         style={{
           position: 'absolute',
           top: 2,
+          maxWidth: width - 2,
           color: '#B89470',
           fontSize: 9,
+          textAlign: 'center',
           zIndex: 20,
         }}
       >
-        {player === 'black' ? '▲ off' : '▽ off'}
+        {`${player === 'black' ? '▲' : '▽'} ${translate('game.controls.bear_off_label')}`}
       </Text>
 
       {count === 0 && (

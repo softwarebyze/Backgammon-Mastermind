@@ -9,7 +9,8 @@
       "selected": "Seçilen – vurgulanan bir noktaya dokun veya Cancel"
     },
     "controls": {
-      "bear_off_a11y": "Ayık Ayı",
+      "bear_off_a11y": "Taş topla",
+      "bear_off_label": "toplanan",
       "cancel": "Cancel Cancel Cancel Cancel",
       "cancel_a11y": "İptal seçimi",
       "confirm_move": "Hamleyi onayla",
