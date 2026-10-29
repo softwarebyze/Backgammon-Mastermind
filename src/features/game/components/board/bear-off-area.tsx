@@ -11,6 +11,7 @@ import {
   maxBearOffVisibleSlots,
 } from '@/features/game/bear-off-layout';
 import { translate } from '@/lib/i18n';
+import { trayLabelFontSize } from './bear-off-label';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 
@@ -50,6 +51,7 @@ function BearOffStack({
   const visible = Math.min(count, maxVisible);
   const overflow = count - visible;
   const showTarget = isLegalTarget && isTargetSide;
+  const label = `${player === 'black' ? '▲' : '▽'}${translate('game.status.off_short')}`;
 
   return (
     <View
@@ -65,19 +67,17 @@ function BearOffStack({
     >
       <Text
         numberOfLines={1}
-        adjustsFontSizeToFit
-        minimumFontScale={0.7}
         style={{
           position: 'absolute',
           top: 2,
-          maxWidth: width - 2,
+          width,
           color: '#B89470',
-          fontSize: 9,
+          fontSize: trayLabelFontSize(label, width),
           textAlign: 'center',
           zIndex: 20,
         }}
       >
-        {`${player === 'black' ? '▲' : '▽'} ${translate('game.controls.bear_off_label')}`}
+        {label}
       </Text>
 
       {count === 0 && (
