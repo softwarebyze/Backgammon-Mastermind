@@ -1,5 +1,5 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
-import type { GameState } from '@/lib/game';
+import type { GameState, Move } from '@/lib/game';
 import { act, renderHook } from '@testing-library/react-native';
 import { getCheckerAnchor } from '@/features/game/board-point-layout';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
@@ -247,8 +247,8 @@ describe('useBoardPlayInput concurrent replay', () => {
     let board = midAnimation([3, 5]);
     const actions = {
       selectPoint: jest.fn(),
-      doMove: jest.fn((move: { die: number }) => {
-        board = midAnimation(board.remainingDice.filter((d, i, all) => i !== all.indexOf(move.die)));
+      doMove: jest.fn((move: Move) => {
+        board = midAnimation(board.remainingDice.filter((_d, i, all) => i !== all.indexOf(move.die ?? -1)));
       }),
       doMoveSequence: jest.fn(),
       getMoveState: () => board,
