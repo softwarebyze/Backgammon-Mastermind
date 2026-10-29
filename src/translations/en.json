@@ -77,7 +77,7 @@
       "direction_overlay": "Direction overlay",
       "direction_overlay_hint": "Horseshoe path on the board",
       "move_hints": "Move hints",
-      "move_hints_hint": "Gold dot beside points you can move from",
+      "move_hints_hint": "Highlights the numbers of the points you can move from",
       "point_numbers": "Point numbers",
       "point_numbers_hint": "Show 1–24 labels on the board",
       "section_automation": "Automation",

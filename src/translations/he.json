@@ -77,7 +77,7 @@
       "direction_overlay": "מסלול כיוון",
       "direction_overlay_hint": "מסלול בצורת פרסה על הלוח",
       "move_hints": "רמזי מהלכים",
-      "move_hints_hint": "נקודה זהובה ליד משבצות שמהן אפשר לזוז",
+      "move_hints_hint": "מדגיש את מספרי הנקודות שמהן אפשר להזיז",
       "point_numbers": "מספרי משבצות",
       "point_numbers_hint": "הצגת תוויות 1–24 על הלוח",
       "section_automation": "אוטומציה",
