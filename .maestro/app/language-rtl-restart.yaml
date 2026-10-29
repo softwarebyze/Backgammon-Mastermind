@@ -40,7 +40,7 @@ tags:
       CLEAR_STATE: 'false'
       HOME_TEXT: ضد الكمبيوتر
 - tapOn:
-    text: إعدادات
+    text: الإعدادات
 - extendedWaitUntil:
     visible: لغة
     timeout: 15000

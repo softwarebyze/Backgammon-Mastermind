@@ -1,58 +1,58 @@
 {
   "error": {
-    "body": "앱을 계속 복원하십시오.",
-    "heading": "뭔가 잘못되었습니다.",
-    "retry": "관련 기사"
+    "body": "계속하려면 앱을 다시 시작하세요.",
+    "heading": "문제가 생겼어요",
+    "retry": "다시 시도"
   },
   "game": {
     "caption": {
-      "selected": "선택 - 강조 표시된 지점을 탭하거나 취소"
+      "selected": "선택됨 – 강조된 포인트를 누르거나 취소하세요"
     },
     "controls": {
       "bear_off_a11y": "곰 륙",
       "cancel": "취소",
-      "cancel_a11y": "자주 묻는 질문",
+      "cancel_a11y": "선택 취소",
       "confirm_move": "수 확정",
-      "confirm_move_a11y": "수를 확정하고 턴을 종료",
-      "leave_game_a11y": "게임 및 반환 홈",
-      "loading": "로드 중 ...",
+      "confirm_move_a11y": "수를 확정하고 차례 마치기",
+      "leave_game_a11y": "게임을 나가고 홈으로 돌아가기",
+      "loading": "불러오는 중…",
       "new_game_message": "새 게임을 시작할까요?",
       "new_game_title": "새 게임",
-      "no_legal_moves": "가능한 수가 없습니다…",
+      "no_legal_moves": "둘 수 있는 수가 없어요…",
       "play_again": "다시 하기",
       "play_again_a11y": "다시 하기",
-      "redo_a11y": "Redo 이동",
+      "redo_a11y": "수 다시 실행",
       "roll_dice": "주사위 굴리기",
       "roll_dice_a11y": "주사위 굴리기",
-      "start_new_game_a11y": "새로운 게임 시작",
-      "undo_a11y": "취소 이동",
-      "undo_move": "실행 취소"
+      "start_new_game_a11y": "새 게임 시작",
+      "undo_a11y": "수 되돌리기",
+      "undo_move": "되돌리기"
     },
     "hint": {
       "back_to_turn": "내 차례로 돌아가기",
-      "back_to_turn_a11y": "내 차례로 돌아가 힌트를 닫기",
+      "back_to_turn_a11y": "내 차례로 돌아가고 힌트 닫기",
       "button": "힌트",
-      "button_a11y": "수 힌트 받기",
-      "error": "힌트를 찾지 못했습니다 — 탭하여 다시 시도",
+      "button_a11y": "수 힌트 보기",
+      "error": "힌트를 찾지 못했어요 – 눌러서 다시 시도",
       "error_a11y": "힌트 다시 시도",
       "finding": "최선의 수를 찾는 중…",
-      "play": "이 수를 두기",
-      "play_a11y": "제안된 수를 두기",
-      "suggested": "제안된 수"
+      "play": "이 수 두기",
+      "play_a11y": "추천 수 두기",
+      "suggested": "추천 수"
     },
     "nudge": {
       "roll_first": "먼저 주사위를 굴리세요"
     },
     "opening": {
-      "compare": "{{winner}}의 {{high}}이(가) {{low}}을(를) 이겼습니다",
-      "goes_first": "{{player}} 선공!",
+      "compare": "{{winner}}: {{high}}이(가) {{low}}을(를) 이김",
+      "goes_first": "{{player}} 먼저 시작!",
       "roll": "굴리기",
-      "rolls_for_opening": "{{player}}이(가) 선공 주사위를 굴립니다",
+      "rolls_for_opening": "{{player}} 선공을 정하려고 굴려요",
       "tie": "무승부!",
-      "tie_again": "같은 숫자 — 다시 굴리세요",
-      "waiting_roll": "{{player}}이(가) 굴리는 중…",
+      "tie_again": "같은 숫자예요 – 다시 굴리세요",
+      "waiting_roll": "{{player}} 굴리는 중…",
       "who_goes_first": "누가 먼저 할까요?",
-      "your_roll": "아무 곳이나 탭하여 굴리기"
+      "your_roll": "아무 곳이나 눌러서 굴리기"
     },
     "options": {
       "open_settings": "언어 및 기타",
@@ -61,111 +61,111 @@
     },
     "preferences": {
       "auto_move": "강제 수 자동 진행",
-      "auto_move_hint": "유일한 가능 수를 자동으로 둡니다",
+      "auto_move_hint": "가능한 수가 하나뿐이면 자동으로 둡니다",
       "auto_roll": "주사위 자동 굴리기",
-      "auto_roll_hint": "내 차례에 자동으로 굴립니다",
+      "auto_roll_hint": "내 차례가 되면 주사위를 자동으로 굴립니다",
       "confirm_move": "수 확정",
-      "confirm_move_hint": "턴이 끝나기 전에 확인해 검토하거나 취소할 수 있습니다",
+      "confirm_move_hint": "차례를 마치기 전에 물어봐서 다시 보거나 되돌릴 수 있어요",
       "dice_display": "주사위 표시",
       "dice_dots": "점",
       "dice_numbers": "숫자",
-      "direction_overlay": "진행 방향 표시",
-      "direction_overlay_hint": "보드 위 말굽 모양 경로",
+      "direction_overlay": "진행 방향",
+      "direction_overlay_hint": "보드에 말굽 모양 경로 표시",
       "move_hints": "이동 힌트",
       "move_hints_hint": "이동 가능한 포인트 옆에 금색 점 표시",
       "point_numbers": "포인트 번호",
-      "point_numbers_hint": "보드에 1–24 라벨 표시",
+      "point_numbers_hint": "보드에 1–24 번호 표시",
       "section_automation": "자동화",
       "section_board": "보드",
       "section_dice": "주사위",
-      "sound": "게임 소리",
-      "sound_hint": "부드러운 주사위·히트·승리 효과음 — 무음 모드를 따릅니다",
+      "sound": "게임 효과음",
+      "sound_hint": "주사위, 잡기, 승리의 부드러운 소리 – 무음 모드를 따릅니다",
       "tutor_mode": "튜터 모드",
-      "tutor_mode_hint": "엔진이 수를 확인하고 큰 실수를 표시합니다"
+      "tutor_mode_hint": "엔진이 내 수를 확인하고 큰 실수를 알려 줘요"
     },
     "review": {
-      "back_to_live": "진행 중인 게임으로 돌아가기",
+      "back_to_live": "게임으로 돌아가기",
       "live": "진행 중인 게임",
-      "live_short": "라이브",
-      "move_a11y": "수 {{ply}}, {{player}}",
-      "move_position": "수 {{current}}/{{total}} · {{player}}",
+      "live_short": "지금",
+      "move_a11y": "{{ply}}번째 수, {{player}}",
+      "move_position": "{{total}}수 중 {{current}}번째 · {{player}}",
       "next": "다음 차례",
       "opening": "시작 배치",
       "pause_replay": "일시정지",
       "player_black": "흑",
       "player_white": "백",
       "previous": "이전 차례",
-      "replay": "리플레이",
-      "scrubber_hint": "차례를 탭하여 복기",
+      "replay": "다시 보기",
+      "scrubber_hint": "차례를 눌러 다시 보기",
       "start": "처음",
-      "turn_a11y": "차례 {{turn}}, {{player}}",
+      "turn_a11y": "{{turn}}번째 차례, {{player}}",
       "turn_label": "차례 {{turn}}/{{totalTurns}} · {{player}}",
-      "turn_position": "차례 {{turn}}/{{totalTurns}} · 수 {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "복기 중 — 라이브 또는 돌아가기를 눌러 계속 플레이"
+      "turn_position": "차례 {{turn}}/{{totalTurns}} · {{moveInTurn}}/{{movesInTurn}}번째 수 · {{player}}",
+      "viewing_hint": "지난 수를 보는 중 – 계속하려면 ‘지금’이나 ‘게임으로 돌아가기’를 누르세요"
     },
     "status": {
-      "black_wins": "흑 승리",
+      "black_wins": "🏆 흑 승리!",
       "computer_wins": "컴퓨터 승리",
       "off_short": "완료",
-      "pips_a11y": "{{player}}: {{pips}} 핍, 15개 중 {{off}}개 완료",
+      "pips_a11y": "{{player}}: {{pips}}핍, 15개 중 {{off}}개 완료",
       "white_wins": "🏆 백 승리!",
-      "you_win": "🏆 승리했습니다!"
+      "you_win": "🏆 내가 이겼어요!"
     },
     "strategy": {
       "close_a11y": "전략 설명 닫기",
-      "got_it": "알겠습니다",
+      "got_it": "알겠어요",
       "label": {
-        "backgame": "백 게임",
+        "backgame": "백게임",
         "blitz": "블리츠",
-        "developing": "발전",
+        "developing": "전개",
         "holding": "홀딩 게임",
-        "priming": "프라임(벽)",
-        "running": "레이스"
+        "priming": "프라임 게임",
+        "running": "러닝 게임"
       },
       "tip": {
-        "backgame": "뒤에서 지켜보며 홈 보드를 단단히 하고 늦은 기회를 기다리세요.",
-        "blitz": "공격하세요. 홀로 있는 말을 모두 잡고 홈 보드를 닫으세요.",
-        "developing": "말을 쌓고 5를 다투며 유연하게 움직이세요.",
-        "holding": "앵커를 지키고 안전하게 버티며 잡을 기회를 기다리세요.",
-        "priming": "벽을 한 칸씩 늘려 상대의 뒷말을 가두세요.",
-        "running": "말을 효율적으로 집으로 옮기고 아직 위험한 말들을 지키세요."
+        "backgame": "뒤에 머물면서 홈 보드를 단단히 지키고, 늦은 잡기 기회를 노리세요.",
+        "blitz": "공격하세요: 잡을 수 있는 블롯은 모두 잡고 홈 보드를 막으세요.",
+        "developing": "포인트를 만들고, 5포인트를 두고 다투며, 유연하게 움직이세요.",
+        "holding": "앵커를 지키며 안전하게 두고, 잡을 기회를 기다리세요.",
+        "priming": "벽을 한 포인트씩 늘려 상대의 뒤쪽 말을 가두세요.",
+        "running": "말을 효율적으로 집으로 옮기고, 아직 잡힐 수 있는 말을 지키세요."
       },
       "why": {
-        "backgame": "{{point1}}와 {{point2}}에 깊은 앵커를 갖고 있지만 레이스에서 {{pipGap}}포인트 뒤처져 있습니다.",
-        "blitz_bar": "바에 {{barCount}}가 있고 홈 보드에서 이미 {{homeMade}}포인트를 만들었습니다.",
-        "blitz_bar_blot": "바에 {{barCount}}가 있고 홈 보드에 홀로 있는 말이 1개 있으며, 이미 홈 보드에서 {{homeMade}}포인트를 만들었습니다.",
-        "blitz_bar_blots": "바에 {{barCount}}가 있고 홈 보드에 홀로 있는 말이 {{blotCount}}개 있으며, 이미 홈 보드에서 {{homeMade}}포인트를 만들었습니다.",
-        "blitz_blot": "홈 보드에 홀로 있는 말이 1개 있고 이미 {{homeMade}}포인트를 만들었습니다.",
-        "blitz_blots": "홈 보드에 홀로 있는 말이 {{blotCount}}개 있고 이미 {{homeMade}}포인트를 만들었습니다.",
-        "developing": "아직 벽도 앵커도 공격도 없습니다 — 아직 게임이 정해지는 단계입니다.",
-        "holding": "{{point}}에 앵커를 잡고 있지만 {{pipGap}}포인트 뒤처져 있습니다.",
-        "priming": "{{prime}}포인트짜리 벽을 만들었습니다.",
-        "priming_anchor": "{{prime}}포인트짜리 벽을 만들고 그 뒤에 앵커까지 만들었습니다.",
-        "running_lead": "레이스에서 {{foePips}} 대 {{myPips}}로 앞서고 있고 잡을 수 있는 거리에 홀린 말이 없습니다.",
-        "running_race": "접촉은 불가능합니다 — 그대로 내보내기만 하면 되는 레이스입니다 ({{myPips}} 대 {{foePips}}포인트)."
+        "backgame": "{{point1}}과 {{point2}}에 깊은 앵커가 있지만, 레이스에서 {{pipGap}}핍 뒤져 있어요.",
+        "blitz_bar": "바에 {{barCount}}개가 있고, 홈 보드에 이미 {{homeMade}}개의 포인트를 만들었어요.",
+        "blitz_bar_blot": "바에 {{barCount}}개, 홈 보드에 블롯 1개가 있고, 이미 {{homeMade}}개의 포인트를 만들었어요.",
+        "blitz_bar_blots": "바에 {{barCount}}개, 홈 보드에 블롯 {{blotCount}}개가 있고, 이미 {{homeMade}}개의 포인트를 만들었어요.",
+        "blitz_blot": "홈 보드에 블롯 1개가 있고, 이미 {{homeMade}}개의 포인트를 만들었어요.",
+        "blitz_blots": "홈 보드에 블롯 {{blotCount}}개가 있고, 이미 {{homeMade}}개의 포인트를 만들었어요.",
+        "developing": "아직 프라임도, 앵커도, 공격도 없어요 – 게임이 모양을 갖춰 가는 중이에요.",
+        "holding": "{{point}}에 앵커가 있고 {{pipGap}}핍 뒤져 있어요.",
+        "priming": "{{prime}}포인트 프라임을 만들었어요.",
+        "priming_anchor": "{{prime}}포인트 프라임을 만들었고, 뒤에 앵커도 있어요.",
+        "running_lead": "레이스에서 {{myPips}} 대 {{foePips}}로 앞서 있고, 잡힐 블롯도 없어요.",
+        "running_race": "더 이상 접촉이 없어요 – 베어오프까지의 순수한 레이스예요({{myPips}} 대 {{foePips}}핍)."
       }
     },
     "turn": {
-      "black_is_moving": "검정이 이동 중…",
-      "black_is_rolling": "검정이 주사위를 굴리는 중…",
-      "black_turn": "검정 차례",
-      "cant_enter": "{{die1}}와 {{die2}}로 바에서 들어올 수 없습니다 — 차례를 마치세요",
+      "black_is_moving": "흑이 움직이는 중…",
+      "black_is_rolling": "흑이 굴리는 중…",
+      "black_turn": "흑 차례",
+      "cant_enter": "{{die1}}과 {{die2}}로는 바에서 들어갈 수 없어요 – 차례를 마치세요",
       "computer_turn": "컴퓨터 차례",
-      "enter_from_bar": "다른 말을 움직이기 전에 바에서 들어오세요",
+      "enter_from_bar": "다른 말을 움직이기 전에 바에 있는 말을 먼저 들여보내세요",
       "game_over": "게임 종료",
-      "move_checkers": "{{color}} 말을 움직이세요",
-      "no_legal_moves": "{{die1}}와 {{die2}}로 가능한 수가 없습니다 — 차례를 마치세요",
-      "opening_roll": "시작 주사위",
-      "roll_dice": "주사위를 굴리세요 — {{color}}으로 플레이",
-      "white_turn": "흰색 차례",
+      "move_checkers": "내 말을 움직이세요 ({{color}})",
+      "no_legal_moves": "{{die1}}과 {{die2}}로 둘 수 있는 수가 없어요 – 차례를 마치세요",
+      "opening_roll": "선공 굴리기",
+      "roll_dice": "주사위를 굴리세요 – 나는 {{color}}",
+      "white_turn": "백 차례",
       "your_turn": "내 차례"
     },
     "tutor": {
-      "back_to_question": "질문으로 돌아가기",
-      "back_to_question_a11y": "답을 보지 않고 돌아가기",
+      "back_to_question": "문제로 돌아가기",
+      "back_to_question_a11y": "정답을 보지 않고 돌아가기",
       "band": {
         "big_blunder": "큰 실수",
-        "fine": "양호",
+        "fine": "좋음",
         "mistake": "실수",
         "slip": "작은 실수"
       },
@@ -176,349 +176,349 @@
         "best_move": "최선의 수",
         "both": "둘 다",
         "mine": "내 수",
-        "show_a11y": "{{label}} 보드 보기",
-        "start": "시작",
-        "starting_position": "시작 국면",
-        "your_move": "당신의 수",
-        "your_move_replayed": "당신의 수, 다시 보기"
+        "show_a11y": "‘{{label}}’ 보드 보기",
+        "start": "처음",
+        "starting_position": "시작 위치",
+        "your_move": "내 수",
+        "your_move_replayed": "내 수 다시 보기"
       },
-      "details_hide": "세부 정보 숨기기",
-      "details_hide_a11y": "세부 정보 숨기기",
-      "details_show": "세부 정보",
-      "details_show_a11y": "세부 정보 보기",
-      "details_summary": "당신의 수는 {{count}}개 중 {{rank}}위이며, 최선의 수보다 게임당 약 {{loss}}점 낮습니다.",
-      "equity_explainer": "엔진은 각 수를 게임당 평균으로 이길 것으로 예상하는 점수로 평가합니다. 높을수록 좋습니다.",
+      "details_hide": "자세히 숨기기",
+      "details_hide_a11y": "자세히 숨기기",
+      "details_show": "자세히",
+      "details_show_a11y": "자세히 보기",
+      "details_summary": "내 수는 {{count}}개 중 {{rank}}위이고, 최선의 수보다 게임당 약 {{loss}}점 덜 얻어요.",
+      "equity_explainer": "엔진은 각 수를 게임당 평균 몇 점을 얻을지로 평가해요. 높을수록 좋아요.",
       "equity_pts": "{{points}}점",
       "keep": "내 수 유지",
-      "keep_a11y": "내 수를 유지하고 계속",
-      "meter_a11y": "실수 정도: {{severity}}. 게임당 약 {{loss}}점 손실. 기준은 GNU Backgammon입니다. 0.04에서 의심, 0.08에서 나쁨, 0.16에서 매우 나쁨.",
+      "keep_a11y": "내 수를 유지하고 계속하기",
+      "meter_a11y": "실수 정도: {{severity}}. 게임당 약 {{loss}}점 손해. 기준은 GNU Backgammon: 0.04부터 의심스러움, 0.08부터 나쁨, 0.16부터 매우 나쁨.",
       "meter_caption": "실수 척도 (GNU Backgammon)",
       "play_best": "최선의 수 두기",
-      "play_best_a11y": "내 수를 취소하고 최선의 수 두기",
-      "question_body": "당신의 수는 이 주사위를 두는 {{count}}가지 방법 중 {{rank}}위였습니다. 평균적으로 최선의 수보다 게임당 약 {{loss}}점 낮습니다.",
+      "play_best_a11y": "내 수를 무르고 최선의 수 두기",
+      "question_body": "이 주사위를 두는 {{count}}가지 방법 중 내 수는 {{rank}}위예요. 평균적으로 최선의 수보다 게임당 약 {{loss}}점 덜 얻어요.",
       "rank": "{{rank}}",
-      "rank_yours": "{{rank}} (당신)",
-      "replay_pause_a11y": "{{label}} 재생 일시정지",
-      "replay_play_a11y": "{{label}} 재생 재생",
+      "rank_yours": "{{rank}} (내 수)",
+      "replay_pause_a11y": "‘{{label}}’ 재생 일시정지",
+      "replay_play_a11y": "‘{{label}}’ 재생",
       "reveal": "최선의 수 보기",
       "reveal_a11y": "추천 수 공개",
-      "rolled": "{{dice}}가 나왔습니다",
+      "rolled": "나온 주사위: {{dice}}",
       "show_mine": "내 수 보기",
-      "show_mine_a11y": "최선의 수를 공개하지 않고 내 수만 보기",
-      "take_back": "취소하고 다시 시도",
-      "take_back_a11y": "차례 전체를 취소하고 다시 시도",
-      "take_back_retry_a11y": "수를 취소하고 다시 시도",
-      "title_compare": "당신의 수와 최선의 수",
-      "title_mine": "당신의 수",
+      "show_mine_a11y": "최선의 수는 숨기고 내 수만 보기",
+      "take_back": "무르고 다시 하기",
+      "take_back_a11y": "차례 전체를 무르고 다시 하기",
+      "take_back_retry_a11y": "수를 무르고 다시 하기",
+      "title_compare": "내 수와 최선의 수",
+      "title_mine": "내 수",
       "turn_off": "튜터 끄기",
       "turn_off_a11y": "튜터 모드 끄기",
-      "undo_last": "마지막 수 취소",
-      "undo_last_a11y": "마지막 수만 취소하고 다시 두기",
+      "undo_last": "마지막 한 수 되돌리기",
+      "undo_last_a11y": "마지막 한 수만 되돌리고 다시 두기",
       "vs_best": "최선 대비 −{{delta}}",
-      "you_played": "둔 수:"
+      "you_played": "내가 둔 수:"
     }
   },
   "home": {
-    "confirm_cancel": "이름 *",
+    "confirm_cancel": "취소",
     "confirm_continue": "계속하기",
-    "confirm_native": "현재 게임을 계속하거나 새로운 것을 시작하세요?",
-    "confirm_new": "새로운 게임",
-    "confirm_replace": "새 게임을 시작할까요? 현재 게임이 대체됩니다.",
-    "confirm_title": "진행중인 게임",
-    "confirm_web": "새로운 게임을 시작하세요? (현재를 계속하기 위하여 가정 스크린에 이력서를 사용하십시오.)",
-    "recovery_body": "마지막 저장 데이터가 손상되었습니다. 새 게임을 시작할 수 있으며 홈 화면은 계속 사용할 수 있습니다.",
+    "confirm_native": "지금 게임을 계속할까요, 새로 시작할까요?",
+    "confirm_new": "새 게임",
+    "confirm_replace": "새 게임을 시작할까요? 지금 게임은 대체돼요.",
+    "confirm_title": "진행 중인 게임",
+    "confirm_web": "새 게임을 시작할까요? (지금 게임을 계속하려면 홈 화면의 ‘게임 이어하기’를 사용하세요.)",
+    "recovery_body": "마지막 저장 파일이 손상되었어요. 새 게임을 시작할 수 있고, 다른 기능은 정상이에요.",
     "recovery_dismiss": "닫기",
-    "recovery_title": "저장된 게임을 복원할 수 없습니다",
+    "recovery_title": "저장된 게임을 복원하지 못했어요",
     "resume": "게임 이어하기",
     "resume_a11y": "저장된 게임 이어하기",
-    "resume_none": "자주 묻는 질문",
-    "resume_sub": "멈춘 곳부터 계속",
-    "review": "마지막 게임 보기",
-    "review_a11y": "완료된 게임 보기",
-    "review_sub": "마지막 게임이 어떻게 끝났는지 확인하세요",
+    "resume_none": "저장된 게임이 없어요",
+    "resume_sub": "멈췄던 곳에서 이어서 하기",
+    "review": "지난 게임 다시 보기",
+    "review_a11y": "끝난 게임 다시 보기",
+    "review_sub": "지난 게임이 어떻게 끝났는지 보기",
     "subtitle": "한 수씩, 보드를 정복하세요",
     "title": "BACKGAMMON\nMASTERMIND",
-    "two_players": "2인 플레이",
-    "two_players_a11y": "이 기기에서 둘이서 플레이",
-    "two_players_sub": "같은 기기에서 번갈아 플레이",
+    "two_players": "2인 대전",
+    "two_players_a11y": "이 기기에서 둘이 함께 하기",
+    "two_players_sub": "같은 기기에서 번갈아 하기",
     "vs_computer": "컴퓨터 대전",
-    "vs_computer_a11y": "컴퓨터와 대전",
-    "vs_computer_sub": "컴퓨터와 대결"
+    "vs_computer_a11y": "컴퓨터와 대전하기",
+    "vs_computer_sub": "컴퓨터와 대전하기"
   },
   "learn": {
-    "back_to_hub": "모든 수업",
-    "continue": "계속하기",
+    "back_to_hub": "전체 레슨",
+    "continue": "다음",
     "feedback": {
-      "hint_nudge": "판결이 필요합니까? 명소를 찾아보세요.",
-      "illegal": "강조된 포인트를 사용하거나 Hint를 탭합니다.",
-      "legal_but_wrong": "그것은 진짜 게임에서 법적 - 여기에, 이 아이디어를 가르치는 움직임을 시도.",
-      "move_progress": "좋은 —{{done}}이름 *{{needed}}수행하다."
+      "hint_nudge": "도움이 필요하면 강조된 곳을 보세요.",
+      "illegal": "강조된 포인트를 눌러 보거나 힌트를 누르세요.",
+      "legal_but_wrong": "실제 게임에서는 둘 수 있는 수지만, 여기서는 이 레슨에서 배우는 수를 둬 보세요.",
+      "move_progress": "좋아요 – {{needed}}번 중 {{done}}번 완료."
     },
     "graduation": {
       "body": "목표를 알고, 보드, 어떻게 작업을 회전, 타격, 그리고 떨어져 베어링. 빠른 체크 — 당신의 첫번째 진짜 게임.",
-      "play_cta": "첫 번째 게임을 재생",
-      "quiz_done": "못을 박았다. 재생 시간.",
-      "quiz_title": "빠른 체크",
-      "quiz_wrong": "그렇지 않다 — 다른 대답을 시도.",
-      "recap_1": "레이스: 모든 15 먼저 곰",
-      "recap_2": "롤 두 개의 인덱스; 오픈 포인트에 착륙",
-      "recap_3": "hit blots → 그들은 바에 앉아",
-      "recap_4": "당신의 홈 보드에서만 곰",
-      "recap_5": "게임 시작 하나 다이 각 — 더 높은 간다 먼저 (ties re-roll)",
-      "title": "당신은 재생할 준비가"
+      "play_cta": "첫 게임 하기",
+      "quiz_done": "완벽해요. 이제 게임을 해 봐요.",
+      "quiz_title": "짧은 확인",
+      "quiz_wrong": "아쉬워요 – 다른 답을 골라 보세요.",
+      "recap_1": "레이스: 15개 말을 먼저 모두 빼내면 승리",
+      "recap_2": "주사위 두 개를 굴리고, 열린 포인트에만 멈춰요",
+      "recap_3": "블롯을 잡으면 → 그 말은 바로 가요",
+      "recap_4": "말은 자기 홈 보드에서만 빼낼 수 있어요",
+      "recap_5": "처음에 각자 주사위 하나를 굴려 큰 쪽이 먼저 해요 (같으면 다시 굴려요)",
+      "title": "이제 게임할 준비가 됐어요"
     },
-    "hint": "사이트맵",
-    "home_cta": "게임 알아보기",
-    "home_cta_progress": "{{done}} / {{total}} 수업 완료",
-    "home_cta_quiz": "빠른 체크 왼쪽 — 다음 재생",
-    "home_cta_ready": "You’re ready - 실제 게임 플레이",
-    "home_cta_sub": "초보자를위한 대화 형 수업",
-    "lesson_complete": "수업 완료!",
+    "hint": "힌트",
+    "home_cta": "게임 배우기",
+    "home_cta_progress": "레슨 {{total}}개 중 {{done}}개 완료",
+    "home_cta_quiz": "짧은 확인만 남았어요 – 그다음 게임!",
+    "home_cta_ready": "준비 완료 – 실전 게임을 해 보세요",
+    "home_cta_sub": "초보자를 위한 대화형 레슨",
+    "lesson_complete": "레슨 완료!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "5 점에는 아무것도 없지만 5를 구했습니다. 가장 높은 검수원에서 곰 ( 3). 더 큰 숫자는 여전히 체크 아웃을 걸립니다.",
-            "hint": "포인트 3을 선택하면 곰 오프 트레이를 탭합니다.",
-            "praise": "그것은 overshoot 규칙입니다 - 당신은 베어링 할 때 많이 사용할 것입니다.",
-            "title": "더 큰 다이, 여전히 떨어져"
+            "body": "5포인트에는 말이 없지만 5가 나왔어요. 가장 멀리 있는 말(3포인트의 말)을 빼내세요. 더 큰 숫자로도 말을 빼낼 수 있어요.",
+            "hint": "3포인트를 고른 뒤 빼내기 칸을 누르세요.",
+            "praise": "이게 큰 숫자 규칙이에요 – 베어오프할 때 자주 써요.",
+            "title": "더 큰 숫자로도 빼내기"
           },
           "try": {
-            "body": "당신의 검수원은 집에서 (1-6), 그래서 당신은 떨어져 품을 수 있습니다. 당신은 3을 압니다. - 보드에서 3 포인트에 체크러.",
-            "hint": "포인트 3을 선택한 다음 오른쪽 가장자리에 곰 오프 영역을 탭합니다.",
-            "praise": "널 떨어져! 먼저 모든 15 승리를 곰.",
-            "title": "곰 1 륙"
+            "body": "모든 말이 홈(1–6)에 있으니 빼낼 수 있어요. 3이 나왔어요 – 3포인트의 말을 보드에서 빼내세요.",
+            "hint": "3포인트를 고른 뒤 오른쪽 가장자리의 빼내기 칸을 누르세요.",
+            "praise": "빼냈어요! 15개를 먼저 모두 빼내면 승리예요.",
+            "title": "말 하나 빼내기"
           }
         },
-        "subtitle": "승리하는 방법",
-        "title": "연락처"
+        "subtitle": "이기는 방법",
+        "title": "베어오프"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "말스호는 플레이어의 체크리스트를 일치시킵니다. 그것은 보드 주위에 플레이어의 노선을 추적하고 집으로 (점 1–6).",
-            "title": "말스호 경로"
+            "body": "말굽 모양 경로는 지금 차례인 사람의 말 색으로 표시돼요. 보드를 돌아 홈(1–6포인트)까지 가는 길을 보여 줘요.",
+            "title": "말굽 모양 경로"
           },
           "far": {
-            "body": "두 개의 farthest 흰색 검수원 시작 지점을 탭합니다 (24 점, 오른쪽).",
-            "hint": "오른쪽 상단에 봐 — 두 개의 흰색 검수원 포인트 24.",
-            "praise": "그들은 상대의 집에 깊은 시작과 가장 긴 여행.",
-            "title": "당신의 가장 먼 checkers"
+            "body": "가장 멀리 있는 흰 말 두 개가 출발하는 포인트(오른쪽 위 24포인트)를 누르세요.",
+            "hint": "오른쪽 위를 보세요 – 24포인트에 흰 말 두 개가 있어요.",
+            "praise": "이 말들은 상대 홈 깊숙한 곳에서 출발해서 가장 먼 길을 가요.",
+            "title": "가장 먼 말"
           },
           "home_stack": {
-            "body": "가정에서 5 개의 흰색 검수원의 큰 스택을 탭합니다 (6 점).",
-            "hint": "하단 오른쪽 : 포인트 6에 5 개의 흰색 검수원",
-            "praise": "그것은 당신의 가정 더미입니다 — 5개의 이미 6 점에 대기하고, 떨어져 방위에 가장 가까운. 모든 게임은이 방법을 시작합니다.",
-            "title": "당신의 가정 더미"
+            "body": "이미 홈에 있는 흰 말 다섯 개 더미(6포인트)를 누르세요.",
+            "hint": "오른쪽 아래: 6포인트에 흰 말 다섯 개.",
+            "praise": "이게 홈 더미예요 – 다섯 개가 이미 6포인트에서 기다리고 있고, 빼내기에 가장 가까워요. 모든 게임이 이렇게 시작해요.",
+            "title": "홈 더미"
           }
         },
-        "subtitle": "당신이 움직이는 방법",
-        "title": "방향 및 설정"
+        "subtitle": "어느 쪽으로 움직이나",
+        "title": "방향과 시작 배치"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "중간에 올려진 지구는 막대기입니다. 여기를 클릭. 바를 탭합니다.",
-            "hint": "왼쪽과 오른쪽 반쪽 사이의 수직 스트립을 탭합니다.",
-            "praise": "오른쪽 — hit checkers sit on the bar until they re-enter.",
-            "title": "더 바"
+            "body": "가운데 솟은 띠가 바예요. 잡힌 말은 여기서 기다려요. 바를 누르세요.",
+            "hint": "보드 왼쪽과 오른쪽 사이의 세로 띠를 누르세요.",
+            "praise": "맞아요 – 잡힌 말은 다시 들어갈 때까지 바에 있어요.",
+            "title": "바"
           },
           "explain": {
-            "body": "당신과 당신의 상대는 각각 15명의 검사가 있습니다. 보드와 오프 주위에 그들을 이동 - 첫 번째 완료 승리.",
-            "title": "승리를 품는 첫 번째"
+            "body": "나와 상대는 각각 말 15개를 가지고 있어요. 보드를 한 바퀴 돌려 빼내고, 먼저 끝내는 쪽이 이겨요.",
+            "title": "먼저 빼내는 쪽이 승리"
           },
           "home": {
-            "body": "당신의 가정은 포인트 1–6 (바닥 오른쪽). 홈 보드에 포인트를 탭합니다.",
-            "hint": "홈은 바닥 밝고 차분한 6 점입니다. - 1 ~ 6 번호.",
-            "praise": "그 집 — 검수원은 여기에서 보드를 떠나.",
+            "body": "내 홈 보드는 1–6포인트(오른쪽 아래)예요. 홈 보드의 아무 포인트나 누르세요.",
+            "hint": "홈은 오른쪽 아래 구역의 여섯 포인트예요 – 1번부터 6번까지.",
+            "praise": "여기가 내 홈이에요 – 말은 여기서 보드를 떠나요.",
             "title": "홈 보드 찾기"
           }
         },
-        "subtitle": "어떤 경주",
-        "title": "Goal & 널"
+        "subtitle": "무엇을 위한 레이스인가",
+        "title": "목표와 보드"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "당신은 바에있어 - 다른 사람을 이동하기 전에 돌아 왔습니다. 24점에서 집으로 계산: 지점 21에 4개의 땅.",
-            "hint": "바를 탭 한 다음 포인트 21 (not 23 — 그 바에서 단지 2 pips).",
-            "praise": "당신은 보드에 다시 - 바 체크너는 항상 먼저 입력.",
-            "title": "바에서 입력",
-            "wrong": "막대기에서 두 핍 (점 23)입니다. 24에서 집으로 4 점을 계산 — 그 점 21."
+            "body": "말이 바에 있어요 – 다른 말을 움직이기 전에 먼저 들어가세요. 24포인트에서 홈 쪽으로 세면 4는 21포인트에 닿아요.",
+            "hint": "바를 누른 뒤 21포인트를 누르세요(23이 아니에요 – 거기는 바에서 2핍이에요).",
+            "praise": "보드로 돌아왔어요 – 바에 있는 말은 항상 먼저 들어가요.",
+            "title": "바에서 들어가기",
+            "wrong": "거기는 바에서 2핍밖에 안 돼요(23포인트). 24에서 홈 쪽으로 네 칸 세면 21포인트예요."
           },
           "hit": {
-            "body": "단일 검수원은 blot입니다. 그것에 땅과 바에 간다. 당신은 3을 압 연 — 5 점에 검은 색 blot을 명중.",
-            "hint": "8에 체크를 탭 한 다음 포인트를 탭 5.",
-            "praise": "공지사항 그 검은 검수원은 이제 바에 있습니다.",
-            "title": "blot을 누릅니다."
+            "body": "포인트에 혼자 있는 말을 블롯이라고 해요. 그 위에 멈추면 그 말은 바로 가요. 3이 나왔어요 – 5포인트의 흑 블롯을 잡으세요.",
+            "hint": "8포인트의 내 말을 누른 뒤 5포인트를 누르세요.",
+            "praise": "잡았어요! 흑 말이 이제 바에 있어요.",
+            "title": "블롯 잡기"
           }
         },
-        "subtitle": "연락처 놀이",
-        "title": "앉아 & 바"
+        "subtitle": "접촉 플레이",
+        "title": "잡기와 바"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "두 개 이상의 상대 검수원은 포인트를 차단합니다 - 당신은 거기에 착륙 할 수 없습니다. 5 점에 구획된 까만 더미를 두십시오.",
-            "hint": "점 5.에 2개의 까만 검수원의 강조한 더미",
-            "praise": "오른쪽 — 만들어진 점 (2+)는 닫힙니다. 빈, 당신의 자신의, 또는 blot (1)는 열려있습니다.",
-            "title": "블록 포인트"
+            "body": "상대 말이 두 개 이상 있는 포인트는 막혀서 멈출 수 없어요. 5포인트의 막힌 흑 더미를 누르세요.",
+            "hint": "5포인트에 강조된 흑 말 두 개 더미예요.",
+            "praise": "맞아요 – 말이 2개 이상인 포인트는 닫혀 있어요. 빈 포인트, 내 포인트, 블롯(1개)이 있는 포인트는 열려 있어요.",
+            "title": "막힌 포인트"
           },
           "doubles": {
-            "body": "두 배는 당신에게 그 수의 4개의 움직임을 줍니다. 2-2을 압니다. 즉, 4 2입니다. 8 포인트에서 6 포인트 4 번 이동.",
-            "hint": "8 포인트를 탭하고 6 포인트를 누릅니다. 이 4 번이 죽을 때.",
-            "praise": "정확히 — 두 배는 그 숫자로 4 이동을 의미합니다.",
-            "title": "더블 = 4 이동"
+            "body": "더블이 나오면 그 숫자로 네 번 움직여요. 2-2가 나왔으니 2를 네 번. 8포인트에서 6포인트로 네 번 옮기세요.",
+            "hint": "8포인트, 그다음 6포인트를 누르세요. 네 번 – 주사위 하나당 한 번.",
+            "praise": "맞아요 – 더블은 그 숫자로 네 번 움직이는 거예요.",
+            "title": "더블 = 네 번 이동"
           },
           "explain": {
-            "body": "각각 두 개의 주사위를 회전하고 할 때 숫자를 모두 재생합니다. 당신은 빈점에 착륙 할 수 있습니다, 당신의 자신의 검수원, 또는 혼자 상대 (blot).",
-            "title": "2개의 수, 열려있는 점"
+            "body": "차례마다 주사위 두 개를 굴리고, 할 수 있으면 두 숫자를 모두 써요. 빈 포인트, 내 말이 있는 포인트, 상대 말이 하나뿐인 포인트(블롯)에 멈출 수 있어요.",
+            "title": "두 숫자, 열린 포인트"
           },
           "two_dice": {
-            "body": "당신은 3과 1을 구했습니다. 8 포인트 세 핍 (에 5)의 검수원을 이동하고 6 포인트 중 하나 (에 5).",
-            "hint": "흰색 검수기를 선택하면 포인트 5를 탭합니다. 8 포인트와 6 포인트 모두에 대해 이것을하십시오.",
-            "praise": "좋은 — 모두 주사위 사용. 동일한 검수원 또는 두 검수원, 두 개의 숫자는 할 수있을 때 수행해야합니다.",
-            "title": "모두 dice"
+            "body": "3과 1이 나왔어요. 8포인트의 말을 3핍(5로), 6포인트의 말을 1핍(5로) 옮기세요.",
+            "hint": "흰 말을 고른 뒤 5포인트를 누르세요. 8포인트와 6포인트에서 각각 해요.",
+            "praise": "좋아요 – 주사위 두 개를 다 썼어요. 말 하나든 둘이든, 가능하면 두 숫자를 모두 써야 해요.",
+            "title": "주사위 두 개 다 쓰기"
           }
         },
-        "subtitle": "턴 작업 방법",
-        "title": "주사위로 이동"
+        "subtitle": "한 차례는 이렇게 진행돼요",
+        "title": "주사위로 움직이기"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "흰색은 말 5개를 뺐고 나머지는 홈 근처입니다. 검은 말은 아직 보드에 흩어져 있습니다. 흰 말을 누르세요. 핍이 적은 흰색이 앞섭니다.",
-            "hint": "베어오프에 가장 가까운 말을 찾습니다.",
-            "praise": "맞습니다. 흰색의 적은 핍은 남은 거리가 짧다는 뜻입니다.",
-            "title": "누가 앞서나?"
+            "body": "백은 이미 5개를 빼냈고 나머지도 홈 가까이 있어요. 흑의 말은 아직 보드 곳곳에 흩어져 있어요. 아무 흰 말이나 누르세요 – 핍 카운트가 적은 백이 레이스에서 앞서 있어요.",
+            "hint": "빼내기에 가장 가까운 말을 찾아보세요.",
+            "praise": "맞아요! 핍 카운트가 적을수록 남은 길이 짧아요.",
+            "title": "누가 앞서 있나요?"
           },
           "behind": {
-            "body": "같은 국면입니다. 검은 말은 홈에서 멀고 핍이 훨씬 많습니다. 검은 말을 누르세요. 검은색이 뒤처집니다.",
-            "hint": "홈에서 가장 먼 말을 찾습니다.",
-            "praise": "맞아요. 검은색은 빼려면 핍이 훨씬 더 필요합니다.",
-            "title": "누가 뒤처지나?"
+            "body": "같은 배치예요. 흑의 말은 홈에서 멀고 핍 카운트가 훨씬 많아요. 아무 흑 말이나 누르세요 – 흑은 레이스에서 뒤져 있어요.",
+            "hint": "홈에서 가장 먼 말을 찾아보세요.",
+            "praise": "맞아요! 흑은 빼내기까지 훨씬 많은 핍이 필요해요.",
+            "title": "누가 뒤져 있나요?"
           },
           "explain": {
             "body": "말이 베어오프할 때까지 가야 할 점의 합입니다. 말은 있는 점의 번호를 더합니다. 6점의 말은 6, 13점의 말은 13입니다. 적을수록 베어오프에 가까워 유리합니다. 수는 대국 중 화면 위에 나오고, 점이 어느 색의 수인지 보여 줍니다.",
-            "title": "핍 수란?"
+            "title": "핍 카운트란?"
           }
         },
-        "subtitle": "누가 경주에서 앞서는 읽기",
-        "title": "핍 수: 경주의 점수"
+        "subtitle": "누가 레이스에서 이기고 있는지 읽기",
+        "title": "핍 카운트: 레이스 점수"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "홈이 강하고 상대에게 블롯이나 바 위의 말이 있습니다. 블롯을 모두 잡고 홈 포인트를 닫아 상대를 바에 묶어 둔 채 빼세요. 여기서 흰색은 홈 포인트 3개, 검은색은 바에 말 1개입니다.",
+            "body": "내 홈 보드가 강하고, 상대에게는 블롯이나 바에 있는 말이 있어요. 공격하세요! 잡을 수 있는 블롯은 모두 잡고 홈 보드 포인트를 막으세요. 내가 말을 빼내는 동안 상대 말을 바에 가둬 두는 게 목표예요. 이 배치에서 백은 홈에 포인트 세 개를 만들었고, 흑은 바에 말이 하나 있어요.",
             "title": "블리츠"
           },
           "identify": {
-            "body": "프라임 국면입니다. 검은색을 막는 흰색 벽, 이어진 포인트 중 하나를 누르세요.",
-            "hint": "흰 말이 2개 이상인 이어진 포인트를 찾습니다.",
-            "praise": "완벽합니다. 그 벽이 프라임이고, 검은색의 뒤 말은 갇혀 있습니다.",
-            "title": "벽 찾기"
+            "body": "프라임 게임이에요. 흰 프라임(흑을 막는, 연속으로 만든 포인트의 벽)의 아무 포인트나 누르세요.",
+            "hint": "흰 말이 각각 2개 이상 있는 연속된 포인트를 찾으세요.",
+            "praise": "완벽해요! 그 벽이 프라임이에요 – 흑의 뒤쪽 말이 갇혔어요.",
+            "title": "프라임 찾기"
           },
           "prime": {
-            "body": "이어진 포인트의 벽, 프라임을 만들었습니다. 강조된 포인트는 4개짜리 벽으로 검은색의 뒤 말의 움직임을 제한합니다. 한 포인트씩 늘리세요.",
-            "title": "프라임(벽)"
+            "body": "연속으로 만든 포인트의 벽, 즉 프라임을 만들었어요. 강조된 포인트들이 흑의 뒤쪽 말을 막는 4포인트 프라임이에요. 프라임을 한 포인트씩 늘려 그 뒤에 상대 말을 가두세요.",
+            "title": "프라임 게임"
           },
           "running": {
-            "body": "앞서 있고 칠 수 있는 거리에 블롯이 없습니다. 말을 안전하게 홈으로 가져오고 블롯을 남기지 마세요. 여기서 흰색이 앞서고 홈도 단단합니다.",
-            "title": "레이스"
+            "body": "레이스에서 앞서 있고, 잡힐 블롯도 없어요. 작전은 간단해요: 말을 안전하게 집으로 옮기고 블롯을 남기지 마세요. 꾀부리지 말고 그냥 달리세요. 이 배치에서 백은 레이스에서 앞서 있고 홈 보드도 탄탄해요.",
+            "title": "러닝 게임"
           }
         },
-        "subtitle": "기본 계획을 구분하기",
-        "title": "게임 계획"
+        "subtitle": "대표적인 작전 알아보기",
+        "title": "게임 작전"
       }
     },
-    "locked": "이전 수업을 완료",
-    "next_lesson": "다음 수업",
+    "locked": "먼저 이전 레슨을 끝내세요",
+    "next_lesson": "다음 레슨",
     "quiz": {
       "bar": {
-        "a": "당신의 가장 먼 checker를 첫째로 이동하십시오",
-        "b": "다른 것을 움직이기 전에 검사관을 입력하십시오.",
-        "c": "연락처",
-        "prompt": "바에 체크러가 있지만, 당신은해야합니다 ..."
+        "a": "가장 먼 말부터 움직인다",
+        "b": "다른 말을 움직이기 전에 그 말을 먼저 들여보낸다",
+        "c": "차례를 건너뛴다",
+        "prompt": "바에 말이 있는 동안에는 반드시…"
       },
       "bear": {
-        "a": "당신이 6을 구할 때마다",
-        "b": "너만 blot을 타격 한 후",
-        "c": "모든 15명의 검수원이 집에 있을 때",
-        "prompt": "언제 살 수 있습니까?"
+        "a": "6이 나올 때마다",
+        "b": "블롯을 잡은 뒤에만",
+        "c": "말 15개가 모두 홈 보드에 있을 때",
+        "prompt": "언제 말을 빼낼 수 있나요?"
       },
       "blot": {
-        "a": "3개 이상의 어떤 더미",
-        "b": "포인트에 단일 검수원 — 그것은 충돌 할 수 있습니다",
-        "c": "점에서 두 개 이상의 검수원 — a made point",
-        "prompt": "blot은 무엇입니까?"
+        "a": "말 세 개 이상의 더미",
+        "b": "포인트에 혼자 있는 말 – 잡힐 수 있어요",
+        "c": "포인트에 두 개 이상 있는 말 – 만든 포인트",
+        "prompt": "블롯이란?"
       },
       "pip_ahead": {
-        "a": "상대. 수가 더 많은 쪽",
-        "b": "나. 수가 더 적은 쪽",
-        "c": "아무도 아님. 핍 수는 경주를 재지 않는다",
-        "prompt": "내 핍은 85, 상대는 102입니다. 경주에서 누가 앞서나요?"
+        "a": "상대 – 숫자가 더 큰 쪽",
+        "b": "나 – 숫자가 더 작은 쪽",
+        "c": "아무도 아님 – 핍 카운트는 레이스와 상관없어요",
+        "prompt": "내 핍 카운트는 85, 상대는 102예요. 레이스에서 누가 앞서 있나요?"
       },
       "pip_meaning": {
-        "a": "말이 베어오프할 때까지 가야 할 점의 합",
+        "a": "내 말들이 빼내기까지 가야 하는 포인트 수의 합",
         "b": "보드에 있는 내 말의 수",
         "c": "내가 만든 포인트의 수",
-        "prompt": "핍 수는 무엇을 나타내나요?"
+        "prompt": "핍 카운트는 무엇을 나타내나요?"
       },
       "strat_blitz": {
-        "a": "블롯을 잡고 홈을 계속 만들기 (블리츠)",
-        "b": "블롯을 무시하고 뒤의 말을 달리기",
-        "c": "앵커를 만들려고 홈을 부수기",
-        "prompt": "홈 포인트 3개를 만들었고 상대 블롯이 내 홈에 있습니다. 가장 좋은 계획은?"
+        "a": "블롯을 잡고 홈 보드를 계속 만든다 (블리츠)",
+        "b": "블롯은 무시하고 뒤쪽 말로 달린다",
+        "c": "앵커를 만들려고 홈 보드를 허문다",
+        "prompt": "홈 보드에 포인트 3개를 만들었고, 상대 블롯이 거기 있어요. 가장 좋은 작전은?"
       },
       "strat_prime": {
-        "a": "공격하려고 프라임을 부수기",
-        "b": "프라임을 유지하고 늘리기. 상대는 갇혀 있다",
-        "c": "가능한 한 빨리 빼기",
-        "prompt": "상대 말 2개가 내 5포인트 프라임 뒤에 있습니다. 계획은?"
+        "a": "공격하려고 프라임을 허문다",
+        "b": "프라임을 지키며 늘린다 – 상대 말이 갇혀 있다",
+        "c": "최대한 빨리 말을 빼낸다",
+        "prompt": "상대 말 두 개가 내 5포인트 프라임 뒤에 갇혀 있어요. 작전은?"
       }
     },
-    "replay": "지원하다",
-    "skip_to_play": "공지사항",
+    "replay": "다시",
+    "skip_to_play": "건너뛰고 게임하기",
     "step_progress": "{{total}}단계 중 {{current}}단계",
-    "subtitle": "짧은 인터랙티브 수업 — 그다음 준비됩니다",
-    "title": "게임 알아보기"
+    "subtitle": "짧은 레슨 일곱 개면 바로 게임할 수 있어요",
+    "title": "게임 배우기"
   },
   "not_found": {
-    "body": "그 페이지는 Backgammon Mastermind의 일부가 아닙니다. 머리는 배우거나 게임을 시작합니다.",
-    "heading": "보드 밖입니다",
-    "home_a11y": "홈으로 이동",
+    "body": "이 페이지는 Backgammon Mastermind에 없어요. 홈으로 가서 배우거나 게임을 시작하세요.",
+    "heading": "보드 밖이에요",
+    "home_a11y": "홈으로",
     "home_cta": "홈으로 돌아가기",
     "title": "찾을 수 없음"
   },
   "settings": {
     "about": "정보",
     "app_name": "Backgammon Mastermind",
-    "arabic": "주요 특징",
+    "arabic": "아랍어",
     "developer": "개발자",
-    "developer_blurb": "엔진 테스트를 위해 원하는 보드 위치를 불러옵니다. 해당 위치에서 일반 게임을 시작합니다. 제품 기능이 아닙니다.",
-    "developer_json": "위치 JSON",
+    "developer_blurb": "엔진 점검용으로 원하는 배치를 불러와요. 그 배치에서 일반 게임이 시작돼요. 제품 기능은 아니에요.",
+    "developer_json": "배치 JSON",
     "developer_load": "JSON 불러오기",
-    "developer_open": "위치 불러오기",
-    "developer_presets": "테스트 프리셋",
-    "english": "한국어",
+    "developer_open": "배치 불러오기",
+    "developer_presets": "점검용 배치",
+    "english": "영어",
     "game": "게임",
-    "general": "주요사업",
+    "general": "일반",
     "github": "GitHub",
     "language": "언어",
-    "link_error_body": "나중에 다시 시도해 주세요.",
-    "link_error_title": "링크를 열 수 없습니다",
+    "link_error_body": "잠시 후 다시 시도하세요.",
+    "link_error_title": "링크를 열 수 없어요",
     "links": "링크",
     "more": "더 보기",
-    "open_source": "오픈 소스 고지",
+    "open_source": "오픈소스 고지",
     "privacy": "개인정보 처리방침",
     "rate": "평가하기",
     "share": "공유",
     "support": "지원",
     "support_us": "응원하기",
-    "terms": "서비스 이용약관",
+    "terms": "이용약관",
     "title": "설정",
     "version": "버전",
     "website": "웹사이트"
   },
-  "welcome": "환영합니다Backgammon Mastermind"
+  "welcome": "Backgammon Mastermind에 오신 것을 환영해요"
 }

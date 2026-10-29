@@ -1,90 +1,90 @@
 {
   "error": {
-    "body": "Reinicie la aplicación para continuar.",
-    "heading": "Algo salió mal.",
-    "retry": "Entrada"
+    "body": "Reinicia la app para continuar.",
+    "heading": "Algo salió mal",
+    "retry": "Reintentar"
   },
   "game": {
     "caption": {
-      "selected": "Seleccionado — pulsa un punto destacado, o Cancelar"
+      "selected": "Seleccionada: toca un punto resaltado o Cancelar"
     },
     "controls": {
       "bear_off_a11y": "¡Apártate!",
       "cancel": "Cancelar",
       "cancel_a11y": "Cancelar selección",
-      "confirm_move": "Confirmar movimiento",
-      "confirm_move_a11y": "Confirmar movimiento y terminar el turno",
-      "leave_game_a11y": "Dejar juego y volver a casa",
-      "loading": "Cargando...",
+      "confirm_move": "Confirmar jugada",
+      "confirm_move_a11y": "Confirmar la jugada y terminar tu turno",
+      "leave_game_a11y": "Salir de la partida y volver al inicio",
+      "loading": "Cargando…",
       "new_game_message": "¿Empezar una partida nueva?",
       "new_game_title": "Partida nueva",
-      "no_legal_moves": "No hay movimientos posibles…",
+      "no_legal_moves": "No hay jugadas posibles…",
       "play_again": "Jugar otra vez",
       "play_again_a11y": "Jugar otra vez",
-      "redo_a11y": "Muévete.",
-      "roll_dice": "Tirar los dados",
+      "redo_a11y": "Rehacer jugada",
+      "roll_dice": "Tirar dados",
       "roll_dice_a11y": "Tirar los dados",
-      "start_new_game_a11y": "Inicio nuevo juego",
-      "undo_a11y": "Deshacer movimiento",
+      "start_new_game_a11y": "Empezar una partida nueva",
+      "undo_a11y": "Deshacer jugada",
       "undo_move": "Deshacer"
     },
     "hint": {
       "back_to_turn": "Volver a mi turno",
       "back_to_turn_a11y": "Volver a mi turno y cerrar la pista",
       "button": "Pista",
-      "button_a11y": "Pedir una pista de jugada",
-      "error": "No hubo pista — toca para reintentar",
-      "error_a11y": "Reintentar la pista",
+      "button_a11y": "Pedir una pista",
+      "error": "No se encontró una pista: toca para reintentar",
+      "error_a11y": "Reintentar pista",
       "finding": "Buscando la mejor jugada…",
-      "play": "Jugar esta jugada",
-      "play_a11y": "Jugar la jugada sugerida",
+      "play": "Hacer esta jugada",
+      "play_a11y": "Hacer la jugada sugerida",
       "suggested": "Jugada sugerida"
     },
     "nudge": {
       "roll_first": "Primero tira los dados"
     },
     "opening": {
-      "compare": "{{winner}} {{high}} gana a {{low}}",
-      "goes_first": "¡Empieza {{player}}!",
+      "compare": "{{winner}}: {{high}} gana a {{low}}",
+      "goes_first": "¡Empiezan {{player}}!",
       "roll": "Tirar",
-      "rolls_for_opening": "{{player}} tira para la salida",
+      "rolls_for_opening": "{{player}} tiran para empezar",
       "tie": "¡Empate!",
-      "tie_again": "Mismo número — tirad de nuevo",
-      "waiting_roll": "{{player}} está tirando…",
+      "tie_again": "Mismo número: vuelve a tirar",
+      "waiting_roll": "{{player}} están tirando…",
       "who_goes_first": "¿Quién empieza?",
-      "your_roll": "Toca en cualquier parte para tirar"
+      "your_roll": "Toca en cualquier sitio para tirar"
     },
     "options": {
       "open_settings": "Idioma y más",
       "open_settings_hint": "Abrir Ajustes",
-      "title": "Opciones de partida"
+      "title": "Opciones de juego"
     },
     "preferences": {
       "auto_move": "Mover automáticamente si es forzado",
-      "auto_move_hint": "Jugar automáticamente el único movimiento legal",
-      "auto_roll": "Tirar los dados automáticamente",
-      "auto_roll_hint": "Tirar automáticamente en tu turno",
-      "confirm_move": "Confirmar movimiento",
-      "confirm_move_hint": "Preguntar antes de terminar el turno para revisar o deshacer",
+      "auto_move_hint": "Hacer la única jugada posible de forma automática",
+      "auto_roll": "Tirar dados automáticamente",
+      "auto_roll_hint": "Tirar solo al empezar tu turno",
+      "confirm_move": "Confirmar jugada",
+      "confirm_move_hint": "Preguntar antes de terminar tu turno para que puedas revisar o deshacer",
       "dice_display": "Aspecto de los dados",
       "dice_dots": "Puntos",
       "dice_numbers": "Números",
-      "direction_overlay": "Guía de dirección",
-      "direction_overlay_hint": "Recorrido en herradura sobre el tablero",
-      "move_hints": "Pistas de movimiento",
+      "direction_overlay": "Mostrar dirección",
+      "direction_overlay_hint": "Camino en herradura sobre el tablero",
+      "move_hints": "Ayudas de movimiento",
       "move_hints_hint": "Punto dorado junto a las casillas desde las que puedes mover",
-      "point_numbers": "Números de casilla",
-      "point_numbers_hint": "Mostrar etiquetas 1–24 en el tablero",
+      "point_numbers": "Números de los puntos",
+      "point_numbers_hint": "Mostrar 1–24 en el tablero",
       "section_automation": "Automatización",
       "section_board": "Tablero",
       "section_dice": "Dados",
       "sound": "Sonidos del juego",
-      "sound_hint": "Dados, capturas y victorias con sonido suave — respeta el modo silencio",
+      "sound_hint": "Sonidos suaves de dados, capturas y victoria; respeta el modo silencio",
       "tutor_mode": "Modo tutor",
-      "tutor_mode_hint": "El motor revisa tus jugadas y marca los errores graves"
+      "tutor_mode_hint": "El motor revisa tus jugadas y avisa de los errores graves"
     },
     "review": {
-      "back_to_live": "Volver a la partida en curso",
+      "back_to_live": "Volver a la partida",
       "live": "Partida en curso",
       "live_short": "En vivo",
       "move_a11y": "Movimiento {{ply}}, {{player}}",
@@ -95,19 +95,19 @@
       "player_black": "Negras",
       "player_white": "Blancas",
       "previous": "Turno anterior",
-      "replay": "Repetición",
+      "replay": "Repetir",
       "scrubber_hint": "Toca un turno para revisarlo",
       "start": "Inicio",
       "turn_a11y": "Turno {{turn}}, {{player}}",
       "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "Turno {{turn}}/{{totalTurns}} · movimiento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "Revisando — toca En vivo o Volver para seguir jugando"
+      "viewing_hint": "Revisando: toca En vivo o Volver a la partida para seguir jugando"
     },
     "status": {
-      "black_wins": "Ganan las negras",
+      "black_wins": "🏆 ¡Ganan las negras!",
       "computer_wins": "Gana el ordenador",
       "off_short": "fuera",
-      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} de 15 retiradas",
+      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} de 15 fichas fuera",
       "white_wins": "🏆 ¡Ganan las blancas!",
       "you_win": "🏆 ¡Has ganado!"
     },
@@ -115,59 +115,59 @@
       "close_a11y": "Cerrar la explicación de la estrategia",
       "got_it": "Entendido",
       "label": {
-        "backgame": "Juego de espera",
-        "blitz": "Blitz",
+        "backgame": "Juego de retaguardia",
+        "blitz": "Ataque",
         "developing": "Desarrollo",
-        "holding": "Juego de retención",
-        "priming": "Muralla",
+        "holding": "Juego de ancla",
+        "priming": "Juego de bloqueo",
         "running": "Carrera"
       },
       "tip": {
-        "backgame": "Quédate atrás, refuerza tu casa y espera la oportunidad tardía.",
-        "blitz": "Ataca: golpea cada ficha suelta y cierra tu casa.",
-        "developing": "Construye puntos, lucha por el 5 y mantente flexible.",
-        "holding": "Mantén tu ancla, sigue seguro y espera tu oportunidad de golpear.",
-        "priming": "Amplía tu muralla punto a punto y atrapa sus fichas traseras.",
-        "running": "Saca tus fichas a casa con eficacia y protege las que sigan en riesgo."
+        "backgame": "Quédate atrás, mantén fuerte tu tablero interior y espera un tiro tardío.",
+        "blitz": "Ataca: golpea cada ficha sola que puedas y cierra tu tablero interior.",
+        "developing": "Haz puntos, lucha por el punto 5 y mantente flexible.",
+        "holding": "Mantén tu ancla, juega seguro y espera tu oportunidad de golpear.",
+        "priming": "Alarga tu muro punto a punto y encierra sus fichas de atrás.",
+        "running": "Lleva tus fichas a casa con eficiencia y protege las que aún puedan ser golpeadas."
       },
       "why": {
-        "backgame": "Mantienes anclas profundas en el {{point1}} y el {{point2}} mientras vas {{pipGap}} puntos atrás en la carrera.",
-        "blitz_bar": "Tienes {{barCount}} en la barra y ya has hecho {{homeMade}} puntos en casa.",
-        "blitz_bar_blot": "Tienes {{barCount}} en la barra y 1 ficha suelta en casa, y ya has hecho {{homeMade}} puntos en casa.",
-        "blitz_bar_blots": "Tienes {{barCount}} en la barra y {{blotCount}} fichas sueltas en casa, y ya has hecho {{homeMade}} puntos en casa.",
-        "blitz_blot": "Tienes 1 ficha suelta en casa y ya has hecho {{homeMade}} puntos en casa.",
-        "blitz_blots": "Tienes {{blotCount}} fichas sueltas en casa y ya has hecho {{homeMade}} puntos en casa.",
-        "developing": "Todavía no hay muralla, ancla ni ataque en el tablero: la partida aún se está formando.",
-        "holding": "Mantienes un ancla en el {{point}} mientras vas {{pipGap}} puntos atrás.",
-        "priming": "Has construido una muralla de {{prime}} puntos.",
-        "priming_anchor": "Has construido una muralla de {{prime}} puntos con un ancla detrás.",
-        "running_lead": "Lideras la carrera {{foePips}} a {{myPips}} sin fichas sueltas al alcance de un golpe.",
-        "running_race": "No hay contacto posible: es una carrera directa para sacar ({{myPips}} frente a {{foePips}} puntos)."
+        "backgame": "Tienes anclas profundas en el {{point1}} y el {{point2}}, pero vas {{pipGap}} pips por detrás en la carrera.",
+        "blitz_bar": "Hay {{barCount}} en la barra y ya has hecho {{homeMade}} puntos en tu tablero interior.",
+        "blitz_bar_blot": "Hay {{barCount}} en la barra y 1 ficha sola en tu tablero interior, y ya has hecho {{homeMade}} puntos en él.",
+        "blitz_bar_blots": "Hay {{barCount}} en la barra y {{blotCount}} fichas solas en tu tablero interior, y ya has hecho {{homeMade}} puntos en él.",
+        "blitz_blot": "Hay 1 ficha sola en tu tablero interior y ya has hecho {{homeMade}} puntos en él.",
+        "blitz_blots": "Hay {{blotCount}} fichas solas en tu tablero interior y ya has hecho {{homeMade}} puntos en él.",
+        "developing": "Todavía no hay bloqueo, ancla ni ataque: la partida está tomando forma.",
+        "holding": "Tienes un ancla en el {{point}} y vas {{pipGap}} pips por detrás.",
+        "priming": "Has formado un bloqueo de {{prime}} puntos.",
+        "priming_anchor": "Has formado un bloqueo de {{prime}} puntos con un ancla detrás.",
+        "running_lead": "Vas por delante en la carrera, {{myPips}} contra {{foePips}}, sin fichas solas a tiro.",
+        "running_race": "Ya no hay contacto: es una carrera pura para sacar las fichas ({{myPips}} contra {{foePips}} pips)."
       }
     },
     "turn": {
-      "black_is_moving": "Las negras mueven…",
-      "black_is_rolling": "Las negras tiran…",
+      "black_is_moving": "Las negras están moviendo…",
+      "black_is_rolling": "Las negras están tirando…",
       "black_turn": "Turno de las negras",
-      "cant_enter": "No puedes entrar desde la barra con {{die1}} y {{die2}} — termina tu turno",
+      "cant_enter": "No puedes entrar desde la barra con {{die1}} y {{die2}}: termina tu turno",
       "computer_turn": "Turno del ordenador",
       "enter_from_bar": "Entra desde la barra antes de mover otras fichas",
       "game_over": "Fin de la partida",
-      "move_checkers": "Mueve tus fichas {{color}}",
-      "no_legal_moves": "No hay movimientos legales con {{die1}} y {{die2}} — termina tu turno",
+      "move_checkers": "Mueve tus fichas ({{color}})",
+      "no_legal_moves": "No hay jugadas posibles con {{die1}} y {{die2}}: termina tu turno",
       "opening_roll": "Tirada inicial",
-      "roll_dice": "Tira los dados — juegas con {{color}}",
+      "roll_dice": "Tira los dados: juegas con {{color}}",
       "white_turn": "Turno de las blancas",
       "your_turn": "Tu turno"
     },
     "tutor": {
       "back_to_question": "Volver a la pregunta",
-      "back_to_question_a11y": "Volver sin mostrar la respuesta",
+      "back_to_question_a11y": "Volver sin ver la respuesta",
       "band": {
         "big_blunder": "Error grave",
         "fine": "Bien",
         "mistake": "Error",
-        "slip": "Desliz"
+        "slip": "Imprecisión"
       },
       "best": "Mejor",
       "best_played": "Mejor:",
@@ -176,70 +176,70 @@
         "best_move": "Mejor jugada",
         "both": "Ambas",
         "mine": "La mía",
-        "show_a11y": "Mostrar el tablero {{label}}",
+        "show_a11y": "Mostrar el tablero «{{label}}»",
         "start": "Inicio",
-        "starting_position": "Posición inicial",
+        "starting_position": "Posición de partida",
         "your_move": "Tu jugada",
-        "your_move_replayed": "Tu jugada, repetida"
+        "your_move_replayed": "Tu jugada, otra vez"
       },
       "details_hide": "Ocultar detalles",
       "details_hide_a11y": "Ocultar detalles",
       "details_show": "Detalles",
       "details_show_a11y": "Mostrar detalles",
-      "details_summary": "Tu jugada quedó en el puesto {{rank}} de {{count}}, con unos {{loss}} puntos por partida menos que la mejor.",
-      "equity_explainer": "El motor puntúa cada jugada según los puntos que espera ganar por partida, de media. Más alto es mejor.",
+      "details_summary": "Tu jugada quedó en el puesto {{rank}} de {{count}} y rinde unos {{loss}} puntos por partida menos que la mejor.",
+      "equity_explainer": "El motor puntúa cada jugada según los puntos que espera ganar por partida, de media. Cuanto más alto, mejor.",
       "equity_pts": "{{points}} pts",
-      "keep": "Quedarme con mi jugada",
-      "keep_a11y": "Quedarme con mi jugada y seguir",
-      "meter_a11y": "Gravedad del error: {{severity}}. Perdiste unos {{loss}} puntos por partida. Las bandas siguen a GNU Backgammon: dudosa a 0.04, mala a 0.08, muy mala a 0.16.",
+      "keep": "Mantener mi jugada",
+      "keep_a11y": "Mantener mi jugada y seguir",
+      "meter_a11y": "Gravedad del error: {{severity}}. Se pierden unos {{loss}} puntos por partida. La escala sigue a GNU Backgammon: dudosa desde 0,04, mala desde 0,08, muy mala desde 0,16.",
       "meter_caption": "Escala de errores (GNU Backgammon)",
-      "play_best": "Jugar la mejor jugada",
-      "play_best_a11y": "Deshacer mi jugada y jugar la mejor",
-      "question_body": "Tu jugada quedó en el puesto {{rank}} de {{count}} formas de jugar esta tirada. De media suma unos {{loss}} puntos por partida menos que la mejor.",
+      "play_best": "Hacer la mejor jugada",
+      "play_best_a11y": "Deshacer mi jugada y hacer la mejor",
+      "question_body": "Tu jugada quedó en el puesto {{rank}} de {{count}} formas de jugar esta tirada. De media, rinde unos {{loss}} puntos por partida menos que la mejor.",
       "rank": "{{rank}}",
-      "rank_yours": "{{rank}} (tuya)",
-      "replay_pause_a11y": "Pausar la repetición de {{label}}",
-      "replay_play_a11y": "Reproducir la repetición de {{label}}",
-      "reveal": "Mostrar la mejor jugada",
-      "reveal_a11y": "Revelar la jugada recomendada",
-      "rolled": "Sacaste {{dice}}",
-      "show_mine": "Mostrar mi jugada",
-      "show_mine_a11y": "Mostrar solo mi jugada, sin revelar la mejor",
+      "rank_yours": "{{rank}} (la tuya)",
+      "replay_pause_a11y": "Pausar la repetición de «{{label}}»",
+      "replay_play_a11y": "Reproducir «{{label}}»",
+      "reveal": "Ver la mejor jugada",
+      "reveal_a11y": "Mostrar la jugada recomendada",
+      "rolled": "Has sacado {{dice}}",
+      "show_mine": "Ver mi jugada",
+      "show_mine_a11y": "Ver solo mi jugada, sin revelar la mejor",
       "take_back": "Deshacer y reintentar",
-      "take_back_a11y": "Deshacer todo el turno e intentarlo de nuevo",
-      "take_back_retry_a11y": "Deshacer la jugada e intentarlo de nuevo",
+      "take_back_a11y": "Deshacer todo el turno y volver a intentarlo",
+      "take_back_retry_a11y": "Deshacer la jugada y volver a intentarlo",
       "title_compare": "Tu jugada frente a la mejor",
       "title_mine": "Tu jugada",
-      "turn_off": "Apagar el tutor",
-      "turn_off_a11y": "Apagar el modo tutor",
-      "undo_last": "Deshacer la última jugada",
-      "undo_last_a11y": "Deshacer solo la última jugada y repetirla",
+      "turn_off": "Desactivar tutor",
+      "turn_off_a11y": "Desactivar el modo tutor",
+      "undo_last": "Deshacer el último movimiento",
+      "undo_last_a11y": "Deshacer solo el último movimiento y repetirlo",
       "vs_best": "−{{delta}} frente a la mejor",
-      "you_played": "Jugaste:"
+      "you_played": "Has jugado:"
     }
   },
   "home": {
     "confirm_cancel": "Cancelar",
     "confirm_continue": "Continuar",
-    "confirm_native": "¿Continúe con su juego actual o comience una nueva?",
-    "confirm_new": "Nuevo juego",
-    "confirm_replace": "¿Empezar una partida nueva? Se reemplazará la partida actual.",
-    "confirm_title": "Juego en progreso",
-    "confirm_web": "¿Empezar un nuevo juego? (Use Resume en la pantalla de inicio para continuar el actual).",
-    "recovery_body": "La última partida guardada estaba dañada. Puedes empezar una nueva; la pantalla de inicio sigue funcionando.",
+    "confirm_native": "¿Seguir con la partida actual o empezar una nueva?",
+    "confirm_new": "Partida nueva",
+    "confirm_replace": "¿Empezar una partida nueva? Se reemplazará la actual.",
+    "confirm_title": "Partida en curso",
+    "confirm_web": "¿Empezar una partida nueva? (Usa Continuar partida en la pantalla de inicio para seguir con la actual.)",
+    "recovery_body": "La última partida guardada estaba dañada. Puedes empezar una nueva; todo lo demás funciona.",
     "recovery_dismiss": "Cerrar",
-    "recovery_title": "No se pudo restaurar la partida guardada",
-    "resume": "Reanudar partida",
-    "resume_a11y": "Reanudar la partida guardada",
-    "resume_none": "No juego guardado para reanudar",
-    "resume_sub": "Continúa donde lo dejaste",
+    "recovery_title": "No se pudo recuperar la partida guardada",
+    "resume": "Continuar partida",
+    "resume_a11y": "Continuar la partida guardada",
+    "resume_none": "No hay ninguna partida guardada",
+    "resume_sub": "Sigue donde lo dejaste",
     "review": "Revisar la última partida",
     "review_a11y": "Revisar la partida terminada",
     "review_sub": "Mira cómo terminó la última partida",
-    "subtitle": "Domina el tablero — movimiento a movimiento",
+    "subtitle": "Domina el tablero, jugada a jugada",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 jugadores",
-    "two_players_a11y": "Jugar con dos jugadores en este dispositivo",
+    "two_players_a11y": "Jugar dos personas en este dispositivo",
     "two_players_sub": "Por turnos en el mismo dispositivo",
     "vs_computer": "Contra el ordenador",
     "vs_computer_a11y": "Jugar contra el ordenador",
@@ -249,242 +249,242 @@
     "back_to_hub": "Todas las lecciones",
     "continue": "Continuar",
     "feedback": {
-      "hint_nudge": "¿Necesitas un codazo? Busque los puntos destacados.",
-      "illegal": "Pruebe un punto destacado — o toque Hint.",
-      "legal_but_wrong": "Eso es legal en un juego real — aquí, prueba el movimiento que enseña esta idea.",
-      "move_progress": "Bien: {{done}} de {{needed}} movimientos completados."
+      "hint_nudge": "¿Necesitas ayuda? Fíjate en las zonas resaltadas.",
+      "illegal": "Prueba un punto resaltado o toca Pista.",
+      "legal_but_wrong": "En una partida real sería válido, pero aquí prueba la jugada que enseña esta idea.",
+      "move_progress": "Bien: {{done}} de {{needed}} movimientos hechos."
     },
     "graduation": {
       "body": "Conoces el objetivo, el tablero, cómo se convierte en trabajo, golpes y desmantelamiento. Un cheque rápido — luego tu primer juego real.",
-      "play_cta": "Juega tu primer juego",
-      "quiz_done": "Lo vi. Hora de jugar.",
-      "quiz_title": "Cheque rápido",
-      "quiz_wrong": "No es cierto: prueba otra respuesta.",
-      "recap_1": "Carrera: apagar los 15 primeros",
-      "recap_2": "Rollo dos dados; tierra en puntos abiertos",
-      "recap_3": "Hit Blolots → se sientan en el bar",
-      "recap_4": "Suelte solo de tu tabla de inicio",
-      "recap_5": "Los juegos comienzan con uno muere cada uno — más alto va primero (que se re-rolla)",
-      "title": "Estás listo para jugar"
+      "play_cta": "Juega tu primera partida",
+      "quiz_done": "¡Perfecto! A jugar.",
+      "quiz_title": "Comprobación rápida",
+      "quiz_wrong": "No exactamente: prueba otra respuesta.",
+      "recap_1": "Carrera: gana quien saca primero sus 15 fichas",
+      "recap_2": "Tira dos dados; mueve solo a puntos abiertos",
+      "recap_3": "Golpea fichas solas → van a la barra",
+      "recap_4": "Solo se sacan fichas desde tu tablero interior",
+      "recap_5": "Al empezar, cada uno tira un dado: el más alto empieza (si empatan, se repite)",
+      "title": "Ya estás listo para jugar"
     },
-    "hint": "Hint",
+    "hint": "Pista",
     "home_cta": "Aprende a jugar",
-    "home_cta_progress": "{{done}} de {{total}} lecciones",
-    "home_cta_quiz": "Cheque rápido a la izquierda - luego jugar",
-    "home_cta_ready": "Estás listo - jugar un juego real",
-    "home_cta_sub": "Clases interactivas para principiantes",
-    "lesson_complete": "Lección completa!",
+    "home_cta_progress": "{{done}} de {{total}} lecciones hechas",
+    "home_cta_quiz": "Falta una comprobación rápida y a jugar",
+    "home_cta_ready": "Ya estás listo: juega una partida de verdad",
+    "home_cta_sub": "Lecciones interactivas para principiantes",
+    "lesson_complete": "¡Lección completada!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "No hay nada en el 5-punto, pero rodaste un 5. Quítese del control más alto (el 3). Un número más grande todavía quita un chequero.",
-            "hint": "Seleccione el punto 3, luego toque la bandeja de desechable.",
-            "praise": "Esa es la regla de sobresueldo — lo utilizarás mucho cuando se despegue.",
-            "title": "Morir más grande, todavía fuera"
+            "body": "No hay nada en el punto 5, pero has sacado un 5. Saca la ficha más alta (la del 3). Un número mayor también sirve para sacar una ficha.",
+            "hint": "Selecciona el punto 3 y toca la bandeja de salida.",
+            "praise": "Esa es la regla del número mayor: la usarás mucho al sacar fichas.",
+            "title": "Número mayor, también fuera"
           },
           "try": {
-            "body": "Todos tus cheques están en casa (1–6), para que puedas aguantar. Enrollaste un 3, toma el control de 3 puntos fuera del tablero.",
-            "hint": "Seleccione el punto 3, luego toque el área de desbordamiento en el borde derecho.",
-            "praise": "¡Fuera de la junta! Primero para soportar las 15 victorias.",
-            "title": "Bear uno fuera"
+            "body": "Todas tus fichas están en casa (1–6), así que puedes sacarlas. Has sacado un 3: saca del tablero la ficha del punto 3.",
+            "hint": "Selecciona el punto 3 y toca la zona de salida en el borde derecho.",
+            "praise": "¡Fuera del tablero! Gana quien saca primero sus 15 fichas.",
+            "title": "Saca una ficha"
           }
         },
-        "subtitle": "Cómo ganas",
-        "title": "Arranque"
+        "subtitle": "Así se gana",
+        "title": "Sacar fichas"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "La herradura coincide con las damas del jugador cuyo turno es. Rastrea la ruta del jugador alrededor del tablero y hacia el hogar (puntos 1–6).",
-            "title": "El camino de la herradura"
+            "body": "La herradura tiene el color de las fichas del jugador al que le toca. Marca su recorrido alrededor del tablero hasta su casa (puntos 1–6).",
+            "title": "El camino en herradura"
           },
           "far": {
-            "body": "Toque el punto donde comienzan sus dos verdugos blancos más lejanos (el punto 24, superior derecha).",
-            "hint": "Mira la derecha superior - dos verdugos blancos en el punto 24.",
-            "praise": "Los que comienzan profundamente en la casa del oponente y tienen el viaje más largo.",
-            "title": "Tus cheques más lejanos"
+            "body": "Toca el punto donde empiezan tus dos fichas blancas más lejanas (el punto 24, arriba a la derecha).",
+            "hint": "Mira arriba a la derecha: dos fichas blancas en el punto 24.",
+            "praise": "Empiezan en lo más profundo de la casa del rival y tienen el viaje más largo.",
+            "title": "Tus fichas más lejanas"
           },
           "home_stack": {
-            "body": "Toque la gran pila de cinco damas blancas ya en su casa (el 6 puntos).",
-            "hint": "Bottom-right: cinco damas blancas en el punto 6.",
-            "praise": "Esa es tu pila de casa — cinco ya esperando en el 6-punto, más cerca de salir. Cada juego comienza por aquí.",
+            "body": "Toca la pila de cinco fichas blancas que ya están en tu casa (el punto 6).",
+            "hint": "Abajo a la derecha: cinco fichas blancas en el punto 6.",
+            "praise": "Esa es tu pila de casa: cinco fichas ya esperan en el punto 6, las más cerca de salir. Todas las partidas empiezan así.",
             "title": "Tu pila de casa"
           }
         },
-        "subtitle": "Por donde te mueves",
-        "title": "Dirección y disposición"
+        "subtitle": "Hacia dónde te mueves",
+        "title": "Dirección y colocación"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "La tira levantada en el medio es el bar. Los corredores esperan aquí. Toca el bar.",
-            "hint": "Toque la tira vertical entre las mitades izquierda y derecha del tablero.",
-            "praise": "Derecha — los chequeadores de golpe se sientan en el bar hasta que vuelvan a entrar.",
-            "title": "El bar"
+            "body": "La franja elevada del centro es la barra. Las fichas golpeadas esperan aquí. Toca la barra.",
+            "hint": "Toca la franja vertical entre las mitades izquierda y derecha del tablero.",
+            "praise": "Correcto: las fichas golpeadas se quedan en la barra hasta que vuelven a entrar.",
+            "title": "La barra"
           },
           "explain": {
-            "body": "Tú y tu oponente cada uno tienen 15 checkers. Muévelos alrededor de la junta y fuera — primero uno acaba de ganar.",
-            "title": "Primero para despegar victorias"
+            "body": "Tu rival y tú tenéis 15 fichas cada uno. Dales la vuelta al tablero y sácalas: gana quien termine primero.",
+            "title": "Gana quien saca primero"
           },
           "home": {
-            "body": "Su casa es los puntos 1–6 (abajo derecho). Toca cualquier punto en tu tablero.",
-            "hint": "El hogar es los seis puntos en el cuadrante inferior derecha - numerado 1 a 6.",
-            "praise": "Esa es tu casa: los chequeos dejan el tablero de aquí.",
-            "title": "Encuentra tu pensión"
+            "body": "Tu casa son los puntos 1–6 (abajo a la derecha). Toca cualquier punto de tu tablero interior.",
+            "hint": "Tu casa son los seis puntos del cuadrante de abajo a la derecha, del 1 al 6.",
+            "praise": "Esa es tu casa: desde aquí las fichas salen del tablero.",
+            "title": "Encuentra tu casa"
           }
         },
-        "subtitle": "Para lo que estás corriendo",
-        "title": "Plantilla"
+        "subtitle": "Por qué compites",
+        "title": "Objetivo y tablero"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Estás en el bar, vuelve antes de mover a alguien más. Cuenta desde el punto 24 hacia el hogar: 4 tierras en el punto 21.",
-            "hint": "Toque la barra, luego punto 21 (no 23), que es sólo dos pips de la barra.",
-            "praise": "Usted está de vuelta en el tablero - los chequeadores de barras siempre entran primero.",
-            "title": "Entra en el bar",
-            "wrong": "Eso es sólo dos pips del bar (punto 23). Cuente cuatro puntos de 24 hacia el hogar, es el punto 21."
+            "body": "Estás en la barra: vuelve a entrar antes de mover cualquier otra ficha. Cuenta desde el punto 24 hacia tu casa: un 4 cae en el punto 21.",
+            "hint": "Toca la barra y luego el punto 21 (no el 23: está a solo dos pips de la barra).",
+            "praise": "¡Has vuelto al tablero! Las fichas de la barra siempre entran primero.",
+            "title": "Entra desde la barra",
+            "wrong": "Eso está a solo dos pips de la barra (punto 23). Cuenta cuatro puntos desde el 24 hacia tu casa: es el punto 21."
           },
           "hit": {
-            "body": "Un solo checker es un borrador. Aterrice y vaya al bar. Enrollaste un 3 – golpeó el bloque negro en el 5-punto.",
-            "hint": "Puntee su chequera en 8, luego toque el punto 5.",
-            "praise": "¡Golpe! Ese cajero negro está ahora en el bar.",
-            "title": "Golpea el bloque"
+            "body": "Una ficha sola en un punto es un blot. Si caes encima, va a la barra. Has sacado un 3: golpea el blot negro del punto 5.",
+            "hint": "Toca tu ficha del 8 y luego el punto 5.",
+            "praise": "¡Golpe! Esa ficha negra está ahora en la barra.",
+            "title": "Golpea el blot"
           }
         },
         "subtitle": "Juego de contacto",
-        "title": "El bar"
+        "title": "Golpear y la barra"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "Dos o más chequeos de oponente bloquean un punto — no se puede aterrizar allí. Pulsa la pila negra bloqueada en el 5 puntos.",
-            "hint": "La pila destacada de dos verdugos negros en el punto 5.",
-            "praise": "Derecha - un punto hecho (2+) está cerrado. Vacío, tuyo o un bloque (1) están abiertos.",
+            "body": "Dos o más fichas rivales bloquean un punto: no puedes caer ahí. Toca la pila negra bloqueada del punto 5.",
+            "hint": "La pila resaltada de dos fichas negras en el punto 5.",
+            "praise": "Correcto: un punto hecho (2 o más) está cerrado. Los vacíos, los tuyos y los blots (1) están abiertos.",
             "title": "Puntos bloqueados"
           },
           "doubles": {
-            "body": "Los dobles te dan cuatro movimientos de ese número. Enrollaste 2-2, eso son cuatro 2s. Mover del 8-punto al 6-punto cuatro veces.",
-            "hint": "Toca el 8-punto, luego el 6-punto. Haz esto cuatro veces, una vez por morir.",
-            "praise": "Exactamente — los dobles significan cuatro movimientos con ese número.",
+            "body": "Con dobles juegas cuatro veces ese número. Has sacado 2-2: son cuatro doses. Mueve cuatro veces del punto 8 al punto 6.",
+            "hint": "Toca el punto 8 y luego el 6. Hazlo cuatro veces, una por dado.",
+            "praise": "Exacto: los dobles son cuatro movimientos con ese número.",
             "title": "Dobles = cuatro movimientos"
           },
           "explain": {
-            "body": "Cada turno rodarás dos dados y juegas ambos números cuando puedas. Usted puede aterrizar en puntos vacíos, sus propios checkers, o un solo oponente (una mancha).",
+            "body": "En cada turno tiras dos dados y juegas los dos números si puedes. Puedes caer en puntos vacíos, en tus propias fichas o en una ficha rival sola (un blot).",
             "title": "Dos números, puntos abiertos"
           },
           "two_dice": {
-            "body": "Tú rodaste 3 y 1. Mueva el control en el 8 puntos tres pips (a 5), y el de 6 puntos un pip (a 5).",
-            "hint": "Seleccione una ficha blanca, luego toque el punto 5. Haz esto por el 8-punto y el 6-punto.",
-            "praise": "Bonito — ambos dados usados. Mismo checker o dos checkers, ambos números deben ser jugados cuando usted puede.",
-            "title": "Juega ambos dados"
+            "body": "Has sacado 3 y 1. Mueve la ficha del punto 8 tres pips (al 5) y la del punto 6 un pip (al 5).",
+            "hint": "Selecciona una ficha blanca y toca el punto 5. Hazlo con la del 8 y con la del 6.",
+            "praise": "Bien: los dos dados usados. Con una ficha o con dos, hay que jugar ambos números siempre que se pueda.",
+            "title": "Juega los dos dados"
           }
         },
-        "subtitle": "Cómo funciona un giro",
-        "title": "Mover con dados"
+        "subtitle": "Cómo funciona un turno",
+        "title": "Mover con los dados"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "El blanco ha sacado 5 fichas y el resto está cerca de casa. Las negras siguen repartidas. Toca cualquier ficha blanca: el blanco va delante porque su recuento es menor.",
+            "body": "Las blancas han sacado 5 fichas y el resto está cerca de casa. Las negras siguen repartidas por el tablero. Toca cualquier ficha blanca: las blancas van por delante en la carrera, con menos pips.",
             "hint": "Busca las fichas más cerca de salir.",
-            "praise": "Exacto. El recuento menor del blanco significa menos camino.",
-            "title": "¿Quién va delante?"
+            "praise": "¡Exacto! Menos pips significa menos camino por recorrer.",
+            "title": "¿Quién va por delante?"
           },
           "behind": {
-            "body": "La misma posición. Las fichas negras están lejos de casa y tienen un recuento mucho mayor. Toca cualquier ficha negra: el negro va detrás.",
+            "body": "La misma posición. Las fichas negras están lejos de casa, con muchos más pips. Toca cualquier ficha negra: las negras van por detrás en la carrera.",
             "hint": "Busca las fichas más lejos de casa.",
-            "praise": "Bien. Al negro le faltan muchos más pips.",
-            "title": "¿Quién va detrás?"
+            "praise": "¡Correcto! Las negras necesitan muchos más pips para sacar sus fichas.",
+            "title": "¿Quién va por detrás?"
           },
           "explain": {
             "body": "Es la suma de puntos que tus fichas aún deben recorrer para salir. Cada ficha suma el número de su punto: una en el 6 vale 6, una en el 13 vale 13. Menos es mejor: estás más cerca de salir. Los números aparecen arriba en cada partida, con un punto que indica el color.",
-            "title": "¿Qué es el recuento de pips?"
+            "title": "¿Qué es el conteo de pips?"
           }
         },
-        "subtitle": "Aprende a ver quién va ganando la carrera",
-        "title": "Recuento de pips: el marcador"
+        "subtitle": "Aprende a ver quién gana la carrera",
+        "title": "Conteo de pips: el marcador de la carrera"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "Tu casa es fuerte y el rival tiene sueltas o fichas en la barra. Golpea cada suelta y cierra los puntos de casa para dejar las suyas en la barra mientras tú sales. Aquí el blanco tiene tres puntos de casa y el negro una ficha en la barra.",
-            "title": "Blitz"
+            "body": "Tienes un tablero interior fuerte y tu rival tiene blots o fichas en la barra. ¡Ataca! Golpea cada blot que puedas y cierra los puntos de tu tablero interior. El objetivo es dejar sus fichas atrapadas en la barra mientras sacas las tuyas. Aquí las blancas tienen tres puntos hechos en casa y las negras una ficha en la barra.",
+            "title": "Ataque (blitz)"
           },
           "identify": {
-            "body": "Esto es un juego de muralla. Toca un punto de la muralla blanca, los puntos seguidos que bloquean al negro.",
-            "hint": "Busca puntos seguidos con al menos 2 fichas blancas.",
-            "praise": "Perfecto. Ese muro es la muralla. Las fichas de atrás del negro están atrapadas.",
-            "title": "Encuentra la muralla"
+            "body": "Esto es un juego de bloqueo. Toca cualquier punto del bloqueo blanco: el muro de puntos hechos seguidos que frena a las negras.",
+            "hint": "Busca puntos seguidos con al menos 2 fichas blancas cada uno.",
+            "praise": "¡Perfecto! Ese muro es el bloqueo: las fichas de atrás de las negras están atrapadas.",
+            "title": "Encuentra el bloqueo"
           },
           "prime": {
-            "body": "Has hecho un muro de puntos seguidos. Los puntos marcados son una muralla de 4 que limita a las fichas de atrás del negro. Alárgala un punto cada vez.",
-            "title": "Muralla"
+            "body": "Has construido un muro de puntos hechos seguidos: un bloqueo (prime). Los puntos resaltados forman un bloqueo de 4 puntos que frena las fichas de atrás de las negras. Alárgalo punto a punto y encierra sus fichas detrás.",
+            "title": "Juego de bloqueo"
           },
           "running": {
-            "body": "Vas delante y no hay fichas sueltas a distancia de golpe. Lleva las fichas a casa sin dejar sueltas. No te compliques: corre. Aquí el blanco va delante con una casa sólida.",
+            "body": "Vas por delante en la carrera y no tienes blots a tiro. El plan es sencillo: lleva tus fichas a casa con seguridad y no dejes blots. Nada de inventos: solo corre. En esta posición las blancas van por delante y tienen un tablero interior sólido.",
             "title": "Carrera"
           }
         },
-        "subtitle": "Reconoce planes de juego clásicos",
+        "subtitle": "Reconoce los planes de juego clásicos",
         "title": "Planes de juego"
       }
     },
-    "locked": "Completa la lección anterior primero",
+    "locked": "Completa primero la lección anterior",
     "next_lesson": "Siguiente lección",
     "quiz": {
       "bar": {
-        "a": "Mueva su chequera más lejos primero",
-        "b": "Ingrese ese chequero antes de mover cualquier otra cosa",
-        "c": "Saltea tu turno",
-        "prompt": "Mientras tienes un chequero en el bar, debes..."
+        "a": "Mover primero tu ficha más lejana",
+        "b": "Entrar con esa ficha antes de mover cualquier otra",
+        "c": "Pasar el turno",
+        "prompt": "Mientras tengas una ficha en la barra, debes…"
       },
       "bear": {
-        "a": "Cada vez que haces 6",
-        "b": "Sólo después de golpear una mancha",
-        "c": "Cuando los 15 checkers están en tu pensión",
-        "prompt": "¿Cuándo puedes aguantar?"
+        "a": "Siempre que saques un 6",
+        "b": "Solo después de golpear un blot",
+        "c": "Cuando tus 15 fichas estén en tu tablero interior",
+        "prompt": "¿Cuándo puedes sacar fichas?"
       },
       "blot": {
-        "a": "Cualquier pila de tres o más",
-        "b": "Un solo checker en un punto - se puede golpear",
-        "c": "Dos o más checkers en un punto - un punto hecho",
-        "prompt": "¿Qué es una mancha?"
+        "a": "Cualquier pila de tres o más fichas",
+        "b": "Una ficha sola en un punto: puede ser golpeada",
+        "c": "Dos o más fichas en un punto: un punto hecho",
+        "prompt": "¿Qué es un blot?"
       },
       "pip_ahead": {
-        "a": "Tu rival, con el recuento mayor",
-        "b": "Tú, con el recuento menor",
-        "c": "Ninguno: el recuento no mide la carrera",
-        "prompt": "Tu recuento es 85 y el de tu rival 102. ¿Quién va delante?"
+        "a": "Tu rival, con el conteo más alto",
+        "b": "Tú, con el conteo más bajo",
+        "c": "Ninguno: el conteo de pips no mide la carrera",
+        "prompt": "Tu conteo de pips es 85 y el de tu rival, 102. ¿Quién va por delante en la carrera?"
       },
       "pip_meaning": {
-        "a": "Los puntos que tus fichas deben recorrer para salir",
-        "b": "Cuántas fichas tienes en el tablero",
-        "c": "Cuántos puntos has cerrado",
-        "prompt": "¿Qué representa tu recuento de pips?"
+        "a": "El total de puntos que tus fichas deben recorrer para salir",
+        "b": "El número de fichas que tienes en el tablero",
+        "c": "El número de puntos que has hecho",
+        "prompt": "¿Qué representa tu conteo de pips?"
       },
       "strat_blitz": {
-        "a": "Golpear la suelta y seguir cerrando la casa (blitz)",
-        "b": "Ignorar la suelta y correr las fichas de atrás",
-        "c": "Romper la casa para hacer un ancla",
-        "prompt": "Tienes 3 puntos de casa y el rival una suelta en tu casa. ¿Cuál es el mejor plan?"
+        "a": "Golpear el blot y seguir construyendo tu tablero interior (ataque)",
+        "b": "Ignorar el blot y correr con tus fichas de atrás",
+        "c": "Romper tu tablero interior para hacer un ancla",
+        "prompt": "Tienes 3 puntos hechos en tu tablero interior y tu rival tiene un blot en él. ¿Cuál es el mejor plan?"
       },
       "strat_prime": {
-        "a": "Romper la muralla para atacar",
-        "b": "Mantener la muralla y alargarla: están atrapados",
-        "c": "Salir lo más rápido posible",
-        "prompt": "El rival tiene dos fichas atrapadas detrás de tu muralla de 5. ¿Cuál es tu plan?"
+        "a": "Romper el bloqueo para atacar",
+        "b": "Mantener el bloqueo y alargarlo: están atrapadas",
+        "c": "Sacar fichas lo más rápido posible",
+        "prompt": "Tu rival tiene dos fichas atrapadas detrás de tu bloqueo de 5 puntos. ¿Cuál es tu plan?"
       }
     },
-    "replay": "Replay",
-    "skip_to_play": "Skip to play",
+    "replay": "Repetir",
+    "skip_to_play": "Ir a jugar",
     "step_progress": "Paso {{current}} de {{total}}",
-    "subtitle": "Lecciones cortas e interactivas — y estarás listo",
+    "subtitle": "Siete lecciones rápidas y estarás listo para jugar",
     "title": "Aprende a jugar"
   },
   "not_found": {
-    "body": "Esa página no es parte de Backgammon Mastermind. Vaya a casa para aprender o comenzar un juego.",
+    "body": "Esa página no forma parte de Backgammon Mastermind. Vuelve al inicio para aprender o empezar una partida.",
     "heading": "Fuera del tablero",
     "home_a11y": "Ir al inicio",
     "home_cta": "Volver al inicio",
@@ -495,18 +495,18 @@
     "app_name": "Backgammon Mastermind",
     "arabic": "Árabe",
     "developer": "Desarrollador",
-    "developer_blurb": "Carga cualquier posición del tablero para probar el motor. Inicia una partida normal desde esa posición. No es una función del producto.",
-    "developer_json": "JSON de la posición",
+    "developer_blurb": "Carga cualquier posición para probar el motor. Empieza una partida normal desde esa posición. No es una función del producto.",
+    "developer_json": "Posición en JSON",
     "developer_load": "Cargar JSON",
     "developer_open": "Cargar posición",
-    "developer_presets": "Ajustes de prueba",
+    "developer_presets": "Posiciones de prueba",
     "english": "Inglés",
-    "game": "Partida",
+    "game": "Juego",
     "general": "General",
     "github": "GitHub",
     "language": "Idioma",
     "link_error_body": "Inténtalo de nuevo más tarde.",
-    "link_error_title": "No se puede abrir el enlace",
+    "link_error_title": "No se pudo abrir el enlace",
     "links": "Enlaces",
     "more": "Más",
     "open_source": "Avisos de código abierto",
@@ -520,5 +520,5 @@
     "version": "Versión",
     "website": "Sitio web"
   },
-  "welcome": "Bienvenido a Backgammon Mastermind"
+  "welcome": "Te damos la bienvenida a Backgammon Mastermind"
 }
