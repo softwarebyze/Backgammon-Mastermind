@@ -4,6 +4,21 @@
     "heading": "Algo salió mal.",
     "retry": "Entrada"
   },
+  "feedback": {
+    "body_label": "Detalles",
+    "body_placeholder": "¿Qué pasó, o qué mejoraría la app?",
+    "email_instead": "Enviar por correo para adjuntar una captura",
+    "error": "No se pudo abrir tu app de correo. Escríbenos a {{email}}.",
+    "intro": "¿Encontraste un error o tienes una idea? Cuéntanoslo: leemos todos los mensajes.",
+    "open_a11y": "Enviar comentarios",
+    "privacy": "Se envía al desarrollador con la versión de la app, el dispositivo y el idioma.",
+    "send": "Enviar",
+    "sent": "¡Gracias por tus comentarios!",
+    "settings_row": "Enviar comentarios",
+    "subject_label": "Título",
+    "subject_placeholder": "¿De qué se trata?",
+    "title": "Comentarios"
+  },
   "game": {
     "caption": {
       "selected": "Seleccionado — pulsa un punto destacado, o Cancelar"

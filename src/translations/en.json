@@ -4,6 +4,21 @@
     "heading": "Something went wrong",
     "retry": "Retry"
   },
+  "feedback": {
+    "body_label": "Details",
+    "body_placeholder": "What happened, or what would make the app better?",
+    "email_instead": "Email instead, to attach a screenshot",
+    "error": "Couldn't open your mail app. Email us at {{email}}.",
+    "intro": "Found a bug or have an idea? Tell us — every note gets read.",
+    "open_a11y": "Send feedback",
+    "privacy": "Sent to the developer with your app version, device and language.",
+    "send": "Send",
+    "sent": "Thanks for the feedback!",
+    "settings_row": "Send feedback",
+    "subject_label": "Title",
+    "subject_placeholder": "What's it about?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selected — tap a highlighted point, or Cancel"

@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FeedbackHeaderButton } from '@/components/navigation/feedback-header-button';
 import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
 import { languageScreenLayout } from '@/lib/i18n';
 import {
@@ -43,6 +44,15 @@ export default function AppLayout() {
         options={{
           ...settingsStackOptions(t('settings.title')),
           ...stackEscapeHeaderOptions(),
+          headerRight: () => <FeedbackHeaderButton />,
+        }}
+      />
+      <Stack.Screen
+        name="feedback"
+        options={{
+          ...settingsStackOptions(t('feedback.title')),
+          ...stackEscapeHeaderOptions(),
+          headerLargeTitle: false,
         }}
       />
       <Stack.Screen

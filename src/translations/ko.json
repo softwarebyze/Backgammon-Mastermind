@@ -4,6 +4,21 @@
     "heading": "뭔가 잘못되었습니다.",
     "retry": "관련 기사"
   },
+  "feedback": {
+    "body_label": "자세한 내용",
+    "body_placeholder": "무슨 일이 있었나요? 또는 앱이 어떻게 더 좋아지면 좋을까요?",
+    "email_instead": "스크린샷을 첨부하려면 이메일로 보내기",
+    "error": "메일 앱을 열 수 없습니다. {{email}}로 메일을 보내 주세요.",
+    "intro": "버그를 발견했거나 아이디어가 있나요? 알려 주세요. 모든 메시지를 읽습니다.",
+    "open_a11y": "피드백 보내기",
+    "privacy": "앱 버전, 기기, 언어와 함께 개발자에게 전송됩니다.",
+    "send": "보내기",
+    "sent": "피드백 감사합니다!",
+    "settings_row": "피드백 보내기",
+    "subject_label": "제목",
+    "subject_placeholder": "어떤 내용인가요?",
+    "title": "피드백"
+  },
   "game": {
     "caption": {
       "selected": "선택 - 강조 표시된 지점을 탭하거나 취소"
