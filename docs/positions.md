@@ -155,3 +155,39 @@ choice and checker-play limitations before the actual start action and existing
 active-game replacement confirmation. Exchange drafts survive closing/reopening
 the tool. The position editor remains a scrolling, responsive native workspace;
 long translations and large text can wrap rather than shrink touch targets.
+
+### Great-experience redesign (follow-up)
+
+- **No layout jumps.** Stack controls float over the board (top edge for top
+  points and bars, bottom edge for bottom points and bars), clamped to the
+  board edges, so selecting, deselecting, or finishing a drag never moves the
+  board in flow. Cube, score, turn, and dice editors float over the tools
+  below the object dock instead of expanding the page, so opening or closing
+  one never changes page height or scroll position; long editor content
+  scrolls inside the overlay.
+- **Saved names clear.** Saving a position clears the name input; loading a
+  saved entry still fills it with that entry's name.
+- **Save from a game.** The game header has a bookmark button (computer and
+  pass-and-play alike) that saves the live board as a "Game snapshot" and
+  shows a brief confirmation pill, without leaving or replacing the game.
+  The snapshot can be renamed later in the Saved panel. Live `GameState`
+  carries no cube, match, or score fields, so a game snapshot preserves
+  checker and (unspent) dice state only — cube/match context remains
+  editor-only, and this is stated in the PR body rather than implied.
+- **Copy from current game.** The exchange action is now labelled "Copy from
+  current game" with a hint that it copies the active game into the editor
+  and leaves the game untouched. With no active game it stays visible but
+  disabled, with an explanation, instead of disappearing.
+- **Crawford, explained.** A dimmed cube shows a visible "Crawford" badge on
+  the dock (the dimming itself is intentional and unchanged). The cube editor
+  explains the dimming and offers "Turn Crawford off" directly; the Score
+  editor toggle still works.
+- **Mobile, desktop, and font size.** The workspace keeps the existing
+  ~920px content cap on desktop and fits ~320px phones by wrapping dock,
+  toolbar, dice-picker, and scoreboard rows instead of clipping them. Fixed
+  heights that clipped enlarged text are now minimums (stack strip, score
+  cards and inputs, object buttons), so containers grow with larger text
+  while touch targets stay at least 44pt on iOS and 48dp on Android. Text
+  is never truncated to fit. Large-text behaviour is visual-only: it is not
+  covered by Jest, which cannot render system font scaling, and still needs
+  physical-device visual QA.

@@ -14,6 +14,8 @@ type Props = {
   onRedo?: () => void;
   onOptions: () => void;
   onReset: () => void;
+  /** Save the live board as a position bookmark, without leaving the game. */
+  onSavePosition?: () => void;
 };
 
 const ICON = Platform.OS === 'web' ? 22 : 20;
@@ -71,6 +73,7 @@ export function GameHeaderActions({
   onRedo,
   onOptions,
   onReset,
+  onSavePosition,
 }: Props) {
   const rtl = useLayoutIsRTL();
   return (
@@ -89,6 +92,14 @@ export function GameHeaderActions({
         disabled={!canRedo || !onRedo}
         onPress={() => onRedo?.()}
       />
+      {onSavePosition && (
+        <HeaderIcon
+          name="bookmark"
+          label={translate('game.controls.save_position_a11y')}
+          testID="save-position-button"
+          onPress={onSavePosition}
+        />
+      )}
       <HeaderIcon
         name="settings"
         label={translate('settings.title')}

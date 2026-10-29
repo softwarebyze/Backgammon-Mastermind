@@ -73,16 +73,18 @@ function ScoreInput({ label, testID, value, onChange, dark = false, target = fal
 }
 
 const scoreStyles = StyleSheet.create({
-  board: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center', gap: 12 },
+  board: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'center', gap: 12 },
   player: { flex: 1, maxWidth: 120, alignItems: 'center', gap: 10 },
   name: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 6, minHeight: 24 },
-  card: { width: '100%', maxWidth: 100, height: 76, borderRadius: 6, backgroundColor: '#E8E0D0', justifyContent: 'center', overflow: 'hidden' },
+  // Fixed heights would clip enlarged system text, so these are minimums:
+  // the cards grow with the input instead of cutting it off.
+  card: { width: '100%', maxWidth: 100, minHeight: 76, borderRadius: 6, backgroundColor: '#E8E0D0', justifyContent: 'center', overflow: 'hidden' },
   darkCard: { backgroundColor: '#3C3028' },
-  input: { width: '100%', height: 76, textAlign: 'center', padding: 0, color: GAME_PALETTE.bg, ...interFont('semibold'), fontVariant: ['tabular-nums'] },
+  input: { width: '100%', minHeight: 76, textAlign: 'center', padding: 0, color: GAME_PALETTE.bg, ...interFont('semibold'), fontVariant: ['tabular-nums'] },
   lightInk: { color: '#F5F0E8' },
   seam: { position: 'absolute', top: '50%', left: 0, right: 0, height: 1, backgroundColor: 'rgba(30,12,2,0.28)' },
   hinge: { position: 'absolute', top: 34, width: 3, height: 8, borderRadius: 1, backgroundColor: '#9F896E' },
   target: { width: 84, alignItems: 'center', gap: 10 },
-  targetInput: { height: 76, color: GAME_PALETTE.text, backgroundColor: GAME_PALETTE.surface, borderRadius: 6 },
+  targetInput: { minHeight: 76, color: GAME_PALETTE.text, backgroundColor: GAME_PALETTE.surface, borderRadius: 6 },
   unit: { ...interFont('regular'), fontSize: 12, lineHeight: 17, textAlign: 'center', color: '#CBB8A7' },
 });

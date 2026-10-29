@@ -18,6 +18,7 @@ type Options = {
   openOptions: () => void;
   handleReset: () => void;
   confirmLeaveGame: () => void;
+  onSavePosition?: () => void;
 };
 
 export function useGameScreenHeader({
@@ -30,6 +31,7 @@ export function useGameScreenHeader({
   openOptions,
   handleReset,
   confirmLeaveGame,
+  onSavePosition,
 }: Options) {
   useLayoutEffect(() => {
     if (!state) {
@@ -47,6 +49,7 @@ export function useGameScreenHeader({
           onRedo={doRedo}
           onOptions={openOptions}
           onReset={handleReset}
+          onSavePosition={onSavePosition}
         />
       ),
     });
@@ -60,5 +63,6 @@ export function useGameScreenHeader({
     openOptions,
     handleReset,
     confirmLeaveGame,
+    onSavePosition,
   ]);
 }

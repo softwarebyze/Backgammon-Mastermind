@@ -100,6 +100,24 @@ tags:
 - tapOn:
     id: position-cube
 - runFlow: ../utils/position-score.yaml
+# Crawford dimming must be visible on the cube dock, explained in the cube
+# editor, and reversible from there (the score toggle still works too).
+- tapOn:
+    id: position-score-toggle
+- tapOn: Crawford
+- assertVisible:
+    id: position-crawford-badge
+- takeScreenshot: position-07-crawford-badge
+- tapOn:
+    id: position-cube
+- assertVisible:
+    id: position-crawford-hint
+- tapOn:
+    id: position-crawford-off
+- assertNotVisible:
+    id: position-crawford-badge
+- tapOn:
+    id: position-detail-done
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
@@ -313,6 +331,12 @@ tags:
     timeout: 30000
 - assertVisible: 'Point 6, 5 white checkers'
 - takeScreenshot: position-04-play
+# The header bookmark saves the live game without leaving or replacing it.
+- tapOn:
+    id: save-position-button
+- assertVisible:
+    id: position-saved-notice
+- takeScreenshot: position-07-in-game-save
 # Open a valid shared preview while a game exists; merely opening it must not
 # start a new game. Choosing Play then Cancel must retain the workspace.
 - runScript: ../utils/position-link.js
@@ -322,6 +346,23 @@ tags:
       id: position-screen
     timeout: 30000
 - takeScreenshot: position-05-shared-preview
+# With a game active, the editor offers a labelled copy-from-game action
+# (not a bare "Use current board") that leaves the game untouched.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-exchange-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-exchange-toggle
+- assertVisible:
+    id: position-copy-hint
+- tapOn:
+    id: position-current
+- assertVisible:
+    id: position-notice
+- takeScreenshot: position-08-copy-from-game
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:

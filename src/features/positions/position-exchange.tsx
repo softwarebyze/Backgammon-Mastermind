@@ -45,7 +45,10 @@ export function PositionExchange({ position, onImport, onCurrent, open }: { open
   return (
     <View style={styles.detailPanel}>
       <View style={styles.row}>
-        {onCurrent && <PositionAction symbol="crosshair" label={translate('positions.current')} testID="position-current" onPress={onCurrent} />}
+        <PositionAction symbol="crosshair" label={translate('positions.copy_from_game')} testID="position-current" disabled={!onCurrent} onPress={() => onCurrent?.()} />
+      </View>
+      <Text testID="position-copy-hint" style={styles.caption}>{onCurrent ? translate('positions.copy_from_game_hint') : translate('positions.no_active_game')}</Text>
+      <View style={styles.row}>
         <PositionAction symbol="download" label={translate('positions.import')} testID="position-import-toggle" onPress={() => setExpanded(!expanded)} selected={expanded} />
         <PositionAction symbol="share-2" label={translate('positions.share')} testID="position-share" onPress={() => runExport('link')} />
         <PositionAction symbol="upload" label="XGID" onPress={() => runExport('XGID')} testID="position-export-xgid" />

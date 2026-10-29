@@ -187,6 +187,7 @@ function PositionWorkspace({ data }: { data?: string }) {
                 onPress={() => {
                   try {
                     setSaved(savePosition(name.trim() || translate('positions.untitled'), position));
+                    setName('');
                     setNotice(translate('positions.saved_notice'));
                   }
                   catch (err) { setError(positionError(err)); }
@@ -210,7 +211,7 @@ function PositionWorkspace({ data }: { data?: string }) {
           )}
         </View>
         {!valid && <Text accessibilityRole="alert" style={styles.error}>{validationError}</Text>}
-        {!!notice && <Text accessibilityLiveRegion="polite" style={styles.caption}>{notice}</Text>}
+        {!!notice && <Text testID="position-notice" accessibilityLiveRegion="polite" style={styles.caption}>{notice}</Text>}
       </ScrollView>
     </>
   );

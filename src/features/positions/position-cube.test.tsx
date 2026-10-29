@@ -22,6 +22,16 @@ it('shows the centered cube without opening match details, then edits value and 
   expect(change.mock.lastCall![0].context).toEqual({ ...p.context, cubeExponent: 0, cubeOwner: null });
 });
 
+it('explains Crawford dimming and turns Crawford off from the cube editor', () => {
+  const p = newPosition();
+  p.context = { ...p.context, matchLength: 7, crawford: true };
+  const change = jest.fn();
+  render(<PositionCube position={p} onChange={change} />);
+  expect(screen.getByText(/Doubling is unavailable in a Crawford game/)).toBeTruthy();
+  fireEvent.press(screen.getByTestId('position-crawford-off'));
+  expect(change).toHaveBeenCalledWith(expect.objectContaining({ context: expect.objectContaining({ crawford: false }) }));
+});
+
 it('respects imported cube limits and preserves Crawford context while lowering', () => {
   const p = newPosition();
   p.context = { ...p.context, cubeExponent: 3, maxCube: 3, matchLength: 5, crawford: true };
