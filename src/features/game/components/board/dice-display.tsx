@@ -12,6 +12,7 @@ import Animated, {
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { diePips } from './die-pips';
 
 type PlayerColor = 'white' | 'black';
 
@@ -34,15 +35,6 @@ type Props = {
 };
 
 const DOUBLE_DIE_SLOTS = ['slot-a', 'slot-b', 'slot-c', 'slot-d'] as const;
-
-const DOT_LAYOUTS: Record<number, Array<[number, number]>> = {
-  1: [[0.5, 0.5]],
-  2: [[0.28, 0.28], [0.72, 0.72]],
-  3: [[0.28, 0.28], [0.5, 0.5], [0.72, 0.72]],
-  4: [[0.28, 0.28], [0.72, 0.28], [0.28, 0.72], [0.72, 0.72]],
-  5: [[0.28, 0.28], [0.72, 0.28], [0.5, 0.5], [0.28, 0.72], [0.72, 0.72]],
-  6: [[0.28, 0.28], [0.72, 0.28], [0.28, 0.5], [0.72, 0.5], [0.28, 0.72], [0.72, 0.72]],
-};
 
 function diceKey(dice: [number, number]): string {
   return `${dice[0]},${dice[1]}`;
@@ -89,23 +81,19 @@ function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
   return { containerStyle, reducedMotion };
 }
 
-function DieDots({ value, dotColor, size }: { value: number; dotColor: string; size: number }) {
-  const layout = DOT_LAYOUTS[value] ?? DOT_LAYOUTS[1]!;
-  const dot = Math.round(size * 0.16);
+function DieDots({ value, dotColor, size, border }: { value: number; dotColor: string; size: number; border: number }) {
   return (
     <View style={StyleSheet.absoluteFill}>
-      {layout.map(([x, y]) => (
+      {diePips(value, size, border).map(pip => (
         <View
-          key={`${x}-${y}`}
+          key={`${pip.left}-${pip.top}`}
           style={{
             position: 'absolute',
-            left: `${x * 100}%`,
-            top: `${y * 100}%`,
-            width: dot,
-            height: dot,
-            marginLeft: -dot / 2,
-            marginTop: -dot / 2,
-            borderRadius: dot / 2,
+            left: pip.left,
+            top: pip.top,
+            width: pip.size,
+            height: pip.size,
+            borderRadius: pip.size / 2,
             backgroundColor: dotColor,
           }}
         />
@@ -141,6 +129,7 @@ function DieFace({
       ? '#BBA070'
       : '#5050A0';
   const fg = used ? '#7A6050' : isWhite ? '#2A1A08' : '#E0E0FF';
+  const borderWidth = emphasized ? 3 : 2;
 
   return (
     <View
@@ -150,14 +139,14 @@ function DieFace({
         {
           backgroundColor: bg,
           borderColor: emphasized ? GAME_PALETTE.accent : border,
-          borderWidth: emphasized ? 3 : 2,
+          borderWidth,
           opacity: used ? 0.4 : 1,
         },
         emphasized && styles.dieEmphasized,
       ]}
     >
       {displayStyle === 'dots'
-        ? <DieDots value={value} dotColor={fg} size={size} />
+        ? <DieDots value={value} dotColor={fg} size={size} border={borderWidth} />
         : (
             <Text style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
               {value}
