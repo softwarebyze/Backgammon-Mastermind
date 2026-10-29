@@ -1,4 +1,5 @@
 import Env from 'env';
+import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
@@ -93,9 +94,11 @@ export function SettingsScreen() {
             <SettingsItem
               text="settings.support"
               icon={<Support color={iconColor} />}
+              testID="settings-feedback"
               onPress={() => {
                 posthog.capture('support_opened');
-                runExternalAction(() => openExternalUrl(APP_LINKS.support));
+                // The feedback form mails support too, with device details filled in.
+                router.push('/feedback');
               }}
             />
           </SettingsContainer>

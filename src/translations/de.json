@@ -4,6 +4,20 @@
     "heading": "Etwas ging schief",
     "retry": "Versuch"
   },
+  "feedback": {
+    "attach_hint": "Danach öffnet sich deine Mail-App, dort kannst du einen Screenshot anhängen.",
+    "body_label": "Details",
+    "body_placeholder": "Was ist passiert, oder was würde die App besser machen?",
+    "error": "Die Mail-App ließ sich nicht öffnen. Schreib uns an {{email}}.",
+    "intro": "Einen Fehler gefunden oder eine Idee? Schreib uns – wir lesen jede Nachricht.",
+    "open_a11y": "Feedback senden",
+    "send": "Senden",
+    "sent": "Danke für dein Feedback!",
+    "settings_row": "Feedback senden",
+    "subject_label": "Titel",
+    "subject_placeholder": "Worum geht es?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Ausgewählt - tippen Sie auf einen hervorgehobenen Punkt oder Abbrechen"

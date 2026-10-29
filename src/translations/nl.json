@@ -4,6 +4,20 @@
     "heading": "Er ging iets mis.",
     "retry": "Opnieuw proberen"
   },
+  "feedback": {
+    "attach_hint": "Daarna opent je mailapp, zodat je een screenshot kunt toevoegen.",
+    "body_label": "Details",
+    "body_placeholder": "Wat gebeurde er, of wat zou de app beter maken?",
+    "error": "Je mailapp kon niet worden geopend. Mail ons op {{email}}.",
+    "intro": "Een bug gevonden of een idee? Laat het ons weten – we lezen elk bericht.",
+    "open_a11y": "Feedback sturen",
+    "send": "Versturen",
+    "sent": "Bedankt voor je feedback!",
+    "settings_row": "Feedback sturen",
+    "subject_label": "Titel",
+    "subject_placeholder": "Waar gaat het over?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Geselecteerd Tik op een gemarkeerd punt, of Annuleren"

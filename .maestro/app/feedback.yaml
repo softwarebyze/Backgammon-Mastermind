@@ -1,0 +1,36 @@
+# Settings header → Feedback form: type a note, then leave without sending
+# (sending hands off to the mail app, which is outside the app under test).
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn:
+    id: open-settings-button
+- extendedWaitUntil:
+    visible:
+      id: open-feedback-button
+    timeout: 15000
+- tapOn:
+    id: open-feedback-button
+- extendedWaitUntil:
+    visible:
+      id: feedback-title
+    timeout: 15000
+- tapOn:
+    id: feedback-title
+- inputText: The computer moves too fast
+- runFlow: ../utils/hide-keyboard.yaml
+- assertVisible:
+    id: feedback-send
+- takeScreenshot: feedback-01-form
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: settings-feedback
+    timeout: 15000

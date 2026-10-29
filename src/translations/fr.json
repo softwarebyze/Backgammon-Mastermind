@@ -4,6 +4,20 @@
     "heading": "Quelque chose a mal tourné",
     "retry": "Réessayer"
   },
+  "feedback": {
+    "attach_hint": "Votre app de messagerie s'ouvre ensuite : vous pourrez y joindre une capture d'écran.",
+    "body_label": "Détails",
+    "body_placeholder": "Que s'est-il passé, ou qu'est-ce qui améliorerait l'app ?",
+    "error": "Impossible d'ouvrir votre messagerie. Écrivez-nous à {{email}}.",
+    "intro": "Un bug ou une idée ? Dites-le-nous : nous lisons chaque message.",
+    "open_a11y": "Envoyer un avis",
+    "send": "Envoyer",
+    "sent": "Merci pour votre avis !",
+    "settings_row": "Envoyer un avis",
+    "subject_label": "Titre",
+    "subject_placeholder": "De quoi s'agit-il ?",
+    "title": "Avis"
+  },
   "game": {
     "caption": {
       "selected": "Sélectionné — appuyez sur un point surligné, ou Annuler"

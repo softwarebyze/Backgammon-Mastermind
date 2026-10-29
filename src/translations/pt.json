@@ -4,6 +4,20 @@
     "heading": "Algo correu mal.",
     "retry": "Repetir"
   },
+  "feedback": {
+    "attach_hint": "Em seguida seu app de e-mail abre, para você anexar uma captura de tela.",
+    "body_label": "Detalhes",
+    "body_placeholder": "O que aconteceu, ou o que deixaria o app melhor?",
+    "error": "Não foi possível abrir seu app de e-mail. Escreva para {{email}}.",
+    "intro": "Encontrou um bug ou tem uma ideia? Conte para nós: lemos todas as mensagens.",
+    "open_a11y": "Enviar feedback",
+    "send": "Enviar",
+    "sent": "Obrigado pelo feedback!",
+    "settings_row": "Enviar feedback",
+    "subject_label": "Título",
+    "subject_placeholder": "Sobre o que é?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selecionado — toque num ponto realçado ou em Cancelar"
