@@ -274,7 +274,7 @@
       "move_progress": "Nice — {{done}} of {{needed}} moves done."
     },
     "graduation": {
-      "body": "You know the goal, the board, how turns work, hitting, and bearing off. A quick check — then your first real game.",
+      "body": "You know the goal, the board, how turns work, hitting, bearing off, the pip count and the main game plans. A quick check — then your first real game.",
       "play_cta": "Play your first game",
       "quiz_done": "Nailed it. Time to play.",
       "quiz_title": "Quick check",
@@ -284,6 +284,8 @@
       "recap_3": "Hit blots → they sit on the bar",
       "recap_4": "Bear off only from your home board",
       "recap_5": "Games start with one die each — higher goes first (ties re-roll)",
+      "recap_6": "Pip count: the lower count is ahead in the race",
+      "recap_7": "Pick a plan: race, attack, prime or hold",
       "title": "You’re ready to play"
     },
     "hint": "Hint",

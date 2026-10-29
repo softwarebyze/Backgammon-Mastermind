@@ -284,6 +284,8 @@
       "recap_3": "Hit blots → eles sentam na barra",
       "recap_4": "Afaste-se apenas do seu tabuleiro",
       "recap_5": "Jogos começam com um dado cada — mais alto vai primeiro (ties re-roll)",
+      "recap_6": "Pip count: the lower count is ahead in the race",
+      "recap_7": "Pick a plan: race, attack, prime or hold",
       "title": "Você está pronto para jogar"
     },
     "hint": "Dica",

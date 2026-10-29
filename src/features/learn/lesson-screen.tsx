@@ -302,6 +302,7 @@ function LessonScreenBody({
               aidsOverride={session.aids}
               emphasisPoints={session.emphasisPoints}
               emphasisBar={session.emphasisBar}
+              exactTaps={session.exactTaps}
             />
           </View>
         </View>

@@ -284,6 +284,8 @@
       "recap_3": "Hit Blolots → se sientan en el bar",
       "recap_4": "Suelte solo de tu tabla de inicio",
       "recap_5": "Los juegos comienzan con uno muere cada uno — más alto va primero (que se re-rolla)",
+      "recap_6": "Pip count: the lower count is ahead in the race",
+      "recap_7": "Pick a plan: race, attack, prime or hold",
       "title": "Estás listo para jugar"
     },
     "hint": "Hint",

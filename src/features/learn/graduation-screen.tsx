@@ -149,7 +149,7 @@ export function GraduationScreen() {
         <Text style={styles.body}>{translate('learn.graduation.body')}</Text>
 
         <View style={styles.recap}>
-          {(['recap_1', 'recap_2', 'recap_3', 'recap_4', 'recap_5'] as const).map(key => (
+          {(['recap_1', 'recap_2', 'recap_3', 'recap_4', 'recap_5', 'recap_6', 'recap_7'] as const).map(key => (
             <Text key={key} style={styles.recapItem}>
               •
               {' '}

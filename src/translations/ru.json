@@ -284,6 +284,8 @@
       "recap_3": "Hit Blots — сидят в баре",
       "recap_4": "Отстаньте только от своей домашней доски",
       "recap_5": "Игры начинаются с одной смерти каждая — выше идет первая (ties re-roll)",
+      "recap_6": "Pip count: the lower count is ahead in the race",
+      "recap_7": "Pick a plan: race, attack, prime or hold",
       "title": "Вы готовы играть"
     },
     "hint": "подсказка",
