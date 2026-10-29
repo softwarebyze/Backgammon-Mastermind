@@ -41,10 +41,23 @@ tags:
     id: position-fine-tune
 - tapOn:
     id: position-die-0
+# The choices open below the fold on short screens.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-dice-value-6
+      START_Y: '25%'
+      END_Y: '80%'
 - tapOn:
     id: position-dice-value-6
 - tapOn:
     id: position-die-1
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-dice-value-2
+      START_Y: '25%'
+      END_Y: '80%'
 - tapOn:
     id: position-dice-value-2
 - takeScreenshot: position-visible-presets-dice
