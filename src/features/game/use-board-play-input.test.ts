@@ -240,6 +240,36 @@ describe('useBoardPlayInput rapid follow-up taps', () => {
   });
 });
 
+describe('useBoardPlayInput concurrent replay', () => {
+  it('keeps replaying queued taps after a replayed tap commits a concurrent move', () => {
+    // The first replayed tap commits at once (no blocking animation), so the
+    // second must replay against that board without waiting for another settle.
+    let board = midAnimation([3, 5]);
+    const actions = {
+      selectPoint: jest.fn(),
+      doMove: jest.fn((move: { die: number }) => {
+        board = midAnimation(board.remainingDice.filter((d, i, all) => i !== all.indexOf(move.die)));
+      }),
+      doMoveSequence: jest.fn(),
+      getMoveState: () => board,
+    };
+    const { result, rerender } = renderHook(
+      (props: Props) => useBoardPlayInput({ ...props, actions, concurrentMoves: true }),
+      { initialProps: { state: board, isAnimating: true, isHumanTurn: true } },
+    );
+
+    act(() => {
+      result.current.handlePointPress(6);
+      result.current.handlePointPress(13);
+    });
+    rerender({ state: board, isAnimating: false, isHumanTurn: true });
+
+    expect(actions.doMove).toHaveBeenCalledTimes(2);
+    expect(actions.doMove).toHaveBeenNthCalledWith(1, expect.objectContaining({ from: 6, to: 3 }), { concurrent: true });
+    expect(actions.doMove).toHaveBeenNthCalledWith(2, expect.objectContaining({ from: 13, to: 8 }), { concurrent: true });
+  });
+});
+
 describe('useBoardPlayInput queued input gating', () => {
   it('ignores taps while a prompt owns the board', () => {
     const state = midAnimation([5]);

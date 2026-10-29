@@ -306,9 +306,12 @@ export function useBoardPlayInput({
         return { selection: action.point, stop: false };
       case 'play':
         playTapSequence(action.sequence);
-        return { selection, stop: true };
+        // A concurrent move commits at once: keep replaying against the new board.
+        return concurrentMoves && getMoveState && !isAnimatingRef.current
+          ? { selection: stateRef.current?.selectedPoint ?? null, stop: false }
+          : { selection, stop: true };
     }
-  }, [nudgeRoll, playTapSequence, selectPoint]);
+  }, [nudgeRoll, playTapSequence, selectPoint, concurrentMoves, getMoveState]);
 
   const drainQueuedInputs = useCallback(() => {
     const s = stateRef.current;
