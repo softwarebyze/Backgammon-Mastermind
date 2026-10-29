@@ -1,30 +1,30 @@
 {
   "error": {
-    "body": "Riavviare l'app per continuare.",
+    "body": "Riavvia l'app per continuare.",
     "heading": "Qualcosa è andato storto",
     "retry": "Riprova"
   },
   "game": {
     "caption": {
-      "selected": "Selezionato — toccare un punto evidenziato, o Annulla"
+      "selected": "Selezionata: tocca una punta evidenziata o Annulla"
     },
     "controls": {
       "bear_off_a11y": "Cuscinetto",
       "cancel": "Annulla",
-      "cancel_a11y": "Annulla selezione",
-      "confirm_move": "Conferma mossa",
+      "cancel_a11y": "Annulla la selezione",
+      "confirm_move": "Conferma la mossa",
       "confirm_move_a11y": "Conferma la mossa e termina il turno",
-      "leave_game_a11y": "Lasciare gioco e tornare a casa",
-      "loading": "Caricamento...",
+      "leave_game_a11y": "Esci dalla partita e torna alla home",
+      "loading": "Caricamento…",
       "new_game_message": "Iniziare una nuova partita?",
       "new_game_title": "Nuova partita",
       "no_legal_moves": "Nessuna mossa possibile…",
       "play_again": "Gioca ancora",
       "play_again_a11y": "Gioca ancora",
-      "redo_a11y": "Muovetevi!",
-      "roll_dice": "Lancia i dadi",
-      "roll_dice_a11y": "Lancia i dadi",
-      "start_new_game_a11y": "Inizia nuovo gioco",
+      "redo_a11y": "Ripeti la mossa",
+      "roll_dice": "Tira i dadi",
+      "roll_dice_a11y": "Tira i dadi",
+      "start_new_game_a11y": "Inizia una nuova partita",
       "undo_a11y": "Annulla la mossa",
       "undo_move": "Annulla"
     },
@@ -32,8 +32,8 @@
       "back_to_turn": "Torna al mio turno",
       "back_to_turn_a11y": "Torna al mio turno e chiudi il suggerimento",
       "button": "Suggerimento",
-      "button_a11y": "Chiedi un suggerimento di mossa",
-      "error": "Nessun suggerimento — tocca per riprovare",
+      "button_a11y": "Chiedi un suggerimento",
+      "error": "Nessun suggerimento trovato: tocca per riprovare",
       "error_a11y": "Riprova il suggerimento",
       "finding": "Cerco la mossa migliore…",
       "play": "Gioca questa mossa",
@@ -41,133 +41,133 @@
       "suggested": "Mossa suggerita"
     },
     "nudge": {
-      "roll_first": "Prima lancia i dadi"
+      "roll_first": "Prima tira i dadi"
     },
     "opening": {
-      "compare": "{{winner}} {{high}} batte {{low}}",
-      "goes_first": "Inizia {{player}}!",
-      "roll": "Lancia",
-      "rolls_for_opening": "{{player}} lancia per l'apertura",
+      "compare": "{{winner}}: {{high}} batte {{low}}",
+      "goes_first": "Inizia il {{player}}!",
+      "roll": "Tira",
+      "rolls_for_opening": "Il {{player}} tira per iniziare",
       "tie": "Pareggio!",
-      "tie_again": "Stesso numero — rilanciate",
-      "waiting_roll": "{{player}} sta lanciando…",
+      "tie_again": "Stesso numero: tira di nuovo",
+      "waiting_roll": "Il {{player}} sta tirando…",
       "who_goes_first": "Chi inizia?",
-      "your_roll": "Tocca ovunque per lanciare"
+      "your_roll": "Tocca ovunque per tirare"
     },
     "options": {
       "open_settings": "Lingua e altro",
-      "open_settings_hint": "Apri Impostazioni",
+      "open_settings_hint": "Apri le impostazioni",
       "title": "Opzioni di gioco"
     },
     "preferences": {
-      "auto_move": "Mossa automatica se obbligata",
-      "auto_move_hint": "Gioca automaticamente l'unica mossa legale",
-      "auto_roll": "Lancio automatico dei dadi",
-      "auto_roll_hint": "Lancia automaticamente nel tuo turno",
-      "confirm_move": "Conferma mossa",
-      "confirm_move_hint": "Chiedi prima di finire il turno per rivedere o annullare",
+      "auto_move": "Mossa forzata automatica",
+      "auto_move_hint": "Gioca in automatico l'unica mossa possibile",
+      "auto_roll": "Tiro automatico",
+      "auto_roll_hint": "Tira i dadi in automatico all'inizio del tuo turno",
+      "confirm_move": "Conferma la mossa",
+      "confirm_move_hint": "Chiedi prima di chiudere il turno, così puoi controllare o annullare",
       "dice_display": "Aspetto dei dadi",
       "dice_dots": "Punti",
       "dice_numbers": "Numeri",
-      "direction_overlay": "Guida di direzione",
-      "direction_overlay_hint": "Percorso a ferro di cavallo sul tavoliere",
-      "move_hints": "Suggerimenti di mossa",
+      "direction_overlay": "Senso di marcia",
+      "direction_overlay_hint": "Percorso a ferro di cavallo sulla tavola",
+      "move_hints": "Aiuti alle mosse",
       "move_hints_hint": "Punto dorato accanto alle punte da cui puoi muovere",
       "point_numbers": "Numeri delle punte",
-      "point_numbers_hint": "Mostra le etichette 1–24 sul tavoliere",
-      "section_automation": "Automazione",
-      "section_board": "Tavoliere",
+      "point_numbers_hint": "Mostra i numeri 1–24 sulla tavola",
+      "section_automation": "Automatismi",
+      "section_board": "Tavola",
       "section_dice": "Dadi",
       "sound": "Suoni di gioco",
-      "sound_hint": "Dadi, catture e vittorie con suoni delicati — rispetta la modalità silenziosa",
+      "sound_hint": "Suoni discreti per dadi, colpi e vittoria; rispetta la modalità silenziosa",
       "tutor_mode": "Modalità tutor",
       "tutor_mode_hint": "Il motore controlla le tue mosse e segnala gli errori gravi"
     },
     "review": {
-      "back_to_live": "Torna alla partita in corso",
+      "back_to_live": "Torna alla partita",
       "live": "Partita in corso",
       "live_short": "Live",
-      "move_a11y": "Mossa {{ply}}, {{player}}",
-      "move_position": "Mossa {{current}} di {{total}} · {{player}}",
+      "move_a11y": "Spostamento {{ply}}, {{player}}",
+      "move_position": "Spostamento {{current}} di {{total}} · {{player}}",
       "next": "Turno successivo",
       "opening": "Posizione iniziale",
       "pause_replay": "Pausa",
       "player_black": "Nero",
       "player_white": "Bianco",
       "previous": "Turno precedente",
-      "replay": "Replay",
+      "replay": "Rivedi",
       "scrubber_hint": "Tocca un turno per rivederlo",
       "start": "Inizio",
       "turn_a11y": "Turno {{turn}}, {{player}}",
       "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
-      "turn_position": "Turno {{turn}}/{{totalTurns}} · mossa {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "Revisione — tocca Live o Torna per continuare a giocare"
+      "turn_position": "Turno {{turn}}/{{totalTurns}} · spostamento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Stai rivedendo la partita: tocca Live o Torna alla partita per continuare"
     },
     "status": {
-      "black_wins": "Vince il Nero",
+      "black_wins": "🏆 Vince il Nero!",
       "computer_wins": "Vince il computer",
       "off_short": "fuori",
-      "pips_a11y": "{{player}}: {{pips}} pip, {{off}} su 15 portate fuori",
+      "pips_a11y": "{{player}}: {{pips}} pip, {{off}} pedine su 15 portate fuori",
       "white_wins": "🏆 Vince il Bianco!",
       "you_win": "🏆 Hai vinto!"
     },
     "strategy": {
       "close_a11y": "Chiudi la spiegazione della strategia",
-      "got_it": "Ho capito",
+      "got_it": "Capito",
       "label": {
-        "backgame": "Gioco di attesa",
-        "blitz": "Attacco totale",
+        "backgame": "Gioco di retroguardia",
+        "blitz": "Blitz",
         "developing": "Sviluppo",
-        "holding": "Gioco di blocco",
-        "priming": "Muro",
+        "holding": "Gioco d'àncora",
+        "priming": "Gioco di blocco",
         "running": "Corsa"
       },
       "tip": {
-        "backgame": "Resta indietro, rafforza la tua base e aspetta l'occasione tardiva.",
-        "blitz": "Attacca: colpisci ogni pedina singola e chiudi la tua base.",
-        "developing": "Costruisci punti, lotta per il 5 e resta flessibile.",
-        "holding": "Tieni la tua àncora, stai al sicuro e aspetta la tua occasione di colpire.",
-        "priming": "Estendi il tuo muro punto per punto e cattura le loro pedine arretrate.",
-        "running": "Porta a casa le pedine in modo efficiente e proteggi quelle ancora a rischio."
+        "backgame": "Resta indietro, tieni forte la tua casa e aspetta un colpo tardivo.",
+        "blitz": "Attacca: colpisci ogni pedina scoperta che puoi e chiudi la tua casa.",
+        "developing": "Costruisci punte, lotta per la punta 5 e resta flessibile.",
+        "holding": "Tieni la tua àncora, gioca sicuro e aspetta l'occasione per colpire.",
+        "priming": "Allunga il muro una punta alla volta e intrappola le pedine arretrate avversarie.",
+        "running": "Porta a casa le pedine in modo efficiente e proteggi quelle ancora esposte."
       },
       "why": {
-        "backgame": "Hai àncore profonde sul {{point1}} e sul {{point2}} mentre sei in ritardo di {{pipGap}} punti nella corsa.",
-        "blitz_bar": "Hai {{barCount}} sul bar e hai già realizzato {{homeMade}} punti nella tua base.",
-        "blitz_bar_blot": "Hai {{barCount}} sul bar e 1 pedina singola nella tua base, e hai già realizzato {{homeMade}} punti nella base.",
-        "blitz_bar_blots": "Hai {{barCount}} sul bar e {{blotCount}} pedine singole nella tua base, e hai già realizzato {{homeMade}} punti nella base.",
-        "blitz_blot": "Hai 1 pedina singola nella tua base e hai già realizzato {{homeMade}} punti nella base.",
-        "blitz_blots": "Hai {{blotCount}} pedine singole nella tua base e hai già realizzato {{homeMade}} punti nella base.",
-        "developing": "Ancora nessun muro, àncora o attacco sul tabellone — la partita si sta ancora plasmando.",
-        "holding": "Tieni un'àncora sul {{point}} mentre sei in ritardo di {{pipGap}} punti.",
-        "priming": "Hai costruito un muro di {{prime}} punti.",
-        "priming_anchor": "Hai costruito un muro di {{prime}} punti con un'àncora dietro.",
-        "running_lead": "Guidi la corsa {{foePips}} a {{myPips}} senza pedine singole a portata di colpo.",
-        "running_race": "Nessun contatto possibile — è una corsa diretta per uscire ({{myPips}} contro {{foePips}} punti)."
+        "backgame": "Tieni àncore profonde sulla {{point1}} e sulla {{point2}}, ma sei indietro di {{pipGap}} pip nella corsa.",
+        "blitz_bar": "Sulla barra: {{barCount}}, e hai già costruito {{homeMade}} punte in casa.",
+        "blitz_bar_blot": "Sulla barra: {{barCount}}, c'è 1 pedina scoperta nella tua casa e ci hai già costruito {{homeMade}} punte.",
+        "blitz_bar_blots": "Sulla barra: {{barCount}}, ci sono {{blotCount}} pedine scoperte nella tua casa e ci hai già costruito {{homeMade}} punte.",
+        "blitz_blot": "C'è 1 pedina scoperta nella tua casa e ci hai già costruito {{homeMade}} punte.",
+        "blitz_blots": "Ci sono {{blotCount}} pedine scoperte nella tua casa e ci hai già costruito {{homeMade}} punte.",
+        "developing": "Ancora nessun blocco, àncora o attacco: la partita sta prendendo forma.",
+        "holding": "Tieni un'àncora sulla {{point}} e sei indietro di {{pipGap}} pip.",
+        "priming": "Hai costruito un blocco di {{prime}} punte.",
+        "priming_anchor": "Hai costruito un blocco di {{prime}} punte con un'àncora dietro.",
+        "running_lead": "Sei avanti nella corsa, {{myPips}} contro {{foePips}}, senza pedine scoperte a tiro.",
+        "running_race": "Non c'è più contatto: è una corsa pura per portare fuori le pedine ({{myPips}} contro {{foePips}} pip)."
       }
     },
     "turn": {
-      "black_is_moving": "Il nero muove…",
-      "black_is_rolling": "Il nero tira…",
-      "black_turn": "Turno del nero",
-      "cant_enter": "Non puoi entrare dalla barra con {{die1}} e {{die2}} — termina il turno",
+      "black_is_moving": "Il Nero sta muovendo…",
+      "black_is_rolling": "Il Nero sta tirando…",
+      "black_turn": "Turno del Nero",
+      "cant_enter": "Non puoi rientrare dalla barra con {{die1}} e {{die2}}: termina il turno",
       "computer_turn": "Turno del computer",
-      "enter_from_bar": "Entra dalla barra prima di muovere le altre pedine",
-      "game_over": "Partita terminata",
-      "move_checkers": "Muovi le tue pedine {{color}}",
-      "no_legal_moves": "Nessuna mossa valida con {{die1}} e {{die2}} — termina il turno",
-      "opening_roll": "Tiro iniziale",
-      "roll_dice": "Tira i dadi — giochi con il {{color}}",
-      "white_turn": "Turno del bianco",
-      "your_turn": "Il tuo turno"
+      "enter_from_bar": "Rientra dalla barra prima di muovere altre pedine",
+      "game_over": "Partita finita",
+      "move_checkers": "Muovi le tue pedine ({{color}})",
+      "no_legal_moves": "Nessuna mossa possibile con {{die1}} e {{die2}}: termina il turno",
+      "opening_roll": "Tiro d'apertura",
+      "roll_dice": "Tira i dadi: giochi con il {{color}}",
+      "white_turn": "Turno del Bianco",
+      "your_turn": "Tocca a te"
     },
     "tutor": {
       "back_to_question": "Torna alla domanda",
-      "back_to_question_a11y": "Torna indietro senza la risposta",
+      "back_to_question_a11y": "Torna indietro senza vedere la risposta",
       "band": {
         "big_blunder": "Errore grave",
-        "fine": "Buona",
+        "fine": "Bene",
         "mistake": "Errore",
-        "slip": "Svista"
+        "slip": "Imprecisione"
       },
       "best": "Migliore",
       "best_played": "Migliore:",
@@ -176,44 +176,44 @@
         "best_move": "Mossa migliore",
         "both": "Entrambe",
         "mine": "La mia",
-        "show_a11y": "Mostra la tavola {{label}}",
+        "show_a11y": "Mostra la tavola «{{label}}»",
         "start": "Inizio",
-        "starting_position": "Posizione iniziale",
+        "starting_position": "Posizione di partenza",
         "your_move": "La tua mossa",
-        "your_move_replayed": "La tua mossa, ripetuta"
+        "your_move_replayed": "La tua mossa, rigiocata"
       },
-      "details_hide": "Nascondi i dettagli",
-      "details_hide_a11y": "Nascondi i dettagli",
+      "details_hide": "Nascondi dettagli",
+      "details_hide_a11y": "Nascondi dettagli",
       "details_show": "Dettagli",
-      "details_show_a11y": "Mostra i dettagli",
-      "details_summary": "La tua mossa è {{rank}}ª su {{count}} e vale circa {{loss}} punti a partita in meno della migliore.",
-      "equity_explainer": "Il motore valuta ogni mossa secondo i punti che si aspetta di vincere a partita, in media. Più alto è meglio.",
+      "details_show_a11y": "Mostra dettagli",
+      "details_summary": "La tua mossa è al {{rank}}° posto su {{count}} e rende circa {{loss}} punti a partita in meno della migliore.",
+      "equity_explainer": "Il motore valuta ogni mossa in base ai punti che si aspetta di vincere in media a partita. Più alto è meglio.",
       "equity_pts": "{{points}} pt",
       "keep": "Tieni la mia mossa",
       "keep_a11y": "Tieni la mia mossa e continua",
-      "meter_a11y": "Gravità dell’errore: {{severity}}. Persi circa {{loss}} punti a partita. La scala segue GNU Backgammon: dubbia a 0.04, cattiva a 0.08, pessima a 0.16.",
+      "meter_a11y": "Gravità dell'errore: {{severity}}. Persi circa {{loss}} punti a partita. La scala segue GNU Backgammon: dubbia da 0,04, cattiva da 0,08, pessima da 0,16.",
       "meter_caption": "Scala degli errori (GNU Backgammon)",
       "play_best": "Gioca la mossa migliore",
-      "play_best_a11y": "Annulla la mia mossa e gioca la migliore",
-      "question_body": "La tua mossa è {{rank}}ª su {{count}} modi di giocare questo tiro. In media vale circa {{loss}} punti a partita in meno della migliore.",
+      "play_best_a11y": "Ritira la mia mossa e gioca la migliore",
+      "question_body": "La tua mossa è al {{rank}}° posto su {{count}} modi di giocare questo tiro. In media rende circa {{loss}} punti a partita in meno della migliore.",
       "rank": "{{rank}}",
-      "rank_yours": "{{rank}} (tua)",
-      "replay_pause_a11y": "Metti in pausa il replay di {{label}}",
-      "replay_play_a11y": "Riproduci il replay di {{label}}",
+      "rank_yours": "{{rank}} (la tua)",
+      "replay_pause_a11y": "Metti in pausa «{{label}}»",
+      "replay_play_a11y": "Riproduci «{{label}}»",
       "reveal": "Mostra la mossa migliore",
       "reveal_a11y": "Rivela la mossa consigliata",
       "rolled": "Hai tirato {{dice}}",
       "show_mine": "Mostra la mia mossa",
       "show_mine_a11y": "Mostra solo la mia mossa, senza rivelare la migliore",
-      "take_back": "Annulla e riprova",
-      "take_back_a11y": "Annulla tutto il turno e riprova",
-      "take_back_retry_a11y": "Annulla la mossa e riprova",
-      "title_compare": "La tua mossa contro la migliore",
+      "take_back": "Ritira e riprova",
+      "take_back_a11y": "Ritira tutto il turno e riprova",
+      "take_back_retry_a11y": "Ritira la mossa e riprova",
+      "title_compare": "La tua mossa e la migliore a confronto",
       "title_mine": "La tua mossa",
       "turn_off": "Disattiva il tutor",
       "turn_off_a11y": "Disattiva la modalità tutor",
-      "undo_last": "Annulla l’ultima mossa",
-      "undo_last_a11y": "Annulla solo l’ultima mossa e rigiocala",
+      "undo_last": "Annulla l'ultimo spostamento",
+      "undo_last_a11y": "Annulla solo l'ultimo spostamento e rigiocalo",
       "vs_best": "−{{delta}} rispetto alla migliore",
       "you_played": "Hai giocato:"
     }
@@ -221,209 +221,209 @@
   "home": {
     "confirm_cancel": "Annulla",
     "confirm_continue": "Continua",
-    "confirm_native": "Continua il tuo gioco attuale o inizia una nuova?",
-    "confirm_new": "Nuovo gioco",
-    "confirm_replace": "Vuoi iniziare una nuova partita? La partita attuale verrà sostituita.",
-    "confirm_title": "Gioco in corso",
-    "confirm_web": "Iniziare un nuovo gioco? (Use Resume sulla schermata iniziale per continuare quella attuale.)",
-    "recovery_body": "L’ultimo salvataggio era danneggiato. Puoi iniziare una nuova partita: la schermata iniziale funziona ancora.",
+    "confirm_native": "Continuare la partita in corso o iniziarne una nuova?",
+    "confirm_new": "Nuova partita",
+    "confirm_replace": "Iniziare una nuova partita? Quella in corso verrà sostituita.",
+    "confirm_title": "Partita in corso",
+    "confirm_web": "Iniziare una nuova partita? (Usa Riprendi nella home per continuare quella in corso.)",
+    "recovery_body": "L'ultimo salvataggio era danneggiato. Puoi iniziare una nuova partita; il resto funziona.",
     "recovery_dismiss": "Chiudi",
     "recovery_title": "Impossibile ripristinare la partita salvata",
     "resume": "Riprendi la partita",
     "resume_a11y": "Riprendi la partita salvata",
-    "resume_none": "Nessun gioco salvato per riprendere",
+    "resume_none": "Nessuna partita salvata",
     "resume_sub": "Continua da dove avevi lasciato",
-    "review": "Rivedi l’ultima partita",
-    "review_a11y": "Rivedi la partita completata",
-    "review_sub": "Guarda come si è conclusa l’ultima partita",
-    "subtitle": "Domina il tavoliere — una mossa alla volta",
+    "review": "Rivedi l'ultima partita",
+    "review_a11y": "Rivedi la partita conclusa",
+    "review_sub": "Guarda com'è finita l'ultima partita",
+    "subtitle": "Domina la tavola, una mossa alla volta",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 giocatori",
     "two_players_a11y": "Gioca in due su questo dispositivo",
-    "two_players_sub": "A turni sullo stesso dispositivo",
+    "two_players_sub": "A turno sullo stesso dispositivo",
     "vs_computer": "Contro il computer",
     "vs_computer_a11y": "Gioca contro il computer",
     "vs_computer_sub": "Gioca contro il computer"
   },
   "learn": {
-    "back_to_hub": "Tutti i corsi",
+    "back_to_hub": "Tutte le lezioni",
     "continue": "Continua",
     "feedback": {
-      "hint_nudge": "Hai bisogno di una bomba? Cerca i punti evidenziati.",
-      "illegal": "Prova un punto evidenziato — o tocca Hint.",
-      "legal_but_wrong": "Questo è legale in un gioco reale — qui, provare la mossa che insegna questa idea.",
-      "move_progress": "Nizza —{{done}}di{{needed}}mosse fatte."
+      "hint_nudge": "Serve una spinta? Guarda le zone evidenziate.",
+      "illegal": "Prova una punta evidenziata, oppure tocca Suggerimento.",
+      "legal_but_wrong": "In una partita vera sarebbe valida, ma qui prova la mossa che insegna questa idea.",
+      "move_progress": "Bene: {{done}} spostamenti su {{needed}}."
     },
     "graduation": {
       "body": "Conosci l'obiettivo, il consiglio, come si trasforma il lavoro, il colpo e il movimento. Un controllo rapido — allora il tuo primo gioco reale.",
-      "play_cta": "Gioca il tuo primo gioco",
-      "quiz_done": "L'ho inchiodato. E' ora di giocare.",
+      "play_cta": "Gioca la tua prima partita",
+      "quiz_done": "Perfetto. Ora si gioca.",
       "quiz_title": "Controllo rapido",
-      "quiz_wrong": "Non proprio — prova un'altra risposta.",
-      "recap_1": "Gara: tutti i 15 primi",
-      "recap_2": "Rotolo due dadi; terra su punti aperti",
-      "recap_3": "Hit blots → siedono sul bar",
-      "recap_4": "Togliti solo dalla tua home board",
-      "recap_5": "I giochi iniziano con un morire ciascuno — più alto va prima (ties re-roll)",
+      "quiz_wrong": "Non proprio: prova un'altra risposta.",
+      "recap_1": "Corsa: vince chi porta fuori per primo tutte le 15 pedine",
+      "recap_2": "Tira due dadi; fermati solo su punte libere",
+      "recap_3": "Colpisci le pedine scoperte → vanno sulla barra",
+      "recap_4": "Si portano fuori le pedine solo dalla propria casa",
+      "recap_5": "All'inizio ognuno tira un dado: inizia chi fa di più (in caso di pareggio si ritira)",
       "title": "Sei pronto a giocare"
     },
-    "hint": "Salve.",
+    "hint": "Suggerimento",
     "home_cta": "Impara a giocare",
-    "home_cta_progress": "{{done}} di {{total}} lezioni",
-    "home_cta_quiz": "Controllo rapido a sinistra — quindi giocare",
-    "home_cta_ready": "Sei pronto — giocare un vero gioco",
+    "home_cta_progress": "{{done}} lezioni su {{total}} completate",
+    "home_cta_quiz": "Manca un controllo rapido, poi gioca",
+    "home_cta_ready": "Sei pronto: gioca una partita vera",
     "home_cta_sub": "Lezioni interattive per principianti",
-    "lesson_complete": "Lezione completa!",
+    "lesson_complete": "Lezione completata!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Non c'e' niente sul 5, ma hai fatto 5. Togliti dal tuo imbroglione più alto (il 3). Un numero piu' grande prende ancora un imbroglione.",
-            "hint": "Selezionare il punto 3, quindi toccare il vassoio di orso.",
-            "praise": "Questa è la regola di overshoot — lo userai molto quando tiri fuori.",
-            "title": "Bigger muore, ancora spento"
+            "body": "Sulla punta 5 non c'è nulla, ma hai tirato un 5. Porta fuori la pedina più alta (quella sulla 3). Anche un numero più grande fa uscire una pedina.",
+            "hint": "Seleziona la punta 3, poi tocca l'area di uscita.",
+            "praise": "È la regola del numero più alto: la userai spesso per portare fuori le pedine.",
+            "title": "Numero più alto, pedina fuori lo stesso"
           },
           "try": {
-            "body": "Tutte le pedine sono a casa (1–6), quindi si può sopportare. Hai fatto rotolare un 3 — prendere il checker sul 3-point fuori dal bordo.",
-            "hint": "Selezionare il punto 3, quindi toccare l'area di orso sul bordo destro.",
-            "praise": "Fuori dal bordo! In primo luogo per sopportare tutte le 15 vittorie.",
-            "title": "Togliere uno"
+            "body": "Tutte le tue pedine sono in casa (1–6), quindi puoi portarle fuori. Hai tirato un 3: togli dalla tavola la pedina sulla punta 3.",
+            "hint": "Seleziona la punta 3, poi tocca l'area di uscita sul bordo destro.",
+            "praise": "Fuori dalla tavola! Vince chi porta fuori per primo tutte le 15 pedine.",
+            "title": "Porta fuori una pedina"
           }
         },
         "subtitle": "Come si vince",
-        "title": "Cuscinetto spento"
+        "title": "Portare fuori le pedine"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Il ferro di cavallo corrisponde alle pedine del giocatore il cui turno è. Ripercorre il percorso del giocatore intorno al bordo e verso casa (punti 1–6).",
-            "title": "Il sentiero a ferro di cavallo"
+            "body": "Il ferro di cavallo ha il colore delle pedine del giocatore di turno. Traccia il suo percorso intorno alla tavola fino a casa (punte 1–6).",
+            "title": "Il percorso a ferro di cavallo"
           },
           "far": {
-            "body": "Tocca il punto in cui iniziano le due pedine bianche più lontane (il 24-punto, in alto a destra).",
-            "hint": "Guarda la parte superiore destra — due pedine bianche al punto 24.",
-            "praise": "Quelli iniziano a fondo nella casa dell'avversario e hanno il viaggio più lungo.",
-            "title": "I tuoi controlli più lontani"
+            "body": "Tocca la punta da cui partono le tue due pedine bianche più lontane (la punta 24, in alto a destra).",
+            "hint": "Guarda in alto a destra: due pedine bianche sulla punta 24.",
+            "praise": "Partono in fondo alla casa avversaria e fanno il viaggio più lungo.",
+            "title": "Le tue pedine più lontane"
           },
           "home_stack": {
-            "body": "Toccare la grande pila di cinque pedine bianche già nella vostra casa (il 6-punto).",
-            "hint": "In basso a destra: cinque pedine bianche al punto 6.",
-            "praise": "Questo è il vostro stack di casa — cinque già in attesa sul 6-punto, più vicino a rimbalzare. Ogni partita inizia da questa parte.",
-            "title": "Il tuo stack di casa"
+            "body": "Tocca la pila di cinque pedine bianche che sono già nella tua casa (la punta 6).",
+            "hint": "In basso a destra: cinque pedine bianche sulla punta 6.",
+            "praise": "È la tua pila di casa: cinque pedine aspettano già sulla punta 6, le più vicine all'uscita. Ogni partita inizia così.",
+            "title": "La tua pila di casa"
           }
         },
-        "subtitle": "Da che parte ti muovi",
-        "title": "Direzione e configurazione"
+        "subtitle": "In che direzione ti muovi",
+        "title": "Direzione e disposizione"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "La striscia sollevata al centro è il bar. Le pedine di Hit aspettano qui. Tocca la barra.",
-            "hint": "Toccare la striscia verticale tra le metà sinistra e destra del bordo.",
-            "praise": "D'accordo: le pedine si siedono sul bar finché non entrano.",
-            "title": "Il bar"
+            "body": "La striscia rialzata al centro è la barra. Qui aspettano le pedine colpite. Tocca la barra.",
+            "hint": "Tocca la striscia verticale tra la metà sinistra e quella destra della tavola.",
+            "praise": "Esatto: le pedine colpite restano sulla barra finché non rientrano.",
+            "title": "La barra"
           },
           "explain": {
-            "body": "Tu e il tuo avversario avete ciascuno 15 pedine. Spostarli intorno al bordo e fuori — prima vittoria finita.",
-            "title": "Prima di sopportare le vittorie"
+            "body": "Tu e il tuo avversario avete 15 pedine ciascuno. Fategli fare il giro della tavola e portatele fuori: vince chi finisce per primo.",
+            "title": "Vince chi esce per primo"
           },
           "home": {
-            "body": "La vostra casa è punti 1–6 (basso-destra). Tocca qualsiasi punto nella tua home board.",
-            "hint": "La casa è i sei punti nel quadrante a destra inferiore — numerati da 1 a 6.",
-            "praise": "Questa è la vostra casa — i controllori lasciano il bordo da qui.",
-            "title": "Trova la tua home board"
+            "body": "La tua casa sono le punte 1–6 (in basso a destra). Tocca una punta qualsiasi della tua casa.",
+            "hint": "La casa sono le sei punte del quadrante in basso a destra, numerate da 1 a 6.",
+            "praise": "Questa è la tua casa: da qui le pedine lasciano la tavola.",
+            "title": "Trova la tua casa"
           }
         },
-        "subtitle": "Cosa stai correndo per",
-        "title": "Gol & board"
+        "subtitle": "Il traguardo della corsa",
+        "title": "Obiettivo e tavola"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Sei sul bar — tornare avanti prima di spostare qualcun altro. Conta dal 24 punto verso casa: un 4 atterra al punto 21.",
-            "hint": "Toccare la barra, quindi il punto 21 (non 23 — che è solo due pips dal bar).",
-            "praise": "Sei tornato sul bordo — i checkers del bar entrano sempre prima.",
-            "title": "Entra dalla barra",
-            "wrong": "Questo è solo due pips dal bar (punto 23). Conta quattro punti da 24 verso casa — questo è il punto 21."
+            "body": "Sei sulla barra: rientra prima di muovere qualsiasi altra pedina. Conta dalla punta 24 verso casa: un 4 arriva sulla punta 21.",
+            "hint": "Tocca la barra, poi la punta 21 (non la 23: è a soli due pip dalla barra).",
+            "praise": "Sei tornato sulla tavola: le pedine sulla barra rientrano sempre per prime.",
+            "title": "Rientra dalla barra",
+            "wrong": "È a soli due pip dalla barra (punta 23). Conta quattro punte dalla 24 verso casa: è la punta 21."
           },
           "hit": {
-            "body": "Un singolo imbroglione e' una macchia. Avvicinati e va al bar. Hai rotolato un 3 — ha colpito il blot nero sul 5-punto.",
-            "hint": "Tocca il tuo imbroglione su 8, quindi tocca il punto 5.",
-            "praise": "Colpisci! Quel checker nero e' sul bar.",
-            "title": "Colpire la blot"
+            "body": "Una pedina da sola su una punta è scoperta (un blot). Se ci arrivi sopra, va sulla barra. Hai tirato un 3: colpisci la pedina nera scoperta sulla punta 5.",
+            "hint": "Tocca la tua pedina sulla 8, poi la punta 5.",
+            "praise": "Colpita! Quella pedina nera ora è sulla barra.",
+            "title": "Colpisci la pedina scoperta"
           }
         },
-        "subtitle": "Contatto gioco",
-        "title": "Hitting &amp; bar"
+        "subtitle": "Il gioco di contatto",
+        "title": "Colpire e la barra"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "Due o più pedine avversari bloccano un punto — non si può atterrare lì. Toccare lo stack nero bloccato su 5 punti.",
-            "hint": "Lo stack evidenziato di due pedine nere al punto 5.",
-            "praise": "Giusto — un punto fatto (2+) è chiuso. Vuoto, il proprio, o un blot (1) sono aperti.",
-            "title": "Punti bloccati"
+            "body": "Due o più pedine avversarie bloccano una punta: non puoi fermarti lì. Tocca la pila nera bloccata sulla punta 5.",
+            "hint": "La pila evidenziata di due pedine nere sulla punta 5.",
+            "praise": "Esatto: una punta occupata da 2 o più pedine è chiusa. Quelle vuote, le tue e quelle con una pedina scoperta (1) sono aperte.",
+            "title": "Punte bloccate"
           },
           "doubles": {
-            "body": "I doppi ti danno quattro mosse di quel numero. Hai rotolato 2-2 — questo è quattro 2s. Spostarsi da 8 punti a 6 punti quattro volte.",
-            "hint": "Toccare il 8-punto, poi il 6-punto. Fate questo quattro volte — una volta per morire.",
-            "praise": "Esattamente — raddoppia significa quattro mosse con quel numero.",
-            "title": "Doppio = quattro mosse"
+            "body": "Un doppio ti dà quattro spostamenti di quel numero. Hai tirato 2-2: sono quattro 2. Muovi quattro volte dalla punta 8 alla punta 6.",
+            "hint": "Tocca la punta 8, poi la punta 6. Quattro volte: una per dado.",
+            "praise": "Esatto: un doppio vale quattro spostamenti di quel numero.",
+            "title": "Doppio = quattro spostamenti"
           },
           "explain": {
-            "body": "Ogni volta che si rotola due dadi e giocare entrambi i numeri quando è possibile. Si può atterrare su punti vuoti, i propri checkers, o un avversario solitario (un blot).",
-            "title": "Due numeri, punti aperti"
+            "body": "A ogni turno tiri due dadi e giochi entrambi i numeri se puoi. Puoi fermarti su punte vuote, sulle tue pedine o su una pedina avversaria da sola (scoperta).",
+            "title": "Due numeri, punte libere"
           },
           "two_dice": {
-            "body": "Hai rotolato 3 e 1. Spostare l'armadietto su 8 punti tre pips (a 5), e quello su 6 punti un pip (a 5).",
-            "hint": "Seleziona un imbroglione bianco, quindi tocca il punto 5. Fai questo sia per gli 8 punti che per i 6 punti.",
-            "praise": "Nizza — entrambi i dadi utilizzati. Stesso imbroglione o due pedine, entrambi i numeri devono essere giocati quando è possibile.",
-            "title": "Gioca a entrambi i dadi"
+            "body": "Hai tirato 3 e 1. Muovi la pedina della punta 8 di tre pip (sulla 5) e quella della punta 6 di un pip (sulla 5).",
+            "hint": "Seleziona una pedina bianca, poi tocca la punta 5. Fallo sia dalla punta 8 sia dalla punta 6.",
+            "praise": "Bene: entrambi i dadi usati. Con una pedina o con due, quando si può vanno giocati entrambi i numeri.",
+            "title": "Gioca entrambi i dadi"
           }
         },
         "subtitle": "Come funziona un turno",
-        "title": "Spostarsi con i dadi"
+        "title": "Muovere con i dadi"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "Il bianco ha portato fuori 5 pedine e le altre sono vicine a casa. Le nere sono ancora sparse. Tocca una pedina bianca: il bianco è avanti perché il conteggio è più basso.",
-            "hint": "Cerca le pedine più vicine all’uscita.",
-            "praise": "Esatto. Il conteggio più basso del bianco vuol dire meno strada.",
+            "body": "Il Bianco ha portato fuori 5 pedine e le altre sono vicine a casa. Le pedine nere sono ancora sparse sulla tavola. Tocca una pedina bianca: il Bianco è avanti nella corsa, con il conteggio dei pip più basso.",
+            "hint": "Cerca le pedine più vicine all'uscita.",
+            "praise": "Esatto! Meno pip significa meno strada da fare.",
             "title": "Chi è avanti?"
           },
           "behind": {
-            "body": "La stessa posizione. Le pedine nere sono lontane da casa e hanno un conteggio molto più alto. Tocca una pedina nera: il nero è indietro.",
+            "body": "Stessa posizione. Le pedine nere sono lontane da casa, con molti più pip. Tocca una pedina nera: il Nero è indietro nella corsa.",
             "hint": "Cerca le pedine più lontane da casa.",
-            "praise": "Giusto. Al nero servono ancora molti pip.",
+            "praise": "Giusto! Al Nero servono molti più pip per portare fuori le pedine.",
             "title": "Chi è indietro?"
           },
           "explain": {
             "body": "È la somma dei punti che le tue pedine devono ancora percorrere per uscire. Ogni pedina conta il numero del suo punto: una sul 6 vale 6, una sul 13 vale 13. Meno è meglio, sei più vicino all’uscita. I numeri stanno in alto in ogni partita, con un puntino per il colore.",
-            "title": "Che cos’è il conteggio pip?"
+            "title": "Cos'è il conteggio dei pip?"
           }
         },
         "subtitle": "Capire chi sta vincendo la corsa",
-        "title": "Conteggio pip: il punteggio"
+        "title": "Conteggio dei pip: il punteggio della corsa"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "La tua casa è forte e l’avversario ha pedine sole o sulla barra. Colpisci ogni pedina sola e chiudi i punti di casa per tenerle sulla barra mentre esci. Qui il bianco ha tre punti di casa e il nero una pedina sulla barra.",
-            "title": "Attacco totale"
+            "body": "La tua casa è forte e l'avversario ha pedine scoperte o pedine sulla barra. Attacca! Colpisci tutte le pedine scoperte che puoi e chiudi le punte della tua casa. L'obiettivo è tenere le sue pedine bloccate sulla barra mentre porti fuori le tue. Qui il Bianco ha tre punte chiuse in casa e il Nero ha una pedina sulla barra.",
+            "title": "Blitz"
           },
           "identify": {
-            "body": "Questa è una partita di muro. Tocca un punto del muro bianco, i punti consecutivi che bloccano il nero.",
-            "hint": "Cerca punti consecutivi con almeno 2 pedine bianche.",
-            "praise": "Perfetto. Quel muro è il prime. Le pedine arretrate del nero sono intrappolate.",
-            "title": "Trova il muro"
+            "body": "Questo è un gioco di blocco. Tocca una punta qualsiasi del blocco bianco: il muro di punte chiuse consecutive che ferma il Nero.",
+            "hint": "Cerca punte consecutive con almeno 2 pedine bianche ciascuna.",
+            "praise": "Perfetto! Quel muro è il blocco: le pedine arretrate del Nero sono intrappolate.",
+            "title": "Trova il blocco"
           },
           "prime": {
-            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che limita le pedine arretrate del nero. Allungalo un punto alla volta.",
-            "title": "Muro"
+            "body": "Hai costruito un muro di punte chiuse consecutive: un blocco (prime). Le punte evidenziate formano un blocco di 4 punte che ostacola le pedine arretrate del Nero. Allungalo una punta alla volta e intrappola le sue pedine dietro.",
+            "title": "Gioco di blocco"
           },
           "running": {
-            "body": "Sei avanti e non ci sono pedine sole a tiro. Porta le pedine a casa senza lasciarne di sole. Qui il bianco è avanti con una casa solida.",
+            "body": "Sei avanti nella corsa e non hai pedine scoperte a tiro. Il piano è semplice: porta le pedine a casa in sicurezza ed evita di lasciarne di scoperte. Niente fantasie: corri. Qui il Bianco è avanti nella corsa con una casa solida.",
             "title": "Corsa"
           }
         },
@@ -431,61 +431,61 @@
         "title": "Piani di gioco"
       }
     },
-    "locked": "Completare la lezione precedente prima",
-    "next_lesson": "Prossima lezione",
+    "locked": "Completa prima la lezione precedente",
+    "next_lesson": "Lezione successiva",
     "quiz": {
       "bar": {
-        "a": "Muovi il tuo imbroglione più lontano prima",
-        "b": "Inserire questo imbroglione prima di spostare qualsiasi altra cosa",
-        "c": "Salta il tuo turno",
-        "prompt": "Mentre hai un imbroglione sul bar, devi..."
+        "a": "Muovere prima la pedina più lontana",
+        "b": "Far rientrare quella pedina prima di muovere qualsiasi altra cosa",
+        "c": "Saltare il turno",
+        "prompt": "Finché hai una pedina sulla barra, devi…"
       },
       "bear": {
-        "a": "Ogni volta che si rotola un 6",
-        "b": "Solo dopo aver colpito una pallottola",
-        "c": "Quando tutti i 15 checkers sono nella tua home board",
-        "prompt": "Quando puoi sopportarlo?"
+        "a": "Ogni volta che tiri un 6",
+        "b": "Solo dopo aver colpito una pedina scoperta",
+        "c": "Quando tutte le 15 pedine sono nella tua casa",
+        "prompt": "Quando puoi portare fuori le pedine?"
       },
       "blot": {
-        "a": "Qualsiasi stack di tre o più",
-        "b": "Un singolo imbroglione su un punto — può essere colpito",
-        "c": "Due o più pedine su un punto — un punto fatto",
-        "prompt": "Che cos'è una macchia?"
+        "a": "Qualsiasi pila di tre o più pedine",
+        "b": "Una pedina da sola su una punta: può essere colpita",
+        "c": "Due o più pedine su una punta: una punta chiusa",
+        "prompt": "Cos'è una pedina scoperta (blot)?"
       },
       "pip_ahead": {
-        "a": "Il tuo avversario, con il conteggio più alto",
+        "a": "L'avversario, con il conteggio più alto",
         "b": "Tu, con il conteggio più basso",
-        "c": "Nessuno — il conteggio non misura la corsa",
-        "prompt": "Il tuo conteggio è 85 e quello dell’avversario 102. Chi è avanti?"
+        "c": "Nessuno: il conteggio dei pip non misura la corsa",
+        "prompt": "Il tuo conteggio dei pip è 85, quello dell'avversario 102. Chi è avanti nella corsa?"
       },
       "pip_meaning": {
-        "a": "I punti che le tue pedine devono ancora percorrere per uscire",
-        "b": "Quante pedine hai sulla scacchiera",
-        "c": "Quanti punti hai chiuso",
-        "prompt": "Cosa rappresenta il tuo conteggio pip?"
+        "a": "Il totale delle punte che le tue pedine devono percorrere per uscire",
+        "b": "Il numero di pedine che hai sulla tavola",
+        "c": "Il numero di punte che hai chiuso",
+        "prompt": "Che cosa rappresenta il tuo conteggio dei pip?"
       },
       "strat_blitz": {
-        "a": "Colpire la pedina sola e continuare la casa (attacco)",
-        "b": "Ignorare la pedina sola e far correre quelle arretrate",
-        "c": "Rompere la casa per fare un’ancora",
-        "prompt": "Hai chiuso 3 punti di casa e l’avversario ha una pedina sola lì. Qual è il piano migliore?"
+        "a": "Colpire la pedina scoperta e continuare a costruire la casa (blitz)",
+        "b": "Ignorare la pedina scoperta e far correre le pedine arretrate",
+        "c": "Rompere la casa per formare un'àncora",
+        "prompt": "Hai chiuso 3 punte nella tua casa e l'avversario ci ha una pedina scoperta. Qual è il piano migliore?"
       },
       "strat_prime": {
-        "a": "Rompi il muro per attaccare",
-        "b": "Tieni il muro e allungalo — sono intrappolati",
-        "c": "Esci il più in fretta possibile",
-        "prompt": "Due pedine avversarie sono dietro il tuo muro di 5. Qual è il tuo piano?"
+        "a": "Rompere il blocco per attaccare",
+        "b": "Tenere il blocco e allungarlo: le sue pedine sono intrappolate",
+        "c": "Portare fuori le pedine il più in fretta possibile",
+        "prompt": "L'avversario ha due pedine intrappolate dietro il tuo blocco di 5 punte. Qual è il tuo piano?"
       }
     },
-    "replay": "Replay",
-    "skip_to_play": "Skip to play",
+    "replay": "Rivedi",
+    "skip_to_play": "Salta e gioca",
     "step_progress": "Passo {{current}} di {{total}}",
-    "subtitle": "Brevi lezioni interattive — poi sei pronto",
+    "subtitle": "Sette lezioni brevi e sarai pronto a giocare",
     "title": "Impara a giocare"
   },
   "not_found": {
-    "body": "Quella pagina non fa parte di Backgammon Mastermind. Torna a casa per imparare o iniziare un gioco.",
-    "heading": "Fuori dal tavoliere",
+    "body": "Questa pagina non fa parte di Backgammon Mastermind. Torna alla home per imparare o iniziare una partita.",
+    "heading": "Fuori dalla tavola",
     "home_a11y": "Vai alla home",
     "home_cta": "Torna alla home",
     "title": "Non trovato"
@@ -495,30 +495,30 @@
     "app_name": "Backgammon Mastermind",
     "arabic": "Arabo",
     "developer": "Sviluppatore",
-    "developer_blurb": "Carica una posizione qualsiasi per testare il motore. Avvia una normale partita da quella posizione. Non è una funzione del prodotto.",
-    "developer_json": "JSON della posizione",
+    "developer_blurb": "Carica una posizione qualsiasi per testare il motore. Avvia una partita normale da quella posizione. Non è una funzione del prodotto.",
+    "developer_json": "Posizione in JSON",
     "developer_load": "Carica JSON",
     "developer_open": "Carica posizione",
-    "developer_presets": "Configurazioni di test",
+    "developer_presets": "Posizioni di prova",
     "english": "Inglese",
-    "game": "Partita",
-    "general": "Generale",
+    "game": "Gioco",
+    "general": "Generali",
     "github": "GitHub",
     "language": "Lingua",
     "link_error_body": "Riprova più tardi.",
     "link_error_title": "Impossibile aprire il link",
-    "links": "Collegamenti",
+    "links": "Link",
     "more": "Altro",
     "open_source": "Note open source",
     "privacy": "Informativa sulla privacy",
     "rate": "Valuta",
     "share": "Condividi",
-    "support": "Supporto",
+    "support": "Assistenza",
     "support_us": "Sostienici",
     "terms": "Termini di servizio",
     "title": "Impostazioni",
     "version": "Versione",
     "website": "Sito web"
   },
-  "welcome": "Benvenuti a Backgammon Mastermind"
+  "welcome": "Benvenuto in Backgammon Mastermind"
 }

@@ -1,173 +1,173 @@
 {
   "error": {
-    "body": "Reinicie o aplicativo para continuar.",
-    "heading": "Algo correu mal.",
-    "retry": "Repetir"
+    "body": "Reinicie o app para continuar.",
+    "heading": "Algo deu errado",
+    "retry": "Tentar de novo"
   },
   "game": {
     "caption": {
-      "selected": "Selecionado — toque num ponto realçado ou em Cancelar"
+      "selected": "Selecionada: toque em um ponto destacado ou em Cancelar"
     },
     "controls": {
       "bear_off_a11y": "Retirar pedra",
       "cancel": "Cancelar",
       "cancel_a11y": "Cancelar seleção",
       "confirm_move": "Confirmar jogada",
-      "confirm_move_a11y": "Confirmar a jogada e terminar o turno",
-      "leave_game_a11y": "Deixe o jogo e volte para casa",
-      "loading": "Carregando...",
-      "new_game_message": "Começar um novo jogo?",
-      "new_game_title": "Novo jogo",
-      "no_legal_moves": "Nenhum movimento possível…",
+      "confirm_move_a11y": "Confirmar a jogada e encerrar sua vez",
+      "leave_game_a11y": "Sair da partida e voltar ao início",
+      "loading": "Carregando…",
+      "new_game_message": "Começar uma nova partida?",
+      "new_game_title": "Nova partida",
+      "no_legal_moves": "Nenhuma jogada possível…",
       "play_again": "Jogar de novo",
       "play_again_a11y": "Jogar de novo",
-      "redo_a11y": "Refazer a jogada",
-      "roll_dice": "Lançar os dados",
-      "roll_dice_a11y": "Lançar os dados",
-      "start_new_game_a11y": "Iniciar um novo jogo",
-      "undo_a11y": "Desfazer a jogada",
+      "redo_a11y": "Refazer jogada",
+      "roll_dice": "Rolar os dados",
+      "roll_dice_a11y": "Rolar os dados",
+      "start_new_game_a11y": "Começar uma nova partida",
+      "undo_a11y": "Desfazer jogada",
       "undo_move": "Desfazer"
     },
     "hint": {
-      "back_to_turn": "Voltar ao meu turno",
-      "back_to_turn_a11y": "Voltar ao meu turno e fechar a dica",
+      "back_to_turn": "Voltar à minha vez",
+      "back_to_turn_a11y": "Voltar à minha vez e fechar a dica",
       "button": "Dica",
-      "button_a11y": "Pedir uma dica de jogada",
-      "error": "Não encontrei uma dica — toque para tentar de novo",
-      "error_a11y": "Tentar a dica outra vez",
-      "finding": "A procurar a melhor jogada…",
-      "play": "Jogar esta jogada",
-      "play_a11y": "Jogar a jogada sugerida",
+      "button_a11y": "Pedir uma dica",
+      "error": "Não foi possível achar uma dica: toque para tentar de novo",
+      "error_a11y": "Tentar a dica de novo",
+      "finding": "Procurando a melhor jogada…",
+      "play": "Fazer esta jogada",
+      "play_a11y": "Fazer a jogada sugerida",
       "suggested": "Jogada sugerida"
     },
     "nudge": {
-      "roll_first": "Lance os dados primeiro"
+      "roll_first": "Primeiro role os dados"
     },
     "opening": {
-      "compare": "{{winner}} {{high}} vence {{low}}",
-      "goes_first": "{{player}} começa!",
-      "roll": "Lançar",
-      "rolls_for_opening": "{{player}} lança para a abertura",
+      "compare": "{{winner}}: {{high}} vence {{low}}",
+      "goes_first": "As {{player}} começam!",
+      "roll": "Rolar",
+      "rolls_for_opening": "As {{player}} rolam para começar",
       "tie": "Empate!",
-      "tie_again": "Mesmo número — lancem de novo",
-      "waiting_roll": "{{player}} está lançando…",
+      "tie_again": "Mesmo número: role de novo",
+      "waiting_roll": "As {{player}} estão rolando…",
       "who_goes_first": "Quem começa?",
-      "your_roll": "Toque em qualquer lugar para lançar"
+      "your_roll": "Toque em qualquer lugar para rolar"
     },
     "options": {
       "open_settings": "Idioma e mais",
-      "open_settings_hint": "Abrir Ajustes",
-      "title": "Opções do jogo"
+      "open_settings_hint": "Abrir os ajustes",
+      "title": "Opções de jogo"
     },
     "preferences": {
-      "auto_move": "Mover automaticamente quando forçado",
-      "auto_move_hint": "Jogar automaticamente o único movimento legal",
-      "auto_roll": "Lançar dados automaticamente",
-      "auto_roll_hint": "Lançar automaticamente na sua vez",
+      "auto_move": "Jogada forçada automática",
+      "auto_move_hint": "Fazer automaticamente a única jogada possível",
+      "auto_roll": "Rolar dados automaticamente",
+      "auto_roll_hint": "Os dados rolam sozinhos no início da sua vez",
       "confirm_move": "Confirmar jogada",
-      "confirm_move_hint": "Perguntar antes de terminar o turno para rever ou desfazer",
+      "confirm_move_hint": "Perguntar antes de encerrar sua vez, para você revisar ou desfazer",
       "dice_display": "Aparência dos dados",
       "dice_dots": "Pontos",
       "dice_numbers": "Números",
-      "direction_overlay": "Guia de direção",
-      "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
-      "move_hints": "Dicas de movimento",
+      "direction_overlay": "Sentido do jogo",
+      "direction_overlay_hint": "Caminho em ferradura sobre o tabuleiro",
+      "move_hints": "Ajuda nas jogadas",
       "move_hints_hint": "Ponto dourado ao lado das casas de onde você pode mover",
-      "point_numbers": "Números das casas",
-      "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
+      "point_numbers": "Números dos pontos",
+      "point_numbers_hint": "Mostrar os números 1–24 no tabuleiro",
       "section_automation": "Automação",
       "section_board": "Tabuleiro",
       "section_dice": "Dados",
       "sound": "Sons do jogo",
-      "sound_hint": "Dados, capturas e vitórias suaves — respeita o modo silencioso",
+      "sound_hint": "Sons suaves de dados, capturas e vitória; respeita o modo silencioso",
       "tutor_mode": "Modo tutor",
-      "tutor_mode_hint": "O motor revê as suas jogadas e assinala erros graves"
+      "tutor_mode_hint": "O motor confere suas jogadas e avisa sobre erros graves"
     },
     "review": {
-      "back_to_live": "Voltar ao jogo em andamento",
-      "live": "Jogo em andamento",
-      "live_short": "Ao vivo",
+      "back_to_live": "Voltar à partida",
+      "live": "Partida atual",
+      "live_short": "Agora",
       "move_a11y": "Movimento {{ply}}, {{player}}",
       "move_position": "Movimento {{current}} de {{total}} · {{player}}",
-      "next": "Próximo turno",
+      "next": "Próxima vez",
       "opening": "Posição inicial",
       "pause_replay": "Pausar",
       "player_black": "Pretas",
       "player_white": "Brancas",
-      "previous": "Turno anterior",
-      "replay": "Replay",
-      "scrubber_hint": "Toque em um turno para revisar",
+      "previous": "Vez anterior",
+      "replay": "Rever",
+      "scrubber_hint": "Toque em uma vez para revisá-la",
       "start": "Início",
-      "turn_a11y": "Turno {{turn}}, {{player}}",
-      "turn_label": "Turno {{turn}}/{{totalTurns}} · {{player}}",
-      "turn_position": "Turno {{turn}}/{{totalTurns}} · movimento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "Revisando — toque em Ao vivo ou Voltar para continuar jogando"
+      "turn_a11y": "Vez {{turn}}, {{player}}",
+      "turn_label": "Vez {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Vez {{turn}}/{{totalTurns}} · movimento {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Você está revisando: toque em Agora ou em Voltar à partida para continuar jogando"
     },
     "status": {
-      "black_wins": "As Pretas venceram",
+      "black_wins": "🏆 As pretas venceram!",
       "computer_wins": "O computador venceu",
       "off_short": "fora",
-      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} de 15 retiradas",
-      "white_wins": "🏆 As Brancas venceram!",
+      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} de 15 pedras retiradas",
+      "white_wins": "🏆 As brancas venceram!",
       "you_win": "🏆 Você venceu!"
     },
     "strategy": {
       "close_a11y": "Fechar a explicação da estratégia",
       "got_it": "Entendi",
       "label": {
-        "backgame": "Jogo de espera",
+        "backgame": "Jogo de retaguarda",
         "blitz": "Blitz",
         "developing": "Desenvolvimento",
-        "holding": "Jogo de contenção",
-        "priming": "Muralha",
+        "holding": "Jogo de âncora",
+        "priming": "Jogo de bloqueio",
         "running": "Corrida"
       },
       "tip": {
-        "backgame": "Fique atrás, fortaleça a sua base e espere a oportunidade tardia.",
-        "blitz": "Ataque: bata em cada peça solta e feche a sua base.",
-        "developing": "Construa pontos, brigue pelo 5 e continue flexível.",
-        "holding": "Segure a sua âncora, fique seguro e espere a sua oportunidade de bater.",
-        "priming": "Estenda a sua muralha ponto a ponto e capture as peças de trás deles.",
-        "running": "Traga as suas peças para casa com eficiência e proteja as que ainda estiverem em risco."
+        "backgame": "Fique para trás, mantenha seu tabuleiro interno forte e espere uma batida tardia.",
+        "blitz": "Ataque: bata em toda pedra solta que puder e feche seu tabuleiro interno.",
+        "developing": "Faça pontos, dispute o ponto 5 e mantenha a flexibilidade.",
+        "holding": "Segure sua âncora, jogue seguro e espere sua chance de bater.",
+        "priming": "Aumente seu muro um ponto de cada vez e prenda as pedras de trás do adversário.",
+        "running": "Leve suas pedras para casa com eficiência e proteja as que ainda podem ser batidas."
       },
       "why": {
-        "backgame": "Você tem âncoras profundas no {{point1}} e no {{point2}} enquanto está {{pipGap}} pontos atrás na corrida.",
-        "blitz_bar": "Há {{barCount}} no bar e você já fez {{homeMade}} pontos na sua base.",
-        "blitz_bar_blot": "Há {{barCount}} no bar e 1 peça solta na sua base, e você já fez {{homeMade}} pontos na base.",
-        "blitz_bar_blots": "Há {{barCount}} no bar e {{blotCount}} peças soltas na sua base, e você já fez {{homeMade}} pontos na base.",
-        "blitz_blot": "Há 1 peça solta na sua base e você já fez {{homeMade}} pontos na base.",
-        "blitz_blots": "Há {{blotCount}} peças soltas na sua base e você já fez {{homeMade}} pontos na base.",
-        "developing": "Ainda não há muralha, âncora ou ataque no tabuleiro — o jogo ainda está a tomar forma.",
-        "holding": "Segura uma âncora no {{point}} enquanto está {{pipGap}} pontos atrás.",
-        "priming": "Você construiu uma muralha de {{prime}} pontos.",
-        "priming_anchor": "Você construiu uma muralha de {{prime}} pontos com uma âncora atrás.",
-        "running_lead": "Você lidera a corrida {{foePips}} a {{myPips}} sem peças soltas ao alcance de um golpe.",
-        "running_race": "Não há contato possível — é uma corrida direta para tirar ({{myPips}} contra {{foePips}} pontos)."
+        "backgame": "Você tem âncoras profundas no {{point1}} e no {{point2}}, mas está {{pipGap}} pips atrás na corrida.",
+        "blitz_bar": "Na barra: {{barCount}}, e você já fez {{homeMade}} pontos no tabuleiro interno.",
+        "blitz_bar_blot": "Na barra: {{barCount}}, há 1 pedra solta no seu tabuleiro interno e você já fez {{homeMade}} pontos nele.",
+        "blitz_bar_blots": "Na barra: {{barCount}}, há {{blotCount}} pedras soltas no seu tabuleiro interno e você já fez {{homeMade}} pontos nele.",
+        "blitz_blot": "Há 1 pedra solta no seu tabuleiro interno e você já fez {{homeMade}} pontos nele.",
+        "blitz_blots": "Há {{blotCount}} pedras soltas no seu tabuleiro interno e você já fez {{homeMade}} pontos nele.",
+        "developing": "Ainda não há bloqueio, âncora nem ataque: a partida está tomando forma.",
+        "holding": "Você tem uma âncora no {{point}} e está {{pipGap}} pips atrás.",
+        "priming": "Você montou um bloqueio de {{prime}} pontos.",
+        "priming_anchor": "Você montou um bloqueio de {{prime}} pontos com uma âncora atrás.",
+        "running_lead": "Você lidera a corrida, {{myPips}} a {{foePips}}, sem pedras soltas ao alcance.",
+        "running_race": "Não há mais contato: é uma corrida pura para retirar as pedras ({{myPips}} contra {{foePips}} pips)."
       }
     },
     "turn": {
-      "black_is_moving": "As pretas estão a mover…",
-      "black_is_rolling": "As pretas estão a lançar…",
+      "black_is_moving": "As pretas estão jogando…",
+      "black_is_rolling": "As pretas estão rolando…",
       "black_turn": "Vez das pretas",
-      "cant_enter": "Não pode entrar da barra com {{die1}} e {{die2}} — termine a vez",
+      "cant_enter": "Não dá para entrar da barra com {{die1}} e {{die2}}: encerre sua vez",
       "computer_turn": "Vez do computador",
-      "enter_from_bar": "Entre da barra antes de mover outras peças",
-      "game_over": "Fim do jogo",
-      "move_checkers": "Mova as suas peças {{color}}",
-      "no_legal_moves": "Sem jogadas válidas com {{die1}} e {{die2}} — termine a vez",
-      "opening_roll": "Lançamento inicial",
-      "roll_dice": "Lance os dados — joga com {{color}}",
+      "enter_from_bar": "Entre da barra antes de mover outras pedras",
+      "game_over": "Fim de partida",
+      "move_checkers": "Mova suas pedras ({{color}})",
+      "no_legal_moves": "Nenhuma jogada possível com {{die1}} e {{die2}}: encerre sua vez",
+      "opening_roll": "Rolagem inicial",
+      "roll_dice": "Role os dados: você joga com as {{color}}",
       "white_turn": "Vez das brancas",
-      "your_turn": "A sua vez"
+      "your_turn": "Sua vez"
     },
     "tutor": {
       "back_to_question": "Voltar à pergunta",
-      "back_to_question_a11y": "Voltar sem mostrar a resposta",
+      "back_to_question_a11y": "Voltar sem ver a resposta",
       "band": {
         "big_blunder": "Erro grave",
-        "fine": "Boa",
+        "fine": "Bom",
         "mistake": "Erro",
-        "slip": "Deslize"
+        "slip": "Imprecisão"
       },
       "best": "Melhor",
       "best_played": "Melhor:",
@@ -176,71 +176,71 @@
         "best_move": "Melhor jogada",
         "both": "Ambas",
         "mine": "A minha",
-        "show_a11y": "Mostrar o tabuleiro {{label}}",
+        "show_a11y": "Mostrar o tabuleiro “{{label}}”",
         "start": "Início",
-        "starting_position": "Posição inicial",
-        "your_move": "A sua jogada",
-        "your_move_replayed": "A sua jogada, repetida"
+        "starting_position": "Posição de partida",
+        "your_move": "Sua jogada",
+        "your_move_replayed": "Sua jogada, de novo"
       },
       "details_hide": "Ocultar detalhes",
       "details_hide_a11y": "Ocultar detalhes",
       "details_show": "Detalhes",
       "details_show_a11y": "Mostrar detalhes",
-      "details_summary": "A sua jogada ficou em {{rank}} de {{count}}, cerca de {{loss}} pontos por partida a menos que a melhor.",
-      "equity_explainer": "O motor avalia cada jogada pelos pontos que espera ganhar por partida, em média. Mais alto é melhor.",
+      "details_summary": "Sua jogada ficou em {{rank}}º de {{count}} e rende cerca de {{loss}} pontos por partida a menos que a melhor.",
+      "equity_explainer": "O motor avalia cada jogada pelos pontos que espera ganhar por partida, em média. Quanto maior, melhor.",
       "equity_pts": "{{points}} pts",
-      "keep": "Ficar com a minha jogada",
-      "keep_a11y": "Ficar com a minha jogada e continuar",
-      "meter_a11y": "Gravidade do erro: {{severity}}. Perdeu cerca de {{loss}} pontos por partida. A escala segue o GNU Backgammon: duvidosa a 0.04, má a 0.08, muito má a 0.16.",
+      "keep": "Manter minha jogada",
+      "keep_a11y": "Manter minha jogada e continuar",
+      "meter_a11y": "Gravidade do erro: {{severity}}. Perda de cerca de {{loss}} pontos por partida. A escala segue o GNU Backgammon: duvidosa a partir de 0,04, ruim a partir de 0,08, muito ruim a partir de 0,16.",
       "meter_caption": "Escala de erros (GNU Backgammon)",
-      "play_best": "Jogar a melhor jogada",
-      "play_best_a11y": "Anular a minha jogada e jogar a melhor",
-      "question_body": "A sua jogada ficou em {{rank}} de {{count}} formas de jogar este lançamento. Em média vale cerca de {{loss}} pontos por partida a menos que a melhor.",
+      "play_best": "Fazer a melhor jogada",
+      "play_best_a11y": "Desfazer minha jogada e fazer a melhor",
+      "question_body": "Sua jogada ficou em {{rank}}º entre {{count}} formas de jogar estes dados. Em média, ela rende cerca de {{loss}} pontos por partida a menos que a melhor.",
       "rank": "{{rank}}",
-      "rank_yours": "{{rank}} (sua)",
-      "replay_pause_a11y": "Pausar a repetição de {{label}}",
-      "replay_play_a11y": "Reproduzir a repetição de {{label}}",
-      "reveal": "Mostrar a melhor jogada",
+      "rank_yours": "{{rank}} (a sua)",
+      "replay_pause_a11y": "Pausar “{{label}}”",
+      "replay_play_a11y": "Reproduzir “{{label}}”",
+      "reveal": "Ver a melhor jogada",
       "reveal_a11y": "Revelar a jogada recomendada",
-      "rolled": "Saiu {{dice}}",
-      "show_mine": "Mostrar a minha jogada",
-      "show_mine_a11y": "Mostrar só a minha jogada, sem revelar a melhor",
-      "take_back": "Anular e tentar de novo",
-      "take_back_a11y": "Anular o turno inteiro e tentar de novo",
-      "take_back_retry_a11y": "Anular a jogada e tentar de novo",
-      "title_compare": "A sua jogada contra a melhor",
-      "title_mine": "A sua jogada",
+      "rolled": "Você tirou {{dice}}",
+      "show_mine": "Ver minha jogada",
+      "show_mine_a11y": "Ver só minha jogada, sem revelar a melhor",
+      "take_back": "Desfazer e tentar de novo",
+      "take_back_a11y": "Desfazer a vez inteira e tentar de novo",
+      "take_back_retry_a11y": "Desfazer a jogada e tentar de novo",
+      "title_compare": "Sua jogada x a melhor",
+      "title_mine": "Sua jogada",
       "turn_off": "Desligar o tutor",
       "turn_off_a11y": "Desligar o modo tutor",
-      "undo_last": "Anular a última jogada",
-      "undo_last_a11y": "Anular só a última jogada e voltar a jogá-la",
-      "vs_best": "−{{delta}} face à melhor",
-      "you_played": "Jogou:"
+      "undo_last": "Desfazer o último movimento",
+      "undo_last_a11y": "Desfazer só o último movimento e jogá-lo de novo",
+      "vs_best": "−{{delta}} em relação à melhor",
+      "you_played": "Você jogou:"
     }
   },
   "home": {
     "confirm_cancel": "Cancelar",
     "confirm_continue": "Continuar",
-    "confirm_native": "Continuar o seu jogo atual ou iniciar um novo?",
-    "confirm_new": "Novo jogo",
-    "confirm_replace": "Iniciar um novo jogo? O jogo atual será substituído.",
-    "confirm_title": "Jogo em andamento",
-    "confirm_web": "Começar um novo jogo? (Use Retomar na tela inicial para continuar a atual.)",
-    "recovery_body": "O último jogo guardado estava danificado. Podes iniciar um novo jogo — o ecrã inicial continua a funcionar.",
+    "confirm_native": "Continuar a partida atual ou começar uma nova?",
+    "confirm_new": "Nova partida",
+    "confirm_replace": "Começar uma nova partida? A partida atual será substituída.",
+    "confirm_title": "Partida em andamento",
+    "confirm_web": "Começar uma nova partida? (Use Continuar partida na tela inicial para seguir com a atual.)",
+    "recovery_body": "O último salvamento estava corrompido. Você pode começar uma nova partida; o resto funciona normalmente.",
     "recovery_dismiss": "Fechar",
-    "recovery_title": "Não foi possível restaurar o jogo guardado",
-    "resume": "Retomar jogo",
-    "resume_a11y": "Retomar o jogo salvo",
-    "resume_none": "Nenhum jogo salvo para retomar",
+    "recovery_title": "Não foi possível restaurar a partida salva",
+    "resume": "Continuar partida",
+    "resume_a11y": "Continuar a partida salva",
+    "resume_none": "Nenhuma partida salva",
     "resume_sub": "Continue de onde parou",
-    "review": "Rever o último jogo",
-    "review_a11y": "Rever o jogo concluído",
-    "review_sub": "Vê como terminou o último jogo",
-    "subtitle": "Domine o tabuleiro — um movimento de cada vez",
+    "review": "Rever a última partida",
+    "review_a11y": "Rever a partida concluída",
+    "review_sub": "Veja como terminou a última partida",
+    "subtitle": "Domine o tabuleiro, uma jogada de cada vez",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 jogadores",
-    "two_players_a11y": "Jogar em dois neste dispositivo",
-    "two_players_sub": "Revezando no mesmo dispositivo",
+    "two_players_a11y": "Jogar a dois neste aparelho",
+    "two_players_sub": "Revezando no mesmo aparelho",
     "vs_computer": "Contra o computador",
     "vs_computer_a11y": "Jogar contra o computador",
     "vs_computer_sub": "Jogue contra o computador"
@@ -249,242 +249,242 @@
     "back_to_hub": "Todas as lições",
     "continue": "Continuar",
     "feedback": {
-      "hint_nudge": "Precisas de um empurrão? Procure os pontos destacados.",
-      "illegal": "Tente um ponto destacado — ou toque em Dica.",
-      "legal_but_wrong": "Isso é legal em um jogo real — aqui, tente o movimento que ensina esta idéia.",
-      "move_progress": "Boa...{{done}}de{{needed}}movimentos feitos."
+      "hint_nudge": "Precisa de uma ajuda? Procure os pontos destacados.",
+      "illegal": "Tente um ponto destacado ou toque em Dica.",
+      "legal_but_wrong": "Numa partida de verdade isso vale, mas aqui tente a jogada que ensina esta ideia.",
+      "move_progress": "Boa: {{done}} de {{needed}} movimentos feitos."
     },
     "graduation": {
       "body": "Sabes qual é o objectivo, o tabuleiro, como é que se transforma no trabalho, bater e aguentar. Uma verificação rápida — então seu primeiro jogo real.",
-      "play_cta": "Jogar o seu primeiro jogo",
-      "quiz_done": "Acertei em cheio. Hora de jogar.",
-      "quiz_title": "Verificação rápida",
-      "quiz_wrong": "Não exatamente — tente outra resposta.",
-      "recap_1": "Corrida: suportar todos os 15 primeiro",
-      "recap_2": "Lança dois dados; pousa em pontos abertos",
-      "recap_3": "Hit blots → eles sentam na barra",
-      "recap_4": "Afaste-se apenas do seu tabuleiro",
-      "recap_5": "Jogos começam com um dado cada — mais alto vai primeiro (ties re-roll)",
+      "play_cta": "Jogar minha primeira partida",
+      "quiz_done": "Mandou bem. Hora de jogar.",
+      "quiz_title": "Checagem rápida",
+      "quiz_wrong": "Quase: tente outra resposta.",
+      "recap_1": "Corrida: vence quem retirar primeiro as 15 pedras",
+      "recap_2": "Role dois dados; pare só em pontos livres",
+      "recap_3": "Bata nas pedras soltas → elas vão para a barra",
+      "recap_4": "Só se retiram pedras do próprio tabuleiro interno",
+      "recap_5": "No início, cada um rola um dado: o maior começa (no empate, rola de novo)",
       "title": "Você está pronto para jogar"
     },
     "hint": "Dica",
-    "home_cta": "Aprender a jogar",
-    "home_cta_progress": "{{done}} de {{total}} lições feitas",
-    "home_cta_quiz": "Verificação rápida à esquerda - em seguida, jogar",
-    "home_cta_ready": "Você está pronto — jogue um jogo real",
-    "home_cta_sub": "Aulas interativas para iniciantes",
-    "lesson_complete": "Lição completa!",
+    "home_cta": "Aprenda a jogar",
+    "home_cta_progress": "{{done}} de {{total}} lições concluídas",
+    "home_cta_quiz": "Falta uma checagem rápida, depois é jogar",
+    "home_cta_ready": "Você está pronto: jogue uma partida de verdade",
+    "home_cta_sub": "Lições interativas para iniciantes",
+    "lesson_complete": "Lição concluída!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Nada está no 5-ponto, mas você rolou um 5. Afaste-se do seu verificador mais alto (o 3). Um número maior ainda tira um cheque.",
-            "hint": "Selecione o ponto 3, em seguida, toque na bandeja de Bear-off.",
-            "praise": "Essa é a regra de superação — você vai usá-la muito quando suportar.",
-            "title": "Maior morrer, ainda fora"
+            "body": "Não há nada no ponto 5, mas você tirou 5. Retire a pedra mais alta (a do ponto 3). Um número maior também retira uma pedra.",
+            "hint": "Selecione o ponto 3 e toque na área de retirada.",
+            "praise": "Essa é a regra do número maior: você vai usá-la muito ao retirar pedras.",
+            "title": "Número maior, sai do mesmo jeito"
           },
           "try": {
-            "body": "Todas as suas damas estão em casa (1–6), para que você possa suportar. Você rolou um 3 - tirar o verificador no 3 ponto fora do tabuleiro.",
-            "hint": "Selecione o ponto 3, em seguida, toque na área de Bear-off na borda direita.",
-            "praise": "Fora do tabuleiro! O primeiro a suportar as 15 vitórias.",
-            "title": "Leva um fora."
+            "body": "Todas as suas pedras estão em casa (1–6), então você pode retirar. Você tirou 3: tire do tabuleiro a pedra do ponto 3.",
+            "hint": "Selecione o ponto 3 e toque na área de retirada, na borda direita.",
+            "praise": "Fora do tabuleiro! Vence quem retirar primeiro as 15 pedras.",
+            "title": "Retire uma pedra"
           }
         },
-        "subtitle": "Como você ganha",
-        "title": "Deslocamento"
+        "subtitle": "Como se ganha",
+        "title": "Retirar pedras"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "A ferradura corresponde às damas do jogador cuja vez é. Ele traça a rota do jogador ao redor do tabuleiro e para casa (pontos 1-6).",
-            "title": "O caminho da ferradura"
+            "body": "A ferradura tem a cor das pedras de quem está na vez. Ela mostra o caminho desse jogador ao redor do tabuleiro até a casa (pontos 1–6).",
+            "title": "O caminho em ferradura"
           },
           "far": {
-            "body": "Toque no ponto onde as suas duas damas brancas mais distantes começam (o 24 pontos, superior-direita).",
-            "hint": "Olhe para a parte superior direita — duas damas brancas no ponto 24.",
-            "praise": "Aqueles começam profundamente na casa do oponente e têm a viagem mais longa.",
-            "title": "As tuas damas mais distantes."
+            "body": "Toque no ponto onde começam suas duas pedras brancas mais distantes (o ponto 24, no alto à direita).",
+            "hint": "Olhe no alto à direita: duas pedras brancas no ponto 24.",
+            "praise": "Elas começam no fundo da casa do adversário e têm o caminho mais longo.",
+            "title": "Suas pedras mais distantes"
           },
           "home_stack": {
-            "body": "Toque na grande pilha de cinco damas brancas já em sua casa (o 6 ponto).",
-            "hint": "Inferior-direita: cinco damas brancas no ponto 6.",
-            "praise": "Essa é a sua pilha de casa — cinco já esperando no 6 ponto, mais próximo de suportar. Todos os jogos começam assim.",
+            "body": "Toque na pilha de cinco pedras brancas que já estão na sua casa (o ponto 6).",
+            "hint": "Embaixo à direita: cinco pedras brancas no ponto 6.",
+            "praise": "Essa é sua pilha de casa: cinco pedras já esperam no ponto 6, as mais perto da saída. Toda partida começa assim.",
             "title": "Sua pilha de casa"
           }
         },
-        "subtitle": "Para que lado te moves?",
-        "title": "& Configuração da direção"
+        "subtitle": "Para que lado você anda",
+        "title": "Sentido e posição inicial"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "A faixa levantada no meio é o bar. Bater damas esperar aqui. Toca no bar.",
+            "body": "A faixa elevada no meio é a barra. As pedras batidas esperam aqui. Toque na barra.",
             "hint": "Toque na faixa vertical entre as metades esquerda e direita do tabuleiro.",
-            "praise": "Direita — aperte damas sentar na barra até que eles re-entram.",
-            "title": "O bar"
+            "praise": "Isso: as pedras batidas ficam na barra até voltarem ao jogo.",
+            "title": "A barra"
           },
           "explain": {
-            "body": "Tu e o teu adversário têm 15 damas. Mova - os ao redor do tabuleiro e off — o primeiro a terminar vence.",
-            "title": "O primeiro a suportar vitórias"
+            "body": "Você e o adversário têm 15 pedras cada. Leve-as pela volta do tabuleiro e retire-as: vence quem terminar primeiro.",
+            "title": "Vence quem retirar primeiro"
           },
           "home": {
-            "body": "Sua casa é pontos 1-6 (baixo-direita). Toque em qualquer ponto do seu tabuleiro.",
-            "hint": "Home é os seis pontos no quadrante inferior direito — numerados de 1 a 6.",
-            "praise": "Essa é a sua casa — damas deixam o tabuleiro daqui.",
-            "title": "Encontre o seu homeboard"
+            "body": "Sua casa são os pontos 1–6 (embaixo à direita). Toque em qualquer ponto do seu tabuleiro interno.",
+            "hint": "A casa são os seis pontos do quadrante de baixo à direita, numerados de 1 a 6.",
+            "praise": "Essa é sua casa: daqui as pedras saem do tabuleiro.",
+            "title": "Encontre sua casa"
           }
         },
-        "subtitle": "O que você está correndo para",
-        "title": "& Tabuleiro de Objectivos"
+        "subtitle": "Pelo que você corre",
+        "title": "Objetivo e tabuleiro"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Você está no bar — volte antes de mover mais alguém. Conte do 24 ponto para casa: um 4 pousa no ponto 21.",
-            "hint": "Toque na barra e, em seguida, no ponto 21 (não 23 — são apenas dois pips da barra).",
-            "praise": "Você está de volta ao tabuleiro — damas de bar sempre entrar primeiro.",
-            "title": "Digite da barra",
-            "wrong": "São apenas dois pips da barra (ponto 23). Conte quatro pontos de 24 para casa — esse é o ponto 21."
+            "body": "Você está na barra: volte ao tabuleiro antes de mover qualquer outra pedra. Conte a partir do ponto 24 em direção à sua casa: um 4 cai no ponto 21.",
+            "hint": "Toque na barra e depois no ponto 21 (não no 23: ele fica a só dois pips da barra).",
+            "praise": "Você voltou ao tabuleiro: pedras na barra sempre entram primeiro.",
+            "title": "Entre da barra",
+            "wrong": "Isso fica a só dois pips da barra (ponto 23). Conte quatro pontos a partir do 24 em direção à casa: é o ponto 21."
           },
           "hit": {
-            "body": "Um único verificador é uma mancha. Pouse nele e vai para o bar. Você rolou um 3 — atingiu a mancha preta no 5 ponto.",
-            "hint": "Toque no seu verificador no ponto 8, em seguida, toque no ponto 5.",
-            "praise": "Bate! Aquele cheque preto está agora no bar.",
-            "title": "Carregar na mancha"
+            "body": "Uma pedra sozinha num ponto é uma pedra solta (blot). Se você parar nela, ela vai para a barra. Você tirou 3: bata na pedra preta solta do ponto 5.",
+            "hint": "Toque na sua pedra do ponto 8 e depois no ponto 5.",
+            "praise": "Batida! Essa pedra preta agora está na barra.",
+            "title": "Bata na pedra solta"
           }
         },
         "subtitle": "Jogo de contato",
-        "title": "A & bater na barra"
+        "title": "Batidas e a barra"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "Duas ou mais damas do oponente bloqueiam um ponto — você não pode pousar lá. Toque na pilha preta bloqueada no 5 pontos.",
-            "hint": "A pilha destacada de duas damas pretas no ponto 5.",
-            "praise": "Certo — está encerrado o ponto (2+). Vazio, seu próprio, ou uma mancha (1) estão abertos.",
+            "body": "Duas ou mais pedras adversárias bloqueiam um ponto: você não pode parar ali. Toque na pilha preta bloqueada do ponto 5.",
+            "hint": "A pilha destacada de duas pedras pretas no ponto 5.",
+            "praise": "Isso: um ponto feito (2 ou mais) está fechado. Pontos vazios, os seus e os de pedra solta (1) estão abertos.",
             "title": "Pontos bloqueados"
           },
           "doubles": {
-            "body": "Os duplos dão-te quatro jogadas desse número. Você rolou 2-2 — são quatro 2s. Vá do ponto 8 para o ponto 6 quatro vezes.",
-            "hint": "Toque no ponto 8 e depois no ponto 6. Faça isso quatro vezes — uma vez por morrer.",
-            "praise": "Exatamente — duplos significam quatro movimentos com esse número.",
-            "title": "Duplos = quatro movimentos"
+            "body": "Uma dupla dá quatro movimentos daquele número. Você tirou 2-2: são quatro 2. Mova quatro vezes do ponto 8 para o ponto 6.",
+            "hint": "Toque no ponto 8 e depois no 6. Quatro vezes: uma por dado.",
+            "praise": "Exato: dupla são quatro movimentos com aquele número.",
+            "title": "Dupla = quatro movimentos"
           },
           "explain": {
-            "body": "Cada turno você joga dois dados e joga os dois números quando você pode. Você pode pousar em pontos vazios, suas próprias damas, ou um adversário solitário (uma mancha).",
-            "title": "Dois números, pontos em aberto"
+            "body": "A cada vez você rola dois dados e joga os dois números quando puder. Você pode parar em pontos vazios, nas suas próprias pedras ou em uma pedra adversária sozinha (uma pedra solta).",
+            "title": "Dois números, pontos livres"
           },
           "two_dice": {
-            "body": "Você rolou 3 e 1. Mova o verificador no ponto 8 três pips (para 5), e no ponto 6 pip um (para 5).",
-            "hint": "Selecione um verificador branco e toque no ponto 5. Faça isso tanto para o ponto 8 quanto para o ponto 6.",
-            "praise": "Boa — ambos os dados usados. Mesmo damas ou duas damas, ambos os números devem ser jogados quando você puder.",
-            "title": "Jogar ambos os dados"
+            "body": "Você tirou 3 e 1. Mova a pedra do ponto 8 três pips (para o 5) e a do ponto 6 um pip (para o 5).",
+            "hint": "Selecione uma pedra branca e toque no ponto 5. Faça isso a partir do 8 e do 6.",
+            "praise": "Boa: os dois dados usados. Com uma pedra ou com duas, os dois números devem ser jogados quando possível.",
+            "title": "Jogue os dois dados"
           }
         },
-        "subtitle": "Como funciona uma curva",
-        "title": "Movendo com dados"
+        "subtitle": "Como funciona uma vez",
+        "title": "Andar com os dados"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "O branco já retirou 5 peças e as outras estão perto de casa. As pretas ainda estão espalhadas. Toca numa peça branca: o branco vai à frente porque a contagem é menor.",
-            "hint": "Procura as peças mais perto de sair.",
-            "praise": "Exato. A contagem menor do branco significa menos caminho.",
-            "title": "Quem vai à frente?"
+            "body": "As brancas já retiraram 5 pedras e o resto está perto de casa. As pretas ainda estão espalhadas pelo tabuleiro. Toque em qualquer pedra branca: as brancas estão na frente na corrida, com a menor contagem de pips.",
+            "hint": "Procure as pedras mais perto da saída.",
+            "praise": "Exato! Menos pips significa menos caminho.",
+            "title": "Quem está na frente?"
           },
           "behind": {
-            "body": "A mesma posição. As peças pretas estão longe de casa e têm uma contagem muito maior. Toca numa peça preta: o preto vai atrás.",
-            "hint": "Procura as peças mais longe de casa.",
-            "praise": "Certo. Ao preto faltam muitos mais pips.",
-            "title": "Quem vai atrás?"
+            "body": "Mesma posição. As pedras pretas estão longe de casa, com muito mais pips. Toque em qualquer pedra preta: as pretas estão atrás na corrida.",
+            "hint": "Procure as pedras mais longe de casa.",
+            "praise": "Isso! As pretas precisam de muito mais pips para retirar as pedras.",
+            "title": "Quem está atrás?"
           },
           "explain": {
             "body": "É a soma dos pontos que as tuas peças ainda têm de percorrer para sair. Cada peça conta o número do ponto: uma no 6 vale 6, uma no 13 vale 13. Menos é melhor, estás mais perto de sair. Os números aparecem em cima em cada partida, com um ponto para a cor.",
             "title": "O que é a contagem de pips?"
           }
         },
-        "subtitle": "Ver quem vai à frente na corrida",
-        "title": "Contagem de pips: o marcador"
+        "subtitle": "Saiba quem está ganhando a corrida",
+        "title": "Contagem de pips: o placar da corrida"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "A tua casa é forte e o adversário tem isoladas ou peças na barra. Acerta em cada isolada e fecha os pontos de casa para as deixar na barra enquanto sais. Aqui o branco tem três pontos de casa e o preto uma peça na barra.",
+            "body": "Seu tabuleiro interno é forte e o adversário tem pedras soltas ou pedras na barra. Ataque! Bata em toda pedra solta que puder e feche os pontos do seu tabuleiro interno. O objetivo é deixar as pedras dele presas na barra enquanto você retira as suas. Aqui as brancas têm três pontos feitos em casa e as pretas têm uma pedra na barra.",
             "title": "Blitz"
           },
           "identify": {
-            "body": "Isto é um jogo de muralha. Toca num ponto da muralha branca, os pontos seguidos que bloqueiam o preto.",
-            "hint": "Procura pontos seguidos com pelo menos 2 peças brancas.",
-            "praise": "Perfeito. Esse muro é a muralha. As peças de trás do preto estão presas.",
-            "title": "Encontra a muralha"
+            "body": "Isto é um jogo de bloqueio. Toque em qualquer ponto do bloqueio branco: o muro de pontos feitos em sequência que barra as pretas.",
+            "hint": "Procure pontos seguidos com pelo menos 2 pedras brancas cada.",
+            "praise": "Perfeito! Esse muro é o bloqueio: as pedras de trás das pretas estão presas.",
+            "title": "Ache o bloqueio"
           },
           "prime": {
-            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que limita as peças de trás do preto. Alonga-a um ponto de cada vez.",
-            "title": "Muralha"
+            "body": "Você construiu um muro de pontos feitos em sequência: um bloqueio (prime). Os pontos destacados formam um bloqueio de 4 pontos que trava as pedras de trás das pretas. Aumente o bloqueio um ponto de cada vez e prenda as pedras dele atrás.",
+            "title": "Jogo de bloqueio"
           },
           "running": {
-            "body": "Vais à frente e não há peças isoladas ao alcance. Traz as peças para casa sem deixar isoladas. Aqui o branco vai à frente com uma casa sólida.",
+            "body": "Você está na frente na corrida e não há pedras soltas ao alcance. O plano é simples: leve as pedras para casa com segurança e não deixe pedras soltas. Nada de invenção: só corra. Nesta posição as brancas estão na frente, com um tabuleiro interno sólido.",
             "title": "Corrida"
           }
         },
-        "subtitle": "Reconhecer planos de jogo clássicos",
+        "subtitle": "Reconheça os planos de jogo clássicos",
         "title": "Planos de jogo"
       }
     },
-    "locked": "Completar a lição anterior primeiro",
+    "locked": "Conclua antes a lição anterior",
     "next_lesson": "Próxima lição",
     "quiz": {
       "bar": {
-        "a": "Mova seu verificador mais distante primeiro",
-        "b": "Digite esse verificador antes de mover qualquer outra coisa",
-        "c": "Salta a tua vez.",
-        "prompt": "Enquanto tens um verificador no bar, tens de..."
+        "a": "Mover primeiro sua pedra mais distante",
+        "b": "Entrar com essa pedra antes de mover qualquer outra",
+        "c": "Passar a vez",
+        "prompt": "Enquanto você tiver uma pedra na barra, você precisa…"
       },
       "bear": {
-        "a": "Sempre que rolares um 6",
-        "b": "Só depois de acertares numa mancha",
-        "c": "Quando todas as 15 damas estão em seu homeboard",
-        "prompt": "Quando é que aguentas?"
+        "a": "Sempre que tirar 6",
+        "b": "Só depois de bater numa pedra solta",
+        "c": "Quando as 15 pedras estiverem no seu tabuleiro interno",
+        "prompt": "Quando você pode retirar pedras?"
       },
       "blot": {
-        "a": "Qualquer pilha de três ou mais",
-        "b": "Um único verificador num ponto — pode ser atingido",
-        "c": "Duas ou mais damas sobre um ponto — uma observação feita",
-        "prompt": "O que é uma mancha?"
+        "a": "Qualquer pilha de três ou mais pedras",
+        "b": "Uma pedra sozinha num ponto: ela pode ser batida",
+        "c": "Duas ou mais pedras num ponto: um ponto feito",
+        "prompt": "O que é uma pedra solta (blot)?"
       },
       "pip_ahead": {
-        "a": "O teu adversário, com a contagem maior",
-        "b": "Tu, com a contagem menor",
-        "c": "Ninguém — a contagem não mede a corrida",
-        "prompt": "A tua contagem é 85 e a do adversário 102. Quem vai à frente?"
+        "a": "O adversário, com a contagem maior",
+        "b": "Você, com a contagem menor",
+        "c": "Ninguém: a contagem de pips não mede a corrida",
+        "prompt": "Sua contagem de pips é 85 e a do adversário é 102. Quem está na frente na corrida?"
       },
       "pip_meaning": {
-        "a": "Os pontos que as tuas peças ainda têm de percorrer para sair",
-        "b": "Quantas peças tens no tabuleiro",
-        "c": "Quantos pontos fechaste",
-        "prompt": "O que representa a tua contagem de pips?"
+        "a": "O total de pontos que suas pedras precisam percorrer para sair",
+        "b": "O número de pedras que você tem no tabuleiro",
+        "c": "O número de pontos que você fez",
+        "prompt": "O que sua contagem de pips representa?"
       },
       "strat_blitz": {
-        "a": "Acertar na isolada e continuar a casa (blitz)",
-        "b": "Ignorar a isolada e correr as peças de trás",
-        "c": "Partir a casa para fazer uma âncora",
-        "prompt": "Fechaste 3 pontos de casa e o adversário tem uma isolada lá. Qual é o melhor plano?"
+        "a": "Bater na pedra solta e continuar fechando a casa (blitz)",
+        "b": "Ignorar a pedra solta e correr com as pedras de trás",
+        "c": "Desfazer a casa para formar uma âncora",
+        "prompt": "Você tem 3 pontos feitos no tabuleiro interno e o adversário tem uma pedra solta nele. Qual é o melhor plano?"
       },
       "strat_prime": {
-        "a": "Partir a muralha para atacar",
-        "b": "Manter a muralha e alongá-la — estão presos",
-        "c": "Sair o mais depressa possível",
-        "prompt": "Duas peças do adversário estão atrás da tua muralha de 5. Qual é o teu plano?"
+        "a": "Desfazer o bloqueio para atacar",
+        "b": "Manter o bloqueio e aumentá-lo: as pedras dele estão presas",
+        "c": "Retirar pedras o mais rápido possível",
+        "prompt": "O adversário tem duas pedras presas atrás do seu bloqueio de 5 pontos. Qual é seu plano?"
       }
     },
-    "replay": "Repetir",
-    "skip_to_play": "Saltar para Jogar",
+    "replay": "Rever",
+    "skip_to_play": "Pular e jogar",
     "step_progress": "Passo {{current}} de {{total}}",
-    "subtitle": "Aulas curtas e interativas — então você está pronto",
-    "title": "Aprender a jogar"
+    "subtitle": "Sete lições rápidas e você estará pronto para jogar",
+    "title": "Aprenda a jogar"
   },
   "not_found": {
-    "body": "Essa página não faz parte do Backgammon Mastermind. Vá para casa para aprender ou começar um jogo.",
+    "body": "Essa página não faz parte do Backgammon Mastermind. Volte ao início para aprender ou começar uma partida.",
     "heading": "Fora do tabuleiro",
     "home_a11y": "Ir para o início",
     "home_cta": "Voltar ao início",
@@ -494,31 +494,31 @@
     "about": "Sobre",
     "app_name": "Backgammon Mastermind",
     "arabic": "Árabe",
-    "developer": "Programador",
-    "developer_blurb": "Carrega qualquer posição do tabuleiro para testar o motor. Inicia um jogo normal a partir dessa posição. Não é uma funcionalidade do produto.",
-    "developer_json": "JSON da posição",
+    "developer": "Desenvolvedor",
+    "developer_blurb": "Carregue qualquer posição para testar o motor. Começa uma partida normal a partir dela. Não é um recurso do produto.",
+    "developer_json": "Posição em JSON",
     "developer_load": "Carregar JSON",
     "developer_open": "Carregar posição",
-    "developer_presets": "Predefinições de teste",
+    "developer_presets": "Posições de teste",
     "english": "Inglês",
     "game": "Jogo",
     "general": "Geral",
     "github": "GitHub",
     "language": "Idioma",
-    "link_error_body": "Tente novamente mais tarde.",
+    "link_error_body": "Tente de novo mais tarde.",
     "link_error_title": "Não foi possível abrir o link",
     "links": "Links",
     "more": "Mais",
     "open_source": "Avisos de código aberto",
-    "privacy": "Política de Privacidade",
+    "privacy": "Política de privacidade",
     "rate": "Avaliar",
     "share": "Compartilhar",
     "support": "Suporte",
-    "support_us": "Apoie-nos",
-    "terms": "Termos de Serviço",
+    "support_us": "Apoie a gente",
+    "terms": "Termos de uso",
     "title": "Ajustes",
     "version": "Versão",
     "website": "Site"
   },
-  "welcome": "Bem- vindo ao Backgammon Mastermind"
+  "welcome": "Boas-vindas ao Backgammon Mastermind"
 }
