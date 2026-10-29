@@ -4,6 +4,20 @@
     "heading": "出问题了",
     "retry": "重试"
   },
+  "feedback": {
+    "attach_hint": "接下来会打开邮件应用，你可以在其中附上截图。",
+    "body_label": "详情",
+    "body_placeholder": "发生了什么，或者怎样能让应用更好？",
+    "error": "无法打开邮件应用。请发邮件至 {{email}}。",
+    "intro": "发现了问题或有好点子？告诉我们，每条反馈我们都会认真阅读。",
+    "open_a11y": "发送反馈",
+    "send": "发送",
+    "sent": "感谢你的反馈！",
+    "settings_row": "发送反馈",
+    "subject_label": "标题",
+    "subject_placeholder": "关于什么？",
+    "title": "反馈"
+  },
   "game": {
     "caption": {
       "selected": "选中的 - 点击突出显示的点, 或取消"

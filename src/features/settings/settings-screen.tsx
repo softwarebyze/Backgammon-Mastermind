@@ -107,9 +107,11 @@ export function SettingsScreen() {
             <SettingsItem
               text="settings.support"
               icon={<Support color={iconColor} />}
+              testID="settings-feedback"
               onPress={() => {
                 posthog.capture('support_opened');
-                runExternalAction(() => openExternalUrl(APP_LINKS.support));
+                // The feedback form mails support too, with device details filled in.
+                router.push('/feedback');
               }}
             />
           </SettingsContainer>

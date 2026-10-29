@@ -8,6 +8,7 @@ flows:
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml
   - app/stats.yaml
+  - app/feedback.yaml
 
 excludeTags:
   - util

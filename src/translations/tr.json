@@ -4,6 +4,20 @@
     "heading": "Bir şey yanlış gitti yanlış bir şey gitti",
     "retry": "Retry"
   },
+  "feedback": {
+    "attach_hint": "Ardından e-posta uygulamanız açılır, böylece ekran görüntüsü ekleyebilirsiniz.",
+    "body_label": "Ayrıntılar",
+    "body_placeholder": "Ne oldu ya da uygulamayı ne daha iyi yapardı?",
+    "error": "E-posta uygulaması açılamadı. Bize {{email}} adresinden yazın.",
+    "intro": "Bir hata mı buldunuz ya da bir fikriniz mi var? Bize yazın, her mesajı okuyoruz.",
+    "open_a11y": "Geri bildirim gönder",
+    "send": "Gönder",
+    "sent": "Geri bildiriminiz için teşekkürler!",
+    "settings_row": "Geri bildirim gönder",
+    "subject_label": "Başlık",
+    "subject_placeholder": "Konu nedir?",
+    "title": "Geri bildirim"
+  },
   "game": {
     "caption": {
       "selected": "Seçilen – vurgulanan bir noktaya dokun veya Cancel"

@@ -16,6 +16,7 @@ export const APP_LINKS = {
   website: WEBSITE_URL,
   privacy: `${WEBSITE_URL}/privacy/`,
   terms: `${WEBSITE_URL}/terms/`,
+  supportEmail: SUPPORT_EMAIL,
   support: `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${Env.EXPO_PUBLIC_NAME} support`)}`,
 } as const;
 

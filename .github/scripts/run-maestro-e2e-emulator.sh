@@ -34,6 +34,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/stats.yaml" \
+  "${WORKSPACE}/.maestro/app/feedback.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \
