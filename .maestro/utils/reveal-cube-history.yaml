@@ -1,5 +1,7 @@
 # Horizontal history is below the board, not at the screen's swipe center.
 # Anchor every swipe to the strip; RIGHT reveals older entries, LEFT newer ones.
+# Maestro parses a swipe's direction before env substitution, so DIRECTION
+# picks one of two literal swipes instead of being interpolated.
 appId: ${APP_ID}
 ---
 - repeat:
@@ -9,11 +11,23 @@ appId: ${APP_ID}
           when:
             notVisible:
               id: ${EVENT_ID}
+            true: ${DIRECTION === 'RIGHT'}
           commands:
             - swipe:
                 from:
                   id: history-turn-strip
-                direction: ${DIRECTION}
+                direction: RIGHT
+                duration: 400
+      - runFlow:
+          when:
+            notVisible:
+              id: ${EVENT_ID}
+            true: ${DIRECTION === 'LEFT'}
+          commands:
+            - swipe:
+                from:
+                  id: history-turn-strip
+                direction: LEFT
                 duration: 400
 - assertVisible:
     id: ${EVENT_ID}
