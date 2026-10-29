@@ -50,6 +50,8 @@ type Props = {
   onCancelSelection: () => void;
   canUndo?: boolean;
   onUndo?: () => void;
+  /** Home, undo/redo, settings and new game; compact in the landscape rail. */
+  toolbar?: (compact: boolean) => React.ReactNode;
 };
 
 /**
@@ -260,8 +262,10 @@ export function GameScreenLayout({
   onCancelSelection,
   canUndo = false,
   onUndo,
+  toolbar,
 }: Props) {
   const {
+    insets,
     landscape,
     desktop,
     chromeWidth,
@@ -325,12 +329,15 @@ export function GameScreenLayout({
         styles.root,
         landscape ? styles.rootLandscape : styles.rootPortrait,
         contentInsets,
+        // No navigation bar: the page starts under the status bar itself.
+        { paddingTop: insets.top },
         landscape && stageMaxWidth != null
           ? { maxWidth: stageMaxWidth, width: '100%', alignSelf: 'center' }
           : null,
       ]}
     >
       <FocusAwareStatusBar />
+      {landscape || !toolbar ? null : <View style={styles.chromeColumn}>{toolbar(false)}</View>}
       <View
         style={[
           styles.boardSlotHost,
@@ -383,6 +390,7 @@ export function GameScreenLayout({
               keyboardShouldPersistTaps="handled"
               testID="game-landscape-chrome"
             >
+              {toolbar ? toolbar(true) : null}
               {chrome}
             </ScrollView>
           )
