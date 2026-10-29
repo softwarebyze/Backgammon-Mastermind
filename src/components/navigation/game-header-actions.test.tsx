@@ -62,3 +62,12 @@ it('provides Hebrew undo and redo labels rather than the English fallback', () =
   expect(he.game.controls.undo_a11y).toBe('ביטול המהלך');
   expect(he.game.controls.redo_a11y).toBe('ביצוע המהלך מחדש');
 });
+
+it('offers a bookmark that saves the position only when the screen supports it', () => {
+  const onSavePosition = jest.fn();
+  const { rerender } = render(<GameHeaderActions onOptions={jest.fn()} onReset={jest.fn()} />);
+  expect(screen.queryByTestId('save-position-button')).toBeNull();
+  rerender(<GameHeaderActions onOptions={jest.fn()} onReset={jest.fn()} onSavePosition={onSavePosition} />);
+  fireEvent.press(screen.getByRole('button', { name: 'Save this position' }));
+  expect(onSavePosition).toHaveBeenCalledTimes(1);
+});
