@@ -1,8 +1,8 @@
 {
   "error": {
-    "body": "Uygulamayı devam etmeye yeniden başlayın.",
-    "heading": "Bir şey yanlış gitti yanlış bir şey gitti",
-    "retry": "Retry"
+    "body": "Devam etmek için uygulamayı yeniden başlatın.",
+    "heading": "Bir şeyler ters gitti",
+    "retry": "Tekrar dene"
   },
   "feedback": {
     "attach_hint": "Ardından e-posta uygulamanız açılır, böylece ekran görüntüsü ekleyebilirsiniz.",
@@ -20,26 +20,26 @@
   },
   "game": {
     "caption": {
-      "selected": "Seçilen – vurgulanan bir noktaya dokun veya Cancel"
+      "selected": "Seçildi: vurgulanan bir haneye ya da İptal'e dokunun"
     },
     "controls": {
-      "bear_off_a11y": "Taş topla",
-      "cancel": "Cancel Cancel Cancel Cancel",
-      "cancel_a11y": "İptal seçimi",
+      "bear_off_a11y": "Pul topla",
+      "cancel": "İptal",
+      "cancel_a11y": "Seçimi iptal et",
       "confirm_move": "Hamleyi onayla",
-      "confirm_move_a11y": "Hamleyi onayla ve turu bitir",
-      "leave_game_a11y": "Oyun bırak ve eve geri dön",
-      "loading": "Yükleniyor...",
-      "new_game_message": "Yeni oyun başlatılsın mı?",
-      "new_game_title": "Yeni Oyun",
-      "no_legal_moves": "Oynanabilir hamle yok…",
-      "play_again": "Tekrar Oyna",
+      "confirm_move_a11y": "Hamleyi onayla ve sırayı bitir",
+      "leave_game_a11y": "Oyundan çık ve ana ekrana dön",
+      "loading": "Yükleniyor…",
+      "new_game_message": "Yeni bir oyun başlatılsın mı?",
+      "new_game_title": "Yeni oyun",
+      "no_legal_moves": "Oynanabilecek hamle yok…",
+      "play_again": "Tekrar oyna",
       "play_again_a11y": "Tekrar oyna",
-      "redo_a11y": "Redo hareket",
-      "roll_dice": "Zar At",
+      "redo_a11y": "Hamleyi yinele",
+      "roll_dice": "Zar at",
       "roll_dice_a11y": "Zar at",
-      "start_new_game_a11y": "Yeni oyun başla",
-      "undo_a11y": "Undo hareketsiz",
+      "start_new_game_a11y": "Yeni oyun başlat",
+      "undo_a11y": "Hamleyi geri al",
       "undo_move": "Geri al"
     },
     "hint": {
@@ -47,29 +47,29 @@
       "back_to_turn_a11y": "Sırama dön ve ipucunu kapat",
       "button": "İpucu",
       "button_a11y": "Hamle ipucu al",
-      "error": "İpucu bulunamadı — yeniden denemek için dokun",
-      "error_a11y": "İpucunu yeniden dene",
+      "error": "İpucu bulunamadı: tekrar denemek için dokunun",
+      "error_a11y": "İpucunu tekrar dene",
       "finding": "En iyi hamle aranıyor…",
       "play": "Bu hamleyi oyna",
       "play_a11y": "Önerilen hamleyi oyna",
       "suggested": "Önerilen hamle"
     },
     "nudge": {
-      "roll_first": "Önce zarları at"
+      "roll_first": "Önce zar atın"
     },
     "opening": {
-      "compare": "{{winner}} {{high}}, {{low}}'u geçti",
+      "compare": "{{winner}}: {{high}}, {{low}} karşısında kazandı",
       "goes_first": "{{player}} başlıyor!",
       "roll": "At",
-      "rolls_for_opening": "{{player}} açılış için zar atıyor",
+      "rolls_for_opening": "{{player}} başlamak için zar atıyor",
       "tie": "Berabere!",
-      "tie_again": "Aynı sayı — tekrar atın",
+      "tie_again": "Aynı sayı: yeniden atın",
       "waiting_roll": "{{player}} zar atıyor…",
-      "who_goes_first": "Kim başlayacak?",
-      "your_roll": "Zar atmak için herhangi bir yere dokun"
+      "who_goes_first": "Kim başlıyor?",
+      "your_roll": "Zar atmak için herhangi bir yere dokunun"
     },
     "options": {
-      "open_settings": "Dil ve daha fazlası",
+      "open_settings": "Dil ve diğerleri",
       "open_settings_hint": "Ayarları aç",
       "title": "Oyun seçenekleri"
     },
@@ -79,114 +79,114 @@
       "you": "Siz"
     },
     "preferences": {
-      "auto_move": "Zorunlu hamlede otomatik oyna",
-      "auto_move_hint": "Tek geçerli hamleyi otomatik oynar",
-      "auto_roll": "Zarı otomatik at",
-      "auto_roll_hint": "Sıra sende olduğunda otomatik zar atar",
-      "confirm_move": "Hamleyi onayla",
-      "confirm_move_hint": "Tur bitmeden sor ki gözden geçirebilesin veya geri alabilesin",
+      "auto_move": "Zorunlu hamleyi otomatik oyna",
+      "auto_move_hint": "Tek geçerli hamle otomatik oynanır",
+      "auto_roll": "Otomatik zar",
+      "auto_roll_hint": "Sıranız başladığında zar kendiliğinden atılır",
+      "confirm_move": "Hamle onayı",
+      "confirm_move_hint": "Sıranız bitmeden önce sorar; kontrol edebilir ya da geri alabilirsiniz",
       "dice_display": "Zar görünümü",
       "dice_dots": "Noktalar",
-      "dice_numbers": "Sayılar",
-      "direction_overlay": "Yön kılavuzu",
+      "dice_numbers": "Rakamlar",
+      "direction_overlay": "Hareket yönü",
       "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
       "move_hints": "Hamle ipuçları",
       "move_hints_hint": "Taş oynatabileceğiniz hanelerin numaralarını vurgular",
       "point_numbers": "Hane numaraları",
-      "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
+      "point_numbers_hint": "Tahtada 1–24 numaralarını göster",
       "section_automation": "Otomasyon",
       "section_board": "Tahta",
       "section_dice": "Zarlar",
       "sound": "Oyun sesleri",
-      "sound_hint": "Hafif zar, kırma ve kazanma sesleri — sessiz moda uyar",
-      "tutor_mode": "Eğitmen modu",
-      "tutor_mode_hint": "Motor hamlelerini denetler ve büyük hataları işaretler"
+      "sound_hint": "Zar, vuruş ve galibiyet için yumuşak sesler; sessiz moda uyar",
+      "tutor_mode": "Öğretmen modu",
+      "tutor_mode_hint": "Motor hamlelerinizi kontrol eder ve büyük hataları işaretler"
     },
     "review": {
-      "back_to_live": "Canlı oyuna dön",
-      "live": "Canlı oyun",
-      "live_short": "Canlı",
+      "back_to_live": "Oyuna dön",
+      "live": "Süren oyun",
+      "live_short": "Şimdi",
       "move_a11y": "Hamle {{ply}}, {{player}}",
       "move_position": "Hamle {{current}}/{{total}} · {{player}}",
-      "next": "Sonraki el",
+      "next": "Sonraki sıra",
       "opening": "Başlangıç dizilişi",
       "pause_replay": "Duraklat",
       "player_black": "Siyah",
       "player_white": "Beyaz",
-      "previous": "Önceki el",
+      "previous": "Önceki sıra",
       "replay": "Tekrar izle",
-      "scrubber_hint": "İncelemek için bir ele dokun",
+      "scrubber_hint": "İncelemek için bir sıraya dokunun",
       "start": "Başlangıç",
-      "turn_a11y": "El {{turn}}, {{player}}",
-      "turn_label": "El {{turn}}/{{totalTurns}} · {{player}}",
-      "turn_position": "El {{turn}}/{{totalTurns}} · hamle {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "İnceleme modundasın — oynamaya devam etmek için Canlı'ya dokun"
+      "turn_a11y": "Sıra {{turn}}, {{player}}",
+      "turn_label": "Sıra {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "Sıra {{turn}}/{{totalTurns}} · hamle {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Oyunu inceliyorsunuz: oynamaya devam etmek için Şimdi'ye ya da Oyuna dön'e dokunun"
     },
     "status": {
-      "black_wins": "Siyah Kazandı",
-      "computer_wins": "Bilgisayar Kazandı",
-      "off_short": "dışarı",
-      "pips_a11y": "{{player}}: {{pips}} pip, 15 pulun {{off}} tanesi çıkarıldı",
-      "white_wins": "🏆 Beyaz Kazandı!",
-      "you_win": "🏆 Kazandın!"
+      "black_wins": "🏆 Siyah kazandı!",
+      "computer_wins": "Bilgisayar kazandı",
+      "off_short": "toplanan",
+      "pips_a11y": "{{player}}: {{pips}} pip, 15 pulun {{off}} tanesi toplandı",
+      "white_wins": "🏆 Beyaz kazandı!",
+      "you_win": "🏆 Kazandınız!"
     },
     "strategy": {
       "close_a11y": "Strateji açıklamasını kapat",
       "got_it": "Anladım",
       "label": {
-        "backgame": "Geride oyun",
-        "blitz": "Blitz",
-        "developing": "Geliştirme",
+        "backgame": "Geriden oyun",
+        "blitz": "Yıldırım saldırısı",
+        "developing": "Gelişim",
         "holding": "Tutma oyunu",
-        "priming": "Duvar",
+        "priming": "Blok oyunu",
         "running": "Yarış"
       },
       "tip": {
-        "backgame": "Geride kal, evini güçlendir ve geç fırsatı bekle.",
-        "blitz": "Saldır: tek başına duran her taşı vur ve evini kapat.",
-        "developing": "Puan kur, 5 için çabala ve esnek kal.",
-        "holding": "Çapanı tut, güvende kal ve vurma fırsatını bekle.",
-        "priming": "Duvarnı nokta nokta büyüt ve onların arka taşlarını haps et.",
-        "running": "Taşlarını verimli biçimde eve getir ve hâlâ risk altındaki taşları koru."
+        "backgame": "Geride kalın, evinizi güçlü tutun ve geç bir vuruş fırsatı bekleyin.",
+        "blitz": "Saldırın: vurabildiğiniz her açık pulu vurun ve evinizi kapatın.",
+        "developing": "Kapı yapın, 5 numaralı hane için savaşın ve esnek kalın.",
+        "holding": "Çapanızı tutun, güvenli oynayın ve vurma fırsatını bekleyin.",
+        "priming": "Duvarınızı kapı kapı uzatın ve rakibin geride kalan pullarını hapsedin.",
+        "running": "Pullarınızı verimli şekilde eve getirin ve hâlâ vurulabilecek olanları koruyun."
       },
       "why": {
-        "backgame": "{{point1}} ve {{point2}} üzerinde derin çapaların var ama yarışta {{pipGap}} puan geridesin.",
-        "blitz_bar": "Barda {{barCount}} var ve evinde zaten {{homeMade}} puan yaptın.",
-        "blitz_bar_blot": "Barda {{barCount}} var ve evinde tek başına duran 1 taş var; ayrıca evinde zaten {{homeMade}} puan yaptın.",
-        "blitz_bar_blots": "Barda {{barCount}} var ve evinde {{blotCount}} tek başına duran taş var; ayrıca evinde zaten {{homeMade}} puan yaptın.",
-        "blitz_blot": "Evinde tek başına duran 1 taş var ve zaten {{homeMade}} puan yaptın.",
-        "blitz_blots": "Evinde {{blotCount}} tek başına duran taş var ve zaten {{homeMade}} puan yaptın.",
-        "developing": "Tahtada henüz duvar, çapa ya da saldırı yok — oyun daha şekilleniyor.",
-        "holding": "{{point}} üzerinde bir çapa tutuyorsun ve {{pipGap}} puan geridesin.",
-        "priming": "{{prime}} puanlık bir duvar kurdun.",
-        "priming_anchor": "{{prime}} puanlık bir duvar kurdun ve arkasında da bir çapa var.",
-        "running_lead": "Yarışta {{foePips}}-{{myPips}} ile öndesin ve vurulabilir menzilde tek başına duran taş yok.",
-        "running_race": "Temas mümkün değil — doğrudan taş çıkarma yarışı ({{myPips}} karşı {{foePips}} puan)."
+        "backgame": "{{point1}} ve {{point2}} numaralı hanelerde derin çapalarınız var, ama yarışta {{pipGap}} pip gerideysiniz.",
+        "blitz_bar": "Barda: {{barCount}}, siz de evinizde {{homeMade}} kapı yaptınız.",
+        "blitz_bar_blot": "Barda: {{barCount}}, evinizde 1 açık pul var ve orada {{homeMade}} kapı yaptınız.",
+        "blitz_bar_blots": "Barda: {{barCount}}, evinizde {{blotCount}} açık pul var ve orada {{homeMade}} kapı yaptınız.",
+        "blitz_blot": "Evinizde 1 açık pul var ve orada {{homeMade}} kapı yaptınız.",
+        "blitz_blots": "Evinizde {{blotCount}} açık pul var ve orada {{homeMade}} kapı yaptınız.",
+        "developing": "Henüz blok, çapa ya da saldırı yok: oyun daha şekilleniyor.",
+        "holding": "{{point}} numaralı hanede çapanız var ve {{pipGap}} pip gerideysiniz.",
+        "priming": "{{prime}} kapılık bir blok kurdunuz.",
+        "priming_anchor": "Arkasında çapa olan {{prime}} kapılık bir blok kurdunuz.",
+        "running_lead": "Yarışta öndesiniz ({{myPips}} - {{foePips}}) ve vuruş menzilinde açık pul yok.",
+        "running_race": "Artık temas yok: pul toplamak için saf bir yarış ({{myPips}} - {{foePips}} pip)."
       }
     },
     "turn": {
       "black_is_moving": "Siyah oynuyor…",
       "black_is_rolling": "Siyah zar atıyor…",
-      "black_turn": "Siyahın sırası",
-      "cant_enter": "{{die1}} ve {{die2}} ile bardan giremezsiniz — sıranızı bitirin",
-      "computer_turn": "Bilgisayarın sırası",
-      "enter_from_bar": "Diğer pulları oynatmadan önce bardan girin",
+      "black_turn": "Sıra Siyahta",
+      "cant_enter": "{{die1}} ve {{die2}} ile bardan giremezsiniz: sıranızı bitirin",
+      "computer_turn": "Sıra bilgisayarda",
+      "enter_from_bar": "Diğer pulları oynamadan önce bardaki pulu oyuna sokun",
       "game_over": "Oyun bitti",
-      "move_checkers": "{{color}} pullarınızı oynatın",
-      "no_legal_moves": "{{die1}} ve {{die2}} ile geçerli hamle yok — sıranızı bitirin",
+      "move_checkers": "Pullarınızı oynayın ({{color}})",
+      "no_legal_moves": "{{die1}} ve {{die2}} ile geçerli hamle yok: sıranızı bitirin",
       "opening_roll": "Açılış zarı",
-      "roll_dice": "Zarları atın — {{color}} ile oynuyorsunuz",
-      "white_turn": "Beyazın sırası",
+      "roll_dice": "Zar atın: siz {{color}} oynuyorsunuz",
+      "white_turn": "Sıra Beyazda",
       "your_turn": "Sıra sizde"
     },
     "tutor": {
       "back_to_question": "Soruya dön",
-      "back_to_question_a11y": "Yanıtı göstermeden geri dön",
+      "back_to_question_a11y": "Cevabı görmeden geri dön",
       "band": {
         "big_blunder": "Büyük hata",
         "fine": "İyi",
         "mistake": "Hata",
-        "slip": "Ufak kaçış"
+        "slip": "Küçük hata"
       },
       "best": "En iyi",
       "best_played": "En iyi:",
@@ -195,348 +195,348 @@
         "best_move": "En iyi hamle",
         "both": "İkisi",
         "mine": "Benimki",
-        "show_a11y": "{{label}} tahtasını göster",
+        "show_a11y": "“{{label}}” tahtasını göster",
         "start": "Başlangıç",
         "starting_position": "Başlangıç konumu",
-        "your_move": "Hamlen",
-        "your_move_replayed": "Hamlen, yeniden"
+        "your_move": "Hamleniz",
+        "your_move_replayed": "Hamleniz, tekrar"
       },
       "details_hide": "Ayrıntıları gizle",
       "details_hide_a11y": "Ayrıntıları gizle",
       "details_show": "Ayrıntılar",
       "details_show_a11y": "Ayrıntıları göster",
-      "details_summary": "Hamlen {{count}} seçenekten {{rank}}. sırada ve en iyi hamleden oyun başına yaklaşık {{loss}} puan daha düşük.",
-      "equity_explainer": "Motor her hamleyi, oyun başına kazanmayı beklediği puanlara göre ortalamayla puanlar. Yüksek olan daha iyidir.",
-      "equity_pts": "{{points}} p",
-      "keep": "Hamlemi tut",
-      "keep_a11y": "Hamlemi tut ve devam et",
-      "meter_a11y": "Hata şiddeti: {{severity}}. Oyun başına yaklaşık {{loss}} puan kaybı. Ölçek GNU Backgammon’a göredir: 0.04’te şüpheli, 0.08’de kötü, 0.16’da çok kötü.",
+      "details_summary": "Hamleniz {{count}} seçenek arasında {{rank}}. sırada ve en iyi hamleden oyun başına ortalama yaklaşık {{loss}} puan daha az getiriyor.",
+      "equity_explainer": "Motor her hamleyi, oyun başına ortalama kaç puan kazandırmasının beklendiğine göre puanlar. Yüksek olan daha iyidir.",
+      "equity_pts": "{{points}} puan",
+      "keep": "Hamlemi koru",
+      "keep_a11y": "Hamlemi koru ve devam et",
+      "meter_a11y": "Hatanın ağırlığı: {{severity}}. Oyun başına yaklaşık {{loss}} puan kayıp. Ölçek GNU Backgammon'ı izler: 0,04'ten itibaren şüpheli, 0,08'den itibaren kötü, 0,16'dan itibaren çok kötü.",
       "meter_caption": "Hata ölçeği (GNU Backgammon)",
       "play_best": "En iyi hamleyi oyna",
-      "play_best_a11y": "Hamlemi geri al ve en iyi hamleyi oyna",
-      "question_body": "Hamlen bu zarı oynamanın {{count}} yolundan {{rank}}. sırada. Ortalama olarak en iyi hamleden oyun başına yaklaşık {{loss}} puan daha düşük.",
+      "play_best_a11y": "Hamlemi geri al ve en iyisini oyna",
+      "question_body": "Hamleniz, bu zarı oynamanın {{count}} yolu arasında {{rank}}. sırada. Ortalamada en iyi hamleden oyun başına yaklaşık {{loss}} puan daha az getiriyor.",
       "rank": "{{rank}}",
-      "rank_yours": "{{rank}} (seninki)",
-      "replay_pause_a11y": "{{label}} tekrarını duraklat",
-      "replay_play_a11y": "{{label}} tekrarını oynat",
+      "rank_yours": "{{rank}} (sizinki)",
+      "replay_pause_a11y": "“{{label}}” oynatmasını duraklat",
+      "replay_play_a11y": "“{{label}}” oynatmasını başlat",
       "reveal": "En iyi hamleyi göster",
-      "reveal_a11y": "Önerilen hamleyi aç",
-      "rolled": "{{dice}} attın",
+      "reveal_a11y": "Önerilen hamleyi göster",
+      "rolled": "Zarınız: {{dice}}",
       "show_mine": "Hamlemi göster",
-      "show_mine_a11y": "En iyi hamleyi açmadan yalnız benim hamlemi göster",
+      "show_mine_a11y": "En iyi hamleyi açık etmeden yalnızca benim hamlemi göster",
       "take_back": "Geri al ve yeniden dene",
-      "take_back_a11y": "Tüm turu geri al ve yeniden dene",
+      "take_back_a11y": "Tüm sırayı geri al ve yeniden dene",
       "take_back_retry_a11y": "Hamleyi geri al ve yeniden dene",
-      "title_compare": "Hamlen ile en iyi hamle",
-      "title_mine": "Hamlen",
-      "turn_off": "Eğitmeni kapat",
-      "turn_off_a11y": "Eğitmen modunu kapat",
-      "undo_last": "Son hamleyi geri al",
-      "undo_last_a11y": "Yalnız son hamleyi geri al ve yeniden oyna",
-      "vs_best": "−{{delta}} en iyiye göre",
-      "you_played": "Oynadın:"
+      "title_compare": "Hamleniz ve en iyi hamle",
+      "title_mine": "Hamleniz",
+      "turn_off": "Öğretmeni kapat",
+      "turn_off_a11y": "Öğretmen modunu kapat",
+      "undo_last": "Son adımı geri al",
+      "undo_last_a11y": "Yalnızca son adımı geri al ve yeniden oyna",
+      "vs_best": "En iyiye göre −{{delta}}",
+      "you_played": "Oynadığınız:"
     }
   },
   "home": {
-    "confirm_cancel": "Cancel Cancel Cancel Cancel",
-    "confirm_continue": "Devam etmeye devam et",
-    "confirm_native": "Mevcut oyununıza devam edin veya yeni bir tane başla?",
+    "confirm_cancel": "İptal",
+    "confirm_continue": "Devam et",
+    "confirm_native": "Mevcut oyuna devam mı edilsin, yoksa yeni oyun mu başlasın?",
     "confirm_new": "Yeni oyun",
-    "confirm_replace": "Yeni bir oyun başlatılsın mı? Mevcut oyununuz değiştirilecek.",
-    "confirm_title": "İlerlemede Oyun",
-    "confirm_web": "Yeni bir oyuna başlayın? (Mevcut olanı sürdürmek için ev ekranında Resume kullanın.)",
-    "recovery_body": "Son kayıt bozulmuştu. Yeni bir oyun başlatabilirsiniz — ana ekran çalışmaya devam ediyor.",
+    "confirm_replace": "Yeni oyun başlatılsın mı? Mevcut oyununuzun yerini alacak.",
+    "confirm_title": "Süren bir oyun var",
+    "confirm_web": "Yeni oyun başlatılsın mı? (Mevcut oyuna devam etmek için ana ekranda Oyuna devam et'i kullanın.)",
+    "recovery_body": "Son kayıt bozuktu. Yeni bir oyun başlatabilirsiniz; diğer her şey çalışıyor.",
     "recovery_dismiss": "Kapat",
     "recovery_title": "Kayıtlı oyun geri yüklenemedi",
-    "resume": "Oyuna Devam Et",
+    "resume": "Oyuna devam et",
     "resume_a11y": "Kayıtlı oyuna devam et",
-    "resume_none": "Hiçbir kurtarma oyunu",
-    "resume_sub": "Kaldığın yerden devam et",
+    "resume_none": "Kayıtlı oyun yok",
+    "resume_sub": "Kaldığınız yerden devam edin",
     "review": "Son oyunu incele",
-    "review_a11y": "Tamamlanan oyunu incele",
-    "review_sub": "Son oyunun nasıl bittiğini görün",
-    "subtitle": "Tahtaya hükmet — hamle hamle",
+    "review_a11y": "Biten oyunu incele",
+    "review_sub": "Son oyunun nasıl bittiğine bakın",
+    "subtitle": "Tahtaya hâkim olun, hamle hamle",
     "title": "BACKGAMMON\nMASTERMIND",
-    "two_players": "2 Oyuncu",
-    "two_players_a11y": "Aynı cihazda iki kişi oyna",
+    "two_players": "2 oyuncu",
+    "two_players_a11y": "Bu cihazda iki kişi oynayın",
     "two_players_sub": "Aynı cihazda sırayla",
-    "vs_computer": "Bilgisayara Karşı",
+    "vs_computer": "Bilgisayara karşı",
     "vs_computer_a11y": "Bilgisayara karşı oyna",
-    "vs_computer_sub": "Bilgisayara karşı oyna"
+    "vs_computer_sub": "Bilgisayara karşı oynayın"
   },
   "learn": {
     "back_to_hub": "Tüm dersler",
-    "continue": "Devam etmeye devam et",
+    "continue": "Devam",
     "feedback": {
-      "hint_nudge": "Bir nudgea mı ihtiyacınız var? vurgulanan noktalara bakın.",
-      "illegal": "Bir vurgu noktası deneyin - ya da Hint tapın.",
-      "legal_but_wrong": "Bu gerçek bir oyunda yasal - burada, bu fikri öğreten hareketi deneyin.",
-      "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı."
+      "hint_nudge": "Küçük bir yardım mı lazım? Vurgulanan yerlere bakın.",
+      "illegal": "Vurgulanan bir haneyi deneyin ya da İpucu'na dokunun.",
+      "legal_but_wrong": "Gerçek bir oyunda bu geçerli; ama burada bu dersin anlattığı hamleyi deneyin.",
+      "move_progress": "Güzel: {{needed}} adımdan {{done}} tanesi tamam."
     },
     "graduation": {
-      "body": "Hedefi biliyorsun, yönetim kurulu, nasıl çalışır, vurup duruyorsunuz. Hızlı bir kontrol - sonra ilk gerçek oyun.",
-      "play_cta": "İlk oyununuzu oynayın",
-      "quiz_done": "Çiçerdi. Oynamak için zaman.",
-      "quiz_title": "Hızlı check",
-      "quiz_wrong": "Oldukça değil – başka bir cevap deneyin.",
-      "recap_1": "Yarış: Tüm 15 ilk",
-      "recap_2": "Roll two dice; açık noktalarda arazi",
-      "recap_3": "Hit blots → barda otururlar",
-      "recap_4": "Sadece ev yönetim kurulundan uzak durun",
-      "recap_5": "Oyunlar her biri ile başlar - daha yüksek gider (en yüksek kayıt)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
-      "title": "Oynamaya hazırsın"
+      "body": "Amacı, tahtayı, bir sıranın nasıl işlediğini, vurmayı, pul toplamayı, pip sayısını ve temel oyun planlarını biliyorsunuz. Kısa bir kontrol, ardından ilk gerçek oyununuz.",
+      "play_cta": "İlk oyununu oyna",
+      "quiz_done": "Harika. Oynama zamanı.",
+      "quiz_title": "Kısa kontrol",
+      "quiz_wrong": "Tam değil: başka bir cevap deneyin.",
+      "recap_1": "Yarış: 15 pulunu önce toplayan kazanır",
+      "recap_2": "İki zar atın; yalnızca açık hanelere oynayın",
+      "recap_3": "Açık pulları vurun → bara giderler",
+      "recap_4": "Pullar yalnızca kendi evinizden toplanır",
+      "recap_5": "Başta herkes bir zar atar; büyük atan başlar (eşitlikte yeniden atılır)",
+      "recap_6": "Pip sayısı: daha az olan yarışta öndedir",
+      "recap_7": "Bir plan seçin: yarış, saldırı, blok ya da tutma",
+      "title": "Oynamaya hazırsınız"
     },
-    "hint": "Hint Hint",
-    "home_cta": "Oynamayı Öğrenin",
-    "home_cta_progress": "{{done}} / {{total}} ders tamamlandı",
-    "home_cta_quiz": "Hızlı check ayrıldı – sonra oyun oyna",
-    "home_cta_ready": "Hazırsınız – gerçek bir oyun oynamak",
-    "home_cta_sub": "Yeni başlayanlar için Etkileşimli dersler",
-    "lesson_complete": "Azon tamam!",
+    "hint": "İpucu",
+    "home_cta": "Oynamayı öğren",
+    "home_cta_progress": "{{total}} dersten {{done}} tanesi tamam",
+    "home_cta_quiz": "Kısa bir kontrol kaldı, sonra oynayın",
+    "home_cta_ready": "Hazırsınız: gerçek bir oyun oynayın",
+    "home_cta_sub": "Yeni başlayanlar için etkileşimli dersler",
+    "lesson_complete": "Ders tamamlandı!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "5- Hiçbir şey 5 noktada değil, ama sen 5. En yüksek çekerinizden (The 3). Daha büyük bir sayı hala bir çeker alır.",
-            "hint": "3. noktası seçin, sonra ayı-off tepsisine tıklayın.",
-            "praise": "Bu overshoot kuralı - dışarı çıkarken çok şey kullanırsınız.",
-            "title": "Daha büyük ölü, hala kapalı"
+            "body": "5 numaralı hanede pul yok ama 5 attınız. En yüksek pulunuzu toplayın (3'teki). Büyük zar da pul toplatır.",
+            "hint": "3 numaralı haneyi seçin, sonra toplama alanına dokunun.",
+            "praise": "Büyük zar kuralı bu: pul toplarken çok kullanacaksınız.",
+            "title": "Büyük zar, pul yine çıkar"
           },
           "try": {
-            "body": "Tüm kontrolleriniz evde (1–6), böylece dışarı çıkabilirsiniz. 3'ü çıkardın - tahtadan 3 noktada çeker alın.",
-            "hint": "3. noktası seçin, sonra doğru kenardaki ayı-off alanına dokun.",
-            "praise": "Gemiden kaçtı! İlk olarak tüm 15 kazanır.",
-            "title": "Ayı One off"
+            "body": "Bütün pullarınız evde (1–6), yani toplayabilirsiniz. 3 attınız: 3 numaralı hanedeki pulu tahtadan çıkarın.",
+            "hint": "3 numaralı haneyi seçin, sonra sağ kenardaki toplama alanına dokunun.",
+            "praise": "Tahtadan çıktı! 15 pulunu önce toplayan kazanır.",
+            "title": "Bir pul toplayın"
           }
         },
-        "subtitle": "Nasıl kazanırsın",
-        "title": "Ayrılma"
+        "subtitle": "Nasıl kazanılır",
+        "title": "Pul toplama"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Athoe, onu döndüren oyuncunun çekcileri ile karşılaşır. Bu oyuncunun gemideki rotasını ve eve ( 1-6) izler.",
-            "title": "Atlarhoe yolu"
+            "body": "At nalı, sırası gelen oyuncunun pullarının rengindedir. O oyuncunun tahtanın etrafından evine (1–6 numaralı haneler) uzanan yolunu gösterir.",
+            "title": "At nalı yolu"
           },
           "far": {
-            "body": "İki en büyük beyaz çekçinizin başladığı noktaya dokun (24 nokta, üst sağ).",
-            "hint": "En iyi sağa bak - 24. sırada iki beyaz çek.",
-            "praise": "Bunlar rakibin evinde derin başlıyor ve en uzun yolculuğu var.",
-            "title": "your farthest checkers"
+            "body": "En uzaktaki iki beyaz pulunuzun başladığı haneye dokunun (24 numaralı hane, sağ üstte).",
+            "hint": "Sağ üste bakın: 24 numaralı hanede iki beyaz pul.",
+            "praise": "Bunlar rakibin evinin derinliklerinden başlar ve en uzun yolu gider.",
+            "title": "En uzaktaki pullarınız"
           },
           "home_stack": {
-            "body": "Evinizde zaten beş beyaz çekçinin büyük yığınına dokun (en 6 nokta).",
-            "hint": "Sub-right: 5 beyaz kontrol noktası 6.",
-            "praise": "Bu senin ev yığını - beş zaten 6 noktada, takılmak için en yakın. Her oyun bu şekilde başlar.",
-            "title": "Eviniz yığını"
+            "body": "Zaten evinizde duran beş beyaz pulluk yığına dokunun (6 numaralı hane).",
+            "hint": "Sağ alt: 6 numaralı hanede beş beyaz pul.",
+            "praise": "Bu ev yığınınız: beş pul 6 numaralı hanede, toplamaya en yakın yerde bekliyor. Her oyun böyle başlar.",
+            "title": "Ev yığınınız"
           }
         },
-        "subtitle": "Hangi şekilde hareket edersiniz",
-        "title": "Yön & Kurulum"
+        "subtitle": "Hangi yöne oynarsınız",
+        "title": "Yön ve diziliş"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "Ortadaki yükseltilmiş şerit bar. Hit checkers burada bekler. Barın.",
-            "hint": "Masanın sol ve sağ yarısı arasındaki dikey şerite dokunun.",
-            "praise": "Doğru – hit checkers yeniden girinceye kadar barda oturur.",
-            "title": "Barın The bar"
+            "body": "Ortadaki yükseltilmiş şerit bardır. Vurulan pullar burada bekler. Bara dokunun.",
+            "hint": "Tahtanın sol ve sağ yarısı arasındaki dikey şeride dokunun.",
+            "praise": "Doğru: vurulan pullar yeniden girene kadar barda kalır.",
+            "title": "Bar"
           },
           "explain": {
-            "body": "Siz ve rakibiniz her biri 15 kontrol sahibi. Onları gemide ve dışarıda hareket ettirin – ilki bitirin.",
-            "title": "İlk önce kazanmak için"
+            "body": "Sizin ve rakibinizin 15'er pulu var. Onları tahtanın etrafında dolaştırıp toplayın: önce bitiren kazanır.",
+            "title": "Önce toplayan kazanır"
           },
           "home": {
-            "body": "Eviniz 1-6 puandır (sağlık). Ev kurulunda herhangi bir noktaya dokun.",
-            "hint": "Ev, alt sağ kadrandaki altı puandır - 6.",
-            "praise": "Bu sizin eviniz – çekers buradan kurulu terk ediyor.",
-            "title": "Ev kurulunu bul"
+            "body": "Eviniz 1–6 numaralı hanelerdir (sağ alt). Evinizdeki herhangi bir haneye dokunun.",
+            "hint": "Ev, sağ alt çeyrekteki altı hanedir; 1'den 6'ya kadar numaralanmıştır.",
+            "praise": "Bu sizin eviniz: pullar tahtadan buradan çıkar.",
+            "title": "Evinizi bulun"
           }
         },
-        "subtitle": "Ne için yarışıyorsun",
-        "title": "Goal & board"
+        "subtitle": "Yarış ne için",
+        "title": "Amaç ve tahta"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Bardasın - başka birini hareket etmeden önce geri gel. Eve doğru 24 noktasından Kont: 21.",
-            "hint": "Bara dokun, sonra 21 ( 23 değil – bardan sadece iki boru).",
-            "praise": "Gemiye geri döndün - bar çekers her zaman önce girer.",
-            "title": "Bardan içeri girin",
-            "wrong": "Bu, bardan sadece iki pips (görüntü 23). Eve doğru 24 puan verin - 21."
+            "body": "Bardasınız: başka bir pulu oynamadan önce oyuna geri girin. 24 numaralı haneden evinize doğru sayın: 4 sizi 21 numaralı haneye getirir.",
+            "hint": "Bara, sonra 21 numaralı haneye dokunun (23'e değil: o bardan sadece iki pip uzakta).",
+            "praise": "Tahtaya geri döndünüz: bardaki pullar her zaman önce girer.",
+            "title": "Bardan girin",
+            "wrong": "Orası bardan sadece iki pip uzakta (23 numaralı hane). 24'ten evinize doğru dört hane sayın: 21 numaralı hane."
           },
           "hit": {
-            "body": "Tek bir çeker bir blot. Arazi üzerinde ve bara gider. 3 tane getirdin - 5 noktada siyah blot vurdun.",
-            "hint": "Kontrolörünüzü 8'de kapatın, sonra 5.",
-            "praise": "Hit! Bu siyah çeker şimdi barda.",
-            "title": "Hit the blot"
+            "body": "Bir hanede tek başına duran pul açık puldur. Üstüne gelirseniz bara gider. 3 attınız: 5 numaralı hanedeki açık siyah pulu vurun.",
+            "hint": "8'deki pulunuza, sonra 5 numaralı haneye dokunun.",
+            "praise": "Vurdunuz! O siyah pul artık barda.",
+            "title": "Açık pulu vurun"
           }
         },
-        "subtitle": "Contact play",
-        "title": "Hitting & bar"
+        "subtitle": "Temaslı oyun",
+        "title": "Vurma ve bar"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "İki veya daha fazla rakip kontrolcü bir noktayı engeller - orada toprak yapamazsınız. 5 noktada bloke edilen kara yığınına dokunun.",
-            "hint": "Tartışmalı iki siyah çekçinin 5.",
-            "praise": "Doğru - yapılmış bir nokta (2+) kapalıdır. Boş, kendi, ya da blot (1) açık.",
-            "title": "Blocked points"
+            "body": "İki ya da daha fazla rakip pul bir haneyi kapatır: oraya oynayamazsınız. 5 numaralı hanedeki kapalı siyah yığına dokunun.",
+            "hint": "5 numaralı hanedeki iki siyah pulluk vurgulu yığın.",
+            "praise": "Doğru: kapı (2+ pul) kapalıdır. Boş haneler, sizin haneleriniz ve tek pullu (açık pul) haneler açıktır.",
+            "title": "Kapalı haneler"
           },
           "doubles": {
-            "body": "Doubles size bu sayının dört hareketini verir. 2-2 – bu dört 2. 8-point'ten dört kez hareket edin.",
-            "hint": "8-point'e dokun, sonra 6 nokta. Bu dört kez yapın - bir kez ölür.",
-            "praise": "Tam olarak - çiftler bu sayıyla dört hareket anlamına gelir.",
-            "title": "Doubles = dört hareket"
+            "body": "Çift zar o sayıyla dört hamle verir. 2-2 attınız: dört kez 2. 8 numaralı haneden 6 numaralı haneye dört kez oynayın.",
+            "hint": "8 numaralı haneye, sonra 6'ya dokunun. Dört kez: her zar için bir.",
+            "praise": "Aynen: çift zar, o sayıyla dört hamle demektir.",
+            "title": "Çift zar = dört hamle"
           },
           "explain": {
-            "body": "Her biri iki indeksi yuvarlar ve her iki sayıyı da yapabilirsiniz. Boş noktalarda, kendi çekçileriniz veya bir lone rakibiniz (a blot).",
-            "title": "İki sayı, açık noktalar"
+            "body": "Her sırada iki zar atarsınız ve mümkünse iki sayıyı da oynarsınız. Boş hanelere, kendi pullarınızın üstüne ya da rakibin tek başına duran pulunun (açık pul) üstüne gelebilirsiniz.",
+            "title": "İki sayı, açık haneler"
           },
           "two_dice": {
-            "body": "3 ve 1. checker'i 8-point üç pips (to 5) ve 6 noktadaki bir pip (to 5).",
-            "hint": "Beyaz bir çeker seçin, sonra 5. Bunu hem 8 nokta hem de 6 nokta için yapın.",
-            "praise": "Nice - her iki işaret de kullanılır. Aynı checker veya iki çeker, her iki sayı da yapabileceğiniz zaman oynanmalıdır.",
-            "title": "Play both dice"
+            "body": "3 ve 1 attınız. 8 numaralı hanedeki pulu üç pip (5'e), 6 numaralı hanedeki pulu bir pip (5'e) oynayın.",
+            "hint": "Beyaz bir pul seçin, sonra 5 numaralı haneye dokunun. Bunu hem 8'den hem 6'dan yapın.",
+            "praise": "Güzel: iki zar da kullanıldı. Tek pulla ya da iki pulla, mümkünse iki sayı da oynanmalı.",
+            "title": "İki zarı da oynayın"
           }
         },
-        "subtitle": "Bir dönüş nasıl çalışır",
-        "title": "dice ile hareket edin"
+        "subtitle": "Bir sıra nasıl işler",
+        "title": "Zarla oynamak"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "Beyaz 5 pul çıkardı, kalanı eve yakın. Siyah pullar hâlâ dağınık. Bir beyaz pula dokun: beyaz önde, çünkü pip sayısı daha düşük.",
-            "hint": "Çıkmaya en yakın pulları ara.",
-            "praise": "Aynen. Beyazın düşük sayısı daha kısa yol demek.",
+            "body": "Beyaz 5 pul topladı, kalanlar eve yakın. Siyahın pulları hâlâ tahtaya dağılmış durumda. Herhangi bir beyaz pula dokunun: daha düşük pip sayısıyla yarışta önde olan Beyaz.",
+            "hint": "Toplamaya en yakın pullara bakın.",
+            "praise": "Aynen! Düşük pip sayısı daha kısa yol demektir.",
             "title": "Kim önde?"
           },
           "behind": {
-            "body": "Aynı konum. Siyah pullar evden uzak ve sayıları çok daha yüksek. Bir siyah pula dokun: siyah geride.",
-            "hint": "Evden en uzak pulları ara.",
-            "praise": "Doğru. Siyahın çıkması için çok daha fazla pip gerek.",
+            "body": "Aynı konum. Siyahın pulları evden uzakta ve pip sayısı çok daha yüksek. Herhangi bir siyah pula dokunun: Siyah yarışta geride.",
+            "hint": "Eve en uzak pullara bakın.",
+            "praise": "Doğru! Siyahın pullarını toplaması için çok daha fazla pip gerekiyor.",
             "title": "Kim geride?"
           },
           "explain": {
-            "body": "Pullarının çıkmak için daha gideceği noktaların toplamıdır. Her pul bulunduğu noktanın numarasını ekler: 6. noktadaki 6, 13. noktadaki 13 sayılır. Az olan iyidir, çıkmaya daha yakınsındır. Sayılar her oyunda üstte görünür, nokta hangi rengin sayısı olduğunu gösterir.",
+            "body": "Pip sayısı, pullarınızın toplanana kadar gitmesi gereken toplam hane sayısıdır. Her pul bulunduğu hanenin numarası kadar sayılır: 6 numaralı hanedeki pul 6, 13'teki 13. Hepsini toplayın; pip sayınız budur. Az olan iyidir: toplamaya daha yakınsınız. Her oyunda her oyuncunun pip sayısı adının yanında görünür.",
             "title": "Pip sayısı nedir?"
           }
         },
-        "subtitle": "Yarışta kimin önde olduğunu okumayı öğren",
-        "title": "Pip sayısı: yarış skoru"
+        "subtitle": "Yarışı kimin kazandığını görün",
+        "title": "Pip sayısı: yarışın skoru"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "Evin güçlü ve rakibin açık pulları ya da barda pulları var. Her açığı kır ve ev noktalarını kapat ki sen çıkarken onunkiler barda kalsın. Burada beyazın üç ev noktası var, siyahın barda bir pulu var.",
-            "title": "Blitz"
+            "body": "Eviniz güçlü, rakibinizin ise açık pulları ya da barda pulları var. Saldırın! Vurabildiğiniz her açık pulu vurun ve evinizdeki haneleri kapatın. Amaç, siz pullarınızı toplarken onun pullarını barda kilitli tutmak. Burada Beyazın evinde üç kapısı var, Siyahın da barda bir pulu.",
+            "title": "Yıldırım saldırısı"
           },
           "identify": {
-            "body": "Bu bir duvar oyunu. Siyahı tutan beyaz duvarın, ardışık noktalardan birine dokun.",
-            "hint": "En az 2 beyaz pulu olan ardışık noktaları ara.",
-            "praise": "Mükemmel. O duvar prime. Siyahın gerideki pulları kapalı.",
-            "title": "Duvarı bul"
+            "body": "Bu bir blok oyunu. Beyaz bloğun herhangi bir hanesine dokunun: Siyahı durduran art arda kapılardan oluşan duvar.",
+            "hint": "Her birinde en az 2 beyaz pul olan art arda hanelere bakın.",
+            "praise": "Mükemmel! O duvar bloktur: Siyahın geride kalan pulları hapsoldu.",
+            "title": "Bloğu bulun"
           },
           "prime": {
-            "body": "Ardışık kapalı noktalardan bir duvar kurdun. Vurgulanan noktalar 4’lük bir duvar; siyahın gerideki pullarını kısıtlar. Birer nokta uzat.",
-            "title": "Duvar"
+            "body": "Art arda kapılardan bir duvar kurdunuz: bir blok (prime). Vurgulanan haneler, Siyahın geride kalan pullarını kısıtlayan 4 kapılık bir blok oluşturuyor. Bloğu kapı kapı uzatın ve rakibin pullarını arkasında hapsedin.",
+            "title": "Blok oyunu"
           },
           "running": {
-            "body": "Öndesin ve vuruş menzilinde açık pul yok. Pulları güvenle eve getir, açık bırakma. Burada beyaz önde ve evi sağlam.",
+            "body": "Yarışta öndesiniz ve vuruş menzilinde açık pul yok. Plan basit: pullarınızı güvenle eve getirin ve açık pul bırakmayın. Süs yok: sadece koşun. Bu konumda Beyaz yarışta önde ve evi sağlam.",
             "title": "Yarış"
           }
         },
-        "subtitle": "Klasik planları tanı",
+        "subtitle": "Klasik oyun planlarını tanıyın",
         "title": "Oyun planları"
       }
     },
-    "locked": "Önceki dersi ilk önce tamamlayın",
+    "locked": "Önce bir önceki dersi bitirin",
     "next_lesson": "Sonraki ders",
     "quiz": {
       "bar": {
-        "a": "Önce en büyük çekerinizi hareket ettirin",
-        "b": "Başka bir şey yapmadan önce bu çeker girin",
-        "c": "Başlayın",
-        "prompt": "Barda bir çeker olsan,..."
+        "a": "Önce en uzaktaki pulu oynamak",
+        "b": "Başka bir şey oynamadan önce o pulu oyuna sokmak",
+        "c": "Sırayı pas geçmek",
+        "prompt": "Barda pulunuz varken şunu yapmak zorundasınız…"
       },
       "bear": {
-        "a": "Ne zaman bir 6 yuvarlarsanız",
-        "b": "Sadece bir blot vurduktan sonra",
-        "c": "Her 15 çekçi ev yönetim kurulunda olduğunda",
-        "prompt": "Ne zaman kapatabilirsiniz?"
+        "a": "Her 6 attığınızda",
+        "b": "Yalnızca bir açık pulu vurduktan sonra",
+        "c": "15 pulun hepsi evinizdeyken",
+        "prompt": "Pul toplamaya ne zaman başlayabilirsiniz?"
       },
       "blot": {
-        "a": "Herhangi bir üç veya daha fazla yığını",
-        "b": "Bir noktada tek bir çeker – vurulabilir",
-        "c": "Bir noktada iki veya daha fazla kontrol - bir nokta",
-        "prompt": "Bir blot nedir?"
+        "a": "Üç ya da daha fazla puldan oluşan her yığın",
+        "b": "Bir hanede tek başına duran pul: vurulabilir",
+        "c": "Bir hanede iki ya da daha fazla pul: bir kapı",
+        "prompt": "Açık pul nedir?"
       },
       "pip_ahead": {
-        "a": "Rakibin, daha yüksek sayıyla",
-        "b": "Sen, daha düşük sayıyla",
-        "c": "Hiçbiri — pip sayısı yarışı ölçmez",
-        "prompt": "Senin sayın 85, rakibinki 102. Yarışta kim önde?"
+        "a": "Rakibiniz, yüksek sayıyla",
+        "b": "Siz, düşük sayıyla",
+        "c": "Hiçbiri: pip sayısı yarışı ölçmez",
+        "prompt": "Pip sayınız 85, rakibinizinki 102. Yarışta kim önde?"
       },
       "pip_meaning": {
-        "a": "Pullarının çıkmak için daha gideceği noktaların toplamı",
-        "b": "Tahtadaki pul sayın",
-        "c": "Kapattığın nokta sayısı",
-        "prompt": "Pip sayın neyi gösterir?"
+        "a": "Pullarınızın toplanana kadar gitmesi gereken toplam hane sayısı",
+        "b": "Tahtadaki pul sayınız",
+        "c": "Yaptığınız kapı sayısı",
+        "prompt": "Pip sayınız neyi gösterir?"
       },
       "strat_blitz": {
-        "a": "Açığı kır ve evi kurmaya devam et (blitz)",
-        "b": "Açığı görmezden gel ve arkadaki pulları koştur",
-        "c": "Çapa yapmak için evi boz",
-        "prompt": "3 ev noktası kapattın ve rakibinin senin evinde bir açığı var. En iyi plan ne?"
+        "a": "Açık pulu vurmak ve evinizi kurmaya devam etmek (yıldırım saldırısı)",
+        "b": "Açık pulu boşverip geride kalan pullarla kaçmak",
+        "c": "Çapa yapmak için evinizi bozmak",
+        "prompt": "Evinizde 3 kapınız var ve rakibin orada bir açık pulu duruyor. En iyi plan hangisi?"
       },
       "strat_prime": {
-        "a": "Saldırmak için duvarı boz",
-        "b": "Duvarı tut ve uzat — kapalılar",
-        "c": "Olabildiğince çabuk çık",
-        "prompt": "Rakibin iki pulu 5’lik duvarının arkasında. Planın ne?"
+        "a": "Saldırmak için bloğu bozmak",
+        "b": "Bloğu koruyup uzatmak: rakibin pulları hapsoldu",
+        "c": "Pulları olabildiğince hızlı toplamak",
+        "prompt": "Rakibinizin iki pulu 5 kapılık bloğunuzun arkasında hapsoldu. Planınız ne?"
       }
     },
-    "replay": "Replay",
-    "skip_to_play": "Oynamak için Skip to play",
-    "step_progress": "Adım {{current}} / {{total}}",
-    "subtitle": "Kısa etkileşimli dersler — sonra hazırsınız",
-    "title": "Oynamayı Öğrenin"
+    "replay": "Tekrar",
+    "skip_to_play": "Atla ve oyna",
+    "step_progress": "Adım {{current}}/{{total}}",
+    "subtitle": "Yedi kısa ders, sonra oynamaya hazırsınız",
+    "title": "Oynamayı öğren"
   },
   "not_found": {
-    "body": "Bu sayfa Backgammon Mastermind'in bir parçası değildir. Bir oyun öğrenmek ya da başlamak için ev.",
-    "heading": "Tahtanın dışı",
-    "home_a11y": "Ana sayfaya git",
-    "home_cta": "Ana sayfaya dön",
+    "body": "Bu sayfa Backgammon Mastermind'ın bir parçası değil. Öğrenmek ya da oyun başlatmak için ana ekrana dönün.",
+    "heading": "Tahtanın dışında",
+    "home_a11y": "Ana ekrana git",
+    "home_cta": "Ana ekrana dön",
     "title": "Bulunamadı"
   },
   "settings": {
     "about": "Hakkında",
     "app_name": "Backgammon Mastermind",
-    "arabic": "Arapça Arapça Arapça",
+    "arabic": "Arapça",
     "developer": "Geliştirici",
-    "developer_blurb": "Motor testi için istediğiniz bir tahta konumunu yükleyin. Bu konumdan normal bir oyun başlatır. Ürün özelliği değildir.",
-    "developer_json": "Konum JSON’u",
+    "developer_blurb": "Motoru test etmek için herhangi bir konumu yükleyin. O konumdan normal bir oyun başlatır. Ürün özelliği değildir.",
+    "developer_json": "JSON olarak konum",
     "developer_load": "JSON yükle",
     "developer_open": "Konum yükle",
-    "developer_presets": "Test ön ayarları",
-    "english": "İngilizce İngilizce İngilizce English",
+    "developer_presets": "Test konumları",
+    "english": "İngilizce",
     "game": "Oyun",
-    "general": "General General General General General General General General General General General General General General",
+    "general": "Genel",
     "github": "GitHub",
     "language": "Dil",
-    "link_error_body": "Lütfen daha sonra tekrar dene.",
-    "link_error_title": "Bağlantı açılamıyor",
+    "link_error_body": "Lütfen daha sonra tekrar deneyin.",
+    "link_error_title": "Bağlantı açılamadı",
     "links": "Bağlantılar",
     "more": "Daha fazla",
     "open_source": "Açık kaynak bildirimleri",
-    "privacy": "Gizlilik Politikası",
-    "rate": "Değerlendir",
+    "privacy": "Gizlilik politikası",
+    "rate": "Puan ver",
     "share": "Paylaş",
     "support": "Destek",
-    "support_us": "Bize Destek Ol",
-    "terms": "Hizmet Şartları",
+    "support_us": "Bizi destekleyin",
+    "terms": "Kullanım koşulları",
     "title": "Ayarlar",
     "version": "Sürüm",
     "website": "Web sitesi"
