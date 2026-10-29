@@ -6,8 +6,7 @@ import { StatsScreen } from './stats-screen';
 
 let mockStats: GameStats = emptyStats();
 jest.mock('./use-game-stats', () => ({
-  // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock must keep the real hook's export name
-  useGameStats: () => mockStats,
+  useGameStats: jest.fn(() => mockStats),
 }));
 jest.mock('expo-router', () => ({ router: { push: jest.fn() }, useIsFocused: () => false }));
 jest.mock('react-native-safe-area-context', () => ({
@@ -56,5 +55,11 @@ describe('home stats link', () => {
     mockStats = withGames();
     render(<HomeStatsLink />);
     expect(screen.getByText('Won 3 of 4')).toBeTruthy();
+  });
+
+  it('reads the win streak to screen readers, not just the badge', () => {
+    mockStats = withGames();
+    render(<HomeStatsLink />);
+    expect(screen.getByTestId('home-stats-link').props.accessibilityLabel).toContain('Win streak: 2');
   });
 });

@@ -1,5 +1,5 @@
 import type { GameMode, GameState, Player } from './types';
-import { getItem, setItem } from '@/lib/storage';
+import { getItem, setRawString } from '@/lib/storage';
 
 import { opponent } from './moves';
 
@@ -113,8 +113,17 @@ function isModeStats(value: unknown): value is ModeStats {
     return false;
   }
   const v = value as Record<string, unknown>;
-  return ['played', 'whiteWins', 'blackWins', 'whiteGammons', 'whiteBackgammons', 'currentStreak', 'bestStreak']
-    .every(key => typeof v[key] === 'number' && Number.isFinite(v[key]) && (v[key] as number) >= 0);
+  const counts = ['played', 'whiteWins', 'blackWins', 'whiteGammons', 'whiteBackgammons', 'currentStreak', 'bestStreak']
+    .every(key => typeof v[key] === 'number' && Number.isInteger(v[key]) && (v[key] as number) >= 0);
+  if (!counts) {
+    return false;
+  }
+  // Every write keeps these consistent; anything else is damaged data.
+  const m = v as ModeStats;
+  return m.played === m.whiteWins + m.blackWins
+    && m.whiteGammons + m.whiteBackgammons <= m.whiteWins
+    && m.currentStreak <= m.bestStreak
+    && m.bestStreak <= m.whiteWins;
 }
 
 /** Saved stats, or empty ones when nothing (or something unreadable) is stored. */
@@ -130,6 +139,13 @@ export function loadStats(): GameStats {
   };
 }
 
-export function saveStats(stats: GameStats): void {
-  void setItem(STORAGE_KEY, stats);
+/** False when storage refused the write; the in-memory record still updates. */
+export function saveStats(stats: GameStats): boolean {
+  try {
+    setRawString(STORAGE_KEY, JSON.stringify(stats));
+    return true;
+  }
+  catch {
+    return false;
+  }
 }

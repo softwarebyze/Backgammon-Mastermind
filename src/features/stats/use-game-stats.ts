@@ -32,11 +32,6 @@ export function recordFinishedGame(state: GameState, moves: number): void {
   listeners.forEach(listener => listener());
 }
 
-/** Test-only: forget the in-memory copy so the next read comes from storage. */
-export function resetGameStatsCacheForTests(): void {
-  cached = null;
-}
-
 export function useGameStats(): GameStats {
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
