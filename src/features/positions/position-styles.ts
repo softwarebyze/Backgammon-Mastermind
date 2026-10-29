@@ -5,9 +5,10 @@ import { interFont } from '@/lib/ui/fonts';
 const TOUCH = Platform.OS === 'android' ? 48 : 44;
 /**
  * The strip under the board always reserves this much height (title row plus
- * two control rows), whatever it shows, so the page never shifts.
+ * a vertical stepper around a scorecard), whatever it shows, so the page
+ * never shifts.
  */
-export const STRIP_HEIGHT = 40 + TOUCH * 2 + 8 * 2 + 12 * 2;
+export const STRIP_HEIGHT = 192;
 const muted = '#CBB8A7';
 
 export const styles = StyleSheet.create({
@@ -38,14 +39,27 @@ export const styles = StyleSheet.create({
   stripRow: { minHeight: TOUCH, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
   stripHint: { ...interFont('regular'), color: muted, fontSize: 13, lineHeight: 19 },
   segmented: { minHeight: TOUCH, flexDirection: 'row', gap: 2, padding: 2, borderRadius: 10, backgroundColor: palette.surface },
-  stepperRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  // Apple HIG stepper proportions: 94×32, two segments split by a hairline.
-  stepperControl: { width: 94, height: 32, flexDirection: 'row', alignItems: 'center', borderRadius: 8, backgroundColor: 'rgba(255, 240, 220, 0.12)', overflow: 'hidden' },
-  stepperSegment: { flex: 1, height: 32, alignItems: 'center', justifyContent: 'center' },
-  stepperSegmentPressed: { backgroundColor: 'rgba(255, 240, 220, 0.18)' },
-  stepperDivider: { width: StyleSheet.hairlineWidth * 2, height: 18, backgroundColor: 'rgba(255, 240, 220, 0.25)' },
-  stepperValue: { ...interFont('semibold'), minWidth: 28, textAlign: 'right', color: palette.text, fontSize: 20, fontVariant: ['tabular-nums'] },
-  stepperValueSmall: { fontSize: 15 },
+  stepperColumn: { alignItems: 'center', gap: 2 },
+  stepButton: { width: 48, height: 26, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  stepButtonPressed: { backgroundColor: 'rgba(255, 240, 220, 0.14)' },
+  stepIconDisabled: { opacity: 0.3 },
+  stepperValue: { ...interFont('semibold'), minWidth: 44, textAlign: 'center', color: palette.text, fontSize: 24, lineHeight: 30, fontVariant: ['tabular-nums'] },
+  stepperValueSmall: { fontSize: 16 },
+  // Flip scorecards (ivory for White, dark for Black), as in match play.
+  scoreCard: { width: 58, height: 46, borderRadius: 6, backgroundColor: '#E8E0D0', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
+  scoreCardDark: { backgroundColor: '#3C3028', borderWidth: 1, borderColor: '#5A4A3C' },
+  scoreCardTarget: { backgroundColor: palette.surface, borderWidth: 1, borderColor: palette.surfaceBorder },
+  scoreCardText: { ...interFont('semibold'), fontSize: 26, color: palette.bg, fontVariant: ['tabular-nums'] },
+  scoreCardTextDark: { color: '#F5F0E8' },
+  scoreCardTextTarget: { color: palette.text },
+  scoreCardTextSmall: { fontSize: 14 },
+  scoreSeam: { position: 'absolute', top: '50%', left: 0, right: 0, height: 1, backgroundColor: 'rgba(30, 12, 2, 0.28)' },
+  scoreHinge: { position: 'absolute', top: 19, width: 3, height: 8, borderRadius: 1, backgroundColor: '#9F896E' },
+  scoreCaption: { ...interFont('medium'), color: muted, fontSize: 12, textAlign: 'center' },
+  scoreboardRow: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' },
+  scoreColumn: { alignItems: 'center', gap: 2, minWidth: 72 },
+  editorRow: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 16 },
+  editorSide: { flex: 1, gap: 8, justifyContent: 'center' },
   scoreSide: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   stripLabel: { ...interFont('medium'), color: muted, fontSize: 13 },
   diceRow: { minHeight: 40, flexDirection: 'row', justifyContent: 'space-between' },

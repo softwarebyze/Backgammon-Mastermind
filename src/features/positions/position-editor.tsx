@@ -32,7 +32,7 @@ export function PositionStackPanel({ position: p, location, color, onChange, onL
     : translate(`positions.${side}_bar`);
   return (
     <StripPanel title={title} icon={<CheckerToken player={side} size={20} />} onDone={onDone} testID="position-point-controls">
-      <View style={styles.stripRow}>
+      <View style={styles.editorRow}>
         <PositionStepper
           label={title}
           testID="position-stack-count"
@@ -41,13 +41,17 @@ export function PositionStackPanel({ position: p, location, color, onChange, onL
           max={count + p.borneOff[side]}
           onChange={setCount}
         />
-        <PositionAction compact symbol="trash-2" label={translate('positions.empty_point')} testID="position-empty-point" disabled={!count} onPress={() => setCount(0)} />
+        <View style={styles.editorSide}>
+          <Text style={styles.stripHint}>
+            {p.borneOff[side]
+              ? translate('positions.spare_checkers', { count: p.borneOff[side], player: translate(`positions.${side}`) })
+              : translate('positions.no_checkers', { player: translate(`positions.${side}`) })}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <PositionAction compact symbol="trash-2" label={translate('positions.empty_point')} testID="position-empty-point" disabled={!count} onPress={() => setCount(0)} />
+          </View>
+        </View>
       </View>
-      <Text style={styles.stripHint}>
-        {p.borneOff[side]
-          ? translate('positions.spare_checkers', { count: p.borneOff[side], player: translate(`positions.${side}`) })
-          : translate('positions.no_checkers', { player: translate(`positions.${side}`) })}
-      </Text>
     </StripPanel>
   );
 }

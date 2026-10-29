@@ -3,7 +3,7 @@ import { PositionStepper } from './position-stepper';
 
 jest.mock('@/lib/haptics', () => ({ hapticSelection: jest.fn() }));
 
-it('shows the value beside a two-segment control and stays within its range', () => {
+it('puts ▲ above and ▼ below the value and stays within its range', () => {
   const change = jest.fn();
   const { rerender } = render(<PositionStepper label="Score" testID="s" value={0} min={0} max={2} onChange={change} />);
   expect(screen.getByTestId('s').props.accessibilityLabel).toBe('Score: 0');
@@ -16,7 +16,7 @@ it('shows the value beside a two-segment control and stays within its range', ()
 
 it('can show a custom visual (the cube face) in place of the number', () => {
   const { Text } = require('react-native');
-  render(<PositionStepper label="Cube" testID="c" value={1} min={0} max={6} onChange={jest.fn()} leading={<Text>cube</Text>} />);
+  render(<PositionStepper label="Cube" testID="c" value={1} min={0} max={6} onChange={jest.fn()}><Text>cube</Text></PositionStepper>);
   expect(screen.getByText('cube')).toBeTruthy();
-  expect(screen.queryByTestId('c')).toBeNull();
+  expect(screen.getByTestId('c').props.accessibilityLabel).toBe('Cube: 1');
 });

@@ -2,19 +2,6 @@ appId: ${APP_ID}
 tags:
   - util
 ---
-# Press one side of a position stepper. Android draws its own − | + segments
-# (testIDs <id>-lower / <id>-higher); iOS shows the system stepper, whose
-# right half increments and left half decrements.
-- runFlow:
-    when:
-      platform: Android
-    commands:
-      - tapOn:
-          id: ${STEPPER}-${SIDE}
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - tapOn:
-          id: ${STEPPER}-control
-          point: "${SIDE == 'higher' ? '75%, 50%' : '25%, 50%'}"
+# Press the ▲ (SIDE: higher) or ▼ (SIDE: lower) half of a position stepper.
+- tapOn:
+    id: ${STEPPER}-${SIDE}

@@ -10,7 +10,8 @@ import { PositionStrip } from './position-strip';
 jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key }));
 jest.mock('@/lib/haptics', () => ({ hapticSelection: jest.fn() }));
 
-const value = (id: string) => screen.getByTestId(id).props.children;
+/** The value a stepper announces ("label: value"). */
+const value = (id: string) => (screen.getByTestId(id).props.accessibilityLabel as string).split(': ').pop();
 
 describe('cube panel', () => {
   it('edits value and owner independently, then resets', () => {
@@ -22,7 +23,7 @@ describe('cube panel', () => {
     const doubled: Position = change.mock.lastCall![0];
     expect(doubled.context).toEqual({ ...p.context, cubeExponent: 1 });
     rerender(<PositionCubePanel position={doubled} onChange={change} onDone={jest.fn()} />);
-    expect(screen.getByTestId('position-cube-value').props.accessibilityLabel).toBe('positions.cube: 2');
+    expect(value('position-cube-value')).toBe('2');
     fireEvent.press(screen.getByTestId('position-cube-owner-black'));
     const owned: Position = change.mock.lastCall![0];
     expect(owned.context).toEqual({ ...doubled.context, cubeOwner: 'black' });
@@ -69,7 +70,8 @@ describe('score panel', () => {
     const change = jest.fn();
     render(<PositionScorePanel position={newPosition()} onChange={change} onDone={jest.fn()} />);
     expect(value('position-match-length')).toBe('positions.money_short');
-    expect(screen.queryByTestId('position-score-white')).toBeNull();
+    // No score to keep in money play: the cards stay, dimmed and locked.
+    expect(screen.getByTestId('position-score-white-higher')).toBeDisabled();
     fireEvent.press(screen.getByTestId('position-jacoby'));
     expect(change.mock.lastCall![0].context.jacoby).toBe(true);
   });

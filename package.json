@@ -87,7 +87,6 @@
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo/dom-webview": "~57.0.1",
     "@expo/metro-runtime": "~57.0.17",
-    "@expo/ui": "~57.0.26",
     "@expo/vector-icons": "^15.1.1",
     "@gorhom/bottom-sheet": "^5.2.8",
     "@posthog/react-native-plugin": "^2.12.5",

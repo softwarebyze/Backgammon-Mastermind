@@ -122,6 +122,3 @@ jest.mock('expo-audio', () => ({
   setAudioModeAsync: jest.fn(() => Promise.resolve()),
   useAudioPlayer: jest.fn(),
 }));
-
-// Jest runs as iOS, but there is no SwiftUI host: use the drawn stepper.
-jest.mock('@/features/positions/native-stepper', () => ({ NativeStepper: null }));
