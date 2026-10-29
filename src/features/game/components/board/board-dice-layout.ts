@@ -24,9 +24,21 @@ export function boardDiceSide(player: Player): BoardDiceSide {
   return player === 'white' ? 'right' : 'left';
 }
 
-/** Dice on the board read a little larger than a checker, never smaller than a fingertip glyph. */
-export function boardDieSize(checkerSize: number): number {
-  return Math.max(26, Math.round(checkerSize * 1.25));
+/** Space between dice on the board. */
+export function boardDieGap(size: number): number {
+  return Math.max(4, Math.round(size * 0.18));
+}
+
+/**
+ * Dice on the board read a little larger than a checker (26px at least), but
+ * the four dice of a double must still fit inside one half of a narrow board.
+ */
+export function boardDieSize(checkerSize: number, halfWidth = Number.POSITIVE_INFINITY): number {
+  let size = Math.max(26, Math.round(checkerSize * 1.25));
+  while (size > 12 && 4 * size + 3 * boardDieGap(size) > halfWidth) {
+    size -= 1;
+  }
+  return size;
 }
 
 /** Left edge (surface-local) and width of one half of the playing surface. */

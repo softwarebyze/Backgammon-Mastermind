@@ -1,8 +1,7 @@
 import type { LessonFeedback } from '@/features/learn/use-lesson-session';
 import type { TxKeyPath } from '@/lib/i18n';
 
-import { useEffect } from 'react';
-import { AccessibilityInfo, Platform, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
@@ -16,21 +15,7 @@ type Props = {
   compact?: boolean;
 };
 
-/**
- * Read each new Correct / Try again aloud. Android does it from the live
- * region; iOS has no live regions, so VoiceOver needs an announcement (#304).
- */
-function useAnnounceFeedback(feedback: LessonFeedback | null) {
-  useEffect(() => {
-    if (!feedback || Platform.OS !== 'ios') {
-      return;
-    }
-    AccessibilityInfo.announceForAccessibility(translate(feedback.messageKey, feedback.messageOptions));
-  }, [feedback]);
-}
-
 export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact = false }: Props) {
-  useAnnounceFeedback(feedback);
   const feedbackColor
     = feedback?.tone === 'praise'
       ? '#A0D080'

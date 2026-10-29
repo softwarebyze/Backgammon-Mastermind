@@ -93,3 +93,29 @@ describe('stats storage', () => {
     expect(loadStats()).toEqual(emptyStats());
   });
 });
+
+describe('stats integrity', () => {
+  beforeEach(() => storage.clearAll());
+
+  it('rejects saved totals that do not add up instead of showing a 200% win rate', () => {
+    const bad = { ...emptyStats(), vsComputer: { ...emptyStats().vsComputer, played: 1, whiteWins: 2 } };
+    storage.set('GAME_STATS_V1', JSON.stringify(bad));
+    expect(loadStats()).toEqual(emptyStats());
+  });
+
+  it('accepts everything recordResult can write', () => {
+    let stats = emptyStats();
+    for (const winner of ['white', 'black', 'white', 'white'] as const)
+      stats = recordResult(stats, result(winner, { kind: winner === 'white' ? 'gammon' : 'single' }));
+    expect(saveStats(stats)).toBe(true);
+    expect(loadStats()).toEqual(stats);
+  });
+
+  it('reports a refused write instead of throwing', () => {
+    const set = jest.spyOn(storage, 'set').mockImplementation(() => {
+      throw new Error('disk full');
+    });
+    expect(saveStats(emptyStats())).toBe(false);
+    set.mockRestore();
+  });
+});

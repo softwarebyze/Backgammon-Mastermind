@@ -26,7 +26,7 @@ export function HomeStatsLink() {
   return (
     <HoverPressable
       accessibilityRole="button"
-      accessibilityLabel={`${translate('stats.home_a11y')}. ${sub}`}
+      accessibilityLabel={[translate('stats.home_a11y'), sub, computer.currentStreak > 1 ? translate('stats.streak', { count: computer.currentStreak }) : null].filter(Boolean).join('. ')}
       testID="home-stats-link"
       onPress={() => {
         hapticLight();

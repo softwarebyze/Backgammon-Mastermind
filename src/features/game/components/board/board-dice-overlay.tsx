@@ -3,7 +3,7 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import { View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { boardDiceSide, boardDieSize, boardHalfFrame, hasBoardDice } from './board-dice-layout';
+import { boardDiceSide, boardDieGap, boardDieSize, boardHalfFrame, hasBoardDice } from './board-dice-layout';
 import { DiceDisplay, SingleDie } from './dice-display';
 
 function HalfSlot({
@@ -53,7 +53,7 @@ export function BoardDiceOverlay({
   if (!hasBoardDice(value)) {
     return null;
   }
-  const size = boardDieSize(dimensions.checkerSize);
+  const size = boardDieSize(dimensions.checkerSize, 6 * dimensions.colWidth);
   const { opening } = value;
 
   if (opening) {
@@ -94,7 +94,7 @@ export function BoardDiceOverlay({
           displayStyle={value.displayStyle}
           animateRoll={value.animateRoll}
           size={size}
-          gap={Math.max(4, Math.round(size * 0.18))}
+          gap={boardDieGap(size)}
         />
       </Animated.View>
     </HalfSlot>
