@@ -33,14 +33,14 @@ Content pillars:
 
 **First week — post 1–3 (three feed posts, matching the cadence) plus the story; 4 and 5 can slip to week two:**
 
-1. Trailer: `AppStorePreview.mp4` + "Play free in your browser → link in bio"
+1. Trailer: launch Reel + "Play free in your browser → link in bio" — ready in [instagram/01-launch/](./instagram/01-launch/) (caption, cover, alt text)
 2. Carousel: "Backgammon in 60 seconds: the board, the bar, the bear-off"
 3. Reel: tutor nudge clip (blunder → take back → correct move)
 4. Optional: Static: "What would you play? (double 3)" — puzzle, answer in comments next day
 5. Optional: Reel: iMessage challenge — "challenge your group chat without leaving the chat"
 6. Story: poll — "Did you know how to play backgammon before this app?" (market research + reach)
 
-Rules: every post ends with **"Free to play → link in bio"**. Link-in-bio → the web landing (see below), not the raw Vercel URL.
+Rules: every post ends with **"Free to play → link in bio"**. Link-in-bio → https://linktr.ee/backgammonmastermind (Play in browser first, then the stores) until the web landing (see below) exists.
 
 ## Web marketing (highest leverage — the playable app IS the demo)
 

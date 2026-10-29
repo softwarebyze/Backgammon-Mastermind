@@ -1,4 +1,4 @@
-import { Composition, Folder } from 'remotion';
+import { Composition, Folder, Still } from 'remotion';
 import {
   APP_STORE_PREVIEW_DURATION,
   AppStorePreview,
@@ -8,6 +8,11 @@ import {
   FEATURE_SPOTLIGHT_DURATION,
   FeatureSpotlight,
 } from './compositions/feature-spotlight';
+import {
+  INSTAGRAM_LAUNCH_DURATION,
+  InstagramCover,
+  InstagramLaunch,
+} from './compositions/instagram-launch';
 import {
   LAUNCH_HERO_DURATION,
   LaunchHero,
@@ -54,6 +59,17 @@ export const RemotionRoot: React.FC = () => {
           width={1080}
           height={1920}
         />
+      </Folder>
+      <Folder name="Instagram">
+        <Composition
+          id="InstagramLaunch"
+          component={InstagramLaunch}
+          durationInFrames={INSTAGRAM_LAUNCH_DURATION}
+          fps={30}
+          width={1080}
+          height={1920}
+        />
+        <Still id="InstagramCover" component={InstagramCover} width={1080} height={1350} />
       </Folder>
     </>
   );

@@ -10,6 +10,8 @@ Remotion project for launch and social marketing assets.
 | `AppStorePreview` | 1920×1080 (16:9) | ~20s | YouTube, website hero |
 | `FeatureSpotlight` | 1080×1080 (1:1) | ~13s | Instagram feed, ads |
 | `TutorSpotlight` | 1080×1920 (9:16) | ~9s | Lessons, tutor, and strategy |
+| `InstagramLaunch` | 1080×1920 (9:16) | ~15s | Instagram launch Reel (safe-zone copy) |
+| `InstagramCover` (still) | 1080×1350 (4:5) | — | Reel grid cover — `pnpm still:instagram-cover` |
 
 ## Quick start
 
