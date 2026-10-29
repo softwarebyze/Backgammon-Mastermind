@@ -11,8 +11,11 @@ import {
 } from '@/lib/game';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 
-/** Roughly when the tumble settles; the blocked cue should follow the dice. */
-export const BLOCKED_SFX_DELAY_MS = 650;
+/**
+ * The no-move state shows as soon as the dice land, so the cue follows almost
+ * at once; the short gap only keeps it from stepping on the roll sound.
+ */
+export const BLOCKED_SFX_DELAY_MS = 150;
 
 type DiceActionsArgs = {
   state: GameState | null;
