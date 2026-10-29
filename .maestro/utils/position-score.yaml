@@ -2,6 +2,7 @@ appId: ${APP_ID}
 tags:
   - util
 ---
+# Scores are steppers: no number pad, so no keyboard Done bar to dismiss.
 - runFlow:
     file: position-scroll.yaml
     env:
@@ -12,32 +13,31 @@ tags:
     id: position-score-toggle
 - assertVisible:
     id: position-match-length
-- tapOn:
-    id: position-match-length
-- eraseText
-- inputText: '5'
-- runFlow: position-score-dismiss.yaml
-- tapOn:
-    id: position-score-white
-- eraseText
-- inputText: '3'
-- runFlow: position-score-dismiss.yaml
-- tapOn:
-    id: position-score-black
-- eraseText
-- inputText: '2'
-- runFlow: position-score-dismiss.yaml
+- repeat:
+    times: 5
+    commands:
+      - tapOn:
+          id: position-match-length-higher
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          id: position-score-white-higher
+- repeat:
+    times: 2
+    commands:
+      - tapOn:
+          id: position-score-black-higher
 - assertVisible:
     id: position-score-white
-    text: '3'
+    text: 'White score: 3'
 - assertVisible:
     id: position-score-black
-    text: '2'
+    text: 'Black score: 2'
 - assertVisible:
     id: position-match-length
-    text: '5'
+    text: 'Match to: 5'
 - takeScreenshot: position-editable-scoreboard
-
 - tapOn:
     id: position-detail-done
 - assertNotVisible:

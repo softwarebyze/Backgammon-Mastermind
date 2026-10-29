@@ -14,8 +14,8 @@ beforeEach(() => {
 
 it('saves, reloads, renames and deletes validated positions without touching the active game', () => {
   const p = newPosition();
-  savePosition(' My board ', p);
-  expect(loadSavedPositions()).toEqual([{ id: JSON.stringify(p), name: 'My board', position: p }]);
+  savePosition(' My board ', p, { now: 1000 });
+  expect(loadSavedPositions()).toEqual([{ id: JSON.stringify(p), name: 'My board', position: p, savedAt: 1000, source: 'editor' }]);
   savePosition('Renamed', p);
   expect(loadSavedPositions()).toHaveLength(1);
   expect(loadSavedPositions()[0]!.name).toBe('Renamed');
@@ -34,4 +34,17 @@ it('survives malformed storage and caps the saved collection', () => {
   expect(loadSavedPositions()).toEqual([]);
   jest.mocked(getRawString).mockReturnValue(JSON.stringify(Array.from({ length: 55 }, (_, i) => ({ id: String(i), name: 'Test', position: newPosition() }))));
   expect(savePosition('Another', newPosition())).toHaveLength(50);
+});
+
+it('keeps when and where a position was saved, plus an optional note', () => {
+  const p = newPosition();
+  savePosition('From my game', p, { note: '  Should I hit here?  ', source: 'game', now: 1234 });
+  expect(loadSavedPositions()[0]).toMatchObject({ name: 'From my game', note: 'Should I hit here?', source: 'game', savedAt: 1234 });
+  savePosition('From my game', p, { note: '   ', now: 99 });
+  expect(loadSavedPositions()[0]).not.toHaveProperty('note');
+});
+
+it('still opens positions saved before timestamps existed', () => {
+  jest.mocked(getRawString).mockReturnValue(JSON.stringify([{ id: 'old', name: 'Old', position: newPosition(), savedAt: 'yesterday', source: 'elsewhere' }]));
+  expect(loadSavedPositions()).toEqual([{ id: 'old', name: 'Old', position: newPosition() }]);
 });

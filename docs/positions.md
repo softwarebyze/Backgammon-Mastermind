@@ -4,32 +4,39 @@ Open **Set up a position** from Home, or **Positions** in Settings. This screen
 is available in production on web, iOS and Android; the developer loader stays
 available for QA.
 
-- Start from the standard board, an empty board, or the current game.
+- Start from the standard board or an empty board (**Standard setup** and the
+  trash **Clear board** button above the board). There is no "copy the current
+  game" action any more: save a live board from the game itself instead (below).
 - Choose White or Black above the board. Press a point and drag toward the
   centre to increase its stack, or toward the edge to decrease it. The initial
   press sets the stack size from the checker slot touched (nearest the outer
   edge means one checker). A blocked addition gives one light haptic per stroke
-  and an accessible message when that colour has no checkers left. The stroke stays on its starting point even when the pointer
-  crosses another point; cancellation restores the starting position.
-- Tap or drag directly on the bar for the selected colour; no separate bar
-  menu is needed. Exact count controls operate on the selected board point or bar. Stacks support
-  up to 15 checkers, limited by the available off-tray checkers. Painting over
-  the other colour returns that stack to its own tray. Each player always has
-  15 checkers across the board, bar and off tray.
-- Selecting a point or bar shows minus / clear / plus controls beside that
-  stack: above the board for top points, below for bottom points. The controls appear after release, so adding their row cannot move the
-  board under an active finger; empty control bands take no space. Screen readers can also adjust
-  points and the bar directly.
-- Standard setup and Clear board stay visible above the board. The standard
-  preset uses a text label without an icon. Current-game capture is in Exchange.
-- Both dice stay visible in the compact strip immediately below the board. Tap either die and choose
-  a face from 1 to 6; clearing dice is visible beside the player-on-roll controls.
-- Set the player on roll and two dice, or leave both dice at zero to roll later.
+  and an accessible message when that colour has no checkers left. The stroke
+  stays on its starting point even when the pointer crosses another point;
+  cancellation restores the starting position.
+- Tap or drag directly on the bar for the selected colour. Stacks support up to
+  15 checkers, limited by the available off-tray checkers. Painting over the
+  other colour returns that stack to its own tray. Each player always has 15
+  checkers across the board, bar and off tray.
+- **Undo / redo** sit in the header. A whole drag is one step; so is each tap,
+  stepper press, preset, import or saved position opened.
+- The single doubling cube lives **on the board**, in the bar: centred on the
+  hinge, or slid into the owner's half (Black above, White below). Tap it to
+  edit value and owner.
 - Import XGID, GNU Position ID with optional Match ID, labeled GNU clipboard
   text, legacy developer position JSON, or a shared position link.
 - Export XGID, GNUID or versioned JSON; use Copy or Share link.
-- Save up to 50 positions locally. Saving the same position again renames it
+- Save up to 50 positions locally, each with a name, an optional note and the
+  time it was saved. Saving the same position again replaces the older entry
   and moves it to the front. These bookmarks do not sync between devices.
+
+### Saving from a game
+
+The game header has a bookmark button. It opens a small dialog for a name and
+an optional note, then saves the live board to Saved positions marked
+"From a game". The game is never paused, left or replaced. A game snapshot
+taken after spending any dice starts with a fresh roll, to avoid reusing spent
+dice.
 
 Opening, editing, importing, saving or sharing a position never replaces the
 active game. Play from here uses the existing replacement confirmation. A bad
@@ -42,23 +49,37 @@ links can also open the position route.
 ## Interface direction
 
 The incumbent board, brown/orange palette and Inter remain the visual authority.
-The workspace prioritizes the board, persistent Standard setup / Clear board,
-and White/Black checker selector with visible editable die faces. Selecting a
-point or bar places exact minus / clear / plus controls beside it, clamped to
-the board edges. There is no sliders button or hidden preset/dice dropdown.
-Play remains the single filled orange action. Exchange and Saved positions
-use compact toolbar actions. The cube stays visible as an ivory face with an owner checker, and opens direct halve/double/reset and owner controls. Match metadata remains secondary.
-Controls expose selected/expanded states and accessible labels. Android targets
-are at least 48dp, iOS at least 44pt. Palette, board assets and Inter stay intact.
+
+The page has four fixed parts and **nothing moves the board**:
+
+1. Toolbar: White/Black paint selector, Standard setup, Clear board.
+2. The board, with the cube in the bar.
+3. **The strip**: a card of reserved height directly under the board. It shows
+   what is selected and swaps its content in place:
+   - nothing selected: a one-line hint plus three tiles (who is on roll, the
+     dice, the score). Tapping the turn tile switches sides; the others open
+     their editors;
+   - a point or the bar: its exact count as a − n + stepper, Clear point, and
+     how many checkers that colour has left;
+   - the cube: value stepper, Reset, and a Centered / Black / White segment;
+   - the dice: one row of six faces per die, plus Roll later;
+   - the score: Match to stepper (0 = Money) with Crawford, then both scores
+     as steppers; in money play the scores give way to Jacoby / Beavers.
+   Every editor closes with the orange check. Nothing overlays the board and
+   no band is inserted above or below it.
+4. Import / share, Saved and Play. Their panels open below everything else.
+
+Scores, match length and cube value use steppers rather than number pads, so
+there is no iOS keyboard Done bar to manage. Controls expose selected/expanded
+states and accessible labels. Android targets are at least 48dp, iOS at least
+44pt.
 
 ## Format and play boundaries
 
 The position document preserves cube, cube owner, scores, match length,
 Crawford/Jacoby flags, pending offers and source-specific context. The current
 game engine supports checker play only. Starting play from a position does not
-apply cube or match scoring; the screen explains this before Play. A game
-snapshot taken after spending any dice starts with a fresh roll, to avoid
-reusing spent dice. Full-turn rolls can be replayed from the snapshot.
+apply cube or match scoring; the screen explains this before Play. Full-turn rolls can be replayed from a game snapshot.
 
 XGID and GNUID encode positions, not move histories. Full match files such as
 `.mat` and `.sgf`, replay-video sharing (#98), and multiple active games (#73)
@@ -91,8 +112,9 @@ Unit tests include the published starting-position/Match ID and XG help
 examples, asymmetric external positions, player perspective, bar/off counts,
 round trips, malformed inputs, saved-board recovery, and active-game isolation.
 `.maestro/app/position-setup.yaml` exercises the production entry point, exact
-direct stack dragging in both colours, precise count controls, save/relaunch/reopen, GNU import, XG export/copy, starting play,
-and malformed shared links. It is registered in the Android evidence run.
+direct stack dragging in both colours, the strip's count/cube/dice/score
+steppers, undo/redo, save/relaunch/reopen, saving from a game with a note,
+GNU import, XG export/copy, starting play, and malformed shared links. It is registered in the Android evidence run.
 
 `.maestro/app/position-preview-ios.yaml` runs alongside the smoke flow on
 iPhone and iPad. It captures standard and empty boards, opens a shared position
@@ -101,57 +123,22 @@ capturing the shared preview. Flow results and captures are attached to CI runs.
 
 ### Cube and dice visual compatibility
 
-The standard preset uses a text label without an icon. Unset dice use the same
-solid player-coloured face as rolled dice with a question mark; this applies to
-the game opening tray too. No dashed die borders remain. The position cube uses
-the ivory face, centered 64 convention, ownership and Crawford dimming from
-`feat/272-match-cube` (PR #325). `DoublingCubeFace` is a presentation-only primitive
-for sharing that treatment when the branches combine. This branch does not
-change the match engine or remove the existing checker-play limitation. The
-position document continues preserving full cube and match context for exchange.
+Unset dice use the same solid player-coloured face as rolled dice with a
+question mark; this applies to the game opening tray too. The cube uses the
+ivory face, centered 64 convention, ownership and Crawford dimming from
+`feat/272-match-cube` (PR #325). `DoublingCubeFace` is a presentation-only
+primitive for sharing that treatment when the branches combine. This branch
+does not change the match engine or remove the existing checker-play
+limitation.
 
-### Editable scoreboard
-
-White and Black scores appear as ivory/dark scorecards beside a central match
-target, using the scorecard material from PR #325. A compact two-colour score summary stays visible beside the dice and cube.
-Tapping it opens the scorecards and match target; each numeral is editable with a numeric keyboard. Zero target is labeled Money game. Match scores
-are capped at the target, and shortening the match clamps both scores so the
-position remains valid. Changing the target resets incompatible rule flags.
-Imported cube context and the opposite player's score survive score edits.
-Match rules live in that same focused editor; scores are always displayed in the summary.
-
-### Stack editing and quiet board workspace
+### Stack ownership
 
 An occupied point keeps its checker colour while its count changes, regardless
 of the paint selector. After it reaches zero, additions use the selected colour.
 A drag crossing zero uses an empty base so reversing it cannot resurrect the old
-colour; cancelling restores the original position and both checker pools.
-Accessibility adjustments and contextual controls follow the same ownership
-rule. The contextual controls are one joined decrement/count-and-clear/increment
-strip; no separate point label, ambient off-count summary, or drag instruction
-text surrounds the board. Exhaustion gives one light haptic per stroke and a
-screen-reader announcement, without adding another visible paragraph.
+colour; cancelling restores the original position and both checker pools. The
+strip's stepper and screen-reader adjustments follow the same rule.
 
 Occupied bar stacks follow the touched half's owner too. Crossing zero transfers
 subsequent additions to the selected colour's bar without losing checkers already
 there; the gesture keeps its original direction and cancellation restores both bars.
-
-The iOS score number pad uses React Native’s built-in Done toolbar, with its localized button label and no custom accessory ID. Dismissing it
-keeps the entered values; dragging the workspace can also dismiss the keyboard.
-The native flow explicitly presses Done rather than relying on a Return key that
-the number pad does not provide.
-
-### Compact object workspace (XG reference revision)
-
-The arrival view is a single working area: checker colour and always-visible
-Standard setup / Clear board above the board, then a compact strip containing
-the player on roll, both dice, doubling cube/owner, and two-colour score summary.
-Tapping an object reveals only that object's editor below the strip. Close returns to the board
-without keeping the form open; it closes without discarding edits. No permanent turn form, full-width cube row,
-score form, rule disclosure, or empty stack-control bands occupy the idle view.
-
-Import/share, Saved, and Play share the next compact row. Play opens the mode
-choice and checker-play limitations before the actual start action and existing
-active-game replacement confirmation. Exchange drafts survive closing/reopening
-the tool. The position editor remains a scrolling, responsive native workspace;
-long translations and large text can wrap rather than shrink touch targets.

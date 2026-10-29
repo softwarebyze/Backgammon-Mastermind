@@ -10,7 +10,7 @@ import { positionError } from './position-errors';
 import { styles } from './position-styles';
 import { sharePosition } from './share-position';
 
-export function PositionExchange({ position, onImport, onCurrent, open }: { open: boolean; position: Position; onImport: (p: Position) => void; onCurrent?: () => void }) {
+export function PositionExchange({ position, onImport, open }: { open: boolean; position: Position; onImport: (p: Position) => void }) {
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
   const [output, setOutput] = useState('');
@@ -45,7 +45,6 @@ export function PositionExchange({ position, onImport, onCurrent, open }: { open
   return (
     <View style={styles.detailPanel}>
       <View style={styles.row}>
-        {onCurrent && <PositionAction symbol="crosshair" label={translate('positions.current')} testID="position-current" onPress={onCurrent} />}
         <PositionAction symbol="download" label={translate('positions.import')} testID="position-import-toggle" onPress={() => setExpanded(!expanded)} selected={expanded} />
         <PositionAction symbol="share-2" label={translate('positions.share')} testID="position-share" onPress={() => runExport('link')} />
         <PositionAction symbol="upload" label="XGID" onPress={() => runExport('XGID')} testID="position-export-xgid" />

@@ -1,18 +1,19 @@
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
 import { createInitialState } from '@/lib/game/constants';
 import { newPosition } from '@/lib/positions/position';
 import { setRawString } from '@/lib/storage';
-import { PositionDetails } from './position-details';
 import { PositionScreen } from './position-screen';
 
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(() => Promise.resolve(true)) }));
-jest.mock('expo-router', () => ({ useLocalSearchParams: jest.fn(() => ({})), router: { replace: jest.fn() } }));
+const mockSetOptions = jest.fn();
+jest.mock('expo-router', () => ({ useLocalSearchParams: jest.fn(() => ({})), useNavigation: () => ({ setOptions: mockSetOptions }), router: { replace: jest.fn() } }));
+
 jest.mock('@/features/game/use-game', () => ({ useGame: jest.fn() }));
 jest.mock('@/features/game/request-new-game', () => ({ requestReplaceActiveGame: jest.fn() }));
-jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key }));
+jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key, useLayoutIsRTL: () => false, getLanguage: () => 'en' }));
 jest.mock('@/components/ui', () => ({ FocusAwareStatusBar: () => null }));
 jest.mock('@/lib/ui/layout-metrics', () => ({ useLayoutMetrics: jest.fn(() => ({ insets: { top: 0, bottom: 0, left: 0, right: 0 } })), contentEdgePadding: () => ({}) }));
 jest.mock('@/features/game/components/board/board-view', () => {
@@ -33,7 +34,7 @@ beforeEach(() => {
 it('editing, saving and exporting a position never replaces the active game', () => {
   render(<PositionScreen />);
   fireEvent.press(screen.getByTestId('test-board-point'));
-  fireEvent.press(screen.getByTestId('position-remove'));
+  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
   fireEvent.press(screen.getByTestId('position-saved-toggle'));
   fireEvent.press(screen.getByTestId('position-save'));
   fireEvent.press(screen.getByTestId('position-exchange-toggle'));
@@ -71,34 +72,20 @@ it('shows invalid import errors without modifying or replacing the board', () =>
 
 it('edits visible die faces without a keyboard or invalid half roll', () => {
   render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('position-die-0'));
-  fireEvent.press(screen.getByTestId('position-dice-value-3'));
-  expect(screen.getByTestId('position-die-0').props.accessibilityLabel).toBe('positions.die_one: 3');
-  expect(screen.getByTestId('position-die-1').props.accessibilityLabel).toBe('positions.die_two: 1');
+  fireEvent.press(screen.getByTestId('position-dice-toggle'));
+  fireEvent.press(screen.getByTestId('position-die-0-value-3'));
+  expect(screen.getByTestId('position-die-1-value-3').props.accessibilityState.selected).toBe(true);
   expect(screen.getByTestId('position-play')).toBeEnabled();
-  fireEvent.press(screen.getByTestId('position-die-1'));
-  fireEvent.press(screen.getByTestId('position-dice-value-2'));
+  fireEvent.press(screen.getByTestId('position-die-1-value-2'));
+  fireEvent.press(screen.getByTestId('position-detail-done'));
+  expect(screen.getByTestId('position-dice-toggle').props.accessibilityLabel).toBe('positions.dice: 3, 2');
   fireEvent.press(screen.getByTestId('test-board-point'));
-  fireEvent.press(screen.getByTestId('position-remove'));
+  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
   fireEvent.press(screen.getByTestId('position-play'));
   fireEvent.press(screen.getByTestId('position-start'));
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [3, 2] }));
-});
-
-it('preserves imported action context when the selected turn is pressed', () => {
-  const p = newPosition();
-  p.context.doubleAction = 'D';
-  p.context.turnOwner = 'black';
-  p.context.resignation = 2;
-  const change = jest.fn();
-  render(<PositionDetails position={p} onChange={change} editing="turn" onEdit={jest.fn()} />);
-  fireEvent.press(screen.getByTestId('position-turn'));
-  fireEvent.press(screen.getByTestId('position-turn-white'));
-  expect(change).not.toHaveBeenCalled();
-  fireEvent.press(screen.getByTestId('position-turn-black'));
-  expect(change).toHaveBeenCalledWith(expect.objectContaining({ currentPlayer: 'black', context: expect.objectContaining({ doubleAction: '', resignation: 0, turnOwner: 'black' }) }));
 });
 
 it('gives a whitespace-only saved name the translated untitled label', () => {
@@ -114,6 +101,7 @@ it('keeps presets and dice visible while exchange and saved tools stay collapsed
   expect(screen.getByTestId('position-standard')).toBeTruthy();
   expect(screen.getByTestId('position-empty')).toBeTruthy();
   expect(screen.getByTestId('position-die-0')).toBeTruthy();
+  expect(screen.getByTestId('position-strip')).toBeTruthy();
   expect(screen.queryByTestId('position-save-name')).toBeNull();
   expect(screen.queryByTestId('position-fine-tune')).toBeNull();
   expect(screen.queryByTestId('position-setup-toggle')).toBeNull();
@@ -136,31 +124,66 @@ it('retains an open import draft through board edits while clearing stale export
   fireEvent.press(screen.getByTestId('position-export-xgid'));
   expect(screen.getByTestId('position-export-output')).toBeTruthy();
   fireEvent.press(screen.getByTestId('test-board-point'));
-  fireEvent.press(screen.getByTestId('position-remove'));
+  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
   expect(screen.getByTestId('position-exchange-toggle').props.accessibilityState.selected).toBe(true);
   expect(screen.getByTestId('position-import-input').props.value).toBe('a position I am still pasting');
   expect(screen.queryByTestId('position-export-output')).toBeNull();
   expect(start).not.toHaveBeenCalled();
 });
 
-it('keeps object summaries visible and opens only the chosen detail editor', () => {
+it('opens one editor at a time in the strip and keeps the summary after Done', () => {
   render(<PositionScreen />);
-  expect(screen.getByTestId('position-object-dock')).toBeTruthy();
-  expect(screen.getByTestId('position-score-toggle')).toBeTruthy();
   expect(screen.queryByTestId('position-match-length')).toBeNull();
-  expect(screen.queryByTestId('position-cube-higher')).toBeNull();
-  expect(screen.queryByTestId('position-start')).toBeNull();
+  expect(screen.queryByTestId('position-cube-value')).toBeNull();
   fireEvent.press(screen.getByTestId('position-score-toggle'));
-  fireEvent.changeText(screen.getByTestId('position-match-length'), '7');
-  fireEvent.changeText(screen.getByTestId('position-score-white'), '3');
+  for (let i = 0; i < 7; i++)
+    fireEvent.press(screen.getByTestId('position-match-length-higher'));
+  for (let i = 0; i < 3; i++)
+    fireEvent.press(screen.getByTestId('position-score-white-higher'));
   fireEvent.press(screen.getByTestId('position-cube'));
   expect(screen.queryByTestId('position-match-length')).toBeNull();
-  expect(screen.getByTestId('position-cube-higher')).toBeTruthy();
+  expect(screen.getByTestId('position-cube-value')).toBeTruthy();
   fireEvent.press(screen.getByTestId('position-detail-done'));
-  expect(screen.queryByTestId('position-detail-panel')).toBeNull();
   expect(screen.getByTestId('position-score-toggle').props.accessibilityLabel).toContain('3 – 0');
-  fireEvent.press(screen.getByTestId('position-score-toggle'));
-  expect(screen.getByTestId('position-match-length').props.value).toBe('7');
-  expect(screen.getByTestId('position-score-white').props.value).toBe('3');
+  expect(screen.getByTestId('position-score-toggle').props.accessibilityLabel).toContain('7');
   expect(start).not.toHaveBeenCalled();
+});
+
+/** The header's undo/redo element, as the navigator would render it. */
+function headerActions() {
+  const options = mockSetOptions.mock.lastCall![0] as { headerRight: () => React.ReactElement<{ canUndo: boolean; canRedo: boolean; onUndo: () => void; onRedo: () => void }> };
+  return options.headerRight().props;
+}
+
+it('undoes and redoes board edits from the header', () => {
+  render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('test-board-point'));
+  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
+  fireEvent.press(screen.getByTestId('position-empty'));
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('0');
+  act(() => headerActions().onUndo());
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
+  act(() => headerActions().onUndo());
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('5');
+  expect(headerActions().canUndo).toBe(false);
+  act(() => headerActions().onRedo());
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
+});
+
+it('saves a named position with a note and shows when it was saved', () => {
+  render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('position-saved-toggle'));
+  fireEvent.changeText(screen.getByTestId('position-save-name'), 'Back game');
+  fireEvent.changeText(screen.getByTestId('position-save-note'), 'Hold both anchors');
+  fireEvent.press(screen.getByTestId('position-save'));
+  expect(screen.getByText('Back game')).toBeTruthy();
+  expect(screen.getByText('Hold both anchors')).toBeTruthy();
+  expect(screen.getByTestId('position-save-name').props.value).toBe('');
+});
+
+it('no longer copies the live game into the editor', () => {
+  render(<PositionScreen />);
+  fireEvent.press(screen.getByTestId('position-exchange-toggle'));
+  expect(screen.queryByTestId('position-current')).toBeNull();
 });

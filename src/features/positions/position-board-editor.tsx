@@ -2,27 +2,31 @@ import type { ReactNode } from 'react';
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
-import { useRef, useState } from 'react';
-import { AccessibilityInfo, View } from 'react-native';
+import { useRef } from 'react';
+import { AccessibilityInfo, Pressable, View } from 'react-native';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { translate } from '@/lib/i18n';
 import { newPosition, positionGame } from '@/lib/positions/position';
-import { positionControlAnchor } from './position-control-anchor';
-import { PositionAction } from './position-controls';
-import { PositionEditor } from './position-editor';
+import { BoardCube } from './position-cube';
 import { styles } from './position-styles';
 import { usePositionStackEditor } from './use-position-stack-editor';
 
-export function PositionBoardEditor({ position, dimensions, location, onLocation, onChange, actions }: {
+export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, cubeSelected = false, onCubePress, onStrokeStart, onStrokeEnd }: {
   actions?: ReactNode;
   position: Position;
   dimensions: BoardDimensions;
   location: PositionLocation | null;
+  color: Player;
+  onColor: (color: Player) => void;
   onLocation: (location: PositionLocation | null) => void;
   onChange: (position: Position) => void;
+  cubeSelected?: boolean;
+  onCubePress?: () => void;
+  /** A drag is one undo step: bracket every stroke. */
+  onStrokeStart?: () => void;
+  onStrokeEnd?: () => void;
 }) {
-  const [color, setColor] = useState<Player>('white');
   const dragging = useRef(false);
   const pendingLocation = useRef(location);
   // Keep the board stationary under the finger. Reveal exact controls only
@@ -37,23 +41,24 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
       AccessibilityInfo.announceForAccessibility(translate('positions.no_checkers', { player: translate(`positions.${side}`) }));
   } });
   const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: location === 'black-bar' ? 'black' : location === 'white-bar' ? 'white' : color, selectedPoint: typeof location === 'number' ? location : location ? 0 : null };
+  const single = (run: () => void) => {
+    onStrokeStart?.();
+    run();
+    onStrokeEnd?.();
+  };
   return (
-    <View style={{ gap: 6, alignSelf: 'center', width: dimensions.boardOuterWidth }}>
+    <View style={{ gap: 8, alignSelf: 'center', width: dimensions.boardOuterWidth }}>
       <View style={styles.boardToolbar}>
         <PaintColors
           color={color}
           onChange={(side) => {
-            setColor(side);
+            onColor(side);
             onLocation(null);
           }}
         />
+        <View style={styles.toolbarSpacer} />
         {actions}
       </View>
-      {location !== null && positionControlAnchor(location, dimensions).top && (
-        <View testID="position-controls-top" style={styles.pointControlBand}>
-          <PositionEditor position={position} location={location} color={color} dimensions={dimensions} onChange={onChange} onLocation={onLocation} />
-        </View>
-      )}
       <View style={styles.board}>
         <BoardView
           state={board}
@@ -65,37 +70,52 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
             ...editor,
             onStart: (point, y) => {
               dragging.current = true;
+              onStrokeStart?.();
               editor.onStart(point, y);
             },
             onEnd: (point, tap, delta) => {
               editor.onEnd(point, tap, delta);
               dragging.current = false;
+              onStrokeEnd?.();
               onLocation(pendingLocation.current);
             },
             onCancel: () => {
               editor.onCancel();
               dragging.current = false;
+              onStrokeEnd?.();
             },
+            onAdjust: (point, delta) => single(() => editor.onAdjust(point, delta)),
           }}
-          onPointPress={point => editor.onAdjust(point, 1)}
+          onPointPress={point => single(() => editor.onAdjust(point, 1))}
           onPointPressIn={() => {}}
           onPointPressOut={() => {}}
-          onBarPress={() => editor.onAdjust(0, 1)}
+          onBarPress={() => single(() => editor.onAdjust(0, 1))}
           onBearOffPress={() => {}}
           aidsOverride={{ showPointNumbers: true, showMoveHints: false, showDirectionOverlay: false }}
         />
+        {onCubePress && <BoardCube position={position} dimensions={dimensions} selected={cubeSelected} onPress={onCubePress} />}
       </View>
-      {location !== null && !positionControlAnchor(location, dimensions).top && (
-        <View testID="position-controls-bottom" style={styles.pointControlBand}>
-          <PositionEditor position={position} location={location} color={color} dimensions={dimensions} onChange={onChange} onLocation={onLocation} />
-        </View>
-      )}
     </View>
   );
 }
 
+/** Which colour taps and drags add. Existing stacks keep their own colour. */
 function PaintColors({ color, onChange }: { color: Player; onChange: (side: Player) => void }) {
-  return (['white', 'black'] as const).map(side => (
-    <PositionAction key={side} testID={`position-paint-${side}`} compact iconOnly icon={<CheckerToken player={side} size={28} />} label={translate(`positions.${side}`)} selected={color === side} onPress={() => onChange(side)} />
-  ));
+  return (
+    <View style={styles.paintGroup} accessibilityLabel={translate('positions.paint')}>
+      {(['white', 'black'] as const).map(side => (
+        <Pressable
+          key={side}
+          testID={`position-paint-${side}`}
+          accessibilityRole="button"
+          accessibilityLabel={translate(`positions.${side}`)}
+          accessibilityState={{ selected: color === side }}
+          onPress={() => onChange(side)}
+          style={({ pressed }) => [styles.paintSwatch, color === side && styles.paintSwatchActive, pressed && styles.pressed]}
+        >
+          <CheckerToken player={side} size={26} />
+        </Pressable>
+      ))}
+    </View>
+  );
 }

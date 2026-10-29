@@ -1,46 +1,53 @@
-import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
-import Feather from '@expo/vector-icons/Feather';
-import { Pressable, Text, View } from 'react-native';
-import { GAME_PALETTE } from '@/features/game/game-palette';
+import { Text, View } from 'react-native';
+import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { translate } from '@/lib/i18n';
 import { editCheckers, newPosition } from '@/lib/positions/position';
-import { positionControlAnchor } from './position-control-anchor';
+import { PositionAction } from './position-controls';
+import { PositionStepper } from './position-stepper';
+import { StripPanel } from './position-strip-panel';
 import { styles } from './position-styles';
 
-/** Contextual controls stay outside the board, beside the selected stack. */
-export function PositionEditor({ position: p, location, color, dimensions, onChange, onLocation }: {
+/** Exact count for the selected point or bar, in the strip under the board. */
+export function PositionStackPanel({ position: p, location, color, onChange, onLocation, onDone }: {
   position: Position;
   location: PositionLocation;
   color: Player;
-  dimensions: BoardDimensions;
   onChange: (p: Position) => void;
   onLocation: (location: PositionLocation) => void;
+  onDone: () => void;
 }) {
   const owner = typeof location === 'string' ? location === 'white-bar' ? 'white' : 'black' : p.points[location]!.player;
   const side = owner ?? color;
   const count = typeof location === 'number' ? p.points[location]!.count : p.bar[side];
-  const edit = (delta: number) => {
-    const edited = editCheckers({ ...p, dice: [0, 0], context: newPosition().context }, location, side, delta);
+  const setCount = (next: number) => {
+    const edited = editCheckers({ ...p, dice: [0, 0], context: newPosition().context }, location, side, next - count);
     onChange({ ...edited, dice: p.dice, context: p.context });
     if (typeof location === 'string' && edited.bar[side] === 0)
       onLocation(`${color}-bar`);
   };
+  const title = typeof location === 'number'
+    ? translate('positions.point_title', { point: location })
+    : translate(`positions.${side}_bar`);
   return (
-    <View testID="position-point-controls" style={[styles.pointControls, { left: positionControlAnchor(location, dimensions).left }]}>
-      <View style={styles.stackControls}>
-        <Pressable testID="position-remove" accessibilityRole="button" accessibilityLabel={translate('positions.remove')} accessibilityState={{ disabled: !count }} disabled={!count} onPress={() => edit(-1)} style={({ pressed }) => [styles.stackStep, !count && styles.disabled, pressed && styles.pressed]}>
-          <Feather name="minus" size={18} color={GAME_PALETTE.text} accessible={false} />
-        </Pressable>
-        <Pressable testID="position-empty-point" accessibilityRole="button" accessibilityLabel={`${translate('positions.empty_point')}, ${count}`} accessibilityState={{ disabled: !count }} disabled={!count} onPress={() => edit(-count)} style={({ pressed }) => [styles.stackClear, !count && styles.disabled, pressed && styles.pressed]}>
-          <Text style={styles.stackCount}>{count}</Text>
-          <Feather name="trash-2" size={13} color={GAME_PALETTE.accentDim} accessible={false} />
-        </Pressable>
-        <Pressable testID="position-add" accessibilityRole="button" accessibilityLabel={translate('positions.add')} accessibilityState={{ disabled: !p.borneOff[side] }} disabled={!p.borneOff[side]} onPress={() => edit(1)} style={({ pressed }) => [styles.stackStep, !p.borneOff[side] && styles.disabled, pressed && styles.pressed]}>
-          <Feather name="plus" size={18} color={GAME_PALETTE.text} accessible={false} />
-        </Pressable>
+    <StripPanel title={title} icon={<CheckerToken player={side} size={20} />} onDone={onDone} testID="position-point-controls">
+      <View style={styles.stripRow}>
+        <PositionStepper
+          label={title}
+          testID="position-stack-count"
+          value={count}
+          min={0}
+          max={count + p.borneOff[side]}
+          onChange={setCount}
+        />
+        <PositionAction compact symbol="trash-2" label={translate('positions.empty_point')} testID="position-empty-point" disabled={!count} onPress={() => setCount(0)} />
       </View>
-    </View>
+      <Text style={styles.stripHint}>
+        {p.borneOff[side]
+          ? translate('positions.spare_checkers', { count: p.borneOff[side], player: translate(`positions.${side}`) })
+          : translate('positions.no_checkers', { player: translate(`positions.${side}`) })}
+      </Text>
+    </StripPanel>
   );
 }

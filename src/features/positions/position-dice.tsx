@@ -1,57 +1,45 @@
 import type { Position } from '@/lib/positions/position';
 import { Pressable, View } from 'react-native';
-import { DieFace, EmptyDiePlaceholder } from '@/features/game/components/board/dice-display';
+import { DieFace } from '@/features/game/components/board/dice-display';
 import { translate } from '@/lib/i18n';
+import { PositionAction } from './position-controls';
+import { StripPanel } from './position-strip-panel';
 import { styles } from './position-styles';
 
-/** Two persistent die faces; a tap opens six explicit choices without a keyboard. */
-export function PositionDice({ position: p, editing, onEdit }: {
-  position: Position;
-  editing: 0 | 1 | null;
-  onEdit: (index: 0 | 1 | null) => void;
-}) {
-  return (
-    <View style={styles.diceEditor}>
-      <View style={{ flexDirection: 'row', gap: 4 }}>
-        {([0, 1] as const).map(index => (
-          <Pressable key={index} testID={`position-die-${index}`} accessibilityRole="button" accessibilityLabel={`${translate(index === 0 ? 'positions.die_one' : 'positions.die_two')}: ${p.dice[index] || translate('positions.roll_later')}`} accessibilityState={{ expanded: editing === index }} onPress={() => onEdit(editing === index ? null : index)} style={({ pressed }) => [styles.dieButton, editing === index && styles.active, pressed && styles.pressed]}>
-            {p.dice[index] > 0
-              ? <DieFace value={p.dice[index]} used={false} playerColor={p.currentPlayer} displayStyle="dots" size={36} />
-              : <EmptyDiePlaceholder playerColor={p.currentPlayer} size={36} />}
-          </Pressable>
-        ))}
-      </View>
+const FACES = [1, 2, 3, 4, 5, 6] as const;
 
-    </View>
-  );
-}
-
-export function PositionDiceChoices({ position: p, onChange, editing, onEdit }: {
-  position: Position;
-  onChange: (p: Position) => void;
-  editing: 0 | 1;
-  onEdit: (index: null) => void;
-}) {
+/** One row of six faces per die; "Roll later" clears both so play starts with a roll. */
+export function PositionDicePanel({ position: p, onChange, onDone }: { position: Position; onChange: (p: Position) => void; onDone: () => void }) {
+  const choose = (index: 0 | 1, value: number) => {
+    const dice: [number, number] = [p.dice[0] || value, p.dice[1] || value];
+    dice[index] = value;
+    onChange({ ...p, dice });
+  };
+  const rolled = p.dice[0] > 0 && p.dice[1] > 0;
   return (
-    <View testID="position-dice-picker" style={styles.dicePicker}>
-      {([1, 2, 3, 4, 5, 6] as const).map(value => (
-        <Pressable
-          key={value}
-          testID={`position-dice-value-${value}`}
-          accessibilityRole="button"
-          accessibilityLabel={String(value)}
-          accessibilityState={{ selected: p.dice[editing] === value }}
-          onPress={() => {
-            const dice: [number, number] = [p.dice[0] || 1, p.dice[1] || 1];
-            dice[editing] = value;
-            onChange({ ...p, dice });
-            onEdit(null);
-          }}
-          style={({ pressed }) => [styles.dieButton, { flex: 1 }, p.dice[editing] === value && styles.active, pressed && styles.pressed]}
-        >
-          <DieFace value={value} used={false} playerColor={p.currentPlayer} displayStyle="dots" size={30} />
-        </Pressable>
+    <StripPanel
+      title={translate('positions.dice')}
+      onDone={onDone}
+      testID="position-dice-picker"
+      accessory={<PositionAction compact symbol="x" label={translate('positions.roll_later')} testID="position-clear-dice" disabled={!rolled} onPress={() => onChange({ ...p, dice: [0, 0] })} />}
+    >
+      {([0, 1] as const).map(index => (
+        <View key={index} style={styles.diceRow} accessibilityLabel={translate(index === 0 ? 'positions.die_one' : 'positions.die_two')}>
+          {FACES.map(value => (
+            <Pressable
+              key={value}
+              testID={`position-die-${index}-value-${value}`}
+              accessibilityRole="button"
+              accessibilityLabel={`${translate(index === 0 ? 'positions.die_one' : 'positions.die_two')}: ${value}`}
+              accessibilityState={{ selected: p.dice[index] === value }}
+              onPress={() => choose(index, value)}
+              style={({ pressed }) => [styles.dieChoice, p.dice[index] === value && styles.dieChoiceSelected, pressed && styles.pressed]}
+            >
+              <DieFace value={value} used={p.dice[index] !== value} playerColor={p.currentPlayer} displayStyle="dots" size={30} />
+            </Pressable>
+          ))}
+        </View>
       ))}
-    </View>
+    </StripPanel>
   );
 }

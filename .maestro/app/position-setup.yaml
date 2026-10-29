@@ -27,7 +27,7 @@ tags:
 - assertNotVisible:
     id: position-match-length
 - assertNotVisible:
-    id: position-cube-higher
+    id: position-cube-value-higher
 - assertNotVisible:
     id: position-start
 - takeScreenshot: position-compact-workspace
@@ -39,27 +39,24 @@ tags:
     id: position-die-0
 - assertNotVisible:
     id: position-fine-tune
-- tapOn:
-    id: position-die-0
-# The choices open below the fold on short screens.
+# The strip sits right under the board; scroll it into view on short screens.
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-dice-value-6
+      TARGET_ID: position-dice-toggle
       START_Y: '80%'
       END_Y: '25%'
 - tapOn:
-    id: position-dice-value-6
+    id: position-dice-toggle
 - tapOn:
-    id: position-die-1
-- runFlow:
-    file: ../utils/position-scroll.yaml
-    env:
-      TARGET_ID: position-dice-value-2
-      START_Y: '80%'
-      END_Y: '25%'
+    id: position-die-0-value-6
 - tapOn:
-    id: position-dice-value-2
+    id: position-die-1-value-2
+- tapOn:
+    id: position-detail-done
+- assertVisible:
+    id: position-dice-toggle
+    text: 'Dice: 6, 2'
 - takeScreenshot: position-visible-presets-dice
 - runFlow:
     file: ../utils/position-scroll.yaml
@@ -72,11 +69,11 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-cube-higher
+      TARGET_ID: position-cube-value-higher
       START_Y: '80%'
       END_Y: '25%'
 - tapOn:
-    id: position-cube-higher
+    id: position-cube-value-higher
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
@@ -148,17 +145,17 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-add
+      TARGET_ID: position-stack-count-higher
       START_Y: '80%'
       END_Y: '25%'
 - tapOn:
-    id: position-add
+    id: position-stack-count-higher
 - assertVisible: 'Point 6, 2 white checkers, selected'
 - takeScreenshot: position-existing-owner
 - tapOn:
     id: position-empty-point
 - tapOn:
-    id: position-add
+    id: position-stack-count-higher
 - assertVisible: 'Point 6, 1 black checker, selected'
 - takeScreenshot: position-owner-after-empty
 - tapOn:
@@ -166,12 +163,17 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-remove
+      TARGET_ID: position-stack-count-lower
       START_Y: '80%'
       END_Y: '25%'
 - tapOn:
-    id: position-remove
+    id: position-stack-count-lower
 - takeScreenshot: position-01-editor
+# Header undo/redo walk the edit history; the board change is unit-tested.
+- tapOn:
+    id: position-undo
+- tapOn:
+    id: position-redo
 # Save the edited board and verify it survives a real relaunch.
 - runFlow:
     file: ../utils/position-scroll.yaml
@@ -193,7 +195,7 @@ tags:
 - hideKeyboard
 - tapOn:
     id: position-save
-- assertVisible: Untitled position
+- assertVisible: 'Untitled position.*'
 - tapOn:
     id: position-save-name
 - eraseText
@@ -201,7 +203,7 @@ tags:
 - hideKeyboard
 - tapOn:
     id: position-save
-- assertVisible: My saved position
+- assertVisible: 'My saved position.*'
 - stopApp
 - launchApp
 - openLink: backgammonmastermind.preview://position
@@ -215,9 +217,9 @@ tags:
     id: position-saved-toggle
 - scrollUntilVisible:
     element:
-      text: My saved position
+      text: 'My saved position.*'
     direction: DOWN
-- tapOn: My saved position
+- tapOn: 'My saved position.*'
 - takeScreenshot: position-02-saved
 # Load a known public GNU ID through the consumer importer.
 - runFlow:
@@ -313,6 +315,21 @@ tags:
     timeout: 30000
 - assertVisible: 'Point 6, 5 white checkers'
 - takeScreenshot: position-04-play
+# Save the live board from the game header with a name and note; play goes on.
+- tapOn:
+    id: save-position-button
+- tapOn:
+    id: save-position-name
+- inputText: Saved mid-game
+- tapOn:
+    id: save-position-note
+- inputText: Check this later
+- hideKeyboard
+- takeScreenshot: position-07-save-from-game
+- tapOn:
+    id: save-position-confirm
+- assertVisible:
+    id: header-undo-button
 # Open a valid shared preview while a game exists; merely opening it must not
 # start a new game. Choosing Play then Cancel must retain the workspace.
 - runScript: ../utils/position-link.js
@@ -342,6 +359,20 @@ tags:
 - tapOn: Cancel
 - assertVisible:
     id: position-screen
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-saved-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-saved-toggle
+- scrollUntilVisible:
+    element:
+      text: 'Saved mid-game.*'
+    direction: DOWN
+- assertVisible: '.*From a game.*'
+- takeScreenshot: position-08-saved-with-time
 # A malformed shared link is an error preview, never a replacement game.
 - openLink: backgammonmastermind.preview://position?data=invalid
 - extendedWaitUntil:

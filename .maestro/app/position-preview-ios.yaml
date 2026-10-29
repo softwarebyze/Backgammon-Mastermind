@@ -33,7 +33,7 @@ tags:
 - assertNotVisible:
     id: position-match-length
 - assertNotVisible:
-    id: position-cube-higher
+    id: position-cube-value-higher
 - assertNotVisible:
     id: position-start
 - takeScreenshot: position-compact-workspace
@@ -46,13 +46,16 @@ tags:
 - assertNotVisible:
     id: position-fine-tune
 - tapOn:
-    id: position-die-0
+    id: position-dice-toggle
 - tapOn:
-    id: position-dice-value-6
+    id: position-die-0-value-6
 - tapOn:
-    id: position-die-1
+    id: position-die-1-value-2
 - tapOn:
-    id: position-dice-value-2
+    id: position-detail-done
+- assertVisible:
+    id: position-dice-toggle
+    text: 'Dice: 6, 2'
 - takeScreenshot: position-visible-presets-dice
 - runFlow:
     file: ../utils/position-scroll.yaml
@@ -65,11 +68,11 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-cube-higher
+      TARGET_ID: position-cube-value-higher
       START_Y: '80%'
       END_Y: '25%'
 - tapOn:
-    id: position-cube-higher
+    id: position-cube-value-higher
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
@@ -144,11 +147,8 @@ tags:
       START_Y: '80%'
       END_Y: '25%'
 - assertVisible:
-    id: position-die-0
-    text: 'First die: 5'
-- assertVisible:
-    id: position-die-1
-    text: 'Second die: 2'
+    id: position-dice-toggle
+    text: 'Dice: 5, 2'
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:

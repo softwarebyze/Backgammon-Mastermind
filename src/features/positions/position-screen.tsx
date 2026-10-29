@@ -1,23 +1,30 @@
-import type { PositionDetail } from './position-details';
+import type { PositionFocus } from './position-strip';
+import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
-import { Keyboard, ScrollView, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
+import { useLayoutEffect, useState } from 'react';
+import { Keyboard, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
 import { translate } from '@/lib/i18n';
-import { newPosition, positionFromGame, positionGame, validatePosition } from '@/lib/positions/position';
-import { deleteSavedPosition, loadSavedPositions, savePosition } from '@/lib/positions/saved-positions';
+import { newPosition, positionGame, validatePosition } from '@/lib/positions/position';
+import { loadSavedPositions } from '@/lib/positions/saved-positions';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
 import { PositionBoardEditor } from './position-board-editor';
 import { PositionAction } from './position-controls';
-import { PositionDetails } from './position-details';
 import { positionError } from './position-errors';
 import { PositionExchange } from './position-exchange';
-import { styles } from './position-styles';
+import { PositionHistoryActions } from './position-history-actions';
+import { PositionSaved } from './position-saved';
+import { PositionStrip } from './position-strip';
+import { STRIP_HEIGHT, styles } from './position-styles';
+import { usePositionHistory } from './use-position-history';
+
+/** Toolbar, strip, tool row and gaps around the board on a phone. */
+const CHROME_HEIGHT = 52 + STRIP_HEIGHT + 56 + 12 * 4;
 
 function initialPosition(data: string | string[] | undefined): { position: Position; error: string } {
   if (data === undefined)
@@ -30,6 +37,14 @@ function initialPosition(data: string | string[] | undefined): { position: Posit
   catch (err) { return { position: newPosition(), error: positionError(err) }; }
 }
 
+function validationError(position: Position): string {
+  try {
+    validatePosition(position);
+    return '';
+  }
+  catch (err) { return positionError(err); }
+}
+
 export function PositionScreen() {
   const { data } = useLocalSearchParams<{ data?: string }>();
   // Key the workspace by URL so a second shared link is never ignored on native.
@@ -38,30 +53,53 @@ export function PositionScreen() {
 
 /* eslint-disable max-lines-per-function -- one workspace composes the board and tools */
 function PositionWorkspace({ data }: { data?: string }) {
+  const navigation = useNavigation();
   const { state, startFromPosition } = useGame();
   const [initial] = useState(() => initialPosition(data));
-  const [position, setPosition] = useState(initial.position);
+  const history = usePositionHistory(() => initial.position);
+  const { position } = history;
   const [error, setError] = useState(initial.error);
   const [location, setLocation] = useState<PositionLocation | null>(null);
+  const [focus, setFocus] = useState<PositionFocus>(null);
+  const [color, setColor] = useState<Player>('white');
   const [saved, setSaved] = useState(loadSavedPositions);
-  const [name, setName] = useState('');
-  const [notice, setNotice] = useState('');
-  const [detail, setDetail] = useState<PositionDetail>(null);
   const [tool, setTool] = useState<'play' | 'saved' | 'exchange' | null>(null);
   const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-human');
+  const { width, height } = useWindowDimensions();
+  const { insets } = useLayoutMetrics();
+  const maxBoardHeight = Math.max(260, Math.min(width < 600 ? 520 : 560, height - CHROME_HEIGHT - 120));
+  const dims = fitBoardToViewport(Math.min(880, Math.max(200, width - 32 - insets.left - insets.right)), maxBoardHeight, { extraHeight: 36, checkerCap: 48 });
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <PositionHistoryActions canUndo={history.canUndo} canRedo={history.canRedo} onUndo={history.undo} onRedo={history.redo} />,
+    });
+  }, [navigation, history.canUndo, history.canRedo, history.undo, history.redo]);
+
+  const change = (p: Position) => {
+    history.change(p);
+    setError('');
+  };
+  const replace = (p: Position) => {
+    change(p);
+    setLocation(null);
+    setFocus(null);
+  };
+  const selectLocation = (next: PositionLocation | null) => {
+    setLocation(next);
+    if (next !== null)
+      setFocus(null);
+  };
+  const selectFocus = (next: PositionFocus) => {
+    Keyboard.dismiss();
+    setLocation(null);
+    setFocus(next);
+  };
   const openTool = (next: 'play' | 'saved' | 'exchange') => {
     Keyboard.dismiss();
-    setDetail(null);
     setTool(tool === next ? null : next);
   };
-  const { width } = useWindowDimensions();
-  const { insets } = useLayoutMetrics();
-  const dims = fitBoardToViewport(Math.min(880, Math.max(200, width - 32 - insets.left - insets.right)), width < 600 ? 310 : 470, { extraHeight: 36, checkerCap: 48 });
-  const change = (p: Position) => {
-    setPosition(p);
-    setError('');
-    setNotice('');
-  };
+
   if (initial.error && data) {
     return (
       <ScrollView style={styles.root} contentContainerStyle={styles.content}>
@@ -71,15 +109,8 @@ function PositionWorkspace({ data }: { data?: string }) {
     );
   }
   // Invalid edits (e.g. a half-entered roll) stay visible, with actions disabled.
-  let validationError = '';
-  let valid = true;
-  try {
-    validatePosition(position);
-  }
-  catch (err) {
-    valid = false;
-    validationError = positionError(err);
-  }
+  const invalid = validationError(position);
+  const finished = position.borneOff.white === 15 || position.borneOff.black === 15;
   const play = () => {
     try {
       const next = positionGame(position, mode);
@@ -107,110 +138,58 @@ function PositionWorkspace({ data }: { data?: string }) {
           position={position}
           dimensions={dims}
           location={location}
-          onLocation={setLocation}
+          color={color}
+          onColor={setColor}
+          onLocation={selectLocation}
           onChange={change}
+          cubeSelected={focus === 'cube'}
+          onCubePress={() => selectFocus(focus === 'cube' ? null : 'cube')}
+          onStrokeStart={history.strokeStart}
+          onStrokeEnd={history.strokeEnd}
           actions={(
-            <View style={[styles.row, { marginLeft: 'auto' }]}>
-              <PositionAction
-                label={translate('positions.standard')}
-                testID="position-standard"
-                compact
-                onPress={() => {
-                  change(newPosition());
-                  setLocation(null);
-                }}
-              />
-              <PositionAction
-                label={translate('positions.empty')}
-                testID="position-empty"
-                compact
-                symbol="trash-2"
-                onPress={() => {
-                  change(newPosition(true));
-                  setLocation(null);
-                }}
-              />
-
-            </View>
+            <>
+              <PositionAction label={translate('positions.standard')} testID="position-standard" compact onPress={() => replace(newPosition())} />
+              <PositionAction label={translate('positions.empty')} testID="position-empty" compact iconOnly={dims.boardOuterWidth < 420} symbol="trash-2" onPress={() => replace(newPosition(true))} />
+            </>
           )}
         />
-        <PositionDetails
+        <PositionStrip
           position={position}
+          location={location}
+          focus={focus}
+          color={color}
           onChange={change}
-          editing={detail}
-          onEdit={(next) => {
-            setTool(null);
-            setDetail(next);
-          }}
+          onLocation={selectLocation}
+          onFocus={selectFocus}
         />
+        {!!invalid && <Text accessibilityRole="alert" testID="position-invalid" style={styles.error}>{invalid}</Text>}
         {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
         <View style={styles.workspaceActions}>
           <PositionAction compact symbol="share-2" label={translate('positions.exchange_short')} testID="position-exchange-toggle" selected={tool === 'exchange'} onPress={() => openTool('exchange')} />
           <PositionAction compact symbol="bookmark" label={translate('positions.saved_short')} testID="position-saved-toggle" selected={tool === 'saved'} onPress={() => openTool('saved')} />
-          <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline disabled={!valid || position.borneOff.white === 15 || position.borneOff.black === 15} onPress={() => openTool('play')} />
+          <View style={styles.toolbarSpacer} />
+          <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline selected={tool === 'play'} disabled={!!invalid || finished} onPress={() => openTool('play')} />
         </View>
         {tool === 'play' && (
           <View style={styles.detailPanel}>
-            <View style={styles.row}>
-              <PositionAction label={translate('positions.pass_play')} symbol="users" selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
-              <PositionAction label={translate('positions.computer')} symbol="cpu" selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
+            <View style={styles.segmented}>
+              <PositionAction segment label={translate('positions.pass_play')} symbol="users" selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
+              <PositionAction segment label={translate('positions.computer')} symbol="cpu" selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
             </View>
             <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
-            <PositionAction label={translate('positions.play')} symbol="play" testID="position-start" disabled={!valid || position.borneOff.white === 15 || position.borneOff.black === 15} onPress={play} />
+            <PositionAction label={translate('positions.play')} symbol="play" testID="position-start" primary disabled={!!invalid || finished} onPress={play} />
           </View>
         )}
-        <View>
-          <PositionExchange
-            open={tool === 'exchange'}
+        <PositionExchange open={tool === 'exchange'} position={position} onImport={replace} />
+        {tool === 'saved' && (
+          <PositionSaved
             position={position}
-            onCurrent={state
-              ? () => {
-                  change(positionFromGame(state));
-                  setLocation(null);
-                  setNotice(translate('positions.snapshot_hint'));
-                }
-              : undefined}
-            onImport={(p) => {
-              change(p);
-              setLocation(null);
-            }}
+            valid={!invalid}
+            saved={saved}
+            onSaved={setSaved}
+            onOpen={entry => replace(entry.position)}
           />
-          {tool === 'saved' && (
-            <View style={styles.detailPanel}>
-              <Text style={styles.caption}>{translate('positions.saved_hint')}</Text>
-              <TextInput testID="position-save-name" accessibilityLabel={translate('positions.name')} placeholder={translate('positions.name')} placeholderTextColor="#CBB8A7" value={name} maxLength={80} onChangeText={setName} style={styles.input} />
-              <PositionAction
-                label={translate('positions.save')}
-                symbol="bookmark"
-                testID="position-save"
-                disabled={!valid}
-                onPress={() => {
-                  try {
-                    setSaved(savePosition(name.trim() || translate('positions.untitled'), position));
-                    setNotice(translate('positions.saved_notice'));
-                  }
-                  catch (err) { setError(positionError(err)); }
-                }}
-              />
-              {!saved.length && <Text style={styles.caption}>{translate('positions.no_saved')}</Text>}
-              {saved.map(entry => (
-                <View style={styles.savedRow} key={entry.id}>
-                  <PositionAction
-                    label={entry.name}
-                    onPress={() => {
-                      change(entry.position);
-                      setLocation(null);
-                      setName(entry.name);
-                    }}
-                  />
-                  <PositionAction symbol="trash-2" label={translate('positions.delete')} onPress={() => setSaved(deleteSavedPosition(entry.id))} />
-                </View>
-              ))}
-            </View>
-          )}
-        </View>
-        {!valid && <Text accessibilityRole="alert" style={styles.error}>{validationError}</Text>}
-        {!!notice && <Text accessibilityLiveRegion="polite" style={styles.caption}>{notice}</Text>}
+        )}
       </ScrollView>
     </>
   );
