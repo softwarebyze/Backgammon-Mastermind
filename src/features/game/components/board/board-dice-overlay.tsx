@@ -1,7 +1,6 @@
 import type { BoardDice, BoardDiceSide } from './board-dice-layout';
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { boardDiceSide, boardDieGap, boardDieSize, boardHalfFrame, hasBoardDice } from './board-dice-layout';
 import { DiceDisplay, SingleDie } from './dice-display';
@@ -86,17 +85,18 @@ export function BoardDiceOverlay({
   const side = boardDiceSide(value.player);
   return (
     <HalfSlot dims={dimensions} side={side} surface={surface} testID={`board-dice-${side}`}>
-      <Animated.View key={side} entering={FadeIn.duration(160)} exiting={FadeOut.duration(120)}>
-        <DiceDisplay
-          dice={value.dice}
-          remainingDice={value.remainingDice}
-          playerColor={value.player}
-          displayStyle={value.displayStyle}
-          animateRoll={value.animateRoll}
-          size={size}
-          gap={boardDieGap(size)}
-        />
-      </Animated.View>
+      {/* No enter/exit fade: stepping through the history changes sides
+          and would fade the dice out and back in (a visible flicker). The
+          dice's own settle pulse marks a new roll. */}
+      <DiceDisplay
+        dice={value.dice}
+        remainingDice={value.remainingDice}
+        playerColor={value.player}
+        displayStyle={value.displayStyle}
+        animateRoll={value.animateRoll}
+        size={size}
+        gap={boardDieGap(size)}
+      />
     </HalfSlot>
   );
 }
