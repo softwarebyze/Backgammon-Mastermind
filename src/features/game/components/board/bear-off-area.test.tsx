@@ -1,5 +1,6 @@
 import { cleanup, render, screen } from '@/lib/test-utils';
 import { BearOffArea } from './bear-off-area';
+import { trayLabelFontSize } from './bear-off-label';
 
 jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key }));
 
@@ -19,6 +20,13 @@ it('labels both trays through i18n instead of a hardcoded English "off" (#244)',
       checkerSize={28}
     />,
   );
-  expect(screen.getByText('▲ game.status.off_short')).toBeTruthy();
-  expect(screen.getByText('▽ game.status.off_short')).toBeTruthy();
+  expect(screen.getByText('▲game.status.off_short')).toBeTruthy();
+  expect(screen.getByText('▽game.status.off_short')).toBeTruthy();
+});
+
+it('shrinks long tray labels to fit instead of truncating them', () => {
+  expect(trayLabelFontSize('▲off', 32)).toBe(9);
+  const size = trayLabelFontSize('▲toplanan', 32);
+  expect(size).toBeLessThan(9);
+  expect(size * 0.58 * '▲toplanan'.length).toBeLessThanOrEqual(28);
 });
