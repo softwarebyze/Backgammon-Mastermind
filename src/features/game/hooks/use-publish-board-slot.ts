@@ -20,6 +20,12 @@ export type PublishBoardSlotOptions = {
    * stays available for the live board.
    */
   minBoardHeight?: number;
+  /**
+   * Portrait game: the player strips sit inside the slot, hugging the board.
+   * Report them with onTopLayout / onBottomLayout and they are taken out of
+   * the board's share of the slot.
+   */
+  stripsInSlot?: boolean;
 };
 
 /**
@@ -30,14 +36,15 @@ export type PublishBoardSlotOptions = {
 export function usePublishBoardSlot(options?: PublishBoardSlotOptions) {
   const reviewHeight = options?.reviewHeight ?? REVIEW_SLOT_HEIGHT;
   const minBoardHeight = options?.minBoardHeight ?? 0;
+  const stripsInSlot = options?.stripsInSlot ?? false;
   const headerHeight = use(HeaderHeightContext) ?? 0;
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const parts = useRef({ top: 0, controls: 0, slotW: 0, slotH: 0 });
+  const parts = useRef({ top: 0, bottom: 0, controls: 0, slotW: 0, slotH: 0 });
   const [controlsHeight, setControlsHeight] = useState(0);
 
   const publish = useCallback(() => {
-    const { top, controls, slotW, slotH } = parts.current;
+    const { top, bottom, controls, slotW, slotH } = parts.current;
     const sideBySide = isLandscapeLayout(screenWidth, screenHeight);
     if (slotW <= 0 || (!sideBySide && top <= 0)) {
       return;
@@ -45,16 +52,17 @@ export function usePublishBoardSlot(options?: PublishBoardSlotOptions) {
     const fromChrome = leftoverBoardHeight({
       screenHeight,
       headerHeight,
-      topChromeHeight: top,
+      topChromeHeight: top + bottom,
       reviewHeight,
       controlsHeight: controls,
       bottomInset: insets.bottom,
       sideBySide,
       minHeight: minBoardHeight > 0 ? minBoardHeight : undefined,
     });
-    const height = slotH > 0 ? Math.min(slotH, fromChrome) : fromChrome;
+    const boardShare = stripsInSlot && !sideBySide ? slotH - top - bottom : slotH;
+    const height = slotH > 0 ? Math.min(boardShare, fromChrome) : fromChrome;
     setBoardSlotSize({ width: slotW, height });
-  }, [screenWidth, screenHeight, headerHeight, insets.bottom, reviewHeight, minBoardHeight]);
+  }, [screenWidth, screenHeight, headerHeight, insets.bottom, reviewHeight, minBoardHeight, stripsInSlot]);
 
   useEffect(() => {
     publish();
@@ -66,6 +74,11 @@ export function usePublishBoardSlot(options?: PublishBoardSlotOptions) {
 
   const onTopLayout = useCallback((event: LayoutChangeEvent) => {
     parts.current.top = Math.round(event.nativeEvent.layout.height);
+    publish();
+  }, [publish]);
+
+  const onBottomLayout = useCallback((event: LayoutChangeEvent) => {
+    parts.current.bottom = Math.round(event.nativeEvent.layout.height);
     publish();
   }, [publish]);
 
@@ -95,5 +108,5 @@ export function usePublishBoardSlot(options?: PublishBoardSlotOptions) {
     });
   }, [minBoardHeight, screenWidth, screenHeight, headerHeight, controlsHeight, insets.bottom]);
 
-  return { onTopLayout, onControlsLayout, onSlotLayout, captionMaxHeight };
+  return { onTopLayout, onBottomLayout, onControlsLayout, onSlotLayout, captionMaxHeight };
 }

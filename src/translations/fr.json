@@ -59,6 +59,11 @@
       "open_settings_hint": "Ouvrir les Réglages",
       "title": "Options de partie"
     },
+    "players": {
+      "computer": "Ordinateur",
+      "pips": "pips",
+      "you": "Vous"
+    },
     "preferences": {
       "auto_move": "Coup auto si forcé",
       "auto_move_hint": "Jouer automatiquement le seul coup légal",

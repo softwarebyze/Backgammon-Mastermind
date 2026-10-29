@@ -59,6 +59,11 @@
       "open_settings_hint": "Apri Impostazioni",
       "title": "Opzioni di gioco"
     },
+    "players": {
+      "computer": "Computer",
+      "pips": "pip",
+      "you": "Tu"
+    },
     "preferences": {
       "auto_move": "Mossa automatica se obbligata",
       "auto_move_hint": "Gioca automaticamente l'unica mossa legale",

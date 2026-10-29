@@ -59,6 +59,11 @@
       "open_settings_hint": "פתיחת הגדרות",
       "title": "אפשרויות משחק"
     },
+    "players": {
+      "computer": "מחשב",
+      "pips": "פיפים",
+      "you": "אתה"
+    },
     "preferences": {
       "auto_move": "מהלך אוטומטי כשהוא כפוי",
       "auto_move_hint": "ביצוע אוטומטי של המהלך החוקי היחיד",

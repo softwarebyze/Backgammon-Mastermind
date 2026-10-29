@@ -59,6 +59,11 @@
       "open_settings_hint": "打开设置",
       "title": "对局选项"
     },
+    "players": {
+      "computer": "电脑",
+      "pips": "点",
+      "you": "你"
+    },
     "preferences": {
       "auto_move": "唯一着法自动走",
       "auto_move_hint": "自动走出唯一合法的一步",

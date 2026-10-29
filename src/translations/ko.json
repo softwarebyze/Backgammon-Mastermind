@@ -59,6 +59,11 @@
       "open_settings_hint": "설정 열기",
       "title": "게임 옵션"
     },
+    "players": {
+      "computer": "컴퓨터",
+      "pips": "핍",
+      "you": "나"
+    },
     "preferences": {
       "auto_move": "강제 수 자동 진행",
       "auto_move_hint": "유일한 가능 수를 자동으로 둡니다",

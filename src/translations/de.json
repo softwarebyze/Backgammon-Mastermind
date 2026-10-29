@@ -59,6 +59,11 @@
       "open_settings_hint": "Einstellungen öffnen",
       "title": "Spieloptionen"
     },
+    "players": {
+      "computer": "Computer",
+      "pips": "Pips",
+      "you": "Du"
+    },
     "preferences": {
       "auto_move": "Auto-Zug bei Zwang",
       "auto_move_hint": "Den einzig möglichen Zug automatisch spielen",

@@ -59,6 +59,11 @@
       "open_settings_hint": "Abrir Ajustes",
       "title": "Opciones de partida"
     },
+    "players": {
+      "computer": "Ordenador",
+      "pips": "pips",
+      "you": "Tú"
+    },
     "preferences": {
       "auto_move": "Mover automáticamente si es forzado",
       "auto_move_hint": "Jugar automáticamente el único movimiento legal",

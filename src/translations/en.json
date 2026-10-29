@@ -59,6 +59,11 @@
       "open_settings_hint": "Open Settings",
       "title": "Game options"
     },
+    "players": {
+      "computer": "Computer",
+      "pips": "pips",
+      "you": "You"
+    },
     "preferences": {
       "auto_move": "Auto-move when forced",
       "auto_move_hint": "Play the only legal move automatically",

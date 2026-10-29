@@ -59,6 +59,11 @@
       "open_settings_hint": "Instellingen openen",
       "title": "Spelopties"
     },
+    "players": {
+      "computer": "Computer",
+      "pips": "pips",
+      "you": "Jij"
+    },
     "preferences": {
       "auto_move": "Automatisch zetten bij dwang",
       "auto_move_hint": "De enige legale zet automatisch spelen",

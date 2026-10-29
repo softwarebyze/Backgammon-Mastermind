@@ -59,6 +59,11 @@
       "open_settings_hint": "設定を開く",
       "title": "ゲームオプション"
     },
+    "players": {
+      "computer": "コンピュータ",
+      "pips": "ピップ",
+      "you": "あなた"
+    },
     "preferences": {
       "auto_move": "強制手を自動でプレイ",
       "auto_move_hint": "唯一の合法手を自動的にプレイします",

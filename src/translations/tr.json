@@ -59,6 +59,11 @@
       "open_settings_hint": "Ayarları aç",
       "title": "Oyun seçenekleri"
     },
+    "players": {
+      "computer": "Bilgisayar",
+      "pips": "pip",
+      "you": "Siz"
+    },
     "preferences": {
       "auto_move": "Zorunlu hamlede otomatik oyna",
       "auto_move_hint": "Tek geçerli hamleyi otomatik oynar",

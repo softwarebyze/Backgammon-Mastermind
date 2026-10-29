@@ -59,6 +59,11 @@
       "open_settings_hint": "فتح الإعدادات",
       "title": "خيارات اللعبة"
     },
+    "players": {
+      "computer": "الكمبيوتر",
+      "pips": "نقاط",
+      "you": "أنت"
+    },
     "preferences": {
       "auto_move": "حركة تلقائية عند الإجبار",
       "auto_move_hint": "تنفيذ الحركة الوحيدة المتاحة تلقائياً",
