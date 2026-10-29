@@ -46,6 +46,13 @@ export default function AppLayout() {
         }}
       />
       <Stack.Screen
+        name="stats"
+        options={{
+          ...settingsStackOptions(t('stats.title')),
+          ...stackEscapeHeaderOptions(),
+        }}
+      />
+      <Stack.Screen
         name="language"
         options={pickerFormSheetOptions(t('settings.language'))}
       />

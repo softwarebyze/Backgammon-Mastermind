@@ -20,12 +20,15 @@ type ItemProps = {
   value?: string;
   onPress?: () => void;
   icon?: React.ReactNode;
+  testID?: string;
 };
 
-export function SettingsItem({ text, value, icon, onPress }: ItemProps) {
+export function SettingsItem({ text, value, icon, onPress, testID }: ItemProps) {
   const isPressable = onPress !== undefined;
   return (
     <Pressable
+      accessibilityRole={isPressable ? 'button' : 'text'}
+      testID={testID}
       onPress={isPressable
         ? () => {
             hapticLight();
