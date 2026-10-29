@@ -46,8 +46,8 @@ tags:
     file: ../utils/position-scroll.yaml
     env:
       TARGET_ID: position-dice-value-6
-      START_Y: '25%'
-      END_Y: '80%'
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-dice-value-6
 - tapOn:
@@ -56,8 +56,8 @@ tags:
     file: ../utils/position-scroll.yaml
     env:
       TARGET_ID: position-dice-value-2
-      START_Y: '25%'
-      END_Y: '80%'
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-dice-value-2
 - takeScreenshot: position-visible-presets-dice
