@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Снять шашку с доски",
-      "bear_off_label": "выброс",
       "cancel": "отменить",
       "cancel_a11y": "Отмена выбора",
       "confirm_move": "Подтвердить ход",

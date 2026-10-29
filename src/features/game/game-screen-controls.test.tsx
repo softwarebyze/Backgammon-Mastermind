@@ -3,7 +3,8 @@ import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 
-import { AUTO_ROLL_BUTTON_GRACE_MS, GameScreenControls } from './game-screen-controls';
+import { GameScreenControls } from './game-screen-controls';
+import { AUTO_ROLL_BUTTON_GRACE_MS } from './roll-button-timing';
 
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),

@@ -11,6 +11,7 @@ import { HintButton } from '@/features/game/components/hint-button';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { AUTO_ROLL_BUTTON_GRACE_MS } from '@/features/game/roll-button-timing';
 import { isTurnStart } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
@@ -52,23 +53,19 @@ const ACTION_SLOT_HEIGHT = 52;
 const CONTROL_HIT_SLOP = 16;
 /** Undo and Confirm share one height so the pair reads as a single control row. */
 const CONFIRM_ROW_BUTTON_HEIGHT = 50;
-/**
- * With auto-roll on the dice roll by themselves ~400ms into the turn. Holding
- * the Roll button back this long keeps it from flashing on every turn, yet it
- * still appears when automation is paused (tutor prompt, redo stack).
- */
-export const AUTO_ROLL_BUTTON_GRACE_MS = 1500;
 
 /** True once `active` has stayed true for `delayMs`; false again as soon as it drops. */
 function useDelayedFlag(active: boolean, delayMs: number): boolean {
   const [elapsed, setElapsed] = useState(false);
   useEffect(() => {
     if (!active) {
-      setElapsed(false);
       return;
     }
     const id = setTimeout(() => setElapsed(true), delayMs);
-    return () => clearTimeout(id);
+    return () => {
+      clearTimeout(id);
+      setElapsed(false);
+    };
   }, [active, delayMs]);
   return active && elapsed;
 }

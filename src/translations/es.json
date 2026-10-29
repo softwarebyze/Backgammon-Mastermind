@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Sacar ficha",
-      "bear_off_label": "fuera",
       "cancel": "Cancelar",
       "cancel_a11y": "Cancelar selección",
       "confirm_move": "Confirmar movimiento",

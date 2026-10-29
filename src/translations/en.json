@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Bear off",
-      "bear_off_label": "off",
       "cancel": "Cancel",
       "cancel_a11y": "Cancel selection",
       "confirm_move": "Confirm move",
