@@ -20,9 +20,10 @@ export function diePips(value: number, size: number, border: number): Pip[] {
   const inner = size - border * 2;
   const target = size * 0.16;
   let pip = Math.max(3, Math.round(target));
-  // Same parity as the face, so the centre pip sits exactly in the middle.
+  // Same parity as the face, so the centre pip sits exactly in the middle;
+  // round down rather than up so pips never grow past the target.
   if ((inner - pip) % 2 !== 0)
-    pip += pip > target ? -1 : 1;
+    pip += pip > 3 ? -1 : 1;
   // Offset of a quarter-position pip's top-left from the inner edge.
   const near = Math.round(inner * 0.25 - pip / 2);
   const far = inner - pip - near;
