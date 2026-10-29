@@ -403,6 +403,8 @@ export const LESSONS: LessonDefinition[] = [
             { point: 1, player: 'black', count: 2 },
             { point: 12, player: 'black', count: 4 },
             { point: 17, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 20, player: 'black', count: 3 },
           ],
           borneOff: { white: 4 },
         },
@@ -420,9 +422,13 @@ export const LESSONS: LessonDefinition[] = [
             { point: 5, player: 'white', count: 2 },
             { point: 4, player: 'white', count: 2 },
             { point: 8, player: 'white', count: 2 },
-            { point: 13, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 5 },
+            { point: 24, player: 'white', count: 2 },
             { point: 7, player: 'black', count: 1 },
-            { point: 12, player: 'black', count: 3 },
+            { point: 12, player: 'black', count: 5 },
+            { point: 17, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 21, player: 'black', count: 2 },
           ],
           bar: { black: 1 },
         },
@@ -441,9 +447,13 @@ export const LESSONS: LessonDefinition[] = [
             { point: 5, player: 'white', count: 2 },
             { point: 4, player: 'white', count: 2 },
             { point: 3, player: 'white', count: 2 },
-            { point: 13, player: 'white', count: 2 },
+            { point: 8, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 4 },
             { point: 24, player: 'black', count: 2 },
             { point: 23, player: 'black', count: 2 },
+            { point: 20, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 12, player: 'black', count: 3 },
             { point: 1, player: 'black', count: 2 },
           ],
         },
@@ -463,9 +473,13 @@ export const LESSONS: LessonDefinition[] = [
             { point: 5, player: 'white', count: 2 },
             { point: 4, player: 'white', count: 2 },
             { point: 3, player: 'white', count: 2 },
-            { point: 13, player: 'white', count: 2 },
+            { point: 8, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 4 },
             { point: 24, player: 'black', count: 2 },
             { point: 23, player: 'black', count: 2 },
+            { point: 20, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 12, player: 'black', count: 3 },
             { point: 1, player: 'black', count: 2 },
           ],
         },
@@ -584,4 +598,19 @@ export function isLessonUnlocked(
   }
   const previous = LESSON_IDS[index - 1]!;
   return completedLessons.includes(previous);
+}
+
+/**
+ * Where a request for `lessonId` should land: the lesson itself when it is
+ * unlocked, otherwise the first lesson still to do. Stops a typed or shared
+ * URL from skipping the locks on the hub (#303).
+ */
+export function resolveLessonAccess(
+  lessonId: LessonId,
+  completedLessons: readonly string[],
+): LessonId {
+  if (isLessonUnlocked(lessonId, completedLessons)) {
+    return lessonId;
+  }
+  return LESSON_IDS.find(id => !completedLessons.includes(id)) ?? LESSON_IDS[0]!;
 }
