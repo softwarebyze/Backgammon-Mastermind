@@ -21,6 +21,7 @@ import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-ban
 import { useGame } from '@/features/game/use-game';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
+import { HomeStatsLink } from '@/features/stats/home-stats-link';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
@@ -245,7 +246,7 @@ export function HomeScreen() {
               styles.modeBtn,
               hovered && styles.modeBtnHover,
               landscape ? styles.modeBtnLandscape : null,
-              styles.learnBtn,
+              styles.secondaryBtn,
               pressed && styles.pressed,
             ]}
             onPress={handleLearn}
@@ -254,13 +255,13 @@ export function HomeScreen() {
               <Feather name="book-open" size={24} color={GAME_PALETTE.accent} />
             </View>
             <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>
+              <Text style={[styles.btnLabel, styles.secondaryLabel]}>
                 {translate('learn.home_cta')}
               </Text>
               {landscape
                 ? null
                 : (
-                    <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>
+                    <Text style={[styles.btnSub, styles.secondarySub]}>
                       {learnSub}
                     </Text>
                   )}
@@ -306,12 +307,14 @@ export function HomeScreen() {
               <Feather name="users" size={24} color={GAME_PALETTE.accent} />
             </View>
             <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>{translate('home.two_players')}</Text>
+              <Text style={[styles.btnLabel, styles.secondaryLabel]}>{translate('home.two_players')}</Text>
               {landscape
                 ? null
-                : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
+                : <Text style={[styles.btnSub, styles.secondarySub]}>{translate('home.two_players_sub')}</Text>}
             </View>
           </HoverPressable>
+
+          <HomeStatsLink />
         </View>
       </ScrollView>
     </>
@@ -456,13 +459,17 @@ const styles = StyleSheet.create({
     backgroundColor: GAME_PALETTE.accent,
     borderColor: '#F0C060',
   },
+  // Only the main action is solid orange; the rest are calm surfaces with an
+  // orange icon, so the screen has one clear call to action.
   secondaryBtn: {
     backgroundColor: GAME_PALETTE.surface,
-    borderColor: GAME_PALETTE.accentDim,
+    borderColor: GAME_PALETTE.surfaceBorder,
   },
-  learnBtn: {
-    backgroundColor: GAME_PALETTE.surface,
-    borderColor: GAME_PALETTE.accent,
+  secondaryLabel: {
+    color: GAME_PALETTE.text,
+  },
+  secondarySub: {
+    color: GAME_PALETTE.textMuted,
   },
   btnIconSlot: {
     width: 32,

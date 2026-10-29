@@ -1,11 +1,12 @@
 import type { GameState } from '@/lib/game';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useRef } from 'react';
+import { recordFinishedGame } from '@/features/stats/use-game-stats';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
 /**
- * Fires `game_completed` once per game, from the game provider (always
+ * Fires `game_completed` (and counts the game in local stats) once per game, from the game provider (always
  * mounted) rather than from a screen effect. Only a live move that ends the
  * game arms the capture, so resuming a finished game for review or redoing
  * the winning move never counts as another completion. A game counts once:
@@ -39,6 +40,7 @@ export function useGameCompletedCapture(state: GameState | null, moveCount: numb
     }
     armedRef.current = false;
     completedRef.current = true;
+    recordFinishedGame(state, moveCount);
     posthog.capture('game_completed', {
       mode: state.mode,
       winner: state.winner,
