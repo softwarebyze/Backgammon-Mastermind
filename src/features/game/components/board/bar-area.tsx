@@ -91,10 +91,10 @@ function BarStack({
         const isTopChecker = i === centers.length - 1;
         const token = <CheckerToken player={player} size={size} showCount={isTopChecker && count > centers.length ? count : undefined} isSelected={isTopChecker && isSelected} />;
         if (!isTopChecker) {
-          return <View key={i} style={{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }}>{token}</View>;
+          return <View key={center} style={{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }}>{token}</View>;
         }
         return (
-          <Animated.View key={i} style={[{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }, topDragStyle]}>
+          <Animated.View key={center} style={[{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }, topDragStyle]}>
             {token}
           </Animated.View>
         );
