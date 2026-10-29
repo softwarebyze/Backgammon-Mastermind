@@ -2,7 +2,8 @@ import type { GameState } from '@/lib/game';
 import { createInitialState } from '@/lib/game/constants';
 import { cleanup, fireEvent, render, screen } from '@/lib/test-utils';
 
-import { PlayerStrip, playerStripStatus } from './player-strip';
+import { PlayerStrip } from './player-strip';
+import { playerStripStatus } from './player-strip-copy';
 import { StrategyMark } from './strategy-icon';
 
 jest.mock('@/lib/i18n', () => ({
