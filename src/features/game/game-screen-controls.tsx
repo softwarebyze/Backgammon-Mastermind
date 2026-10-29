@@ -1,7 +1,7 @@
 import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
@@ -50,6 +50,28 @@ type Props = {
 
 const ACTION_SLOT_HEIGHT = 52;
 const CONTROL_HIT_SLOP = 16;
+/** Undo and Confirm share one height so the pair reads as a single control row. */
+const CONFIRM_ROW_BUTTON_HEIGHT = 50;
+/**
+ * With auto-roll on the dice roll by themselves ~400ms into the turn. Holding
+ * the Roll button back this long keeps it from flashing on every turn, yet it
+ * still appears when automation is paused (tutor prompt, redo stack).
+ */
+export const AUTO_ROLL_BUTTON_GRACE_MS = 1500;
+
+/** True once `active` has stayed true for `delayMs`; false again as soon as it drops. */
+function useDelayedFlag(active: boolean, delayMs: number): boolean {
+  const [elapsed, setElapsed] = useState(false);
+  useEffect(() => {
+    if (!active) {
+      setElapsed(false);
+      return;
+    }
+    const id = setTimeout(() => setElapsed(true), delayMs);
+    return () => clearTimeout(id);
+  }, [active, delayMs]);
+  return active && elapsed;
+}
 
 export function GameScreenControls({
   state,
@@ -122,6 +144,7 @@ export function GameScreenControls({
           isReviewing={isReviewing}
           moveLogLength={moveLogLength}
           confirmMoveEnabled={preferences.confirmMove}
+          autoRollEnabled={preferences.autoRoll}
           onRoll={() => {
             hapticLight();
             onRoll();
@@ -147,6 +170,7 @@ function ActionControl({
   isReviewing,
   moveLogLength,
   confirmMoveEnabled,
+  autoRollEnabled,
   onRoll,
   onReset,
   onGoLive,
@@ -161,6 +185,7 @@ function ActionControl({
   isReviewing: boolean;
   moveLogLength: number;
   confirmMoveEnabled: boolean;
+  autoRollEnabled: boolean;
   onRoll: () => void;
   onReset: () => void;
   onGoLive?: () => void;
@@ -169,6 +194,14 @@ function ActionControl({
   onUndoMove?: () => void;
   canUndoMove: boolean;
 }) {
+  const awaitingHumanRoll = !isReviewing
+    && isHumanTurn
+    && (state.phase === 'rolling' || state.phase === 'opening-roll');
+  const rollButtonRevealed = useDelayedFlag(
+    awaitingHumanRoll && autoRollEnabled,
+    AUTO_ROLL_BUTTON_GRACE_MS,
+  );
+  const showRollButton = awaitingHumanRoll && (!autoRollEnabled || rollButtonRevealed);
   const prevConfirmEnabled = useRef(confirmMoveEnabled);
   useEffect(() => {
     const wasEnabled = prevConfirmEnabled.current;
@@ -214,8 +247,13 @@ function ActionControl({
     );
   }
 
-  // Opening: keep the Roll Dice button (tap-anywhere on the ceremony still works).
-  if (state.phase === 'opening-roll' && isHumanTurn) {
+  // Opening and regular rolls share one Roll button (tap-anywhere on the
+  // opening ceremony still works). With auto-roll it only appears as a
+  // fallback when the automatic roll has not happened.
+  if (awaitingHumanRoll) {
+    if (!showRollButton) {
+      return <View style={styles.actionSpacer} testID="auto-roll-pending" />;
+    }
     return (
       <HoverPressable
         accessibilityRole="button"
@@ -230,26 +268,7 @@ function ActionControl({
     );
   }
 
-  if (state.phase === 'opening-roll' && isComputerTurn) {
-    return <View style={styles.actionSpacer} />;
-  }
-
-  if (state.phase === 'rolling' && isHumanTurn) {
-    return (
-      <HoverPressable
-        accessibilityRole="button"
-        accessibilityLabel={translate('game.controls.roll_dice_a11y')}
-        testID="roll-dice-button"
-        style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
-        onPress={onRoll}
-        hitSlop={CONTROL_HIT_SLOP}
-      >
-        <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
-      </HoverPressable>
-    );
-  }
-
-  if (state.phase === 'rolling' && isComputerTurn) {
+  if ((state.phase === 'opening-roll' || state.phase === 'rolling') && isComputerTurn) {
     return <View style={styles.actionSpacer} />;
   }
 
@@ -491,9 +510,10 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: 'rgba(232, 224, 208, 0.45)',
     paddingHorizontal: 20,
-    paddingVertical: 12,
+    height: CONFIRM_ROW_BUTTON_HEIGHT,
     minWidth: 96,
     alignItems: 'center',
+    justifyContent: 'center',
     ...continuousRadius(12),
   },
   undoBtnDisabled: {
@@ -509,10 +529,10 @@ const styles = StyleSheet.create({
   },
   confirmBtn: {
     backgroundColor: GAME_PALETTE.control,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: GAME_PALETTE.controlBorder,
     paddingHorizontal: 24,
-    paddingVertical: 14,
+    height: CONFIRM_ROW_BUTTON_HEIGHT,
     minWidth: 180,
     flexDirection: 'row',
     alignItems: 'center',

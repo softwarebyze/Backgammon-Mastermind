@@ -10,6 +10,7 @@
     },
     "controls": {
       "bear_off_a11y": "ベアオフ",
+      "bear_off_label": "上がり",
       "cancel": "キャンセル",
       "cancel_a11y": "キャンセル選択",
       "confirm_move": "手を確定",

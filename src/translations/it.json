@@ -9,7 +9,8 @@
       "selected": "Selezionato — toccare un punto evidenziato, o Annulla"
     },
     "controls": {
-      "bear_off_a11y": "Cuscinetto",
+      "bear_off_a11y": "Porta fuori la pedina",
+      "bear_off_label": "fuori",
       "cancel": "Annulla",
       "cancel_a11y": "Annulla selezione",
       "confirm_move": "Conferma mossa",

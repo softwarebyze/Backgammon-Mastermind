@@ -9,7 +9,8 @@
       "selected": "선택 - 강조 표시된 지점을 탭하거나 취소"
     },
     "controls": {
-      "bear_off_a11y": "곰 륙",
+      "bear_off_a11y": "말 빼내기",
+      "bear_off_label": "아웃",
       "cancel": "취소",
       "cancel_a11y": "자주 묻는 질문",
       "confirm_move": "수 확정",
