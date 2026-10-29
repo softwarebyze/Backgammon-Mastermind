@@ -5,12 +5,13 @@
     "retry": "Repetir"
   },
   "feedback": {
-    "attach_hint": "Em seguida seu app de e-mail abre, para você anexar uma captura de tela.",
     "body_label": "Detalhes",
     "body_placeholder": "O que aconteceu, ou o que deixaria o app melhor?",
+    "email_instead": "Enviar por email para anexar uma captura de ecrã",
     "error": "Não foi possível abrir seu app de e-mail. Escreva para {{email}}.",
     "intro": "Encontrou um bug ou tem uma ideia? Conte para nós: lemos todas as mensagens.",
     "open_a11y": "Enviar feedback",
+    "privacy": "Enviado ao programador com a versão da app, o dispositivo e o idioma.",
     "send": "Enviar",
     "sent": "Obrigado pelo feedback!",
     "settings_row": "Enviar feedback",

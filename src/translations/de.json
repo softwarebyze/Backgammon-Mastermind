@@ -5,12 +5,13 @@
     "retry": "Versuch"
   },
   "feedback": {
-    "attach_hint": "Danach öffnet sich deine Mail-App, dort kannst du einen Screenshot anhängen.",
     "body_label": "Details",
     "body_placeholder": "Was ist passiert, oder was würde die App besser machen?",
+    "email_instead": "Lieber per E-Mail, um einen Screenshot anzuhängen",
     "error": "Die Mail-App ließ sich nicht öffnen. Schreib uns an {{email}}.",
     "intro": "Einen Fehler gefunden oder eine Idee? Schreib uns – wir lesen jede Nachricht.",
     "open_a11y": "Feedback senden",
+    "privacy": "Wird mit App-Version, Gerät und Sprache an den Entwickler gesendet.",
     "send": "Senden",
     "sent": "Danke für dein Feedback!",
     "settings_row": "Feedback senden",

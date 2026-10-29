@@ -5,12 +5,13 @@
     "retry": "Riprova"
   },
   "feedback": {
-    "attach_hint": "Poi si apre la tua app di posta, così puoi allegare uno screenshot.",
     "body_label": "Dettagli",
     "body_placeholder": "Cosa è successo, o cosa renderebbe l'app migliore?",
+    "email_instead": "Invia per email per allegare uno screenshot",
     "error": "Impossibile aprire l'app di posta. Scrivici a {{email}}.",
     "intro": "Hai trovato un bug o hai un'idea? Scrivici: leggiamo ogni messaggio.",
     "open_a11y": "Invia feedback",
+    "privacy": "Inviato allo sviluppatore con versione dell’app, dispositivo e lingua.",
     "send": "Invia",
     "sent": "Grazie per il feedback!",
     "settings_row": "Invia feedback",

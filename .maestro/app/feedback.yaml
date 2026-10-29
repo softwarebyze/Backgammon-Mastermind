@@ -1,5 +1,6 @@
-# Settings header → Feedback form: type a note, then leave without sending
-# (sending hands off to the mail app, which is outside the app under test).
+# Settings header → Feedback form: type a note, then leave without sending.
+# Send goes to PostHog; the CI build has no PostHog key, so it would fall back
+# to the mail app, which is outside the app under test.
 appId: ${APP_ID}
 tags:
   - pull-request
@@ -27,6 +28,8 @@ tags:
 - runFlow: ../utils/hide-keyboard.yaml
 - assertVisible:
     id: feedback-send
+- assertVisible:
+    id: feedback-email
 - takeScreenshot: feedback-01-form
 - tapOn:
     id: stack-escape-button

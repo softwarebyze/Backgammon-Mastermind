@@ -5,12 +5,13 @@
     "retry": "Réessayer"
   },
   "feedback": {
-    "attach_hint": "Votre app de messagerie s'ouvre ensuite : vous pourrez y joindre une capture d'écran.",
     "body_label": "Détails",
     "body_placeholder": "Que s'est-il passé, ou qu'est-ce qui améliorerait l'app ?",
+    "email_instead": "Envoyer par e-mail pour joindre une capture d’écran",
     "error": "Impossible d'ouvrir votre messagerie. Écrivez-nous à {{email}}.",
     "intro": "Un bug ou une idée ? Dites-le-nous : nous lisons chaque message.",
     "open_a11y": "Envoyer un avis",
+    "privacy": "Envoyé au développeur avec la version de l’app, l’appareil et la langue.",
     "send": "Envoyer",
     "sent": "Merci pour votre avis !",
     "settings_row": "Envoyer un avis",

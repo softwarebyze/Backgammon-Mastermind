@@ -1,23 +1,18 @@
 import Feather from '@expo/vector-icons/Feather';
-import Env from 'env';
-import { router } from 'expo-router';
-import { usePostHog } from 'posthog-react-native';
 import { useRef, useState } from 'react';
-import { Platform, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
+import { Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { APP_LINKS, openExternalUrl } from '@/lib/app-links';
-import { hapticLight } from '@/lib/haptics';
-import { translate, useSelectedLanguage } from '@/lib/i18n';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { SETTINGS_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
-import { canSendFeedback, feedbackMailUrl } from './feedback-mail';
+import { canSendFeedback } from './feedback-mail';
+import { useFeedbackSender } from './use-feedback-sender';
 
 function LabeledInput({
   id,
@@ -60,52 +55,14 @@ function LabeledInput({
 }
 
 export function FeedbackScreen() {
-  const posthog = usePostHog();
   const { insets } = useLayoutMetrics();
-  const { width, height } = useWindowDimensions();
-  const { language } = useSelectedLanguage();
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
   const [sending, setSending] = useState(false);
-  const inFlight = useRef(false); // a fast double tap lands before the re-render disables Send
+  const inFlight = useRef(false);
   const ready = canSendFeedback(title, details) && !sending;
 
-  const send = async () => {
-    if (!ready || inFlight.current) {
-      return;
-    }
-    inFlight.current = true;
-    setSending(true);
-    hapticLight();
-    // Only the note's size goes to analytics; the words go by email, if sent.
-    posthog.capture('feedback_submitted', {
-      title_length: title.trim().length,
-      details_length: details.trim().length,
-    });
-    try {
-      await openExternalUrl(feedbackMailUrl(title, details, {
-        appName: Env.EXPO_PUBLIC_NAME,
-        version: Env.EXPO_PUBLIC_VERSION,
-        platform: Platform.OS,
-        osVersion: String(Platform.Version ?? ''),
-        language: language ?? 'en',
-        screen: { width, height },
-      }));
-      showMessage({ message: translate('feedback.sent'), type: 'success' });
-      router.back();
-    }
-    catch {
-      showMessage({
-        message: translate('feedback.error', { email: APP_LINKS.supportEmail }),
-        type: 'warning',
-        duration: 6000,
-      });
-    }
-    finally {
-      inFlight.current = false;
-      setSending(false);
-    }
-  };
+  const { send, sendByEmail } = useFeedbackSender({ title, details, ready, setSending, inFlight });
 
   return (
     <>
@@ -142,8 +99,8 @@ export function FeedbackScreen() {
           />
 
           <View style={styles.hintRow}>
-            <Feather name="paperclip" size={14} color={GAME_PALETTE.textMuted} />
-            <Text style={styles.hint}>{translate('feedback.attach_hint')}</Text>
+            <Feather name="lock" size={14} color={GAME_PALETTE.textMuted} />
+            <Text style={styles.hint}>{translate('feedback.privacy')}</Text>
           </View>
 
           <HoverPressable
@@ -162,6 +119,18 @@ export function FeedbackScreen() {
           >
             <Feather name="send" size={18} color={GAME_PALETTE.controlInk} />
             <Text style={styles.sendText}>{translate('feedback.send')}</Text>
+          </HoverPressable>
+
+          <HoverPressable
+            accessibilityRole="link"
+            accessibilityLabel={translate('feedback.email_instead')}
+            disabled={sending}
+            testID="feedback-email"
+            onPress={() => void sendByEmail()}
+            style={({ pressed }) => [styles.emailLink, pressed && styles.pressed]}
+          >
+            <Feather name="paperclip" size={14} color={GAME_PALETTE.accentDim} />
+            <Text style={styles.emailText}>{translate('feedback.email_instead')}</Text>
           </HoverPressable>
         </View>
       </ScrollView>
@@ -248,6 +217,18 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.85,
+  },
+  emailLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    minHeight: 44,
+  },
+  emailText: {
+    color: GAME_PALETTE.accentDim,
+    fontSize: 14,
+    ...interFont('medium'),
   },
   sendText: {
     color: GAME_PALETTE.controlInk,

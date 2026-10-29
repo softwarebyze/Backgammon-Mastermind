@@ -5,12 +5,13 @@
     "retry": "Opnieuw proberen"
   },
   "feedback": {
-    "attach_hint": "Daarna opent je mailapp, zodat je een screenshot kunt toevoegen.",
     "body_label": "Details",
     "body_placeholder": "Wat gebeurde er, of wat zou de app beter maken?",
+    "email_instead": "Liever per e-mail, om een screenshot toe te voegen",
     "error": "Je mailapp kon niet worden geopend. Mail ons op {{email}}.",
     "intro": "Een bug gevonden of een idee? Laat het ons weten – we lezen elk bericht.",
     "open_a11y": "Feedback sturen",
+    "privacy": "Wordt met app-versie, apparaat en taal naar de ontwikkelaar gestuurd.",
     "send": "Versturen",
     "sent": "Bedankt voor je feedback!",
     "settings_row": "Feedback sturen",
