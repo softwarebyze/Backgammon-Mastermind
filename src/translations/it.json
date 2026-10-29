@@ -40,6 +40,35 @@
       "play_a11y": "Gioca la mossa suggerita",
       "suggested": "Mossa suggerita"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Match a"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Gioca in due o contro il computer con il cubo del raddoppio. Contro il computer giochi con i bianchi.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Pip",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Prima lancia i dadi"
     },
@@ -85,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Torna alla partita in corso",
+      "cube_accept": "{{player}} accetta · Cubo {{value}}",
+      "cube_drop": "{{player}} rifiuta",
+      "cube_offer": "{{player}} offre il raddoppio",
       "live": "Partita in corso",
       "live_short": "Live",
       "move_a11y": "Mossa {{ply}}, {{player}}",
@@ -236,6 +268,15 @@
     "review": "Rivedi l’ultima partita",
     "review_a11y": "Rivedi la partita completata",
     "review_sub": "Guarda come si è conclusa l’ultima partita",
+    "setup": {
+      "format": "Gioco",
+      "length": "Durata dell’incontro",
+      "match": "Incontro",
+      "opponent": "Avversario",
+      "single": "Partita singola",
+      "start_match": "Inizia incontro a {{length}} punti",
+      "start_single": "Inizia partita"
+    },
     "subtitle": "Domina il tavoliere — una mossa alla volta",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 giocatori",

@@ -1,13 +1,17 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
-import type { Player } from '@/lib/game/types';
+import type { GameState, Player } from '@/lib/game/types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { pointNumberLabel } from '@/features/game/point-numbering';
+import { calculatePipCount } from '@/lib/game';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
   side: 'top' | 'bottom';
+  state?: GameState;
+  showNumbers?: boolean;
   dimensions: BoardDimensions;
   /**
    * Whose point of view the numbers are labeled from. Black's 1-point is
@@ -40,17 +44,20 @@ function PointHalf({ indices, colWidth }: { indices: number[]; colWidth: number 
 }
 
 /** Column-aligned number rail — matches board column widths exactly. */
-export function PointNumberRail({ side, dimensions, perspective = 'white' }: Props) {
+export function PointNumberRail({ side, dimensions, perspective = 'white', state, showNumbers = true }: Props) {
   const { colWidth, barWidth, bearOffWidth, boardWidth } = dimensions;
+  const player = side === 'top' ? 'black' : 'white';
   const left = side === 'top' ? TOP_LEFT : BOT_LEFT;
   const right = side === 'top' ? TOP_RIGHT : BOT_RIGHT;
 
   return (
     <View style={[styles.rail, { height: POINT_NUMBER_RAIL, width: boardWidth }]}>
-      <PointHalf indices={left.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
+      <PointHalf indices={showNumbers ? left.map(n => pointNumberLabel(n, perspective)) : []} colWidth={colWidth} />
       <View style={{ width: barWidth }} />
-      <PointHalf indices={right.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
-      <View style={{ width: bearOffWidth }} />
+      <PointHalf indices={showNumbers ? right.map(n => pointNumberLabel(n, perspective)) : []} colWidth={colWidth} />
+      <View style={{ width: bearOffWidth, alignItems: 'center' }}>
+        {state && <Text testID={`pip-count-${player}`} style={[styles.label, { color: player === 'white' ? '#F5F0E8' : '#E8B580' }]} accessibilityLabel={translate('game.status.pips_a11y', { player: translate(`game.review.player_${player}`), pips: calculatePipCount(state, player), off: state.borneOff[player] })}>{calculatePipCount(state, player)}</Text>}
+      </View>
     </View>
   );
 }

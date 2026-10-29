@@ -1,8 +1,10 @@
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry, MoveLogTurn } from '@/lib/game/move-log';
 import { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-
 import { GAME_PALETTE } from '@/features/game/game-palette';
+
+import { chronologicalHistory } from '@/lib/game/cube-history';
 import { isNoMoveLogEntry, turnsForReviewStrip, unusedDiceInTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
@@ -21,6 +23,9 @@ type Props = {
   liveCurrentPlayer?: MoveLogEntry['player'] | null;
   onJumpToPly: (ply: number) => void;
   onGoLive: () => void;
+  cubeEvents?: CubeHistoryEvent[];
+  selectedCubeEventId?: number | null;
+  onJumpToCubeEvent?: (id: number) => void;
 };
 
 function turnStartPly(turn: MoveLogTurn): number {
@@ -77,6 +82,9 @@ export function MoveReviewTurnStrip({
   liveCurrentPlayer = null,
   onJumpToPly,
   onGoLive,
+  cubeEvents = [],
+  selectedCubeEventId = null,
+  onJumpToCubeEvent,
 }: Props) {
   // Live: hide unfinished current turn. Review: show all so scrubbing still works.
   const turns = turnsForReviewStrip(moveLog, {
@@ -87,18 +95,24 @@ export function MoveReviewTurnStrip({
     t => focusedPly >= turnStartPly(t) && focusedPly <= t.endPly,
   );
 
+  const historyItems = chronologicalHistory(turns, cubeEvents);
+  const focusedHistoryIndex = historyItems.findIndex(item => item.kind === 'cube'
+    ? item.event.id === selectedCubeEventId
+    : selectedCubeEventId === null && item.turn === turns[focusedTurnIdx]);
+
   useEffect(() => {
     if (!isReviewing) {
       scrollRef.current?.scrollToEnd({ animated: true });
       return;
     }
-    const x = Math.max(0, (focusedTurnIdx + 1) * CHIP_SCROLL_STEP - 120);
+    const x = Math.max(0, (focusedHistoryIndex + 1) * CHIP_SCROLL_STEP - 120);
     scrollRef.current?.scrollTo({ x, animated: true });
-  }, [focusedTurnIdx, isReviewing, turns.length]);
+  }, [focusedHistoryIndex, isReviewing, historyItems.length]);
 
   return (
     <ScrollView
       ref={scrollRef}
+      testID="history-turn-strip"
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.timeline}
@@ -107,33 +121,48 @@ export function MoveReviewTurnStrip({
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.opening')}
-        accessibilityState={{ selected: isReviewing && focusedPly === 0 }}
+        accessibilityState={{ selected: isReviewing && selectedCubeEventId === null && focusedPly === 0 }}
         onPress={() => {
           hapticLight();
           onJumpToPly(0);
         }}
         hitSlop={4}
-        style={[styles.chip, isReviewing && focusedPly === 0 && styles.chipFocused]}
+        style={[styles.chip, isReviewing && selectedCubeEventId === null && focusedPly === 0 && styles.chipFocused]}
       >
-        <Text style={[styles.chipText, isReviewing && focusedPly === 0 && styles.chipTextFocused]}>
+        <Text style={[styles.chipText, isReviewing && selectedCubeEventId === null && focusedPly === 0 && styles.chipTextFocused]}>
           {translate('game.review.start')}
         </Text>
       </Pressable>
 
-      {turns.map((turn, idx) => (
-        <TurnChip
-          key={turn.turnIndex}
-          turn={turn}
-          focused={isReviewing && focusedTurnIdx === idx}
-          onPress={() => {
-            hapticLight();
-            onJumpToPly(turn.endPly);
-          }}
-        />
-      ))}
+      {historyItems.map(item => item.kind === 'cube'
+        ? (
+            <Pressable
+              key={`cube-${item.event.id}`}
+              testID={`history-cube-${item.event.id}`}
+              accessibilityRole="button"
+              accessibilityLabel={cubeEventLabel(item.event)}
+              accessibilityState={{ selected: selectedCubeEventId === item.event.id }}
+              onPress={() => onJumpToCubeEvent?.(item.event.id)}
+              style={[styles.chip, selectedCubeEventId === item.event.id && styles.chipFocused]}
+            >
+              <Text style={styles.chipText}>{cubeEventLabel(item.event)}</Text>
+            </Pressable>
+          )
+        : (
+            <TurnChip
+              key={`turn-${item.turn.turnIndex}`}
+              turn={item.turn}
+              focused={isReviewing && selectedCubeEventId === null && turns[focusedTurnIdx] === item.turn}
+              onPress={() => {
+                hapticLight();
+                onJumpToPly(item.turn.endPly);
+              }}
+            />
+          ))}
 
       <Pressable
         accessibilityRole="button"
+        testID="history-live"
         accessibilityLabel={translate('game.review.live')}
         accessibilityState={{ selected: !isReviewing }}
         onPress={() => {
@@ -219,3 +248,9 @@ const styles = StyleSheet.create({
   liveText: { color: GAME_PALETTE.accent },
   liveTextActive: { color: '#2A1A08' },
 });
+
+function cubeEventLabel(event: CubeHistoryEvent): string {
+  const player = event.player === 'white' ? translate('game.review.player_white') : translate('game.review.player_black');
+  const key = event.kind === 'offer' ? 'game.review.cube_offer' : event.kind === 'accept' ? 'game.review.cube_accept' : 'game.review.cube_drop';
+  return translate(key as Parameters<typeof translate>[0], { player, value: (event.after.match?.cube.value ?? 1) * (event.kind === 'offer' ? 2 : 1) });
+}

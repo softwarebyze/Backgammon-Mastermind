@@ -14,6 +14,7 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
+  showPips?: boolean;
 };
 
 /** Resolve `game.strategy.<group>.<strategyKey>` without losing key typing. */
@@ -26,7 +27,7 @@ function strategyMessage(group: 'label' | 'tip', key: StrategyKey) {
  * and both race pip counts. Deliberately bubble-free — it reads as part of
  * the header, not a floating badge.
  */
-export function GamePipStatusBar({ state }: Props) {
+export function GamePipStatusBar({ state, showPips = true }: Props) {
   const [showExplanation, setShowExplanation] = useState(false);
   const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
   const strategy = classifyStrategy(state, perspective);
@@ -42,7 +43,7 @@ export function GamePipStatusBar({ state }: Props) {
 
   if (gameOver) {
     return (
-      <View style={styles.wrap}>
+      <View style={[styles.wrap, !showPips && styles.strategyOnly]}>
         <View style={styles.gameOverWrap}>
           <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
         </View>
@@ -51,7 +52,7 @@ export function GamePipStatusBar({ state }: Props) {
   }
 
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, !showPips && styles.strategyOnly]}>
       <View style={styles.row}>
         <Pressable
           onPress={() => setShowExplanation(true)}
@@ -63,20 +64,22 @@ export function GamePipStatusBar({ state }: Props) {
           <View testID="strategy-mark">
             <StrategyMark strategy={strategy.key} size={18} />
           </View>
-          <Text style={styles.strategyText}>{label}</Text>
+          <Text style={styles.strategyText} numberOfLines={2}>{label}</Text>
           <Text style={styles.chevron}>{getIsRTL() ? '◂' : '▸'}</Text>
         </Pressable>
-        <View style={styles.pips}>
-          <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
-            {whitePips}
-          </Text>
-          <Text style={styles.pipDivider}>–</Text>
-          <View style={[styles.pipDot, { backgroundColor: '#2A2A2E' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
-            {blackPips}
-          </Text>
-        </View>
+        {showPips && (
+          <View style={styles.pips}>
+            <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
+            <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
+              {whitePips}
+            </Text>
+            <Text style={styles.pipDivider}>–</Text>
+            <View style={[styles.pipDot, { backgroundColor: '#2A2A2E' }]} />
+            <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
+              {blackPips}
+            </Text>
+          </View>
+        )}
       </View>
       <Modal
         visible={showExplanation}
@@ -124,6 +127,7 @@ function getWinnerLabel(state: GameState) {
 }
 
 const styles = StyleSheet.create({
+  strategyOnly: { height: 46, justifyContent: 'center' },
   wrap: {
     width: '100%',
     paddingHorizontal: 16,
@@ -150,6 +154,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+    minHeight: 44,
+    flexShrink: 1,
     paddingVertical: 4,
   },
   strategyText: {

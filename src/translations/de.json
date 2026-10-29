@@ -40,6 +40,35 @@
       "play_a11y": "Den vorgeschlagenen Zug spielen",
       "suggested": "Vorgeschlagener Zug"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Match bis"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Spiele zu zweit oder gegen den Computer mit Verdopplungswürfel. Gegen den Computer spielst du Weiß.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Pips",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Würfle zuerst"
     },
@@ -85,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Zurück zum laufenden Spiel",
+      "cube_accept": "{{player}} nimmt an · Würfel {{value}}",
+      "cube_drop": "{{player}} lehnt ab",
+      "cube_offer": "{{player}} bietet Dopplung an",
       "live": "Laufendes Spiel",
       "live_short": "Live",
       "move_a11y": "Zug {{ply}}, {{player}}",
@@ -236,6 +268,15 @@
     "review": "Letztes Spiel ansehen",
     "review_a11y": "Beendetes Spiel ansehen",
     "review_sub": "Sieh dir an, wie das letzte Spiel endete",
+    "setup": {
+      "format": "Spiel",
+      "length": "Matchlänge",
+      "match": "Match",
+      "opponent": "Gegner",
+      "single": "Einzelspiel",
+      "start_match": "Match auf {{length}} Punkte starten",
+      "start_single": "Spiel starten"
+    },
     "subtitle": "Meistere das Brett — Zug für Zug",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 Spieler",

@@ -1,0 +1,221 @@
+# Real UI: offer, cold resume pending decision, accept, score, undo/redo, Crawford, drop.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- tapOn: Auto-roll dice
+- tapOn:
+    id: stack-escape-button
+# Keep the existing single-game entry visible at launch, then verify the
+# match choices remain reachable below it on compact Android screens.
+- takeScreenshot: match-00-home-single-games
+- tapOn:
+    id: home-opponent-vs-human
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-3
+    direction: DOWN
+- assertVisible:
+    id: home-match-length-5
+- tapOn:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: match-cube-home-match-options
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible: Cube 1 · Center
+    timeout: 45000
+- assertVisible:
+    id: match-score
+- takeScreenshot: match-00-new-local-match
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-cube
+- assertVisible: Cube 1 · Center
+- tapOn:
+    id: match-double
+- assertVisible:
+    id: match-accept
+- assertNotVisible:
+    id: roll-dice-button
+- takeScreenshot: match-01-pending-offer
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible:
+    id: match-accept
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 2 · Black
+- takeScreenshot: match-02-acceptor-owns
+- tapOn:
+    id: roll-dice-button
+# Auto-move may finish the unique bear-off; otherwise play it manually.
+- runFlow:
+    when:
+      visible:
+        id: point-1
+      notVisible:
+        id: match-next
+    commands:
+      - tapOn:
+          id: point-1
+      - tapOn: Bear off
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: White 2  –  Black 0
+- takeScreenshot: match-03-scored
+- tapOn:
+    id: header-undo-button
+- extendedWaitUntil:
+    visible:
+      id: header-redo-button
+      enabled: true
+    timeout: 15000
+- assertVisible: White 0  –  Black 0
+- assertVisible: Cube 2 · Black
+- assertNotVisible:
+    id: roll-dice-button
+- tapOn:
+    id: header-redo-button
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: White 2  –  Black 0
+- tapOn:
+    id: match-next
+- assertVisible: Crawford game · no doubling
+- assertNotVisible:
+    id: match-double
+- takeScreenshot: match-04-crawford
+# Finish a match at match point, then start another at 0–0.
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-final
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-final
+- assertNotVisible:
+    id: match-double
+- tapOn:
+    id: roll-dice-button
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: White 3  –  Black 1
+- assertVisible: White wins the match · +1
+- takeScreenshot: match-05-match-won
+- tapOn:
+    id: match-next
+- assertVisible: Match to 3 · Game 1
+- assertVisible: White 0  –  Black 0
+# A fresh fixture exercises dropping at the old cube value.
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-cube
+- tapOn:
+    id: match-double
+- tapOn:
+    id: match-drop
+- assertVisible: White 1  –  Black 0
+- takeScreenshot: match-06-drop
+# A blocked roll must never carry Undo across the accepted-cube/revealed-roll floor.
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-undo-floor
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-undo-floor
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-7
+- tapOn:
+    id: point-8
+- runFlow:
+    when:
+      visible:
+        id: confirm-move-button
+    commands:
+      - tapOn:
+          id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: match-double
+    timeout: 15000
+- tapOn:
+    id: match-double
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 2 · White
+- tapOn:
+    id: roll-dice-button
+- runFlow:
+    when:
+      visible:
+        id: confirm-move-button
+    commands:
+      - tapOn:
+          id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: roll-dice-button
+    timeout: 15000
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- assertVisible: Cube 2 · White
+- takeScreenshot: match-07-blocked-roll-undo-floor
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- assertVisible: Cube 2 · White
+- takeScreenshot: match-08-resumed-undo-floor

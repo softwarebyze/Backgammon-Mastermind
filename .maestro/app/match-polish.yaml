@@ -1,0 +1,132 @@
+# Match chrome stays in place through offers, scoring, Crawford, and a new game.
+# The CI recording supplies animation/board-bounds evidence; compare board-view
+# across these captures. Reduced Motion intentionally omits confetti.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- tapOn: Auto-roll dice
+- tapOn:
+    id: stack-escape-button
+- tapOn:
+    id: home-opponent-vs-human
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-3
+    direction: DOWN
+- assertVisible:
+    id: home-match-length-5
+- tapOn:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: match-polish-home-match-options
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: match-score
+    timeout: 45000
+- assertVisible: Cube 1 · Center
+- assertVisible:
+    id: board-view
+- takeScreenshot: match-polish-01-opening
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-cube
+- assertVisible:
+    id: match-double
+- takeScreenshot: match-polish-02-before-roll
+- tapOn:
+    id: match-double
+- assertVisible:
+    id: match-accept
+- assertNotVisible:
+    id: roll-dice-button
+- takeScreenshot: match-polish-03-offer
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 2 · Black
+- takeScreenshot: match-polish-04-accepted
+- tapOn:
+    id: roll-dice-button
+- runFlow:
+    when:
+      notVisible:
+        id: match-next
+    commands:
+      - tapOn:
+          id: point-1
+      - tapOn: Bear off
+- runFlow:
+    when:
+      visible:
+        id: confirm-move-button
+    commands:
+      - takeScreenshot: match-polish-05-confirm
+      - tapOn:
+          id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: White 2  –  Black 0
+- assertNotVisible:
+    id: win-confetti
+- takeScreenshot: match-polish-06-game-result
+- tapOn:
+    id: match-next
+- assertVisible: Crawford game · no doubling
+- assertVisible: Cube 1 · Center. Crawford game · no doubling
+- assertNotVisible:
+    id: match-double
+- assertNotVisible:
+    id: win-confetti
+- takeScreenshot: match-polish-07-next-opening
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-final
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-final
+- tapOn:
+    id: roll-dice-button
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: White 3  –  Black 1
+- assertVisible: White wins the match · +1
+- takeScreenshot: match-polish-08-match-result
+- tapOn:
+    id: match-next
+- assertVisible: Match to 3 · Game 1
+- assertVisible: White 0  –  Black 0
+- assertNotVisible:
+    id: win-confetti
+- takeScreenshot: match-polish-09-new-match

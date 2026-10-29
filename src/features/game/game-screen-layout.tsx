@@ -12,6 +12,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { GameBoardSection } from '@/features/game/components/game-board-section';
 import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { GuidanceModal } from '@/features/game/components/guidance-modal';
+import { MatchStatusBar } from '@/features/game/components/match-status-bar';
 import { MoveReviewBar } from '@/features/game/components/move-review-bar';
 import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
@@ -54,18 +55,31 @@ type Props = {
 function GameTopChrome({
   state,
   headline,
+  isReviewing,
   onLayout,
 }: {
   state: GameState;
   headline: string | null;
+  isReviewing: boolean;
   onLayout: (event: LayoutChangeEvent) => void;
 }) {
   return (
     <View style={styles.chromeColumn} onLayout={onLayout}>
-      <GamePipStatusBar state={state} />
-      <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} headlineOverride={headline} />
-      </View>
+      {state.match
+        ? (
+            <>
+              <MatchStatusBar state={state} headline={headline} isReviewing={isReviewing} />
+              <GamePipStatusBar state={state} showPips={false} />
+            </>
+          )
+        : (
+            <>
+              <GamePipStatusBar state={state} showPips={false} />
+              <View style={styles.turnBannerWrap}>
+                <TurnIndicatorBanner state={state} headlineOverride={isReviewing ? translate('game.review.viewing_hint') : headline} />
+              </View>
+            </>
+          )}
     </View>
   );
 }
@@ -88,6 +102,8 @@ function GameReviewSlot({
       testID="game-review-slot"
     >
       <MoveReviewBar
+        selectedCubeEventId={review.selectedCubeEventId}
+        onJumpToCubeEvent={review.jumpToCubeEvent}
         viewIndex={review.viewIndex}
         liveIndex={review.liveIndex}
         isReviewing={review.isReviewing}
@@ -173,7 +189,7 @@ function GameChromeStack({
   return (
     <>
       {includeTop
-        ? <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />
+        ? <GameTopChrome state={state} isReviewing={review.isReviewing} headline={review.isReviewing ? null : openingText?.headline ?? null} onLayout={onTopLayout} />
         : null}
       <GameReviewSlot review={review} moveLog={moveLog} state={state} hidden={layout.hideReview} />
       <View
@@ -249,7 +265,7 @@ export function GameScreenLayout({
   // Live state only — review scrub must not drive the opening reveal.
   const reveal = useOpeningReveal(input.state, input.handleRoll);
   const opening = openingTray(live, reveal);
-  const openingText = openingCopy(live, reveal);
+  const openingText = review.isReviewing ? null : openingCopy(live, reveal);
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
 
   const chrome = (
@@ -288,7 +304,7 @@ export function GameScreenLayout({
       <FocusAwareStatusBar />
       {landscape
         ? null
-        : <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />}
+        : <GameTopChrome state={state} isReviewing={review.isReviewing} headline={review.isReviewing ? null : openingText?.headline ?? null} onLayout={onTopLayout} />}
       <View
         style={[
           styles.boardSlotHost,
@@ -391,6 +407,7 @@ const styles = StyleSheet.create({
     minHeight: 0,
   },
   turnBannerWrap: {
+    height: 62,
     width: '100%',
     alignItems: 'center',
     paddingHorizontal: 12,

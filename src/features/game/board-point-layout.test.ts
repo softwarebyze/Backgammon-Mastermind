@@ -42,7 +42,7 @@ describe('getCheckerAnchor', () => {
     expect(anchor.x).toBeGreaterThan(0);
   });
 
-  it('offsets bar stacks by checker index', () => {
+  it('keeps the front bar checker beside the groove as the stack grows', () => {
     const first = getCheckerAnchor({
       pointIndex: 0,
       dims: TEST_DIMS,
@@ -56,7 +56,7 @@ describe('getCheckerAnchor', () => {
       player: 'white',
     });
 
-    expect(second.y).toBeLessThan(first.y);
+    expect(second.y).toBe(first.y);
   });
 });
 

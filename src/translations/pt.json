@@ -40,6 +40,35 @@
       "play_a11y": "Jogar a jogada sugerida",
       "suggested": "Jogada sugerida"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Partida até"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Jogue a dois ou contra o computador com o cubo de dobra. Contra o computador você joga com as brancas.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Pips",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Lance os dados primeiro"
     },
@@ -85,6 +114,9 @@
     },
     "review": {
       "back_to_live": "Voltar ao jogo em andamento",
+      "cube_accept": "{{player}} aceita · Cubo {{value}}",
+      "cube_drop": "{{player}} recusa",
+      "cube_offer": "{{player}} oferece dobrar",
       "live": "Jogo em andamento",
       "live_short": "Ao vivo",
       "move_a11y": "Movimento {{ply}}, {{player}}",
@@ -236,6 +268,15 @@
     "review": "Rever o último jogo",
     "review_a11y": "Rever o jogo concluído",
     "review_sub": "Vê como terminou o último jogo",
+    "setup": {
+      "format": "Jogo",
+      "length": "Duração da partida",
+      "match": "Partida",
+      "opponent": "Adversário",
+      "single": "Jogo único",
+      "start_match": "Iniciar partida de {{length}} pontos",
+      "start_single": "Iniciar jogo"
+    },
     "subtitle": "Domine o tabuleiro — um movimento de cada vez",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 jogadores",

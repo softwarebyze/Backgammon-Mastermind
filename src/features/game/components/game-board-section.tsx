@@ -10,12 +10,10 @@ import { MovePathOverlay } from '@/features/game/components/board/move-path-over
 import { playingSurfaceOffset } from '@/features/game/components/board/playing-surface-offset';
 import { useHintArrows } from '@/features/game/hint-arrows-store';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
-import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT } from '@/lib/game/constants';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Input = ReturnType<typeof useGameInput>;
-
 type Props = {
   boardState: GameState;
   boardAnimation: MoveAnimationFrame | null;
@@ -29,6 +27,12 @@ type Props = {
   /** Whose point of view the point-number rails are labeled from. */
   numberPerspective: Player;
 };
+function usePresentationDimensions(hasMatch: boolean) {
+  const base = useBoardDimensions({ showPointNumbers: true });
+  return useMemo(() => hasMatch
+    ? { ...base, bearOffCubeClearance: 36 * Math.min(1, base.pointHeight / 90) }
+    : base, [base, hasMatch]);
+}
 
 export function GameBoardSection({
   boardState,
@@ -42,9 +46,8 @@ export function GameBoardSection({
   input,
   numberPerspective,
 }: Props) {
-  const dimensions = useBoardDimensions();
+  const dimensions = usePresentationDimensions(boardState.match != null);
   const { boardMaxWidth } = useLayoutMetrics();
-  const { preferences } = useGamePreferences();
   const hintArrows = useHintArrows();
   // Guidance owns the live board while it is visible. Mixing its arrows with
   // the previous move's path makes the suggestion ambiguous, and the old
@@ -52,7 +55,7 @@ export function GameBoardSection({
   const overlaySegments = isReviewing ? pathSegments : hintArrows.length > 0 ? hintArrows : pathSegments;
   const overlayFadeOutMs = !isReviewing && hintArrows.length > 0 ? undefined : pathFadeOutMs;
   const showPath = overlaySegments.length > 0;
-  const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
+  const surface = playingSurfaceOffset(dimensions.boardFrameWidth, true);
   const travelEmphasis = useMemo(() => {
     if (!boardAnimation) {
       return { points: undefined as ReadonlySet<number> | undefined, bar: false };
@@ -68,7 +71,6 @@ export function GameBoardSection({
       bar: boardAnimation.from === BAR_POINT || boardAnimation.to === BAR_POINT,
     };
   }, [boardAnimation]);
-
   useEffect(() => {
     input.setBoardDimensions(dimensions);
   }, [dimensions, input]);
@@ -76,6 +78,7 @@ export function GameBoardSection({
   return (
     <View style={[styles.boardWrap, { maxWidth: boardMaxWidth }]}>
       <Pressable
+        accessible={false}
         onPress={interactionEnabled ? input.handleBoardPress : undefined}
         style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
       >
@@ -91,6 +94,7 @@ export function GameBoardSection({
           ]}
         >
           <BoardView
+            boardPresentation
             state={boardState}
             dimensions={dimensions}
             previewTarget={interactionEnabled ? previewTarget : null}

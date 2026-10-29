@@ -15,6 +15,7 @@ type DiceActionsArgs = {
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
   isAnimating: boolean;
+  moveCount?: number;
   recordNoMove: (before: GameState, after: GameState) => void;
 };
 
@@ -23,9 +24,10 @@ export function useGameDiceActions({
   setState,
   isAnimating,
   recordNoMove,
+  moveCount = 0,
 }: DiceActionsArgs) {
   const doPassTurn = useCallback(() => {
-    if (isAnimating || !state) {
+    if (isAnimating || !state || state.match?.pendingOffer) {
       return;
     }
     if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
@@ -48,7 +50,7 @@ export function useGameDiceActions({
       return;
     }
     setState((prev) => {
-      if (!prev) {
+      if (!prev || prev.match?.pendingOffer) {
         return prev;
       }
       if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
@@ -71,9 +73,10 @@ export function useGameDiceActions({
         return prev;
       }
       playGameSfx('roll');
-      return applyDiceRoll(prev, rollDice());
+      const rolled = applyDiceRoll(prev, rollDice());
+      return rolled.match ? { ...rolled, match: { ...rolled.match, undoFloor: moveCount } } : rolled;
     });
-  }, [isAnimating, setState]);
+  }, [isAnimating, setState, moveCount]);
 
   return { doPassTurn, doRollDice };
 }

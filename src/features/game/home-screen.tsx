@@ -15,6 +15,7 @@ import {
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
+import { HomeGameSetup } from '@/features/game/components/home-game-setup';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
@@ -24,6 +25,7 @@ import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
+import { createMatchGame } from '@/lib/game/match';
 import {
   canContinueSavedGame,
   hasQuarantinedSession,
@@ -45,24 +47,6 @@ import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
-function startGameFromHome(
-  mode: GameMode,
-  state: GameState | null,
-  startGame: (mode: GameMode) => void,
-) {
-  hapticLight();
-  void ensureGameSfxReady();
-  requestReplaceActiveGame({
-    source: 'home',
-    liveState: state,
-    onReplace: () => {
-      startGame(mode);
-      router.replace('/game');
-    },
-    onContinue: () => router.replace('/game'),
-  });
-}
-
 function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolean) {
   hapticLight();
   if (canOpenPersistedGame(state) || resumeGame()) {
@@ -74,7 +58,7 @@ function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolea
 
 /* eslint-disable max-lines-per-function -- home mode menu composition */
 export function HomeScreen() {
-  const { state, startGame, resumeGame } = useGame();
+  const { state, startGame, startFromPosition, resumeGame } = useGame();
   const { preferences } = useGamePreferences();
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
@@ -87,16 +71,30 @@ export function HomeScreen() {
   const learnLessonsDone = allLessonsComplete(progress);
 
   const handleStart = useCallback(
-    (mode: GameMode) => {
-      posthog.capture('game_started', {
-        mode,
-        had_saved_game: isResumableGame(state),
-        tutor_mode: preferences.tutorMode,
-        ...settingProperties(preferences),
+    (mode: GameMode, length: 3 | 5 | null) => {
+      hapticLight();
+      void ensureGameSfxReady();
+      requestReplaceActiveGame({
+        source: 'home',
+        liveState: state,
+        onReplace: () => {
+          posthog.capture('game_started', {
+            mode,
+            had_saved_game: isResumableGame(state),
+            tutor_mode: preferences.tutorMode,
+            ...settingProperties(preferences),
+            ...(length ? { match_length: length } : {}),
+          });
+          if (length)
+            startFromPosition(createMatchGame(length, mode));
+          else
+            startGame(mode);
+          router.replace('/game');
+        },
+        onContinue: () => router.replace('/game'),
       });
-      startGameFromHome(mode, state, startGame);
     },
-    [posthog, preferences, startGame, state],
+    [posthog, preferences, startGame, startFromPosition, state],
   );
 
   const handleResume = useCallback(
@@ -166,19 +164,6 @@ export function HomeScreen() {
           <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
             {translate('home.title')}
           </Text>
-          {landscape
-            ? null
-            : <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>}
-
-          {landscape
-            ? null
-            : (
-                <View style={styles.dividerRow}>
-                  <View style={styles.dividerLine} />
-                  <View style={styles.dividerDiamond} />
-                  <View style={styles.dividerLine} />
-                </View>
-              )}
         </View>
 
         <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
@@ -238,6 +223,8 @@ export function HomeScreen() {
             </HoverPressable>
           )}
 
+          <HomeGameSetup onStart={handleStart} />
+
           <HoverPressable
             accessibilityRole="button"
             accessibilityLabel={translate('learn.home_cta')}
@@ -266,52 +253,6 @@ export function HomeScreen() {
                   )}
             </View>
           </HoverPressable>
-
-          <HoverPressable
-            accessibilityRole="button"
-            accessibilityLabel={translate('home.vs_computer_a11y')}
-            style={({ pressed, hovered }) => [
-              styles.modeBtn,
-              hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
-              styles.primaryBtn,
-              pressed && styles.pressed,
-            ]}
-            onPress={() => handleStart('vs-computer')}
-          >
-            <View style={styles.btnIconSlot}>
-              <Feather name="cpu" size={24} color={GAME_PALETTE.bg} />
-            </View>
-            <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>{translate('home.vs_computer')}</Text>
-              {landscape
-                ? null
-                : <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>}
-            </View>
-          </HoverPressable>
-
-          <HoverPressable
-            accessibilityRole="button"
-            accessibilityLabel={translate('home.two_players_a11y')}
-            style={({ pressed, hovered }) => [
-              styles.modeBtn,
-              hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
-              styles.secondaryBtn,
-              pressed && styles.pressed,
-            ]}
-            onPress={() => handleStart('vs-human')}
-          >
-            <View style={styles.btnIconSlot}>
-              <Feather name="users" size={24} color={GAME_PALETTE.accent} />
-            </View>
-            <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>{translate('home.two_players')}</Text>
-              {landscape
-                ? null
-                : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
-            </View>
-          </HoverPressable>
         </View>
       </ScrollView>
     </>
@@ -327,105 +268,65 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
-    justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
+    justifyContent: 'flex-start',
     paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
   },
   rootLandscape: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 12,
-    gap: 24,
+    paddingTop: 8,
   },
   brand: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 12,
+    marginBottom: 20,
     width: '100%',
     maxWidth: GAME_CHROME_MAX_WIDTH,
   },
-  brandLandscape: {
-    width: 'auto',
-    flexShrink: 1,
-    maxWidth: 320,
-  },
+  brandLandscape: { marginBottom: 12 },
   logoContainer: {
-    width: 110,
-    height: 110,
+    width: 48,
+    height: 48,
+    flexShrink: 0,
     overflow: 'hidden',
     borderWidth: 3,
     borderColor: GAME_PALETTE.accent,
     backgroundColor: GAME_PALETTE.bg,
-    marginBottom: 20,
-    marginTop: 8,
     boxShadow: '0 4px 16px rgba(212, 168, 67, 0.35)',
-    ...continuousRadius(28),
+    ...continuousRadius(12),
   },
-  logoLandscape: {
-    width: 72,
-    height: 72,
-    marginBottom: 8,
-    marginTop: 0,
-  },
+  logoLandscape: { width: 40, height: 40 },
   logo: {
     width: '100%',
     height: '100%',
   },
   title: {
-    fontSize: 32,
-    lineHeight: 38,
+    flex: 1,
+    fontSize: 22,
+    lineHeight: 28,
     color: GAME_PALETTE.accent,
-    letterSpacing: 4,
+    letterSpacing: 1,
     ...interFont('extrabold'),
-    textAlign: 'center',
+    textAlign: 'auto',
   },
   titleLandscape: {
     fontSize: 22,
     lineHeight: 26,
     letterSpacing: 2,
   },
-  subtitle: {
-    fontSize: 13,
-    color: GAME_PALETTE.accentDim,
-    marginTop: 4,
-    letterSpacing: 1,
-    ...interFont('regular'),
-    textAlign: 'center',
-  },
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '60%',
-    marginVertical: 24,
-    gap: 8,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: GAME_PALETTE.surfaceBorder,
-  },
-  dividerDiamond: {
-    width: 8,
-    height: 8,
-    backgroundColor: GAME_PALETTE.accent,
-    transform: [{ rotate: '45deg' }],
-  },
   buttons: {
     maxWidth: GAME_CHROME_MAX_WIDTH,
     gap: 14,
     marginBottom: 24,
-    flexShrink: 1,
   },
   buttonsPortrait: {
     width: '100%',
   },
   buttonsLandscape: {
-    flexGrow: 1,
-    flexShrink: 1,
-    minWidth: 240,
+    minWidth: 0,
     maxWidth: GAME_CHROME_MAX_WIDTH,
     width: '100%',
     gap: 8,
     marginBottom: 0,
-    justifyContent: 'center',
   },
   modeBtn: {
     flexDirection: 'row',
@@ -451,14 +352,6 @@ const styles = StyleSheet.create({
   resumeBtn: {
     backgroundColor: '#1A2A14',
     borderColor: '#4A6A30',
-  },
-  primaryBtn: {
-    backgroundColor: GAME_PALETTE.accent,
-    borderColor: '#F0C060',
-  },
-  secondaryBtn: {
-    backgroundColor: GAME_PALETTE.surface,
-    borderColor: GAME_PALETTE.accentDim,
   },
   learnBtn: {
     backgroundColor: GAME_PALETTE.surface,
