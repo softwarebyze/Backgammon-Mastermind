@@ -404,7 +404,7 @@
             "title": "Qui est derrière ?"
           },
           "explain": {
-            "body": "C’est le total des points que tes pions doivent encore parcourir pour sortir. Chaque pion compte le numéro de sa flèche : un sur la 6 compte 6, un sur la 13 compte 13. Le plus petit est le meilleur, tu es plus près de sortir. Les nombres sont en haut de l’écran, avec un point pour la couleur.",
+            "body": "Le compte des pips, c'est le nombre total de cases que vos pions doivent encore parcourir pour sortir. Chaque pion compte le numéro de sa case : un pion sur la case 6 compte 6, sur la case 13 compte 13. Additionnez-les tous : c'est votre compte de pips. Plus il est bas, mieux c'est : vous êtes plus près de la sortie. Pendant chaque partie, le compte de chaque joueur s'affiche à côté de son nom.",
             "title": "Qu’est-ce que le compte de pips ?"
           }
         },

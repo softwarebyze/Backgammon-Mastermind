@@ -404,7 +404,7 @@
             "title": "Who's behind?"
           },
           "explain": {
-            "body": "Pip count is the total number of points your checkers must travel to bear off. Each checker contributes its point number — a checker on the 6-point counts 6, on the 13-point counts 13. Add them all up and you get your pip count. Lower is better: it means you're closer to bearing off. The pip counts appear at the top of the screen during every game, with a dot showing which number belongs to which color.",
+            "body": "Pip count is the total number of points your checkers must travel to bear off. Each checker counts its point number — a checker on the 6-point counts 6, on the 13-point counts 13. Add them all up and you get your pip count. Lower is better: it means you're closer to bearing off. During every game, each player's pip count is shown next to their name.",
             "title": "What is pip count?"
           }
         },
