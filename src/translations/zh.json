@@ -508,6 +508,7 @@
     "crawford": "Crawford",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
+    "cube_hint": "轻点即可加倍。上下拖动或使用箭头，把它交给一名玩家。",
     "cube_owner": "Cube owner",
     "delete": "Delete",
     "dice": "Dice",

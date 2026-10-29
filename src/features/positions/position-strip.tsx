@@ -4,13 +4,12 @@ import { Pressable, Text, View } from 'react-native';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { DieFace, EmptyDiePlaceholder } from '@/features/game/components/board/dice-display';
 import { translate } from '@/lib/i18n';
-import { PositionCubePanel } from './position-cube';
 import { PositionDicePanel } from './position-dice';
 import { PositionStackPanel } from './position-editor';
 import { PositionScorePanel } from './position-scoreboard';
 import { styles } from './position-styles';
 
-export type PositionFocus = 'cube' | 'dice' | 'score' | null;
+export type PositionFocus = 'dice' | 'score' | null;
 
 /**
  * The reserved strip under the board. It always takes the same space and only
@@ -34,13 +33,11 @@ export function PositionStrip({ position, location, focus, color, onChange, onLo
     <View testID="position-strip" style={styles.strip}>
       {location !== null
         ? <PositionStackPanel position={position} location={location} color={color} onChange={onChange} onLocation={onLocation} onDone={close} />
-        : focus === 'cube'
-          ? <PositionCubePanel position={position} onChange={onChange} onDone={close} />
-          : focus === 'dice'
-            ? <PositionDicePanel position={position} onChange={onChange} onDone={close} />
-            : focus === 'score'
-              ? <PositionScorePanel position={position} onChange={onChange} onDone={close} />
-              : <PositionSummary position={position} onChange={onChange} onFocus={onFocus} />}
+        : focus === 'dice'
+          ? <PositionDicePanel position={position} onChange={onChange} onDone={close} />
+          : focus === 'score'
+            ? <PositionScorePanel position={position} onChange={onChange} onDone={close} />
+            : <PositionSummary position={position} onChange={onChange} onFocus={onFocus} />}
     </View>
   );
 }

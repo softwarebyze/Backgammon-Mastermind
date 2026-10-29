@@ -63,10 +63,12 @@ function BearOffStack({
         borderRadius: 6,
       }}
     >
+      {/* Each label sits at its half's outer edge, which keeps the hinge clear for a cube. */}
       <Text
         style={{
           position: 'absolute',
-          top: 2,
+          top: player === 'black' ? 2 : undefined,
+          bottom: player === 'white' ? 2 : undefined,
           color: '#B89470',
           fontSize: 9,
           zIndex: 20,

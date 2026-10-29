@@ -2,7 +2,6 @@ import type { Position, PositionLocation } from '@/lib/positions/position';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { newPosition, validatePosition } from '@/lib/positions/position';
 import { setPositionStack } from '@/lib/positions/set-stack';
-import { PositionCubePanel } from './position-cube';
 import { PositionStackPanel } from './position-editor';
 import { PositionScorePanel } from './position-scoreboard';
 import { PositionStrip } from './position-strip';
@@ -12,36 +11,6 @@ jest.mock('@/lib/haptics', () => ({ hapticSelection: jest.fn() }));
 
 /** The value a stepper announces ("label: value"). */
 const value = (id: string) => (screen.getByTestId(id).props.accessibilityLabel as string).split(': ').pop();
-
-describe('cube panel', () => {
-  it('edits value and owner independently, then resets', () => {
-    const p = newPosition();
-    const change = jest.fn();
-    const { rerender } = render(<PositionCubePanel position={p} onChange={change} onDone={jest.fn()} />);
-    expect(screen.getByTestId('position-cube-value-lower')).toBeDisabled();
-    fireEvent.press(screen.getByTestId('position-cube-value-higher'));
-    const doubled: Position = change.mock.lastCall![0];
-    expect(doubled.context).toEqual({ ...p.context, cubeExponent: 1 });
-    rerender(<PositionCubePanel position={doubled} onChange={change} onDone={jest.fn()} />);
-    expect(value('position-cube-value')).toBe('2');
-    fireEvent.press(screen.getByTestId('position-cube-owner-black'));
-    const owned: Position = change.mock.lastCall![0];
-    expect(owned.context).toEqual({ ...doubled.context, cubeOwner: 'black' });
-    rerender(<PositionCubePanel position={owned} onChange={change} onDone={jest.fn()} />);
-    fireEvent.press(screen.getByTestId('position-cube-reset'));
-    expect(change.mock.lastCall![0].context).toEqual({ ...p.context, cubeExponent: 0, cubeOwner: null });
-  });
-
-  it('respects imported cube limits and keeps Crawford context while lowering', () => {
-    const p = newPosition();
-    p.context = { ...p.context, cubeExponent: 3, maxCube: 3, matchLength: 5, crawford: true };
-    const change = jest.fn();
-    render(<PositionCubePanel position={p} onChange={change} onDone={jest.fn()} />);
-    expect(screen.getByTestId('position-cube-value-higher')).toBeDisabled();
-    fireEvent.press(screen.getByTestId('position-cube-value-lower'));
-    expect(change.mock.lastCall![0].context).toEqual({ ...p.context, cubeExponent: 2 });
-  });
-});
 
 describe('score panel', () => {
   it('steps each score without a keyboard and keeps it below the match target', () => {
@@ -103,7 +72,7 @@ describe('stack panel', () => {
 });
 
 describe('strip', () => {
-  const strip = (props: { position?: Position; location?: PositionLocation | null; focus?: 'cube' | 'dice' | 'score' | null; onChange?: jest.Mock; onFocus?: jest.Mock }) => (
+  const strip = (props: { position?: Position; location?: PositionLocation | null; focus?: 'dice' | 'score' | null; onChange?: jest.Mock; onFocus?: jest.Mock }) => (
     <PositionStrip
       position={props.position ?? newPosition()}
       location={props.location ?? null}
@@ -148,8 +117,8 @@ describe('strip', () => {
   });
 
   it('shows the selected point ahead of any other editor', () => {
-    render(strip({ location: 13, focus: 'cube' }));
+    render(strip({ location: 13, focus: 'score' }));
     expect(screen.getByTestId('position-point-controls')).toBeTruthy();
-    expect(screen.queryByTestId('position-cube-panel')).toBeNull();
+    expect(screen.queryByTestId('position-scoreboard')).toBeNull();
   });
 });

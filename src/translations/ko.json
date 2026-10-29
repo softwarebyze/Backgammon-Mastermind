@@ -508,6 +508,7 @@
     "crawford": "Crawford",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
+    "cube_hint": "탭하면 두 배가 됩니다. 위아래로 끌거나 화살표를 사용해 플레이어에게 넘기세요.",
     "cube_owner": "Cube owner",
     "delete": "Delete",
     "dice": "Dice",

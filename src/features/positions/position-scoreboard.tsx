@@ -10,21 +10,11 @@ import { styles } from './position-styles';
 /** Longest match the stepper offers; imported positions may still carry longer ones. */
 const MAX_MATCH = 25;
 
-function Rings() {
-  return (
-    <>
-      <View pointerEvents="none" style={[styles.scoreRing, { left: '22%' }]} />
-      <View pointerEvents="none" style={[styles.scoreRing, { right: '22%' }]} />
-    </>
-  );
-}
-
-/** A flip scorecard: ivory for White, black for Black. */
+/** A scorecard: ivory for White, black for Black. */
 function ScoreCard({ score, player }: { score: number; player: Player }) {
   const text = String(score);
   return (
     <View style={[styles.scoreCard, player === 'black' && styles.scoreCardDark]}>
-      <Rings />
       <Text style={[styles.scoreCardText, player === 'black' && styles.scoreCardTextDark, text.length > 2 && styles.scoreCardTextSmall]}>{text}</Text>
     </View>
   );
@@ -34,7 +24,6 @@ function ScoreCard({ score, player }: { score: number; player: Player }) {
 function TargetCard({ length }: { length: number }) {
   return (
     <View style={styles.targetCard}>
-      <Rings />
       <Text numberOfLines={1} adjustsFontSizeToFit style={styles.targetLabel}>
         {translate(length ? 'positions.match_to' : 'positions.money_short')}
       </Text>
@@ -88,8 +77,6 @@ export function PositionScorePanel({ position: p, onChange, onDone }: { position
   return (
     <StripPanel title={translate('positions.match_score')} onDone={onDone} testID="position-scoreboard" accessory={rules}>
       <View style={styles.scoreboard}>
-        <View pointerEvents="none" style={styles.scoreBacking} />
-        <View pointerEvents="none" style={styles.scoreRail} />
         {side('black')}
         <PositionStepper
           label={translate('positions.match_to')}

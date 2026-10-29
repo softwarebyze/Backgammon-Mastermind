@@ -9,11 +9,11 @@ import { PositionScreen } from './position-screen';
 
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(() => Promise.resolve(true)) }));
 const mockSetOptions = jest.fn();
-jest.mock('expo-router', () => ({ useLocalSearchParams: jest.fn(() => ({})), useNavigation: () => ({ setOptions: mockSetOptions }), router: { replace: jest.fn() } }));
+jest.mock('expo-router', () => ({ useLocalSearchParams: jest.fn(() => ({})), useNavigation: jest.fn(() => ({ setOptions: mockSetOptions })), router: { replace: jest.fn() } }));
 
 jest.mock('@/features/game/use-game', () => ({ useGame: jest.fn() }));
 jest.mock('@/features/game/request-new-game', () => ({ requestReplaceActiveGame: jest.fn() }));
-jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key, useLayoutIsRTL: () => false, getLanguage: () => 'en' }));
+jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key, useLayoutIsRTL: jest.fn(() => false), getLanguage: () => 'en' }));
 jest.mock('@/components/ui', () => ({ FocusAwareStatusBar: () => null }));
 jest.mock('@/lib/ui/layout-metrics', () => ({ useLayoutMetrics: jest.fn(() => ({ insets: { top: 0, bottom: 0, left: 0, right: 0 } })), contentEdgePadding: () => ({}) }));
 jest.mock('@/features/game/components/board/board-view', () => {
@@ -134,15 +134,14 @@ it('retains an open import draft through board edits while clearing stale export
 it('opens one editor at a time in the strip and keeps the summary after Done', () => {
   render(<PositionScreen />);
   expect(screen.queryByTestId('position-match-length')).toBeNull();
-  expect(screen.queryByTestId('position-cube-value')).toBeNull();
   fireEvent.press(screen.getByTestId('position-score-toggle'));
   for (let i = 0; i < 7; i++)
     fireEvent.press(screen.getByTestId('position-match-length-higher'));
   for (let i = 0; i < 3; i++)
     fireEvent.press(screen.getByTestId('position-score-white-higher'));
-  fireEvent.press(screen.getByTestId('position-cube'));
+  fireEvent.press(screen.getByTestId('position-detail-done'));
+  fireEvent.press(screen.getByTestId('position-dice-toggle'));
   expect(screen.queryByTestId('position-match-length')).toBeNull();
-  expect(screen.getByTestId('position-cube-value')).toBeTruthy();
   fireEvent.press(screen.getByTestId('position-detail-done'));
   expect(screen.getByTestId('position-score-toggle').props.accessibilityLabel).toContain('3 – 0');
   expect(screen.getByTestId('position-score-toggle').props.accessibilityLabel).toContain('7');

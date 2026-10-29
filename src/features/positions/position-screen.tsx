@@ -142,8 +142,6 @@ function PositionWorkspace({ data }: { data?: string }) {
           onColor={setColor}
           onLocation={selectLocation}
           onChange={change}
-          cubeSelected={focus === 'cube'}
-          onCubePress={() => selectFocus(focus === 'cube' ? null : 'cube')}
           onStrokeStart={history.strokeStart}
           onStrokeEnd={history.strokeEnd}
           actions={(

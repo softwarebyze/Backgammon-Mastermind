@@ -12,7 +12,7 @@ import { BoardCube } from './position-cube';
 import { styles } from './position-styles';
 import { usePositionStackEditor } from './use-position-stack-editor';
 
-export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, cubeSelected = false, onCubePress, onStrokeStart, onStrokeEnd }: {
+export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, onStrokeStart, onStrokeEnd }: {
   actions?: ReactNode;
   position: Position;
   dimensions: BoardDimensions;
@@ -21,8 +21,6 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
   onColor: (color: Player) => void;
   onLocation: (location: PositionLocation | null) => void;
   onChange: (position: Position) => void;
-  cubeSelected?: boolean;
-  onCubePress?: () => void;
   /** A drag is one undo step: bracket every stroke. */
   onStrokeStart?: () => void;
   onStrokeEnd?: () => void;
@@ -93,7 +91,7 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
           onBearOffPress={() => {}}
           aidsOverride={{ showPointNumbers: true, showMoveHints: false, showDirectionOverlay: false }}
         />
-        {onCubePress && <BoardCube position={position} dimensions={dimensions} selected={cubeSelected} onPress={onCubePress} />}
+        <BoardCube position={position} dimensions={dimensions} onChange={patch => onChange({ ...position, context: { ...position.context, ...patch } })} />
       </View>
     </View>
   );

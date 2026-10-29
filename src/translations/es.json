@@ -508,6 +508,7 @@
     "crawford": "Crawford",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
+    "cube_hint": "Toca para doblar. Arrastra arriba o abajo, o usa las flechas, para dárselo a un jugador.",
     "cube_owner": "Cube owner",
     "delete": "Delete",
     "dice": "Dice",

@@ -508,6 +508,7 @@
     "crawford": "Crawford",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
+    "cube_hint": "Touchez pour doubler. Glissez vers le haut ou le bas, ou utilisez les flèches, pour le donner à un joueur.",
     "cube_owner": "Cube owner",
     "delete": "Delete",
     "dice": "Dice",

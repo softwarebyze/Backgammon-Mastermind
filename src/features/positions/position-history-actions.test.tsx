@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { PositionHistoryActions } from './position-history-actions';
 
-jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key, useLayoutIsRTL: () => false }));
+jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key, useLayoutIsRTL: jest.fn(() => false) }));
 jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn() }));
 
 it('offers undo and redo only when there is a step to take', () => {

@@ -22,7 +22,7 @@ jest.mock('@/features/game/components/board/board-view', () => ({ BoardView: ({ 
   mockEditor = stackEditor;
   return null;
 } }));
-jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn() }));
+jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn(), hapticSelection: jest.fn() }));
 jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key }));
 
 const dims = fitBoardToViewport(380, 310);
@@ -218,10 +218,10 @@ it('brackets every drag and tap as one undo stroke, including cancelled drags', 
   expect(end).toHaveBeenCalledTimes(3);
 });
 
-it('draws the one cube on the board and opens its editor from there', () => {
-  const press = jest.fn();
-  render(<Editor position={newPosition()} dimensions={dims} location={null} onLocation={jest.fn()} onChange={jest.fn()} onCubePress={press} />);
-  fireEvent.press(screen.getByTestId('position-cube'));
-  expect(press).toHaveBeenCalledTimes(1);
+it('draws the one cube on the board and edits it in place', () => {
+  const change = jest.fn();
+  render(<Editor position={newPosition()} dimensions={dims} location={null} onLocation={jest.fn()} onChange={change} />);
   expect(screen.getAllByTestId('doubling-cube-face')).toHaveLength(1);
+  fireEvent.press(screen.getByTestId('position-cube-up'));
+  expect(change.mock.lastCall![0].context.cubeOwner).toBe('black');
 });
