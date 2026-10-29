@@ -1,7 +1,7 @@
 {
   "error": {
-    "body": "Uruchom aplikację, aby kontynuować.",
-    "heading": "Coś poszło nie tak.",
+    "body": "Uruchom aplikację ponownie, aby kontynuować.",
+    "heading": "Coś poszło nie tak",
     "retry": "Spróbuj ponownie"
   },
   "feedback": {
@@ -20,25 +20,25 @@
   },
   "game": {
     "caption": {
-      "selected": "Wybrane - dotknij zaznaczonego punktu lub Anuluj"
+      "selected": "Zaznaczono – dotknij podświetlonego pola lub Anuluj"
     },
     "controls": {
       "bear_off_a11y": "Zdejmij pionek",
       "cancel": "Anuluj",
       "cancel_a11y": "Anuluj zaznaczenie",
-      "confirm_move": "Potwierdź ruch",
-      "confirm_move_a11y": "Potwierdź ruch i zakończ turę",
-      "leave_game_a11y": "Zostaw grę i wróć do domu",
-      "loading": "Ładowanie...",
-      "new_game_message": "Rozpocząć nową grę?",
-      "new_game_title": "Nowa gra",
+      "confirm_move": "Zatwierdź ruch",
+      "confirm_move_a11y": "Zatwierdź ruch i zakończ turę",
+      "leave_game_a11y": "Wyjdź z partii i wróć do ekranu głównego",
+      "loading": "Wczytywanie…",
+      "new_game_message": "Rozpocząć nową partię?",
+      "new_game_title": "Nowa partia",
       "no_legal_moves": "Brak możliwych ruchów…",
       "play_again": "Zagraj ponownie",
       "play_again_a11y": "Zagraj ponownie",
-      "redo_a11y": "Cofnij ruch",
+      "redo_a11y": "Ponów ruch",
       "roll_dice": "Rzuć kośćmi",
       "roll_dice_a11y": "Rzuć kośćmi",
-      "start_new_game_a11y": "Rozpocznij nową grę",
+      "start_new_game_a11y": "Rozpocznij nową partię",
       "undo_a11y": "Cofnij ruch",
       "undo_move": "Cofnij"
     },
@@ -46,31 +46,31 @@
       "back_to_turn": "Wróć do mojej tury",
       "back_to_turn_a11y": "Wróć do mojej tury i zamknij podpowiedź",
       "button": "Podpowiedź",
-      "button_a11y": "Poproś o podpowiedź ruchu",
-      "error": "Brak podpowiedzi — dotknij, aby spróbować ponownie",
+      "button_a11y": "Poproś o podpowiedź",
+      "error": "Nie znaleziono podpowiedzi – dotknij, aby spróbować ponownie",
       "error_a11y": "Ponów podpowiedź",
       "finding": "Szukam najlepszego ruchu…",
       "play": "Zagraj ten ruch",
-      "play_a11y": "Zagraj sugerowany ruch",
-      "suggested": "Sugerowany ruch"
+      "play_a11y": "Zagraj proponowany ruch",
+      "suggested": "Proponowany ruch"
     },
     "nudge": {
       "roll_first": "Najpierw rzuć kośćmi"
     },
     "opening": {
-      "compare": "{{winner}} {{high}} bije {{low}}",
-      "goes_first": "{{player}} zaczyna!",
+      "compare": "{{winner}}: {{high}} wygrywa z {{low}}",
+      "goes_first": "Zaczynają {{player}}!",
       "roll": "Rzuć",
-      "rolls_for_opening": "{{player}} rzuca o rozpoczęcie",
+      "rolls_for_opening": "{{player}} rzucają o rozpoczęcie",
       "tie": "Remis!",
-      "tie_again": "Ta sama liczba — rzućcie ponownie",
-      "waiting_roll": "{{player}} rzuca…",
+      "tie_again": "Ta sama liczba – rzuć jeszcze raz",
+      "waiting_roll": "{{player}} rzucają…",
       "who_goes_first": "Kto zaczyna?",
       "your_roll": "Dotknij gdziekolwiek, aby rzucić"
     },
     "options": {
       "open_settings": "Język i więcej",
-      "open_settings_hint": "Otwórz Ustawienia",
+      "open_settings_hint": "Otwórz ustawienia",
       "title": "Opcje gry"
     },
     "players": {
@@ -79,114 +79,114 @@
       "you": "Ty"
     },
     "preferences": {
-      "auto_move": "Automatyczny ruch przymusowy",
-      "auto_move_hint": "Automatycznie wykonuje jedyny możliwy ruch",
-      "auto_roll": "Automatyczny rzut kośćmi",
-      "auto_roll_hint": "Rzuca automatycznie w twojej turze",
-      "confirm_move": "Potwierdź ruch",
-      "confirm_move_hint": "Zapytaj przed końcem tury, by sprawdzić lub cofnąć",
+      "auto_move": "Automatyczny ruch wymuszony",
+      "auto_move_hint": "Automatycznie wykonuj jedyny możliwy ruch",
+      "auto_roll": "Automatyczny rzut",
+      "auto_roll_hint": "Rzucaj kośćmi automatycznie na początku tury",
+      "confirm_move": "Zatwierdzanie ruchu",
+      "confirm_move_hint": "Pytaj przed końcem tury, żeby można było sprawdzić lub cofnąć ruch",
       "dice_display": "Wygląd kości",
       "dice_dots": "Oczka",
-      "dice_numbers": "Liczby",
-      "direction_overlay": "Wskazówka kierunku",
-      "direction_overlay_hint": "Trasa w kształcie podkowy na planszy",
+      "dice_numbers": "Cyfry",
+      "direction_overlay": "Kierunek ruchu",
+      "direction_overlay_hint": "Ścieżka w kształcie podkowy na planszy",
       "move_hints": "Podpowiedzi ruchów",
       "move_hints_hint": "Wyróżnia numery pól, z których możesz ruszyć",
       "point_numbers": "Numery pól",
-      "point_numbers_hint": "Pokaż etykiety 1–24 na planszy",
-      "section_automation": "Automatyzacja",
+      "point_numbers_hint": "Pokazuj numery 1–24 na planszy",
+      "section_automation": "Automatyka",
       "section_board": "Plansza",
       "section_dice": "Kości",
       "sound": "Dźwięki gry",
-      "sound_hint": "Delikatne dźwięki kości, bić i zwycięstw — szanuje tryb cichy",
-      "tutor_mode": "Tryb tutora",
-      "tutor_mode_hint": "Silnik sprawdza twoje ruchy i oznacza duże błędy"
+      "sound_hint": "Ciche dźwięki rzutów, bić i wygranej – respektuje tryb cichy",
+      "tutor_mode": "Tryb nauczyciela",
+      "tutor_mode_hint": "Silnik sprawdza twoje ruchy i oznacza poważne błędy"
     },
     "review": {
-      "back_to_live": "Wróć do bieżącej gry",
-      "live": "Bieżąca gra",
-      "live_short": "Na żywo",
+      "back_to_live": "Wróć do partii",
+      "live": "Bieżąca partia",
+      "live_short": "Teraz",
       "move_a11y": "Ruch {{ply}}, {{player}}",
       "move_position": "Ruch {{current}} z {{total}} · {{player}}",
       "next": "Następna tura",
-      "opening": "Pozycja początkowa",
+      "opening": "Ustawienie początkowe",
       "pause_replay": "Pauza",
       "player_black": "Czarne",
       "player_white": "Białe",
       "previous": "Poprzednia tura",
-      "replay": "Powtórka",
+      "replay": "Odtwórz",
       "scrubber_hint": "Dotknij tury, aby ją przejrzeć",
       "start": "Początek",
       "turn_a11y": "Tura {{turn}}, {{player}}",
       "turn_label": "Tura {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "Tura {{turn}}/{{totalTurns}} · ruch {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "Przeglądanie — dotknij Na żywo lub Wróć, aby grać dalej"
+      "viewing_hint": "Przeglądasz partię – dotknij Teraz albo Wróć do partii, aby grać dalej"
     },
     "status": {
-      "black_wins": "Czarne wygrywają",
-      "computer_wins": "Komputer wygrywa",
+      "black_wins": "🏆 Wygrywają czarne!",
+      "computer_wins": "Wygrywa komputer",
       "off_short": "zdjęte",
-      "pips_a11y": "{{player}}: {{pips}} pipsów, {{off}} z 15 zdjętych",
-      "white_wins": "🏆 Białe wygrywają!",
+      "pips_a11y": "{{player}}: {{pips}} pipsów, zdjęte {{off}} z 15",
+      "white_wins": "🏆 Wygrywają białe!",
       "you_win": "🏆 Wygrywasz!"
     },
     "strategy": {
       "close_a11y": "Zamknij wyjaśnienie strategii",
       "got_it": "Rozumiem",
       "label": {
-        "backgame": "Gra wyczekująca",
+        "backgame": "Gra z tyłu",
         "blitz": "Blitz",
         "developing": "Rozwój",
-        "holding": "Gra blokująca",
-        "priming": "Mur",
+        "holding": "Gra na kotwicy",
+        "priming": "Gra blokadą",
         "running": "Wyścig"
       },
       "tip": {
-        "backgame": "Zostań z tyłu, wzmocnij swój dom i czekaj na późniejszą okazję.",
-        "blitz": "Atakuj: bij każdą samotną figurę i zamknij swój dom.",
-        "developing": "Buduj punkty, walcz o piątkę i bądź elastyczny.",
-        "holding": "Trzymaj kotwicę, bądź bezpieczny i czekaj na swoją okazję do uderzenia.",
-        "priming": "Rozbudowuj mur punkt po punkcie i schwyłaj ich tylne figury.",
-        "running": "Sprawnie odsadzaj swoje figury do domu i chroń te, które wciąż są zagrożone."
+        "backgame": "Zostań z tyłu, trzymaj mocny dom i czekaj na późne bicie.",
+        "blitz": "Atakuj: bij każdego samotnego pionka, jakiego możesz, i zamknij swój dom.",
+        "developing": "Buduj punkty, walcz o pole 5 i pozostań elastyczny.",
+        "holding": "Trzymaj kotwicę, graj bezpiecznie i czekaj na okazję do bicia.",
+        "priming": "Wydłużaj swój mur pole po polu i zamknij tylne pionki rywala.",
+        "running": "Sprawnie sprowadzaj pionki do domu i chroń te, które wciąż można zbić."
       },
       "why": {
-        "backgame": "Trzymasz głębokie kotwice na {{point1}} i {{point2}}, będąc {{pipGap}} punktami do tyłu w wyścigu.",
-        "blitz_bar": "Na pasku masz {{barCount}}, a w domu zrobiłeś już {{homeMade}} punktów.",
-        "blitz_bar_blot": "Na pasku masz {{barCount}} i 1 samotną figurę w domu, a w domu zrobiłeś już {{homeMade}} punktów.",
-        "blitz_bar_blots": "Na pasku masz {{barCount}} i {{blotCount}} samotnych figur w domu, a w domu zrobiłeś już {{homeMade}} punktów.",
-        "blitz_blot": "Masz 1 samotną figurę w domu, a zrobiłeś już {{homeMade}} punktów.",
-        "blitz_blots": "Masz {{blotCount}} samotnych figur w domu, a zrobiłeś już {{homeMade}} punktów.",
-        "developing": "Na szachownicy nie ma jeszcze muru, kotwicy ani ataku — gra dopiero się kształtuje.",
-        "holding": "Trzymasz kotwicę na {{point}}, będąc {{pipGap}} punktami do tyłu.",
-        "priming": "Zbudowałeś mur z {{prime}} punktów.",
-        "priming_anchor": "Zbudowałeś mur z {{prime}} punktów z kotwicą za nim.",
-        "running_lead": "Prowadzisz w wyścigu {{foePips}} do {{myPips}}, bez samotnych figur w zasięgu uderzenia.",
-        "running_race": "Kontakt jest niemożliwy — to prosty wyścig do wyprowadzenia figur ({{myPips}} do {{foePips}} punktów)."
+        "backgame": "Masz głębokie kotwice na polach {{point1}} i {{point2}}, ale tracisz {{pipGap}} pipsów w wyścigu.",
+        "blitz_bar": "Na bandzie: {{barCount}}, a ty masz już {{homeMade}} zbudowanych pól w domu.",
+        "blitz_bar_blot": "Na bandzie: {{barCount}}, w twoim domu stoi 1 samotny pionek, a ty masz już tam {{homeMade}} zbudowanych pól.",
+        "blitz_bar_blots": "Na bandzie: {{barCount}}, w twoim domu stoją samotne pionki ({{blotCount}}), a ty masz już tam {{homeMade}} zbudowanych pól.",
+        "blitz_blot": "W twoim domu stoi 1 samotny pionek, a ty masz już tam {{homeMade}} zbudowanych pól.",
+        "blitz_blots": "W twoim domu stoją samotne pionki ({{blotCount}}), a ty masz już tam {{homeMade}} zbudowanych pól.",
+        "developing": "Nie ma jeszcze blokady, kotwicy ani ataku – partia dopiero nabiera kształtu.",
+        "holding": "Masz kotwicę na polu {{point}} i tracisz {{pipGap}} pipsów.",
+        "priming": "Zbudowałeś blokadę z {{prime}} pól.",
+        "priming_anchor": "Zbudowałeś blokadę z {{prime}} pól z kotwicą za nią.",
+        "running_lead": "Prowadzisz w wyścigu {{myPips}} do {{foePips}} i żaden samotny pionek nie jest w zasięgu bicia.",
+        "running_race": "Nie ma już kontaktu – to czysty wyścig do zdjęcia pionków ({{myPips}} do {{foePips}} pipsów)."
       }
     },
     "turn": {
       "black_is_moving": "Czarne wykonują ruch…",
       "black_is_rolling": "Czarne rzucają…",
       "black_turn": "Ruch czarnych",
-      "cant_enter": "Nie możesz wejść z bandy przy {{die1}} i {{die2}} — zakończ turę",
+      "cant_enter": "Z {{die1}} i {{die2}} nie wejdziesz z bandy – zakończ turę",
       "computer_turn": "Ruch komputera",
-      "enter_from_bar": "Wejdź z bandy przed ruchem innymi pionkami",
-      "game_over": "Koniec gry",
-      "move_checkers": "Przesuń swoje {{color}} pionki",
-      "no_legal_moves": "Brak dozwolonych ruchów przy {{die1}} i {{die2}} — zakończ turę",
+      "enter_from_bar": "Najpierw wprowadź pionek z bandy, potem ruszaj inne",
+      "game_over": "Koniec partii",
+      "move_checkers": "Rusz swoje pionki ({{color}})",
+      "no_legal_moves": "Brak możliwych ruchów z {{die1}} i {{die2}} – zakończ turę",
       "opening_roll": "Rzut otwierający",
-      "roll_dice": "Rzuć kośćmi — grasz kolorem {{color}}",
+      "roll_dice": "Rzuć kośćmi – grasz: {{color}}",
       "white_turn": "Ruch białych",
       "your_turn": "Twój ruch"
     },
     "tutor": {
       "back_to_question": "Wróć do pytania",
-      "back_to_question_a11y": "Wróć bez pokazywania odpowiedzi",
+      "back_to_question_a11y": "Wróć bez oglądania odpowiedzi",
       "band": {
-        "big_blunder": "Duży błąd",
+        "big_blunder": "Poważny błąd",
         "fine": "Dobrze",
         "mistake": "Błąd",
-        "slip": "Potknięcie"
+        "slip": "Niedokładność"
       },
       "best": "Najlepszy",
       "best_played": "Najlepszy:",
@@ -195,260 +195,260 @@
         "best_move": "Najlepszy ruch",
         "both": "Oba",
         "mine": "Mój",
-        "show_a11y": "Pokaż planszę {{label}}",
-        "start": "Start",
-        "starting_position": "Pozycja początkowa",
+        "show_a11y": "Pokaż planszę „{{label}}”",
+        "start": "Początek",
+        "starting_position": "Pozycja wyjściowa",
         "your_move": "Twój ruch",
-        "your_move_replayed": "Twój ruch, powtórzony"
+        "your_move_replayed": "Twój ruch, odtworzony"
       },
       "details_hide": "Ukryj szczegóły",
       "details_hide_a11y": "Ukryj szczegóły",
       "details_show": "Szczegóły",
       "details_show_a11y": "Pokaż szczegóły",
-      "details_summary": "Twój ruch był {{rank}} z {{count}} i daje około {{loss}} punktu na partię mniej niż najlepszy.",
-      "equity_explainer": "Silnik ocenia każdy ruch według punktów, które spodziewa się wygrać na partię, średnio. Wyżej znaczy lepiej.",
+      "details_summary": "Twój ruch zajął miejsce {{rank}} z {{count}} i daje średnio około {{loss}} pkt na partię mniej niż najlepszy.",
+      "equity_explainer": "Silnik ocenia każdy ruch według punktów, które średnio przynosi na partię. Im wyżej, tym lepiej.",
       "equity_pts": "{{points}} pkt",
       "keep": "Zostaw mój ruch",
       "keep_a11y": "Zostaw mój ruch i graj dalej",
-      "meter_a11y": "Waga błędu: {{severity}}. Strata około {{loss}} punktu na partię. Skala jak w GNU Backgammon: wątpliwy od 0.04, zły od 0.08, bardzo zły od 0.16.",
+      "meter_a11y": "Waga błędu: {{severity}}. Strata około {{loss}} pkt na partię. Skala jak w GNU Backgammon: wątpliwy od 0,04, zły od 0,08, bardzo zły od 0,16.",
       "meter_caption": "Skala błędów (GNU Backgammon)",
       "play_best": "Zagraj najlepszy ruch",
       "play_best_a11y": "Cofnij mój ruch i zagraj najlepszy",
-      "question_body": "Twój ruch był {{rank}} z {{count}} sposobów zagrania tego rzutu. Średnio daje około {{loss}} punktu na partię mniej niż najlepszy.",
+      "question_body": "Twój ruch zajął miejsce {{rank}} spośród {{count}} sposobów rozegrania tego rzutu. Średnio daje około {{loss}} pkt na partię mniej niż najlepszy.",
       "rank": "{{rank}}",
       "rank_yours": "{{rank}} (twój)",
-      "replay_pause_a11y": "Wstrzymaj powtórkę {{label}}",
-      "replay_play_a11y": "Odtwórz powtórkę {{label}}",
+      "replay_pause_a11y": "Wstrzymaj „{{label}}”",
+      "replay_play_a11y": "Odtwórz „{{label}}”",
       "reveal": "Pokaż najlepszy ruch",
       "reveal_a11y": "Odkryj zalecany ruch",
       "rolled": "Wyrzuciłeś {{dice}}",
       "show_mine": "Pokaż mój ruch",
-      "show_mine_a11y": "Pokaż tylko mój ruch, bez odkrywania najlepszego",
+      "show_mine_a11y": "Pokaż tylko mój ruch, bez zdradzania najlepszego",
       "take_back": "Cofnij i spróbuj ponownie",
       "take_back_a11y": "Cofnij całą turę i spróbuj ponownie",
       "take_back_retry_a11y": "Cofnij ruch i spróbuj ponownie",
-      "title_compare": "Twój ruch wobec najlepszego",
+      "title_compare": "Twój ruch a najlepszy",
       "title_mine": "Twój ruch",
-      "turn_off": "Wyłącz tutora",
-      "turn_off_a11y": "Wyłącz tryb tutora",
-      "undo_last": "Cofnij ostatni ruch",
-      "undo_last_a11y": "Cofnij tylko ostatni ruch i zagraj go ponownie",
-      "vs_best": "−{{delta}} względem najlepszego",
+      "turn_off": "Wyłącz nauczyciela",
+      "turn_off_a11y": "Wyłącz tryb nauczyciela",
+      "undo_last": "Cofnij ostatni krok",
+      "undo_last_a11y": "Cofnij tylko ostatni krok i zagraj go ponownie",
+      "vs_best": "−{{delta}} do najlepszego",
       "you_played": "Zagrałeś:"
     }
   },
   "home": {
     "confirm_cancel": "Anuluj",
     "confirm_continue": "Kontynuuj",
-    "confirm_native": "Kontynuować grę czy rozpocząć nową?",
-    "confirm_new": "Nowa gra",
-    "confirm_replace": "Rozpocząć nową grę? Bieżąca gra zostanie zastąpiona.",
-    "confirm_title": "Gra w toku",
-    "confirm_web": "Zacząć nową grę? (Użyj ponownie na ekranie głównym, aby kontynuować bieżący.)",
-    "recovery_body": "Ostatni zapis był uszkodzony. Możesz rozpocząć nową grę — ekran główny nadal działa.",
+    "confirm_native": "Kontynuować bieżącą partię czy zacząć nową?",
+    "confirm_new": "Nowa partia",
+    "confirm_replace": "Rozpocząć nową partię? Bieżąca partia zostanie zastąpiona.",
+    "confirm_title": "Partia w toku",
+    "confirm_web": "Rozpocząć nową partię? (Aby kontynuować bieżącą, użyj „Wznów partię” na ekranie głównym.)",
+    "recovery_body": "Ostatni zapis był uszkodzony. Możesz zacząć nową partię – reszta działa normalnie.",
     "recovery_dismiss": "Zamknij",
-    "recovery_title": "Nie udało się przywrócić zapisanej gry",
-    "resume": "Wznów grę",
-    "resume_a11y": "Wznów zapisaną grę",
-    "resume_none": "Brak zapisanej gry do wznowienia",
-    "resume_sub": "Kontynuuj od miejsca, w którym skończyłeś",
-    "review": "Przejrzyj ostatnią grę",
-    "review_a11y": "Przejrzyj zakończoną grę",
-    "review_sub": "Zobacz, jak zakończyła się ostatnia gra",
-    "subtitle": "Opanuj planszę — ruch po ruchu",
+    "recovery_title": "Nie udało się przywrócić zapisanej partii",
+    "resume": "Wznów partię",
+    "resume_a11y": "Wznów zapisaną partię",
+    "resume_none": "Brak zapisanej partii",
+    "resume_sub": "Kontynuuj tam, gdzie skończyłeś",
+    "review": "Przejrzyj ostatnią partię",
+    "review_a11y": "Przejrzyj zakończoną partię",
+    "review_sub": "Zobacz, jak skończyła się ostatnia partia",
+    "subtitle": "Opanuj planszę – ruch po ruchu",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 graczy",
-    "two_players_a11y": "Graj we dwoje na tym urządzeniu",
-    "two_players_sub": "Na zmianę na tym samym urządzeniu",
-    "vs_computer": "Przeciw komputerowi",
-    "vs_computer_a11y": "Graj przeciwko komputerowi",
-    "vs_computer_sub": "Zagraj przeciwko komputerowi"
+    "two_players_a11y": "Gra we dwoje na tym urządzeniu",
+    "two_players_sub": "Na zmianę na jednym urządzeniu",
+    "vs_computer": "Z komputerem",
+    "vs_computer_a11y": "Graj z komputerem",
+    "vs_computer_sub": "Zagraj z komputerem"
   },
   "learn": {
     "back_to_hub": "Wszystkie lekcje",
-    "continue": "Kontynuuj",
+    "continue": "Dalej",
     "feedback": {
-      "hint_nudge": "Potrzebujesz kuksańca? Szukaj zaznaczonych miejsc.",
-      "illegal": "Wypróbuj zaznaczony punkt - lub dotknij podpowiedzi.",
-      "legal_but_wrong": "To jest legalne w prawdziwej grze - tutaj, spróbuj ruchu, który uczy ten pomysł.",
-      "move_progress": "Nieźle.{{done}}z{{needed}}Wykonane ruchy."
+      "hint_nudge": "Potrzebujesz wskazówki? Spójrz na podświetlone miejsca.",
+      "illegal": "Spróbuj podświetlonego pola – albo dotknij Podpowiedź.",
+      "legal_but_wrong": "W prawdziwej partii to dozwolone – ale tutaj spróbuj ruchu, którego uczy ta lekcja.",
+      "move_progress": "Dobrze – wykonano {{done}} z {{needed}} ruchów."
     },
     "graduation": {
-      "body": "Znasz cel, tablicę, jak się obraca, uderza i odjeżdża. Szybkie sprawdzenie - potem twoja pierwsza prawdziwa gra.",
-      "play_cta": "Zagraj w swoją pierwszą grę",
-      "quiz_done": "Trafiłem. Czas na zabawę.",
-      "quiz_title": "Szybka kontrola",
-      "quiz_wrong": "Nie całkiem - spróbuj innej odpowiedzi.",
-      "recap_1": "Wyścig: potrzymaj wszystkie 15 pierwszy",
-      "recap_2": "Rzucić dwie kości; ziemi na punkty otwarte",
-      "recap_3": "Hit blots → siadają na barze",
-      "recap_4": "Wytrzymaj tylko w domu",
-      "recap_5": "Gry zaczynają się od jednego umrzeć każdy - wyższy idzie pierwszy (krawaty re- roll)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
-      "title": "Jesteś gotowy do gry."
+      "body": "Znasz już cel gry, planszę, przebieg tury, bicie, zdejmowanie pionków, liczbę pipsów i główne plany gry. Krótki sprawdzian – a potem twoja pierwsza prawdziwa partia.",
+      "play_cta": "Zagraj pierwszą partię",
+      "quiz_done": "Świetnie. Czas grać.",
+      "quiz_title": "Krótki sprawdzian",
+      "quiz_wrong": "Nie do końca – spróbuj innej odpowiedzi.",
+      "recap_1": "Wyścig: wygrywa, kto pierwszy zdejmie wszystkie 15 pionków",
+      "recap_2": "Rzuć dwiema kośćmi; stawaj tylko na otwartych polach",
+      "recap_3": "Bij samotne pionki → trafiają na bandę",
+      "recap_4": "Pionki zdejmuje się tylko z własnego domu",
+      "recap_5": "Na początku każdy rzuca jedną kością – zaczyna wyższa liczba (przy remisie rzuca się ponownie)",
+      "recap_6": "Liczba pipsów: kto ma mniej, prowadzi w wyścigu",
+      "recap_7": "Wybierz plan: wyścig, atak, blokada lub kotwica",
+      "title": "Możesz grać"
     },
     "hint": "Podpowiedź",
     "home_cta": "Naucz się grać",
-    "home_cta_progress": "{{done}} z {{total}} lekcji",
-    "home_cta_quiz": "Szybkie sprawdzenie w lewo - następnie grać",
-    "home_cta_ready": "Jesteś gotowy - zagraj prawdziwą grę",
+    "home_cta_progress": "Ukończone lekcje: {{done}} z {{total}}",
+    "home_cta_quiz": "Został krótki sprawdzian – potem graj",
+    "home_cta_ready": "Jesteś gotów – zagraj prawdziwą partię",
     "home_cta_sub": "Interaktywne lekcje dla początkujących",
-    "lesson_complete": "Lekcja zakończona!",
+    "lesson_complete": "Lekcja ukończona!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Nic nie ma na 5-tym punkcie, ale zwinęłaś 5. Należy odstąpić od najwyższego poziomu kontroli (3). Większa liczba nadal zdejmuje warcaby.",
-            "hint": "Wybierz punkt 3, a następnie dotknij tacki z brodaczem.",
-            "praise": "To zasada przesady - będziesz ją często używał, kiedy odchodzisz.",
-            "title": "Większa śmierć, wciąż wyłączona"
+            "body": "Na polu 5 nic nie ma, a wyrzuciłeś 5. Zdejmij najwyżej stojący pionek (ten z pola 3). Większa liczba też pozwala zdjąć pionek.",
+            "hint": "Zaznacz pole 3, a potem dotknij strefy zdejmowania.",
+            "praise": "To zasada większej liczby – przyda ci się często przy zdejmowaniu.",
+            "title": "Większa liczba, a pionek i tak schodzi"
           },
           "try": {
-            "body": "Wszystkie warcaby są w domu (1-6), więc można się wytrwać. Rzuciłeś 3 - weź sprawdzacz na 3- punkt z tablicy.",
-            "hint": "Wybierz punkt 3, a następnie dotknij miejsca na prawej krawędzi.",
-            "praise": "Z tablicy! Pierwszy, który zniesie wszystkie 15 zwycięstw.",
-            "title": "Niedźwiedź jeden"
+            "body": "Wszystkie twoje pionki są w domu (1–6), więc możesz je zdejmować. Wyrzuciłeś 3 – zdejmij z planszy pionek z pola 3.",
+            "hint": "Zaznacz pole 3, a potem dotknij strefy zdejmowania przy prawej krawędzi.",
+            "praise": "Zdjęty! Wygrywa, kto pierwszy zdejmie wszystkie 15.",
+            "title": "Zdejmij pionek"
           }
         },
-        "subtitle": "Jak wygrywasz",
-        "title": "Wyłączenie"
+        "subtitle": "Jak się wygrywa",
+        "title": "Zdejmowanie pionków"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Podkowa pasuje do warcaby gracza, którego kolej jest. Śledzi trasę gracza wokół planszy i do domu (pkt 1- 6).",
-            "title": "Ścieżka podkowa"
+            "body": "Podkowa ma kolor pionków gracza, którego jest tura. Pokazuje jego trasę dookoła planszy aż do domu (pola 1–6).",
+            "title": "Ścieżka w kształcie podkowy"
           },
           "far": {
-            "body": "Dotknij punktu, w którym zaczynają się twoje dwa najdalsze białe warcaby (24- punkt, gór- prawo).",
-            "hint": "Spójrz na górną prawą - dwie białe warcaby na punkcie 24.",
-            "praise": "Te zaczynają się głęboko w domu przeciwnika i mają najdłuższą podróż.",
-            "title": "Twoje najdalsze warcaby"
+            "body": "Dotknij pola, z którego startują twoje dwa najdalsze białe pionki (pole 24, prawy górny róg).",
+            "hint": "Spójrz w prawy górny róg – dwa białe pionki na polu 24.",
+            "praise": "Startują głęboko w domu rywala i mają najdłuższą drogę.",
+            "title": "Twoje najdalsze pionki"
           },
           "home_stack": {
-            "body": "Dotknij duży stos pięciu białych warcaby już w domu (punkt 6).",
-            "hint": "Bottom-right: pięć białych warcaby w punkcie 6.",
-            "praise": "To twój domowy stos. Pięciu już czeka na punkt szósty, najbliżej przerwy. Każda gra zaczyna się w ten sposób.",
+            "body": "Dotknij stosu pięciu białych pionków, które już są w twoim domu (pole 6).",
+            "hint": "Prawy dolny róg: pięć białych pionków na polu 6.",
+            "praise": "To twój domowy stos – pięć pionków czeka już na polu 6, najbliżej zdejmowania. Tak zaczyna się każda partia.",
             "title": "Twój domowy stos"
           }
         },
-        "subtitle": "Którędy się ruszysz?",
+        "subtitle": "W którą stronę się ruszasz",
         "title": "Kierunek i ustawienie"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "Podniesiony pasek w środku to bar. Hit warcaby czekać tutaj. Stuknij w pasek.",
-            "hint": "Dotknij pionowego pasa między lewym i prawym połówką deski.",
-            "praise": "Prawo - hit warcaby siedzieć na barze, aż ponownie wejść.",
-            "title": "Bar"
+            "body": "Wyniesiony pas na środku to banda. Tu czekają zbite pionki. Dotknij bandy.",
+            "hint": "Dotknij pionowego pasa między lewą a prawą połową planszy.",
+            "praise": "Tak – zbite pionki zostają na bandzie, dopóki nie wejdą z powrotem.",
+            "title": "Banda"
           },
           "explain": {
-            "body": "Ty i twój przeciwnik macie po 15 warcaby. Przesuń je wokół planszy i wyłączyć - pierwszy zakończył wygrywa.",
-            "title": "Kto pierwszy wytrzyma wygrywa"
+            "body": "Ty i twój rywal macie po 15 pionków. Przeprowadźcie je dookoła planszy i zdejmijcie – wygrywa ten, kto skończy pierwszy.",
+            "title": "Kto pierwszy zdejmie, ten wygrywa"
           },
           "home": {
-            "body": "Twój dom to punkty 1- 6 (dolny prawy). Dotknij dowolnego punktu w swojej tablicy.",
-            "hint": "Dom to sześć punktów w prawym dolnym kwadrancie - od 1 do 6.",
-            "praise": "To twój dom. Warcaby opuszczają zarząd.",
-            "title": "Znajdź swoją tablicę"
+            "body": "Twój dom to pola 1–6 (prawy dolny róg). Dotknij dowolnego pola w swoim domu.",
+            "hint": "Dom to sześć pól w prawej dolnej ćwiartce – o numerach od 1 do 6.",
+            "praise": "To twój dom – stąd pionki schodzą z planszy.",
+            "title": "Znajdź swój dom"
           }
         },
-        "subtitle": "Po co się ścigasz?",
-        "title": "Cel & plansza"
+        "subtitle": "O co toczy się wyścig",
+        "title": "Cel i plansza"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Jesteś na barze - wracaj, zanim ruszysz kogoś innego. Policz od 24- punktu w kierunku domu: 4 ziemie na punkt 21.",
-            "hint": "Dotknij paska, a następnie punkt 21 (nie 23 - to tylko dwa pipy z paska).",
-            "praise": "Jesteś z powrotem w zarządzie - sprawdzacze zawsze wchodzą pierwszy.",
-            "title": "Wpisz z paska",
-            "wrong": "To tylko dwa pipy z baru (pkt 23). Policz cztery punkty od 24 do domu - to jest punkt 21."
+            "body": "Jesteś na bandzie – wejdź z powrotem, zanim ruszysz cokolwiek innego. Licz od pola 24 w stronę domu: 4 ląduje na polu 21.",
+            "hint": "Dotknij bandy, a potem pola 21 (nie 23 – to tylko dwa pipsy od bandy).",
+            "praise": "Wróciłeś na planszę – pionki z bandy zawsze wchodzą pierwsze.",
+            "title": "Wejście z bandy",
+            "wrong": "To tylko dwa pipsy od bandy (pole 23). Odlicz cztery pola od 24 w stronę domu – to pole 21."
           },
           "hit": {
-            "body": "Pojedynczy sprawdzacz to plama. Wyląduj na nim i idzie do baru. Rzuciłeś 3 - trafiłeś czarną plamę na 5- punkt.",
-            "hint": "Dotknij kontrolera na 8, a następnie naciśnij punkt 5.",
-            "praise": "Uderz! Ten czarny sprawdzacz jest teraz na barze.",
-            "title": "Hit the blot"
+            "body": "Pionek stojący samotnie na polu to blot. Jeśli na nim staniesz, trafia na bandę. Wyrzuciłeś 3 – zbij czarnego samotnego pionka na polu 5.",
+            "hint": "Dotknij swojego pionka na polu 8, a potem pola 5.",
+            "praise": "Zbity! Ten czarny pionek jest teraz na bandzie.",
+            "title": "Zbij samotnego pionka"
           }
         },
-        "subtitle": "Odtwarzanie kontaktów",
-        "title": "Uderzanie i pasek"
+        "subtitle": "Gra z kontaktem",
+        "title": "Bicie i banda"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "Dwa lub więcej warcaby przeciwników blokują punkt - nie można tam wylądować. Stuknij zablokowany czarny stos na 5- punkt.",
-            "hint": "Podświetlona stos dwóch czarnych warcaby w punkcie 5.",
-            "praise": "Prawo - punkt 2 + zostaje zamknięty. Pusty, własny lub blot (1) są otwarte.",
-            "title": "Zablokowane punkty"
+            "body": "Dwa lub więcej pionków rywala blokują pole – nie możesz tam stanąć. Dotknij zablokowanego czarnego stosu na polu 5.",
+            "hint": "Podświetlony stos dwóch czarnych pionków na polu 5.",
+            "praise": "Tak – zbudowane pole (2+) jest zamknięte. Puste pola, twoje pola i samotne pionki (1) są otwarte.",
+            "title": "Zablokowane pola"
           },
           "doubles": {
-            "body": "Podwójne daje cztery ruchy tej liczby. Rzuciłeś 2-2 - to cztery 2s. Przesuń z punktu ósmego do punktu szóstego cztery razy.",
-            "hint": "Dotknij 8- punktu, a następnie 6- punktu. Zrób to cztery razy - raz na śmierć.",
-            "praise": "Dokładnie - podwójne oznacza cztery ruchy z tą liczbą.",
-            "title": "Podwójne = cztery ruchy"
+            "body": "Dublet daje cztery ruchy o tę liczbę. Wyrzuciłeś 2-2 – to cztery dwójki. Przesuń cztery razy z pola 8 na pole 6.",
+            "hint": "Dotknij pola 8, a potem pola 6. Cztery razy – raz na każdą kość.",
+            "praise": "Dokładnie – dublet to cztery ruchy o tę liczbę.",
+            "title": "Dublet = cztery ruchy"
           },
           "explain": {
-            "body": "Każdy skręca dwie kości i grać obie liczby, kiedy można. Możesz lądować na pustych punktach, własnych warcaby, lub samotny przeciwnik (blot).",
-            "title": "Dwie liczby, punkty otwarte"
+            "body": "W każdej turze rzucasz dwiema kośćmi i rozgrywasz obie liczby, jeśli możesz. Możesz stanąć na pustym polu, na własnych pionkach lub na samotnym pionku rywala (blocie).",
+            "title": "Dwie liczby, otwarte pola"
           },
           "two_dice": {
-            "body": "Rzuciłeś 3 i 1. Przesuń sprawdzacz na 8- punkt trzy pipy (do 5), a jeden na 6- punkt jeden pip (do 5).",
-            "hint": "Wybierz biały sprawdzacz, a następnie stuknij punkt 5. Zrób to zarówno dla 8- i 6- punktu.",
-            "praise": "Nieźle - obie kości używane. Te same warcaby lub dwa warcaby, obie liczby muszą być odtwarzane, gdy możesz.",
-            "title": "Zagraj w obie kości"
+            "body": "Wyrzuciłeś 3 i 1. Przesuń pionek z pola 8 o trzy pipsy (na 5), a pionek z pola 6 o jeden pips (na 5).",
+            "hint": "Zaznacz biały pionek, a potem dotknij pola 5. Zrób to z pola 8 i z pola 6.",
+            "praise": "Dobrze – obie kości wykorzystane. Jednym pionkiem czy dwoma, obie liczby trzeba rozegrać, gdy to możliwe.",
+            "title": "Rozegraj obie kości"
           }
         },
-        "subtitle": "Jak działa obrót",
-        "title": "Przeprowadzka z kośćmi"
+        "subtitle": "Jak wygląda tura",
+        "title": "Ruch kośćmi"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "Biały zdjął 5 pionów, reszta jest blisko domu. Czarne są wciąż rozrzucone. Dotknij białego piona: biały prowadzi, bo ma mniej pipów.",
-            "hint": "Szukaj pionów najbliżej zejścia.",
-            "praise": "Dokładnie. Niższa liczba białego to krótsza droga.",
+            "body": "Białe zdjęły 5 pionków, a reszta jest blisko domu. Czarne pionki są wciąż rozrzucone po planszy. Dotknij dowolnego białego pionka – białe prowadzą w wyścigu, mając mniej pipsów.",
+            "hint": "Poszukaj pionków najbliżej zdjęcia.",
+            "praise": "Dokładnie! Mniej pipsów to krótsza droga.",
             "title": "Kto prowadzi?"
           },
           "behind": {
-            "body": "Ta sama pozycja. Czarne piony są daleko od domu i mają dużo wyższą liczbę. Dotknij czarnego piona: czarny jest z tyłu.",
-            "hint": "Szukaj pionów najdalej od domu.",
-            "praise": "Dobrze. Czarnemu brakuje jeszcze wielu pipów.",
-            "title": "Kto jest z tyłu?"
+            "body": "Ta sama pozycja. Czarne pionki są daleko od domu i mają dużo więcej pipsów. Dotknij dowolnego czarnego pionka – czarne przegrywają wyścig.",
+            "hint": "Poszukaj pionków najdalej od domu.",
+            "praise": "Tak! Czarne potrzebują znacznie więcej pipsów, żeby zdjąć pionki.",
+            "title": "Kto przegrywa?"
           },
           "explain": {
-            "body": "To suma pól, które twoje piony muszą jeszcze przejść, żeby zejść z planszy. Każdy pion dodaje numer swojego pola: na polu 6 liczy się 6, na polu 13 liczy się 13. Mniej znaczy lepiej, jesteś bliżej zejścia. Liczby są u góry w każdej partii, a kropka pokazuje kolor.",
-            "title": "Czym jest liczba pipów?"
+            "body": "Liczba pipsów to łączna liczba pól, które twoje pionki muszą jeszcze przejść do zdjęcia. Każdy pionek liczy się numerem swojego pola – pionek na polu 6 to 6, na polu 13 to 13. Dodaj wszystko, a otrzymasz swoją liczbę pipsów. Mniej znaczy lepiej: jesteś bliżej zdejmowania. W każdej partii liczba pipsów każdego gracza widnieje obok jego nazwy.",
+            "title": "Co to jest liczba pipsów?"
           }
         },
-        "subtitle": "Naucz się czytać, kto prowadzi w wyścigu",
-        "title": "Liczba pipów: wynik wyścigu"
+        "subtitle": "Sprawdź, kto wygrywa wyścig",
+        "title": "Liczba pipsów: wynik wyścigu"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "Twój dom jest mocny, a przeciwnik ma samotne piony albo piony na barze. Bij każdy samotny i zamykaj pola domu, żeby jego piony zostały na barze, gdy ty schodzisz. Tu biały ma trzy pola domu, a czarny piona na barze.",
+            "body": "Masz mocny dom, a rywal ma samotne pionki lub pionki na bandzie. Atakuj! Bij każdego samotnego pionka, jakiego możesz, i zamykaj pola w swoim domu. Cel: trzymać jego pionki na bandzie, podczas gdy ty zdejmujesz swoje. Tutaj białe mają w domu trzy zbudowane pola, a czarne – pionek na bandzie.",
             "title": "Blitz"
           },
           "identify": {
-            "body": "To partia na mur. Dotknij pola białego muru, kolejnych pól, które blokują czarnego.",
-            "hint": "Szukaj kolejnych pól z co najmniej 2 białymi pionami.",
-            "praise": "Idealnie. Ta ściana to mur. Tylne piony czarnego są uwięzione.",
-            "title": "Wskaż mur"
+            "body": "To jest gra blokadą. Dotknij dowolnego pola białej blokady – muru z kolejnych zbudowanych pól, który zatrzymuje czarne.",
+            "hint": "Szukaj kolejnych pól, na każdym co najmniej 2 białe pionki.",
+            "praise": "Świetnie! Ten mur to blokada – tylne czarne pionki są uwięzione.",
+            "title": "Znajdź blokadę"
           },
           "prime": {
-            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, który ogranicza tylne piony czarnego. Wydłużaj go po jednym polu.",
-            "title": "Mur"
+            "body": "Zbudowałeś mur z kolejnych zbudowanych pól – blokadę (prime). Podświetlone pola tworzą blokadę z 4 pól, która ogranicza tylne czarne pionki. Wydłużaj blokadę pole po polu i zamknij za nią jego pionki.",
+            "title": "Gra blokadą"
           },
           "running": {
-            "body": "Prowadzisz i nie ma samotnych pionów w zasięgu bicia. Sprowadź piony do domu i nie zostawiaj samotnych. Tu biały prowadzi i ma mocny dom.",
+            "body": "Prowadzisz w wyścigu i żaden samotny pionek nie jest w zasięgu bicia. Plan jest prosty: bezpiecznie sprowadź pionki do domu i nie zostawiaj samotnych. Bez kombinowania – po prostu biegnij. Tutaj białe prowadzą w wyścigu i mają solidny dom.",
             "title": "Wyścig"
           }
         },
-        "subtitle": "Rozpoznaj klasyczne plany gry",
+        "subtitle": "Rozpoznawaj klasyczne plany gry",
         "title": "Plany gry"
       }
     },
@@ -456,71 +456,71 @@
     "next_lesson": "Następna lekcja",
     "quiz": {
       "bar": {
-        "a": "Przesuń swój najdalej sprawdzacz pierwszy",
-        "b": "Wprowadź ten sprawdzacz przed przesunięciem czegokolwiek innego",
-        "c": "Pomiń swoją kolej",
-        "prompt": "Podczas gdy masz sprawdzacz na barze, musisz..."
+        "a": "Najpierw ruszyć najdalszy pionek",
+        "b": "Wprowadzić ten pionek, zanim ruszysz cokolwiek innego",
+        "c": "Opuścić turę",
+        "prompt": "Dopóki masz pionek na bandzie, musisz…"
       },
       "bear": {
-        "a": "Ilekroć rzucasz 6",
-        "b": "Tylko po tym, jak uderzysz w plamę.",
-        "c": "Kiedy wszystkie 15 warcaby są w domu",
-        "prompt": "Kiedy wytrzymasz?"
+        "a": "Za każdym razem, gdy wyrzucisz 6",
+        "b": "Dopiero po zbiciu samotnego pionka",
+        "c": "Gdy wszystkie 15 pionków jest w twoim domu",
+        "prompt": "Kiedy możesz zdejmować pionki?"
       },
       "blot": {
-        "a": "Każdy stos trzech lub więcej",
-        "b": "Pojedynczy sprawdzacz w punkcie - można go trafić",
-        "c": "Dwa lub więcej warcaby na punkt - punkt ustalony",
-        "prompt": "Co to jest plama?"
+        "a": "Każdy stos trzech lub więcej pionków",
+        "b": "Pojedynczy pionek na polu – można go zbić",
+        "c": "Dwa lub więcej pionków na polu – zbudowane pole",
+        "prompt": "Co to jest blot?"
       },
       "pip_ahead": {
-        "a": "Przeciwnik, z wyższą liczbą",
+        "a": "Rywal, z wyższą liczbą",
         "b": "Ty, z niższą liczbą",
-        "c": "Nikt — liczba pipów nie mierzy wyścigu",
-        "prompt": "Twoja liczba to 85, przeciwnika 102. Kto prowadzi w wyścigu?"
+        "c": "Nikt – liczba pipsów nie mierzy wyścigu",
+        "prompt": "Twoja liczba pipsów to 85, a rywala 102. Kto prowadzi w wyścigu?"
       },
       "pip_meaning": {
-        "a": "Pola, które twoje piony muszą jeszcze przejść, żeby zejść",
-        "b": "Ile pionów masz na planszy",
-        "c": "Ile pól już zająłeś",
-        "prompt": "Co oznacza twoja liczba pipów?"
+        "a": "Łączna liczba pól, które twoje pionki muszą przejść do zdjęcia",
+        "b": "Liczba twoich pionków na planszy",
+        "c": "Liczba zbudowanych przez ciebie pól",
+        "prompt": "Co oznacza twoja liczba pipsów?"
       },
       "strat_blitz": {
-        "a": "Zbić samotnego i dalej budować dom (blitz)",
-        "b": "Zignorować samotnego i puścić tylne piony",
-        "c": "Rozbić dom, żeby zrobić kotwicę",
-        "prompt": "Masz 3 pola domu, a przeciwnik samotnego w twoim domu. Jaki jest najlepszy plan?"
+        "a": "Zbić samotnego pionka i dalej budować dom (blitz)",
+        "b": "Zignorować go i uciekać tylnymi pionkami",
+        "c": "Rozbić dom, żeby zbudować kotwicę",
+        "prompt": "Masz w domu 3 zbudowane pola, a rywal ma tam samotnego pionka. Jaki jest najlepszy plan?"
       },
       "strat_prime": {
-        "a": "Rozbić mur, żeby atakować",
-        "b": "Trzymać mur i go wydłużać — są uwięzieni",
-        "c": "Schodzić jak najszybciej",
-        "prompt": "Dwa piony przeciwnika są za twoim murem z 5 pól. Jaki jest twój plan?"
+        "a": "Rozbić blokadę, żeby zaatakować",
+        "b": "Utrzymać blokadę i ją wydłużyć – jego pionki są uwięzione",
+        "c": "Jak najszybciej zdejmować pionki",
+        "prompt": "Rywal ma dwa pionki uwięzione za twoją blokadą z 5 pól. Jaki jest twój plan?"
       }
     },
-    "replay": "Powtórz",
+    "replay": "Jeszcze raz",
     "skip_to_play": "Przejdź do gry",
     "step_progress": "Krok {{current}} z {{total}}",
-    "subtitle": "Krótkie interaktywne lekcje — potem jesteś gotowy",
+    "subtitle": "Siedem krótkich lekcji – i możesz grać",
     "title": "Naucz się grać"
   },
   "not_found": {
-    "body": "Ta strona nie jest częścią Backgammon Mastermind. Jedź do domu, by się nauczyć albo zacząć grę.",
+    "body": "Ta strona nie należy do Backgammon Mastermind. Wróć do ekranu głównego, aby się uczyć lub zacząć partię.",
     "heading": "Poza planszą",
-    "home_a11y": "Przejdź na stronę główną",
-    "home_cta": "Wróć na stronę główną",
+    "home_a11y": "Przejdź do ekranu głównego",
+    "home_cta": "Wróć do ekranu głównego",
     "title": "Nie znaleziono"
   },
   "settings": {
     "about": "O aplikacji",
     "app_name": "Backgammon Mastermind",
     "arabic": "Arabski",
-    "developer": "Deweloper",
-    "developer_blurb": "Wczytaj dowolną pozycję planszy do testowania silnika. Rozpoczyna normalną grę od tej pozycji. To nie jest funkcja produktu.",
-    "developer_json": "JSON pozycji",
+    "developer": "Dla deweloperów",
+    "developer_blurb": "Wczytaj dowolną pozycję, aby przetestować silnik. Zaczyna zwykłą partię od tej pozycji. To nie jest funkcja produktu.",
+    "developer_json": "Pozycja w JSON",
     "developer_load": "Wczytaj JSON",
     "developer_open": "Wczytaj pozycję",
-    "developer_presets": "Ustawienia testowe",
+    "developer_presets": "Pozycje testowe",
     "english": "Angielski",
     "game": "Gra",
     "general": "Ogólne",
@@ -530,7 +530,7 @@
     "link_error_title": "Nie można otworzyć linku",
     "links": "Linki",
     "more": "Więcej",
-    "open_source": "Informacje o otwartym kodzie",
+    "open_source": "Informacje o open source",
     "privacy": "Polityka prywatności",
     "rate": "Oceń",
     "share": "Udostępnij",
@@ -571,5 +571,5 @@
     "win_rate": "Wygrane",
     "won": "Wygrane"
   },
-  "welcome": "Witamy w Backgammon Mastermind"
+  "welcome": "Witaj w Backgammon Mastermind"
 }

@@ -1,7 +1,7 @@
 {
   "error": {
-    "body": "Herstart de app om verder te gaan.",
-    "heading": "Er ging iets mis.",
+    "body": "Start de app opnieuw om verder te gaan.",
+    "heading": "Er ging iets mis",
     "retry": "Opnieuw proberen"
   },
   "feedback": {
@@ -20,50 +20,50 @@
   },
   "game": {
     "caption": {
-      "selected": "Geselecteerd Tik op een gemarkeerd punt, of Annuleren"
+      "selected": "Geselecteerd – tik op een gemarkeerd punt of op Annuleren"
     },
     "controls": {
-      "bear_off_a11y": "Steen uitspelen",
+      "bear_off_a11y": "Schijf uitspelen",
       "cancel": "Annuleren",
       "cancel_a11y": "Selectie annuleren",
       "confirm_move": "Zet bevestigen",
-      "confirm_move_a11y": "Zet bevestigen en beurt beëindigen",
-      "leave_game_a11y": "Verlaat het spel en keer terug naar huis",
-      "loading": "Laden...",
-      "new_game_message": "Een nieuw spel starten?",
-      "new_game_title": "Nieuw spel",
-      "no_legal_moves": "Geen zetten mogelijk…",
-      "play_again": "Opnieuw spelen",
-      "play_again_a11y": "Opnieuw spelen",
-      "redo_a11y": "Opnieuw verplaatsen",
-      "roll_dice": "Gooi de dobbelstenen",
+      "confirm_move_a11y": "Zet bevestigen en je beurt beëindigen",
+      "leave_game_a11y": "Partij verlaten en terug naar het begin",
+      "loading": "Laden…",
+      "new_game_message": "Nieuwe partij beginnen?",
+      "new_game_title": "Nieuwe partij",
+      "no_legal_moves": "Geen geldige zet…",
+      "play_again": "Nog een keer",
+      "play_again_a11y": "Nog een keer spelen",
+      "redo_a11y": "Zet opnieuw doen",
+      "roll_dice": "Gooien",
       "roll_dice_a11y": "Dobbelstenen gooien",
-      "start_new_game_a11y": "Nieuw spel starten",
-      "undo_a11y": "Verplaatsen ongedaan maken",
-      "undo_move": "Ongedaan maken"
+      "start_new_game_a11y": "Nieuwe partij beginnen",
+      "undo_a11y": "Zet ongedaan maken",
+      "undo_move": "Terug"
     },
     "hint": {
       "back_to_turn": "Terug naar mijn beurt",
-      "back_to_turn_a11y": "Terug naar mijn beurt, hint sluiten",
-      "button": "Hint",
-      "button_a11y": "Vraag een zethint",
-      "error": "Geen hint gevonden — tik om opnieuw te proberen",
-      "error_a11y": "Hint opnieuw proberen",
+      "back_to_turn_a11y": "Terug naar mijn beurt en de tip sluiten",
+      "button": "Tip",
+      "button_a11y": "Een tip voor je zet",
+      "error": "Geen tip gevonden – tik om het opnieuw te proberen",
+      "error_a11y": "Tip opnieuw proberen",
       "finding": "Beste zet zoeken…",
       "play": "Deze zet spelen",
       "play_a11y": "De voorgestelde zet spelen",
       "suggested": "Voorgestelde zet"
     },
     "nudge": {
-      "roll_first": "Gooi eerst de dobbelstenen"
+      "roll_first": "Eerst gooien"
     },
     "opening": {
-      "compare": "{{winner}} {{high}} verslaat {{low}}",
+      "compare": "{{winner}}: {{high}} wint van {{low}}",
       "goes_first": "{{player}} begint!",
       "roll": "Gooien",
-      "rolls_for_opening": "{{player}} gooit voor de opening",
-      "tie": "Gelijkspel!",
-      "tie_again": "Zelfde getal — gooi opnieuw",
+      "rolls_for_opening": "{{player}} gooit om te beginnen",
+      "tie": "Gelijk!",
+      "tie_again": "Zelfde getal – nog een keer gooien",
       "waiting_roll": "{{player}} gooit…",
       "who_goes_first": "Wie begint?",
       "your_roll": "Tik ergens om te gooien"
@@ -79,186 +79,186 @@
       "you": "Jij"
     },
     "preferences": {
-      "auto_move": "Automatisch zetten bij dwang",
-      "auto_move_hint": "De enige legale zet automatisch spelen",
+      "auto_move": "Gedwongen zet automatisch",
+      "auto_move_hint": "De enige mogelijke zet automatisch spelen",
       "auto_roll": "Automatisch gooien",
-      "auto_roll_hint": "Automatisch gooien als jij aan de beurt bent",
+      "auto_roll_hint": "Aan het begin van je beurt automatisch gooien",
       "confirm_move": "Zet bevestigen",
-      "confirm_move_hint": "Vraag voordat je beurt eindigt zodat je kunt controleren of ongedaan maken",
-      "dice_display": "Weergave dobbelstenen",
-      "dice_dots": "Stippen",
+      "confirm_move_hint": "Vragen voordat je beurt eindigt, zodat je kunt nakijken of terugzetten",
+      "dice_display": "Weergave van de dobbelstenen",
+      "dice_dots": "Ogen",
       "dice_numbers": "Cijfers",
-      "direction_overlay": "Richtingsgids",
+      "direction_overlay": "Speelrichting tonen",
       "direction_overlay_hint": "Hoefijzerpad op het bord",
-      "move_hints": "Zethints",
+      "move_hints": "Zethulp",
       "move_hints_hint": "Markeert de nummers van de punten waarvan je kunt zetten",
       "point_numbers": "Puntnummers",
-      "point_numbers_hint": "Labels 1–24 op het bord tonen",
-      "section_automation": "Automatisering",
+      "point_numbers_hint": "Nummers 1–24 op het bord tonen",
+      "section_automation": "Automatisch",
       "section_board": "Bord",
       "section_dice": "Dobbelstenen",
       "sound": "Spelgeluiden",
-      "sound_hint": "Zachte dobbel-, slag- en wingeluiden — respecteert de stille modus",
+      "sound_hint": "Zachte geluiden bij gooien, slaan en winnen – houdt rekening met de stilmodus",
       "tutor_mode": "Tutormodus",
-      "tutor_mode_hint": "De engine controleert je zetten en markeert grote fouten"
+      "tutor_mode_hint": "De engine controleert je zetten en waarschuwt bij grote blunders"
     },
     "review": {
-      "back_to_live": "Terug naar het lopende spel",
-      "live": "Lopend spel",
-      "live_short": "Live",
+      "back_to_live": "Terug naar de partij",
+      "live": "Lopende partij",
+      "live_short": "Nu",
       "move_a11y": "Zet {{ply}}, {{player}}",
       "move_position": "Zet {{current}} van {{total}} · {{player}}",
       "next": "Volgende beurt",
-      "opening": "Beginopstelling",
+      "opening": "Beginstelling",
       "pause_replay": "Pauze",
       "player_black": "Zwart",
       "player_white": "Wit",
       "previous": "Vorige beurt",
-      "replay": "Terugkijken",
-      "scrubber_hint": "Tik op een beurt om terug te kijken",
-      "start": "Start",
+      "replay": "Afspelen",
+      "scrubber_hint": "Tik op een beurt om die te bekijken",
+      "start": "Begin",
       "turn_a11y": "Beurt {{turn}}, {{player}}",
       "turn_label": "Beurt {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "Beurt {{turn}}/{{totalTurns}} · zet {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "Terugkijken — tik op Live of Terug om verder te spelen"
+      "viewing_hint": "Je kijkt terug – tik op Nu of Terug naar de partij om verder te spelen"
     },
     "status": {
-      "black_wins": "Zwart wint",
-      "computer_wins": "Computer wint",
+      "black_wins": "🏆 Zwart wint!",
+      "computer_wins": "De computer wint",
       "off_short": "eraf",
-      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} van 15 eraf",
+      "pips_a11y": "{{player}}: {{pips}} pips, {{off}} van de 15 eraf",
       "white_wins": "🏆 Wit wint!",
-      "you_win": "🏆 Jij wint!"
+      "you_win": "🏆 Je hebt gewonnen!"
     },
     "strategy": {
-      "close_a11y": "Uitleg van de strategie sluiten",
+      "close_a11y": "Uitleg over de strategie sluiten",
       "got_it": "Begrepen",
       "label": {
-        "backgame": "Achterstandspartij",
+        "backgame": "Backgame",
         "blitz": "Blitz",
         "developing": "Opbouw",
         "holding": "Houdspel",
-        "priming": "Muur",
-        "running": "Race"
+        "priming": "Primespel",
+        "running": "Racespel"
       },
       "tip": {
-        "backgame": "Blijf achteren, versterk je thuisbord en wacht op de late kans.",
-        "blitz": "Val aan: pak elk losse steen en sluit je thuisbord.",
-        "developing": "Bouw punten, vecht om de 5 en blijf flexibel.",
-        "holding": "Houd je anker vast, blijf veilig en wacht op je kans om te slaan.",
-        "priming": "Bouw je muur steeds verder uit en vang hun achterste stenen.",
-        "running": "Breng je stenen efficiënt thuis en bescherm de stenen die nog in gevaar zijn."
+        "backgame": "Blijf achter, houd je thuisbord sterk en wacht op een late kans om te slaan.",
+        "blitz": "Val aan: sla elke losse schijf die je kunt en sluit je thuisbord.",
+        "developing": "Maak punten, vecht om het 5-punt en blijf flexibel.",
+        "holding": "Houd je anker vast, speel veilig en wacht op je kans om te slaan.",
+        "priming": "Verleng je muur punt voor punt en sluit de achterste schijven van je tegenstander in.",
+        "running": "Breng je schijven efficiënt naar huis en bescherm de schijven die nog geraakt kunnen worden."
       },
       "why": {
-        "backgame": "Je houdt diepe ankers op {{point1}} en {{point2}} terwijl je {{pipGap}} punten achterloopt in de race.",
-        "blitz_bar": "Er staan {{barCount}} op de bar en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
-        "blitz_bar_blot": "Er staan {{barCount}} op de bar en 1 losse steen op je thuisbord, en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
-        "blitz_bar_blots": "Er staan {{barCount}} op de bar en {{blotCount}} losse stenen op je thuisbord, en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
-        "blitz_blot": "Er is 1 losse steen op je thuisbord en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
-        "blitz_blots": "Er zijn {{blotCount}} losse stenen op je thuisbord en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
-        "developing": "Nog geen muur, anker of aanval op het bord — het spel vormt zich nog.",
-        "holding": "Je houdt een anker op {{point}} terwijl je {{pipGap}} punten achterloopt.",
-        "priming": "Je hebt een muur van {{prime}} punten gebouwd.",
-        "priming_anchor": "Je hebt een muur van {{prime}} punten gebouwd met er een anker achter.",
-        "running_lead": "Je leidt de race {{foePips}} tegen {{myPips}} met geen losse stenen binnen slagafstand.",
-        "running_race": "Geen contact mogelijk — het is een rechte race om af te spelen ({{myPips}} tegen {{foePips}} punten)."
+        "backgame": "Je houdt diepe ankers op het {{point1}}- en het {{point2}}-punt, maar staat {{pipGap}} pips achter in de race.",
+        "blitz_bar": "Op de bar: {{barCount}}, en je hebt al {{homeMade}} punten in je thuisbord gemaakt.",
+        "blitz_bar_blot": "Op de bar: {{barCount}}, er staat 1 losse schijf in je thuisbord en je hebt er al {{homeMade}} punten gemaakt.",
+        "blitz_bar_blots": "Op de bar: {{barCount}}, er staan {{blotCount}} losse schijven in je thuisbord en je hebt er al {{homeMade}} punten gemaakt.",
+        "blitz_blot": "Er staat 1 losse schijf in je thuisbord en je hebt er al {{homeMade}} punten gemaakt.",
+        "blitz_blots": "Er staan {{blotCount}} losse schijven in je thuisbord en je hebt er al {{homeMade}} punten gemaakt.",
+        "developing": "Nog geen prime, anker of aanval – de partij krijgt nog vorm.",
+        "holding": "Je houdt een anker op het {{point}}-punt en staat {{pipGap}} pips achter.",
+        "priming": "Je hebt een prime van {{prime}} punten gebouwd.",
+        "priming_anchor": "Je hebt een prime van {{prime}} punten gebouwd, met een anker erachter.",
+        "running_lead": "Je staat voor in de race, {{myPips}} tegen {{foePips}}, zonder losse schijven binnen bereik.",
+        "running_race": "Geen contact meer – het is een pure race om uit te spelen ({{myPips}} tegen {{foePips}} pips)."
       }
     },
     "turn": {
       "black_is_moving": "Zwart zet…",
-      "black_is_rolling": "Zwart werpt…",
+      "black_is_rolling": "Zwart gooit…",
       "black_turn": "Zwart is aan de beurt",
-      "cant_enter": "Je kunt niet binnenkomen met {{die1}} en {{die2}} — beëindig je beurt",
+      "cant_enter": "Met {{die1}} en {{die2}} kom je niet van de bar – beëindig je beurt",
       "computer_turn": "De computer is aan de beurt",
-      "enter_from_bar": "Kom vanaf de balk binnen voordat je andere stenen verplaatst",
-      "game_over": "Spel afgelopen",
-      "move_checkers": "Verplaats je {{color}} stenen",
-      "no_legal_moves": "Geen geldige zetten met {{die1}} en {{die2}} — beëindig je beurt",
+      "enter_from_bar": "Kom eerst van de bar binnen voordat je andere schijven zet",
+      "game_over": "Partij voorbij",
+      "move_checkers": "Zet je schijven ({{color}})",
+      "no_legal_moves": "Geen geldige zet met {{die1}} en {{die2}} – beëindig je beurt",
       "opening_roll": "Openingsworp",
-      "roll_dice": "Gooi de dobbelstenen — je speelt {{color}}",
+      "roll_dice": "Gooi – je speelt met {{color}}",
       "white_turn": "Wit is aan de beurt",
       "your_turn": "Jij bent aan de beurt"
     },
     "tutor": {
       "back_to_question": "Terug naar de vraag",
-      "back_to_question_a11y": "Terug zonder het antwoord te tonen",
+      "back_to_question_a11y": "Terug zonder het antwoord te zien",
       "band": {
-        "big_blunder": "Grote fout",
-        "fine": "Goed",
+        "big_blunder": "Grote blunder",
+        "fine": "Prima",
         "mistake": "Fout",
-        "slip": "Misser"
+        "slip": "Onnauwkeurigheid"
       },
       "best": "Beste",
       "best_played": "Beste:",
       "compare": {
         "best": "Beste",
         "best_move": "Beste zet",
-        "both": "Beide",
+        "both": "Allebei",
         "mine": "De mijne",
-        "show_a11y": "Bord {{label}} tonen",
-        "start": "Start",
-        "starting_position": "Beginstelling",
+        "show_a11y": "Bord „{{label}}” tonen",
+        "start": "Begin",
+        "starting_position": "Uitgangsstelling",
         "your_move": "Jouw zet",
-        "your_move_replayed": "Jouw zet, herhaald"
+        "your_move_replayed": "Jouw zet, opnieuw afgespeeld"
       },
       "details_hide": "Details verbergen",
       "details_hide_a11y": "Details verbergen",
       "details_show": "Details",
       "details_show_a11y": "Details tonen",
-      "details_summary": "Jouw zet stond op plek {{rank}} van {{count}}, ongeveer {{loss}} punten per partij minder dan de beste zet.",
-      "equity_explainer": "De engine beoordeelt elke zet op de punten die hij gemiddeld per partij verwacht te winnen. Hoger is beter.",
+      "details_summary": "Je zet staat op plaats {{rank}} van {{count}} en levert per partij ongeveer {{loss}} punten minder op dan de beste zet.",
+      "equity_explainer": "De engine beoordeelt elke zet op het aantal punten dat hij gemiddeld per partij verwacht te winnen. Hoger is beter.",
       "equity_pts": "{{points}} ptn",
       "keep": "Mijn zet houden",
       "keep_a11y": "Mijn zet houden en doorgaan",
-      "meter_a11y": "Ernst van de fout: {{severity}}. Ongeveer {{loss}} punten per partij verloren. De schaal volgt GNU Backgammon: twijfelachtig bij 0.04, slecht bij 0.08, zeer slecht bij 0.16.",
+      "meter_a11y": "Ernst van de fout: {{severity}}. Ongeveer {{loss}} punten per partij verloren. De schaal volgt GNU Backgammon: twijfelachtig vanaf 0,04, slecht vanaf 0,08, zeer slecht vanaf 0,16.",
       "meter_caption": "Foutenschaal (GNU Backgammon)",
       "play_best": "Beste zet spelen",
       "play_best_a11y": "Mijn zet terugnemen en de beste zet spelen",
-      "question_body": "Jouw zet stond op plek {{rank}} van {{count}} manieren om deze worp te spelen. Gemiddeld levert hij ongeveer {{loss}} punten per partij minder op dan de beste zet.",
+      "question_body": "Je zet staat op plaats {{rank}} van {{count}} manieren om deze worp te spelen. Gemiddeld levert hij per partij ongeveer {{loss}} punten minder op dan de beste zet.",
       "rank": "{{rank}}",
-      "rank_yours": "{{rank}} (van jou)",
-      "replay_pause_a11y": "Herhaling van {{label}} pauzeren",
-      "replay_play_a11y": "Herhaling van {{label}} afspelen",
+      "rank_yours": "{{rank}} (jouw zet)",
+      "replay_pause_a11y": "„{{label}}” pauzeren",
+      "replay_play_a11y": "„{{label}}” afspelen",
       "reveal": "Beste zet tonen",
       "reveal_a11y": "De aanbevolen zet onthullen",
       "rolled": "Je gooide {{dice}}",
       "show_mine": "Mijn zet tonen",
-      "show_mine_a11y": "Alleen mijn zet tonen, zonder de beste zet te onthullen",
-      "take_back": "Terugnemen en opnieuw proberen",
+      "show_mine_a11y": "Alleen mijn zet tonen, zonder de beste te verklappen",
+      "take_back": "Terugnemen en opnieuw",
       "take_back_a11y": "De hele beurt terugnemen en opnieuw proberen",
       "take_back_retry_a11y": "De zet terugnemen en opnieuw proberen",
-      "title_compare": "Jouw zet tegen de beste zet",
+      "title_compare": "Jouw zet tegenover de beste",
       "title_mine": "Jouw zet",
       "turn_off": "Tutor uitzetten",
       "turn_off_a11y": "Tutormodus uitzetten",
-      "undo_last": "Laatste zet ongedaan maken",
-      "undo_last_a11y": "Alleen de laatste zet ongedaan maken en opnieuw spelen",
-      "vs_best": "−{{delta}} t.o.v. beste",
-      "you_played": "Je speelde:"
+      "undo_last": "Laatste stap terugnemen",
+      "undo_last_a11y": "Alleen de laatste stap terugnemen en opnieuw spelen",
+      "vs_best": "−{{delta}} t.o.v. de beste",
+      "you_played": "Jij speelde:"
     }
   },
   "home": {
     "confirm_cancel": "Annuleren",
     "confirm_continue": "Doorgaan",
-    "confirm_native": "Je huidige spel voortzetten of een nieuwe starten?",
-    "confirm_new": "Nieuw spel",
-    "confirm_replace": "Een nieuw spel starten? Je huidige spel wordt vervangen.",
-    "confirm_title": "Spel aan de gang",
-    "confirm_web": "Een nieuw spel beginnen? (Gebruik Hervatten op het startscherm om de huidige voort te zetten.)",
-    "recovery_body": "De laatste opslag was beschadigd. Je kunt een nieuw spel starten — het beginscherm werkt nog steeds.",
+    "confirm_native": "Je huidige partij voortzetten of een nieuwe beginnen?",
+    "confirm_new": "Nieuwe partij",
+    "confirm_replace": "Nieuwe partij beginnen? Je huidige partij wordt vervangen.",
+    "confirm_title": "Partij bezig",
+    "confirm_web": "Nieuwe partij beginnen? (Met Partij hervatten op het beginscherm speel je de huidige verder.)",
+    "recovery_body": "De laatste opslag was beschadigd. Je kunt een nieuwe partij beginnen – de rest werkt gewoon.",
     "recovery_dismiss": "Sluiten",
-    "recovery_title": "Opgeslagen spel kon niet worden hersteld",
-    "resume": "Spel hervatten",
-    "resume_a11y": "Opgeslagen spel hervatten",
-    "resume_none": "Geen opgeslagen spel om te hervatten",
+    "recovery_title": "Opgeslagen partij kon niet worden hersteld",
+    "resume": "Partij hervatten",
+    "resume_a11y": "Opgeslagen partij hervatten",
+    "resume_none": "Geen opgeslagen partij",
     "resume_sub": "Ga verder waar je gebleven was",
-    "review": "Laatste spel bekijken",
-    "review_a11y": "Voltooid spel bekijken",
-    "review_sub": "Bekijk hoe het laatste spel eindigde",
-    "subtitle": "Beheers het bord — zet voor zet",
+    "review": "Laatste partij bekijken",
+    "review_a11y": "Afgelopen partij bekijken",
+    "review_sub": "Zie hoe de laatste partij afliep",
+    "subtitle": "Beheers het bord – zet voor zet",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 spelers",
-    "two_players_a11y": "Met z'n tweeën spelen op dit apparaat",
+    "two_players_a11y": "Met twee spelen op dit apparaat",
     "two_players_sub": "Om de beurt op hetzelfde apparaat",
     "vs_computer": "Tegen de computer",
     "vs_computer_a11y": "Tegen de computer spelen",
@@ -266,249 +266,249 @@
   },
   "learn": {
     "back_to_hub": "Alle lessen",
-    "continue": "Doorgaan",
+    "continue": "Verder",
     "feedback": {
-      "hint_nudge": "Heb je een zetje nodig? Zoek naar de gemarkeerde plekken.",
-      "illegal": "Probeer een gemarkeerd punt of tik op Hint.",
-      "legal_but_wrong": "Dat is legaal in een echt spel hier, probeer de beweging die dit idee leert.",
-      "move_progress": "Mooi. {{done}} van {{needed}} zetten gedaan."
+      "hint_nudge": "Duwtje nodig? Let op de gemarkeerde plekken.",
+      "illegal": "Probeer een gemarkeerd punt – of tik op Tip.",
+      "legal_but_wrong": "In een echte partij mag dit – maar probeer hier de zet waar deze les om draait.",
+      "move_progress": "Goed – {{done}} van {{needed}} stappen gedaan."
     },
     "graduation": {
-      "body": "Je kent het doel, het bord, hoe het werkt, slaat en afgaat. Een snelle controle en dan je eerste echte spel.",
-      "play_cta": "Speel je eerste spel",
-      "quiz_done": "Gelukt. Tijd om te spelen.",
-      "quiz_title": "Snel controleren",
-      "quiz_wrong": "Probeer een ander antwoord.",
-      "recap_1": "Ras: beer alle 15 eerst af",
-      "recap_2": "Rol twee dobbelstenen; land op open punten",
-      "recap_3": "Hit blots → ze zitten op de bar",
-      "recap_4": "Alleen van je thuisbord afhouden",
-      "recap_5": "Spelletjes beginnen met een die elke hogere gaat eerst (ties re-roll)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
+      "body": "Je kent het doel, het bord, hoe een beurt werkt, slaan, uitspelen, de pipstand en de belangrijkste spelplannen. Even een korte check – en dan je eerste echte partij.",
+      "play_cta": "Speel je eerste partij",
+      "quiz_done": "Helemaal goed. Tijd om te spelen.",
+      "quiz_title": "Korte check",
+      "quiz_wrong": "Net niet – probeer een ander antwoord.",
+      "recap_1": "Race: wie als eerste alle 15 schijven uitspeelt, wint",
+      "recap_2": "Gooi twee dobbelstenen; zet alleen op open punten",
+      "recap_3": "Sla losse schijven → ze gaan naar de bar",
+      "recap_4": "Uitspelen mag alleen vanuit je thuisbord",
+      "recap_5": "Aan het begin gooit iedereen één steen – de hoogste begint (bij gelijkspel opnieuw)",
+      "recap_6": "Pipstand: wie de laagste heeft, staat voor in de race",
+      "recap_7": "Kies een plan: racen, aanvallen, blokkeren of vasthouden",
       "title": "Je bent klaar om te spelen"
     },
-    "hint": "Hint",
-    "home_cta": "Spelen leren",
+    "hint": "Tip",
+    "home_cta": "Leer spelen",
     "home_cta_progress": "{{done}} van {{total}} lessen gedaan",
-    "home_cta_quiz": "Snel controleren links en dan afspelen",
-    "home_cta_ready": "Je bent klaar om een echt spel te spelen",
+    "home_cta_quiz": "Nog een korte check – dan spelen",
+    "home_cta_ready": "Je bent klaar – speel een echte partij",
     "home_cta_sub": "Interactieve lessen voor beginners",
     "lesson_complete": "Les voltooid!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Niets is op de 5-punt, maar je rolde een 5. Afhouden van uw hoogste controle (de 3). Een groter getal neemt nog steeds een das uit.",
-            "hint": "Selecteer punt 3, en tik vervolgens op het afdekbakje.",
-            "praise": "Dat is de regel die je veel gebruikt bij het aftrekken.",
-            "title": "Groter sterven, nog steeds uit"
+            "body": "Er staat niets op het 5-punt, maar je gooide een 5. Speel je hoogste schijf uit (die op de 3). Een hoger getal mag ook uitspelen.",
+            "hint": "Kies punt 3 en tik dan op het uitspeelvak.",
+            "praise": "Dat is de regel van het hogere getal – die gebruik je vaak bij het uitspelen.",
+            "title": "Hoger getal, toch eraf"
           },
           "try": {
-            "body": "Al je stenen staan in je thuisbord (punten 1–6), dus je mag beginnen met uitspelen. Je hebt 3 gegooid: haal de steen op punt 3 van het bord.",
-            "hint": "Selecteer punt 3, en tik vervolgens op het afkantgedeelte aan de rechterkant.",
-            "praise": "Van het bord af! Eerst om alle 15 overwinningen af te dragen.",
-            "title": "Bear one off"
+            "body": "Al je schijven staan thuis (1–6), dus je mag uitspelen. Je gooide een 3 – haal de schijf op het 3-punt van het bord.",
+            "hint": "Kies punt 3 en tik dan op het uitspeelvak aan de rechterrand.",
+            "praise": "Van het bord! Wie als eerste alle 15 uitspeelt, wint.",
+            "title": "Speel er één uit"
           }
         },
-        "subtitle": "Hoe je wint",
-        "title": "Bearing off"
+        "subtitle": "Zo win je",
+        "title": "Uitspelen"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Het hoefijzer komt overeen met de stenen van de speler die aan de beurt is. Het volgt de route van die speler over het bord en naar huis (punten 1–6).",
+            "body": "Het hoefijzer heeft de kleur van de schijven van wie er aan de beurt is. Het toont de route van die speler rond het bord tot in zijn thuisbord (punten 1–6).",
             "title": "Het hoefijzerpad"
           },
           "far": {
-            "body": "Tik op het punt waar uw twee verste witte dammen beginnen (de 24-punt, rechtsboven).",
-            "hint": "Kijk eens naar de rechterbovenhoek. Twee witte dammen op punt 24.",
-            "praise": "Die beginnen diep in de tegenstander thuis en hebben de langste reis.",
-            "title": "Uw verste dammen"
+            "body": "Tik op het punt waar je twee verste witte schijven beginnen (het 24-punt, rechtsboven).",
+            "hint": "Kijk rechtsboven – twee witte schijven op punt 24.",
+            "praise": "Die beginnen diep in het thuisbord van je tegenstander en hebben de langste weg.",
+            "title": "Je verste schijven"
           },
           "home_stack": {
-            "body": "Tik op de grote stapel van vijf witte dammen al in uw huis (de 6-punts).",
-            "hint": "Rechtsonder: vijf witte dammen op punt 6.",
-            "praise": "Dat is uw thuis stapel  Elk spel begint zo.",
-            "title": "Uw thuis stack"
+            "body": "Tik op de stapel van vijf witte schijven die al in je thuisbord staan (het 6-punt).",
+            "hint": "Rechtsonder: vijf witte schijven op punt 6.",
+            "praise": "Dat is je thuisstapel – vijf schijven wachten al op het 6-punt, het dichtst bij uitspelen. Elke partij begint zo.",
+            "title": "Je thuisstapel"
           }
         },
         "subtitle": "Welke kant je op gaat",
-        "title": "Richting instellen"
+        "title": "Richting en opstelling"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "De verhoogde strook in het midden is de bar. Hit dackers wacht hier. Tik op de bar.",
-            "hint": "Tik op de verticale strook tussen de linker en rechter helft van het bord.",
-            "praise": "De rechterkant zit op de bar tot ze weer binnenkomen.",
+            "body": "De verhoogde strook in het midden is de bar. Geslagen schijven wachten hier. Tik op de bar.",
+            "hint": "Tik op de verticale strook tussen de linker- en rechterhelft van het bord.",
+            "praise": "Klopt – geslagen schijven blijven op de bar tot ze weer binnenkomen.",
             "title": "De bar"
           },
           "explain": {
-            "body": "Jij en je tegenstander hebben elk 15 dammen. Beweeg ze rond het bord en uit ",
-            "title": "Eerste om af te dragen wint"
+            "body": "Jij en je tegenstander hebben elk 15 schijven. Breng ze rond het bord en speel ze uit – wie als eerste klaar is, wint.",
+            "title": "Wie als eerste uitspeelt, wint"
           },
           "home": {
-            "body": "Uw huis is punten 1 en 6 (rechtsonder). Tik op elk punt in je thuisbord.",
-            "hint": "Thuis is de zes punten in het rechtsonder kwadrant genummerd 1 tot 6.",
-            "praise": "Dat is uw huis ",
-            "title": "Vind uw thuisbord"
+            "body": "Je thuisbord zijn de punten 1–6 (rechtsonder). Tik op een punt in je thuisbord.",
+            "hint": "Je thuisbord zijn de zes punten in het kwart rechtsonder – genummerd 1 tot en met 6.",
+            "praise": "Dat is je thuisbord – vanaf hier verlaten schijven het bord.",
+            "title": "Vind je thuisbord"
           }
         },
-        "subtitle": "Waarvoor race je?",
-        "title": "Doel & bord"
+        "subtitle": "Waar de race om draait",
+        "title": "Doel en bord"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Je bent op de bar  Tel vanaf het 24-punt naar huis: een 4 landt op punt 21.",
-            "hint": "Tik op de balk, dan punt 21 (niet 23 ",
-            "praise": "Je bent weer terug op het bord bar dammen altijd eerst invoeren.",
-            "title": "Voer vanuit de balk in",
-            "wrong": "Dat is slechts twee pips van de bar (punt 23). Tel vier punten van 24 in de richting van huis dat is punt 21."
+            "body": "Je staat op de bar – kom eerst weer binnen voordat je iets anders zet. Tel vanaf het 24-punt richting huis: een 4 komt op punt 21.",
+            "hint": "Tik op de bar en dan op punt 21 (niet 23 – dat is maar twee pips van de bar).",
+            "praise": "Je bent terug op het bord – schijven op de bar komen altijd eerst binnen.",
+            "title": "Binnenkomen vanaf de bar",
+            "wrong": "Dat is maar twee pips van de bar (punt 23). Tel vier punten vanaf 24 richting huis – dat is punt 21."
           },
           "hit": {
-            "body": "Een enkele controle is een smet. Land erop en het gaat naar de bar. Je rolde een 3 ",
-            "hint": "Tik op je dashboard op 8, dan tik je op punt 5.",
-            "praise": "Hit! Die zwarte dam staat nu op de bar.",
-            "title": "Hit the blot"
+            "body": "Een schijf die alleen staat, is een losse schijf (blot). Kom je erop, dan gaat hij naar de bar. Je gooide een 3 – sla de losse zwarte schijf op het 5-punt.",
+            "hint": "Tik op je schijf op de 8 en dan op punt 5.",
+            "praise": "Raak! Die zwarte schijf staat nu op de bar.",
+            "title": "Sla de losse schijf"
           }
         },
         "subtitle": "Contactspel",
-        "title": "& De balk raken"
+        "title": "Slaan en de bar"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "Twee of meer tegenstander dammen blokkeren een punt  Tik op de geblokkeerde zwarte stack op de 5-punts.",
-            "hint": "De gemarkeerde stapel van twee zwarte dammen op punt 5.",
-            "praise": "Rechts is een gemaakt punt (2+) gesloten. Leeg, je eigen, of een blot (1) zijn open.",
+            "body": "Twee of meer schijven van je tegenstander blokkeren een punt – daar kun je niet komen. Tik op de geblokkeerde zwarte stapel op het 5-punt.",
+            "hint": "De gemarkeerde stapel van twee zwarte schijven op punt 5.",
+            "praise": "Klopt – een gemaakt punt (2+) is dicht. Lege punten, je eigen punten en losse schijven (1) zijn open.",
             "title": "Geblokkeerde punten"
           },
           "doubles": {
-            "body": "Je krijgt vier zetten van dat nummer. Je rolde 2-2 dat is 4 2s. Ga van de 8-punt naar de 6-punt vier keer.",
-            "hint": "Tik op de 8-punt, dan de 6-punt. Doe dit vier keer, één keer per keer.",
-            "praise": "Precies... dubbel betekent vier zetten met dat nummer.",
+            "body": "Met dubbel speel je vier keer dat getal. Je gooide 2-2 – dat zijn vier keer 2. Zet vier keer van het 8-punt naar het 6-punt.",
+            "hint": "Tik op het 8-punt en dan op het 6-punt. Vier keer – één keer per steen.",
+            "praise": "Precies – dubbel betekent vier zetten met dat getal.",
             "title": "Dubbel = vier zetten"
           },
           "explain": {
-            "body": "Elke draai rol je twee dobbelstenen en speel beide nummers wanneer je kunt. U kunt landen op lege punten, uw eigen dammen, of een eenzame tegenstander (een blot).",
-            "title": "Twee nummers, open punten."
+            "body": "Elke beurt gooi je twee dobbelstenen en speel je beide getallen als dat kan. Je mag op lege punten komen, op je eigen schijven of op één losse schijf van je tegenstander.",
+            "title": "Twee getallen, open punten"
           },
           "two_dice": {
-            "body": "Je rolde 3 en 1. Verplaats de checker op de 8-punts drie pips (naar 5) en die op de 6-punts één pip (naar 5).",
-            "hint": "Selecteer een witte vink en tik vervolgens op punt 5. Doe dit voor zowel de 8-punt en de 6-punt.",
-            "praise": "Mooie dobbelstenen gebruikt. Dezelfde checker of twee checkers, beide nummers moeten worden afgespeeld wanneer je kunt.",
-            "title": "Speel beide dobbelstenen"
+            "body": "Je gooide 3 en 1. Zet de schijf op het 8-punt drie pips (naar 5) en die op het 6-punt één pip (naar 5).",
+            "hint": "Kies een witte schijf en tik dan op punt 5. Doe dit voor het 8-punt en het 6-punt.",
+            "praise": "Goed – beide stenen gebruikt. Met één schijf of twee: je moet beide getallen spelen als dat kan.",
+            "title": "Speel beide stenen"
           }
         },
-        "subtitle": "Hoe een draai werkt",
-        "title": "Bewegen met dobbelstenen"
+        "subtitle": "Zo werkt een beurt",
+        "title": "Zetten met de dobbelstenen"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "Wit heeft 5 stenen uitgespeeld en de rest is dicht bij huis. Zwart ligt nog verspreid. Tik een witte steen: wit ligt voor, de count is lager.",
-            "hint": "Zoek de stenen die het dichtst bij uitspelen zijn.",
-            "praise": "Precies. De lagere count van wit betekent minder weg.",
-            "title": "Wie ligt voor?"
+            "body": "Wit heeft 5 schijven uitgespeeld en de rest staat bijna thuis. De zwarte schijven staan nog verspreid over het bord. Tik op een witte schijf – wit staat voor in de race met de laagste pipstand.",
+            "hint": "Zoek de schijven die het dichtst bij uitspelen zijn.",
+            "praise": "Precies! Een lagere pipstand betekent minder afstand.",
+            "title": "Wie staat voor?"
           },
           "behind": {
-            "body": "Dezelfde stelling. De zwarte stenen zijn ver van huis en hebben een veel hogere count. Tik een zwarte steen: zwart ligt achter.",
-            "hint": "Zoek de stenen die het verst van huis zijn.",
-            "praise": "Goed. Zwart heeft nog veel meer pips nodig.",
-            "title": "Wie ligt achter?"
+            "body": "Dezelfde stelling. De zwarte schijven staan ver van huis, met een veel hogere pipstand. Tik op een zwarte schijf – zwart staat achter in de race.",
+            "hint": "Zoek de schijven die het verst van huis zijn.",
+            "praise": "Klopt! Zwart heeft nog veel meer pips nodig om uit te spelen.",
+            "title": "Wie staat achter?"
           },
           "explain": {
-            "body": "Het is het totaal aantal punten dat je stenen nog moeten afleggen om uit te spelen. Elke steen telt het nummer van zijn punt: een op de 6 telt 6, een op de 13 telt 13. Lager is beter, je bent dichter bij uitspelen. De getallen staan bovenin, met een stip voor de kleur.",
-            "title": "Wat is de pip count?"
+            "body": "De pipstand is het totaal aantal punten dat je schijven nog moeten afleggen tot het uitspelen. Elke schijf telt het nummer van zijn punt – een schijf op het 6-punt telt 6, op het 13-punt telt 13. Tel alles op en je hebt je pipstand. Lager is beter: je bent dichter bij uitspelen. In elke partij staat de pipstand van elke speler naast zijn naam.",
+            "title": "Wat is de pipstand?"
           }
         },
-        "subtitle": "Zien wie de race leidt",
-        "title": "Pip count: de stand"
+        "subtitle": "Zie wie de race wint",
+        "title": "Pipstand: de tussenstand van de race"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "Je huis is sterk en de tegenstander heeft blots of stenen op de bar. Sla elke blot en sluit je huispunten, zodat zijn stenen op de bar blijven terwijl jij uitspeelt. Hier heeft wit drie huispunten en zwart een steen op de bar.",
+            "body": "Je thuisbord is sterk en je tegenstander heeft losse schijven of schijven op de bar. Val aan! Sla elke losse schijf die je kunt en sluit de punten in je thuisbord. Het doel: zijn schijven op de bar vasthouden terwijl jij uitspeelt. Hier heeft wit drie punten in zijn thuisbord gemaakt en heeft zwart een schijf op de bar.",
             "title": "Blitz"
           },
           "identify": {
-            "body": "Dit is een muurspel. Tik een punt van de witte muur, de opeenvolgende punten die zwart blokkeren.",
-            "hint": "Zoek opeenvolgende punten met minstens 2 witte stenen.",
-            "praise": "Perfect. Die muur is de prime. De achterste stenen van zwart zitten vast.",
-            "title": "Vind de muur"
+            "body": "Dit is een primespel. Tik op een punt van de witte prime – de muur van opeenvolgende gemaakte punten die zwart tegenhoudt.",
+            "hint": "Zoek opeenvolgende punten met elk minstens 2 witte schijven.",
+            "praise": "Perfect! Die muur is de prime – de achterste zwarte schijven zitten vast.",
+            "title": "Vind de prime"
           },
           "prime": {
-            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart beperkt. Maak hem punt voor punt langer.",
-            "title": "Muur"
+            "body": "Je hebt een muur van opeenvolgende gemaakte punten gebouwd – een prime. De gemarkeerde punten vormen een prime van 4 punten die de achterste zwarte schijven hindert. Verleng je prime punt voor punt en sluit zijn schijven erachter in.",
+            "title": "Primespel"
           },
           "running": {
-            "body": "Je leidt en er liggen geen blots binnen slagbereik. Breng de stenen veilig thuis en laat geen blots liggen. Hier leidt wit met een vast huis.",
-            "title": "Race"
+            "body": "Je staat voor in de race en er staat geen losse schijf binnen bereik. Het plan is simpel: breng je schijven veilig naar huis en laat geen losse schijven staan. Geen fratsen – gewoon racen. Hier staat wit voor in de race, met een stevig thuisbord.",
+            "title": "Racespel"
           }
         },
-        "subtitle": "Klassieke spelplannen herkennen",
+        "subtitle": "Herken klassieke spelplannen",
         "title": "Spelplannen"
       }
     },
-    "locked": "De vorige les eerst voltooien",
+    "locked": "Rond eerst de vorige les af",
     "next_lesson": "Volgende les",
     "quiz": {
       "bar": {
-        "a": "Beweeg eerst je verste checker",
-        "b": "Voer die checker in voordat u iets anders verplaatst",
-        "c": "Sla je beurt over",
-        "prompt": "Terwijl je een controle aan de bar hebt, moet je..."
+        "a": "Eerst je verste schijf zetten",
+        "b": "Die schijf binnenbrengen voordat je iets anders zet",
+        "c": "Je beurt overslaan",
+        "prompt": "Zolang je een schijf op de bar hebt, moet je…"
       },
       "bear": {
-        "a": "Wanneer je een 6 rolt",
-        "b": "Pas nadat je een vlek geraakt hebt.",
-        "c": "Wanneer alle 15 dammen in uw huis board",
-        "prompt": "Wanneer kun je het verdragen?"
+        "a": "Telkens als je een 6 gooit",
+        "b": "Pas nadat je een losse schijf hebt geslagen",
+        "c": "Als al je 15 schijven in je thuisbord staan",
+        "prompt": "Wanneer mag je uitspelen?"
       },
       "blot": {
-        "a": "Elke stapel van drie of meer",
-        "b": "Een enkele controleer op een punt kan worden geraakt",
-        "c": "Twee of meer dammen op een punt",
-        "prompt": "Wat is een vlek?"
+        "a": "Elke stapel van drie of meer schijven",
+        "b": "Eén schijf alleen op een punt – die kan geslagen worden",
+        "c": "Twee of meer schijven op een punt – een gemaakt punt",
+        "prompt": "Wat is een losse schijf (blot)?"
       },
       "pip_ahead": {
-        "a": "Je tegenstander, met de hogere count",
-        "b": "Jij, met de lagere count",
-        "c": "Niemand — de count meet de race niet",
-        "prompt": "Jouw count is 85 en die van je tegenstander 102. Wie leidt de race?"
+        "a": "Je tegenstander, met de hoogste stand",
+        "b": "Jij, met de laagste stand",
+        "c": "Niemand – de pipstand zegt niets over de race",
+        "prompt": "Jouw pipstand is 85 en die van je tegenstander 102. Wie staat voor in de race?"
       },
       "pip_meaning": {
-        "a": "De punten die je stenen nog moeten afleggen om uit te spelen",
-        "b": "Hoeveel stenen je op het bord hebt",
-        "c": "Hoeveel punten je bezet hebt",
-        "prompt": "Wat stelt je pip count voor?"
+        "a": "Het totaal aantal punten dat je schijven nog moeten afleggen tot het uitspelen",
+        "b": "Het aantal schijven dat je op het bord hebt",
+        "c": "Het aantal punten dat je hebt gemaakt",
+        "prompt": "Wat geeft je pipstand aan?"
       },
       "strat_blitz": {
-        "a": "De blot slaan en het huis verder bouwen (blitz)",
-        "b": "De blot negeren en de achterste stenen laten rennen",
-        "c": "Het huis openbreken om een anker te maken",
-        "prompt": "Je hebt 3 huispunten en de tegenstander een blot in je huis. Wat is het beste plan?"
+        "a": "De losse schijf slaan en je thuisbord verder opbouwen (blitz)",
+        "b": "De losse schijf negeren en met je achterste schijven wegrennen",
+        "c": "Je thuisbord openbreken om een anker te maken",
+        "prompt": "Je hebt 3 punten in je thuisbord gemaakt en je tegenstander heeft daar een losse schijf. Wat is het beste plan?"
       },
       "strat_prime": {
-        "a": "De muur openbreken om aan te vallen",
-        "b": "De muur houden en verlengen — ze zitten vast",
+        "a": "De prime openbreken om aan te vallen",
+        "b": "De prime houden en verlengen – zijn schijven zitten vast",
         "c": "Zo snel mogelijk uitspelen",
-        "prompt": "Twee stenen van de tegenstander zitten achter jouw muur van 5. Wat is je plan?"
+        "prompt": "Je tegenstander heeft twee schijven vastzitten achter jouw prime van 5 punten. Wat is je plan?"
       }
     },
-    "replay": "Herspelen",
-    "skip_to_play": "Afspelen overslaan",
+    "replay": "Opnieuw",
+    "skip_to_play": "Meteen spelen",
     "step_progress": "Stap {{current}} van {{total}}",
-    "subtitle": "Korte interactieve lessen — dan ben je klaar",
-    "title": "Spelen leren"
+    "subtitle": "Zeven korte lessen – en je bent klaar om te spelen",
+    "title": "Leer spelen"
   },
   "not_found": {
-    "body": "Die pagina hoort niet bij Backgammon Mastermind. Ga naar huis om te leren of een spel te beginnen.",
-    "heading": "Buiten het bord",
-    "home_a11y": "Naar het startscherm",
-    "home_cta": "Terug naar start",
+    "body": "Deze pagina hoort niet bij Backgammon Mastermind. Ga naar het begin om te leren of een partij te starten.",
+    "heading": "Van het bord",
+    "home_a11y": "Naar het beginscherm",
+    "home_cta": "Terug naar het begin",
     "title": "Niet gevonden"
   },
   "settings": {
@@ -516,27 +516,27 @@
     "app_name": "Backgammon Mastermind",
     "arabic": "Arabisch",
     "developer": "Ontwikkelaar",
-    "developer_blurb": "Laad een willekeurige bordpositie om de engine te testen. Start vanaf die positie een normaal spel. Dit is geen productfunctie.",
-    "developer_json": "Positie-JSON",
+    "developer_blurb": "Laad een willekeurige stelling om de engine te testen. Start een gewone partij vanaf die stelling. Geen productfunctie.",
+    "developer_json": "Stelling als JSON",
     "developer_load": "JSON laden",
-    "developer_open": "Positie laden",
-    "developer_presets": "Testinstellingen",
+    "developer_open": "Stelling laden",
+    "developer_presets": "Teststellingen",
     "english": "Engels",
     "game": "Spel",
     "general": "Algemeen",
     "github": "GitHub",
     "language": "Taal",
     "link_error_body": "Probeer het later opnieuw.",
-    "link_error_title": "Kan link niet openen",
+    "link_error_title": "Link kan niet worden geopend",
     "links": "Links",
     "more": "Meer",
-    "open_source": "Open-sourcevermeldingen",
+    "open_source": "Opensourcevermeldingen",
     "privacy": "Privacybeleid",
     "rate": "Beoordelen",
     "share": "Delen",
     "support": "Ondersteuning",
     "support_us": "Steun ons",
-    "terms": "Servicevoorwaarden",
+    "terms": "Gebruiksvoorwaarden",
     "title": "Instellingen",
     "version": "Versie",
     "website": "Website"
