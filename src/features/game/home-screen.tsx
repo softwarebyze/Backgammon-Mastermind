@@ -16,6 +16,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { HomeTitle } from '@/features/game/home-title';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
@@ -163,9 +164,7 @@ export function HomeScreen() {
             />
           </View>
 
-          <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
-            {translate('home.title')}
-          </Text>
+          <HomeTitle landscape={landscape} />
           {landscape
             ? null
             : <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>}
@@ -368,19 +367,6 @@ const styles = StyleSheet.create({
   logo: {
     width: '100%',
     height: '100%',
-  },
-  title: {
-    fontSize: 32,
-    lineHeight: 38,
-    color: GAME_PALETTE.accent,
-    letterSpacing: 4,
-    ...interFont('extrabold'),
-    textAlign: 'center',
-  },
-  titleLandscape: {
-    fontSize: 22,
-    lineHeight: 26,
-    letterSpacing: 2,
   },
   subtitle: {
     fontSize: 13,
