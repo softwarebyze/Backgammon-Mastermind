@@ -1,12 +1,12 @@
 import type { RefObject } from 'react';
 import Env from 'env';
-import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { Platform, useWindowDimensions } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { APP_LINKS, openExternalUrl } from '@/lib/app-links';
 import { hapticLight } from '@/lib/haptics';
 import { translate, useSelectedLanguage } from '@/lib/i18n';
+import { goBackOrHome } from '@/lib/navigation/go-back-or-home';
 import { feedbackEvent } from './feedback-event';
 import { feedbackMailUrl } from './feedback-mail';
 
@@ -61,7 +61,7 @@ export function useFeedbackSender({ title, details, ready, setSending, inFlight 
       // Deliver now rather than with the next batch, so a closed app doesn't lose it.
       await posthog.flush().catch(() => {});
       showMessage({ message: translate('feedback.sent'), type: 'success' });
-      router.back();
+      goBackOrHome();
     }
     finally {
       inFlight.current = false;

@@ -8,7 +8,7 @@ const mockOpen = jest.fn(async (_url: string) => {});
 const mockBack = jest.fn();
 
 jest.mock('posthog-react-native', () => ({ usePostHog: jest.fn(() => mockPostHog) }));
-jest.mock('expo-router', () => ({ router: { back: () => mockBack() }, useIsFocused: jest.fn(() => false) }));
+jest.mock('expo-router', () => ({ router: { back: () => mockBack(), canGoBack: () => true, replace: jest.fn() }, useIsFocused: jest.fn(() => false) }));
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: jest.fn(() => ({ top: 0, right: 0, bottom: 0, left: 0 })),
 }));
