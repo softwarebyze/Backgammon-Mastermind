@@ -2,7 +2,7 @@ import Feather from '@expo/vector-icons/Feather';
 import Env from 'env';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -66,17 +66,21 @@ export function FeedbackScreen() {
   const { language } = useSelectedLanguage();
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
-  const ready = canSendFeedback(title, details);
+  const [sending, setSending] = useState(false);
+  const inFlight = useRef(false); // a fast double tap lands before the re-render disables Send
+  const ready = canSendFeedback(title, details) && !sending;
 
   const send = async () => {
-    if (!ready) {
+    if (!ready || inFlight.current) {
       return;
     }
+    inFlight.current = true;
+    setSending(true);
     hapticLight();
-    // The note also lands in analytics, next to the session that produced it.
+    // Only the note's size goes to analytics; the words go by email, if sent.
     posthog.capture('feedback_submitted', {
-      title: title.trim(),
-      details: details.trim(),
+      title_length: title.trim().length,
+      details_length: details.trim().length,
     });
     try {
       await openExternalUrl(feedbackMailUrl(title, details, {
@@ -96,6 +100,10 @@ export function FeedbackScreen() {
         type: 'warning',
         duration: 6000,
       });
+    }
+    finally {
+      inFlight.current = false;
+      setSending(false);
     }
   };
 
