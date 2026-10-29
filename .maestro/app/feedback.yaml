@@ -33,7 +33,19 @@ tags:
 - takeScreenshot: feedback-01-form
 - tapOn:
     id: stack-escape-button
+# Back on Settings; the Support row sits near the bottom of the list.
 - extendedWaitUntil:
     visible:
+      id: open-feedback-button
+    timeout: 15000
+- scrollUntilVisible:
+    element:
       id: settings-feedback
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: settings-feedback
+- extendedWaitUntil:
+    visible:
+      id: feedback-title
     timeout: 15000
