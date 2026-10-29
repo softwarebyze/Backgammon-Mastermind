@@ -48,10 +48,14 @@ export function PositionCubePanel({ position: p, onChange, onDone }: { position:
           label={translate('positions.cube')}
           testID="position-cube-value"
           value={cube.cubeExponent}
-          display={String(2 ** cube.cubeExponent)}
           min={0}
           max={cube.maxCube}
           onChange={cubeExponent => change({ cubeExponent })}
+          leading={(
+            <View testID="position-cube-value" accessibilityLabel={`${translate('positions.cube')}: ${2 ** cube.cubeExponent}`}>
+              <DoublingCubeFace value={2 ** cube.cubeExponent} unavailable={cube.crawford} size={40} />
+            </View>
+          )}
         />
         <PositionAction compact symbol="rotate-ccw" label={translate('positions.reset_cube')} testID="position-cube-reset" disabled={cube.cubeExponent === 0 && cube.cubeOwner === null} onPress={() => change({ cubeExponent: 0, cubeOwner: null })} />
       </View>

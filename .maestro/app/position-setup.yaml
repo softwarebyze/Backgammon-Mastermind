@@ -27,7 +27,7 @@ tags:
 - assertNotVisible:
     id: position-match-length
 - assertNotVisible:
-    id: position-cube-value-higher
+    id: position-cube-value
 - assertNotVisible:
     id: position-start
 - takeScreenshot: position-compact-workspace
@@ -69,11 +69,14 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-cube-value-higher
+      TARGET_ID: position-cube-value
       START_Y: '80%'
       END_Y: '25%'
-- tapOn:
-    id: position-cube-value-higher
+- runFlow:
+    file: ../utils/position-step.yaml
+    env:
+      STEPPER: position-cube-value
+      SIDE: higher
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
@@ -145,17 +148,23 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-stack-count-higher
+      TARGET_ID: position-stack-count
       START_Y: '80%'
       END_Y: '25%'
-- tapOn:
-    id: position-stack-count-higher
+- runFlow:
+    file: ../utils/position-step.yaml
+    env:
+      STEPPER: position-stack-count
+      SIDE: higher
 - assertVisible: 'Point 6, 2 white checkers, selected'
 - takeScreenshot: position-existing-owner
 - tapOn:
     id: position-empty-point
-- tapOn:
-    id: position-stack-count-higher
+- runFlow:
+    file: ../utils/position-step.yaml
+    env:
+      STEPPER: position-stack-count
+      SIDE: higher
 - assertVisible: 'Point 6, 1 black checker, selected'
 - takeScreenshot: position-owner-after-empty
 - tapOn:
@@ -163,11 +172,14 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-stack-count-lower
+      TARGET_ID: position-stack-count
       START_Y: '80%'
       END_Y: '25%'
-- tapOn:
-    id: position-stack-count-lower
+- runFlow:
+    file: ../utils/position-step.yaml
+    env:
+      STEPPER: position-stack-count
+      SIDE: lower
 - takeScreenshot: position-01-editor
 # Header undo/redo walk the edit history; the board change is unit-tested.
 - tapOn:

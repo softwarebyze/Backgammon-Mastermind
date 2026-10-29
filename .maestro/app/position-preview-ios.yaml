@@ -33,7 +33,7 @@ tags:
 - assertNotVisible:
     id: position-match-length
 - assertNotVisible:
-    id: position-cube-value-higher
+    id: position-cube-value
 - assertNotVisible:
     id: position-start
 - takeScreenshot: position-compact-workspace
@@ -68,11 +68,14 @@ tags:
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
-      TARGET_ID: position-cube-value-higher
+      TARGET_ID: position-cube-value
       START_Y: '80%'
       END_Y: '25%'
-- tapOn:
-    id: position-cube-value-higher
+- runFlow:
+    file: ../utils/position-step.yaml
+    env:
+      STEPPER: position-cube-value
+      SIDE: higher
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:

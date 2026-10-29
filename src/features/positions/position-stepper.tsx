@@ -1,47 +1,57 @@
+import type { ReactNode } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import { Pressable, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticSelection } from '@/lib/haptics';
+import { NativeStepper } from './native-stepper';
 import { styles } from './position-styles';
 
 /**
- * − value + with no keyboard. Scores, match length and cube value are small
- * integers; tapping beats summoning a number pad (and its iOS Done toolbar).
+ * A stepper in the platform style: the value sits beside a compact − | +
+ * control rather than between two big buttons. iOS uses the system stepper;
+ * Android and web draw the same two-segment shape. No keyboard is involved.
  */
-export function PositionStepper({ label, value, display, min, max, onChange, testID, wide = false }: {
+export function PositionStepper({ label, value, display, min, max, onChange, testID, leading }: {
   label: string;
   value: number;
+  /** Text shown for the value (e.g. "Money" for 0). */
   display?: string;
   min: number;
   max: number;
   onChange: (value: number) => void;
   testID: string;
-  wide?: boolean;
+  /** Replaces the value text, e.g. the cube face itself. */
+  leading?: ReactNode;
 }) {
-  const step = (delta: number) => {
-    const next = Math.max(min, Math.min(max, value + delta));
-    if (next !== value) {
+  const shown = display ?? String(value);
+  const change = (next: number) => {
+    const clamped = Math.max(min, Math.min(max, next));
+    if (clamped !== value) {
       hapticSelection();
-      onChange(next);
+      onChange(clamped);
     }
   };
-  const shown = display ?? String(value);
   return (
-    <View style={styles.stepper} accessible={false}>
-      <StepButton symbol="minus" label={`${label} −`} disabled={value <= min} onPress={() => step(-1)} testID={`${testID}-lower`} />
-      <Text
-        testID={testID}
-        accessibilityLabel={`${label}: ${shown}`}
-        style={[styles.stepperValue, wide && styles.stepperValueWide, shown.length > 3 && styles.stepperValueSmall]}
-      >
-        {shown}
-      </Text>
-      <StepButton symbol="plus" label={`${label} +`} disabled={value >= max} onPress={() => step(1)} testID={`${testID}-higher`} />
+    <View style={styles.stepperRow}>
+      {leading ?? (
+        <Text testID={testID} accessibilityLabel={`${label}: ${shown}`} style={[styles.stepperValue, shown.length > 3 && styles.stepperValueSmall]}>
+          {shown}
+        </Text>
+      )}
+      {NativeStepper
+        ? <NativeStepper label={label} value={value} min={min} max={max} onChange={change} testID={`${testID}-control`} />
+        : (
+            <View style={styles.stepperControl}>
+              <StepSegment symbol="minus" label={`${label} −`} disabled={value <= min} onPress={() => change(value - 1)} testID={`${testID}-lower`} />
+              <View style={styles.stepperDivider} />
+              <StepSegment symbol="plus" label={`${label} +`} disabled={value >= max} onPress={() => change(value + 1)} testID={`${testID}-higher`} />
+            </View>
+          )}
     </View>
   );
 }
 
-function StepButton({ symbol, label, disabled, onPress, testID }: { symbol: 'minus' | 'plus'; label: string; disabled: boolean; onPress: () => void; testID: string }) {
+function StepSegment({ symbol, label, disabled, onPress, testID }: { symbol: 'minus' | 'plus'; label: string; disabled: boolean; onPress: () => void; testID: string }) {
   return (
     <Pressable
       testID={testID}
@@ -49,11 +59,11 @@ function StepButton({ symbol, label, disabled, onPress, testID }: { symbol: 'min
       accessibilityLabel={label}
       accessibilityState={{ disabled }}
       disabled={disabled}
-      hitSlop={4}
+      hitSlop={{ top: 8, bottom: 8 }}
       onPress={onPress}
-      style={({ pressed }) => [styles.stepperButton, disabled && styles.disabled, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.stepperSegment, pressed && styles.stepperSegmentPressed]}
     >
-      <Feather name={symbol} size={18} color={GAME_PALETTE.text} accessible={false} />
+      <Feather name={symbol} size={18} color={GAME_PALETTE.text} style={disabled && styles.disabled} accessible={false} />
     </Pressable>
   );
 }

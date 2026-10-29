@@ -15,15 +15,15 @@ tags:
 - runFlow:
     file: position-scroll.yaml
     env:
-      TARGET_ID: position-stack-count-lower
+      TARGET_ID: position-stack-count
       START_Y: '80%'
       END_Y: '25%'
 - assertVisible:
-    id: position-stack-count-lower
+    id: position-stack-count
 - assertVisible:
     id: position-empty-point
 - assertVisible:
-    id: position-stack-count-higher
+    id: position-stack-count
 - takeScreenshot: position-bar-01-white
 - swipe:
     from:
@@ -53,11 +53,11 @@ tags:
 - runFlow:
     file: position-scroll.yaml
     env:
-      TARGET_ID: position-stack-count-lower
+      TARGET_ID: position-stack-count
       START_Y: '25%'
       END_Y: '80%'
 - assertVisible:
-    id: position-stack-count-lower
+    id: position-stack-count
 - takeScreenshot: position-bar-02-black
 - swipe:
     from:

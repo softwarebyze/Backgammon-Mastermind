@@ -40,7 +40,6 @@ export function PositionScorePanel({ position: p, onChange, onDone }: { position
             min={0}
             max={Math.max(MAX_MATCH, c.matchLength)}
             onChange={setLength}
-            wide
           />
         </View>
         {c.matchLength > 0 && <PositionAction compact chip label={translate('positions.crawford')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />}

@@ -16,18 +16,27 @@ tags:
 - repeat:
     times: 5
     commands:
-      - tapOn:
-          id: position-match-length-higher
+      - runFlow:
+          file: position-step.yaml
+          env:
+            STEPPER: position-match-length
+            SIDE: higher
 - repeat:
     times: 3
     commands:
-      - tapOn:
-          id: position-score-white-higher
+      - runFlow:
+          file: position-step.yaml
+          env:
+            STEPPER: position-score-white
+            SIDE: higher
 - repeat:
     times: 2
     commands:
-      - tapOn:
-          id: position-score-black-higher
+      - runFlow:
+          file: position-step.yaml
+          env:
+            STEPPER: position-score-black
+            SIDE: higher
 - assertVisible:
     id: position-score-white
     text: 'White score: 3'

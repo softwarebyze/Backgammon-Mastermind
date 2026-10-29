@@ -22,7 +22,7 @@ describe('cube panel', () => {
     const doubled: Position = change.mock.lastCall![0];
     expect(doubled.context).toEqual({ ...p.context, cubeExponent: 1 });
     rerender(<PositionCubePanel position={doubled} onChange={change} onDone={jest.fn()} />);
-    expect(value('position-cube-value')).toBe('2');
+    expect(screen.getByTestId('position-cube-value').props.accessibilityLabel).toBe('positions.cube: 2');
     fireEvent.press(screen.getByTestId('position-cube-owner-black'));
     const owned: Position = change.mock.lastCall![0];
     expect(owned.context).toEqual({ ...doubled.context, cubeOwner: 'black' });
