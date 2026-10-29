@@ -31,8 +31,6 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { translate } from '@/lib/i18n';
 import { useHardwareBackPress } from '@/lib/navigation/use-hardware-back-press';
-import { positionFromGame } from '@/lib/positions/position';
-import { savePosition } from '@/lib/positions/saved-positions';
 import { interFont } from '@/lib/ui/fonts';
 
 /* eslint-disable max-lines-per-function -- screen composes all game slices */
@@ -136,29 +134,6 @@ export function GameScreen() {
     router.push('/settings');
   }, [posthog, input.state?.mode]);
 
-  // Quick capture for both computer and pass-and-play games: the header
-  // bookmark saves the live board without leaving or replacing the game.
-  // GameState carries no cube/match/score fields, so only checker and dice
-  // state can be captured here; cube/match context stays editor-only.
-  const [positionSaved, setPositionSaved] = useState(false);
-  useEffect(() => {
-    if (!positionSaved)
-      return;
-    const timer = setTimeout(() => setPositionSaved(false), 3000);
-    return () => clearTimeout(timer);
-  }, [positionSaved]);
-  const saveCurrentPosition = useCallback(() => {
-    if (!input.state)
-      return;
-    try {
-      savePosition(translate('positions.game_snapshot'), positionFromGame(input.state));
-      setPositionSaved(true);
-    }
-    catch {
-      // An invalid mid-game board stays unsaved rather than interrupting play.
-    }
-  }, [input.state]);
-
   useGameScreenHeader({
     navigation,
     state: input.state,
@@ -169,7 +144,6 @@ export function GameScreen() {
     openOptions,
     handleReset: input.handleReset,
     confirmLeaveGame: leaveGame,
-    onSavePosition: saveCurrentPosition,
   });
 
   const canConfirmMove = !!input.state
@@ -253,11 +227,6 @@ export function GameScreen() {
           <Text style={styles.reviewingText}>Reviewing your turn…</Text>
         </View>
       )}
-      {positionSaved && (
-        <View testID="position-saved-notice" style={styles.savedPill} pointerEvents="none">
-          <Text style={styles.reviewingText}>{translate('positions.saved_notice')}</Text>
-        </View>
-      )}
     </View>
   );
 }
@@ -292,16 +261,5 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.text,
     fontSize: 13,
     ...interFont('regular'),
-  },
-  savedPill: {
-    position: 'absolute',
-    top: 150,
-    alignSelf: 'center',
-    backgroundColor: 'rgba(20, 18, 14, 0.92)',
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.accentDim,
-    borderRadius: 999,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
   },
 });

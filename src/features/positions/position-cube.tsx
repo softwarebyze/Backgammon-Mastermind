@@ -14,12 +14,6 @@ export function PositionCube({ position: p, onChange }: { position: Position; on
   return (
     <View style={{ gap: 12 }}>
       <View style={{ alignItems: 'center' }}><DoublingCubeFace value={value} unavailable={cube.crawford} size={52} /></View>
-      {cube.crawford && (
-        <>
-          <Text testID="position-crawford-hint" style={styles.caption}>{translate('positions.crawford_hint')}</Text>
-          <PositionAction label={translate('positions.crawford_off')} testID="position-crawford-off" onPress={() => change({ crawford: false })} />
-        </>
-      )}
       <View style={styles.row}>
         <PositionAction symbol="minus" iconOnly label={translate('positions.cube_lower')} testID="position-cube-lower" disabled={cube.cubeExponent === 0} onPress={() => adjust(-1)} />
         <PositionAction symbol="rotate-ccw" label={translate('positions.reset_cube')} testID="position-cube-reset" onPress={() => change({ cubeExponent: 0, cubeOwner: null })} />

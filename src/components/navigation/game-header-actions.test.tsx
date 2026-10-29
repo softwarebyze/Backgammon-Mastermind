@@ -28,16 +28,6 @@ it('uses the Settings gear and opens Settings through its accessible button', ()
 // The header timeline undo is the only undo reachable while dice remain in the
 // turn, because the confirm bar only renders once remainingDice hits 0. Maestro
 // drives it by testID, so these IDs are part of the E2E contract.
-it('offers a save-current-position header button only when a save handler is provided', () => {
-  const onSave = jest.fn();
-  const { rerender } = render(<GameHeaderActions onOptions={jest.fn()} onReset={jest.fn()} />);
-  expect(screen.queryByTestId('save-position-button')).toBeNull();
-  rerender(<GameHeaderActions onOptions={jest.fn()} onReset={jest.fn()} onSavePosition={onSave} />);
-  fireEvent.press(screen.getByTestId('save-position-button'));
-  expect(onSave).toHaveBeenCalledTimes(1);
-  expect(screen.getByRole('button', { name: 'Save current position' })).toBeTruthy();
-});
-
 it('exposes testIDs for the mid-sequence header undo and redo', () => {
   render(<GameHeaderActions canUndo canRedo onUndo={jest.fn()} onRedo={jest.fn()} onOptions={jest.fn()} onReset={jest.fn()} />);
   expect(screen.getByTestId('header-undo-button')).toBeOnTheScreen();

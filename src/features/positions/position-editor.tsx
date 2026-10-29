@@ -6,13 +6,11 @@ import { Pressable, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { editCheckers, newPosition } from '@/lib/positions/position';
+import { positionControlAnchor } from './position-control-anchor';
 import { styles } from './position-styles';
 
-/**
- * Contextual controls float over the board (placed by PositionBoardEditor),
- *  so they never move the board in flow.
- */
-export function PositionEditor({ position: p, location, color, onChange, onLocation }: {
+/** Contextual controls stay outside the board, beside the selected stack. */
+export function PositionEditor({ position: p, location, color, dimensions, onChange, onLocation }: {
   position: Position;
   location: PositionLocation;
   color: Player;
@@ -30,7 +28,7 @@ export function PositionEditor({ position: p, location, color, onChange, onLocat
       onLocation(`${color}-bar`);
   };
   return (
-    <View testID="position-point-controls" style={styles.pointControls}>
+    <View testID="position-point-controls" style={[styles.pointControls, { left: positionControlAnchor(location, dimensions).left }]}>
       <View style={styles.stackControls}>
         <Pressable testID="position-remove" accessibilityRole="button" accessibilityLabel={translate('positions.remove')} accessibilityState={{ disabled: !count }} disabled={!count} onPress={() => edit(-1)} style={({ pressed }) => [styles.stackStep, !count && styles.disabled, pressed && styles.pressed]}>
           <Feather name="minus" size={18} color={GAME_PALETTE.text} accessible={false} />

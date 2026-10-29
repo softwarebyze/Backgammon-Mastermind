@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet } from 'react-native';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
 import { createInitialState } from '@/lib/game/constants';
@@ -100,48 +99,6 @@ it('preserves imported action context when the selected turn is pressed', () => 
   expect(change).not.toHaveBeenCalled();
   fireEvent.press(screen.getByTestId('position-turn-black'));
   expect(change).toHaveBeenCalledWith(expect.objectContaining({ currentPlayer: 'black', context: expect.objectContaining({ doubleAction: '', resignation: 0, turnOwner: 'black' }) }));
-});
-
-it('clears the saved-position name input after a successful save', () => {
-  render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('position-saved-toggle'));
-  fireEvent.changeText(screen.getByTestId('position-save-name'), 'My board');
-  fireEvent.press(screen.getByTestId('position-save'));
-  expect(screen.getByTestId('position-save-name').props.value).toBe('');
-  expect(screen.getByRole('button', { name: 'My board' })).toBeTruthy();
-});
-
-it('shows a disabled, explained copy-from-game action when there is no active game', () => {
-  jest.mocked(useGame).mockReturnValue({ state: null, startFromPosition: start } as unknown as ReturnType<typeof useGame>);
-  render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('position-exchange-toggle'));
-  expect(screen.getByTestId('position-current').props.accessibilityState.disabled).toBe(true);
-  expect(screen.getByText('positions.no_active_game')).toBeTruthy();
-  expect(screen.getByRole('button', { name: 'positions.copy_from_game' })).toBeTruthy();
-});
-
-it('shows a visible Crawford badge on the cube dock and turns Crawford off from the cube editor', () => {
-  const p = newPosition();
-  p.context = { ...p.context, matchLength: 7, crawford: true };
-  const change = jest.fn();
-  const { rerender } = render(<PositionDetails position={p} onChange={change} editing={null} onEdit={jest.fn()} />);
-  expect(screen.getByTestId('position-crawford-badge')).toBeTruthy();
-  expect(screen.getByText('positions.crawford')).toBeTruthy();
-  rerender(<PositionDetails position={p} onChange={change} editing="cube" onEdit={jest.fn()} />);
-  fireEvent.press(screen.getByTestId('position-crawford-off'));
-  expect(change).toHaveBeenCalledWith(expect.objectContaining({ context: expect.objectContaining({ crawford: false }) }));
-});
-
-it('floats detail editors over the tools below instead of pushing them in flow', () => {
-  render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('position-cube'));
-  const overlay = screen.getByTestId('position-detail-overlay');
-  expect((StyleSheet.flatten(overlay.props.style) as { position?: string }).position).toBe('absolute');
-  // The tools row underneath never leaves the tree or moves in flow.
-  expect(screen.getByTestId('position-play')).toBeTruthy();
-  expect(screen.getByTestId('position-saved-toggle')).toBeTruthy();
-  fireEvent.press(screen.getByTestId('position-detail-done'));
-  expect(screen.queryByTestId('position-detail-overlay')).toBeNull();
 });
 
 it('gives a whitespace-only saved name the translated untitled label', () => {

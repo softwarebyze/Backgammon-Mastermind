@@ -37,7 +37,6 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
       AccessibilityInfo.announceForAccessibility(translate('positions.no_checkers', { player: translate(`positions.${side}`) }));
   } });
   const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: location === 'black-bar' ? 'black' : location === 'white-bar' ? 'white' : color, selectedPoint: typeof location === 'number' ? location : location ? 0 : null };
-  const anchor = location === null ? null : positionControlAnchor(location, dimensions);
   return (
     <View style={{ gap: 6, alignSelf: 'center', width: dimensions.boardOuterWidth }}>
       <View style={styles.boardToolbar}>
@@ -50,7 +49,12 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
         />
         {actions}
       </View>
-      <View style={[styles.board, { position: 'relative' }]}>
+      {location !== null && positionControlAnchor(location, dimensions).top && (
+        <View testID="position-controls-top" style={styles.pointControlBand}>
+          <PositionEditor position={position} location={location} color={color} dimensions={dimensions} onChange={onChange} onLocation={onLocation} />
+        </View>
+      )}
+      <View style={styles.board}>
         <BoardView
           state={board}
           dimensions={dimensions}
@@ -80,18 +84,12 @@ export function PositionBoardEditor({ position, dimensions, location, onLocation
           onBearOffPress={() => {}}
           aidsOverride={{ showPointNumbers: true, showMoveHints: false, showDirectionOverlay: false }}
         />
-        {location !== null && anchor && (
-          <View
-            // Keep the legacy top/bottom ids so existing flows keep finding the
-            // strip, while the strip itself now floats over the board and can
-            // never push the board (or anything below it) around in flow.
-            testID={anchor.top ? 'position-controls-top' : 'position-controls-bottom'}
-            style={[styles.pointControlsOverlay, { left: anchor.left, top: anchor.top ? 8 : undefined, bottom: anchor.top ? undefined : 8 }]}
-          >
-            <PositionEditor position={position} location={location} color={color} dimensions={dimensions} onChange={onChange} onLocation={onLocation} />
-          </View>
-        )}
       </View>
+      {location !== null && !positionControlAnchor(location, dimensions).top && (
+        <View testID="position-controls-bottom" style={styles.pointControlBand}>
+          <PositionEditor position={position} location={location} color={color} dimensions={dimensions} onChange={onChange} onLocation={onLocation} />
+        </View>
+      )}
     </View>
   );
 }

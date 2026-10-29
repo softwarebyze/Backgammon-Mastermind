@@ -1,6 +1,6 @@
 import type { StackEditHandlers } from '@/features/game/components/board/use-stack-edit-gesture';
 import { act, fireEvent, render, screen, within } from '@testing-library/react-native';
-import { AccessibilityInfo, StyleSheet } from 'react-native';
+import { AccessibilityInfo } from 'react-native';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { hapticLight } from '@/lib/haptics';
 import { newPosition } from '@/lib/positions/position';
@@ -130,14 +130,6 @@ it('edits both bar stacks directly with press location, reversible dragging and 
   act(() => mockEditor.onEnd(0, false, 2));
   expect(change.mock.lastCall![0].bar.black).toBe(5);
   expect(change.mock.lastCall![0].borneOff.black).toBe(10);
-});
-
-it('floats stack controls over the board so selecting a point cannot shift it', () => {
-  const p = newPosition();
-  render(<PositionBoardEditor position={p} dimensions={dims} location={13} onLocation={jest.fn()} onChange={jest.fn()} />);
-  const top = screen.getByTestId('position-controls-top');
-  expect((StyleSheet.flatten(top.props.style) as { position?: string }).position).toBe('absolute');
-  expect((StyleSheet.flatten(top.props.style) as { top?: number }).top).toBe(8);
 });
 
 it('places exact controls above top points and below bottom points without a settings toggle', () => {
