@@ -271,7 +271,7 @@
       "hint_nudge": "Küçük bir yardım mı lazım? Vurgulanan yerlere bakın.",
       "illegal": "Vurgulanan bir haneyi deneyin ya da İpucu'na dokunun.",
       "legal_but_wrong": "Gerçek bir oyunda bu geçerli; ama burada bu dersin anlattığı hamleyi deneyin.",
-      "move_progress": "Güzel: {{needed}} adımdan {{done}} tanesi tamam."
+      "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı."
     },
     "graduation": {
       "body": "Amacı, tahtayı, bir sıranın nasıl işlediğini, vurmayı, pul toplamayı, pip sayısını ve temel oyun planlarını biliyorsunuz. Kısa bir kontrol, ardından ilk gerçek oyununuz.",

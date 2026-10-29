@@ -1,7 +1,7 @@
 {
   "error": {
-    "body": "重新启动应用程序继续 。",
-    "heading": "出问题了",
+    "body": "请重新启动应用以继续。",
+    "heading": "出了点问题",
     "retry": "重试"
   },
   "feedback": {
@@ -20,171 +20,171 @@
   },
   "game": {
     "caption": {
-      "selected": "选中的 - 点击突出显示的点, 或取消"
+      "selected": "已选中——点按高亮的点，或点按取消"
     },
     "controls": {
       "bear_off_a11y": "移出棋子",
       "cancel": "取消",
       "cancel_a11y": "取消选择",
       "confirm_move": "确认走子",
-      "confirm_move_a11y": "确认走子并结束回合",
-      "leave_game_a11y": "离开游戏回家",
-      "loading": "正在装入...",
-      "new_game_message": "开始新对局？",
+      "confirm_move_a11y": "确认走子并结束本回合",
+      "leave_game_a11y": "离开对局并返回首页",
+      "loading": "加载中…",
+      "new_game_message": "要开始新对局吗？",
       "new_game_title": "新对局",
-      "no_legal_moves": "没有可走的棋…",
+      "no_legal_moves": "无子可走…",
       "play_again": "再来一局",
       "play_again_a11y": "再来一局",
-      "redo_a11y": "重做移动",
+      "redo_a11y": "重做这步",
       "roll_dice": "掷骰子",
       "roll_dice_a11y": "掷骰子",
-      "start_new_game_a11y": "开始新游戏",
-      "undo_a11y": "撤消移动",
+      "start_new_game_a11y": "开始新对局",
+      "undo_a11y": "撤销这步",
       "undo_move": "撤销"
     },
     "hint": {
-      "back_to_turn": "返回我的回合",
-      "back_to_turn_a11y": "返回我的回合并关闭提示",
+      "back_to_turn": "回到我的回合",
+      "back_to_turn_a11y": "回到我的回合并关闭提示",
       "button": "提示",
-      "button_a11y": "获取走子提示",
-      "error": "找不到提示 — 点按重试",
-      "error_a11y": "重试提示",
+      "button_a11y": "获取走法提示",
+      "error": "没找到提示——点按重试",
+      "error_a11y": "重新获取提示",
       "finding": "正在寻找最佳走法…",
       "play": "走这一步",
-      "play_a11y": "走建议的一步",
+      "play_a11y": "按建议走子",
       "suggested": "建议走法"
     },
     "nudge": {
       "roll_first": "请先掷骰子"
     },
     "opening": {
-      "compare": "{{winner}}的{{high}}胜过{{low}}",
-      "goes_first": "{{player}}先行！",
-      "roll": "掷骰",
-      "rolls_for_opening": "{{player}}正在掷开局骰",
+      "compare": "{{winner}}：{{high}} 胜 {{low}}",
+      "goes_first": "{{player}}先走！",
+      "roll": "掷",
+      "rolls_for_opening": "{{player}}掷骰决定先手",
       "tie": "平局！",
-      "tie_again": "点数相同——请重掷",
+      "tie_again": "点数相同——再掷一次",
       "waiting_roll": "{{player}}正在掷骰…",
       "who_goes_first": "谁先走？",
       "your_roll": "点按任意位置掷骰"
     },
     "options": {
-      "open_settings": "语言与更多",
+      "open_settings": "语言及更多",
       "open_settings_hint": "打开设置",
       "title": "对局选项"
     },
     "players": {
       "computer": "电脑",
-      "pips": "点",
+      "pips": "步",
       "you": "你"
     },
     "preferences": {
-      "auto_move": "唯一着法自动走",
-      "auto_move_hint": "自动走出唯一合法的一步",
+      "auto_move": "被迫走法自动完成",
+      "auto_move_hint": "只有一种合法走法时自动走子",
       "auto_roll": "自动掷骰",
-      "auto_roll_hint": "轮到你时自动掷骰",
+      "auto_roll_hint": "轮到你时自动掷骰子",
       "confirm_move": "确认走子",
-      "confirm_move_hint": "结束回合前提示，方便检查或撤销",
-      "dice_display": "骰子显示",
-      "dice_dots": "点数",
+      "confirm_move_hint": "回合结束前询问，方便你检查或撤销",
+      "dice_display": "骰子样式",
+      "dice_dots": "圆点",
       "dice_numbers": "数字",
-      "direction_overlay": "方向指引",
+      "direction_overlay": "行进方向",
       "direction_overlay_hint": "在棋盘上显示马蹄形路线",
       "move_hints": "走子提示",
-      "move_hints_hint": "高亮显示可以移动的点位编号",
-      "point_numbers": "点位编号",
-      "point_numbers_hint": "在棋盘上显示1–24编号",
+      "move_hints_hint": "高亮显示可以走子的点的编号",
+      "point_numbers": "点的编号",
+      "point_numbers_hint": "在棋盘上显示 1–24 编号",
       "section_automation": "自动化",
       "section_board": "棋盘",
       "section_dice": "骰子",
       "sound": "游戏音效",
-      "sound_hint": "轻柔的骰子、击子与获胜音效——遵循静音模式",
+      "sound_hint": "柔和的掷骰、打子和胜利音效——遵循静音模式",
       "tutor_mode": "导师模式",
-      "tutor_mode_hint": "引擎检查你的走法并标出大失误"
+      "tutor_mode_hint": "引擎会检查你的走法并标出严重失误"
     },
     "review": {
-      "back_to_live": "返回当前对局",
+      "back_to_live": "回到对局",
       "live": "当前对局",
-      "live_short": "对局",
-      "move_a11y": "第{{ply}}步，{{player}}",
-      "move_position": "第{{current}}步，共{{total}}步 · {{player}}",
+      "live_short": "当前",
+      "move_a11y": "第 {{ply}} 步，{{player}}",
+      "move_position": "第 {{current}}/{{total}} 步 · {{player}}",
       "next": "下一回合",
-      "opening": "开局局面",
+      "opening": "初始局面",
       "pause_replay": "暂停",
       "player_black": "黑方",
       "player_white": "白方",
       "previous": "上一回合",
       "replay": "回放",
-      "scrubber_hint": "点按回合进行复盘",
+      "scrubber_hint": "点按某一回合查看",
       "start": "开始",
-      "turn_a11y": "回合{{turn}}，{{player}}",
-      "turn_label": "回合{{turn}}/{{totalTurns}} · {{player}}",
-      "turn_position": "回合{{turn}}/{{totalTurns}} · 第{{moveInTurn}}/{{movesInTurn}}步 · {{player}}",
-      "viewing_hint": "复盘中——点按“对局”或“返回”继续游戏"
+      "turn_a11y": "第 {{turn}} 回合，{{player}}",
+      "turn_label": "回合 {{turn}}/{{totalTurns}} · {{player}}",
+      "turn_position": "回合 {{turn}}/{{totalTurns}} · 第 {{moveInTurn}}/{{movesInTurn}} 步 · {{player}}",
+      "viewing_hint": "正在复盘——点按“当前”或“回到对局”继续下棋"
     },
     "status": {
-      "black_wins": "黑方获胜",
+      "black_wins": "🏆 黑方获胜！",
       "computer_wins": "电脑获胜",
       "off_short": "已出",
-      "pips_a11y": "{{player}}：{{pips}} 点，已出 {{off}}/15",
+      "pips_a11y": "{{player}}：{{pips}} 步，已移出 {{off}}/15",
       "white_wins": "🏆 白方获胜！",
       "you_win": "🏆 你赢了！"
     },
     "strategy": {
       "close_a11y": "关闭策略说明",
-      "got_it": "明白了",
+      "got_it": "知道了",
       "label": {
-        "backgame": "后手局",
-        "blitz": "全攻",
+        "backgame": "后防战",
+        "blitz": "闪电战",
         "developing": "布局",
-        "holding": "防守局",
-        "priming": "Prime（墙）",
-        "running": "竞速"
+        "holding": "据守战",
+        "priming": "封锁战",
+        "running": "竞速战"
       },
       "tip": {
-        "backgame": "稳守后手，加固自己的底仓，等待后期机会。",
-        "blitz": "进攻：打掉每一个孤子，并封住自己的底仓。",
-        "developing": "堆点、争夺 5 点，同时保持灵活。",
-        "holding": "守住锚点，稳住阵脚，等待进击的机会。",
-        "priming": "一点一点扩大你的墙，把对方的后方棋子锁住。",
-        "running": "高效地把棋子带回底仓，并保护仍有风险的棋子。"
+        "backgame": "留在后方，保持内盘坚固，等待后期的打子机会。",
+        "blitz": "进攻：能打的孤子都打掉，并封住你的内盘。",
+        "developing": "建点，争夺 5 点，保持灵活。",
+        "holding": "守住你的锚点，稳妥行棋，等待打子机会。",
+        "priming": "一点一点延长你的封锁墙，困住对手后方的棋子。",
+        "running": "高效地把棋子带回家，保护仍可能被打的棋子。"
       },
       "why": {
-        "backgame": "你在 {{point1}} 和 {{point2}} 都有深锚，但竞速中落后 {{pipGap}} 分。",
-        "blitz_bar": "你有 {{barCount}} 颗在 bar 上，并且已经在底仓做好了 {{homeMade}} 个点。",
-        "blitz_bar_blot": "你有 {{barCount}} 颗在 bar 上，底仓还有 1 个孤子，并且已经在底仓做好了 {{homeMade}} 个点。",
-        "blitz_bar_blots": "你有 {{barCount}} 颗在 bar 上，底仓还有 {{blotCount}} 个孤子，并且已经在底仓做好了 {{homeMade}} 个点。",
-        "blitz_blot": "你的底仓还有 1 个孤子，并且已经做好了 {{homeMade}} 个点。",
-        "blitz_blots": "你的底仓还有 {{blotCount}} 个孤子，并且已经做好了 {{homeMade}} 个点。",
-        "developing": "棋盘上还看不出墙、锚点或进攻——局面仍在成形。",
-        "holding": "你在 {{point}} 守着锚点，但落后 {{pipGap}} 分。",
-        "priming": "你建成了一道 {{prime}} 点的墙。",
-        "priming_anchor": "你建成了一道 {{prime}} 点的墙，后面还有锚点保护。",
-        "running_lead": "竞速中你以 {{foePips}} 比 {{myPips}} 领先，且没有棋子落在对方可打的范围内。",
-        "running_race": "无法接触——这是一场纯粹比谁先收完的竞速（{{myPips}} 对 {{foePips}} 分）。"
+        "backgame": "你在 {{point1}} 点和 {{point2}} 点有深锚，但竞速中落后 {{pipGap}} 步。",
+        "blitz_bar": "中间栏上有 {{barCount}} 枚，而你已在内盘建了 {{homeMade}} 个点。",
+        "blitz_bar_blot": "中间栏上有 {{barCount}} 枚，你的内盘有 1 个孤子，且已在内盘建了 {{homeMade}} 个点。",
+        "blitz_bar_blots": "中间栏上有 {{barCount}} 枚，你的内盘有 {{blotCount}} 个孤子，且已在内盘建了 {{homeMade}} 个点。",
+        "blitz_blot": "你的内盘有 1 个孤子，且已在内盘建了 {{homeMade}} 个点。",
+        "blitz_blots": "你的内盘有 {{blotCount}} 个孤子，且已在内盘建了 {{homeMade}} 个点。",
+        "developing": "还没有封锁、锚点或进攻——局面仍在成形。",
+        "holding": "你在 {{point}} 点有锚点，落后 {{pipGap}} 步。",
+        "priming": "你已建成 {{prime}} 点封锁。",
+        "priming_anchor": "你已建成 {{prime}} 点封锁，后面还有锚点。",
+        "running_lead": "你在竞速中以 {{myPips}} 对 {{foePips}} 领先，且没有可被打到的孤子。",
+        "running_race": "已无接触——这是一场纯粹的移出竞速（{{myPips}} 对 {{foePips}} 步）。"
       }
     },
     "turn": {
-      "black_is_moving": "黑方正在走棋…",
-      "black_is_rolling": "黑方正在掷骰子…",
-      "black_turn": "黑方回合",
-      "cant_enter": "掷出 {{die1}} 和 {{die2}} 无法从中间条入场 — 请结束回合",
-      "computer_turn": "电脑回合",
-      "enter_from_bar": "移动其他棋子前，请先从中间条入场",
-      "game_over": "游戏结束",
-      "move_checkers": "移动你的{{color}}棋子",
-      "no_legal_moves": "掷出 {{die1}} 和 {{die2}} 时无合法走法 — 请结束回合",
+      "black_is_moving": "黑方走子中…",
+      "black_is_rolling": "黑方掷骰中…",
+      "black_turn": "轮到黑方",
+      "cant_enter": "用 {{die1}} 和 {{die2}} 无法从中间栏入场——请结束回合",
+      "computer_turn": "轮到电脑",
+      "enter_from_bar": "先让中间栏上的棋子入场，再走其他棋子",
+      "game_over": "对局结束",
+      "move_checkers": "走你的棋子（{{color}}）",
+      "no_legal_moves": "用 {{die1}} 和 {{die2}} 无子可走——请结束回合",
       "opening_roll": "开局掷骰",
-      "roll_dice": "掷骰子 — 你执{{color}}",
-      "white_turn": "白方回合",
-      "your_turn": "你的回合"
+      "roll_dice": "掷骰子——你执{{color}}",
+      "white_turn": "轮到白方",
+      "your_turn": "轮到你了"
     },
     "tutor": {
-      "back_to_question": "返回问题",
-      "back_to_question_a11y": "不看答案返回",
+      "back_to_question": "回到题目",
+      "back_to_question_a11y": "不看答案直接返回",
       "band": {
-        "big_blunder": "大失误",
-        "fine": "尚可",
+        "big_blunder": "严重失误",
+        "fine": "不错",
         "mistake": "失误",
         "slip": "小失误"
       },
@@ -195,320 +195,320 @@
         "best_move": "最佳走法",
         "both": "两者",
         "mine": "我的",
-        "show_a11y": "显示{{label}}棋盘",
-        "start": "起始",
+        "show_a11y": "显示“{{label}}”棋盘",
+        "start": "开始",
         "starting_position": "起始局面",
         "your_move": "你的走法",
-        "your_move_replayed": "你的走法，重放"
+        "your_move_replayed": "你的走法（回放）"
       },
-      "details_hide": "隐藏详情",
-      "details_hide_a11y": "隐藏详情",
+      "details_hide": "收起详情",
+      "details_hide_a11y": "收起详情",
       "details_show": "详情",
       "details_show_a11y": "显示详情",
-      "details_summary": "你的走法在{{count}}步中排第{{rank}}，平均每局比最佳走法少约{{loss}}分。",
-      "equity_explainer": "引擎按每局平均预期赢得的分数为每步评分。越高越好。",
-      "equity_pts": "{{points}}分",
+      "details_summary": "你的走法在 {{count}} 种中排第 {{rank}}，平均每局比最佳走法少得约 {{loss}} 分。",
+      "equity_explainer": "引擎按每种走法平均每局预期能赢的分数来评分。越高越好。",
+      "equity_pts": "{{points}} 分",
       "keep": "保留我的走法",
       "keep_a11y": "保留我的走法并继续",
-      "meter_a11y": "失误程度：{{severity}}。每局约损失{{loss}}分。刻度遵循 GNU Backgammon：0.04 为可疑，0.08 为差，0.16 为很差。",
+      "meter_a11y": "失误程度：{{severity}}。每局约损失 {{loss}} 分。标准参照 GNU Backgammon：0.04 起为可疑，0.08 起为差，0.16 起为很差。",
       "meter_caption": "失误刻度（GNU Backgammon）",
-      "play_best": "走最佳一步",
-      "play_best_a11y": "撤回我的走法并走最佳一步",
-      "question_body": "你的走法在这一骰的{{count}}种走法中排第{{rank}}。平均每局比最佳走法少约{{loss}}分。",
+      "play_best": "走最佳走法",
+      "play_best_a11y": "撤回我的走法，改走最佳走法",
+      "question_body": "这次掷骰共有 {{count}} 种走法，你的走法排第 {{rank}}。平均每局比最佳走法少得约 {{loss}} 分。",
       "rank": "{{rank}}",
       "rank_yours": "{{rank}}（你的）",
-      "replay_pause_a11y": "暂停{{label}}回放",
-      "replay_play_a11y": "播放{{label}}回放",
-      "reveal": "显示最佳走法",
-      "reveal_a11y": "揭示推荐走法",
-      "rolled": "你掷出了{{dice}}",
-      "show_mine": "显示我的走法",
-      "show_mine_a11y": "只显示我的走法，不揭示最佳走法",
+      "replay_pause_a11y": "暂停“{{label}}”回放",
+      "replay_play_a11y": "播放“{{label}}”回放",
+      "reveal": "查看最佳走法",
+      "reveal_a11y": "揭晓推荐走法",
+      "rolled": "你掷出了 {{dice}}",
+      "show_mine": "查看我的走法",
+      "show_mine_a11y": "只看我的走法，不揭晓最佳走法",
       "take_back": "撤回并重试",
       "take_back_a11y": "撤回整个回合并重试",
-      "take_back_retry_a11y": "撤回这一步并重试",
-      "title_compare": "你的走法与最佳走法",
+      "take_back_retry_a11y": "撤回这步并重试",
+      "title_compare": "你的走法 vs 最佳走法",
       "title_mine": "你的走法",
       "turn_off": "关闭导师",
       "turn_off_a11y": "关闭导师模式",
-      "undo_last": "撤销上一步",
-      "undo_last_a11y": "只撤销上一步并重走",
+      "undo_last": "撤销最后一步",
+      "undo_last_a11y": "只撤销最后一步并重新走",
       "vs_best": "比最佳 −{{delta}}",
-      "you_played": "你走了："
+      "you_played": "你的走法："
     }
   },
   "home": {
     "confirm_cancel": "取消",
     "confirm_continue": "继续",
-    "confirm_native": "继续目前的游戏还是开始新的游戏?",
-    "confirm_new": "新游戏",
-    "confirm_replace": "开始新游戏？当前游戏将被替换。",
-    "confirm_title": "游戏中",
-    "confirm_web": "开始新的游戏? (在主屏幕上使用Resume来继续目前的一个.",
-    "recovery_body": "上次的存档已损坏。你可以开始新游戏，主屏幕仍可正常使用。",
+    "confirm_native": "继续当前对局，还是开始新对局？",
+    "confirm_new": "新对局",
+    "confirm_replace": "要开始新对局吗？当前对局将被替换。",
+    "confirm_title": "对局进行中",
+    "confirm_web": "要开始新对局吗？（如需继续当前对局，请在首页点按“继续对局”。）",
+    "recovery_body": "上次的存档已损坏。你可以开始新对局——其他功能都正常。",
     "recovery_dismiss": "关闭",
-    "recovery_title": "无法恢复已保存的游戏",
+    "recovery_title": "无法恢复已保存的对局",
     "resume": "继续对局",
     "resume_a11y": "继续已保存的对局",
-    "resume_none": "没有保存的游戏可恢复",
+    "resume_none": "没有已保存的对局",
     "resume_sub": "从上次停下的地方继续",
-    "review": "回顾上一局",
-    "review_a11y": "回顾已结束的游戏",
-    "review_sub": "查看上一局如何结束",
-    "subtitle": "步步为营，掌控棋盘",
+    "review": "复盘上一局",
+    "review_a11y": "复盘已结束的对局",
+    "review_sub": "看看上一局是怎么结束的",
+    "subtitle": "一步一步，掌控棋盘",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "双人对战",
-    "two_players_a11y": "在本设备上双人游玩",
-    "two_players_sub": "同一设备轮流游玩",
+    "two_players_a11y": "两人在本设备上对战",
+    "two_players_sub": "在同一台设备上轮流下",
     "vs_computer": "人机对战",
     "vs_computer_a11y": "与电脑对战",
     "vs_computer_sub": "与电脑对战"
   },
   "learn": {
-    "back_to_hub": "所有教训",
+    "back_to_hub": "全部课程",
     "continue": "继续",
     "feedback": {
-      "hint_nudge": "需要一击吗? 寻找突出的斑点。",
-      "illegal": "尝试一个突出的点——或磁带提示.",
-      "legal_but_wrong": "这在真正的游戏中是合法的。 在这里,试试教这个想法的动作。",
-      "move_progress": "不错...{{done}}页:1{{needed}}移动完成。"
+      "hint_nudge": "需要一点提示？看看高亮的位置。",
+      "illegal": "试试高亮的点——或点按“提示”。",
+      "legal_but_wrong": "这在实战中是合法的——不过这里请试试本课要教的那一步。",
+      "move_progress": "不错——已完成 {{done}}/{{needed}} 步。"
     },
     "graduation": {
-      "body": "你知道目标,董事会, 如何转动工作,击球,和轴承离开。 快速检查,然后你的第一个真正的游戏。",
-      "play_cta": "玩你的第一个游戏",
-      "quiz_done": "钉之. 该玩了",
-      "quiz_title": "快速检查",
-      "quiz_wrong": "不尽然——尝试另一个答案。",
-      "recap_1": "赛车: 全部15次抢先",
-      "recap_2": "掷两骰子;在开点降落",
-      "recap_3": "他们坐在吧台上",
-      "recap_4": "只从你家的板上拿起",
-      "recap_5": "游戏从每场比赛一个死开始——高点先走(两次翻转)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
-      "title": "你准备好玩了"
+      "body": "你已经了解目标、棋盘、回合流程、打子、移出棋子、步数计算和主要战略。做个小测验，然后开始你的第一盘真正的对局。",
+      "play_cta": "开始第一局",
+      "quiz_done": "全对！开始下棋吧。",
+      "quiz_title": "小测验",
+      "quiz_wrong": "不太对——换个答案试试。",
+      "recap_1": "竞速：先把 15 枚棋子全部移出的一方获胜",
+      "recap_2": "掷两颗骰子；只能落在开放的点上",
+      "recap_3": "打掉孤子 → 它会被放到中间栏",
+      "recap_4": "只能从自己的内盘移出棋子",
+      "recap_5": "开局各掷一颗骰子——点数大者先走（相同则重掷）",
+      "recap_6": "步数：较少的一方在竞速中领先",
+      "recap_7": "选择战略：竞速、进攻、封锁或据守",
+      "title": "你可以开始下棋了"
     },
     "hint": "提示",
-    "home_cta": "学会演奏",
-    "home_cta_progress": "{{done}} / {{total}} 课已完成",
-    "home_cta_quiz": "快速检查左边——然后播放",
-    "home_cta_ready": "你准备好了,玩个真正的游戏",
-    "home_cta_sub": "初学者的互动经验教训",
-    "lesson_complete": "课程完成!",
+    "home_cta": "学习下棋",
+    "home_cta_progress": "已完成 {{done}}/{{total}} 课",
+    "home_cta_quiz": "还剩一个小测验——然后开始下棋",
+    "home_cta_ready": "准备好了——来一盘真正的对局吧",
+    "home_cta_sub": "面向新手的互动课程",
+    "lesson_complete": "课程完成！",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "什么也没有在5点, 但你滚了一个5。 从你最高的检查(3)开始。 更多人还是会跳棋",
-            "hint": "选择第3点,然后敲开熊的托盘。",
-            "praise": "这是过度射击的规则,",
-            "title": "死得更惨,还是没死"
+            "body": "5 点上没有棋子，但你掷出了 5。请移出最远的那枚棋子（3 点上的）。点数更大也能移出棋子。",
+            "hint": "选择 3 点，然后点按移出区。",
+            "praise": "这就是大点数规则——移出棋子时会经常用到。",
+            "title": "点数更大，照样移出"
           },
           "try": {
-            "body": "你的棋子都在家里(1–6),所以你可以忍受。 你卷了3个——从板子上取下3分的棋子.",
-            "hint": "选择第3点,然后在右边缘敲击熊角区域.",
-            "praise": "离开董事会! 首先要承受所有15个胜利。",
-            "title": "扣一个"
+            "body": "你的棋子都在内盘（1–6）里，可以开始移出了。你掷出了 3——把 3 点上的棋子移出棋盘。",
+            "hint": "选择 3 点，然后点按右侧边缘的移出区。",
+            "praise": "移出棋盘！先把 15 枚全部移出的一方获胜。",
+            "title": "移出一枚"
           }
         },
-        "subtitle": "你怎么赢的",
-        "title": "关闭"
+        "subtitle": "怎样获胜",
+        "title": "移出棋子"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "马蹄与轮到它的选手的棋子相匹配. 它追踪玩家绕板和回家的路线(点1-6).",
-            "title": "马蹄之路"
+            "body": "马蹄形路线的颜色与当前回合玩家的棋子颜色一致。它标出这名玩家绕棋盘一圈直到内盘（1–6 点）的路线。",
+            "title": "马蹄形路线"
           },
           "far": {
-            "body": "点击两个最远的白色跳棋开始点(24点,右上方).",
-            "hint": "看右上方——24号点两个白棋.",
-            "praise": "这些是从对手的家乡开始的,旅程最长。",
+            "body": "点按你最远的两枚白子的起点（24 点，右上角）。",
+            "hint": "看右上角——24 点上有两枚白子。",
+            "praise": "它们从对手内盘的深处出发，路程最长。",
             "title": "你最远的棋子"
           },
           "home_stack": {
-            "body": "敲打5个白棋的大堆 已经在你家里了(6分)。",
-            "hint": "右下角:5个白色跳棋在6号点上.",
-            "praise": "这是你家的堆积物——五个已经等待了6点,最接近承受。 每场比赛都这样开始",
-            "title": "你的家堆叠"
+            "body": "点按已经在你内盘里的那摞五枚白子（6 点）。",
+            "hint": "右下角：6 点上有五枚白子。",
+            "praise": "这是你的主堆——五枚棋子已在 6 点等候，离移出最近。每局都这样开始。",
+            "title": "你的主堆"
           }
         },
-        "subtitle": "你走哪边",
-        "title": "方向设置( S)"
+        "subtitle": "朝哪个方向走",
+        "title": "方向与摆放"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "中间的长条是酒吧. 命中棋手在这里等待。 敲击吧。",
-            "hint": "将棋盘左侧和右侧之间的垂直条形拍下来。",
-            "praise": "右——命中棋手坐在吧台上,直到重新进入.",
-            "title": "那个酒吧"
+            "body": "中间凸起的那条就是中间栏。被打的棋子在这里等候。点按中间栏。",
+            "hint": "点按棋盘左右两半之间的竖条。",
+            "praise": "对——被打的棋子会留在中间栏，直到重新入场。",
+            "title": "中间栏"
           },
           "explain": {
-            "body": "你和你的对手各有15个跳棋 把它们绕到板子上然后关闭——第一个完成的胜利.",
-            "title": "抢先抢先赢"
+            "body": "你和对手各有 15 枚棋子。让它们绕棋盘一圈并移出——先完成的一方获胜。",
+            "title": "先移出者获胜"
           },
           "home": {
-            "body": "您的家为 1–6( 右下角) 。 任何点在你的家板。",
-            "hint": "家是右下角象限中的六点——编号为1到6.",
-            "praise": "那是你的家,",
-            "title": "找回你家的棋盘"
+            "body": "你的内盘是 1–6 点（右下角）。点按内盘中的任意一个点。",
+            "hint": "内盘是右下区域的六个点——编号 1 到 6。",
+            "praise": "这就是你的内盘——棋子从这里离开棋盘。",
+            "title": "找到你的内盘"
           }
         },
-        "subtitle": "你赛车的目的",
-        "title": "目标板( B)"
+        "subtitle": "竞速的目标",
+        "title": "目标与棋盘"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "你在酒吧里, 从24点算到家:21点有4块土地。",
-            "hint": "然后是21点(不是23点,",
-            "praise": "你回到棋盘上,",
-            "title": "从栏中输入",
-            "wrong": "那只是酒吧里的两条嘴(23点)。 从24点到家计4点——即21点。"
+            "body": "你在中间栏上——走其他棋子前必须先入场。从 24 点朝内盘方向数：4 会落在 21 点。",
+            "hint": "点按中间栏，然后点按 21 点（不是 23——那只离中间栏两步）。",
+            "praise": "你回到棋盘了——中间栏上的棋子总是最先入场。",
+            "title": "从中间栏入场",
+            "wrong": "那里离中间栏只有两步（23 点）。从 24 点朝内盘方向数四格——是 21 点。"
           },
           "hit": {
-            "body": "单检查器是污点。 降落在它上,它去酒吧。 你翻了3,5点的黑血球",
-            "hint": "敲你的棋子 8,然后敲5点。",
-            "praise": "击! 那个黑检查员现在在酒吧了",
-            "title": "击倒污点"
+            "body": "单独一枚在某个点上的棋子叫孤子。落在它上面，它就会被打到中间栏。你掷出了 3——打掉 5 点上的黑色孤子。",
+            "hint": "点按你在 8 点上的棋子，然后点按 5 点。",
+            "praise": "打中了！那枚黑子现在在中间栏上。",
+            "title": "打掉孤子"
           }
         },
-        "subtitle": "联系游戏",
-        "title": "击打栏( T)"
+        "subtitle": "接触战",
+        "title": "打子与中间栏"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "两个或两个以上的对手检查员挡住了一个点, 把堵住的黑堆按5点",
-            "hint": "5号点上两个黑棋的突出堆叠.",
-            "praise": "右——一个定点(2+)关闭. 空的,你自己的,或者一个blot(1)是打开的.",
-            "title": "屏蔽点"
+            "body": "两枚或更多对方棋子会封住一个点——你不能落在那里。点按 5 点上被封住的黑子堆。",
+            "hint": "5 点上高亮的两枚黑子。",
+            "praise": "对——建成的点（2 枚以上）是封闭的。空点、你自己的点和只有一枚棋子的点（孤子）是开放的。",
+            "title": "被封住的点"
           },
           "doubles": {
-            "body": "双胞胎给你那四招 你翻了2 -2,这是4 2s。 从八分中转六分四次.",
-            "hint": "敲8点,然后6点。 做这四次——一次死。",
-            "praise": "确切地说,双胞胎意味着4个动作。",
-            "title": "双倍 = 四步"
+            "body": "掷出对子可以按该点数走四次。你掷出了 2-2——就是四个 2。从 8 点走到 6 点，共四次。",
+            "hint": "点按 8 点，再点按 6 点。重复四次——每颗骰子一次。",
+            "praise": "没错——对子就是按该点数走四次。",
+            "title": "对子 = 走四次"
           },
           "explain": {
-            "body": "每转一转,你滚两个骰子, 玩两个数字,当你可以。 您可以降落在空点、 自己的跳棋或孤独的对手上。",
-            "title": "两个数字,开点"
+            "body": "每回合掷两颗骰子，能走时两个点数都要用上。你可以落在空点、你自己的棋子上，或对方单独一枚的棋子（孤子）上。",
+            "title": "两个点数，开放的点"
           },
           "two_dice": {
-            "body": "你转了3和1。 将8分3个pip上的检查器移到5位,将6分1个pip上的检查器移到5位.",
-            "hint": "选择一个白色检查器,然后是第5点。 既为八分也为六分.",
-            "praise": "不错 都用骰子了 相同的检查器或两个检查器,在可以的时候必须玩两个数字.",
-            "title": "玩双骰子"
+            "body": "你掷出了 3 和 1。把 8 点上的棋子走三步（到 5 点），把 6 点上的棋子走一步（到 5 点）。",
+            "hint": "选一枚白子，然后点按 5 点。8 点和 6 点各做一次。",
+            "praise": "很好——两颗骰子都用上了。无论用一枚还是两枚棋子，只要能走，两个点数都必须用。",
+            "title": "两颗骰子都要用"
           }
         },
-        "subtitle": "如何转弯",
-        "title": "用骰子移动"
+        "subtitle": "一个回合怎么进行",
+        "title": "按骰子走子"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "白棋已收掉5枚，其余靠近本家。黑棋还散在棋盘上。点任意一枚白棋：白棋点数更低，所以领先。",
-            "hint": "找最接近收子的棋子。",
-            "praise": "对。白棋点数更低，就是剩下的路程更短。",
+            "body": "白方已移出 5 枚，其余也都接近内盘。黑方的棋子还散布在棋盘各处。点按任意一枚白子——白方步数更少，在竞速中领先。",
+            "hint": "找离移出最近的棋子。",
+            "praise": "没错！步数越少，要走的路就越短。",
             "title": "谁领先？"
           },
           "behind": {
-            "body": "同一局面。黑棋离本家远，点数高得多。点任意一枚黑棋：黑棋落后。",
-            "hint": "找离本家最远的棋子。",
-            "praise": "没错。黑棋还要走很多点才能收完。",
+            "body": "同一局面。黑方棋子离家很远，步数多得多。点按任意一枚黑子——黑方在竞速中落后。",
+            "hint": "找离家最远的棋子。",
+            "praise": "对！黑方移出前还要走多得多的步数。",
             "title": "谁落后？"
           },
           "explain": {
-            "body": "点数是你的棋子收完之前还要走的点位总和。每枚棋子加上它所在点的编号：在6点上算6，在13点上算13。越少越好，说明离收子更近。每局屏幕上方都会显示，圆点标明数字属于哪种颜色。",
-            "title": "什么是点数？"
+            "body": "步数是你的棋子移出前还要走的总格数。每枚棋子按所在点的编号计算——6 点上的棋子算 6，13 点上的算 13。全部加起来就是你的步数。越少越好：说明你离移出更近。每局对局中，每位玩家的步数都显示在名字旁边。",
+            "title": "什么是步数？"
           }
         },
-        "subtitle": "学会看谁在比赛中领先",
-        "title": "点数：比赛分数"
+        "subtitle": "看懂谁在竞速中领先",
+        "title": "步数：竞速的比分"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "你的本家很强，对手有单子或棋子在中间条上。打掉每枚单子并封住本家各点，把对手留在中间条上，同时自己收子。这里白棋做成了三个本家点，黑棋有一枚在中间条上。",
-            "title": "全攻"
+            "body": "你的内盘很强，对手有孤子或棋子在中间栏上。进攻！能打的孤子都打掉，并封住内盘的点。目标是在你移出棋子时，把对手的棋子困在中间栏上。这里白方已在内盘建了三个点，黑方有一枚棋子在中间栏上。",
+            "title": "闪电战"
           },
           "identify": {
-            "body": "这是封锁局。点白棋墙上的任意一点，也就是挡住黑棋的连续占点。",
-            "hint": "找至少有2枚白棋、并且连在一起的点。",
-            "praise": "很好。这堵墙就是封锁，黑棋后面的棋子被困住了。",
-            "title": "找出这堵墙"
+            "body": "这是封锁战。点按白方封锁中的任意一个点——那道挡住黑方的连续建点之墙。",
+            "hint": "找相连的、每个至少有 2 枚白子的点。",
+            "praise": "完美！那道墙就是封锁——黑方后方的棋子被困住了。",
+            "title": "找出封锁"
           },
           "prime": {
-            "body": "你做了一堵连续占点的墙。高亮的点是4点墙，限制黑棋后面的棋子。一次延长一个点。",
-            "title": "封锁墙"
+            "body": "你建起了一道连续建点的墙——封锁。高亮的点组成一个 4 点封锁，限制着黑方后方的棋子。一点一点延长封锁，把对手的棋子困在后面。",
+            "title": "封锁战"
           },
           "running": {
-            "body": "你领先，而且击打范围内没有单子。把棋子安全带回本家，不要留下单子。这里白棋领先，本家也稳。",
-            "title": "竞速"
+            "body": "你在竞速中领先，且没有可被打到的孤子。计划很简单：把棋子安全带回家，不要留下孤子。别耍花样——跑就对了。这个局面中白方在竞速中领先，内盘也很稳固。",
+            "title": "竞速战"
           }
         },
-        "subtitle": "认出经典计划",
-        "title": "对局计划"
+        "subtitle": "认识经典的作战计划",
+        "title": "作战计划"
       }
     },
-    "locked": "先完成上一课",
+    "locked": "请先完成上一课",
     "next_lesson": "下一课",
     "quiz": {
       "bar": {
-        "a": "先把最远的检查器移开",
-        "b": "在移动其它东西前输入检查器",
-        "c": "轮到你了",
-        "prompt": "酒吧里有个检查员,你必须..."
+        "a": "先走最远的棋子",
+        "b": "先让这枚棋子入场，再走其他棋子",
+        "c": "跳过本回合",
+        "prompt": "只要你有棋子在中间栏上，你就必须…"
       },
       "bear": {
-        "a": "每当你卷起一个6",
-        "b": "只有在你撞到污点之后",
-        "c": "当所有15个棋子都在你家里的时候",
-        "prompt": "你什么时候能承受?"
+        "a": "每次掷出 6 时",
+        "b": "只有打掉孤子之后",
+        "c": "15 枚棋子全部在你的内盘时",
+        "prompt": "什么时候可以移出棋子？"
       },
       "blot": {
-        "a": "任何三叠以上",
-        "b": "点上的单个检查者——可以被击中",
-        "c": "在某一点上有两个或两个以上的跳棋——一个定点",
-        "prompt": "什么是污点?"
+        "a": "任意三枚或以上的棋子堆",
+        "b": "单独在一个点上的棋子——可以被打",
+        "c": "一个点上有两枚或以上棋子——建成的点",
+        "prompt": "什么是孤子？"
       },
       "pip_ahead": {
-        "a": "对手，点数更高的一方",
-        "b": "你，点数更低的一方",
-        "c": "都不是——点数不表示比赛",
-        "prompt": "你的点数是85，对手是102。谁在比赛中领先？"
+        "a": "对手，步数更多",
+        "b": "你，步数更少",
+        "c": "都不是——步数不能衡量竞速",
+        "prompt": "你的步数是 85，对手是 102。谁在竞速中领先？"
       },
       "pip_meaning": {
-        "a": "棋子收完之前还要走的点位总和",
+        "a": "你的棋子移出前还要走的总格数",
         "b": "你在棋盘上的棋子数",
-        "c": "你已经做成的点数",
-        "prompt": "点数表示什么？"
+        "c": "你建成的点数",
+        "prompt": "你的步数代表什么？"
       },
       "strat_blitz": {
-        "a": "打掉单子并继续做本家（全攻）",
-        "b": "不理单子，让后面的棋子跑",
-        "c": "拆开本家去做锚点",
-        "prompt": "你做成了3个本家点，对手有一枚单子在你的本家。最好的计划是什么？"
+        "a": "打掉孤子并继续建设内盘（闪电战）",
+        "b": "不理孤子，让后方棋子快跑",
+        "c": "拆掉内盘去建锚点",
+        "prompt": "你的内盘已建了 3 个点，对手在那里有一个孤子。最好的计划是？"
       },
       "strat_prime": {
-        "a": "拆墙来进攻",
-        "b": "守住墙并加长——他们被困住了",
-        "c": "尽快收子",
-        "prompt": "对手有两枚棋子被困在你的5点墙后面。你的计划是什么？"
+        "a": "拆掉封锁去进攻",
+        "b": "保持并延长封锁——对手的棋子被困住了",
+        "c": "尽快移出棋子",
+        "prompt": "对手有两枚棋子被困在你的 5 点封锁后面。你的计划是？"
       }
     },
-    "replay": "重播",
-    "skip_to_play": "跳过播放",
-    "step_progress": "第 {{current}} 步，共 {{total}} 步",
-    "subtitle": "简短的互动课程——然后你就准备好了",
-    "title": "学会演奏"
+    "replay": "再来一次",
+    "skip_to_play": "跳过，直接下棋",
+    "step_progress": "第 {{current}}/{{total}} 步",
+    "subtitle": "七节简短课程，学完就能下棋",
+    "title": "学习下棋"
   },
   "not_found": {
-    "body": "那页不是双陆棋大师的一部分 回家学习或开始游戏。",
+    "body": "这个页面不属于 Backgammon Mastermind。回到首页学习或开始对局吧。",
     "heading": "出界了",
-    "home_a11y": "前往主页",
-    "home_cta": "返回主页",
+    "home_a11y": "前往首页",
+    "home_cta": "返回首页",
     "title": "未找到"
   },
   "settings": {
@@ -516,14 +516,14 @@
     "app_name": "Backgammon Mastermind",
     "arabic": "阿拉伯语",
     "developer": "开发者",
-    "developer_blurb": "加载任意棋盘局面以测试引擎，并从该局面开始正常游戏。此功能不面向普通用户。",
+    "developer_blurb": "载入任意局面以测试引擎。将从该局面开始一局普通对局。这不是产品功能。",
     "developer_json": "局面 JSON",
-    "developer_load": "加载 JSON",
-    "developer_open": "加载局面",
-    "developer_presets": "测试预设",
-    "english": "联合国",
-    "game": "对局",
-    "general": "常规",
+    "developer_load": "载入 JSON",
+    "developer_open": "载入局面",
+    "developer_presets": "测试局面",
+    "english": "英语",
+    "game": "游戏",
+    "general": "通用",
     "github": "GitHub",
     "language": "语言",
     "link_error_body": "请稍后再试。",
@@ -571,5 +571,5 @@
     "win_rate": "胜率",
     "won": "胜"
   },
-  "welcome": "欢迎来到双陆棋大师"
+  "welcome": "欢迎来到 Backgammon Mastermind"
 }
