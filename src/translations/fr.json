@@ -72,7 +72,7 @@
       "direction_overlay": "Guide de direction",
       "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
       "move_hints": "Indices de coup",
-      "move_hints_hint": "Point doré près des flèches d'où vous pouvez jouer",
+      "move_hints_hint": "Met en évidence les numéros des flèches d'où vous pouvez jouer",
       "point_numbers": "Numéros des flèches",
       "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
       "section_automation": "Automatisation",

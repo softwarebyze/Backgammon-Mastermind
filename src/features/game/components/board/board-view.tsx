@@ -250,7 +250,8 @@ export function BoardView({
         isTop={isTop}
         isSelected={selectedPoint === idx}
         isLegalTarget={legalTargets.has(idx) || (emphasisPoints?.has(idx) ?? false)}
-        isMovableSource={movableSources.has(idx)}
+        // With point numbers on, the rail carries the hint instead (#265).
+        isMovableSource={!showPointNumbers && movableSources.has(idx)}
         isHoverable={hoverSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
@@ -310,7 +311,7 @@ export function BoardView({
       ]}
     >
       {showPointNumbers && (
-        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} />
+        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} />
       )}
 
       <View
@@ -399,7 +400,7 @@ export function BoardView({
       </View>
 
       {showPointNumbers && (
-        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} />
+        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} />
       )}
     </View>
   );

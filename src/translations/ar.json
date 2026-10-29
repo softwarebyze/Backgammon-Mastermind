@@ -72,7 +72,7 @@
       "direction_overlay": "تراكب الاتجاه",
       "direction_overlay_hint": "مسار حدوة الحصان على اللوحة",
       "move_hints": "تلميحات الحركة",
-      "move_hints_hint": "نقطة ذهبية بجانب النقاط التي يمكنك التحرك منها",
+      "move_hints_hint": "يُبرز أرقام النقاط التي يمكنك التحريك منها",
       "point_numbers": "أرقام النقاط",
       "point_numbers_hint": "عرض تسميات 1–24 على اللوحة",
       "section_automation": "أتمتة",

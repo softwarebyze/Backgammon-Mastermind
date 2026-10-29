@@ -72,7 +72,7 @@
       "direction_overlay": "Richtingsgids",
       "direction_overlay_hint": "Hoefijzerpad op het bord",
       "move_hints": "Zethints",
-      "move_hints_hint": "Gouden stip naast punten waarvandaan je kunt zetten",
+      "move_hints_hint": "Markeert de nummers van de punten waarvan je kunt zetten",
       "point_numbers": "Puntnummers",
       "point_numbers_hint": "Labels 1–24 op het bord tonen",
       "section_automation": "Automatisering",

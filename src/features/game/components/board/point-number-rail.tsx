@@ -14,6 +14,12 @@ type Props = {
    * physical point 24, so black's labels read 25 - n.
    */
   perspective?: Player;
+  /**
+   * Physical points the player can move from (move hints). Their numbers
+   * light up in the rail, outside the board, where no point color can hide
+   * them (#265).
+   */
+  highlighted?: ReadonlySet<number>;
 };
 
 const TOP_LEFT = [13, 14, 15, 16, 17, 18];
@@ -21,7 +27,14 @@ const TOP_RIGHT = [19, 20, 21, 22, 23, 24];
 const BOT_LEFT = [12, 11, 10, 9, 8, 7];
 const BOT_RIGHT = [6, 5, 4, 3, 2, 1];
 
-function NumberCell({ value, width }: { value: number; width: number }) {
+function NumberCell({ value, width, lit }: { value: number; width: number; lit: boolean }) {
+  if (lit) {
+    return (
+      <View style={[styles.cell, { width }]} testID={`move-hint-${value}`}>
+        <Text style={[styles.label, styles.litLabel]}>{value}</Text>
+      </View>
+    );
+  }
   return (
     <Text style={[styles.label, { width }]}>
       {value}
@@ -29,27 +42,42 @@ function NumberCell({ value, width }: { value: number; width: number }) {
   );
 }
 
-function PointHalf({ indices, colWidth }: { indices: number[]; colWidth: number }) {
+function PointHalf({
+  points,
+  colWidth,
+  perspective,
+  highlighted,
+}: {
+  points: number[];
+  colWidth: number;
+  perspective: Player;
+  highlighted?: ReadonlySet<number>;
+}) {
   return (
     <View style={styles.half}>
-      {indices.map(value => (
-        <NumberCell key={value} value={value} width={colWidth} />
+      {points.map(point => (
+        <NumberCell
+          key={point}
+          value={pointNumberLabel(point, perspective)}
+          width={colWidth}
+          lit={highlighted?.has(point) ?? false}
+        />
       ))}
     </View>
   );
 }
 
 /** Column-aligned number rail — matches board column widths exactly. */
-export function PointNumberRail({ side, dimensions, perspective = 'white' }: Props) {
+export function PointNumberRail({ side, dimensions, perspective = 'white', highlighted }: Props) {
   const { colWidth, barWidth, bearOffWidth, boardWidth } = dimensions;
   const left = side === 'top' ? TOP_LEFT : BOT_LEFT;
   const right = side === 'top' ? TOP_RIGHT : BOT_RIGHT;
 
   return (
     <View style={[styles.rail, { height: POINT_NUMBER_RAIL, width: boardWidth }]}>
-      <PointHalf indices={left.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
+      <PointHalf points={left} colWidth={colWidth} perspective={perspective} highlighted={highlighted} />
       <View style={{ width: barWidth }} />
-      <PointHalf indices={right.map(n => pointNumberLabel(n, perspective))} colWidth={colWidth} />
+      <PointHalf points={right} colWidth={colWidth} perspective={perspective} highlighted={highlighted} />
       <View style={{ width: bearOffWidth }} />
     </View>
   );
@@ -64,6 +92,19 @@ const styles = StyleSheet.create({
   half: {
     flex: 6,
     flexDirection: 'row',
+  },
+  cell: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  litLabel: {
+    minWidth: 20,
+    paddingHorizontal: 3,
+    overflow: 'hidden',
+    borderRadius: 6,
+    backgroundColor: '#FF9A4C',
+    color: '#1E0C02',
+    ...interFont('bold'),
   },
   label: {
     textAlign: 'center',

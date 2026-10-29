@@ -72,7 +72,7 @@
       "direction_overlay": "Guia de direção",
       "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
       "move_hints": "Dicas de movimento",
-      "move_hints_hint": "Ponto dourado ao lado das casas de onde você pode mover",
+      "move_hints_hint": "Destaca os números das casas de onde você pode mover",
       "point_numbers": "Números das casas",
       "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
       "section_automation": "Automação",

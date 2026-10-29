@@ -72,7 +72,7 @@
       "direction_overlay": "Направление движения",
       "direction_overlay_hint": "Путь подковой на доске",
       "move_hints": "Подсказки ходов",
-      "move_hints_hint": "Золотая точка у пунктов, с которых можно ходить",
+      "move_hints_hint": "Подсвечивает номера пунктов, с которых можно ходить",
       "point_numbers": "Номера пунктов",
       "point_numbers_hint": "Показывать метки 1–24 на доске",
       "section_automation": "Автоматизация",

@@ -72,7 +72,7 @@
       "direction_overlay": "方向指引",
       "direction_overlay_hint": "在棋盘上显示马蹄形路线",
       "move_hints": "走子提示",
-      "move_hints_hint": "可移动的点位旁显示金色圆点",
+      "move_hints_hint": "高亮显示可以移动的点位编号",
       "point_numbers": "点位编号",
       "point_numbers_hint": "在棋盘上显示1–24编号",
       "section_automation": "自动化",
