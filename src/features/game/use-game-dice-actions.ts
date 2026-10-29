@@ -11,6 +11,9 @@ import {
 } from '@/lib/game';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 
+/** Roughly when the tumble settles; the blocked cue should follow the dice. */
+export const BLOCKED_SFX_DELAY_MS = 650;
+
 type DiceActionsArgs = {
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
@@ -71,7 +74,12 @@ export function useGameDiceActions({
         return prev;
       }
       playGameSfx('roll');
-      return applyDiceRoll(prev, rollDice());
+      const next = applyDiceRoll(prev, rollDice());
+      if (next.phase === 'no-move') {
+        // After the dice land, a soft "err err" says this roll can't be played.
+        setTimeout(() => playGameSfx('blocked'), BLOCKED_SFX_DELAY_MS);
+      }
+      return next;
     });
   }, [isAnimating, setState]);
 
