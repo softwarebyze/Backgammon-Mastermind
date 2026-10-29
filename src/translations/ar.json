@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "إخراج الحجر",
-      "bear_off_label": "خارج",
       "cancel": "إلغاء",
       "cancel_a11y": "إلغاء التحديد",
       "confirm_move": "تأكيد الحركة",
@@ -59,6 +58,11 @@
       "open_settings": "اللغة والمزيد",
       "open_settings_hint": "فتح الإعدادات",
       "title": "خيارات اللعبة"
+    },
+    "players": {
+      "computer": "الكمبيوتر",
+      "pips": "نقاط",
+      "you": "أنت"
     },
     "preferences": {
       "auto_move": "حركة تلقائية عند الإجبار",

@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Taş topla",
-      "bear_off_label": "toplanan",
       "cancel": "Cancel Cancel Cancel Cancel",
       "cancel_a11y": "İptal seçimi",
       "confirm_move": "Hamleyi onayla",
@@ -59,6 +58,11 @@
       "open_settings": "Dil ve daha fazlası",
       "open_settings_hint": "Ayarları aç",
       "title": "Oyun seçenekleri"
+    },
+    "players": {
+      "computer": "Bilgisayar",
+      "pips": "pip",
+      "you": "Siz"
     },
     "preferences": {
       "auto_move": "Zorunlu hamlede otomatik oyna",

@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Zdejmij pionek",
-      "bear_off_label": "zdjęte",
       "cancel": "Anuluj",
       "cancel_a11y": "Anuluj zaznaczenie",
       "confirm_move": "Potwierdź ruch",
@@ -60,6 +59,11 @@
       "open_settings_hint": "Otwórz Ustawienia",
       "title": "Opcje gry"
     },
+    "players": {
+      "computer": "Komputer",
+      "pips": "pipsów",
+      "you": "Ty"
+    },
     "preferences": {
       "auto_move": "Automatyczny ruch przymusowy",
       "auto_move_hint": "Automatycznie wykonuje jedyny możliwy ruch",
@@ -107,7 +111,7 @@
     "status": {
       "black_wins": "Czarne wygrywają",
       "computer_wins": "Komputer wygrywa",
-      "off_short": "zbite",
+      "off_short": "zdjęte",
       "pips_a11y": "{{player}}: {{pips}} pipsów, {{off}} z 15 zdjętych",
       "white_wins": "🏆 Białe wygrywają!",
       "you_win": "🏆 Wygrywasz!"

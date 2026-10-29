@@ -19,6 +19,6 @@ it('labels both trays through i18n instead of a hardcoded English "off" (#244)',
       checkerSize={28}
     />,
   );
-  expect(screen.getByText('▲ game.controls.bear_off_label')).toBeTruthy();
-  expect(screen.getByText('▽ game.controls.bear_off_label')).toBeTruthy();
+  expect(screen.getByText('▲ game.status.off_short')).toBeTruthy();
+  expect(screen.getByText('▽ game.status.off_short')).toBeTruthy();
 });

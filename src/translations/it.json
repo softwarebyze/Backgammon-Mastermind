@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Porta fuori la pedina",
-      "bear_off_label": "fuori",
       "cancel": "Annulla",
       "cancel_a11y": "Annulla selezione",
       "confirm_move": "Conferma mossa",
@@ -59,6 +58,11 @@
       "open_settings": "Lingua e altro",
       "open_settings_hint": "Apri Impostazioni",
       "title": "Opzioni di gioco"
+    },
+    "players": {
+      "computer": "Computer",
+      "pips": "pip",
+      "you": "Tu"
     },
     "preferences": {
       "auto_move": "Mossa automatica se obbligata",

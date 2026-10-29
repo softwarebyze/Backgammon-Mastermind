@@ -77,7 +77,7 @@ function BearOffStack({
           zIndex: 20,
         }}
       >
-        {`${player === 'black' ? '▲' : '▽'} ${translate('game.controls.bear_off_label')}`}
+        {`${player === 'black' ? '▲' : '▽'} ${translate('game.status.off_short')}`}
       </Text>
 
       {count === 0 && (

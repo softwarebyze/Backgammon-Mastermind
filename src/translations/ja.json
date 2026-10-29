@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "ベアオフ",
-      "bear_off_label": "上がり",
       "cancel": "キャンセル",
       "cancel_a11y": "キャンセル選択",
       "confirm_move": "手を確定",
@@ -59,6 +58,11 @@
       "open_settings": "言語・その他",
       "open_settings_hint": "設定を開く",
       "title": "ゲームオプション"
+    },
+    "players": {
+      "computer": "コンピュータ",
+      "pips": "ピップ",
+      "you": "あなた"
     },
     "preferences": {
       "auto_move": "強制手を自動でプレイ",

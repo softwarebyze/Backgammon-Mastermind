@@ -1,7 +1,7 @@
 import type { GameState } from '@/lib/game';
 import { useState } from 'react';
-import { createPositionState } from '@/lib/game/create-position';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
+import { createPositionState } from '@/lib/game/create-position';
 import { act, renderHook } from '@/lib/test-utils';
 import { BLOCKED_SFX_DELAY_MS, useGameDiceActions } from './use-game-dice-actions';
 

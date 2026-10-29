@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Bear off",
-      "bear_off_label": "off",
       "cancel": "Cancel",
       "cancel_a11y": "Cancel selection",
       "confirm_move": "Confirm move",
@@ -59,6 +58,11 @@
       "open_settings": "Language & more",
       "open_settings_hint": "Open Settings",
       "title": "Game options"
+    },
+    "players": {
+      "computer": "Computer",
+      "pips": "pips",
+      "you": "You"
     },
     "preferences": {
       "auto_move": "Auto-move when forced",

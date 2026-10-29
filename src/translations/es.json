@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Sacar ficha",
-      "bear_off_label": "fuera",
       "cancel": "Cancelar",
       "cancel_a11y": "Cancelar selección",
       "confirm_move": "Confirmar movimiento",
@@ -59,6 +58,11 @@
       "open_settings": "Idioma y más",
       "open_settings_hint": "Abrir Ajustes",
       "title": "Opciones de partida"
+    },
+    "players": {
+      "computer": "Ordenador",
+      "pips": "pips",
+      "you": "Tú"
     },
     "preferences": {
       "auto_move": "Mover automáticamente si es forzado",

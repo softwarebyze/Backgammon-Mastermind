@@ -29,6 +29,8 @@ type Props = {
   animateRoll?: boolean;
   /** Die edge in px; scales dots, numerals and radius. Default matches the phone tray. */
   size?: number;
+  /** Space between dice; on-board dice sit a little tighter so doubles fit a half. */
+  gap?: number;
 };
 
 const DOUBLE_DIE_SLOTS = ['slot-a', 'slot-b', 'slot-c', 'slot-d'] as const;
@@ -263,11 +265,12 @@ export function DiceDisplay({
   displayStyle = 'dots',
   animateRoll = true,
   size = TRAY_DIE_SIZE,
+  gap,
 }: Props) {
   const { containerStyle, reducedMotion } = useDiceRollAnimation(dice, animateRoll);
 
   return (
-    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, containerStyle]}>
+    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, gap !== undefined && { gap }, containerStyle]}>
       <DiceFaces
         dice={dice}
         remainingDice={remainingDice}
@@ -277,6 +280,44 @@ export function DiceDisplay({
         displayStyle={displayStyle}
         size={size}
       />
+    </Animated.View>
+  );
+}
+
+/**
+ * One die on its own (the opening roll on the board puts each side's die in
+ * that player's half). 0 renders the dashed placeholder.
+ */
+export function SingleDie({
+  value,
+  playerColor,
+  emphasized = false,
+  displayStyle = 'dots',
+  animateRoll = true,
+  size = TRAY_DIE_SIZE,
+}: {
+  value: number;
+  playerColor: PlayerColor;
+  emphasized?: boolean;
+  displayStyle?: DiceDisplayStyle;
+  animateRoll?: boolean;
+  size?: number;
+}) {
+  const { containerStyle } = useDiceRollAnimation([value, 0], animateRoll);
+  return (
+    <Animated.View testID={`single-die-${playerColor}`} style={containerStyle}>
+      {value === 0
+        ? <EmptyDiePlaceholder playerColor={playerColor} size={size} />
+        : (
+            <DieFace
+              value={value}
+              used={false}
+              playerColor={playerColor}
+              displayStyle={displayStyle}
+              size={size}
+              emphasized={emphasized}
+            />
+          )}
     </Animated.View>
   );
 }

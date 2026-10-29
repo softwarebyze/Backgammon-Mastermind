@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "Sortir un pion",
-      "bear_off_label": "sortis",
       "cancel": "Annuler",
       "cancel_a11y": "Annuler la sélection",
       "confirm_move": "Confirmer le coup",
@@ -59,6 +58,11 @@
       "open_settings": "Langue et plus",
       "open_settings_hint": "Ouvrir les Réglages",
       "title": "Options de partie"
+    },
+    "players": {
+      "computer": "Ordinateur",
+      "pips": "pips",
+      "you": "Vous"
     },
     "preferences": {
       "auto_move": "Coup auto si forcé",

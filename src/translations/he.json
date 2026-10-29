@@ -10,7 +10,6 @@
     },
     "controls": {
       "bear_off_a11y": "הוצאת כלי",
-      "bear_off_label": "בחוץ",
       "cancel": "ביטול",
       "cancel_a11y": "ביטול הבחירה",
       "confirm_move": "אשר מהלך",
@@ -59,6 +58,11 @@
       "open_settings": "שפה ועוד",
       "open_settings_hint": "פתיחת הגדרות",
       "title": "אפשרויות משחק"
+    },
+    "players": {
+      "computer": "מחשב",
+      "pips": "פיפים",
+      "you": "אתה"
     },
     "preferences": {
       "auto_move": "מהלך אוטומטי כשהוא כפוי",
