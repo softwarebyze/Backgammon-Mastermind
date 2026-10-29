@@ -16,6 +16,11 @@ jest.mock('@/lib/game-preferences/use-game-preferences', () => {
   return { useGamePreferences: readMockPreferences };
 });
 
+const mockRecordFinishedGame = jest.fn();
+jest.mock('@/features/stats/use-game-stats', () => ({
+  recordFinishedGame: (...args: unknown[]) => mockRecordFinishedGame(...args),
+}));
+
 jest.mock('posthog-react-native', () => ({
   usePostHog: function postHogApi() {
     return { capture: mockCapture };
@@ -34,6 +39,7 @@ function overState(): GameState {
 
 beforeEach(() => {
   mockCapture.mockClear();
+  mockRecordFinishedGame.mockClear();
   mockPreferences = { ...DEFAULT_GAME_PREFERENCES };
 });
 
@@ -126,5 +132,26 @@ describe('useGameCompletedCapture', () => {
     rerender({ state: after, count: 90 });
 
     expect(mockCapture).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('local stats', () => {
+  it('counts a game once, when a live move ends it', () => {
+    const before = movingState();
+    const after = overState();
+    const { result, rerender } = renderHook(
+      (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
+      { initialProps: { state: before, count: 60 } },
+    );
+    result.current.noteMoveApplied(before, after);
+    rerender({ state: after, count: 61 });
+    rerender({ state: { ...after }, count: 61 });
+    expect(mockRecordFinishedGame).toHaveBeenCalledTimes(1);
+    expect(mockRecordFinishedGame).toHaveBeenCalledWith(after, 61);
+  });
+
+  it('does not count a finished game that is only opened for review', () => {
+    renderHook(() => useGameCompletedCapture(overState(), 80));
+    expect(mockRecordFinishedGame).not.toHaveBeenCalled();
   });
 });
