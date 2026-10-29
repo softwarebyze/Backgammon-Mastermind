@@ -1,6 +1,8 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
-import { cleanup, render, screen } from '@/lib/test-utils';
-import { boardDiceSide, boardDieSize, boardHalfFrame, hasBoardDice } from './board-dice-layout';
+import { StyleSheet } from 'react-native';
+import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
+import { cleanup, render, screen, within } from '@/lib/test-utils';
+import { boardDiceSide, boardDieGap, boardDieSize, boardHalfFrame, hasBoardDice } from './board-dice-layout';
 import { BoardDiceOverlay } from './board-dice-overlay';
 
 afterEach(cleanup);
@@ -32,10 +34,19 @@ describe('board dice layout', () => {
     expect(boardHalfFrame(DIMS, 'right')).toEqual({ left: 6 * DIMS.colWidth + DIMS.barWidth, width: 6 * DIMS.colWidth });
   });
 
-  it('fits four dice of a double inside one half', () => {
-    const size = boardDieSize(DIMS.checkerSize);
-    const gap = Math.max(4, Math.round(size * 0.18));
-    expect(4 * size + 3 * gap).toBeLessThanOrEqual(6 * DIMS.colWidth);
+  it.each([
+    ['phone', DIMS],
+    ['narrow, height-bound', fitBoardToViewport(260, 230)],
+    ['smallest', fitBoardToViewport(200, 200)],
+  ])('fits four dice of a double inside one half (%s board)', (_name, dims) => {
+    const half = 6 * dims.colWidth;
+    const size = boardDieSize(dims.checkerSize, half);
+    expect(4 * size + 3 * boardDieGap(size)).toBeLessThanOrEqual(half);
+  });
+
+  it('keeps the readable 26px floor whenever there is room', () => {
+    expect(boardDieSize(10)).toBe(26);
+    expect(boardDieSize(10, 6 * DIMS.colWidth)).toBe(26);
   });
 
   it('shows nothing before a roll', () => {
@@ -59,8 +70,13 @@ describe('board dice overlay', () => {
         surface={{ left: 4, top: 22 }}
       />,
     );
-    expect(screen.getByTestId('board-dice-white')).toBeTruthy();
-    expect(screen.getByTestId('board-dice-black')).toBeTruthy();
-    expect(screen.getByTestId('single-die-white')).toBeTruthy();
+    const white = screen.getByTestId('board-dice-white');
+    const black = screen.getByTestId('board-dice-black');
+    const leftOf = (node: ReturnType<typeof screen.getByTestId>) => (StyleSheet.flatten(node.props.style) as { left: number }).left;
+    // White's die (6) sits in the right half, black's (still rolling) in the left.
+    expect(leftOf(white)).toBe(4 + boardHalfFrame(DIMS, 'right').left);
+    expect(leftOf(black)).toBe(4 + boardHalfFrame(DIMS, 'left').left);
+    expect(within(white).getByTestId('single-die-white')).toBeTruthy();
+    expect(within(black).getByTestId('single-die-black')).toBeTruthy();
   });
 });

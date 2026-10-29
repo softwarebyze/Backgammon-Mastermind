@@ -12,6 +12,9 @@ import {
 } from '@/features/game/hooks/use-board-dimensions';
 import { isLandscapeLayout } from '@/lib/ui/game-chrome';
 
+/** Smallest board share once the player strips are taken out of the slot. */
+const MIN_STRIPPED_BOARD_SHARE = 120;
+
 export type PublishBoardSlotOptions = {
   /** Game review strip is 68; Learn has no review strip. */
   reviewHeight?: number;
@@ -59,7 +62,9 @@ export function usePublishBoardSlot(options?: PublishBoardSlotOptions) {
       sideBySide,
       minHeight: minBoardHeight > 0 ? minBoardHeight : undefined,
     });
-    const boardShare = stripsInSlot && !sideBySide ? slotH - top - bottom : slotH;
+    // Huge text can make the strips fill the slot. Keep a floor so the board
+    // shrinks to it (and the page scrolls) instead of keeping a stale size.
+    const boardShare = stripsInSlot && !sideBySide ? Math.max(MIN_STRIPPED_BOARD_SHARE, slotH - top - bottom) : slotH;
     const height = slotH > 0 ? Math.min(boardShare, fromChrome) : fromChrome;
     setBoardSlotSize({ width: slotW, height });
   }, [screenWidth, screenHeight, headerHeight, insets.bottom, reviewHeight, minBoardHeight, stripsInSlot]);
