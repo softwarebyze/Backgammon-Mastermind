@@ -123,7 +123,7 @@
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
     },
     "status": {
-      "black_wins": "Black Wins",
+      "black_wins": "🏆 Black Wins!",
       "computer_wins": "Computer Wins",
       "off_short": "off",
       "pips_a11y": "{{player}}: {{pips}} pips, {{off}} of 15 borne off",
@@ -420,12 +420,12 @@
             "title": "Who's behind?"
           },
           "explain": {
-            "body": "Pip count is the total number of points your checkers must travel to bear off. Each checker contributes its point number — a checker on the 6-point counts 6, on the 13-point counts 13. Add them all up and you get your pip count. Lower is better: it means you're closer to bearing off. The pip counts appear at the top of the screen during every game, with a dot showing which number belongs to which color.",
+            "body": "Pip count is the total number of points your checkers must travel to bear off. Each checker counts its point number — a checker on the 6-point counts 6, on the 13-point counts 13. Add them all up and you get your pip count. Lower is better: it means you're closer to bearing off. During every game, each player's pip count is shown next to their name.",
             "title": "What is pip count?"
           }
         },
         "subtitle": "Learn to read who's winning the race",
-        "title": "Pip Count: The Race Score"
+        "title": "Pip count: the race score"
       },
       "strategies": {
         "steps": {
@@ -441,15 +441,15 @@
           },
           "prime": {
             "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it.",
-            "title": "Priming Game"
+            "title": "Priming game"
           },
           "running": {
             "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board.",
-            "title": "Running Game"
+            "title": "Running game"
           }
         },
         "subtitle": "Recognize classic game plans",
-        "title": "Game Strategies"
+        "title": "Game plans"
       }
     },
     "locked": "Complete the previous lesson first",
@@ -501,7 +501,7 @@
     "replay": "Replay",
     "skip_to_play": "Skip to play",
     "step_progress": "Step {{current}} of {{total}}",
-    "subtitle": "Short interactive lessons — then you’re ready",
+    "subtitle": "Seven quick lessons — then you’re ready to play",
     "title": "Learn to play"
   },
   "not_found": {
@@ -524,7 +524,7 @@
     "english": "English",
     "game": "Game",
     "general": "General",
-    "github": "Github",
+    "github": "GitHub",
     "language": "Language",
     "link_error_body": "Please try again later.",
     "link_error_title": "Unable to open link",

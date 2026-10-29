@@ -1,8 +1,8 @@
 {
   "error": {
-    "body": "Starten Sie die App neu, um fortzufahren.",
-    "heading": "Etwas ging schief",
-    "retry": "Versuch"
+    "body": "Starte die App neu, um weiterzumachen.",
+    "heading": "Etwas ist schiefgelaufen",
+    "retry": "Erneut versuchen"
   },
   "feedback": {
     "attach_hint": "Danach öffnet sich deine Mail-App, dort kannst du einen Screenshot anhängen.",
@@ -20,53 +20,53 @@
   },
   "game": {
     "caption": {
-      "selected": "Ausgewählt - tippen Sie auf einen hervorgehobenen Punkt oder Abbrechen"
+      "selected": "Ausgewählt – tippe auf einen markierten Punkt oder auf Abbrechen"
     },
     "controls": {
       "bear_off_a11y": "Stein abtragen",
-      "cancel": "Stornierung",
-      "cancel_a11y": "Auswahl abbrechen",
+      "cancel": "Abbrechen",
+      "cancel_a11y": "Auswahl aufheben",
       "confirm_move": "Zug bestätigen",
       "confirm_move_a11y": "Zug bestätigen und Zug beenden",
-      "leave_game_a11y": "Spiel verlassen und nach Hause zurückkehren",
-      "loading": "Beladung...",
-      "new_game_message": "Neues Spiel starten?",
-      "new_game_title": "Neues Spiel",
-      "no_legal_moves": "Keine gültigen Züge…",
+      "leave_game_a11y": "Partie verlassen und zum Start",
+      "loading": "Wird geladen…",
+      "new_game_message": "Neue Partie starten?",
+      "new_game_title": "Neue Partie",
+      "no_legal_moves": "Kein gültiger Zug…",
       "play_again": "Nochmal spielen",
       "play_again_a11y": "Nochmal spielen",
-      "redo_a11y": "Redo Move",
+      "redo_a11y": "Zug wiederholen",
       "roll_dice": "Würfeln",
       "roll_dice_a11y": "Würfeln",
-      "start_new_game_a11y": "Starten Sie neues Spiel",
-      "undo_a11y": "Undo Bewegung",
-      "undo_move": "Rückgängig"
+      "start_new_game_a11y": "Neue Partie starten",
+      "undo_a11y": "Zug zurücknehmen",
+      "undo_move": "Zurück"
     },
     "hint": {
       "back_to_turn": "Zurück zu meinem Zug",
-      "back_to_turn_a11y": "Zurück zu meinem Zug, Hinweis schließen",
-      "button": "Hinweis",
-      "button_a11y": "Einen Zughinweis holen",
-      "error": "Kein Hinweis gefunden — tippen zum Wiederholen",
-      "error_a11y": "Hinweis erneut versuchen",
-      "finding": "Suche den besten Zug…",
+      "back_to_turn_a11y": "Zurück zu meinem Zug, Tipp schließen",
+      "button": "Tipp",
+      "button_a11y": "Zugtipp anzeigen",
+      "error": "Kein Tipp gefunden – tippe für einen neuen Versuch",
+      "error_a11y": "Tipp erneut suchen",
+      "finding": "Bester Zug wird gesucht…",
       "play": "Diesen Zug spielen",
       "play_a11y": "Den vorgeschlagenen Zug spielen",
       "suggested": "Vorgeschlagener Zug"
     },
     "nudge": {
-      "roll_first": "Würfle zuerst"
+      "roll_first": "Erst würfeln"
     },
     "opening": {
-      "compare": "{{winner}} {{high}} schlägt {{low}}",
+      "compare": "{{winner}}: {{high}} schlägt {{low}}",
       "goes_first": "{{player}} beginnt!",
       "roll": "Würfeln",
-      "rolls_for_opening": "{{player}} würfelt um den Anwurf",
-      "tie": "Unentschieden!",
-      "tie_again": "Gleiche Zahl — nochmal würfeln",
+      "rolls_for_opening": "{{player}} würfelt um den Anfang",
+      "tie": "Gleichstand!",
+      "tie_again": "Gleiche Zahl – nochmal würfeln",
       "waiting_roll": "{{player}} würfelt…",
-      "who_goes_first": "Wer beginnt?",
-      "your_roll": "Zum Würfeln irgendwo tippen"
+      "who_goes_first": "Wer fängt an?",
+      "your_roll": "Tippe irgendwo, um zu würfeln"
     },
     "options": {
       "open_settings": "Sprache & mehr",
@@ -79,114 +79,114 @@
       "you": "Du"
     },
     "preferences": {
-      "auto_move": "Auto-Zug bei Zwang",
+      "auto_move": "Erzwungene Züge automatisch",
       "auto_move_hint": "Den einzig möglichen Zug automatisch spielen",
       "auto_roll": "Automatisch würfeln",
-      "auto_roll_hint": "In deinem Zug automatisch würfeln",
+      "auto_roll_hint": "Zu Beginn deines Zuges automatisch würfeln",
       "confirm_move": "Zug bestätigen",
-      "confirm_move_hint": "Vor Zugende fragen, damit du prüfen oder rückgängig machen kannst",
+      "confirm_move_hint": "Vor dem Ende deines Zuges nachfragen, damit du prüfen oder zurücknehmen kannst",
       "dice_display": "Würfelanzeige",
-      "dice_dots": "Punkte",
+      "dice_dots": "Augen",
       "dice_numbers": "Zahlen",
-      "direction_overlay": "Richtungsanzeige",
+      "direction_overlay": "Zugrichtung anzeigen",
       "direction_overlay_hint": "Hufeisen-Pfad auf dem Brett",
-      "move_hints": "Zughinweise",
+      "move_hints": "Zughilfen",
       "move_hints_hint": "Hebt die Nummern der Punkte hervor, von denen du ziehen kannst",
-      "point_numbers": "Feldnummern",
-      "point_numbers_hint": "Beschriftung 1–24 auf dem Brett anzeigen",
-      "section_automation": "Automatisierung",
+      "point_numbers": "Punktnummern",
+      "point_numbers_hint": "Beschriftung 1–24 am Brett anzeigen",
+      "section_automation": "Automatik",
       "section_board": "Brett",
       "section_dice": "Würfel",
       "sound": "Spielgeräusche",
-      "sound_hint": "Dezente Würfel-, Schlag- und Siegklänge — respektiert den Stummmodus",
+      "sound_hint": "Leise Klänge für Würfeln, Schlagen und Sieg – beachtet den Stummschalter",
       "tutor_mode": "Tutor-Modus",
-      "tutor_mode_hint": "Die Engine prüft deine Züge und markiert große Fehler"
+      "tutor_mode_hint": "Die Engine prüft deine Züge und meldet grobe Fehler"
     },
     "review": {
-      "back_to_live": "Zurück zum laufenden Spiel",
-      "live": "Laufendes Spiel",
+      "back_to_live": "Zurück zur Partie",
+      "live": "Laufende Partie",
       "live_short": "Live",
       "move_a11y": "Zug {{ply}}, {{player}}",
       "move_position": "Zug {{current}} von {{total}} · {{player}}",
-      "next": "Nächster Zug",
-      "opening": "Ausgangsstellung",
+      "next": "Nächste Runde",
+      "opening": "Startaufstellung",
       "pause_replay": "Pause",
       "player_black": "Schwarz",
       "player_white": "Weiß",
-      "previous": "Vorheriger Zug",
-      "replay": "Wiederholung",
-      "scrubber_hint": "Tippe auf einen Zug zum Ansehen",
+      "previous": "Vorherige Runde",
+      "replay": "Abspielen",
+      "scrubber_hint": "Tippe auf eine Runde, um sie anzusehen",
       "start": "Start",
       "turn_a11y": "Runde {{turn}}, {{player}}",
       "turn_label": "Runde {{turn}}/{{totalTurns}} · {{player}}",
       "turn_position": "Runde {{turn}}/{{totalTurns}} · Zug {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "Ansichtsmodus — tippe auf Live oder Zurück, um weiterzuspielen"
+      "viewing_hint": "Rückblick – tippe auf Live oder „Zurück zur Partie“, um weiterzuspielen"
     },
     "status": {
-      "black_wins": "Schwarz gewinnt",
-      "computer_wins": "Computer gewinnt",
+      "black_wins": "🏆 Schwarz gewinnt!",
+      "computer_wins": "Der Computer gewinnt",
       "off_short": "raus",
-      "pips_a11y": "{{player}}: {{pips}} Pips, {{off}} von 15 herausgewürfelt",
+      "pips_a11y": "{{player}}: {{pips}} Pips, {{off}} von 15 abgetragen",
       "white_wins": "🏆 Weiß gewinnt!",
       "you_win": "🏆 Du gewinnst!"
     },
     "strategy": {
-      "close_a11y": "Strategieerklärung schließen",
+      "close_a11y": "Strategie-Erklärung schließen",
       "got_it": "Verstanden",
       "label": {
-        "backgame": "Rückstandsspiel",
+        "backgame": "Backgame",
         "blitz": "Blitz",
         "developing": "Aufbau",
         "holding": "Haltespiel",
-        "priming": "Prime",
-        "running": "Rennspiel"
+        "priming": "Prime-Spiel",
+        "running": "Laufspiel"
       },
       "tip": {
-        "backgame": "Bleib hinten, stärke dein Heimmbrett und warte auf die späte Chance.",
-        "blitz": "Greif an: Triff jede einzelne Figur und schließe dein Heimmbrett.",
-        "developing": "Punkte aufbauen, um die 5 kämpfen und flexibel bleiben.",
-        "holding": "Halte deinen Anker, bleib sicher und warte auf deine Trefferchance.",
-        "priming": "Erweitere deine Mauer Schritt für Schritt und fange ihre hinteren Figuren ein.",
-        "running": "Bring deine Figuren effizient nach Hause und schütze jede Figur, die noch gefährdet ist."
+        "backgame": "Bleib hinten, halte dein Heimfeld stark und warte auf einen späten Treffer.",
+        "blitz": "Angriff: Schlag jeden Blot, den du kannst, und schließ dein Heimfeld.",
+        "developing": "Baue Punkte, kämpfe um den 5er-Punkt und bleib flexibel.",
+        "holding": "Halte deinen Anker, spiel sicher und warte auf deine Chance zu schlagen.",
+        "priming": "Verlängere deine Mauer Punkt für Punkt und sperre die hinteren Steine ein.",
+        "running": "Bring deine Steine zügig nach Hause und schütze die, die noch getroffen werden können."
       },
       "why": {
-        "backgame": "Du hältst tiefe Anker auf {{point1}} und {{point2}}, während du im Rennen {{pipGap}} Punkte zurückliegst.",
-        "blitz_bar": "Es stehen {{barCount}} auf der Bar, und du hast bereits {{homeMade}} Punkte in deinem Heimmbrett gemacht.",
-        "blitz_bar_blot": "Es stehen {{barCount}} auf der Bar und eine einzelne Figur in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
-        "blitz_bar_blots": "Es stehen {{barCount}} auf der Bar und {{blotCount}} einzelne Figuren in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
-        "blitz_blot": "Es ist eine einzelne Figur in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
-        "blitz_blots": "Es sind {{blotCount}} einzelne Figuren in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
-        "developing": "Noch keine Prime, kein Anker und kein Angriff auf dem Brett — das Spiel formt sich erst.",
-        "holding": "Du hältst einen Anker auf {{point}}, während du {{pipGap}} Punkte zurückliegst.",
-        "priming": "Du hast eine Prime über {{prime}} Punkte aufgebaut.",
-        "priming_anchor": "Du hast eine Prime über {{prime}} Punkte mit einem Anker dahinter aufgebaut.",
-        "running_lead": "Du führst im Rennen {{foePips}} zu {{myPips}}, ohne einzelne Figuren in Reichweite.",
-        "running_race": "Kein Kontakt möglich — ein reines Rennen zum Auswerfen ({{myPips}} zu {{foePips}} Punkte)."
+        "backgame": "Du hältst tiefe Anker auf dem {{point1}} und dem {{point2}}, liegst im Rennen aber {{pipGap}} Pips zurück.",
+        "blitz_bar": "Auf der Bar: {{barCount}}, und du hast schon {{homeMade}} Punkte im Heimfeld gebaut.",
+        "blitz_bar_blot": "Auf der Bar: {{barCount}}, dazu 1 Blot in deinem Heimfeld, und du hast schon {{homeMade}} Punkte im Heimfeld gebaut.",
+        "blitz_bar_blots": "Auf der Bar: {{barCount}}, dazu {{blotCount}} Blots in deinem Heimfeld, und du hast schon {{homeMade}} Punkte im Heimfeld gebaut.",
+        "blitz_blot": "In deinem Heimfeld steht 1 Blot, und du hast schon {{homeMade}} Punkte im Heimfeld gebaut.",
+        "blitz_blots": "In deinem Heimfeld stehen {{blotCount}} Blots, und du hast schon {{homeMade}} Punkte im Heimfeld gebaut.",
+        "developing": "Noch keine Prime, kein Anker, kein Angriff – die Partie nimmt gerade erst Form an.",
+        "holding": "Du hältst einen Anker auf dem {{point}} und liegst {{pipGap}} Pips zurück.",
+        "priming": "Du hast eine Prime aus {{prime}} Punkten gebaut.",
+        "priming_anchor": "Du hast eine Prime aus {{prime}} Punkten gebaut, mit einem Anker dahinter.",
+        "running_lead": "Du führst im Rennen mit {{myPips}} zu {{foePips}}, und kein Blot steht in Schlagweite.",
+        "running_race": "Kein Kontakt mehr – es ist ein reines Rennen ums Abtragen ({{myPips}} zu {{foePips}} Pips)."
       }
     },
     "turn": {
       "black_is_moving": "Schwarz zieht…",
       "black_is_rolling": "Schwarz würfelt…",
       "black_turn": "Schwarz ist am Zug",
-      "cant_enter": "Mit {{die1}} und {{die2}} kein Einsetzen möglich — Zug beenden",
+      "cant_enter": "Mit {{die1}} und {{die2}} kommst du nicht von der Bar – beende deinen Zug",
       "computer_turn": "Der Computer ist am Zug",
-      "enter_from_bar": "Erst vom Balken einsetzen, bevor du andere Steine ziehst",
-      "game_over": "Spiel beendet",
-      "move_checkers": "Bewege deine {{color}}en Steine",
-      "no_legal_moves": "Keine gültigen Züge mit {{die1}} und {{die2}} — Zug beenden",
+      "enter_from_bar": "Erst von der Bar einwürfeln, dann andere Steine ziehen",
+      "game_over": "Partie vorbei",
+      "move_checkers": "Zieh deine Steine ({{color}})",
+      "no_legal_moves": "Mit {{die1}} und {{die2}} gibt es keinen gültigen Zug – beende deinen Zug",
       "opening_roll": "Eröffnungswurf",
-      "roll_dice": "Würfeln — du spielst {{color}}",
+      "roll_dice": "Würfle – du spielst {{color}}",
       "white_turn": "Weiß ist am Zug",
       "your_turn": "Du bist am Zug"
     },
     "tutor": {
       "back_to_question": "Zurück zur Frage",
-      "back_to_question_a11y": "Zurück, ohne die Antwort zu zeigen",
+      "back_to_question_a11y": "Zurück, ohne die Lösung zu zeigen",
       "band": {
         "big_blunder": "Grober Fehler",
-        "fine": "In Ordnung",
+        "fine": "Gut",
         "mistake": "Fehler",
-        "slip": "Ausrutscher"
+        "slip": "Ungenauigkeit"
       },
       "best": "Bester",
       "best_played": "Bester:",
@@ -195,70 +195,70 @@
         "best_move": "Bester Zug",
         "both": "Beide",
         "mine": "Meiner",
-        "show_a11y": "Brett {{label}} zeigen",
+        "show_a11y": "Brett „{{label}}“ zeigen",
         "start": "Start",
-        "starting_position": "Anfangsposition",
+        "starting_position": "Ausgangsstellung",
         "your_move": "Dein Zug",
-        "your_move_replayed": "Dein Zug, wiederholt"
+        "your_move_replayed": "Dein Zug, nochmal abgespielt"
       },
       "details_hide": "Details ausblenden",
       "details_hide_a11y": "Details ausblenden",
       "details_show": "Details",
       "details_show_a11y": "Details anzeigen",
-      "details_summary": "Dein Zug lag auf Platz {{rank}} von {{count}} und bringt etwa {{loss}} Punkte pro Partie weniger als der beste Zug.",
-      "equity_explainer": "Die Engine bewertet jeden Zug nach den Punkten, die er im Schnitt pro Partie gewinnen soll. Höher ist besser.",
+      "details_summary": "Dein Zug ist Nummer {{rank}} von {{count}} und bringt im Schnitt etwa {{loss}} Punkte pro Partie weniger als der beste Zug.",
+      "equity_explainer": "Die Engine bewertet jeden Zug danach, wie viele Punkte er im Schnitt pro Partie einbringt. Höher ist besser.",
       "equity_pts": "{{points}} Pkt.",
       "keep": "Meinen Zug behalten",
       "keep_a11y": "Meinen Zug behalten und weiterspielen",
-      "meter_a11y": "Fehlerstärke: {{severity}}. Etwa {{loss}} Punkte pro Partie verloren. Die Skala folgt GNU Backgammon: zweifelhaft ab 0.04, schlecht ab 0.08, sehr schlecht ab 0.16.",
+      "meter_a11y": "Schwere des Fehlers: {{severity}}. Etwa {{loss}} Punkte pro Partie verloren. Die Skala folgt GNU Backgammon: zweifelhaft ab 0,04, schlecht ab 0,08, sehr schlecht ab 0,16.",
       "meter_caption": "Fehlerskala (GNU Backgammon)",
       "play_best": "Besten Zug spielen",
       "play_best_a11y": "Meinen Zug zurücknehmen und den besten Zug spielen",
-      "question_body": "Dein Zug lag auf Platz {{rank}} von {{count}} Möglichkeiten für diesen Wurf. Im Schnitt bringt er etwa {{loss}} Punkte pro Partie weniger als der beste Zug.",
+      "question_body": "Dein Zug ist Nummer {{rank}} von {{count}} Möglichkeiten, diesen Wurf zu spielen. Im Schnitt bringt er etwa {{loss}} Punkte pro Partie weniger als der beste Zug.",
       "rank": "{{rank}}",
       "rank_yours": "{{rank}} (deiner)",
-      "replay_pause_a11y": "Wiederholung von {{label}} pausieren",
-      "replay_play_a11y": "Wiederholung von {{label}} abspielen",
+      "replay_pause_a11y": "Wiedergabe „{{label}}“ pausieren",
+      "replay_play_a11y": "Wiedergabe „{{label}}“ abspielen",
       "reveal": "Besten Zug zeigen",
       "reveal_a11y": "Den empfohlenen Zug aufdecken",
       "rolled": "Du hast {{dice}} gewürfelt",
       "show_mine": "Meinen Zug zeigen",
-      "show_mine_a11y": "Nur meinen Zug zeigen, ohne den besten Zug aufzudecken",
-      "take_back": "Zurücknehmen und erneut versuchen",
-      "take_back_a11y": "Den ganzen Zug zurücknehmen und erneut versuchen",
-      "take_back_retry_a11y": "Den Zug zurücknehmen und erneut versuchen",
-      "title_compare": "Dein Zug gegen den besten Zug",
+      "show_mine_a11y": "Nur meinen Zug zeigen, ohne den besten zu verraten",
+      "take_back": "Zurücknehmen & neu versuchen",
+      "take_back_a11y": "Den ganzen Zug zurücknehmen und neu versuchen",
+      "take_back_retry_a11y": "Den Zug zurücknehmen und neu versuchen",
+      "title_compare": "Dein Zug vs. bester Zug",
       "title_mine": "Dein Zug",
       "turn_off": "Tutor ausschalten",
       "turn_off_a11y": "Tutor-Modus ausschalten",
       "undo_last": "Letzten Zug zurücknehmen",
       "undo_last_a11y": "Nur den letzten Zug zurücknehmen und neu spielen",
-      "vs_best": "−{{delta}} ggü. bestem",
-      "you_played": "Du spieltest:"
+      "vs_best": "−{{delta}} zum besten",
+      "you_played": "Du hast gespielt:"
     }
   },
   "home": {
-    "confirm_cancel": "Stornierung",
-    "confirm_continue": "Weiterfahren",
-    "confirm_native": "Setzen Sie Ihr aktuelles Spiel fort oder starten Sie ein neues?",
-    "confirm_new": "Neues Spiel",
-    "confirm_replace": "Neues Spiel starten? Dein aktuelles Spiel wird ersetzt.",
-    "confirm_title": "Spiel im Gange",
-    "confirm_web": "Ein neues Spiel starten? (Verwenden Sie Resume auf dem Startbildschirm, um den aktuellen fortzusetzen.)",
-    "recovery_body": "Der letzte Spielstand war beschädigt. Du kannst ein neues Spiel starten – die Startseite funktioniert weiterhin.",
+    "confirm_cancel": "Abbrechen",
+    "confirm_continue": "Weiterspielen",
+    "confirm_native": "Aktuelle Partie fortsetzen oder eine neue starten?",
+    "confirm_new": "Neue Partie",
+    "confirm_replace": "Neue Partie starten? Deine aktuelle Partie wird ersetzt.",
+    "confirm_title": "Partie läuft",
+    "confirm_web": "Neue Partie starten? (Mit „Partie fortsetzen“ auf dem Startbildschirm spielst du die aktuelle weiter.)",
+    "recovery_body": "Der letzte Spielstand war beschädigt. Du kannst eine neue Partie starten – alles andere funktioniert weiter.",
     "recovery_dismiss": "Schließen",
-    "recovery_title": "Gespeichertes Spiel konnte nicht wiederhergestellt werden",
-    "resume": "Spiel fortsetzen",
-    "resume_a11y": "Gespeichertes Spiel fortsetzen",
-    "resume_none": "Kein gespeichertes Spiel wird wieder aufgenommen",
+    "recovery_title": "Gespeicherte Partie konnte nicht wiederhergestellt werden",
+    "resume": "Partie fortsetzen",
+    "resume_a11y": "Gespeicherte Partie fortsetzen",
+    "resume_none": "Keine gespeicherte Partie vorhanden",
     "resume_sub": "Mach da weiter, wo du aufgehört hast",
-    "review": "Letztes Spiel ansehen",
-    "review_a11y": "Beendetes Spiel ansehen",
-    "review_sub": "Sieh dir an, wie das letzte Spiel endete",
-    "subtitle": "Meistere das Brett — Zug für Zug",
+    "review": "Letzte Partie ansehen",
+    "review_a11y": "Beendete Partie ansehen",
+    "review_sub": "Sieh dir an, wie die letzte Partie ausging",
+    "subtitle": "Beherrsche das Brett – Zug um Zug",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 Spieler",
-    "two_players_a11y": "Zu zweit am selben Gerät spielen",
+    "two_players_a11y": "Zu zweit an einem Gerät spielen",
     "two_players_sub": "Abwechselnd am selben Gerät",
     "vs_computer": "Gegen Computer",
     "vs_computer_a11y": "Gegen den Computer spielen",
@@ -266,112 +266,112 @@
   },
   "learn": {
     "back_to_hub": "Alle Lektionen",
-    "continue": "Weiterfahren",
+    "continue": "Weiter",
     "feedback": {
-      "hint_nudge": "Brauchen Sie einen Nudge? Suchen Sie nach den hervorgehobenen Stellen.",
-      "illegal": "Versuchen Sie einen hervorgehobenen Punkt - oder tippen Sie auf Hint.",
-      "legal_but_wrong": "Das ist legal in einem echten Spiel - hier, versuchen Sie die Bewegung, die diese Idee lehrt.",
-      "move_progress": "Gut — {{done}} von {{needed}} Zügen geschafft."
+      "hint_nudge": "Brauchst du einen Schubs? Achte auf die markierten Stellen.",
+      "illegal": "Versuch einen markierten Punkt – oder tippe auf Tipp.",
+      "legal_but_wrong": "In einer echten Partie wäre das erlaubt – hier probier den Zug, um den es in dieser Lektion geht.",
+      "move_progress": "Gut – {{done}} von {{needed}} Zügen geschafft."
     },
     "graduation": {
-      "body": "Sie kennen das Ziel, das Brett, wie sich Arbeit, Schlagen und Abstützen drehen. Ein kurzer Check - dann dein erstes richtiges Spiel.",
-      "play_cta": "Spielen Sie Ihr erstes Spiel",
-      "quiz_done": "Nagelte es. Zeit zum Spielen.",
-      "quiz_title": "Schnellprüfung",
-      "quiz_wrong": "Nicht ganz - versuchen Sie eine andere Antwort.",
-      "recap_1": "Rennen: Bear off alle 15 zuerst",
-      "recap_2": "Rollen Sie zwei Würfel; landen auf offenen Punkten",
-      "recap_3": "Hit Blots: Sie sitzen an der Bar",
-      "recap_4": "Bear off nur von Ihrem Home Board",
-      "recap_5": "Spiele beginnen mit jeweils einem Würfel - höher geht zuerst (Tiles Re-Roll)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
-      "title": "Du bist bereit zu spielen"
+      "body": "Du kennst das Ziel, das Brett, den Ablauf eines Zuges, das Schlagen, das Abtragen, die Pipzahl und die wichtigsten Spielpläne. Ein kurzer Check – dann deine erste echte Partie.",
+      "play_cta": "Erste Partie spielen",
+      "quiz_done": "Perfekt. Zeit zu spielen.",
+      "quiz_title": "Kurzer Check",
+      "quiz_wrong": "Nicht ganz – versuch eine andere Antwort.",
+      "recap_1": "Rennen: Wer zuerst alle 15 Steine abträgt, gewinnt",
+      "recap_2": "Zwei Würfel werfen; nur auf offene Punkte ziehen",
+      "recap_3": "Blots schlagen → sie kommen auf die Bar",
+      "recap_4": "Abtragen nur aus dem eigenen Heimfeld",
+      "recap_5": "Zu Beginn wirft jeder einen Würfel – die höhere Zahl fängt an (bei Gleichstand nochmal)",
+      "recap_6": "Pipzahl: Wer weniger hat, führt im Rennen",
+      "recap_7": "Wähle einen Plan: rennen, angreifen, sperren oder halten",
+      "title": "Du bist bereit"
     },
-    "hint": "Hinweis",
-    "home_cta": "Lernen Sie zu spielen",
-    "home_cta_progress": "{{done}} von {{total}} Lektionen",
-    "home_cta_quiz": "Quick Check links — dann spielen",
-    "home_cta_ready": "Sie sind bereit - spielen Sie ein echtes Spiel",
-    "home_cta_sub": "Interaktiver Unterricht für Anfänger",
-    "lesson_complete": "Lektion komplett!",
+    "hint": "Tipp",
+    "home_cta": "Spielen lernen",
+    "home_cta_progress": "{{done}} von {{total}} Lektionen geschafft",
+    "home_cta_quiz": "Noch ein kurzer Check – dann spielen",
+    "home_cta_ready": "Du bist bereit – spiel eine echte Partie",
+    "home_cta_sub": "Interaktive Lektionen für Einsteiger",
+    "lesson_complete": "Lektion geschafft!",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Nichts ist auf dem 5-Punkt, aber Sie haben eine 5 gewürfelt. Befreien Sie sich von Ihrem höchsten Checker (der 3). Eine größere Zahl nimmt immer noch einen Checker ab.",
-            "hint": "Wählen Sie Punkt 3, dann tippen Sie auf die Ablageschale.",
-            "praise": "Das ist die Überschreitungsregel - Sie werden es viel verwenden, wenn Sie sich abstützen.",
-            "title": "Größere sterben, immer noch weg"
+            "body": "Auf dem 5er-Punkt steht nichts, aber du hast eine 5 gewürfelt. Trage den höchsten Stein ab (den auf der 3). Eine größere Zahl darf trotzdem abtragen.",
+            "hint": "Wähle Punkt 3 und tippe dann auf das Abtragefeld.",
+            "praise": "Das ist die Überschuss-Regel – die brauchst du beim Abtragen oft.",
+            "title": "Größere Zahl, trotzdem raus"
           },
           "try": {
-            "body": "Alle Ihre Checker sind zu Hause (1-6), so dass Sie aushalten können. Sie haben eine 3 gerollt - nehmen Sie den Checker auf dem 3-Punkt vom Brett.",
-            "hint": "Wählen Sie Punkt 3, dann tippen Sie auf den Abstützbereich am rechten Rand.",
-            "praise": "Aus dem Board! Zuerst, um alle 15 Siege abzutragen.",
-            "title": "Bear one off"
+            "body": "Alle deine Steine sind im Heimfeld (1–6), also darfst du abtragen. Du hast eine 3 gewürfelt – nimm den Stein vom 3er-Punkt vom Brett.",
+            "hint": "Wähle Punkt 3 und tippe dann auf das Abtragefeld am rechten Rand.",
+            "praise": "Runter vom Brett! Wer zuerst alle 15 abträgt, gewinnt.",
+            "title": "Einen Stein abtragen"
           }
         },
-        "subtitle": "Wie Sie gewinnen",
-        "title": "Abstützung"
+        "subtitle": "So gewinnst du",
+        "title": "Abtragen"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Das Hufeisen passt zu den Kontrolleuren des Spielers, dessen Reihe es ist. Es verfolgt die Route dieses Spielers um das Brett und nach Hause (Punkte 1-6).",
-            "title": "Der Hufeisenweg"
+            "body": "Das Hufeisen hat die Farbe der Steine des Spielers, der am Zug ist. Es zeigt seinen Weg rund ums Brett bis ins Heimfeld (Punkte 1–6).",
+            "title": "Der Hufeisen-Pfad"
           },
           "far": {
-            "body": "Tippen Sie auf den Punkt, an dem Ihre beiden am weitesten entfernten weißen Checker beginnen (der 24-Punkt, oben rechts).",
-            "hint": "Schauen Sie sich oben rechts an - zwei weiße Checker auf Punkt 24.",
-            "praise": "Diese beginnen tief im Haus des Gegners und haben die längste Reise.",
-            "title": "Ihre entferntesten Checker"
+            "body": "Tippe auf den Punkt, auf dem deine zwei hintersten weißen Steine starten (Punkt 24, oben rechts).",
+            "hint": "Schau oben rechts – zwei weiße Steine auf Punkt 24.",
+            "praise": "Die starten tief im Heimfeld des Gegners und haben den weitesten Weg.",
+            "title": "Deine hintersten Steine"
           },
           "home_stack": {
-            "body": "Tippen Sie auf den großen Stapel von fünf weißen Checkern bereits in Ihrem Haus (der 6-Punkt).",
-            "hint": "Rechts unten: fünf weiße Checker auf Punkt 6.",
-            "praise": "Das ist dein Home Stack - fünf warten bereits auf den 6-Punkt, der am nächsten ist. Jedes Spiel beginnt so.",
-            "title": "Dein Home Stack"
+            "body": "Tippe auf den Stapel aus fünf weißen Steinen, die schon in deinem Heimfeld stehen (Punkt 6).",
+            "hint": "Unten rechts: fünf weiße Steine auf Punkt 6.",
+            "praise": "Das ist dein Heimstapel – fünf Steine warten schon auf dem 6er-Punkt, am nächsten am Abtragen. Jede Partie beginnt so.",
+            "title": "Dein Heimstapel"
           }
         },
-        "subtitle": "In welche Richtung du dich bewegst",
-        "title": "Richtung und Einrichtung"
+        "subtitle": "In welche Richtung du ziehst",
+        "title": "Richtung & Aufstellung"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "Der erhöhte Streifen in der Mitte ist die Bar. Hit Checkers warten hier. Tippen Sie auf die Bar.",
-            "hint": "Tippen Sie auf den vertikalen Streifen zwischen der linken und rechten Hälfte des Boards.",
-            "praise": "Rechts - hit-checker sitzen auf der bar, bis sie wieder eintreten.",
+            "body": "Die erhöhte Leiste in der Mitte ist die Bar. Geschlagene Steine warten hier. Tippe auf die Bar.",
+            "hint": "Tippe auf die senkrechte Leiste zwischen linker und rechter Brett-Hälfte.",
+            "praise": "Richtig – geschlagene Steine bleiben auf der Bar, bis sie wieder einsteigen.",
             "title": "Die Bar"
           },
           "explain": {
-            "body": "Sie und Ihr Gegner haben jeweils 15 Checker. Bewegen Sie sie um das Brett und aus - der erste gewinnt.",
-            "title": "Zuerst, um Gewinne abzutragen"
+            "body": "Du und dein Gegner habt je 15 Steine. Zieht sie einmal ums Brett und tragt sie ab – wer zuerst fertig ist, gewinnt.",
+            "title": "Wer zuerst abträgt, gewinnt"
           },
           "home": {
-            "body": "Ihr Haus ist Punkte 1-6 (unten rechts). Tippen Sie auf einen beliebigen Punkt in Ihrem Home Board.",
-            "hint": "Zuhause sind die sechs Punkte im unteren rechten Quadranten - nummeriert 1 bis 6.",
-            "praise": "Das ist dein Zuhause - Checker verlassen das Board von hier.",
-            "title": "Finden Sie Ihr Home Board"
+            "body": "Dein Heimfeld sind die Punkte 1–6 (unten rechts). Tippe auf einen Punkt in deinem Heimfeld.",
+            "hint": "Das Heimfeld sind die sechs Punkte im Viertel unten rechts – Nummer 1 bis 6.",
+            "praise": "Das ist dein Heimfeld – von hier verlassen die Steine das Brett.",
+            "title": "Finde dein Heimfeld"
           }
         },
-        "subtitle": "Wofür du fährst",
-        "title": "Ziel und Board"
+        "subtitle": "Worum es im Rennen geht",
+        "title": "Ziel & Brett"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Du bist in der bar - komm wieder an, bevor du jemand anderen bewegst. Zählen Sie vom 24-Punkt nach Hause: eine 4 landet auf Punkt 21.",
-            "hint": "Tippen Sie auf die Bar, dann auf Punkt 21 (nicht 23 - das sind nur zwei Pips von der Bar).",
-            "praise": "Sie sind wieder an der Tafel - Balkenprüfer treten immer zuerst ein.",
-            "title": "Betreten Sie die Bar",
-            "wrong": "Das sind nur zwei Pips von der Bar (Punkt 23). Zählen Sie vier Punkte von 24 nach Hause - das ist Punkt 21."
+            "body": "Du bist auf der Bar – bring den Stein zurück ins Spiel, bevor du einen anderen ziehst. Zähl vom 24er-Punkt Richtung Heimfeld: Eine 4 landet auf Punkt 21.",
+            "hint": "Tippe auf die Bar, dann auf Punkt 21 (nicht 23 – das sind nur zwei Pips von der Bar).",
+            "praise": "Du bist zurück auf dem Brett – Steine auf der Bar steigen immer zuerst ein.",
+            "title": "Von der Bar einsteigen",
+            "wrong": "Das sind nur zwei Pips von der Bar (Punkt 23). Zähl vier Punkte von 24 Richtung Heimfeld – das ist Punkt 21."
           },
           "hit": {
-            "body": "Ein einzelner Checker ist ein Blot. Landen Sie darauf und es geht zur Bar. Sie haben eine 3 gewürfelt - den schwarzen Fleck auf dem 5-Punkt getroffen.",
-            "hint": "Tippen Sie auf 8 und dann auf Punkt 5.",
-            "praise": "Schlag! Dieser schwarze checker ist jetzt auf der bar.",
-            "title": "Schlagen Sie den Blot"
+            "body": "Ein einzelner Stein ist ein Blot. Landest du darauf, kommt er auf die Bar. Du hast eine 3 gewürfelt – schlag den schwarzen Blot auf dem 5er-Punkt.",
+            "hint": "Tippe auf deinen Stein auf der 8, dann auf Punkt 5.",
+            "praise": "Getroffen! Der schwarze Stein steht jetzt auf der Bar.",
+            "title": "Schlag den Blot"
           }
         },
         "subtitle": "Kontaktspiel",
@@ -380,135 +380,135 @@
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "Zwei oder mehr gegnerische Checker blockieren einen Punkt - Sie können dort nicht landen. Tippen Sie auf den blockierten schwarzen Stapel auf dem 5-Punkt.",
-            "hint": "Der hervorgehobene Stapel von zwei schwarzen Checkern auf Punkt 5.",
-            "praise": "Rechts - ein gemachter Punkt (2+) ist geschlossen. Leere, eigene oder ein Fleck (1) sind offen.",
-            "title": "Sperrpunkte"
+            "body": "Zwei oder mehr gegnerische Steine blockieren einen Punkt – dort kannst du nicht landen. Tippe auf den blockierten schwarzen Stapel auf dem 5er-Punkt.",
+            "hint": "Der markierte Stapel aus zwei schwarzen Steinen auf Punkt 5.",
+            "praise": "Genau – ein gebauter Punkt (2+) ist zu. Leere Punkte, eigene Steine und Blots (1) sind offen.",
+            "title": "Blockierte Punkte"
           },
           "doubles": {
-            "body": "Doubles geben Ihnen vier Züge dieser Zahl. Du hast 2-2 gerollt - das sind vier 2s. Bewegen Sie sich vom 8-Punkt zum 6-Punkt viermal.",
-            "hint": "Tippen Sie auf den 8-Punkt, dann auf den 6-Punkt. Tun Sie dies vier Mal - einmal pro sterben.",
-            "praise": "Genau - Doppel bedeuten vier Züge mit dieser Zahl.",
-            "title": "Doubles = vier Züge"
+            "body": "Ein Pasch gibt dir vier Züge mit dieser Zahl. Du hast 2-2 gewürfelt – das sind vier Zweier. Zieh viermal vom 8er- auf den 6er-Punkt.",
+            "hint": "Tippe auf den 8er-Punkt, dann auf den 6er-Punkt. Das viermal – einmal pro Würfel.",
+            "praise": "Genau – ein Pasch heißt vier Züge mit dieser Zahl.",
+            "title": "Pasch = vier Züge"
           },
           "explain": {
-            "body": "Jede Runde rollen Sie zwei Würfel und spielen beide Zahlen, wenn Sie können. Sie können auf leeren Punkten, Ihren eigenen Checkern oder einem einsamen Gegner (einem Fleck) landen.",
+            "body": "In jeder Runde wirfst du zwei Würfel und spielst beide Zahlen, wenn möglich. Du darfst auf leeren Punkten, auf eigenen Steinen oder auf einem einzelnen gegnerischen Stein (einem Blot) landen.",
             "title": "Zwei Zahlen, offene Punkte"
           },
           "two_dice": {
-            "body": "Du hast eine 3 und eine 1 gewürfelt. Ziehe den Stein auf Punkt 8 drei Felder weit auf Punkt 5 und den Stein auf Punkt 6 ein Feld weit auf Punkt 5.",
-            "hint": "Wählen Sie einen weißen Checker und tippen Sie dann auf Punkt 5. Tun Sie dies sowohl für den 8-Punkt als auch für den 6-Punkt.",
-            "praise": "Schön - beide Würfel verwendet. Gleicher checker oder zwei checker, beide zahlen müssen gespielt werden, wenn sie können.",
-            "title": "Spiele beide Würfel"
+            "body": "Du hast 3 und 1 gewürfelt. Zieh den Stein vom 8er-Punkt drei Pips weit (auf die 5) und den vom 6er-Punkt einen Pip weit (auf die 5).",
+            "hint": "Wähle einen weißen Stein und tippe dann auf Punkt 5. Mach das für den 8er- und den 6er-Punkt.",
+            "praise": "Gut – beide Würfel gespielt. Ob ein Stein oder zwei: Beide Zahlen müssen gespielt werden, wenn es geht.",
+            "title": "Beide Würfel spielen"
           }
         },
-        "subtitle": "Wie ein Turn funktioniert",
-        "title": "Umzug mit Würfeln"
+        "subtitle": "So läuft ein Zug",
+        "title": "Ziehen mit Würfeln"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "Weiß hat 5 Steine auswürfelt, der Rest ist nah am Haus. Schwarz ist noch über das Brett verteilt. Tippe einen weißen Stein: Weiß führt, weil der Pip-Count niedriger ist.",
-            "hint": "Such die Steine, die dem Auswürfeln am nächsten sind.",
-            "praise": "Genau! Der niedrigere Pip-Count von Weiß bedeutet weniger Weg.",
-            "title": "Wer liegt vorn?"
+            "body": "Weiß hat 5 Steine abgetragen, der Rest ist fast zu Hause. Die schwarzen Steine sind noch übers Brett verteilt. Tippe auf einen weißen Stein – Weiß führt im Rennen mit der niedrigeren Pipzahl.",
+            "hint": "Such die Steine, die dem Abtragen am nächsten sind.",
+            "praise": "Genau! Die niedrigere Pipzahl von Weiß bedeutet einen kürzeren Weg.",
+            "title": "Wer führt?"
           },
           "behind": {
-            "body": "Dieselbe Stellung. Die schwarzen Steine sind weit vom Haus und haben einen viel höheren Pip-Count. Tippe einen schwarzen Stein: Schwarz liegt zurück.",
-            "hint": "Such die Steine, die am weitesten vom Haus sind.",
-            "praise": "Richtig! Schwarz braucht noch viel mehr Pips.",
-            "title": "Wer liegt zurück?"
+            "body": "Gleiche Stellung. Die schwarzen Steine sind weit weg von zu Hause, mit viel höherer Pipzahl. Tippe auf einen schwarzen Stein – Schwarz liegt im Rennen hinten.",
+            "hint": "Such die Steine, die am weitesten von zu Hause entfernt sind.",
+            "praise": "Richtig! Schwarz braucht noch viel mehr Pips bis zum Abtragen.",
+            "title": "Wer liegt hinten?"
           },
           "explain": {
-            "body": "Der Pip-Count ist die Summe der Punkte, die deine Steine noch bis zum Auswürfeln reisen müssen. Jeder Stein zählt seine Punktzahl: einer auf dem 6-Punkt zählt 6, einer auf dem 13-Punkt zählt 13. Weniger ist besser, du bist näher am Ziel. Die Zahlen stehen oben im Spiel, ein Punkt zeigt, welche Zahl zu welcher Farbe gehört.",
-            "title": "Was ist der Pip-Count?"
+            "body": "Die Pipzahl ist die Summe der Punkte, die deine Steine bis zum Abtragen noch zurücklegen müssen. Jeder Stein zählt seine Punktnummer – ein Stein auf dem 6er-Punkt zählt 6, auf dem 13er-Punkt 13. Alles zusammengezählt ergibt deine Pipzahl. Weniger ist besser: Du bist näher am Abtragen. In jeder Partie steht die Pipzahl jedes Spielers neben seinem Namen.",
+            "title": "Was ist die Pipzahl?"
           }
         },
-        "subtitle": "Erkennen, wer das Rennen führt",
-        "title": "Pip-Count: der Spielstand"
+        "subtitle": "Erkenne, wer das Rennen gewinnt",
+        "title": "Pipzahl: der Rennstand"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "Dein Haus ist stark, der Gegner hat Blots oder Steine auf der Bar. Schlage jeden Blot und schließe deine Hauspunkte, damit seine Steine auf der Bar festsitzen, während du auswürfelst. Hier hat Weiß drei Hauspunkte und Schwarz einen Stein auf der Bar.",
+            "body": "Dein Heimfeld ist stark und dein Gegner hat Blots oder Steine auf der Bar. Greif an! Schlag jeden Blot, den du kannst, und schließ die Punkte in deinem Heimfeld. Ziel ist, seine Steine auf der Bar einzusperren, während du abträgst. Hier hat Weiß drei Punkte im Heimfeld gebaut und Schwarz einen Stein auf der Bar.",
             "title": "Blitz"
           },
           "identify": {
-            "body": "Das ist ein Prime-Spiel. Tippe einen Punkt der weißen Prime, der Mauer aus aufeinanderfolgenden Punkten, die Schwarz sperrt.",
-            "hint": "Such aufeinanderfolgende Punkte mit mindestens 2 weißen Steinen.",
-            "praise": "Perfekt! Diese Mauer ist die Prime. Die hinteren Steine von Schwarz sitzen fest.",
+            "body": "Das ist ein Prime-Spiel. Tippe auf einen Punkt der weißen Prime – der Mauer aus gebauten Punkten in Folge, die Schwarz blockiert.",
+            "hint": "Such aufeinanderfolgende Punkte mit jeweils mindestens 2 weißen Steinen.",
+            "praise": "Perfekt! Diese Mauer ist die Prime – die hinteren schwarzen Steine sitzen fest.",
             "title": "Finde die Prime"
           },
           "prime": {
-            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt.",
-            "title": "Prime"
+            "body": "Du hast eine Mauer aus gebauten Punkten in Folge errichtet – eine Prime. Die markierten Punkte bilden eine Prime aus 4 Punkten, die die hinteren schwarzen Steine einschränkt. Verlängere deine Prime Punkt für Punkt und sperre die Steine dahinter ein.",
+            "title": "Prime-Spiel"
           },
           "running": {
-            "body": "Du führst, und keine Blots liegen in Schlagweite. Bring die Steine sicher nach Hause und lass keine Blots liegen. Nicht tricksen, einfach rennen. Hier führt Weiß mit einem festen Haus.",
-            "title": "Rennspiel"
+            "body": "Du führst im Rennen und kein Blot steht in Schlagweite. Der Plan ist einfach: Bring deine Steine sicher nach Hause und lass keine Blots stehen. Keine Experimente – einfach laufen. Hier liegt Weiß im Rennen vorn und hat ein solides Heimfeld.",
+            "title": "Laufspiel"
           }
         },
-        "subtitle": "Klassische Spielpläne erkennen",
+        "subtitle": "Erkenne klassische Spielpläne",
         "title": "Spielpläne"
       }
     },
-    "locked": "Beende zuerst die vorherige Lektion",
+    "locked": "Schließ zuerst die vorige Lektion ab",
     "next_lesson": "Nächste Lektion",
     "quiz": {
       "bar": {
-        "a": "Bewegen Sie Ihren am weitesten entfernten Checker zuerst",
-        "b": "Geben Sie diesen Checker ein, bevor Sie etwas anderes bewegen",
-        "c": "Skip Your Turn",
-        "prompt": "Während Sie einen Checker an der Bar haben, müssen Sie ..."
+        "a": "Zuerst deinen hintersten Stein ziehen",
+        "b": "Diesen Stein einsteigen lassen, bevor du etwas anderes ziehst",
+        "c": "Deinen Zug aussetzen",
+        "prompt": "Solange du einen Stein auf der Bar hast, musst du…"
       },
       "bear": {
-        "a": "Wann immer Sie eine 6 rollen",
-        "b": "Erst nachdem Sie einen Fleck getroffen haben",
-        "c": "Wenn alle 15 Checker in Ihrem Home Board sind",
-        "prompt": "Wann kannst du aushalten?"
+        "a": "Immer wenn du eine 6 würfelst",
+        "b": "Erst nachdem du einen Blot geschlagen hast",
+        "c": "Wenn alle 15 Steine in deinem Heimfeld stehen",
+        "prompt": "Wann darfst du abtragen?"
       },
       "blot": {
-        "a": "Jeder Stapel von drei oder mehr",
-        "b": "Ein einzelner Checker an einem Punkt - er kann getroffen werden",
-        "c": "Zwei oder mehr Checker an einem Punkt — ein gemachter Punkt",
+        "a": "Jeder Stapel aus drei oder mehr Steinen",
+        "b": "Ein einzelner Stein auf einem Punkt – er kann geschlagen werden",
+        "c": "Zwei oder mehr Steine auf einem Punkt – ein gebauter Punkt",
         "prompt": "Was ist ein Blot?"
       },
       "pip_ahead": {
-        "a": "Dein Gegner, mit dem höheren Count",
-        "b": "Du, mit dem niedrigeren Count",
-        "c": "Keiner — der Pip-Count misst das Rennen nicht",
-        "prompt": "Dein Pip-Count ist 85, der deines Gegners 102. Wer führt im Rennen?"
+        "a": "Dein Gegner, mit der höheren Zahl",
+        "b": "Du, mit der niedrigeren Zahl",
+        "c": "Keiner – die Pipzahl sagt nichts über das Rennen",
+        "prompt": "Deine Pipzahl ist 85, die deines Gegners 102. Wer führt im Rennen?"
       },
       "pip_meaning": {
-        "a": "Die Punkte, die deine Steine noch bis zum Auswürfeln reisen müssen",
-        "b": "Wie viele Steine du auf dem Brett hast",
-        "c": "Wie viele Punkte du besetzt hast",
-        "prompt": "Was bedeutet dein Pip-Count?"
+        "a": "Die Summe der Punkte, die deine Steine bis zum Abtragen zurücklegen müssen",
+        "b": "Die Anzahl deiner Steine auf dem Brett",
+        "c": "Die Anzahl der Punkte, die du gebaut hast",
+        "prompt": "Was gibt deine Pipzahl an?"
       },
       "strat_blitz": {
-        "a": "Den Blot schlagen und das Haus weiter bauen (Blitz)",
-        "b": "Den Blot ignorieren und die hinteren Steine rennen lassen",
-        "c": "Das Haus aufbrechen, um einen Anker zu machen",
-        "prompt": "Du hast 3 Hauspunkte, der Gegner einen Blot in deinem Haus. Was ist der beste Plan?"
+        "a": "Den Blot schlagen und das Heimfeld weiter ausbauen (Blitz)",
+        "b": "Den Blot ignorieren und mit den hinteren Steinen loslaufen",
+        "c": "Das Heimfeld aufgeben, um einen Anker zu bauen",
+        "prompt": "Du hast 3 Punkte in deinem Heimfeld gebaut, und dein Gegner hat dort einen Blot. Was ist der beste Plan?"
       },
       "strat_prime": {
-        "a": "Die Prime aufbrechen und angreifen",
-        "b": "Die Prime halten und verlängern — sie sitzen fest",
-        "c": "So schnell wie möglich auswürfeln",
-        "prompt": "Zwei Steine des Gegners sitzen hinter deiner 5er-Prime. Was ist dein Plan?"
+        "a": "Die Prime aufgeben, um anzugreifen",
+        "b": "Die Prime halten und verlängern – die Steine sitzen fest",
+        "c": "So schnell wie möglich abtragen",
+        "prompt": "Zwei Steine deines Gegners sitzen hinter deiner Prime aus 5 Punkten fest. Was ist dein Plan?"
       }
     },
-    "replay": "Wiederholung",
-    "skip_to_play": "Skip zum Spielen",
+    "replay": "Nochmal",
+    "skip_to_play": "Direkt spielen",
     "step_progress": "Schritt {{current}} von {{total}}",
-    "subtitle": "Kurze interaktive Lektionen — dann bist du bereit",
-    "title": "Lernen Sie zu spielen"
+    "subtitle": "Sieben kurze Lektionen – dann bist du bereit",
+    "title": "Spielen lernen"
   },
   "not_found": {
-    "body": "Diese Seite ist nicht Teil von Backgammon Mastermind. Geh nach Hause, um zu lernen oder ein Spiel zu beginnen.",
-    "heading": "Neben dem Brett",
-    "home_a11y": "Zur Startseite",
-    "home_cta": "Zur Startseite",
+    "body": "Diese Seite gehört nicht zu Backgammon Mastermind. Geh zum Start, um zu lernen oder eine Partie zu beginnen.",
+    "heading": "Vom Brett gefallen",
+    "home_a11y": "Zum Startbildschirm",
+    "home_cta": "Zurück zum Start",
     "title": "Nicht gefunden"
   },
   "settings": {
@@ -516,18 +516,18 @@
     "app_name": "Backgammon Mastermind",
     "arabic": "Arabisch",
     "developer": "Entwickler",
-    "developer_blurb": "Lade eine beliebige Brettposition für Engine-Tests. Startet an dieser Position eine normale Spielsitzung. Keine Produktfunktion.",
-    "developer_json": "Positions-JSON",
+    "developer_blurb": "Eine beliebige Stellung für Engine-Tests laden. Startet eine normale Partie ab dieser Stellung. Keine Produktfunktion.",
+    "developer_json": "Stellung als JSON",
     "developer_load": "JSON laden",
-    "developer_open": "Position laden",
-    "developer_presets": "Testvorgaben",
+    "developer_open": "Stellung laden",
+    "developer_presets": "Test-Stellungen",
     "english": "Englisch",
     "game": "Spiel",
-    "general": "Generalmajor",
+    "general": "Allgemein",
     "github": "GitHub",
     "language": "Sprache",
-    "link_error_body": "Bitte versuche es später erneut.",
-    "link_error_title": "Link kann nicht geöffnet werden",
+    "link_error_body": "Bitte versuch es später noch einmal.",
+    "link_error_title": "Link lässt sich nicht öffnen",
     "links": "Links",
     "more": "Mehr",
     "open_source": "Open-Source-Hinweise",

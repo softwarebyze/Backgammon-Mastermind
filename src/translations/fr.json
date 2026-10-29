@@ -1,7 +1,7 @@
 {
   "error": {
-    "body": "Redémarrer l'application pour continuer.",
-    "heading": "Quelque chose a mal tourné",
+    "body": "Redémarrez l'app pour continuer.",
+    "heading": "Un problème est survenu",
     "retry": "Réessayer"
   },
   "feedback": {
@@ -20,58 +20,58 @@
   },
   "game": {
     "caption": {
-      "selected": "Sélectionné — appuyez sur un point surligné, ou Annuler"
+      "selected": "Sélectionné : touchez une case en surbrillance, ou Annuler"
     },
     "controls": {
       "bear_off_a11y": "Sortir un pion",
       "cancel": "Annuler",
       "cancel_a11y": "Annuler la sélection",
-      "confirm_move": "Confirmer le coup",
-      "confirm_move_a11y": "Confirmer le coup et terminer le tour",
-      "leave_game_a11y": "Laissez le jeu et rentrez chez vous",
-      "loading": "Chargement...",
+      "confirm_move": "Valider le coup",
+      "confirm_move_a11y": "Valider le coup et finir votre tour",
+      "leave_game_a11y": "Quitter la partie et revenir à l'accueil",
+      "loading": "Chargement…",
       "new_game_message": "Commencer une nouvelle partie ?",
       "new_game_title": "Nouvelle partie",
       "no_legal_moves": "Aucun coup possible…",
       "play_again": "Rejouer",
       "play_again_a11y": "Rejouer",
-      "redo_a11y": "Redéplacement",
+      "redo_a11y": "Rétablir le coup",
       "roll_dice": "Lancer les dés",
       "roll_dice_a11y": "Lancer les dés",
-      "start_new_game_a11y": "Démarrer un nouveau jeu",
-      "undo_a11y": "Annuler le dernier coup",
+      "start_new_game_a11y": "Commencer une nouvelle partie",
+      "undo_a11y": "Annuler le coup",
       "undo_move": "Annuler"
     },
     "hint": {
-      "back_to_turn": "Retour à mon tour",
-      "back_to_turn_a11y": "Retour à mon tour, fermer l’indice",
+      "back_to_turn": "Revenir à mon tour",
+      "back_to_turn_a11y": "Revenir à mon tour et fermer l'indice",
       "button": "Indice",
-      "button_a11y": "Obtenir un indice de coup",
-      "error": "Aucun indice — touchez pour réessayer",
-      "error_a11y": "Réessayer l’indice",
+      "button_a11y": "Obtenir un indice",
+      "error": "Aucun indice trouvé : touchez pour réessayer",
+      "error_a11y": "Réessayer l'indice",
       "finding": "Recherche du meilleur coup…",
       "play": "Jouer ce coup",
       "play_a11y": "Jouer le coup suggéré",
       "suggested": "Coup suggéré"
     },
     "nudge": {
-      "roll_first": "Lance d'abord les dés"
+      "roll_first": "Lancez d'abord les dés"
     },
     "opening": {
-      "compare": "{{winner}} {{high}} bat {{low}}",
-      "goes_first": "{{player}} commence !",
+      "compare": "{{winner}} : {{high}} bat {{low}}",
+      "goes_first": "Les {{player}} commencent !",
       "roll": "Lancer",
-      "rolls_for_opening": "{{player}} lance pour l'ouverture",
+      "rolls_for_opening": "Les {{player}} lancent pour commencer",
       "tie": "Égalité !",
-      "tie_again": "Même chiffre — relancez",
-      "waiting_roll": "{{player}} lance…",
+      "tie_again": "Même chiffre : relancez",
+      "waiting_roll": "Les {{player}} lancent…",
       "who_goes_first": "Qui commence ?",
       "your_roll": "Touchez n'importe où pour lancer"
     },
     "options": {
       "open_settings": "Langue et plus",
-      "open_settings_hint": "Ouvrir les Réglages",
-      "title": "Options de partie"
+      "open_settings_hint": "Ouvrir les réglages",
+      "title": "Options de jeu"
     },
     "players": {
       "computer": "Ordinateur",
@@ -79,114 +79,114 @@
       "you": "Vous"
     },
     "preferences": {
-      "auto_move": "Coup auto si forcé",
-      "auto_move_hint": "Jouer automatiquement le seul coup légal",
-      "auto_roll": "Lancer auto des dés",
-      "auto_roll_hint": "Lancer automatiquement à votre tour",
-      "confirm_move": "Confirmer le coup",
-      "confirm_move_hint": "Demander avant de finir le tour pour vérifier ou annuler",
+      "auto_move": "Coup forcé automatique",
+      "auto_move_hint": "Jouer automatiquement le seul coup possible",
+      "auto_roll": "Lancer automatique",
+      "auto_roll_hint": "Lancer les dés automatiquement à votre tour",
+      "confirm_move": "Valider le coup",
+      "confirm_move_hint": "Demander avant de finir votre tour, pour vérifier ou annuler",
       "dice_display": "Affichage des dés",
       "dice_dots": "Points",
       "dice_numbers": "Chiffres",
-      "direction_overlay": "Guide de direction",
+      "direction_overlay": "Sens du jeu",
       "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
-      "move_hints": "Indices de coup",
-      "move_hints_hint": "Met en évidence les numéros des flèches d'où vous pouvez jouer",
-      "point_numbers": "Numéros des flèches",
-      "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
-      "section_automation": "Automatisation",
+      "move_hints": "Aide aux coups",
+      "move_hints_hint": "Met en évidence les numéros des cases d'où vous pouvez jouer",
+      "point_numbers": "Numéros des cases",
+      "point_numbers_hint": "Afficher les numéros 1 à 24 sur le plateau",
+      "section_automation": "Automatismes",
       "section_board": "Plateau",
       "section_dice": "Dés",
       "sound": "Sons du jeu",
-      "sound_hint": "Dés, prises et victoires en douceur — respecte le mode silencieux",
+      "sound_hint": "Sons discrets pour les dés, les frappes et la victoire ; respecte le mode silencieux",
       "tutor_mode": "Mode tuteur",
       "tutor_mode_hint": "Le moteur vérifie vos coups et signale les grosses erreurs"
     },
     "review": {
-      "back_to_live": "Retour à la partie en cours",
+      "back_to_live": "Revenir à la partie",
       "live": "Partie en cours",
-      "live_short": "En direct",
-      "move_a11y": "Coup {{ply}}, {{player}}",
-      "move_position": "Coup {{current}} sur {{total}} · {{player}}",
+      "live_short": "Direct",
+      "move_a11y": "Déplacement {{ply}}, {{player}}",
+      "move_position": "Déplacement {{current}} sur {{total}} · {{player}}",
       "next": "Tour suivant",
       "opening": "Position de départ",
       "pause_replay": "Pause",
       "player_black": "Noirs",
       "player_white": "Blancs",
       "previous": "Tour précédent",
-      "replay": "Relecture",
+      "replay": "Revoir",
       "scrubber_hint": "Touchez un tour pour le revoir",
       "start": "Début",
       "turn_a11y": "Tour {{turn}}, {{player}}",
       "turn_label": "Tour {{turn}}/{{totalTurns}} · {{player}}",
-      "turn_position": "Tour {{turn}}/{{totalTurns}} · coup {{moveInTurn}}/{{movesInTurn}} · {{player}}",
-      "viewing_hint": "Relecture — touchez En direct ou Retour pour continuer à jouer"
+      "turn_position": "Tour {{turn}}/{{totalTurns}} · déplacement {{moveInTurn}}/{{movesInTurn}} · {{player}}",
+      "viewing_hint": "Vous revoyez la partie : touchez Direct ou Revenir à la partie pour continuer"
     },
     "status": {
-      "black_wins": "Les Noirs gagnent",
+      "black_wins": "🏆 Les Noirs gagnent !",
       "computer_wins": "L'ordinateur gagne",
-      "off_short": "sorties",
-      "pips_a11y": "{{player}} : {{pips}} pips, {{off}} sur 15 sorties",
+      "off_short": "sortis",
+      "pips_a11y": "{{player}} : {{pips}} pips, {{off}} pions sortis sur 15",
       "white_wins": "🏆 Les Blancs gagnent !",
-      "you_win": "🏆 Vous gagnez !"
+      "you_win": "🏆 Vous avez gagné !"
     },
     "strategy": {
       "close_a11y": "Fermer l'explication de la stratégie",
-      "got_it": "J'ai compris",
+      "got_it": "Compris",
       "label": {
-        "backgame": "Jeu d'attente",
+        "backgame": "Jeu d'arrière",
         "blitz": "Blitz",
         "developing": "Développement",
-        "holding": "Jeu de blocage",
-        "priming": "Muraille",
+        "holding": "Jeu d'ancre",
+        "priming": "Jeu de prime",
         "running": "Course"
       },
       "tip": {
-        "backgame": "Restez en retrait, reinforcez votre maison et attendez l'occasion tardive.",
-        "blitz": "Attaquez : frappez chaque pion isolé et fermez votre maison.",
-        "developing": "Construisez des points, battez-vous pour le 5 et restez souple.",
-        "holding": "Tenez votre ancre, restez en sécurité et attendez votre occasion de frappe.",
-        "priming": "Prolongez votre muraille point par point et capturez leurs pions arrières.",
-        "running": "Ramachez vos pions efficacement et protégez ceux qui restent en danger."
+        "backgame": "Restez en arrière, gardez un jan intérieur solide et attendez une frappe tardive.",
+        "blitz": "Attaquez : frappez chaque blot possible et fermez votre jan intérieur.",
+        "developing": "Faites des cases, battez-vous pour la case 5 et restez souple.",
+        "holding": "Gardez votre ancre, jouez prudemment et attendez votre occasion de frapper.",
+        "priming": "Allongez votre mur case par case et enfermez ses pions arrière.",
+        "running": "Rentrez vos pions efficacement et protégez ceux qui peuvent encore être frappés."
       },
       "why": {
-        "backgame": "Vous tenez des ancres profondes sur le {{point1}} et le {{point2}} tout en ayant {{pipGap}} points de retard dans la course.",
-        "blitz_bar": "Vous avez {{barCount}} sur la barre et vous avez déjà fait {{homeMade}} points dans votre maison.",
-        "blitz_bar_blot": "Vous avez {{barCount}} sur la barre et 1 pion isolé dans votre maison, et vous avez déjà fait {{homeMade}} points dans votre maison.",
-        "blitz_bar_blots": "Vous avez {{barCount}} sur la barre et {{blotCount}} pions isolés dans votre maison, et vous avez déjà fait {{homeMade}} points dans votre maison.",
-        "blitz_blot": "Vous avez 1 pion isolé dans votre maison et vous avez déjà fait {{homeMade}} points dans votre maison.",
-        "blitz_blots": "Vous avez {{blotCount}} pions isolés dans votre maison et vous avez déjà fait {{homeMade}} points dans votre maison.",
-        "developing": "Pas encore de muraille, d'ancre ni d'attaque sur le board — la partie se façonne.",
-        "holding": "Vous tenez une ancre sur le {{point}} avec {{pipGap}} points de retard.",
-        "priming": "Vous avez construit une muraille de {{prime}} points.",
-        "priming_anchor": "Vous avez construit une muraille de {{prime}} points avec une ancre derrière.",
-        "running_lead": "Vous menez la course {{foePips}} à {{myPips}} sans pion isolé à portée de frappe.",
-        "running_race": "Aucun contact possible — c'est une course directe pour sortir ({{myPips}} contre {{foePips}} points)."
+        "backgame": "Vous tenez des ancres profondes sur la {{point1}} et la {{point2}}, mais avez {{pipGap}} pips de retard dans la course.",
+        "blitz_bar": "Il y a {{barCount}} sur la barre, et vous avez déjà fait {{homeMade}} cases dans votre jan intérieur.",
+        "blitz_bar_blot": "Il y a {{barCount}} sur la barre et 1 blot dans votre jan intérieur, où vous avez déjà fait {{homeMade}} cases.",
+        "blitz_bar_blots": "Il y a {{barCount}} sur la barre et {{blotCount}} blots dans votre jan intérieur, où vous avez déjà fait {{homeMade}} cases.",
+        "blitz_blot": "Il y a 1 blot dans votre jan intérieur, où vous avez déjà fait {{homeMade}} cases.",
+        "blitz_blots": "Il y a {{blotCount}} blots dans votre jan intérieur, où vous avez déjà fait {{homeMade}} cases.",
+        "developing": "Pas encore de prime, d'ancre ni d'attaque : la partie se met en place.",
+        "holding": "Vous tenez une ancre sur la {{point}} avec {{pipGap}} pips de retard.",
+        "priming": "Vous avez construit une prime de {{prime}} cases.",
+        "priming_anchor": "Vous avez construit une prime de {{prime}} cases avec une ancre derrière.",
+        "running_lead": "Vous menez la course {{myPips}} à {{foePips}}, sans blot à portée.",
+        "running_race": "Plus aucun contact : c'est une pure course à la sortie ({{myPips}} contre {{foePips}} pips)."
       }
     },
     "turn": {
-      "black_is_moving": "Les noirs jouent…",
-      "black_is_rolling": "Les noirs lancent…",
-      "black_turn": "Au tour des noirs",
-      "cant_enter": "Impossible de rentrer avec {{die1}} et {{die2}} — terminez votre tour",
-      "computer_turn": "Au tour de l’ordinateur",
-      "enter_from_bar": "Rentrez depuis la barre avant de déplacer d’autres pions",
+      "black_is_moving": "Les Noirs jouent…",
+      "black_is_rolling": "Les Noirs lancent…",
+      "black_turn": "Au tour des Noirs",
+      "cant_enter": "Impossible de rentrer depuis la barre avec {{die1}} et {{die2}} : finissez votre tour",
+      "computer_turn": "Au tour de l'ordinateur",
+      "enter_from_bar": "Rentrez depuis la barre avant de jouer d'autres pions",
       "game_over": "Partie terminée",
-      "move_checkers": "Déplacez vos pions {{color}}",
-      "no_legal_moves": "Aucun coup légal avec {{die1}} et {{die2}} — terminez votre tour",
-      "opening_roll": "Jet d’ouverture",
-      "roll_dice": "Lancez les dés — vous jouez les {{color}}",
-      "white_turn": "Au tour des blancs",
+      "move_checkers": "Jouez vos pions ({{color}})",
+      "no_legal_moves": "Aucun coup possible avec {{die1}} et {{die2}} : finissez votre tour",
+      "opening_roll": "Lancer d'ouverture",
+      "roll_dice": "Lancez les dés : vous jouez les {{color}}",
+      "white_turn": "Au tour des Blancs",
       "your_turn": "À vous de jouer"
     },
     "tutor": {
       "back_to_question": "Retour à la question",
-      "back_to_question_a11y": "Revenir sans montrer la réponse",
+      "back_to_question_a11y": "Revenir sans voir la réponse",
       "band": {
         "big_blunder": "Grosse erreur",
-        "fine": "Correct",
+        "fine": "Bien",
         "mistake": "Erreur",
-        "slip": "Lapsus"
+        "slip": "Imprécision"
       },
       "best": "Meilleur",
       "best_played": "Meilleur :",
@@ -195,7 +195,7 @@
         "best_move": "Meilleur coup",
         "both": "Les deux",
         "mine": "Le mien",
-        "show_a11y": "Afficher le plateau {{label}}",
+        "show_a11y": "Afficher le plateau « {{label}} »",
         "start": "Début",
         "starting_position": "Position de départ",
         "your_move": "Votre coup",
@@ -205,246 +205,246 @@
       "details_hide_a11y": "Masquer les détails",
       "details_show": "Détails",
       "details_show_a11y": "Afficher les détails",
-      "details_summary": "Votre coup est classé {{rank}} sur {{count}}, soit environ {{loss}} point par partie de moins que le meilleur coup.",
-      "equity_explainer": "Le moteur note chaque coup selon les points qu’il espère gagner par partie, en moyenne. Plus c’est haut, mieux c’est.",
+      "details_summary": "Votre coup est classé {{rank}} sur {{count}} et rapporte environ {{loss}} points de moins par partie que le meilleur.",
+      "equity_explainer": "Le moteur note chaque coup selon les points qu'il rapporte en moyenne par partie. Plus c'est haut, mieux c'est.",
       "equity_pts": "{{points}} pts",
       "keep": "Garder mon coup",
       "keep_a11y": "Garder mon coup et continuer",
-      "meter_a11y": "Gravité de l’erreur : {{severity}}. Environ {{loss}} point perdu par partie. L’échelle suit GNU Backgammon : douteux à 0.04, mauvais à 0.08, très mauvais à 0.16.",
-      "meter_caption": "Échelle d’erreurs (GNU Backgammon)",
+      "meter_a11y": "Gravité de l'erreur : {{severity}}. Environ {{loss}} points perdus par partie. L'échelle suit GNU Backgammon : douteux dès 0,04, mauvais dès 0,08, très mauvais dès 0,16.",
+      "meter_caption": "Échelle des erreurs (GNU Backgammon)",
       "play_best": "Jouer le meilleur coup",
-      "play_best_a11y": "Annuler mon coup et jouer le meilleur",
-      "question_body": "Votre coup est classé {{rank}} sur {{count}} façons de jouer ce lancer. En moyenne, il rapporte environ {{loss}} point par partie de moins que le meilleur coup.",
+      "play_best_a11y": "Reprendre mon coup et jouer le meilleur",
+      "question_body": "Votre coup est classé {{rank}} sur {{count}} façons de jouer ce lancer. En moyenne, il rapporte environ {{loss}} points de moins par partie que le meilleur.",
       "rank": "{{rank}}",
       "rank_yours": "{{rank}} (le vôtre)",
-      "replay_pause_a11y": "Mettre en pause la relecture {{label}}",
-      "replay_play_a11y": "Lire la relecture {{label}}",
-      "reveal": "Montrer le meilleur coup",
+      "replay_pause_a11y": "Mettre en pause « {{label}} »",
+      "replay_play_a11y": "Rejouer « {{label}} »",
+      "reveal": "Voir le meilleur coup",
       "reveal_a11y": "Révéler le coup recommandé",
-      "rolled": "Vous avez lancé {{dice}}",
-      "show_mine": "Montrer mon coup",
-      "show_mine_a11y": "Montrer seulement mon coup, sans révéler le meilleur",
-      "take_back": "Annuler et réessayer",
-      "take_back_a11y": "Annuler tout le tour et réessayer",
-      "take_back_retry_a11y": "Annuler le coup et réessayer",
-      "title_compare": "Votre coup face au meilleur coup",
+      "rolled": "Vous avez fait {{dice}}",
+      "show_mine": "Voir mon coup",
+      "show_mine_a11y": "Voir seulement mon coup, sans révéler le meilleur",
+      "take_back": "Reprendre et réessayer",
+      "take_back_a11y": "Reprendre tout le tour et réessayer",
+      "take_back_retry_a11y": "Reprendre le coup et réessayer",
+      "title_compare": "Votre coup face au meilleur",
       "title_mine": "Votre coup",
       "turn_off": "Désactiver le tuteur",
       "turn_off_a11y": "Désactiver le mode tuteur",
-      "undo_last": "Annuler le dernier coup",
-      "undo_last_a11y": "Annuler seulement le dernier coup et le rejouer",
-      "vs_best": "−{{delta}} vs meilleur",
+      "undo_last": "Annuler le dernier déplacement",
+      "undo_last_a11y": "Annuler seulement le dernier déplacement et le rejouer",
+      "vs_best": "−{{delta}} par rapport au meilleur",
       "you_played": "Vous avez joué :"
     }
   },
   "home": {
     "confirm_cancel": "Annuler",
     "confirm_continue": "Continuer",
-    "confirm_native": "Continuer votre jeu actuel ou en démarrer un nouveau ?",
-    "confirm_new": "Nouveau jeu",
+    "confirm_native": "Continuer la partie en cours ou en commencer une nouvelle ?",
+    "confirm_new": "Nouvelle partie",
     "confirm_replace": "Commencer une nouvelle partie ? La partie en cours sera remplacée.",
-    "confirm_title": "Jeu en cours",
-    "confirm_web": "Commencer un nouveau jeu ? (Utilisez Resume sur l'écran d'accueil pour continuer le courant.)",
-    "recovery_body": "La dernière sauvegarde était endommagée. Tu peux commencer une nouvelle partie — l’accueil fonctionne toujours.",
+    "confirm_title": "Partie en cours",
+    "confirm_web": "Commencer une nouvelle partie ? (Touchez Reprendre sur l'accueil pour continuer la partie en cours.)",
+    "recovery_body": "La dernière sauvegarde était endommagée. Vous pouvez commencer une nouvelle partie ; le reste fonctionne.",
     "recovery_dismiss": "Fermer",
     "recovery_title": "Impossible de restaurer la partie sauvegardée",
     "resume": "Reprendre la partie",
     "resume_a11y": "Reprendre la partie sauvegardée",
-    "resume_none": "Aucun jeu enregistré à reprendre",
-    "resume_sub": "Reprenez là où vous en étiez",
+    "resume_none": "Aucune partie sauvegardée",
+    "resume_sub": "Reprenez là où vous vous êtes arrêté",
     "review": "Revoir la dernière partie",
     "review_a11y": "Revoir la partie terminée",
-    "review_sub": "Découvre comment la dernière partie s’est terminée",
-    "subtitle": "Maîtrisez le plateau — coup après coup",
+    "review_sub": "Voyez comment la dernière partie s'est terminée",
+    "subtitle": "Maîtrisez le plateau, coup après coup",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 joueurs",
     "two_players_a11y": "Jouer à deux sur cet appareil",
     "two_players_sub": "À tour de rôle sur le même appareil",
     "vs_computer": "Contre l'ordinateur",
     "vs_computer_a11y": "Jouer contre l'ordinateur",
-    "vs_computer_sub": "Jouez contre l’ordinateur"
+    "vs_computer_sub": "Jouez contre l'ordinateur"
   },
   "learn": {
     "back_to_hub": "Toutes les leçons",
     "continue": "Continuer",
     "feedback": {
-      "hint_nudge": "Besoin d'un coup de pouce ? Cherchez les endroits surlignés.",
-      "illegal": "Essayez un point surligné — ou appuyez sur Conseil.",
-      "legal_but_wrong": "C'est légal dans un vrai jeu — ici, essayez le mouvement qui enseigne cette idée.",
-      "move_progress": "Bien — {{done}} mouvements sur {{needed}} effectués."
+      "hint_nudge": "Besoin d'un coup de pouce ? Regardez les zones en surbrillance.",
+      "illegal": "Essayez une case en surbrillance, ou touchez Indice.",
+      "legal_but_wrong": "Ce coup est permis en vraie partie, mais ici, essayez celui qui illustre cette idée.",
+      "move_progress": "Bien : {{done}} déplacement(s) sur {{needed}}."
     },
     "graduation": {
-      "body": "Tu connais le but, le conseil, comment tourne le travail, frappe et recule. Une vérification rapide — puis votre premier vrai jeu.",
-      "play_cta": "Jouez à votre premier jeu",
-      "quiz_done": "J'ai tout gâché. Il est temps de jouer.",
-      "quiz_title": "Vérification rapide",
-      "quiz_wrong": "Pas tout à fait — essayez une autre réponse.",
-      "recap_1": "Course : battre les 15 premiers",
-      "recap_2": "Rouler deux dés; atterrir sur des points ouverts",
-      "recap_3": "Hit blots → ils s'assoient sur le bar",
-      "recap_4": "Ne vous éloignez que de votre pensionnat",
-      "recap_5": "Les jeux commencent avec une mort chacun — plus haut passe en premier (ties re-roll)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
+      "body": "Vous connaissez le but, le plateau, le déroulement d'un tour, la frappe, la sortie des pions, le compte des pips et les grands plans de jeu. Une petite vérification, puis votre première vraie partie.",
+      "play_cta": "Jouer ma première partie",
+      "quiz_done": "Parfait. À vous de jouer.",
+      "quiz_title": "Petite vérification",
+      "quiz_wrong": "Pas tout à fait : essayez une autre réponse.",
+      "recap_1": "Course : le premier à sortir ses 15 pions gagne",
+      "recap_2": "Lancez deux dés ; posez-vous seulement sur des cases ouvertes",
+      "recap_3": "Frappez les blots → ils vont sur la barre",
+      "recap_4": "On ne sort des pions que depuis son jan intérieur",
+      "recap_5": "Au début, chacun lance un dé : le plus haut commence (en cas d'égalité, on relance)",
+      "recap_6": "Compte des pips : le plus bas mène la course",
+      "recap_7": "Choisissez un plan : courir, attaquer, bloquer ou tenir",
       "title": "Vous êtes prêt à jouer"
     },
-    "hint": "Conseil",
+    "hint": "Indice",
     "home_cta": "Apprendre à jouer",
-    "home_cta_progress": "{{done}} leçons sur {{total}}",
-    "home_cta_quiz": "Cochez à gauche — puis jouez",
-    "home_cta_ready": "Vous êtes prêt — jouer un vrai jeu",
-    "home_cta_sub": "Cours interactifs pour débutants",
-    "lesson_complete": "Leçon terminée!",
+    "home_cta_progress": "{{done}} leçon(s) terminée(s) sur {{total}}",
+    "home_cta_quiz": "Encore une petite vérification, puis jouez",
+    "home_cta_ready": "Vous êtes prêt : jouez une vraie partie",
+    "home_cta_sub": "Leçons interactives pour débutants",
+    "lesson_complete": "Leçon terminée !",
     "lessons": {
       "bearing_off": {
         "steps": {
           "overshoot": {
-            "body": "Rien n'est sur le 5-point, mais vous avez roulé un 5. L'ours de votre plus haut chèque (le 3). Un nombre plus grand enlève encore un chèque.",
-            "hint": "Sélectionnez le point 3, puis appuyez sur le plateau d'appui.",
-            "praise": "C'est la règle de dépassement — vous l'utiliserez beaucoup en prenant du recul.",
-            "title": "Plus grand, mort, toujours éteint"
+            "body": "Il n'y a rien sur la case 5, mais vous avez fait un 5. Sortez votre pion le plus haut (celui du 3). Un chiffre plus grand permet quand même de sortir.",
+            "hint": "Sélectionnez la case 3, puis touchez la zone de sortie.",
+            "praise": "C'est la règle du dépassement : vous l'utiliserez souvent pour sortir vos pions.",
+            "title": "Chiffre plus grand, pion quand même sorti"
           },
           "try": {
-            "body": "Tous vos vérificateurs sont à la maison (1-6), donc vous pouvez supporter. Vous avez roulé un 3 — prenez le checker sur le 3-point de la planche.",
-            "hint": "Sélectionnez le point 3, puis appuyez sur la zone d'ours sur le bord droit.",
-            "praise": "Dehors ! D'abord pour supporter les 15 victoires.",
-            "title": "Enlève-en un."
+            "body": "Tous vos pions sont dans votre jan intérieur (1 à 6) : vous pouvez sortir. Vous avez fait un 3 : sortez le pion de la case 3.",
+            "hint": "Sélectionnez la case 3, puis touchez la zone de sortie sur le bord droit.",
+            "praise": "Sorti ! Le premier à sortir ses 15 pions gagne.",
+            "title": "Sortez un pion"
           }
         },
-        "subtitle": "Comment tu gagnes",
-        "title": "Démarrage"
+        "subtitle": "Comment on gagne",
+        "title": "Sortir les pions"
       },
       "direction_setup": {
         "steps": {
           "explain": {
-            "body": "Le fer à cheval correspond aux dames du joueur dont c'est le tour. Il retrace le parcours du joueur autour du plateau et à la maison (points 1 à 6).",
-            "title": "Le sentier du fer à cheval"
+            "body": "Le fer à cheval prend la couleur des pions du joueur dont c'est le tour. Il trace son parcours autour du plateau jusqu'à son jan intérieur (cases 1 à 6).",
+            "title": "Le parcours en fer à cheval"
           },
           "far": {
-            "body": "Appuyez sur le point de départ de vos deux vérificateurs blancs les plus éloignés (le 24-point, en haut à droite).",
-            "hint": "Regardez en haut à droite — deux dames blanches au point 24.",
-            "praise": "Ceux qui commencent profondément dans la maison de l'adversaire et ont le plus long voyage.",
-            "title": "Vos meilleurs vérificateurs"
+            "body": "Touchez la case où commencent vos deux pions blancs les plus éloignés (la case 24, en haut à droite).",
+            "hint": "Regardez en haut à droite : deux pions blancs sur la case 24.",
+            "praise": "Ils partent du fond du jan de l'adversaire et ont le plus long chemin.",
+            "title": "Vos pions les plus éloignés"
           },
           "home_stack": {
-            "body": "Tapez sur la grande pile de cinq dames blanches déjà dans votre maison (le 6-point).",
-            "hint": "En bas à droite : cinq dames blanches au point 6.",
-            "praise": "C'est la pile de votre maison — cinq qui attendent déjà sur le 6-point, le plus proche de se tenir. Chaque jeu commence comme ça.",
-            "title": "Votre pile de maison"
+            "body": "Touchez la pile de cinq pions blancs déjà dans votre jan intérieur (la case 6).",
+            "hint": "En bas à droite : cinq pions blancs sur la case 6.",
+            "praise": "C'est votre pile maison : cinq pions attendent déjà sur la case 6, les plus proches de la sortie. Chaque partie commence ainsi.",
+            "title": "Votre pile maison"
           }
         },
-        "subtitle": "Par où tu bouges",
-        "title": "Direction & configuration"
+        "subtitle": "Dans quel sens vous jouez",
+        "title": "Sens et position de départ"
       },
       "goal_board": {
         "steps": {
           "bar": {
-            "body": "La bande surélevée au milieu est la barre. Les contrôleurs attendent ici. Tapez sur le bar.",
-            "hint": "Tapez la bande verticale entre les moitiés gauche et droite de la planche.",
-            "praise": "Droite — les vérificateurs sont assis sur le bar jusqu'à ce qu'ils rentrent.",
+            "body": "La bande surélevée au milieu, c'est la barre. Les pions frappés y attendent. Touchez la barre.",
+            "hint": "Touchez la bande verticale entre les moitiés gauche et droite du plateau.",
+            "praise": "Exact : les pions frappés restent sur la barre jusqu'à ce qu'ils rentrent.",
             "title": "La barre"
           },
           "explain": {
-            "body": "Vous et votre adversaire avez chacun 15 checkers. Déplacez - les autour du plateau et retirez - les.",
-            "title": "Tout d'abord à supporter les victoires"
+            "body": "Vous et votre adversaire avez chacun 15 pions. Faites-leur faire le tour du plateau puis sortez-les : le premier qui a fini gagne.",
+            "title": "Le premier à tout sortir gagne"
           },
           "home": {
-            "body": "Votre maison est points 1–6 (en bas à droite). Tapez sur n'importe quel point dans votre homeboard.",
-            "hint": "Accueil est les six points dans le quadrant inférieur droit — numérotés 1 à 6.",
-            "praise": "C'est votre maison, les dames quittent le conseil d'administration.",
-            "title": "Trouvez votre carte d'accueil"
+            "body": "Votre jan intérieur, ce sont les cases 1 à 6 (en bas à droite). Touchez une case de votre jan intérieur.",
+            "hint": "Ce sont les six cases du quart en bas à droite, numérotées de 1 à 6.",
+            "praise": "C'est votre jan intérieur : c'est d'ici que les pions quittent le plateau.",
+            "title": "Trouvez votre jan intérieur"
           }
         },
-        "subtitle": "Ce que vous êtes en course pour",
-        "title": "Objectif & conseil"
+        "subtitle": "Le but de la course",
+        "title": "But et plateau"
       },
       "hitting_bar": {
         "steps": {
           "enter": {
-            "body": "Vous êtes au bar, revenez avant de déplacer quelqu'un d'autre. Comptez du 24-point vers la maison: un 4 terres sur le point 21.",
-            "hint": "Appuyez sur la barre, puis le point 21 (pas 23 — qui est seulement deux pips de la barre).",
-            "praise": "Vous êtes de retour sur le tableau — les contrôleurs de barre entrent toujours en premier.",
-            "title": "Entrez dans la barre",
-            "wrong": "Ce n'est que deux pips de la barre (point 23). Comptez quatre points de 24 vers la maison — ce qui est le point 21."
+            "body": "Vous êtes sur la barre : rentrez avant de jouer un autre pion. Comptez depuis la case 24 vers votre jan : un 4 arrive sur la case 21.",
+            "hint": "Touchez la barre, puis la case 21 (pas la 23 : elle n'est qu'à deux pips de la barre).",
+            "praise": "Vous êtes de retour sur le plateau : les pions sur la barre rentrent toujours en premier.",
+            "title": "Rentrer depuis la barre",
+            "wrong": "Ce n'est qu'à deux pips de la barre (case 23). Comptez quatre cases depuis la 24 vers votre jan : c'est la case 21."
           },
           "hit": {
-            "body": "Un seul checker est une tache. Atterrissez dessus et il va au bar. Vous avez roulé un 3 — frappez la tache noire sur le 5-point.",
-            "hint": "Appuyez sur votre checker sur 8, puis sur le point 5.",
-            "praise": "Frappe ! Ce checker noir est maintenant sur le bar.",
-            "title": "Frappe la tache"
+            "body": "Un pion seul sur une case est un blot. Si vous vous posez dessus, il part sur la barre. Vous avez fait un 3 : frappez le blot noir sur la case 5.",
+            "hint": "Touchez votre pion sur la 8, puis la case 5.",
+            "praise": "Frappé ! Ce pion noir est maintenant sur la barre.",
+            "title": "Frappez le blot"
           }
         },
-        "subtitle": "Jeu de contact",
-        "title": "Hitting & la barre"
+        "subtitle": "Le jeu de contact",
+        "title": "Frapper et la barre"
       },
       "moving_dice": {
         "steps": {
           "blocked": {
-            "body": "Deux ou plusieurs contrôleurs adversaires bloquent un point — vous ne pouvez pas atterrir là. Appuyez sur la pile noire bloquée sur le 5-point.",
-            "hint": "La pile surlignée de deux dames noires sur le point 5.",
-            "praise": "Droite — un point marqué (2+) est fermé. Vide, le vôtre, ou un blot (1) sont ouverts.",
-            "title": "Points bloqués"
+            "body": "Deux pions adverses ou plus bloquent une case : vous ne pouvez pas vous y poser. Touchez la pile noire bloquée sur la case 5.",
+            "hint": "La pile en surbrillance de deux pions noirs sur la case 5.",
+            "praise": "Exact : une case faite (2 pions ou plus) est fermée. Les cases vides, les vôtres et les blots (1 pion) sont ouvertes.",
+            "title": "Cases bloquées"
           },
           "doubles": {
-            "body": "Les doubles vous donnent quatre coups de ce nombre. Vous avez roulé 2-2, ça fait 4-2. Passer de la 8-point à la 6-point quatre fois.",
-            "hint": "Appuyez sur le 8-point, puis le 6-point. Faites cela quatre fois — une fois par mort.",
-            "praise": "Exactement — le double signifie quatre mouvements avec ce nombre.",
-            "title": "Doubles = quatre mouvements"
+            "body": "Un double vous donne quatre déplacements de ce chiffre. Vous avez fait 2-2 : cela fait quatre 2. Jouez quatre fois de la case 8 à la case 6.",
+            "hint": "Touchez la case 8, puis la case 6. Quatre fois : une par dé.",
+            "praise": "Exactement : un double, c'est quatre déplacements de ce chiffre.",
+            "title": "Double = quatre déplacements"
           },
           "explain": {
-            "body": "Chaque tour vous roulez deux dés et jouez les deux nombres quand vous pouvez. Vous pouvez atterrir sur des points vides, vos propres dames, ou un seul adversaire (un blot).",
-            "title": "Deux numéros, points ouverts"
+            "body": "À chaque tour, vous lancez deux dés et jouez les deux chiffres si possible. Vous pouvez vous poser sur une case vide, sur vos propres pions ou sur un pion adverse seul (un blot).",
+            "title": "Deux chiffres, cases ouvertes"
           },
           "two_dice": {
-            "body": "Vous avez roulé 3 et 1. Déplacez le checker sur le 8-point trois pips (à 5), et celui sur le 6-point un pip (à 5).",
-            "hint": "Sélectionnez un vérificateur blanc, puis touchez le point 5. Faites cela pour le 8-point et le 6-point.",
-            "praise": "Nice — les deux dés utilisés. Même checker ou deux checkers, les deux numéros doivent être joués quand vous pouvez.",
-            "title": "Jouer les deux dés"
+            "body": "Vous avez fait 3 et 1. Avancez le pion de la case 8 de trois pips (sur la 5) et celui de la case 6 d'un pip (sur la 5).",
+            "hint": "Sélectionnez un pion blanc, puis touchez la case 5. Faites-le pour la case 8 et pour la case 6.",
+            "praise": "Bien : les deux dés sont joués. Avec un pion ou deux, il faut jouer les deux chiffres quand c'est possible.",
+            "title": "Jouez les deux dés"
           }
         },
-        "subtitle": "Comment fonctionne un tour",
-        "title": "Déplacement avec dés"
+        "subtitle": "Le déroulement d'un tour",
+        "title": "Avancer avec les dés"
       },
       "pip_count": {
         "steps": {
           "ahead": {
-            "body": "Le blanc a sorti 5 pions, le reste est près de la maison. Les noirs sont encore éparpillés. Touche un pion blanc : le blanc mène, son compte est plus bas.",
-            "hint": "Cherche les pions les plus près de sortir.",
-            "praise": "Exact. Le compte plus bas du blanc veut dire moins de chemin.",
-            "title": "Qui est devant ?"
+            "body": "Les Blancs ont sorti 5 pions et les autres sont près de la sortie. Les pions noirs sont encore dispersés sur le plateau. Touchez un pion blanc : les Blancs mènent la course avec le compte de pips le plus bas.",
+            "hint": "Cherchez les pions les plus proches de la sortie.",
+            "praise": "Exactement ! Moins de pips, c'est moins de chemin à parcourir.",
+            "title": "Qui mène ?"
           },
           "behind": {
-            "body": "La même position. Les pions noirs sont loin de la maison et ont un compte bien plus haut. Touche un pion noir : le noir est derrière.",
-            "hint": "Cherche les pions les plus loin de la maison.",
-            "praise": "Bien. Le noir a encore beaucoup de pips à faire.",
-            "title": "Qui est derrière ?"
+            "body": "Même position. Les pions noirs sont loin de leur jan, avec beaucoup plus de pips. Touchez un pion noir : les Noirs sont en retard dans la course.",
+            "hint": "Cherchez les pions les plus éloignés de la sortie.",
+            "praise": "Exact ! Les Noirs ont encore beaucoup plus de pips à parcourir.",
+            "title": "Qui est en retard ?"
           },
           "explain": {
-            "body": "C’est le total des points que tes pions doivent encore parcourir pour sortir. Chaque pion compte le numéro de sa flèche : un sur la 6 compte 6, un sur la 13 compte 13. Le plus petit est le meilleur, tu es plus près de sortir. Les nombres sont en haut de l’écran, avec un point pour la couleur.",
-            "title": "Qu’est-ce que le compte de pips ?"
+            "body": "Le compte des pips, c'est le nombre total de cases que vos pions doivent encore parcourir pour sortir. Chaque pion compte le numéro de sa case : un pion sur la case 6 compte 6, sur la case 13 compte 13. Additionnez-les tous : c'est votre compte de pips. Plus il est bas, mieux c'est : vous êtes plus près de la sortie. Pendant chaque partie, le compte de chaque joueur s'affiche à côté de son nom.",
+            "title": "Qu'est-ce que le compte des pips ?"
           }
         },
-        "subtitle": "Voir qui mène la course",
-        "title": "Compte de pips : le score"
+        "subtitle": "Savoir qui gagne la course",
+        "title": "Compte des pips : le score de la course"
       },
       "strategies": {
         "steps": {
           "blitz": {
-            "body": "Ta maison est forte et l’adversaire a des pions isolés ou sur la barre. Frappe chaque isolé et ferme tes flèches de maison pour les garder sur la barre pendant que tu sors. Ici le blanc a trois flèches et le noir un pion sur la barre.",
+            "body": "Votre jan intérieur est solide et l'adversaire a des blots ou des pions sur la barre. Attaquez ! Frappez tous les blots possibles et fermez les cases de votre jan intérieur. Le but : garder ses pions bloqués sur la barre pendant que vous sortez les vôtres. Ici, les Blancs ont fait trois cases dans leur jan et les Noirs ont un pion sur la barre.",
             "title": "Blitz"
           },
           "identify": {
-            "body": "C’est une partie de muraille. Touche une flèche de la prime blanche, le mur de flèches qui bloque le noir.",
-            "hint": "Cherche des flèches à la suite avec au moins 2 pions blancs.",
-            "praise": "Parfait. Ce mur est la prime. Les pions arrière du noir sont pris.",
-            "title": "Repère la muraille"
+            "body": "Voici un jeu de prime. Touchez une case de la prime blanche : le mur de cases faites consécutives qui bloque les Noirs.",
+            "hint": "Cherchez des cases consécutives avec au moins 2 pions blancs chacune.",
+            "praise": "Parfait ! Ce mur, c'est la prime : les pions arrière noirs sont piégés.",
+            "title": "Repérez la prime"
           },
           "prime": {
-            "body": "Tu as un mur de flèches faites à la suite, une prime. Les flèches marquées forment une prime de 4 qui gêne les pions arrière du noir. Allonge-la d’une flèche à la fois.",
-            "title": "Muraille"
+            "body": "Vous avez construit un mur de cases faites consécutives : une prime. Les cases en surbrillance forment une prime de 4 cases qui gêne les pions arrière noirs. Allongez votre prime case par case et enfermez ses pions derrière.",
+            "title": "Jeu de prime"
           },
           "running": {
-            "body": "Tu mènes, et aucun pion isolé n’est à portée. Ramène tes pions sans en laisser d’isolés. Pas de fantaisie : cours. Ici le blanc mène avec une maison solide.",
+            "body": "Vous menez la course et aucun blot n'est à portée. Le plan est simple : rentrez vos pions en sécurité et ne laissez pas de blots. Pas de fantaisie : courez. Ici, les Blancs mènent la course avec un jan intérieur solide.",
             "title": "Course"
           }
         },
@@ -452,60 +452,60 @@
         "title": "Plans de jeu"
       }
     },
-    "locked": "Compléter la leçon précédente d'abord",
+    "locked": "Terminez d'abord la leçon précédente",
     "next_lesson": "Leçon suivante",
     "quiz": {
       "bar": {
-        "a": "Déplacez d'abord votre meilleur vérificateur",
-        "b": "Entrez ce vérificateur avant de déplacer autre chose",
-        "c": "Saute ton tour",
-        "prompt": "Pendant que vous avez un vérificateur sur le bar, vous devez..."
+        "a": "Jouer d'abord votre pion le plus éloigné",
+        "b": "Faire rentrer ce pion avant de jouer quoi que ce soit d'autre",
+        "c": "Passer votre tour",
+        "prompt": "Tant que vous avez un pion sur la barre, vous devez…"
       },
       "bear": {
-        "a": "Chaque fois que vous roulez un 6",
-        "b": "Seulement après avoir touché une tache",
-        "c": "Lorsque les 15 vérificateurs sont dans votre pension",
-        "prompt": "Quand pouvez-vous supporter ?"
+        "a": "Chaque fois que vous faites un 6",
+        "b": "Seulement après avoir frappé un blot",
+        "c": "Quand vos 15 pions sont dans votre jan intérieur",
+        "prompt": "Quand pouvez-vous sortir vos pions ?"
       },
       "blot": {
-        "a": "Toute pile de trois ou plus",
-        "b": "Un seul vérificateur sur un point — il peut être frappé",
-        "c": "Deux contrôleurs ou plus sur un point — un point",
-        "prompt": "Qu'est-ce qu'une tache ?"
+        "a": "Toute pile de trois pions ou plus",
+        "b": "Un pion seul sur une case : il peut être frappé",
+        "c": "Deux pions ou plus sur une case : une case faite",
+        "prompt": "Qu'est-ce qu'un blot ?"
       },
       "pip_ahead": {
-        "a": "Ton adversaire, avec le compte le plus haut",
-        "b": "Toi, avec le compte le plus bas",
-        "c": "Personne — le compte ne mesure pas la course",
-        "prompt": "Ton compte est 85, celui de l’adversaire 102. Qui mène la course ?"
+        "a": "Votre adversaire, avec le compte le plus haut",
+        "b": "Vous, avec le compte le plus bas",
+        "c": "Personne : le compte des pips ne mesure pas la course",
+        "prompt": "Votre compte de pips est de 85, celui de votre adversaire de 102. Qui mène la course ?"
       },
       "pip_meaning": {
-        "a": "Les points que tes pions doivent encore parcourir pour sortir",
-        "b": "Le nombre de pions que tu as sur le plateau",
-        "c": "Le nombre de flèches que tu as faites",
-        "prompt": "Que représente ton compte de pips ?"
+        "a": "Le nombre total de cases que vos pions doivent parcourir pour sortir",
+        "b": "Le nombre de pions que vous avez sur le plateau",
+        "c": "Le nombre de cases que vous avez faites",
+        "prompt": "Que représente votre compte de pips ?"
       },
       "strat_blitz": {
-        "a": "Frapper l’isolé et continuer la maison (blitz)",
-        "b": "Ignorer l’isolé et faire courir les pions arrière",
-        "c": "Casser la maison pour faire une ancre",
-        "prompt": "Tu as 3 flèches de maison et l’adversaire un isolé dedans. Quel est le meilleur plan ?"
+        "a": "Frapper le blot et continuer à construire votre jan intérieur (blitz)",
+        "b": "Ignorer le blot et faire courir vos pions arrière",
+        "c": "Casser votre jan intérieur pour faire une ancre",
+        "prompt": "Vous avez fait 3 cases dans votre jan intérieur et l'adversaire y a un blot. Quel est le meilleur plan ?"
       },
       "strat_prime": {
-        "a": "Casser la muraille pour attaquer",
-        "b": "Garder la muraille et l’allonger — ils sont pris",
-        "c": "Sortir le plus vite possible",
-        "prompt": "Deux pions adverses sont derrière ta prime de 5. Quel est ton plan ?"
+        "a": "Casser la prime pour attaquer",
+        "b": "Garder la prime et l'allonger : ses pions sont piégés",
+        "c": "Sortir les pions le plus vite possible",
+        "prompt": "Votre adversaire a deux pions piégés derrière votre prime de 5 cases. Quel est votre plan ?"
       }
     },
-    "replay": "Rejouer",
-    "skip_to_play": "Sauter pour jouer",
+    "replay": "Revoir",
+    "skip_to_play": "Passer et jouer",
     "step_progress": "Étape {{current}} sur {{total}}",
-    "subtitle": "Courtes leçons interactives — puis vous êtes prêt",
+    "subtitle": "Sept courtes leçons, et vous êtes prêt à jouer",
     "title": "Apprendre à jouer"
   },
   "not_found": {
-    "body": "Cette page ne fait pas partie de Backgammon Mastermind. Rentre chez toi pour apprendre ou commencer un jeu.",
+    "body": "Cette page ne fait pas partie de Backgammon Mastermind. Revenez à l'accueil pour apprendre ou commencer une partie.",
     "heading": "Hors du plateau",
     "home_a11y": "Aller à l'accueil",
     "home_cta": "Retour à l'accueil",
@@ -516,17 +516,17 @@
     "app_name": "Backgammon Mastermind",
     "arabic": "Arabe",
     "developer": "Développeur",
-    "developer_blurb": "Charge une position quelconque pour tester le moteur. Lance une partie normale à partir de cette position. Ce n’est pas une fonctionnalité du produit.",
-    "developer_json": "JSON de la position",
+    "developer_blurb": "Charger n'importe quelle position pour tester le moteur. Démarre une partie normale depuis cette position. Ce n'est pas une fonction du produit.",
+    "developer_json": "Position en JSON",
     "developer_load": "Charger le JSON",
-    "developer_open": "Charger la position",
-    "developer_presets": "Préréglages de test",
-    "english": "changements climatiques",
-    "game": "Partie",
-    "general": "Généralités",
+    "developer_open": "Charger une position",
+    "developer_presets": "Positions de test",
+    "english": "Anglais",
+    "game": "Jeu",
+    "general": "Général",
     "github": "GitHub",
     "language": "Langue",
-    "link_error_body": "Veuillez réessayer plus tard.",
+    "link_error_body": "Réessayez plus tard.",
     "link_error_title": "Impossible d'ouvrir le lien",
     "links": "Liens",
     "more": "Plus",
@@ -571,5 +571,5 @@
     "win_rate": "Victoires",
     "won": "Gagnées"
   },
-  "welcome": "Bienvenue à Backgammon Mastermind"
+  "welcome": "Bienvenue dans Backgammon Mastermind"
 }
