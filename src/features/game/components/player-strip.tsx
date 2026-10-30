@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { GameState, Player } from '@/lib/game';
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
@@ -50,6 +51,10 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   // Both sides get their plan, the computer's included.
   const showStrategy = !hideStrategy && !gameOver;
   const pipsA11y = translate('game.status.pips_a11y', { player: name, pips, off });
+  // Narrow strips (small phones, and matches with their score column) show the
+  // plan as its mark alone, so the name and status never get cut off.
+  const [width, setWidth] = useState(0);
+  const narrow = width > 0 && width < (state.match ? 420 : 340);
 
   // Only the name is pressable, so an editable trailing score never nests buttons.
   const Identity = onPress ? Pressable : View;
@@ -57,6 +62,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
     <View
       testID={`player-strip-${player}`}
       style={[styles.strip, active && styles.stripActive, won && styles.stripWon]}
+      onLayout={e => setWidth(e.nativeEvent.layout.width)}
     >
       <Identity
         accessible
@@ -70,7 +76,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
           <CheckerToken player={player} size={TOKEN_SIZE} />
         </View>
         <View style={styles.copy}>
-          <Text style={[styles.name, !active && styles.nameIdle]} numberOfLines={1}>
+          <Text style={[styles.name, !active && styles.nameIdle]}>
             {name}
           </Text>
           {status
@@ -78,7 +84,6 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
                 <Animated.View key={status} entering={FadeIn.duration(180)}>
                   <Text
                     style={[styles.status, won && styles.statusWon, !turnStatus && styles.statusIdle]}
-                    numberOfLines={1}
                     testID={`player-status-${player}`}
                   >
                     {status}
@@ -88,7 +93,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
             : null}
         </View>
       </Identity>
-      {showStrategy ? <StrategyChip state={state} player={player} iconOnly={compact} /> : null}
+      {showStrategy ? <StrategyChip state={state} player={player} iconOnly={compact || narrow} /> : null}
       <View style={styles.score} accessible accessibilityLabel={pipsA11y} testID={`pip-count-${player}`}>
         <AnimatedNumber value={pips} style={[styles.pips, !active && styles.pipsIdle]} />
         <Text style={styles.scoreLabel} numberOfLines={1}>

@@ -12,7 +12,7 @@ import { MatchControls } from '@/features/game/components/match-controls';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
-import { matchPlayer } from '@/features/game/match-copy';
+import { matchOfferText, matchResultText } from '@/features/game/match-copy';
 import { AUTO_ROLL_BUTTON_GRACE_MS } from '@/features/game/roll-button-timing';
 import { isTurnStart } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
@@ -78,10 +78,8 @@ function useDelayedFlag(active: boolean, delayMs: number): boolean {
 function matchCaption(state: GameState): string | null {
   const m = state.match;
   if (m?.pendingOffer)
-    return translate('game.match.offer', { player: matchPlayer(m.pendingOffer), opponent: matchPlayer(m.pendingOffer === 'white' ? 'black' : 'white'), value: m.cube.value * 2, points: m.cube.value });
-  if (m?.result)
-    return translate(m.winner ? 'game.match.winner' : 'game.match.result', { player: matchPlayer(m.result.winner), points: m.result.points, kind: translate(`game.match.${m.result.kind}`) });
-  return null;
+    return matchOfferText({ offerer: m.pendingOffer, value: m.cube.value * 2, points: m.cube.value }, state.mode);
+  return m ? matchResultText(m, state.mode) : null;
 }
 
 export function GameScreenControls({

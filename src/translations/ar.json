@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "نقاط",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "ارمِ النرد أولاً"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} يرمي نرد الافتتاح",
       "tie": "تعادل!",
       "tie_again": "نفس الرقم — ارمِ مجدداً",
-      "waiting_roll": "{{player}} يرمي…",
       "who_goes_first": "من يبدأ؟",
       "your_roll": "اضغط في أي مكان للرمي"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "العودة للعب المباشر",
       "cube_accept": "{{player}} يقبل · مكعب {{value}}",
+      "cube_accept_you": "تقبل · مكعب {{value}}",
       "cube_drop": "{{player}} يرفض",
+      "cube_drop_you": "ترفض",
       "cube_offer": "{{player}} يعرض المضاعفة",
+      "cube_offer_you": "تعرض المضاعفة",
       "live": "اللعب المباشر",
       "live_short": "مباشر",
       "move_a11y": "حركة {{ply}}، {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "الأسود يتحرك…",
-      "black_is_rolling": "الأسود يرمي…",
       "black_turn": "دور الأسود",
       "cant_enter": "لا يمكن الدخول من الحاجز بـ {{die1}} و{{die2}} — أنهِ دورك",
+      "computer_moving": "الكمبيوتر يحرّك القطع",
+      "computer_rolling": "الكمبيوتر يرمي النرد",
       "computer_turn": "دور الكمبيوتر",
       "enter_from_bar": "أدخل من الحاجز قبل تحريك الأحجار الأخرى",
       "game_over": "انتهت اللعبة",

@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "Pips",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "Würfle zuerst"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} würfelt um den Anwurf",
       "tie": "Unentschieden!",
       "tie_again": "Gleiche Zahl — nochmal würfeln",
-      "waiting_roll": "{{player}} würfelt…",
       "who_goes_first": "Wer beginnt?",
       "your_roll": "Zum Würfeln irgendwo tippen"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "Zurück zum laufenden Spiel",
       "cube_accept": "{{player}} nimmt an · Würfel {{value}}",
+      "cube_accept_you": "Du nimmst an · Würfel {{value}}",
       "cube_drop": "{{player}} lehnt ab",
+      "cube_drop_you": "Du lehnst ab",
       "cube_offer": "{{player}} bietet Dopplung an",
+      "cube_offer_you": "Du bietest Dopplung an",
       "live": "Laufendes Spiel",
       "live_short": "Live",
       "move_a11y": "Zug {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "Schwarz zieht…",
-      "black_is_rolling": "Schwarz würfelt…",
       "black_turn": "Schwarz ist am Zug",
       "cant_enter": "Mit {{die1}} und {{die2}} kein Einsetzen möglich — Zug beenden",
+      "computer_moving": "Computer zieht",
+      "computer_rolling": "Computer würfelt",
       "computer_turn": "Der Computer ist am Zug",
       "enter_from_bar": "Erst vom Balken einsetzen, bevor du andere Steine ziehst",
       "game_over": "Spiel beendet",

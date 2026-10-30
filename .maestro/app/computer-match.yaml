@@ -73,6 +73,8 @@ tags:
 - assertVisible:
     id: header-undo-button
     enabled: false
+# Against the computer the offer speaks to the player, not to a colour.
+- assertVisible: 'The computer offers a double to 2.*'
 - takeScreenshot: computer-match-02-computer-offers
 - stopApp
 - launchApp:
@@ -165,7 +167,7 @@ tags:
     visible:
       id: match-cube-owner-black
     timeout: 15000
-- assertVisible: Cube 2 · Black
+- assertVisible: Cube 2 · Computer
 - assertVisible:
     id: roll-dice-button
 - takeScreenshot: computer-match-06-computer-takes
@@ -178,7 +180,7 @@ tags:
     timeout: 60000
 - tapOn:
     id: resume-game-button
-- assertVisible: Cube 2 · Black
+- assertVisible: Cube 2 · Computer
 - assertNotVisible:
     id: match-double
 # Computer drops a badly losing board and White gets one point, not two.

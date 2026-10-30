@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "Πιπ",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "Ρίξε πρώτα τα ζάρια"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} ρίχνει για το άνοιγμα",
       "tie": "Ισοπαλία!",
       "tie_again": "Ίδιος αριθμός — ρίξτε ξανά",
-      "waiting_roll": "{{player}} ρίχνει…",
       "who_goes_first": "Ποιος ξεκινά;",
       "your_roll": "Άγγιξε οπουδήποτε για να ρίξεις"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "Επιστροφή στο τρέχον παιχνίδι",
       "cube_accept": "{{player}} δέχεται · Κύβος {{value}}",
+      "cube_accept_you": "Δέχεσαι · Κύβος {{value}}",
       "cube_drop": "{{player}} απορρίπτει",
+      "cube_drop_you": "Απορρίπτεις",
       "cube_offer": "{{player}} προτείνει διπλασιασμό",
+      "cube_offer_you": "Προτείνεις διπλασιασμό",
       "live": "Τρέχον παιχνίδι",
       "live_short": "Live",
       "move_a11y": "Κίνηση {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "Τα μαύρα κινούνται…",
-      "black_is_rolling": "Τα μαύρα ρίχνουν…",
       "black_turn": "Σειρά των μαύρων",
       "cant_enter": "Δεν μπορείς να μπεις από τη μπάρα με {{die1}} και {{die2}} — τέλος σειράς",
+      "computer_moving": "Ο υπολογιστής παίζει",
+      "computer_rolling": "Ο υπολογιστής ρίχνει τα ζάρια",
       "computer_turn": "Σειρά του υπολογιστή",
       "enter_from_bar": "Μπες από τη μπάρα πριν κινήσεις άλλα πούλια",
       "game_over": "Τέλος παιχνιδιού",

@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "Pips",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "Lance os dados primeiro"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} lança para a abertura",
       "tie": "Empate!",
       "tie_again": "Mesmo número — lancem de novo",
-      "waiting_roll": "{{player}} está lançando…",
       "who_goes_first": "Quem começa?",
       "your_roll": "Toque em qualquer lugar para lançar"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "Voltar ao jogo em andamento",
       "cube_accept": "{{player}} aceita · Cubo {{value}}",
+      "cube_accept_you": "Você aceita · Cubo {{value}}",
       "cube_drop": "{{player}} recusa",
+      "cube_drop_you": "Você recusa",
       "cube_offer": "{{player}} oferece dobrar",
+      "cube_offer_you": "Você oferece dobrar",
       "live": "Jogo em andamento",
       "live_short": "Ao vivo",
       "move_a11y": "Movimento {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "As pretas estão a mover…",
-      "black_is_rolling": "As pretas estão a lançar…",
       "black_turn": "Vez das pretas",
       "cant_enter": "Não pode entrar da barra com {{die1}} e {{die2}} — termine a vez",
+      "computer_moving": "O computador está movendo",
+      "computer_rolling": "O computador está jogando os dados",
       "computer_turn": "Vez do computador",
       "enter_from_bar": "Entre da barra antes de mover outras peças",
       "game_over": "Fim do jogo",

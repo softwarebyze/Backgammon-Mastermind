@@ -1,18 +1,18 @@
-import type { Player } from '@/lib/game';
+import type { GameMode, Player } from '@/lib/game';
 import type { MatchState } from '@/lib/game/match';
 import { StyleSheet, Text, View } from 'react-native';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { matchPlayer } from '@/features/game/match-copy';
+import { matchOfferText, matchPlayer } from '@/features/game/match-copy';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
-export function MatchCube({ cube, crawford = false, pendingOffer = null }: { pendingOffer?: Player | null; cube: MatchState['cube']; crawford?: boolean }) {
+export function MatchCube({ cube, crawford = false, pendingOffer = null, mode }: { pendingOffer?: Player | null; cube: MatchState['cube']; crawford?: boolean; mode?: GameMode }) {
   return (
     <View
       testID="match-cube"
       accessible
       accessibilityRole="text"
-      accessibilityLabel={`${pendingOffer ? translate('game.match.offer', { player: matchPlayer(pendingOffer), opponent: matchPlayer(pendingOffer === 'white' ? 'black' : 'white'), value: cube.value * 2, points: cube.value }) : translate('game.match.cube', { value: cube.value, owner: matchPlayer(cube.owner) })}${crawford ? `. ${translate('game.match.crawford')}` : ''}`}
+      accessibilityLabel={`${pendingOffer ? matchOfferText({ offerer: pendingOffer, value: cube.value * 2, points: cube.value }, mode) : translate('game.match.cube', { value: cube.value, owner: matchPlayer(cube.owner, mode) })}${crawford ? `. ${translate('game.match.crawford')}` : ''}`}
       style={styles.wrap}
     >
       <View testID={pendingOffer ? `match-cube-pending-${pendingOffer}` : `match-cube-owner-${cube.owner}`} style={[styles.face, crawford && styles.unavailable, pendingOffer && styles.pending]}>

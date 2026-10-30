@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "פיפים",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "קודם הטילו את הקוביות"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} מטיל לפתיחה",
       "tie": "תיקו!",
       "tie_again": "אותו מספר — הטילו שוב",
-      "waiting_roll": "{{player}} מטיל…",
       "who_goes_first": "מי מתחיל?",
       "your_roll": "הקישו בכל מקום כדי להטיל"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "חזרה למשחק החי",
       "cube_accept": "{{player}} מקבל · קוביית הכפלה {{value}}",
+      "cube_accept_you": "אתה מקבל · קוביית הכפלה {{value}}",
       "cube_drop": "{{player}} מסרב",
+      "cube_drop_you": "אתה מסרב",
       "cube_offer": "{{player}} מציע להכפיל",
+      "cube_offer_you": "אתה מציע להכפיל",
       "live": "משחק חי",
       "live_short": "חי",
       "move_a11y": "מהלך {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "השחור מזיז…",
-      "black_is_rolling": "השחור מטיל…",
       "black_turn": "תור השחור",
       "cant_enter": "אי אפשר להיכנס מהבר עם {{die1}} ו־{{die2}} — סיום התור",
+      "computer_moving": "המחשב מזיז",
+      "computer_rolling": "המחשב מטיל קוביות",
       "computer_turn": "תור המחשב",
       "enter_from_bar": "יש להיכנס מהבר לפני הזזת כלים אחרים",
       "game_over": "המשחק הסתיים",

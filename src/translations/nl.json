@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "Pips",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "Gooi eerst de dobbelstenen"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} gooit voor de opening",
       "tie": "Gelijkspel!",
       "tie_again": "Zelfde getal — gooi opnieuw",
-      "waiting_roll": "{{player}} gooit…",
       "who_goes_first": "Wie begint?",
       "your_roll": "Tik ergens om te gooien"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "Terug naar het lopende spel",
       "cube_accept": "{{player}} accepteert · Kubus {{value}}",
+      "cube_accept_you": "Je accepteert · Kubus {{value}}",
       "cube_drop": "{{player}} past",
+      "cube_drop_you": "Je past",
       "cube_offer": "{{player}} biedt verdubbeling aan",
+      "cube_offer_you": "Je biedt verdubbeling aan",
       "live": "Lopend spel",
       "live_short": "Live",
       "move_a11y": "Zet {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "Zwart zet…",
-      "black_is_rolling": "Zwart werpt…",
       "black_turn": "Zwart is aan de beurt",
       "cant_enter": "Je kunt niet binnenkomen met {{die1}} en {{die2}} — beëindig je beurt",
+      "computer_moving": "Computer zet",
+      "computer_rolling": "Computer gooit",
       "computer_turn": "De computer is aan de beurt",
       "enter_from_bar": "Kom vanaf de balk binnen voordat je andere stenen verplaatst",
       "game_over": "Spel afgelopen",

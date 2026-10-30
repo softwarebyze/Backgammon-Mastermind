@@ -57,7 +57,7 @@ describe('game screen controls', () => {
     renderComputerControls('moving');
 
     expect(screen.queryAllByText(/moving/i)).toHaveLength(0);
-    expect(screen.queryByText('Black is moving…')).toBeNull();
+    expect(screen.queryByText('Computer is moving')).toBeNull();
     expect(screen.queryByText('Tap to skip wait')).toBeNull();
     expect(screen.queryByTestId('skip-computer-button')).toBeNull();
   });
@@ -66,7 +66,7 @@ describe('game screen controls', () => {
     renderComputerControls('rolling');
 
     expect(screen.queryAllByText(/rolling/i)).toHaveLength(0);
-    expect(screen.queryByText('Black is rolling…')).toBeNull();
+    expect(screen.queryByText('Computer is rolling')).toBeNull();
     expect(screen.queryByText('Tap to skip wait')).toBeNull();
   });
 });

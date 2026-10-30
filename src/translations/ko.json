@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "핍",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "먼저 주사위를 굴리세요"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}}이(가) 선공 주사위를 굴립니다",
       "tie": "무승부!",
       "tie_again": "같은 숫자 — 다시 굴리세요",
-      "waiting_roll": "{{player}}이(가) 굴리는 중…",
       "who_goes_first": "누가 먼저 할까요?",
       "your_roll": "아무 곳이나 탭하여 굴리기"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "진행 중인 게임으로 돌아가기",
       "cube_accept": "{{player}} 수락 · 큐브 {{value}}",
+      "cube_accept_you": "수락 · 큐브 {{value}}",
       "cube_drop": "{{player}} 거절",
+      "cube_drop_you": "거절",
       "cube_offer": "{{player}} 더블 제안",
+      "cube_offer_you": "더블 제안",
       "live": "진행 중인 게임",
       "live_short": "라이브",
       "move_a11y": "수 {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "검정이 이동 중…",
-      "black_is_rolling": "검정이 주사위를 굴리는 중…",
       "black_turn": "검정 차례",
       "cant_enter": "{{die1}}와 {{die2}}로 바에서 들어올 수 없습니다 — 차례를 마치세요",
+      "computer_moving": "컴퓨터가 말을 옮기는 중",
+      "computer_rolling": "컴퓨터가 주사위를 굴리는 중",
       "computer_turn": "컴퓨터 차례",
       "enter_from_bar": "다른 말을 움직이기 전에 바에서 들어오세요",
       "game_over": "게임 종료",

@@ -287,6 +287,7 @@ export function GameScreenLayout({
     isReviewing: review.isReviewing,
     reviewedPlayer: review.reviewedPlayer,
     currentPlayer: state.currentPlayer,
+    vsComputer: state.mode === 'vs-computer',
   });
   // Live state only — review scrub must not drive the opening reveal.
   const reveal = useOpeningReveal(input.state, input.handleRoll);

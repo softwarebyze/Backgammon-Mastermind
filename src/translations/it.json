@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "Pip",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "Prima lancia i dadi"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} lancia per l'apertura",
       "tie": "Pareggio!",
       "tie_again": "Stesso numero — rilanciate",
-      "waiting_roll": "{{player}} sta lanciando…",
       "who_goes_first": "Chi inizia?",
       "your_roll": "Tocca ovunque per lanciare"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "Torna alla partita in corso",
       "cube_accept": "{{player}} accetta · Cubo {{value}}",
+      "cube_accept_you": "Accetti · Cubo {{value}}",
       "cube_drop": "{{player}} rifiuta",
+      "cube_drop_you": "Rifiuti",
       "cube_offer": "{{player}} offre il raddoppio",
+      "cube_offer_you": "Offri il raddoppio",
       "live": "Partita in corso",
       "live_short": "Live",
       "move_a11y": "Mossa {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "Il nero muove…",
-      "black_is_rolling": "Il nero tira…",
       "black_turn": "Turno del nero",
       "cant_enter": "Non puoi entrare dalla barra con {{die1}} e {{die2}} — termina il turno",
+      "computer_moving": "Il computer muove",
+      "computer_rolling": "Il computer lancia i dadi",
       "computer_turn": "Turno del computer",
       "enter_from_bar": "Entra dalla barra prima di muovere le altre pedine",
       "game_over": "Partita terminata",

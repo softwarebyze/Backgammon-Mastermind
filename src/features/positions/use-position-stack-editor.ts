@@ -73,17 +73,7 @@ export function usePositionStackEditor(props: {
         drag.current = start;
         latest.current.onBlocked(null);
         latest.current.onLocation(start.location);
-        const d = latest.current.dimensions;
-        let count: number;
-        if (point === 0) {
-          const { size, centers } = barStackLayout({ ...d, count: MAX_BAR_VISIBLE, player: start.color });
-          const hingeEdge = start.color === 'black' ? (d.boardHeight - d.middleHeight) / 2 : (d.boardHeight + d.middleHeight) / 2;
-          count = stackPressCount(Math.abs(y - hingeEdge) - 6, size, Math.abs(centers[1]! - centers[0]!));
-        }
-        else {
-          const distance = start.top ? y : d.pointHeight - y;
-          count = stackPressCount(distance, d.checkerSize, Math.min(d.checkerSize - 2, (d.pointHeight - d.checkerSize) / 4));
-        }
+        const count = pressCount(start, { point, y }, latest.current.dimensions);
         const next = apply(start, count);
         start.count = point === 0 ? next.bar[start.color] : next.points[point]!.player === start.color ? next.points[point]!.count : 0;
       },
@@ -114,4 +104,21 @@ export function usePositionStackEditor(props: {
     };
   }, []);
   return editor;
+}
+
+/**
+ * How many checkers a press at `y` asks for. A press reaches only as far as
+ * the point or bar draws checkers, so it never cuts a taller stack down;
+ * dragging along it still does.
+ */
+function pressCount({ count: current, color, top }: Pick<Drag, 'count' | 'color' | 'top'>, { point, y }: { point: number; y: number }, d: BoardDimensions): number {
+  if (point === 0) {
+    const { size, centers } = barStackLayout({ ...d, count: MAX_BAR_VISIBLE, player: color });
+    const hingeEdge = color === 'black' ? (d.boardHeight - d.middleHeight) / 2 : (d.boardHeight + d.middleHeight) / 2;
+    const count = stackPressCount(Math.abs(y - hingeEdge) - 6, size, Math.abs(centers[1]! - centers[0]!));
+    return current > MAX_BAR_VISIBLE ? Math.max(count, current) : count;
+  }
+  const spacing = Math.min(d.checkerSize - 2, (d.pointHeight - d.checkerSize) / 4);
+  const count = stackPressCount(top ? y : d.pointHeight - y, d.checkerSize, spacing);
+  return current > stackPressCount(d.pointHeight, d.checkerSize, spacing) ? Math.max(count, current) : count;
 }

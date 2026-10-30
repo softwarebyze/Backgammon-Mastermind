@@ -42,7 +42,7 @@ describe('player strip', () => {
   it('only the side to move shows a status', () => {
     const state = moving('vs-computer', 'black');
     expect(playerStripStatus(state, 'white', null)).toBeNull();
-    expect(playerStripStatus(state, 'black', null)).toBe('game.turn.black_is_moving');
+    expect(playerStripStatus(state, 'black', null)).toBe('game.turn.computer_moving');
     expect(playerStripStatus(state, 'black', 'Who goes first?')).toBe('Who goes first?');
   });
 

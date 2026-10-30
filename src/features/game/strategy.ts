@@ -259,6 +259,11 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
       ? { message: anchors.length >= 1 ? 'priming_anchor' : 'priming', params: { prime } }
       : { message: 'priming_trap', params: { made: block.count, from: block.from, to: block.to, trapped: block.trapped } };
   }
+  // The opening: everyone's back checkers sit on an anchor and nothing has
+  // taken shape, so this comes before holding and the single-blot attack.
+  else if (myPips >= OPENING_PIPS && foePips >= OPENING_PIPS) {
+    // "developing" is fair here, and only here.
+  }
   // A single loose checker is worth attacking once your board is strong.
   else if (foeBlotsHome.length === 1 && homeMade.length >= 3) {
     key = 'blitz';
@@ -271,9 +276,6 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
   else if (pipLead >= 0.1 && !contactExposed(state, player)) {
     key = 'running';
     reason = { message: 'running_lead', params: { foePips, myPips } };
-  }
-  else if (myPips >= OPENING_PIPS && foePips >= OPENING_PIPS) {
-    // The opening: nothing has taken shape yet, so "developing" is fair.
   }
   // Past the opening, every position has one of the five plans.
   else if (pipLead > 0) {

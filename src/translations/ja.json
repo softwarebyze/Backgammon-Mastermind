@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "ピップ",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "先にサイコロを振ってください"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}}がオープニングロール中",
       "tie": "引き分け！",
       "tie_again": "同じ目 — もう一度振ってください",
-      "waiting_roll": "{{player}}が振っています…",
       "who_goes_first": "どちらが先攻？",
       "your_roll": "画面のどこかをタップして振る"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "対局に戻る",
       "cube_accept": "{{player}}がテイク · キューブ{{value}}",
+      "cube_accept_you": "あなたがテイク · キューブ{{value}}",
       "cube_drop": "{{player}}がパス",
+      "cube_drop_you": "あなたがパス",
       "cube_offer": "{{player}}がダブルを提案",
+      "cube_offer_you": "あなたがダブルを提案",
       "live": "進行中の対局",
       "live_short": "ライブ",
       "move_a11y": "ムーブ{{ply}}、{{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "黒が移動中…",
-      "black_is_rolling": "黒がサイコロを振っています…",
       "black_turn": "黒の番",
       "cant_enter": "{{die1}}と{{die2}}ではバーから入れません — 手番を終了してください",
+      "computer_moving": "コンピュータが駒を動かしています",
+      "computer_rolling": "コンピュータがサイコロを振っています",
       "computer_turn": "コンピュータの番",
       "enter_from_bar": "他の駒を動かす前にバーから入れてください",
       "game_over": "ゲーム終了",

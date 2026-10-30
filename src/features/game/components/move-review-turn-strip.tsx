@@ -249,8 +249,14 @@ const styles = StyleSheet.create({
   liveTextActive: { color: '#2A1A08' },
 });
 
+/** Against the computer the human reads "You offer…" and Black reads as "Computer". */
 function cubeEventLabel(event: CubeHistoryEvent): string {
-  const player = event.player === 'white' ? translate('game.review.player_white') : translate('game.review.player_black');
-  const key = event.kind === 'offer' ? 'game.review.cube_offer' : event.kind === 'accept' ? 'game.review.cube_accept' : 'game.review.cube_drop';
+  const vsComputer = event.after.mode === 'vs-computer';
+  const you = vsComputer && event.player === 'white';
+  const player = vsComputer
+    ? translate('game.players.computer')
+    : translate(event.player === 'white' ? 'game.review.player_white' : 'game.review.player_black');
+  const kind = event.kind === 'offer' ? 'cube_offer' : event.kind === 'accept' ? 'cube_accept' : 'cube_drop';
+  const key = `game.review.${kind}${you ? '_you' : ''}`;
   return translate(key as Parameters<typeof translate>[0], { player, value: (event.after.match?.cube.value ?? 1) * (event.kind === 'offer' ? 2 : 1) });
 }

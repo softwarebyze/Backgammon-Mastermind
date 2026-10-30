@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "Пипсы",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "Сначала бросьте кости"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} бросает за право первого хода",
       "tie": "Ничья!",
       "tie_again": "Одинаковые числа — бросьте ещё раз",
-      "waiting_roll": "{{player}} бросает…",
       "who_goes_first": "Кто ходит первым?",
       "your_roll": "Коснитесь экрана, чтобы бросить"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "Вернуться к текущей игре",
       "cube_accept": "{{player}} принимает · Куб {{value}}",
+      "cube_accept_you": "Вы принимаете · Куб {{value}}",
       "cube_drop": "{{player}} отказывается",
+      "cube_drop_you": "Вы отказываетесь",
       "cube_offer": "{{player}} предлагает удвоение",
+      "cube_offer_you": "Вы предлагаете удвоение",
       "live": "Текущая игра",
       "live_short": "Игра",
       "move_a11y": "Ход {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "Чёрные ходят…",
-      "black_is_rolling": "Чёрные бросают…",
       "black_turn": "Ход чёрных",
       "cant_enter": "Нельзя войти с бара при {{die1}} и {{die2}} — завершите ход",
+      "computer_moving": "Компьютер ходит",
+      "computer_rolling": "Компьютер бросает кости",
       "computer_turn": "Ход компьютера",
       "enter_from_bar": "Сначала войдите с бара, затем двигайте другие шашки",
       "game_over": "Игра окончена",

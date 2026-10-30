@@ -323,3 +323,22 @@ describe('past the opening', () => {
       expect(classifyStrategy(state, side).key).not.toBe('developing');
   });
 });
+
+it('stays in the opening after the first moves, not a holding game', () => {
+  // A few moves in: Black leads by about 5% and everyone still has back
+  // checkers, which used to read as a holding game for White.
+  const state = stateWith([
+    [24, 'white', 2],
+    [13, 'white', 5],
+    [8, 'white', 2],
+    [6, 'white', 4],
+    [5, 'white', 2],
+    [1, 'black', 2],
+    [12, 'black', 3],
+    [17, 'black', 3],
+    [18, 'black', 2],
+    [19, 'black', 5],
+  ]);
+  expect(calculatePipCount(state, 'white')).toBeGreaterThan(calculatePipCount(state, 'black') * 1.03);
+  expect(classifyStrategy(state, 'white').key).toBe('developing');
+});

@@ -13,13 +13,18 @@ export function pointNumberLabel(n: number, perspective: Player): number {
 /**
  * Whose point of view the point-number rails are labeled from.
  *
- * The numbers follow the side whose turn is on screen: live that's the side
- * to move; in review it's the player whose turn is being reviewed.
+ * Two players on one device: the numbers follow the side whose turn is on
+ * screen (live, the side to move; in review, the reviewed turn's player).
+ * Against the computer they stay on the human's side, so they don't flip
+ * while the computer moves.
  */
 export function resolveNumberPerspective(args: {
   isReviewing: boolean;
   reviewedPlayer: Player | null;
   currentPlayer: Player;
+  vsComputer?: boolean;
 }): Player {
+  if (args.vsComputer)
+    return 'white';
   return args.isReviewing && args.reviewedPlayer ? args.reviewedPlayer : args.currentPlayer;
 }

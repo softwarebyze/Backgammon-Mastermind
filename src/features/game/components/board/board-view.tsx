@@ -405,7 +405,7 @@ export function BoardView({
 
         {boardPresentation && state.match && (
           <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: boardWidth - bearOffWidth / 2 - 15, top: cubeCenterY(dimensions, state.match.pendingOffer ? opponent(state.match.pendingOffer) : state.match.cube.owner === 'center' ? null : state.match.cube.owner) - 14, zIndex: 45, transform: [{ scale: cubeScale }] }}>
-            <MatchCube cube={state.match.cube} crawford={state.match.crawford} pendingOffer={state.match.pendingOffer} />
+            <MatchCube cube={state.match.cube} crawford={state.match.crawford} pendingOffer={state.match.pendingOffer} mode={state.mode} />
           </View>
         )}
 

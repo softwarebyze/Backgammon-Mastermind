@@ -61,14 +61,18 @@
       "new_match": "New match",
       "next_game": "Next game",
       "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "offer_by_you": "You offer a double to {{value}}.",
+      "offer_to_you": "The computer offers a double to {{value}}. Accept or drop? Dropping concedes {{points}}.",
       "pips": "पिप्स",
       "result": "{{player}} wins {{points}} · {{kind}}",
+      "result_you": "You win {{points}} · {{kind}}",
       "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
       "score": "White {{white}}  –  Black {{black}}",
       "single": "single",
       "title": "Match to {{length}} · Game {{game}}",
       "white": "White",
-      "winner": "{{player}} wins the match · +{{points}}"
+      "winner": "{{player}} wins the match · +{{points}}",
+      "winner_you": "You win the match · +{{points}}"
     },
     "nudge": {
       "roll_first": "पहले पासे फेंकें"
@@ -80,7 +84,6 @@
       "rolls_for_opening": "{{player}} शुरुआत के लिए पासा फेंक रहा है",
       "tie": "बराबरी!",
       "tie_again": "एक जैसा अंक — फिर से फेंकें",
-      "waiting_roll": "{{player}} पासा फेंक रहा है…",
       "who_goes_first": "पहले कौन चलेगा?",
       "your_roll": "फेंकने के लिए कहीं भी टैप करें"
     },
@@ -123,8 +126,11 @@
     "review": {
       "back_to_live": "चालू गेम पर लौटें",
       "cube_accept": "{{player}} स्वीकार करता है · क्यूब {{value}}",
+      "cube_accept_you": "आप स्वीकार करते हैं · क्यूब {{value}}",
       "cube_drop": "{{player}} मना करता है",
+      "cube_drop_you": "आप मना करते हैं",
       "cube_offer": "{{player}} दोगुना करने की पेशकश करता है",
+      "cube_offer_you": "आप दोगुना करने की पेशकश करते हैं",
       "live": "चालू गेम",
       "live_short": "लाइव",
       "move_a11y": "चाल {{ply}}, {{player}}",
@@ -192,10 +198,10 @@
       }
     },
     "turn": {
-      "black_is_moving": "काला चल रहा है…",
-      "black_is_rolling": "काला पासा फेंक रहा है…",
       "black_turn": "काले की बारी",
       "cant_enter": "{{die1}} और {{die2}} से बार से प्रवेश नहीं हो सकता — अपनी बारी समाप्त करें",
+      "computer_moving": "कंप्यूटर चाल चल रहा है",
+      "computer_rolling": "कंप्यूटर पासा फेंक रहा है",
       "computer_turn": "कंप्यूटर की बारी",
       "enter_from_bar": "दूसरी गोटियाँ चलाने से पहले बार से प्रवेश करें",
       "game_over": "खेल समाप्त",

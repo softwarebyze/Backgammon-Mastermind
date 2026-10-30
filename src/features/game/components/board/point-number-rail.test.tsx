@@ -39,6 +39,11 @@ describe('pointNumberLabel', () => {
 });
 
 describe('resolveNumberPerspective', () => {
+  it('stays on the human side against the computer, even while it moves', () => {
+    expect(resolveNumberPerspective({ isReviewing: false, reviewedPlayer: null, currentPlayer: 'black', vsComputer: true })).toBe('white');
+    expect(resolveNumberPerspective({ isReviewing: true, reviewedPlayer: 'black', currentPlayer: 'white', vsComputer: true })).toBe('white');
+  });
+
   it('uses the side to move on the live board', () => {
     expect(resolveNumberPerspective({
       isReviewing: false,

@@ -52,7 +52,7 @@ export function StrategyChip({ state, player, iconOnly = false }: Props) {
         <View testID={`strategy-mark-${player}`}>
           <StrategyMark strategy={strategy.key} size={14} />
         </View>
-        {iconOnly ? null : <Text style={styles.chipText} numberOfLines={1}>{label}</Text>}
+        {iconOnly ? null : <Text style={styles.chipText}>{label}</Text>}
       </Pressable>
       <Modal
         visible={showExplanation}
@@ -93,8 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    flexShrink: 4,
-    minWidth: 0,
+    flexShrink: 0,
     paddingHorizontal: 8,
     paddingVertical: 4,
     backgroundColor: 'rgba(255, 196, 153, 0.06)',
@@ -106,7 +105,6 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   chipText: {
-    flexShrink: 1,
     color: GAME_PALETTE.textMuted,
     fontSize: 12,
     letterSpacing: 0.2,

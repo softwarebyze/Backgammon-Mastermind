@@ -66,7 +66,7 @@ export function openingCopy(
   return {
     headline: translate('game.opening.who_goes_first'),
     caption: computerRolling
-      ? translate('game.opening.waiting_roll', { player: roller })
+      ? translate('game.turn.computer_rolling')
       : translate('game.opening.rolls_for_opening', { player: roller }),
   };
 }
