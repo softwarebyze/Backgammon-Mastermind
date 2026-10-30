@@ -31,8 +31,6 @@ tags:
 - assertVisible:
     id: position-cube
 - assertNotVisible:
-    id: position-cube-value
-- assertNotVisible:
     id: position-start
 - takeScreenshot: position-compact-workspace
 - assertVisible:
@@ -63,41 +61,20 @@ tags:
       TARGET_ID: position-cube
       START_Y: '80%'
       END_Y: '25%'
+# The cube is edited in place: tap doubles it, the arrows give it to a player.
 - tapOn:
     id: position-cube
-- runFlow:
-    file: ../utils/position-scroll.yaml
-    env:
-      TARGET_ID: position-cube-value
-      START_Y: '80%'
-      END_Y: '25%'
-- runFlow:
-    file: ../utils/position-step.yaml
-    env:
-      STEPPER: position-cube-value
-      SIDE: higher
-- runFlow:
-    file: ../utils/position-scroll.yaml
-    env:
-      TARGET_ID: position-cube-owner-black
-      START_Y: '80%'
-      END_Y: '25%'
 - tapOn:
-    id: position-cube-owner-black
+    id: position-cube-up
 - assertVisible:
     id: position-cube
     text: 'Doubling cube: 2. Cube owner: Black'
 - takeScreenshot: position-visual-cube
-- runFlow:
-    file: ../utils/position-scroll.yaml
-    env:
-      TARGET_ID: position-cube-reset
-      START_Y: '80%'
-      END_Y: '25%'
 - tapOn:
-    id: position-cube-reset
-- tapOn:
+    id: position-cube-down
+- assertVisible:
     id: position-cube
+    text: 'Doubling cube: 2. Cube owner: Centered'
 - runFlow: ../utils/position-score.yaml
 - runFlow:
     file: ../utils/position-scroll.yaml
