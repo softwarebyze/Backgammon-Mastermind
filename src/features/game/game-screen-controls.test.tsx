@@ -126,6 +126,31 @@ describe('confirm move bar', () => {
     expect(screen.queryByText('No legal moves…')).toBeNull();
   });
 
+  it('shows one no-move message when a blocked roll passes by itself', () => {
+    mockPrefs.confirmMove = false;
+    const state = createInitialState('vs-human');
+    state.phase = 'no-move';
+    state.bar.white = 1;
+    state.dice = [2, 5];
+    state.remainingDice = [2, 5];
+
+    setup(
+      <GameScreenControls
+        state={state}
+        liveDiceState={state}
+        isHumanTurn
+        isComputerTurn={false}
+        moveLogLength={0}
+        onRoll={jest.fn()}
+        onReset={jest.fn()}
+      />,
+    );
+
+    expect(screen.getByText('No legal moves…')).toBeOnTheScreen();
+    expect(screen.queryByText(/end your turn/)).toBeNull();
+    expect(screen.queryByText(/Move your/)).toBeNull();
+  });
+
   it('does not render the confirm bar when confirm is off', () => {
     mockPrefs.confirmMove = false;
     const state = awaitingConfirmState();

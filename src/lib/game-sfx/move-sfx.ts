@@ -4,7 +4,8 @@ import { opponent } from '@/lib/game';
 
 import { BEAR_OFF } from '@/lib/game/constants';
 
-export type GameSfxKind = 'roll' | 'place' | 'hit' | 'bearOff' | 'win';
+/** `blocked`: a roll with no legal move (soft two-note "err err"). */
+export type GameSfxKind = 'roll' | 'place' | 'hit' | 'bearOff' | 'win' | 'blocked';
 
 /** Which one-shots to play for a completed move (order = play order). */
 export function sfxKindsForMove(
