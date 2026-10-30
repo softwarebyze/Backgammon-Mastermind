@@ -2,7 +2,7 @@ import type { Player } from '@/lib/game/types';
 import type { Position } from '@/lib/positions/position';
 import { Text, View } from 'react-native';
 import { translate } from '@/lib/i18n';
-import { nextMatchLength } from './match-length';
+import { crawfordPossible, nextMatchLength } from './match-length';
 import { PositionAction } from './position-controls';
 import { PositionStepper } from './position-stepper';
 import { styles } from './position-styles';
@@ -35,7 +35,8 @@ function TargetCard({ length }: { length: number }) {
 /**
  * The match as a scoreboard: Black's card, the target, White's card, each
  * with ▲ / ▼. Money play has no score to keep, so only the target shows and
- * Jacoby / Beavers replace Crawford.
+ * Jacoby / Beavers replace Crawford. Crawford is offered only when exactly
+ * one side is a point from winning, and clears when the score moves away.
  */
 export function PositionScoreboard({ position: p, onChange }: { position: Position; onChange: (p: Position) => void }) {
   const c = p.context;
@@ -59,7 +60,10 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
       value={c.scores[player]}
       min={0}
       max={Math.max(scoreCap, c.scores[player])}
-      onChange={score => context({ scores: { ...c.scores, [player]: score } })}
+      onChange={(score) => {
+        const scores = { ...c.scores, [player]: score };
+        context({ scores, crawford: c.crawford && crawfordPossible({ matchLength: c.matchLength, scores }) });
+      }}
       disabled={money}
     >
       <ScoreCard score={c.scores[player]} player={player} />
@@ -77,7 +81,7 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
                   <PositionAction compact chip label={translate('positions.beavers')} testID="position-beavers" selected={c.beavers} onPress={() => context({ beavers: !c.beavers })} />
                 </>
               )
-            : <PositionAction compact chip label={translate('positions.crawford')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />}
+            : (crawfordPossible(c) || c.crawford) && <PositionAction compact chip label={translate('positions.crawford')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />}
         </View>
       </View>
       <View style={styles.scoreboard}>

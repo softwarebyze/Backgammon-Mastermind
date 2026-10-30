@@ -1,4 +1,4 @@
-import { nextMatchLength } from './match-length';
+import { crawfordPossible, nextMatchLength } from './match-length';
 import { positionLayout } from './position-layout';
 
 it('steps the match target through money and odd lengths', () => {
@@ -10,6 +10,16 @@ it('steps the match target through money and odd lengths', () => {
   // Imported even lengths step to their odd neighbours.
   expect(nextMatchLength(4, 1)).toBe(5);
   expect(nextMatchLength(4, -1)).toBe(3);
+});
+
+it('allows a Crawford game only with exactly one side at match point', () => {
+  expect(crawfordPossible({ matchLength: 0, scores: { white: 0, black: 0 } })).toBe(false);
+  expect(crawfordPossible({ matchLength: 5, scores: { white: 0, black: 0 } })).toBe(false);
+  expect(crawfordPossible({ matchLength: 5, scores: { white: 4, black: 2 } })).toBe(true);
+  expect(crawfordPossible({ matchLength: 5, scores: { white: 1, black: 4 } })).toBe(true);
+  expect(crawfordPossible({ matchLength: 5, scores: { white: 4, black: 4 } })).toBe(false);
+  // A 1-point match starts at double match point.
+  expect(crawfordPossible({ matchLength: 1, scores: { white: 0, black: 0 } })).toBe(false);
 });
 
 it('stacks the controls under the board on phones', () => {

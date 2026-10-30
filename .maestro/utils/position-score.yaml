@@ -50,3 +50,14 @@ tags:
     id: position-score-black
     text: 'Black score: 2'
 - takeScreenshot: position-editable-scoreboard
+# Crawford only exists once exactly one player is a point from winning.
+- assertNotVisible:
+    id: position-crawford
+- tapOn:
+    id: position-score-white-higher
+- assertVisible:
+    id: position-crawford
+- tapOn:
+    id: position-score-white-lower
+- assertNotVisible:
+    id: position-crawford

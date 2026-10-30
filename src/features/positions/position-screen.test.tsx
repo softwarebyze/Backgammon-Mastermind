@@ -159,6 +159,25 @@ it('keeps the match score on a scoreboard with odd match lengths', () => {
   expect(start).not.toHaveBeenCalled();
 });
 
+it('offers Crawford only while exactly one player is a point from winning', () => {
+  render(<PositionScreen />);
+  for (let i = 0; i < 3; i++)
+    fireEvent.press(screen.getByTestId('position-match-length-higher'));
+  // 0-0 to 5: nobody is close, so there is no Crawford game.
+  expect(screen.queryByTestId('position-crawford')).toBeNull();
+  for (let i = 0; i < 4; i++)
+    fireEvent.press(screen.getByTestId('position-score-white-higher'));
+  fireEvent.press(screen.getByTestId('position-crawford'));
+  expect(screen.getByTestId('position-crawford')).toHaveProp('accessibilityState', expect.objectContaining({ selected: true }));
+  // Both at match point: double match point, never Crawford.
+  for (let i = 0; i < 4; i++)
+    fireEvent.press(screen.getByTestId('position-score-black-higher'));
+  expect(screen.queryByTestId('position-crawford')).toBeNull();
+  // Back to one side at match point: the old flag did not survive.
+  fireEvent.press(screen.getByTestId('position-score-black-lower'));
+  expect(screen.getByTestId('position-crawford')).toHaveProp('accessibilityState', expect.objectContaining({ selected: false }));
+});
+
 it('puts a player on roll by tapping their strip', () => {
   render(<PositionScreen />);
   expect(screen.getByTestId('player-status-white')).toHaveTextContent('positions.on_roll');
