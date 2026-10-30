@@ -51,6 +51,7 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
     concurrentMoves: true,
     isHumanTurn,
     interactionEnabled,
+    preselectBar: true,
     actions,
     onMoveMade,
   });

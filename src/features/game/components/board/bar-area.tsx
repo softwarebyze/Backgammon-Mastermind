@@ -1,7 +1,7 @@
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { Player } from '@/lib/game/types';
 import { useId, useMemo } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
@@ -37,6 +37,8 @@ type Props = {
   panFrom?: number;
   isDragging?: boolean;
   dragOverlay?: DragOverlayRefs;
+  /** Ring the current player's front bar checker as a move hint. */
+  showMoveHint?: boolean;
 } & DragHandlers;
 
 function BarHinge({ width, height }: { width: number; height: number }) {
@@ -59,6 +61,19 @@ function BarHinge({ width, height }: { width: number; height: number }) {
   );
 }
 
+function BarOutline({ lit }: { lit: boolean }) {
+  return (
+    <View
+      pointerEvents="none"
+      style={{
+        ...StyleSheet.absoluteFill,
+        ...(lit ? { borderWidth: 2, borderColor: '#FFD700' } : { borderWidth: 1, borderColor: 'rgba(0,0,0,0.45)' }),
+        zIndex: 2,
+      }}
+    />
+  );
+}
+
 type StackProps = {
   count: number;
   player: Player;
@@ -67,6 +82,7 @@ type StackProps = {
   checkerSize: number;
   isDragging: boolean;
   isSelected?: boolean;
+  showMoveHint?: boolean;
 };
 
 function BarStack({
@@ -77,6 +93,7 @@ function BarStack({
   checkerSize,
   isDragging,
   isSelected = false,
+  showMoveHint = false,
 }: StackProps) {
   const { size, centers } = barStackLayout({ boardHeight, middleHeight, checkerSize, count, player });
   const topDragStyle = useAnimatedStyle(() => ({
@@ -91,7 +108,7 @@ function BarStack({
     <View pointerEvents="none" style={{ position: 'absolute', top: 0, width: '100%', height: boardHeight }}>
       {centers.map((center, i) => {
         const isTopChecker = i === centers.length - 1;
-        const token = <CheckerToken player={player} size={size} showCount={isTopChecker && count > centers.length ? count : undefined} isSelected={isTopChecker && isSelected} />;
+        const token = <CheckerToken player={player} size={size} showCount={isTopChecker && count > centers.length ? count : undefined} isSelected={isTopChecker && isSelected} showMoveHint={isTopChecker && showMoveHint} />;
         if (!isTopChecker) {
           return <View key={center} style={{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }}>{token}</View>;
         }
@@ -120,6 +137,7 @@ export function BarArea({
   panFrom = BAR_POINT,
   isDragging = false,
   dragOverlay,
+  showMoveHint = false,
   onDragAttempt,
   onDragStart,
   onDragMove,
@@ -167,18 +185,7 @@ export function BarArea({
         opacity: pressed ? 0.8 : 1,
       })}
     >
-      <View
-        pointerEvents="none"
-        style={{
-          position: 'absolute',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          ...(isBarSelected || emphasized ? { borderWidth: 2, borderColor: '#FFD700' } : { borderWidth: 1, borderColor: 'rgba(0,0,0,0.45)' }),
-          zIndex: 2,
-        }}
-      />
+      <BarOutline lit={isBarSelected || emphasized} />
       <BarStack
         count={blackCount}
         player="black"
@@ -187,6 +194,7 @@ export function BarArea({
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'black'}
         isSelected={isBarSelected && currentPlayer === 'black'}
+        showMoveHint={showMoveHint && currentPlayer === 'black'}
       />
 
       <View pointerEvents="none" style={{ position: 'absolute', top: halfHeight }}>
@@ -201,6 +209,7 @@ export function BarArea({
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'white'}
         isSelected={isBarSelected && currentPlayer === 'white'}
+        showMoveHint={showMoveHint && currentPlayer === 'white'}
       />
     </Pressable>
   );
