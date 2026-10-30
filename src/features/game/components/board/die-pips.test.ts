@@ -26,8 +26,8 @@ describe('die pips', () => {
     }
   });
 
-  it.each(SIZES)('keeps clear space between the pips of a 6 (size %i)', (size) => {
-    const pips = diePips(6, size, 2);
+  it.each(SIZES.flatMap(size => [[size, 2], [size, 3]]))('keeps clear space between the pips of a 6 (size %i, border %i)', (size, border) => {
+    const pips = diePips(6, size, border);
     const column = pips.filter(p => p.left === pips[0]!.left).map(p => p.top).sort((a, b) => a - b);
     const pip = pips[0]!.size;
     const gaps = [column[1]! - column[0]! - pip, column[2]! - column[1]! - pip];

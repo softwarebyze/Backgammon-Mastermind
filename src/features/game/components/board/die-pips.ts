@@ -19,9 +19,16 @@ export type Pip = { left: number; top: number; size: number };
 export function diePips(value: number, size: number, border: number): Pip[] {
   const inner = size - border * 2;
   const target = size * 0.155;
-  const pip = Math.max(3, Math.round(target));
+  let pip = Math.max(3, Math.round(target));
   // Offset of a quarter-position pip's top-left from the inner edge.
-  const near = Math.round(inner * 0.25 - pip / 2);
+  let near = Math.round(inner * 0.25 - pip / 2);
+  // A 6's column needs clear space between pips (thicker borders squeeze it);
+  // shrink the pips until it has some.
+  const minGap = Math.max(1, Math.floor(size * 0.06));
+  while (pip > 3 && (inner - pip) / 2 - near - pip < minGap) {
+    pip -= 1;
+    near = Math.round(inner * 0.25 - pip / 2);
+  }
   const far = inner - pip - near;
   // Exactly centred, so it can land on a half pixel when the parity differs.
   const mid = (inner - pip) / 2;
