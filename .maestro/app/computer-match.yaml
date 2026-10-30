@@ -1,0 +1,209 @@
+# Computer lifecycle; deterministic boards supplied by the developer presets.
+# Unit tests cover cancellation, binding undo floors, dead cubes and ownership.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- tapOn: Auto-roll dice
+- tapOn:
+    id: stack-escape-button
+- takeScreenshot: computer-match-00-home-primary-actions
+- tapOn:
+    id: home-opponent-vs-computer
+- tapOn:
+    id: home-format-match
+- scrollUntilVisible:
+    element:
+      id: home-match-length-3
+    direction: DOWN
+- assertVisible:
+    id: home-match-length-5
+- tapOn:
+    id: home-match-length-3
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: computer-match-home-match-options
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: match-score
+    timeout: 45000
+- assertVisible: Match to 3 · Game 1
+- takeScreenshot: computer-match-01-new-match
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible: Match to 3 · Game 1
+# Black offers automatically, before rolling. Only the human answers.
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-computer-match-offer
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-computer-match-offer
+- extendedWaitUntil:
+    visible:
+      id: match-accept
+    timeout: 15000
+- assertNotVisible:
+    id: roll-dice-button
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- takeScreenshot: computer-match-02-computer-offers
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible:
+    id: match-accept
+- assertNotVisible:
+    id: roll-dice-button
+- tapOn:
+    id: match-accept
+- assertVisible:
+    id: match-cube-owner-white
+- assertNotVisible:
+    id: match-accept
+# Black rolls and plays its checker turn automatically, then White can roll.
+# Maestro may wait through the complete AI turn between commands. Verify the
+# settled handoff and changed pip count instead of requiring a transient gap.
+- extendedWaitUntil:
+    visible:
+      id: roll-dice-button
+    timeout: 30000
+- assertVisible: Your turn
+- assertNotVisible: 'Black: 30 pips, 0 of 15 borne off'
+- assertVisible:
+    id: match-cube-owner-white
+- takeScreenshot: computer-match-03-human-takes
+# Human drop awards the old stake. At 2-away/3-away this reaches Crawford.
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-computer-match-offer
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-computer-match-offer
+- extendedWaitUntil:
+    visible:
+      id: match-drop
+    timeout: 15000
+- tapOn:
+    id: match-drop
+- assertVisible: White 0  –  Black 2
+- assertVisible:
+    id: match-next
+- takeScreenshot: computer-match-04-human-drops
+- tapOn:
+    id: match-next
+- assertVisible: Crawford game · no doubling
+- assertNotVisible:
+    id: match-double
+- takeScreenshot: computer-match-05-crawford
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible: Crawford game · no doubling
+- assertNotVisible:
+    id: match-double
+# The human never sees Take/Drop controls to answer their own offer for Black.
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-computer-match-take
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-computer-match-take
+- tapOn:
+    id: match-double
+- assertNotVisible:
+    id: match-accept
+- assertNotVisible:
+    id: match-drop
+- extendedWaitUntil:
+    visible:
+      id: match-cube-owner-black
+    timeout: 15000
+- assertVisible: Cube 2 · Black
+- assertVisible:
+    id: roll-dice-button
+- takeScreenshot: computer-match-06-computer-takes
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible: Cube 2 · Black
+- assertNotVisible:
+    id: match-double
+# Computer drops a badly losing board and White gets one point, not two.
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-computer-match-drop
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-computer-match-drop
+- tapOn:
+    id: match-double
+- assertNotVisible:
+    id: match-accept
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: White 1  –  Black 0
+- takeScreenshot: computer-match-07-computer-drops
+- tapOn:
+    id: match-next
+- assertVisible: Match to 3 · Game 2
+- assertVisible: White 1  –  Black 0
+- takeScreenshot: computer-match-08-next-game

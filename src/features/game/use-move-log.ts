@@ -1,17 +1,23 @@
 import type { GameState, Move } from '@/lib/game';
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { appendCubeHistoryEvent } from '@/lib/game/cube-history';
 
 import { appendMoveLogEntry, appendNoMoveLogEntry } from '@/lib/game/move-log';
 import { backfillMoveLogSnapshots, deriveReplayBaseline } from '@/lib/game/move-replay';
 import {
   clearMoveLogAndBaseline,
   loadMoveLog,
+  loadPersistedSession,
   loadReplayBaseline,
   saveReplayBaseline,
 } from '@/lib/game/persistence';
 
+// eslint-disable-next-line max-lines-per-function -- shared lifecycle for checker and cube history
 export function useMoveLog(liveState: GameState | null) {
+  const [cubeEvents, setCubeEvents] = useState<CubeHistoryEvent[]>(() => loadPersistedSession()?.cubeEvents ?? []);
+  const eventsRef = useRef(cubeEvents);
   const [moveLog, setMoveLog] = useState<MoveLogEntry[]>(() => loadMoveLog());
   const [storedBaseline, setStoredBaseline] = useState<GameState | null>(
     () => loadReplayBaseline(),
@@ -26,7 +32,7 @@ export function useMoveLog(liveState: GameState | null) {
   }, []);
 
   const replayBaseline = useMemo(() => {
-    if (moveLog.length === 0) {
+    if (moveLog.length === 0 && cubeEvents.length === 0) {
       return null;
     }
     if (storedBaseline) {
@@ -36,7 +42,7 @@ export function useMoveLog(liveState: GameState | null) {
       return null;
     }
     return deriveReplayBaseline(liveState, moveLog);
-  }, [liveState, moveLog, storedBaseline]);
+  }, [liveState, moveLog, storedBaseline, cubeEvents.length]);
 
   const resolvedLog = useMemo(() => {
     if (!replayBaseline || moveLog.length === 0) {
@@ -46,7 +52,7 @@ export function useMoveLog(liveState: GameState | null) {
   }, [moveLog, replayBaseline]);
 
   const ensureBaseline = useCallback((before: GameState) => {
-    if (logRef.current.length === 0) {
+    if (logRef.current.length === 0 && eventsRef.current.length === 0) {
       saveReplayBaseline(before);
       setStoredBaseline(before);
     }
@@ -78,8 +84,17 @@ export function useMoveLog(liveState: GameState | null) {
     return true;
   }, [commitLog, ensureBaseline]);
 
+  const recordCubeEvent = useCallback((kind: CubeHistoryEvent['kind'], before: GameState, after: GameState) => {
+    ensureBaseline(before);
+    const next = appendCubeHistoryEvent(eventsRef.current, kind, before, after, logRef.current.length);
+    eventsRef.current = next;
+    setCubeEvents(next);
+  }, [ensureBaseline]);
+
   const resetMoveLog = useCallback(() => {
     commitLog([]);
+    eventsRef.current = [];
+    setCubeEvents([]);
     setStoredBaseline(null);
     // Sync clear so a kill mid-reset cannot reload the previous review log.
     clearMoveLogAndBaseline();
@@ -87,6 +102,8 @@ export function useMoveLog(liveState: GameState | null) {
 
   const reloadMoveLog = useCallback(() => {
     commitLog(loadMoveLog());
+    eventsRef.current = loadPersistedSession()?.cubeEvents ?? [];
+    setCubeEvents(eventsRef.current);
     setStoredBaseline(loadReplayBaseline());
   }, [commitLog]);
 
@@ -96,7 +113,7 @@ export function useMoveLog(liveState: GameState | null) {
       return null;
     }
     const popped = prev[prev.length - 1]!;
-    if (prev.length === 1) {
+    if (prev.length === 1 && eventsRef.current.length === 0) {
       setStoredBaseline(null);
     }
     commitLog(prev.slice(0, -1));
@@ -111,6 +128,8 @@ export function useMoveLog(liveState: GameState | null) {
 
   return {
     getMoveLog,
+    cubeEvents,
+    recordCubeEvent,
     moveLog: resolvedLog,
     replayBaseline,
     recordMove,

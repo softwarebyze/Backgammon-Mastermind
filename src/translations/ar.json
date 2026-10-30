@@ -41,6 +41,35 @@
       "play_a11y": "العب الحركة المقترحة",
       "suggested": "الحركة المقترحة"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "المباراة إلى"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "العب محلياً أو ضد الكمبيوتر مع مكعب المضاعفة. تلعب بالأبيض ضد الكمبيوتر.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "نقاط",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "ارمِ النرد أولاً"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "العودة للعب المباشر",
+      "cube_accept": "{{player}} يقبل · مكعب {{value}}",
+      "cube_drop": "{{player}} يرفض",
+      "cube_offer": "{{player}} يعرض المضاعفة",
       "live": "اللعب المباشر",
       "live_short": "مباشر",
       "move_a11y": "حركة {{ply}}، {{player}}",
@@ -243,6 +275,15 @@
     "review": "مراجعة آخر لعبة",
     "review_a11y": "مراجعة اللعبة المكتملة",
     "review_sub": "شاهد كيف انتهت اللعبة السابقة",
+    "setup": {
+      "format": "اللعب",
+      "length": "طول المباراة",
+      "match": "مباراة بالنقاط",
+      "opponent": "المنافس",
+      "single": "لعبة واحدة",
+      "start_match": "بدء مباراة من {{length}} نقاط",
+      "start_single": "بدء اللعبة"
+    },
     "subtitle": "أتقن اللوحة — حركة تلو الأخرى",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "لاعبان",

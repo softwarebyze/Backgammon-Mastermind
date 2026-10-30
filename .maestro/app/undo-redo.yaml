@@ -10,12 +10,15 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - openLink: backgammonmastermind.preview://developer
 - extendedWaitUntil:
-    visible:
-      id: developer-preset-e2e-undo-redo-3-1
+    visible: Audit presets
     timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-undo-redo-3-1
+    direction: DOWN
 - tapOn:
     id: developer-preset-e2e-undo-redo-3-1
 - extendedWaitUntil:

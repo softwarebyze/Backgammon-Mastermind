@@ -41,6 +41,35 @@
       "play_a11y": "Play the suggested move",
       "suggested": "Suggested move"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Match to"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Play locally or against the computer with the doubling cube. You play White against the computer.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Pips",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Roll the dice first"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "Back to live game",
+      "cube_accept": "{{player}} takes · Cube {{value}}",
+      "cube_drop": "{{player}} drops",
+      "cube_offer": "{{player}} offers double",
       "live": "Live game",
       "live_short": "Live",
       "move_a11y": "Move {{ply}}, {{player}}",
@@ -243,6 +275,15 @@
     "review": "Review last game",
     "review_a11y": "Review completed game",
     "review_sub": "See how the last game ended",
+    "setup": {
+      "format": "Play",
+      "length": "Match length",
+      "match": "Match",
+      "opponent": "Opponent",
+      "single": "Single game",
+      "start_match": "Start {{length}}-point match",
+      "start_single": "Start game"
+    },
     "subtitle": "Master the board — one move at a time",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 Players",

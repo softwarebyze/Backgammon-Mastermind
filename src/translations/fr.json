@@ -41,6 +41,35 @@
       "play_a11y": "Jouer le coup suggéré",
       "suggested": "Coup suggéré"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Match en"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Jouez à deux ou contre l’ordinateur avec le videau. Vous jouez les blancs contre l’ordinateur.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Pips",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Lance d'abord les dés"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "Retour à la partie en cours",
+      "cube_accept": "{{player}} accepte · Videau {{value}}",
+      "cube_drop": "{{player}} refuse",
+      "cube_offer": "{{player}} propose de doubler",
       "live": "Partie en cours",
       "live_short": "En direct",
       "move_a11y": "Coup {{ply}}, {{player}}",
@@ -243,6 +275,15 @@
     "review": "Revoir la dernière partie",
     "review_a11y": "Revoir la partie terminée",
     "review_sub": "Découvre comment la dernière partie s’est terminée",
+    "setup": {
+      "format": "Jeu",
+      "length": "Longueur du match",
+      "match": "Match",
+      "opponent": "Adversaire",
+      "single": "Partie simple",
+      "start_match": "Commencer un match en {{length}} points",
+      "start_single": "Commencer la partie"
+    },
     "subtitle": "Maîtrisez le plateau — coup après coup",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 joueurs",

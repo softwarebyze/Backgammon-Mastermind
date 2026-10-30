@@ -41,6 +41,35 @@
       "play_a11y": "Zagraj sugerowany ruch",
       "suggested": "Sugerowany ruch"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Mecz do"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Graj lokalnie lub przeciw komputerowi z kostką podwajającą. Przeciw komputerowi grasz białymi.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Pipsy",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Najpierw rzuć kośćmi"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "Wróć do bieżącej gry",
+      "cube_accept": "{{player}} przyjmuje · Kostka {{value}}",
+      "cube_drop": "{{player}} odrzuca",
+      "cube_offer": "{{player}} proponuje podwojenie",
       "live": "Bieżąca gra",
       "live_short": "Na żywo",
       "move_a11y": "Ruch {{ply}}, {{player}}",
@@ -243,6 +275,15 @@
     "review": "Przejrzyj ostatnią grę",
     "review_a11y": "Przejrzyj zakończoną grę",
     "review_sub": "Zobacz, jak zakończyła się ostatnia gra",
+    "setup": {
+      "format": "Gra",
+      "length": "Długość meczu",
+      "match": "Mecz",
+      "opponent": "Przeciwnik",
+      "single": "Pojedyncza gra",
+      "start_match": "Rozpocznij mecz do {{length}} punktów",
+      "start_single": "Rozpocznij grę"
+    },
     "subtitle": "Opanuj planszę — ruch po ruchu",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 graczy",

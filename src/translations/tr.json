@@ -41,6 +41,35 @@
       "play_a11y": "Önerilen hamleyi oyna",
       "suggested": "Önerilen hamle"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Hedef puan"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Katlama küpüyle aynı cihazda veya bilgisayara karşı oynayın. Bilgisayara karşı beyaz oynarsınız.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Pip",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Önce zarları at"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "Canlı oyuna dön",
+      "cube_accept": "{{player}} kabul ediyor · Küp {{value}}",
+      "cube_drop": "{{player}} reddediyor",
+      "cube_offer": "{{player}} ikiye katlamayı öneriyor",
       "live": "Canlı oyun",
       "live_short": "Canlı",
       "move_a11y": "Hamle {{ply}}, {{player}}",
@@ -243,6 +275,15 @@
     "review": "Son oyunu incele",
     "review_a11y": "Tamamlanan oyunu incele",
     "review_sub": "Son oyunun nasıl bittiğini görün",
+    "setup": {
+      "format": "Oyun",
+      "length": "Maç uzunluğu",
+      "match": "Maç",
+      "opponent": "Rakip",
+      "single": "Tek oyun",
+      "start_match": "{{length}} sayılık maçı başlat",
+      "start_single": "Oyunu başlat"
+    },
     "subtitle": "Tahtaya hükmet — hamle hamle",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 Oyuncu",

@@ -41,6 +41,35 @@
       "play_a11y": "제안된 수를 두기",
       "suggested": "제안된 수"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "목표 점수"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "더블링 큐브로 같은 기기에서 둘이 플레이하거나 컴퓨터와 대결하세요. 컴퓨터 대전에서는 백을 사용합니다.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "핍",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "먼저 주사위를 굴리세요"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "진행 중인 게임으로 돌아가기",
+      "cube_accept": "{{player}} 수락 · 큐브 {{value}}",
+      "cube_drop": "{{player}} 거절",
+      "cube_offer": "{{player}} 더블 제안",
       "live": "진행 중인 게임",
       "live_short": "라이브",
       "move_a11y": "수 {{ply}}, {{player}}",
@@ -243,6 +275,15 @@
     "review": "마지막 게임 보기",
     "review_a11y": "완료된 게임 보기",
     "review_sub": "마지막 게임이 어떻게 끝났는지 확인하세요",
+    "setup": {
+      "format": "게임 방식",
+      "length": "목표 점수",
+      "match": "매치",
+      "opponent": "상대",
+      "single": "단일 게임",
+      "start_match": "{{length}}점 매치 시작",
+      "start_single": "게임 시작"
+    },
     "subtitle": "한 수씩, 보드를 정복하세요",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2인 플레이",

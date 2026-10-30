@@ -9,13 +9,13 @@ import { hapticLight } from '@/lib/haptics';
 
 export function useLeaveGame() {
   const posthog = usePostHog();
-  const { state, moveLog, replayBaseline, clearAITimeout } = useGame();
+  const { state, moveLog, replayBaseline, cubeEvents, clearAITimeout } = useGame();
   const allowLeaveRef = useRef(false);
 
   const leaveGame = useCallback(() => {
     clearAITimeout();
     if (state) {
-      savePersistedSession({ state, moveLog, replayBaseline });
+      savePersistedSession({ state, moveLog, replayBaseline, cubeEvents });
     }
     posthog.capture('game_exited', {
       mode: state?.mode ?? null,
@@ -25,7 +25,7 @@ export function useLeaveGame() {
     allowLeaveRef.current = true;
     hapticLight();
     router.replace('/');
-  }, [posthog, clearAITimeout, state, moveLog, replayBaseline]);
+  }, [posthog, clearAITimeout, state, moveLog, replayBaseline, cubeEvents]);
 
   const handleBackPress = useCallback(() => {
     leaveGame();

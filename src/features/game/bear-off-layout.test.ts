@@ -58,3 +58,17 @@ describe('bearOffCheckerCenterY', () => {
     expect(seventh).toBeGreaterThanOrEqual(grooveTop);
   });
 });
+
+it.each(['black', 'white'] as const)('keeps a full %s bear-off stack clear of the match cube and aligns animation anchors', (player) => {
+  const dims = { ...TEST_DIMS, bearOffCubeClearance: 36 };
+  const halfHeight = bearOffHalfHeight(dims.boardHeight, dims.middleHeight);
+  const tokenSize = bearOffTokenSize(dims.checkerSize);
+  const visibleCount = Math.min(15, maxBearOffVisibleSlots(halfHeight, tokenSize, 36));
+  const lastTop = bearOffSlotTopInSection({ halfHeight, tokenSize, visibleCount, slotIndex: visibleCount - 1, player, clearance: 36 });
+  if (player === 'black')
+    expect(lastTop + tokenSize).toBeLessThanOrEqual(halfHeight - 36);
+  else
+    expect(lastTop).toBeGreaterThanOrEqual(36);
+  const sectionTop = player === 'black' ? 0 : halfHeight + dims.middleHeight;
+  expect(bearOffCheckerCenterY(dims, player, 15)).toBe(sectionTop + lastTop + tokenSize / 2);
+});

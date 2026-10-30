@@ -3,6 +3,7 @@ import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
   withDelay,
   withTiming,
@@ -104,17 +105,18 @@ type Props = {
  */
 export function WinConfettiOverlay({ burstKey }: Props) {
   const { width, height } = useWindowDimensions();
+  const reducedMotion = useReducedMotion();
   const particles = useMemo(
     () => (burstKey > 0 ? makeParticles(burstKey, width, height) : []),
     [burstKey, width, height],
   );
 
-  if (burstKey === 0) {
+  if (burstKey === 0 || reducedMotion) {
     return null;
   }
 
   return (
-    <View pointerEvents="none" style={styles.root} key={burstKey}>
+    <View pointerEvents="none" style={styles.root} key={burstKey} testID="win-confetti" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       {particles.map(p => (
         <ConfettiPiece key={p.id} particle={p} />
       ))}

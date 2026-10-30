@@ -41,6 +41,35 @@
       "play_a11y": "走建议的一步",
       "suggested": "建议走法"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "目标分数"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "使用倍数骰在本机双人对战或与电脑对战。与电脑对战时你执白。",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "点数",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "请先掷骰子"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "返回当前对局",
+      "cube_accept": "{{player}}接受 · 倍数骰{{value}}",
+      "cube_drop": "{{player}}拒绝",
+      "cube_offer": "{{player}}提议加倍",
       "live": "当前对局",
       "live_short": "对局",
       "move_a11y": "第{{ply}}步，{{player}}",
@@ -243,6 +275,15 @@
     "review": "回顾上一局",
     "review_a11y": "回顾已结束的游戏",
     "review_sub": "查看上一局如何结束",
+    "setup": {
+      "format": "对局形式",
+      "length": "目标分数",
+      "match": "比赛",
+      "opponent": "对手",
+      "single": "单局游戏",
+      "start_match": "开始 {{length}} 分赛",
+      "start_single": "开始游戏"
+    },
     "subtitle": "步步为营，掌控棋盘",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "双人对战",

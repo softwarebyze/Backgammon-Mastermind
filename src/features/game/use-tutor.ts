@@ -308,7 +308,7 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
   const pendingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const moveLogRef = useRef(moveLog);
   moveLogRef.current = moveLog;
-  const tutorOn = preferences.tutorMode;
+  const tutorOn = preferences.tutorMode && !liveState?.match;
   /**
    * Bumped when a verdict hold releases, so the effect below re-runs and picks
    * up a turn that was blocked while the hold was active.

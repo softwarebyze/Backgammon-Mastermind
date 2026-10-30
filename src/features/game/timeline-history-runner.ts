@@ -8,6 +8,7 @@ import {
   buildRedoHistoryStep,
   buildUndoHistoryStep,
   countTrailingNoMoves,
+  hasUndoableHumanMove,
   redoInstant,
   undoMany,
 } from '@/features/game/timeline-history-actions';
@@ -57,7 +58,24 @@ function countTrailingAutoRewound(moveLog: MoveLogEntry[], mode: GameState['mode
   return count;
 }
 
+/** Validate the entire rewind before touching logs, animation, or snapshots. */
+export function canUndoHistory({ timeline, moveLog, state, gameMode: mode }: {
+  timeline: GameTimeline | null;
+  moveLog: MoveLogEntry[];
+  state: GameState | null;
+  gameMode: GameState['mode'] | undefined;
+}): boolean {
+  if (!timeline || !canUndoTimeline(timeline) || !hasUndoableHumanMove(mode, moveLog) || state?.match?.pendingOffer)
+    return false;
+  const count = countTrailingAutoRewound(moveLog, mode) + 1;
+  return count <= moveLog.length && count <= timeline.cursor
+    && timeline.cursor - count >= (state?.match?.undoFloor ?? 0);
+}
+
 export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
+  if (!canUndoHistory({ ...ctx, state: ctx.getLiveState() }))
+    return false;
+
   const { replayBaseline, popLastMove, setTimeline, setState, finishHistoryAnim, getLiveState } = ctx;
   const { timeline, moveLog } = ctx;
 

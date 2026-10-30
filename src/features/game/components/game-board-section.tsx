@@ -17,7 +17,6 @@ import { BAR_POINT } from '@/lib/game/constants';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Input = ReturnType<typeof useGameInput>;
-
 type Props = {
   boardState: GameState;
   boardAnimation: MoveAnimationFrame | null;
@@ -35,6 +34,12 @@ type Props = {
   /** False: size to the board so siblings (player strips) sit right against it. */
   fill?: boolean;
 };
+function usePresentationDimensions(hasMatch: boolean) {
+  const base = useBoardDimensions({ showPointNumbers: true });
+  return useMemo(() => hasMatch
+    ? { ...base, bearOffCubeClearance: 36 * Math.min(1, base.pointHeight / 90) }
+    : base, [base, hasMatch]);
+}
 
 /** Points (and the bar) a moving checker travels between, lit while it slides. */
 function emphasisForAnimation(boardAnimation: MoveAnimationFrame | null) {
@@ -67,9 +72,8 @@ export function GameBoardSection({
   boardDice = null,
   fill = true,
 }: Props) {
-  const dimensions = useBoardDimensions();
+  const dimensions = usePresentationDimensions(boardState.match != null);
   const { boardMaxWidth } = useLayoutMetrics();
-  const { preferences } = useGamePreferences();
   const hintArrows = useHintArrows();
   // Guidance owns the live board while it is visible. Mixing its arrows with
   // the previous move's path makes the suggestion ambiguous, and the old
@@ -77,6 +81,7 @@ export function GameBoardSection({
   const overlaySegments = isReviewing ? pathSegments : hintArrows.length > 0 ? hintArrows : pathSegments;
   const overlayFadeOutMs = !isReviewing && hintArrows.length > 0 ? undefined : pathFadeOutMs;
   const showPath = overlaySegments.length > 0;
+  const { preferences } = useGamePreferences();
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
   const travelEmphasis = useMemo(() => emphasisForAnimation(boardAnimation), [boardAnimation]);
 
@@ -87,6 +92,7 @@ export function GameBoardSection({
   return (
     <View style={[styles.boardWrap, !fill && styles.boardWrapHug, { maxWidth: boardMaxWidth }]}>
       <Pressable
+        accessible={false}
         onPress={interactionEnabled ? input.handleBoardPress : undefined}
         style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
       >
@@ -102,6 +108,7 @@ export function GameBoardSection({
           ]}
         >
           <BoardView
+            boardPresentation
             state={boardState}
             dimensions={dimensions}
             previewTarget={interactionEnabled ? previewTarget : null}

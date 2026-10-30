@@ -15,8 +15,13 @@ tags:
 - takeScreenshot: 01-home-loaded
 - tapOn:
     text: Play against the computer
-# iOS exposes the board as one accessibility group; individual point IDs are
-# Android-only in this hierarchy. Wait for the shared game board slot.
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
+# Wait for the shared game board slot. Individual points remain accessible.
 # Auto-roll is on by default, so the roll button may already be gone.
 - extendedWaitUntil:
     visible:
@@ -63,8 +68,11 @@ tags:
                 timeout: 5000
 - extendedWaitUntil:
     visible:
-      id: game-board-slot
+      id: game-action-caption
+      text: Move your white checkers
     timeout: 90000
+- assertVisible:
+    id: game-dice-tray
 - takeScreenshot: 03-after-opening
 # Portrait draws the dice on the board in the roller's half. iOS exposes the
 # board as one accessibility group, so only Android can see inside it. Match

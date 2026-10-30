@@ -41,6 +41,35 @@
       "play_a11y": "Παίξε την προτεινόμενη κίνηση",
       "suggested": "Προτεινόμενη κίνηση"
     },
+    "match": {
+      "accept": "Accept double",
+      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "backgammon": "backgammon",
+      "black": "Black",
+      "board": {
+        "match_to": "Αγώνας στους"
+      },
+      "center": "Center",
+      "crawford": "Crawford game · no doubling",
+      "cube": "Cube {{value}} · {{owner}}",
+      "double": "Double",
+      "drop": "Drop",
+      "gammon": "gammon",
+      "home_note": "Παίξτε τοπικά ή ενάντια στον υπολογιστή με κύβο διπλασιασμού. Ενάντια στον υπολογιστή παίζετε με τα λευκά.",
+      "home_title": "Match play",
+      "length": "{{length}} points",
+      "new_match": "New match",
+      "next_game": "Next game",
+      "offer": "{{player}} offers a double to {{value}}. {{opponent}}: accept or drop. Dropping concedes {{points}}.",
+      "pips": "Πιπ",
+      "result": "{{player}} wins {{points}} · {{kind}}",
+      "roll_note": "Roll when ready. Auto-roll pauses in matches; undo keeps the roll and cube decisions.",
+      "score": "White {{white}}  –  Black {{black}}",
+      "single": "single",
+      "title": "Match to {{length}} · Game {{game}}",
+      "white": "White",
+      "winner": "{{player}} wins the match · +{{points}}"
+    },
     "nudge": {
       "roll_first": "Ρίξε πρώτα τα ζάρια"
     },
@@ -91,6 +120,9 @@
     },
     "review": {
       "back_to_live": "Επιστροφή στο τρέχον παιχνίδι",
+      "cube_accept": "{{player}} δέχεται · Κύβος {{value}}",
+      "cube_drop": "{{player}} απορρίπτει",
+      "cube_offer": "{{player}} προτείνει διπλασιασμό",
       "live": "Τρέχον παιχνίδι",
       "live_short": "Live",
       "move_a11y": "Κίνηση {{ply}}, {{player}}",
@@ -243,6 +275,15 @@
     "review": "Προβολή τελευταίου παιχνιδιού",
     "review_a11y": "Προβολή ολοκληρωμένου παιχνιδιού",
     "review_sub": "Δες πώς τελείωσε το τελευταίο παιχνίδι",
+    "setup": {
+      "format": "Παιχνίδι",
+      "length": "Διάρκεια αγώνα",
+      "match": "Αγώνας",
+      "opponent": "Αντίπαλος",
+      "single": "Μονό παιχνίδι",
+      "start_match": "Έναρξη αγώνα {{length}} πόντων",
+      "start_single": "Έναρξη παιχνιδιού"
+    },
     "subtitle": "Κατάκτησε το ταμπλό — κίνηση την κίνηση",
     "title": "BACKGAMMON\nMASTERMIND",
     "two_players": "2 παίκτες",

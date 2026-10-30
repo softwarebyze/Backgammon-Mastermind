@@ -17,6 +17,7 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations } from '@/lib/game/moves';
+import { MatchCube } from '../match-cube';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
 import { boardLayoutStyle, boardWebDir } from './board-layout-direction';
@@ -65,6 +66,7 @@ type BoardAidsOverride = {
 
 type Props = {
   state: GameState;
+  boardPresentation?: boolean;
   dimensions: BoardDimensions;
   previewTarget: number | null;
   moveAnimation: MoveAnimationFrame | null;
@@ -96,6 +98,7 @@ type Props = {
 /* eslint-disable max-lines-per-function -- board layout composition */
 export function BoardView({
   state,
+  boardPresentation = false,
   dimensions,
   previewTarget,
   moveAnimation,
@@ -294,6 +297,7 @@ export function BoardView({
     );
   };
 
+  const cubeScale = Math.min(1, pointHeight / 90);
   const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
   const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
   const barPanFrom = canDrag
@@ -331,6 +335,7 @@ export function BoardView({
       )}
 
       <View
+        testID="board-playing-surface"
         ref={surfaceRef}
         onLayout={measureSurface}
         style={{
@@ -384,6 +389,7 @@ export function BoardView({
         />
 
         <BearOffArea
+          cubeClearance={dimensions.bearOffCubeClearance}
           whiteBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'white', count: state.borneOff.white }, moveAnimation)}
           blackBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'black', count: state.borneOff.black }, moveAnimation)}
           isLegalTarget={bearOffLegal && interactionEnabled}
@@ -394,6 +400,12 @@ export function BoardView({
           middleHeight={middleHeight}
           checkerSize={checkerSize}
         />
+
+        {boardPresentation && state.match && (
+          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: boardWidth - bearOffWidth / 2 - 15, top: boardHeight / 2 - 14 + (state.match.pendingOffer ? (state.match.pendingOffer === 'white' ? -18 : 18) : state.match.cube.owner === 'black' ? -18 : state.match.cube.owner === 'white' ? 18 : 0) * cubeScale, zIndex: 45, transform: [{ scale: cubeScale }] }}>
+            <MatchCube cube={state.match.cube} crawford={state.match.crawford} pendingOffer={state.match.pendingOffer} />
+          </View>
+        )}
 
         {showDirection && (
           <DirectionOverlay

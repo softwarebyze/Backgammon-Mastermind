@@ -58,3 +58,22 @@ describe('shouldCelebrateWin', () => {
     ).toBe(false);
   });
 });
+
+describe('match celebrations', () => {
+  const transition = {
+    prevPhase: 'moving' as const,
+    nextPhase: 'game-over' as const,
+    mode: 'vs-human' as const,
+    winner: 'white' as const,
+    isReviewing: false,
+  };
+
+  it('does not celebrate an intermediate match game', () => {
+    expect(shouldCelebrateWin({ ...transition, match: { winner: null } })).toBe(false);
+  });
+
+  it('celebrates the match winner and preserves standalone games', () => {
+    expect(shouldCelebrateWin({ ...transition, match: { winner: 'white' } })).toBe(true);
+    expect(shouldCelebrateWin({ ...transition, match: null })).toBe(true);
+  });
+});

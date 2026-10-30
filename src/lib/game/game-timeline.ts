@@ -115,6 +115,11 @@ export function peekRedoMove(timeline: GameTimeline): MoveLogEntry | null {
  * back the same roll, never ask the player to roll again.
  */
 function boardBeforeEntry(previous: GameState, entry: MoveLogEntry): GameState {
+  // Cube offers and revealed rolls are binding but are not checker plies.
+  // Recover their metadata from this ply, rather than the previous turn.
+  if (previous.match && entry.after?.match) {
+    previous = { ...previous, match: { ...previous.match, cube: entry.after.match.cube, pendingOffer: null, undoFloor: entry.after.match.undoFloor } };
+  }
   const noMove = isNoMoveLogEntry(entry);
   if (!noMove && previous.phase === 'moving' && previous.currentPlayer === entry.player) {
     return previous;

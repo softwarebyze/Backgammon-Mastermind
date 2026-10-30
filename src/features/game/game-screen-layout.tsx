@@ -95,6 +95,8 @@ function GameReviewSlot({
       testID="game-review-slot"
     >
       <MoveReviewBar
+        selectedCubeEventId={review.selectedCubeEventId}
+        onJumpToCubeEvent={review.jumpToCubeEvent}
         viewIndex={review.viewIndex}
         liveIndex={review.liveIndex}
         isReviewing={review.isReviewing}
@@ -289,7 +291,7 @@ export function GameScreenLayout({
   // Live state only — review scrub must not drive the opening reveal.
   const reveal = useOpeningReveal(input.state, input.handleRoll);
   const opening = openingTray(live, reveal);
-  const openingText = openingCopy(live, reveal);
+  const openingText = review.isReviewing ? null : openingCopy(live, reveal);
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
   const { preferences } = useGamePreferences();
   // Portrait: the dice land on the board in the roller's half, like at a real

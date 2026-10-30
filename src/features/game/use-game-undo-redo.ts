@@ -10,10 +10,11 @@ import { hasUndoableHumanMove, isHumanHistoryStep } from '@/features/game/timeli
 import {
   canRunRedo,
   canRunUndo,
+  canUndoHistory,
   runAnimatedRedo,
   runAnimatedUndo,
 } from '@/features/game/timeline-history-runner';
-import { canRedoTimeline, canUndoTimeline, peekRedoMove } from '@/lib/game/game-timeline';
+import { canRedoTimeline, peekRedoMove } from '@/lib/game/game-timeline';
 
 export type { HistoryPathOverlay } from '@/features/game/timeline-history-actions';
 
@@ -68,9 +69,8 @@ export function useGameUndoRedo(options: Options) {
 
   // vs-computer: undo rewinds trailing AI moves and lands on the human's own
   // move; redo only replays human moves (the live AI replays its own turn).
-  const canUndo = timeline != null && canUndoTimeline(timeline)
-    && hasUndoableHumanMove(gameMode, moveLog);
-  const canRedo = timeline != null && canRedoTimeline(timeline)
+  const canUndo = canUndoHistory({ timeline, moveLog, state, gameMode });
+  const canRedo = !state?.match?.pendingOffer && timeline != null && canRedoTimeline(timeline)
     && isHumanHistoryStep(gameMode, peekRedoMove(timeline));
 
   const [historyPath, setHistoryPath] = useState<HistoryPathOverlay | null>(null);
