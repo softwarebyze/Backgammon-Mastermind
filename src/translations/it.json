@@ -104,6 +104,7 @@
       "viewing_hint": "Revisione — tocca Live o Torna per continuare a giocare"
     },
     "status": {
+      "bar_short": "Barra",
       "black_wins": "Vince il Nero",
       "computer_wins": "Vince il computer",
       "off_short": "fuori",

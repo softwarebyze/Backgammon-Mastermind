@@ -104,6 +104,7 @@
       "viewing_hint": "复盘中——点按“对局”或“返回”继续游戏"
     },
     "status": {
+      "bar_short": "中栏",
       "black_wins": "黑方获胜",
       "computer_wins": "电脑获胜",
       "off_short": "已出",

@@ -164,6 +164,10 @@ export function BoardView({
     return getMovableSources(state);
   }, [showLiveHints, showHighlights, showMoveHints, state]);
 
+  // The bar keeps its hint while its checker is preselected: entering is the only move.
+  const barHinted = movableSources.has(BAR_POINT)
+    || (showLiveHints && showHighlights && showMoveHints && state.phase === 'moving' && state.selectedPoint === BAR_POINT);
+
   // Web hover: any checker the player could pick up, independent of the hint pref.
   const hoverSources = useMemo(() => {
     if (Platform.OS !== 'web' || !interactionEnabled || !showHighlights
@@ -311,7 +315,7 @@ export function BoardView({
       ]}
     >
       {showPointNumbers && (
-        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} />
+        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} barLit={barHinted && state.currentPlayer === 'black'} />
       )}
 
       <View
@@ -345,6 +349,7 @@ export function BoardView({
           panFrom={barPanFrom ?? BAR_POINT}
           isDragging={dragFrom !== null && dragFrom === (barPanFrom ?? BAR_POINT)}
           dragOverlay={dragOverlay}
+          showMoveHint={!showPointNumbers && movableSources.has(BAR_POINT)}
           onDragAttempt={onDragAttempt}
           onDragStart={handleDragStartAbs}
           onDragMove={handleDragMoveAbs}
@@ -400,7 +405,7 @@ export function BoardView({
       </View>
 
       {showPointNumbers && (
-        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} />
+        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} barLit={barHinted && state.currentPlayer === 'white'} />
       )}
     </View>
   );

@@ -104,6 +104,7 @@
       "viewing_hint": "Terugkijken — tik op Live of Terug om verder te spelen"
     },
     "status": {
+      "bar_short": "Bar",
       "black_wins": "Zwart wint",
       "computer_wins": "Computer wint",
       "off_short": "eraf",

@@ -104,6 +104,7 @@
       "viewing_hint": "振り返り中 — ライブか「対局に戻る」をタップで再開"
     },
     "status": {
+      "bar_short": "バー",
       "black_wins": "黒の勝ち",
       "computer_wins": "コンピュータの勝ち",
       "off_short": "上がり",

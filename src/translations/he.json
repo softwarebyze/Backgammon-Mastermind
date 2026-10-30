@@ -104,6 +104,7 @@
       "viewing_hint": "צפייה — הקישו על חי או חזרה כדי להמשיך לשחק"
     },
     "status": {
+      "bar_short": "בר",
       "black_wins": "השחור ניצח",
       "computer_wins": "המחשב ניצח",
       "off_short": "בחוץ",

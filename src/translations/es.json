@@ -104,6 +104,7 @@
       "viewing_hint": "Revisando — toca En vivo o Volver para seguir jugando"
     },
     "status": {
+      "bar_short": "Barra",
       "black_wins": "Ganan las negras",
       "computer_wins": "Gana el ordenador",
       "off_short": "fuera",

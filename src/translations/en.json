@@ -104,6 +104,7 @@
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
     },
     "status": {
+      "bar_short": "Bar",
       "black_wins": "Black Wins",
       "computer_wins": "Computer Wins",
       "off_short": "off",

@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 import { pointNumberLabel } from '@/features/game/point-numbering';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
@@ -20,6 +21,8 @@ type Props = {
    * them (#265).
    */
   highlighted?: ReadonlySet<number>;
+  /** Light a "Bar" pill in the bar gap: the player must or can enter from the bar. */
+  barLit?: boolean;
 };
 
 const TOP_LEFT = [13, 14, 15, 16, 17, 18];
@@ -68,7 +71,7 @@ function PointHalf({
 }
 
 /** Column-aligned number rail — matches board column widths exactly. */
-export function PointNumberRail({ side, dimensions, perspective = 'white', highlighted }: Props) {
+export function PointNumberRail({ side, dimensions, perspective = 'white', highlighted, barLit = false }: Props) {
   const { colWidth, barWidth, bearOffWidth, boardWidth } = dimensions;
   const left = side === 'top' ? TOP_LEFT : BOT_LEFT;
   const right = side === 'top' ? TOP_RIGHT : BOT_RIGHT;
@@ -76,7 +79,13 @@ export function PointNumberRail({ side, dimensions, perspective = 'white', highl
   return (
     <View style={[styles.rail, { height: POINT_NUMBER_RAIL, width: boardWidth }]}>
       <PointHalf points={left} colWidth={colWidth} perspective={perspective} highlighted={highlighted} />
-      <View style={{ width: barWidth }} />
+      <View style={[styles.cell, { width: barWidth }]}>
+        {barLit && (
+          <Text testID="move-hint-bar" numberOfLines={1} style={[styles.label, styles.litLabel, styles.barLabel]}>
+            {translate('game.status.bar_short')}
+          </Text>
+        )}
+      </View>
       <PointHalf points={right} colWidth={colWidth} perspective={perspective} highlighted={highlighted} />
       <View style={{ width: bearOffWidth }} />
     </View>
@@ -105,6 +114,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF9A4C',
     color: '#1E0C02',
     ...interFont('bold'),
+  },
+  barLabel: {
+    minWidth: 0,
+    paddingHorizontal: 2,
+    fontSize: 9,
   },
   label: {
     textAlign: 'center',

@@ -104,6 +104,7 @@
       "viewing_hint": "Ansichtsmodus — tippe auf Live oder Zurück, um weiterzuspielen"
     },
     "status": {
+      "bar_short": "Bar",
       "black_wins": "Schwarz gewinnt",
       "computer_wins": "Computer gewinnt",
       "off_short": "raus",

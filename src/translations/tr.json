@@ -104,6 +104,7 @@
       "viewing_hint": "İnceleme modundasın — oynamaya devam etmek için Canlı'ya dokun"
     },
     "status": {
+      "bar_short": "Bar",
       "black_wins": "Siyah Kazandı",
       "computer_wins": "Bilgisayar Kazandı",
       "off_short": "dışarı",

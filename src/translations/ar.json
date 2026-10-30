@@ -104,6 +104,7 @@
       "viewing_hint": "مراجعة — اضغط مباشر أو العودة للعب للمتابعة"
     },
     "status": {
+      "bar_short": "البار",
       "black_wins": "فاز الأسود",
       "computer_wins": "فاز الكمبيوتر",
       "off_short": "خارج",

@@ -104,6 +104,7 @@
       "viewing_hint": "Revisando — toque em Ao vivo ou Voltar para continuar jogando"
     },
     "status": {
+      "bar_short": "Barra",
       "black_wins": "As Pretas venceram",
       "computer_wins": "O computador venceu",
       "off_short": "fora",
