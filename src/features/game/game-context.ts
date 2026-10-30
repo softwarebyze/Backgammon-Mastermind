@@ -7,6 +7,8 @@ import type { MoveLogEntry } from '@/lib/game/move-log';
 import { createContext } from 'react';
 
 export type GameContextType = {
+  /** False off the game route or in the background; human input is ignored then. */
+  active?: boolean;
   setReviewing?: (reviewing: boolean) => void;
   state: GameState | null;
   moveLog: MoveLogEntry[];

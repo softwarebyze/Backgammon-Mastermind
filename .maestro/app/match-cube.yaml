@@ -94,7 +94,7 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 2  –  Black 0
+- assertVisible: .*White 2  –  Black 0
 - takeScreenshot: match-03-scored
 - tapOn:
     id: header-undo-button
@@ -103,7 +103,7 @@ tags:
       id: header-redo-button
       enabled: true
     timeout: 15000
-- assertVisible: White 0  –  Black 0
+- assertVisible: .*White 0  –  Black 0
 - assertVisible: Cube 2 · Black
 - assertNotVisible:
     id: roll-dice-button
@@ -113,7 +113,7 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 2  –  Black 0
+- assertVisible: .*White 2  –  Black 0
 - tapOn:
     id: match-next
 - assertVisible: Crawford game · no doubling
@@ -136,13 +136,13 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 3  –  Black 1
+- assertVisible: .*White 3  –  Black 1
 - assertVisible: White wins the match · +1
 - takeScreenshot: match-05-match-won
 - tapOn:
     id: match-next
 - assertVisible: Match to 3 · Game 1
-- assertVisible: White 0  –  Black 0
+- assertVisible: .*White 0  –  Black 0
 # A fresh fixture exercises dropping at the old cube value.
 - openLink: backgammonmastermind.preview://developer
 - scrollUntilVisible:
@@ -155,7 +155,7 @@ tags:
     id: match-double
 - tapOn:
     id: match-drop
-- assertVisible: White 1  –  Black 0
+- assertVisible: .*White 1  –  Black 0
 - takeScreenshot: match-06-drop
 # A blocked roll must never carry Undo across the accepted-cube/revealed-roll floor.
 - openLink: backgammonmastermind.preview://developer

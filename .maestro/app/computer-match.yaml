@@ -122,7 +122,7 @@ tags:
     timeout: 15000
 - tapOn:
     id: match-drop
-- assertVisible: White 0  –  Black 2
+- assertVisible: .*White 0  –  Black 2
 - assertVisible:
     id: match-next
 - takeScreenshot: computer-match-04-human-drops
@@ -200,10 +200,10 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 1  –  Black 0
+- assertVisible: .*White 1  –  Black 0
 - takeScreenshot: computer-match-07-computer-drops
 - tapOn:
     id: match-next
 - assertVisible: Match to 3 · Game 2
-- assertVisible: White 1  –  Black 0
+- assertVisible: .*White 1  –  Black 0
 - takeScreenshot: computer-match-08-next-game

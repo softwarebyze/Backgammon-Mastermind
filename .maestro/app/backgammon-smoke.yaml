@@ -71,8 +71,6 @@ tags:
       id: game-action-caption
       text: Move your white checkers
     timeout: 90000
-- assertVisible:
-    id: game-dice-tray
 - takeScreenshot: 03-after-opening
 # Portrait draws the dice on the board in the roller's half. iOS exposes the
 # board as one accessibility group, so only Android can see inside it. Match

@@ -91,7 +91,7 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 2  –  Black 0
+- assertVisible: .*White 2  –  Black 0
 - assertNotVisible:
     id: win-confetti
 - takeScreenshot: match-polish-06-game-result
@@ -120,13 +120,13 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 3  –  Black 1
+- assertVisible: .*White 3  –  Black 1
 - assertVisible: White wins the match · +1
 - takeScreenshot: match-polish-08-match-result
 - tapOn:
     id: match-next
 - assertVisible: Match to 3 · Game 1
-- assertVisible: White 0  –  Black 0
+- assertVisible: .*White 0  –  Black 0
 - assertNotVisible:
     id: win-confetti
 - takeScreenshot: match-polish-09-new-match

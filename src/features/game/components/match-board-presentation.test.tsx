@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import { BoardView } from '@/features/game/components/board/board-view';
-import { MatchStatusBar } from '@/features/game/components/match-status-bar';
 import { StrategyChip } from '@/features/game/components/strategy-chip';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { resolveBoardViewport } from '@/features/game/hooks/use-board-dimensions';
@@ -43,15 +42,6 @@ it.each([[390, 700], [844, 280], [1000, 650]])('keeps board bounds through phase
   view.rerender(board());
   expect(screen.getByTestId('match-cube-pending-black')).toBeOnTheScreen();
   expect(screen.getByText('4')).toBeOnTheScreen();
-});
-
-it('keeps live opening and AI headlines out of historical match views', () => {
-  const state = createMatchGame(3, 'vs-computer');
-  state.currentPlayer = 'black';
-  state.phase = 'rolling';
-  setup(<MatchStatusBar state={state} headline="Black is rolling" isReviewing />);
-  expect(screen.queryByText('Black is rolling')).toBeNull();
-  expect(screen.getByTestId('match-turn')).toHaveTextContent(/Reviewing/);
 });
 
 it('ignores live opening and offer captions while reviewing', () => {

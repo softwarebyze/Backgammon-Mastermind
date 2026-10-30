@@ -52,13 +52,13 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 2  –  Black 0
+- assertVisible: .*White 2  –  Black 0
 - assertVisible:
-    id: match-score-numeral-white
-    text: '2'
+    id: match-score-white
+    text: 2 of \d+ points
 - assertVisible:
-    id: match-score-numeral-black
-    text: '0'
+    id: match-score-black
+    text: 0 of \d+ points
 - runFlow:
     file: ../utils/reveal-cube-history.yaml
     env:
@@ -66,7 +66,7 @@ tags:
       DIRECTION: RIGHT
 - tapOn:
     id: history-cube-1
-- assertVisible: White 0  –  Black 0
+- assertVisible: .*White 0  –  Black 0
 - assertNotVisible:
     id: match-accept
 - assertNotVisible:
@@ -79,11 +79,11 @@ tags:
       DIRECTION: LEFT
 - tapOn:
     id: history-cube-2
-- assertVisible: White 0  –  Black 0
+- assertVisible: .*White 0  –  Black 0
 - takeScreenshot: cube-history-03-review-take
 - tapOn:
     id: review-back-to-live-button
-- assertVisible: White 2  –  Black 0
+- assertVisible: .*White 2  –  Black 0
 # A drop has its own selectable history event and never manufactures a checker move.
 - openLink: backgammonmastermind.preview://developer
 - scrollUntilVisible:
@@ -96,7 +96,7 @@ tags:
     id: match-double
 - tapOn:
     id: match-drop
-- assertVisible: White 1  –  Black 0
+- assertVisible: .*White 1  –  Black 0
 - runFlow:
     file: ../utils/reveal-cube-history.yaml
     env:
@@ -104,7 +104,7 @@ tags:
       DIRECTION: RIGHT
 - tapOn:
     id: history-cube-1
-- assertVisible: White 0  –  Black 0
+- assertVisible: .*White 0  –  Black 0
 - runFlow:
     file: ../utils/reveal-cube-history.yaml
     env:
@@ -112,7 +112,7 @@ tags:
       DIRECTION: LEFT
 - tapOn:
     id: history-cube-2
-- assertVisible: White 1  –  Black 0
+- assertVisible: .*White 1  –  Black 0
 - assertNotVisible:
     id: match-next
 - takeScreenshot: cube-history-04-review-drop

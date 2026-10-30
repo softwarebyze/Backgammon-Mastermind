@@ -303,6 +303,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   }, []);
 
   return {
+    active,
     matchAction,
     setReviewing,
     cubeEvents,

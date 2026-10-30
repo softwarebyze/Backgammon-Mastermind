@@ -91,13 +91,13 @@ tags:
     visible:
       id: match-next
     timeout: 15000
-- assertVisible: White 2  –  Black 0
+- assertVisible: .*White 2  –  Black 0
 - assertVisible:
-    id: match-score-numeral-white
-    text: '2'
+    id: match-score-white
+    text: 2 of \d+ points
 - assertVisible:
-    id: match-score-numeral-black
-    text: '0'
+    id: match-score-black
+    text: 0 of \d+ points
 - takeScreenshot: match-board-06-result
 - tapOn:
     id: match-next

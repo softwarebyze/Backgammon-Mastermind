@@ -220,6 +220,7 @@ export function GameScreen() {
             onReset={input.handleReset}
             onHome={leaveGame}
             onSavePosition={openSavePosition}
+            match={state.match}
           />
         )}
         board={{ ...board, boardState: previewState ?? state, interactionEnabled }}

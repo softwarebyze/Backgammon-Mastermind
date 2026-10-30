@@ -74,6 +74,16 @@ function useDelayedFlag(active: boolean, delayMs: number): boolean {
   return active && elapsed;
 }
 
+/** A pending double or a finished game's result replaces the turn caption. */
+function matchCaption(state: GameState): string | null {
+  const m = state.match;
+  if (m?.pendingOffer)
+    return translate('game.match.offer', { player: matchPlayer(m.pendingOffer), opponent: matchPlayer(m.pendingOffer === 'white' ? 'black' : 'white'), value: m.cube.value * 2, points: m.cube.value });
+  if (m?.result)
+    return translate(m.winner ? 'game.match.winner' : 'game.match.result', { player: matchPlayer(m.result.winner), points: m.result.points, kind: translate(`game.match.${m.result.kind}`) });
+  return null;
+}
+
 export function GameScreenControls({
   state,
   liveDiceState,
@@ -163,9 +173,7 @@ export function GameScreenControls({
         />
       </View>
       <Text style={[styles.caption, state.match && styles.matchCaption]} numberOfLines={state.match ? 2 : 1} testID="game-action-caption" accessibilityLiveRegion="polite">
-        {!isReviewing && state.match?.pendingOffer
-          ? translate('game.match.offer', { player: matchPlayer(state.match.pendingOffer), opponent: matchPlayer(state.match.pendingOffer === 'white' ? 'black' : 'white'), value: state.match.cube.value * 2, points: state.match.cube.value })
-          : caption}
+        {isReviewing ? caption : matchCaption(state) ?? caption}
       </Text>
     </View>
   );

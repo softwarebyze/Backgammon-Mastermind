@@ -1,11 +1,11 @@
 import { useReducedMotion, withTiming } from 'react-native-reanimated';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
+import { GameToolbar } from '@/features/game/game-toolbar';
 import { createMatchGame } from '@/lib/game/match';
 import { cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 import { MatchControls } from './match-controls';
 import { MatchCube } from './match-cube';
-import { MatchScorecard } from './match-scorecard';
-import { MatchStatusBar } from './match-status-bar';
+import { PlayerStrip } from './player-strip';
 import { WinConfettiOverlay } from './win-confetti-overlay';
 
 const mockAction = jest.fn();
@@ -54,15 +54,23 @@ it('blocks cube decisions during animation', () => {
   expect(mockAction).not.toHaveBeenCalled();
 });
 
-it('renders compact scores and an accessible summary', () => {
+it('names the match in the toolbar and reads out the score', () => {
   const state = createMatchGame(3);
-  const view = setup(<MatchStatusBar state={state} />);
-  expect(screen.getByTestId('match-score')).toHaveProp('accessibilityLabel', 'White 0  –  Black 0');
-  expect(screen.getByTestId('match-score')).toHaveProp('accessible', true);
-  expect(screen.getByTestId('match-score')).toHaveProp('accessibilityHint', 'White: 167 pips, 0 of 15 borne off. Black: 167 pips, 0 of 15 borne off');
-  expect(screen.getByTestId('match-target')).toBeOnTheScreen();
-  expect(screen.queryByTestId('match-cube')).toBeNull();
-  expect(screen.queryByTestId('pip-count-white')).toBeNull();
+  state.match!.score = { white: 2, black: 0 };
+  const noop = jest.fn();
+  const view = setup(<GameToolbar canUndo={false} canRedo={false} onUndo={noop} onRedo={noop} onOptions={noop} onReset={noop} onHome={noop} match={state.match} />);
+  expect(screen.getByTestId('match-score')).toHaveTextContent('Match to 3 · Game 1');
+  expect(screen.getByTestId('match-score')).toHaveProp('accessibilityLabel', 'Match to 3 · Game 1. White 2  –  Black 0');
+  view.rerender(<GameToolbar canUndo={false} canRedo={false} onUndo={noop} onRedo={noop} onOptions={noop} onReset={noop} onHome={noop} match={{ ...state.match!, crawford: true }} />);
+  expect(screen.getByTestId('match-score')).toHaveTextContent('Crawford game · no doubling');
+  view.rerender(<GameToolbar canUndo={false} canRedo={false} onUndo={noop} onRedo={noop} onOptions={noop} onReset={noop} onHome={noop} />);
+  expect(screen.queryByTestId('match-score')).toBeNull();
+});
+
+it('draws the cube for each owner and a pending offer', () => {
+  const state = createMatchGame(3);
+  const view = setup(<MatchCube cube={state.match!.cube} />);
+  expect(screen.getByText('64')).toBeOnTheScreen();
   view.rerender(<MatchCube cube={state.match!.cube} />);
   expect(screen.getByText('64')).toBeOnTheScreen();
   view.rerender(<MatchCube cube={state.match!.cube} pendingOffer="white" />);
@@ -74,13 +82,10 @@ it('renders compact scores and an accessible summary', () => {
   expect(screen.getByTestId('match-cube')).toHaveProp('accessibilityLabel', 'Cube 2 · Black');
 });
 
-it('updates score without animation and suppresses confetti with Reduced Motion', () => {
+it('suppresses confetti with Reduced Motion', () => {
   jest.mocked(useReducedMotion).mockReturnValue(true);
-  const view = setup(<MatchScorecard player="white" score={0} active />);
-  view.rerender(<MatchScorecard player="white" score={2} active />);
-  expect(screen.getByTestId('match-score-white')).toHaveTextContent('2');
+  setup(<WinConfettiOverlay burstKey={1} />);
   expect(withTiming).not.toHaveBeenCalled();
-  view.rerender(<WinConfettiOverlay burstKey={1} />);
   expect(screen.queryByTestId('win-confetti')).toBeNull();
 });
 
@@ -112,15 +117,18 @@ it('reserves the same compact controls footprint across every match phase', () =
   expect(screen.queryByText(/hints and tutor are off/)).toBeNull();
 });
 
-it.each(['white', 'black'] as const)('keeps the %s score outside the transformed leaf after a score/active change', (player) => {
-  const view = setup(<MatchScorecard player={player} score={0} active />);
-  view.rerender(<MatchScorecard player={player} score={2} active={false} />);
-  const numeral = screen.getByTestId(`match-score-numeral-${player}`);
-  expect(numeral).toHaveTextContent('2');
-  const leaf = screen.getByTestId(`match-score-leaf-${player}`);
-  expect(leaf.findAll(node => node === numeral)).toHaveLength(0);
-  expect(leaf).not.toHaveStyle({ backgroundColor: player === 'white' ? '#E8E0D0' : '#3C3028' });
-  expect(leaf).toHaveStyle({ zIndex: 0 });
-  expect(numeral).toHaveStyle({ zIndex: 1 });
-  expect(screen.getByTestId(`match-score-${player}`)).toHaveTextContent('2');
+it.each(['white', 'black'] as const)('shows the %s match score in the player strip', (player) => {
+  const state = createMatchGame(5);
+  state.match!.score = { white: 2, black: 1 };
+  setup(<PlayerStrip state={state} player={player} />);
+  const score = screen.getByTestId(`match-score-${player}`);
+  expect(score).toHaveTextContent(`${state.match!.score[player]}to 5`);
+  expect(score).toHaveProp('accessibilityLabel', `${state.match!.score[player]} of 5 points`);
+});
+
+it('shows the match result under the board once a game is won', () => {
+  const state = createMatchGame(3);
+  const won = { ...state, phase: 'game-over' as const, winner: 'white' as const, match: { ...state.match!, score: { white: 3, black: 0 }, winner: 'white' as const, result: { winner: 'white' as const, points: 1, kind: 'single' as const } } };
+  setup(<GameScreenControls state={won} liveDiceState={won} isHumanTurn isComputerTurn={false} moveLogLength={4} onRoll={jest.fn()} onReset={jest.fn()} />);
+  expect(screen.getByTestId('game-action-caption')).toHaveTextContent('White wins the match · +1');
 });

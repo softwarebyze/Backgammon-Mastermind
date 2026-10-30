@@ -11,9 +11,10 @@ tags:
       CLEAR_STATE: 'true'
       HOME_TEXT: vs Computer
 - openLink: backgammonmastermind.preview://developer
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: developer-preset-e2e-undo-redo-3-1
+    direction: DOWN
     timeout: 60000
 - tapOn:
     id: developer-preset-e2e-undo-redo-3-1
