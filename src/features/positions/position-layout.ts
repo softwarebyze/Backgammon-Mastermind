@@ -19,5 +19,8 @@ export function positionLayout(width: number, height: number, horizontalInsets: 
   const side = width >= 720 && width > height * 1.2;
   const boardWidth = width - 32 - horizontalInsets - (side ? SIDE_PANEL_WIDTH + SIDE_GAP : 0);
   const boardHeight = height - CHROME_HEIGHT - STRIPS_HEIGHT - (side ? 0 : TOOLBAR_HEIGHT + BELOW_BOARD_HEIGHT);
-  return { side, boardWidth: Math.min(1200, Math.max(200, boardWidth)), boardHeight: Math.max(180, boardHeight) };
+  const fittedWidth = Math.min(1200, Math.max(200, boardWidth));
+  // Small phones scroll a little rather than shrink the board below a usable size.
+  const minHeight = side ? 180 : fittedWidth * 0.75;
+  return { side, boardWidth: fittedWidth, boardHeight: Math.max(minHeight, boardHeight) };
 }

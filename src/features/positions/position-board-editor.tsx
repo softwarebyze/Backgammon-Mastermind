@@ -49,7 +49,7 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
     onStrokeEnd?.();
   };
   return (
-    <View style={{ gap: 8, alignSelf: 'center', width: dimensions.boardOuterWidth }}>
+    <View style={{ gap: 8, alignSelf: 'stretch', alignItems: 'stretch' }}>
       {showToolbar && <PositionEditorToolbar color={color} onColor={onColor} onLocation={onLocation} actions={actions} />}
       <PositionPlayerStrip position={position} player="black" onChange={onChange} />
       <View style={styles.board}>

@@ -25,3 +25,9 @@ it('puts the controls beside the board in wide or short windows', () => {
   // Zoomed out, the board grows with the window instead of staying small.
   expect(positionLayout(2880, 1800, 0).boardHeight).toBeGreaterThan(1200);
 });
+
+it('scrolls on small phones instead of shrinking the board to a sliver', () => {
+  const layout = positionLayout(320, 640, 0);
+  expect(layout.side).toBe(false);
+  expect(layout.boardHeight).toBeGreaterThanOrEqual(layout.boardWidth * 0.75);
+});

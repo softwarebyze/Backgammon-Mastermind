@@ -68,15 +68,17 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
   return (
     <View style={styles.scorePanel} testID="position-scoreboard">
       <View style={styles.scoreHeading}>
-        <Text style={styles.stripTitle}>{translate(money ? 'positions.money_game' : 'positions.match_score')}</Text>
-        {money
-          ? (
-              <>
-                <PositionAction compact chip label={translate('positions.jacoby')} testID="position-jacoby" selected={c.jacoby} onPress={() => context({ jacoby: !c.jacoby })} />
-                <PositionAction compact chip label={translate('positions.beavers')} testID="position-beavers" selected={c.beavers} onPress={() => context({ beavers: !c.beavers })} />
-              </>
-            )
-          : <PositionAction compact chip label={translate('positions.crawford')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />}
+        <Text style={styles.scoreTitle}>{translate(money ? 'positions.money_game' : 'positions.match_score')}</Text>
+        <View style={styles.scoreRules}>
+          {money
+            ? (
+                <>
+                  <PositionAction compact chip label={translate('positions.jacoby')} testID="position-jacoby" selected={c.jacoby} onPress={() => context({ jacoby: !c.jacoby })} />
+                  <PositionAction compact chip label={translate('positions.beavers')} testID="position-beavers" selected={c.beavers} onPress={() => context({ beavers: !c.beavers })} />
+                </>
+              )
+            : <PositionAction compact chip label={translate('positions.crawford')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />}
+        </View>
       </View>
       <View style={styles.scoreboard}>
         {!money && side('black')}
