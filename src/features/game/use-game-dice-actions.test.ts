@@ -1,5 +1,5 @@
 import type { GameState } from '@/lib/game';
-import { useState } from 'react';
+import { createElement, StrictMode, useState } from 'react';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 import { createPositionState } from '@/lib/game/create-position';
 import { act, renderHook } from '@/lib/test-utils';
@@ -13,12 +13,12 @@ jest.mock('@/lib/game', () => ({
 
 const play = jest.mocked(playGameSfx);
 
-function renderDice(initial: GameState) {
+function renderDice(initial: GameState, strict = false) {
   return renderHook(() => {
     const [state, setState] = useState<GameState | null>(initial);
     const actions = useGameDiceActions({ state, setState, isAnimating: false, recordNoMove: jest.fn() });
     return { state, ...actions };
-  });
+  }, strict ? { wrapper: ({ children }) => createElement(StrictMode, null, children) } : undefined);
 }
 
 beforeEach(() => {
@@ -51,4 +51,17 @@ it('stays quiet when the roll can be played', () => {
   act(() => jest.advanceTimersByTime(BLOCKED_SFX_DELAY_MS));
   expect(result.current.state?.phase).toBe('moving');
   expect(play).not.toHaveBeenCalledWith('blocked');
+});
+
+it('plays each sound once, even under StrictMode and on a double tap', () => {
+  const closed = [19, 20, 21, 22, 23, 24].map(point => ({ point, player: 'black' as const, count: 2 }));
+  const { result } = renderDice(createPositionState({ placements: closed, bar: { white: 1 }, mode: 'vs-human' }), true);
+
+  act(() => {
+    result.current.doRollDice();
+    result.current.doRollDice();
+  });
+  act(() => jest.advanceTimersByTime(BLOCKED_SFX_DELAY_MS));
+  expect(play.mock.calls.filter(([kind]) => kind === 'roll')).toHaveLength(1);
+  expect(play.mock.calls.filter(([kind]) => kind === 'blocked')).toHaveLength(1);
 });
