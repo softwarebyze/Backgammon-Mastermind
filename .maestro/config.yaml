@@ -8,6 +8,7 @@ flows:
   - app/center-bar-checkers.yaml
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml
+  - app/rapid-follow-up-input.yaml
 
 excludeTags:
   - util
