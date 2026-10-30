@@ -40,3 +40,7 @@ tags:
 - assertVisible: 'Bar.*black checkers'
 - tapOn:
     id: position-paint-white
+# A long swipe can put every checker on the bar; start the next check empty.
+- tapOn:
+    id: position-empty
+- assertVisible: Bar
