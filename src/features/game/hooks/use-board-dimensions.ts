@@ -9,7 +9,7 @@ import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
-const BEAR_OFF_WIDTH = 38;
+const BEAR_OFF_WIDTH = 32;
 /** Narrower chrome for mini boards (guidance replays) so the points stay readable. */
 const COMPACT_BAR_WIDTH = 16;
 const COMPACT_BEAR_OFF_WIDTH = 20;
@@ -58,11 +58,11 @@ const MAX_POINT_CHECKERS = 7;
 /** Bar and bear-off tray as multiples of the checker once the board outgrows the phone constants. */
 const BAR_PER_CHECKER = BAR_WIDTH / CHECKER_CAP;
 const BEAR_OFF_PER_CHECKER = BEAR_OFF_WIDTH / CHECKER_CAP;
-const COLUMN_GUTTER = 4;
+const COLUMN_GUTTER = 2;
 
 /**
  * Columns + bar + bear-off for a board this wide. Up to a 32px checker this is
- * the original fixed 28/38 layout (phones and tablets unchanged); beyond it,
+ * the fixed 28/32 layout (phones and tablets); beyond it,
  * bar and tray scale with the checker so a 48px checker still fits the bar.
  */
 function boardColumns(boardWidth: number, cap: number) {

@@ -32,9 +32,10 @@ type SlideLayerProps = {
   progress: SharedValue<number>;
   dimensions: BoardDimensions;
   zIndex: number;
+  testID?: string;
 };
 
-function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerProps) {
+function CheckerSlideLayer({ slide, progress, dimensions, zIndex, testID }: SlideLayerProps) {
   const fromSize = checkerRenderSize(dimensions.checkerSize, slide.from);
   const toSize = checkerRenderSize(dimensions.checkerSize, slide.to);
 
@@ -70,7 +71,7 @@ function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerPr
   });
 
   return (
-    <Animated.View style={style} pointerEvents="none">
+    <Animated.View testID={testID} style={style} pointerEvents="none">
       <CheckerToken flat player={slide.player} size={fromSize} />
     </Animated.View>
   );
@@ -86,11 +87,11 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
   // first checker lands, and the next withTiming(1) finishes immediately —
   // that checker jumps into place instead of sliding.
   return (
-    <CheckerSlideOverlay
-      key={animationKey(animation)}
-      animation={animation}
-      dimensions={dimensions}
-    />
+    <>
+      {(animation.parallel ?? [animation]).filter(frame => frame.waitFor === undefined).map(frame => (
+        <CheckerSlideOverlay key={animationKey(frame)} animation={frame} dimensions={dimensions} />
+      ))}
+    </>
   );
 }
 
@@ -165,13 +166,16 @@ function CheckerSlideOverlay({ animation, dimensions }: Props) {
 
   return (
     <>
-      <CheckerSlideLayer
-        slide={moverSlide}
-        progress={progress}
-        dimensions={dimensions}
-        zIndex={100}
-      />
-      {animation.capture && (
+      {!animation.hidden && (
+        <CheckerSlideLayer
+          testID={`checker-flight-${key}`}
+          slide={moverSlide}
+          progress={progress}
+          dimensions={dimensions}
+          zIndex={100}
+        />
+      )}
+      {animation.capture && !animation.capture.hidden && (
         <CheckerSlideLayer
           slide={animation.capture}
           progress={progress}

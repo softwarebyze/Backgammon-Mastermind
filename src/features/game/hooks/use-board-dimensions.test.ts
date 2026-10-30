@@ -293,7 +293,7 @@ describe('learnCaptionMaxHeight', () => {
 
 describe('point height uses leftover slot height', () => {
   it('stretches points into a tall portrait slot instead of leaving it empty', () => {
-    const compact = fitBoardToViewport(382, 260);
+    const compact = fitBoardToViewport(382, 290);
     const tall = fitBoardToViewport(382, 480);
     expect(tall.boardOuterWidth).toBe(compact.boardOuterWidth);
     expect(tall.pointHeight).toBeGreaterThan(compact.pointHeight);
@@ -318,7 +318,7 @@ describe('desktop checker cap', () => {
     expect(a).toEqual(b);
     expect(a.checkerSize).toBe(32);
     expect(a.barWidth).toBe(28);
-    expect(a.bearOffWidth).toBe(38);
+    expect(a.bearOffWidth).toBe(32);
   });
 
   it('grows checkers, bar, and tray together on a 1000px desktop board', () => {
@@ -344,5 +344,15 @@ describe('trayDieSize', () => {
     expect(trayDieSize(32)).toBe(44);
     expect(trayDieSize(48)).toBe(64);
     expect(trayDieSize(80)).toBe(64);
+  });
+});
+
+describe('phone checker size (#248)', () => {
+  it('lets neighbouring checkers nearly touch and keeps the bear-off tray narrow on a 390pt phone', () => {
+    const dims = fitBoardToViewport(390, 700);
+    expect(dims.colWidth - dims.checkerSize).toBeLessThanOrEqual(2);
+    expect(dims.bearOffWidth).toBeLessThanOrEqual(32);
+    // Was 22.3 with 4px gutters and a 38px tray.
+    expect(dims.checkerSize).toBeGreaterThanOrEqual(24.5);
   });
 });
