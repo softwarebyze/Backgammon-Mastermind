@@ -69,14 +69,15 @@ it('shows invalid import errors without modifying or replacing the board', () =>
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('5');
 });
 
-it('sets the dice on the board by tapping them, never leaving a half roll playable', () => {
+it('picks each die from all six faces in one tap, then offers the other blank die', () => {
   render(<PositionScreen />);
-  for (let i = 0; i < 3; i++)
-    fireEvent.press(screen.getByTestId('position-die-0'));
+  fireEvent.press(screen.getByTestId('position-die-0'));
+  fireEvent.press(screen.getByTestId('position-die-option-3'));
   expect(screen.getByTestId('position-die-0').props.accessibilityLabel).toBe('positions.dice 1: 3');
+  // A half roll cannot start, so the second die's picker opens straight away.
   expect(screen.getByTestId('position-play')).toBeDisabled();
-  fireEvent.press(screen.getByTestId('position-die-1'));
-  fireEvent.press(screen.getByTestId('position-die-1'));
+  fireEvent.press(screen.getByTestId('position-die-option-2'));
+  expect(screen.queryByTestId('position-die-picker')).toBeNull();
   expect(screen.getByTestId('position-play')).toBeEnabled();
   fireEvent.press(screen.getByTestId('position-play'));
   fireEvent.press(screen.getByTestId('position-start'));
@@ -84,12 +85,18 @@ it('sets the dice on the board by tapping them, never leaving a half roll playab
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [3, 2] }));
 });
 
-it('steps a die past 6 back to blank, which means roll when play starts', () => {
+it('clears a die with Roll later and closes the picker from outside', () => {
   render(<PositionScreen />);
-  for (let i = 0; i < 7; i++)
-    fireEvent.press(screen.getByTestId('position-die-0'));
+  fireEvent.press(screen.getByTestId('position-die-0'));
+  fireEvent.press(screen.getByTestId('position-die-picker-close'));
+  expect(screen.queryByTestId('position-die-picker')).toBeNull();
+  fireEvent.press(screen.getByTestId('position-die-0'));
+  fireEvent.press(screen.getByTestId('position-die-option-5'));
+  fireEvent.press(screen.getByTestId('position-die-option-5'));
+  fireEvent.press(screen.getByTestId('position-die-0'));
+  fireEvent.press(screen.getByTestId('position-die-option-0'));
   expect(screen.getByTestId('position-die-0').props.accessibilityLabel).toBe('positions.dice 1: positions.roll_later');
-  expect(screen.getByTestId('position-play')).toBeEnabled();
+  expect(screen.queryByTestId('position-die-picker')).toBeNull();
 });
 
 it('gives a whitespace-only saved name the translated untitled label', () => {

@@ -37,17 +37,18 @@ tags:
     id: position-die-0
 - assertNotVisible:
     id: position-strip
-# The dice sit on the board in the roller's half; each tap steps one die.
-- repeat:
-    times: 6
-    commands:
-      - tapOn:
-          id: position-die-0
-- repeat:
-    times: 2
-    commands:
-      - tapOn:
-          id: position-die-1
+# Tapping a die opens all six faces; picking the first opens the second.
+- tapOn:
+    id: position-die-0
+- assertVisible:
+    id: position-die-picker
+- takeScreenshot: position-die-picker
+- tapOn:
+    id: position-die-option-6
+- tapOn:
+    id: position-die-option-2
+- assertNotVisible:
+    id: position-die-picker
 - assertVisible:
     id: position-die-0
     text: 'Dice 1: 6'
