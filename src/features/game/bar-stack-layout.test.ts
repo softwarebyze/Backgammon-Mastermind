@@ -34,7 +34,7 @@ it.each(['white', 'black'] as const)('uses the visible front %s checker for touc
 });
 
 it.each(['white', 'black'] as const)('lands each new %s bar checker in the next slot without moving the others', (player) => {
-  const dims = resolveBoardViewport({ screenWidth: 390, screenHeight: 844, platform: 'ios', slotWidth: 390, slotHeight: 600 });
+  const dims = resolveBoardViewport({ screenWidth: 390, screenHeight: 844, platform: 'native', slotWidth: 390, slotHeight: 600 });
   const first = barStackLayout({ ...dims, player, count: 1 }).centers[0]!;
   expect(Math.abs(first - dims.boardHeight / 2)).toBeLessThan(dims.checkerSize + dims.middleHeight);
   for (let count = 2; count <= MAX_BAR_VISIBLE; count++) {
