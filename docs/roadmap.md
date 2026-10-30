@@ -1,6 +1,6 @@
 # Product roadmap (long horizon)
 
-Vision map (M0–M6). **Not** the sprint board — that is [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (and [Releases](https://github.com/softwarebyze/Backgammon-Mastermind/releases) for what already shipped). **Last updated: 2026-10-12** (v1.1.0 shipped 2026-10-10 — shipped markers below were backfilled then; anything without a marker is still aspirational).
+Vision map (M0–M6). **Not** the sprint board — that is [GitHub Issues](https://github.com/softwarebyze/Backgammon-Mastermind/issues) (and [Releases](https://github.com/softwarebyze/Backgammon-Mastermind/releases) for what already shipped). **Last updated: 2026-10-22** (v1.1.0 shipped 2026-10-10 — shipped markers below were backfilled then; anything without a marker is still aspirational).
 
 Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-explained) and the chess.com bar for post-game analysis.
 
@@ -29,7 +29,7 @@ Inspired by [Backgammon.com Learn](https://backgammon.com/learn/board-setup-expl
 | Knip unused-export CI | `.github/workflows/knip.yml` + `knip.json` | Done |
 | React Doctor advisory CI | `.github/workflows/react-doctor.yml` (#41) | Done |
 | Bundle size delta on PR | `size-limit` or `@expo/bundle-analyzer` workflow | Planned |
-| Screenshot diff CI (iPad, web, phone) | Screenmap maps/diffs run on every PR (`screenmap-pr.yml`) — iOS + Android done; web/Playwright half still open (#87) | 🟡 Partial |
+| Screenshot diff CI (iPad, web, phone) | Not implemented — PR evidence is Maestro Android screenshots/video (`e2e-android.yml`); screenshot diffing for iPad/web/phone still open (#87) | Planned |
 | Maestro recordings per release | `.maestro/app/` flows + artifact upload + rolling "E2E evidence" pre-release | Done |
 | Perf regression (Flashlight / Sentry Performance) | Baseline on game screen | Planned |
 | PostHog events schema | `src/lib/analytics/` (#122; `game_completed`/`setting_changed` in #207/#212) | Done |
