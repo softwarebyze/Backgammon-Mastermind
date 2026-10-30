@@ -14,8 +14,10 @@ import { PositionPlayerStrip } from './position-players';
 import { styles } from './position-styles';
 import { usePositionStackEditor } from './use-position-stack-editor';
 
-export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, onStrokeStart, onStrokeEnd }: {
+export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, onStrokeStart, onStrokeEnd, showToolbar = true }: {
   actions?: ReactNode;
+  /** Wide layouts move the paint and setup buttons beside the board. */
+  showToolbar?: boolean;
   position: Position;
   dimensions: BoardDimensions;
   location: PositionLocation | null;
@@ -48,17 +50,7 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
   };
   return (
     <View style={{ gap: 8, alignSelf: 'center', width: dimensions.boardOuterWidth }}>
-      <View style={styles.boardToolbar}>
-        <PaintColors
-          color={color}
-          onChange={(side) => {
-            onColor(side);
-            onLocation(null);
-          }}
-        />
-        <View style={styles.toolbarSpacer} />
-        {actions}
-      </View>
+      {showToolbar && <PositionEditorToolbar color={color} onColor={onColor} onLocation={onLocation} actions={actions} />}
       <PositionPlayerStrip position={position} player="black" onChange={onChange} />
       <View style={styles.board}>
         <BoardView
@@ -98,6 +90,28 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
         <BoardCube position={position} dimensions={dimensions} onChange={patch => onChange({ ...position, context: { ...position.context, ...patch } })} />
       </View>
       <PositionPlayerStrip position={position} player="white" onChange={onChange} />
+    </View>
+  );
+}
+
+/** Paint colour on the left, setup actions (standard, clear) on the right. */
+export function PositionEditorToolbar({ color, onColor, onLocation, actions }: {
+  color: Player;
+  onColor: (color: Player) => void;
+  onLocation: (location: PositionLocation | null) => void;
+  actions?: ReactNode;
+}) {
+  return (
+    <View style={styles.boardToolbar}>
+      <PaintColors
+        color={color}
+        onChange={(side) => {
+          onColor(side);
+          onLocation(null);
+        }}
+      />
+      <View style={styles.toolbarSpacer} />
+      {actions}
     </View>
   );
 }

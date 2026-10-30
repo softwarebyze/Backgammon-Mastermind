@@ -105,7 +105,7 @@ it('keeps presets and dice visible while exchange and saved tools stay collapsed
   expect(screen.getByTestId('position-standard')).toBeTruthy();
   expect(screen.getByTestId('position-empty')).toBeTruthy();
   expect(screen.getByTestId('position-die-0')).toBeTruthy();
-  expect(screen.getByTestId('position-match-row')).toBeTruthy();
+  expect(screen.getByTestId('position-scoreboard')).toBeTruthy();
   expect(screen.queryByTestId('position-strip')).toBeNull();
   expect(screen.queryByTestId('position-save-name')).toBeNull();
   expect(screen.queryByTestId('position-fine-tune')).toBeNull();
@@ -135,18 +135,20 @@ it('retains an open import draft through board edits while clearing stale export
   expect(start).not.toHaveBeenCalled();
 });
 
-it('sets the match length below the board and each score in its player strip', () => {
+it('keeps the match score on a scoreboard with odd match lengths', () => {
   render(<PositionScreen />);
-  expect(screen.getByTestId('position-match-length')).toHaveTextContent('positions.money_game');
+  // Money play has no score to keep.
+  expect(screen.getByTestId('position-match-length')).toHaveProp('accessibilityLabel', 'positions.match_to: positions.money_short');
   expect(screen.queryByTestId('position-score-white')).toBeNull();
-  for (let i = 0; i < 7; i++)
+  for (let i = 0; i < 4; i++)
     fireEvent.press(screen.getByTestId('position-match-length-higher'));
-  expect(screen.getByTestId('position-match-length')).toHaveTextContent('positions.match_to 7');
+  // Money → 1 → 3 → 5 → 7.
+  expect(screen.getByTestId('position-match-length')).toHaveProp('accessibilityLabel', 'positions.match_to: 7');
   for (let i = 0; i < 9; i++)
     fireEvent.press(screen.getByTestId('position-score-white-higher'));
   // A score never reaches the match length.
-  expect(screen.getByTestId('position-score-white-value')).toHaveTextContent('6');
-  expect(screen.getByTestId('position-score-black-value')).toHaveTextContent('0');
+  expect(screen.getByTestId('position-score-white')).toHaveProp('accessibilityLabel', 'positions.white_score: 6');
+  expect(screen.getByTestId('position-score-black')).toHaveProp('accessibilityLabel', 'positions.black_score: 0');
   expect(start).not.toHaveBeenCalled();
 });
 

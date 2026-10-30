@@ -30,16 +30,23 @@ const TOP_RIGHT = [19, 20, 21, 22, 23, 24];
 const BOT_LEFT = [12, 11, 10, 9, 8, 7];
 const BOT_RIGHT = [6, 5, 4, 3, 2, 1];
 
+/** Numbers scale with their column so two digits never wrap or shrink to specks. */
+function labelSize(width: number) {
+  const fontSize = Math.round(Math.max(7, Math.min(15, width * 0.42)));
+  return { fontSize, lineHeight: fontSize + 2 };
+}
+
 function NumberCell({ value, width, lit }: { value: number; width: number; lit: boolean }) {
+  const size = labelSize(width);
   if (lit) {
     return (
       <View style={[styles.cell, { width }]} testID={`move-hint-${value}`}>
-        <Text style={[styles.label, styles.litLabel]}>{value}</Text>
+        <Text style={[styles.label, styles.litLabel, size]}>{value}</Text>
       </View>
     );
   }
   return (
-    <Text style={[styles.label, { width }]}>
+    <Text style={[styles.label, { width }, size]}>
       {value}
     </Text>
   );

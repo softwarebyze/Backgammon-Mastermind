@@ -13,19 +13,18 @@ import { newPosition, positionGame, validatePosition } from '@/lib/positions/pos
 import { loadSavedPositions } from '@/lib/positions/saved-positions';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { WEB_SETTINGS_TOP_PADDING } from '@/lib/ui/web-layout';
-import { PositionBoardEditor } from './position-board-editor';
+import { PositionBoardEditor, PositionEditorToolbar } from './position-board-editor';
 import { PositionAction } from './position-controls';
 import { positionError } from './position-errors';
 import { PositionExchange } from './position-exchange';
 import { PositionHistoryActions } from './position-history-actions';
-import { PositionMatchRow } from './position-match-row';
+import { positionLayout, SIDE_GAP, SIDE_PANEL_WIDTH } from './position-layout';
 import { PositionSaved } from './position-saved';
-import { STRIP_HEIGHT, styles } from './position-styles';
+import { PositionScoreboard } from './position-scoreboard';
+import { styles } from './position-styles';
 import { usePositionHistory } from './use-position-history';
 
 /** Toolbar, strip, tool row and gaps around the board on a phone. */
-const CHROME_HEIGHT = 52 + STRIP_HEIGHT + 56 + 12 * 4;
-
 function initialPosition(data: string | string[] | undefined): { position: Position; error: string } {
   if (data === undefined)
     return { position: newPosition(), error: '' };
@@ -66,8 +65,8 @@ function PositionWorkspace({ data }: { data?: string }) {
   const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-human');
   const { width, height } = useWindowDimensions();
   const { insets } = useLayoutMetrics();
-  const maxBoardHeight = Math.max(260, Math.min(width < 600 ? 520 : 560, height - CHROME_HEIGHT - 120));
-  const fitted = fitBoardToViewport(Math.min(880, Math.max(200, width - 32 - insets.left - insets.right)), maxBoardHeight, { extraHeight: 36, checkerCap: 48 });
+  const layout = positionLayout(width, height, insets.left + insets.right);
+  const fitted = fitBoardToViewport(layout.boardWidth, layout.boardHeight, { extraHeight: 36, checkerCap: 64 });
   // The cube's corners are reserved in the tray, as in a match game.
   const dims = { ...fitted, bearOffCubeClearance: cubeCornerClearance(fitted.pointHeight) };
 
@@ -112,6 +111,60 @@ function PositionWorkspace({ data }: { data?: string }) {
     }
     catch (err) { setError(positionError(err)); }
   };
+  const setupActions = (
+    <>
+      <PositionAction label={translate('positions.standard')} testID="position-standard" compact onPress={() => replace(newPosition())} />
+      <PositionAction label={translate('positions.empty')} testID="position-empty" compact iconOnly={layout.side || dims.boardOuterWidth < 420} symbol="trash-2" onPress={() => replace(newPosition(true))} />
+    </>
+  );
+  const editor = (
+    <PositionBoardEditor
+      position={position}
+      dimensions={dims}
+      location={location}
+      color={color}
+      onColor={setColor}
+      onLocation={selectLocation}
+      onChange={change}
+      onStrokeStart={history.strokeStart}
+      onStrokeEnd={history.strokeEnd}
+      actions={setupActions}
+      showToolbar={!layout.side}
+    />
+  );
+  const panel = (
+    <>
+      <PositionScoreboard position={position} onChange={change} />
+      {!!invalid && <Text accessibilityRole="alert" testID="position-invalid" style={styles.error}>{invalid}</Text>}
+      {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
+      <View style={styles.workspaceActions}>
+        <PositionAction compact symbol="share-2" label={translate('positions.exchange_short')} testID="position-exchange-toggle" selected={tool === 'exchange'} onPress={() => openTool('exchange')} />
+        <PositionAction compact symbol="bookmark" label={translate('positions.saved_short')} testID="position-saved-toggle" selected={tool === 'saved'} onPress={() => openTool('saved')} />
+        <View style={styles.toolbarSpacer} />
+        <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline selected={tool === 'play'} disabled={!!invalid || finished} onPress={() => openTool('play')} />
+      </View>
+      {tool === 'play' && (
+        <View style={styles.detailPanel}>
+          <View style={styles.segmented}>
+            <PositionAction segment label={translate('positions.pass_play')} symbol="users" selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
+            <PositionAction segment label={translate('positions.computer')} symbol="cpu" selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
+          </View>
+          <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
+          <PositionAction label={translate('positions.play')} symbol="play" testID="position-start" primary disabled={!!invalid || finished} onPress={play} />
+        </View>
+      )}
+      <PositionExchange open={tool === 'exchange'} position={position} onImport={replace} />
+      {tool === 'saved' && (
+        <PositionSaved
+          position={position}
+          valid={!invalid}
+          saved={saved}
+          onSaved={setSaved}
+          onOpen={entry => replace(entry.position)}
+        />
+      )}
+    </>
+  );
   return (
     <>
       <FocusAwareStatusBar />
@@ -122,55 +175,25 @@ function PositionWorkspace({ data }: { data?: string }) {
         keyboardDismissMode="on-drag"
         automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[styles.content, { maxWidth: dims.boardOuterWidth + 32 + insets.left + insets.right, paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
+        contentContainerStyle={[styles.content, { maxWidth: dims.boardOuterWidth + 32 + insets.left + insets.right + (layout.side ? SIDE_PANEL_WIDTH + SIDE_GAP : 0), paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
       >
         {!!data && <Text style={styles.caption}>{translate('positions.shared_intro')}</Text>}
-        <PositionBoardEditor
-          position={position}
-          dimensions={dims}
-          location={location}
-          color={color}
-          onColor={setColor}
-          onLocation={selectLocation}
-          onChange={change}
-          onStrokeStart={history.strokeStart}
-          onStrokeEnd={history.strokeEnd}
-          actions={(
-            <>
-              <PositionAction label={translate('positions.standard')} testID="position-standard" compact onPress={() => replace(newPosition())} />
-              <PositionAction label={translate('positions.empty')} testID="position-empty" compact iconOnly={dims.boardOuterWidth < 420} symbol="trash-2" onPress={() => replace(newPosition(true))} />
-            </>
-          )}
-        />
-        <PositionMatchRow position={position} onChange={change} />
-        {!!invalid && <Text accessibilityRole="alert" testID="position-invalid" style={styles.error}>{invalid}</Text>}
-        {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
-        <View style={styles.workspaceActions}>
-          <PositionAction compact symbol="share-2" label={translate('positions.exchange_short')} testID="position-exchange-toggle" selected={tool === 'exchange'} onPress={() => openTool('exchange')} />
-          <PositionAction compact symbol="bookmark" label={translate('positions.saved_short')} testID="position-saved-toggle" selected={tool === 'saved'} onPress={() => openTool('saved')} />
-          <View style={styles.toolbarSpacer} />
-          <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline selected={tool === 'play'} disabled={!!invalid || finished} onPress={() => openTool('play')} />
-        </View>
-        {tool === 'play' && (
-          <View style={styles.detailPanel}>
-            <View style={styles.segmented}>
-              <PositionAction segment label={translate('positions.pass_play')} symbol="users" selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
-              <PositionAction segment label={translate('positions.computer')} symbol="cpu" selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
-            </View>
-            <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
-            <PositionAction label={translate('positions.play')} symbol="play" testID="position-start" primary disabled={!!invalid || finished} onPress={play} />
-          </View>
-        )}
-        <PositionExchange open={tool === 'exchange'} position={position} onImport={replace} />
-        {tool === 'saved' && (
-          <PositionSaved
-            position={position}
-            valid={!invalid}
-            saved={saved}
-            onSaved={setSaved}
-            onOpen={entry => replace(entry.position)}
-          />
-        )}
+        {layout.side
+          ? (
+              <View style={styles.sideLayout}>
+                {editor}
+                <View style={[styles.sidePanel, { width: SIDE_PANEL_WIDTH }]}>
+                  <PositionEditorToolbar color={color} onColor={setColor} onLocation={selectLocation} actions={setupActions} />
+                  {panel}
+                </View>
+              </View>
+            )
+          : (
+              <>
+                {editor}
+                {panel}
+              </>
+            )}
       </ScrollView>
     </>
   );

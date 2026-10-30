@@ -3,12 +3,6 @@ import { GAME_PALETTE as palette } from '@/features/game/game-palette';
 import { interFont } from '@/lib/ui/fonts';
 
 const TOUCH = Platform.OS === 'android' ? 48 : 44;
-/**
- * The strip under the board always reserves this much height (title row plus
- * a vertical stepper around a scorecard), whatever it shows, so the page
- * never shifts.
- */
-export const STRIP_HEIGHT = 192;
 const muted = '#CBB8A7';
 
 export const styles = StyleSheet.create({
@@ -32,8 +26,6 @@ export const styles = StyleSheet.create({
   cubeChevron: { height: 20, width: 28, alignItems: 'center', justifyContent: 'center', borderRadius: 10 },
   cubeTrack: { position: 'absolute', zIndex: 29, width: 2, borderRadius: 1, backgroundColor: 'rgba(255, 240, 220, 0.25)' },
   cubeTrackStop: { position: 'absolute', left: -2, width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255, 240, 220, 0.6)' },
-  // Reserved editing strip
-  strip: { minHeight: STRIP_HEIGHT, borderRadius: 14, backgroundColor: 'rgba(43, 26, 16, 0.72)', borderWidth: 1, borderColor: palette.surfaceBorder, padding: 12 },
   stripPanel: { flex: 1, gap: 8 },
   stripHeading: { minHeight: 40, flexDirection: 'row', alignItems: 'center', gap: 8 },
   stripTitle: { ...interFont('semibold'), flex: 1, color: palette.text, fontSize: 16 },
@@ -42,19 +34,24 @@ export const styles = StyleSheet.create({
   stripHint: { ...interFont('regular'), color: muted, fontSize: 13, lineHeight: 19 },
   segmented: { minHeight: TOUCH, flexDirection: 'row', gap: 2, padding: 2, borderRadius: 10, backgroundColor: palette.surface },
   stepperColumn: { alignItems: 'center', gap: 2 },
-  stepButton: { width: 48, height: 26, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  stepButton: { width: 48, height: 22, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
   stepButtonPressed: { backgroundColor: 'rgba(255, 240, 220, 0.14)' },
   stepIconDisabled: { opacity: 0.3 },
   stepperValue: { ...interFont('semibold'), minWidth: 44, textAlign: 'center', color: palette.text, fontSize: 24, lineHeight: 30, fontVariant: ['tabular-nums'] },
   stepperValueSmall: { fontSize: 16 },
+  // Wide or short windows: controls beside the board.
+  sideLayout: { flexDirection: 'row', alignItems: 'flex-start', gap: 24 },
+  sidePanel: { gap: 12 },
   // Scoreboard: Black's card, the smaller "Match to" card, White's card.
-  scoreboard: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 20 },
-  scoreCard: { width: 60, height: 66, borderRadius: 12, backgroundColor: '#ECE4D4', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 3 },
+  scorePanel: { borderRadius: 14, backgroundColor: 'rgba(43, 26, 16, 0.72)', borderWidth: 1, borderColor: palette.surfaceBorder, paddingHorizontal: 12, paddingVertical: 8, gap: 4 },
+  scoreHeading: { minHeight: 36, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 },
+  scoreboard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 20 },
+  scoreCard: { width: 52, height: 56, borderRadius: 12, backgroundColor: '#ECE4D4', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 3 },
   scoreCardDark: { backgroundColor: '#1C1714', borderWidth: 1, borderColor: '#3A302A' },
-  scoreCardText: { ...interFont('bold'), fontSize: 38, lineHeight: 44, color: '#1E0C02', fontVariant: ['tabular-nums'] },
+  scoreCardText: { ...interFont('bold'), fontSize: 32, lineHeight: 38, color: '#1E0C02', fontVariant: ['tabular-nums'] },
   scoreCardTextDark: { color: '#F5F0E8' },
   scoreCardTextSmall: { fontSize: 22, lineHeight: 28 },
-  targetCard: { width: 66, height: 58, borderRadius: 12, backgroundColor: palette.surface, borderWidth: 1, borderColor: palette.surfaceBorder, alignItems: 'center', justifyContent: 'center' },
+  targetCard: { minWidth: 66, height: 52, paddingHorizontal: 6, borderRadius: 12, backgroundColor: palette.surface, borderWidth: 1, borderColor: palette.surfaceBorder, alignItems: 'center', justifyContent: 'center' },
   targetLabel: { ...interFont('semibold'), fontSize: 9, lineHeight: 11, letterSpacing: 0.6, textTransform: 'uppercase', color: palette.accent, textAlign: 'center' },
   targetNumber: { ...interFont('bold'), fontSize: 26, lineHeight: 30, color: '#F5F0E8', fontVariant: ['tabular-nums'] },
   scoreCaption: { ...interFont('medium'), color: muted, fontSize: 12, textAlign: 'center' },
