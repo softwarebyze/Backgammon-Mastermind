@@ -4,7 +4,10 @@ import { useGameInput } from '@/features/game/use-game-input';
 import { createInitialState } from '@/lib/game';
 import { BAR_POINT } from '@/lib/game/constants';
 
-jest.mock('posthog-react-native', () => ({ usePostHog: () => ({ capture: jest.fn() }) }));
+jest.mock('posthog-react-native', () => ({
+  // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock preserves public hook name
+  usePostHog: () => ({ capture: jest.fn() }),
+}));
 jest.mock('expo-haptics', () => ({
   impactAsync: jest.fn(() => Promise.resolve()),
   selectionAsync: jest.fn(() => Promise.resolve()),
