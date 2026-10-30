@@ -5,6 +5,7 @@ import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
 import { Keyboard, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+import { cubeCornerClearance } from '@/features/game/bear-off-layout';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
@@ -68,7 +69,9 @@ function PositionWorkspace({ data }: { data?: string }) {
   const { width, height } = useWindowDimensions();
   const { insets } = useLayoutMetrics();
   const maxBoardHeight = Math.max(260, Math.min(width < 600 ? 520 : 560, height - CHROME_HEIGHT - 120));
-  const dims = fitBoardToViewport(Math.min(880, Math.max(200, width - 32 - insets.left - insets.right)), maxBoardHeight, { extraHeight: 36, checkerCap: 48 });
+  const fitted = fitBoardToViewport(Math.min(880, Math.max(200, width - 32 - insets.left - insets.right)), maxBoardHeight, { extraHeight: 36, checkerCap: 48 });
+  // The cube's corners are reserved in the tray, as in a match game.
+  const dims = { ...fitted, bearOffCubeClearance: cubeCornerClearance(fitted.pointHeight) };
 
   useLayoutEffect(() => {
     navigation.setOptions({

@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 import {
-  BEAR_OFF_LABEL_HEIGHT,
   BEAR_OFF_PADDING,
   bearOffHalfHeight,
   bearOffSlotTopInSection,
@@ -11,7 +10,6 @@ import {
   maxBearOffVisibleSlots,
 } from '@/features/game/bear-off-layout';
 import { translate } from '@/lib/i18n';
-import { trayLabelFontSize } from './bear-off-label';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 
@@ -54,7 +52,6 @@ function BearOffStack({
   const visible = Math.min(count, maxVisible);
   const overflow = count - visible;
   const showTarget = isLegalTarget && isTargetSide;
-  const label = `${player === 'black' ? '▲' : '▽'}${translate('game.status.off_short')}`;
 
   return (
     <View
@@ -68,23 +65,6 @@ function BearOffStack({
         borderRadius: 6,
       }}
     >
-      {/* Each label sits at its half's outer edge, which keeps the hinge clear for a cube. */}
-      <Text
-        numberOfLines={1}
-        style={{
-          position: 'absolute',
-          top: player === 'black' ? 2 : undefined,
-          bottom: player === 'white' ? 2 : undefined,
-          width,
-          color: '#B89470',
-          fontSize: trayLabelFontSize(label, width),
-          textAlign: 'center',
-          zIndex: 20,
-        }}
-      >
-        {label}
-      </Text>
-
       {count === 0 && (
         <View
           style={{
@@ -126,8 +106,8 @@ function BearOffStack({
         <Text
           style={{
             position: 'absolute',
-            top: player === 'black' ? BEAR_OFF_PADDING + BEAR_OFF_LABEL_HEIGHT : undefined,
-            bottom: player === 'white' ? BEAR_OFF_PADDING : undefined,
+            top: player === 'black' ? BEAR_OFF_PADDING + cubeClearance : undefined,
+            bottom: player === 'white' ? BEAR_OFF_PADDING + cubeClearance : undefined,
             right: 4,
             color: '#D4A843',
             fontSize: 9,

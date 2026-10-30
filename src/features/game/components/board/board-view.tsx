@@ -6,6 +6,7 @@ import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { Platform, View } from 'react-native';
 
+import { cubeCenterY } from '@/features/game/bear-off-layout';
 import {
   boardHitExtraCandidates,
   remapTapIndex,
@@ -16,7 +17,7 @@ import { displayBarCountDuringAnimation, displayCommittedCount, displayPointDuri
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 import { getMovableSources } from '@/lib/game/move-hints';
-import { getReachableDestinations } from '@/lib/game/moves';
+import { getReachableDestinations, opponent } from '@/lib/game/moves';
 import { MatchCube } from '../match-cube';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
@@ -402,7 +403,7 @@ export function BoardView({
         />
 
         {boardPresentation && state.match && (
-          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: boardWidth - bearOffWidth / 2 - 15, top: boardHeight / 2 - 14 + (state.match.pendingOffer ? (state.match.pendingOffer === 'white' ? -18 : 18) : state.match.cube.owner === 'black' ? -18 : state.match.cube.owner === 'white' ? 18 : 0) * cubeScale, zIndex: 45, transform: [{ scale: cubeScale }] }}>
+          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: boardWidth - bearOffWidth / 2 - 15, top: cubeCenterY(dimensions, state.match.pendingOffer ? opponent(state.match.pendingOffer) : state.match.cube.owner === 'center' ? null : state.match.cube.owner) - 14, zIndex: 45, transform: [{ scale: cubeScale }] }}>
             <MatchCube cube={state.match.cube} crawford={state.match.crawford} pendingOffer={state.match.pendingOffer} />
           </View>
         )}

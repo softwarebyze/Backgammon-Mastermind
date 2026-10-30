@@ -1,5 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
+import { cubeCenterY, cubeCornerClearance } from '@/features/game/bear-off-layout';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 
 /** Top to bottom: Black plays from the top, White from the bottom. */
@@ -9,15 +10,16 @@ type CubeSlot = (typeof CUBE_SLOTS)[number];
 
 /**
  * Where the one doubling cube sits on the setup board: in the bear-off tray,
- * as in a match game. Centred on the hinge, or in the middle of its owner's
- * half. It only ever moves up and down that column.
+ * exactly as in a match game. Centred on the hinge, or in its owner's outer
+ * corner, clear of borne-off checkers. It only ever moves up and down that column.
  */
 export function boardCubeLayout(d: BoardDimensions, pointNumbers = true) {
-  const size = Math.round(Math.max(24, Math.min(d.checkerSize + 2, d.bearOffWidth - 4)));
+  const clearance = d.bearOffCubeClearance ?? cubeCornerClearance(d.pointHeight);
+  const size = Math.round(Math.max(20, Math.min(d.checkerSize + 2, d.bearOffWidth - 4, clearance)));
   const surfaceTop = d.boardFrameWidth + (pointNumbers ? POINT_NUMBER_RAIL : 0);
   const trayCentreX = d.boardFrameWidth + 12 * d.colWidth + d.barWidth + d.bearOffWidth / 2;
   const hinge = surfaceTop + d.pointHeight + d.middleHeight / 2;
-  const travel = Math.round(d.pointHeight / 2 + d.middleHeight / 2);
+  const travel = Math.round(d.boardHeight / 2 - cubeCenterY(d, 'black'));
   return {
     size,
     left: Math.round(trayCentreX - size / 2),
