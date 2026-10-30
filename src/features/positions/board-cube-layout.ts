@@ -3,7 +3,7 @@ import type { Player } from '@/lib/game/types';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 
 /** Top to bottom: Black plays from the top, White from the bottom. */
-export const CUBE_SLOTS = ['black', null, 'white'] as const satisfies readonly (Player | null)[];
+const CUBE_SLOTS = ['black', null, 'white'] as const satisfies readonly (Player | null)[];
 
 type CubeSlot = (typeof CUBE_SLOTS)[number];
 
