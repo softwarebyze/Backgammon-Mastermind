@@ -111,7 +111,8 @@ export function PositionEditorToolbar({ color, onColor, onLocation, actions }: {
         }}
       />
       <View style={styles.toolbarSpacer} />
-      {actions}
+      {/* Setup actions wrap below the colours together on narrow screens. */}
+      <View style={styles.toolbarActions}>{actions}</View>
     </View>
   );
 }

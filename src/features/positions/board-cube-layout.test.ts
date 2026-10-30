@@ -42,3 +42,11 @@ it('doubles on each tap and wraps the top value back to 1', () => {
   expect(nextCubeExponent(6, 6)).toBe(0);
   expect(nextCubeExponent(4, 3)).toBe(0);
 });
+
+it.each([180, 220, 300])('keeps the cube inside the tray on a %ipx board', (width) => {
+  const d = fitBoardToViewport(width, 400, { extraHeight: 36, checkerCap: 64 });
+  const { size, left } = boardCubeLayout(d);
+  const trayLeft = d.boardFrameWidth + 12 * d.colWidth + d.barWidth;
+  expect(left).toBeGreaterThanOrEqual(trayLeft);
+  expect(left + size).toBeLessThanOrEqual(trayLeft + d.bearOffWidth);
+});

@@ -31,3 +31,7 @@ it('scrolls on small phones instead of shrinking the board to a sliver', () => {
   expect(layout.side).toBe(false);
   expect(layout.boardHeight).toBeGreaterThanOrEqual(layout.boardWidth * 0.75);
 });
+
+it.each([180, 220, 260])('never makes the board wider than a %ipx window allows', (width) => {
+  expect(positionLayout(width, width * 2, 0).boardWidth).toBeLessThanOrEqual(width - 32);
+});

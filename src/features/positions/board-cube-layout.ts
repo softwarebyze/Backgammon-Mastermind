@@ -15,7 +15,8 @@ type CubeSlot = (typeof CUBE_SLOTS)[number];
  */
 export function boardCubeLayout(d: BoardDimensions, pointNumbers = true) {
   const clearance = d.bearOffCubeClearance ?? cubeCornerClearance(d.pointHeight);
-  const size = Math.round(Math.max(20, Math.min(d.checkerSize + 2, d.bearOffWidth - 4, clearance)));
+  // The cube always fits inside the tray, however small the board gets.
+  const size = Math.round(Math.max(10, Math.min(d.checkerSize + 2, d.bearOffWidth - 4, clearance)));
   const surfaceTop = d.boardFrameWidth + (pointNumbers ? POINT_NUMBER_RAIL : 0);
   const trayCentreX = d.boardFrameWidth + 12 * d.colWidth + d.barWidth + d.bearOffWidth / 2;
   const hinge = surfaceTop + d.pointHeight + d.middleHeight / 2;

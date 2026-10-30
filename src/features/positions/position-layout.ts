@@ -19,7 +19,8 @@ export function positionLayout(width: number, height: number, horizontalInsets: 
   const side = width >= 720 && width > height * 1.2;
   const boardWidth = width - 32 - horizontalInsets - (side ? SIDE_PANEL_WIDTH + SIDE_GAP : 0);
   const boardHeight = height - CHROME_HEIGHT - STRIPS_HEIGHT - (side ? 0 : TOOLBAR_HEIGHT + BELOW_BOARD_HEIGHT);
-  const fittedWidth = Math.min(1200, Math.max(200, boardWidth));
+  // Never wider than the column: a large browser zoom can leave very little room.
+  const fittedWidth = Math.min(1200, Math.max(120, boardWidth));
   // Small phones scroll a little rather than shrink the board below a usable size.
   const minHeight = side ? 180 : fittedWidth * 0.75;
   return { side, boardWidth: fittedWidth, boardHeight: Math.max(minHeight, boardHeight) };
