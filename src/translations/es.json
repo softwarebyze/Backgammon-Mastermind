@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Juego de espera",
         "blitz": "Blitz",
-        "developing": "Desarrollo",
+        "developing": "Apertura",
         "holding": "Juego de retención",
         "priming": "Muralla",
         "running": "Carrera"
@@ -181,8 +181,12 @@
         "blitz_blots": "Tienes {{blotCount}} fichas sueltas en casa y ya has hecho {{homeMade}} puntos en casa.",
         "developing": "Todavía no hay muralla, ancla ni ataque en el tablero: la partida aún se está formando.",
         "holding": "Mantienes un ancla en el {{point}} mientras vas {{pipGap}} puntos atrás.",
+        "holding_behind": "Vas {{pipGap}} pips por detrás, así que deja fichas atrás y espera un tiro.",
         "priming": "Has construido una muralla de {{prime}} puntos.",
         "priming_anchor": "Has construido una muralla de {{prime}} puntos con un ancla detrás.",
+        "priming_build": "Vas {{pipGap}} pips por detrás, así que bloquea sus fichas traseras en vez de correr.",
+        "priming_trap": "Has hecho {{made}} de los 6 puntos del {{from}} al {{to}}, con {{trapped}} de sus fichas atrapadas detrás.",
+        "running_ahead": "Vas por delante en la carrera, {{myPips}} a {{foePips}} pips, así que la carrera te favorece.",
         "running_lead": "Lideras la carrera {{foePips}} a {{myPips}} sin fichas sueltas al alcance de un golpe.",
         "running_race": "No hay contacto posible: es una carrera directa para sacar ({{myPips}} frente a {{foePips}} puntos)."
       }

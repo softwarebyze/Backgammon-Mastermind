@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Back game",
         "blitz": "Blitz",
-        "developing": "Developing",
+        "developing": "Opening",
         "holding": "Holding game",
         "priming": "Priming game",
         "running": "Running game"
@@ -181,8 +181,12 @@
         "blitz_blots": "There's {{blotCount}} blots in your home board, and you've already made {{homeMade}} home-board points.",
         "developing": "No prime, anchor, or attack on the board yet — the game is still taking shape.",
         "holding": "You hold an anchor on the {{point}} while trailing by {{pipGap}} pips.",
+        "holding_behind": "You trail by {{pipGap}} pips, so keep checkers back and wait for a shot.",
         "priming": "You've built a {{prime}}-point prime.",
         "priming_anchor": "You've built a {{prime}}-point prime with an anchor behind it.",
+        "priming_build": "You trail by {{pipGap}} pips, so block their back checkers instead of racing.",
+        "priming_trap": "You've made {{made}} of the 6 points from {{from}} to {{to}}, with {{trapped}} of their checkers stuck behind them.",
+        "running_ahead": "You lead the race {{myPips}} to {{foePips}} pips, so the race favors you.",
         "running_lead": "You lead the race {{foePips}} to {{myPips}} with no blots in hitting range.",
         "running_race": "No contact is possible — it's a straight race to bear off ({{myPips}} vs {{foePips}} pips)."
       }

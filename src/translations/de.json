@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Rückstandsspiel",
         "blitz": "Blitz",
-        "developing": "Aufbau",
+        "developing": "Eröffnung",
         "holding": "Haltespiel",
         "priming": "Prime",
         "running": "Rennspiel"
@@ -181,8 +181,12 @@
         "blitz_blots": "Es sind {{blotCount}} einzelne Figuren in deinem Heimmbrett, und du hast bereits {{homeMade}} Punkte im Heimmbrett gemacht.",
         "developing": "Noch keine Prime, kein Anker und kein Angriff auf dem Brett — das Spiel formt sich erst.",
         "holding": "Du hältst einen Anker auf {{point}}, während du {{pipGap}} Punkte zurückliegst.",
+        "holding_behind": "Du liegst {{pipGap}} Pips zurück, also halte Steine hinten und warte auf einen Schuss.",
         "priming": "Du hast eine Prime über {{prime}} Punkte aufgebaut.",
         "priming_anchor": "Du hast eine Prime über {{prime}} Punkte mit einem Anker dahinter aufgebaut.",
+        "priming_build": "Du liegst {{pipGap}} Pips zurück, also blockiere die hinteren Steine des Gegners, statt zu laufen.",
+        "priming_trap": "Du hast {{made}} der 6 Punkte von {{from}} bis {{to}} gebaut, mit {{trapped}} gegnerischen Steinen dahinter.",
+        "running_ahead": "Du führst im Rennen mit {{myPips}} zu {{foePips}} Pips, das Rennen spricht für dich.",
         "running_lead": "Du führst im Rennen {{foePips}} zu {{myPips}}, ohne einzelne Figuren in Reichweite.",
         "running_race": "Kein Kontakt möglich — ein reines Rennen zum Auswerfen ({{myPips}} zu {{foePips}} Punkte)."
       }

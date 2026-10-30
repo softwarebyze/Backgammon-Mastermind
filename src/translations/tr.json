@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Geride oyun",
         "blitz": "Blitz",
-        "developing": "Geliştirme",
+        "developing": "Açılış",
         "holding": "Tutma oyunu",
         "priming": "Duvar",
         "running": "Yarış"
@@ -181,8 +181,12 @@
         "blitz_blots": "Evinde {{blotCount}} tek başına duran taş var ve zaten {{homeMade}} puan yaptın.",
         "developing": "Tahtada henüz duvar, çapa ya da saldırı yok — oyun daha şekilleniyor.",
         "holding": "{{point}} üzerinde bir çapa tutuyorsun ve {{pipGap}} puan geridesin.",
+        "holding_behind": "{{pipGap}} pip gerisindesin, bu yüzden pulları geride tut ve vuruş fırsatı bekle.",
         "priming": "{{prime}} puanlık bir duvar kurdun.",
         "priming_anchor": "{{prime}} puanlık bir duvar kurdun ve arkasında da bir çapa var.",
+        "priming_build": "{{pipGap}} pip gerisindesin, bu yüzden yarışmak yerine rakibin arka pullarını blokla.",
+        "priming_trap": "{{from}} ile {{to}} arasındaki 6 puanın {{made}} tanesini yaptın ve rakibin {{trapped}} pulu arkada sıkıştı.",
+        "running_ahead": "Yarışta {{myPips}}'e {{foePips}} pip öndesin, bu yüzden yarış senin lehine.",
         "running_lead": "Yarışta {{foePips}}-{{myPips}} ile öndesin ve vurulabilir menzilde tek başına duran taş yok.",
         "running_race": "Temas mümkün değil — doğrudan taş çıkarma yarışı ({{myPips}} karşı {{foePips}} puan)."
       }

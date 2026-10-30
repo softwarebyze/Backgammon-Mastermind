@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Gra wyczekująca",
         "blitz": "Blitz",
-        "developing": "Rozwój",
+        "developing": "Otwarcie",
         "holding": "Gra blokująca",
         "priming": "Mur",
         "running": "Wyścig"
@@ -181,8 +181,12 @@
         "blitz_blots": "Masz {{blotCount}} samotnych figur w domu, a zrobiłeś już {{homeMade}} punktów.",
         "developing": "Na szachownicy nie ma jeszcze muru, kotwicy ani ataku — gra dopiero się kształtuje.",
         "holding": "Trzymasz kotwicę na {{point}}, będąc {{pipGap}} punktami do tyłu.",
+        "holding_behind": "Przegrywasz o {{pipGap}} pipsów, więc zostaw piony z tyłu i czekaj na strzał.",
         "priming": "Zbudowałeś mur z {{prime}} punktów.",
         "priming_anchor": "Zbudowałeś mur z {{prime}} punktów z kotwicą za nim.",
+        "priming_build": "Przegrywasz o {{pipGap}} pipsów, więc blokuj tylne piony rywala zamiast się ścigać.",
+        "priming_trap": "Masz {{made}} z 6 punktów od {{from}} do {{to}}, a za nimi stoi {{trapped}} pionów rywala.",
+        "running_ahead": "Prowadzisz w wyścigu {{myPips}} do {{foePips}} pipsów, więc wyścig ci sprzyja.",
         "running_lead": "Prowadzisz w wyścigu {{foePips}} do {{myPips}}, bez samotnych figur w zasięgu uderzenia.",
         "running_race": "Kontakt jest niemożliwy — to prosty wyścig do wyprowadzenia figur ({{myPips}} do {{foePips}} punktów)."
       }

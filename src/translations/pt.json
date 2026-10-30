@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Jogo de espera",
         "blitz": "Blitz",
-        "developing": "Desenvolvimento",
+        "developing": "Abertura",
         "holding": "Jogo de contenção",
         "priming": "Muralha",
         "running": "Corrida"
@@ -181,8 +181,12 @@
         "blitz_blots": "Há {{blotCount}} peças soltas na sua base e você já fez {{homeMade}} pontos na base.",
         "developing": "Ainda não há muralha, âncora ou ataque no tabuleiro — o jogo ainda está a tomar forma.",
         "holding": "Segura uma âncora no {{point}} enquanto está {{pipGap}} pontos atrás.",
+        "holding_behind": "Você está {{pipGap}} pips atrás, então mantenha peças atrás e espere uma chance de bater.",
         "priming": "Você construiu uma muralha de {{prime}} pontos.",
         "priming_anchor": "Você construiu uma muralha de {{prime}} pontos com uma âncora atrás.",
+        "priming_build": "Você está {{pipGap}} pips atrás, então bloqueie as peças de trás dele em vez de correr.",
+        "priming_trap": "Você fez {{made}} dos 6 pontos do {{from}} ao {{to}}, com {{trapped}} peças dele presas atrás.",
+        "running_ahead": "Você lidera a corrida por {{myPips}} a {{foePips}} pips, então a corrida te favorece.",
         "running_lead": "Você lidera a corrida {{foePips}} a {{myPips}} sem peças soltas ao alcance de um golpe.",
         "running_race": "Não há contato possível — é uma corrida direta para tirar ({{myPips}} contra {{foePips}} pontos)."
       }

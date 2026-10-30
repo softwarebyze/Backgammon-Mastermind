@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Achterstandspartij",
         "blitz": "Blitz",
-        "developing": "Opbouw",
+        "developing": "Opening",
         "holding": "Houdspel",
         "priming": "Muur",
         "running": "Race"
@@ -181,8 +181,12 @@
         "blitz_blots": "Er zijn {{blotCount}} losse stenen op je thuisbord en je hebt al {{homeMade}} punten op je thuisbord gemaakt.",
         "developing": "Nog geen muur, anker of aanval op het bord — het spel vormt zich nog.",
         "holding": "Je houdt een anker op {{point}} terwijl je {{pipGap}} punten achterloopt.",
+        "holding_behind": "Je staat {{pipGap}} pips achter, dus houd stenen achter en wacht op een schot.",
         "priming": "Je hebt een muur van {{prime}} punten gebouwd.",
         "priming_anchor": "Je hebt een muur van {{prime}} punten gebouwd met er een anker achter.",
+        "priming_build": "Je staat {{pipGap}} pips achter, dus blokkeer zijn achterste stenen in plaats van te racen.",
+        "priming_trap": "Je hebt {{made}} van de 6 punten van {{from}} tot {{to}} gemaakt, met {{trapped}} van zijn stenen daarachter vast.",
+        "running_ahead": "Je leidt de race met {{myPips}} tegen {{foePips}} pips, dus de race is in je voordeel.",
         "running_lead": "Je leidt de race {{foePips}} tegen {{myPips}} met geen losse stenen binnen slagafstand.",
         "running_race": "Geen contact mogelijk — het is een rechte race om af te spelen ({{myPips}} tegen {{foePips}} punten)."
       }

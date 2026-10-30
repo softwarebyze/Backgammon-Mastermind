@@ -159,7 +159,7 @@
       "label": {
         "backgame": "백 게임",
         "blitz": "블리츠",
-        "developing": "발전",
+        "developing": "오프닝",
         "holding": "홀딩 게임",
         "priming": "프라임(벽)",
         "running": "레이스"
@@ -181,8 +181,12 @@
         "blitz_blots": "홈 보드에 홀로 있는 말이 {{blotCount}}개 있고 이미 {{homeMade}}포인트를 만들었습니다.",
         "developing": "아직 벽도 앵커도 공격도 없습니다 — 아직 게임이 정해지는 단계입니다.",
         "holding": "{{point}}에 앵커를 잡고 있지만 {{pipGap}}포인트 뒤처져 있습니다.",
+        "holding_behind": "{{pipGap}} 핍 뒤처져 있으니 말을 뒤에 남겨 두고 칠 기회를 기다리세요.",
         "priming": "{{prime}}포인트짜리 벽을 만들었습니다.",
         "priming_anchor": "{{prime}}포인트짜리 벽을 만들고 그 뒤에 앵커까지 만들었습니다.",
+        "priming_build": "{{pipGap}} 핍 뒤처져 있으니 레이스 대신 상대의 뒤쪽 말을 막으세요.",
+        "priming_trap": "{{from}}부터 {{to}}까지 6개 포인트 중 {{made}}개를 만들었고, 상대 말 {{trapped}}개가 그 뒤에 갇혀 있습니다.",
+        "running_ahead": "레이스에서 {{myPips}} 대 {{foePips}} 핍으로 앞서 있으니 레이스가 유리합니다.",
         "running_lead": "레이스에서 {{foePips}} 대 {{myPips}}로 앞서고 있고 잡을 수 있는 거리에 홀린 말이 없습니다.",
         "running_race": "접촉은 불가능합니다 — 그대로 내보내기만 하면 되는 레이스입니다 ({{myPips}} 대 {{foePips}}포인트)."
       }

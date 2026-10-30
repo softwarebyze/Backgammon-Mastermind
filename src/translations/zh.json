@@ -159,7 +159,7 @@
       "label": {
         "backgame": "后手局",
         "blitz": "全攻",
-        "developing": "布局",
+        "developing": "开局",
         "holding": "防守局",
         "priming": "Prime（墙）",
         "running": "竞速"
@@ -181,8 +181,12 @@
         "blitz_blots": "你的底仓还有 {{blotCount}} 个孤子，并且已经做好了 {{homeMade}} 个点。",
         "developing": "棋盘上还看不出墙、锚点或进攻——局面仍在成形。",
         "holding": "你在 {{point}} 守着锚点，但落后 {{pipGap}} 分。",
+        "holding_behind": "你落后{{pipGap}}点，所以把棋子留在后面，等待打击机会。",
         "priming": "你建成了一道 {{prime}} 点的墙。",
         "priming_anchor": "你建成了一道 {{prime}} 点的墙，后面还有锚点保护。",
+        "priming_build": "你落后{{pipGap}}点，所以不要跑，去封锁对方后面的棋子。",
+        "priming_trap": "你在{{from}}到{{to}}这6个点中做成了{{made}}个，对方有{{trapped}}个棋子被困在后面。",
+        "running_ahead": "你在比赛中以{{myPips}}比{{foePips}}点领先，所以跑步对你有利。",
         "running_lead": "竞速中你以 {{foePips}} 比 {{myPips}} 领先，且没有棋子落在对方可打的范围内。",
         "running_race": "无法接触——这是一场纯粹比谁先收完的竞速（{{myPips}} 对 {{foePips}} 分）。"
       }

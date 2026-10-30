@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Jeu d'attente",
         "blitz": "Blitz",
-        "developing": "Développement",
+        "developing": "Ouverture",
         "holding": "Jeu de blocage",
         "priming": "Muraille",
         "running": "Course"
@@ -181,8 +181,12 @@
         "blitz_blots": "Vous avez {{blotCount}} pions isolés dans votre maison et vous avez déjà fait {{homeMade}} points dans votre maison.",
         "developing": "Pas encore de muraille, d'ancre ni d'attaque sur le board — la partie se façonne.",
         "holding": "Vous tenez une ancre sur le {{point}} avec {{pipGap}} points de retard.",
+        "holding_behind": "Vous êtes en retard de {{pipGap}} pips : gardez des pions en arrière et attendez un tir.",
         "priming": "Vous avez construit une muraille de {{prime}} points.",
         "priming_anchor": "Vous avez construit une muraille de {{prime}} points avec une ancre derrière.",
+        "priming_build": "Vous êtes en retard de {{pipGap}} pips : bloquez ses pions arrière plutôt que de courir.",
+        "priming_trap": "Vous avez fait {{made}} des 6 cases de {{from}} à {{to}}, avec {{trapped}} de ses pions bloqués derrière.",
+        "running_ahead": "Vous menez la course {{myPips}} à {{foePips}} pips, la course vous est favorable.",
         "running_lead": "Vous menez la course {{foePips}} à {{myPips}} sans pion isolé à portée de frappe.",
         "running_race": "Aucun contact possible — c'est une course directe pour sortir ({{myPips}} contre {{foePips}} points)."
       }

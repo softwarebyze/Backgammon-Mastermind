@@ -159,7 +159,7 @@
       "label": {
         "backgame": "バックゲーム",
         "blitz": "ブリッツ",
-        "developing": "発展",
+        "developing": "序盤",
         "holding": "ホールディング",
         "priming": "Prim（壁）",
         "running": "レース"
@@ -181,8 +181,12 @@
         "blitz_blots": "ホームボードに孤立した駒が {{blotCount}} 個あり、すでに {{homeMade}} ポイント作られています。",
         "developing": "まだ Prim もアンカーも攻撃もありません — まだ形づく段階です。",
         "holding": "{{point}} にアンカーを保持しつつ、{{pipGap}} ポイント遅れています。",
+        "holding_behind": "{{pipGap}}ピップ遅れているので、駒を後方に残してヒットのチャンスを待ちましょう。",
         "priming": "{{prime}} ポイントの Prim（壁）を完成させました。",
         "priming_anchor": "{{prime}} ポイントの Prim（壁）を完成させ、その後ろにアンカーまで作りました。",
+        "priming_build": "{{pipGap}}ピップ遅れているので、レースせずに相手の後方の駒をブロックしましょう。",
+        "priming_trap": "{{from}}から{{to}}の6ポイント中{{made}}ポイントを作り、相手の駒{{trapped}}個がその後ろに閉じ込められています。",
+        "running_ahead": "レースは{{myPips}}対{{foePips}}ピップでリードしているので、レースが有利です。",
         "running_lead": "レースは {{foePips}} 対 {{myPips}} でリードしており、叩ける範囲に孤立した駒はありません。",
         "running_race": "接触は不可能です — そのまま持ち切るレースです（{{myPips}} 対 {{foePips}} ポイント）。"
       }

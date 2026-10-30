@@ -23,8 +23,12 @@ type StrategyReasonKey
     | 'blitz_blots'
     | 'developing'
     | 'holding'
+    | 'holding_behind'
     | 'priming'
     | 'priming_anchor'
+    | 'priming_build'
+    | 'priming_trap'
+    | 'running_ahead'
     | 'running_lead'
     | 'running_race';
 
@@ -87,6 +91,33 @@ function longestPrime(made: number[]): number {
   }
   return best;
 }
+
+/**
+ * The six-point stretch where `player` has made the most points, and how many
+ * enemy checkers still sit behind it (the bar included). Gaps are allowed:
+ * five points out of six block nearly as well as a full prime.
+ */
+function bestBlock(state: GameState, player: Player, made: number[]) {
+  const foe = opponent(player);
+  let best = { from: 1, to: 6, count: 0, trapped: 0 };
+  for (let from = 1; from <= 19; from++) {
+    const to = from + 5;
+    const count = made.filter(n => n >= from && n <= to).length;
+    // White blocks Black, who moves up the board; Black blocks White, who moves down.
+    let trapped = state.bar[foe];
+    for (let n = 1; n <= 24; n++) {
+      const point = state.points[n];
+      if (point.player === foe && (player === 'white' ? n < from : n > to))
+        trapped += point.count;
+    }
+    if (count > best.count || (count === best.count && trapped > best.trapped))
+      best = { from, to, count, trapped };
+  }
+  return best;
+}
+
+/** Both sides still near their starting pip count: the opening. */
+const OPENING_PIPS = 140;
 
 /**
  * Whether `player` has an exposed blot the opponent can reach: a blot of
@@ -158,8 +189,8 @@ function isPureRace(state: GameState): boolean {
 
 /**
  * Which of backgammon's five core strategies the position points to for
- * `player`, per backgammon.com's "5 Core Strategies". Falls back to
- * "Developing" for early/neutral positions — most games start there.
+ * `player`, per backgammon.com's "5 Core Strategies". "Developing" is not one
+ * of them: it only names the opening, before either side has a plan.
  */
 export function classifyStrategy(state: GameState, player: Player): StrategyInfo {
   const foe = opponent(player);
@@ -176,6 +207,7 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
   const homeMade = made.filter(n => inRange(n, [homeLo, homeHi]));
   const foeBlotsHome = blots(state, foe).filter(n => inRange(n, [homeLo, homeHi]));
   const prime = longestPrime(made);
+  const block = bestBlock(state, player, made);
 
   const pipLead = foePips > 0 ? (foePips - myPips) / foePips : 0;
   const pipDeficit = myPips > 0 ? (myPips - foePips) / myPips : 0;
@@ -198,6 +230,8 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
       params: { point1: deepAnchors[0], point2: deepAnchors[1], pipGap },
     };
   }
+  // Attack: hit loose checkers in your home board while it is strong enough
+  // that a hit checker struggles to come back in.
   else if ((foeBlotsHome.length >= 2 || state.bar[foe] > 0) && homeMade.length >= 2) {
     key = 'blitz';
     // The bar count and the blot count are each optional, and the blot count
@@ -217,12 +251,18 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
           : 'blitz_blots';
     reason = { message, params: { barCount, blotCount, homeMade: homeMade.length } };
   }
-  else if (prime >= 4 || (prime >= 3 && anchors.length >= 1)) {
+  // A prime only matters with enemy checkers behind it. Gaps are allowed:
+  // 4 of 6 points in front of them still trap.
+  else if (block.trapped >= 1 && (block.count >= 4 || (prime >= 3 && anchors.length >= 1))) {
     key = 'priming';
-    reason = {
-      message: anchors.length >= 1 ? 'priming_anchor' : 'priming',
-      params: { prime },
-    };
+    reason = prime >= 4 || block.count < 4
+      ? { message: anchors.length >= 1 ? 'priming_anchor' : 'priming', params: { prime } }
+      : { message: 'priming_trap', params: { made: block.count, from: block.from, to: block.to, trapped: block.trapped } };
+  }
+  // A single loose checker is worth attacking once your board is strong.
+  else if (foeBlotsHome.length === 1 && homeMade.length >= 3) {
+    key = 'blitz';
+    reason = { message: 'blitz_blot', params: { barCount: 0, blotCount: 1, homeMade: homeMade.length } };
   }
   else if (anchors.length >= 1 && pipDeficit > 0.03) {
     key = 'holding';
@@ -231,6 +271,22 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
   else if (pipLead >= 0.1 && !contactExposed(state, player)) {
     key = 'running';
     reason = { message: 'running_lead', params: { foePips, myPips } };
+  }
+  else if (myPips >= OPENING_PIPS && foePips >= OPENING_PIPS) {
+    // The opening: nothing has taken shape yet, so "developing" is fair.
+  }
+  // Past the opening, every position has one of the five plans.
+  else if (pipLead > 0) {
+    key = 'running';
+    reason = { message: 'running_ahead', params: { foePips, myPips } };
+  }
+  else if (block.count >= 2 && block.trapped >= 1) {
+    key = 'priming';
+    reason = { message: 'priming_build', params: { pipGap, trapped: block.trapped } };
+  }
+  else {
+    key = 'holding';
+    reason = { message: 'holding_behind', params: { pipGap } };
   }
 
   return { key, reason };

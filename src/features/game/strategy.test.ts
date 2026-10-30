@@ -87,11 +87,13 @@ describe('classifyStrategy', () => {
   });
 
   it('explains why: priming cites the prime length', () => {
+    // A prime needs something behind it: one black checker on the ace point.
     const state = stateWith([
       [3, 'white', 2],
       [4, 'white', 2],
       [5, 'white', 2],
       [6, 'white', 2],
+      [1, 'black', 2],
     ]);
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('priming');
@@ -226,8 +228,8 @@ describe('classifyStrategy pure race', () => {
       [24, 'black', 8],
     ]);
     expect(calculatePipCount(state, 'white')).toBeLessThan(calculatePipCount(state, 'black') * 0.9);
-    // Genuine contact, so this is not a running game despite the pip lead.
-    expect(classifyStrategy(state, 'white').key).not.toBe('running');
+    // Genuine contact: still a race lead, but never "no blots in hitting range".
+    expect(classifyStrategy(state, 'white').reason.message).not.toBe('running_lead');
   });
 
   it('calls a pure race for the trailer too', () => {
@@ -268,5 +270,56 @@ describe('classifyStrategy pure race', () => {
     const info = classifyStrategy(state, 'white');
     expect(info.key).toBe('running');
     expect(whyText(info)).toMatch(/straight race/);
+  });
+});
+
+describe('past the opening', () => {
+  // A real midgame from play: White has 2, 3, 4, 6 and 7 with Black's ace-point
+  // anchor behind; Black has 4 home points and White's straggler on its 21.
+  const midgame = () => stateWith([
+    [2, 'white', 3],
+    [3, 'white', 3],
+    [4, 'white', 2],
+    [6, 'white', 3],
+    [7, 'white', 2],
+    [15, 'white', 1],
+    [21, 'white', 1],
+    [1, 'black', 2],
+    [20, 'black', 2],
+    [22, 'black', 4],
+    [23, 'black', 4],
+    [24, 'black', 3],
+  ]);
+
+  it('sees a broken prime with checkers trapped behind it as priming', () => {
+    const info = classifyStrategy(midgame(), 'white');
+    expect(info.key).toBe('priming');
+    expect(info.reason).toEqual({ message: 'priming_trap', params: { made: 5, from: 2, to: 7, trapped: 2 } });
+    expect(whyText(info)).toMatch(/5 of the 6 points from 2 to 7, with 2 of their checkers/);
+  });
+
+  it('attacks a single blot in a strong home board', () => {
+    const info = classifyStrategy(midgame(), 'black');
+    expect(info.key).toBe('blitz');
+    expect(info.reason.message).toBe('blitz_blot');
+  });
+
+  it('never falls back to developing once the opening is over', () => {
+    // Little structure on either side, well past the opening.
+    const state = stateWith([
+      [3, 'white', 3],
+      [5, 'white', 3],
+      [8, 'white', 4],
+      [10, 'white', 4],
+      [14, 'white', 1],
+      [11, 'black', 1],
+      [16, 'black', 4],
+      [19, 'black', 3],
+      [21, 'black', 4],
+      [22, 'black', 3],
+    ]);
+    expect(calculatePipCount(state, 'white')).toBeLessThan(140);
+    for (const side of ['white', 'black'] as const)
+      expect(classifyStrategy(state, side).key).not.toBe('developing');
   });
 });

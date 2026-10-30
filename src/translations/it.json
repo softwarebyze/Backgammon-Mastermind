@@ -159,7 +159,7 @@
       "label": {
         "backgame": "Gioco di attesa",
         "blitz": "Attacco totale",
-        "developing": "Sviluppo",
+        "developing": "Apertura",
         "holding": "Gioco di blocco",
         "priming": "Muro",
         "running": "Corsa"
@@ -181,8 +181,12 @@
         "blitz_blots": "Hai {{blotCount}} pedine singole nella tua base e hai già realizzato {{homeMade}} punti nella base.",
         "developing": "Ancora nessun muro, àncora o attacco sul tabellone — la partita si sta ancora plasmando.",
         "holding": "Tieni un'àncora sul {{point}} mentre sei in ritardo di {{pipGap}} punti.",
+        "holding_behind": "Sei indietro di {{pipGap}} pip, quindi tieni pedine indietro e aspetta un colpo.",
         "priming": "Hai costruito un muro di {{prime}} punti.",
         "priming_anchor": "Hai costruito un muro di {{prime}} punti con un'àncora dietro.",
+        "priming_build": "Sei indietro di {{pipGap}} pip, quindi blocca le sue pedine arretrate invece di correre.",
+        "priming_trap": "Hai fatto {{made}} dei 6 punti dal {{from}} al {{to}}, con {{trapped}} delle sue pedine bloccate dietro.",
+        "running_ahead": "Sei avanti nella corsa {{myPips}} a {{foePips}} pip, quindi la corsa ti favorisce.",
         "running_lead": "Guidi la corsa {{foePips}} a {{myPips}} senza pedine singole a portata di colpo.",
         "running_race": "Nessun contatto possibile — è una corsa diretta per uscire ({{myPips}} contro {{foePips}} punti)."
       }
