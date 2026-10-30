@@ -163,8 +163,8 @@ it('offers Crawford only while exactly one player is a point from winning', () =
   render(<PositionScreen />);
   for (let i = 0; i < 3; i++)
     fireEvent.press(screen.getByTestId('position-match-length-higher'));
-  // The rule is a match setting, on by default; 0-0 to 5 has no Crawford game.
-  expect(screen.getByTestId('position-crawford-rule')).toHaveProp('accessibilityState', expect.objectContaining({ selected: true }));
+  // One chip only, and 0-0 to 5 has no Crawford game.
+  expect(screen.queryByTestId('position-crawford-rule')).toBeNull();
   expect(screen.queryByTestId('position-crawford')).toBeNull();
   for (let i = 0; i < 4; i++)
     fireEvent.press(screen.getByTestId('position-score-white-higher'));
@@ -180,10 +180,6 @@ it('offers Crawford only while exactly one player is a point from winning', () =
   // Back to one side at match point: it is the Crawford game again.
   fireEvent.press(screen.getByTestId('position-score-black-lower'));
   expect(screen.getByTestId('position-crawford')).toHaveProp('accessibilityState', expect.objectContaining({ selected: true }));
-  // Without the rule for the match there is never a Crawford game.
-  fireEvent.press(screen.getByTestId('position-crawford-rule'));
-  expect(screen.getByTestId('position-crawford-rule')).toHaveProp('accessibilityState', expect.objectContaining({ selected: false }));
-  expect(screen.queryByTestId('position-crawford')).toBeNull();
 });
 
 it('puts a player on roll by tapping their strip', () => {

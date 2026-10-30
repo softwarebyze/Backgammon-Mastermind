@@ -35,9 +35,10 @@ function TargetCard({ length }: { length: number }) {
 /**
  * The match as a scoreboard: Black's card, the target, White's card, each
  * with ▲ / ▼. Money play has no score to keep, so only the target shows and
- * Jacoby / Beavers replace Crawford. "Crawford" is the rule for the whole
- * match; "Crawford game" (this game has no doubling) only appears when the
- * rule is on and exactly one side is a point from winning.
+ * Jacoby / Beavers replace Crawford. A position only needs to know whether
+ * this is the Crawford game (no doubling), so that is the one chip, shown
+ * when exactly one side is a point from winning. The match-wide Crawford
+ * rule only shapes later games, so it is chosen on Home when a match starts.
  */
 export function PositionScoreboard({ position: p, onChange }: { position: Position; onChange: (p: Position) => void }) {
   const c = p.context;
@@ -86,10 +87,7 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
                 </>
               )
             : (
-                <>
-                  <PositionAction compact chip label={translate('positions.crawford')} testID="position-crawford-rule" selected={rule} onPress={() => context({ crawfordRule: !rule, crawford: !rule && crawfordPossible(c) })} />
-                  {rule && (crawfordPossible(c) || c.crawford) && <PositionAction compact chip label={translate('positions.crawford_game')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />}
-                </>
+                (crawfordPossible(c) || c.crawford) && <PositionAction compact chip label={translate('positions.crawford_game')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />
               )}
         </View>
       </View>
