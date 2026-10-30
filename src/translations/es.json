@@ -256,7 +256,7 @@
       "move_progress": "Bien: {{done}} de {{needed}} movimientos completados."
     },
     "graduation": {
-      "body": "Conoces el objetivo, el tablero, cómo se convierte en trabajo, golpes y desmantelamiento. Un cheque rápido — luego tu primer juego real.",
+      "body": "Ya conoces el objetivo, el tablero, cómo funcionan los turnos, cómo golpear y sacar fichas, el recuento de pips y los principales planes de juego. Una comprobación rápida y luego tu primera partida de verdad.",
       "play_cta": "Juega tu primer juego",
       "quiz_done": "Lo vi. Hora de jugar.",
       "quiz_title": "Cheque rápido",
@@ -266,8 +266,8 @@
       "recap_3": "Hit Blolots → se sientan en el bar",
       "recap_4": "Suelte solo de tu tabla de inicio",
       "recap_5": "Los juegos comienzan con uno muere cada uno — más alto va primero (que se re-rolla)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
+      "recap_6": "Recuento de pips: el menor va delante en la carrera",
+      "recap_7": "Elige un plan: carrera, ataque, muralla o retención",
       "title": "Estás listo para jugar"
     },
     "hint": "Hint",

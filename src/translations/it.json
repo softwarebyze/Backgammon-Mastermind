@@ -256,7 +256,7 @@
       "move_progress": "Nizza —{{done}}di{{needed}}mosse fatte."
     },
     "graduation": {
-      "body": "Conosci l'obiettivo, il consiglio, come si trasforma il lavoro, il colpo e il movimento. Un controllo rapido — allora il tuo primo gioco reale.",
+      "body": "Conosci l’obiettivo, la tavola, come funziona il turno, come colpire e far uscire le pedine, il conteggio pip e i principali piani di gioco. Un rapido controllo, poi la tua prima vera partita.",
       "play_cta": "Gioca il tuo primo gioco",
       "quiz_done": "L'ho inchiodato. E' ora di giocare.",
       "quiz_title": "Controllo rapido",
@@ -266,8 +266,8 @@
       "recap_3": "Hit blots → siedono sul bar",
       "recap_4": "Togliti solo dalla tua home board",
       "recap_5": "I giochi iniziano con un morire ciascuno — più alto va prima (ties re-roll)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
+      "recap_6": "Conteggio pip: chi ha il numero più basso è avanti nella corsa",
+      "recap_7": "Scegli un piano: corsa, attacco, muro o blocco",
       "title": "Sei pronto a giocare"
     },
     "hint": "Salve.",

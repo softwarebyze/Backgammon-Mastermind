@@ -256,7 +256,7 @@
       "move_progress": "Bien — {{done}} mouvements sur {{needed}} effectués."
     },
     "graduation": {
-      "body": "Tu connais le but, le conseil, comment tourne le travail, frappe et recule. Une vérification rapide — puis votre premier vrai jeu.",
+      "body": "Tu connais le but, le plateau, le déroulement d’un tour, comment frapper et sortir tes pions, le compte de pips et les grands plans de jeu. Une petite vérification, puis ta première vraie partie.",
       "play_cta": "Jouez à votre premier jeu",
       "quiz_done": "J'ai tout gâché. Il est temps de jouer.",
       "quiz_title": "Vérification rapide",
@@ -266,8 +266,8 @@
       "recap_3": "Hit blots → ils s'assoient sur le bar",
       "recap_4": "Ne vous éloignez que de votre pensionnat",
       "recap_5": "Les jeux commencent avec une mort chacun — plus haut passe en premier (ties re-roll)",
-      "recap_6": "Pip count: the lower count is ahead in the race",
-      "recap_7": "Pick a plan: race, attack, prime or hold",
+      "recap_6": "Compte de pips : le plus bas mène la course",
+      "recap_7": "Choisis un plan : course, attaque, muraille ou blocage",
       "title": "Vous êtes prêt à jouer"
     },
     "hint": "Conseil",
