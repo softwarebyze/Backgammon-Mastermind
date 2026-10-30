@@ -57,8 +57,8 @@ export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
   const { preferences } = useGamePreferences();
-  const input = useGameInput();
   const {
+    state: liveState,
     moveAnimation,
     resetAnimation,
     moveLog,
@@ -71,8 +71,6 @@ export function GameScreen() {
     resumeAIScheduling,
     selectPoint,
   } = useGame();
-  // Tutor mode: background blunder-checking for human turns.
-  useTutorMode(input.state, moveLog);
   const guidance = useGuidance();
   const guidanceVerdictPending = useGuidanceVerdictPending();
   // A blunder prompt or a pending verdict pauses play. Hint sessions never
@@ -82,6 +80,17 @@ export function GameScreen() {
   // Only mention the review when the hold is noticeable — the verdict
   // usually lands before the player even notices the pause.
   const showReviewing = useDelayedTrue(guidanceVerdictPending, 600);
+  const review = useMoveReview({
+    liveState,
+    moveLog,
+    replayBaseline,
+  });
+  // Board input is off while a prompt or review owns the screen. The input
+  // hook drops anything tapped during an animation instead of replaying it
+  // under the overlay once the checker settles.
+  const input = useGameInput({ interactionEnabled: !review.isReviewing && !tutorPaused });
+  // Tutor mode: background blunder-checking for human turns.
+  useTutorMode(liveState, moveLog);
   // Leaving the screen drops any guidance session/hold with it.
   useEffect(() => {
     return () => {
@@ -102,11 +111,6 @@ export function GameScreen() {
     return () => clearHintArrows();
   }, [guidanceArrows]);
   const { leaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
-  const review = useMoveReview({
-    liveState: input.state,
-    moveLog,
-    replayBaseline,
-  });
 
   // Leave-home clears AI timers; same in-memory state won't re-trigger the effect — kick on focus.
   useFocusEffect(useCallback(() => {

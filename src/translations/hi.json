@@ -73,7 +73,7 @@
       "direction_overlay": "दिशा मार्गदर्शक",
       "direction_overlay_hint": "बोर्ड पर घोड़े की नाल जैसा रास्ता",
       "move_hints": "चाल संकेत",
-      "move_hints_hint": "जिन जगहों से चल सकते हैं उनके पास सुनहरा बिंदु",
+      "move_hints_hint": "उन पॉइंट के नंबर हाइलाइट करता है जहाँ से आप चाल चल सकते हैं",
       "point_numbers": "पॉइंट संख्याएँ",
       "point_numbers_hint": "बोर्ड पर 1–24 लेबल दिखाएँ",
       "section_automation": "स्वचालन",
@@ -105,6 +105,7 @@
       "viewing_hint": "समीक्षा चल रही है — खेलते रहने के लिए लाइव या लौटें दबाएँ"
     },
     "status": {
+      "bar_short": "बार",
       "black_wins": "काला जीता",
       "computer_wins": "कंप्यूटर जीता",
       "off_short": "बाहर",

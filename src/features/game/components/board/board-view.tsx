@@ -11,7 +11,7 @@ import {
   remapTapIndex,
   resolvePanOrigin,
 } from '@/features/game/hit-test-board';
-import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
+import { displayBarCountDuringAnimation, displayCommittedCount, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
@@ -170,6 +170,10 @@ export function BoardView({
     return getMovableSources(state);
   }, [showLiveHints, showHighlights, showMoveHints, state]);
 
+  // The bar keeps its hint while its checker is preselected: entering is the only move.
+  const barHinted = movableSources.has(BAR_POINT)
+    || (showLiveHints && showHighlights && showMoveHints && state.phase === 'moving' && state.selectedPoint === BAR_POINT);
+
   // Web hover: any checker the player could pick up, independent of the hint pref.
   const hoverSources = useMemo(() => {
     if (Platform.OS !== 'web' || !interactionEnabled || !showHighlights
@@ -262,7 +266,8 @@ export function BoardView({
         isTop={isTop}
         isSelected={selectedPoint === idx}
         isLegalTarget={legalTargets.has(idx) || (emphasisPoints?.has(idx) ?? false)}
-        isMovableSource={movableSources.has(idx)}
+        // With point numbers on, the rail carries the hint instead (#265).
+        isMovableSource={!showPointNumbers && movableSources.has(idx)}
         isHoverable={hoverSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
@@ -322,7 +327,7 @@ export function BoardView({
       ]}
     >
       {showPointNumbers && (
-        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} />
+        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} barLit={barHinted && state.currentPlayer === 'black'} />
       )}
 
       <View
@@ -351,12 +356,14 @@ export function BoardView({
           whiteCount={barWhite}
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
-          selectedPoint={emphasisBar && selectedPoint === null ? BAR_POINT : selectedPoint}
+          selectedPoint={selectedPoint}
+          emphasized={emphasisBar}
           onPressBar={() => dispatchFatFingerPress(BAR_POINT)}
           dragEnabled={barPanFrom !== null}
           panFrom={barPanFrom ?? BAR_POINT}
           isDragging={dragFrom !== null && dragFrom === (barPanFrom ?? BAR_POINT)}
           dragOverlay={dragOverlay}
+          showMoveHint={!showPointNumbers && movableSources.has(BAR_POINT)}
           onDragAttempt={onDragAttempt}
           onDragStart={handleDragStartAbs}
           onDragMove={handleDragMoveAbs}
@@ -377,8 +384,8 @@ export function BoardView({
         />
 
         <BearOffArea
-          whiteBorneOff={state.borneOff.white}
-          blackBorneOff={state.borneOff.black}
+          whiteBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'white', count: state.borneOff.white }, moveAnimation)}
+          blackBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'black', count: state.borneOff.black }, moveAnimation)}
           isLegalTarget={bearOffLegal && interactionEnabled}
           currentPlayer={state.currentPlayer}
           onPress={() => dispatchFatFingerPress(BEAR_OFF)}
@@ -412,7 +419,7 @@ export function BoardView({
       </View>
 
       {showPointNumbers && (
-        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} />
+        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} barLit={barHinted && state.currentPlayer === 'white'} />
       )}
     </View>
   );

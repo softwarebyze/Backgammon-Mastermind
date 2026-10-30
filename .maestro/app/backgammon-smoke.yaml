@@ -25,6 +25,8 @@ tags:
 - takeScreenshot: 02-game-board
 - assertVisible:
     id: strategy-line
+# Issue #308: no disclosure glyph after the strategy name.
+- assertNotVisible: '.*[▸◂].*'
 # Opening roll + ties + confirm-move (on by default): tap roll / confirm when shown
 - repeat:
     times: 8

@@ -2,11 +2,12 @@ import type { StackEditHandlers } from './use-stack-edit-gesture';
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { Player } from '@/lib/game/types';
 import { useId, useMemo } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+import { barStackLayout } from '@/features/game/bar-stack-layout';
 import { BAR_POINT } from '@/lib/game/constants';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
@@ -27,6 +28,8 @@ type Props = {
   blackCount: number;
   currentPlayer: Player;
   selectedPoint: number | null;
+  /** Outline the bar (a move passing through it, a lesson step) without selecting its checker. */
+  emphasized?: boolean;
   onPressBar: () => void;
   barWidth: number;
   boardHeight: number;
@@ -37,6 +40,8 @@ type Props = {
   panFrom?: number;
   isDragging?: boolean;
   dragOverlay?: DragOverlayRefs;
+  /** Ring the current player's front bar checker as a move hint. */
+  showMoveHint?: boolean;
 } & DragHandlers;
 
 function BarHinge({ width, height }: { width: number; height: number }) {
@@ -59,53 +64,59 @@ function BarHinge({ width, height }: { width: number; height: number }) {
   );
 }
 
+function BarOutline({ lit }: { lit: boolean }) {
+  return (
+    <View
+      pointerEvents="none"
+      style={{
+        ...StyleSheet.absoluteFill,
+        ...(lit ? { borderWidth: 2, borderColor: '#FFD700' } : { borderWidth: 1, borderColor: 'rgba(0,0,0,0.45)' }),
+        zIndex: 2,
+      }}
+    />
+  );
+}
+
 type StackProps = {
   count: number;
   player: Player;
-  justify: 'flex-start' | 'flex-end';
-  halfHeight: number;
+  boardHeight: number;
+  middleHeight: number;
   checkerSize: number;
   isDragging: boolean;
   isSelected?: boolean;
+  showMoveHint?: boolean;
 };
 
 function BarStack({
   count,
   player,
-  justify,
-  halfHeight,
+  boardHeight,
+  middleHeight,
   checkerSize,
   isDragging,
   isSelected = false,
+  showMoveHint = false,
 }: StackProps) {
-  const small = checkerSize * 0.88;
-  const visible = Math.min(count, 4);
+  const { size, centers } = barStackLayout({ boardHeight, middleHeight, checkerSize, count, player });
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
   }));
 
   if (count === 0) {
-    return <View style={{ height: halfHeight }} />;
+    return null;
   }
 
   return (
-    <View
-      style={{
-        height: halfHeight,
-        alignItems: 'center',
-        justifyContent: justify,
-        paddingVertical: 6,
-        gap: 2,
-      }}
-    >
-      {Array.from({ length: visible }, (_, i) => {
-        const isTopChecker = i === visible - 1;
-        const token = <CheckerToken player={player} size={small} showCount={isTopChecker && count > 4 ? count : undefined} isSelected={isTopChecker && isSelected} />;
+    <View pointerEvents="none" style={{ position: 'absolute', top: 0, width: '100%', height: boardHeight }}>
+      {centers.map((center, i) => {
+        const isTopChecker = i === centers.length - 1;
+        const token = <CheckerToken player={player} size={size} showCount={isTopChecker && count > centers.length ? count : undefined} isSelected={isTopChecker && isSelected} showMoveHint={isTopChecker && showMoveHint} />;
         if (!isTopChecker) {
-          return <View key={i}>{token}</View>;
+          return <View key={center} style={{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }}>{token}</View>;
         }
         return (
-          <Animated.View key={i} style={topDragStyle}>
+          <Animated.View key={center} style={[{ position: 'absolute', top: center - size / 2, alignSelf: 'center' }, topDragStyle]}>
             {token}
           </Animated.View>
         );
@@ -120,6 +131,7 @@ export function BarArea({
   blackCount,
   currentPlayer,
   selectedPoint,
+  emphasized = false,
   onPressBar,
   barWidth,
   boardHeight,
@@ -129,6 +141,7 @@ export function BarArea({
   panFrom = BAR_POINT,
   isDragging = false,
   dragOverlay,
+  showMoveHint = false,
   onDragAttempt,
   onDragStart,
   onDragMove,
@@ -153,7 +166,7 @@ export function BarArea({
 
   const pressable = (
     <Pressable
-      testID={stackEditor ? 'position-board-bar' : undefined}
+      testID={stackEditor ? 'position-board-bar' : 'board-bar'}
       accessibilityRole={stackEditor ? 'adjustable' : 'button'}
       accessibilityValue={stackEditor ? { min: 0, max: 15, now: currentPlayer === 'white' ? whiteCount : blackCount } : undefined}
       accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : undefined}
@@ -175,34 +188,35 @@ export function BarArea({
         width: barWidth,
         height: boardHeight,
         backgroundColor: BOARD_THEME.bar.surface,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
-        borderWidth: isBarSelected ? 2 : 0,
-        borderColor: isBarSelected ? '#FFD700' : 'rgba(0,0,0,0.45)',
         alignItems: 'center',
         opacity: pressed ? 0.8 : 1,
       })}
     >
+      <BarOutline lit={isBarSelected || emphasized} />
       <BarStack
         count={blackCount}
         player="black"
-        justify="flex-start"
-        halfHeight={halfHeight}
+        boardHeight={boardHeight}
+        middleHeight={middleHeight}
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'black'}
         isSelected={isBarSelected && currentPlayer === 'black'}
+        showMoveHint={showMoveHint && currentPlayer === 'black'}
       />
 
-      <BarHinge width={barWidth} height={middleHeight} />
+      <View pointerEvents="none" style={{ position: 'absolute', top: halfHeight }}>
+        <BarHinge width={barWidth} height={middleHeight} />
+      </View>
 
       <BarStack
         count={whiteCount}
         player="white"
-        justify="flex-end"
-        halfHeight={halfHeight}
+        boardHeight={boardHeight}
+        middleHeight={middleHeight}
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'white'}
         isSelected={isBarSelected && currentPlayer === 'white'}
+        showMoveHint={showMoveHint && currentPlayer === 'white'}
       />
     </Pressable>
   );

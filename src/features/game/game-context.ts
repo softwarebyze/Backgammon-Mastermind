@@ -18,6 +18,7 @@ export type GameContextType = {
   doPassTurn: () => void;
   selectPoint: (point: number | null) => void;
   doMove: (move: Move, opts?: AnimatedMoveOpts) => void;
+  getMoveState?: () => GameState | null;
   doMoveSequence: (moves: Move[], opts?: AnimatedMoveOpts) => void;
   doUndo: () => void;
   doRedo: () => void;
