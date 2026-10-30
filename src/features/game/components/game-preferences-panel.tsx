@@ -52,6 +52,7 @@ export function GamePreferencesPanel({
           hint={showHints ? translate('game.preferences.move_hints_hint') : undefined}
           value={preferences.showMoveHints}
           onChange={onShowMoveHintsChange}
+          testID="setting-toggle-move-hints"
         />
         <View style={styles.divider} />
         <SettingToggleRow

@@ -72,7 +72,7 @@
       "direction_overlay": "Guida di direzione",
       "direction_overlay_hint": "Percorso a ferro di cavallo sul tavoliere",
       "move_hints": "Suggerimenti di mossa",
-      "move_hints_hint": "Punto dorato accanto alle punte da cui puoi muovere",
+      "move_hints_hint": "Evidenzia i numeri delle punte da cui puoi muovere",
       "point_numbers": "Numeri delle punte",
       "point_numbers_hint": "Mostra le etichette 1–24 sul tavoliere",
       "section_automation": "Automazione",
@@ -104,6 +104,7 @@
       "viewing_hint": "Revisione — tocca Live o Torna per continuare a giocare"
     },
     "status": {
+      "bar_short": "Barra",
       "black_wins": "Vince il Nero",
       "computer_wins": "Vince il computer",
       "off_short": "fuori",
