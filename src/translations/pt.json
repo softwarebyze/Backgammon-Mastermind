@@ -256,7 +256,7 @@
       "move_progress": "Boa...{{done}}de{{needed}}movimentos feitos."
     },
     "graduation": {
-      "body": "Sabes qual é o objectivo, o tabuleiro, como é que se transforma no trabalho, bater e aguentar. Uma verificação rápida — então seu primeiro jogo real.",
+      "body": "Já conheces o objetivo, o tabuleiro, como funcionam os turnos, como bater e tirar as peças, a contagem de pips e os principais planos de jogo. Uma verificação rápida e depois a tua primeira partida a sério.",
       "play_cta": "Jogar o seu primeiro jogo",
       "quiz_done": "Acertei em cheio. Hora de jogar.",
       "quiz_title": "Verificação rápida",
@@ -266,6 +266,8 @@
       "recap_3": "Hit blots → eles sentam na barra",
       "recap_4": "Afaste-se apenas do seu tabuleiro",
       "recap_5": "Jogos começam com um dado cada — mais alto vai primeiro (ties re-roll)",
+      "recap_6": "Contagem de pips: a menor vai à frente na corrida",
+      "recap_7": "Escolhe um plano: corrida, ataque, muralha ou contenção",
       "title": "Você está pronto para jogar"
     },
     "hint": "Dica",

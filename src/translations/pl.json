@@ -256,7 +256,7 @@
       "move_progress": "Nieźle.{{done}}z{{needed}}Wykonane ruchy."
     },
     "graduation": {
-      "body": "Znasz cel, tablicę, jak się obraca, uderza i odjeżdża. Szybkie sprawdzenie - potem twoja pierwsza prawdziwa gra.",
+      "body": "Znasz już cel, planszę, przebieg tury, bicie, schodzenie z planszy, liczbę pipów i główne plany gry. Szybki sprawdzian, a potem twoja pierwsza prawdziwa partia.",
       "play_cta": "Zagraj w swoją pierwszą grę",
       "quiz_done": "Trafiłem. Czas na zabawę.",
       "quiz_title": "Szybka kontrola",
@@ -266,6 +266,8 @@
       "recap_3": "Hit blots → siadają na barze",
       "recap_4": "Wytrzymaj tylko w domu",
       "recap_5": "Gry zaczynają się od jednego umrzeć każdy - wyższy idzie pierwszy (krawaty re- roll)",
+      "recap_6": "Liczba pipów: niższa liczba prowadzi w wyścigu",
+      "recap_7": "Wybierz plan: wyścig, atak, mur lub blokada",
       "title": "Jesteś gotowy do gry."
     },
     "hint": "Podpowiedź",
