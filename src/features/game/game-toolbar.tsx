@@ -35,21 +35,9 @@ function matchTitle(match: NonNullable<GameState['match']>): string {
 }
 
 export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onReset, onHome, onSavePosition, match, compact = false }: Props) {
-  return (
+  const row = (
     <View testID="game-toolbar" style={[styles.row, compact && styles.rowCompact]}>
       <GameHomeButton onPress={onHome} />
-      {match
-        ? (
-            <Text
-              testID="match-score"
-              style={styles.title}
-              accessibilityLabel={`${matchTitle(match)}. ${translate('game.match.score', { white: match.score.white, black: match.score.black })}`}
-              accessibilityLiveRegion="polite"
-            >
-              {matchTitle(match)}
-            </Text>
-          )
-        : null}
       <GameHeaderActions
         canUndo={canUndo}
         canRedo={canRedo}
@@ -59,6 +47,21 @@ export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onRes
         onReset={onReset}
         onSavePosition={onSavePosition}
       />
+    </View>
+  );
+  if (!match)
+    return row;
+  return (
+    <View style={styles.stack}>
+      {row}
+      <Text
+        testID="match-score"
+        style={styles.title}
+        accessibilityLabel={`${matchTitle(match)}. ${translate('game.match.score', { white: match.score.white, black: match.score.black })}`}
+        accessibilityLiveRegion="polite"
+      >
+        {matchTitle(match)}
+      </Text>
     </View>
   );
 }
@@ -75,8 +78,10 @@ const styles = StyleSheet.create({
   rowCompact: {
     paddingHorizontal: 0,
   },
+  stack: {
+    width: '100%',
+  },
   title: {
-    flexShrink: 1,
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
     textAlign: 'center',
