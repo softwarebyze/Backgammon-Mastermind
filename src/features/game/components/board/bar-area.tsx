@@ -34,6 +34,8 @@ type Props = {
   panFrom?: number;
   isDragging?: boolean;
   dragOverlay?: DragOverlayRefs;
+  /** Ring the current player's front bar checker as a move hint. */
+  showMoveHint?: boolean;
 } & DragHandlers;
 
 function BarHinge({ width, height }: { width: number; height: number }) {
@@ -64,6 +66,7 @@ type StackProps = {
   checkerSize: number;
   isDragging: boolean;
   isSelected?: boolean;
+  showMoveHint?: boolean;
 };
 
 function BarStack({
@@ -74,6 +77,7 @@ function BarStack({
   checkerSize,
   isDragging,
   isSelected = false,
+  showMoveHint = false,
 }: StackProps) {
   const small = checkerSize * 0.88;
   const visible = Math.min(count, 4);
@@ -97,7 +101,7 @@ function BarStack({
     >
       {Array.from({ length: visible }, (_, i) => {
         const isTopChecker = i === visible - 1;
-        const token = <CheckerToken player={player} size={small} isSelected={isTopChecker && isSelected} />;
+        const token = <CheckerToken player={player} size={small} isSelected={isTopChecker && isSelected} showMoveHint={isTopChecker && showMoveHint} />;
         if (!isTopChecker) {
           return <View key={i}>{token}</View>;
         }
@@ -125,6 +129,7 @@ export function BarArea({
   panFrom = BAR_POINT,
   isDragging = false,
   dragOverlay,
+  showMoveHint = false,
   onDragAttempt,
   onDragStart,
   onDragMove,
@@ -183,6 +188,7 @@ export function BarArea({
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'black'}
         isSelected={isBarSelected && currentPlayer === 'black'}
+        showMoveHint={showMoveHint && currentPlayer === 'black'}
       />
 
       <BarHinge width={barWidth} height={middleHeight} />
@@ -195,6 +201,7 @@ export function BarArea({
         checkerSize={checkerSize}
         isDragging={isDragging && currentPlayer === 'white'}
         isSelected={isBarSelected && currentPlayer === 'white'}
+        showMoveHint={showMoveHint && currentPlayer === 'white'}
       />
     </Pressable>
   );
