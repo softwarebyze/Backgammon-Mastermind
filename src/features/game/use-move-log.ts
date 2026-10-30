@@ -107,7 +107,10 @@ export function useMoveLog(liveState: GameState | null) {
     commitLog([...logRef.current, entry]);
   }, [commitLog]);
 
+  const getMoveLog = useCallback(() => logRef.current, []);
+
   return {
+    getMoveLog,
     moveLog: resolvedLog,
     replayBaseline,
     recordMove,

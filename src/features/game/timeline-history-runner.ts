@@ -40,6 +40,8 @@ type HistoryAnimCtx = {
    * confirm bar leaves; hold arrows already update/clear from moveLog.
    */
   suppressHistoryPath?: boolean;
+  /** Live input commits history synchronously; review retains settle-time semantics. */
+  startCommittedFrame?: (frame: MoveAnimationFrame, before: GameState) => void;
 };
 
 /** vs-computer rewinds past the AI's moves as well as blocked rolls. */
@@ -133,6 +135,20 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
+  if (ctx.startCommittedFrame) {
+    const before = getLiveState();
+    const result = undoMany(timeline, passes + 1, { popLastMove, liveState: before });
+    if (result) {
+      setTimeline(result.nextTimeline);
+      setState(result.nextState);
+      ctx.setHistoryPath(ctx.suppressHistoryPath ? null : step.path);
+      if (before) {
+        ctx.startCommittedFrame({ ...step.frame, onFinish: () => {} }, before);
+      }
+    }
+    return true;
+  }
+
   const settle = ctx.armAnimationFinish(commitUndo);
   if (ctx.suppressHistoryPath) {
     ctx.setHistoryPath(null);
@@ -188,6 +204,20 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
     if (result) {
       setTimeline(result.nextTimeline);
       setState(result.nextState);
+    }
+    return true;
+  }
+
+  if (ctx.startCommittedFrame) {
+    const before = ctx.getLiveState();
+    const result = redoInstant(timeline, restoreMove);
+    if (result) {
+      setTimeline(result.nextTimeline);
+      setState(result.nextState);
+      ctx.setHistoryPath(step.path);
+      if (before) {
+        ctx.startCommittedFrame({ ...step.frame, onFinish: () => {} }, before);
+      }
     }
     return true;
   }

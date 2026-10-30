@@ -10,7 +10,7 @@ import {
   remapTapIndex,
   resolvePanOrigin,
 } from '@/features/game/hit-test-board';
-import { displayBarCountDuringAnimation, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
+import { displayBarCountDuringAnimation, displayCommittedCount, displayPointDuringAnimation, isBoardHighlightActive } from '@/features/game/move-animation';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
@@ -364,8 +364,8 @@ export function BoardView({
         />
 
         <BearOffArea
-          whiteBorneOff={state.borneOff.white}
-          blackBorneOff={state.borneOff.black}
+          whiteBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'white', count: state.borneOff.white }, moveAnimation)}
+          blackBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'black', count: state.borneOff.black }, moveAnimation)}
           isLegalTarget={bearOffLegal && interactionEnabled}
           currentPlayer={state.currentPlayer}
           onPress={() => dispatchFatFingerPress(BEAR_OFF)}

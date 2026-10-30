@@ -14,6 +14,9 @@ import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 export const CHECKER_MOVE_DURATION_MS = 620;
 
 export type CheckerSlide = {
+  hidden?: boolean;
+  consumesArrival?: boolean;
+  consumesArrivalOf?: string;
   from: number;
   to: number;
   player: Player;
@@ -24,6 +27,17 @@ export type CheckerSlide = {
 };
 
 export type MoveAnimationFrame = {
+  /** This mover has continued; its sibling capture may still occupy its slot. */
+  hidden?: boolean;
+  id?: number;
+  waitFor?: number;
+  waitForIds?: number[];
+  consumesArrival?: boolean;
+  consumesArrivalOf?: string;
+  inputBlocked?: boolean;
+  /** Logical state already includes these in-flight checkers. */
+  committed?: boolean;
+  parallel?: MoveAnimationFrame[];
   from: number;
   to: number;
   player: Player;
@@ -135,6 +149,10 @@ export function displayPointDuringAnimation(
   point: BoardPoint,
   animation: MoveAnimationFrame | null,
 ): BoardPoint {
+  if (animation?.committed) {
+    const count = displayCommittedCount({ point: pointIndex, player: point.player, count: point.count }, animation);
+    return { player: count > 0 ? point.player : null, count };
+  }
   if (animation?.capture?.from === pointIndex) {
     return { player: null, count: 0 };
   }
@@ -154,6 +172,9 @@ export function displayBarCountDuringAnimation(
   count: number,
   animation: MoveAnimationFrame | null,
 ): number {
+  if (animation?.committed) {
+    return displayCommittedCount({ point: BAR_POINT, player, count }, animation);
+  }
   if (animation?.from === BAR_POINT && animation.player === player) {
     return animation.sourceDisplayCount;
   }
@@ -165,11 +186,54 @@ export function displayBarCountDuringAnimation(
 
 /** Selection/legal tints are hidden while a checker slides to avoid a color snap at landing. */
 export function isBoardHighlightActive(animation: MoveAnimationFrame | null): boolean {
-  return animation === null;
+  return animation === null || animation.committed === true;
 }
 
 export function animationKey(frame: MoveAnimationFrame): string {
+  if (frame.id !== undefined) {
+    return `flight-${frame.id}`;
+  }
   const capture = frame.capture ? `-cap-${frame.capture.player}` : '';
   // Stack height distinguishes a second checker leaving the same point (6/4, 6/4).
   return `${frame.from}-${frame.to}-${frame.player}-${frame.sourceStackCount}${capture}`;
+}
+
+/** Hide arrivals until they land. Later departures cancel matching pending arrivals. */
+export function displayCommittedCount(
+  { point, player, count }: { point: number; player: Player | null; count: number },
+  animation: MoveAnimationFrame | null,
+): number {
+  if (!animation?.committed || player === null) {
+    return count;
+  }
+  const arrivals = new Set<string>();
+  const consumed = new Set<string>();
+  let legacyDepartures = 0;
+  for (const [index, frame] of (animation.parallel ?? [animation]).entries()) {
+    const slides = [
+      { slide: frame, key: `${frame.id ?? index}-mover` },
+      ...(frame.capture ? [{ slide: frame.capture, key: `${frame.id ?? index}-capture` }] : []),
+    ];
+    for (const { slide, key } of slides) {
+      if (slide.hidden || slide.player !== player) {
+        continue;
+      }
+      if (slide.to === point) {
+        arrivals.add(key);
+      }
+      if (slide.from === point && slide.consumesArrival) {
+        if (slide.consumesArrivalOf) {
+          consumed.add(slide.consumesArrivalOf);
+        }
+        else {
+          legacyDepartures++;
+        }
+      }
+    }
+  }
+  for (const key of consumed) {
+    arrivals.delete(key);
+  }
+  const arriving = Math.max(0, arrivals.size - legacyDepartures);
+  return Math.max(0, count - arriving);
 }
