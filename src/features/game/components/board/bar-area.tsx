@@ -25,6 +25,8 @@ type Props = {
   blackCount: number;
   currentPlayer: Player;
   selectedPoint: number | null;
+  /** Outline the bar (a move passing through it, a lesson step) without selecting its checker. */
+  emphasized?: boolean;
   onPressBar: () => void;
   barWidth: number;
   boardHeight: number;
@@ -108,6 +110,7 @@ export function BarArea({
   blackCount,
   currentPlayer,
   selectedPoint,
+  emphasized = false,
   onPressBar,
   barWidth,
   boardHeight,
@@ -172,8 +175,7 @@ export function BarArea({
           bottom: 0,
           left: 0,
           right: 0,
-          borderWidth: isBarSelected ? 2 : 1,
-          borderColor: isBarSelected ? '#FFD700' : 'rgba(0,0,0,0.45)',
+          ...(isBarSelected || emphasized ? { borderWidth: 2, borderColor: '#FFD700' } : { borderWidth: 1, borderColor: 'rgba(0,0,0,0.45)' }),
           zIndex: 2,
         }}
       />
