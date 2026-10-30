@@ -1,4 +1,5 @@
 import type { GameMode } from '@/lib/game';
+import Feather from '@expo/vector-icons/Feather';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
@@ -25,6 +26,7 @@ export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: 3
         ]}
       />
       <HomeMatchOptions format={format} length={length} crawford={crawford} onFormatChange={setFormat} onLengthChange={setLength} onCrawfordChange={setCrawford} />
+      {/* The only amber block on the screen: everything above feeds this. */}
       <HoverPressable
         testID="home-start-game"
         accessibilityRole="button"
@@ -36,15 +38,31 @@ export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: 3
             ? i18n.t('home.setup.start_match', { length, defaultValue: 'Start {{length}}-point match' })
             : i18n.t('home.setup.start_single', { defaultValue: 'Start game' })}
         </Text>
+        <Feather name="play" size={18} color={GAME_PALETTE.controlInk} accessible={false} />
       </HoverPressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  setup: { width: '100%', gap: 16 },
-  start: { minHeight: 52, padding: 14, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: GAME_PALETTE.accent },
-  startText: { color: GAME_PALETTE.bg, fontSize: 17, textAlign: 'center', ...interFont('bold') },
+  setup: { width: '100%', gap: 10 },
+  start: {
+    marginTop: 6,
+    minHeight: 56,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 14,
+    backgroundColor: GAME_PALETTE.control,
+    shadowColor: GAME_PALETTE.control,
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  startText: { color: GAME_PALETTE.controlInk, fontSize: 17, textAlign: 'center', ...interFont('bold') },
   hovered: { backgroundColor: GAME_PALETTE.controlHover },
-  pressed: { opacity: 0.8 },
+  pressed: { opacity: 0.85, transform: [{ scale: 0.99 }] },
 });

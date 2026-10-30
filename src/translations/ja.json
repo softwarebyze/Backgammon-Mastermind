@@ -295,7 +295,7 @@
       "start_single": "ゲーム開始"
     },
     "subtitle": "一手ずつ、ボードを極める",
-    "title": "BACKGAMMON\nMASTERMIND",
+    "title": "Backgammon Mastermind",
     "two_players": "2人プレイ",
     "two_players_a11y": "この端末で2人でプレイ",
     "two_players_sub": "同じ端末で交代プレイ",
@@ -326,7 +326,7 @@
       "title": "プレイする準備が整いました"
     },
     "hint": "ログイン",
-    "home_cta": "遊ぶことを学ぶ",
+    "home_cta": "遊び方を学ぶ",
     "home_cta_progress": "{{done}} / {{total}} レッスン完了",
     "home_cta_quiz": "クイックチェック左 — 再生",
     "home_cta_ready": "準備完了 — 実際のゲームを再生",

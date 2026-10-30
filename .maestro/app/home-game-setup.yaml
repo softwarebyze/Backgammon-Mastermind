@@ -51,10 +51,9 @@ tags:
 # The Crawford rule is chosen per match and is on by default.
 - scrollUntilVisible:
     element:
-      id: home-crawford-on
+      id: home-crawford
     direction: DOWN
-- assertVisible:
-    id: home-crawford-off
+- assertVisible: Crawford rule
 - scrollUntilVisible:
     element:
       id: home-start-game

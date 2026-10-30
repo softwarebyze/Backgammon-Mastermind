@@ -1,6 +1,12 @@
-import { View } from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 import { HomeSetupChoice } from '@/features/game/components/home-setup-choice';
+import { GAME_PALETTE } from '@/features/game/game-palette';
 import i18n, { translate } from '@/lib/i18n';
+import { interFont } from '@/lib/ui/fonts';
+import { HOME_INK } from './home-ink';
+
+/** React Native Web ignores thumbColor; it reads these instead. */
+const WEB_SWITCH_COLORS = { activeThumbColor: HOME_INK.ivory, activeTrackColor: GAME_PALETTE.accent } as object;
 
 export function HomeMatchOptions({ format, length, crawford, onFormatChange, onLengthChange, onCrawfordChange }: {
   format: 'single' | 'match';
@@ -12,7 +18,7 @@ export function HomeMatchOptions({ format, length, crawford, onFormatChange, onL
   onCrawfordChange: (crawford: boolean) => void;
 }) {
   return (
-    <View style={{ gap: 16 }}>
+    <View style={styles.group}>
       <HomeSetupChoice
         label={i18n.t('home.setup.format', { defaultValue: 'Play' })}
         value={format}
@@ -23,7 +29,7 @@ export function HomeMatchOptions({ format, length, crawford, onFormatChange, onL
         ]}
       />
       {format === 'match' && (
-        <>
+        <View style={styles.match}>
           <HomeSetupChoice
             label={i18n.t('home.setup.length', { defaultValue: 'Match length' })}
             value={length}
@@ -34,17 +40,29 @@ export function HomeMatchOptions({ format, length, crawford, onFormatChange, onL
               testID: `home-match-length-${value}`,
             }))}
           />
-          <HomeSetupChoice
-            label={translate('home.setup.crawford')}
-            value={crawford ? 'on' : 'off'}
-            onChange={value => onCrawfordChange(value === 'on')}
-            options={[
-              { value: 'on', label: translate('home.setup.crawford_on'), accessibilityLabel: `${translate('home.setup.crawford')}: ${translate('home.setup.crawford_on')}`, testID: 'home-crawford-on' },
-              { value: 'off', label: translate('home.setup.crawford_off'), accessibilityLabel: `${translate('home.setup.crawford')}: ${translate('home.setup.crawford_off')}`, testID: 'home-crawford-off' },
-            ]}
-          />
-        </>
+          <View style={styles.switchRow}>
+            <Text style={styles.switchLabel}>{translate('home.setup.crawford')}</Text>
+            <Switch
+              testID="home-crawford"
+              accessibilityLabel={translate('home.setup.crawford')}
+              value={crawford}
+              onValueChange={onCrawfordChange}
+              trackColor={{ false: GAME_PALETTE.surface, true: GAME_PALETTE.accent }}
+              thumbColor={HOME_INK.ivory}
+              ios_backgroundColor={GAME_PALETTE.surface}
+              {...WEB_SWITCH_COLORS}
+            />
+          </View>
+        </View>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  group: { gap: 10 },
+  // Match settings sit in a quieter inset under the format choice.
+  match: { gap: 10, paddingLeft: 12, borderLeftWidth: 2, borderLeftColor: HOME_INK.hairline },
+  switchRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+  switchLabel: { flex: 1, color: HOME_INK.ivory, fontSize: 15, ...interFont('medium') },
+});

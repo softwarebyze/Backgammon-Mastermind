@@ -275,7 +275,7 @@
     "recovery_body": "The last save was damaged. You can start a new game — home still works.",
     "recovery_dismiss": "Dismiss",
     "recovery_title": "Saved game couldn't be restored",
-    "resume": "Resume Game",
+    "resume": "Resume game",
     "resume_a11y": "Resume saved game",
     "resume_none": "No saved game to resume",
     "resume_sub": "Continue where you left off",
@@ -295,7 +295,7 @@
       "start_single": "Start game"
     },
     "subtitle": "Master the board — one move at a time",
-    "title": "BACKGAMMON\nMASTERMIND",
+    "title": "Backgammon Mastermind",
     "two_players": "2 Players",
     "two_players_a11y": "Play with two players locally",
     "two_players_sub": "Pass & play locally",

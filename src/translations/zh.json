@@ -295,7 +295,7 @@
       "start_single": "开始游戏"
     },
     "subtitle": "步步为营，掌控棋盘",
-    "title": "BACKGAMMON\nMASTERMIND",
+    "title": "Backgammon Mastermind",
     "two_players": "双人对战",
     "two_players_a11y": "在本设备上双人游玩",
     "two_players_sub": "同一设备轮流游玩",
@@ -326,7 +326,7 @@
       "title": "你准备好玩了"
     },
     "hint": "提示",
-    "home_cta": "学会演奏",
+    "home_cta": "学习玩法",
     "home_cta_progress": "{{done}} / {{total}} 课已完成",
     "home_cta_quiz": "快速检查左边——然后播放",
     "home_cta_ready": "你准备好了,玩个真正的游戏",
