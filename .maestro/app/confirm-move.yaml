@@ -15,10 +15,7 @@ tags:
       id: developer-json-input
     direction: DOWN
     timeout: 60000
-- longPressOn:
-    id: developer-json-input
-- tapOn: (?i)select all
-- eraseText: 1
+- runFlow: ../utils/clear-developer-json.yaml
 - inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
 - hideKeyboard
 - tapOn:

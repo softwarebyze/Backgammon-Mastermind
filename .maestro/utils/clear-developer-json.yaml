@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+# Empty the Developer JSON field. Tapping can put the cursor at the start,
+# where backspace clears nothing, so select all instead. The emulator does not
+# always show the text menu on the first long press, so press again until it does.
+- repeat:
+    while:
+      notVisible: (?i)select all
+    times: 4
+    commands:
+      - longPressOn:
+          id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
