@@ -26,7 +26,10 @@ tags:
     element:
       id: home-start-game
     direction: DOWN
-- assertVisible: Start 7-point match
+# iOS reads a button as one accessibility label, so match it by id and prefix.
+- assertVisible:
+    id: home-start-game
+    text: 'Start 7-point match.*'
 - takeScreenshot: match-seven-ios-01-setup
 - tapOn:
     id: home-start-game
@@ -34,7 +37,9 @@ tags:
     visible:
       id: match-score
     timeout: 45000
-- assertVisible: Match to 7 · Game 1
+- assertVisible:
+    id: match-score
+    text: 'Match to 7 · Game 1.*'
 - takeScreenshot: match-seven-ios-02-started
 - stopApp
 - launchApp:
@@ -46,6 +51,8 @@ tags:
 - tapOn:
     id: resume-game-button
 - extendedWaitUntil:
-    visible: Match to 7 · Game 1
+    visible:
+      id: match-score
+      text: 'Match to 7 · Game 1.*'
     timeout: 30000
 - takeScreenshot: match-seven-ios-03-resumed

@@ -23,7 +23,8 @@ it('never cuts a stack taller than the point can draw on a plain press', () => {
   // A press near the base of the 6-point (a bottom point) derives a small count.
   act(() => result.current.onStart(6, dims.pointHeight - dims.checkerSize));
   act(() => result.current.onEnd(6, true));
-  expect(onChange.mock.lastCall![0].points[6]).toEqual({ player: 'white', count: 12 });
+  // The tap changes nothing: the 12-checker stack stays whole.
+  expect(onChange).not.toHaveBeenCalled();
 });
 
 it('still sizes an ordinary stack to the press', () => {
@@ -31,4 +32,16 @@ it('still sizes an ordinary stack to the press', () => {
   const { result } = renderHook(() => usePositionStackEditor({ position: tallStack(), color: 'white', location: null, dimensions: dims, onLocation: jest.fn(), onChange, onBlocked: jest.fn() }));
   act(() => result.current.onStart(8, dims.pointHeight - dims.checkerSize / 2));
   expect(onChange.mock.lastCall![0].points[8]).toEqual({ player: 'white', count: 1 });
+});
+
+it('sizes a tall stack from the press once the finger moves', () => {
+  const onChange = jest.fn();
+  const { result } = renderHook(() => usePositionStackEditor({ position: tallStack(), color: 'white', location: null, dimensions: dims, onLocation: jest.fn(), onChange, onBlocked: jest.fn() }));
+  act(() => result.current.onStart(6, dims.pointHeight - dims.checkerSize));
+  act(() => result.current.onDelta(6, 0));
+  const pressed = onChange.mock.lastCall![0].points[6].count;
+  expect(pressed).toBeLessThan(12);
+  // Dragging on from the press removes more, down to an empty point.
+  act(() => result.current.onEnd(6, false, 15));
+  expect(onChange.mock.lastCall![0].points[6].count).toBe(0);
 });

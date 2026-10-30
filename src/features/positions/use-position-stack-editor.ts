@@ -7,7 +7,18 @@ import { barStackLayout, MAX_BAR_VISIBLE } from '@/features/game/bar-stack-layou
 import { hapticLight } from '@/lib/haptics';
 import { setPositionStack, stackDragCount, stackPressCount } from '@/lib/positions/set-stack';
 
-type Drag = { rollback: Position; position: Position; location: PositionLocation; color: Player; count: number; offset: number; top: boolean; notified: boolean };
+type Drag = {
+  rollback: Position;
+  position: Position;
+  location: PositionLocation;
+  color: Player;
+  count: number;
+  offset: number;
+  top: boolean;
+  notified: boolean;
+  /** A press on a stack taller than the point draws: applied only once the finger moves. */
+  pending?: number;
+};
 
 export function usePositionStackEditor(props: {
   position: Position;
@@ -66,26 +77,40 @@ export function usePositionStackEditor(props: {
       }
       return next;
     };
-    const move = (start: Drag, steps: number) => apply(start, stackDragCount(start.count, steps, start.top), start.count + (start.top ? steps : -steps));
+    const settle = (start: Drag, point: number, count: number) => {
+      const next = apply(start, count);
+      start.count = point === 0 ? next.bar[start.color] : next.points[point]!.player === start.color ? next.points[point]!.count : 0;
+    };
+    const move = (start: Drag, point: number, steps: number) => {
+      // A tall stack only takes the pressed height once the finger moves, so a
+      // plain tap leaves it whole while a drag still sizes it from the press.
+      if (start.pending !== undefined) {
+        settle(start, point, start.pending);
+        start.pending = undefined;
+      }
+      apply(start, stackDragCount(start.count, steps, start.top), start.count + (start.top ? steps : -steps));
+    };
     return {
       onStart: (point, y) => {
         const start = snapshot(point, y);
         drag.current = start;
         latest.current.onBlocked(null);
         latest.current.onLocation(start.location);
-        const count = pressCount(start, { point, y }, latest.current.dimensions);
-        const next = apply(start, count);
-        start.count = point === 0 ? next.bar[start.color] : next.points[point]!.player === start.color ? next.points[point]!.count : 0;
+        const { count, tall } = pressCount(start, { point, y }, latest.current.dimensions);
+        if (tall)
+          start.pending = count;
+        else
+          settle(start, point, count);
       },
-      onDelta: (_point, steps) => {
+      onDelta: (point, steps) => {
         const start = drag.current;
         if (start)
-          move(start, steps);
+          move(start, point, steps);
       },
-      onEnd: (_point, tap, steps) => {
+      onEnd: (point, tap, steps) => {
         if (drag.current && !tap && steps !== undefined) {
           const start = drag.current;
-          move(start, steps);
+          move(start, point, steps);
         }
         drag.current = null;
       },
@@ -107,18 +132,15 @@ export function usePositionStackEditor(props: {
 }
 
 /**
- * How many checkers a press at `y` asks for. A press reaches only as far as
- * the point or bar draws checkers, so it never cuts a taller stack down;
- * dragging along it still does.
+ * How many checkers a press at `y` asks for, and whether the stack is taller
+ * than the point or bar can draw (then the press waits for a drag).
  */
-function pressCount({ count: current, color, top }: Pick<Drag, 'count' | 'color' | 'top'>, { point, y }: { point: number; y: number }, d: BoardDimensions): number {
+function pressCount({ count: current, color, top }: Pick<Drag, 'count' | 'color' | 'top'>, { point, y }: { point: number; y: number }, d: BoardDimensions): { count: number; tall: boolean } {
   if (point === 0) {
     const { size, centers } = barStackLayout({ ...d, count: MAX_BAR_VISIBLE, player: color });
     const hingeEdge = color === 'black' ? (d.boardHeight - d.middleHeight) / 2 : (d.boardHeight + d.middleHeight) / 2;
-    const count = stackPressCount(Math.abs(y - hingeEdge) - 6, size, Math.abs(centers[1]! - centers[0]!));
-    return current > MAX_BAR_VISIBLE ? Math.max(count, current) : count;
+    return { count: stackPressCount(Math.abs(y - hingeEdge) - 6, size, Math.abs(centers[1]! - centers[0]!)), tall: current > MAX_BAR_VISIBLE };
   }
   const spacing = Math.min(d.checkerSize - 2, (d.pointHeight - d.checkerSize) / 4);
-  const count = stackPressCount(top ? y : d.pointHeight - y, d.checkerSize, spacing);
-  return current > stackPressCount(d.pointHeight, d.checkerSize, spacing) ? Math.max(count, current) : count;
+  return { count: stackPressCount(top ? y : d.pointHeight - y, d.checkerSize, spacing), tall: current > stackPressCount(d.pointHeight, d.checkerSize, spacing) };
 }
