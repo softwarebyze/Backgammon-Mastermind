@@ -6,16 +6,16 @@ tags:
 - tapOn:
     id: point-6
     point: '50%, 95%'
-- assertVisible: 'Point 6, 1 white checker, selected'
+- assertVisible: 'Point 6, 1 white checker'
 - tapOn:
     id: point-6
     point: '50%, 50%'
-- assertVisible: 'Point 6, [2-9] white checkers, selected'
+- assertVisible: 'Point 6, [2-9] white checkers'
 - takeScreenshot: position-press-01-count
 - tapOn:
     id: point-6
     point: '50%, 95%'
-- assertVisible: 'Point 6, 1 white checker, selected'
+- assertVisible: 'Point 6, 1 white checker'
 - swipe:
     from:
       id: point-6
@@ -29,27 +29,32 @@ tags:
     direction: UP
     duration: 900
 # Swipe distance maps to checker slots, so a tall iPad point can stop one
-# checker short. The + stepper tops it off (and refreshes iOS's accessibility snapshot).
+# checker short. One more swipe tops it off.
 - runFlow:
-    file: position-step.yaml
-    env:
-      STEPPER: position-stack-count
-      SIDE: higher
-- assertVisible: 'Point 6, 15 white checkers, selected'
+    when:
+      notVisible: 'Point 6, 15 white checkers'
+    commands:
+      - swipe:
+          from:
+            id: point-6
+            point: '50%, 60%'
+          direction: UP
+          duration: 900
+- assertVisible: 'Point 6, 15 white checkers'
 - takeScreenshot: position-drag-01-white
 # All white checkers are used. This blocked press must keep the empty point
 # unchanged; haptic and accessibility feedback are covered by unit tests.
 - tapOn:
     id: point-7
     point: '50%, 95%'
-- assertVisible: 'Point 7, selected'
+- assertVisible: Point 7
 - takeScreenshot: position-press-02-exhausted
 - swipe:
     from:
       id: point-6
     direction: DOWN
     duration: 900
-- assertVisible: 'Point 6, selected'
+- assertVisible: Point 6
 - tapOn:
     id: position-paint-black
 - swipe:
@@ -57,7 +62,7 @@ tags:
       id: point-13
     direction: DOWN
     duration: 900
-- assertVisible: 'Point 13, 15 black checkers, selected'
+- assertVisible: 'Point 13, 15 black checkers'
 - takeScreenshot: position-drag-02-black
 - tapOn:
     id: position-paint-white

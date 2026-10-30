@@ -91,6 +91,8 @@
     },
     "players": {
       "computer": "מחשב",
+      "match_score_a11y": "{{score}} מתוך {{length}} נקודות",
+      "match_to": "עד {{length}}",
       "pips": "פיפים",
       "you": "אתה"
     },
@@ -595,6 +597,8 @@
     "no_saved": "No saved positions yet.",
     "note": "Note (optional)",
     "off_counts": "Borne off: White {{white}} · Black {{black}}",
+    "on_roll": "בתור",
+    "on_roll_hint": "הקש כדי שיהיה תורו של שחקן זה",
     "paint": "Color to add",
     "pass_play": "Pass and play",
     "play": "Play from here",

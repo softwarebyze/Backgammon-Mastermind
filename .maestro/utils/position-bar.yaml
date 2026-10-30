@@ -2,71 +2,41 @@ appId: ${APP_ID}
 tags:
   - util
 ---
-# The bar uses the same direct editing gesture as a point, with no count menu.
+# Bar stacks grow outward from the hinge: White down, Black up. A press sets
+# the count by distance from the hinge, and dragging outward adds checkers.
 - tapOn:
     id: position-board-bar
-    point: '50%, 98%'
+    point: '50%, 56%'
 - assertVisible: 'Bar, 1 white checker'
 - tapOn:
     id: position-board-bar
     point: '50%, 80%'
 - assertVisible: 'Bar, [2-9] white checkers'
-# On short phones the controls below the board can be below the fold.
-- runFlow:
-    file: position-scroll.yaml
-    env:
-      TARGET_ID: position-stack-count
-      START_Y: '80%'
-      END_Y: '25%'
-- assertVisible:
-    id: position-stack-count
-- assertVisible:
-    id: position-empty-point
-- assertVisible:
-    id: position-stack-count
 - takeScreenshot: position-bar-01-white
 - swipe:
     from:
       id: position-board-bar
-      point: '50%, 80%'
+      point: '50%, 60%'
     direction: DOWN
     duration: 900
-- assertVisible:
-    id: position-board-bar
-    text: Bar
-- runFlow:
-    file: position-scroll.yaml
-    env:
-      TARGET_ID: position-paint-black
-      START_Y: '25%'
-      END_Y: '80%'
+- assertVisible: 'Bar, [2-9] white checkers|Bar, 1[0-5] white checkers'
 - tapOn:
     id: position-paint-black
 - tapOn:
     id: position-board-bar
-    point: '50%, 2%'
-- assertVisible: 'Bar, 1 black checker'
+    point: '50%, 44%'
+- assertVisible: 'Bar.*1 black checker'
 - tapOn:
     id: position-board-bar
     point: '50%, 20%'
-- assertVisible: 'Bar, [2-9] black checkers'
-- runFlow:
-    file: position-scroll.yaml
-    env:
-      TARGET_ID: position-stack-count
-      START_Y: '25%'
-      END_Y: '80%'
-- assertVisible:
-    id: position-stack-count
+- assertVisible: 'Bar.*[2-9] black checkers'
 - takeScreenshot: position-bar-02-black
 - swipe:
     from:
       id: position-board-bar
-      point: '50%, 20%'
+      point: '50%, 40%'
     direction: UP
     duration: 900
-- assertVisible:
-    id: position-board-bar
-    text: Bar
+- assertVisible: 'Bar.*black checkers'
 - tapOn:
     id: position-paint-white

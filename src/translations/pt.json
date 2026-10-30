@@ -91,6 +91,8 @@
     },
     "players": {
       "computer": "Computador",
+      "match_score_a11y": "{{score}} de {{length}} pontos",
+      "match_to": "até {{length}}",
       "pips": "pips",
       "you": "Você"
     },
@@ -595,6 +597,8 @@
     "no_saved": "No saved positions yet.",
     "note": "Note (optional)",
     "off_counts": "Borne off: White {{white}} · Black {{black}}",
+    "on_roll": "Na vez",
+    "on_roll_hint": "Toque para dar a vez a este jogador",
     "paint": "Color to add",
     "pass_play": "Pass and play",
     "play": "Play from here",

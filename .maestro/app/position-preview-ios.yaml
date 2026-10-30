@@ -27,11 +27,9 @@ tags:
     id: position-paint-black
 - takeScreenshot: position-ios-01-editor
 - assertVisible:
-    id: position-score-toggle
+    id: player-strip-white
 - assertVisible:
     id: position-cube
-- assertNotVisible:
-    id: position-match-length
 - assertNotVisible:
     id: position-cube-value
 - assertNotVisible:
@@ -44,18 +42,20 @@ tags:
 - assertVisible:
     id: position-die-0
 - assertNotVisible:
-    id: position-fine-tune
-- tapOn:
-    id: position-dice-toggle
-- tapOn:
-    id: position-die-0-value-6
-- tapOn:
-    id: position-die-1-value-2
-- tapOn:
-    id: position-detail-done
+    id: position-strip
+- repeat:
+    times: 6
+    commands:
+      - tapOn:
+          id: position-die-0
+- repeat:
+    times: 2
+    commands:
+      - tapOn:
+          id: position-die-1
 - assertVisible:
-    id: position-dice-toggle
-    text: 'Dice: 6, 2'
+    id: position-die-0
+    text: 'Dice 1: 6'
 - takeScreenshot: position-visible-presets-dice
 - runFlow:
     file: ../utils/position-scroll.yaml
@@ -150,8 +150,11 @@ tags:
       START_Y: '80%'
       END_Y: '25%'
 - assertVisible:
-    id: position-dice-toggle
-    text: 'Dice: 5, 2'
+    id: position-die-0
+    text: 'Dice 1: 5'
+- assertVisible:
+    id: position-die-1
+    text: 'Dice 2: 2'
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:

@@ -91,6 +91,8 @@
     },
     "players": {
       "computer": "コンピュータ",
+      "match_score_a11y": "{{length}}点中{{score}}点",
+      "match_to": "{{length}}点先取",
       "pips": "ピップ",
       "you": "あなた"
     },
@@ -595,6 +597,8 @@
     "no_saved": "No saved positions yet.",
     "note": "Note (optional)",
     "off_counts": "Borne off: White {{white}} · Black {{black}}",
+    "on_roll": "手番",
+    "on_roll_hint": "タップしてこのプレイヤーの手番にする",
     "paint": "Color to add",
     "pass_play": "Pass and play",
     "play": "Play from here",

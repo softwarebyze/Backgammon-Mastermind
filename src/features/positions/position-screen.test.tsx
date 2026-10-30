@@ -34,7 +34,6 @@ beforeEach(() => {
 it('editing, saving and exporting a position never replaces the active game', () => {
   render(<PositionScreen />);
   fireEvent.press(screen.getByTestId('test-board-point'));
-  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
   fireEvent.press(screen.getByTestId('position-saved-toggle'));
   fireEvent.press(screen.getByTestId('position-save'));
   fireEvent.press(screen.getByTestId('position-exchange-toggle'));
@@ -70,22 +69,27 @@ it('shows invalid import errors without modifying or replacing the board', () =>
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('5');
 });
 
-it('edits visible die faces without a keyboard or invalid half roll', () => {
+it('sets the dice on the board by tapping them, never leaving a half roll playable', () => {
   render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('position-dice-toggle'));
-  fireEvent.press(screen.getByTestId('position-die-0-value-3'));
-  expect(screen.getByTestId('position-die-1-value-3').props.accessibilityState.selected).toBe(true);
+  for (let i = 0; i < 3; i++)
+    fireEvent.press(screen.getByTestId('position-die-0'));
+  expect(screen.getByTestId('position-die-0').props.accessibilityLabel).toBe('positions.dice 1: 3');
+  expect(screen.getByTestId('position-play')).toBeDisabled();
+  fireEvent.press(screen.getByTestId('position-die-1'));
+  fireEvent.press(screen.getByTestId('position-die-1'));
   expect(screen.getByTestId('position-play')).toBeEnabled();
-  fireEvent.press(screen.getByTestId('position-die-1-value-2'));
-  fireEvent.press(screen.getByTestId('position-detail-done'));
-  expect(screen.getByTestId('position-dice-toggle').props.accessibilityLabel).toBe('positions.dice: 3, 2');
-  fireEvent.press(screen.getByTestId('test-board-point'));
-  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
-  expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
   fireEvent.press(screen.getByTestId('position-play'));
   fireEvent.press(screen.getByTestId('position-start'));
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [3, 2] }));
+});
+
+it('steps a die past 6 back to blank, which means roll when play starts', () => {
+  render(<PositionScreen />);
+  for (let i = 0; i < 7; i++)
+    fireEvent.press(screen.getByTestId('position-die-0'));
+  expect(screen.getByTestId('position-die-0').props.accessibilityLabel).toBe('positions.dice 1: positions.roll_later');
+  expect(screen.getByTestId('position-play')).toBeEnabled();
 });
 
 it('gives a whitespace-only saved name the translated untitled label', () => {
@@ -101,7 +105,8 @@ it('keeps presets and dice visible while exchange and saved tools stay collapsed
   expect(screen.getByTestId('position-standard')).toBeTruthy();
   expect(screen.getByTestId('position-empty')).toBeTruthy();
   expect(screen.getByTestId('position-die-0')).toBeTruthy();
-  expect(screen.getByTestId('position-strip')).toBeTruthy();
+  expect(screen.getByTestId('position-match-row')).toBeTruthy();
+  expect(screen.queryByTestId('position-strip')).toBeNull();
   expect(screen.queryByTestId('position-save-name')).toBeNull();
   expect(screen.queryByTestId('position-fine-tune')).toBeNull();
   expect(screen.queryByTestId('position-setup-toggle')).toBeNull();
@@ -124,28 +129,33 @@ it('retains an open import draft through board edits while clearing stale export
   fireEvent.press(screen.getByTestId('position-export-xgid'));
   expect(screen.getByTestId('position-export-output')).toBeTruthy();
   fireEvent.press(screen.getByTestId('test-board-point'));
-  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
   expect(screen.getByTestId('position-exchange-toggle').props.accessibilityState.selected).toBe(true);
   expect(screen.getByTestId('position-import-input').props.value).toBe('a position I am still pasting');
   expect(screen.queryByTestId('position-export-output')).toBeNull();
   expect(start).not.toHaveBeenCalled();
 });
 
-it('opens one editor at a time in the strip and keeps the summary after Done', () => {
+it('sets the match length below the board and each score in its player strip', () => {
   render(<PositionScreen />);
-  expect(screen.queryByTestId('position-match-length')).toBeNull();
-  fireEvent.press(screen.getByTestId('position-score-toggle'));
+  expect(screen.getByTestId('position-match-length')).toHaveTextContent('positions.money_game');
+  expect(screen.queryByTestId('position-score-white')).toBeNull();
   for (let i = 0; i < 7; i++)
     fireEvent.press(screen.getByTestId('position-match-length-higher'));
-  for (let i = 0; i < 3; i++)
+  expect(screen.getByTestId('position-match-length')).toHaveTextContent('positions.match_to 7');
+  for (let i = 0; i < 9; i++)
     fireEvent.press(screen.getByTestId('position-score-white-higher'));
-  fireEvent.press(screen.getByTestId('position-detail-done'));
-  fireEvent.press(screen.getByTestId('position-dice-toggle'));
-  expect(screen.queryByTestId('position-match-length')).toBeNull();
-  fireEvent.press(screen.getByTestId('position-detail-done'));
-  expect(screen.getByTestId('position-score-toggle').props.accessibilityLabel).toContain('3 – 0');
-  expect(screen.getByTestId('position-score-toggle').props.accessibilityLabel).toContain('7');
+  // A score never reaches the match length.
+  expect(screen.getByTestId('position-score-white-value')).toHaveTextContent('6');
+  expect(screen.getByTestId('position-score-black-value')).toHaveTextContent('0');
   expect(start).not.toHaveBeenCalled();
+});
+
+it('puts a player on roll by tapping their strip', () => {
+  render(<PositionScreen />);
+  expect(screen.getByTestId('player-status-white')).toHaveTextContent('positions.on_roll');
+  fireEvent.press(screen.getByTestId('player-strip-black'));
+  expect(screen.getByTestId('player-status-black')).toHaveTextContent('positions.on_roll');
+  expect(screen.queryByTestId('player-status-white')).toBeNull();
 });
 
 /** The header's undo/redo element, as the navigator would render it. */
@@ -156,18 +166,17 @@ function headerActions() {
 
 it('undoes and redoes board edits from the header', () => {
   render(<PositionScreen />);
-  fireEvent.press(screen.getByTestId('test-board-point'));
-  fireEvent.press(screen.getByTestId('position-stack-count-lower'));
-  expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
   fireEvent.press(screen.getByTestId('position-empty'));
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('0');
+  fireEvent.press(screen.getByTestId('test-board-point'));
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('1');
   act(() => headerActions().onUndo());
-  expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('0');
   act(() => headerActions().onUndo());
   expect(screen.getByTestId('test-board-point')).toHaveTextContent('5');
   expect(headerActions().canUndo).toBe(false);
   act(() => headerActions().onRedo());
-  expect(screen.getByTestId('test-board-point')).toHaveTextContent('4');
+  expect(screen.getByTestId('test-board-point')).toHaveTextContent('0');
 });
 
 it('saves a named position with a note and shows when it was saved', () => {

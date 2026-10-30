@@ -2,17 +2,16 @@ appId: ${APP_ID}
 tags:
   - util
 ---
-# Scores are steppers: no number pad, so no keyboard Done bar to dismiss.
+# Match length sits under the board; each score lives in its player strip.
 - runFlow:
     file: position-scroll.yaml
     env:
-      TARGET_ID: position-score-toggle
+      TARGET_ID: position-match-length-higher
       START_Y: '80%'
       END_Y: '25%'
-- tapOn:
-    id: position-score-toggle
 - assertVisible:
     id: position-match-length
+    text: Money game
 - repeat:
     times: 5
     commands:
@@ -21,6 +20,9 @@ tags:
           env:
             STEPPER: position-match-length
             SIDE: higher
+- assertVisible:
+    id: position-match-length
+    text: Match to 5
 - repeat:
     times: 3
     commands:
@@ -29,6 +31,12 @@ tags:
           env:
             STEPPER: position-score-white
             SIDE: higher
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-score-black-higher
+      START_Y: '25%'
+      END_Y: '80%'
 - repeat:
     times: 2
     commands:
@@ -38,19 +46,9 @@ tags:
             STEPPER: position-score-black
             SIDE: higher
 - assertVisible:
-    id: position-score-white
-    text: 'White score: 3'
+    id: position-score-white-value
+    text: '3'
 - assertVisible:
-    id: position-score-black
-    text: 'Black score: 2'
-- assertVisible:
-    id: position-match-length
-    text: 'Match to: 5'
+    id: position-score-black-value
+    text: '2'
 - takeScreenshot: position-editable-scoreboard
-- tapOn:
-    id: position-detail-done
-- assertNotVisible:
-    id: position-match-length
-- assertVisible:
-    id: position-score-toggle
-- takeScreenshot: position-compact-score-summary

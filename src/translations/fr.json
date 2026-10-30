@@ -91,6 +91,8 @@
     },
     "players": {
       "computer": "Ordinateur",
+      "match_score_a11y": "{{score}} sur {{length}} points",
+      "match_to": "en {{length}}",
       "pips": "pips",
       "you": "Vous"
     },
@@ -595,6 +597,8 @@
     "no_saved": "No saved positions yet.",
     "note": "Note (optional)",
     "off_counts": "Borne off: White {{white}} · Black {{black}}",
+    "on_roll": "Au trait",
+    "on_roll_hint": "Touchez pour donner le trait à ce joueur",
     "paint": "Color to add",
     "pass_play": "Pass and play",
     "play": "Play from here",

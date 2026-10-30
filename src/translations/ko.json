@@ -91,6 +91,8 @@
     },
     "players": {
       "computer": "컴퓨터",
+      "match_score_a11y": "{{length}}점 중 {{score}}점",
+      "match_to": "{{length}}점",
       "pips": "핍",
       "you": "나"
     },
@@ -595,6 +597,8 @@
     "no_saved": "No saved positions yet.",
     "note": "Note (optional)",
     "off_counts": "Borne off: White {{white}} · Black {{black}}",
+    "on_roll": "차례",
+    "on_roll_hint": "탭하여 이 플레이어의 차례로 설정",
     "paint": "Color to add",
     "pass_play": "Pass and play",
     "play": "Play from here",

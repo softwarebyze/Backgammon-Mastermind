@@ -1,4 +1,3 @@
-import type { PositionFocus } from './position-strip';
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
 import { router, useLocalSearchParams, useNavigation } from 'expo-router';
@@ -19,8 +18,8 @@ import { PositionAction } from './position-controls';
 import { positionError } from './position-errors';
 import { PositionExchange } from './position-exchange';
 import { PositionHistoryActions } from './position-history-actions';
+import { PositionMatchRow } from './position-match-row';
 import { PositionSaved } from './position-saved';
-import { PositionStrip } from './position-strip';
 import { STRIP_HEIGHT, styles } from './position-styles';
 import { usePositionHistory } from './use-position-history';
 
@@ -61,7 +60,6 @@ function PositionWorkspace({ data }: { data?: string }) {
   const { position } = history;
   const [error, setError] = useState(initial.error);
   const [location, setLocation] = useState<PositionLocation | null>(null);
-  const [focus, setFocus] = useState<PositionFocus>(null);
   const [color, setColor] = useState<Player>('white');
   const [saved, setSaved] = useState(loadSavedPositions);
   const [tool, setTool] = useState<'play' | 'saved' | 'exchange' | null>(null);
@@ -86,18 +84,8 @@ function PositionWorkspace({ data }: { data?: string }) {
   const replace = (p: Position) => {
     change(p);
     setLocation(null);
-    setFocus(null);
   };
-  const selectLocation = (next: PositionLocation | null) => {
-    setLocation(next);
-    if (next !== null)
-      setFocus(null);
-  };
-  const selectFocus = (next: PositionFocus) => {
-    Keyboard.dismiss();
-    setLocation(null);
-    setFocus(next);
-  };
+  const selectLocation = (next: PositionLocation | null) => setLocation(next);
   const openTool = (next: 'play' | 'saved' | 'exchange') => {
     Keyboard.dismiss();
     setTool(tool === next ? null : next);
@@ -154,15 +142,7 @@ function PositionWorkspace({ data }: { data?: string }) {
             </>
           )}
         />
-        <PositionStrip
-          position={position}
-          location={location}
-          focus={focus}
-          color={color}
-          onChange={change}
-          onLocation={selectLocation}
-          onFocus={selectFocus}
-        />
+        <PositionMatchRow position={position} onChange={change} />
         {!!invalid && <Text accessibilityRole="alert" testID="position-invalid" style={styles.error}>{invalid}</Text>}
         {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
         <View style={styles.workspaceActions}>

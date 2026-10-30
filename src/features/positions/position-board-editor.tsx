@@ -8,7 +8,9 @@ import { BoardView } from '@/features/game/components/board/board-view';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { translate } from '@/lib/i18n';
 import { newPosition, positionGame } from '@/lib/positions/position';
+import { PositionBoardDice } from './position-board-dice';
 import { BoardCube } from './position-cube';
+import { PositionPlayerStrip } from './position-players';
 import { styles } from './position-styles';
 import { usePositionStackEditor } from './use-position-stack-editor';
 
@@ -38,7 +40,7 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
     if (side)
       AccessibilityInfo.announceForAccessibility(translate('positions.no_checkers', { player: translate(`positions.${side}`) }));
   } });
-  const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: location === 'black-bar' ? 'black' : location === 'white-bar' ? 'white' : color, selectedPoint: typeof location === 'number' ? location : location ? 0 : null };
+  const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: location === 'black-bar' ? 'black' : location === 'white-bar' ? 'white' : color, selectedPoint: null };
   const single = (run: () => void) => {
     onStrokeStart?.();
     run();
@@ -57,6 +59,7 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
         <View style={styles.toolbarSpacer} />
         {actions}
       </View>
+      <PositionPlayerStrip position={position} player="black" onChange={onChange} />
       <View style={styles.board}>
         <BoardView
           state={board}
@@ -91,8 +94,10 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
           onBearOffPress={() => {}}
           aidsOverride={{ showPointNumbers: true, showMoveHints: false, showDirectionOverlay: false }}
         />
+        <PositionBoardDice position={position} dimensions={dimensions} onChange={onChange} />
         <BoardCube position={position} dimensions={dimensions} onChange={patch => onChange({ ...position, context: { ...position.context, ...patch } })} />
       </View>
+      <PositionPlayerStrip position={position} player="white" onChange={onChange} />
     </View>
   );
 }

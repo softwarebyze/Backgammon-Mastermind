@@ -91,6 +91,8 @@
     },
     "players": {
       "computer": "电脑",
+      "match_score_a11y": "{{length}}分中得{{score}}分",
+      "match_to": "{{length}}分制",
       "pips": "点",
       "you": "你"
     },
@@ -595,6 +597,8 @@
     "no_saved": "No saved positions yet.",
     "note": "Note (optional)",
     "off_counts": "Borne off: White {{white}} · Black {{black}}",
+    "on_roll": "轮到",
+    "on_roll_hint": "点按让该玩家行动",
     "paint": "Color to add",
     "pass_play": "Pass and play",
     "play": "Play from here",

@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 import type { GameState, Player } from '@/lib/game';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { AnimatedNumber } from '@/components/ui/animated-number';
@@ -22,6 +23,11 @@ type Props = {
   headlineOverride?: string | null;
   /** Narrow landscape rail: the strategy chip shrinks to its mark. */
   compact?: boolean;
+  /** Makes the whole strip a button (the position editor sets who is on roll). */
+  onPress?: () => void;
+  pressHint?: string;
+  /** Replaces the match score, e.g. with an editable one. */
+  trailing?: ReactNode;
 };
 
 /**
@@ -29,7 +35,7 @@ type Props = {
  * far they have to go (pip count) and how many checkers are already off.
  * Black sits above the board and white below it, like the checkers.
  */
-export function PlayerStrip({ state, player, headlineOverride = null, compact = false }: Props) {
+export function PlayerStrip({ state, player, headlineOverride = null, compact = false, onPress, pressHint, trailing }: Props) {
   const name = playerDisplayName(state, player);
   const status = playerStripStatus(state, player, headlineOverride);
   const gameOver = state.phase === 'game-over';
@@ -40,10 +46,12 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const showStrategy = !gameOver && strategyPerspective(state) === player;
   const pipsA11y = translate('game.status.pips_a11y', { player: name, pips, off });
 
+  const Root = onPress ? Pressable : View;
   return (
-    <View
+    <Root
       testID={`player-strip-${player}`}
       style={[styles.strip, active && styles.stripActive, won && styles.stripWon]}
+      {...(onPress ? { onPress, accessibilityRole: 'button' as const, accessibilityHint: pressHint, accessibilityState: { selected: active } } : null)}
     >
       <View
         accessible
@@ -82,11 +90,35 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
             : translate('game.players.pips')}
         </Text>
       </View>
+      {trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} /> : null)}
+    </Root>
+  );
+}
+
+/** Points won so far in a match, against the length played to. */
+function MatchScore({ score, length, player }: { score: number; length: number; player: Player }) {
+  return (
+    <View style={styles.matchScore} testID={`match-score-${player}`} accessible accessibilityLabel={translate('game.players.match_score_a11y', { score, length })}>
+      <Text style={styles.matchScoreValue}>{score}</Text>
+      <Text style={styles.scoreLabel}>{translate('game.players.match_to', { length })}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  matchScore: {
+    alignItems: 'center',
+    minWidth: 40,
+    paddingLeft: 10,
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderLeftColor: 'rgba(255, 196, 153, 0.25)',
+  },
+  matchScoreValue: {
+    color: GAME_PALETTE.accent,
+    fontSize: 22,
+    lineHeight: 26,
+    ...interFont('bold'),
+  },
   strip: {
     flexDirection: 'row',
     alignItems: 'center',
