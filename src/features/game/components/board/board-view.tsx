@@ -343,7 +343,8 @@ export function BoardView({
           whiteCount={barWhite}
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
-          selectedPoint={emphasisBar && selectedPoint === null ? BAR_POINT : selectedPoint}
+          selectedPoint={selectedPoint}
+          emphasized={emphasisBar}
           onPressBar={() => dispatchFatFingerPress(BAR_POINT)}
           dragEnabled={barPanFrom !== null}
           panFrom={barPanFrom ?? BAR_POINT}
