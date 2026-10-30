@@ -1,8 +1,10 @@
+import { StyleSheet } from 'react-native';
 import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
-import { cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
+import { act, cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 
 import { GameScreenControls } from './game-screen-controls';
+import { AUTO_ROLL_BUTTON_GRACE_MS } from './roll-button-timing';
 
 jest.mock('@/lib/haptics', () => ({
   hapticLight: jest.fn(),
@@ -214,4 +216,74 @@ describe('confirm move bar', () => {
 
     expect(screen.queryByTestId('confirm-move-button')).toBeNull();
   });
+});
+
+describe('roll button with auto-roll', () => {
+  function renderHumanRoll() {
+    const state = createInitialState('vs-computer');
+    state.phase = 'rolling';
+    state.currentPlayer = 'white';
+    return setup(
+      <GameScreenControls
+        state={state}
+        liveDiceState={state}
+        isHumanTurn
+        isComputerTurn={false}
+        moveLogLength={0}
+        onRoll={jest.fn()}
+        onReset={jest.fn()}
+      />,
+    );
+  }
+
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  it('does not flash the Roll button while auto-roll is about to roll', () => {
+    mockPrefs.autoRoll = true;
+    renderHumanRoll();
+    expect(screen.queryByTestId('roll-dice-button')).toBeNull();
+    expect(screen.getByTestId('auto-roll-pending')).toBeTruthy();
+  });
+
+  it('falls back to the Roll button when the automatic roll has not happened', () => {
+    mockPrefs.autoRoll = true;
+    renderHumanRoll();
+    act(() => jest.advanceTimersByTime(AUTO_ROLL_BUTTON_GRACE_MS));
+    expect(screen.getByTestId('roll-dice-button')).toBeTruthy();
+  });
+
+  it('shows the Roll button right away when auto-roll is off', () => {
+    mockPrefs.autoRoll = false;
+    renderHumanRoll();
+    expect(screen.getByTestId('roll-dice-button')).toBeTruthy();
+  });
+});
+
+it('gives Undo and Confirm move the same height (#319)', () => {
+  mockPrefs.confirmMove = true;
+  const state = awaitingConfirmState();
+  setup(
+    <GameScreenControls
+      state={state}
+      liveDiceState={state}
+      isHumanTurn
+      isComputerTurn={false}
+      moveLogLength={0}
+      onRoll={jest.fn()}
+      onReset={jest.fn()}
+      onConfirmMove={jest.fn()}
+      onUndoMove={jest.fn()}
+      canUndoMove
+    />,
+  );
+  const heightOf = (id: string) => {
+    const style = screen.getByTestId(id).props.style;
+    return StyleSheet.flatten(typeof style === 'function' ? style({ pressed: false, hovered: false }) : style);
+  };
+  const undo = heightOf('undo-move-button');
+  const confirm = heightOf('confirm-move-button');
+  expect(undo.height).toBeGreaterThanOrEqual(44);
+  expect(undo.height).toBe(confirm.height);
+  expect(undo.borderWidth).toBe(confirm.borderWidth);
 });

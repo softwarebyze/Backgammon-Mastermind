@@ -6,12 +6,13 @@ import { useCallback, useState } from 'react';
 
 import {
   Image,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
+import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
@@ -43,7 +44,6 @@ import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
-import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
 function startGameFromHome(
   mode: GameMode,
@@ -79,6 +79,10 @@ export function HomeScreen() {
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
   const { insets, landscape } = useLayoutMetrics();
+  const { height } = useWindowDimensions();
+  // No navigation bar: start just under the status bar, a little lower on
+  // tall phones so the brand isn't jammed against the top.
+  const topSpace = insets.top + (landscape ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
   const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
@@ -149,11 +153,15 @@ export function HomeScreen() {
             right: 24,
             bottom: landscape ? 16 : 32,
           }),
+          { paddingTop: topSpace },
         ]}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
+        <View style={[styles.settingsCorner, { top: insets.top + 4, right: insets.right + 8 }]}>
+          <SettingsHeaderButton />
+        </View>
         <View style={[styles.brand, landscape ? styles.brandLandscape : null]}>
           <View style={[styles.logoContainer, landscape ? styles.logoLandscape : null]}>
             <Image
@@ -330,14 +338,16 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
-    justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
-    paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
+    justifyContent: 'flex-start',
+  },
+  settingsCorner: {
+    position: 'absolute',
+    zIndex: 10,
   },
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 12,
     gap: 24,
   },
   brand: {

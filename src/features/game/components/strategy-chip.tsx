@@ -6,17 +6,16 @@ import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { classifyStrategy } from '@/features/game/strategy';
-import { calculatePipCount } from '@/lib/game';
+import { classifyStrategy, strategyPerspective } from '@/features/game/strategy';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
+  /** Narrow rails: just the plan's mark; the name stays in the label and the sheet. */
+  iconOnly?: boolean;
 };
-
-const STRATEGY_HIT_SLOP = { top: 9, bottom: 9, left: 8, right: 8 } as const;
 
 /** Resolve `game.strategy.<group>.<strategyKey>` without losing key typing. */
 function strategyMessage(group: 'label' | 'tip', key: StrategyKey) {
@@ -24,13 +23,12 @@ function strategyMessage(group: 'label' | 'tip', key: StrategyKey) {
 }
 
 /**
- * Quiet status line: the strategy the position points to (tap for why + tip)
- * and both race pip counts. Deliberately bubble-free — it reads as part of
- * the header, not a floating badge.
+ * The plan the position points to, as a quiet chip (tap for why + a one-line
+ * tip). Lives in the player strip of the side it describes.
  */
-export function GamePipStatusBar({ state }: Props) {
+export function StrategyChip({ state, iconOnly = false }: Props) {
   const [showExplanation, setShowExplanation] = useState(false);
-  const perspective = state.mode === 'vs-computer' ? 'white' as const : state.currentPlayer;
+  const perspective = strategyPerspective(state);
   const strategy = classifyStrategy(state, perspective);
   const label = strategyMessage('label', strategy.key);
   const tip = strategyMessage('tip', strategy.key);
@@ -38,49 +36,22 @@ export function GamePipStatusBar({ state }: Props) {
     `game.strategy.why.${strategy.reason.message}` as TxKeyPath,
     strategy.reason.params,
   );
-  const whitePips = calculatePipCount(state, 'white');
-  const blackPips = calculatePipCount(state, 'black');
-  const gameOver = state.phase === 'game-over';
-
-  if (gameOver) {
-    return (
-      <View style={styles.wrap}>
-        <View style={styles.gameOverWrap}>
-          <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
-        </View>
-      </View>
-    );
-  }
 
   return (
-    <View style={styles.wrap}>
-      <View style={styles.row}>
-        <Pressable
-          onPress={() => setShowExplanation(true)}
-          accessibilityRole="button"
-          accessibilityLabel={`${label}. ${why} ${tip}`}
-          // Grow the touch target without growing the row, so the board keeps its size.
-          hitSlop={STRATEGY_HIT_SLOP}
-          style={styles.strategyRow}
-          testID="strategy-line"
-        >
-          <View testID="strategy-mark">
-            <StrategyMark strategy={strategy.key} size={18} />
-          </View>
-          <Text style={styles.strategyText}>{label}</Text>
-        </Pressable>
-        <View style={styles.pips}>
-          <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
-            {whitePips}
-          </Text>
-          <Text style={styles.pipDivider}>–</Text>
-          <View style={[styles.pipDot, { backgroundColor: '#2A2A2E' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
-            {blackPips}
-          </Text>
+    <>
+      <Pressable
+        onPress={() => setShowExplanation(true)}
+        accessibilityRole="button"
+        accessibilityLabel={`${label}. ${why} ${tip}`}
+        style={({ pressed }) => [styles.chip, pressed && styles.chipPressed]}
+        hitSlop={8}
+        testID="strategy-line"
+      >
+        <View testID="strategy-mark">
+          <StrategyMark strategy={strategy.key} size={14} />
         </View>
-      </View>
+        {iconOnly ? null : <Text style={styles.chipText} numberOfLines={1}>{label}</Text>}
+      </Pressable>
       <Modal
         visible={showExplanation}
         transparent
@@ -111,79 +82,33 @@ export function GamePipStatusBar({ state }: Props) {
           </Pressable>
         </Pressable>
       </Modal>
-    </View>
+    </>
   );
 }
 
-function getWinnerLabel(state: GameState) {
-  if (state.winner === 'white') {
-    return state.mode === 'vs-computer'
-      ? translate('game.status.you_win')
-      : translate('game.status.white_wins');
-  }
-  return state.mode === 'vs-computer'
-    ? translate('game.status.computer_wins')
-    : translate('game.status.black_wins');
-}
-
 const styles = StyleSheet.create({
-  wrap: {
-    width: '100%',
-    paddingHorizontal: 16,
-    marginBottom: 2,
-    gap: 6,
-  },
-  gameOverWrap: {
-    width: '100%',
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  winnerBadge: {
-    color: '#E8C860',
-    fontSize: 20,
-    letterSpacing: 0.5,
-    ...interFont('bold'),
-  },
-  row: {
+  chip: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  strategyRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
+    gap: 5,
+    flexShrink: 4,
+    minWidth: 0,
+    paddingHorizontal: 8,
     paddingVertical: 4,
-  },
-  strategyText: {
-    color: GAME_PALETTE.textMuted,
-    fontSize: 12,
-    letterSpacing: 0.3,
-    ...interFont('medium'),
-  },
-  pips: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  pipDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    backgroundColor: 'rgba(255, 196, 153, 0.06)',
     borderWidth: 1,
-    borderColor: 'rgba(232, 224, 208, 0.4)',
+    borderColor: 'rgba(255, 196, 153, 0.12)',
+    ...continuousRadius(999),
   },
-  pipDivider: {
-    color: GAME_PALETTE.textMuted,
-    opacity: 0.5,
-    fontSize: 11,
+  chipPressed: {
+    opacity: 0.7,
   },
-  pipText: {
+  chipText: {
+    flexShrink: 1,
     color: GAME_PALETTE.textMuted,
-    opacity: 0.85,
     fontSize: 12,
-    ...interFont('regular'),
-    fontVariant: ['tabular-nums'],
+    letterSpacing: 0.2,
+    ...interFont('medium'),
   },
   modalScrim: {
     flex: 1,

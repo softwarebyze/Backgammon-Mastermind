@@ -9,7 +9,7 @@
       "selected": "Ausgewählt - tippen Sie auf einen hervorgehobenen Punkt oder Abbrechen"
     },
     "controls": {
-      "bear_off_a11y": "Bär aus",
+      "bear_off_a11y": "Stein abtragen",
       "cancel": "Stornierung",
       "cancel_a11y": "Auswahl abbrechen",
       "confirm_move": "Zug bestätigen",
@@ -59,6 +59,11 @@
       "open_settings": "Sprache & mehr",
       "open_settings_hint": "Einstellungen öffnen",
       "title": "Spieloptionen"
+    },
+    "players": {
+      "computer": "Computer",
+      "pips": "Pips",
+      "you": "Du"
     },
     "preferences": {
       "auto_move": "Auto-Zug bei Zwang",
@@ -401,7 +406,7 @@
             "title": "Wer liegt zurück?"
           },
           "explain": {
-            "body": "Der Pip-Count ist die Summe der Punkte, die deine Steine noch bis zum Auswürfeln reisen müssen. Jeder Stein zählt seine Punktzahl: einer auf dem 6-Punkt zählt 6, einer auf dem 13-Punkt zählt 13. Weniger ist besser, du bist näher am Ziel. Die Zahlen stehen oben im Spiel, ein Punkt zeigt, welche Zahl zu welcher Farbe gehört.",
+            "body": "Die Pipzahl ist die Summe der Punkte, die deine Steine bis zum Abtragen noch zurücklegen müssen. Jeder Stein zählt seine Punktnummer – ein Stein auf dem 6er-Punkt zählt 6, auf dem 13er-Punkt 13. Alles zusammengezählt ergibt deine Pipzahl. Weniger ist besser: Du bist näher am Abtragen. In jeder Partie steht die Pipzahl jedes Spielers neben seinem Namen.",
             "title": "Was ist der Pip-Count?"
           }
         },

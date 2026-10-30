@@ -161,6 +161,11 @@ function isPureRace(state: GameState): boolean {
  * `player`, per backgammon.com's "5 Core Strategies". Falls back to
  * "Developing" for early/neutral positions — most games start there.
  */
+/** Whose plan the game screen describes: the human vs the computer, else the side to move. */
+export function strategyPerspective(state: GameState): Player {
+  return state.mode === 'vs-computer' ? 'white' : state.currentPlayer;
+}
+
 export function classifyStrategy(state: GameState, player: Player): StrategyInfo {
   const foe = opponent(player);
   const myPips = calculatePipCount(state, player);

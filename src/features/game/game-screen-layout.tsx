@@ -1,4 +1,5 @@
 import type { LayoutChangeEvent } from 'react-native';
+import type { BoardDice } from '@/features/game/components/board/board-dice-layout';
 import type { PathSegment } from '@/features/game/components/board/move-path-overlay';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
@@ -10,10 +11,9 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GameBoardSection } from '@/features/game/components/game-board-section';
-import { GamePipStatusBar } from '@/features/game/components/game-pip-status-bar';
 import { GuidanceModal } from '@/features/game/components/guidance-modal';
 import { MoveReviewBar } from '@/features/game/components/move-review-bar';
-import { TurnIndicatorBanner } from '@/features/game/components/turn-indicator-banner';
+import { PlayerStrip } from '@/features/game/components/player-strip';
 import { WinConfettiOverlay } from '@/features/game/components/win-confetti-overlay';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
@@ -24,6 +24,7 @@ import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slo
 import { resolveNumberPerspective } from '@/features/game/point-numbering';
 import { useOpeningReveal } from '@/features/game/use-opening-reveal';
 import { useWinCelebration } from '@/features/game/use-win-celebration';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { openingCopy, openingTray } from '@/lib/game/opening-display';
 import { translate } from '@/lib/i18n';
 import { GAME_CHROME_MAX_WIDTH, LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
@@ -49,23 +50,29 @@ type Props = {
   onCancelSelection: () => void;
   canUndo?: boolean;
   onUndo?: () => void;
+  /** Home, undo/redo, settings and new game; compact in the landscape rail. */
+  toolbar?: (compact: boolean) => React.ReactNode;
 };
 
+/**
+ * Black's side of the table. Portrait puts it above the board (white's strip
+ * sits under the board); the landscape rail stacks both sides.
+ */
 function GameTopChrome({
   state,
   headline,
+  bothSides,
   onLayout,
 }: {
   state: GameState;
   headline: string | null;
+  bothSides: boolean;
   onLayout: (event: LayoutChangeEvent) => void;
 }) {
   return (
-    <View style={styles.chromeColumn} onLayout={onLayout}>
-      <GamePipStatusBar state={state} />
-      <View style={styles.turnBannerWrap}>
-        <TurnIndicatorBanner state={state} headlineOverride={headline} />
-      </View>
+    <View style={[styles.chromeColumn, styles.stripWrap]} onLayout={onLayout}>
+      <PlayerStrip state={state} player="black" headlineOverride={headline} compact={bothSides} />
+      {bothSides ? <PlayerStrip state={state} player="white" headlineOverride={headline} compact /> : null}
     </View>
   );
 }
@@ -124,6 +131,7 @@ type ChromeStackProps = {
   interactionEnabled: boolean;
   compact: boolean;
   includeTop: boolean;
+  diceOnBoard: boolean;
   dieSize: number;
   opening: ReturnType<typeof openingTray>;
   openingText: ReturnType<typeof openingCopy>;
@@ -144,6 +152,7 @@ function GameChromeStack({
   interactionEnabled,
   compact,
   includeTop,
+  diceOnBoard,
   dieSize,
   opening,
   openingText,
@@ -173,7 +182,7 @@ function GameChromeStack({
   return (
     <>
       {includeTop
-        ? <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />
+        ? <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides onLayout={onTopLayout} />
         : null}
       <GameReviewSlot review={review} moveLog={moveLog} state={state} hidden={layout.hideReview} />
       <View
@@ -201,6 +210,7 @@ function GameChromeStack({
           opening={opening}
           compact={compact}
           dieSize={dieSize}
+          diceOnBoard={diceOnBoard}
           onRoll={input.handleRoll}
           onReset={input.handleReset}
           onGoLive={review.goLive}
@@ -214,6 +224,34 @@ function GameChromeStack({
   );
 }
 
+/** Same dice the tray would show: live (or the reviewed turn), and the opening dice while they're up. */
+function boardDiceFor({
+  state,
+  live,
+  isReviewing,
+  opening,
+  displayStyle,
+}: {
+  state: GameState;
+  live: GameState;
+  isReviewing: boolean;
+  opening: ReturnType<typeof openingTray>;
+  displayStyle: BoardDice['displayStyle'];
+}): BoardDice | null {
+  const source = isReviewing ? state : live;
+  if (source.phase === 'game-over' && !isReviewing) {
+    return null;
+  }
+  return {
+    dice: source.dice,
+    remainingDice: source.remainingDice,
+    player: source.currentPlayer,
+    opening: isReviewing ? null : opening,
+    displayStyle,
+    animateRoll: !isReviewing,
+  };
+}
+
 /* eslint-disable-next-line max-lines-per-function -- portrait vs landscape chrome composition */
 export function GameScreenLayout({
   board,
@@ -224,8 +262,10 @@ export function GameScreenLayout({
   onCancelSelection,
   canUndo = false,
   onUndo,
+  toolbar,
 }: Props) {
   const {
+    insets,
     landscape,
     desktop,
     chromeWidth,
@@ -234,7 +274,7 @@ export function GameScreenLayout({
     stageMaxWidth,
     contentInsets,
   } = useLayoutMetrics();
-  const { onTopLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot();
+  const { onTopLayout, onBottomLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot({ stripsInSlot: !landscape });
   const dieSize = trayDieSize(useBoardDimensions().checkerSize);
   const state = board.boardState;
   const live = input.state!;
@@ -251,6 +291,14 @@ export function GameScreenLayout({
   const opening = openingTray(live, reveal);
   const openingText = openingCopy(live, reveal);
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
+  const { preferences } = useGamePreferences();
+  // Portrait: the dice land on the board in the roller's half, like at a real
+  // table, which frees the tray row under the board. Landscape keeps them in
+  // the side rail, where the short board has no free middle.
+  const diceOnBoard = !landscape;
+  const boardDice = diceOnBoard
+    ? boardDiceFor({ state, live, isReviewing: review.isReviewing, opening, displayStyle: preferences.diceDisplayStyle })
+    : null;
 
   const chrome = (
     <GameChromeStack
@@ -263,6 +311,7 @@ export function GameScreenLayout({
       interactionEnabled={board.interactionEnabled}
       compact={landscape}
       includeTop={landscape}
+      diceOnBoard={diceOnBoard}
       dieSize={dieSize}
       opening={opening}
       openingText={openingText}
@@ -280,15 +329,15 @@ export function GameScreenLayout({
         styles.root,
         landscape ? styles.rootLandscape : styles.rootPortrait,
         contentInsets,
+        // No navigation bar: the page starts under the status bar itself.
+        { paddingTop: insets.top },
         landscape && stageMaxWidth != null
           ? { maxWidth: stageMaxWidth, width: '100%', alignSelf: 'center' }
           : null,
       ]}
     >
       <FocusAwareStatusBar />
-      {landscape
-        ? null
-        : <GameTopChrome state={state} headline={openingText?.headline ?? null} onLayout={onTopLayout} />}
+      {landscape || !toolbar ? null : <View style={styles.chromeColumn}>{toolbar(false)}</View>}
       <View
         style={[
           styles.boardSlotHost,
@@ -298,6 +347,10 @@ export function GameScreenLayout({
         testID="game-board-slot"
         onLayout={onSlotLayout}
       >
+        {/* Portrait: black's strip, the board, white's strip, held together and centered in the slot. */}
+        {landscape
+          ? null
+          : <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides={false} onLayout={onTopLayout} />}
         <GameBoardSection
           boardState={state}
           boardAnimation={board.boardAnimation}
@@ -309,7 +362,16 @@ export function GameScreenLayout({
           pathFadeOutMs={board.pathFadeOutMs}
           input={input}
           numberPerspective={numberPerspective}
+          boardDice={boardDice}
+          fill={landscape}
         />
+        {landscape
+          ? null
+          : (
+              <View style={[styles.chromeColumn, styles.stripWrap]} onLayout={onBottomLayout}>
+                <PlayerStrip state={state} player="white" headlineOverride={openingText?.headline ?? null} />
+              </View>
+            )}
       </View>
       <WinConfettiOverlay burstKey={winBurstKey} />
       <View style={styles.tutorSlot} pointerEvents="box-none">
@@ -328,6 +390,7 @@ export function GameScreenLayout({
               keyboardShouldPersistTaps="handled"
               testID="game-landscape-chrome"
             >
+              {toolbar ? toolbar(true) : null}
               {chrome}
             </ScrollView>
           )
@@ -384,17 +447,17 @@ const styles = StyleSheet.create({
   boardSlotPortrait: {
     width: '100%',
     alignSelf: 'center',
+    justifyContent: 'center',
   },
   boardSlotLandscape: {
     alignSelf: 'stretch',
     minWidth: 0,
     minHeight: 0,
   },
-  turnBannerWrap: {
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    marginBottom: 4,
+  stripWrap: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    gap: 4,
   },
   reviewSlot: {
     width: '100%',

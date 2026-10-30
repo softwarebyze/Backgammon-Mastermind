@@ -9,7 +9,7 @@
       "selected": "Seleccionado — pulsa un punto destacado, o Cancelar"
     },
     "controls": {
-      "bear_off_a11y": "¡Apártate!",
+      "bear_off_a11y": "Sacar ficha",
       "cancel": "Cancelar",
       "cancel_a11y": "Cancelar selección",
       "confirm_move": "Confirmar movimiento",
@@ -59,6 +59,11 @@
       "open_settings": "Idioma y más",
       "open_settings_hint": "Abrir Ajustes",
       "title": "Opciones de partida"
+    },
+    "players": {
+      "computer": "Ordenador",
+      "pips": "pips",
+      "you": "Tú"
     },
     "preferences": {
       "auto_move": "Mover automáticamente si es forzado",
@@ -401,7 +406,7 @@
             "title": "¿Quién va detrás?"
           },
           "explain": {
-            "body": "Es la suma de puntos que tus fichas aún deben recorrer para salir. Cada ficha suma el número de su punto: una en el 6 vale 6, una en el 13 vale 13. Menos es mejor: estás más cerca de salir. Los números aparecen arriba en cada partida, con un punto que indica el color.",
+            "body": "El conteo de pips es el total de puntos que tus fichas deben recorrer para salir. Cada ficha cuenta el número de su punto: una ficha en el punto 6 cuenta 6, en el 13 cuenta 13. Súmalas todas y tendrás tu conteo de pips. Menos es mejor: estás más cerca de sacar. En cada partida, el conteo de pips de cada jugador aparece junto a su nombre.",
             "title": "¿Qué es el recuento de pips?"
           }
         },

@@ -11,6 +11,7 @@ import {
   maxBearOffVisibleSlots,
 } from '@/features/game/bear-off-layout';
 import { translate } from '@/lib/i18n';
+import { trayLabelFontSize } from './bear-off-label';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 
@@ -50,6 +51,7 @@ function BearOffStack({
   const visible = Math.min(count, maxVisible);
   const overflow = count - visible;
   const showTarget = isLegalTarget && isTargetSide;
+  const label = `${player === 'black' ? '▲' : '▽'}${translate('game.status.off_short')}`;
 
   return (
     <View
@@ -65,16 +67,19 @@ function BearOffStack({
     >
       {/* Each label sits at its half's outer edge, which keeps the hinge clear for a cube. */}
       <Text
+        numberOfLines={1}
         style={{
           position: 'absolute',
           top: player === 'black' ? 2 : undefined,
           bottom: player === 'white' ? 2 : undefined,
+          width,
           color: '#B89470',
-          fontSize: 9,
+          fontSize: trayLabelFontSize(label, width),
+          textAlign: 'center',
           zIndex: 20,
         }}
       >
-        {player === 'black' ? '▲ off' : '▽ off'}
+        {label}
       </Text>
 
       {count === 0 && (

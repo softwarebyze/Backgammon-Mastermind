@@ -9,7 +9,7 @@
       "selected": "Geselecteerd Tik op een gemarkeerd punt, of Annuleren"
     },
     "controls": {
-      "bear_off_a11y": "Afhouden",
+      "bear_off_a11y": "Steen uitspelen",
       "cancel": "Annuleren",
       "cancel_a11y": "Selectie annuleren",
       "confirm_move": "Zet bevestigen",
@@ -59,6 +59,11 @@
       "open_settings": "Taal en meer",
       "open_settings_hint": "Instellingen openen",
       "title": "Spelopties"
+    },
+    "players": {
+      "computer": "Computer",
+      "pips": "pips",
+      "you": "Jij"
     },
     "preferences": {
       "auto_move": "Automatisch zetten bij dwang",
@@ -401,7 +406,7 @@
             "title": "Wie ligt achter?"
           },
           "explain": {
-            "body": "Het is het totaal aantal punten dat je stenen nog moeten afleggen om uit te spelen. Elke steen telt het nummer van zijn punt: een op de 6 telt 6, een op de 13 telt 13. Lager is beter, je bent dichter bij uitspelen. De getallen staan bovenin, met een stip voor de kleur.",
+            "body": "De pipstand is het totaal aantal punten dat je schijven nog moeten afleggen tot het uitspelen. Elke schijf telt het nummer van zijn punt – een schijf op het 6-punt telt 6, op het 13-punt telt 13. Tel alles op en je hebt je pipstand. Lager is beter: je bent dichter bij uitspelen. In elke partij staat de pipstand van elke speler naast zijn naam.",
             "title": "Wat is de pip count?"
           }
         },
