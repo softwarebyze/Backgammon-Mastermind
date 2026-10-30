@@ -153,7 +153,7 @@ it('sets the match length below the board and each score in its player strip', (
 it('puts a player on roll by tapping their strip', () => {
   render(<PositionScreen />);
   expect(screen.getByTestId('player-status-white')).toHaveTextContent('positions.on_roll');
-  fireEvent.press(screen.getByTestId('player-strip-black'));
+  fireEvent.press(screen.getByTestId('player-name-black'));
   expect(screen.getByTestId('player-status-black')).toHaveTextContent('positions.on_roll');
   expect(screen.queryByTestId('player-status-white')).toBeNull();
 });

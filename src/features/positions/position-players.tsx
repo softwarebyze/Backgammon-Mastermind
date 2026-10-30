@@ -27,6 +27,7 @@ export function PositionPlayerStrip({ position, player, onChange }: {
       state={state}
       player={player}
       headlineOverride={translate('positions.on_roll')}
+      hideStrategy
       onPress={position.currentPlayer === player ? undefined : putOnRoll}
       pressHint={translate('positions.on_roll_hint')}
       trailing={c.matchLength > 0

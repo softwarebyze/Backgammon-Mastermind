@@ -23,11 +23,13 @@ type Props = {
   headlineOverride?: string | null;
   /** Narrow landscape rail: the strategy chip shrinks to its mark. */
   compact?: boolean;
-  /** Makes the whole strip a button (the position editor sets who is on roll). */
+  /** Makes the name a button (the position editor sets who is on roll). */
   onPress?: () => void;
   pressHint?: string;
   /** Replaces the match score, e.g. with an editable one. */
   trailing?: ReactNode;
+  /** The position editor has no plan to show. */
+  hideStrategy?: boolean;
 };
 
 /**
@@ -35,7 +37,7 @@ type Props = {
  * far they have to go (pip count) and how many checkers are already off.
  * Black sits above the board and white below it, like the checkers.
  */
-export function PlayerStrip({ state, player, headlineOverride = null, compact = false, onPress, pressHint, trailing }: Props) {
+export function PlayerStrip({ state, player, headlineOverride = null, compact = false, onPress, pressHint, trailing, hideStrategy = false }: Props) {
   const name = playerDisplayName(state, player);
   const status = playerStripStatus(state, player, headlineOverride);
   const gameOver = state.phase === 'game-over';
@@ -43,21 +45,23 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const won = gameOver && state.winner === player;
   const pips = calculatePipCount(state, player);
   const off = state.borneOff[player];
-  const showStrategy = !gameOver && strategyPerspective(state) === player;
+  const showStrategy = !hideStrategy && !gameOver && strategyPerspective(state) === player;
   const pipsA11y = translate('game.status.pips_a11y', { player: name, pips, off });
 
-  const Root = onPress ? Pressable : View;
+  // Only the name is pressable, so an editable trailing score never nests buttons.
+  const Identity = onPress ? Pressable : View;
   return (
-    <Root
+    <View
       testID={`player-strip-${player}`}
       style={[styles.strip, active && styles.stripActive, won && styles.stripWon]}
-      {...(onPress ? { onPress, accessibilityRole: 'button' as const, accessibilityHint: pressHint, accessibilityState: { selected: active } } : null)}
     >
-      <View
+      <Identity
         accessible
-        accessibilityRole="text"
+        accessibilityRole={onPress ? 'button' : 'text'}
         accessibilityLabel={status ? `${name}. ${status}` : name}
         style={styles.identity}
+        testID={`player-name-${player}`}
+        {...(onPress ? { onPress, accessibilityHint: pressHint, accessibilityState: { selected: active } } : null)}
       >
         <View style={[styles.tokenRing, active && styles.tokenRingActive]}>
           <CheckerToken player={player} size={TOKEN_SIZE} />
@@ -80,7 +84,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
               )
             : null}
         </View>
-      </View>
+      </Identity>
       {showStrategy ? <StrategyChip state={state} iconOnly={compact} /> : null}
       <View style={styles.score} accessible accessibilityLabel={pipsA11y} testID={`pip-count-${player}`}>
         <AnimatedNumber value={pips} style={[styles.pips, !active && styles.pipsIdle]} />
@@ -91,7 +95,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
         </Text>
       </View>
       {trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} /> : null)}
-    </Root>
+    </View>
   );
 }
 
