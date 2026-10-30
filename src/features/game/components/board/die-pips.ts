@@ -18,15 +18,12 @@ export type Pip = { left: number; top: number; size: number };
  */
 export function diePips(value: number, size: number, border: number): Pip[] {
   const inner = size - border * 2;
-  const target = size * 0.16;
-  let pip = Math.max(3, Math.round(target));
-  // Same parity as the face, so the centre pip sits exactly in the middle;
-  // round down rather than up so pips never grow past the target.
-  if ((inner - pip) % 2 !== 0)
-    pip += pip > 3 ? -1 : 1;
+  const target = size * 0.155;
+  const pip = Math.max(3, Math.round(target));
   // Offset of a quarter-position pip's top-left from the inner edge.
   const near = Math.round(inner * 0.25 - pip / 2);
   const far = inner - pip - near;
+  // Exactly centred, so it can land on a half pixel when the parity differs.
   const mid = (inner - pip) / 2;
   const at = (f: number) => (f < 0.5 ? near : f > 0.5 ? far : mid);
   return (PIP_LAYOUTS[value] ?? PIP_LAYOUTS[1]!).map(([x, y]) => ({ left: at(x), top: at(y), size: pip }));
