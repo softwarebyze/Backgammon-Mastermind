@@ -283,6 +283,9 @@
     "review_a11y": "Tamamlanan oyunu incele",
     "review_sub": "Son oyunun nasıl bittiğini görün",
     "setup": {
+      "crawford": "Crawford kuralı",
+      "crawford_off": "Kapalı",
+      "crawford_on": "Açık",
       "format": "Oyun",
       "length": "Maç uzunluğu",
       "match": "Maç",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "Crawford oyunu",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "Değerini ve sahibini seçmek için dokun. Bir oyuncuya vermek için yukarı veya aşağı sürükle.",

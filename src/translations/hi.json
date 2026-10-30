@@ -283,6 +283,9 @@
     "review_a11y": "पूरा हुआ गेम देखें",
     "review_sub": "देखें कि पिछला गेम कैसे खत्म हुआ",
     "setup": {
+      "crawford": "क्रॉफ़र्ड नियम",
+      "crawford_off": "बंद",
+      "crawford_on": "चालू",
       "format": "खेल",
       "length": "मैच की लंबाई",
       "match": "मैच",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "क्रॉफ़र्ड गेम",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "मान और मालिक चुनने के लिए टैप करें। किसी खिलाड़ी को देने के लिए ऊपर या नीचे खींचें।",

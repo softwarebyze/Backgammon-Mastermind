@@ -283,6 +283,9 @@
     "review_a11y": "Посмотреть завершённую игру",
     "review_sub": "Посмотрите, чем закончилась последняя игра",
     "setup": {
+      "crawford": "Правило Кроуфорда",
+      "crawford_off": "Выкл.",
+      "crawford_on": "Вкл.",
       "format": "Игра",
       "length": "Длина матча",
       "match": "Матч",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "Партия Кроуфорда",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "Нажмите, чтобы выбрать значение и владельца. Перетащите вверх или вниз, чтобы отдать его игроку.",

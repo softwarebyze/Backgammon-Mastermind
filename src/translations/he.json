@@ -283,6 +283,9 @@
     "review_a11y": "צפייה במשחק שהסתיים",
     "review_sub": "לראות איך המשחק האחרון הסתיים",
     "setup": {
+      "crawford": "חוק קרופורד",
+      "crawford_off": "כבוי",
+      "crawford_on": "פעיל",
       "format": "משחק",
       "length": "יעד נקודות",
       "match": "משחק לנקודות",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "משחק קרופורד",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "הקש כדי לקבוע ערך ובעלים. גרור למעלה או למטה כדי לתת אותה לשחקן.",

@@ -283,6 +283,9 @@
     "review_a11y": "終了したゲームを見る",
     "review_sub": "前回のゲームの結末を確認",
     "setup": {
+      "crawford": "クロフォードルール",
+      "crawford_off": "なし",
+      "crawford_on": "あり",
       "format": "対戦形式",
       "length": "マッチの目標点",
       "match": "マッチ",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "クロフォードゲーム",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "タップで値と所有者を設定。上下にドラッグしてプレイヤーに渡します。",

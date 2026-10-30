@@ -85,6 +85,16 @@ it.each([
   expect(usePostHog().capture).toHaveBeenCalledWith('game_started', expect.objectContaining({ mode, match_length: length }));
 });
 
+it('starts a match without the Crawford rule when it is switched off', () => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  expect(screen.getByTestId('home-crawford-on').props.accessibilityState).toEqual({ checked: true });
+  fireEvent.press(screen.getByTestId('home-crawford-off'));
+  fireEvent.press(screen.getByRole('button', { name: 'Start 3-point match' }));
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(3, 'vs-computer', false));
+  expect(usePostHog().capture).toHaveBeenCalledWith('game_started', expect.objectContaining({ match_length: 3, crawford_rule: false }));
+});
+
 it('preserves opponent and length when changing formats', () => {
   render(<HomeScreen />);
   fireEvent.press(screen.getByTestId('home-opponent-vs-human'));

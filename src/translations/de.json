@@ -283,6 +283,9 @@
     "review_a11y": "Beendetes Spiel ansehen",
     "review_sub": "Sieh dir an, wie das letzte Spiel endete",
     "setup": {
+      "crawford": "Crawford-Regel",
+      "crawford_off": "Aus",
+      "crawford_on": "An",
       "format": "Spiel",
       "length": "Matchlänge",
       "match": "Match",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "Crawford-Spiel",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "Tippen, um Wert und Besitzer festzulegen. Nach oben oder unten ziehen, um ihn einem Spieler zu geben.",

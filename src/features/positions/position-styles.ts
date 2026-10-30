@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   scoreHeading: { minHeight: 36, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 },
   // The title keeps one line; the rule chips wrap below it on narrow screens.
   scoreTitle: { ...interFont('semibold'), flexGrow: 1, flexShrink: 0, color: palette.text, fontSize: 16 },
-  scoreRules: { flexDirection: 'row', gap: 6 },
+  scoreRules: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   scoreboard: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 20 },
   scoreCard: { width: 52, height: 56, borderRadius: 12, backgroundColor: '#ECE4D4', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 6, shadowOffset: { width: 0, height: 2 }, elevation: 3 },
   scoreCardDark: { backgroundColor: '#1C1714', borderWidth: 1, borderColor: '#3A302A' },

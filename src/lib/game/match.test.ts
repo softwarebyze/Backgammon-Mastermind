@@ -86,6 +86,19 @@ describe('match cube rules', () => {
     expect(matchEnd.match?.winner).toBe('white');
     expect(nextMatchGame(matchEnd)).toBe(matchEnd);
   });
+  it('skips the Crawford game when the match is played without the rule', () => {
+    const s = finishing();
+    s.match = { ...createMatch(3, false), cube: { value: 2, owner: 'black' } };
+    const next = nextMatchGame(win(s));
+    expect(next.match).toMatchObject({ crawford: false, crawfordRule: false, score: { white: 2, black: 0 } });
+    expect(canOfferDouble({ ...next, phase: 'rolling', currentPlayer: 'black' })).toBe(true);
+  });
+  it('treats saves from before the rule existed as playing it', () => {
+    const s = finishing();
+    const { crawfordRule: _ignored, ...legacy } = s.match!;
+    s.match = { ...legacy, length: 3, cube: { value: 2, owner: 'black' } };
+    expect(nextMatchGame(win(s)).match?.crawford).toBe(true);
+  });
 });
 
 describe('match recovery and history', () => {

@@ -20,6 +20,8 @@ const positionSchema = z.object({
     matchLength: z.number().int().min(0).max(32767),
     scores: z.object({ white: z.number().int().min(0).max(32767), black: z.number().int().min(0).max(32767) }),
     crawford: z.boolean(),
+    /** The match plays the Crawford rule; missing means it does (XGID and GNU IDs cannot say). */
+    crawfordRule: z.boolean().optional(),
     jacoby: z.boolean(),
     beavers: z.boolean(),
     maxCube: z.number().int().min(0).max(15),

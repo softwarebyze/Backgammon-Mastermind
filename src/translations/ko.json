@@ -283,6 +283,9 @@
     "review_a11y": "완료된 게임 보기",
     "review_sub": "마지막 게임이 어떻게 끝났는지 확인하세요",
     "setup": {
+      "crawford": "크로퍼드 규칙",
+      "crawford_off": "끄기",
+      "crawford_on": "켜기",
       "format": "게임 방식",
       "length": "목표 점수",
       "match": "매치",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "크로퍼드 게임",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "탭하여 값과 소유자를 설정하세요. 위아래로 끌어 플레이어에게 줍니다.",

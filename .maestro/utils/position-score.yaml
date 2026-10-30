@@ -50,7 +50,10 @@ tags:
     id: position-score-black
     text: 'Black score: 2'
 - takeScreenshot: position-editable-scoreboard
-# Crawford only exists once exactly one player is a point from winning.
+# The Crawford rule is a match setting; the Crawford game only exists once
+# exactly one player is a point from winning.
+- assertVisible:
+    id: position-crawford-rule
 - assertNotVisible:
     id: position-crawford
 - tapOn:

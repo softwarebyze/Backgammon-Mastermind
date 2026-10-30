@@ -41,6 +41,7 @@ const matchSchema = z.object({
   pendingOffer: playerSchema.nullable(),
   crawford: z.boolean(),
   crawfordPlayed: z.boolean(),
+  crawfordRule: z.boolean().optional(),
   gameNumber: z.number().int().positive(),
   winner: playerSchema.nullable(),
   result: z.object({ winner: playerSchema, points: z.number().int().positive(), kind: z.enum(['single', 'gammon', 'backgammon', 'drop']) }).nullable(),

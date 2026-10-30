@@ -75,7 +75,7 @@ export function HomeScreen() {
   const learnLessonsDone = allLessonsComplete(progress);
 
   const handleStart = useCallback(
-    (mode: GameMode, length: 3 | 5 | null) => {
+    (mode: GameMode, length: 3 | 5 | null, crawfordRule = true) => {
       hapticLight();
       void ensureGameSfxReady();
       requestReplaceActiveGame({
@@ -87,10 +87,10 @@ export function HomeScreen() {
             had_saved_game: isResumableGame(state),
             tutor_mode: preferences.tutorMode,
             ...settingProperties(preferences),
-            ...(length ? { match_length: length } : {}),
+            ...(length ? { match_length: length, crawford_rule: crawfordRule } : {}),
           });
           if (length)
-            startFromPosition(createMatchGame(length, mode));
+            startFromPosition(createMatchGame(length, mode, crawfordRule));
           else
             startGame(mode);
           router.replace('/game');

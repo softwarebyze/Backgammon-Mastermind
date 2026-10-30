@@ -48,6 +48,13 @@ tags:
     direction: DOWN
 - tapOn:
     id: home-match-length-3
+# The Crawford rule is chosen per match and is on by default.
+- scrollUntilVisible:
+    element:
+      id: home-crawford-on
+    direction: DOWN
+- assertVisible:
+    id: home-crawford-off
 - scrollUntilVisible:
     element:
       id: home-start-game

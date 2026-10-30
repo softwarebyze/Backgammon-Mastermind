@@ -6,8 +6,11 @@ export type MatchState = {
   score: Record<Player, number>;
   cube: { value: number; owner: Player | 'center' };
   pendingOffer: Player | null;
+  /** This game is the Crawford game: no doubling. */
   crawford: boolean;
   crawfordPlayed: boolean;
+  /** Whether the match plays the Crawford rule at all; saves from before it existed did. */
+  crawfordRule?: boolean;
   gameNumber: number;
   winner: Player | null;
   result: { winner: Player; points: number; kind: 'single' | 'gammon' | 'backgammon' | 'drop' } | null;
@@ -15,12 +18,12 @@ export type MatchState = {
   undoFloor: number;
 };
 
-export function createMatch(length: 3 | 5): MatchState {
-  return { length, score: { white: 0, black: 0 }, cube: { value: 1, owner: 'center' }, pendingOffer: null, crawford: false, crawfordPlayed: false, gameNumber: 1, winner: null, result: null, undoFloor: 0 };
+export function createMatch(length: 3 | 5, crawfordRule = true): MatchState {
+  return { length, score: { white: 0, black: 0 }, cube: { value: 1, owner: 'center' }, pendingOffer: null, crawford: false, crawfordPlayed: false, crawfordRule, gameNumber: 1, winner: null, result: null, undoFloor: 0 };
 }
 
-export function createMatchGame(length: 3 | 5, mode: GameMode = 'vs-human'): GameState {
-  return { ...createInitialState(mode), match: createMatch(length) };
+export function createMatchGame(length: 3 | 5, mode: GameMode = 'vs-human', crawfordRule = true): GameState {
+  return { ...createInitialState(mode), match: createMatch(length, crawfordRule) };
 }
 
 /** USBGF Ruling Guide 4.4: before own roll, acceptor owns, Crawford and dead cubes. */
@@ -78,7 +81,7 @@ export function nextMatchGame(state: GameState): GameState {
   const m = state.match;
   if (!m?.result || m.winner)
     return state;
-  const crawford = !m.crawfordPlayed && (m.score.white === m.length - 1 || m.score.black === m.length - 1);
+  const crawford = m.crawfordRule !== false && !m.crawfordPlayed && (m.score.white === m.length - 1 || m.score.black === m.length - 1);
   // Every game uses the normal opening roll; previous game winner has no privilege.
   return { ...createInitialState(state.mode), match: { ...m, cube: { value: 1, owner: 'center' }, pendingOffer: null, result: null, gameNumber: m.gameNumber + 1, crawford, crawfordPlayed: m.crawfordPlayed || crawford, undoFloor: 0 } };
 }

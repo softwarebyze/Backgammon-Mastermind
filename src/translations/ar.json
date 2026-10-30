@@ -283,6 +283,9 @@
     "review_a11y": "مراجعة اللعبة المكتملة",
     "review_sub": "شاهد كيف انتهت اللعبة السابقة",
     "setup": {
+      "crawford": "قاعدة كروفورد",
+      "crawford_off": "إيقاف",
+      "crawford_on": "تشغيل",
       "format": "اللعب",
       "length": "طول المباراة",
       "match": "مباراة بالنقاط",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "مباراة كروفورد",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "اضغط لتحديد قيمته ومالكه. اسحب لأعلى أو لأسفل لإعطائه لاعبًا.",

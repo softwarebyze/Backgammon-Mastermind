@@ -8,10 +8,11 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import i18n, { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
-export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: 3 | 5 | null) => void }) {
+export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: 3 | 5 | null, crawfordRule: boolean) => void }) {
   const [mode, setMode] = useState<GameMode>('vs-computer');
   const [format, setFormat] = useState<'single' | 'match'>('single');
   const [length, setLength] = useState<3 | 5>(3);
+  const [crawford, setCrawford] = useState(true);
   return (
     <View style={styles.setup}>
       <HomeSetupChoice
@@ -23,11 +24,11 @@ export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: 3
           { value: 'vs-human', label: translate('home.two_players'), accessibilityLabel: translate('home.two_players_a11y'), testID: 'home-opponent-vs-human' },
         ]}
       />
-      <HomeMatchOptions format={format} length={length} onFormatChange={setFormat} onLengthChange={setLength} />
+      <HomeMatchOptions format={format} length={length} crawford={crawford} onFormatChange={setFormat} onLengthChange={setLength} onCrawfordChange={setCrawford} />
       <HoverPressable
         testID="home-start-game"
         accessibilityRole="button"
-        onPress={() => onStart(mode, format === 'match' ? length : null)}
+        onPress={() => onStart(mode, format === 'match' ? length : null, crawford)}
         style={({ pressed, hovered }) => [styles.start, hovered && styles.hovered, pressed && styles.pressed]}
       >
         <Text style={styles.startText}>

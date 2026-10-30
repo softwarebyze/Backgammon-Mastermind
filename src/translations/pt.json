@@ -283,6 +283,9 @@
     "review_a11y": "Rever o jogo concluído",
     "review_sub": "Vê como terminou o último jogo",
     "setup": {
+      "crawford": "Regra de Crawford",
+      "crawford_off": "Não",
+      "crawford_on": "Sim",
       "format": "Jogo",
       "length": "Duração da partida",
       "match": "Partida",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "Jogo Crawford",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "Toque para definir o valor e o dono. Arraste para cima ou para baixo para entregá-lo a um jogador.",

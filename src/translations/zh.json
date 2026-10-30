@@ -283,6 +283,9 @@
     "review_a11y": "回顾已结束的游戏",
     "review_sub": "查看上一局如何结束",
     "setup": {
+      "crawford": "克劳福德规则",
+      "crawford_off": "关",
+      "crawford_on": "开",
       "format": "对局形式",
       "length": "目标分数",
       "match": "比赛",
@@ -560,6 +563,7 @@
     "copy": "Copy",
     "copy_hint": "Select the text below to copy it.",
     "crawford": "Crawford",
+    "crawford_game": "克劳福德局",
     "cube": "Doubling cube",
     "cube_exponent": "Cube power (2ⁿ)",
     "cube_hint": "点按设置数值和所属方。上下拖动可交给某位玩家。",
