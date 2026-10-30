@@ -3,6 +3,7 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
 import { useMemo, useRef } from 'react';
+import { barStackLayout, MAX_BAR_VISIBLE } from '@/features/game/bar-stack-layout';
 import { hapticLight } from '@/lib/haptics';
 import { setPositionStack, stackDragCount, stackPressCount } from '@/lib/positions/set-stack';
 
@@ -35,7 +36,9 @@ export function usePositionStackEditor(props: {
         color: side,
         location: point === 0 ? `${side}-bar` : point,
         count: point === 0 ? p.bar[side] : p.points[point]!.count,
-        top: point === 0 ? side === 'black' : point >= 13,
+        // Bar stacks grow outward from the hinge (Black up, White down), so a
+        // Black bar drag adds like a bottom point and a White one like a top point.
+        top: point === 0 ? side === 'white' : point >= 13,
         notified: false,
       };
     };
@@ -71,11 +74,16 @@ export function usePositionStackEditor(props: {
         latest.current.onBlocked(null);
         latest.current.onLocation(start.location);
         const d = latest.current.dimensions;
-        const height = point === 0 ? d.boardHeight : d.pointHeight;
-        const distance = start.top ? y : height - y;
-        const count = point === 0
-          ? stackPressCount(distance - 6, d.checkerSize * 0.88, d.checkerSize * 0.88 + 2)
-          : stackPressCount(distance, d.checkerSize, Math.min(d.checkerSize - 2, (d.pointHeight - d.checkerSize) / 4));
+        let count: number;
+        if (point === 0) {
+          const { size, centers } = barStackLayout({ ...d, count: MAX_BAR_VISIBLE, player: start.color });
+          const hingeEdge = start.color === 'black' ? (d.boardHeight - d.middleHeight) / 2 : (d.boardHeight + d.middleHeight) / 2;
+          count = stackPressCount(Math.abs(y - hingeEdge) - 6, size, Math.abs(centers[1]! - centers[0]!));
+        }
+        else {
+          const distance = start.top ? y : d.pointHeight - y;
+          count = stackPressCount(distance, d.checkerSize, Math.min(d.checkerSize - 2, (d.pointHeight - d.checkerSize) / 4));
+        }
         const next = apply(start, count);
         start.count = point === 0 ? next.bar[start.color] : next.points[point]!.player === start.color ? next.points[point]!.count : 0;
       },
