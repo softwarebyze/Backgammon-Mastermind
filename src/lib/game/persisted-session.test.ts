@@ -33,6 +33,17 @@ describe('persisted session schema', () => {
   it('rejects invalid JSON text', () => {
     expect(parsePersistedSessionJson('{not-json').ok).toBe(false);
   });
+
+  it('restores matches of any odd length, not only 3 or 5', () => {
+    const save = (length: number) => parsePersistedSessionValue(makePersistedSession({
+      state: { ...createInitialState('vs-computer'), match: createMatch(length) },
+      moveLog: [],
+      replayBaseline: null,
+    }));
+    expect(save(7).ok).toBe(true);
+    expect(save(11).ok).toBe(true);
+    expect(save(0).ok).toBe(false);
+  });
 });
 
 describe('game state invariants', () => {

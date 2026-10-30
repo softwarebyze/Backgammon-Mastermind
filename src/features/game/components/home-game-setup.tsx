@@ -9,10 +9,10 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import i18n, { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
-export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: 3 | 5 | null, crawfordRule: boolean) => void }) {
+export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: number | null, crawfordRule: boolean) => void }) {
   const [mode, setMode] = useState<GameMode>('vs-computer');
   const [format, setFormat] = useState<'single' | 'match'>('single');
-  const [length, setLength] = useState<3 | 5>(3);
+  const [length, setLength] = useState(3);
   const [crawford, setCrawford] = useState(true);
   return (
     <View style={styles.setup}>
@@ -30,7 +30,7 @@ export function HomeGameSetup({ onStart }: { onStart: (mode: GameMode, length: 3
       <HoverPressable
         testID="home-start-game"
         accessibilityRole="button"
-        onPress={() => onStart(mode, format === 'match' ? length : null, crawford)}
+        onPress={() => onStart(mode, format === 'match' ? length : null, crawford && length > 1)}
         style={({ pressed, hovered }) => [styles.start, hovered && styles.hovered, pressed && styles.pressed]}
       >
         <Text style={styles.startText}>

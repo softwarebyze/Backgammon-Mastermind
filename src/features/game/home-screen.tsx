@@ -6,6 +6,7 @@ import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
 
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,7 +17,6 @@ import { SettingsHeaderButton } from '@/components/navigation/settings-header-bu
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
-import { HomeBoardHero } from '@/features/game/components/home-board-hero';
 import { HomeGameSetup } from '@/features/game/components/home-game-setup';
 import { HOME_INK } from '@/features/game/components/home-ink';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -77,7 +77,7 @@ export function HomeScreen() {
   const learnLessonsDone = allLessonsComplete(progress);
 
   const handleStart = useCallback(
-    (mode: GameMode, length: 3 | 5 | null, crawfordRule = true) => {
+    (mode: GameMode, length: number | null, crawfordRule = true) => {
       hapticLight();
       void ensureGameSfxReady();
       requestReplaceActiveGame({
@@ -139,12 +139,15 @@ export function HomeScreen() {
           })
         : translate('learn.home_cta_sub');
 
-  // Wide or landscape: board on the left, the play panel beside it.
-  const side = landscape || width >= 900;
-  const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, side ? 400 : width - 48);
-  // The board leads, but never crowds the window: capped, with room around it.
-  const heroWidth = side ? Math.min(width - panelWidth - 48 - 48, 680) : Math.min(width - 48, GAME_CHROME_MAX_WIDTH);
-  const heroHeight = side ? Math.min(height - topSpace - 64, 520) : heroWidth * 0.72;
+  // Short landscape phones: the name on the left, the controls beside it, so Start stays on screen.
+  const split = landscape && height < 520;
+  const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, split ? width - 48 - 200 - 32 : width - 48);
+  const brand = (
+    <View style={[styles.brand, split && styles.brandSplit]}>
+      <Image source={require('../../../assets/brand/display-logo.png')} style={styles.logo} resizeMode="cover" accessible={false} />
+      <Text accessibilityRole="header" style={styles.title}>{translate('home.title')}</Text>
+    </View>
+  );
 
   return (
     <>
@@ -154,8 +157,10 @@ export function HomeScreen() {
         style={styles.scroll}
         contentContainerStyle={[
           styles.root,
-          side ? styles.rootSide : null,
-          contentEdgePadding(insets, { left: 24, right: 24, bottom: side ? 16 : 32 }),
+          // Tablets and desktop: the column sits in the middle of the window.
+          width >= 600 ? styles.rootCentered : null,
+          split ? styles.rootSplit : null,
+          contentEdgePadding(insets, { left: 24, right: 24, bottom: landscape ? 16 : 32 }),
           { paddingTop: topSpace },
         ]}
         bounces={false}
@@ -165,10 +170,9 @@ export function HomeScreen() {
         <View style={[styles.settingsCorner, { top: insets.top + 4, right: insets.right + 8 }]}>
           <SettingsHeaderButton />
         </View>
-        <HomeBoardHero maxWidth={heroWidth} maxHeight={heroHeight} />
-
+        {split && brand}
         <View style={[styles.panel, { width: panelWidth }]}>
-          <Text accessibilityRole="header" style={styles.title}>{translate('home.title')}</Text>
+          {!split && brand}
 
           {showRecovery && (
             <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
@@ -266,11 +270,13 @@ const styles = StyleSheet.create({
     gap: 24,
     backgroundColor: GAME_PALETTE.bg,
   },
-  rootSide: {
+  rootCentered: {
+    justifyContent: 'center',
+  },
+  rootSplit: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 48,
+    gap: 32,
   },
   settingsCorner: {
     position: 'absolute',
@@ -279,12 +285,31 @@ const styles = StyleSheet.create({
   panel: {
     gap: 12,
   },
+  brand: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    marginBottom: 12,
+  },
+  brandSplit: {
+    width: 200,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginBottom: 0,
+  },
+  logo: {
+    width: 52,
+    height: 52,
+    borderWidth: 1,
+    borderColor: HOME_INK.hairline,
+    ...continuousRadius(13),
+  },
   title: {
+    flex: 1,
     color: HOME_INK.ivory,
     fontSize: 26,
     lineHeight: 32,
     letterSpacing: -0.4,
-    marginBottom: 4,
     ...interFont('bold'),
   },
   tiles: {

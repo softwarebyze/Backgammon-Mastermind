@@ -95,6 +95,17 @@ it('starts a match without the Crawford rule when it is switched off', () => {
   expect(usePostHog().capture).toHaveBeenCalledWith('game_started', expect.objectContaining({ match_length: 3, crawford_rule: false }));
 });
 
+it('offers odd match lengths up to 11, without Crawford for a 1-point match', () => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  fireEvent.press(screen.getByTestId('home-match-length-7'));
+  fireEvent.press(screen.getByRole('button', { name: 'Start 7-point match' }));
+  expect(useGame().startFromPosition).toHaveBeenLastCalledWith(createMatchGame(7, 'vs-computer', true));
+  fireEvent.press(screen.getByTestId('home-match-length-1'));
+  expect(screen.queryByTestId('home-crawford')).toBeNull();
+  expect(screen.queryByTestId('home-match-length-13')).toBeNull();
+});
+
 it('preserves opponent and length when changing formats', () => {
   render(<HomeScreen />);
   fireEvent.press(screen.getByTestId('home-opponent-vs-human'));

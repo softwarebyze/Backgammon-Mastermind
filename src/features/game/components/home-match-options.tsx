@@ -8,13 +8,16 @@ import { HOME_INK } from './home-ink';
 /** React Native Web ignores thumbColor; it reads these instead. */
 const WEB_SWITCH_COLORS = { activeThumbColor: HOME_INK.ivory, activeTrackColor: GAME_PALETTE.accent } as object;
 
+/** Matches are played to odd lengths; longer ones can be set up in the position editor. */
+const MATCH_LENGTHS = [1, 3, 5, 7, 9, 11];
+
 export function HomeMatchOptions({ format, length, crawford, onFormatChange, onLengthChange, onCrawfordChange }: {
   format: 'single' | 'match';
-  length: 3 | 5;
+  length: number;
   /** The Crawford rule for the whole match: no doubling in the game after a player reaches match point. */
   crawford: boolean;
   onFormatChange: (format: 'single' | 'match') => void;
-  onLengthChange: (length: 3 | 5) => void;
+  onLengthChange: (length: number) => void;
   onCrawfordChange: (crawford: boolean) => void;
 }) {
   return (
@@ -30,29 +33,34 @@ export function HomeMatchOptions({ format, length, crawford, onFormatChange, onL
       />
       {format === 'match' && (
         <View style={styles.match}>
+          <Text style={styles.switchLabel}>{translate('home.setup.length')}</Text>
           <HomeSetupChoice
-            label={i18n.t('home.setup.length', { defaultValue: 'Match length' })}
+            label={translate('home.setup.length')}
             value={length}
             onChange={onLengthChange}
-            options={([3, 5] as const).map(value => ({
+            options={MATCH_LENGTHS.map(value => ({
               value,
-              label: translate('game.match.length', { length: value }),
+              label: String(value),
+              accessibilityLabel: translate('game.match.length', { length: value }),
               testID: `home-match-length-${value}`,
             }))}
           />
-          <View style={styles.switchRow}>
-            <Text style={styles.switchLabel}>{translate('home.setup.crawford')}</Text>
-            <Switch
-              testID="home-crawford"
-              accessibilityLabel={translate('home.setup.crawford')}
-              value={crawford}
-              onValueChange={onCrawfordChange}
-              trackColor={{ false: GAME_PALETTE.surface, true: GAME_PALETTE.accent }}
-              thumbColor={HOME_INK.ivory}
-              ios_backgroundColor={GAME_PALETTE.surface}
-              {...WEB_SWITCH_COLORS}
-            />
-          </View>
+          {/* A 1-point match never uses the cube, so Crawford cannot apply. */}
+          {length > 1 && (
+            <View style={styles.switchRow}>
+              <Text style={styles.switchLabel}>{translate('home.setup.crawford')}</Text>
+              <Switch
+                testID="home-crawford"
+                accessibilityLabel={translate('home.setup.crawford')}
+                value={crawford}
+                onValueChange={onCrawfordChange}
+                trackColor={{ false: GAME_PALETTE.surface, true: GAME_PALETTE.accent }}
+                thumbColor={HOME_INK.ivory}
+                ios_backgroundColor={GAME_PALETTE.surface}
+                {...WEB_SWITCH_COLORS}
+              />
+            </View>
+          )}
         </View>
       )}
     </View>

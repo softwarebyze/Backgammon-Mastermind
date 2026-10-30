@@ -2,7 +2,8 @@ import type { GameMode, GameState, Player } from './types';
 import { createInitialState } from './constants';
 
 export type MatchState = {
-  length: 3 | 5;
+  /** Points to win: an odd number from 1 to 25. */
+  length: number;
   score: Record<Player, number>;
   cube: { value: number; owner: Player | 'center' };
   pendingOffer: Player | null;
@@ -18,11 +19,11 @@ export type MatchState = {
   undoFloor: number;
 };
 
-export function createMatch(length: 3 | 5, crawfordRule = true): MatchState {
+export function createMatch(length: number, crawfordRule = true): MatchState {
   return { length, score: { white: 0, black: 0 }, cube: { value: 1, owner: 'center' }, pendingOffer: null, crawford: false, crawfordPlayed: false, crawfordRule, gameNumber: 1, winner: null, result: null, undoFloor: 0 };
 }
 
-export function createMatchGame(length: 3 | 5, mode: GameMode = 'vs-human', crawfordRule = true): GameState {
+export function createMatchGame(length: number, mode: GameMode = 'vs-human', crawfordRule = true): GameState {
   return { ...createInitialState(mode), match: createMatch(length, crawfordRule) };
 }
 
