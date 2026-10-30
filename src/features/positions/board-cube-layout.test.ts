@@ -1,5 +1,5 @@
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
-import { boardCubeLayout, cubeSlotOffset, nextCubeExponent, snapCubeSlot, stepCubeSlot } from './board-cube-layout';
+import { boardCubeLayout, cubeSlotOffset, snapCubeSlot, stepCubeSlot } from './board-cube-layout';
 
 it.each([288, 398, 700])('keeps the cube in the bear-off tray at board width %i', (width) => {
   const d = fitBoardToViewport(width, 470, { extraHeight: 36 });
@@ -34,13 +34,6 @@ it('steps one slot at a time and stops at the ends', () => {
   expect(stepCubeSlot('black', -1)).toBeUndefined();
   expect(stepCubeSlot('black', 1)).toBeNull();
   expect(stepCubeSlot('white', 1)).toBeUndefined();
-});
-
-it('doubles on each tap and wraps the top value back to 1', () => {
-  expect(nextCubeExponent(0, 6)).toBe(1);
-  expect(nextCubeExponent(5, 6)).toBe(6);
-  expect(nextCubeExponent(6, 6)).toBe(0);
-  expect(nextCubeExponent(4, 3)).toBe(0);
 });
 
 it.each([180, 220, 300])('keeps the cube inside the tray on a %ipx board', (width) => {

@@ -30,6 +30,8 @@ type Props = {
   trailing?: ReactNode;
   /** The position editor has no plan to show. */
   hideStrategy?: boolean;
+  /** Shown, muted, when this side is just waiting ("Tap to put on roll"). */
+  idleStatus?: string;
 };
 
 /**
@@ -37,9 +39,10 @@ type Props = {
  * far they have to go (pip count) and how many checkers are already off.
  * Black sits above the board and white below it, like the checkers.
  */
-export function PlayerStrip({ state, player, headlineOverride = null, compact = false, onPress, pressHint, trailing, hideStrategy = false }: Props) {
+export function PlayerStrip({ state, player, headlineOverride = null, compact = false, onPress, pressHint, trailing, hideStrategy = false, idleStatus }: Props) {
   const name = playerDisplayName(state, player);
-  const status = playerStripStatus(state, player, headlineOverride);
+  const turnStatus = playerStripStatus(state, player, headlineOverride);
+  const status = turnStatus ?? idleStatus ?? null;
   const gameOver = state.phase === 'game-over';
   const active = gameOver ? state.winner === player : state.currentPlayer === player;
   const won = gameOver && state.winner === player;
@@ -74,7 +77,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
             ? (
                 <Animated.View key={status} entering={FadeIn.duration(180)}>
                   <Text
-                    style={[styles.status, won && styles.statusWon]}
+                    style={[styles.status, won && styles.statusWon, !turnStatus && styles.statusIdle]}
                     numberOfLines={1}
                     testID={`player-status-${player}`}
                   >
@@ -181,6 +184,9 @@ const styles = StyleSheet.create({
   },
   statusWon: {
     color: '#E8C860',
+  },
+  statusIdle: {
+    color: GAME_PALETTE.textMuted,
   },
   score: {
     alignItems: 'flex-end',

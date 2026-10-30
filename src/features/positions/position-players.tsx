@@ -6,7 +6,7 @@ import { newPosition, positionGame } from '@/lib/positions/position';
 
 /**
  * The same player strip a game shows, above (Black) or below (White) the
- * board. Tapping it puts that player on roll.
+ * board. Tapping it puts that player on roll; the other strip says so.
  */
 export function PositionPlayerStrip({ position, player, onChange }: {
   position: Position;
@@ -24,6 +24,7 @@ export function PositionPlayerStrip({ position, player, onChange }: {
       hideStrategy
       onPress={position.currentPlayer === player ? undefined : putOnRoll}
       pressHint={translate('positions.on_roll_hint')}
+      idleStatus={translate('positions.tap_on_roll')}
     />
   );
 }

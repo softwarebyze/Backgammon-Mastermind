@@ -162,9 +162,12 @@ it('keeps the match score on a scoreboard with odd match lengths', () => {
 it('puts a player on roll by tapping their strip', () => {
   render(<PositionScreen />);
   expect(screen.getByTestId('player-status-white')).toHaveTextContent('positions.on_roll');
+  // The waiting side says how to give it the roll, apart from the "Place" colours.
+  expect(screen.getByTestId('player-status-black')).toHaveTextContent('positions.tap_on_roll');
+  expect(screen.getByText('positions.place')).toBeTruthy();
   fireEvent.press(screen.getByTestId('player-name-black'));
   expect(screen.getByTestId('player-status-black')).toHaveTextContent('positions.on_roll');
-  expect(screen.queryByTestId('player-status-white')).toBeNull();
+  expect(screen.getByTestId('player-status-white')).toHaveTextContent('positions.tap_on_roll');
 });
 
 /** The header's undo/redo element, as the navigator would render it. */

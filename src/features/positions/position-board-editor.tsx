@@ -3,7 +3,7 @@ import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
 import { useRef } from 'react';
-import { AccessibilityInfo, Pressable, View } from 'react-native';
+import { AccessibilityInfo, Pressable, Text, View } from 'react-native';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { translate } from '@/lib/i18n';
@@ -14,10 +14,12 @@ import { PositionPlayerStrip } from './position-players';
 import { styles } from './position-styles';
 import { usePositionStackEditor } from './use-position-stack-editor';
 
-export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, onStrokeStart, onStrokeEnd, showToolbar = true }: {
+export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, onStrokeStart, onStrokeEnd, showToolbar = true, showStrips = true }: {
   actions?: ReactNode;
   /** Wide layouts move the paint and setup buttons beside the board. */
   showToolbar?: boolean;
+  /** ...and the player strips, so the board can use the full height. */
+  showStrips?: boolean;
   position: Position;
   dimensions: BoardDimensions;
   location: PositionLocation | null;
@@ -51,7 +53,7 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
   return (
     <View style={{ gap: 8, alignSelf: 'stretch', alignItems: 'stretch' }}>
       {showToolbar && <PositionEditorToolbar color={color} onColor={onColor} onLocation={onLocation} actions={actions} />}
-      <PositionPlayerStrip position={position} player="black" onChange={onChange} />
+      {showStrips && <PositionPlayerStrip position={position} player="black" onChange={onChange} />}
       <View style={styles.board}>
         <BoardView
           state={board}
@@ -89,7 +91,7 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
         <PositionBoardDice position={position} dimensions={dimensions} onChange={onChange} />
         <BoardCube position={position} dimensions={dimensions} onChange={patch => onChange({ ...position, context: { ...position.context, ...patch } })} />
       </View>
-      <PositionPlayerStrip position={position} player="white" onChange={onChange} />
+      {showStrips && <PositionPlayerStrip position={position} player="white" onChange={onChange} />}
     </View>
   );
 }
@@ -117,10 +119,14 @@ export function PositionEditorToolbar({ color, onColor, onLocation, actions }: {
   );
 }
 
-/** Which colour taps and drags add. Existing stacks keep their own colour. */
+/**
+ * Which colour taps and drags add. Existing stacks keep their own colour.
+ * Labelled "Place" so it never reads as choosing who is on roll.
+ */
 function PaintColors({ color, onChange }: { color: Player; onChange: (side: Player) => void }) {
   return (
     <View style={styles.paintGroup} accessibilityLabel={translate('positions.paint')}>
+      <Text style={styles.paintLabel} accessible={false}>{translate('positions.place')}</Text>
       {(['white', 'black'] as const).map(side => (
         <Pressable
           key={side}

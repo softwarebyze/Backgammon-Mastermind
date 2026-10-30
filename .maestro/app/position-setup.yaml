@@ -26,6 +26,11 @@ tags:
     id: player-strip-white
 - assertVisible:
     id: position-cube
+# Who is on roll and which colour to place are labelled apart.
+- assertVisible:
+    id: player-status-black
+    text: Tap to put on roll
+- assertVisible: Place
 - assertNotVisible:
     id: position-start
 - takeScreenshot: position-compact-workspace
@@ -56,7 +61,7 @@ tags:
     id: position-die-1
     text: 'Dice 2: 2'
 - takeScreenshot: position-visible-presets-dice
-# The cube is edited in place: tap doubles it, the arrows give it to a player.
+# Tapping the cube opens every value and owner at once.
 - runFlow:
     file: ../utils/position-scroll.yaml
     env:
@@ -65,16 +70,27 @@ tags:
       END_Y: '25%'
 - tapOn:
     id: position-cube
+- assertVisible:
+    id: position-cube-picker
+- takeScreenshot: position-cube-picker
 - tapOn:
-    id: position-cube-up
+    id: position-cube-value-1
+- tapOn:
+    id: position-cube-owner-black
+- tapOn:
+    id: position-cube-done
+- assertNotVisible:
+    id: position-cube-picker
 - assertVisible:
     id: position-cube
     text: 'Doubling cube: 2. Cube owner: Black'
 - takeScreenshot: position-visual-cube
-- assertNotVisible:
-    id: position-cube-up
 - tapOn:
-    id: position-cube-down
+    id: position-cube
+- tapOn:
+    id: position-cube-owner-center
+- tapOn:
+    id: position-cube-done
 - assertVisible:
     id: position-cube
     text: 'Doubling cube: 2. Cube owner: Centered'

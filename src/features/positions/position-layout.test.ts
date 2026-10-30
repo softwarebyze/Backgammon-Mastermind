@@ -1,5 +1,5 @@
 import { nextMatchLength } from './match-length';
-import { positionLayout, SIDE_PANEL_WIDTH } from './position-layout';
+import { positionLayout } from './position-layout';
 
 it('steps the match target through money and odd lengths', () => {
   const up: number[] = [0];
@@ -21,9 +21,17 @@ it('stacks the controls under the board on phones', () => {
 it('puts the controls beside the board in wide or short windows', () => {
   const zoomedIn = positionLayout(720, 450, 0);
   expect(zoomedIn.side).toBe(true);
-  expect(zoomedIn.boardWidth).toBe(720 - 32 - SIDE_PANEL_WIDTH - 24);
+  expect(zoomedIn.boardWidth).toBe(720 - 32 - zoomedIn.panelWidth - 24);
   // Zoomed out, the board grows with the window instead of staying small.
   expect(positionLayout(2880, 1800, 0).boardHeight).toBeGreaterThan(1200);
+});
+
+it('gives a landscape phone board the full height, with the strips in the panel', () => {
+  const layout = positionLayout(844, 390, 0);
+  expect(layout.side).toBe(true);
+  expect(layout.panelWidth).toBe(280);
+  // Header and page padding only: no strips, toolbar or scoreboard above or below.
+  expect(layout.boardHeight).toBe(390 - 108);
 });
 
 it('scrolls on small phones instead of shrinking the board to a sliver', () => {

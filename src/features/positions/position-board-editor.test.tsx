@@ -222,6 +222,7 @@ it('draws the one cube on the board and edits it in place', () => {
   const change = jest.fn();
   render(<Editor position={newPosition()} dimensions={dims} location={null} onLocation={jest.fn()} onChange={change} />);
   expect(screen.getAllByTestId('doubling-cube-face')).toHaveLength(1);
-  fireEvent.press(screen.getByTestId('position-cube-up'));
+  fireEvent(screen.getByTestId('position-cube'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+  fireEvent.press(screen.getByTestId('position-cube-owner-black'));
   expect(change.mock.lastCall![0].context.cubeOwner).toBe('black');
 });

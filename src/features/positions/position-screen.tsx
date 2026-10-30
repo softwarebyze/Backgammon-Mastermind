@@ -18,7 +18,8 @@ import { PositionAction } from './position-controls';
 import { positionError } from './position-errors';
 import { PositionExchange } from './position-exchange';
 import { PositionHistoryActions } from './position-history-actions';
-import { positionLayout, SIDE_GAP, SIDE_PANEL_WIDTH } from './position-layout';
+import { positionLayout, SIDE_GAP } from './position-layout';
+import { PositionPlayerStrip } from './position-players';
 import { PositionSaved } from './position-saved';
 import { PositionScoreboard } from './position-scoreboard';
 import { styles } from './position-styles';
@@ -130,6 +131,7 @@ function PositionWorkspace({ data }: { data?: string }) {
       onStrokeEnd={history.strokeEnd}
       actions={setupActions}
       showToolbar={!layout.side}
+      showStrips={!layout.side}
     />
   );
   const panel = (
@@ -175,14 +177,16 @@ function PositionWorkspace({ data }: { data?: string }) {
         keyboardDismissMode="on-drag"
         automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[styles.content, { maxWidth: dims.boardOuterWidth + 32 + insets.left + insets.right + (layout.side ? SIDE_PANEL_WIDTH + SIDE_GAP : 0), paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
+        contentContainerStyle={[styles.content, { maxWidth: dims.boardOuterWidth + 32 + insets.left + insets.right + (layout.side ? layout.panelWidth + SIDE_GAP : 0), paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
       >
         {!!data && <Text style={styles.caption}>{translate('positions.shared_intro')}</Text>}
         {layout.side
           ? (
               <View style={styles.sideLayout}>
                 {editor}
-                <View style={[styles.sidePanel, { width: SIDE_PANEL_WIDTH }]}>
+                <View style={[styles.sidePanel, { width: layout.panelWidth }]}>
+                  <PositionPlayerStrip position={position} player="black" onChange={change} />
+                  <PositionPlayerStrip position={position} player="white" onChange={change} />
                   <PositionEditorToolbar color={color} onColor={setColor} onLocation={selectLocation} actions={setupActions} />
                   {panel}
                 </View>

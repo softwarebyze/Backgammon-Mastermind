@@ -1,14 +1,14 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Position } from '@/lib/positions/position';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { boardDiceSide, boardDieGap, boardDieSize, boardHalfFrame } from '@/features/game/components/board/board-dice-layout';
 import { DieFace, EmptyDiePlaceholder } from '@/features/game/components/board/dice-display';
 import { playingSurfaceOffset } from '@/features/game/components/board/playing-surface-offset';
-import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticSelection } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { interFont } from '@/lib/ui/fonts';
+import { BoardPicker } from './position-board-picker';
+import { pickerStyles } from './position-picker-styles';
 
 type DieIndex = 0 | 1;
 const FACES = [1, 2, 3, 4, 5, 6] as const;
@@ -84,7 +84,7 @@ export function PositionBoardDice({ position, dimensions, onChange }: {
   );
 }
 
-/** Six faces and "Roll later" over a dimmed board; tapping outside closes it. */
+/** Six faces and "Roll later" over a dimmed board. */
 function DiePicker({ title, current, size, playerColor, onPick, onClose }: {
   title: string;
   current: number;
@@ -94,96 +94,31 @@ function DiePicker({ title, current, size, playerColor, onPick, onClose }: {
   onClose: () => void;
 }) {
   return (
-    <View style={styles.overlay} testID="position-die-picker">
-      <Pressable style={StyleSheet.absoluteFill} accessibilityRole="button" accessibilityLabel={translate('positions.done')} testID="position-die-picker-close" onPress={onClose} />
-      <View style={styles.card}>
-        <Text style={styles.title}>{title}</Text>
-        <View style={[styles.grid, { width: (size + 10) * 3 + 8 * 2 }]}>
-          {FACES.map(value => (
-            <Pressable
-              key={value}
-              testID={`position-die-option-${value}`}
-              accessibilityRole="button"
-              accessibilityLabel={`${title}: ${value}`}
-              accessibilityState={{ selected: current === value }}
-              onPress={() => onPick(value)}
-              style={({ pressed }) => [styles.option, current === value && styles.optionSelected, pressed && styles.pressed]}
-            >
-              <DieFace value={value} used={false} playerColor={playerColor} displayStyle="dots" size={size} />
-            </Pressable>
-          ))}
-        </View>
-        <Pressable
-          testID="position-die-option-0"
-          accessibilityRole="button"
-          accessibilityState={{ selected: current === 0 }}
-          onPress={() => onPick(0)}
-          style={({ pressed }) => [styles.later, current === 0 && styles.optionSelected, pressed && styles.pressed]}
-        >
-          <Text style={styles.laterText}>{translate('positions.roll_later')}</Text>
-        </Pressable>
+    <BoardPicker testID="position-die-picker" title={title} onClose={onClose}>
+      <View style={[pickerStyles.grid, { width: (size + 10) * 3 + 8 * 2 }]}>
+        {FACES.map(value => (
+          <Pressable
+            key={value}
+            testID={`position-die-option-${value}`}
+            accessibilityRole="button"
+            accessibilityLabel={`${title}: ${value}`}
+            accessibilityState={{ selected: current === value }}
+            onPress={() => onPick(value)}
+            style={({ pressed }) => [pickerStyles.option, current === value && pickerStyles.optionSelected, pressed && pickerStyles.pressed]}
+          >
+            <DieFace value={value} used={false} playerColor={playerColor} displayStyle="dots" size={size} />
+          </Pressable>
+        ))}
       </View>
-    </View>
+      <Pressable
+        testID="position-die-option-0"
+        accessibilityRole="button"
+        accessibilityState={{ selected: current === 0 }}
+        onPress={() => onPick(0)}
+        style={({ pressed }) => [pickerStyles.pill, current === 0 && pickerStyles.optionSelected, pressed && pickerStyles.pressed]}
+      >
+        <Text style={pickerStyles.pillText}>{translate('positions.roll_later')}</Text>
+      </Pressable>
+    </BoardPicker>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    zIndex: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(10, 4, 1, 0.55)',
-    borderRadius: 12,
-  },
-  card: {
-    alignItems: 'center',
-    gap: 8,
-    padding: 12,
-    borderRadius: 16,
-    backgroundColor: GAME_PALETTE.bg,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.surfaceBorder,
-  },
-  title: {
-    color: GAME_PALETTE.text,
-    fontSize: 14,
-    ...interFont('semibold'),
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  option: {
-    padding: 4,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'transparent',
-  },
-  optionSelected: {
-    borderColor: GAME_PALETTE.accent,
-    backgroundColor: GAME_PALETTE.surface,
-  },
-  later: {
-    minHeight: 36,
-    paddingHorizontal: 14,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.surfaceBorder,
-    justifyContent: 'center',
-  },
-  laterText: {
-    color: GAME_PALETTE.text,
-    fontSize: 14,
-    ...interFont('medium'),
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-});

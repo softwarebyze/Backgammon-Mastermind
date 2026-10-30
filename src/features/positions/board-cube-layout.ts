@@ -49,8 +49,3 @@ export function stepCubeSlot(slot: CubeSlot, direction: -1 | 1): CubeSlot | unde
   const next = CUBE_SLOTS.indexOf(slot) + direction;
   return next < 0 || next >= CUBE_SLOTS.length ? undefined : CUBE_SLOTS[next];
 }
-
-/** A tap doubles the cube; past the top value it wraps back to the centred 64. */
-export function nextCubeExponent(exponent: number, maxCube: number): number {
-  return exponent >= maxCube ? 0 : exponent + 1;
-}

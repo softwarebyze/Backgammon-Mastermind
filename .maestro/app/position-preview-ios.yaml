@@ -63,17 +63,30 @@ tags:
       TARGET_ID: position-cube
       START_Y: '80%'
       END_Y: '25%'
-# The cube is edited in place: tap doubles it, the arrows give it to a player.
+# Tapping the cube opens every value and owner at once.
 - tapOn:
     id: position-cube
+- assertVisible:
+    id: position-cube-picker
+- takeScreenshot: position-cube-picker
 - tapOn:
-    id: position-cube-up
+    id: position-cube-value-1
+- tapOn:
+    id: position-cube-owner-black
+- tapOn:
+    id: position-cube-done
+- assertNotVisible:
+    id: position-cube-picker
 - assertVisible:
     id: position-cube
     text: 'Doubling cube: 2. Cube owner: Black'
 - takeScreenshot: position-visual-cube
 - tapOn:
-    id: position-cube-down
+    id: position-cube
+- tapOn:
+    id: position-cube-owner-center
+- tapOn:
+    id: position-cube-done
 - assertVisible:
     id: position-cube
     text: 'Doubling cube: 2. Cube owner: Centered'

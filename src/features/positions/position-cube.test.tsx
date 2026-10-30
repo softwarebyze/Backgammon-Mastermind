@@ -17,15 +17,31 @@ function mountCube(context: Partial<Position['context']> = {}) {
   return onChange;
 }
 
-it('steps toward Black or White with the arrows and hides the arrow at each end', () => {
-  let onChange = mountCube();
-  fireEvent.press(screen.getByTestId('position-cube-down'));
-  expect(onChange).toHaveBeenLastCalledWith({ cubeOwner: 'white' });
+it('opens every value and owner in one tap', () => {
+  const onChange = mountCube();
+  expect(screen.queryByTestId('position-cube-picker')).toBeNull();
+  fireEvent(screen.getByTestId('position-cube'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+  fireEvent.press(screen.getByTestId('position-cube-value-3'));
+  expect(onChange).toHaveBeenLastCalledWith({ cubeExponent: 3 });
+  fireEvent.press(screen.getByTestId('position-cube-owner-black'));
+  expect(onChange).toHaveBeenLastCalledWith({ cubeOwner: 'black' });
+  // The picker stays open for the other half; Done closes it.
+  fireEvent.press(screen.getByTestId('position-cube-done'));
+  expect(screen.queryByTestId('position-cube-picker')).toBeNull();
+});
+
+it('offers values up to 64, or the match cube limit when lower', () => {
+  mountCube({ maxCube: 10 });
+  fireEvent(screen.getByTestId('position-cube'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+  expect(screen.getByTestId('position-cube-value-6')).toBeTruthy();
+  expect(screen.queryByTestId('position-cube-value-7')).toBeNull();
   screen.unmount();
-  onChange = mountCube({ cubeOwner: 'black' });
-  expect(screen.queryByTestId('position-cube-up')).toBeNull();
-  fireEvent.press(screen.getByTestId('position-cube-down'));
-  expect(onChange).toHaveBeenLastCalledWith({ cubeOwner: null });
+  mountCube({ maxCube: 3 });
+  fireEvent(screen.getByTestId('position-cube'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
+  expect(screen.getByTestId('position-cube-value-3')).toBeTruthy();
+  expect(screen.queryByTestId('position-cube-value-4')).toBeNull();
+  fireEvent.press(screen.getByTestId('position-cube-picker-close'));
+  expect(screen.queryByTestId('position-cube-picker')).toBeNull();
 });
 
 it('adjusts the value and owner from accessibility actions', () => {
