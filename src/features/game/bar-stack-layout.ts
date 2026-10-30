@@ -4,7 +4,9 @@ export const MAX_BAR_VISIBLE = 4;
 const PADDING = 6;
 
 /**
- * Board-local centers, back to front. Both stacks grow away from the hinge.
+ * Board-local centers, back to front. Both stacks grow away from the hinge:
+ * the first checker sits beside the hinge and each new one lands in the next
+ * slot out, so checkers already on the bar never shift when another arrives.
  * Shared by drawing, touch snapping, drag overlays, and move/path animations.
  * Vertical player sides stay fixed when the board's horizontal layout is RTL.
  */
@@ -29,6 +31,6 @@ export function barStackLayout({
     ? halfHeight - PADDING - size / 2
     : halfHeight + middleHeight + PADDING + size / 2;
   const direction = player === 'black' ? -1 : 1;
-  const centers = Array.from({ length: visible }, (_, i) => nearHinge + direction * (visible - 1 - i) * step);
+  const centers = Array.from({ length: visible }, (_, i) => nearHinge + direction * i * step);
   return { size, centers };
 }

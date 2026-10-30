@@ -26,10 +26,23 @@ it.each(['white', 'black'] as const)('uses the visible front %s checker for touc
     const layout = barStackLayout({ ...dims, player, count });
     const anchor = getCheckerAnchor({ pointIndex: 0, dims, player, stackCount: count });
     expect(anchor.y).toBe(layout.centers[layout.centers.length - 1]);
-    expect(Math.abs(anchor.y - dims.boardHeight / 2)).toBeLessThan(dims.checkerSize + dims.middleHeight);
     expect(resolveDropTarget(anchor.x, anchor.y, dims)).toBe(0);
     const state = createPositionState({ bar: { [player]: count }, currentPlayer: player, dice: [1, 2], mode: 'vs-human' });
     expect(hitTestFatFinger({ ...anchor, state, dims })).toBe(0);
     expect(resolvePanOrigin({ pointIndex: 0, state, dims })).toBe(0);
+  }
+});
+
+it.each(['white', 'black'] as const)('lands each new %s bar checker in the next slot without moving the others', (player) => {
+  const dims = resolveBoardViewport({ screenWidth: 390, screenHeight: 844, platform: 'ios', slotWidth: 390, slotHeight: 600 });
+  const first = barStackLayout({ ...dims, player, count: 1 }).centers[0]!;
+  expect(Math.abs(first - dims.boardHeight / 2)).toBeLessThan(dims.checkerSize + dims.middleHeight);
+  for (let count = 2; count <= MAX_BAR_VISIBLE; count++) {
+    const before = barStackLayout({ ...dims, player, count: count - 1 }).centers;
+    const after = barStackLayout({ ...dims, player, count }).centers;
+    // Existing checkers keep their place; the landing slot is the new front.
+    expect(after.slice(0, -1)).toEqual(before);
+    expect(getCheckerAnchor({ pointIndex: 0, dims, player, stackCount: count }).y).toBe(after[after.length - 1]);
+    expect(Math.abs(after[after.length - 1]! - dims.boardHeight / 2)).toBeGreaterThan(Math.abs(before[before.length - 1]! - dims.boardHeight / 2));
   }
 });
