@@ -47,6 +47,8 @@ type Props = {
   compact?: boolean;
   /** Tray die edge; the layout derives it from the board's checker size. */
   dieSize?: number;
+  /** The board draws the dice in the roller's half; skip the tray row. */
+  diceOnBoard?: boolean;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
@@ -88,6 +90,7 @@ export function GameScreenControls({
   canUndoMove = false,
   compact = false,
   dieSize = TRAY_DIE_SIZE,
+  diceOnBoard = false,
 }: Props) {
   const { preferences } = useGamePreferences();
   const guidance = useGuidance();
@@ -103,32 +106,36 @@ export function GameScreenControls({
 
   return (
     <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow} pointerEvents="none">
-        {showOpening
-          ? (
+      {diceOnBoard
+        ? null
+        : (
+            <View style={styles.diceRow} pointerEvents="none">
+              {showOpening
+                ? (
               // Opening: each side's die in its own color; the engine hands these
               // same two values to the winner, so nothing has to travel.
-              <DiceDisplay
-                dice={opening.dice}
-                remainingDice={opening.dice.filter(v => v !== 0)}
-                playerColor={diceForTray.currentPlayer}
-                slotColors={['white', 'black']}
-                emphasis={opening.emphasis}
-                displayStyle={preferences.diceDisplayStyle}
-                size={dieSize}
-              />
-            )
-          : (
-              <DiceDisplay
-                dice={diceForTray.dice}
-                remainingDice={diceForTray.remainingDice}
-                playerColor={diceForTray.currentPlayer}
-                displayStyle={preferences.diceDisplayStyle}
-                animateRoll={!isReviewing}
-                size={dieSize}
-              />
-            )}
-      </View>
+                    <DiceDisplay
+                      dice={opening.dice}
+                      remainingDice={opening.dice.filter(v => v !== 0)}
+                      playerColor={diceForTray.currentPlayer}
+                      slotColors={['white', 'black']}
+                      emphasis={opening.emphasis}
+                      displayStyle={preferences.diceDisplayStyle}
+                      size={dieSize}
+                    />
+                  )
+                : (
+                    <DiceDisplay
+                      dice={diceForTray.dice}
+                      remainingDice={diceForTray.remainingDice}
+                      playerColor={diceForTray.currentPlayer}
+                      displayStyle={preferences.diceDisplayStyle}
+                      animateRoll={!isReviewing}
+                      size={dieSize}
+                    />
+                  )}
+            </View>
+          )}
       <View
         style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"

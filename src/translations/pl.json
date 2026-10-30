@@ -59,6 +59,11 @@
       "open_settings_hint": "Otwórz Ustawienia",
       "title": "Opcje gry"
     },
+    "players": {
+      "computer": "Komputer",
+      "pips": "pipsów",
+      "you": "Ty"
+    },
     "preferences": {
       "auto_move": "Automatyczny ruch przymusowy",
       "auto_move_hint": "Automatycznie wykonuje jedyny możliwy ruch",
@@ -106,7 +111,7 @@
     "status": {
       "black_wins": "Czarne wygrywają",
       "computer_wins": "Komputer wygrywa",
-      "off_short": "zbite",
+      "off_short": "zdjęte",
       "pips_a11y": "{{player}}: {{pips}} pipsów, {{off}} z 15 zdjętych",
       "white_wins": "🏆 Białe wygrywają!",
       "you_win": "🏆 Wygrywasz!"
@@ -399,7 +404,7 @@
             "title": "Kto jest z tyłu?"
           },
           "explain": {
-            "body": "To suma pól, które twoje piony muszą jeszcze przejść, żeby zejść z planszy. Każdy pion dodaje numer swojego pola: na polu 6 liczy się 6, na polu 13 liczy się 13. Mniej znaczy lepiej, jesteś bliżej zejścia. Liczby są u góry w każdej partii, a kropka pokazuje kolor.",
+            "body": "Liczba pipsów to łączna liczba pól, które twoje pionki muszą jeszcze przejść do zdjęcia. Każdy pionek liczy się numerem swojego pola – pionek na polu 6 to 6, na polu 13 to 13. Dodaj wszystko, a otrzymasz swoją liczbę pipsów. Mniej znaczy lepiej: jesteś bliżej zdejmowania. W każdej partii liczba pipsów każdego gracza widnieje obok jego nazwy.",
             "title": "Czym jest liczba pipów?"
           }
         },

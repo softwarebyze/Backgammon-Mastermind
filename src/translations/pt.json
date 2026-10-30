@@ -59,6 +59,11 @@
       "open_settings_hint": "Abrir Ajustes",
       "title": "Opções do jogo"
     },
+    "players": {
+      "computer": "Computador",
+      "pips": "pips",
+      "you": "Você"
+    },
     "preferences": {
       "auto_move": "Mover automaticamente quando forçado",
       "auto_move_hint": "Jogar automaticamente o único movimento legal",
@@ -399,7 +404,7 @@
             "title": "Quem vai atrás?"
           },
           "explain": {
-            "body": "É a soma dos pontos que as tuas peças ainda têm de percorrer para sair. Cada peça conta o número do ponto: uma no 6 vale 6, uma no 13 vale 13. Menos é melhor, estás mais perto de sair. Os números aparecem em cima em cada partida, com um ponto para a cor.",
+            "body": "A contagem de pips é o total de pontos que suas pedras ainda precisam percorrer para sair. Cada pedra vale o número do seu ponto: uma pedra no ponto 6 vale 6, no 13 vale 13. Some todas e você tem sua contagem de pips. Menos é melhor: você está mais perto de retirar. Em toda partida, a contagem de cada jogador aparece ao lado do nome dele.",
             "title": "O que é a contagem de pips?"
           }
         },

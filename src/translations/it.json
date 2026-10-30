@@ -59,6 +59,11 @@
       "open_settings_hint": "Apri Impostazioni",
       "title": "Opzioni di gioco"
     },
+    "players": {
+      "computer": "Computer",
+      "pips": "pip",
+      "you": "Tu"
+    },
     "preferences": {
       "auto_move": "Mossa automatica se obbligata",
       "auto_move_hint": "Gioca automaticamente l'unica mossa legale",
@@ -399,7 +404,7 @@
             "title": "Chi è indietro?"
           },
           "explain": {
-            "body": "È la somma dei punti che le tue pedine devono ancora percorrere per uscire. Ogni pedina conta il numero del suo punto: una sul 6 vale 6, una sul 13 vale 13. Meno è meglio, sei più vicino all’uscita. I numeri stanno in alto in ogni partita, con un puntino per il colore.",
+            "body": "Il conteggio dei pip è il totale delle punte che le tue pedine devono ancora percorrere per uscire. Ogni pedina vale il numero della sua punta: una pedina sulla punta 6 vale 6, sulla 13 vale 13. Sommale tutte e ottieni il tuo conteggio. Meno è meglio: sei più vicino all'uscita. In ogni partita il conteggio di ogni giocatore compare accanto al suo nome.",
             "title": "Che cos’è il conteggio pip?"
           }
         },
