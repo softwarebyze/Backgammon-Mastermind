@@ -138,7 +138,7 @@ function PositionWorkspace({ data }: { data?: string }) {
       {!!invalid && <Text accessibilityRole="alert" testID="position-invalid" style={styles.error}>{invalid}</Text>}
       {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
       <View style={styles.workspaceActions}>
-        <PositionAction compact symbol="share-2" label={translate('positions.exchange_short')} testID="position-exchange-toggle" selected={tool === 'exchange'} onPress={() => openTool('exchange')} />
+        <PositionAction compact symbol="share-2" label={translate('positions.exchange_short')} iconOnly={width < 360} testID="position-exchange-toggle" selected={tool === 'exchange'} onPress={() => openTool('exchange')} />
         <PositionAction compact symbol="bookmark" label={translate('positions.saved_short')} testID="position-saved-toggle" selected={tool === 'saved'} onPress={() => openTool('saved')} />
         <View style={styles.toolbarSpacer} />
         <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline selected={tool === 'play'} disabled={!!invalid || finished} onPress={() => openTool('play')} />

@@ -167,6 +167,12 @@ tags:
     id: position-save-name
 - inputText: '   '
 - hideKeyboard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-save
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-save
 - assertVisible: 'Untitled position.*'
@@ -175,6 +181,12 @@ tags:
 - eraseText
 - inputText: My saved position
 - hideKeyboard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-save
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-save
 - assertVisible: 'My saved position.*'
