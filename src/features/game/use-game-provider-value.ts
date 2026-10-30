@@ -32,6 +32,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     recordNoMove,
     resetMoveLog,
     reloadMoveLog,
+    getMoveLog,
     popLastMove,
     restoreMove,
   } = useMoveLog(state);
@@ -41,7 +42,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   moveLogRef.current = moveLog;
   const replayBaselineRef = useRef(replayBaseline);
   replayBaselineRef.current = replayBaseline;
-  const { timeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
+  const { timeline, getTimeline, setTimeline, resetTimeline, clearTimeline, recordTimelineMove } = useGameTimeline();
   const { noteMoveApplied, resetForNewGame } = useGameCompletedCapture(state, moveLog.length);
   const handleMoveRecorded = useCallback((snapshot: GameState, move: Move, next: GameState) => {
     recordMove(snapshot, move, next);
@@ -71,6 +72,10 @@ export function useGameProviderValue(active: boolean): GameContextType {
     isAnimating,
     doMove,
     doMoveSequence,
+    getMoveState,
+    commitHistoryState,
+    addHistoryFrame,
+    prepareHistory,
     playMove,
     resetAnimation,
     armAnimationFinish,
@@ -83,9 +88,15 @@ export function useGameProviderValue(active: boolean): GameContextType {
    * everything. (Hint sessions never pause: the player keeps playing.)
    */
   const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
-  const selectPoint = useGameSelectPoint(setState, isAnimating);
+  const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
   const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
+    getTimeline,
+    getMoveLog,
+    getMoveState,
+    commitHistoryState,
+    startCommittedFrame: addHistoryFrame,
+    prepareHistory,
     timeline,
     setTimeline,
     setState,
@@ -238,6 +249,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     selectPoint,
     doMove,
     doMoveSequence,
+    getMoveState,
     doUndo,
     doRedo,
     canUndo,
