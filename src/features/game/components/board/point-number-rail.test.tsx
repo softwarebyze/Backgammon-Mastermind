@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react-native';
+import { render, screen } from '@testing-library/react-native';
 import { Text } from 'react-native';
 
 import { pointNumberLabel, resolveNumberPerspective } from '@/features/game/point-numbering';
@@ -98,5 +98,35 @@ describe('pointNumberRail', () => {
     expect(renderedLabels('bottom', 'black')).toEqual(
       ['13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'],
     );
+  });
+});
+
+describe('move hints in the rail (#265)', () => {
+  it('lights the numbers of the points the player can move from, by physical point', () => {
+    render(
+      <PointNumberRail side="bottom" dimensions={DIMENSIONS} highlighted={new Set([6, 8])} />,
+    );
+    expect(screen.getByTestId('move-hint-6')).toBeTruthy();
+    expect(screen.getByTestId('move-hint-8')).toBeTruthy();
+    expect(screen.queryByTestId('move-hint-5')).toBeNull();
+  });
+
+  it('follows the label perspective: black\'s movable 24-point reads as its 1', () => {
+    render(
+      <PointNumberRail side="top" dimensions={DIMENSIONS} perspective="black" highlighted={new Set([24])} />,
+    );
+    expect(screen.getByTestId('move-hint-1')).toBeTruthy();
+  });
+});
+
+describe('bar hint in the rail', () => {
+  it('lights a Bar pill in the bar gap when entering from the bar', () => {
+    render(<PointNumberRail side="bottom" dimensions={DIMENSIONS} barLit />);
+    expect(screen.getByTestId('move-hint-bar')).toBeTruthy();
+  });
+
+  it('leaves the bar gap empty otherwise', () => {
+    render(<PointNumberRail side="bottom" dimensions={DIMENSIONS} highlighted={new Set([6])} />);
+    expect(screen.queryByTestId('move-hint-bar')).toBeNull();
   });
 });

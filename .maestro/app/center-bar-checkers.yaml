@@ -1,0 +1,38 @@
+# Both bar stacks overflow; they sit beside the centre groove, one per player
+# side, with their counts visible, and a bar checker still enters.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+# The overflowing bar turn has a forced result; turn off its automatic playback
+# so the flow can select and enter a checker itself.
+- openLink: backgammonmastermind.preview://settings
+- scrollUntilVisible:
+    element: Auto-move when forced
+    direction: DOWN
+    timeout: 15000
+- tapOn: Auto-move when forced
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible:
+      id: developer-preset-e2e-center-bar
+    timeout: 60000
+- tapOn:
+    id: developer-preset-e2e-center-bar
+- extendedWaitUntil:
+    visible: 'Bar, 7 white checkers, 6 black checkers'
+    timeout: 45000
+- takeScreenshot: center-bar-01-stacks
+- tapOn:
+    id: board-bar
+- tapOn:
+    id: point-24
+- extendedWaitUntil:
+    visible: 'Bar, 6 white checkers, 6 black checkers'
+    timeout: 15000
+- takeScreenshot: center-bar-02-after-entry
