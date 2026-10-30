@@ -124,15 +124,27 @@ function JsonSection({ onLoad }: { onLoad: (state: GameState) => void }) {
         placeholderTextColor={GAME_PALETTE.textMuted}
         style={styles.jsonInput}
       />
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={translate('settings.developer_load')}
-        testID="developer-load-json"
-        style={({ pressed }) => [styles.loadBtn, pressed && styles.pressed]}
-        onPress={handleLoad}
-      >
-        <Text style={styles.loadLabel}>{translate('settings.developer_load')}</Text>
-      </Pressable>
+      <View style={styles.jsonActions}>
+        {/* Emptying a multiline field through the system text menu is unreliable. */}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={translate('settings.developer_clear')}
+          testID="developer-clear-json"
+          style={({ pressed }) => [styles.loadBtn, styles.clearBtn, pressed && styles.pressed]}
+          onPress={() => setJson('')}
+        >
+          <Text style={styles.loadLabel}>{translate('settings.developer_clear')}</Text>
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={translate('settings.developer_load')}
+          testID="developer-load-json"
+          style={({ pressed }) => [styles.loadBtn, styles.loadBtnWide, pressed && styles.pressed]}
+          onPress={handleLoad}
+        >
+          <Text style={styles.loadLabel}>{translate('settings.developer_load')}</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -188,6 +200,16 @@ const styles = StyleSheet.create({
       ? 'ui-monospace, SFMono-Regular, Menlo, monospace'
       : 'monospace',
     ...continuousRadius(12),
+  },
+  jsonActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  clearBtn: {
+    paddingHorizontal: 16,
+  },
+  loadBtnWide: {
+    flex: 1,
   },
   loadBtn: {
     marginTop: 12,

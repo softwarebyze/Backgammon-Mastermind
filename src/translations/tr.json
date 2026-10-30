@@ -651,6 +651,7 @@
     "arabic": "Arapça Arapça Arapça",
     "developer": "Geliştirici",
     "developer_blurb": "Motor testi için istediğiniz bir tahta konumunu yükleyin. Bu konumdan normal bir oyun başlatır. Ürün özelliği değildir.",
+    "developer_clear": "Temizle",
     "developer_json": "Konum JSON’u",
     "developer_load": "JSON yükle",
     "developer_open": "Konum yükle",

@@ -651,6 +651,7 @@
     "arabic": "Arabic",
     "developer": "Developer",
     "developer_blurb": "Load an arbitrary board for engine QA. Starts a normal game session from that position. Not a product feature.",
+    "developer_clear": "Clear",
     "developer_json": "Position JSON",
     "developer_load": "Load JSON",
     "developer_open": "Load position",

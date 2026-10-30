@@ -651,6 +651,7 @@
     "arabic": "Arabe",
     "developer": "Développeur",
     "developer_blurb": "Charge une position quelconque pour tester le moteur. Lance une partie normale à partir de cette position. Ce n’est pas une fonctionnalité du produit.",
+    "developer_clear": "Effacer",
     "developer_json": "JSON de la position",
     "developer_load": "Charger le JSON",
     "developer_open": "Charger la position",

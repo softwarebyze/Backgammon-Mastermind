@@ -651,6 +651,7 @@
     "arabic": "عربي",
     "developer": "المطور",
     "developer_blurb": "حمّل لوحة عشوائية لاختبار المحرك. يبدأ جلسة لعب عادية من ذلك الوضع. ليست ميزة للمنتج.",
+    "developer_clear": "مسح",
     "developer_json": "JSON للوضع",
     "developer_load": "تحميل JSON",
     "developer_open": "تحميل وضع",

@@ -651,6 +651,7 @@
     "arabic": "Arabski",
     "developer": "Deweloper",
     "developer_blurb": "Wczytaj dowolną pozycję planszy do testowania silnika. Rozpoczyna normalną grę od tej pozycji. To nie jest funkcja produktu.",
+    "developer_clear": "Wyczyść",
     "developer_json": "JSON pozycji",
     "developer_load": "Wczytaj JSON",
     "developer_open": "Wczytaj pozycję",

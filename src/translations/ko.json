@@ -651,6 +651,7 @@
     "arabic": "주요 특징",
     "developer": "개발자",
     "developer_blurb": "엔진 테스트를 위해 원하는 보드 위치를 불러옵니다. 해당 위치에서 일반 게임을 시작합니다. 제품 기능이 아닙니다.",
+    "developer_clear": "지우기",
     "developer_json": "위치 JSON",
     "developer_load": "JSON 불러오기",
     "developer_open": "위치 불러오기",

@@ -651,6 +651,7 @@
     "arabic": "ערבית ערבית",
     "developer": "מפתחים",
     "developer_blurb": "טעינת מצב לוח כלשהו לבדיקת המנוע. מתחיל משחק רגיל מאותו מצב. זו אינה תכונה למשתמשים.",
+    "developer_clear": "נקה",
     "developer_json": "JSON של המצב",
     "developer_load": "טעינת JSON",
     "developer_open": "טעינת מצב",

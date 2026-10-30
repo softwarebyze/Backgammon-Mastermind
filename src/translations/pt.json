@@ -651,6 +651,7 @@
     "arabic": "Árabe",
     "developer": "Programador",
     "developer_blurb": "Carrega qualquer posição do tabuleiro para testar o motor. Inicia um jogo normal a partir dessa posição. Não é uma funcionalidade do produto.",
+    "developer_clear": "Limpar",
     "developer_json": "JSON da posição",
     "developer_load": "Carregar JSON",
     "developer_open": "Carregar posição",

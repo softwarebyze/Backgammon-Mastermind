@@ -651,6 +651,7 @@
     "arabic": "Arabisch",
     "developer": "Entwickler",
     "developer_blurb": "Lade eine beliebige Brettposition für Engine-Tests. Startet an dieser Position eine normale Spielsitzung. Keine Produktfunktion.",
+    "developer_clear": "Leeren",
     "developer_json": "Positions-JSON",
     "developer_load": "JSON laden",
     "developer_open": "Position laden",

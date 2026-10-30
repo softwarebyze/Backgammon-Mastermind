@@ -651,6 +651,7 @@
     "arabic": "Arabo",
     "developer": "Sviluppatore",
     "developer_blurb": "Carica una posizione qualsiasi per testare il motore. Avvia una normale partita da quella posizione. Non è una funzione del prodotto.",
+    "developer_clear": "Cancella",
     "developer_json": "JSON della posizione",
     "developer_load": "Carica JSON",
     "developer_open": "Carica posizione",

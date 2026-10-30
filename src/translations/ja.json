@@ -651,6 +651,7 @@
     "arabic": "ログイン",
     "developer": "開発者",
     "developer_blurb": "エンジンの動作確認用に任意の盤面を読み込みます。その局面から通常のゲームを開始します。製品向けの機能ではありません。",
+    "developer_clear": "クリア",
     "developer_json": "局面JSON",
     "developer_load": "JSONを読み込む",
     "developer_open": "局面を読み込む",

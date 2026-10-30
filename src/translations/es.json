@@ -651,6 +651,7 @@
     "arabic": "Árabe",
     "developer": "Desarrollador",
     "developer_blurb": "Carga cualquier posición del tablero para probar el motor. Inicia una partida normal desde esa posición. No es una función del producto.",
+    "developer_clear": "Borrar",
     "developer_json": "JSON de la posición",
     "developer_load": "Cargar JSON",
     "developer_open": "Cargar posición",

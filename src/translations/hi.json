@@ -651,6 +651,7 @@
     "arabic": "अरबी",
     "developer": "डेवलपर",
     "developer_blurb": "इंजन की जाँच के लिए बोर्ड की कोई भी स्थिति लोड करें। उस स्थिति से सामान्य गेम शुरू होता है। यह उत्पाद की सुविधा नहीं है।",
+    "developer_clear": "साफ़ करें",
     "developer_json": "स्थिति JSON",
     "developer_load": "JSON लोड करें",
     "developer_open": "स्थिति लोड करें",

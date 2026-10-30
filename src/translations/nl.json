@@ -651,6 +651,7 @@
     "arabic": "Arabisch",
     "developer": "Ontwikkelaar",
     "developer_blurb": "Laad een willekeurige bordpositie om de engine te testen. Start vanaf die positie een normaal spel. Dit is geen productfunctie.",
+    "developer_clear": "Wissen",
     "developer_json": "Positie-JSON",
     "developer_load": "JSON laden",
     "developer_open": "Positie laden",

@@ -2,25 +2,13 @@ appId: ${APP_ID}
 tags:
   - util
 ---
-# Empty the Developer JSON field. Tapping can put the cursor at the start,
-# where backspace clears nothing, so select all instead. The text menu may not
-# open on the first long press, and on a narrow screen with a word selected,
-# Select all sits behind the menu's overflow button.
-- repeat:
-    while:
-      notVisible: (?i)select all
-    times: 4
-    commands:
-      - runFlow:
-          when:
-            notVisible: (?i)more options
-          commands:
-            - longPressOn:
-                id: developer-json-input
-      - runFlow:
-          when:
-            visible: (?i)more options
-          commands:
-            - tapOn: (?i)more options
-- tapOn: (?i)select all
-- eraseText: 1
+# Empty the Developer JSON field with its Clear button. The system text menu
+# (Select all) is unreliable on emulators, so flows no longer depend on it.
+- scrollUntilVisible:
+    element:
+      id: developer-clear-json
+    direction: DOWN
+- tapOn:
+    id: developer-clear-json
+- tapOn:
+    id: developer-json-input
