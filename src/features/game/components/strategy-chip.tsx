@@ -1,18 +1,20 @@
 import type { StrategyKey } from '@/features/game/strategy';
-import type { GameState } from '@/lib/game';
+import type { GameState, Player } from '@/lib/game';
 import type { TxKeyPath } from '@/lib/i18n';
 
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { classifyStrategy, strategyPerspective } from '@/features/game/strategy';
+import { classifyStrategy } from '@/features/game/strategy';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
+  /** Whose plan this chip describes. */
+  player: Player;
   /** Narrow rails: just the plan's mark; the name stays in the label and the sheet. */
   iconOnly?: boolean;
 };
@@ -26,28 +28,28 @@ function strategyMessage(group: 'label' | 'tip', key: StrategyKey) {
  * The plan the position points to, as a quiet chip (tap for why + a one-line
  * tip). Lives in the player strip of the side it describes.
  */
-export function StrategyChip({ state, iconOnly = false }: Props) {
+export function StrategyChip({ state, player, iconOnly = false }: Props) {
   const [showExplanation, setShowExplanation] = useState(false);
-  const perspective = strategyPerspective(state);
-  const strategy = classifyStrategy(state, perspective);
+  const strategy = classifyStrategy(state, player);
   const label = strategyMessage('label', strategy.key);
   const tip = strategyMessage('tip', strategy.key);
-  const why = translate(
-    `game.strategy.why.${strategy.reason.message}` as TxKeyPath,
-    strategy.reason.params,
-  );
+  // The reasons and tips talk to "you": on the computer's side, just name its plan.
+  const computer = state.mode === 'vs-computer' && player === 'black';
+  const why = computer
+    ? translate('game.strategy.computer_plan')
+    : translate(`game.strategy.why.${strategy.reason.message}` as TxKeyPath, strategy.reason.params);
 
   return (
     <>
       <Pressable
         onPress={() => setShowExplanation(true)}
         accessibilityRole="button"
-        accessibilityLabel={`${label}. ${why} ${tip}`}
+        accessibilityLabel={computer ? `${why}: ${label}` : `${label}. ${why} ${tip}`}
         style={({ pressed }) => [styles.chip, pressed && styles.chipPressed]}
         hitSlop={8}
-        testID="strategy-line"
+        testID={`strategy-line-${player}`}
       >
-        <View testID="strategy-mark">
+        <View testID={`strategy-mark-${player}`}>
           <StrategyMark strategy={strategy.key} size={14} />
         </View>
         {iconOnly ? null : <Text style={styles.chipText} numberOfLines={1}>{label}</Text>}
@@ -69,7 +71,7 @@ export function StrategyChip({ state, iconOnly = false }: Props) {
               <Text style={styles.modalTitle}>{label}</Text>
             </View>
             <Text style={styles.whyText}>{why}</Text>
-            <Text style={styles.tipText}>{tip}</Text>
+            {computer ? null : <Text style={styles.tipText}>{tip}</Text>}
             <Pressable
               onPress={() => setShowExplanation(false)}
               accessibilityRole="button"

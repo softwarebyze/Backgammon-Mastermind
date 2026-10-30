@@ -53,8 +53,8 @@ it('ignores live opening and offer captions while reviewing', () => {
 });
 
 it('keeps match strategy visible and opens its explanation without duplicate header pips', () => {
-  setup(<StrategyChip state={createMatchGame(3)} />);
+  setup(<StrategyChip state={createMatchGame(3)} player="white" />);
   expect(screen.queryByText('167')).toBeNull();
-  fireEvent.press(screen.getByTestId('strategy-line'));
+  fireEvent.press(screen.getByTestId('strategy-line-white'));
   expect(screen.getByTestId('strategy-explanation')).toBeOnTheScreen();
 });

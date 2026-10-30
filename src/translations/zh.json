@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "关闭策略说明",
+      "computer_plan": "电脑的策略，根据其棋子的位置判断。",
       "got_it": "明白了",
       "label": {
         "backgame": "后手局",

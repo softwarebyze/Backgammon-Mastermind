@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Close strategy explanation",
+      "computer_plan": "The computer's plan, from where its checkers stand.",
       "got_it": "Got it",
       "label": {
         "backgame": "Back game",

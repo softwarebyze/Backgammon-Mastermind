@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Chiudi la spiegazione della strategia",
+      "computer_plan": "Il piano del computer, in base alla posizione delle sue pedine.",
       "got_it": "Ho capito",
       "label": {
         "backgame": "Gioco di attesa",

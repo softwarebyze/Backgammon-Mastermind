@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Uitleg van de strategie sluiten",
+      "computer_plan": "Het plan van de computer, op basis van waar zijn stenen staan.",
       "got_it": "Begrepen",
       "label": {
         "backgame": "Achterstandspartij",

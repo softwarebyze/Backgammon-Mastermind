@@ -36,10 +36,10 @@ tags:
 - assertVisible:
     id: pip-count-white
 - assertVisible:
-    id: strategy-line
+    id: strategy-line-white
 - takeScreenshot: match-board-01-centered
 - tapOn:
-    id: strategy-line
+    id: strategy-line-white
 - assertVisible:
     id: strategy-explanation
 - tapOn:

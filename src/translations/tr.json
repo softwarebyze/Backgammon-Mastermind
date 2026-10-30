@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Strateji açıklamasını kapat",
+      "computer_plan": "Bilgisayarın planı, taşlarının durumuna göre.",
       "got_it": "Anladım",
       "label": {
         "backgame": "Geride oyun",

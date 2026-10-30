@@ -1,6 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
-import { cubeCenterY, cubeCornerClearance } from '@/features/game/bear-off-layout';
+import { cubeCenterY, maxCubeEdge } from '@/features/game/bear-off-layout';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 
 /** Top to bottom: Black plays from the top, White from the bottom. */
@@ -14,9 +14,8 @@ type CubeSlot = (typeof CUBE_SLOTS)[number];
  * corner, clear of borne-off checkers. It only ever moves up and down that column.
  */
 export function boardCubeLayout(d: BoardDimensions, pointNumbers = true) {
-  const clearance = d.bearOffCubeClearance ?? cubeCornerClearance(d.pointHeight);
-  // The cube always fits inside the tray, however small the board gets.
-  const size = Math.round(Math.max(10, Math.min(d.checkerSize + 2, d.bearOffWidth - 4, clearance)));
+  // The cube always fits inside the tray and clear of the stacks, however small the board gets.
+  const size = Math.round(Math.min(d.checkerSize + 2, maxCubeEdge(d)));
   const surfaceTop = d.boardFrameWidth + (pointNumbers ? POINT_NUMBER_RAIL : 0);
   const trayCentreX = d.boardFrameWidth + 12 * d.colWidth + d.barWidth + d.bearOffWidth / 2;
   const hinge = surfaceTop + d.pointHeight + d.middleHeight / 2;

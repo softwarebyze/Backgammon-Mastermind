@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Cerrar la explicación de la estrategia",
+      "computer_plan": "El plan de la computadora, según dónde están sus fichas.",
       "got_it": "Entendido",
       "label": {
         "backgame": "Juego de espera",

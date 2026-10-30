@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Strategieerklärung schließen",
+      "computer_plan": "Der Plan des Computers, nach der Stellung seiner Steine.",
       "got_it": "Verstanden",
       "label": {
         "backgame": "Rückstandsspiel",

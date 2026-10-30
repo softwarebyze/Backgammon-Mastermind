@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "전략 설명 닫기",
+      "computer_plan": "컴퓨터의 작전, 말의 배치를 기준으로 합니다.",
       "got_it": "알겠습니다",
       "label": {
         "backgame": "백 게임",

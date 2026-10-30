@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Fermer l'explication de la stratégie",
+      "computer_plan": "Le plan de l'ordinateur, d'après la position de ses pions.",
       "got_it": "J'ai compris",
       "label": {
         "backgame": "Jeu d'attente",

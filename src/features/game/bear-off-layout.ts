@@ -25,7 +25,10 @@ export function bearOffStackStep(halfHeight: number, tokenSize: number, visibleC
 }
 
 export function maxBearOffVisibleSlots(halfHeight: number, tokenSize: number, clearance = 0): number {
-  const available = halfHeight - clearance - BEAR_OFF_PADDING * 2 - tokenSize;
+  // With a cube on the board, a dense stack still stops a checker short of
+  // the hinge, so the centred cube never covers it.
+  const hingeReserve = clearance > 0 ? tokenSize : 0;
+  const available = halfHeight - clearance - BEAR_OFF_PADDING * 2 - tokenSize - hingeReserve;
   if (available <= 0) {
     return 1;
   }
@@ -94,4 +97,18 @@ export function cubeCenterY(dims: BoardDimensions, owner: Player | null): number
   if (owner === 'white')
     return dims.boardHeight - BEAR_OFF_PADDING - clearance / 2;
   return dims.boardHeight / 2;
+}
+
+/** A cube is drawn tilted by 6°, which widens its footprint by about 10%. */
+const CUBE_TILT_GROWTH = 1.1;
+
+/**
+ * The largest cube edge that stays inside the tray: narrower than the tray,
+ * inside its owner's corner, and, when centred, clear of both borne-off
+ * stacks, which stop a checker and the padding short of the hinge.
+ */
+export function maxCubeEdge(dims: BoardDimensions): number {
+  const clearance = dims.bearOffCubeClearance ?? cubeCornerClearance(dims.pointHeight);
+  const hingeRoom = dims.middleHeight + 2 * (BEAR_OFF_PADDING + bearOffTokenSize(dims.checkerSize));
+  return Math.max(8, Math.min(dims.bearOffWidth - 4, clearance, hingeRoom) / CUBE_TILT_GROWTH);
 }

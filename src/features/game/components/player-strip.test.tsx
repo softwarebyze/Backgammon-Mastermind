@@ -55,7 +55,7 @@ describe('player strip', () => {
     expect(screen.getByText('3 game.status.off_short')).toBeTruthy();
   });
 
-  it('puts the strategy chip on the human side and reveals the tip on tap', () => {
+  it('shows each side its own plan, the computer included, and reveals the tip on tap', () => {
     const state = moving('vs-computer', 'white');
     render(
       <>
@@ -63,14 +63,21 @@ describe('player strip', () => {
         <PlayerStrip state={state} player="white" />
       </>,
     );
-    expect(screen.getAllByTestId('strategy-line')).toHaveLength(1);
-    expect(screen.getByText('game.strategy.label.developing')).toBeTruthy();
+    expect(screen.getByTestId('strategy-line-black')).toBeTruthy();
+    expect(screen.getByTestId('strategy-line-white')).toBeTruthy();
 
     expect(screen.queryByText('game.strategy.tip.developing')).toBeNull();
-    fireEvent.press(screen.getByTestId('strategy-line'));
+    fireEvent.press(screen.getByTestId('strategy-line-white'));
     expect(screen.getByText('game.strategy.tip.developing')).toBeTruthy();
     fireEvent.press(screen.getByTestId('strategy-explanation-close'));
-    expect(screen.getByTestId('strategy-mark')).toBeTruthy();
+    expect(screen.getByTestId('strategy-mark-white')).toBeTruthy();
+  });
+
+  it('names the computer plan without talking to the player as you', () => {
+    render(<PlayerStrip state={moving('vs-computer', 'white')} player="black" />);
+    fireEvent.press(screen.getByTestId('strategy-line-black'));
+    expect(screen.getByText('game.strategy.computer_plan')).toBeTruthy();
+    expect(screen.queryByText('game.strategy.tip.developing')).toBeNull();
   });
 
   it('crowns the winner at game over and drops the strategy chip', () => {
@@ -83,7 +90,8 @@ describe('player strip', () => {
     );
     expect(screen.getByText('game.status.you_win')).toBeTruthy();
     expect(screen.queryByTestId('player-status-black')).toBeNull();
-    expect(screen.queryByTestId('strategy-line')).toBeNull();
+    expect(screen.queryByTestId('strategy-line-white')).toBeNull();
+    expect(screen.queryByTestId('strategy-line-black')).toBeNull();
   });
 });
 

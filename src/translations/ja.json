@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "戦略の解説を閉じる",
+      "computer_plan": "コンピューターの作戦（駒の配置から判断）。",
       "got_it": "了解",
       "label": {
         "backgame": "バックゲーム",

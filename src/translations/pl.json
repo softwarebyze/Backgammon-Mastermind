@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Zamknij wyjaśnienie strategii",
+      "computer_plan": "Plan komputera, według ustawienia jego pionów.",
       "got_it": "Rozumiem",
       "label": {
         "backgame": "Gra wyczekująca",

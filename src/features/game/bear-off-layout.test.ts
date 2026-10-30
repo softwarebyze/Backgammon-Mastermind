@@ -6,8 +6,12 @@ import {
   bearOffSlotTopInSection,
   bearOffStackStep,
   bearOffTokenSize,
+  cubeCenterY,
+  cubeCornerClearance,
   maxBearOffVisibleSlots,
+  maxCubeEdge,
 } from '@/features/game/bear-off-layout';
+import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 
 const TEST_DIMS: BoardDimensions = {
   boardWidth: 400,
@@ -77,4 +81,21 @@ it.each(['black', 'white'] as const)('keeps a full %s bear-off stack clear of th
   }
   const sectionTop = player === 'black' ? 0 : halfHeight + dims.middleHeight;
   expect(bearOffCheckerCenterY(dims, player, 15)).toBe(sectionTop + lastTop + tokenSize / 2);
+});
+
+describe('maxCubeEdge', () => {
+  // 375×560 is a short phone browser: the board is small and the tray narrow.
+  it.each([[260, 200], [343, 250], [358, 420], [700, 520]])('keeps a %ix%i board\'s cube clear of full stacks', (width, height) => {
+    const base = fitBoardToViewport(width, height, { extraHeight: 36 });
+    const dims = { ...base, bearOffCubeClearance: cubeCornerClearance(base.pointHeight) };
+    const half = (maxCubeEdge(dims) * 1.1) / 2;
+    const token = bearOffTokenSize(dims.checkerSize);
+    // Centred: clear of the top of White's and the bottom of Black's 15-checker stacks.
+    expect(cubeCenterY(dims, null) + half).toBeLessThanOrEqual(bearOffCheckerCenterY(dims, 'white', 15) - token / 2);
+    expect(cubeCenterY(dims, null) - half).toBeGreaterThanOrEqual(bearOffCheckerCenterY(dims, 'black', 15) + token / 2);
+    // In a corner: above the first borne-off checker.
+    expect(cubeCenterY(dims, 'black') + half).toBeLessThanOrEqual(bearOffCheckerCenterY(dims, 'black', 1) - token / 2);
+    // Never wider than the tray.
+    expect(half * 2).toBeLessThanOrEqual(dims.bearOffWidth);
+  });
 });

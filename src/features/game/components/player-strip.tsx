@@ -7,7 +7,6 @@ import { AnimatedNumber } from '@/components/ui/animated-number';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { StrategyChip } from '@/features/game/components/strategy-chip';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { strategyPerspective } from '@/features/game/strategy';
 import { calculatePipCount } from '@/lib/game';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
@@ -48,7 +47,8 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const won = gameOver && state.winner === player;
   const pips = calculatePipCount(state, player);
   const off = state.borneOff[player];
-  const showStrategy = !hideStrategy && !gameOver && strategyPerspective(state) === player;
+  // Both sides get their plan, the computer's included.
+  const showStrategy = !hideStrategy && !gameOver;
   const pipsA11y = translate('game.status.pips_a11y', { player: name, pips, off });
 
   // Only the name is pressable, so an editable trailing score never nests buttons.
@@ -88,7 +88,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
             : null}
         </View>
       </Identity>
-      {showStrategy ? <StrategyChip state={state} iconOnly={compact} /> : null}
+      {showStrategy ? <StrategyChip state={state} player={player} iconOnly={compact} /> : null}
       <View style={styles.score} accessible accessibilityLabel={pipsA11y} testID={`pip-count-${player}`}>
         <AnimatedNumber value={pips} style={[styles.pips, !active && styles.pipsIdle]} />
         <Text style={styles.scoreLabel} numberOfLines={1}>

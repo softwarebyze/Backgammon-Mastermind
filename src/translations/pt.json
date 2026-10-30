@@ -154,6 +154,7 @@
     },
     "strategy": {
       "close_a11y": "Fechar a explicação da estratégia",
+      "computer_plan": "O plano do computador, de acordo com a posição das peças dele.",
       "got_it": "Entendi",
       "label": {
         "backgame": "Jogo de espera",

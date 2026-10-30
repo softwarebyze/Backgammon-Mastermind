@@ -6,7 +6,7 @@ import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { Platform, View } from 'react-native';
 
-import { cubeCenterY } from '@/features/game/bear-off-layout';
+import { cubeCenterY, maxCubeEdge } from '@/features/game/bear-off-layout';
 import {
   boardHitExtraCandidates,
   remapTapIndex,
@@ -298,7 +298,8 @@ export function BoardView({
     );
   };
 
-  const cubeScale = Math.min(1, pointHeight / 90);
+  // The match cube is 30px wide; shrink it to whatever the tray can hold.
+  const cubeScale = Math.min(1, maxCubeEdge(dimensions) / 30);
   const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
   const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
   const barPanFrom = canDrag
