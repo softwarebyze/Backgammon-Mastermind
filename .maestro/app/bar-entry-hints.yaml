@@ -1,0 +1,63 @@
+# A checker on the bar must enter first, so the bar is selected for the
+# player and the rail lights a "Bar" pill. One tap on the entry point plays it.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- longPressOn:
+    id: developer-json-input
+- tapOn: (?i)select all
+- eraseText: 1
+- inputText: '{"placements":[{"point":6,"player":"white","count":5},{"point":8,"player":"white","count":3},{"point":13,"player":"white","count":5},{"point":24,"player":"white","count":1},{"point":19,"player":"black","count":5},{"point":17,"player":"black","count":3},{"point":12,"player":"black","count":5},{"point":1,"player":"black","count":2}],"bar":{"white":1,"black":0},"dice":[3,1],"currentPlayer":"white","mode":"vs-human"}'
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: developer-load-json
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible:
+      id: point-22
+    timeout: 45000
+# Move hints are off by default; turn them on in the game's Settings.
+- tapOn: Settings
+- extendedWaitUntil:
+    visible:
+      id: stack-escape-button
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: setting-toggle-move-hints
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    id: setting-toggle-move-hints
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: move-hint-bar
+    timeout: 15000
+- takeScreenshot: bar-hints-01-bar-preselected
+# No tap on the bar first: the entry point plays straight away.
+- tapOn:
+    id: point-22
+- extendedWaitUntil:
+    visible: 'Point 22, 1 white checker'
+    timeout: 15000
+- assertNotVisible:
+    id: move-hint-bar
+- takeScreenshot: bar-hints-02-entered
