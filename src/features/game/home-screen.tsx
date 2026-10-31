@@ -88,13 +88,17 @@ export function HomeScreen() {
 
   const handleStart = useCallback(
     (mode: GameMode) => {
-      posthog.capture('game_started', {
-        mode,
-        had_saved_game: isResumableGame(state),
-        tutor_mode: preferences.tutorMode,
-        ...settingProperties(preferences),
+      // Only count a start once the player confirms replacing a saved game;
+      // "Continue" or "Cancel" in that dialog starts nothing.
+      startGameFromHome(mode, state, (confirmedMode) => {
+        posthog.capture('game_started', {
+          mode: confirmedMode,
+          had_saved_game: isResumableGame(state),
+          tutor_mode: preferences.tutorMode,
+          ...settingProperties(preferences),
+        });
+        startGame(confirmedMode);
       });
-      startGameFromHome(mode, state, startGame);
     },
     [posthog, preferences, startGame, state],
   );
