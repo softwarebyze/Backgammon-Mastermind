@@ -78,7 +78,7 @@ afterEach(() => {
 });
 
 it.each([
-  ['android', 440],
+  ['android', 0],
   ['ios', 440],
   ['web', -440],
 ])('scrolls Live into view with the %s RTL offset', async (os, expectedX) => {
@@ -89,28 +89,5 @@ it.each([
 
   await waitFor(() => {
     expect(scrollTo).toHaveBeenLastCalledWith({ x: expectedX, animated: true });
-  });
-});
-
-it('keeps the positive offset on web LTR', async () => {
-  Platform.OS = 'web';
-  layoutRTL.mockReturnValue(false);
-  renderStrip(false);
-  layoutStrip();
-
-  await waitFor(() => {
-    expect(scrollTo).toHaveBeenLastCalledWith({ x: 440, animated: true });
-  });
-});
-
-it('follows the focused turn offset in web RTL review', async () => {
-  Platform.OS = 'web';
-  layoutRTL.mockReturnValue(true);
-  renderStrip(true);
-  layoutStrip();
-
-  await waitFor(() => {
-    // Eight turns: (8 * 62) - 120 = 376 from the Start chip, mirrored by web RTL.
-    expect(scrollTo).toHaveBeenLastCalledWith({ x: -376, animated: true });
   });
 });

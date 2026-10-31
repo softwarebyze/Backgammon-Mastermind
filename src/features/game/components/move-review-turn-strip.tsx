@@ -100,7 +100,7 @@ export function MoveReviewTurnStrip({
       isReviewing ? { kind: 'turn', focusedTurnIdx } : { kind: 'live' },
       {
         isRTL: rtl,
-        isWeb: Platform.OS === 'web',
+        platform: Platform.OS,
         contentWidth,
         viewportWidth,
       },
