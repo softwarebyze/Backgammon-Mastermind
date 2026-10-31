@@ -92,6 +92,11 @@ export function HomeScreen() {
   // iOS Safari's toolbar covers the bottom of the window.
   const webVisible = useWebVisibleHeight();
   const layoutIsRTL = useLayoutIsRTL();
+  // Web has no header bar (see homeScreenOptions), so the gear floats here.
+  const floatingGear = Platform.OS === 'web';
+  const gearSide = layoutIsRTL ? 'left' : 'right';
+  // Native's header owns the top inset.
+  const topInset = floatingGear ? insets.top : 0;
   const [screenHeight, setScreenHeight] = useState(0);
   const [brandSize, setBrandSize] = useState({ height: 0, level: 1 });
   const [buttonsSize, setButtonsSize] = useState({ height: 0, level: 1 });
@@ -101,14 +106,12 @@ export function HomeScreen() {
   const level = landscape || !brandSize.height || !buttonsSize.height || buttonsSize.level !== measuredLevel
     ? (landscape ? 1 : measuredLevel)
     : homeFitLevel({
-        available: visible - insets.top - insets.bottom,
+        available: visible - topInset - insets.bottom,
         measured: brandSize.height + buttonsSize.height,
         level: measuredLevel,
         buttons: 3 + (canResume ? 1 : 0) + (canReview ? 1 : 0),
       });
   const fit = homeFitAt(level);
-  // Native swaps left/right itself under RTL; web needs the side spelled out.
-  const gearSide = Platform.OS === 'web' && layoutIsRTL ? 'left' : 'right';
   const buttonFit = landscape ? styles.modeBtnLandscape : { paddingVertical: fit.buttonPad };
 
   const handleStart = useCallback(
@@ -174,16 +177,18 @@ export function HomeScreen() {
             right: 24,
             bottom: (landscape ? 16 : fit.bottom) + covered,
           }),
-          { paddingTop: insets.top + (landscape ? 12 : fit.top) },
+          { paddingTop: topInset + (landscape ? 12 : fit.top) },
         ]}
         onLayout={e => setScreenHeight(e.nativeEvent.layout.height)}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
-        <View style={[styles.settingsCorner, { top: insets.top + 4, [gearSide]: Math.max(insets.left, insets.right) + 8 }]}>
-          <SettingsHeaderButton />
-        </View>
+        {floatingGear && (
+          <View style={[styles.settingsCorner, { top: insets.top + 4, [gearSide]: Math.max(insets.left, insets.right) + 8 }]}>
+            <SettingsHeaderButton />
+          </View>
+        )}
         <View
           style={[styles.brand, landscape ? styles.brandLandscape : null]}
           onLayout={e => setBrandSize({ height: e.nativeEvent.layout.height, level })}

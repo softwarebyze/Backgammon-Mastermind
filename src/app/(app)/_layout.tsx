@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
 import { languageScreenLayout } from '@/lib/i18n';
 import {
   homeScreenOptions,
@@ -32,7 +33,10 @@ export default function AppLayout() {
     >
       <Stack.Screen
         name="index"
-        options={homeScreenOptions}
+        options={{
+          ...homeScreenOptions,
+          headerRight: () => <SettingsHeaderButton />,
+        }}
       />
       <Stack.Screen
         name="settings"
