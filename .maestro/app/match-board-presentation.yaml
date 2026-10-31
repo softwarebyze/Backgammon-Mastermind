@@ -69,7 +69,7 @@ onFlowComplete:
 # The side rail is narrow: the strips go to two rows rather than squeeze the names.
 - assertVisible:
     id: player-name-black
-    text: 'Computer.*'
+    text: 'Black.*'
 - assertVisible:
     id: pip-count-black
 - assertVisible:
