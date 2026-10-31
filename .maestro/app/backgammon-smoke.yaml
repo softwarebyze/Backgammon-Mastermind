@@ -28,7 +28,8 @@ tags:
       id: game-board-slot
     timeout: 45000
 - takeScreenshot: 02-game-board
-- assertVisible:
+# The opening is not a plan yet: no strategy chip until one takes shape.
+- assertNotVisible:
     id: strategy-line-white
 # Issue #308: no disclosure glyph after the strategy name.
 - assertNotVisible: '.*[▸◂].*'
