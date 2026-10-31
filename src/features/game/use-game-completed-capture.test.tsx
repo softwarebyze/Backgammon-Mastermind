@@ -120,11 +120,30 @@ describe('useGameCompletedCapture', () => {
     );
     result.current.noteMoveApplied(before, after);
     rerender({ state: after, count: 101 });
+    result.current.resetForNewGame('new_game');
     rerender({ state: before, count: 0 });
-    result.current.resetForNewGame();
     result.current.noteMoveApplied(before, after);
     rerender({ state: after, count: 90 });
 
     expect(mockCapture).toHaveBeenCalledTimes(2);
+  });
+
+  it('reports a replaced unfinished game as abandoned, but not a finished one', () => {
+    const { result, rerender } = renderHook(
+      (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
+      { initialProps: { state: movingState(), count: 12 } },
+    );
+    result.current.resetForNewGame('reset');
+    expect(mockCapture).toHaveBeenCalledWith('game_abandoned', {
+      mode: 'vs-computer',
+      phase: 'moving',
+      move_count: 12,
+      reason: 'reset',
+    });
+
+    mockCapture.mockClear();
+    rerender({ state: overState(), count: 140 });
+    result.current.resetForNewGame('new_game');
+    expect(mockCapture).not.toHaveBeenCalledWith('game_abandoned', expect.anything());
   });
 });
