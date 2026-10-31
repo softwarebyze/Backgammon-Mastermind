@@ -90,11 +90,11 @@
       "match_score_a11y": "{{score}} de {{length}} puntos",
       "match_to": "a {{length}}",
       "pips": "pips",
-      "status_cant_move": "Sin movimiento",
+      "status_cant_move": "Sin jugada",
       "status_doubles": "Dobla a {{value}}",
       "status_moving": "Moviendo…",
       "status_rolling": "Tirando…",
-      "status_take_or_pass": "¿Aceptar o rechazar?",
+      "status_take_or_pass": "¿Aceptas?",
       "status_won": "🏆 Ganador",
       "status_your_turn": "Tu turno",
       "you": "Tú"

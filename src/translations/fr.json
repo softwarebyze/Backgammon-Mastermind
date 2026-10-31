@@ -94,7 +94,7 @@
       "status_doubles": "Double à {{value}}",
       "status_moving": "Joue…",
       "status_rolling": "Lance…",
-      "status_take_or_pass": "Accepter ou refuser ?",
+      "status_take_or_pass": "Accepter ?",
       "status_won": "🏆 Vainqueur",
       "status_your_turn": "À vous",
       "you": "Vous"
@@ -615,7 +615,7 @@
     "shared": "Partage ouvert ou lien copié.",
     "shared_intro": "Cette position partagée est prête. Votre partie en cours reste intacte jusqu'à ce que vous choisissiez Jouer.",
     "standard": "Position de départ",
-    "tap_on_roll": "Touchez pour lui donner le tour",
+    "tap_on_roll": "Toucher : au trait",
     "title": "Positions",
     "undo": "Annuler la modification",
     "untitled": "Position sans titre",

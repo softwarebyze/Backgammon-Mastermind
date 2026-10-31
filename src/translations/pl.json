@@ -94,7 +94,7 @@
       "status_doubles": "Dubluje do {{value}}",
       "status_moving": "Rusza…",
       "status_rolling": "Rzuca…",
-      "status_take_or_pass": "Przyjąć czy poddać?",
+      "status_take_or_pass": "Przyjąć?",
       "status_won": "🏆 Zwycięzca",
       "status_your_turn": "Twój ruch",
       "you": "Ty"
@@ -615,7 +615,7 @@
     "shared": "Otwarto udostępnianie lub skopiowano link.",
     "shared_intro": "Ta udostępniona pozycja jest gotowa. Twoja bieżąca gra pozostaje nietknięta, dopóki nie wybierzesz Graj.",
     "standard": "Ustawienie początkowe",
-    "tap_on_roll": "Stuknij, by dać ruch",
+    "tap_on_roll": "Stuknij: ruch",
     "title": "Pozycje",
     "undo": "Cofnij edycję",
     "untitled": "Pozycja bez nazwy",

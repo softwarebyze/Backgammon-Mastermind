@@ -94,7 +94,7 @@
       "status_doubles": "Küpü {{value}} yapıyor",
       "status_moving": "Oynuyor…",
       "status_rolling": "Zar atıyor…",
-      "status_take_or_pass": "Kabul mü, pes mi?",
+      "status_take_or_pass": "Kabul mü?",
       "status_won": "🏆 Kazanan",
       "status_your_turn": "Sıra sizde",
       "you": "Siz"
@@ -615,7 +615,7 @@
     "shared": "Paylaşım açıldı veya bağlantı kopyalandı.",
     "shared_intro": "Bu paylaşılan pozisyon incelemeye hazır. Oyna'yı seçene kadar mevcut oyununuz değişmez.",
     "standard": "Başlangıç dizilişi",
-    "tap_on_roll": "Sırayı vermek için dokun",
+    "tap_on_roll": "Dokun: sıra bunda",
     "title": "Pozisyonlar",
     "undo": "Düzenlemeyi geri al",
     "untitled": "Adsız pozisyon",

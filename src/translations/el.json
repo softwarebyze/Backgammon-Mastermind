@@ -91,10 +91,10 @@
       "match_to": "στους {{length}}",
       "pips": "πόντοι",
       "status_cant_move": "Καμία κίνηση",
-      "status_doubles": "Διπλασιάζει στο {{value}}",
+      "status_doubles": "Διπλό στο {{value}}",
       "status_moving": "Παίζει…",
       "status_rolling": "Ρίχνει…",
-      "status_take_or_pass": "Δέχεσαι ή παραιτείσαι;",
+      "status_take_or_pass": "Δέχεσαι;",
       "status_won": "🏆 Νικητής",
       "status_your_turn": "Η σειρά σου",
       "you": "Εσύ"

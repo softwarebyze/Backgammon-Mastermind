@@ -94,7 +94,7 @@
       "status_doubles": "Raddoppia a {{value}}",
       "status_moving": "Muove…",
       "status_rolling": "Tira…",
-      "status_take_or_pass": "Accetti o rifiuti?",
+      "status_take_or_pass": "Accetti?",
       "status_won": "🏆 Vincitore",
       "status_your_turn": "Tocca a te",
       "you": "Tu"
@@ -615,7 +615,7 @@
     "shared": "Condivisione aperta o link copiato.",
     "shared_intro": "Questa posizione condivisa è pronta. La partita in corso resta invariata finché non scegli Gioca.",
     "standard": "Posizione iniziale",
-    "tap_on_roll": "Tocca per dargli il turno",
+    "tap_on_roll": "Tocca: di turno",
     "title": "Posizioni",
     "undo": "Annulla modifica",
     "untitled": "Posizione senza nome",

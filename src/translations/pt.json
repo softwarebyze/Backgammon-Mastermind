@@ -94,7 +94,7 @@
       "status_doubles": "Dobra para {{value}}",
       "status_moving": "Movendo…",
       "status_rolling": "Rolando…",
-      "status_take_or_pass": "Aceitar ou recusar?",
+      "status_take_or_pass": "Aceitar?",
       "status_won": "🏆 Vencedor",
       "status_your_turn": "Sua vez",
       "you": "Você"
@@ -615,7 +615,7 @@
     "shared": "Compartilhamento aberto ou link copiado.",
     "shared_intro": "Esta posição compartilhada está pronta. Seu jogo atual fica intacto até você escolher Jogar.",
     "standard": "Posição inicial",
-    "tap_on_roll": "Toque para dar a vez",
+    "tap_on_roll": "Toque: é a vez",
     "title": "Posições",
     "undo": "Desfazer edição",
     "untitled": "Posição sem nome",
