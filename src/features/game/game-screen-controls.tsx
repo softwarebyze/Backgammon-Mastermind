@@ -55,7 +55,6 @@ type Props = {
 
 const ACTION_SLOT_HEIGHT = 52;
 const CONTROL_HIT_SLOP = 16;
-
 /** True once `active` has stayed true for `delayMs`; false again as soon as it drops. */
 function useDelayedFlag(active: boolean, delayMs: number): boolean {
   const [elapsed, setElapsed] = useState(false);

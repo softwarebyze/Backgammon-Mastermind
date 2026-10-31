@@ -3,13 +3,13 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
-/** Every button under the board is this tall, so a row of them never steps (#319). */
+/** Every button under the board is at least this tall, so a row of them never steps (#319); large system text can still grow them. */
 const CONTROL_BUTTON_HEIGHT = 50;
 
 /** The two button looks under the board: filled (Roll, Confirm, Take) and outlined (Hint, Undo, Double, Pass). */
 export const controlButtonStyles = StyleSheet.create({
   primary: {
-    height: CONTROL_BUTTON_HEIGHT,
+    minHeight: CONTROL_BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: GAME_PALETTE.control,
@@ -24,7 +24,7 @@ export const controlButtonStyles = StyleSheet.create({
     ...interFont('semibold'),
   },
   secondary: {
-    height: CONTROL_BUTTON_HEIGHT,
+    minHeight: CONTROL_BUTTON_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: GAME_PALETTE.bg,
