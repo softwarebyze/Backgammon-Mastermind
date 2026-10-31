@@ -144,13 +144,67 @@ export function HomeScreen() {
           })
         : translate('learn.home_cta_sub');
 
-  // Short landscape phones: the name on the left, the controls beside it, so Start stays on screen.
+  // Landscape phones: a one-line header, then the choices on the left and
+  // the match details and Start on the right, so Start is always on screen (#346).
   const split = landscape && height < 520;
-  const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, split ? width - 48 - 200 - 32 : width - 48);
+  const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, width - 48);
   const brand = (
-    <View style={[styles.brand, split && styles.brandSplit, short && styles.brandShort]}>
-      <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort]} resizeMode="cover" accessible={false} />
-      <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort]} numberOfLines={short ? 2 : undefined}>{translate('home.title')}</Text>
+    <View style={[styles.brand, short && styles.brandShort, split && styles.brandSplit]}>
+      <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
+      <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
+    </View>
+  );
+  const resumeCard = canResume
+    ? (
+        <HomeCard
+          testID="resume-game-button"
+          accessibilityLabel={translate('home.resume_a11y')}
+          symbol="play-circle"
+          label={translate('home.resume')}
+          sub={dense ? undefined : translate('home.resume_sub')}
+          onPress={handleResume}
+          prominent
+          dense={dense}
+          inline={split}
+        />
+      )
+    : null;
+  const reviewCard = canReview
+    ? (
+        <HomeCard
+          testID="review-last-game-button"
+          accessibilityLabel={translate('home.review_a11y')}
+          symbol="eye"
+          label={translate('home.review')}
+          sub={dense ? undefined : translate('home.review_sub')}
+          onPress={handleReview}
+          prominent
+          dense={dense}
+          inline={split}
+        />
+      )
+    : null;
+  const tiles = (
+    <View style={[styles.tiles, !split && panelWidth < 320 && styles.tilesStacked]}>
+      <HomeCard
+        testID="learn-button"
+        accessibilityLabel={translate('learn.home_cta')}
+        symbol="book-open"
+        label={translate('learn.home_cta')}
+        sub={dense ? undefined : learnSub}
+        onPress={handleLearn}
+        dense={dense}
+        compact={split}
+      />
+      <HomeCard
+        testID="position-setup-button"
+        accessibilityLabel={translate('positions.setup')}
+        symbol="grid"
+        label={translate('positions.setup')}
+        onPress={() => router.push('/position')}
+        dense={dense}
+        compact={split}
+      />
     </View>
   );
 
@@ -175,69 +229,39 @@ export function HomeScreen() {
         <View style={[styles.settingsCorner, { top: insets.top + 4, right: insets.right + 8 }]}>
           <SettingsHeaderButton />
         </View>
-        {split && brand}
-        <View style={[styles.panel, dense && styles.panelShort, { width: panelWidth }]}>
-          {!split && brand}
-
-          {showRecovery && (
-            <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
-          )}
-
-          {canResume && (
-            <HomeCard
-              testID="resume-game-button"
-              accessibilityLabel={translate('home.resume_a11y')}
-              symbol="play-circle"
-              label={translate('home.resume')}
-              sub={dense ? undefined : translate('home.resume_sub')}
-              onPress={handleResume}
-              prominent
-              dense={dense}
-            />
-          )}
-
-          {canReview && (
-            <HomeCard
-              testID="review-last-game-button"
-              accessibilityLabel={translate('home.review_a11y')}
-              symbol="eye"
-              label={translate('home.review')}
-              sub={dense ? undefined : translate('home.review_sub')}
-              onPress={handleReview}
-              prominent
-              dense={dense}
-            />
-          )}
-
-          <HomeGameSetup onStart={handleStart} />
-
-          <View style={[styles.tiles, panelWidth < 320 && styles.tilesStacked]}>
-            <HomeCard
-              testID="learn-button"
-              accessibilityLabel={translate('learn.home_cta')}
-              symbol="book-open"
-              label={translate('learn.home_cta')}
-              sub={dense ? undefined : learnSub}
-              onPress={handleLearn}
-              dense={dense}
-            />
-            <HomeCard
-              testID="position-setup-button"
-              accessibilityLabel={translate('positions.setup')}
-              symbol="grid"
-              label={translate('positions.setup')}
-              onPress={() => router.push('/position')}
-              dense={dense}
-            />
-          </View>
-        </View>
+        {split
+          ? (
+              <View style={styles.splitStage}>
+                <View style={styles.splitHeader}>
+                  {brand}
+                  {resumeCard}
+                  {reviewCard}
+                </View>
+                {showRecovery && (
+                  <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
+                )}
+                <HomeGameSetup onStart={handleStart} columns aside={tiles} />
+              </View>
+            )
+          : (
+              <View style={[styles.panel, dense && styles.panelShort, { width: panelWidth }]}>
+                {brand}
+                {showRecovery && (
+                  <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
+                )}
+                {resumeCard}
+                {reviewCard}
+                <HomeGameSetup onStart={handleStart} />
+                {tiles}
+              </View>
+            )}
       </ScrollView>
     </>
   );
 }
 
 /** A secondary destination: icon, name and a line about it. "Prominent" is ivory, for picking a game back up. */
-function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, prominent = false, dense = false }: {
+function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, prominent = false, dense = false, compact = false, inline = false }: {
   testID: string;
   accessibilityLabel: string;
   symbol: ComponentProps<typeof Feather>['name'];
@@ -247,6 +271,10 @@ function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, pro
   prominent?: boolean;
   /** Short screens: one line, 56px tall. */
   dense?: boolean;
+  /** Landscape phones: as tall as the Start button beside it. */
+  compact?: boolean;
+  /** In the landscape header row: as wide as its label. */
+  inline?: boolean;
 }) {
   return (
     <HoverPressable
@@ -257,6 +285,8 @@ function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, pro
       style={({ pressed, hovered }) => [
         styles.card,
         dense && styles.cardDense,
+        compact && styles.cardCompact,
+        inline && styles.cardInline,
         prominent && styles.cardProminent,
         hovered && (prominent ? styles.cardProminentHover : styles.cardHover),
         pressed && styles.pressed,
@@ -286,9 +316,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   rootSplit: {
+    alignItems: 'stretch',
+  },
+  splitStage: {
+    width: '100%',
+    maxWidth: 820,
+    alignSelf: 'center',
+    gap: 8,
+  },
+  // Clear of the settings gear in the top corner.
+  splitHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 32,
+    gap: 12,
+    paddingRight: 40,
   },
   settingsCorner: {
     position: 'absolute',
@@ -312,10 +353,10 @@ const styles = StyleSheet.create({
     paddingRight: 40,
   },
   brandSplit: {
-    width: 200,
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+    flex: 1,
     marginBottom: 0,
+    gap: 10,
+    paddingRight: 0,
   },
   logo: {
     width: 52,
@@ -329,6 +370,11 @@ const styles = StyleSheet.create({
     height: 44,
     ...continuousRadius(10),
   },
+  logoSplit: {
+    width: 36,
+    height: 36,
+    ...continuousRadius(9),
+  },
   title: {
     flex: 1,
     color: HOME_INK.ivory,
@@ -340,6 +386,13 @@ const styles = StyleSheet.create({
   titleShort: {
     fontSize: 20,
     lineHeight: 22,
+  },
+  titleSplit: {
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: 'auto',
+    fontSize: 19,
+    lineHeight: 24,
   },
   tiles: {
     flexDirection: 'row',
@@ -363,6 +416,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: HOME_INK.hairline,
     ...continuousRadius(14),
+  },
+  cardCompact: {
+    minHeight: 48,
+    paddingVertical: 6,
+  },
+  cardInline: {
+    flexGrow: 0,
+    flexBasis: 'auto',
+    minHeight: 44,
+    paddingVertical: 6,
   },
   cardDense: {
     minHeight: 56,

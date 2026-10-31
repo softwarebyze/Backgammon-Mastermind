@@ -186,3 +186,21 @@ it('continues the existing game from the replacement dialog without starting the
   expect(useGame().startFromPosition).not.toHaveBeenCalled();
   alert.mockRestore();
 });
+
+it('keeps every match setting and Start in reach on a landscape phone', () => {
+  const { useLayoutMetrics } = jest.requireMock('@/lib/ui/layout-metrics');
+  const portrait = jest.mocked(useLayoutMetrics).getMockImplementation();
+  jest.mocked(useLayoutMetrics).mockReturnValue({ insets: { left: 0, right: 0, bottom: 0 }, landscape: true });
+  const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 667, height: 280, scale: 2, fontScale: 1 });
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  fireEvent.press(screen.getByTestId('home-match-length-7'));
+  expect(screen.getByTestId('home-crawford')).toBeTruthy();
+  // Two columns: the length row sits beside the format choice, without its own label.
+  expect(screen.queryByText('Match length')).toBeNull();
+  expect(screen.getByTestId('learn-button')).toBeTruthy();
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  expect(useGame().startFromPosition).toHaveBeenCalled();
+  dims.mockRestore();
+  jest.mocked(useLayoutMetrics).mockImplementation(portrait);
+});
