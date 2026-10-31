@@ -283,7 +283,7 @@ it('gives Undo and Confirm move the same height (#319)', () => {
   };
   const undo = heightOf('undo-move-button');
   const confirm = heightOf('confirm-move-button');
-  expect(undo.height).toBeGreaterThanOrEqual(44);
-  expect(undo.height).toBe(confirm.height);
+  expect(undo.minHeight).toBeGreaterThanOrEqual(44);
+  expect(undo.minHeight).toBe(confirm.minHeight);
   expect(undo.borderWidth).toBe(confirm.borderWidth);
 });

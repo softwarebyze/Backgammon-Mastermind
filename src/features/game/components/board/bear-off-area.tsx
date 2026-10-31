@@ -67,6 +67,8 @@ function BearOffStack({
     >
       <Text
         numberOfLines={1}
+        // The size is already fitted to the tray; system text scaling would overflow it.
+        maxFontSizeMultiplier={1}
         style={{
           position: 'absolute',
           top: 2,
