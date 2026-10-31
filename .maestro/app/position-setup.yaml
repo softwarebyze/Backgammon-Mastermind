@@ -31,8 +31,6 @@ tags:
     id: player-status-black
     text: Tap to put on roll
 - assertVisible: Place
-- assertNotVisible:
-    id: position-start
 - takeScreenshot: position-compact-workspace
 - assertVisible:
     id: position-standard
@@ -302,16 +300,11 @@ tags:
       TARGET_ID: position-play
       START_Y: '25%'
       END_Y: '80%'
+# Pass and play keeps the imported position still while it is checked.
+- tapOn:
+    id: position-mode-human
 - tapOn:
     id: position-play
-- runFlow:
-    file: ../utils/position-scroll.yaml
-    env:
-      TARGET_ID: position-start
-      START_Y: '80%'
-      END_Y: '25%'
-- tapOn:
-    id: position-start
 - extendedWaitUntil:
     visible:
       id: header-undo-button
@@ -350,14 +343,6 @@ tags:
       END_Y: '25%'
 - tapOn:
     id: position-play
-- runFlow:
-    file: ../utils/position-scroll.yaml
-    env:
-      TARGET_ID: position-start
-      START_Y: '80%'
-      END_Y: '25%'
-- tapOn:
-    id: position-start
 - assertVisible: Game in progress
 - tapOn: Cancel
 - assertVisible:

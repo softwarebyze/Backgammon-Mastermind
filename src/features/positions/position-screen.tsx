@@ -62,8 +62,9 @@ function PositionWorkspace({ data }: { data?: string }) {
   const [location, setLocation] = useState<PositionLocation | null>(null);
   const [color, setColor] = useState<Player>('white');
   const [saved, setSaved] = useState(loadSavedPositions);
-  const [tool, setTool] = useState<'play' | 'saved' | 'exchange' | null>(null);
-  const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-human');
+  const [tool, setTool] = useState<'saved' | 'exchange' | null>(null);
+  // Same default as Home: most people practise a position against the computer.
+  const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-computer');
   const viewport = useWindowDimensions();
   // Size from the space the screen really gets: on web a portrait iPad caps the app column below the window width.
   const [frameWidth, setFrameWidth] = useState<number | null>(null);
@@ -90,7 +91,7 @@ function PositionWorkspace({ data }: { data?: string }) {
     setLocation(null);
   };
   const selectLocation = (next: PositionLocation | null) => setLocation(next);
-  const openTool = (next: 'play' | 'saved' | 'exchange') => {
+  const openTool = (next: 'saved' | 'exchange') => {
     Keyboard.dismiss();
     setTool(tool === next ? null : next);
   };
@@ -143,22 +144,16 @@ function PositionWorkspace({ data }: { data?: string }) {
       <PositionScoreboard position={position} onChange={change} />
       {!!invalid && <Text accessibilityRole="alert" testID="position-invalid" style={styles.error}>{invalid}</Text>}
       {!!error && <Text accessibilityRole="alert" testID="position-error" style={styles.error}>{error}</Text>}
+      <View style={styles.segmented} accessibilityRole="radiogroup">
+        <PositionAction segment label={translate('positions.computer')} symbol="cpu" testID="position-mode-computer" selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
+        <PositionAction segment label={translate('positions.pass_play')} symbol="users" testID="position-mode-human" selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
+      </View>
       <View style={styles.workspaceActions}>
         <PositionAction compact symbol="share-2" label={translate('positions.exchange_short')} iconOnly={width < 360} testID="position-exchange-toggle" selected={tool === 'exchange'} onPress={() => openTool('exchange')} />
         <PositionAction compact symbol="bookmark" label={translate('positions.saved_short')} testID="position-saved-toggle" selected={tool === 'saved'} onPress={() => openTool('saved')} />
         <View style={styles.toolbarSpacer} />
-        <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline selected={tool === 'play'} disabled={!!invalid || finished} onPress={() => openTool('play')} />
+        <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline disabled={!!invalid || finished} onPress={play} />
       </View>
-      {tool === 'play' && (
-        <View style={styles.detailPanel}>
-          <View style={styles.segmented}>
-            <PositionAction segment label={translate('positions.pass_play')} symbol="users" selected={mode === 'vs-human'} onPress={() => setMode('vs-human')} />
-            <PositionAction segment label={translate('positions.computer')} symbol="cpu" selected={mode === 'vs-computer'} onPress={() => setMode('vs-computer')} />
-          </View>
-          <Text style={styles.caption}>{translate('positions.play_hint')}</Text>
-          <PositionAction label={translate('positions.play')} symbol="play" testID="position-start" primary disabled={!!invalid || finished} onPress={play} />
-        </View>
-      )}
       <PositionExchange open={tool === 'exchange'} position={position} onImport={replace} />
       {tool === 'saved' && (
         <PositionSaved

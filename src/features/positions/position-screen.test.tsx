@@ -51,11 +51,10 @@ it('opens a shared preview without replacing a game, then uses confirmation on P
   expect(screen.getByText('positions.shared_intro')).toBeTruthy();
   expect(start).not.toHaveBeenCalled();
   fireEvent.press(screen.getByTestId('position-play'));
-  fireEvent.press(screen.getByTestId('position-start'));
   expect(requestReplaceActiveGame).toHaveBeenCalledWith(expect.objectContaining({ source: 'position', onReplace: expect.any(Function) }));
   expect(start).not.toHaveBeenCalled();
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
-  expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [6, 2], mode: 'vs-human' }));
+  expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [6, 2], mode: 'vs-computer' }));
 });
 
 it('shows invalid import errors without modifying or replacing the board', () => {
@@ -80,7 +79,6 @@ it('picks each die from all six faces in one tap, then offers the other blank di
   expect(screen.queryByTestId('position-die-picker')).toBeNull();
   expect(screen.getByTestId('position-play')).toBeEnabled();
   fireEvent.press(screen.getByTestId('position-play'));
-  fireEvent.press(screen.getByTestId('position-start'));
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ dice: [3, 2] }));
 });
@@ -122,8 +120,6 @@ it('keeps presets and dice visible while exchange and saved tools stay collapsed
   expect(screen.getByTestId('position-play')).toBeDisabled();
   fireEvent.press(screen.getByTestId('position-standard'));
   fireEvent.press(screen.getByTestId('position-play'));
-  fireEvent.press(screen.getByRole('button', { name: 'positions.computer' }));
-  fireEvent.press(screen.getByTestId('position-start'));
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ mode: 'vs-computer' }));
 });

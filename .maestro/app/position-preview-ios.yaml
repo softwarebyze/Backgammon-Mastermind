@@ -30,8 +30,6 @@ tags:
     id: player-strip-white
 - assertVisible:
     id: position-cube
-- assertNotVisible:
-    id: position-start
 - takeScreenshot: position-compact-workspace
 - assertVisible:
     id: position-standard
