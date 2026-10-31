@@ -68,7 +68,12 @@ export function HomeScreen() {
   const { width, height } = useWindowDimensions();
   // No navigation bar: start just under the status bar, a little lower on
   // tall phones so the brand isn't jammed against the top.
-  const topSpace = insets.top + (landscape ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
+  // Short phones in Safari (about 550-660px visible): a smaller brand and
+  // cards without their second line, so every button fits without scrolling (#346).
+  const short = !landscape && height < 700;
+  // Same for a phone held sideways: one-line cards and tighter gaps.
+  const dense = short || (landscape && height < 400);
+  const topSpace = insets.top + (landscape || short ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
   const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
@@ -143,9 +148,9 @@ export function HomeScreen() {
   const split = landscape && height < 520;
   const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, split ? width - 48 - 200 - 32 : width - 48);
   const brand = (
-    <View style={[styles.brand, split && styles.brandSplit]}>
-      <Image source={require('../../../assets/brand/display-logo.png')} style={styles.logo} resizeMode="cover" accessible={false} />
-      <Text accessibilityRole="header" style={styles.title}>{translate('home.title')}</Text>
+    <View style={[styles.brand, split && styles.brandSplit, short && styles.brandShort]}>
+      <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort]} resizeMode="cover" accessible={false} />
+      <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort]} numberOfLines={short ? 2 : undefined}>{translate('home.title')}</Text>
     </View>
   );
 
@@ -160,7 +165,7 @@ export function HomeScreen() {
           // Tablets and desktop: the column sits in the middle of the window.
           width >= 600 ? styles.rootCentered : null,
           split ? styles.rootSplit : null,
-          contentEdgePadding(insets, { left: 24, right: 24, bottom: landscape ? 16 : 32 }),
+          contentEdgePadding(insets, { left: 24, right: 24, bottom: dense ? 8 : landscape ? 16 : 32 }),
           { paddingTop: topSpace },
         ]}
         bounces={false}
@@ -171,7 +176,7 @@ export function HomeScreen() {
           <SettingsHeaderButton />
         </View>
         {split && brand}
-        <View style={[styles.panel, { width: panelWidth }]}>
+        <View style={[styles.panel, dense && styles.panelShort, { width: panelWidth }]}>
           {!split && brand}
 
           {showRecovery && (
@@ -184,9 +189,10 @@ export function HomeScreen() {
               accessibilityLabel={translate('home.resume_a11y')}
               symbol="play-circle"
               label={translate('home.resume')}
-              sub={translate('home.resume_sub')}
+              sub={dense ? undefined : translate('home.resume_sub')}
               onPress={handleResume}
               prominent
+              dense={dense}
             />
           )}
 
@@ -196,9 +202,10 @@ export function HomeScreen() {
               accessibilityLabel={translate('home.review_a11y')}
               symbol="eye"
               label={translate('home.review')}
-              sub={translate('home.review_sub')}
+              sub={dense ? undefined : translate('home.review_sub')}
               onPress={handleReview}
               prominent
+              dense={dense}
             />
           )}
 
@@ -210,8 +217,9 @@ export function HomeScreen() {
               accessibilityLabel={translate('learn.home_cta')}
               symbol="book-open"
               label={translate('learn.home_cta')}
-              sub={learnSub}
+              sub={dense ? undefined : learnSub}
               onPress={handleLearn}
+              dense={dense}
             />
             <HomeCard
               testID="position-setup-button"
@@ -219,6 +227,7 @@ export function HomeScreen() {
               symbol="grid"
               label={translate('positions.setup')}
               onPress={() => router.push('/position')}
+              dense={dense}
             />
           </View>
         </View>
@@ -228,7 +237,7 @@ export function HomeScreen() {
 }
 
 /** A secondary destination: icon, name and a line about it. "Prominent" is ivory, for picking a game back up. */
-function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, prominent = false }: {
+function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, prominent = false, dense = false }: {
   testID: string;
   accessibilityLabel: string;
   symbol: ComponentProps<typeof Feather>['name'];
@@ -236,6 +245,8 @@ function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, pro
   sub?: string;
   onPress: () => void;
   prominent?: boolean;
+  /** Short screens: one line, 56px tall. */
+  dense?: boolean;
 }) {
   return (
     <HoverPressable
@@ -245,6 +256,7 @@ function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, pro
       onPress={onPress}
       style={({ pressed, hovered }) => [
         styles.card,
+        dense && styles.cardDense,
         prominent && styles.cardProminent,
         hovered && (prominent ? styles.cardProminentHover : styles.cardHover),
         pressed && styles.pressed,
@@ -285,11 +297,19 @@ const styles = StyleSheet.create({
   panel: {
     gap: 12,
   },
+  panelShort: {
+    gap: 8,
+  },
   brand: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
     marginBottom: 12,
+  },
+  // Clear of the settings gear in the top corner, which sits on the right in both directions.
+  brandShort: {
+    marginBottom: 0,
+    paddingRight: 40,
   },
   brandSplit: {
     width: 200,
@@ -304,6 +324,11 @@ const styles = StyleSheet.create({
     borderColor: HOME_INK.hairline,
     ...continuousRadius(13),
   },
+  logoShort: {
+    width: 44,
+    height: 44,
+    ...continuousRadius(10),
+  },
   title: {
     flex: 1,
     color: HOME_INK.ivory,
@@ -311,6 +336,10 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     letterSpacing: -0.4,
     ...interFont('bold'),
+  },
+  titleShort: {
+    fontSize: 20,
+    lineHeight: 22,
   },
   tiles: {
     flexDirection: 'row',
@@ -334,6 +363,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: HOME_INK.hairline,
     ...continuousRadius(14),
+  },
+  cardDense: {
+    minHeight: 56,
+    paddingVertical: 8,
   },
   cardHover: {
     borderColor: 'rgba(236, 228, 212, 0.3)',
