@@ -107,7 +107,7 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
 
   // The log can hold nothing but passes and AI moves: nothing real to undo.
   if (autoRewound >= moveLog.length || autoRewound >= timeline.cursor) {
-    return true;
+    return false;
   }
 
   // Human compounds commit as one input and retain each visual checker leg.
@@ -123,7 +123,7 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
       setTimeline(result.nextTimeline);
       setState(result.nextState);
     }
-    return true;
+    return result != null;
   }
 
   // Blocked rolls after the move ride along with it: the log and timeline keep
