@@ -8,7 +8,7 @@ import { emulateFontScale, FONT_SCALE_CAP, WEB_EMULATED_FONT_SCALE } from '@/lib
  * React Native `Text` with a default system-text-size cap. Use it instead of
  * importing `Text` from react-native so large Dynamic Type grows text without
  * overrunning fixed rows. Pass `maxFontSizeMultiplier={FONT_SCALE_CAP.control}`
- * (or `.board`) where the text must stay inside fixed geometry.
+ * (or `.fixed`) where the text must stay inside fixed geometry.
  */
 export function Text({
   maxFontSizeMultiplier = FONT_SCALE_CAP.body,

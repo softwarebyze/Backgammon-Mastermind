@@ -1,5 +1,5 @@
 import type { TextStyle } from 'react-native';
-import { Platform } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
 
 /**
  * Most a text style may grow with the system text size (iOS Dynamic Type,
@@ -61,4 +61,10 @@ export function emulateFontScale(
     fontSize: (style.fontSize ?? 14) * factor,
     ...(typeof style.lineHeight === 'number' ? { lineHeight: style.lineHeight * factor } : {}),
   };
+}
+
+/** The system text scale in effect: the OS's on native, `?fontScale=` on web. */
+export function useTextScale(): number {
+  const { fontScale } = useWindowDimensions();
+  return Platform.OS === 'web' ? WEB_EMULATED_FONT_SCALE : fontScale;
 }

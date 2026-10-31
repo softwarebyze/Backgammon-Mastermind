@@ -3,7 +3,7 @@ import type { GameState } from '@/lib/game';
 import type { TxKeyPath } from '@/lib/i18n';
 
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/scaled-text';
 import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -97,10 +97,12 @@ export function GamePipStatusBar({ state }: Props) {
           <Pressable style={styles.modalCard} onPress={() => {}} testID="strategy-explanation">
             <View style={styles.modalHeader}>
               <StrategyMark strategy={strategy.key} size={22} />
-              <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.modalTitle}>{label}</Text>
+              <Text style={styles.modalTitle}>{label}</Text>
             </View>
-            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.whyText}>{why}</Text>
-            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.tipText}>{tip}</Text>
+            <ScrollView style={styles.modalBody} contentContainerStyle={styles.modalBodyContent}>
+              <Text style={styles.whyText}>{why}</Text>
+              <Text style={styles.tipText}>{tip}</Text>
+            </ScrollView>
             <Pressable
               onPress={() => setShowExplanation(false)}
               accessibilityRole="button"
@@ -108,7 +110,7 @@ export function GamePipStatusBar({ state }: Props) {
               style={styles.modalClose}
               testID="strategy-explanation-close"
             >
-              <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.modalCloseText}>{translate('game.strategy.got_it')}</Text>
+              <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.modalCloseText}>{translate('game.strategy.got_it')}</Text>
             </Pressable>
           </Pressable>
         </Pressable>
@@ -200,6 +202,7 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.accentDim,
     padding: 20,
     maxWidth: 340,
+    maxHeight: '100%',
     width: '100%',
     gap: 10,
     ...continuousRadius(16),
@@ -210,9 +213,17 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   modalTitle: {
+    flexShrink: 1,
     color: GAME_PALETTE.text,
     fontSize: 17,
     ...interFont('semibold'),
+  },
+  modalBody: {
+    flexGrow: 0,
+    flexShrink: 1,
+  },
+  modalBodyContent: {
+    gap: 10,
   },
   whyText: {
     color: GAME_PALETTE.text,
