@@ -16,8 +16,11 @@ export type GameAbandonReason = 'new_game' | 'reset';
  * only resets when `resetForNewGame` is called.
  *
  * `resetForNewGame` also fires `game_abandoned` when the game it replaces
- * never reached game-over, so every started game ends in exactly one of
- * `game_completed` or `game_abandoned` (or is still saved and resumable).
+ * had moves and never completed, so every played game ends in exactly one of
+ * `game_completed` or `game_abandoned` (or is still saved and resumable). A
+ * completed game that was undone out of game-over already counted as
+ * completed, so replacing it is not an abandon. A game with no moves was
+ * never played, so replacing it reports nothing.
  */
 export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
   const posthog = usePostHog();
@@ -35,7 +38,12 @@ export function useGameCompletedCapture(state: GameState | null, moveCount: numb
 
   const resetForNewGame = useCallback((reason: GameAbandonReason) => {
     const { state: previous, moveCount: previousMoveCount } = latestRef.current;
-    if (previous && previous.phase !== 'game-over') {
+    if (
+      previous
+      && previous.phase !== 'game-over'
+      && !completedRef.current
+      && previousMoveCount > 0
+    ) {
       // Optional: provider hooks also run in tests without a PostHogProvider.
       posthog?.capture('game_abandoned', {
         mode: previous.mode,

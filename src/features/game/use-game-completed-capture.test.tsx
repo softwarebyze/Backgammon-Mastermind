@@ -128,22 +128,45 @@ describe('useGameCompletedCapture', () => {
     expect(mockCapture).toHaveBeenCalledTimes(2);
   });
 
-  it('reports a replaced unfinished game as abandoned, but not a finished one', () => {
-    const { result, rerender } = renderHook(
-      (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
-      { initialProps: { state: movingState(), count: 12 } },
-    );
-    result.current.resetForNewGame('reset');
-    expect(mockCapture).toHaveBeenCalledWith('game_abandoned', {
-      mode: 'vs-computer',
-      phase: 'moving',
-      move_count: 12,
-      reason: 'reset',
+  describe('game_abandoned', () => {
+    function render(state: GameState, count: number) {
+      return renderHook(
+        (p: { state: GameState; count: number }) => useGameCompletedCapture(p.state, p.count),
+        { initialProps: { state, count } },
+      );
+    }
+
+    function abandons() {
+      return mockCapture.mock.calls.filter(([event]) => event === 'game_abandoned');
+    }
+
+    it('fires once when an unfinished game with moves is replaced', () => {
+      const { result } = render(movingState(), 12);
+      result.current.resetForNewGame('new_game');
+      expect(abandons()).toEqual([['game_abandoned', {
+        mode: 'vs-computer',
+        phase: 'moving',
+        move_count: 12,
+        reason: 'new_game',
+      }]]);
     });
 
-    mockCapture.mockClear();
-    rerender({ state: overState(), count: 140 });
-    result.current.resetForNewGame('new_game');
-    expect(mockCapture).not.toHaveBeenCalledWith('game_abandoned', expect.anything());
+    it('does not fire when the replaced game has no moves', () => {
+      const { result } = render(movingState(), 0);
+      result.current.resetForNewGame('reset');
+      expect(abandons()).toEqual([]);
+    });
+
+    it('does not fire for a completed game that was undone before the reset', () => {
+      const before = movingState();
+      const after = overState();
+      const { result, rerender } = render(before, 100);
+      result.current.noteMoveApplied(before, after);
+      rerender({ state: after, count: 101 });
+      rerender({ state: before, count: 100 });
+      result.current.resetForNewGame('reset');
+
+      expect(mockCapture.mock.calls.map(([event]) => event)).toEqual(['game_completed']);
+    });
   });
 });
