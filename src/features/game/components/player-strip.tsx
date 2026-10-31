@@ -58,7 +58,8 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   // plan as its mark alone, so the name and status never get cut off. The
   // landscape side rail is narrower still: see the two-row layout below.
   const [width, setWidth] = useState(0);
-  const narrow = width > 0 && width < (state.match ? 420 : 340);
+  // 344 is a 360-wide phone's strip: anything smaller shows the mark alone.
+  const narrow = width > 0 && width < (state.match ? 420 : 344);
   const tight = width > 0 && width < (state.match ? 280 : 220);
 
   // Only the name is pressable, so an editable trailing score never nests buttons.
@@ -68,6 +69,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
         <Animated.View key={status} entering={FadeIn.duration(180)}>
           <Text
             style={[styles.status, won && styles.statusWon, !turnStatus && styles.statusIdle]}
+            numberOfLines={1}
             testID={`player-status-${player}`}
           >
             {status}
@@ -88,7 +90,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
         <CheckerToken player={player} size={TOKEN_SIZE} />
       </View>
       <View style={styles.copy}>
-        <Text style={[styles.name, !active && styles.nameIdle]}>
+        <Text style={[styles.name, !active && styles.nameIdle]} numberOfLines={1}>
           {name}
         </Text>
         {tight ? null : statusText}
@@ -96,7 +98,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
     </Identity>
   );
   const pipCount = <PipCount player={player} pips={pips} off={off} active={active} label={pipsA11y} inline={tight} />;
-  const score = trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} /> : null);
+  const score = trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} showLength={!narrow} /> : null);
   const stripStyle = [styles.strip, active && styles.stripActive, won && styles.stripWon];
   const onLayout = (e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width);
 
@@ -148,12 +150,12 @@ function PipCount({ player, pips, off, active, label, inline }: {
   );
 }
 
-/** Points won so far in a match, against the length played to. */
-function MatchScore({ score, length, player }: { score: number; length: number; player: Player }) {
+/** Points won so far in a match; wide strips add the length, which the header always shows. */
+function MatchScore({ score, length, player, showLength }: { score: number; length: number; player: Player; showLength: boolean }) {
   return (
-    <View style={styles.matchScore} testID={`match-score-${player}`} accessible accessibilityLabel={translate('game.players.match_score_a11y', { score, length })}>
+    <View style={[styles.matchScore, !showLength && styles.matchScoreNarrow]} testID={`match-score-${player}`} accessible accessibilityLabel={translate('game.players.match_score_a11y', { score, length })}>
       <Text style={styles.matchScoreValue}>{score}</Text>
-      <Text style={styles.scoreLabel}>{translate('game.players.match_to', { length })}</Text>
+      {showLength ? <Text style={styles.scoreLabel}>{translate('game.players.match_to', { length })}</Text> : null}
     </View>
   );
 }
@@ -165,6 +167,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderLeftWidth: StyleSheet.hairlineWidth,
     borderLeftColor: 'rgba(255, 196, 153, 0.25)',
+  },
+  matchScoreNarrow: {
+    minWidth: 28,
+    paddingLeft: 8,
   },
   matchScoreValue: {
     color: GAME_PALETTE.accent,

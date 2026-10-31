@@ -30,7 +30,7 @@ describe('opening display', () => {
     expect(reveal).toEqual({ white: 2, black: 5, winner: 'black' });
     expect(openingTray(resolved, reveal)).toEqual({ dice: [2, 5], emphasis: 1 });
     expect(openingCopy(resolved, reveal)).toEqual({
-      headline: 'Black goes first!',
+      headline: 'Goes first!',
       caption: 'Black 5 beats 2',
     });
     // Once the reveal is over, normal play owns tray and copy.

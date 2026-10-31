@@ -76,7 +76,7 @@ it('draws the cube for each owner and a pending offer', () => {
   view.rerender(<MatchCube cube={state.match!.cube} pendingOffer="white" />);
   expect(screen.getByTestId('match-cube-pending-white')).toBeOnTheScreen();
   expect(screen.getByText('2')).toBeOnTheScreen();
-  expect(screen.getByTestId('match-cube')).toHaveProp('accessibilityLabel', 'White offers a double to 2. Black: accept or drop. Dropping concedes 1.');
+  expect(screen.getByTestId('match-cube')).toHaveProp('accessibilityLabel', 'White doubles to 2. Black: take or pass? Passing gives up 1.');
   view.rerender(<MatchCube cube={{ value: 2, owner: 'black' }} />);
   expect(screen.getByTestId('match-cube-owner-black')).toBeOnTheScreen();
   expect(screen.getByTestId('match-cube')).toHaveProp('accessibilityLabel', 'Cube 2 · Black');
@@ -113,7 +113,7 @@ it('reserves the same compact controls footprint across every match phase', () =
   view.rerender(render('rolling', 'white'));
   expect(screen.getByTestId('game-action-slot')).toHaveStyle({ height: 52 });
   expect(screen.getByTestId('game-action-caption')).toHaveStyle({ height: 32 });
-  expect(screen.getByTestId('game-action-caption')).toHaveTextContent(/White offers a double/);
+  expect(screen.getByTestId('game-action-caption')).toHaveTextContent(/White doubles to 2/);
   expect(screen.queryByText(/hints and tutor are off/)).toBeNull();
 });
 
