@@ -48,9 +48,11 @@ export function homeFitLevel({ available, measured, level, buttons }: {
   const text = measured + now.top + now.buttonsBottom + now.bottom - flexibleHeight(now, buttons);
   const roomy = flexibleHeight(ROOMY, buttons);
   const tight = flexibleHeight(TIGHT, buttons);
-  const level1 = (available - text - tight) / (roomy - tight);
-  // Floor to 1/100 so rounding never overshoots the space by a pixel.
-  return Math.min(1, Math.max(0, Math.floor(level1 * 100) / 100));
+  let fit = Math.min(1, Math.max(0, Math.floor((available - text - tight) / (roomy - tight) * 100) / 100));
+  // homeFitAt rounds each size, which can add a few pixels: step down until it fits.
+  while (fit > 0 && text + flexibleHeight(homeFitAt(fit), buttons) > available)
+    fit = Math.max(0, Math.round((fit - 0.01) * 100) / 100);
+  return fit;
 }
 
 function visibleHeight() {
