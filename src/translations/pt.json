@@ -28,6 +28,20 @@
       "undo_a11y": "Desfazer a jogada",
       "undo_move": "Desfazer"
     },
+    "difficulty": {
+      "classic": "Clássico",
+      "classic_description": "Adversário original · sem baixar o motor",
+      "easy": "Fácil",
+      "easy_description": "Sage · escolhas de jogadas mais tolerantes",
+      "fallback": "Clássico neste turno; Sage indisponível.",
+      "hard": "Difícil",
+      "hard_description": "Sage · sempre escolhe seu melhor turno",
+      "hint": "Aplica-se a partidas novas e retomadas. O tutor não muda.",
+      "medium": "Médio",
+      "medium_description": "Sage · menos escolhas tolerantes",
+      "opponent": "Computador: {{level}}",
+      "title": "Dificuldade do computador"
+    },
     "hint": {
       "back_to_turn": "Voltar ao meu turno",
       "back_to_turn_a11y": "Voltar ao meu turno e fechar a dica",

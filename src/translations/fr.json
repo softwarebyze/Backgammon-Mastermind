@@ -28,6 +28,20 @@
       "undo_a11y": "Annuler le dernier coup",
       "undo_move": "Annuler"
     },
+    "difficulty": {
+      "classic": "Classique",
+      "classic_description": "Adversaire d’origine · aucun moteur à télécharger",
+      "easy": "Facile",
+      "easy_description": "Sage · choix de coups plus indulgents",
+      "fallback": "Classique pour ce tour ; Sage indisponible.",
+      "hard": "Difficile",
+      "hard_description": "Sage · choisit toujours son meilleur tour",
+      "hint": "Pour les nouvelles parties et les reprises. Le tuteur reste inchangé.",
+      "medium": "Moyen",
+      "medium_description": "Sage · choix de coups moins indulgents",
+      "opponent": "Ordinateur : {{level}}",
+      "title": "Difficulté de l’ordinateur"
+    },
     "hint": {
       "back_to_turn": "Retour à mon tour",
       "back_to_turn_a11y": "Retour à mon tour, fermer l’indice",

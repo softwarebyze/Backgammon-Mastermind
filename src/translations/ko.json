@@ -28,6 +28,20 @@
       "undo_a11y": "취소 이동",
       "undo_move": "실행 취소"
     },
+    "difficulty": {
+      "classic": "클래식",
+      "classic_description": "기존 상대 · 엔진 다운로드 없음",
+      "easy": "쉬움",
+      "easy_description": "Sage · 더 자주 관대한 수 선택",
+      "fallback": "이번 턴은 클래식 사용. Sage를 사용할 수 없습니다.",
+      "hard": "어려움",
+      "hard_description": "Sage · 항상 가장 높게 평가한 턴 선택",
+      "hint": "새 게임과 이어 하는 게임에 적용됩니다. 튜터 안내는 그대로입니다.",
+      "medium": "보통",
+      "medium_description": "Sage · 관대한 수를 덜 선택",
+      "opponent": "컴퓨터: {{level}}",
+      "title": "컴퓨터 난이도"
+    },
     "hint": {
       "back_to_turn": "내 차례로 돌아가기",
       "back_to_turn_a11y": "내 차례로 돌아가 힌트를 닫기",

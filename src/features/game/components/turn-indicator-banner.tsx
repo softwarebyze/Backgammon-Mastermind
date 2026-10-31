@@ -2,6 +2,7 @@ import type { GameState } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CheckerToken } from '@/features/game/components/board/checker-token';
+import { ComputerDifficultySummary } from '@/features/game/components/computer-difficulty-summary';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { getTurnDisplay } from '@/lib/game/turn-display';
 import { interFont } from '@/lib/ui/fonts';
@@ -27,8 +28,6 @@ export function TurnIndicatorBanner({ state, headlineOverride = null }: Props) {
   return (
     <View
       style={styles.bannerShell}
-      accessibilityRole="text"
-      accessibilityLabel={`${turn.colorLabel}. ${headline}`}
     >
       <CheckerToken player={turn.player} size={CHECKER_SIZE} />
       <View style={styles.copy}>
@@ -50,6 +49,7 @@ export function TurnIndicatorBanner({ state, headlineOverride = null }: Props) {
         >
           {headline}
         </Text>
+        {state.mode === 'vs-computer' && <ComputerDifficultySummary inGame />}
       </View>
     </View>
   );

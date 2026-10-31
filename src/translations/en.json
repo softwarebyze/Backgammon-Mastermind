@@ -28,6 +28,20 @@
       "undo_a11y": "Undo move",
       "undo_move": "Undo"
     },
+    "difficulty": {
+      "classic": "Classic",
+      "classic_description": "Original opponent · no engine download",
+      "easy": "Easy",
+      "easy_description": "Sage · more forgiving move choices",
+      "fallback": "Using Classic for this turn; Sage unavailable.",
+      "hard": "Hard",
+      "hard_description": "Sage · always chooses its top-ranked turn",
+      "hint": "Applies to new and resumed games. Tutor guidance is unchanged.",
+      "medium": "Medium",
+      "medium_description": "Sage · fewer forgiving move choices",
+      "opponent": "Computer: {{level}}",
+      "title": "Computer difficulty"
+    },
     "hint": {
       "back_to_turn": "Back to my turn",
       "back_to_turn_a11y": "Back to my turn, dismiss the hint",

@@ -28,6 +28,20 @@
       "undo_a11y": "Deshacer movimiento",
       "undo_move": "Deshacer"
     },
+    "difficulty": {
+      "classic": "Clásico",
+      "classic_description": "Rival original · sin descargar el motor",
+      "easy": "Fácil",
+      "easy_description": "Sage · jugadas más permisivas",
+      "fallback": "Clásico en este turno; Sage no disponible.",
+      "hard": "Difícil",
+      "hard_description": "Sage · siempre elige su mejor turno",
+      "hint": "Se aplica a partidas nuevas y reanudadas. La ayuda del tutor no cambia.",
+      "medium": "Medio",
+      "medium_description": "Sage · menos jugadas permisivas",
+      "opponent": "Ordenador: {{level}}",
+      "title": "Dificultad del ordenador"
+    },
     "hint": {
       "back_to_turn": "Volver a mi turno",
       "back_to_turn_a11y": "Volver a mi turno y cerrar la pista",

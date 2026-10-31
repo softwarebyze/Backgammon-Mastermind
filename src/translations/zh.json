@@ -28,6 +28,20 @@
       "undo_a11y": "撤消移动",
       "undo_move": "撤销"
     },
+    "difficulty": {
+      "classic": "经典",
+      "classic_description": "原有对手 · 无需下载引擎",
+      "easy": "简单",
+      "easy_description": "Sage · 更多宽松的走法选择",
+      "fallback": "此回合使用经典模式；Sage不可用。",
+      "hard": "困难",
+      "hard_description": "Sage · 始终选择评分最高的回合",
+      "hint": "适用于新游戏和继续的游戏。导师提示保持不变。",
+      "medium": "中等",
+      "medium_description": "Sage · 更少宽松的走法选择",
+      "opponent": "电脑：{{level}}",
+      "title": "电脑难度"
+    },
     "hint": {
       "back_to_turn": "返回我的回合",
       "back_to_turn_a11y": "返回我的回合并关闭提示",

@@ -28,6 +28,20 @@
       "undo_a11y": "تراجع عن الحركة",
       "undo_move": "تراجع"
     },
+    "difficulty": {
+      "classic": "كلاسيكي",
+      "classic_description": "الخصم الأصلي · دون تنزيل محرّك",
+      "easy": "سهل",
+      "easy_description": "Sage · اختيارات نقلات أكثر تساهلاً",
+      "fallback": "كلاسيكي لهذا الدور؛ Sage غير متاح.",
+      "hard": "صعب",
+      "hard_description": "Sage · يختار دائماً دوره الأعلى تقييماً",
+      "hint": "للألعاب الجديدة والمستأنفة. إرشادات المدرّب لا تتغير.",
+      "medium": "متوسط",
+      "medium_description": "Sage · اختيارات أقل تساهلاً",
+      "opponent": "الكمبيوتر: {{level}}",
+      "title": "صعوبة الكمبيوتر"
+    },
     "hint": {
       "back_to_turn": "العودة إلى دوري",
       "back_to_turn_a11y": "العودة إلى دوري وإغلاق التلميح",

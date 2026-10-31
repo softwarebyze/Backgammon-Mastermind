@@ -3,6 +3,7 @@ import type { GamePreferences } from '@/lib/game-preferences/types';
 import { StyleSheet, View } from 'react-native';
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
+import { ComputerDifficultyPicker } from '@/features/game/components/settings-ui/computer-difficulty-picker';
 import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
@@ -45,6 +46,7 @@ export function GamePreferencesPanel({
 }: Props) {
   return (
     <View style={styles.wrap}>
+      <View style={styles.card}><ComputerDifficultyPicker /></View>
       <View style={styles.card}>
         <SettingToggleRow
           icon={<MoveHintIcon size={32} active={preferences.showMoveHints} />}
