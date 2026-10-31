@@ -12,10 +12,12 @@ import {
   Text,
   View,
 } from 'react-native';
+import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { brandSpace, buttonsSpace, homeFitAt, homeFitLevel, useWebVisibleHeight } from '@/features/game/home-fit';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
@@ -32,7 +34,7 @@ import {
 } from '@/lib/game/persistence';
 import { canOpenPersistedGame } from '@/lib/game/resume-game';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { LESSON_IDS } from '@/lib/learn/curriculum';
 import {
   allLessonsComplete,
@@ -43,7 +45,6 @@ import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
-import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
 
 function startGameFromHome(
   mode: GameMode,
@@ -85,6 +86,35 @@ export function HomeScreen() {
   const learnDone = completedLessonCount(progress);
   const learnReady = isReadyToPlay(progress);
   const learnLessonsDone = allLessonsComplete(progress);
+
+  // Fit the whole menu on screen: shrink the logo and spacing on short
+  // screens instead of scrolling. On web, size to the visible viewport, since
+  // iOS Safari's toolbar covers the bottom of the window.
+  const webVisible = useWebVisibleHeight();
+  const layoutIsRTL = useLayoutIsRTL();
+  // Web has no header bar (see homeScreenOptions), so the gear floats here.
+  const floatingGear = Platform.OS === 'web';
+  const gearSide = layoutIsRTL ? 'left' : 'right';
+  // Native's header owns the top inset.
+  const topInset = floatingGear ? insets.top : 0;
+  const [screenHeight, setScreenHeight] = useState(0);
+  // Each block's height minus its fit-dependent sizes: the same at every
+  // level, so a level change that leaves a block's height alone (no new
+  // onLayout) can't leave the fit stale.
+  const [brandText, setBrandText] = useState<number | null>(null);
+  const [buttonsText, setButtonsText] = useState<number | null>(null);
+  const visible = webVisible == null ? screenHeight : Math.min(screenHeight, webVisible);
+  const covered = Math.max(0, screenHeight - visible);
+  const buttonCount = 3 + (canResume ? 1 : 0) + (canReview ? 1 : 0);
+  const level = landscape || brandText == null || buttonsText == null
+    ? 1
+    : homeFitLevel({
+        available: visible - topInset - insets.bottom,
+        text: brandText + buttonsText,
+        buttons: buttonCount,
+      });
+  const fit = homeFitAt(level);
+  const buttonFit = landscape ? styles.modeBtnLandscape : { paddingVertical: fit.buttonPad };
 
   const handleStart = useCallback(
     (mode: GameMode) => {
@@ -136,7 +166,7 @@ export function HomeScreen() {
         : translate('learn.home_cta_sub');
 
   return (
-    <>
+    <View style={styles.scroll}>
       <FocusAwareStatusBar />
       <ScrollView
         testID="home-screen"
@@ -147,15 +177,27 @@ export function HomeScreen() {
           contentEdgePadding(insets, {
             left: 24,
             right: 24,
-            bottom: landscape ? 16 : 32,
+            bottom: (landscape ? 16 : fit.bottom) + covered,
           }),
+          { paddingTop: topInset + (landscape ? 12 : fit.top) },
         ]}
+        onLayout={e => setScreenHeight(e.nativeEvent.layout.height)}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
-        <View style={[styles.brand, landscape ? styles.brandLandscape : null]}>
-          <View style={[styles.logoContainer, landscape ? styles.logoLandscape : null]}>
+        <View
+          style={[styles.brand, landscape ? styles.brandLandscape : null]}
+          onLayout={landscape ? undefined : e => setBrandText(e.nativeEvent.layout.height - brandSpace(fit))}
+        >
+          <View
+            style={[
+              styles.logoContainer,
+              landscape
+                ? styles.logoLandscape
+                : { width: fit.logo, height: fit.logo, marginTop: fit.logoTop, marginBottom: fit.logoBottom },
+            ]}
+          >
             <Image
               source={require('../../../assets/brand/display-logo.png')}
               style={styles.logo}
@@ -173,7 +215,7 @@ export function HomeScreen() {
           {landscape
             ? null
             : (
-                <View style={styles.dividerRow}>
+                <View style={[styles.dividerRow, { marginVertical: fit.dividerGap }]}>
                   <View style={styles.dividerLine} />
                   <View style={styles.dividerDiamond} />
                   <View style={styles.dividerLine} />
@@ -181,7 +223,15 @@ export function HomeScreen() {
               )}
         </View>
 
-        <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
+        <View
+          style={[
+            styles.buttons,
+            landscape
+              ? styles.buttonsLandscape
+              : [styles.buttonsPortrait, { gap: fit.buttonGap, marginBottom: fit.buttonsBottom }],
+          ]}
+          onLayout={landscape ? undefined : e => setButtonsText(e.nativeEvent.layout.height - buttonsSpace(fit, buttonCount))}
+        >
           {showRecovery && (
             <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
           )}
@@ -194,7 +244,7 @@ export function HomeScreen() {
               style={({ pressed, hovered }) => [
                 styles.modeBtn,
                 hovered && styles.modeBtnHover,
-                landscape ? styles.modeBtnLandscape : null,
+                buttonFit,
                 styles.resumeBtn,
                 pressed && styles.pressed,
               ]}
@@ -220,7 +270,7 @@ export function HomeScreen() {
               style={({ pressed, hovered }) => [
                 styles.modeBtn,
                 hovered && styles.modeBtnHover,
-                landscape ? styles.modeBtnLandscape : null,
+                buttonFit,
                 styles.resumeBtn,
                 pressed && styles.pressed,
               ]}
@@ -244,7 +294,7 @@ export function HomeScreen() {
             style={({ pressed, hovered }) => [
               styles.modeBtn,
               hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
+              buttonFit,
               styles.learnBtn,
               pressed && styles.pressed,
             ]}
@@ -273,7 +323,7 @@ export function HomeScreen() {
             style={({ pressed, hovered }) => [
               styles.modeBtn,
               hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
+              buttonFit,
               styles.primaryBtn,
               pressed && styles.pressed,
             ]}
@@ -296,7 +346,7 @@ export function HomeScreen() {
             style={({ pressed, hovered }) => [
               styles.modeBtn,
               hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
+              buttonFit,
               styles.secondaryBtn,
               pressed && styles.pressed,
             ]}
@@ -314,7 +364,13 @@ export function HomeScreen() {
           </HoverPressable>
         </View>
       </ScrollView>
-    </>
+      {/* Outside the ScrollView so it stays put if Home still has to scroll. */}
+      {floatingGear && (
+        <View style={[styles.settingsCorner, { top: insets.top + 4, [gearSide]: Math.max(insets.left, insets.right) + 8 }]}>
+          <SettingsHeaderButton />
+        </View>
+      )}
+    </View>
   );
 }
 
@@ -327,15 +383,20 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
-    justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
-    paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
+    justifyContent: 'center',
   },
   rootLandscape: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 12,
     gap: 24,
+  },
+  settingsCorner: {
+    position: 'absolute',
+    zIndex: 10,
+    // Page colour, so text scrolling under it doesn't show through.
+    backgroundColor: GAME_PALETTE.bg,
+    borderRadius: 12,
   },
   brand: {
     alignItems: 'center',
