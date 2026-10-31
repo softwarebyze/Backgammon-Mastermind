@@ -12,7 +12,6 @@
 | [production-checklist.md](./production-checklist.md) | First-time App Store / Play submission |
 | [ios-testing-and-store.md](./ios-testing-and-store.md) | Dev client, TestFlight, which ASC app gets which binary |
 | [expo-dev-client-store-builds.md](./expo-dev-client-store-builds.md) | Why `expo-dev-client` ships dev-only permissions in store builds, and how they get stripped |
-| [screenmap.md](./screenmap.md) | Screenmap CI (iOS + Android maps on PRs) |
 | [android-play-release.md](./android-play-release.md) | Play Console setup, Fastlane screenshots, EAS prod Android submit |
 | [roadmap.md](./roadmap.md) | Long-horizon product vision (M0–M6) — not the sprint board |
 | [imessage-extension.md](./imessage-extension.md) | iMessage two-device game — architecture + ship notes |
