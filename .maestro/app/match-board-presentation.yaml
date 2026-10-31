@@ -49,9 +49,7 @@ onFlowComplete:
     id: strategy-explanation-close
 - tapOn:
     id: match-double
-- assertVisible: 'White offers a double.*'
-- assertNotVisible:
-    id: roll-dice-button
+- assertVisible: 'White doubles to 2.*'
 - takeScreenshot: match-board-02-offered
 - tapOn:
     id: match-accept

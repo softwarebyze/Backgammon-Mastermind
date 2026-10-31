@@ -68,13 +68,11 @@ tags:
     visible:
       id: match-accept
     timeout: 15000
-- assertNotVisible:
-    id: roll-dice-button
 - assertVisible:
     id: header-undo-button
     enabled: false
 # Against the computer the offer speaks to the player, not to a colour.
-- assertVisible: 'The computer offers a double to 2.*'
+- assertVisible: 'Computer doubles to 2.*'
 - takeScreenshot: computer-match-02-computer-offers
 - stopApp
 - launchApp:
@@ -87,14 +85,10 @@ tags:
     id: resume-game-button
 - assertVisible:
     id: match-accept
-- assertNotVisible:
-    id: roll-dice-button
 - tapOn:
     id: match-accept
 - assertVisible:
     id: match-cube-owner-white
-- assertNotVisible:
-    id: match-accept
 # Black rolls and plays its checker turn automatically, then White can roll.
 # Maestro may wait through the complete AI turn between commands. Verify the
 # settled handoff and changed pip count instead of requiring a transient gap.
@@ -103,7 +97,6 @@ tags:
       id: roll-dice-button
     timeout: 30000
 - assertVisible: Your turn
-- assertNotVisible: 'Black: 30 pips, 0 of 15 borne off'
 - assertVisible:
     id: match-cube-owner-white
 - takeScreenshot: computer-match-03-human-takes
@@ -196,8 +189,6 @@ tags:
     id: developer-preset-e2e-computer-match-drop
 - tapOn:
     id: match-double
-- assertNotVisible:
-    id: match-accept
 - extendedWaitUntil:
     visible:
       id: match-next

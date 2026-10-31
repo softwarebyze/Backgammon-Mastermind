@@ -1,6 +1,6 @@
-# iOS match coverage: start a 7-point match from Home, check the header and
-# score, then relaunch and resume it. Cube exchanges are covered on Android
-# through the Developer presets, since a live double depends on the dice.
+# iOS match coverage: start a 7-point match from Home, then continue a 7-point
+# match at 2–1 from a set-up position (no dice needed to reach the cube):
+# White doubles, Black takes, and the cube survives a relaunch.
 appId: ${APP_ID}
 tags:
   - ios
@@ -56,3 +56,67 @@ tags:
       text: 'Match to 7 · Game 1.*'
     timeout: 30000
 - takeScreenshot: match-seven-ios-03-resumed
+# A set-up 7-point position plays as that match: White on roll can double.
+- runScript: ../utils/match-seven-cube-link.js
+- openLink: ${output.matchSevenLink}
+- runFlow:
+    when:
+      visible: Open
+    commands:
+      - tapOn: Open
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-play
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-mode-human
+- tapOn:
+    id: position-play
+- runFlow:
+    when:
+      visible:
+        id: confirm-dialog-confirm
+    commands:
+      - tapOn:
+          id: confirm-dialog-confirm
+- extendedWaitUntil:
+    visible:
+      id: match-double
+    timeout: 45000
+- assertVisible:
+    id: match-score
+    text: 'Match to 7 · Game 1.*'
+- takeScreenshot: match-seven-ios-04-double-or-roll
+- tapOn:
+    id: match-double
+- tapOn:
+    id: match-accept
+- extendedWaitUntil:
+    visible:
+      id: match-cube
+      text: 'Cube 2 · Black.*'
+    timeout: 15000
+- takeScreenshot: match-seven-ios-05-cube-taken
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- extendedWaitUntil:
+    visible:
+      id: match-cube
+      text: 'Cube 2 · Black.*'
+    timeout: 30000
+- takeScreenshot: match-seven-ios-06-cube-resumed

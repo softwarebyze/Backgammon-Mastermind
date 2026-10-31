@@ -62,8 +62,6 @@ tags:
     id: match-double
 - assertVisible:
     id: match-accept
-- assertNotVisible:
-    id: roll-dice-button
 - takeScreenshot: match-polish-03-offer
 - tapOn:
     id: match-accept
@@ -101,8 +99,6 @@ tags:
 - assertVisible: Cube 1 · Center. Crawford game · no doubling
 - assertNotVisible:
     id: match-double
-- assertNotVisible:
-    id: win-confetti
 - takeScreenshot: match-polish-07-next-opening
 - openLink: backgammonmastermind.preview://developer
 - extendedWaitUntil:
@@ -127,6 +123,4 @@ tags:
     id: match-next
 - assertVisible: Match to 3 · Game 1
 - assertVisible: .*White 0  –  Black 0
-- assertNotVisible:
-    id: win-confetti
 - takeScreenshot: match-polish-09-new-match

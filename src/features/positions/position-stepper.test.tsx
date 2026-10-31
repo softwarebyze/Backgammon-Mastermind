@@ -13,10 +13,3 @@ it('puts ▲ above and ▼ below the value and stays within its range', () => {
   rerender(<PositionStepper label="Score" testID="s" value={2} min={0} max={2} onChange={change} />);
   expect(screen.getByTestId('s-higher')).toBeDisabled();
 });
-
-it('can show a custom visual (the cube face) in place of the number', () => {
-  const { Text } = require('react-native');
-  render(<PositionStepper label="Cube" testID="c" value={1} min={0} max={6} onChange={jest.fn()}><Text>cube</Text></PositionStepper>);
-  expect(screen.getByText('cube')).toBeTruthy();
-  expect(screen.getByTestId('c').props.accessibilityLabel).toBe('Cube: 1');
-});

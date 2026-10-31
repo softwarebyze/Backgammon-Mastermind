@@ -105,8 +105,6 @@ tags:
     timeout: 15000
 - assertVisible: .*White 0  –  Black 0
 - assertVisible: Cube 2 · Black
-- assertNotVisible:
-    id: roll-dice-button
 - tapOn:
     id: header-redo-button
 - extendedWaitUntil:

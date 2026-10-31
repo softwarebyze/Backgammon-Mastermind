@@ -59,7 +59,7 @@ tags:
     timeout: 15000
 - assertVisible: 'Point 5, 2 white checkers'
 - assertVisible: 'Point 6, 4 white checkers'
-- assertNotVisible: ".*Black's turn.*"
+- assertNotVisible: '.*Black. Your turn.*'
 - takeScreenshot: confirm-03-held-turn
 - tapOn:
     id: undo-move-button
@@ -81,7 +81,7 @@ tags:
 - tapOn:
     id: confirm-move-button
 - extendedWaitUntil:
-    visible: ".*Black's turn.*"
+    visible: '.*Black. Your turn.*'
     timeout: 15000
 - assertVisible: 'Point 5, 2 white checkers'
 - takeScreenshot: confirm-05-turn-handed-off

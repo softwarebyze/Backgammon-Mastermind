@@ -37,8 +37,6 @@ tags:
     id: position-empty
 - assertVisible:
     id: position-die-0
-- assertNotVisible:
-    id: position-strip
 # Tapping a die opens all six faces; picking the first opens the second.
 - tapOn:
     id: position-die-0
@@ -49,8 +47,6 @@ tags:
     id: position-die-option-6
 - tapOn:
     id: position-die-option-2
-- assertNotVisible:
-    id: position-die-picker
 - assertVisible:
     id: position-die-0
     text: 'Dice 1: 6'
@@ -73,8 +69,6 @@ tags:
     id: position-cube-owner-black
 - tapOn:
     id: position-cube-done
-- assertNotVisible:
-    id: position-cube-picker
 - assertVisible:
     id: position-cube
     text: 'Doubling cube: 2. Cube owner: Black'

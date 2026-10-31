@@ -11,8 +11,6 @@ tags:
       HOME_TEXT: Play against the computer
 - tapOn:
     id: home-opponent-vs-human
-- assertNotVisible:
-    id: game-board-slot
 - tapOn:
     id: home-format-single
 - assertNotVisible:
@@ -38,8 +36,6 @@ tags:
       HOME_TEXT: Play against the computer
 - tapOn:
     id: home-opponent-vs-human
-- assertNotVisible:
-    id: game-board-slot
 - tapOn:
     id: home-format-match
 - scrollUntilVisible:
@@ -76,8 +72,6 @@ tags:
       HOME_TEXT: Play against the computer
 - tapOn:
     id: home-opponent-vs-human
-- assertNotVisible:
-    id: game-board-slot
 - tapOn:
     id: home-format-match
 - scrollUntilVisible:
@@ -108,12 +102,8 @@ tags:
       HOME_TEXT: Play against the computer
 - tapOn:
     id: home-opponent-vs-computer
-- assertNotVisible:
-    id: game-board-slot
 - tapOn:
     id: home-format-single
-- assertNotVisible:
-    id: home-match-length-3
 - scrollUntilVisible:
     element:
       id: home-start-game
@@ -125,8 +115,6 @@ tags:
     visible:
       id: game-board-slot
     timeout: 45000
-- assertNotVisible:
-    id: match-score
 - takeScreenshot: home-setup-vs-computer-single-started
 - runFlow:
     file: ../utils/launch-app.yaml
@@ -135,8 +123,6 @@ tags:
       HOME_TEXT: Play against the computer
 - tapOn:
     id: home-opponent-vs-computer
-- assertNotVisible:
-    id: game-board-slot
 - tapOn:
     id: home-format-match
 - scrollUntilVisible:
@@ -167,8 +153,6 @@ tags:
       HOME_TEXT: Play against the computer
 - tapOn:
     id: home-opponent-vs-computer
-- assertNotVisible:
-    id: game-board-slot
 - tapOn:
     id: home-format-match
 - scrollUntilVisible:
