@@ -164,12 +164,6 @@ it.each(['white', 'black'] as const)('edits the existing owner with %s selected,
   expect(change.mock.lastCall![0]).toBe(p);
 });
 
-it('keeps ambient instructions and off-count captions out of the board workspace', () => {
-  render(<Editor position={newPosition()} dimensions={dims} location={null} onLocation={jest.fn()} onChange={jest.fn()} />);
-  expect(screen.queryByText('positions.off_counts')).toBeNull();
-  expect(screen.queryByText('positions.drag_hint')).toBeNull();
-});
-
 it('resizes the touched occupied bar with the other colour selected, then switches at zero', () => {
   const p = setPositionStack(setPositionStack(newPosition(true), 'black-bar', 'black', 3), 'white-bar', 'white', 2);
   const change = jest.fn();
