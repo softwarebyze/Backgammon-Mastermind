@@ -25,6 +25,8 @@ type Props = {
   headlineOverride?: string | null;
   /** Narrow landscape rail: the strategy chip shrinks to its mark. */
   compact?: boolean;
+  /** A phone held sideways under 250px tall: one slimmer row, even in a match, without the plan chip. */
+  squeeze?: boolean;
   /** Makes the name a button (the position editor sets who is on roll). */
   onPress?: () => void;
   pressHint?: string;
@@ -41,7 +43,7 @@ type Props = {
  * far they have to go (pip count) and how many checkers are already off.
  * Black sits above the board and white below it, like the checkers.
  */
-export function PlayerStrip({ state, player, headlineOverride = null, compact = false, onPress, pressHint, trailing, hideStrategy = false, idleStatus }: Props) {
+export function PlayerStrip({ state, player, headlineOverride = null, compact = false, squeeze = false, onPress, pressHint, trailing, hideStrategy = false, idleStatus }: Props) {
   const name = playerDisplayName(state, player);
   const turnStatus = playerStripStatus(state, player, headlineOverride);
   const status = turnStatus ?? idleStatus ?? null;
@@ -52,7 +54,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const off = state.borneOff[player];
   // Both sides get their plan, the computer's included. The opening is not a
   // plan yet, so the chip waits until one takes shape.
-  const showStrategy = !hideStrategy && !gameOver && classifyStrategy(state, player).key !== 'developing';
+  const showStrategy = !hideStrategy && !squeeze && !gameOver && classifyStrategy(state, player).key !== 'developing';
   const pipsA11y = translate('game.status.pips_a11y', { player: name, pips, off });
   // Narrow strips (small phones, and matches with their score column) show the
   // plan as its mark alone, so the name and status never get cut off. The
@@ -60,7 +62,8 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const [width, setWidth] = useState(0);
   // 344 is a 360-wide phone's strip: anything smaller shows the mark alone.
   const narrow = width > 0 && width < (state.match ? 420 : 344);
-  const tight = width > 0 && width < (state.match ? 280 : 220);
+  // Too short for two rows (#348): the score keeps its narrow column instead.
+  const tight = width > 0 && width < (state.match && !squeeze ? 280 : 220);
 
   // Only the name is pressable, so an editable trailing score never nests buttons.
   const Identity = onPress ? Pressable : View;
@@ -99,7 +102,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   );
   const pipCount = <PipCount player={player} pips={pips} off={off} active={active} label={pipsA11y} inline={tight} />;
   const score = trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} showLength={!narrow} /> : null);
-  const stripStyle = [styles.strip, active && styles.stripActive, won && styles.stripWon];
+  const stripStyle = [styles.strip, squeeze && styles.stripSqueeze, active && styles.stripActive, won && styles.stripWon];
   const onLayout = (e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width);
 
   // The side rail is too narrow for one row: the name keeps the top line with
@@ -189,6 +192,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
     ...continuousRadius(14),
+  },
+  stripSqueeze: {
+    minHeight: 44,
+    paddingVertical: 2,
   },
   stripTight: {
     flexDirection: 'column',

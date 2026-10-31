@@ -62,17 +62,19 @@ function GameTopChrome({
   state,
   headline,
   bothSides,
+  squeeze,
   onLayout,
 }: {
   state: GameState;
   headline: string | null;
   bothSides: boolean;
+  squeeze: boolean;
   onLayout: (event: LayoutChangeEvent) => void;
 }) {
   return (
     <View style={[styles.chromeColumn, styles.stripWrap, bothSides && styles.stripWrapRail]} onLayout={onLayout}>
-      <PlayerStrip state={state} player="black" headlineOverride={headline} compact={bothSides} />
-      {bothSides ? <PlayerStrip state={state} player="white" headlineOverride={headline} compact /> : null}
+      <PlayerStrip state={state} player="black" headlineOverride={headline} compact={bothSides} squeeze={squeeze} />
+      {bothSides ? <PlayerStrip state={state} player="white" headlineOverride={headline} compact squeeze={squeeze} /> : null}
     </View>
   );
 }
@@ -142,6 +144,8 @@ type ChromeStackProps = {
   compact: boolean;
   /** A phone held sideways in Safari (under 330px tall): no room for the timeline or the caption. */
   fold: boolean;
+  /** Under 250px tall: slimmer one-row strips, so a match still fits (#348). */
+  squeeze: boolean;
   includeTop: boolean;
   diceOnBoard: boolean;
   dieSize: number;
@@ -164,6 +168,7 @@ function GameChromeStack({
   interactionEnabled,
   compact,
   fold,
+  squeeze,
   includeTop,
   diceOnBoard,
   dieSize,
@@ -195,7 +200,7 @@ function GameChromeStack({
   return (
     <>
       {includeTop
-        ? <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides onLayout={onTopLayout} />
+        ? <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides squeeze={squeeze} onLayout={onTopLayout} />
         : null}
       <GameReviewSlot review={review} moveLog={moveLog} state={state} hidden={layout.hideReview || fold} compact={compact} />
       <View
@@ -316,6 +321,7 @@ export function GameScreenLayout({
     ? boardDiceFor({ state, live, isReviewing: review.isReviewing, opening, displayStyle: preferences.diceDisplayStyle })
     : null;
 
+  const railHeight = height - insets.top - insets.bottom;
   const chrome = (
     <GameChromeStack
       state={state}
@@ -327,7 +333,8 @@ export function GameScreenLayout({
       interactionEnabled={board.interactionEnabled}
       compact={landscape}
       // The header undo/redo still step through the game; the strips carry each side's status.
-      fold={landscape && !desktop && height - insets.top - insets.bottom < 330}
+      fold={landscape && !desktop && railHeight < 330}
+      squeeze={landscape && !desktop && railHeight < 250}
       includeTop={landscape}
       diceOnBoard={diceOnBoard}
       dieSize={dieSize}
@@ -368,7 +375,7 @@ export function GameScreenLayout({
         {/* Portrait: black's strip, the board, white's strip, held together and centered in the slot. */}
         {landscape
           ? null
-          : <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides={false} onLayout={onTopLayout} />}
+          : <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides={false} squeeze={false} onLayout={onTopLayout} />}
         <GameBoardSection
           boardState={state}
           boardAnimation={board.boardAnimation}

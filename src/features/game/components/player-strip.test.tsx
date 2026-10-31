@@ -144,4 +144,18 @@ describe('strategy mark', () => {
     expect(screen.queryByTestId('strategy-line-white')).toBeNull();
     expect(screen.getByText('game.players.you')).toBeTruthy();
   });
+
+  it('keeps a match strip on one slim row, without the plan, when the rail is too short for two', () => {
+    const state: GameState = { ...pastOpening('vs-computer', 'white'), match: createMatch(5) };
+    const layout = { nativeEvent: { layout: { width: 272, height: 52, x: 0, y: 0 } } };
+    const { rerender } = render(<PlayerStrip state={state} player="white" compact />);
+    fireEvent(screen.getByTestId('player-strip-white'), 'layout', layout);
+    expect(screen.getByTestId('player-strip-white')).toHaveStyle({ flexDirection: 'column' });
+    rerender(<PlayerStrip state={state} player="white" compact squeeze />);
+    fireEvent(screen.getByTestId('player-strip-white'), 'layout', layout);
+    expect(screen.getByTestId('player-strip-white')).toHaveStyle({ flexDirection: 'row' });
+    expect(screen.queryByTestId('strategy-mark-white')).toBeNull();
+    expect(screen.getByTestId('match-score-white')).toBeTruthy();
+    expect(screen.getByTestId('player-status-white')).toBeTruthy();
+  });
 });
