@@ -64,7 +64,11 @@ function PositionWorkspace({ data }: { data?: string }) {
   const [saved, setSaved] = useState(loadSavedPositions);
   const [tool, setTool] = useState<'play' | 'saved' | 'exchange' | null>(null);
   const [mode, setMode] = useState<'vs-human' | 'vs-computer'>('vs-human');
-  const { width, height } = useWindowDimensions();
+  const viewport = useWindowDimensions();
+  // Size from the space the screen really gets: on web a portrait iPad caps the app column below the window width.
+  const [frameWidth, setFrameWidth] = useState<number | null>(null);
+  const width = Math.min(viewport.width, frameWidth ?? viewport.width);
+  const { height } = viewport;
   const { insets } = useLayoutMetrics();
   const layout = positionLayout(width, height, insets.left + insets.right);
   const fitted = fitBoardToViewport(layout.boardWidth, layout.boardHeight, { extraHeight: 36, checkerCap: 64 });
@@ -173,6 +177,7 @@ function PositionWorkspace({ data }: { data?: string }) {
       <ScrollView
         testID="position-screen"
         style={styles.root}
+        onLayout={e => setFrameWidth(e.nativeEvent.layout.width)}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         automaticallyAdjustKeyboardInsets
