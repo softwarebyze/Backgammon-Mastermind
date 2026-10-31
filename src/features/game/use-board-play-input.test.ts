@@ -1,5 +1,5 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
-import type { GameState } from '@/lib/game';
+import type { GameState, Move } from '@/lib/game';
 import { act, renderHook } from '@testing-library/react-native';
 import { getCheckerAnchor } from '@/features/game/board-point-layout';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
@@ -237,6 +237,36 @@ describe('useBoardPlayInput rapid follow-up taps', () => {
     rerender({ state, isAnimating: false, isHumanTurn: true });
 
     expect(actions.doMove).not.toHaveBeenCalled();
+  });
+});
+
+describe('useBoardPlayInput concurrent replay', () => {
+  it('keeps replaying queued taps after a replayed tap commits a concurrent move', () => {
+    // The first replayed tap commits at once (no blocking animation), so the
+    // second must replay against that board without waiting for another settle.
+    let board = midAnimation([3, 5]);
+    const actions = {
+      selectPoint: jest.fn(),
+      doMove: jest.fn((move: Move) => {
+        board = midAnimation(board.remainingDice.filter((_d, i, all) => i !== all.indexOf(move.die ?? -1)));
+      }),
+      doMoveSequence: jest.fn(),
+      getMoveState: () => board,
+    };
+    const { result, rerender } = renderHook(
+      (props: Props) => useBoardPlayInput({ ...props, actions, concurrentMoves: true }),
+      { initialProps: { state: board, isAnimating: true, isHumanTurn: true } },
+    );
+
+    act(() => {
+      result.current.handlePointPress(6);
+      result.current.handlePointPress(13);
+    });
+    rerender({ state: board, isAnimating: false, isHumanTurn: true });
+
+    expect(actions.doMove).toHaveBeenCalledTimes(2);
+    expect(actions.doMove).toHaveBeenNthCalledWith(1, expect.objectContaining({ from: 6, to: 3 }), { concurrent: true });
+    expect(actions.doMove).toHaveBeenNthCalledWith(2, expect.objectContaining({ from: 13, to: 8 }), { concurrent: true });
   });
 });
 

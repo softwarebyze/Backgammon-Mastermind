@@ -30,6 +30,8 @@ describe('gamePipStatusBar', () => {
 
     expect(screen.getByTestId('strategy-line')).toBeTruthy();
     expect(screen.getByText('game.strategy.label.developing')).toBeTruthy();
+    // Issue #308: no trailing disclosure glyph after the strategy name, in LTR or RTL.
+    expect(screen.queryByText(/[▸◂▶◀›‹•·]/)).toBeNull();
     // Both race pip counts render (opening position: 167 each).
     expect(screen.getAllByText('167')).toHaveLength(2);
   });
@@ -45,6 +47,15 @@ describe('gamePipStatusBar', () => {
 
     fireEvent.press(screen.getByTestId('strategy-explanation-close'));
     expect(screen.getByTestId('strategy-mark')).toBeTruthy();
+  });
+
+  it('keeps the strategy name an accessible button without the disclosure glyph', () => {
+    const state = createInitialState('vs-computer');
+    render(<GamePipStatusBar state={state} />);
+
+    const line = screen.getByTestId('strategy-line');
+    expect(line).toHaveProp('accessibilityRole', 'button');
+    expect(line.props.accessibilityLabel).toMatch(/^game\.strategy\.label\.developing\. /);
   });
 
   it('labels the pip counts accessibly per player', () => {

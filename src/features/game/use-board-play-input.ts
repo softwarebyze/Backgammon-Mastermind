@@ -13,8 +13,9 @@ import { previewFromDrag, resolveDragMove } from '@/features/game/drag-move';
 import { dragReleaseAnchor } from '@/features/game/drag-overlay-offset';
 import { resolveFatFingerDrop } from '@/features/game/hit-test-board';
 import { resolvePendingDragDrop } from '@/features/game/pending-drag-drop';
+import { shouldPreselectBar } from '@/features/game/preselect-bar';
 import { resolveBoardTap } from '@/features/game/resolve-board-tap';
-import { BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
+import { BAR_POINT, BEAR_OFF, findMoveSequence, getLegalMoves } from '@/lib/game';
 import { getSingleDestinationSequence } from '@/lib/game/single-move';
 import { translate } from '@/lib/i18n';
 
@@ -64,6 +65,8 @@ type UseBoardPlayInputArgs = {
    * drop queued input instead of replaying it under the overlay. Default true.
    */
   interactionEnabled?: boolean;
+  /** Select the bar for the player whenever they must enter from it. Default false (lessons script their taps). */
+  preselectBar?: boolean;
   actions: BoardPlayActions;
   /** Optional analytics hook — omitted in Learn (uses its own events). */
   onMoveMade?: (inputType: BoardMoveInputType) => void;
@@ -81,6 +84,7 @@ export function useBoardPlayInput({
   enableRollNudge = true,
   concurrentMoves = false,
   interactionEnabled = true,
+  preselectBar = false,
   actions,
   onMoveMade,
 }: UseBoardPlayInputArgs) {
@@ -94,6 +98,12 @@ export function useBoardPlayInput({
       stateRef.current = { ...live, selectedPoint: point, legalMovesForSelected: point === null ? [] : getLegalMoves(live).filter(m => m.from === point) };
     }
   }, [selectAction, concurrentMoves]);
+  const mustEnterFromBar = preselectBar && shouldPreselectBar(state, { isHumanTurn, isAnimating, interactionEnabled });
+  useEffect(() => {
+    if (mustEnterFromBar) {
+      selectPoint(BAR_POINT);
+    }
+  }, [mustEnterFromBar, selectPoint]);
   const onMoveMadeRef = useRef(onMoveMade);
   onMoveMadeRef.current = onMoveMade;
   const turnKey = `${state?.phase}|${state?.currentPlayer}|${state?.dice[0]}|${state?.dice[1]}|${isAnimating}`;
@@ -306,9 +316,12 @@ export function useBoardPlayInput({
         return { selection: action.point, stop: false };
       case 'play':
         playTapSequence(action.sequence);
-        return { selection, stop: true };
+        // A concurrent move commits at once: keep replaying against the new board.
+        return concurrentMoves && getMoveState && !isAnimatingRef.current
+          ? { selection: stateRef.current?.selectedPoint ?? null, stop: false }
+          : { selection, stop: true };
     }
-  }, [nudgeRoll, playTapSequence, selectPoint]);
+  }, [nudgeRoll, playTapSequence, selectPoint, concurrentMoves, getMoveState]);
 
   const drainQueuedInputs = useCallback(() => {
     const s = stateRef.current;

@@ -72,7 +72,7 @@
       "direction_overlay": "Guía de dirección",
       "direction_overlay_hint": "Recorrido en herradura sobre el tablero",
       "move_hints": "Pistas de movimiento",
-      "move_hints_hint": "Punto dorado junto a las casillas desde las que puedes mover",
+      "move_hints_hint": "Resalta los números de los puntos desde los que puedes mover",
       "point_numbers": "Números de casilla",
       "point_numbers_hint": "Mostrar etiquetas 1–24 en el tablero",
       "section_automation": "Automatización",
@@ -104,6 +104,7 @@
       "viewing_hint": "Revisando — toca En vivo o Volver para seguir jugando"
     },
     "status": {
+      "bar_short": "Barra",
       "black_wins": "Ganan las negras",
       "computer_wins": "Gana el ordenador",
       "off_short": "fuera",
