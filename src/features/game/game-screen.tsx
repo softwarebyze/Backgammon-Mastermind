@@ -1,9 +1,10 @@
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AppState, StyleSheet, Text, View } from 'react-native';
-
+import { AppState, StyleSheet, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+
+import { Text } from '@/components/ui/scaled-text';
 import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -31,6 +32,7 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
 import { translate } from '@/lib/i18n';
 import { useHardwareBackPress } from '@/lib/navigation/use-hardware-back-press';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 
 /* eslint-disable max-lines-per-function -- screen composes all game slices */
@@ -197,7 +199,7 @@ export function GameScreen() {
     return (
       <View style={[styles.root, styles.center]}>
         <FocusAwareStatusBar />
-        <Text style={{ color: GAME_PALETTE.accent }}>{translate('game.controls.loading')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={{ color: GAME_PALETTE.accent }}>{translate('game.controls.loading')}</Text>
       </View>
     );
   }
@@ -228,7 +230,7 @@ export function GameScreen() {
       />
       {showReviewing && (
         <View style={styles.reviewingPill} pointerEvents="none">
-          <Text style={styles.reviewingText}>Reviewing your turn…</Text>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.reviewingText}>Reviewing your turn…</Text>
         </View>
       )}
     </View>

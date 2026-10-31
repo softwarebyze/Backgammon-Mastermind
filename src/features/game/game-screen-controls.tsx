@@ -2,12 +2,13 @@ import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
 import { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
-import { DiceDisplay } from '@/features/game/components/board/dice-display';
 
+import { Text } from '@/components/ui/scaled-text';
+import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { HintButton } from '@/features/game/components/hint-button';
+
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
@@ -17,6 +18,7 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -134,7 +136,7 @@ export function GameScreenControls({
           canUndoMove={canUndoMove}
         />
       </View>
-      <Text style={styles.caption}>{caption}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.caption}>{caption}</Text>
     </View>
   );
 }
@@ -194,7 +196,7 @@ function ActionControl({
         onPress={onGoLive}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
       </HoverPressable>
     );
   }
@@ -209,7 +211,7 @@ function ActionControl({
         onPress={onReset}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
       </HoverPressable>
     );
   }
@@ -225,7 +227,7 @@ function ActionControl({
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
       </HoverPressable>
     );
   }
@@ -244,7 +246,7 @@ function ActionControl({
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
       </HoverPressable>
     );
   }
@@ -303,7 +305,7 @@ function ActionControl({
           onCancelSelection();
         }}
       >
-        <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
       </HoverPressable>
     );
   }
@@ -345,7 +347,7 @@ function ConfirmMoveBar({
         onPress={onUndo}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
           {translate('game.controls.undo_move')}
         </Text>
       </HoverPressable>
@@ -362,7 +364,7 @@ function ConfirmMoveBar({
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Feather name="check" size={18} color={GAME_PALETTE.controlInk} />
-        <Text style={styles.primaryBtnText}>{translate('game.controls.confirm_move')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.controls.confirm_move')}</Text>
       </HoverPressable>
     </View>
   );
@@ -371,7 +373,7 @@ function ConfirmMoveBar({
 function StatusPlaceholder({ text }: { text: string }) {
   return (
     <View style={styles.statusSlot} pointerEvents="none">
-      <Text style={styles.statusText}>{text}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.statusText}>{text}</Text>
     </View>
   );
 }
