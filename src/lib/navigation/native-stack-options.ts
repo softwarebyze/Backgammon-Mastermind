@@ -15,10 +15,14 @@ const gameHeaderStyle = {
   backgroundColor: GAME_PALETTE.surface,
 } as const;
 
-/** Home — native header with settings in the top bar */
+/**
+ * Home — native header with settings in the top bar. On web there is no bar:
+ * the screen floats the gear in its corner, so the menu gets the full height
+ * and nothing sits over it.
+ */
 export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
-  headerShown: true,
+  headerShown: Platform.OS !== 'web',
   headerShadowVisible: false,
   // Opaque: iOS 26 transparent headers rubber-band non-ScrollView screens.
   headerTransparent: false,
