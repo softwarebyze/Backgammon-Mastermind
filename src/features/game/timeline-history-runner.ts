@@ -57,6 +57,34 @@ function countTrailingAutoRewound(moveLog: MoveLogEntry[], mode: GameState['mode
   return count;
 }
 
+/** Commit a compound as one input, while each checker leg keeps its own flight. */
+function undoCommittedAction(ctx: HistoryAnimCtx, count: number) {
+  let timeline = ctx.timeline;
+  let before = ctx.getLiveState();
+  for (let i = 0; i < count; i++) {
+    const step = buildUndoHistoryStep({
+      replayBaseline: ctx.replayBaseline!,
+      moveLog: ctx.moveLog,
+      undoPly: timeline.cursor,
+      onFinish: () => {},
+    });
+    const result = undoMany(timeline, 1, { popLastMove: ctx.popLastMove, liveState: before });
+    if (!result) {
+      break;
+    }
+    if (step?.frame && before) {
+      ctx.startCommittedFrame!(step.frame, before);
+    }
+    timeline = result.nextTimeline;
+    before = result.nextState;
+  }
+  ctx.setTimeline(timeline);
+  if (before) {
+    ctx.setState(before);
+  }
+}
+
+// eslint-disable-next-line max-lines-per-function -- grouped live history and legacy settle-time review
 export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
   const { replayBaseline, popLastMove, setTimeline, setState, finishHistoryAnim, getLiveState } = ctx;
   const { timeline, moveLog } = ctx;
@@ -67,17 +95,30 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
   // move is popped as well — the intermediate snapshots are black-to-move
   // states that would wake the AI.
   const autoRewound = countTrailingAutoRewound(moveLog, ctx.gameMode);
-  const needsBatch = ctx.gameMode === 'vs-computer' && autoRewound > 0;
+  const lastIndex = moveLog.length - autoRewound - 1;
+  const actionId = moveLog[lastIndex]?.actionId;
+  let actionLength = 1;
+  if (actionId != null) {
+    while (moveLog[lastIndex - actionLength]?.actionId === actionId) {
+      actionLength++;
+    }
+  }
+  const needsBatch = actionLength > 1 || (ctx.gameMode === 'vs-computer' && autoRewound > 0);
 
   // The log can hold nothing but passes and AI moves: nothing real to undo.
   if (autoRewound >= moveLog.length || autoRewound >= timeline.cursor) {
     return true;
   }
 
-  // A multi-move rewind commits in one batch (no animation): animating the
-  // final step would briefly show a black-to-move board and trigger the AI.
+  // Human compounds commit as one input and retain each visual checker leg.
+  if (actionLength > 1 && autoRewound === 0 && replayBaseline && ctx.startCommittedFrame) {
+    undoCommittedAction(ctx, actionLength);
+    return true;
+  }
+
+  // AI rewinds stay atomic: intermediate black-to-move states would wake AI.
   if (needsBatch || !replayBaseline) {
-    const result = undoMany(timeline, autoRewound + 1, { popLastMove, liveState: getLiveState() });
+    const result = undoMany(timeline, autoRewound + actionLength, { popLastMove, liveState: getLiveState() });
     if (result) {
       setTimeline(result.nextTimeline);
       setState(result.nextState);
@@ -165,6 +206,31 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
   const moveEntry = peekRedoMove(timeline);
   if (!moveEntry) {
     return false;
+  }
+
+  if (moveEntry.actionId && timeline.redoMoves[1]?.actionId === moveEntry.actionId) {
+    let next = timeline;
+    let before = ctx.getLiveState();
+    let log = moveLog;
+    while (peekRedoMove(next)?.actionId === moveEntry.actionId) {
+      const entry = peekRedoMove(next)!;
+      const step = replayBaseline && ctx.startCommittedFrame
+        ? buildRedoHistoryStep({ replayBaseline, moveLog: log, moveEntry: entry, cursor: next.cursor, onFinish: () => {} })
+        : null;
+      const result = redoInstant(next, restoreMove);
+      if (!result) {
+        break;
+      }
+      if (step?.frame && before) {
+        ctx.startCommittedFrame!(step.frame, before);
+      }
+      before = result.nextState;
+      log = [...log, entry];
+      next = result.nextTimeline;
+      setState(result.nextState);
+    }
+    setTimeline(next);
+    return true;
   }
 
   if (!replayBaseline) {

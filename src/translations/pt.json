@@ -207,14 +207,12 @@
       "show_mine": "Mostrar a minha jogada",
       "show_mine_a11y": "Mostrar só a minha jogada, sem revelar a melhor",
       "take_back": "Anular e tentar de novo",
-      "take_back_a11y": "Anular o turno inteiro e tentar de novo",
+      "take_back_a11y": "Anular a jogada e tentar de novo",
       "take_back_retry_a11y": "Anular a jogada e tentar de novo",
       "title_compare": "A sua jogada contra a melhor",
       "title_mine": "A sua jogada",
       "turn_off": "Desligar o tutor",
       "turn_off_a11y": "Desligar o modo tutor",
-      "undo_last": "Anular a última jogada",
-      "undo_last_a11y": "Anular só a última jogada e voltar a jogá-la",
       "vs_best": "−{{delta}} face à melhor",
       "you_played": "Jogou:"
     }

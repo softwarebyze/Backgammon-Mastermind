@@ -207,14 +207,12 @@
       "show_mine": "Hamlemi göster",
       "show_mine_a11y": "En iyi hamleyi açmadan yalnız benim hamlemi göster",
       "take_back": "Geri al ve yeniden dene",
-      "take_back_a11y": "Tüm turu geri al ve yeniden dene",
+      "take_back_a11y": "Hamleyi geri al ve yeniden dene",
       "take_back_retry_a11y": "Hamleyi geri al ve yeniden dene",
       "title_compare": "Hamlen ile en iyi hamle",
       "title_mine": "Hamlen",
       "turn_off": "Eğitmeni kapat",
       "turn_off_a11y": "Eğitmen modunu kapat",
-      "undo_last": "Son hamleyi geri al",
-      "undo_last_a11y": "Yalnız son hamleyi geri al ve yeniden oyna",
       "vs_best": "−{{delta}} en iyiye göre",
       "you_played": "Oynadın:"
     }

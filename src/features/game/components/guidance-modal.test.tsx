@@ -15,7 +15,6 @@ const mockDoUndo = jest.fn();
 const mockDoMoveSequence = jest.fn();
 const mockSetTutorMode = jest.fn();
 const mockCapture = jest.fn();
-let mockCanUndo = true;
 
 jest.mock('posthog-react-native', () => ({
   usePostHog: function postHogApi() {
@@ -29,7 +28,6 @@ jest.mock('@/features/game/use-game', () => ({
       tutorRevertTurn: mockTutorRevertTurn,
       doUndo: mockDoUndo,
       doMoveSequence: mockDoMoveSequence,
-      canUndo: mockCanUndo,
     };
   },
 }));
@@ -83,7 +81,6 @@ beforeEach(() => {
   mockDoMoveSequence.mockClear();
   mockSetTutorMode.mockClear();
   mockCapture.mockClear();
-  mockCanUndo = true;
 });
 
 afterEach(() => {
@@ -110,8 +107,10 @@ describe('guidance modal question', () => {
     // …but no recommended-move notation anywhere in the question view.
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.queryByText(/13\/10/)).toBeNull();
-    // Actions available from the question.
+    // Actions available from the question: last-action take-back only, even
+    // when the played turn used a single die.
     expect(screen.getByTestId('guidance-take-back')).toBeTruthy();
+    expect(screen.queryByTestId('guidance-undo-last-move')).toBeNull();
     expect(screen.getByTestId('guidance-reveal')).toBeTruthy();
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
     expect(screen.getByTestId('guidance-keep-move')).toBeTruthy();
@@ -147,23 +146,21 @@ describe('guidance modal question', () => {
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
   });
 
-  it('undo last move rewinds a single die move and closes the modal', () => {
-    renderQuestion();
+  it('offers only last-action take-back for a flagged compound move', () => {
+    const session = blunderSession();
+    session.myMoves = [
+      { from: 13, to: 10, dieIndex: 0 },
+      { from: 10, to: 9, dieIndex: 1 },
+    ];
+    renderQuestion(session);
 
-    fireEvent.press(screen.getByTestId('guidance-undo-last-move'));
+    // A compound is one action: no partial rewind that leaves half of it.
+    expect(screen.queryByTestId('guidance-undo-last-move')).toBeNull();
+
+    fireEvent.press(screen.getByTestId('guidance-take-back'));
 
     expect(mockDoUndo).toHaveBeenCalledTimes(1);
-    expect(mockTutorRevertTurn).not.toHaveBeenCalled();
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
-  });
-
-  it('hides undo last move when there is nothing to undo', () => {
-    mockCanUndo = false;
-    renderQuestion();
-
-    expect(screen.queryByTestId('guidance-undo-last-move')).toBeNull();
-    // The whole-turn take-back is still available.
-    expect(screen.getByTestId('guidance-take-back')).toBeTruthy();
   });
 
   it('show my move renders the animated replay board for the player path', () => {
@@ -229,12 +226,12 @@ describe('guidance modal solution', () => {
     expect(within(details).getByText('3 (yours)')).toBeTruthy();
   });
 
-  it('take back reverts the turn and closes the modal', () => {
+  it('take back undoes the last action and closes the modal', () => {
     const session = blunderSession();
     renderQuestion(session);
 
     fireEvent.press(screen.getByTestId('guidance-take-back'));
-    expect(mockTutorRevertTurn).toHaveBeenCalledWith(session.questionState, 1);
+    expect(mockDoUndo).toHaveBeenCalledTimes(1);
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
   });
 

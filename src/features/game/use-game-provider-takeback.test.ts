@@ -8,7 +8,7 @@ import type { GameState } from '@/lib/game';
  * turn-start state; this test locks in that the board is immediately
  * interactive afterwards.
  */
-import { getLegalMoves } from '@/lib/game';
+import { getLegalMoves, getReachableDestinations } from '@/lib/game';
 import { act, renderHook } from '@/lib/test-utils';
 
 import { useGameProviderValue } from './use-game-provider-value';
@@ -46,6 +46,24 @@ function playOpening(result: { current: Provider }) {
   expect(result.current.state?.phase).toBe('moving');
 }
 
+function startRolledTurn(result: { current: Provider }) {
+  act(() => {
+    result.current.startGame('vs-human');
+  });
+  playOpening(result);
+  act(() => {
+    result.current.doRollDice();
+  });
+  expect(result.current.state?.phase).toBe('moving');
+  return JSON.parse(JSON.stringify(result.current.state)) as GameState;
+}
+
+function findCompound(result: { current: Provider }) {
+  return Array.from({ length: 24 }, (_, i) => i + 1)
+    .flatMap(from => [...getReachableDestinations(result.current.state!, from).values()])
+    .find(sequence => sequence.length === 2);
+}
+
 function makeMove(result: { current: Provider }) {
   const moves = getLegalMoves(result.current.state!);
   expect(moves.length).toBeGreaterThan(0);
@@ -66,15 +84,7 @@ describe('provider tutor take-back', () => {
 
   it('take-back restores turn-start and the board is immediately interactive', () => {
     const { result } = renderHook(() => useGameProviderValue(true));
-    act(() => {
-      result.current.startGame('vs-human');
-    });
-    playOpening(result);
-    act(() => {
-      result.current.doRollDice();
-    });
-    expect(result.current.state?.phase).toBe('moving');
-    const turnStart: GameState = JSON.parse(JSON.stringify(result.current.state));
+    const turnStart = startRolledTurn(result);
 
     makeMove(result);
     if (result.current.state?.phase === 'moving') {
@@ -116,6 +126,34 @@ describe('provider tutor take-back', () => {
     expect(result.current.isAnimating).toBe(false);
     expect(result.current.state!.remainingDice.length)
       .toBe(turnStart.remainingDice.length - 1);
+  });
+
+  it('reverts a flagged compound move as one action', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    const turnStart = startRolledTurn(result);
+
+    // One tap on a destination that needs both dice: a compound action.
+    const compound = findCompound(result);
+    expect(compound).toBeDefined();
+    act(() => {
+      result.current.doMoveSequence(compound!);
+    });
+    settleAllAnimations(result);
+    expect(result.current.moveLog).toHaveLength(2);
+    expect(result.current.canUndo).toBe(true);
+
+    // Take back & retry, as the tutor guidance modal triggers it.
+    act(() => {
+      result.current.tutorRevertTurn(turnStart, result.current.moveLog.length);
+    });
+    settleAllAnimations(result);
+
+    // The whole compound is gone, not just its final die.
+    expect(result.current.moveLog).toHaveLength(0);
+    expect(result.current.state?.points).toEqual(turnStart.points);
+    expect(result.current.state?.remainingDice).toEqual(turnStart.remainingDice);
+    expect(result.current.canUndo).toBe(false);
+    expect(result.current.canRedo).toBe(false);
   });
 
   it('take-back with no moves to animate falls back to an instant revert', () => {

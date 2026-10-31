@@ -58,7 +58,7 @@ function whiteAwaitingConfirmState(): GameState {
   s.remainingDice = [];
   return s;
 }
-/** One die still to play — "undo last move" does not restart the turn. */
+/** One die still to play — a header undo does not restart the turn. */
 function whiteMidTurnState(): GameState {
   const s = whiteMovingState();
   s.remainingDice = [1];
@@ -254,8 +254,8 @@ describe('tutor verdict-pending hold', () => {
   });
 });
 
-describe('tutor undo last move', () => {
-  it('catches the same blunder again after undo last move', async () => {
+describe('tutor undo into a turn', () => {
+  it('catches the same blunder again after undo into a turn', async () => {
     let resolveAnalysis!: (plan: never) => void;
     planSageTurnFullMock.mockImplementation(
       () => new Promise((resolve) => { resolveAnalysis = resolve as (plan: never) => void; }),
