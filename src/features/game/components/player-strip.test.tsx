@@ -108,4 +108,15 @@ describe('strategy mark', () => {
     rerender(<StrategyMark strategy="backgame" size={18} />);
     expect(screen.getByText('🕸️')).toBeTruthy();
   });
+
+  it('gives the landscape side rail\'s room to the name: mark alone when narrow, no plan when tight', () => {
+    const state = moving('vs-computer', 'white');
+    const layout = (width: number) => ({ nativeEvent: { layout: { width, height: 52, x: 0, y: 0 } } });
+    render(<PlayerStrip state={state} player="white" />);
+    fireEvent(screen.getByTestId('player-strip-white'), 'layout', layout(300));
+    expect(screen.getByTestId('strategy-mark-white')).toBeTruthy();
+    fireEvent(screen.getByTestId('player-strip-white'), 'layout', layout(200));
+    expect(screen.queryByTestId('strategy-line-white')).toBeNull();
+    expect(screen.getByText('game.players.you')).toBeTruthy();
+  });
 });

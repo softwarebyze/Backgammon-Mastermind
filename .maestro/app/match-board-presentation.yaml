@@ -3,6 +3,9 @@
 appId: ${APP_ID}
 tags:
   - pull-request
+# A failure while rotated must not leave later flows in landscape.
+onFlowComplete:
+  - setOrientation: PORTRAIT
 ---
 - runFlow:
     file: ../utils/launch-app.yaml
@@ -63,6 +66,10 @@ tags:
 - setOrientation: LANDSCAPE_LEFT
 - assertVisible:
     id: board-view
+# The side rail is narrow: the strips go to two rows rather than squeeze the names.
+- assertVisible:
+    id: player-name-black
+    text: 'Computer.*'
 - assertVisible:
     id: pip-count-black
 - assertVisible:

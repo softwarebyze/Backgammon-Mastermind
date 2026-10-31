@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { LayoutChangeEvent } from 'react-native';
 import type { GameState, Player } from '@/lib/game';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -52,57 +53,95 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const showStrategy = !hideStrategy && !gameOver;
   const pipsA11y = translate('game.status.pips_a11y', { player: name, pips, off });
   // Narrow strips (small phones, and matches with their score column) show the
-  // plan as its mark alone, so the name and status never get cut off.
+  // plan as its mark alone, so the name and status never get cut off. The
+  // landscape side rail is narrower still: see the two-row layout below.
   const [width, setWidth] = useState(0);
   const narrow = width > 0 && width < (state.match ? 420 : 340);
+  const tight = width > 0 && width < (state.match ? 280 : 220);
 
   // Only the name is pressable, so an editable trailing score never nests buttons.
   const Identity = onPress ? Pressable : View;
-  return (
-    <View
-      testID={`player-strip-${player}`}
-      style={[styles.strip, active && styles.stripActive, won && styles.stripWon]}
-      onLayout={e => setWidth(e.nativeEvent.layout.width)}
-    >
-      <Identity
-        accessible
-        accessibilityRole={onPress ? 'button' : 'text'}
-        accessibilityLabel={status ? `${name}. ${status}` : name}
-        style={styles.identity}
-        testID={`player-name-${player}`}
-        {...(onPress ? { onPress, accessibilityHint: pressHint, accessibilityState: { selected: active } } : null)}
-      >
-        <View style={[styles.tokenRing, active && styles.tokenRingActive]}>
-          <CheckerToken player={player} size={TOKEN_SIZE} />
-        </View>
-        <View style={styles.copy}>
-          <Text style={[styles.name, !active && styles.nameIdle]}>
-            {name}
+  const statusText = status
+    ? (
+        <Animated.View key={status} entering={FadeIn.duration(180)}>
+          <Text
+            style={[styles.status, won && styles.statusWon, !turnStatus && styles.statusIdle]}
+            testID={`player-status-${player}`}
+          >
+            {status}
           </Text>
-          {status
-            ? (
-                <Animated.View key={status} entering={FadeIn.duration(180)}>
-                  <Text
-                    style={[styles.status, won && styles.statusWon, !turnStatus && styles.statusIdle]}
-                    testID={`player-status-${player}`}
-                  >
-                    {status}
-                  </Text>
-                </Animated.View>
-              )
-            : null}
-        </View>
-      </Identity>
-      {showStrategy ? <StrategyChip state={state} player={player} iconOnly={compact || narrow} /> : null}
-      <View style={styles.score} accessible accessibilityLabel={pipsA11y} testID={`pip-count-${player}`}>
-        <AnimatedNumber value={pips} style={[styles.pips, !active && styles.pipsIdle]} />
-        <Text style={styles.scoreLabel} numberOfLines={1}>
-          {off > 0
-            ? `${off} ${translate('game.status.off_short')}`
-            : translate('game.players.pips')}
-        </Text>
+        </Animated.View>
+      )
+    : null;
+  const identity = (
+    <Identity
+      accessible
+      accessibilityRole={onPress ? 'button' : 'text'}
+      accessibilityLabel={status ? `${name}. ${status}` : name}
+      style={styles.identity}
+      testID={`player-name-${player}`}
+      {...(onPress ? { onPress, accessibilityHint: pressHint, accessibilityState: { selected: active } } : null)}
+    >
+      <View style={[styles.tokenRing, active && styles.tokenRingActive]}>
+        <CheckerToken player={player} size={TOKEN_SIZE} />
       </View>
-      {trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} /> : null)}
+      <View style={styles.copy}>
+        <Text style={[styles.name, !active && styles.nameIdle]}>
+          {name}
+        </Text>
+        {tight ? null : statusText}
+      </View>
+    </Identity>
+  );
+  const pipCount = <PipCount player={player} pips={pips} off={off} active={active} label={pipsA11y} inline={tight} />;
+  const score = trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} /> : null);
+  const stripStyle = [styles.strip, active && styles.stripActive, won && styles.stripWon];
+  const onLayout = (e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width);
+
+  // The side rail is too narrow for one row: the name keeps the top line with
+  // the score, and the status and pips share the line under it.
+  if (tight) {
+    return (
+      <View testID={`player-strip-${player}`} style={[stripStyle, styles.stripTight]} onLayout={onLayout}>
+        <View style={styles.tightRow}>
+          {identity}
+          {score}
+        </View>
+        <View style={[styles.tightRow, styles.tightDetail]}>
+          <View style={styles.tightStatus}>{statusText}</View>
+          {pipCount}
+        </View>
+      </View>
+    );
+  }
+  return (
+    <View testID={`player-strip-${player}`} style={stripStyle} onLayout={onLayout}>
+      {identity}
+      {showStrategy ? <StrategyChip state={state} player={player} iconOnly={compact || narrow} /> : null}
+      {pipCount}
+      {score}
+    </View>
+  );
+}
+
+/** How far a side has to go, or how many checkers it has already borne off. */
+function PipCount({ player, pips, off, active, label, inline }: {
+  player: Player;
+  pips: number;
+  off: number;
+  active: boolean;
+  label: string;
+  /** One line ("167 PIPS") for the side rail's second row. */
+  inline: boolean;
+}) {
+  return (
+    <View style={inline ? styles.scoreInline : styles.score} accessible accessibilityLabel={label} testID={`pip-count-${player}`}>
+      <AnimatedNumber value={pips} style={[styles.pips, inline && styles.pipsInline, !active && styles.pipsIdle]} />
+      <Text style={styles.scoreLabel} numberOfLines={1}>
+        {off > 0
+          ? `${off} ${translate('game.status.off_short')}`
+          : translate('game.players.pips')}
+      </Text>
     </View>
   );
 }
@@ -142,6 +181,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
     ...continuousRadius(14),
+  },
+  stripTight: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 2,
+  },
+  tightRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  // Lines the status up under the name, past the token.
+  tightDetail: {
+    paddingLeft: TOKEN_SIZE + 17,
+  },
+  tightStatus: {
+    flex: 1,
+    minWidth: 0,
   },
   stripActive: {
     backgroundColor: GAME_PALETTE.surface,
@@ -202,6 +259,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontVariant: ['tabular-nums'],
     ...interFont('semibold'),
+  },
+  scoreInline: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 4,
+  },
+  pipsInline: {
+    fontSize: 14,
   },
   pipsIdle: {
     color: GAME_PALETTE.textMuted,
