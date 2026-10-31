@@ -38,3 +38,19 @@ Escape hatch later: a Framer/Webflow page on a custom domain that CTAs into this
 ## Custom DNS (optional)
 
 If you add `www.yourdomain.com` → Vercel project, deep routes still work via the same rewrite. Real DNS “subdomains” (`app.`, `www.`) are project domain settings, not app code.
+
+## Links to the apps (#350)
+
+| Piece | Where | What it does |
+|------|-------|--------------|
+| `/.well-known/apple-app-site-association` | `public/.well-known/` | iOS universal links for `75M38Z9JBF.com.backgammonmastermind` on `/`, `/game*`, `/learn*`, `/settings` |
+| `/.well-known/assetlinks.json` | `public/.well-known/` | Android App Links for `com.backgammonmastermind` |
+| `associatedDomains` / `intentFilters` (`autoVerify`) | `app.config.ts` | Production app claims `backgammon-mastermind.vercel.app` (preview/dev builds don't) |
+| `apple-itunes-app` meta | `public/index.html` (+ `src/app/+html.tsx`) | Safari Smart App Banner; `app-argument` is the current URL |
+| "Get the app" pill + Settings section | `src/features/get-app/` | Web only. Android → Google Play, desktop → both stores, iOS non-Safari → App Store, iPhone Safari → none (banner covers it) |
+
+`vercel.json` serves both files with `Content-Type: application/json`, and the SPA rewrite skips `/.well-known/`.
+
+**Android fingerprints.** `assetlinks.json` must list the SHA-256 of the key that signs what users install. For Play installs that is Google's **Play App Signing** key, not the EAS upload key. Copy it from Play Console → Backgammon Mastermind → Test and release → App integrity → App signing → "App signing key certificate" → SHA-256, and add it to `sha256_cert_fingerprints` (the EAS upload key, from `eas credentials -p android` → production, is already there for directly installed builds). Check with `https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://backgammon-mastermind.vercel.app&relation=delegate_permission/common.handle_all_urls`.
+
+**iOS.** The Associated Domains capability must be on for the `com.backgammonmastermind` App ID. EAS turns it on during the next production build when it manages signing; links only start working in a binary built after this change. Apple's CDN caches the AASA, so allow up to a day after deploy.

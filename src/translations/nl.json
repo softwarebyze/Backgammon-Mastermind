@@ -219,6 +219,12 @@
       "you_played": "Je speelde:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Verbergen",
+    "google_play": "Google Play",
+    "title": "Download de app"
+  },
   "home": {
     "confirm_cancel": "Annuleren",
     "confirm_continue": "Doorgaan",

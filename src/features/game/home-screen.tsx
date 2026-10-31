@@ -19,6 +19,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
+import { GetAppLink } from '@/features/get-app/get-app-link';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
@@ -314,6 +315,7 @@ export function HomeScreen() {
           </HoverPressable>
         </View>
       </ScrollView>
+      <GetAppLink top={insets.top + 8} />
     </>
   );
 }

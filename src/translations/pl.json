@@ -219,6 +219,12 @@
       "you_played": "Zagrałeś:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Ukryj",
+    "google_play": "Google Play",
+    "title": "Pobierz aplikację"
+  },
   "home": {
     "confirm_cancel": "Anuluj",
     "confirm_continue": "Kontynuuj",

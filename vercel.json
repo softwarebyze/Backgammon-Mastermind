@@ -1,11 +1,17 @@
 {
+  "headers": [
+    {
+      "source": "/.well-known/(apple-app-site-association|assetlinks\\.json)",
+      "headers": [{ "key": "Content-Type", "value": "application/json" }]
+    }
+  ],
   "rewrites": [
     { "source": "/privacy", "destination": "/privacy/index.html" },
     { "source": "/privacy/", "destination": "/privacy/index.html" },
     { "source": "/terms", "destination": "/terms/index.html" },
     { "source": "/terms/", "destination": "/terms/index.html" },
     {
-      "source": "/((?!_expo/|apple-touch-icon\\.png$|favicon\\.png$|favicon\\.ico$).*)",
+      "source": "/((?!_expo/|\\.well-known/|apple-touch-icon\\.png$|favicon\\.png$|favicon\\.ico$).*)",
       "destination": "/index.html"
     }
   ]

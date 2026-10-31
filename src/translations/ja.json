@@ -219,6 +219,12 @@
       "you_played": "指した手:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "非表示",
+    "google_play": "Google Play",
+    "title": "アプリを入手"
+  },
   "home": {
     "confirm_cancel": "キャンセル",
     "confirm_continue": "続ける",

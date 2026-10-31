@@ -219,6 +219,12 @@
       "you_played": "आपने खेला:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "छिपाएं",
+    "google_play": "Google Play",
+    "title": "ऐप पाएं"
+  },
   "home": {
     "confirm_cancel": "रद्द करना",
     "confirm_continue": "जारी",
