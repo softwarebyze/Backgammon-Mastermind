@@ -17,7 +17,7 @@ import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { homeFitAt, homeFitLevel, useWebVisibleHeight } from '@/features/game/home-fit';
+import { brandSpace, buttonsSpace, homeFitAt, homeFitLevel, useWebVisibleHeight } from '@/features/game/home-fit';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
@@ -98,18 +98,20 @@ export function HomeScreen() {
   // Native's header owns the top inset.
   const topInset = floatingGear ? insets.top : 0;
   const [screenHeight, setScreenHeight] = useState(0);
-  const [brandSize, setBrandSize] = useState({ height: 0, level: 1 });
-  const [buttonsSize, setButtonsSize] = useState({ height: 0, level: 1 });
+  // Each block's height minus its fit-dependent sizes: the same at every
+  // level, so a level change that leaves a block's height alone (no new
+  // onLayout) can't leave the fit stale.
+  const [brandText, setBrandText] = useState<number | null>(null);
+  const [buttonsText, setButtonsText] = useState<number | null>(null);
   const visible = webVisible == null ? screenHeight : Math.min(screenHeight, webVisible);
   const covered = Math.max(0, screenHeight - visible);
-  const measuredLevel = brandSize.level;
-  const level = landscape || !brandSize.height || !buttonsSize.height || buttonsSize.level !== measuredLevel
-    ? (landscape ? 1 : measuredLevel)
+  const buttonCount = 3 + (canResume ? 1 : 0) + (canReview ? 1 : 0);
+  const level = landscape || brandText == null || buttonsText == null
+    ? 1
     : homeFitLevel({
         available: visible - topInset - insets.bottom,
-        measured: brandSize.height + buttonsSize.height,
-        level: measuredLevel,
-        buttons: 3 + (canResume ? 1 : 0) + (canReview ? 1 : 0),
+        text: brandText + buttonsText,
+        buttons: buttonCount,
       });
   const fit = homeFitAt(level);
   const buttonFit = landscape ? styles.modeBtnLandscape : { paddingVertical: fit.buttonPad };
@@ -164,7 +166,7 @@ export function HomeScreen() {
         : translate('learn.home_cta_sub');
 
   return (
-    <>
+    <View style={styles.scroll}>
       <FocusAwareStatusBar />
       <ScrollView
         testID="home-screen"
@@ -184,14 +186,9 @@ export function HomeScreen() {
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
-        {floatingGear && (
-          <View style={[styles.settingsCorner, { top: insets.top + 4, [gearSide]: Math.max(insets.left, insets.right) + 8 }]}>
-            <SettingsHeaderButton />
-          </View>
-        )}
         <View
           style={[styles.brand, landscape ? styles.brandLandscape : null]}
-          onLayout={e => setBrandSize({ height: e.nativeEvent.layout.height, level })}
+          onLayout={landscape ? undefined : e => setBrandText(e.nativeEvent.layout.height - brandSpace(fit))}
         >
           <View
             style={[
@@ -233,7 +230,7 @@ export function HomeScreen() {
               ? styles.buttonsLandscape
               : [styles.buttonsPortrait, { gap: fit.buttonGap, marginBottom: fit.buttonsBottom }],
           ]}
-          onLayout={e => setButtonsSize({ height: e.nativeEvent.layout.height, level })}
+          onLayout={landscape ? undefined : e => setButtonsText(e.nativeEvent.layout.height - buttonsSpace(fit, buttonCount))}
         >
           {showRecovery && (
             <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
@@ -367,7 +364,13 @@ export function HomeScreen() {
           </HoverPressable>
         </View>
       </ScrollView>
-    </>
+      {/* Outside the ScrollView so it stays put if Home still has to scroll. */}
+      {floatingGear && (
+        <View style={[styles.settingsCorner, { top: insets.top + 4, [gearSide]: Math.max(insets.left, insets.right) + 8 }]}>
+          <SettingsHeaderButton />
+        </View>
+      )}
+    </View>
   );
 }
 
@@ -391,6 +394,9 @@ const styles = StyleSheet.create({
   settingsCorner: {
     position: 'absolute',
     zIndex: 10,
+    // Page colour, so text scrolling under it doesn't show through.
+    backgroundColor: GAME_PALETTE.bg,
+    borderRadius: 12,
   },
   brand: {
     alignItems: 'center',

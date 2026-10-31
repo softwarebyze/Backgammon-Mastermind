@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 
-/** Home spacing at a fit level: 1 is the roomy design, 0 the tightest. */
+/**
+ * Home spacing at a fit level: 1 is the roomy design, 0 tight, and -1 the
+ * compact last resort for the shortest screens (e.g. with Resume at 320x400).
+ */
 export type HomeFit = {
   top: number;
   logo: number;
@@ -16,43 +19,46 @@ export type HomeFit = {
 
 const ROOMY: HomeFit = { top: 40, logo: 110, logoTop: 8, logoBottom: 20, dividerGap: 24, buttonPad: 14, buttonGap: 14, buttonsBottom: 24, bottom: 32 };
 const TIGHT: HomeFit = { top: 6, logo: 48, logoTop: 0, logoBottom: 8, dividerGap: 6, buttonPad: 8, buttonGap: 8, buttonsBottom: 0, bottom: 12 };
+// The logo stays tall enough to keep the title below the floating gear.
+const COMPACT: HomeFit = { top: 4, logo: 28, logoTop: 0, logoBottom: 4, dividerGap: 3, buttonPad: 4, buttonGap: 6, buttonsBottom: 0, bottom: 8 };
+
+const HOME_FIT_MIN_LEVEL = -1;
 
 export function homeFitAt(level: number): HomeFit {
-  const t = Math.min(1, Math.max(0, level));
+  const t = Math.min(1, Math.max(HOME_FIT_MIN_LEVEL, level));
+  const [from, to, k] = t >= 0 ? [TIGHT, ROOMY, t] : [COMPACT, TIGHT, t + 1];
   const out = {} as HomeFit;
   for (const key of Object.keys(ROOMY) as (keyof HomeFit)[])
-    out[key] = Math.round(TIGHT[key] + (ROOMY[key] - TIGHT[key]) * t);
+    out[key] = Math.round(from[key] + (to[key] - from[key]) * k);
   return out;
 }
 
-/** Vertical space the fit-dependent sizes take with `buttons` mode buttons. */
-function flexibleHeight(fit: HomeFit, buttons: number) {
-  return fit.top + fit.logo + fit.logoTop + fit.logoBottom + fit.dividerGap * 2
-    + fit.buttonPad * 2 * buttons + fit.buttonGap * Math.max(0, buttons - 1)
-    + fit.buttonsBottom + fit.bottom;
+/** Fit-dependent height inside the brand block (logo and divider). */
+export function brandSpace(fit: HomeFit) {
+  return fit.logo + fit.logoTop + fit.logoBottom + fit.dividerGap * 2;
+}
+
+/** Fit-dependent height inside the buttons block (padding and gaps). */
+export function buttonsSpace(fit: HomeFit, buttons: number) {
+  return fit.buttonPad * 2 * buttons + fit.buttonGap * Math.max(0, buttons - 1);
 }
 
 /**
- * The roomiest level whose content fits `available`. `measured` is the brand
- * plus buttons height laid out at `level`, without the outer padding and the
- * buttons' bottom margin. Text height doesn't depend on the level, so one
- * measurement is enough to solve for it.
+ * The roomiest level, in steps of 0.01, at which the menu fits `available`.
+ * `text` is the menu's height minus every fit-dependent size, so it is the
+ * same at every level and only changes when the text or width does.
  */
-export function homeFitLevel({ available, measured, level, buttons }: {
+export function homeFitLevel({ available, text, buttons }: {
   available: number;
-  measured: number;
-  level: number;
+  text: number;
   buttons: number;
 }) {
-  const now = homeFitAt(level);
-  const text = measured + now.top + now.buttonsBottom + now.bottom - flexibleHeight(now, buttons);
-  const roomy = flexibleHeight(ROOMY, buttons);
-  const tight = flexibleHeight(TIGHT, buttons);
-  let fit = Math.min(1, Math.max(0, Math.floor((available - text - tight) / (roomy - tight) * 100) / 100));
-  // homeFitAt rounds each size, which can add a few pixels: step down until it fits.
-  while (fit > 0 && text + flexibleHeight(homeFitAt(fit), buttons) > available)
-    fit = Math.max(0, Math.round((fit - 0.01) * 100) / 100);
-  return fit;
+  for (let step = 100; step > HOME_FIT_MIN_LEVEL * 100; step--) {
+    const fit = homeFitAt(step / 100);
+    if (text + fit.top + brandSpace(fit) + buttonsSpace(fit, buttons) + fit.buttonsBottom + fit.bottom <= available)
+      return step / 100;
+  }
+  return HOME_FIT_MIN_LEVEL;
 }
 
 function visibleHeight() {
