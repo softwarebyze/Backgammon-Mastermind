@@ -15,10 +15,13 @@ const gameHeaderStyle = {
   backgroundColor: GAME_PALETTE.surface,
 } as const;
 
-/** Home — native header with settings in the top bar */
+/**
+ * Home — no navigation bar. The screen floats the settings gear in its corner,
+ * so the menu gets the full height and nothing sits over it when it scrolls.
+ */
 export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
-  headerShown: true,
+  headerShown: false,
   headerShadowVisible: false,
   // Opaque: iOS 26 transparent headers rubber-band non-ScrollView screens.
   headerTransparent: false,
