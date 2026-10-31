@@ -7,7 +7,7 @@ group = 'com.bgsage'
 version = '0.1.0'
 
 // Vendored engine lands via .github/scripts/fetch-bgsage-engine.sh (bgsage-verify).
-// Normal CI (Maestro e2e / Screenmap) does not fetch it — skip JNI so prebuild/APK still works.
+// Normal CI (Maestro e2e) does not fetch it — skip JNI so prebuild/APK still works.
 def vendorBoard = file("${projectDir}/../vendor/bgsage/cpp/src/board.cpp")
 def hasBgsageVendor = vendorBoard.exists()
 
