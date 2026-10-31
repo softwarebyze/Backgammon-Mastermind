@@ -112,11 +112,11 @@ export function GameScreenControls({
   const showOpening = opening !== null && !isReviewing;
 
   return (
-    <View style={[styles.controls, compact && styles.controlsCompact, state.match && styles.matchControls]} testID="game-controls">
+    <View style={[styles.controls, compact && styles.controlsCompact]} testID="game-controls">
       {diceOnBoard
         ? null
         : (
-            <View style={[styles.diceRow, state.match && styles.matchDiceRow]} pointerEvents="none" testID="game-dice-tray">
+            <View style={styles.diceRow} pointerEvents="none" testID="game-dice-tray">
               {showOpening
                 ? (
               // Opening: each side's die in its own color; the engine hands these
@@ -168,7 +168,7 @@ export function GameScreenControls({
           canUndoMove={canUndoMove}
         />
       </View>
-      <Text style={[styles.caption, state.match && styles.matchCaption]} numberOfLines={state.match ? 2 : 1} testID="game-action-caption" accessibilityLiveRegion="polite">
+      <Text style={styles.caption} numberOfLines={2} testID="game-action-caption" accessibilityLiveRegion="polite">
         {isReviewing ? caption : matchCaption(state) ?? caption}
       </Text>
     </View>
@@ -422,12 +422,14 @@ function StatusPlaceholder({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
+  // One footprint for single games and matches, every phase: two caption
+  // lines fit a cube decision, and the board never changes size.
   controls: {
     width: '100%',
     maxWidth: 420,
     alignItems: 'center',
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 4,
+    paddingBottom: 4,
     paddingHorizontal: 20,
   },
   controlsCompact: {
@@ -440,7 +442,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 44,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
@@ -507,27 +509,13 @@ const styles = StyleSheet.create({
     ...interFont('regular'),
   },
   caption: {
-    marginTop: 6,
-    minHeight: 18,
+    marginTop: 4,
+    height: 32,
+    lineHeight: 16,
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
     textAlign: 'center',
     ...interFont('regular'),
-  },
-  // Two lines for cube decisions without making the match footer taller.
-  matchControls: {
-    paddingTop: 4,
-    paddingBottom: 4,
-  },
-  matchDiceRow: {
-    marginBottom: 4,
-  },
-  matchCaption: {
-    height: 32,
-    minHeight: 32,
-    lineHeight: 16,
-    marginTop: 4,
-    fontSize: 12,
   },
   confirmRow: {
     flexDirection: 'row',

@@ -7,6 +7,9 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
+/** The match title line under the buttons. */
+const TITLE_HEIGHT = 16;
+
 type Props = {
   canUndo: boolean;
   canRedo: boolean;
@@ -27,9 +30,9 @@ type Props = {
  * them in one slim row above the board; landscape puts them at the top of the
  * side rail so the board gets the full height of the screen.
  */
-/** "Match to 5 · Game 2", or the Crawford notice in the game it applies to. */
+/** "Match to 5 · Game 2", or the Crawford notice while the Crawford game is still being played. */
 function matchTitle(match: NonNullable<GameState['match']>): string {
-  return match.crawford
+  return match.crawford && !match.winner
     ? translate('game.match.crawford')
     : translate('game.match.title', { length: match.length, game: match.gameNumber });
 }
@@ -49,14 +52,25 @@ export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onRes
       />
     </View>
   );
-  if (!match)
-    return row;
+  // Portrait keeps the title line in single games too, so the board sits at
+  // the same place and size whether or not a match is on.
+  if (!match) {
+    return compact
+      ? row
+      : (
+          <View style={styles.stack}>
+            {row}
+            <View style={styles.titleSpace} />
+          </View>
+        );
+  }
   return (
     <View style={styles.stack}>
       {row}
       <Text
         testID="match-score"
         style={styles.title}
+        numberOfLines={1}
         accessibilityLabel={`${matchTitle(match)}. ${translate('game.match.score', { white: match.score.white, black: match.score.black })}`}
         accessibilityLiveRegion="polite"
       >
@@ -81,7 +95,12 @@ const styles = StyleSheet.create({
   stack: {
     width: '100%',
   },
+  titleSpace: {
+    height: TITLE_HEIGHT,
+  },
   title: {
+    height: TITLE_HEIGHT,
+    lineHeight: TITLE_HEIGHT,
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
     textAlign: 'center',
