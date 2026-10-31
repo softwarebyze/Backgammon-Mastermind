@@ -1,11 +1,10 @@
 import type { GameState } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
-import { GAME_PALETTE } from '@/features/game/game-palette';
+import { controlButtonStyles } from '@/features/game/control-buttons';
 import { useGame } from '@/features/game/use-game';
 import { canOfferDouble } from '@/lib/game/match';
 import { translate } from '@/lib/i18n';
-import { interFont } from '@/lib/ui/fonts';
 
 export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerTurn }: { state: GameState; onRoll: () => void; onReset: () => void; isHumanTurn: boolean; isComputerTurn: boolean }) {
   const { matchAction, isAnimating, canRedo } = useGame();
@@ -25,9 +24,9 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
         accessibilityState={{ disabled: blocked }}
         disabled={blocked}
         onPress={onPress}
-        style={({ pressed, hovered }) => [styles.button, secondary && styles.secondary, hovered && styles.hover, (pressed || blocked) && styles.dim]}
+        style={({ pressed, hovered }) => [secondary ? controlButtonStyles.secondary : controlButtonStyles.primary, styles.button, hovered && styles.hover, (pressed || blocked) && styles.dim]}
       >
-        <Text style={[styles.buttonText, secondary && styles.secondaryText]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>{label}</Text>
+        <Text style={secondary ? controlButtonStyles.secondaryText : controlButtonStyles.primaryText} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>{label}</Text>
       </HoverPressable>
     );
   };
@@ -56,10 +55,7 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
 const styles = StyleSheet.create({
   wrap: { width: '100%', alignItems: 'center' },
   row: { width: '100%', flexDirection: 'row', gap: 10, justifyContent: 'center' },
-  button: { minHeight: 48, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, flexShrink: 1, borderRadius: 12, backgroundColor: GAME_PALETTE.control },
-  secondary: { backgroundColor: GAME_PALETTE.bg, borderWidth: 1, borderColor: GAME_PALETTE.accent },
+  button: { paddingHorizontal: 20, minWidth: 96, flexShrink: 1 },
   hover: { opacity: 0.85 },
   dim: { opacity: 0.5 },
-  buttonText: { color: GAME_PALETTE.controlInk, fontSize: 16, ...interFont('semibold') },
-  secondaryText: { color: GAME_PALETTE.accent },
 });

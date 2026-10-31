@@ -9,6 +9,7 @@ import { DiceDisplay } from '@/features/game/components/board/dice-display';
 
 import { HintButton } from '@/features/game/components/hint-button';
 import { MatchControls } from '@/features/game/components/match-controls';
+import { controlButtonStyles } from '@/features/game/control-buttons';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
@@ -21,7 +22,6 @@ import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
-import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
@@ -55,8 +55,6 @@ type Props = {
 
 const ACTION_SLOT_HEIGHT = 52;
 const CONTROL_HIT_SLOP = 16;
-/** Undo and Confirm share one height so the pair reads as a single control row. */
-const CONFIRM_ROW_BUTTON_HEIGHT = 50;
 
 /** True once `active` has stayed true for `delayMs`; false again as soon as it drops. */
 function useDelayedFlag(active: boolean, delayMs: number): boolean {
@@ -476,15 +474,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   primaryBtn: {
-    backgroundColor: GAME_PALETTE.control,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.controlBorder,
+    ...controlButtonStyles.primary,
     paddingHorizontal: 40,
-    paddingVertical: 14,
     minWidth: 200,
-    alignItems: 'center',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
-    ...continuousRadius(12),
   },
   primaryBtnHover: {
     backgroundColor: GAME_PALETTE.controlHover,
@@ -496,27 +488,14 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.9,
   },
-  primaryBtnText: {
-    color: GAME_PALETTE.controlInk,
-    fontSize: 16,
-    ...interFont('semibold'),
-  },
+  primaryBtnText: controlButtonStyles.primaryText,
   secondaryBtn: {
-    backgroundColor: GAME_PALETTE.bg,
-    borderWidth: 1.5,
-    borderColor: 'rgba(232, 224, 208, 0.35)',
+    ...controlButtonStyles.secondary,
     paddingHorizontal: 32,
-    paddingVertical: 12,
     minWidth: 160,
-    alignItems: 'center',
     zIndex: 2,
-    ...continuousRadius(12),
   },
-  secondaryBtnText: {
-    color: GAME_PALETTE.accent,
-    fontSize: 16,
-    ...interFont('semibold'),
-  },
+  secondaryBtnText: controlButtonStyles.secondaryText,
   statusSlot: {
     height: ACTION_SLOT_HEIGHT,
     justifyContent: 'center',
@@ -558,39 +537,23 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   undoBtn: {
-    backgroundColor: GAME_PALETTE.bg,
-    borderWidth: 1.5,
+    ...controlButtonStyles.secondary,
     borderColor: 'rgba(232, 224, 208, 0.45)',
     paddingHorizontal: 20,
-    height: CONFIRM_ROW_BUTTON_HEIGHT,
     minWidth: 96,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...continuousRadius(12),
   },
   undoBtnDisabled: {
     opacity: 0.4,
   },
-  undoBtnText: {
-    color: GAME_PALETTE.accent,
-    fontSize: 16,
-    ...interFont('semibold'),
-  },
+  undoBtnText: controlButtonStyles.secondaryText,
   undoBtnTextDisabled: {
     color: GAME_PALETTE.textMuted,
   },
   confirmBtn: {
-    backgroundColor: GAME_PALETTE.control,
-    borderWidth: 1.5,
-    borderColor: GAME_PALETTE.controlBorder,
+    ...controlButtonStyles.primary,
     paddingHorizontal: 24,
-    height: CONFIRM_ROW_BUTTON_HEIGHT,
     minWidth: 180,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
     gap: 8,
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
-    ...continuousRadius(12),
   },
 });
