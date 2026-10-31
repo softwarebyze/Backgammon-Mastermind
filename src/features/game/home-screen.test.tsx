@@ -204,3 +204,12 @@ it('keeps every match setting and Start in reach on a landscape phone', () => {
   dims.mockRestore();
   jest.mocked(useLayoutMetrics).mockImplementation(portrait);
 });
+
+it('fits a match on a 320x480 phone: the length row goes without its label', () => {
+  const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 320, height: 480, scale: 2, fontScale: 1 });
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  expect(screen.getByTestId('home-match-length-3')).toBeTruthy();
+  expect(screen.queryByText('Match length')).toBeNull();
+  dims.mockRestore();
+});

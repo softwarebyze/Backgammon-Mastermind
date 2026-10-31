@@ -10,10 +10,12 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import i18n, { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
-export function HomeGameSetup({ onStart, columns = false, aside = null }: {
+export function HomeGameSetup({ onStart, columns = false, tight = false, aside = null }: {
   onStart: (mode: GameMode, length: number | null, crawfordRule: boolean) => void;
   /** Landscape phones: the choices (and `aside`) on the left, match details and Start on the right. */
   columns?: boolean;
+  /** Very short portrait screens: tighter gaps, no "Match length" label. */
+  tight?: boolean;
   aside?: ReactNode;
 }) {
   const [mode, setMode] = useState<GameMode>('vs-computer');
@@ -37,7 +39,7 @@ export function HomeGameSetup({ onStart, columns = false, aside = null }: {
       testID="home-start-game"
       accessibilityRole="button"
       onPress={() => onStart(mode, format === 'match' ? length : null, crawford && length > 1)}
-      style={({ pressed, hovered }) => [styles.start, columns && styles.startColumns, hovered && styles.hovered, pressed && styles.pressed]}
+      style={({ pressed, hovered }) => [styles.start, (columns || tight) && styles.startColumns, hovered && styles.hovered, pressed && styles.pressed]}
     >
       <Text style={styles.startText}>
         {format === 'match'
@@ -63,9 +65,9 @@ export function HomeGameSetup({ onStart, columns = false, aside = null }: {
     );
   }
   return (
-    <View style={styles.setup}>
+    <View style={[styles.setup, tight && styles.setupTight]}>
       {opponent}
-      <HomeMatchOptions {...matchProps} />
+      <HomeMatchOptions {...matchProps} bare={tight} />
       {/* The only amber block on the screen: everything above feeds this. */}
       {start}
     </View>
@@ -74,6 +76,7 @@ export function HomeGameSetup({ onStart, columns = false, aside = null }: {
 
 const styles = StyleSheet.create({
   setup: { width: '100%', gap: 10 },
+  setupTight: { gap: 8 },
   columns: { width: '100%', flexDirection: 'row', gap: 16 },
   column: { flex: 1, minWidth: 0, gap: 8 },
   // Start sits at the bottom of its column, level with the cards on the left.

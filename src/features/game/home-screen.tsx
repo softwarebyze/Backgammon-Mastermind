@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react';
 
 import {
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -23,6 +24,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
+import { useWebVisibleHeight } from '@/features/game/use-web-visible-height';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
@@ -37,7 +39,7 @@ import {
 } from '@/lib/game/persistence';
 import { canOpenPersistedGame } from '@/lib/game/resume-game';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { LESSON_IDS } from '@/lib/learn/curriculum';
 import {
   allLessonsComplete,
@@ -65,7 +67,15 @@ export function HomeScreen() {
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
   const { insets, landscape } = useLayoutMetrics();
-  const { width, height } = useWindowDimensions();
+  const { width, height: windowHeight } = useWindowDimensions();
+  // On web, lay out for what the browser shows: iOS Safari's toolbar covers
+  // the bottom of the window, and Start must not sit under it.
+  const webVisible = useWebVisibleHeight();
+  const height = webVisible == null ? windowHeight : Math.min(windowHeight, webVisible);
+  const covered = windowHeight - height;
+  // Native swaps left and right itself under RTL; web needs the side spelled out.
+  const layoutIsRTL = useLayoutIsRTL();
+  const gearSide = Platform.OS === 'web' && layoutIsRTL ? 'left' : 'right';
   // No navigation bar: start just under the status bar, a little lower on
   // tall phones so the brand isn't jammed against the top.
   // Short phones in Safari (about 550-660px visible): a smaller brand and
@@ -73,6 +83,8 @@ export function HomeScreen() {
   const short = !landscape && height < 700;
   // Same for a phone held sideways: one-line cards and tighter gaps.
   const dense = short || (landscape && height < 400);
+  // Very short phones (320x480): slimmer tiles and tighter setup, so a match still fits.
+  const tiny = !landscape && height < 520;
   const topSpace = insets.top + (landscape || short ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
@@ -149,7 +161,7 @@ export function HomeScreen() {
   const split = landscape && height < 520;
   const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, width - 48);
   const brand = (
-    <View style={[styles.brand, short && styles.brandShort, split && styles.brandSplit]}>
+    <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
       <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
       <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
     </View>
@@ -194,7 +206,7 @@ export function HomeScreen() {
         sub={dense ? undefined : learnSub}
         onPress={handleLearn}
         dense={dense}
-        compact={split}
+        compact={split || tiny}
       />
       <HomeCard
         testID="position-setup-button"
@@ -203,7 +215,7 @@ export function HomeScreen() {
         label={translate('positions.setup')}
         onPress={() => router.push('/position')}
         dense={dense}
-        compact={split}
+        compact={split || tiny}
       />
     </View>
   );
@@ -219,20 +231,20 @@ export function HomeScreen() {
           // Tablets and desktop: the column sits in the middle of the window.
           width >= 600 ? styles.rootCentered : null,
           split ? styles.rootSplit : null,
-          contentEdgePadding(insets, { left: 24, right: 24, bottom: dense ? 8 : landscape ? 16 : 32 }),
+          contentEdgePadding(insets, { left: 24, right: 24, bottom: (dense ? 8 : landscape ? 16 : 32) + covered }),
           { paddingTop: topSpace },
         ]}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
-        <View style={[styles.settingsCorner, { top: insets.top + 4, right: insets.right + 8 }]}>
+        <View style={[styles.settingsCorner, { top: insets.top + 4, [gearSide]: (gearSide === 'left' ? insets.left : insets.right) + 8 }]}>
           <SettingsHeaderButton />
         </View>
         {split
           ? (
               <View style={styles.splitStage}>
-                <View style={styles.splitHeader}>
+                <View style={[styles.splitHeader, gearSide === 'left' && styles.gearClear]}>
                   {brand}
                   {resumeCard}
                   {reviewCard}
@@ -251,7 +263,7 @@ export function HomeScreen() {
                 )}
                 {resumeCard}
                 {reviewCard}
-                <HomeGameSetup onStart={handleStart} />
+                <HomeGameSetup onStart={handleStart} tight={tiny} />
                 {tiles}
               </View>
             )}
@@ -331,6 +343,11 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingRight: 40,
   },
+  // The gear moved to the left (Hebrew on web): clear that side instead.
+  gearClear: {
+    paddingRight: 0,
+    paddingLeft: 40,
+  },
   settingsCorner: {
     position: 'absolute',
     zIndex: 10,
@@ -347,7 +364,7 @@ const styles = StyleSheet.create({
     gap: 14,
     marginBottom: 12,
   },
-  // Clear of the settings gear in the top corner, which sits on the right in both directions.
+  // Clear of the settings gear in the top corner (see gearClear).
   brandShort: {
     marginBottom: 0,
     paddingRight: 40,
@@ -357,6 +374,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     gap: 10,
     paddingRight: 0,
+    paddingLeft: 0,
   },
   logo: {
     width: 52,
