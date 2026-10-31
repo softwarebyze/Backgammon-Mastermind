@@ -76,6 +76,17 @@ export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
     },
   },
   {
+    id: 'e2e-undo-redo-3-1',
+    label: 'E2E undo/redo (3–1)',
+    description: 'Standard board, White to play a fixed 3–1 (8→5 is legal). Used by the undo-redo Maestro flow.',
+    options: {
+      useStandardSetup: true,
+      dice: [3, 1],
+      currentPlayer: 'white',
+      mode: 'vs-human',
+    },
+  },
+  {
     id: 'e2e-tutor-compound-3-1',
     label: 'E2E tutor compound (3–1)',
     description: 'White 6→3→2 is a 0.078-equity blunder against the engine. Used by the tutor take-back Maestro flow.',
@@ -84,17 +95,6 @@ export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
         { point: 6, player: 'white', count: 15 },
         { point: 19, player: 'black', count: 15 },
       ],
-      dice: [3, 1],
-      currentPlayer: 'white',
-      mode: 'vs-human',
-    },
-  },
-  {
-    id: 'e2e-undo-redo-3-1',
-    label: 'E2E undo/redo (3–1)',
-    description: 'Standard board, White to play a fixed 3–1 (8→5 is legal). Used by the undo-redo Maestro flow.',
-    options: {
-      useStandardSetup: true,
       dice: [3, 1],
       currentPlayer: 'white',
       mode: 'vs-human',

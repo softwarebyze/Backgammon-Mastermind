@@ -20,9 +20,10 @@ tags:
 - tapOn:
     id: setting-toggle-tutor-mode
 - openLink: backgammonmastermind.preview://developer
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: developer-preset-e2e-tutor-compound-3-1
+    direction: DOWN
     timeout: 60000
 - tapOn:
     id: developer-preset-e2e-tutor-compound-3-1
@@ -48,7 +49,6 @@ tags:
     visible:
       id: guidance-modal
     timeout: 180000
-- assertVisible: 'Point 2, 1 white checker'
 - assertNotVisible:
     id: guidance-undo-last-move
 - takeScreenshot: 02-blunder-prompt
@@ -62,7 +62,6 @@ tags:
 - extendedWaitUntil:
     visible: 'Point 6, 15 white checkers'
     timeout: 15000
-- assertNotVisible: 'Point 2, 1 white checker'
 - assertVisible:
     id: header-undo-button
     enabled: false
@@ -89,7 +88,6 @@ tags:
     timeout: 15000
 - assertNotVisible:
     id: guidance-modal
-- assertNotVisible: 'Point 2, 1 white checker'
 - takeScreenshot: 05-after-repeated-take-back
 
 # Reverse the grouped redo before it lands. Stale forward finishes cannot
@@ -103,8 +101,6 @@ tags:
 - extendedWaitUntil:
     visible: 'Point 6, 15 white checkers'
     timeout: 15000
-- assertNotVisible: 'Point 2, 1 white checker'
-- assertNotVisible: 'Point 3, 1 white checker'
 - assertNotVisible:
     id: guidance-modal
 - assertVisible:

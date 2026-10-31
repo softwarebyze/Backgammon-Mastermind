@@ -94,8 +94,8 @@ describe('position loader presets', () => {
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
       'e2e-center-bar',
-      'e2e-tutor-compound-3-1',
       'e2e-undo-redo-3-1',
+      'e2e-tutor-compound-3-1',
     ]);
   });
 
