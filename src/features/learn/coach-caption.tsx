@@ -1,9 +1,11 @@
 import type { LessonFeedback } from '@/features/learn/use-lesson-session';
 import type { TxKeyPath } from '@/lib/i18n';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -25,8 +27,8 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
 
   return (
     <View style={[styles.root, compact && styles.rootCompact]}>
-      <Text style={styles.stepLabel}>{stepLabel}</Text>
-      <Text accessibilityRole="header" style={[styles.title, compact && styles.titleCompact]}>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.stepLabel}>{stepLabel}</Text>
+      <Text accessibilityRole="header" maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={[styles.title, compact && styles.titleCompact]}>
         {translate(titleKey as TxKeyPath)}
       </Text>
       <Text style={[styles.body, compact && styles.bodyCompact]}>{translate(bodyKey as TxKeyPath)}</Text>

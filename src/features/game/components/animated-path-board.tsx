@@ -2,8 +2,9 @@ import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Move } from '@/lib/game/types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Svg, { Polygon, Rect } from 'react-native-svg';
+import { Text } from '@/components/ui/scaled-text';
 import { boardLayoutStyle, boardWebDir } from '@/features/game/components/board/board-layout-direction';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
@@ -18,6 +19,7 @@ import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -234,7 +236,7 @@ export function AnimatedPathBoard({
     <View style={styles.wrap} testID={testID}>
       <View style={styles.labelRow}>
         <View style={[styles.dot, { backgroundColor: accent }]} />
-        <Text style={styles.label}>{label}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.label}>{label}</Text>
         {hasMoves && (
           <Pressable
             onPress={() => setPaused(p => !p)}

@@ -1,7 +1,7 @@
 import type { Player } from '@/lib/game/types';
 import * as React from 'react';
-import { Pressable, Text, View } from 'react-native';
-
+import { Pressable, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import {
   BEAR_OFF_LABEL_HEIGHT,
   BEAR_OFF_PADDING,
@@ -10,7 +10,9 @@ import {
   bearOffTokenSize,
   maxBearOffVisibleSlots,
 } from '@/features/game/bear-off-layout';
+
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { trayLabelFontSize } from './bear-off-label';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
@@ -68,7 +70,7 @@ function BearOffStack({
       <Text
         numberOfLines={1}
         // The size is already fitted to the tray; system text scaling would overflow it.
-        maxFontSizeMultiplier={1}
+        maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
         style={{
           position: 'absolute',
           top: 2,
@@ -120,6 +122,7 @@ function BearOffStack({
 
       {overflow > 0 && (
         <Text
+          maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
           style={{
             position: 'absolute',
             top: player === 'black' ? BEAR_OFF_PADDING + BEAR_OFF_LABEL_HEIGHT : undefined,

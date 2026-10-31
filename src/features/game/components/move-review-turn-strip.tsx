@@ -1,11 +1,13 @@
 import type { MoveLogEntry, MoveLogTurn } from '@/lib/game/move-log';
 import { useEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+
 import { isNoMoveLogEntry, turnsForReviewStrip, unusedDiceInTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 
 const CHIP_HEIGHT = 28;
@@ -58,11 +60,11 @@ function TurnChip({
           turn.player === 'white' ? styles.playerDotWhite : styles.playerDotBlack,
         ]}
       />
-      <Text style={[styles.chipText, focused && styles.chipTextFocused, noMove && styles.chipTextMuted]}>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.chipText, focused && styles.chipTextFocused, noMove && styles.chipTextMuted]}>
         {`${turn.dice[0]}·${turn.dice[1]}`}
       </Text>
       {(noMove || unused > 0) && (
-        <Text style={styles.unusedMark}>{noMove ? '×' : `-${unused}`}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.unusedMark}>{noMove ? '×' : `-${unused}`}</Text>
       )}
     </Pressable>
   );
@@ -115,7 +117,7 @@ export function MoveReviewTurnStrip({
         hitSlop={4}
         style={[styles.chip, isReviewing && focusedPly === 0 && styles.chipFocused]}
       >
-        <Text style={[styles.chipText, isReviewing && focusedPly === 0 && styles.chipTextFocused]}>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.chipText, isReviewing && focusedPly === 0 && styles.chipTextFocused]}>
           {translate('game.review.start')}
         </Text>
       </Pressable>
@@ -144,7 +146,7 @@ export function MoveReviewTurnStrip({
         }}
         style={[styles.chip, styles.liveChip, !isReviewing && styles.liveChipActive]}
       >
-        <Text style={[styles.chipText, !isReviewing ? styles.liveTextActive : styles.liveText]}>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.chipText, !isReviewing ? styles.liveTextActive : styles.liveText]}>
           {translate('game.review.live_short')}
         </Text>
       </Pressable>

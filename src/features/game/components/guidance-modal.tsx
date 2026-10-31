@@ -2,7 +2,8 @@ import type { GuidanceSession } from '@/features/game/guidance-store';
 
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 
 import { AnimatedPathBoard } from '@/features/game/components/animated-path-board';
 import { BlunderMeter } from '@/features/game/components/blunder-meter';

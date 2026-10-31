@@ -1,9 +1,10 @@
 import type { TextProps, TextStyle } from 'react-native';
 import type { TxKeyPath } from '@/lib/i18n';
 import * as React from 'react';
-import { Text as NNText, StyleSheet } from 'react-native';
-
+import { StyleSheet } from 'react-native';
 import { twMerge } from 'tailwind-merge';
+
+import { Text as NNText } from '@/components/ui/scaled-text';
 import { getLayoutIsRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 

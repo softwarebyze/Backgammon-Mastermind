@@ -1,8 +1,10 @@
 import type { Player } from '@/lib/game/types';
 import * as React from 'react';
 import { useId } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import Svg, { Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
+import { Text } from '@/components/ui/scaled-text';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 
 import { BOARD_THEME } from './board-theme';
 
@@ -40,6 +42,7 @@ function StackCountBadge({ count, size, isWhite }: { count: number; size: number
         ]}
       >
         <Text
+          maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
           style={{
             color: isWhite ? '#3A2A10' : '#E0E0FF',
             fontSize: size * 0.26,

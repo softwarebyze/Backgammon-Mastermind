@@ -4,16 +4,10 @@ import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
 
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
+import { Text } from '@/components/ui/scaled-text';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
@@ -39,6 +33,7 @@ import {
   completedLessonCount,
   isReadyToPlay,
 } from '@/lib/learn/progress';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
@@ -163,7 +158,8 @@ export function HomeScreen() {
             />
           </View>
 
-          <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
+          {/* The wordmark is sized to the screen width like the logo above it. */}
+          <Text accessibilityRole="header" maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.title, landscape ? styles.titleLandscape : null]}>
             {translate('home.title')}
           </Text>
           {landscape

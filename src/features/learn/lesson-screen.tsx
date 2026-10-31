@@ -3,9 +3,10 @@ import type { LessonId } from '@/lib/learn/curriculum';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+
+import { Text } from '@/components/ui/scaled-text';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -23,6 +24,7 @@ import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
 import { isLastStepComplete } from '@/lib/learn/progress';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
@@ -204,7 +206,7 @@ function LessonScreenBody({
 
       {showCompleteBanner
         ? (
-            <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
+            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
           )
         : null}
 
@@ -219,7 +221,7 @@ function LessonScreenBody({
         ]}
         onPress={onPrimary}
       >
-        <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
           {primaryLabel}
         </Text>
       </Pressable>

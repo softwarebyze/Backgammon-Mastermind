@@ -1,6 +1,6 @@
 import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
 import { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation,
   useAnimatedStyle,
@@ -9,9 +9,11 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-
+import { Text } from '@/components/ui/scaled-text';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { diePips } from './die-pips';
 
 type PlayerColor = 'white' | 'black';
@@ -146,7 +148,7 @@ function DieFace({
       {displayStyle === 'dots'
         ? <DieDots value={value} dotColor={fg} size={size} border={borderWidth} />
         : (
-            <Text style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
+            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
               {value}
             </Text>
           )}

@@ -1,10 +1,12 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
+
 import { pointNumberLabel } from '@/features/game/point-numbering';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
@@ -34,12 +36,12 @@ function NumberCell({ value, width, lit }: { value: number; width: number; lit: 
   if (lit) {
     return (
       <View style={[styles.cell, { width }]} testID={`move-hint-${value}`}>
-        <Text style={[styles.label, styles.litLabel]}>{value}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.label, styles.litLabel]}>{value}</Text>
       </View>
     );
   }
   return (
-    <Text style={[styles.label, { width }]}>
+    <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.label, { width }]}>
       {value}
     </Text>
   );
@@ -81,7 +83,7 @@ export function PointNumberRail({ side, dimensions, perspective = 'white', highl
       <PointHalf points={left} colWidth={colWidth} perspective={perspective} highlighted={highlighted} />
       <View style={[styles.cell, { width: barWidth }]}>
         {barLit && (
-          <Text testID="move-hint-bar" numberOfLines={1} style={[styles.label, styles.litLabel, styles.barLabel]}>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} testID="move-hint-bar" numberOfLines={1} style={[styles.label, styles.litLabel, styles.barLabel]}>
             {translate('game.status.bar_short')}
           </Text>
         )}
