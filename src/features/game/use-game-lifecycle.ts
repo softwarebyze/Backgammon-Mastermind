@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { GameAbandonReason } from '@/features/game/use-game-completed-capture';
 import type { GameMode, GameState } from '@/lib/game';
 import { useCallback } from 'react';
 
@@ -17,7 +18,8 @@ type Options = {
   resetTimeline: (initial: GameState) => void;
   clearTimeline: () => void;
   setState: Dispatch<SetStateAction<GameState | null>>;
-  onNewGame?: () => void;
+  /** Called before the live game is replaced; it is still `state` here. */
+  onNewGame?: (reason: GameAbandonReason) => void;
 };
 
 export function useGameLifecycle({
@@ -33,7 +35,7 @@ export function useGameLifecycle({
 }: Options) {
   const beginSession = useCallback((next: GameState) => {
     bumpTutorGameGeneration();
-    onNewGame?.();
+    onNewGame?.('new_game');
     clearAITimeout();
     resetAnimation();
     clearActiveGame();
@@ -66,7 +68,7 @@ export function useGameLifecycle({
 
   const resetGame = useCallback(() => {
     bumpTutorGameGeneration();
-    onNewGame?.();
+    onNewGame?.('reset');
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
