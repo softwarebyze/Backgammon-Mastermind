@@ -219,6 +219,12 @@
       "you_played": "Вы сыграли:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Скрыть",
+    "google_play": "Google Play",
+    "title": "Скачать приложение"
+  },
   "home": {
     "confirm_cancel": "отменить",
     "confirm_continue": "Продолжать",

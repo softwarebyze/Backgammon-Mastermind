@@ -219,6 +219,12 @@
       "you_played": "שיחקתם:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "הסתרה",
+    "google_play": "Google Play",
+    "title": "להורדת האפליקציה"
+  },
   "home": {
     "confirm_cancel": "ביטול",
     "confirm_continue": "המשך",

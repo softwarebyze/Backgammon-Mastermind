@@ -219,6 +219,12 @@
       "you_played": "Hai giocato:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Nascondi",
+    "google_play": "Google Play",
+    "title": "Scarica l’app"
+  },
   "home": {
     "confirm_cancel": "Annulla",
     "confirm_continue": "Continua",

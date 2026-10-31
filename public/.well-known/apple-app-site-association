@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["75M38Z9JBF.com.backgammonmastermind"],
+        "components": [
+          { "/": "/" },
+          { "/": "/game", "comment": "Current game" },
+          { "/": "/game/*" },
+          { "/": "/learn", "comment": "Learn to Play" },
+          { "/": "/learn/*" },
+          { "/": "/settings" }
+        ]
+      }
+    ]
+  }
+}

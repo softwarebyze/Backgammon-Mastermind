@@ -219,6 +219,12 @@
       "you_played": "You played:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Hide",
+    "google_play": "Google Play",
+    "title": "Get the app"
+  },
   "home": {
     "confirm_cancel": "Cancel",
     "confirm_continue": "Continue",

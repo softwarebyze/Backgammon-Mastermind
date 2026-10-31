@@ -219,6 +219,12 @@
       "you_played": "你走了："
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "隐藏",
+    "google_play": "Google Play",
+    "title": "获取应用"
+  },
   "home": {
     "confirm_cancel": "取消",
     "confirm_continue": "继续",

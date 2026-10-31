@@ -219,6 +219,12 @@
       "you_played": "Oynadın:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Gizle",
+    "google_play": "Google Play",
+    "title": "Uygulamayı indir"
+  },
   "home": {
     "confirm_cancel": "Cancel Cancel Cancel Cancel",
     "confirm_continue": "Devam etmeye devam et",

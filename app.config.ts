@@ -26,6 +26,18 @@ const brandAdaptiveForeground = './assets/brand/adaptive-foreground.png';
 const EXPO_ACCOUNT_OWNER = 'zackebenfeld';
 const EAS_PROJECT_ID = '7ec6600a-8b02-4714-acc1-08385effa4c9';
 
+// Universal links (iOS) and App Links (Android) for the production website.
+// The site serves the matching files from public/.well-known/. Only the
+// production app is listed there, so only production claims the domain.
+const WEB_DOMAIN = 'backgammon-mastermind.vercel.app';
+const claimsWebLinks = Env.EXPO_PUBLIC_APP_ENV === 'production';
+const WEB_LINK_PATHS = [
+  { path: '/' },
+  { pathPrefix: '/game' },
+  { pathPrefix: '/learn' },
+  { pathPrefix: '/settings' },
+];
+
 const appIconBadgeConfig: AppIconBadgeConfig = {
   enabled: Env.EXPO_PUBLIC_APP_ENV !== 'production',
   badges: [
@@ -173,6 +185,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     supportsTablet: true,
     bundleIdentifier: Env.EXPO_PUBLIC_BUNDLE_ID,
+    ...(claimsWebLinks ? { associatedDomains: [`applinks:${WEB_DOMAIN}`] } : {}),
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
       CFBundleLocalizations: [
@@ -206,6 +219,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: brand.adaptiveIconBackgroundColor,
     },
     package: Env.EXPO_PUBLIC_PACKAGE,
+    ...(claimsWebLinks
+      ? {
+          intentFilters: [
+            {
+              action: 'VIEW',
+              autoVerify: true,
+              data: WEB_LINK_PATHS.map(p => ({ scheme: 'https', host: WEB_DOMAIN, ...p })),
+              category: ['BROWSABLE', 'DEFAULT'],
+            },
+          ],
+        }
+      : {}),
   },
   web: {
     favicon: './assets/brand/favicon.png',

@@ -219,6 +219,12 @@
       "you_played": "Jugaste:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Ocultar",
+    "google_play": "Google Play",
+    "title": "Descarga la app"
+  },
   "home": {
     "confirm_cancel": "Cancelar",
     "confirm_continue": "Continuar",

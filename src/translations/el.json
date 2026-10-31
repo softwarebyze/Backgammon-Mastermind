@@ -219,6 +219,12 @@
       "you_played": "Έπαιξες:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "Απόκρυψη",
+    "google_play": "Google Play",
+    "title": "Κατεβάστε την εφαρμογή"
+  },
   "home": {
     "confirm_cancel": "Ακύρωση",
     "confirm_continue": "Συνέχεια",

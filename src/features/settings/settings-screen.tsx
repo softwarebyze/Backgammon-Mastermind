@@ -10,6 +10,7 @@ import {
   View,
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { GetAppSettingsSection } from '@/features/get-app/get-app-settings-section';
 import {
   APP_LINKS,
   openExternalUrl,
@@ -56,6 +57,8 @@ export function SettingsScreen() {
         ]}
       >
         <View className="px-4" style={styles.page}>
+          {Platform.OS === 'web' ? <GetAppSettingsSection /> : null}
+
           <SettingsContainer title="settings.general">
             <LanguageItem />
           </SettingsContainer>

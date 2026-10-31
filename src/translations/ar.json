@@ -219,6 +219,12 @@
       "you_played": "لعبت:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "إخفاء",
+    "google_play": "Google Play",
+    "title": "حمّل التطبيق"
+  },
   "home": {
     "confirm_cancel": "إلغاء",
     "confirm_continue": "متابعة",
