@@ -9,7 +9,7 @@
       "selected": "选中的 - 点击突出显示的点, 或取消"
     },
     "controls": {
-      "bear_off_a11y": "走开",
+      "bear_off_a11y": "移出棋子",
       "cancel": "取消",
       "cancel_a11y": "取消选择",
       "confirm_move": "确认走子",
