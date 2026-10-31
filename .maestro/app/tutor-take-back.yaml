@@ -70,10 +70,6 @@ tags:
 # The shared history action retains an atomic redo, with no orphaned leg.
 - tapOn:
     id: header-redo-button
-- extendedWaitUntil:
-    visible: 'Point 2, 1 white checker'
-    timeout: 15000
-- takeScreenshot: 04-after-redo
 # Redo is judged again. The native modal owns touch input, so retry through its
 # primary action; real Z/Ctrl+Z/Cmd+Z while the prompt is open are covered by
 # tutor-keyboard-undo.dom.test.tsx.
@@ -81,6 +77,7 @@ tags:
     visible:
       id: guidance-modal
     timeout: 15000
+- takeScreenshot: 04-after-redo
 - tapOn:
     id: guidance-take-back
 - extendedWaitUntil:
