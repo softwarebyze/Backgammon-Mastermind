@@ -1,3 +1,4 @@
+import type { StackEditHandlers } from './use-stack-edit-gesture';
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import type { BoardPoint, Player } from '@/lib/game/types';
 import { useMemo } from 'react';
@@ -10,6 +11,7 @@ import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
 import { pointAccessibilityLabel } from './point-accessibility';
 import { PointTriangle } from './point-triangle';
+import { StackEditTarget } from './stack-edit-target';
 import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 const MAX_VISIBLE = 5;
@@ -216,6 +218,7 @@ function ColumnContent({
 }
 
 type Props = {
+  stackEditor?: StackEditHandlers;
   pointIndex: number;
   point: BoardPoint;
   isTop: boolean;
@@ -245,6 +248,7 @@ type Props = {
 };
 
 export function PointColumn({
+  stackEditor,
   pointIndex,
   point,
   isTop,
@@ -317,12 +321,13 @@ export function PointColumn({
 
   const pressable = (
     <HoverPressable
-      accessibilityRole="button"
+      accessibilityRole={stackEditor ? 'adjustable' : 'button'}
       accessibilityLabel={a11yLabel}
+      accessibilityValue={stackEditor ? { min: 0, max: 15, now: point.count } : undefined}
       accessible
       testID={`point-${pointIndex}`}
-      pointerEvents={dragEnabled ? 'box-only' : 'auto'}
-      onPress={dragEnabled
+      pointerEvents={dragEnabled || stackEditor ? 'box-only' : 'auto'}
+      onPress={dragEnabled || stackEditor
         ? undefined
         : (e) => {
             e?.stopPropagation?.();
@@ -330,9 +335,12 @@ export function PointColumn({
           }}
       onPressIn={dragEnabled ? undefined : onPressIn}
       onPressOut={dragEnabled ? undefined : onPressOut}
-      accessibilityActions={[{ name: 'activate' }]}
+      accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }, { name: 'activate' }] : [{ name: 'activate' }]}
       onAccessibilityAction={(event) => {
-        if (event.nativeEvent.actionName === 'activate') {
+        if (stackEditor) {
+          stackEditor.onAdjust(pointIndex, event.nativeEvent.actionName === 'decrement' ? -1 : 1);
+        }
+        else if (event.nativeEvent.actionName === 'activate') {
           onPress();
         }
       }}
@@ -343,15 +351,11 @@ export function PointColumn({
     </HoverPressable>
   );
 
-  if (dragEnabled && columnGesture) {
-    return (
-      <GestureDetector gesture={columnGesture}>
-        {pressable}
-      </GestureDetector>
-    );
-  }
-
-  return pressable;
+  if (stackEditor)
+    return <StackEditTarget point={pointIndex} checkerSize={checkerSize} editor={stackEditor}>{pressable}</StackEditTarget>;
+  return dragEnabled && columnGesture
+    ? <GestureDetector gesture={columnGesture}>{pressable}</GestureDetector>
+    : pressable;
 }
 
 const styles = StyleSheet.create({

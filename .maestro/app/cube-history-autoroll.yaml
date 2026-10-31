@@ -1,0 +1,114 @@
+# Default Auto-roll ON: preserve double opportunity, block pending, resume after take.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-cube
+# With a centered live cube, Auto-roll leaves the pre-roll choice available.
+- assertVisible:
+    id: match-double
+- assertVisible:
+    id: roll-dice-button
+- tapOn:
+    id: match-double
+- assertVisible:
+    id: history-cube-1
+- takeScreenshot: cube-history-01-pending
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 60000
+- tapOn:
+    id: resume-game-button
+- assertVisible:
+    id: history-cube-1
+- assertVisible:
+    id: match-accept
+- tapOn:
+    id: match-accept
+# The opponent now owns the cube: auto-roll + forced bear-off complete this fixture.
+- extendedWaitUntil:
+    visible:
+      id: match-next
+    timeout: 15000
+- assertVisible: .*White 2  –  Black 0
+- assertVisible:
+    id: match-score-white
+    text: 2 of \d+ points
+- assertVisible:
+    id: match-score-black
+    text: 0 of \d+ points
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-1
+      DIRECTION: RIGHT
+- tapOn:
+    id: history-cube-1
+- assertVisible: .*White 0  –  Black 0
+- assertNotVisible:
+    id: match-accept
+- takeScreenshot: cube-history-02-review-offer
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-2
+      DIRECTION: LEFT
+- tapOn:
+    id: history-cube-2
+- assertVisible: .*White 0  –  Black 0
+- takeScreenshot: cube-history-03-review-take
+- tapOn:
+    id: review-back-to-live-button
+- assertVisible: .*White 2  –  Black 0
+# A drop has its own selectable history event and never manufactures a checker move.
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-match-cube
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-match-cube
+- tapOn:
+    id: match-double
+- tapOn:
+    id: match-drop
+- assertVisible: .*White 1  –  Black 0
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-1
+      DIRECTION: RIGHT
+- tapOn:
+    id: history-cube-1
+- assertVisible: .*White 0  –  Black 0
+- runFlow:
+    file: ../utils/reveal-cube-history.yaml
+    env:
+      EVENT_ID: history-cube-2
+      DIRECTION: LEFT
+- tapOn:
+    id: history-cube-2
+- assertVisible: .*White 1  –  Black 0
+- takeScreenshot: cube-history-04-review-drop
+- tapOn:
+    id: review-back-to-live-button
+- assertVisible:
+    id: match-next

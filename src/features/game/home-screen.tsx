@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
 import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
@@ -10,20 +11,26 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
+import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
+import { HomeGameSetup } from '@/features/game/components/home-game-setup';
+import { HOME_INK } from '@/features/game/components/home-ink';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
+import { useWebVisibleHeight } from '@/features/game/use-web-visible-height';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
+import { createMatchGame } from '@/lib/game/match';
 import {
   canContinueSavedGame,
   hasQuarantinedSession,
@@ -32,7 +39,7 @@ import {
 } from '@/lib/game/persistence';
 import { canOpenPersistedGame } from '@/lib/game/resume-game';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { LESSON_IDS } from '@/lib/learn/curriculum';
 import {
   allLessonsComplete,
@@ -43,25 +50,6 @@ import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
-import { WEB_HEADER_INSET } from '@/lib/ui/web-layout';
-
-function startGameFromHome(
-  mode: GameMode,
-  state: GameState | null,
-  startGame: (mode: GameMode) => void,
-) {
-  hapticLight();
-  void ensureGameSfxReady();
-  requestReplaceActiveGame({
-    source: 'home',
-    liveState: state,
-    onReplace: () => {
-      startGame(mode);
-      router.replace('/game');
-    },
-    onContinue: () => router.replace('/game'),
-  });
-}
 
 function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolean) {
   hapticLight();
@@ -74,11 +62,30 @@ function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolea
 
 /* eslint-disable max-lines-per-function -- home mode menu composition */
 export function HomeScreen() {
-  const { state, startGame, resumeGame } = useGame();
+  const { state, startGame, startFromPosition, resumeGame } = useGame();
   const { preferences } = useGamePreferences();
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
   const { insets, landscape } = useLayoutMetrics();
+  const { width, height: windowHeight } = useWindowDimensions();
+  // On web, lay out for what the browser shows: iOS Safari's toolbar covers
+  // the bottom of the window, and Start must not sit under it.
+  const webVisible = useWebVisibleHeight();
+  const height = webVisible == null ? windowHeight : Math.min(windowHeight, webVisible);
+  const covered = windowHeight - height;
+  // Native swaps left and right itself under RTL; web needs the side spelled out.
+  const layoutIsRTL = useLayoutIsRTL();
+  const gearSide = Platform.OS === 'web' && layoutIsRTL ? 'left' : 'right';
+  // No navigation bar: start just under the status bar, a little lower on
+  // tall phones so the brand isn't jammed against the top.
+  // Short phones in Safari (about 550-660px visible): a smaller brand and
+  // cards without their second line, so every button fits without scrolling (#346).
+  const short = !landscape && height < 700;
+  // Same for a phone held sideways: one-line cards and tighter gaps.
+  const dense = short || (landscape && height < 400);
+  // Very short phones (320x480): slimmer tiles and tighter setup, so a match still fits.
+  const tiny = !landscape && height < 520;
+  const topSpace = insets.top + (landscape || short ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
   const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
@@ -87,16 +94,30 @@ export function HomeScreen() {
   const learnLessonsDone = allLessonsComplete(progress);
 
   const handleStart = useCallback(
-    (mode: GameMode) => {
-      posthog.capture('game_started', {
-        mode,
-        had_saved_game: isResumableGame(state),
-        tutor_mode: preferences.tutorMode,
-        ...settingProperties(preferences),
+    (mode: GameMode, length: number | null, crawfordRule = true) => {
+      hapticLight();
+      void ensureGameSfxReady();
+      requestReplaceActiveGame({
+        source: 'home',
+        liveState: state,
+        onReplace: () => {
+          posthog.capture('game_started', {
+            mode,
+            had_saved_game: isResumableGame(state),
+            tutor_mode: preferences.tutorMode,
+            ...settingProperties(preferences),
+            ...(length ? { match_length: length, crawford_rule: crawfordRule } : {}),
+          });
+          if (length)
+            startFromPosition(createMatchGame(length, mode, crawfordRule));
+          else
+            startGame(mode);
+          router.replace('/game');
+        },
+        onContinue: () => router.replace('/game'),
       });
-      startGameFromHome(mode, state, startGame);
     },
-    [posthog, preferences, startGame, state],
+    [posthog, preferences, startGame, startFromPosition, state],
   );
 
   const handleResume = useCallback(
@@ -135,6 +156,70 @@ export function HomeScreen() {
           })
         : translate('learn.home_cta_sub');
 
+  // Landscape phones: a one-line header, then the choices on the left and
+  // the match details and Start on the right, so Start is always on screen (#346).
+  const split = landscape && height < 520;
+  const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, width - 48);
+  const brand = (
+    <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
+      <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
+      <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
+    </View>
+  );
+  const resumeCard = canResume
+    ? (
+        <HomeCard
+          testID="resume-game-button"
+          accessibilityLabel={translate('home.resume_a11y')}
+          symbol="play-circle"
+          label={translate('home.resume')}
+          sub={dense ? undefined : translate('home.resume_sub')}
+          onPress={handleResume}
+          prominent
+          dense={dense}
+          inline={split}
+        />
+      )
+    : null;
+  const reviewCard = canReview
+    ? (
+        <HomeCard
+          testID="review-last-game-button"
+          accessibilityLabel={translate('home.review_a11y')}
+          symbol="eye"
+          label={translate('home.review')}
+          sub={dense ? undefined : translate('home.review_sub')}
+          onPress={handleReview}
+          prominent
+          dense={dense}
+          inline={split}
+        />
+      )
+    : null;
+  const tiles = (
+    <View style={[styles.tiles, !split && panelWidth < 320 && styles.tilesStacked]}>
+      <HomeCard
+        testID="learn-button"
+        accessibilityLabel={translate('learn.home_cta')}
+        symbol="book-open"
+        label={translate('learn.home_cta')}
+        sub={dense ? undefined : learnSub}
+        onPress={handleLearn}
+        dense={dense}
+        compact={split || tiny}
+      />
+      <HomeCard
+        testID="position-setup-button"
+        accessibilityLabel={translate('positions.setup')}
+        symbol="grid"
+        label={translate('positions.setup')}
+        onPress={() => router.push('/position')}
+        dense={dense}
+        compact={split || tiny}
+      />
+    </View>
+  );
+
   return (
     <>
       <FocusAwareStatusBar />
@@ -143,178 +228,88 @@ export function HomeScreen() {
         style={styles.scroll}
         contentContainerStyle={[
           styles.root,
-          landscape ? styles.rootLandscape : null,
-          contentEdgePadding(insets, {
-            left: 24,
-            right: 24,
-            bottom: landscape ? 16 : 32,
-          }),
+          // Tablets and desktop: the column sits in the middle of the window.
+          width >= 600 ? styles.rootCentered : null,
+          split ? styles.rootSplit : null,
+          contentEdgePadding(insets, { left: 24, right: 24, bottom: (dense ? 8 : landscape ? 16 : 32) + covered }),
+          { paddingTop: topSpace },
         ]}
         bounces={false}
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
-        <View style={[styles.brand, landscape ? styles.brandLandscape : null]}>
-          <View style={[styles.logoContainer, landscape ? styles.logoLandscape : null]}>
-            <Image
-              source={require('../../../assets/brand/display-logo.png')}
-              style={styles.logo}
-              resizeMode="cover"
-            />
-          </View>
-
-          <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
-            {translate('home.title')}
-          </Text>
-          {landscape
-            ? null
-            : <Text style={styles.subtitle}>{translate('home.subtitle')}</Text>}
-
-          {landscape
-            ? null
-            : (
-                <View style={styles.dividerRow}>
-                  <View style={styles.dividerLine} />
-                  <View style={styles.dividerDiamond} />
-                  <View style={styles.dividerLine} />
+        <View style={[styles.settingsCorner, { top: insets.top + 4, [gearSide]: (gearSide === 'left' ? insets.left : insets.right) + 8 }]}>
+          <SettingsHeaderButton />
+        </View>
+        {split
+          ? (
+              <View style={styles.splitStage}>
+                <View style={[styles.splitHeader, gearSide === 'left' && styles.gearClear]}>
+                  {brand}
+                  {resumeCard}
+                  {reviewCard}
                 </View>
-              )}
-        </View>
-
-        <View style={[styles.buttons, landscape ? styles.buttonsLandscape : styles.buttonsPortrait]}>
-          {showRecovery && (
-            <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
-          )}
-
-          {canResume && (
-            <HoverPressable
-              accessibilityRole="button"
-              accessibilityLabel={translate('home.resume_a11y')}
-              testID="resume-game-button"
-              style={({ pressed, hovered }) => [
-                styles.modeBtn,
-                hovered && styles.modeBtnHover,
-                landscape ? styles.modeBtnLandscape : null,
-                styles.resumeBtn,
-                pressed && styles.pressed,
-              ]}
-              onPress={handleResume}
-            >
-              <View style={styles.btnIconSlot}>
-                <Feather name="play-circle" size={24} color="#A0D080" />
+                {showRecovery && (
+                  <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
+                )}
+                <HomeGameSetup onStart={handleStart} columns aside={tiles} />
               </View>
-              <View style={styles.btnTextCol}>
-                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>{translate('home.resume')}</Text>
-                {landscape
-                  ? null
-                  : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.resume_sub')}</Text>}
+            )
+          : (
+              <View style={[styles.panel, dense && styles.panelShort, { width: panelWidth }]}>
+                {brand}
+                {showRecovery && (
+                  <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
+                )}
+                {resumeCard}
+                {reviewCard}
+                <HomeGameSetup onStart={handleStart} tight={tiny} />
+                {tiles}
               </View>
-            </HoverPressable>
-          )}
-
-          {canReview && (
-            <HoverPressable
-              accessibilityRole="button"
-              accessibilityLabel={translate('home.review_a11y')}
-              testID="review-last-game-button"
-              style={({ pressed, hovered }) => [
-                styles.modeBtn,
-                hovered && styles.modeBtnHover,
-                landscape ? styles.modeBtnLandscape : null,
-                styles.resumeBtn,
-                pressed && styles.pressed,
-              ]}
-              onPress={handleReview}
-            >
-              <View style={styles.btnIconSlot}>
-                <Feather name="eye" size={24} color="#A0D080" />
-              </View>
-              <View style={styles.btnTextCol}>
-                <Text style={[styles.btnLabel, { color: '#A0D080' }]}>{translate('home.review')}</Text>
-                {landscape
-                  ? null
-                  : <Text style={[styles.btnSub, { color: '#6A9A50' }]}>{translate('home.review_sub')}</Text>}
-              </View>
-            </HoverPressable>
-          )}
-
-          <HoverPressable
-            accessibilityRole="button"
-            accessibilityLabel={translate('learn.home_cta')}
-            style={({ pressed, hovered }) => [
-              styles.modeBtn,
-              hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
-              styles.learnBtn,
-              pressed && styles.pressed,
-            ]}
-            onPress={handleLearn}
-          >
-            <View style={styles.btnIconSlot}>
-              <Feather name="book-open" size={24} color={GAME_PALETTE.accent} />
-            </View>
-            <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>
-                {translate('learn.home_cta')}
-              </Text>
-              {landscape
-                ? null
-                : (
-                    <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>
-                      {learnSub}
-                    </Text>
-                  )}
-            </View>
-          </HoverPressable>
-
-          <HoverPressable
-            accessibilityRole="button"
-            accessibilityLabel={translate('home.vs_computer_a11y')}
-            style={({ pressed, hovered }) => [
-              styles.modeBtn,
-              hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
-              styles.primaryBtn,
-              pressed && styles.pressed,
-            ]}
-            onPress={() => handleStart('vs-computer')}
-          >
-            <View style={styles.btnIconSlot}>
-              <Feather name="cpu" size={24} color={GAME_PALETTE.bg} />
-            </View>
-            <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.bg }]}>{translate('home.vs_computer')}</Text>
-              {landscape
-                ? null
-                : <Text style={[styles.btnSub, { color: '#4A2A10' }]}>{translate('home.vs_computer_sub')}</Text>}
-            </View>
-          </HoverPressable>
-
-          <HoverPressable
-            accessibilityRole="button"
-            accessibilityLabel={translate('home.two_players_a11y')}
-            style={({ pressed, hovered }) => [
-              styles.modeBtn,
-              hovered && styles.modeBtnHover,
-              landscape ? styles.modeBtnLandscape : null,
-              styles.secondaryBtn,
-              pressed && styles.pressed,
-            ]}
-            onPress={() => handleStart('vs-human')}
-          >
-            <View style={styles.btnIconSlot}>
-              <Feather name="users" size={24} color={GAME_PALETTE.accent} />
-            </View>
-            <View style={styles.btnTextCol}>
-              <Text style={[styles.btnLabel, { color: GAME_PALETTE.accent }]}>{translate('home.two_players')}</Text>
-              {landscape
-                ? null
-                : <Text style={[styles.btnSub, { color: GAME_PALETTE.accentDim }]}>{translate('home.two_players_sub')}</Text>}
-            </View>
-          </HoverPressable>
-        </View>
+            )}
       </ScrollView>
     </>
+  );
+}
+
+/** A secondary destination: icon, name and a line about it. "Prominent" is ivory, for picking a game back up. */
+function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, prominent = false, dense = false, compact = false, inline = false }: {
+  testID: string;
+  accessibilityLabel: string;
+  symbol: ComponentProps<typeof Feather>['name'];
+  label: string;
+  sub?: string;
+  onPress: () => void;
+  prominent?: boolean;
+  /** Short screens: one line, 56px tall. */
+  dense?: boolean;
+  /** Landscape phones: as tall as the Start button beside it. */
+  compact?: boolean;
+  /** In the landscape header row: as wide as its label. */
+  inline?: boolean;
+}) {
+  return (
+    <HoverPressable
+      testID={testID}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      onPress={onPress}
+      style={({ pressed, hovered }) => [
+        styles.card,
+        dense && styles.cardDense,
+        compact && styles.cardCompact,
+        inline && styles.cardInline,
+        prominent && styles.cardProminent,
+        hovered && (prominent ? styles.cardProminentHover : styles.cardHover),
+        pressed && styles.pressed,
+      ]}
+    >
+      <Feather name={symbol} size={20} color={prominent ? GAME_PALETTE.bg : HOME_INK.ivory} accessible={false} />
+      <View style={styles.cardCopy}>
+        <Text style={[styles.cardLabel, prominent && styles.cardLabelProminent]}>{label}</Text>
+        {sub ? <Text style={[styles.cardSub, prominent && styles.cardSubProminent]}>{sub}</Text> : null}
+      </View>
+    </HoverPressable>
   );
 }
 
@@ -325,161 +320,169 @@ const styles = StyleSheet.create({
   },
   root: {
     flexGrow: 1,
-    backgroundColor: GAME_PALETTE.bg,
     alignItems: 'center',
-    justifyContent: Platform.OS === 'web' ? 'flex-start' : 'center',
-    paddingTop: Platform.OS === 'web' ? WEB_HEADER_INSET : 8,
+    gap: 24,
+    backgroundColor: GAME_PALETTE.bg,
   },
-  rootLandscape: {
+  rootCentered: {
+    justifyContent: 'center',
+  },
+  rootSplit: {
+    alignItems: 'stretch',
+  },
+  splitStage: {
+    width: '100%',
+    maxWidth: 820,
+    alignSelf: 'center',
+    gap: 8,
+  },
+  // Clear of the settings gear in the top corner.
+  splitHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 12,
-    gap: 24,
+    gap: 12,
+    paddingRight: 40,
+  },
+  // The gear moved to the left (Hebrew on web): clear that side instead.
+  gearClear: {
+    paddingRight: 0,
+    paddingLeft: 40,
+  },
+  settingsCorner: {
+    position: 'absolute',
+    zIndex: 10,
+  },
+  panel: {
+    gap: 12,
+  },
+  panelShort: {
+    gap: 8,
   },
   brand: {
+    flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    maxWidth: GAME_CHROME_MAX_WIDTH,
+    gap: 14,
+    marginBottom: 12,
   },
-  brandLandscape: {
-    width: 'auto',
-    flexShrink: 1,
-    maxWidth: 320,
+  // Clear of the settings gear in the top corner (see gearClear).
+  brandShort: {
+    marginBottom: 0,
+    paddingRight: 40,
   },
-  logoContainer: {
-    width: 110,
-    height: 110,
-    overflow: 'hidden',
-    borderWidth: 3,
-    borderColor: GAME_PALETTE.accent,
-    backgroundColor: GAME_PALETTE.bg,
-    marginBottom: 20,
-    marginTop: 8,
-    boxShadow: '0 4px 16px rgba(212, 168, 67, 0.35)',
-    ...continuousRadius(28),
-  },
-  logoLandscape: {
-    width: 72,
-    height: 72,
-    marginBottom: 8,
-    marginTop: 0,
+  brandSplit: {
+    flex: 1,
+    marginBottom: 0,
+    gap: 10,
+    paddingRight: 0,
+    paddingLeft: 0,
   },
   logo: {
-    width: '100%',
-    height: '100%',
+    width: 52,
+    height: 52,
+    borderWidth: 1,
+    borderColor: HOME_INK.hairline,
+    ...continuousRadius(13),
+  },
+  logoShort: {
+    width: 44,
+    height: 44,
+    ...continuousRadius(10),
+  },
+  logoSplit: {
+    width: 36,
+    height: 36,
+    ...continuousRadius(9),
   },
   title: {
-    fontSize: 32,
-    lineHeight: 38,
-    color: GAME_PALETTE.accent,
-    letterSpacing: 4,
-    ...interFont('extrabold'),
-    textAlign: 'center',
-  },
-  titleLandscape: {
-    fontSize: 22,
-    lineHeight: 26,
-    letterSpacing: 2,
-  },
-  subtitle: {
-    fontSize: 13,
-    color: GAME_PALETTE.accentDim,
-    marginTop: 4,
-    letterSpacing: 1,
-    ...interFont('regular'),
-    textAlign: 'center',
-  },
-  dividerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '60%',
-    marginVertical: 24,
-    gap: 8,
-  },
-  dividerLine: {
     flex: 1,
-    height: 1,
-    backgroundColor: GAME_PALETTE.surfaceBorder,
-  },
-  dividerDiamond: {
-    width: 8,
-    height: 8,
-    backgroundColor: GAME_PALETTE.accent,
-    transform: [{ rotate: '45deg' }],
-  },
-  buttons: {
-    maxWidth: GAME_CHROME_MAX_WIDTH,
-    gap: 14,
-    marginBottom: 24,
-    flexShrink: 1,
-  },
-  buttonsPortrait: {
-    width: '100%',
-  },
-  buttonsLandscape: {
-    flexGrow: 1,
-    flexShrink: 1,
-    minWidth: 240,
-    maxWidth: GAME_CHROME_MAX_WIDTH,
-    width: '100%',
-    gap: 8,
-    marginBottom: 0,
-    justifyContent: 'center',
-  },
-  modeBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderWidth: 2,
-    gap: 16,
-    ...continuousRadius(16),
-  },
-  modeBtnLandscape: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    gap: 10,
-    minHeight: 44,
-  },
-  modeBtnHover: {
-    borderColor: GAME_PALETTE.accent,
-  },
-  pressed: {
-    opacity: 0.88,
-  },
-  resumeBtn: {
-    backgroundColor: '#1A2A14',
-    borderColor: '#4A6A30',
-  },
-  primaryBtn: {
-    backgroundColor: GAME_PALETTE.accent,
-    borderColor: '#F0C060',
-  },
-  secondaryBtn: {
-    backgroundColor: GAME_PALETTE.surface,
-    borderColor: GAME_PALETTE.accentDim,
-  },
-  learnBtn: {
-    backgroundColor: GAME_PALETTE.surface,
-    borderColor: GAME_PALETTE.accent,
-  },
-  btnIconSlot: {
-    width: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnTextCol: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  btnLabel: {
-    fontSize: 17,
+    color: HOME_INK.ivory,
+    fontSize: 26,
+    lineHeight: 32,
+    letterSpacing: -0.4,
     ...interFont('bold'),
   },
-  btnSub: {
-    fontSize: 12,
-    marginTop: 2,
+  titleShort: {
+    fontSize: 20,
+    lineHeight: 22,
+  },
+  titleSplit: {
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: 'auto',
+    fontSize: 19,
+    lineHeight: 24,
+  },
+  tiles: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 4,
+  },
+  // Narrow phones: one tile per row, so neither label wraps into a column.
+  tilesStacked: {
+    flexDirection: 'column',
+  },
+  card: {
+    flexGrow: 1,
+    flexBasis: 0,
+    minHeight: 72,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    backgroundColor: GAME_PALETTE.surface,
+    borderWidth: 1,
+    borderColor: HOME_INK.hairline,
+    ...continuousRadius(14),
+  },
+  cardCompact: {
+    minHeight: 48,
+    paddingVertical: 6,
+  },
+  cardInline: {
+    flexGrow: 0,
+    flexBasis: 'auto',
+    minHeight: 44,
+    paddingVertical: 6,
+  },
+  cardDense: {
+    minHeight: 56,
+    paddingVertical: 8,
+  },
+  cardHover: {
+    borderColor: 'rgba(236, 228, 212, 0.3)',
+  },
+  cardProminent: {
+    flex: 0,
+    backgroundColor: HOME_INK.ivory,
+    borderColor: HOME_INK.ivory,
+  },
+  cardProminentHover: {
+    backgroundColor: '#F6F0E4',
+  },
+  pressed: {
+    opacity: 0.85,
+  },
+  cardCopy: {
+    flex: 1,
+    gap: 2,
+  },
+  cardLabel: {
+    color: HOME_INK.ivory,
+    fontSize: 15,
+    ...interFont('semibold'),
+  },
+  cardLabelProminent: {
+    color: GAME_PALETTE.bg,
+    fontSize: 17,
+  },
+  cardSub: {
+    color: HOME_INK.muted,
+    fontSize: 12.5,
+    lineHeight: 17,
     ...interFont('regular'),
+  },
+  cardSubProminent: {
+    color: '#5A4636',
   },
 });

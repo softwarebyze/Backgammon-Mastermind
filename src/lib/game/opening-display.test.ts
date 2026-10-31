@@ -15,7 +15,7 @@ describe('opening display', () => {
   it('fills the white slot after white rolls and says the computer is rolling', () => {
     const state = applyOpeningDieRoll(createInitialState('vs-computer'), 4);
     expect(openingTray(state, null)).toEqual({ dice: [4, 0], emphasis: null });
-    expect(openingCopy(state, null)?.caption).toBe('Black is rolling…');
+    expect(openingCopy(state, null)?.caption).toBe('Computer is rolling');
   });
 
   it('asks the second human to roll in pass-and-play', () => {
@@ -30,7 +30,7 @@ describe('opening display', () => {
     expect(reveal).toEqual({ white: 2, black: 5, winner: 'black' });
     expect(openingTray(resolved, reveal)).toEqual({ dice: [2, 5], emphasis: 1 });
     expect(openingCopy(resolved, reveal)).toEqual({
-      headline: 'Black goes first!',
+      headline: 'Goes first!',
       caption: 'Black 5 beats 2',
     });
     // Once the reveal is over, normal play owns tray and copy.

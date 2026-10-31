@@ -57,7 +57,7 @@ describe('game screen controls', () => {
     renderComputerControls('moving');
 
     expect(screen.queryAllByText(/moving/i)).toHaveLength(0);
-    expect(screen.queryByText('Black is moving…')).toBeNull();
+    expect(screen.queryByText('Computer is moving')).toBeNull();
     expect(screen.queryByText('Tap to skip wait')).toBeNull();
     expect(screen.queryByTestId('skip-computer-button')).toBeNull();
   });
@@ -66,7 +66,7 @@ describe('game screen controls', () => {
     renderComputerControls('rolling');
 
     expect(screen.queryAllByText(/rolling/i)).toHaveLength(0);
-    expect(screen.queryByText('Black is rolling…')).toBeNull();
+    expect(screen.queryByText('Computer is rolling')).toBeNull();
     expect(screen.queryByText('Tap to skip wait')).toBeNull();
   });
 });
@@ -286,4 +286,37 @@ it('gives Undo and Confirm move the same height (#319)', () => {
   expect(undo.minHeight).toBeGreaterThanOrEqual(44);
   expect(undo.minHeight).toBe(confirm.minHeight);
   expect(undo.borderWidth).toBe(confirm.borderWidth);
+});
+
+it('fits Undo and Confirm move side by side in the landscape rail, with no caption when folded (#348)', () => {
+  mockPrefs.confirmMove = true;
+  const state = awaitingConfirmState();
+  setup(
+    <GameScreenControls
+      state={state}
+      liveDiceState={state}
+      isHumanTurn
+      isComputerTurn={false}
+      moveLogLength={0}
+      onRoll={jest.fn()}
+      onReset={jest.fn()}
+      onConfirmMove={jest.fn()}
+      onUndoMove={jest.fn()}
+      canUndoMove
+      compact
+      hideCaption
+    />,
+  );
+  const styleOf = (id: string) => {
+    const style = screen.getByTestId(id).props.style;
+    return StyleSheet.flatten(typeof style === 'function' ? style({ pressed: false, hovered: false }) : style);
+  };
+  const undo = styleOf('undo-move-button');
+  const confirm = styleOf('confirm-move-button');
+  // A 264px rail: the icon-only Undo and a Confirm that may shrink, never 96 + 12 + 180.
+  expect(undo.width).toBeLessThanOrEqual(56);
+  expect(confirm.minWidth).toBe(0);
+  expect(undo.minHeight).toBe(confirm.minHeight);
+  expect(screen.getByTestId('undo-move-button').props.accessibilityLabel).toBeTruthy();
+  expect(screen.queryByTestId('game-action-caption')).toBeNull();
 });

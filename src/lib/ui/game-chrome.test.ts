@@ -39,8 +39,8 @@ describe('game chrome layout', () => {
 
   it('sizes landscape chrome from width share, not a 360px vertical constant', () => {
     expect(landscapeChromeColumnWidth(844)).toBe(304);
-    expect(landscapeChromeColumnWidth(667)).toBe(240);
-    expect(landscapeChromeColumnWidth(500)).toBe(220);
+    expect(landscapeChromeColumnWidth(667)).toBe(280);
+    expect(landscapeChromeColumnWidth(500)).toBe(280);
   });
 
   it('caps desktop chrome so the rail stays beside the board', () => {

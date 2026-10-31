@@ -1,0 +1,46 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+# Bar stacks grow outward from the hinge: White down, Black up. A press sets
+# the count by distance from the hinge, and dragging outward adds checkers.
+- tapOn:
+    id: position-board-bar
+    point: '50%, 56%'
+- assertVisible: 'Bar, 1 white checker'
+- tapOn:
+    id: position-board-bar
+    point: '50%, 80%'
+- assertVisible: 'Bar, [2-9] white checkers'
+- takeScreenshot: position-bar-01-white
+- swipe:
+    from:
+      id: position-board-bar
+      point: '50%, 60%'
+    direction: DOWN
+    duration: 900
+- assertVisible: 'Bar, [2-9] white checkers|Bar, 1[0-5] white checkers'
+- tapOn:
+    id: position-paint-black
+- tapOn:
+    id: position-board-bar
+    point: '50%, 44%'
+- assertVisible: 'Bar.*1 black checker'
+- tapOn:
+    id: position-board-bar
+    point: '50%, 20%'
+- assertVisible: 'Bar.*[2-9] black checkers'
+- takeScreenshot: position-bar-02-black
+- swipe:
+    from:
+      id: position-board-bar
+      point: '50%, 40%'
+    direction: UP
+    duration: 900
+- assertVisible: 'Bar.*black checkers'
+- tapOn:
+    id: position-paint-white
+# A long swipe can put every checker on the bar; start the next check empty.
+- tapOn:
+    id: position-empty
+- assertVisible: Bar

@@ -15,10 +15,7 @@ tags:
       id: developer-json-input
     direction: DOWN
     timeout: 60000
-- longPressOn:
-    id: developer-json-input
-- tapOn: (?i)select all
-- eraseText: 1
+- runFlow: ../utils/clear-developer-json.yaml
 - inputText: '{"placements":[{"point":6,"player":"white","count":5},{"point":8,"player":"white","count":3},{"point":13,"player":"white","count":5},{"point":24,"player":"white","count":1},{"point":19,"player":"black","count":5},{"point":17,"player":"black","count":3},{"point":12,"player":"black","count":5},{"point":1,"player":"black","count":2}],"bar":{"white":1,"black":0},"dice":[3,1],"currentPlayer":"white","mode":"vs-human"}'
 - hideKeyboard
 - scrollUntilVisible:

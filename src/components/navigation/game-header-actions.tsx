@@ -14,13 +14,14 @@ type Props = {
   onRedo?: () => void;
   onOptions: () => void;
   onReset: () => void;
+  /** Save the live board to Positions without leaving the game. */
+  onSavePosition?: () => void;
 };
 
 const ICON = Platform.OS === 'web' ? 22 : 20;
-const GAP = Platform.OS === 'web' ? 8 : 0;
 const HIT = 44;
 
-function HeaderIcon({
+export function HeaderIcon({
   name,
   label,
   onPress,
@@ -71,10 +72,12 @@ export function GameHeaderActions({
   onRedo,
   onOptions,
   onReset,
+  onSavePosition,
 }: Props) {
   const rtl = useLayoutIsRTL();
+  // No gap: the 44px hit boxes already space the icons, and the row fits a 280px landscape rail.
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: GAP }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <HeaderIcon
         name={rtl ? 'corner-up-right' : 'corner-up-left'}
         label={translate('game.controls.undo_a11y')}
@@ -89,6 +92,14 @@ export function GameHeaderActions({
         disabled={!canRedo || !onRedo}
         onPress={() => onRedo?.()}
       />
+      {onSavePosition && (
+        <HeaderIcon
+          name="bookmark"
+          label={translate('game.controls.save_position_a11y')}
+          testID="save-position-button"
+          onPress={onSavePosition}
+        />
+      )}
       <HeaderIcon
         name="settings"
         label={translate('settings.title')}

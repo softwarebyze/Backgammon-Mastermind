@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+# Empty the Developer JSON field with its Clear button. The system text menu
+# (Select all) is unreliable on emulators, so flows no longer depend on it.
+- scrollUntilVisible:
+    element:
+      id: developer-clear-json
+    direction: DOWN
+- tapOn:
+    id: developer-clear-json
+- tapOn:
+    id: developer-json-input

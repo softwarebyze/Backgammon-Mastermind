@@ -45,9 +45,13 @@ const IMESSAGE_EXPECTED = [
   { width: 2064, height: 2752, files: ['staged', 'legal', 'turn', 'new'].map((n, i) => `imessage-ipad-13-0${i + 1}-${n}.png`) },
 ];
 const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]);
-const IOS_ROOT = path.join(ROOT, 'fastlane/screenshots');
+// Tests stage into a temp folder so a test run never rewrites the tracked store assets.
+const FASTLANE_ROOT = process.env.FASTLANE_OUT_DIR
+  ? path.resolve(process.env.FASTLANE_OUT_DIR)
+  : path.join(ROOT, 'fastlane');
+const IOS_ROOT = path.join(FASTLANE_ROOT, 'screenshots');
 const IMESSAGE_DIR = 'iMessage';
-const PLAY_ROOT = path.join(ROOT, 'fastlane/metadata/android');
+const PLAY_ROOT = path.join(FASTLANE_ROOT, 'metadata/android');
 
 const PLAY_PHONE = { width: 1080, height: 1920 };
 const LAYOUT = {

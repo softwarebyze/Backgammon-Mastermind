@@ -1,4 +1,5 @@
 import type { GameState } from '@/lib/game';
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useMemo } from 'react';
 import {
@@ -11,6 +12,7 @@ import {
 import { stateAtPly } from '@/lib/game/move-replay';
 
 export function useReviewDisplayState(args: {
+  cubeEvents?: CubeHistoryEvent[];
   liveState: GameState | null;
   replayBaseline: GameState | null;
   moveLog: MoveLogEntry[];
@@ -22,6 +24,7 @@ export function useReviewDisplayState(args: {
 }) {
   const {
     liveState,
+    cubeEvents,
     replayBaseline,
     moveLog,
     isReviewing,
@@ -38,8 +41,14 @@ export function useReviewDisplayState(args: {
       return liveState;
     }
     const snap = stateAtPly(replayBaseline, moveLog, displayPly);
+    // Cube decisions occupy the gap between checker plies. The first replay
+    // frame of the following turn must already show the accepted cube, while
+    // the preceding turn and the explicit Start position keep their old cube.
+    const event = cubeEvents?.findLast(event => event.afterPly >= displayPly && event.afterPly < (presenterPly ?? displayPly));
+    if (event)
+      snap.match = event.after.match;
     return applyReviewPresenterOverlay(moveLog, presenterPly ?? displayPly, snap);
-  }, [displayPly, isReviewing, presenterPly, replayBaseline, moveLog, liveState]);
+  }, [displayPly, isReviewing, presenterPly, replayBaseline, moveLog, liveState, cubeEvents]);
 
   const activeEntry = useMemo(
     () => (isReviewing ? reviewMoveEntry(moveLog, highlightMovePly) : null),

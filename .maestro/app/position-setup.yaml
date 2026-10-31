@@ -1,0 +1,364 @@
+# Public setup/import/export, local bookmarks, and play from a position.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-setup-button
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-setup-button
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- assertVisible:
+    id: player-strip-black
+- assertVisible:
+    id: player-strip-white
+- assertVisible:
+    id: position-cube
+# Who is on roll and which colour to place are labelled apart.
+- assertVisible:
+    id: player-status-black
+    text: Tap to put on roll
+- assertVisible: Place
+- takeScreenshot: position-compact-workspace
+- assertVisible:
+    id: position-standard
+- assertVisible:
+    id: position-empty
+- assertVisible:
+    id: position-die-0
+# Tapping a die opens all six faces; picking the first opens the second.
+- tapOn:
+    id: position-die-0
+- assertVisible:
+    id: position-die-picker
+- takeScreenshot: position-die-picker
+- tapOn:
+    id: position-die-option-6
+- tapOn:
+    id: position-die-option-2
+- assertVisible:
+    id: position-die-0
+    text: 'Dice 1: 6'
+- assertVisible:
+    id: position-die-1
+    text: 'Dice 2: 2'
+- takeScreenshot: position-visible-presets-dice
+# Tapping the cube opens every value and owner at once.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-cube
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-cube
+- assertVisible:
+    id: position-cube-picker
+- takeScreenshot: position-cube-picker
+- tapOn:
+    id: position-cube-value-1
+- tapOn:
+    id: position-cube-owner-black
+- tapOn:
+    id: position-cube-done
+- assertVisible:
+    id: position-cube
+    text: 'Doubling cube: 2. Cube owner: Black'
+- takeScreenshot: position-visual-cube
+- tapOn:
+    id: position-cube
+- tapOn:
+    id: position-cube-owner-center
+- tapOn:
+    id: position-cube-done
+- assertVisible:
+    id: position-cube
+    text: 'Doubling cube: 2. Cube owner: Centered'
+- runFlow: ../utils/position-score.yaml
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-empty
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-empty
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- runFlow: ../utils/position-bar.yaml
+- runFlow: ../utils/position-drag.yaml
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-standard
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-standard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-paint-white
+- assertVisible: 'Point 6, 5 white checkers'
+- tapOn:
+    id: position-paint-black
+# The standard board has no spare Black checkers. Free one before testing
+# adding Black after clearing the White stack.
+- tapOn:
+    id: point-1
+    point: '50%, 95%'
+- assertVisible: 'Point 1, 1 black checker'
+- tapOn:
+    id: point-6
+    point: '50%, 95%'
+- assertVisible: 'Point 6, 1 white checker'
+- tapOn:
+    id: point-6
+    point: '50%, 80%'
+- assertVisible: 'Point 6, [2-9] white checkers'
+- takeScreenshot: position-existing-owner
+# Dragging a stack down to nothing empties the point; the next press adds
+# the selected colour (Black) instead of the old owner.
+- swipe:
+    from:
+      id: point-6
+      point: '50%, 60%'
+    direction: DOWN
+    duration: 900
+- assertVisible: Point 6
+- tapOn:
+    id: point-6
+    point: '50%, 95%'
+- assertVisible: 'Point 6, 1 black checker'
+- takeScreenshot: position-owner-after-empty
+- takeScreenshot: position-01-editor
+# Header undo/redo walk the edit history; the board change is unit-tested.
+- tapOn:
+    id: position-undo
+- tapOn:
+    id: position-redo
+# Save the edited board and verify it survives a real relaunch.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-saved-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-saved-toggle
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-save-name
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-save-name
+- inputText: '   '
+- hideKeyboard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-save
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-save
+- assertVisible: 'Untitled position.*'
+- tapOn:
+    id: position-save-name
+- eraseText
+- inputText: My saved position
+- hideKeyboard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-save
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-save
+- assertVisible: 'My saved position.*'
+- stopApp
+- launchApp
+- openLink: backgammonmastermind.preview://position
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-saved-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-saved-toggle
+- scrollUntilVisible:
+    element:
+      text: 'My saved position.*'
+    direction: DOWN
+- tapOn: 'My saved position.*'
+- takeScreenshot: position-02-saved
+# Load a known public GNU ID through the consumer importer.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-exchange-toggle
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-exchange-toggle
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-toggle
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-import-toggle
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-input
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-import-input
+- inputText: 4HPwATDgc/ABMA:QYkqASAAIAAA
+- hideKeyboard
+# A board edit must preserve the open importer and pasted draft.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-standard
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-standard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-input
+      START_Y: '80%'
+      END_Y: '25%'
+- assertVisible:
+    id: position-import-input
+    text: '4HPwATDgc/ABMA:QYkqASAAIAAA'
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-import-load
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-import-load
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-export-xgid
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-export-xgid
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-export-output
+      START_Y: '80%'
+      END_Y: '25%'
+- assertVisible:
+    id: position-export-output
+- tapOn:
+    id: position-copy
+- takeScreenshot: position-03-export
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-play
+      START_Y: '25%'
+      END_Y: '80%'
+# Pass and play keeps the imported position still while it is checked.
+- tapOn:
+    id: position-mode-human
+- tapOn:
+    id: position-play
+- extendedWaitUntil:
+    visible:
+      id: header-undo-button
+    timeout: 30000
+- assertVisible: 'Point 6, 5 white checkers'
+- takeScreenshot: position-04-play
+# Save the live board from the game header with a name and note; play goes on.
+- tapOn:
+    id: save-position-button
+- tapOn:
+    id: save-position-name
+- inputText: Saved mid-game
+- tapOn:
+    id: save-position-note
+- inputText: Check this later
+- hideKeyboard
+- takeScreenshot: position-07-save-from-game
+- tapOn:
+    id: save-position-confirm
+- assertVisible:
+    id: header-undo-button
+# Open a valid shared preview while a game exists; merely opening it must not
+# start a new game. Choosing Play then Cancel must retain the workspace.
+- runScript: ../utils/position-link.js
+- openLink: ${output.sharedPositionLink}
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- takeScreenshot: position-05-shared-preview
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-play
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-play
+- assertVisible: Game in progress
+- tapOn: Cancel
+- assertVisible:
+    id: position-screen
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-saved-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-saved-toggle
+- scrollUntilVisible:
+    element:
+      text: 'Saved mid-game.*'
+    direction: DOWN
+- assertVisible: '.*From a game.*'
+- takeScreenshot: position-08-saved-with-time
+# A malformed shared link is an error preview, never a replacement game.
+- openLink: backgammonmastermind.preview://position?data=invalid
+- extendedWaitUntil:
+    visible:
+      id: position-error
+    timeout: 30000
+- takeScreenshot: position-06-invalid-share

@@ -5,6 +5,7 @@ import { useCallback } from 'react';
 import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { bumpTutorGameGeneration } from '@/features/game/use-tutor';
 import { createInitialState } from '@/lib/game';
+import { createMatchGame } from '@/lib/game/match';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
 import { performResume } from '@/lib/game/resume-game';
 
@@ -75,7 +76,7 @@ export function useGameLifecycle({
     if (!state) {
       return;
     }
-    const next = createInitialState(state.mode);
+    const next = state.match ? createMatchGame(state.match.length, state.mode, state.match.crawfordRule !== false) : createInitialState(state.mode);
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);

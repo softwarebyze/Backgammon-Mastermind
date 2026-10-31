@@ -8,6 +8,7 @@ import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segme
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
+import { GameToolbar } from '@/features/game/game-toolbar';
 import { guidanceArrowSegments } from '@/features/game/guidance-arrows';
 import {
   clearGuidance,
@@ -22,10 +23,10 @@ import {
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
 import { useGameKeyboardShortcuts } from '@/features/game/use-game-keyboard-shortcuts';
-import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
 import { useTutorMode } from '@/features/game/use-tutor';
+import { SavePositionDialog } from '@/features/positions/save-position-dialog';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
@@ -138,17 +139,8 @@ export function GameScreen() {
     router.push('/settings');
   }, [posthog, input.state?.mode]);
 
-  useGameScreenHeader({
-    navigation,
-    state: input.state,
-    canUndo: !review.isReviewing && canUndo,
-    canRedo: !review.isReviewing && canRedo,
-    doUndo,
-    doRedo,
-    openOptions,
-    handleReset: input.handleReset,
-    confirmLeaveGame: leaveGame,
-  });
+  const [savingPosition, setSavingPosition] = useState(false);
+  const openSavePosition = useCallback(() => setSavingPosition(true), []);
 
   const canConfirmMove = !!input.state
     && !review.isReviewing
@@ -217,6 +209,20 @@ export function GameScreen() {
   return (
     <View style={styles.screenWrap}>
       <GameScreenLayout
+        toolbar={(compact: boolean) => (
+          <GameToolbar
+            compact={compact}
+            canUndo={!review.isReviewing && canUndo}
+            canRedo={!review.isReviewing && canRedo}
+            onUndo={doUndo}
+            onRedo={doRedo}
+            onOptions={openOptions}
+            onReset={input.handleReset}
+            onHome={leaveGame}
+            onSavePosition={openSavePosition}
+            match={state.match}
+          />
+        )}
         board={{ ...board, boardState: previewState ?? state, interactionEnabled }}
         review={review}
         input={input}
@@ -231,6 +237,7 @@ export function GameScreen() {
           <Text style={styles.reviewingText}>Reviewing your turn…</Text>
         </View>
       )}
+      <SavePositionDialog state={input.state} visible={savingPosition} onClose={() => setSavingPosition(false)} />
     </View>
   );
 }

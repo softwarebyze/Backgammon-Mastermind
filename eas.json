@@ -3,6 +3,15 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "position-preview": {
+      "extends": "preview",
+      "distribution": "internal",
+      "developmentClient": false,
+      "channel": "position-preview",
+      "ios": {
+        "buildConfiguration": "Release"
+      }
+    },
     "production": {
       "channel": "production",
       "autoIncrement": true,

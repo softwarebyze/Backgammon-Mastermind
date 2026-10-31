@@ -72,13 +72,13 @@ export function playerLabel(player: Player): string {
   return translate(player === 'white' ? 'game.review.player_white' : 'game.review.player_black');
 }
 
-/** One player-named line in the banner — footer is skip-wait only. */
+/** One line in the banner naming the computer, not its colour — footer is skip-wait only. */
 function computerWaitHeadline(phase: GamePhase): string {
   if (phase === 'rolling') {
-    return translate('game.turn.black_is_rolling');
+    return translate('game.turn.computer_rolling');
   }
   if (phase === 'moving') {
-    return translate('game.turn.black_is_moving');
+    return translate('game.turn.computer_moving');
   }
   return translate('game.turn.computer_turn');
 }
@@ -91,7 +91,7 @@ export function getActionCaption(
   if (state.phase === 'opening-roll') {
     return ' ';
   }
-  // Banner already says whose turn it is. Don't stack "Black is moving…"
+  // Banner already says whose turn it is. Don't stack "Computer is moving"
   // under a footer "Moving…" (or Rolling…) during computer wait.
   if (turn.isWaiting && (state.phase === 'rolling' || state.phase === 'moving')) {
     return ' ';

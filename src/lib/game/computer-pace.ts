@@ -29,7 +29,7 @@ const COMPUTER_NO_MOVE_DELAY_MS = 640;
  * than the slide.
  */
 const COMPUTER_MOVE_DELAY_MS = 120;
-/** Banner beat ("Black is moving…") before the move is chosen. Was 140 / 600. */
+/** Banner beat ("Computer is moving") before the move is chosen. Was 140 / 600. */
 const COMPUTER_MOVING_THINK_MS = 80;
 
 export function computerThinkDelayMs(phase: string): number {

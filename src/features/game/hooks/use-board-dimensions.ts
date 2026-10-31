@@ -34,6 +34,8 @@ export const MIN_LEARN_CAPTION_HEIGHT = 56;
 const DEFAULT_LEFTOVER_FLOOR = 120;
 
 export type BoardDimensions = {
+  /** Match-only empty space beside the hinge for the doubling cube. */
+  bearOffCubeClearance?: number;
   boardWidth: number;
   boardHeight: number;
   boardFrameWidth: number;
@@ -182,6 +184,8 @@ export function fitBoardToViewport(
 
 /** Move-review strip is a fixed slot in GameScreenLayout. */
 export const REVIEW_SLOT_HEIGHT = 68;
+/** The landscape side rail's review bar while live: the turn strip alone, no label row. */
+export const COMPACT_REVIEW_SLOT_HEIGHT = 44;
 
 /** Tray die edge on phones/tablets. */
 export const TRAY_DIE_SIZE = 44;

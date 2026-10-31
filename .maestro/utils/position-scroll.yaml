@@ -1,0 +1,32 @@
+# Scroll outside the editable board so gestures cannot change a checker stack.
+appId: ${APP_ID}
+tags:
+  - util
+---
+- repeat:
+    times: 12
+    commands:
+      - runFlow:
+          when:
+            notVisible:
+              id: ${TARGET_ID}
+          commands:
+            # Maestro parses coordinates before evaluating runFlow variables.
+            - runFlow:
+                when:
+                  true: ${START_Y === '80%'}
+                commands:
+                  - swipe:
+                      start: 99%, 80%
+                      end: 99%, 25%
+                      duration: 350
+            - runFlow:
+                when:
+                  true: ${START_Y === '25%'}
+                commands:
+                  - swipe:
+                      start: 99%, 25%
+                      end: 99%, 80%
+                      duration: 350
+- assertVisible:
+    id: ${TARGET_ID}

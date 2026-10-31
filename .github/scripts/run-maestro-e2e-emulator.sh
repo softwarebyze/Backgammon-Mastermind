@@ -23,12 +23,19 @@ RECORD_PID=$!
 MAESTRO_EXIT=0
 # Smoke + regression flows + native RTL language restart (screenshots land in maestro-visual-report).
 maestro test \
+  "${WORKSPACE}/.maestro/app/home-game-setup.yaml" \
+  "${WORKSPACE}/.maestro/app/match-board-presentation.yaml" \
+  "${WORKSPACE}/.maestro/app/cube-history-autoroll.yaml" \
+  "${WORKSPACE}/.maestro/app/match-cube.yaml" \
+  "${WORKSPACE}/.maestro/app/computer-match.yaml" \
+  "${WORKSPACE}/.maestro/app/match-polish.yaml" \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
+  "${WORKSPACE}/.maestro/app/position-setup.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/center-bar-checkers.yaml" \
   "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \

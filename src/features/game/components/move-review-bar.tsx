@@ -1,14 +1,21 @@
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import Feather from '@expo/vector-icons/Feather';
+import { use } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-
 import { MoveReviewTurnStrip } from '@/features/game/components/move-review-turn-strip';
+
+import { GameContext } from '@/features/game/game-context';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { COMPACT_REVIEW_SLOT_HEIGHT } from '@/features/game/hooks/use-board-dimensions';
 import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
+  cubeEvents?: CubeHistoryEvent[];
+  selectedCubeEventId?: number | null;
+  onJumpToCubeEvent?: (id: number) => void;
   viewIndex: number;
   liveIndex: number;
   isReviewing: boolean;
@@ -27,11 +34,16 @@ type Props = {
   onJumpToPly: (ply: number) => void;
   onGoLive: () => void;
   onToggleReplay?: () => void;
+  /** Landscape side rail: live, the bar is just the turn strip, so it takes 44px instead of 68. */
+  compact?: boolean;
 };
 
 const BAR_HEIGHT = 68;
 
 export function MoveReviewBar({
+  cubeEvents: suppliedEvents,
+  selectedCubeEventId,
+  onJumpToCubeEvent,
   viewIndex,
   liveIndex,
   isReviewing,
@@ -49,16 +61,20 @@ export function MoveReviewBar({
   onJumpToPly,
   onGoLive,
   onToggleReplay,
+  compact = false,
 }: Props) {
   // Row order already mirrors in RTL (back sits on the right); flip the glyphs
   // so back points right and forward points left, like the header undo/redo.
   const rtl = useLayoutIsRTL();
-  if (liveIndex === 0) {
-    return <View style={styles.placeholder} />;
+  const contextEvents = use(GameContext)?.cubeEvents;
+  const cubeEvents = suppliedEvents ?? contextEvents ?? [];
+  const height = compact && !isReviewing ? { minHeight: COMPACT_REVIEW_SLOT_HEIGHT, maxHeight: COMPACT_REVIEW_SLOT_HEIGHT, height: COMPACT_REVIEW_SLOT_HEIGHT } : null;
+  if (liveIndex === 0 && cubeEvents.length === 0) {
+    return <View style={[styles.placeholder, height]} />;
   }
 
   return (
-    <View style={[styles.wrap, isNavigating && styles.wrapBusy]}>
+    <View style={[styles.wrap, height, isNavigating && styles.wrapBusy]}>
       {/* Live: the turn pills are self-evidently tappable — no instruction row.
           Reviewing: the position label carries real information. */}
       {isReviewing
@@ -107,6 +123,9 @@ export function MoveReviewBar({
           label={translate('game.review.previous')}
         />
         <MoveReviewTurnStrip
+          cubeEvents={cubeEvents}
+          selectedCubeEventId={selectedCubeEventId}
+          onJumpToCubeEvent={onJumpToCubeEvent}
           viewIndex={viewIndex}
           isReviewing={isReviewing}
           moveLog={moveLog}

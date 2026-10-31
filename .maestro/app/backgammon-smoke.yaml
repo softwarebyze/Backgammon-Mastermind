@@ -15,18 +15,31 @@ tags:
 - takeScreenshot: 01-home-loaded
 - tapOn:
     text: Play against the computer
-# iOS exposes the board as one accessibility group; individual point IDs are
-# Android-only in this hierarchy. Wait for the shared game board slot.
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
+# Wait for the shared game board slot. Individual points remain accessible.
 # Auto-roll is on by default, so the roll button may already be gone.
 - extendedWaitUntil:
     visible:
       id: game-board-slot
     timeout: 45000
 - takeScreenshot: 02-game-board
-- assertVisible:
-    id: strategy-line
+# The opening is not a plan yet: no strategy chip until one takes shape.
+- assertNotVisible:
+    id: strategy-line-white
 # Issue #308: no disclosure glyph after the strategy name.
 - assertNotVisible: '.*[▸◂].*'
+# Each side of the table has its own strip: computer above the board, you below.
+- assertVisible:
+    id: player-strip-black
+- assertVisible:
+    id: player-strip-white
+- assertVisible:
+    id: pip-count-white
 # Opening roll + ties + confirm-move (on by default): tap roll / confirm when shown
 - repeat:
     times: 8
@@ -36,8 +49,10 @@ tags:
             visible:
               id: roll-dice-button
           commands:
+            # Auto-roll can finish between the visibility check and the tap.
             - tapOn:
                 id: roll-dice-button
+                optional: true
       - runFlow:
           when:
             visible:
@@ -54,9 +69,23 @@ tags:
                 timeout: 5000
 - extendedWaitUntil:
     visible:
-      id: game-board-slot
+      id: game-action-caption
+      text: Move your white checkers
     timeout: 90000
 - takeScreenshot: 03-after-opening
+# Portrait draws the dice on the board in the roller's half. iOS exposes the
+# board as one accessibility group, so only Android can see inside it. Match
+# only the playable-roll halves (left/right), not the opening-roll split
+# (board-dice-white/black), so this waits for a real roll.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - extendedWaitUntil:
+          visible:
+            id: 'board-dice-(left|right)'
+          timeout: 30000
+      - takeScreenshot: 03b-dice-on-board
 - assertVisible:
     id: game-board-slot
 - takeScreenshot: 04-smoke-complete
