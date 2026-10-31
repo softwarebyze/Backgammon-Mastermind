@@ -64,7 +64,10 @@ export function BoardCube({ position: p, dimensions, onChange }: {
   };
   const open = () => setPicking(true);
 
+  // No doubling in the Crawford game: the cube stays at 1 in the middle and cannot be changed.
+  const locked = c.crawford;
   const pan = Gesture.Pan()
+    .enabled(!locked)
     .activeOffsetY([-6, 6])
     .failOffsetX([-24, 24])
     .onStart(() => {
@@ -78,7 +81,7 @@ export function BoardCube({ position: p, dimensions, onChange }: {
       dragging.value = withTiming(0, { duration: 160 });
       runOnJS(settle)(offset.value);
     });
-  const tap = Gesture.Tap().onEnd(() => {
+  const tap = Gesture.Tap().enabled(!locked).onEnd(() => {
     runOnJS(open)();
   });
 
@@ -99,14 +102,9 @@ export function BoardCube({ position: p, dimensions, onChange }: {
             accessible
             accessibilityRole="adjustable"
             accessibilityLabel={cubeLabel(p)}
-            accessibilityHint={translate('positions.cube_hint')}
-            accessibilityActions={[
-              { name: 'activate' },
-              { name: 'increment' },
-              { name: 'decrement' },
-              ...(up === undefined ? [] : [{ name: 'up', label: ownerLabel(up) }]),
-              ...(down === undefined ? [] : [{ name: 'down', label: ownerLabel(down) }]),
-            ]}
+            accessibilityHint={locked ? undefined : translate('positions.cube_hint')}
+            accessibilityState={{ disabled: locked }}
+            accessibilityActions={locked ? [] : cubeActions(up, down)}
             onAccessibilityAction={(e) => {
               const name = e.nativeEvent.actionName;
               if (name === 'activate')
@@ -124,7 +122,7 @@ export function BoardCube({ position: p, dimensions, onChange }: {
           </View>
         </GestureDetector>
       </Animated.View>
-      {picking && (
+      {picking && !locked && (
         <CubePicker
           exponent={c.cubeExponent}
           maxCube={c.maxCube}
@@ -136,6 +134,16 @@ export function BoardCube({ position: p, dimensions, onChange }: {
       )}
     </>
   );
+}
+
+function cubeActions(up: Player | null | undefined, down: Player | null | undefined) {
+  return [
+    { name: 'activate' },
+    { name: 'increment' },
+    { name: 'decrement' },
+    ...(up === undefined ? [] : [{ name: 'up', label: ownerLabel(up) }]),
+    ...(down === undefined ? [] : [{ name: 'down', label: ownerLabel(down) }]),
+  ];
 }
 
 function ownerLabel(slot: Player | null): string {

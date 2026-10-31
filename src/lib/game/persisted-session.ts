@@ -35,7 +35,7 @@ const openingRollsSchema = z.object({
 });
 
 const matchSchema = z.object({
-  length: z.number().int().min(1).max(25),
+  length: z.number().int().min(1).max(32767),
   score: playerCountSchema,
   cube: z.object({ value: z.number().int().positive().refine(n => Number.isSafeInteger(n) && Math.log2(n) % 1 === 0), owner: z.enum(['white', 'black', 'center']) }),
   pendingOffer: playerSchema.nullable(),

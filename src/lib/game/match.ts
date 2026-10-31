@@ -2,7 +2,7 @@ import type { GameMode, GameState, Player } from './types';
 import { createInitialState } from './constants';
 
 export type MatchState = {
-  /** Points to win: an odd number from 1 to 25. */
+  /** Points to win: Home offers odd lengths to 25; a set-up position may carry any length. */
   length: number;
   score: Record<Player, number>;
   cube: { value: number; owner: Player | 'center' };

@@ -1,3 +1,4 @@
+import type { MatchState } from '@/lib/game/match';
 import type { GameMode, GameState, Player } from '@/lib/game/types';
 import { z } from 'zod';
 import { createInitialPoints } from '@/lib/game/constants';
@@ -122,8 +123,42 @@ export function positionGame(p: Position, mode: GameMode = 'vs-human'): GameStat
     mode,
     dice: p.dice[0] ? p.dice : undefined,
   });
+  const match = positionMatch(p);
+  const withMatch = match ? { ...state, match } : state;
   const winner = p.borneOff.white === 15 ? 'white' : p.borneOff.black === 15 ? 'black' : null;
-  return winner ? { ...state, phase: 'game-over', winner, dice: [0, 0], remainingDice: [] } : state;
+  return winner ? { ...withMatch, phase: 'game-over', winner, dice: [0, 0], remainingDice: [] } : withMatch;
+}
+
+/**
+ * A match position plays on as that match: its score, cube and Crawford
+ * game carry into play. Money positions play checkers only.
+ */
+function positionMatch(p: Position): MatchState | undefined {
+  const c = p.context;
+  if (!c.matchLength)
+    return undefined;
+  const crawfordRule = c.crawfordRule !== false;
+  const atMatchPoint = c.scores.white === c.matchLength - 1 || c.scores.black === c.matchLength - 1;
+  return {
+    length: c.matchLength,
+    score: { ...c.scores },
+    // No doubling in the Crawford game: the cube stays at 1 in the middle.
+    cube: c.crawford ? { value: 1, owner: 'center' } : { value: 2 ** c.cubeExponent, owner: c.cubeOwner ?? 'center' },
+    pendingOffer: null,
+    crawford: c.crawford,
+    // Someone at match point outside the Crawford game means it has been played.
+    crawfordPlayed: c.crawford || (crawfordRule && atMatchPoint),
+    crawfordRule,
+    gameNumber: 1,
+    winner: null,
+    result: null,
+    undoFloor: 0,
+  };
+}
+
+/** The Crawford game has no doubling, so turning it on puts the cube back to 1 in the middle. */
+export function withCrawfordGame(context: Position['context'], crawford: boolean): Position['context'] {
+  return crawford ? { ...context, crawford, cubeExponent: 0, cubeOwner: null } : { ...context, crawford };
 }
 
 export type PositionLocation = number | 'white-bar' | 'black-bar';

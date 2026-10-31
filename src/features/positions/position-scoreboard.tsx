@@ -2,6 +2,7 @@ import type { Player } from '@/lib/game/types';
 import type { Position } from '@/lib/positions/position';
 import { Text, View } from 'react-native';
 import { translate } from '@/lib/i18n';
+import { withCrawfordGame } from '@/lib/positions/position';
 import { crawfordPossible, nextMatchLength } from './match-length';
 import { PositionAction } from './position-controls';
 import { PositionStepper } from './position-stepper';
@@ -67,7 +68,7 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
         const scores = { ...c.scores, [player]: score };
         const possible = rule && crawfordPossible({ matchLength: c.matchLength, scores });
         // Reaching match point starts the Crawford game, as in play.
-        context({ scores, crawford: possible && (c.crawford || !crawfordPossible(c)) });
+        onChange({ ...p, context: withCrawfordGame({ ...c, scores }, possible && (c.crawford || !crawfordPossible(c))) });
       }}
       disabled={money}
     >
@@ -87,7 +88,7 @@ export function PositionScoreboard({ position: p, onChange }: { position: Positi
                 </>
               )
             : (
-                (crawfordPossible(c) || c.crawford) && <PositionAction compact chip label={translate('positions.crawford_game')} testID="position-crawford" selected={c.crawford} onPress={() => context({ crawford: !c.crawford })} />
+                (crawfordPossible(c) || c.crawford) && <PositionAction compact chip label={translate('positions.crawford_game')} testID="position-crawford" selected={c.crawford} onPress={() => onChange({ ...p, context: withCrawfordGame(c, !c.crawford) })} />
               )}
         </View>
       </View>
