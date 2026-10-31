@@ -19,7 +19,6 @@ type Props = {
 };
 
 const ICON = Platform.OS === 'web' ? 22 : 20;
-const GAP = Platform.OS === 'web' ? 8 : 0;
 const HIT = 44;
 
 export function HeaderIcon({
@@ -76,8 +75,9 @@ export function GameHeaderActions({
   onSavePosition,
 }: Props) {
   const rtl = useLayoutIsRTL();
+  // No gap: the 44px hit boxes already space the icons, and the row fits a 280px landscape rail.
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: GAP }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <HeaderIcon
         name={rtl ? 'corner-up-right' : 'corner-up-left'}
         label={translate('game.controls.undo_a11y')}

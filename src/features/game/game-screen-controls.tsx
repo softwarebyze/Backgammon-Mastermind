@@ -51,6 +51,8 @@ type Props = {
   dieSize?: number;
   /** The board draws the dice in the roller's half; skip the tray row. */
   diceOnBoard?: boolean;
+  /** The shortest landscape rail has no room for the caption; the player strips say whose turn it is. */
+  hideCaption?: boolean;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
@@ -98,6 +100,7 @@ export function GameScreenControls({
   compact = false,
   dieSize = TRAY_DIE_SIZE,
   diceOnBoard = false,
+  hideCaption = false,
 }: Props) {
   const { preferences } = useGamePreferences();
   const guidance = useGuidance();
@@ -165,11 +168,17 @@ export function GameScreenControls({
           onConfirmMove={onConfirmMove}
           onUndoMove={onUndoMove}
           canUndoMove={canUndoMove}
+          compact={compact}
         />
       </View>
-      <Text style={styles.caption} numberOfLines={2} testID="game-action-caption" accessibilityLiveRegion="polite">
-        {isReviewing ? caption : matchCaption(state) ?? caption}
-      </Text>
+      {/* In the side rail the review bar's own label says what is on view. */}
+      {hideCaption || (compact && isReviewing)
+        ? null
+        : (
+            <Text style={[styles.caption, compact && styles.captionCompact]} numberOfLines={2} testID="game-action-caption" accessibilityLiveRegion="polite">
+              {isReviewing ? caption : matchCaption(state) ?? caption}
+            </Text>
+          )}
     </View>
   );
 }
@@ -190,6 +199,7 @@ function ActionControl({
   onConfirmMove,
   onUndoMove,
   canUndoMove,
+  compact,
 }: {
   state: GameState;
   isHumanTurn: boolean;
@@ -205,6 +215,7 @@ function ActionControl({
   onConfirmMove?: () => void;
   onUndoMove?: () => void;
   canUndoMove: boolean;
+  compact: boolean;
 }) {
   const awaitingHumanRoll = !isReviewing
     && isHumanTurn
@@ -301,6 +312,7 @@ function ActionControl({
   ) {
     return (
       <ConfirmMoveBar
+        compact={compact}
         canUndo={canUndoMove}
         onConfirm={() => {
           hapticLight();
@@ -367,7 +379,9 @@ function ConfirmMoveBar({
   canUndo,
   onConfirm,
   onUndo,
+  compact,
 }: {
+  compact: boolean;
   canUndo: boolean;
   onConfirm: () => void;
   onUndo: () => void;
@@ -382,6 +396,7 @@ function ConfirmMoveBar({
         testID="undo-move-button"
         style={({ pressed, hovered }) => [
           styles.undoBtn,
+          compact && styles.undoBtnCompact,
           !canUndo && styles.undoBtnDisabled,
           canUndo && hovered && styles.secondaryBtnHover,
           pressed && canUndo && styles.pressed,
@@ -389,9 +404,14 @@ function ConfirmMoveBar({
         onPress={onUndo}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
-          {translate('game.controls.undo_move')}
-        </Text>
+        {/* The side rail is too narrow for both labels: Undo keeps its arrow, like the toolbar's. */}
+        {compact
+          ? <Feather name="rotate-ccw" size={20} color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.textMuted} />
+          : (
+              <Text style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
+                {translate('game.controls.undo_move')}
+              </Text>
+            )}
       </HoverPressable>
       <HoverPressable
         accessibilityRole="button"
@@ -399,6 +419,7 @@ function ConfirmMoveBar({
         testID="confirm-move-button"
         style={({ pressed, hovered }) => [
           styles.confirmBtn,
+          compact && styles.confirmBtnCompact,
           hovered && styles.primaryBtnHover,
           pressed && styles.pressed,
         ]}
@@ -406,7 +427,7 @@ function ConfirmMoveBar({
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Feather name="check" size={18} color={GAME_PALETTE.controlInk} />
-        <Text style={styles.primaryBtnText}>{translate('game.controls.confirm_move')}</Text>
+        <Text style={[styles.primaryBtnText, compact && styles.confirmTextCompact]} numberOfLines={1}>{translate('game.controls.confirm_move')}</Text>
       </HoverPressable>
     </View>
   );
@@ -432,9 +453,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   controlsCompact: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingHorizontal: 12,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingHorizontal: 4,
   },
   diceRow: {
     flexDirection: 'row',
@@ -516,6 +537,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...interFont('regular'),
   },
+  captionCompact: {
+    marginTop: 2,
+  },
   confirmRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -528,6 +552,11 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(232, 224, 208, 0.45)',
     paddingHorizontal: 20,
     minWidth: 96,
+  },
+  undoBtnCompact: {
+    minWidth: 0,
+    width: 56,
+    paddingHorizontal: 0,
   },
   undoBtnDisabled: {
     opacity: 0.4,
@@ -542,5 +571,16 @@ const styles = StyleSheet.create({
     minWidth: 180,
     flexDirection: 'row',
     gap: 8,
+  },
+  confirmBtnCompact: {
+    minWidth: 0,
+    flexGrow: 1,
+    flexShrink: 1,
+    paddingHorizontal: 12,
+    gap: 6,
+  },
+  confirmTextCompact: {
+    fontSize: 15,
+    flexShrink: 1,
   },
 });

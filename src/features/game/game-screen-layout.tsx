@@ -19,7 +19,7 @@ import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenControls } from '@/features/game/game-screen-controls';
 import { useGuidance } from '@/features/game/guidance-store';
 import { hintCardChrome } from '@/features/game/hint-card-chrome';
-import { REVIEW_SLOT_HEIGHT, trayDieSize, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
+import { COMPACT_REVIEW_SLOT_HEIGHT, REVIEW_SLOT_HEIGHT, trayDieSize, useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { resolveNumberPerspective } from '@/features/game/point-numbering';
 import { useOpeningReveal } from '@/features/game/use-opening-reveal';
@@ -70,7 +70,7 @@ function GameTopChrome({
   onLayout: (event: LayoutChangeEvent) => void;
 }) {
   return (
-    <View style={[styles.chromeColumn, styles.stripWrap]} onLayout={onLayout}>
+    <View style={[styles.chromeColumn, styles.stripWrap, bothSides && styles.stripWrapRail]} onLayout={onLayout}>
       <PlayerStrip state={state} player="black" headlineOverride={headline} compact={bothSides} />
       {bothSides ? <PlayerStrip state={state} player="white" headlineOverride={headline} compact /> : null}
     </View>
@@ -82,15 +82,22 @@ function GameReviewSlot({
   moveLog,
   state,
   hidden = false,
+  compact = false,
 }: {
   review: Review;
   moveLog: MoveLogEntry[];
   state: GameState;
   hidden?: boolean;
+  compact?: boolean;
 }) {
   return (
     <View
-      style={[styles.reviewSlot, styles.chromeColumn, hidden && styles.reviewSlotHidden]}
+      style={[
+        styles.reviewSlot,
+        styles.chromeColumn,
+        compact && !review.isReviewing && styles.reviewSlotCompact,
+        hidden && styles.reviewSlotHidden,
+      ]}
       pointerEvents="box-none"
       testID="game-review-slot"
     >
@@ -118,6 +125,7 @@ function GameReviewSlot({
         onJumpToPly={review.jumpToPly}
         onGoLive={review.goLive}
         onToggleReplay={review.toggleReplay}
+        compact={compact}
       />
     </View>
   );
@@ -132,6 +140,8 @@ type ChromeStackProps = {
   isComputerTurn: boolean;
   interactionEnabled: boolean;
   compact: boolean;
+  /** A phone held sideways in Safari (under 330px tall): no room for the timeline or the caption. */
+  fold: boolean;
   includeTop: boolean;
   diceOnBoard: boolean;
   dieSize: number;
@@ -153,6 +163,7 @@ function GameChromeStack({
   isComputerTurn,
   interactionEnabled,
   compact,
+  fold,
   includeTop,
   diceOnBoard,
   dieSize,
@@ -186,7 +197,7 @@ function GameChromeStack({
       {includeTop
         ? <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides onLayout={onTopLayout} />
         : null}
-      <GameReviewSlot review={review} moveLog={moveLog} state={state} hidden={layout.hideReview} />
+      <GameReviewSlot review={review} moveLog={moveLog} state={state} hidden={layout.hideReview || fold} compact={compact} />
       <View
         style={[
           styles.controlsLayer,
@@ -211,6 +222,7 @@ function GameChromeStack({
           }
           opening={opening}
           compact={compact}
+          hideCaption={fold}
           dieSize={dieSize}
           diceOnBoard={diceOnBoard}
           onRoll={input.handleRoll}
@@ -267,6 +279,7 @@ export function GameScreenLayout({
   toolbar,
 }: Props) {
   const {
+    height,
     insets,
     landscape,
     desktop,
@@ -295,10 +308,10 @@ export function GameScreenLayout({
   const openingText = review.isReviewing ? null : openingCopy(live, reveal);
   const winBurstKey = useWinCelebration(input.state, review.isReviewing);
   const { preferences } = useGamePreferences();
-  // Portrait: the dice land on the board in the roller's half, like at a real
-  // table, which frees the tray row under the board. Landscape keeps them in
-  // the side rail, where the short board has no free middle.
-  const diceOnBoard = !landscape;
+  // The dice land on the board in the roller's half, like at a real table.
+  // In landscape that also keeps the side rail short enough to fit a phone
+  // held sideways without scrolling (#348).
+  const diceOnBoard = true;
   const boardDice = diceOnBoard
     ? boardDiceFor({ state, live, isReviewing: review.isReviewing, opening, displayStyle: preferences.diceDisplayStyle })
     : null;
@@ -313,6 +326,8 @@ export function GameScreenLayout({
       isComputerTurn={isComputerTurn}
       interactionEnabled={board.interactionEnabled}
       compact={landscape}
+      // The header undo/redo still step through the game; the strips carry each side's status.
+      fold={landscape && !desktop && height - insets.top - insets.bottom < 330}
       includeTop={landscape}
       diceOnBoard={diceOnBoard}
       dieSize={dieSize}
@@ -386,7 +401,7 @@ export function GameScreenLayout({
               style={[styles.chromeRail, { width: chromeWidth }]}
               contentContainerStyle={[
                 styles.chromeRailContent,
-                desktop ? styles.chromeRailContentTall : null,
+                desktop ? styles.chromeRailContentTall : styles.chromeRailContentPhone,
               ]}
               bounces={false}
               overScrollMode="never"
@@ -439,6 +454,10 @@ const styles = StyleSheet.create({
   chromeRailContentTall: {
     justifyContent: 'center',
   },
+  // A phone held sideways has 330px or less: every pixel of the rail is spoken for.
+  chromeRailContentPhone: {
+    paddingBottom: 0,
+  },
   boardSlotHost: {
     flexGrow: 1,
     flexShrink: 1,
@@ -462,6 +481,10 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     gap: 4,
   },
+  stripWrapRail: {
+    paddingVertical: 0,
+    gap: 2,
+  },
   reviewSlot: {
     width: '100%',
     alignItems: 'center',
@@ -470,6 +493,9 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     overflow: 'hidden',
     zIndex: 1,
+  },
+  reviewSlotCompact: {
+    height: COMPACT_REVIEW_SLOT_HEIGHT,
   },
   reviewSlotHidden: {
     display: 'none',

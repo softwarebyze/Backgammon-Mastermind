@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: GAME_PALETTE.accentDim,
     paddingHorizontal: 14,
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 8,
     alignItems: 'center',
     ...continuousRadius(12),
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    marginTop: 10,
+    marginTop: 8,
   },
   playBtn: {
     backgroundColor: GAME_PALETTE.accent,

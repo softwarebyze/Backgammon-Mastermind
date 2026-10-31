@@ -24,8 +24,12 @@ export const PAGE_STAGE_MAX_WIDTH = 1120;
 /** Settings and forms — readable column, not full-bleed on wide windows. */
 export const SETTINGS_MAX_WIDTH = 640;
 
-/** Minimum width for dice / coach / review when they sit beside the board. */
-const LANDSCAPE_CHROME_MIN = 220;
+/**
+ * Narrowest the side rail gets in landscape: the six toolbar buttons at 44px
+ * each, plus the rail's padding, so none is pushed past the screen edge on a
+ * 667-wide phone (#348).
+ */
+const LANDSCAPE_CHROME_MIN = 280;
 
 /** Gap between the board pane and the chrome rail in landscape. */
 export const LANDSCAPE_GAP = 8;
