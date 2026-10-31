@@ -9,6 +9,7 @@ import { AnimatedNumber } from '@/components/ui/animated-number';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { StrategyChip } from '@/features/game/components/strategy-chip';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { classifyStrategy } from '@/features/game/strategy';
 import { calculatePipCount } from '@/lib/game';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
@@ -49,8 +50,9 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const won = gameOver && state.winner === player;
   const pips = calculatePipCount(state, player);
   const off = state.borneOff[player];
-  // Both sides get their plan, the computer's included.
-  const showStrategy = !hideStrategy && !gameOver;
+  // Both sides get their plan, the computer's included. The opening is not a
+  // plan yet, so the chip waits until one takes shape.
+  const showStrategy = !hideStrategy && !gameOver && classifyStrategy(state, player).key !== 'developing';
   const pipsA11y = translate('game.status.pips_a11y', { player: name, pips, off });
   // Narrow strips (small phones, and matches with their score column) show the
   // plan as its mark alone, so the name and status never get cut off. The
