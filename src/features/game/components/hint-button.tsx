@@ -1,6 +1,7 @@
 import type { GuidanceSession } from '@/features/game/guidance-store';
 
 import type { GameState } from '@/lib/game/types';
+import Feather from '@expo/vector-icons/Feather';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -17,6 +18,7 @@ import { cloneGameState } from '@/lib/game/snapshot';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
@@ -63,15 +65,24 @@ function useHintRequest(state: GameState) {
   return { begin, isCurrent, invalidate };
 }
 
+/** Both card actions share one height; hitSlop brings the tap target to 44. */
+const ACTION_HEIGHT = 39;
+const ACTION_HIT_SLOP = { top: 3, bottom: 3, left: 0, right: 0 };
+
 /**
  * The revealed-hint card: the suggested move plus "Play this move" and
- * "Back to my turn" actions.
+ * "Back to my turn" actions. In the phone-landscape side rail there is no
+ * room for both labels (#249), so the actions become a check and an X with
+ * the same accessibility labels; filled vs outlined keeps them apart without
+ * relying on colour.
  */
 function HintResult({ session, onPlay, onDismiss }: {
   session: GuidanceSession;
   onPlay: () => void;
   onDismiss: () => void;
 }) {
+  const { landscape, desktop } = useLayoutMetrics();
+  const iconActions = landscape && !desktop;
   return (
     <View style={styles.resultWrap} testID="hint-result">
       <Text style={styles.resultLabel}>{translate('game.hint.suggested')}</Text>
@@ -84,18 +95,24 @@ function HintResult({ session, onPlay, onDismiss }: {
           accessibilityLabel={translate('game.hint.play_a11y')}
           testID="hint-play-move"
           onPress={onPlay}
-          style={({ pressed }) => [styles.playBtn, pressed && styles.pressed]}
+          hitSlop={ACTION_HIT_SLOP}
+          style={({ pressed }) => [styles.playBtn, iconActions && styles.iconBtn, pressed && styles.pressed]}
         >
-          <Text style={styles.playBtnText}>{translate('game.hint.play')}</Text>
+          {iconActions
+            ? <Feather name="check" size={22} color={GAME_PALETTE.bg} />
+            : <Text style={styles.playBtnText}>{translate('game.hint.play')}</Text>}
         </Pressable>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={translate('game.hint.back_to_turn_a11y')}
           testID="hint-dismiss"
           onPress={onDismiss}
-          style={({ pressed }) => [styles.dismissBtn, pressed && styles.pressed]}
+          hitSlop={ACTION_HIT_SLOP}
+          style={({ pressed }) => [styles.dismissBtn, iconActions && styles.iconDismissBtn, pressed && styles.pressed]}
         >
-          <Text style={styles.dismissText}>{translate('game.hint.back_to_turn')}</Text>
+          {iconActions
+            ? <Feather name="x" size={22} color={GAME_PALETTE.textMuted} />
+            : <Text style={styles.dismissText}>{translate('game.hint.back_to_turn')}</Text>}
         </Pressable>
       </View>
     </View>
@@ -286,8 +303,14 @@ const styles = StyleSheet.create({
   playBtn: {
     backgroundColor: GAME_PALETTE.accent,
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    minHeight: ACTION_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
     ...continuousRadius(10),
+  },
+  iconBtn: {
+    minWidth: 64,
+    paddingHorizontal: 16,
   },
   playBtnText: {
     color: GAME_PALETTE.bg,
@@ -296,7 +319,16 @@ const styles = StyleSheet.create({
   },
   dismissBtn: {
     paddingHorizontal: 12,
-    paddingVertical: 10,
+    minHeight: ACTION_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconDismissBtn: {
+    minWidth: 64,
+    paddingHorizontal: 16,
+    borderWidth: 1.5,
+    borderColor: GAME_PALETTE.accentDim,
+    ...continuousRadius(10),
   },
   dismissText: {
     color: GAME_PALETTE.textMuted,
