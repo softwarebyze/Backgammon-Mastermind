@@ -43,7 +43,7 @@
     },
     "match": {
       "accept": "Accept double",
-      "advice_note": "Match play: hints and tutor are off until match-aware engine advice is available.",
+      "advice_note": "No hints in a match yet: the engine can't weigh the score.",
       "backgammon": "backgammon",
       "black": "Black",
       "board": {

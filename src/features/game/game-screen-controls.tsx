@@ -351,7 +351,15 @@ function ActionControl({
   // The engine plans a full turn from the dice just rolled. A failed
   // analysis shows no suggestion. The blunder-review solution view still
   // draws best-move arrows after take-back, which restores turn start.
-  if (!state.match && state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
+  if (state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
+    // The engine weighs money play only; at a match score its advice can be wrong, so say why Hint is missing.
+    if (state.match) {
+      return (
+        <View style={styles.actionSpacer}>
+          <Text style={styles.matchAdviceNote} numberOfLines={2} testID="match-advice-note">{translate('game.match.advice_note')}</Text>
+        </View>
+      );
+    }
     return <HintButton state={state} moveLogLength={moveLogLength} />;
   }
 
@@ -457,6 +465,15 @@ const styles = StyleSheet.create({
   actionSpacer: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',
+  },
+  matchAdviceNote: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 13,
+    lineHeight: 18,
+    textAlign: 'center',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    paddingHorizontal: 16,
   },
   primaryBtn: {
     backgroundColor: GAME_PALETTE.control,
