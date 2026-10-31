@@ -12,6 +12,7 @@ jest.mock('@/lib/haptics', () => ({
 
 const mockTutorRevertTurn = jest.fn();
 const mockDoUndo = jest.fn();
+const mockTutorTakeBack = jest.fn();
 const mockDoMoveSequence = jest.fn();
 const mockSetTutorMode = jest.fn();
 const mockCapture = jest.fn();
@@ -27,6 +28,7 @@ jest.mock('@/features/game/use-game', () => ({
     return {
       tutorRevertTurn: mockTutorRevertTurn,
       doUndo: mockDoUndo,
+      tutorTakeBack: mockTutorTakeBack,
       doMoveSequence: mockDoMoveSequence,
     };
   },
@@ -79,6 +81,7 @@ beforeEach(() => {
   mockTutorRevertTurn.mockClear();
   mockDoUndo.mockClear();
   mockDoMoveSequence.mockClear();
+  mockTutorTakeBack.mockClear();
   mockSetTutorMode.mockClear();
   mockCapture.mockClear();
 });
@@ -107,10 +110,8 @@ describe('guidance modal question', () => {
     // …but no recommended-move notation anywhere in the question view.
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.queryByText(/13\/10/)).toBeNull();
-    // Actions available from the question: last-action take-back only, even
-    // when the played turn used a single die.
+    // Actions available from the question.
     expect(screen.getByTestId('guidance-take-back')).toBeTruthy();
-    expect(screen.queryByTestId('guidance-undo-last-move')).toBeNull();
     expect(screen.getByTestId('guidance-reveal')).toBeTruthy();
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
     expect(screen.getByTestId('guidance-keep-move')).toBeTruthy();
@@ -144,23 +145,6 @@ describe('guidance modal question', () => {
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.queryByText(/You played:/)).toBeNull();
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
-  });
-
-  it('offers only last-action take-back for a flagged compound move', () => {
-    const session = blunderSession();
-    session.myMoves = [
-      { from: 13, to: 10, dieIndex: 0 },
-      { from: 10, to: 9, dieIndex: 1 },
-    ];
-    renderQuestion(session);
-
-    // A compound is one action: no partial rewind that leaves half of it.
-    expect(screen.queryByTestId('guidance-undo-last-move')).toBeNull();
-
-    fireEvent.press(screen.getByTestId('guidance-take-back'));
-
-    expect(mockDoUndo).toHaveBeenCalledTimes(1);
-    expect(screen.queryByTestId('guidance-modal')).toBeNull();
   });
 
   it('show my move renders the animated replay board for the player path', () => {
@@ -226,12 +210,11 @@ describe('guidance modal solution', () => {
     expect(within(details).getByText('3 (yours)')).toBeTruthy();
   });
 
-  it('take back undoes the last action and closes the modal', () => {
-    const session = blunderSession();
-    renderQuestion(session);
+  it('take back undoes every leg of the judged turn and closes the modal', () => {
+    renderQuestion({ ...blunderSession(), myMoves: [{ from: 13, to: 10, dieIndex: 0 }, { from: 10, to: 9, dieIndex: 1 }] });
 
     fireEvent.press(screen.getByTestId('guidance-take-back'));
-    expect(mockDoUndo).toHaveBeenCalledTimes(1);
+    expect(mockTutorTakeBack).toHaveBeenCalledWith(2);
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
   });
 

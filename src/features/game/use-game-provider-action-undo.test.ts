@@ -69,6 +69,33 @@ describe('action undo through the real provider', () => {
     expect(result.current.canRedo).toBe(false);
     expect(result.current.moveLog).toHaveLength(2);
   });
+  it('tutor take-back undoes the whole judged turn; redo restores it one action at a time', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    const initial = position();
+    act(() => result.current.startFromPosition(initial));
+    act(() => result.current.doMove({ from: 8, to: 7, dieIndex: 0 }));
+    settle(result);
+    const afterTap = result.current.state!;
+    act(() => result.current.doMoveSequence([{ from: 8, to: 7, dieIndex: 0 }, { from: 7, to: 6, dieIndex: 0 }]));
+    settle(result);
+    const final = result.current.state!;
+    act(() => flag(initial));
+    act(() => result.current.tutorTakeBack(3));
+    settle(result);
+    expect(getGuidance()).toBeNull();
+    expect(result.current.state!.points).toEqual(initial.points);
+    expect(result.current.state!.remainingDice).toEqual(initial.remainingDice);
+    expect(result.current.moveLog).toHaveLength(0);
+    expect(result.current.canUndo).toBe(false);
+    act(() => result.current.doRedo());
+    settle(result);
+    expect(result.current.state!.points).toEqual(afterTap.points);
+    act(() => result.current.doRedo());
+    settle(result);
+    expect(result.current.state!.points).toEqual(final.points);
+    expect(result.current.moveLog).toHaveLength(3);
+    expect(result.current.canRedo).toBe(false);
+  });
   it('undoes a compound then an earlier action immediately, and redoes both during reverse flights', () => {
     const { result } = renderHook(() => useGameProviderValue(true));
     const initial = position();

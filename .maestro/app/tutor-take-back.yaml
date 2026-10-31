@@ -1,6 +1,6 @@
 # Tutor take-back on a flagged compound: one tap plays 6→3→2 (both dice),
-# the engine rates it a 0.078 blunder, and the prompt must offer only the
-# last-action take-back — never a partial rewind that leaves half the compound.
+# the engine rates it a 0.078 blunder, and Take back & retry must undo the
+# whole judged turn — never a partial rewind that leaves half the compound.
 appId: ${APP_ID}
 tags:
   - pull-request
@@ -49,8 +49,6 @@ tags:
     visible:
       id: guidance-modal
     timeout: 180000
-- assertNotVisible:
-    id: guidance-undo-last-move
 - takeScreenshot: 02-blunder-prompt
 - tapOn:
     id: guidance-take-back

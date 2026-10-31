@@ -143,6 +143,22 @@ export function useGameProviderValue(active: boolean): GameContextType {
     clearGuidance();
     setGuidanceVerdictPending(false);
   }, [clearAITimeout, undoHistory]);
+  /**
+   * Tutor "Take back & retry": undo every action of the judged turn, so two
+   * separate taps both go back. A compound is one action; redo stays per action.
+   */
+  const tutorTakeBack = useCallback((movesMade: number) => {
+    const turn = getMoveLog().slice(-movesMade);
+    const actions = turn.filter((entry, i) => !entry.actionId || entry.actionId !== turn[i + 1]?.actionId).length;
+    for (let i = 0; i < actions; i++) {
+      if (!undoHistory()) {
+        break;
+      }
+    }
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [clearAITimeout, getMoveLog, undoHistory]);
   const doRedo = useCallback(() => {
     if (!redoHistory()) {
       return;
@@ -278,5 +294,6 @@ export function useGameProviderValue(active: boolean): GameContextType {
     clearAITimeout,
     resumeAIScheduling,
     tutorRevertTurn,
+    tutorTakeBack,
   };
 }

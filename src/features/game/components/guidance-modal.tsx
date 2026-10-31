@@ -497,7 +497,7 @@ function useBlunderModalActions(session: GuidanceSession | null) {
       return;
     captureBlunderAction('take_back');
     clearGuidance();
-    game.doUndo();
+    game.tutorTakeBack(session.myMoves.length);
   };
   // Full reveal is the "peek": the answer was hidden until the player asked.
   const handleRevealFull = () => {
