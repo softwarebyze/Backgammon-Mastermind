@@ -11,8 +11,13 @@ const FRAMES = JSON.parse(
 const LOCALIZATIONS = JSON.parse(
   readFileSync(join(ROOT, 'docs/marketing/screenshot-localizations.json'), 'utf8'),
 ) as Record<string, { appLanguage: string; playLocale: string }>;
-const IOS_ROOT = join(ROOT, 'fastlane/screenshots');
-const PLAY_ROOT = join(ROOT, 'fastlane/metadata/android');
+// The script stages into a temp folder here, never the tracked fastlane assets.
+const FASTLANE_OUT = mkdtempSync(join(tmpdir(), 'fastlane-out-'));
+const SCRIPT_ENV = { ...process.env, FASTLANE_OUT_DIR: FASTLANE_OUT };
+const IOS_ROOT = join(FASTLANE_OUT, 'screenshots');
+const PLAY_ROOT = join(FASTLANE_OUT, 'metadata/android');
+
+afterAll(() => rmSync(FASTLANE_OUT, { recursive: true, force: true }));
 const PLAY_OUT = join(
   PLAY_ROOT,
   'en-US/images/phoneScreenshots',
@@ -61,6 +66,7 @@ describe('prepare-store-screenshots', () => {
 
     execFileSync(process.execPath, ['scripts/prepare-store-screenshots.mjs'], {
       cwd: ROOT,
+      env: SCRIPT_ENV,
     });
 
     expect(existsSync(staleIos)).toBe(false);
@@ -125,7 +131,7 @@ describe('iMessage screenshot validation', () => {
     try {
       execFileSync(process.execPath, ['scripts/prepare-store-screenshots.mjs'], {
         cwd: ROOT,
-        env: { ...process.env, IMESSAGE_SCREENSHOTS_DIR: sourceDir },
+        env: { ...SCRIPT_ENV, IMESSAGE_SCREENSHOTS_DIR: sourceDir },
         stdio: 'pipe',
       });
       return '';
