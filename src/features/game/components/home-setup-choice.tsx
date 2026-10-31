@@ -34,7 +34,7 @@ export function HomeSetupChoice<T extends string | number>({ label, value, optio
             pressed && styles.pressed,
           ]}
         >
-          <Text style={[styles.text, value === option.value && styles.selectedText]} numberOfLines={1}>{option.label}</Text>
+          <Text style={[styles.text, value === option.value && styles.selectedText]} numberOfLines={2}>{option.label}</Text>
         </HoverPressable>
       ))}
     </View>
@@ -54,12 +54,13 @@ const styles = StyleSheet.create({
   option: {
     flex: 1,
     minHeight: 44,
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
-  text: { color: HOME_INK.muted, fontSize: 15, textAlign: 'center', ...interFont('semibold') },
+  // Long labels ("Gegen Computer" at 320) wrap to a second line instead of losing their end.
+  text: { color: HOME_INK.muted, fontSize: 15, lineHeight: 18, textAlign: 'center', ...interFont('semibold') },
   selected: {
     backgroundColor: HOME_INK.ivory,
     shadowColor: '#000',
