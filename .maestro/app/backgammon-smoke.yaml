@@ -38,6 +38,8 @@ tags:
           commands:
             - tapOn:
                 id: roll-dice-button
+                # Auto-roll can remove this control after the visibility check.
+                optional: true
       - runFlow:
           when:
             visible:

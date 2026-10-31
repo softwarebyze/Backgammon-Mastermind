@@ -1,16 +1,16 @@
 import type { MoveLogEntry, MoveLogTurn } from '@/lib/game/move-log';
-import { useEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { timelineScrollX } from '@/features/game/components/timeline-scroll';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { isNoMoveLogEntry, turnsForReviewStrip, unusedDiceInTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 const CHIP_HEIGHT = 28;
 const CHIP_GAP = 6;
-const CHIP_SCROLL_STEP = 62;
 
 type Props = {
   viewIndex: number;
@@ -83,18 +83,30 @@ export function MoveReviewTurnStrip({
     hideInProgressFor: isReviewing ? null : liveCurrentPlayer,
   });
   const scrollRef = useRef<ScrollView>(null);
+  const rtl = useLayoutIsRTL();
+  // Scroll offsets depend on both the content and viewport widths, so wait for
+  // layout before scrolling (the first effect runs before either is measured).
+  const [contentWidth, setContentWidth] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(0);
   const focusedTurnIdx = turns.findIndex(
     t => focusedPly >= turnStartPly(t) && focusedPly <= t.endPly,
   );
 
   useEffect(() => {
-    if (!isReviewing) {
-      scrollRef.current?.scrollToEnd({ animated: true });
+    if (contentWidth <= 0 || viewportWidth <= 0) {
       return;
     }
-    const x = Math.max(0, (focusedTurnIdx + 1) * CHIP_SCROLL_STEP - 120);
+    const x = timelineScrollX(
+      isReviewing ? { kind: 'turn', focusedTurnIdx } : { kind: 'live' },
+      {
+        isRTL: rtl,
+        platform: Platform.OS,
+        contentWidth,
+        viewportWidth,
+      },
+    );
     scrollRef.current?.scrollTo({ x, animated: true });
-  }, [focusedTurnIdx, isReviewing, turns.length]);
+  }, [contentWidth, focusedTurnIdx, isReviewing, rtl, turns.length, viewportWidth]);
 
   return (
     <ScrollView
@@ -102,6 +114,8 @@ export function MoveReviewTurnStrip({
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.timeline}
+      onContentSizeChange={width => setContentWidth(width)}
+      onLayout={event => setViewportWidth(event.nativeEvent.layout.width)}
       style={styles.timelineScroll}
     >
       <Pressable
@@ -136,6 +150,7 @@ export function MoveReviewTurnStrip({
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.live')}
         accessibilityState={{ selected: !isReviewing }}
+        testID="timeline-live-chip"
         onPress={() => {
           if (isReviewing) {
             hapticLight();
