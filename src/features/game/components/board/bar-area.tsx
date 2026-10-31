@@ -9,6 +9,7 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { barStackLayout } from '@/features/game/bar-stack-layout';
 import { BAR_POINT } from '@/lib/game/constants';
+import { translate } from '@/lib/i18n';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 import { StackEditTarget } from './stack-edit-target';
@@ -171,10 +172,7 @@ export function BarArea({
       accessibilityValue={stackEditor ? { min: 0, max: 15, now: currentPlayer === 'white' ? whiteCount : blackCount } : undefined}
       accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : undefined}
       onAccessibilityAction={event => stackEditor?.onAdjust(BAR_POINT, event.nativeEvent.actionName === 'decrement' ? -1 : 1)}
-      accessibilityLabel={
-        `Bar${whiteCount > 0 ? `, ${whiteCount} white ${whiteCount === 1 ? 'checker' : 'checkers'}` : ''}`
-        + `${blackCount > 0 ? `, ${blackCount} black ${blackCount === 1 ? 'checker' : 'checkers'}` : ''}`
-      }
+      accessibilityLabel={barLabel(whiteCount, blackCount)}
       accessible
       pointerEvents={dragEnabled || stackEditor ? 'box-only' : 'auto'}
       onPress={dragEnabled || stackEditor
@@ -234,4 +232,14 @@ export function BarArea({
   }
 
   return pressable;
+}
+
+/** "Bar, 2 white checkers, 1 black checker" in the reader's language. */
+function barLabel(white: number, black: number): string {
+  const parts = [translate('game.status.bar_short')];
+  if (white > 0)
+    parts.push(translate(white === 1 ? 'game.status.bar_white_one' : 'game.status.bar_white_many', { checkers: white }));
+  if (black > 0)
+    parts.push(translate(black === 1 ? 'game.status.bar_black_one' : 'game.status.bar_black_many', { checkers: black }));
+  return parts.join(', ');
 }

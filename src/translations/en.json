@@ -150,7 +150,11 @@
       "viewing_hint": "Reviewing — tap Live or Back to live to keep playing"
     },
     "status": {
+      "bar_black_many": "{{checkers}} black checkers",
+      "bar_black_one": "{{checkers}} black checker",
       "bar_short": "Bar",
+      "bar_white_many": "{{checkers}} white checkers",
+      "bar_white_one": "{{checkers}} white checker",
       "black_wins": "Black Wins",
       "computer_wins": "Computer Wins",
       "off_short": "off",
