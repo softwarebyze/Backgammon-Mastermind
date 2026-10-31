@@ -1,7 +1,7 @@
 import type { GameContextType } from '@/features/game/game-context';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useRef, useState } from 'react';
-import { useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { clearGuidance, setGuidanceVerdictPending, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
@@ -89,7 +89,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
    */
   const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
   const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
-  const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
+  const { doUndo: undoHistory, doRedo: redoHistory, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
     getTimeline,
     getMoveLog,
@@ -133,6 +133,39 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetAnimation();
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
+  // All entry points (header, confirm bar, keyboard and tutor) share this path.
+  // An unavailable undo must leave the current guidance intact.
+  const doUndo = useCallback(() => {
+    if (!undoHistory()) {
+      return;
+    }
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [clearAITimeout, undoHistory]);
+  /**
+   * Tutor "Take back & retry": undo every action of the judged turn, so two
+   * separate taps both go back. A compound is one action; redo stays per action.
+   */
+  const tutorTakeBack = useCallback((movesMade: number) => {
+    const turn = getMoveLog().slice(-movesMade);
+    const actions = turn.filter((entry, i) => !entry.actionId || entry.actionId !== turn[i + 1]?.actionId).length;
+    for (let i = 0; i < actions; i++) {
+      if (!undoHistory()) {
+        break;
+      }
+    }
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [clearAITimeout, getMoveLog, undoHistory]);
+  const doRedo = useCallback(() => {
+    if (!redoHistory()) {
+      return;
+    }
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [redoHistory]);
   usePersistActiveGame(state, moveLog, replayBaseline);
   const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,
@@ -261,5 +294,6 @@ export function useGameProviderValue(active: boolean): GameContextType {
     clearAITimeout,
     resumeAIScheduling,
     tutorRevertTurn,
+    tutorTakeBack,
   };
 }

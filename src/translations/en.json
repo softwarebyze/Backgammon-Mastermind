@@ -207,14 +207,12 @@
       "show_mine": "Show my move",
       "show_mine_a11y": "Show only my move, without revealing the best move",
       "take_back": "Take back & retry",
-      "take_back_a11y": "Take back the whole turn and try again",
+      "take_back_a11y": "Take back the move and try again",
       "take_back_retry_a11y": "Take back the move and try again",
       "title_compare": "Your move vs the best move",
       "title_mine": "Your move",
       "turn_off": "Turn Tutor off",
       "turn_off_a11y": "Turn Tutor mode off",
-      "undo_last": "Undo last move",
-      "undo_last_a11y": "Undo just the last move and replay it",
       "vs_best": "−{{delta}} vs best",
       "you_played": "You played:"
     }

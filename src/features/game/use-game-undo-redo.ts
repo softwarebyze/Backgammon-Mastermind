@@ -171,10 +171,10 @@ export function useGameUndoRedo(options: Options) {
     const live = readTimeline();
     if (!canRunUndo(live, false) || !hasUndoableHumanMove(gameMode, readLog())
       || (isAnimating && !startCommittedFrame)) {
-      return;
+      return false;
     }
     clearHistoryPath();
-    runAnimatedUndo(animCtx());
+    return runAnimatedUndo(animCtx());
   }, [animCtx, clearHistoryPath, gameMode, isAnimating, prepareHistory, startCommittedFrame, readLog, readTimeline]);
 
   const doRedo = useCallback(() => {
@@ -182,10 +182,10 @@ export function useGameUndoRedo(options: Options) {
     const live = readTimeline();
     if (!canRunRedo(live, false) || !isHumanHistoryStep(gameMode, peekRedoMove(live))
       || (isAnimating && !startCommittedFrame)) {
-      return;
+      return false;
     }
     clearHistoryPath();
-    runAnimatedRedo(animCtx());
+    return runAnimatedRedo(animCtx());
   }, [animCtx, clearHistoryPath, gameMode, isAnimating, prepareHistory, startCommittedFrame, readTimeline]);
 
   useEffect(() => {

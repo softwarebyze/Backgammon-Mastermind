@@ -46,6 +46,18 @@ function playOpening(result: { current: Provider }) {
   expect(result.current.state?.phase).toBe('moving');
 }
 
+function startRolledTurn(result: { current: Provider }) {
+  act(() => {
+    result.current.startGame('vs-human');
+  });
+  playOpening(result);
+  act(() => {
+    result.current.doRollDice();
+  });
+  expect(result.current.state?.phase).toBe('moving');
+  return JSON.parse(JSON.stringify(result.current.state)) as GameState;
+}
+
 function makeMove(result: { current: Provider }) {
   const moves = getLegalMoves(result.current.state!);
   expect(moves.length).toBeGreaterThan(0);
@@ -66,15 +78,7 @@ describe('provider tutor take-back', () => {
 
   it('take-back restores turn-start and the board is immediately interactive', () => {
     const { result } = renderHook(() => useGameProviderValue(true));
-    act(() => {
-      result.current.startGame('vs-human');
-    });
-    playOpening(result);
-    act(() => {
-      result.current.doRollDice();
-    });
-    expect(result.current.state?.phase).toBe('moving');
-    const turnStart: GameState = JSON.parse(JSON.stringify(result.current.state));
+    const turnStart = startRolledTurn(result);
 
     makeMove(result);
     if (result.current.state?.phase === 'moving') {

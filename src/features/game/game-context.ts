@@ -36,6 +36,8 @@ export type GameContextType = {
    * move log and timeline so history stays consistent. Used for "take back".
    */
   tutorRevertTurn: (startState: GameState, movesMade: number, onComplete?: () => void) => void;
+  /** Tutor take-back: undo every action of the judged turn (its last `movesMade` legs). */
+  tutorTakeBack: (movesMade: number) => void;
 };
 
 export const GameContext = createContext<GameContextType | null>(null);

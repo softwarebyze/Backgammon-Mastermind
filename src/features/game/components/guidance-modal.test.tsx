@@ -12,10 +12,10 @@ jest.mock('@/lib/haptics', () => ({
 
 const mockTutorRevertTurn = jest.fn();
 const mockDoUndo = jest.fn();
+const mockTutorTakeBack = jest.fn();
 const mockDoMoveSequence = jest.fn();
 const mockSetTutorMode = jest.fn();
 const mockCapture = jest.fn();
-let mockCanUndo = true;
 
 jest.mock('posthog-react-native', () => ({
   usePostHog: function postHogApi() {
@@ -28,8 +28,8 @@ jest.mock('@/features/game/use-game', () => ({
     return {
       tutorRevertTurn: mockTutorRevertTurn,
       doUndo: mockDoUndo,
+      tutorTakeBack: mockTutorTakeBack,
       doMoveSequence: mockDoMoveSequence,
-      canUndo: mockCanUndo,
     };
   },
 }));
@@ -81,9 +81,9 @@ beforeEach(() => {
   mockTutorRevertTurn.mockClear();
   mockDoUndo.mockClear();
   mockDoMoveSequence.mockClear();
+  mockTutorTakeBack.mockClear();
   mockSetTutorMode.mockClear();
   mockCapture.mockClear();
-  mockCanUndo = true;
 });
 
 afterEach(() => {
@@ -145,25 +145,6 @@ describe('guidance modal question', () => {
     expect(screen.queryByText(/Best:/)).toBeNull();
     expect(screen.queryByText(/You played:/)).toBeNull();
     expect(screen.getByTestId('guidance-show-mine')).toBeTruthy();
-  });
-
-  it('undo last move rewinds a single die move and closes the modal', () => {
-    renderQuestion();
-
-    fireEvent.press(screen.getByTestId('guidance-undo-last-move'));
-
-    expect(mockDoUndo).toHaveBeenCalledTimes(1);
-    expect(mockTutorRevertTurn).not.toHaveBeenCalled();
-    expect(screen.queryByTestId('guidance-modal')).toBeNull();
-  });
-
-  it('hides undo last move when there is nothing to undo', () => {
-    mockCanUndo = false;
-    renderQuestion();
-
-    expect(screen.queryByTestId('guidance-undo-last-move')).toBeNull();
-    // The whole-turn take-back is still available.
-    expect(screen.getByTestId('guidance-take-back')).toBeTruthy();
   });
 
   it('show my move renders the animated replay board for the player path', () => {
@@ -229,12 +210,11 @@ describe('guidance modal solution', () => {
     expect(within(details).getByText('3 (yours)')).toBeTruthy();
   });
 
-  it('take back reverts the turn and closes the modal', () => {
-    const session = blunderSession();
-    renderQuestion(session);
+  it('take back undoes every leg of the judged turn and closes the modal', () => {
+    renderQuestion({ ...blunderSession(), myMoves: [{ from: 13, to: 10, dieIndex: 0 }, { from: 10, to: 9, dieIndex: 1 }] });
 
     fireEvent.press(screen.getByTestId('guidance-take-back'));
-    expect(mockTutorRevertTurn).toHaveBeenCalledWith(session.questionState, 1);
+    expect(mockTutorTakeBack).toHaveBeenCalledWith(2);
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
   });
 

@@ -207,14 +207,12 @@
       "show_mine": "自分の手を表示",
       "show_mine_a11y": "最善手を見せずに、自分の手だけ表示",
       "take_back": "取り消してやり直す",
-      "take_back_a11y": "手番全体を取り消してやり直す",
+      "take_back_a11y": "手を取り消してやり直す",
       "take_back_retry_a11y": "手を取り消してやり直す",
       "title_compare": "あなたの手と最善手",
       "title_mine": "あなたの手",
       "turn_off": "チューターをオフ",
       "turn_off_a11y": "チューターモードをオフ",
-      "undo_last": "直前の手を取り消す",
-      "undo_last_a11y": "直前の手だけ取り消して指し直す",
       "vs_best": "最善より −{{delta}}",
       "you_played": "指した手:"
     }

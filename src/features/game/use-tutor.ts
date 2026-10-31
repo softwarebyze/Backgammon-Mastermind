@@ -85,8 +85,8 @@ function parkJudgedTurn(args: {
 }
 
 /**
- * "Undo last move" lands mid-turn: same dice, not a fresh turn, so no new
- * analysis would start. Put the judged one back. Returns true when restored.
+ * Undo can land mid-turn: same dice, not a fresh turn, so no new analysis
+ * would start. Put the judged one back. Returns true when restored.
  */
 function restoreRetriedTurn(args: {
   retryRef: { current: TrackedTurn | null };
@@ -263,8 +263,8 @@ function finishTrackedTurn(args: {
       return;
     tracked.endMoveLogLength = moveLogLength;
     openBlunderPrompt({ entry: tracked, endBoard, moveLog, endMoveLogLength: moveLogLength });
-    // Keep the analysis. "Undo last move" returns to the middle of this
-    // turn, which is not a fresh turn, so a new analysis would never start.
+    // Keep the analysis. Undo returns to the middle of this turn, which is
+    // not a fresh turn, so a new analysis would never start.
     rememberForRetry(tracked);
     return;
   }

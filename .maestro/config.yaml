@@ -4,6 +4,7 @@ flows:
   - app/game-settings-gear.yaml
   - app/settings-no-fast-mode.yaml
   - app/android-back-closes-settings.yaml
+  - app/tutor-take-back.yaml
   - app/undo-redo.yaml
   - app/center-bar-checkers.yaml
   - app/reduced-motion.yaml
