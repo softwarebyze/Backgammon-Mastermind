@@ -4,16 +4,10 @@ import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
 
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
+import { Text } from '@/components/ui/scaled-text';
 import { showErrorMessage } from '@/components/ui/utils';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
@@ -39,6 +33,7 @@ import {
   completedLessonCount,
   isReadyToPlay,
 } from '@/lib/learn/progress';
+import { FONT_SCALE_CAP, useTextScale } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
@@ -79,6 +74,9 @@ export function HomeScreen() {
   const { progress } = useLearnProgress();
   const posthog = usePostHog();
   const { insets, landscape } = useLayoutMetrics();
+  // Large text makes the mode cards taller; a smaller logo keeps the menu on one screen.
+  const textScale = useTextScale();
+  const largeText = !landscape && textScale >= 1.5;
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
   const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
@@ -159,7 +157,7 @@ export function HomeScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={[styles.brand, landscape ? styles.brandLandscape : null]}>
-          <View style={[styles.logoContainer, landscape ? styles.logoLandscape : null]}>
+          <View style={[styles.logoContainer, landscape ? styles.logoLandscape : null, largeText ? styles.logoLargeText : null]}>
             <Image
               source={require('../../../assets/brand/display-logo.png')}
               style={styles.logo}
@@ -167,7 +165,8 @@ export function HomeScreen() {
             />
           </View>
 
-          <Text accessibilityRole="header" style={[styles.title, landscape ? styles.titleLandscape : null]}>
+          {/* The wordmark is sized to the screen width like the logo above it. */}
+          <Text accessibilityRole="header" maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.title, landscape ? styles.titleLandscape : null]}>
             {translate('home.title')}
           </Text>
           {landscape
@@ -177,7 +176,7 @@ export function HomeScreen() {
           {landscape
             ? null
             : (
-                <View style={styles.dividerRow}>
+                <View style={[styles.dividerRow, largeText ? styles.dividerRowLargeText : null]}>
                   <View style={styles.dividerLine} />
                   <View style={styles.dividerDiamond} />
                   <View style={styles.dividerLine} />
@@ -369,6 +368,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 0,
   },
+  logoLargeText: {
+    width: 72,
+    height: 72,
+    marginBottom: 12,
+  },
   logo: {
     width: '100%',
     height: '100%',
@@ -400,6 +404,9 @@ const styles = StyleSheet.create({
     width: '60%',
     marginVertical: 24,
     gap: 8,
+  },
+  dividerRowLargeText: {
+    marginVertical: 12,
   },
   dividerLine: {
     flex: 1,

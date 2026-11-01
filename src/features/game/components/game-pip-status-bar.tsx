@@ -3,12 +3,14 @@ import type { GameState } from '@/lib/game';
 import type { TxKeyPath } from '@/lib/i18n';
 
 import { useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy } from '@/features/game/strategy';
 import { calculatePipCount } from '@/lib/game';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -46,7 +48,7 @@ export function GamePipStatusBar({ state }: Props) {
     return (
       <View style={styles.wrap}>
         <View style={styles.gameOverWrap}>
-          <Text style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.winnerBadge}>{getWinnerLabel(state)}</Text>
         </View>
       </View>
     );
@@ -67,16 +69,16 @@ export function GamePipStatusBar({ state }: Props) {
           <View testID="strategy-mark">
             <StrategyMark strategy={strategy.key} size={18} />
           </View>
-          <Text style={styles.strategyText}>{label}</Text>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.strategyText}>{label}</Text>
         </Pressable>
         <View style={styles.pips}>
           <View style={[styles.pipDot, { backgroundColor: '#E8E0D0' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.pipText} accessibilityLabel={`${translate('game.review.player_white')} pip count ${whitePips}`}>
             {whitePips}
           </Text>
-          <Text style={styles.pipDivider}>–</Text>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.pipDivider}>–</Text>
           <View style={[styles.pipDot, { backgroundColor: '#2A2A2E' }]} />
-          <Text style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.pipText} accessibilityLabel={`${translate('game.review.player_black')} pip count ${blackPips}`}>
             {blackPips}
           </Text>
         </View>
@@ -97,8 +99,10 @@ export function GamePipStatusBar({ state }: Props) {
               <StrategyMark strategy={strategy.key} size={22} />
               <Text style={styles.modalTitle}>{label}</Text>
             </View>
-            <Text style={styles.whyText}>{why}</Text>
-            <Text style={styles.tipText}>{tip}</Text>
+            <ScrollView style={styles.modalBody} contentContainerStyle={styles.modalBodyContent}>
+              <Text style={styles.whyText}>{why}</Text>
+              <Text style={styles.tipText}>{tip}</Text>
+            </ScrollView>
             <Pressable
               onPress={() => setShowExplanation(false)}
               accessibilityRole="button"
@@ -106,7 +110,7 @@ export function GamePipStatusBar({ state }: Props) {
               style={styles.modalClose}
               testID="strategy-explanation-close"
             >
-              <Text style={styles.modalCloseText}>{translate('game.strategy.got_it')}</Text>
+              <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.modalCloseText}>{translate('game.strategy.got_it')}</Text>
             </Pressable>
           </Pressable>
         </Pressable>
@@ -198,6 +202,7 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.accentDim,
     padding: 20,
     maxWidth: 340,
+    maxHeight: '100%',
     width: '100%',
     gap: 10,
     ...continuousRadius(16),
@@ -208,9 +213,17 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   modalTitle: {
+    flexShrink: 1,
     color: GAME_PALETTE.text,
     fontSize: 17,
     ...interFont('semibold'),
+  },
+  modalBody: {
+    flexGrow: 0,
+    flexShrink: 1,
+  },
+  modalBodyContent: {
+    gap: 10,
   },
   whyText: {
     color: GAME_PALETTE.text,

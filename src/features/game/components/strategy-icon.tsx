@@ -1,5 +1,7 @@
 import type { StrategyKey } from '@/features/game/strategy';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 
 /** Glanceable color for the developing dot. The five plans use emoji. */
 const DEVELOPING_COLOR = '#8A8A92';
@@ -35,7 +37,7 @@ export function StrategyMark({
     );
   }
   return (
-    <Text style={{ fontSize: size * 0.85, lineHeight: size, width: size, textAlign: 'center' }}>
+    <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={{ fontSize: size * 0.85, lineHeight: size, width: size, textAlign: 'center' }}>
       {STRATEGY_EMOJI[strategy]}
     </Text>
   );

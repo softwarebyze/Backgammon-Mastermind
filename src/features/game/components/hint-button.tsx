@@ -3,7 +3,8 @@ import type { GuidanceSession } from '@/features/game/guidance-store';
 import type { GameState } from '@/lib/game/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { getEngineHint } from '@/features/game/engine-hint';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { formatHintNotation } from '@/features/game/guidance-copy';
@@ -16,6 +17,7 @@ import { useGame } from '@/features/game/use-game';
 import { cloneGameState } from '@/lib/game/snapshot';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -74,8 +76,8 @@ function HintResult({ session, onPlay, onDismiss }: {
 }) {
   return (
     <View style={styles.resultWrap} testID="hint-result">
-      <Text style={styles.resultLabel}>{translate('game.hint.suggested')}</Text>
-      <Text style={styles.resultText} numberOfLines={2}>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.resultLabel}>{translate('game.hint.suggested')}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.resultText} numberOfLines={2}>
         {formatHintNotation(session.engineMoves)}
       </Text>
       <View style={styles.resultActions}>
@@ -86,7 +88,7 @@ function HintResult({ session, onPlay, onDismiss }: {
           onPress={onPlay}
           style={({ pressed }) => [styles.playBtn, pressed && styles.pressed]}
         >
-          <Text style={styles.playBtnText}>{translate('game.hint.play')}</Text>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.playBtnText}>{translate('game.hint.play')}</Text>
         </Pressable>
         <Pressable
           accessibilityRole="button"
@@ -95,7 +97,7 @@ function HintResult({ session, onPlay, onDismiss }: {
           onPress={onDismiss}
           style={({ pressed }) => [styles.dismissBtn, pressed && styles.pressed]}
         >
-          <Text style={styles.dismissText}>{translate('game.hint.back_to_turn')}</Text>
+          <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.dismissText}>{translate('game.hint.back_to_turn')}</Text>
         </Pressable>
       </View>
     </View>
@@ -190,7 +192,7 @@ export function HintButton({ state, moveLogLength }: Props) {
     return (
       <View style={styles.slot} testID="hint-loading">
         <ActivityIndicator size="small" color={GAME_PALETTE.accent} />
-        <Text style={styles.loadingText}>{translate('game.hint.finding')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.loadingText}>{translate('game.hint.finding')}</Text>
       </View>
     );
   }
@@ -204,7 +206,7 @@ export function HintButton({ state, moveLogLength }: Props) {
         onPress={ask}
         style={({ pressed }) => [styles.hintBtn, pressed && styles.pressed]}
       >
-        <Text style={styles.hintBtnText}>{translate('game.hint.error')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.hintBtnText}>{translate('game.hint.error')}</Text>
       </Pressable>
     );
   }
@@ -217,7 +219,7 @@ export function HintButton({ state, moveLogLength }: Props) {
       onPress={ask}
       style={({ pressed }) => [styles.hintBtn, pressed && styles.pressed]}
     >
-      <Text style={styles.hintBtnText}>{translate('game.hint.button')}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.hintBtnText}>{translate('game.hint.button')}</Text>
     </Pressable>
   );
 }

@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { BLUNDER_BANDS, BLUNDER_METER_MAX } from '@/features/game/blunder-bands';
+
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { blunderBandLabel } from '@/features/game/guidance-copy';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -52,6 +54,7 @@ export function BlunderMeter({ loss }: { loss: number }) {
         {BLUNDER_BANDS.map((band, i) => (
           <View key={band.id} style={{ flex: band.flex, alignItems: 'center' }}>
             <Text
+              maxFontSizeMultiplier={FONT_SCALE_CAP.control}
               style={[
                 styles.label,
                 i === activeIndex && styles.labelActive,
@@ -59,13 +62,13 @@ export function BlunderMeter({ loss }: { loss: number }) {
             >
               {blunderBandLabel(band.id)}
             </Text>
-            <Text style={styles.range}>
+            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.range}>
               {band.range}
             </Text>
           </View>
         ))}
       </View>
-      <Text style={styles.caption}>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.caption}>
         {translate('game.tutor.meter_caption')}
       </Text>
     </View>

@@ -1,9 +1,11 @@
 import type { GameState } from '@/lib/game';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
+
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { getTurnDisplay } from '@/lib/game/turn-display';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -33,6 +35,7 @@ export function TurnIndicatorBanner({ state, headlineOverride = null }: Props) {
       <CheckerToken player={turn.player} size={CHECKER_SIZE} />
       <View style={styles.copy}>
         <Text
+          maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
           style={[
             styles.bannerColor,
             isActive ? styles.activeColor : styles.waitingColor,
@@ -42,6 +45,7 @@ export function TurnIndicatorBanner({ state, headlineOverride = null }: Props) {
           {turn.colorLabel.toUpperCase()}
         </Text>
         <Text
+          maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
           style={[
             styles.bannerHeadline,
             isActive ? styles.activeHeadline : styles.waitingHeadline,

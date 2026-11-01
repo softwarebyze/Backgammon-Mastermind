@@ -1,7 +1,8 @@
 import type { TxKeyPath } from '@/lib/i18n';
 
 import * as React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
@@ -50,6 +51,9 @@ export function SettingsItem({ text, value, icon, onPress }: ItemProps) {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
+    // Large text: the value drops below the label instead of overlapping it.
+    flexWrap: 'wrap',
+    rowGap: 4,
     alignItems: 'center',
     justifyContent: 'space-between',
     minHeight: SETTINGS_ROW_MIN_HEIGHT,
@@ -59,7 +63,8 @@ const styles = StyleSheet.create({
   left: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
   },
   icon: {
     marginRight: 10,
@@ -68,13 +73,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    flexShrink: 1,
+    marginStart: 'auto',
+    paddingStart: 12,
   },
   label: {
+    flexShrink: 1,
     color: GAME_PALETTE.text,
     fontSize: 16,
     ...interFont('regular'),
   },
   value: {
+    flexShrink: 1,
+    textAlign: 'right',
     color: GAME_PALETTE.textMuted,
     fontSize: 15,
     ...interFont('regular'),
