@@ -32,7 +32,11 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
       <Text style={[styles.body, compact && styles.bodyCompact]}>{translate(bodyKey as TxKeyPath)}</Text>
       {feedback
         ? (
-            <Text style={[styles.feedback, { color: feedbackColor }]}>
+            <Text
+              accessibilityLiveRegion="polite"
+              testID="learn-feedback"
+              style={[styles.feedback, { color: feedbackColor }]}
+            >
               {translate(feedback.messageKey, feedback.messageOptions)}
             </Text>
           )

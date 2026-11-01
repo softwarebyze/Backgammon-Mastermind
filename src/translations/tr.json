@@ -256,7 +256,7 @@
       "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı."
     },
     "graduation": {
-      "body": "Hedefi biliyorsun, yönetim kurulu, nasıl çalışır, vurup duruyorsunuz. Hızlı bir kontrol - sonra ilk gerçek oyun.",
+      "body": "Artık hedefi, tahtayı, sıranın nasıl işlediğini, vurmayı, pulları çıkarmayı, pip sayısını ve temel oyun planlarını biliyorsun. Kısa bir kontrol, sonra ilk gerçek oyunun.",
       "play_cta": "İlk oyununuzu oynayın",
       "quiz_done": "Çiçerdi. Oynamak için zaman.",
       "quiz_title": "Hızlı check",
@@ -266,6 +266,8 @@
       "recap_3": "Hit blots → barda otururlar",
       "recap_4": "Sadece ev yönetim kurulundan uzak durun",
       "recap_5": "Oyunlar her biri ile başlar - daha yüksek gider (en yüksek kayıt)",
+      "recap_6": "Pip sayısı: sayısı düşük olan yarışta öndedir",
+      "recap_7": "Bir plan seç: yarış, saldırı, duvar veya tutma",
       "title": "Oynamaya hazırsın"
     },
     "hint": "Hint Hint",
