@@ -12,6 +12,9 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: Play against the computer
+# The title shrinks to fit rather than breaking a word on narrow phones.
+- assertVisible:
+    id: home-title
 - takeScreenshot: 01-home-loaded
 - tapOn:
     text: Play against the computer
