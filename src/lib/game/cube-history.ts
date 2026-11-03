@@ -4,7 +4,7 @@ import type { GameState, Player } from './types';
 /** Events live BETWEEN checker plies. They never consume an undo/timeline ply. */
 export type CubeHistoryEvent = {
   id: number;
-  kind: 'offer' | 'accept' | 'drop';
+  kind: 'offer' | 'accept' | 'drop' | 'beaver';
   player: Player;
   /** Number of checker/no-move entries preceding this event. */
   afterPly: number;

@@ -1,10 +1,10 @@
 import type { GameState } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
-import { MoneyCubeHintButton } from '@/features/game/components/money-cube-hint-button';
+import { CubeHintButton } from '@/features/game/components/cube-hint-button';
 import { controlButtonStyles } from '@/features/game/control-buttons';
 import { useGame } from '@/features/game/use-game';
-import { canOfferDouble } from '@/lib/game/match';
+import { canBeaver, canOfferDouble } from '@/lib/game/match';
 import { translate } from '@/lib/i18n';
 
 export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerTurn }: { state: GameState; onRoll: () => void; onReset: () => void; isHumanTurn: boolean; isComputerTurn: boolean }) {
@@ -34,11 +34,12 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
   return (
     <View style={styles.wrap}>
       <View style={styles.row}>
-        {m.length === 0 && state.phase === 'rolling' && !m.result && (m.pendingOffer || canOfferDouble(state)) && <MoneyCubeHintButton state={state} disabled={blocked} />}
+        {state.phase === 'rolling' && !m.result && (m.pendingOffer || canOfferDouble(state)) && <CubeHintButton state={state} disabled={blocked} />}
         {m.pendingOffer
           ? (
               <>
                 {button('match-drop', translate('game.match.drop'), () => matchAction?.('drop'))}
+                {canBeaver(state) && button('match-beaver', translate('game.match.beaver'), () => matchAction?.('beaver'))}
                 {button('match-accept', translate('game.match.accept'), () => matchAction?.('accept'))}
               </>
             )
@@ -56,8 +57,8 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
 }
 const styles = StyleSheet.create({
   wrap: { width: '100%', alignItems: 'center' },
-  row: { width: '100%', flexDirection: 'row', gap: 10, justifyContent: 'center' },
-  button: { paddingHorizontal: 12, minWidth: 68, flexShrink: 1 },
+  row: { width: '100%', flexDirection: 'row', gap: 8, justifyContent: 'center' },
+  button: { paddingHorizontal: 8, minWidth: 56, flexShrink: 1 },
   hover: { opacity: 0.85 },
   dim: { opacity: 0.5 },
 });

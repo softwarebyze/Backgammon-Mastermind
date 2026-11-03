@@ -9,13 +9,14 @@ export function matchPlayer(player: Player | 'center', mode?: GameMode): string 
 }
 
 /** The pending double, worded to the human when they play the computer. */
-export function matchOfferText({ offerer, value, points }: { offerer: Player; value: number; points: number }, mode?: GameMode): string {
+export function matchOfferText({ offerer, value, points, beaver = false }: { offerer: Player; value: number; points: number; beaver?: boolean }, mode?: GameMode): string {
+  const ownership = beaver ? ` ${translate('game.match.keep_cube', { player: matchPlayer(offerer, mode) })}` : '';
   if (mode === 'vs-computer') {
-    return offerer === 'white'
+    return (offerer === 'white'
       ? translate('game.match.offer_by_you', { value })
-      : translate('game.match.offer_to_you', { value, points });
+      : translate('game.match.offer_to_you', { value, points })) + ownership;
   }
-  return translate('game.match.offer', { player: matchPlayer(offerer), opponent: matchPlayer(offerer === 'white' ? 'black' : 'white'), value, points });
+  return translate('game.match.offer', { player: matchPlayer(offerer), opponent: matchPlayer(offerer === 'white' ? 'black' : 'white'), value, points }) + ownership;
 }
 
 /** A finished game or match, "You win" when the human won against the computer. */

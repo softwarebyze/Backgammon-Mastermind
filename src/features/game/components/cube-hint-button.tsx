@@ -1,17 +1,17 @@
-import type { MoneyCubeHint } from '../money-cube-hint';
+import type { CubeHint } from '../cube-analysis';
 import type { GameState } from '@/lib/game/types';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { controlButtonStyles } from '@/features/game/control-buttons';
+import { getCubeHint } from '@/features/game/cube-analysis';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { getMoneyCubeHint } from '@/features/game/money-cube-hint';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 /** Advice never commits a cube action; the player uses Double, Take or Pass themselves. */
-export function MoneyCubeHintButton({ state, disabled }: { state: GameState; disabled: boolean }) {
-  const [answer, setAnswer] = useState<{ state: GameState; request: number; value: MoneyCubeHint | 'loading' | 'error' | 'unsupported' } | null>(null);
+export function CubeHintButton({ state, disabled }: { state: GameState; disabled: boolean }) {
+  const [answer, setAnswer] = useState<{ state: GameState; request: number; value: CubeHint | 'loading' | 'error' } | null>(null);
   const current = useRef({ state, disabled });
   current.current = { state, disabled };
   const request = useRef(0);
@@ -33,19 +33,19 @@ export function MoneyCubeHintButton({ state, disabled }: { state: GameState; dis
     const id = ++request.current;
     setAnswer({ state, request: id, value: 'loading' });
     try {
-      const value = await getMoneyCubeHint(state);
+      const value = await getCubeHint(state);
       if (id === request.current && current.current.state === state && !current.current.disabled)
         setAnswer({ state, request: id, value });
     }
-    catch (error) {
+    catch {
       if (id === request.current && current.current.state === state && !current.current.disabled)
-        setAnswer({ state, request: id, value: error instanceof Error && error.message === 'unsupported_money_rules' ? 'unsupported' : 'error' });
+        setAnswer({ state, request: id, value: 'error' });
     }
   };
   const value = visible ? answer.value : null;
   const label = value === 'no_double'
     ? translate('game.money.no_double')
-    : value && value !== 'loading' && value !== 'error' && value !== 'unsupported' ? translate(`game.match.${value}`) : '';
+    : value && value !== 'loading' && value !== 'error' ? translate(`game.match.${value}`) : '';
   return (
     <>
       <Pressable testID="cube-hint-button" accessibilityRole="button" accessibilityLabel={translate('game.money.cube_hint')} disabled={disabled} onPress={ask} style={[controlButtonStyles.secondary, styles.button, disabled && styles.disabled]}>
@@ -63,7 +63,7 @@ export function MoneyCubeHintButton({ state, disabled }: { state: GameState; dis
                     <Text style={styles.text}>{translate('game.hint.finding')}</Text>
                   </>
                 )
-              : <Text testID="cube-hint-result" accessibilityLiveRegion="polite" style={styles.result}>{value === 'unsupported' ? translate('game.money.hint_rules') : value === 'error' ? translate('game.hint.error') : label}</Text>}
+              : <Text testID="cube-hint-result" accessibilityLiveRegion="polite" style={styles.result}>{value === 'error' ? translate('game.hint.error') : label}</Text>}
             {value === 'error' && <Pressable testID="cube-hint-retry" accessibilityRole="button" onPress={ask} style={[controlButtonStyles.primary, styles.button]}><Text style={controlButtonStyles.primaryText}>{translate('game.hint.button')}</Text></Pressable>}
             <Pressable testID="cube-hint-dismiss" accessibilityRole="button" onPress={dismiss} style={[controlButtonStyles.secondary, styles.button]}><Text style={controlButtonStyles.secondaryText}>{translate('game.hint.back_to_turn')}</Text></Pressable>
           </View>

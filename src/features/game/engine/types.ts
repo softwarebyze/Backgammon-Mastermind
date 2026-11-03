@@ -12,7 +12,7 @@ type EngineTurnCandidate = {
    * fingerprint against these to rank the play.
    */
   board: number[];
-  /** Cubeless equity for the player on roll after this candidate. */
+  /** Equity for the player on roll, using this position’s cube and match context. */
   equity: number;
 };
 
@@ -39,6 +39,10 @@ export type EngineTurnPlan = {
 type EngineCubePlan = {
   shouldDouble: boolean;
   shouldTake: boolean;
+  shouldBeaver: boolean;
+  equityNoDouble: number;
+  equityDoubleTake: number;
+  equityDoublePass: number;
 };
 
 export type GameEngine = {
@@ -49,8 +53,7 @@ export type GameEngine = {
   readonly id: string;
   /**
    * Best full-turn plan plus all candidates, best-first. Throws when the
-   * engine is unavailable or returns nothing usable — callers fall back to
-   * the next engine (hints) or stay silent (tutor) rather than guessing.
+   * engine is unavailable or returns nothing usable — callers can offer a retry without guessing.
    */
   planTurn: (state: GameState) => Promise<EngineTurnPlan>;
   /**
@@ -59,6 +62,6 @@ export type GameEngine = {
    * the analyzed candidates.
    */
   boardAfterTurn: (state: GameState) => number[];
-  /** Money play only: Jacoby on, beavers off; owner is relative to the player on roll. */
-  analyzeMoneyCube?: (state: GameState, cube: { value: number; owner: 0 | 1 | 2 }) => Promise<EngineCubePlan>;
+  analyzeCube?: (state: GameState) => Promise<EngineCubePlan>;
+
 };

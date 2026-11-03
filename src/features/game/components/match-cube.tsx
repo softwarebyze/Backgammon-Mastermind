@@ -6,13 +6,13 @@ import { matchOfferText, matchPlayer } from '@/features/game/match-copy';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
-export function MatchCube({ cube, crawford = false, pendingOffer = null, mode }: { pendingOffer?: Player | null; cube: MatchState['cube']; crawford?: boolean; mode?: GameMode }) {
+export function MatchCube({ cube, crawford = false, pendingOffer = null, pendingBeaver = false, mode }: { pendingOffer?: Player | null; pendingBeaver?: boolean; cube: MatchState['cube']; crawford?: boolean; mode?: GameMode }) {
   return (
     <View
       testID="match-cube"
       accessible
       accessibilityRole="text"
-      accessibilityLabel={`${pendingOffer ? matchOfferText({ offerer: pendingOffer, value: cube.value * 2, points: cube.value }, mode) : translate('game.match.cube', { value: cube.value, owner: matchPlayer(cube.owner, mode) })}${crawford ? `. ${translate('game.match.crawford')}` : ''}`}
+      accessibilityLabel={`${pendingOffer ? matchOfferText({ offerer: pendingOffer, value: cube.value * 2, points: cube.value, beaver: pendingBeaver }, mode) : translate('game.match.cube', { value: cube.value, owner: matchPlayer(cube.owner, mode) })}${crawford ? `. ${translate('game.match.crawford')}` : ''}`}
       style={styles.wrap}
     >
       <View testID={pendingOffer ? `match-cube-pending-${pendingOffer}` : `match-cube-owner-${cube.owner}`} style={[styles.face, crawford && styles.unavailable, pendingOffer && styles.pending]}>

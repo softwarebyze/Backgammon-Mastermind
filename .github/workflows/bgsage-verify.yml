@@ -40,6 +40,19 @@ permissions:
   contents: read
 
 jobs:
+  engine-context:
+    name: Native and WASM rule-context parity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bash .github/scripts/fetch-bgsage-engine.sh
+      - run: bash .github/scripts/build-bgsage-probe.sh
+      - run: /tmp/bgsage-context-probe --verify-met
+      - run: node scripts/verify-bgsage-context.mjs
+
   android:
     name: Android — APK build + Maestro engine test
     runs-on: ubuntu-latest
@@ -242,7 +255,7 @@ jobs:
         run: |
           APP=$(ls -d "$RUNNER_TEMP"/bgsage-dd/Build/Products/Release-iphonesimulator/*.app | head -1)
           echo "app: $APP"
-          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "$GITHUB_WORKSPACE/.maestro/app/position-preview-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/match-seven-ios.yaml"
+          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "$GITHUB_WORKSPACE/.maestro/app/position-preview-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/match-seven-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/cube-tutor-beavers.yaml"
 
       - name: Upload iOS Maestro screenshots
         if: always()

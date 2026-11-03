@@ -4,6 +4,7 @@ flows:
   - app/cube-history-autoroll.yaml
   - app/match-cube.yaml
   - app/money-cube-hints.yaml
+  - app/cube-tutor-beavers.yaml
   - app/computer-match.yaml
   - app/match-polish.yaml
   - app/confirm-move.yaml

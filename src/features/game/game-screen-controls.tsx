@@ -77,7 +77,7 @@ function useDelayedFlag(active: boolean, delayMs: number): boolean {
 function matchCaption(state: GameState): string | null {
   const m = state.match;
   if (m?.pendingOffer)
-    return matchOfferText({ offerer: m.pendingOffer, value: m.cube.value * 2, points: m.cube.value }, state.mode);
+    return matchOfferText({ offerer: m.pendingOffer, value: m.cube.value * 2, points: m.cube.value, beaver: m.pendingBeaver }, state.mode);
   return m ? matchResultText(m, state.mode) : null;
 }
 
@@ -361,14 +361,6 @@ function ActionControl({
   // analysis shows no suggestion. The blunder-review solution view still
   // draws best-move arrows after take-back, which restores turn start.
   if (state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
-    // The engine weighs money play only; at a match score its advice can be wrong, so say why Hint is missing.
-    if (state.match && state.match.length > 0) {
-      return (
-        <View style={styles.actionSpacer}>
-          <Text style={styles.matchAdviceNote} numberOfLines={2} testID="match-advice-note">{translate('game.match.advice_note')}</Text>
-        </View>
-      );
-    }
     return <HintButton state={state} moveLogLength={moveLogLength} />;
   }
 
@@ -485,15 +477,6 @@ const styles = StyleSheet.create({
   actionSpacer: {
     height: ACTION_SLOT_HEIGHT,
     width: '100%',
-  },
-  matchAdviceNote: {
-    color: GAME_PALETTE.textMuted,
-    fontSize: 13,
-    lineHeight: 18,
-    textAlign: 'center',
-    marginTop: 'auto',
-    marginBottom: 'auto',
-    paddingHorizontal: 16,
   },
   primaryBtn: {
     ...controlButtonStyles.primary,

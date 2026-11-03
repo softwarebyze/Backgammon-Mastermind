@@ -6,6 +6,7 @@ import { computerThinkDelayMs } from '@/lib/game/computer-pace';
 import { acceptDouble, createMatch, createMatchGame, dropDouble, offerDouble } from '@/lib/game/match';
 import { clearActiveGame, loadPersistedGame, savePersistedSession } from '@/lib/game/persistence';
 import { act, renderHook } from '@/lib/test-utils';
+import { analyzeCubeDecision } from './cube-analysis';
 import { useGameProviderValue } from './use-game-provider-value';
 
 jest.mock('posthog-react-native', () => ({ usePostHog: jest.fn().mockReturnValue({ capture: jest.fn() }) }));
@@ -16,13 +17,21 @@ function board(advantage: 'even' | 'black' | 'white' = 'even', currentPlayer: 'b
     { point: advantage === 'white' ? 2 : 15, player: 'white', count: 15 },
   ] });
 }
-function think() {
-  act(() => jest.advanceTimersByTime(computerThinkDelayMs('rolling')));
+async function think() {
+  await act(async () => {
+    jest.advanceTimersByTime(computerThinkDelayMs('rolling'));
+  });
 }
+jest.mock('./cube-analysis', () => ({ analyzeCubeDecision: jest.fn() }));
 
 beforeEach(() => {
   jest.useFakeTimers();
-  patchGamePreferences({ autoRoll: false });
+  patchGamePreferences({ autoRoll: false, tutorMode: false });
+  jest.mocked(analyzeCubeDecision).mockImplementation(async state => ({
+    actor: 'black',
+    best: state.match?.pendingOffer ? (state.points[2]?.player === 'white' ? 'drop' : 'accept') : state.points[23]?.player === 'black' ? 'offer' : 'roll',
+    values: {},
+  }));
   clearActiveGame();
   setGuidanceVerdictPending(false);
 });
@@ -32,7 +41,7 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-it.each([['even', 'accept'], ['white', 'drop']] as const)('automatically answers a human offer (%s → %s), rejecting human answers for AI', (advantage, answer) => {
+it.each([['even', 'accept'], ['white', 'drop']] as const)('automatically answers a human offer (%s → %s), rejecting human answers for AI', async (advantage, answer) => {
   const { result } = renderHook(() => useGameProviderValue(true));
   act(() => result.current.startFromPosition(board(advantage, 'white')));
   act(() => result.current.matchAction!('offer'));
@@ -46,7 +55,7 @@ it.each([['even', 'accept'], ['white', 'drop']] as const)('automatically answers
   act(() => result.current.doUndo());
   expect(result.current.state).toBe(pending);
   expect(result.current.canUndo).toBe(false);
-  think();
+  await think();
   expect(result.current.state?.match?.pendingOffer).toBeNull();
   expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer', answer]);
   act(() => jest.advanceTimersByTime(100));
@@ -61,14 +70,14 @@ it.each([['even', 'accept'], ['white', 'drop']] as const)('automatically answers
   }
 });
 
-it('offers as Black before rolling, waits for the human, then rolls with White owning the accepted cube', () => {
+it('offers as Black before rolling, waits for the human, then rolls with White owning the accepted cube', async () => {
   const { result } = renderHook(() => useGameProviderValue(true));
   act(() => result.current.startFromPosition(board('black')));
   const initial = result.current.state;
   act(() => result.current.matchAction!('offer'));
   act(() => result.current.doRollDice());
   expect(result.current.state).toBe(initial);
-  think();
+  await think();
   expect(result.current.state?.match?.pendingOffer).toBe('black');
   expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer']);
   const pending = result.current.state;
@@ -79,52 +88,52 @@ it('offers as Black before rolling, waits for the human, then rolls with White o
   expect(result.current.cubeEvents).toHaveLength(1);
   act(() => result.current.matchAction!('accept'));
   expect(result.current.state?.match?.cube).toEqual({ value: 2, owner: 'white' });
-  think();
+  await think();
   expect(result.current.state?.phase).toBe('moving');
   expect(result.current.state?.match?.cube).toEqual({ value: 2, owner: 'white' });
   expect(result.current.state?.match?.undoFloor).toBe(0);
 });
 
-it.each(['white', 'black'] as const)('cold resumes a pending %s offer with the correct actor', (offerer) => {
+it.each(['white', 'black'] as const)('cold resumes a pending %s offer with the correct actor', async (offerer) => {
   const pending = offerDouble(board(offerer === 'white' ? 'even' : 'black', offerer), 0);
   savePersistedSession({ state: pending, moveLog: [], replayBaseline: pending });
   const { result } = renderHook(() => useGameProviderValue(true));
   expect(result.current.state?.mode).toBe('vs-computer');
   expect(result.current.state?.match?.pendingOffer).toBe(offerer);
-  think();
+  await think();
   if (offerer === 'white')
     expect(result.current.state?.match?.cube).toEqual({ value: 2, owner: 'black' });
   else
     expect(result.current.state?.match?.pendingOffer).toBe('black');
 });
 
-it('cancels on pause, inactivity, explicit cancellation and reset; re-arms only on resume', () => {
+it('cancels on pause, inactivity, explicit cancellation and reset; re-arms only on resume', async () => {
   const { result, rerender } = renderHook<ReturnType<typeof useGameProviderValue>, { active: boolean }>(({ active }) => useGameProviderValue(active), { initialProps: { active: true } });
   act(() => result.current.startFromPosition(board('black')));
   act(() => setGuidanceVerdictPending(true));
   const paused = result.current.state;
   act(() => result.current.matchAction!('offer'));
-  think();
+  await think();
   expect(result.current.state).toBe(paused);
   act(() => setGuidanceVerdictPending(false));
   rerender({ active: false });
-  think();
+  await think();
   expect(result.current.state).toBe(paused);
   rerender({ active: true });
   act(() => result.current.clearAITimeout());
-  think();
+  await think();
   expect(result.current.state).toBe(paused);
   act(() => result.current.resumeAIScheduling());
-  think();
+  await think();
   expect(result.current.state?.match?.pendingOffer).toBe('black');
   act(() => result.current.resetGame());
   const reset = result.current.state;
   expect(reset).toEqual(createMatchGame(5, 'vs-computer'));
-  think();
+  await think();
   expect(result.current.state).toBe(reset);
 });
 
-it('cancels a computed checker move when the match is replaced', () => {
+it('cancels a computed checker move when the match is replaced', async () => {
   const { result } = renderHook(() => useGameProviderValue(true));
   const moving = createPositionState({ useStandardSetup: true, mode: 'vs-computer', currentPlayer: 'black', match: createMatch(5), dice: [3, 1] });
   act(() => result.current.startFromPosition(moving));
@@ -137,7 +146,7 @@ it('cancels a computed checker move when the match is replaced', () => {
   expect(result.current.moveLog).toHaveLength(0);
 });
 
-it('drop, cold resume, next game and new match preserve computer mode and Crawford', () => {
+it('drop, cold resume, next game and new match preserve computer mode and Crawford', async () => {
   const state = board('black');
   state.match!.length = 3;
   state.match!.score.black = 1;
@@ -153,7 +162,7 @@ it('drop, cold resume, next game and new match preserve computer mode and Crawfo
   expect(result.current.state).toEqual(createMatchGame(3, 'vs-computer'));
 });
 
-it.each([false, true])('accepted cube + AI blocked roll keeps binding undo floor (cold: %s)', (cold) => {
+it.each([false, true])('accepted cube + AI blocked roll keeps binding undo floor (cold: %s)', async (cold) => {
   let utils = renderHook(() => useGameProviderValue(true));
   const state = createPositionState({ mode: 'vs-computer', match: createMatch(5), dice: [3, 4], placements: [{ point: 1, player: 'white', count: 2 }, { point: 2, player: 'white', count: 2 }, { point: 6, player: 'white', count: 11 }, { point: 24, player: 'black', count: 14 }], bar: { black: 1 } });
   state.match!.cube = { value: 2, owner: 'white' };
@@ -166,7 +175,7 @@ it.each([false, true])('accepted cube + AI blocked roll keeps binding undo floor
   // Black does not own the cube. Its revealed blocked roll is binding,
   // and the automatic pass must not make White's previous moves undoable.
   const random = jest.spyOn(Math, 'random').mockReturnValue(0.01);
-  think();
+  await think();
   random.mockRestore();
   expect(utils.result.current.state?.phase).toBe('no-move');
   expect(utils.result.current.state?.match?.undoFloor).toBe(2);
@@ -183,16 +192,16 @@ it.each([false, true])('accepted cube + AI blocked roll keeps binding undo floor
   utils.unmount();
 });
 
-it('keeps a taken cube through cold resume before the computer roll', () => {
+it('keeps a taken cube through cold resume before the computer roll', async () => {
   const accepted = acceptDouble(offerDouble(board('black'), 0));
   savePersistedSession({ state: accepted, moveLog: [], replayBaseline: accepted });
   const { result } = renderHook(() => useGameProviderValue(true));
-  think();
+  await think();
   expect(result.current.state?.match?.cube).toEqual({ value: 2, owner: 'white' });
   expect(result.current.state?.match?.pendingOffer).toBeNull();
 });
 
-it('rejects human checker selection and moves during the computer turn', () => {
+it('rejects human checker selection and moves during the computer turn', async () => {
   const { result } = renderHook(() => useGameProviderValue(true));
   const moving = createPositionState({ useStandardSetup: true, mode: 'vs-computer', currentPlayer: 'black', match: createMatch(5), dice: [3, 1] });
   act(() => result.current.startFromPosition(moving));
@@ -206,7 +215,7 @@ it('rejects human checker selection and moves during the computer turn', () => {
   expect(result.current.moveLog).toHaveLength(0);
 });
 
-it('lets the computer bear off, finish the match, and start a fresh computer match', () => {
+it('lets the computer bear off, finish the match, and start a fresh computer match', async () => {
   const { result } = renderHook(() => useGameProviderValue(true));
   const state = createPositionState({ mode: 'vs-computer', currentPlayer: 'black', dice: [1, 2], match: { ...createMatch(3), score: { black: 2, white: 1 }, crawford: true, crawfordPlayed: true }, placements: [{ point: 24, player: 'black', count: 1 }, { point: 1, player: 'white', count: 14 }], borneOff: { black: 14, white: 1 } });
   act(() => result.current.startFromPosition(state));
@@ -221,7 +230,7 @@ it('lets the computer bear off, finish the match, and start a fresh computer mat
   expect(result.current.state).toEqual(createMatchGame(3, 'vs-computer'));
 });
 
-it('rechecks current eligibility when the tutor invokes its retained replay callback', () => {
+it('rechecks current eligibility when the tutor invokes its retained replay callback', async () => {
   const { result } = renderHook(() => useGameProviderValue(true));
   const start = createPositionState({ useStandardSetup: true, mode: 'vs-computer', dice: [3, 1] });
   const move = getLegalMoves(start)[0]!;
@@ -234,4 +243,30 @@ it('rechecks current eligibility when the tutor invokes its retained replay call
   act(() => result.current.tutorRevertTurn(start, 0));
   act(() => replayBest([move]));
   expect(result.current.moveAnimation).not.toBeNull();
+});
+
+it('shows an engine error and retries the same cube decision without guessing', async () => {
+  jest.mocked(analyzeCubeDecision).mockRejectedValueOnce(new Error('unavailable')).mockResolvedValueOnce({ actor: 'black', best: 'accept', values: {} });
+  const { result } = renderHook(() => useGameProviderValue(true));
+  act(() => result.current.startFromPosition(offerDouble(board('even', 'white'), 0)));
+  const pending = result.current.state;
+  await think();
+  expect(result.current.state).toBe(pending);
+  expect(result.current.computerCubeError).toBe(true);
+  act(() => result.current.retryCubeAnalysis!());
+  await think();
+  expect(result.current.computerCubeError).toBe(false);
+  expect(result.current.state?.match?.cube.value).toBe(2);
+});
+it('ignores a late cube result after leaving the game', async () => {
+  let resolve!: (value: Awaited<ReturnType<typeof analyzeCubeDecision>>) => void;
+  jest.mocked(analyzeCubeDecision).mockImplementationOnce(() => new Promise(r => resolve = r));
+  const { result, rerender } = renderHook(({ active }: { active: boolean }) => useGameProviderValue(active), { initialProps: { active: true } });
+  act(() => result.current.startFromPosition(board('black')));
+  await think();
+  const pending = result.current.state;
+  rerender({ active: false });
+  await act(async () => resolve({ actor: 'black', best: 'offer', values: {} }));
+  expect(result.current.state).toBe(pending);
+  expect(result.current.cubeEvents).toHaveLength(0);
 });

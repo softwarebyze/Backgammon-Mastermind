@@ -23,8 +23,10 @@ function undoGroup(state: GameState | null, events: CubeHistoryEvent[], ply: num
     return [];
   // Against the computer, take back your answer so you can choose Take or
   // Pass again, rather than leaving a computer-to-roll position waiting on you.
-  if (state.mode === 'vs-computer' && events[start]!.player === 'black')
-    return last.kind === 'offer' ? [] : [last];
+  if (state.mode === 'vs-computer' && events[start]!.player === 'black') {
+    const answer = events.findLastIndex(event => event.afterPly === ply && event.player === 'white');
+    return answer > start ? events.slice(answer) : [];
+  }
   return events.slice(start);
 }
 

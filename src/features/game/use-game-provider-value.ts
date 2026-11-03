@@ -5,6 +5,7 @@ import { useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
+import { useCubeTutor } from '@/features/game/use-cube-tutor';
 import { useGameCompletedCapture } from '@/features/game/use-game-completed-capture';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
 import { useGameLifecycle } from '@/features/game/use-game-lifecycle';
@@ -21,7 +22,7 @@ import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
-import { acceptDouble, dropDouble, nextMatchGame, offerDouble } from '@/lib/game/match';
+import { acceptDouble, beaverDouble, canOfferDouble, dropDouble, nextMatchGame, offerDouble } from '@/lib/game/match';
 import { loadPersistedGame } from '@/lib/game/persistence';
 
 /* eslint-disable max-lines-per-function -- provider composes all game slices */
@@ -94,7 +95,14 @@ export function useGameProviderValue(active: boolean): GameContextType {
    * Blunder prompt open or a completed turn waiting on its verdict — pause
    * everything. (Hint sessions never pause: the player keeps playing.)
    */
-  const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending || reviewing;
+  const baseTutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending || reviewing;
+  const { session: cubeTutorSession, run: checkCubeAction, cancel: cancelCubeTutor, proceed: continueCubeTutor, reveal: revealCubeTutor, retry: retryCubeTutor } = useCubeTutor({
+    state,
+    active,
+    blocked: baseTutorPaused || isAnimating,
+    enabled: loadGamePreferences().tutorMode,
+  });
+  const tutorPaused = baseTutorPaused || !!cubeTutorSession;
   const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
   const { doUndo: undoCheckers, doRedo: redoCheckers, canUndo: canUndoCheckers, canRedo: canRedoCheckers, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
@@ -145,9 +153,10 @@ export function useGameProviderValue(active: boolean): GameContextType {
   }, [redoCube, redoCheckers]);
   const resetForNewSession = useCallback(() => {
     resetCubeHistory();
+    cancelCubeTutor();
     resetForNewGame();
-  }, [resetCubeHistory, resetForNewGame]);
-  const { clearAITimeout, resumeAIScheduling } = useComputerOpponent({
+  }, [resetCubeHistory, cancelCubeTutor, resetForNewGame]);
+  const { clearAITimeout, resumeAIScheduling, computerCubeError, retryCubeAnalysis } = useComputerOpponent({
     enabled: active,
     state,
     setState,
@@ -277,7 +286,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   cubeActionEligibility.current = { active, isAnimating, canRedo: canRedoCheckers, tutorPaused };
   const cubeActionStateRef = useRef(state);
   cubeActionStateRef.current = state;
-  const matchAction = useCallback((action: 'offer' | 'accept' | 'drop' | 'next') => {
+  const matchAction = useCallback((action: 'offer' | 'accept' | 'drop' | 'beaver' | 'next') => {
     const eligibility = cubeActionEligibility.current;
     if (!eligibility.active || !state?.match || cubeActionStateRef.current !== state || eligibility.isAnimating || eligibility.canRedo || eligibility.tutorPaused)
       return;
@@ -291,13 +300,18 @@ export function useGameProviderValue(active: boolean): GameContextType {
       return;
     const next = action === 'offer'
       ? offerDouble(state, moveLog.length)
-      : action === 'accept' ? acceptDouble(state) : dropDouble(state);
+      : action === 'accept' ? acceptDouble(state) : action === 'beaver' ? beaverDouble(state) : dropDouble(state);
     if (next !== state) {
-      cubeActionStateRef.current = next;
-      recordCubeEvent(action, state, next);
-      setState(next);
+      void checkCubeAction(state, action, () => {
+        const latest = cubeActionEligibility.current;
+        if (!latest.active || latest.isAnimating || latest.canRedo || cubeActionStateRef.current !== state)
+          return;
+        cubeActionStateRef.current = next;
+        recordCubeEvent(action, state, next);
+        setState(next);
+      });
     }
-  }, [state, startFromPosition, moveLog.length, recordCubeEvent]);
+  }, [state, startFromPosition, moveLog.length, recordCubeEvent, checkCubeAction]);
 
   // These are the public human entry points. The AI uses playMove directly;
   // rejecting Black here also protects hint/board callers from playing for it.
@@ -305,13 +319,17 @@ export function useGameProviderValue(active: boolean): GameContextType {
     && (state.mode !== 'vs-computer' || state.currentPlayer === 'white');
   // Tutor guidance retains callbacks across a rewind. Read eligibility and
   // actions at invocation time so a previously paused render cannot veto replay.
-  const humanActionsRef = useRef({ humanCanPlay, canRedo, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint });
-  humanActionsRef.current = { humanCanPlay, canRedo: canRedoCheckers, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint };
+  const humanActionsRef = useRef({ state, humanCanPlay, canRedo, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint });
+  humanActionsRef.current = { state, humanCanPlay, canRedo: canRedoCheckers, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint };
   const humanRoll = useCallback(() => {
     const latest = humanActionsRef.current;
-    if (latest.humanCanPlay && !latest.canRedo)
+    if (!latest.humanCanPlay || latest.canRedo)
+      return;
+    if (latest.state && canOfferDouble(latest.state))
+      void checkCubeAction(latest.state, 'roll', latest.doRollDice);
+    else
       latest.doRollDice();
-  }, []);
+  }, [checkCubeAction]);
   const humanPass = useCallback(() => {
     const latest = humanActionsRef.current;
     if (latest.humanCanPlay && !latest.canRedo)
@@ -335,6 +353,13 @@ export function useGameProviderValue(active: boolean): GameContextType {
 
   return {
     active,
+    cubeTutorSession,
+    computerCubeError,
+    retryCubeAnalysis,
+    cancelCubeTutor,
+    continueCubeTutor,
+    revealCubeTutor,
+    retryCubeTutor,
     matchAction,
     setReviewing,
     cubeEvents,

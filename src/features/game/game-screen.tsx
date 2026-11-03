@@ -2,8 +2,9 @@ import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState, StyleSheet, Text, View } from 'react-native';
-
 import { FocusAwareStatusBar } from '@/components/ui';
+
+import { CubeTutorOverlay } from '@/features/game/components/cube-tutor-overlay';
 import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -59,6 +60,7 @@ export function GameScreen() {
   const { preferences } = useGamePreferences();
   const {
     state: liveState,
+    cubeTutorSession,
     moveAnimation,
     resetAnimation,
     moveLog,
@@ -76,7 +78,7 @@ export function GameScreen() {
   // A blunder prompt or a pending verdict pauses play. Hint sessions never
   // pause: the player keeps playing with the engine's suggestion on the board.
   const blunderOpen = guidance?.kind === 'blunder';
-  const tutorPaused = blunderOpen || guidanceVerdictPending;
+  const tutorPaused = blunderOpen || guidanceVerdictPending || !!cubeTutorSession;
   // Only mention the review when the hold is noticeable — the verdict
   // usually lands before the player even notices the pause.
   const showReviewing = useDelayedTrue(guidanceVerdictPending, 600);
@@ -237,6 +239,7 @@ export function GameScreen() {
           <Text style={styles.reviewingText}>Reviewing your turn…</Text>
         </View>
       )}
+      <CubeTutorOverlay />
       <SavePositionDialog state={input.state} visible={savingPosition} onClose={() => setSavingPosition(false)} />
     </View>
   );

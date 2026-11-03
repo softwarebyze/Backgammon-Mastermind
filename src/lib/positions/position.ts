@@ -111,7 +111,7 @@ export function positionFromGame(state: GameState): Position {
   p.context.turnOwner = state.currentPlayer;
   if (state.match) {
     const m = state.match;
-    p.context = { ...p.context, matchLength: m.length, scores: { ...m.score }, cubeExponent: Math.log2(m.cube.value), cubeOwner: m.cube.owner === 'center' ? null : m.cube.owner, crawford: m.crawford, crawfordRule: m.crawfordRule, jacoby: m.length === 0 && m.jacoby !== false };
+    p.context = { ...p.context, matchLength: m.length, scores: { ...m.score }, cubeExponent: Math.log2(m.cube.value), cubeOwner: m.cube.owner === 'center' ? null : m.cube.owner, crawford: m.crawford, crawfordRule: m.crawfordRule, jacoby: m.length === 0 && m.jacoby !== false, beavers: !!m.beavers, maxCube: Math.log2(m.cubeLimit ?? 32768) };
   }
   const fullRoll = state.dice[0] === state.dice[1] ? 4 : 2;
   p.dice = state.phase === 'moving' && state.remainingDice.length === fullRoll ? [...state.dice] : [0, 0];
@@ -140,13 +140,12 @@ export function positionGame(p: Position, mode: GameMode = 'vs-human'): GameStat
  */
 function positionMatch(p: Position): MatchState | undefined {
   const c = p.context;
-  if (!c.matchLength && c.beavers)
-    throw new Error('money_beavers_unsupported');
   const crawfordRule = c.matchLength > 0 && c.crawfordRule !== false;
   const atMatchPoint = c.scores.white === c.matchLength - 1 || c.scores.black === c.matchLength - 1;
   return {
     length: c.matchLength,
-    ...(c.matchLength === 0 ? { jacoby: c.jacoby } : {}),
+    ...(c.matchLength === 0 ? { jacoby: c.jacoby, beavers: c.beavers } : {}),
+    cubeLimit: 2 ** c.maxCube,
     score: { ...c.scores },
     // No doubling in the Crawford game: the cube stays at 1 in the middle.
     cube: c.crawford ? { value: 1, owner: 'center' } : { value: 2 ** c.cubeExponent, owner: c.cubeOwner ?? 'center' },

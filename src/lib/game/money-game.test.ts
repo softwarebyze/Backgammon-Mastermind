@@ -1,7 +1,7 @@
 import { newPosition, positionFromGame, positionGame } from '@/lib/positions/position';
-import { computerCubeAction } from './computer-cube';
 import { createPositionState } from './create-position';
-import { acceptDouble, canOfferDouble, createMatch, dropDouble, nextMatchGame, offerDouble, scoreMatchGame } from './match';
+import { appendCubeHistoryEvent } from './cube-history';
+import { acceptDouble, beaverDouble, canBeaver, canOfferDouble, createMatch, dropDouble, nextMatchGame, offerDouble, scoreMatchGame } from './match';
 import { makePersistedSession, parsePersistedSessionValue } from './persisted-session';
 
 function money() {
@@ -40,11 +40,6 @@ it.each(['pending', 'taken', 'finished'] as const)('restores a money game %s cub
     expect(parsed.session.state.match).toEqual(state.match);
 });
 
-it('the computer can answer a money offer instead of waiting forever', () => {
-  const state = offerDouble({ ...money(), mode: 'vs-computer' }, 0);
-  expect(computerCubeAction(state)).toBe('accept');
-});
-
 it.each([[1, 1], [2, 6]] as const)('scores a backgammon at cube %s as %s with Jacoby', (cube, points) => {
   const state = createPositionState({ placements: [{ point: 3, player: 'black', count: 15 }], borneOff: { white: 15 }, match: { ...createMatch(0), cube: { value: cube, owner: cube === 1 ? 'center' : 'black' } } });
   expect(scoreMatchGame({ ...state, phase: 'game-over', winner: 'white' }).match?.result?.points).toBe(points);
@@ -69,5 +64,53 @@ it('saves a finished money position with its scored result', () => {
 it('does not silently ignore Beavers on an imported money position', () => {
   const p = newPosition();
   p.context.beavers = true;
-  expect(() => positionGame(p)).toThrow('money_beavers_unsupported');
+  expect(positionGame(p).match?.beavers).toBe(true);
+});
+
+it('beavers accept the first double and retain the responder’s ownership on acceptance', () => {
+  const state = money();
+  state.match!.beavers = true;
+  const offered = offerDouble(state, 0);
+  expect(canBeaver(offered)).toBe(true);
+  const beavered = beaverDouble(offered);
+  expect(beavered.match).toMatchObject({ cube: { value: 2, owner: 'black' }, pendingOffer: 'black', pendingBeaver: true });
+  expect(beavered.currentPlayer).toBe('white');
+  expect(canBeaver(beavered)).toBe(false);
+  expect(acceptDouble(beavered).match).toMatchObject({ cube: { value: 4, owner: 'black' }, pendingOffer: null, pendingBeaver: false });
+  expect(dropDouble(beavered).match?.result).toEqual({ winner: 'black', points: 2, kind: 'drop' });
+});
+it('enforces beaver rules and the imported cube limit', () => {
+  const state = money();
+  expect(canBeaver(offerDouble(state, 0))).toBe(false);
+  Object.assign(state.match!, { beavers: true, cubeLimit: 2 });
+  expect(canBeaver(offerDouble(state, 0))).toBe(false);
+  expect(canOfferDouble(acceptDouble(offerDouble(state, 0)))).toBe(false);
+  state.match = { ...createMatch(5), beavers: true };
+  expect(canBeaver(offerDouble(state, 0))).toBe(false);
+});
+it.each(['pending', 'accepted', 'dropped'] as const)('restores a %s beaver without changing ownership or scores', (phase) => {
+  const state = money();
+  state.match!.beavers = true;
+  const beavered = beaverDouble(offerDouble(state, 0));
+  const saved = phase === 'pending' ? beavered : phase === 'accepted' ? acceptDouble(beavered) : dropDouble(beavered);
+  const parsed = parsePersistedSessionValue(makePersistedSession({ state: saved, moveLog: [], replayBaseline: null }));
+  expect(parsed.ok).toBe(true);
+  if (parsed.ok)
+    expect(parsed.session.state.match).toEqual(saved.match);
+});
+
+it.each(['pending', 'accepted', 'dropped'] as const)('cold-restores the complete %s beaver history', (phase) => {
+  const start = money();
+  start.match!.beavers = true;
+  const offered = offerDouble(start, 0);
+  const beavered = beaverDouble(offered);
+  const end = phase === 'pending' ? beavered : phase === 'accepted' ? acceptDouble(beavered) : dropDouble(beavered);
+  let events = appendCubeHistoryEvent([], 'offer', start, offered, 0);
+  events = appendCubeHistoryEvent(events, 'beaver', offered, beavered, 0);
+  if (end !== beavered)
+    events = appendCubeHistoryEvent(events, phase === 'accepted' ? 'accept' : 'drop', beavered, end, 0);
+  const parsed = parsePersistedSessionValue(makePersistedSession({ state: end, moveLog: [], replayBaseline: start, cubeEvents: events }));
+  expect(parsed).toMatchObject({ ok: true });
+  if (parsed.ok)
+    expect(parsed.session.cubeEvents).toEqual(events);
 });

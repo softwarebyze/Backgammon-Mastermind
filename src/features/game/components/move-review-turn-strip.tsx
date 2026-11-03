@@ -256,7 +256,7 @@ function cubeEventLabel(event: CubeHistoryEvent): string {
   const player = vsComputer
     ? translate('game.players.computer')
     : translate(event.player === 'white' ? 'game.review.player_white' : 'game.review.player_black');
-  const kind = event.kind === 'offer' ? 'cube_offer' : event.kind === 'accept' ? 'cube_accept' : 'cube_drop';
+  const kind = event.kind === 'offer' || event.kind === 'beaver' ? 'cube_offer' : event.kind === 'accept' ? 'cube_accept' : 'cube_drop';
   const key = `game.review.${kind}${you ? '_you' : ''}`;
-  return translate(key as Parameters<typeof translate>[0], { player, value: (event.after.match?.cube.value ?? 1) * (event.kind === 'offer' ? 2 : 1) });
+  return translate(key as Parameters<typeof translate>[0], { player, value: (event.after.match?.cube.value ?? 1) * (event.kind === 'offer' || event.kind === 'beaver' ? 2 : 1) });
 }

@@ -1,6 +1,7 @@
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { HistoryPathOverlay } from '@/features/game/timeline-history-actions';
 import type { AnimatedMoveOpts } from '@/features/game/use-animated-moves';
+import type { CubeTutorSession } from '@/features/game/use-cube-tutor';
 import type { GameMode, GameState, Move } from '@/lib/game';
 import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
@@ -11,6 +12,13 @@ export type GameContextType = {
   active?: boolean;
   setReviewing?: (reviewing: boolean) => void;
   state: GameState | null;
+  computerCubeError?: boolean;
+  retryCubeAnalysis?: () => void;
+  cubeTutorSession?: CubeTutorSession | null;
+  cancelCubeTutor?: () => void;
+  continueCubeTutor?: () => void;
+  revealCubeTutor?: () => void;
+  retryCubeTutor?: () => void;
   moveLog: MoveLogEntry[];
   cubeEvents?: CubeHistoryEvent[];
   replayBaseline: GameState | null;
@@ -19,7 +27,7 @@ export type GameContextType = {
   startFromPosition: (state: GameState) => void;
   resumeGame: () => boolean;
   resetGame: () => void;
-  matchAction?: (action: 'offer' | 'accept' | 'drop' | 'next') => void;
+  matchAction?: (action: 'offer' | 'accept' | 'drop' | 'beaver' | 'next') => void;
   doRollDice: () => void;
   doPassTurn: () => void;
   selectPoint: (point: number | null) => void;

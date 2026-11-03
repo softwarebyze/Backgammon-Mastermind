@@ -4,7 +4,7 @@ import type { BoardPoint, GamePhase, GameState, Player } from './types';
 import { z } from 'zod';
 
 import { TOTAL_CHECKERS } from './constants';
-import { acceptDouble, canOfferDouble, dropDouble, offerDouble } from './match';
+import { acceptDouble, beaverDouble, canOfferDouble, dropDouble, offerDouble } from './match';
 
 const PERSISTED_SESSION_VERSION = 1;
 
@@ -37,6 +37,9 @@ const openingRollsSchema = z.object({
 const matchSchema = z.object({
   length: z.number().int().min(0).max(32767),
   jacoby: z.boolean().optional(),
+  beavers: z.boolean().optional(),
+  pendingBeaver: z.boolean().optional(),
+  cubeLimit: z.number().int().min(1).max(32768).refine(n => Math.log2(n) % 1 === 0).optional(),
   score: playerCountSchema,
   cube: z.object({ value: z.number().int().positive().refine(n => Number.isSafeInteger(n) && Math.log2(n) % 1 === 0), owner: z.enum(['white', 'black', 'center']) }),
   pendingOffer: playerSchema.nullable(),
@@ -88,7 +91,7 @@ const moveLogEntrySchema = z.object({
 
 const cubeHistoryEventSchema = z.object({
   id: z.number().int().positive(),
-  kind: z.enum(['offer', 'accept', 'drop']),
+  kind: z.enum(['offer', 'accept', 'drop', 'beaver']),
   player: playerSchema,
   afterPly: z.number().int().nonnegative(),
   before: gameStateSchema,
@@ -209,11 +212,20 @@ export function gameStateInvariantError(state: GameState): string | null {
   if (countCheckers(state, 'black') !== TOTAL_CHECKERS) {
     return 'black must have exactly 15 checkers';
   }
-  if (state.match && ((state.match.pendingOffer && (state.match.pendingOffer !== state.currentPlayer || !canOfferDouble({ ...state, match: { ...state.match, pendingOffer: null } }))) || (!!state.match.result !== (state.phase === 'game-over')))) {
+  if (state.match?.pendingBeaver) {
+    const m = state.match;
+    if (m.length !== 0 || !m.beavers || !m.pendingOffer || m.pendingOffer === state.currentPlayer
+      || m.cube.owner !== m.pendingOffer || m.cube.value * 2 > (m.cubeLimit ?? 32768) || state.phase !== 'rolling') {
+      return 'invalid pending beaver';
+    }
+  }
+  if (state.match && ((!state.match.pendingBeaver && state.match.pendingOffer && (state.match.pendingOffer !== state.currentPlayer || !canOfferDouble({ ...state, match: { ...state.match, pendingOffer: null } }))) || (!!state.match.result !== (state.phase === 'game-over')))) {
     return 'invalid match phase or pending cube offer';
   }
   if (state.match?.length === 0 && (state.match.crawford || state.match.crawfordPlayed || state.match.winner))
     return 'money games have no Crawford game or match winner';
+  if (state.match && state.match.cube.value > (state.match.cubeLimit ?? 32768))
+    return 'cube exceeds its limit';
   return diceError(state.dice, state.remainingDice)
     ?? phaseWinnerError(state.phase, state.winner)
     ?? selectedPointError(state.selectedPoint)
@@ -271,12 +283,17 @@ function invariantErrorForSession(session: PersistedSession): string | null {
       return 'invalid cube history state';
     const expected = event.kind === 'offer'
       ? offerDouble(event.before, event.afterPly)
-      : event.kind === 'accept' ? acceptDouble(event.before) : dropDouble(event.before);
+      : event.kind === 'accept' ? acceptDouble(event.before) : event.kind === 'beaver' ? beaverDouble(event.before) : dropDouble(event.before);
     const actor = event.kind === 'offer'
       ? event.before.currentPlayer
       : event.before.match?.pendingOffer === 'white' ? 'black' : 'white';
-    if (expected === event.before || actor !== event.player || JSON.stringify(expected) !== JSON.stringify(event.after))
+    // Zod orders optional keys by schema, whereas a reducer may append a new
+    // pendingBeaver key. Compare both in schema order, not insertion order.
+    const normalized = gameStateSchema.safeParse(expected);
+    if (expected === event.before || actor !== event.player || !normalized.success
+      || JSON.stringify(normalized.data) !== JSON.stringify(event.after)) {
       return 'invalid cube history transition';
+    }
     priorId = event.id;
     priorPly = event.afterPly;
   }

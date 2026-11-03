@@ -4,14 +4,17 @@ import { computerThinkDelayMs } from '@/lib/game/computer-pace';
 import { createMatch } from '@/lib/game/match';
 import { clearActiveGame, loadPersistedSession } from '@/lib/game/persistence';
 import { act, renderHook } from '@/lib/test-utils';
+import { analyzeCubeDecision } from './cube-analysis';
 import { useGameProviderValue } from './use-game-provider-value';
 
 jest.mock('posthog-react-native', () => ({ usePostHog: jest.fn().mockReturnValue({ capture: jest.fn() }) }));
 
+jest.mock('./cube-analysis', () => ({ analyzeCubeDecision: jest.fn() }));
 beforeEach(() => {
   jest.useFakeTimers();
   clearActiveGame();
-  patchGamePreferences({ autoRoll: false });
+  patchGamePreferences({ autoRoll: false, tutorMode: false });
+  jest.mocked(analyzeCubeDecision).mockImplementation(async state => ({ actor: 'black', best: state.match?.pendingOffer ? 'accept' : 'offer', values: {} }));
 });
 afterEach(() => {
   jest.clearAllTimers();
@@ -118,7 +121,7 @@ it.each(['roll', 'double', 'new game'] as const)('can choose %s instead of redo,
   expect(result.current.state).toEqual(state);
 });
 
-it('cancels the computer response on Undo and holds automation until the player chooses', () => {
+it('cancels the computer response on Undo and holds automation until the player chooses', async () => {
   patchGamePreferences({ autoRoll: true });
   const { result } = renderHook(() => useGameProviderValue(true));
   const initial = { ...position(), mode: 'vs-computer' as const };
@@ -128,17 +131,21 @@ it('cancels the computer response on Undo and holds automation until the player 
   act(() => jest.advanceTimersByTime(10000));
   expect(result.current.state).toEqual(initial);
   act(() => result.current.doRedo());
-  act(() => jest.advanceTimersByTime(computerThinkDelayMs('rolling')));
+  await act(async () => {
+    jest.advanceTimersByTime(computerThinkDelayMs('rolling'));
+  });
   expect(result.current.state?.match?.cube.value).toBe(2);
   act(() => result.current.doUndo());
   expect(result.current.state).toEqual(initial);
 });
 
-it('takes back the human answer to a computer offer so a different answer is playable', () => {
+it('takes back the human answer to a computer offer so a different answer is playable', async () => {
   const initial = createPositionState({ placements: [{ point: 21, player: 'black', count: 15 }, { point: 6, player: 'white', count: 15 }], currentPlayer: 'black', mode: 'vs-computer', match: createMatch(0) });
   const { result } = renderHook(() => useGameProviderValue(true));
   act(() => result.current.startFromPosition(initial));
-  act(() => jest.advanceTimersByTime(computerThinkDelayMs('rolling')));
+  await act(async () => {
+    jest.advanceTimersByTime(computerThinkDelayMs('rolling'));
+  });
   expect(result.current.state?.match?.pendingOffer).toBe('black');
   act(() => result.current.matchAction!('accept'));
   act(() => result.current.doUndo());
@@ -147,4 +154,35 @@ it('takes back the human answer to a computer offer so a different answer is pla
   act(() => result.current.matchAction!('drop'));
   expect(result.current.state?.match?.result).toMatchObject({ winner: 'black', points: 1, kind: 'drop' });
   expect(result.current.canRedo).toBe(false);
+});
+
+it('undoes a beaver with its computer response as one human decision', async () => {
+  jest.mocked(analyzeCubeDecision).mockResolvedValueOnce({ actor: 'black', best: 'offer', values: {} }).mockResolvedValueOnce({ actor: 'black', best: 'accept', values: {} });
+  const initial = { ...position(), currentPlayer: 'black' as const, mode: 'vs-computer' as const };
+  initial.match!.beavers = true;
+  const { result } = renderHook(() => useGameProviderValue(true));
+  act(() => result.current.startFromPosition(initial));
+  await act(async () => {
+    jest.advanceTimersByTime(computerThinkDelayMs('rolling'));
+  });
+  act(() => result.current.matchAction!('beaver'));
+  await act(async () => {
+    jest.advanceTimersByTime(computerThinkDelayMs('rolling'));
+  });
+  expect(result.current.state?.match?.cube).toEqual({ value: 4, owner: 'white' });
+  const taken = result.current.state;
+  act(() => result.current.doUndo());
+  expect(result.current.state?.match).toMatchObject({ cube: { value: 1, owner: 'center' }, pendingOffer: 'black' });
+  expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer']);
+  act(() => result.current.doRedo());
+  expect(result.current.state).toEqual(taken);
+});
+
+it('preserves money rules and cube limits when starting a new game', () => {
+  const initial = position();
+  Object.assign(initial.match!, { jacoby: false, beavers: true, cubeLimit: 64 });
+  const { result } = renderHook(() => useGameProviderValue(true));
+  act(() => result.current.startFromPosition(initial));
+  act(() => result.current.resetGame());
+  expect(result.current.state?.match).toMatchObject({ jacoby: false, beavers: true, cubeLimit: 64, cube: { value: 1, owner: 'center' } });
 });

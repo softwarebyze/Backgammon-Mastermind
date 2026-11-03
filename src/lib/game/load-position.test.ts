@@ -1,4 +1,3 @@
-import { computerCubeAction } from './computer-cube';
 import { BAR_POINT } from './constants';
 import { createPositionState } from './create-position';
 import {
@@ -151,15 +150,10 @@ it('the match undo-floor fixture blocks every Black roll after White plays 8→7
 describe('computer match QA presets', () => {
   it('offers from the computer side and reaches Crawford after a drop', () => {
     const state = loadPositionPreset(preset('e2e-computer-match-offer'));
-    expect(computerCubeAction(state)).toBe('offer');
     const dropped = dropDouble(offerDouble(state, 0));
     expect(dropped.match?.score.black).toBe(2);
     const next = nextMatchGame(dropped);
     expect(next.mode).toBe('vs-computer');
     expect(next.match?.crawford).toBe(true);
-  });
-  it.each([['take', 'accept'], ['drop', 'drop']] as const)('provides a deterministic computer %s response', (id, action) => {
-    const state = loadPositionPreset(preset(`e2e-computer-match-${id}`));
-    expect(computerCubeAction(offerDouble(state, 0))).toBe(action);
   });
 });
