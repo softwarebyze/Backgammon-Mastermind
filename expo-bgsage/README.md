@@ -21,7 +21,8 @@ the model and retains upstream MPL attribution for the standard table/functions.
 The engine supports scores through 25-away and cube faces through 32768.
 
 `patches/apply.mjs` applies reviewed, idempotent changes to the pinned source:
-32/64-bit-safe cache rotation and beavers that respect the configured cube cap.
+32/64-bit-safe cache rotation, beavers that respect the configured cube cap,
+and consistent hidden-layer sigmoid saturation on AVX, ARM and WASM.
 The fetch script applies these to both native source trees; the upstream pin is
 unchanged. Never modify ignored vendored sources as the only copy of a fix.
 
