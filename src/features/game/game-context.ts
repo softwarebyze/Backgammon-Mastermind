@@ -30,6 +30,8 @@ export type GameContextType = {
   doRedo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  /** A cube take-back can branch with a new Double or Roll instead of Redo. */
+  canBranchCubeHistory?: boolean;
   isAnimating: boolean;
   moveAnimation: MoveAnimationFrame | null;
   historyPath: HistoryPathOverlay | null;

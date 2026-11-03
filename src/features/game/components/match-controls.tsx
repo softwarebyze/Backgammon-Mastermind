@@ -8,9 +8,9 @@ import { canOfferDouble } from '@/lib/game/match';
 import { translate } from '@/lib/i18n';
 
 export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerTurn }: { state: GameState; onRoll: () => void; onReset: () => void; isHumanTurn: boolean; isComputerTurn: boolean }) {
-  const { matchAction, isAnimating, canRedo } = useGame();
+  const { matchAction, isAnimating, canRedo, canBranchCubeHistory } = useGame();
   const m = state.match!;
-  const blocked = isAnimating || canRedo;
+  const blocked = isAnimating || (canRedo && !canBranchCubeHistory);
   // The offerer remains currentPlayer while the other side answers the cube.
   const humanDecision = state.mode !== 'vs-computer' || m.pendingOffer === 'black';
   if (state.phase !== 'game-over' && (m.pendingOffer ? !humanDecision : !isHumanTurn || isComputerTurn))

@@ -8,6 +8,16 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: Play against the computer
+# Hold the roll while checking cube take-backs; automatic roll behavior has
+# separate coverage, including taking a cube back after a revealed roll.
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- tapOn: Auto-roll dice
+- tapOn:
+    id: stack-escape-button
 - tapOn:
     id: home-format-single
 - assertNotVisible:
@@ -59,6 +69,15 @@ tags:
 - tapOn:
     id: match-accept
 - assertVisible: Cube 2 · Black
+- tapOn:
+    id: header-undo-button
+- assertVisible: Cube 1 · Center
+- assertVisible:
+    id: match-double
+- takeScreenshot: money-undo-taken-double
+- tapOn:
+    id: header-redo-button
+- assertVisible: Cube 2 · Black
 - assertNotVisible:
     id: match-double
 - stopApp
@@ -72,6 +91,12 @@ tags:
     id: resume-game-button
 - assertVisible: Cube 2 · Black
 - takeScreenshot: money-03-cube-restored
+- tapOn:
+    id: header-undo-button
+- assertVisible: Cube 1 · Center
+- assertNotVisible:
+    id: match-accept
+- takeScreenshot: money-undo-after-cold-recovery
 - openLink: ${output.moneyDoubleLink}
 - extendedWaitUntil:
     visible:
@@ -107,6 +132,16 @@ tags:
 - tapOn:
     id: match-double
 - tapOn:
+    id: header-undo-button
+- assertVisible: Cube 1 · Center
+- assertNotVisible:
+    id: match-accept
+- takeScreenshot: money-undo-pending-offer
+- tapOn:
+    id: header-redo-button
+- assertVisible:
+    id: match-accept
+- tapOn:
     id: cube-hint-button
 - extendedWaitUntil:
     visible:
@@ -120,6 +155,15 @@ tags:
     id: match-drop
 - assertVisible: White wins 1 · Pass
 - takeScreenshot: money-06-pass-scored
+- tapOn:
+    id: header-undo-button
+- assertVisible: Cube 1 · Center
+- assertNotVisible:
+    id: match-next
+- takeScreenshot: money-undo-passed-double
+- tapOn:
+    id: header-redo-button
+- assertVisible: White wins 1 · Pass
 - tapOn:
     id: match-next
 - assertVisible: Cube 1 · Center

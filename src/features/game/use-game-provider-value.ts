@@ -12,6 +12,7 @@ import { useGameSelectPoint } from '@/features/game/use-game-select-point';
 import { useGameTimeline } from '@/features/game/use-game-timeline';
 import { useGameUndoRedo } from '@/features/game/use-game-undo-redo';
 import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
+import { useMoneyCubeHistory } from '@/features/game/use-money-cube-history';
 import { useMoveLog } from '@/features/game/use-move-log';
 import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
 import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
@@ -31,6 +32,8 @@ export function useGameProviderValue(active: boolean): GameContextType {
     moveLog,
     cubeEvents,
     recordCubeEvent,
+    getCubeEvents,
+    replaceCubeEvents,
     replayBaseline,
     recordMove,
     recordNoMove,
@@ -93,7 +96,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
    */
   const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending || reviewing;
   const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
-  const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
+  const { doUndo: undoCheckers, doRedo: redoCheckers, canUndo: canUndoCheckers, canRedo: canRedoCheckers, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
     getTimeline,
     getMoveLog,
@@ -116,6 +119,34 @@ export function useGameProviderValue(active: boolean): GameContextType {
       state != null && isAwaitingMoveConfirm(state, loadGamePreferences().confirmMove)
     ),
   });
+  const { canUndo: canUndoCube, canRedo: canRedoCube, undo: undoCube, redo: redoCube, reset: resetCubeHistory } = useMoneyCubeHistory({
+    state,
+    active,
+    blocked: isAnimating || tutorPaused,
+    ply: moveLog.length,
+    events: cubeEvents,
+    getEvents: getCubeEvents,
+    replaceEvents: replaceCubeEvents,
+    getState: getMoveState,
+    getTimeline,
+    setTimeline,
+    commitState: commitHistoryState,
+    prepareHistory,
+  });
+  const canUndo = canUndoCheckers || canUndoCube;
+  const canRedo = canRedoCheckers || canRedoCube;
+  const doUndo = useCallback(() => {
+    if (!undoCube())
+      undoCheckers();
+  }, [undoCube, undoCheckers]);
+  const doRedo = useCallback(() => {
+    if (!redoCube())
+      redoCheckers();
+  }, [redoCube, redoCheckers]);
+  const resetForNewSession = useCallback(() => {
+    resetCubeHistory();
+    resetForNewGame();
+  }, [resetCubeHistory, resetForNewGame]);
   const { clearAITimeout, resumeAIScheduling } = useComputerOpponent({
     enabled: active,
     state,
@@ -149,7 +180,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetTimeline,
     clearTimeline,
     setState,
-    onNewGame: resetForNewGame,
+    onNewGame: resetForNewSession,
   });
   useRestoreGameTimeline({ enabled: active, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
   useGameplayHelpers({
@@ -242,8 +273,8 @@ export function useGameProviderValue(active: boolean): GameContextType {
     armAnimationFinish,
   ]);
 
-  const cubeActionEligibility = useRef({ active, isAnimating, canRedo, tutorPaused });
-  cubeActionEligibility.current = { active, isAnimating, canRedo, tutorPaused };
+  const cubeActionEligibility = useRef({ active, isAnimating, canRedo: canRedoCheckers, tutorPaused });
+  cubeActionEligibility.current = { active, isAnimating, canRedo: canRedoCheckers, tutorPaused };
   const cubeActionStateRef = useRef(state);
   cubeActionStateRef.current = state;
   const matchAction = useCallback((action: 'offer' | 'accept' | 'drop' | 'next') => {
@@ -275,7 +306,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   // Tutor guidance retains callbacks across a rewind. Read eligibility and
   // actions at invocation time so a previously paused render cannot veto replay.
   const humanActionsRef = useRef({ humanCanPlay, canRedo, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint });
-  humanActionsRef.current = { humanCanPlay, canRedo, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint };
+  humanActionsRef.current = { humanCanPlay, canRedo: canRedoCheckers, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint };
   const humanRoll = useCallback(() => {
     const latest = humanActionsRef.current;
     if (latest.humanCanPlay && !latest.canRedo)
@@ -324,6 +355,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     doRedo,
     canUndo,
     canRedo,
+    canBranchCubeHistory: canRedoCube && !canRedoCheckers,
     isAnimating,
     moveAnimation,
     historyPath,

@@ -9,7 +9,7 @@ import { PlayerStrip } from './player-strip';
 import { WinConfettiOverlay } from './win-confetti-overlay';
 
 const mockAction = jest.fn();
-const mockContext = { matchAction: mockAction, isAnimating: false, canRedo: false };
+const mockContext = { matchAction: mockAction, isAnimating: false, canRedo: false, canBranchCubeHistory: false };
 jest.mock('@/features/game/use-game', () => ({
   // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock preserves public hook name
   useGame: () => mockContext,
@@ -19,6 +19,8 @@ afterEach(() => {
   jest.clearAllMocks();
   jest.mocked(useReducedMotion).mockReturnValue(false);
   mockContext.isAnimating = false;
+  mockContext.canRedo = false;
+  mockContext.canBranchCubeHistory = false;
 });
 
 function controls(pendingOffer: 'white' | 'black' | null, currentPlayer: 'white' | 'black') {
@@ -131,4 +133,18 @@ it('shows the match result under the board once a game is won', () => {
   const won = { ...state, phase: 'game-over' as const, winner: 'white' as const, match: { ...state.match!, score: { white: 3, black: 0 }, winner: 'white' as const, result: { winner: 'white' as const, points: 1, kind: 'single' as const } } };
   setup(<GameScreenControls state={won} liveDiceState={won} isHumanTurn isComputerTurn={false} moveLogLength={4} onRoll={jest.fn()} onReset={jest.fn()} />);
   expect(screen.getByTestId('game-action-caption')).toHaveTextContent('White wins the match · +1');
+});
+
+it('lets a cube take-back branch with Double or Roll while checker redo still blocks actions', () => {
+  const state = createMatchGame(0, 'vs-human');
+  state.phase = 'rolling';
+  mockContext.canRedo = true;
+  const props = { state, onRoll: jest.fn(), onReset: jest.fn(), isHumanTurn: true, isComputerTurn: false };
+  const view = setup(<MatchControls {...props} />);
+  expect(screen.getByTestId('match-double')).toBeDisabled();
+  expect(screen.getByTestId('roll-dice-button')).toBeDisabled();
+  mockContext.canBranchCubeHistory = true;
+  view.rerender(<MatchControls {...props} />);
+  expect(screen.getByTestId('match-double')).not.toBeDisabled();
+  expect(screen.getByTestId('roll-dice-button')).not.toBeDisabled();
 });

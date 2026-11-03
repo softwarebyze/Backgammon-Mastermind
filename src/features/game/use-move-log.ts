@@ -124,10 +124,18 @@ export function useMoveLog(liveState: GameState | null) {
     commitLog([...logRef.current, entry]);
   }, [commitLog]);
 
+  const replaceCubeEvents = useCallback((next: CubeHistoryEvent[]) => {
+    eventsRef.current = next;
+    setCubeEvents(next);
+  }, []);
+  const getCubeEvents = useCallback(() => eventsRef.current, []);
+
   const getMoveLog = useCallback(() => logRef.current, []);
 
   return {
     getMoveLog,
+    getCubeEvents,
+    replaceCubeEvents,
     cubeEvents,
     recordCubeEvent,
     moveLog: resolvedLog,
