@@ -26,15 +26,15 @@ tags:
 - tapOn:
     id: match-double
 - assertVisible:
-    id: player-status-white
-    text: Take or pass\?
+    id: player-name-white
+    text: White. Take or pass\?
 - takeScreenshot: cube-turn-white-responds
 - tapOn:
     id: match-accept
 - assertVisible: Cube 4 · White
 - assertVisible:
-    id: player-status-black
-    text: Your turn
+    id: player-name-black
+    text: Black. Your turn
 - takeScreenshot: cube-turn-black-still-rolls
 - tapOn:
     id: header-undo-button
@@ -76,14 +76,14 @@ tags:
     env:
       POSITION_LINK: ${output.moneyPendingDoubleLink}
 - assertVisible:
-    id: player-status-white
-    text: Take or pass\?
+    id: player-name-white
+    text: White. Take or pass\?
 - tapOn:
     id: match-accept
 - assertVisible: Cube 4 · White
 - assertVisible:
-    id: player-status-black
-    text: Your turn
+    id: player-name-black
+    text: Black. Your turn
 - takeScreenshot: cube-position-pending-double-restored
 - runFlow:
     file: ../utils/play-money-position.yaml
@@ -95,6 +95,6 @@ tags:
     id: match-accept
 - assertVisible: Cube 8 · White
 - assertVisible:
-    id: player-status-black
-    text: Your turn
+    id: player-name-black
+    text: Black. Your turn
 - takeScreenshot: cube-position-pending-beaver-restored

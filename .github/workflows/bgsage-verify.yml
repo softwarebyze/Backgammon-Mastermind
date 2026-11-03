@@ -11,6 +11,11 @@ name: bgsage native verify
 
 on:
   workflow_dispatch:
+    inputs:
+      ios_cube_only:
+        description: 'Focused iOS smoke and cube Undo rerun (default runs full verification)'
+        type: boolean
+        default: false
   pull_request:
     branches: [main]
     # This job runs `pnpm type-check` over the whole app and builds both native
@@ -54,6 +59,7 @@ jobs:
       - run: node scripts/verify-bgsage-context.mjs
 
   android:
+    if: ${{ !inputs.ios_cube_only }}
     name: Android — APK build + Maestro engine test
     runs-on: ubuntu-latest
     timeout-minutes: 120
@@ -252,10 +258,15 @@ jobs:
       - name: Run backgammon smoke on iPhone + iPad simulators
         env:
           MAESTRO_CLI_NO_ANALYTICS: '1'
+          IOS_CUBE_ONLY: ${{ inputs.ios_cube_only }}
         run: |
           APP=$(ls -d "$RUNNER_TEMP"/bgsage-dd/Build/Products/Release-iphonesimulator/*.app | head -1)
           echo "app: $APP"
-          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "$GITHUB_WORKSPACE/.maestro/app/position-preview-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/match-seven-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/cube-tutor-beavers.yaml" "$GITHUB_WORKSPACE/.maestro/app/cube-decision-undo.yaml"
+          FLOWS=("$GITHUB_WORKSPACE/.maestro/app/cube-decision-undo.yaml")
+          if [[ "$IOS_CUBE_ONLY" != "true" ]]; then
+            FLOWS=("$GITHUB_WORKSPACE/.maestro/app/position-preview-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/match-seven-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/cube-tutor-beavers.yaml" "${FLOWS[@]}")
+          fi
+          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "${FLOWS[@]}"
 
       - name: Upload iOS Maestro screenshots
         if: always()

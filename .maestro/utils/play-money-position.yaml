@@ -7,11 +7,11 @@ appId: ${APP_ID}
     timeout: 30000
 - runFlow:
     when:
-      visible: 'Take or pass\?'
+      visible: '.*Take or pass\?'
     commands:
       - assertVisible:
-          id: player-status-.*
-          text: 'Doubles to .*'
+          id: player-name-.*
+          text: '.*Doubles to .*'
 - runFlow:
     file: position-scroll.yaml
     env:
