@@ -67,6 +67,13 @@
       "winner": "{{player}}赢得比赛 · +{{points}}",
       "winner_you": "你赢得比赛 · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "关闭 Beavers 以游玩此金钱局局面。",
+      "cube_hint": "加倍提示",
+      "hint_rules": "首次使用加倍骰前，加倍提示需要启用雅可比规则。",
+      "no_double": "不加倍",
+      "rules": "掷骰前可以提议将分数加倍。"
+    },
     "nudge": {
       "roll_first": "请先掷骰子"
     },

@@ -38,7 +38,7 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
     <HoverPressable
       testID="home-start-game"
       accessibilityRole="button"
-      onPress={() => onStart(mode, format === 'match' ? length : null, crawford && length > 1)}
+      onPress={() => onStart(mode, format === 'match' ? length : 0, crawford && length > 1)}
       style={({ pressed, hovered }) => [styles.start, (columns || tight) && styles.startColumns, hovered && styles.hovered, pressed && styles.pressed]}
     >
       <Text style={styles.startText}>

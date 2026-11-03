@@ -7,13 +7,13 @@ export function shouldCelebrateWin(args: {
   mode: GameMode;
   winner: Player | null;
   isReviewing: boolean;
-  match?: Pick<MatchState, 'winner'> | null;
+  match?: Pick<MatchState, 'winner'> & Partial<Pick<MatchState, 'length'>> | null;
 }): boolean {
   const { prevPhase, nextPhase, mode, winner, isReviewing } = args;
   if (isReviewing || !prevPhase || prevPhase === 'game-over' || nextPhase !== 'game-over') {
     return false;
   }
-  if (args.match && !args.match.winner) {
+  if (args.match && args.match.length !== 0 && !args.match.winner) {
     return false;
   }
   if (mode === 'vs-computer' && winner !== 'white') {

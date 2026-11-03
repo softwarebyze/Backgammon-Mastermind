@@ -3,6 +3,7 @@ import type { GameMode, GameState, Player } from '@/lib/game/types';
 import { z } from 'zod';
 import { createInitialPoints } from '@/lib/game/constants';
 import { createPositionState } from '@/lib/game/create-position';
+import { scoreMatchGame } from '@/lib/game/match';
 
 const count = z.number().int().min(0).max(15);
 const player = z.enum(['white', 'black']);
@@ -108,6 +109,10 @@ export function positionFromGame(state: GameState): Position {
   p.borneOff = { ...state.borneOff };
   p.currentPlayer = state.currentPlayer;
   p.context.turnOwner = state.currentPlayer;
+  if (state.match) {
+    const m = state.match;
+    p.context = { ...p.context, matchLength: m.length, scores: { ...m.score }, cubeExponent: Math.log2(m.cube.value), cubeOwner: m.cube.owner === 'center' ? null : m.cube.owner, crawford: m.crawford, crawfordRule: m.crawfordRule, jacoby: m.length === 0 && m.jacoby !== false };
+  }
   const fullRoll = state.dice[0] === state.dice[1] ? 4 : 2;
   p.dice = state.phase === 'moving' && state.remainingDice.length === fullRoll ? [...state.dice] : [0, 0];
   return validatePosition(p);
@@ -126,21 +131,22 @@ export function positionGame(p: Position, mode: GameMode = 'vs-human'): GameStat
   const match = positionMatch(p);
   const withMatch = match ? { ...state, match } : state;
   const winner = p.borneOff.white === 15 ? 'white' : p.borneOff.black === 15 ? 'black' : null;
-  return winner ? { ...withMatch, phase: 'game-over', winner, dice: [0, 0], remainingDice: [] } : withMatch;
+  return winner ? scoreMatchGame({ ...withMatch, phase: 'game-over', winner, dice: [0, 0], remainingDice: [] }) : withMatch;
 }
 
 /**
  * A match position plays on as that match: its score, cube and Crawford
- * game carry into play. Money positions play checkers only.
+ * game carry into play. Money positions retain the cube and Jacoby rule.
  */
 function positionMatch(p: Position): MatchState | undefined {
   const c = p.context;
-  if (!c.matchLength)
-    return undefined;
-  const crawfordRule = c.crawfordRule !== false;
+  if (!c.matchLength && c.beavers)
+    throw new Error('money_beavers_unsupported');
+  const crawfordRule = c.matchLength > 0 && c.crawfordRule !== false;
   const atMatchPoint = c.scores.white === c.matchLength - 1 || c.scores.black === c.matchLength - 1;
   return {
     length: c.matchLength,
+    ...(c.matchLength === 0 ? { jacoby: c.jacoby } : {}),
     score: { ...c.scores },
     // No doubling in the Crawford game: the cube stays at 1 in the middle.
     cube: c.crawford ? { value: 1, owner: 'center' } : { value: 2 ** c.cubeExponent, owner: c.cubeOwner ?? 'center' },

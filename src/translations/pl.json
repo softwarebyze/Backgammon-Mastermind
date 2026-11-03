@@ -67,6 +67,13 @@
       "winner": "{{player}} wygrywa mecz · +{{points}}",
       "winner_you": "Wygrywasz mecz · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Wyłącz Beavers, aby rozegrać tę pozycję na pieniądze.",
+      "cube_hint": "Podpowiedź kubka",
+      "hint_rules": "Podpowiedzi kubka wymagają reguły Jacoby do pierwszego podwojenia.",
+      "no_double": "Nie podwajaj",
+      "rules": "Możesz podwoić stawkę przed rzutem kośćmi."
+    },
     "nudge": {
       "roll_first": "Najpierw rzuć kośćmi"
     },

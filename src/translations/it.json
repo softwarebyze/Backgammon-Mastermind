@@ -67,6 +67,13 @@
       "winner": "{{player}} vince l'incontro · +{{points}}",
       "winner_you": "Vinci l'incontro · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Disattiva Beavers per giocare questa posizione a soldi.",
+      "cube_hint": "Suggerimento sul cubo",
+      "hint_rules": "I suggerimenti sul cubo richiedono Jacoby finché il cubo non è stato usato.",
+      "no_double": "Non raddoppiare",
+      "rules": "Puoi raddoppiare la posta prima di tirare i dadi."
+    },
     "nudge": {
       "roll_first": "Prima lancia i dadi"
     },

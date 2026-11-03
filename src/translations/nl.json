@@ -67,6 +67,13 @@
       "winner": "{{player}} wint de match · +{{points}}",
       "winner_you": "Je wint de match · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Schakel Beavers uit om deze geldspelpositie te spelen.",
+      "cube_hint": "Kubushint",
+      "hint_rules": "Kubushints vereisen Jacoby totdat de kubus is gebruikt.",
+      "no_double": "Niet dubbelen",
+      "rules": "Je kunt de inzet verdubbelen voordat je gooit."
+    },
     "nudge": {
       "roll_first": "Gooi eerst de dobbelstenen"
     },

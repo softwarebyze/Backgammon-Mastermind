@@ -2,7 +2,7 @@ import type { EngineTurnPlan, GameEngine } from './types';
 
 import type { GameState } from '@/lib/game/types';
 
-import { gameStateToSageBoard, planSageTurnFull } from 'expo-bgsage';
+import { gameStateToSageBoard, planSageTurnFull, sageCubeDecision } from 'expo-bgsage';
 
 /**
  * The bgsage neural-net engine, behind the GameEngine interface.
@@ -29,6 +29,13 @@ export const bgsageEngine: GameEngine = {
       equity: plan.equity,
       candidates,
     };
+  },
+
+  async analyzeMoneyCube(state, cube) {
+    const verdict = await sageCubeDecision(state, cube.value, cube.owner, 2);
+    if (![verdict.equityNoDouble, verdict.equityDoubleTake, verdict.equityDoublePass].every(Number.isFinite))
+      throw new Error('bgsage returned no usable cube analysis');
+    return { shouldDouble: verdict.shouldDouble, shouldTake: verdict.shouldTake };
   },
 
   boardAfterTurn(state: GameState): number[] {

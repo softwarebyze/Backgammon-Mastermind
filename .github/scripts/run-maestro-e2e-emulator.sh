@@ -27,6 +27,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/match-board-presentation.yaml" \
   "${WORKSPACE}/.maestro/app/cube-history-autoroll.yaml" \
   "${WORKSPACE}/.maestro/app/match-cube.yaml" \
+  "${WORKSPACE}/.maestro/app/money-cube-hints.yaml" \
   "${WORKSPACE}/.maestro/app/computer-match.yaml" \
   "${WORKSPACE}/.maestro/app/match-polish.yaml" \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \

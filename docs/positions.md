@@ -77,9 +77,12 @@ states and accessible labels. Android targets are at least 48dp, iOS at least
 ## Format and play boundaries
 
 The position document preserves cube, cube owner, scores, match length,
-Crawford/Jacoby flags, pending offers and source-specific context. The current
-game engine supports checker play only. Starting play from a position does not
-apply cube or match scoring; the screen explains this before Play. Full-turn rolls can be replayed from a game snapshot.
+Crawford/Jacoby flags, pending offers and source-specific context. Starting play
+preserves the cube, score and match rules. A zero match length plays a single
+game with a cube and the chosen Jacoby rule; Beavers must be disabled before
+Play. Cube hints support Jacoby money play (and either Jacoby setting after the
+cube has been turned), while match-score cube hints remain unavailable. Full-turn
+rolls can be replayed from a game snapshot.
 
 XGID and GNUID encode positions, not move histories. Full match files such as
 `.mat` and `.sgf`, replay-video sharing (#98), and multiple active games (#73)

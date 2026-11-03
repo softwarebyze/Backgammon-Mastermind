@@ -48,7 +48,7 @@ it('offers one opponent choice and a clear default single-game start', () => {
   expect(screen.queryByTestId('home-match-length-3')).toBeNull();
   expect(useGame().startGame).not.toHaveBeenCalled();
   fireEvent.press(screen.getByRole('button', { name: 'Start game' }));
-  expect(useGame().startGame).toHaveBeenCalledWith('vs-computer');
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-computer', true));
   expect(router.replace).toHaveBeenCalledWith('/game');
 });
 
@@ -62,8 +62,8 @@ it.each(['vs-human', 'vs-computer'] as const)('starts a %s single game only afte
   expect(useGame().startGame).not.toHaveBeenCalled();
   expect(useGame().startFromPosition).not.toHaveBeenCalled();
   fireEvent.press(screen.getByTestId('home-start-game'));
-  expect(useGame().startGame).toHaveBeenCalledWith(mode);
-  expect(useGame().startFromPosition).not.toHaveBeenCalled();
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, mode, true));
+  expect(useGame().startGame).not.toHaveBeenCalled();
 });
 
 it.each([
@@ -141,7 +141,7 @@ it.each(['single', 'match'] as const)('cancels %s replacement without mutation o
   if (format === 'match')
     expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(5, 'vs-human'));
   else
-    expect(useGame().startGame).toHaveBeenCalledWith('vs-human');
+    expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-human', true));
   expect(router.replace).toHaveBeenCalledWith('/game');
   alert.mockRestore();
 });
@@ -212,4 +212,11 @@ it('fits a match on a 320x480 phone: the length row goes without its label', () 
   expect(screen.getByTestId('home-match-length-3')).toBeTruthy();
   expect(screen.queryByText('Match length')).toBeNull();
   dims.mockRestore();
+});
+
+it('starts a money game with its cube and no match target', () => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-format-single'));
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-computer', true));
 });

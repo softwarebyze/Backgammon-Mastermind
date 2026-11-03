@@ -60,7 +60,7 @@ describe('position setup', () => {
     const state = positionGame(p, 'vs-computer');
     expect(state.match).toMatchObject({ length: 7, score: { white: 4, black: 2 }, cube: { value: 4, owner: 'black' }, crawford: false, crawfordPlayed: false });
     expect(gameStateInvariantError(state)).toBeNull();
-    expect(positionGame(newPosition()).match).toBeUndefined();
+    expect(positionGame(newPosition()).match).toMatchObject({ length: 0, jacoby: false, cube: { value: 1, owner: 'center' } });
   });
 
   it('allows no doubling in a Crawford game position', () => {

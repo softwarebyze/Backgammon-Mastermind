@@ -67,6 +67,13 @@
       "winner": "{{player}} 매치 승리 · +{{points}}",
       "winner_you": "매치 승리 · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "이 머니 게임 포지션을 플레이하려면 Beavers를 끄세요.",
+      "cube_hint": "큐브 힌트",
+      "hint_rules": "큐브를 처음 사용하기 전에는 큐브 힌트에 자코비 규칙이 필요합니다.",
+      "no_double": "더블하지 않기",
+      "rules": "주사위를 굴리기 전에 점수를 두 배로 높일 수 있습니다."
+    },
     "nudge": {
       "roll_first": "먼저 주사위를 굴리세요"
     },

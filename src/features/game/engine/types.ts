@@ -36,6 +36,11 @@ export type EngineTurnPlan = {
  * merely rendering a game screen never pays the cost of — or fails on —
  * the engine.
  */
+type EngineCubePlan = {
+  shouldDouble: boolean;
+  shouldTake: boolean;
+};
+
 export type GameEngine = {
   /**
    * Stable id, e.g. 'bgsage'. Used for logging and to tell a real answer
@@ -54,4 +59,6 @@ export type GameEngine = {
    * the analyzed candidates.
    */
   boardAfterTurn: (state: GameState) => number[];
+  /** Money play only: Jacoby on, beavers off; owner is relative to the player on roll. */
+  analyzeMoneyCube?: (state: GameState, cube: { value: number; owner: 0 | 1 | 2 }) => Promise<EngineCubePlan>;
 };

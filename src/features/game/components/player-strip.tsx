@@ -101,7 +101,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
     </Identity>
   );
   const pipCount = <PipCount player={player} pips={pips} off={off} active={active} label={pipsA11y} inline={tight} />;
-  const score = trailing ?? (state.match ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} showLength={!narrow} /> : null);
+  const score = trailing ?? (state.match && state.match.length > 0 ? <MatchScore score={state.match.score[player]} length={state.match.length} player={player} showLength={!narrow} /> : null);
   const stripStyle = [styles.strip, squeeze && styles.stripSqueeze, active && styles.stripActive, won && styles.stripWon];
   const onLayout = (e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width);
 

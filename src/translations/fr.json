@@ -67,6 +67,13 @@
       "winner": "{{player}} gagne le match · +{{points}}",
       "winner_you": "Vous gagnez le match · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Désactivez Beavers pour jouer cette position d’argent.",
+      "cube_hint": "Conseil de videau",
+      "hint_rules": "Les conseils de videau nécessitent Jacoby tant que le videau n’a pas été utilisé.",
+      "no_double": "Ne pas doubler",
+      "rules": "Vous pouvez doubler la mise avant de lancer les dés."
+    },
     "nudge": {
       "roll_first": "Lance d'abord les dés"
     },

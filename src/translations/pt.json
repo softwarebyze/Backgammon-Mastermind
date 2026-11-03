@@ -67,6 +67,13 @@
       "winner": "{{player}} vence a partida · +{{points}}",
       "winner_you": "Você vence a partida · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Desative Beavers para jogar esta posição a dinheiro.",
+      "cube_hint": "Dica do cubo",
+      "hint_rules": "As dicas do cubo exigem Jacoby até o cubo ser usado.",
+      "no_double": "Não dobrar",
+      "rules": "Você pode dobrar a aposta antes de lançar os dados."
+    },
     "nudge": {
       "roll_first": "Lance os dados primeiro"
     },

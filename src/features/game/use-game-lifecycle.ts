@@ -77,6 +77,8 @@ export function useGameLifecycle({
       return;
     }
     const next = state.match ? createMatchGame(state.match.length, state.mode, state.match.crawfordRule !== false) : createInitialState(state.mode);
+    if (next.match && state.match?.length === 0)
+      next.match.jacoby = state.match.jacoby;
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);

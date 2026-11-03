@@ -67,6 +67,13 @@
       "winner": "{{player}} wins the match · +{{points}}",
       "winner_you": "You win the match · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Turn off Beavers to play this money position.",
+      "cube_hint": "Cube hint",
+      "hint_rules": "Cube hints require Jacoby until the cube has been turned.",
+      "no_double": "No double",
+      "rules": "You can double the stakes before rolling."
+    },
     "nudge": {
       "roll_first": "Roll the dice first"
     },

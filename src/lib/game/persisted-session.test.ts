@@ -42,7 +42,8 @@ describe('persisted session schema', () => {
     }));
     expect(save(7).ok).toBe(true);
     expect(save(11).ok).toBe(true);
-    expect(save(0).ok).toBe(false);
+    expect(save(0).ok).toBe(true);
+    expect(save(-1).ok).toBe(false);
   });
 });
 

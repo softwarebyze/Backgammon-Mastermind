@@ -35,7 +35,8 @@ const openingRollsSchema = z.object({
 });
 
 const matchSchema = z.object({
-  length: z.number().int().min(1).max(32767),
+  length: z.number().int().min(0).max(32767),
+  jacoby: z.boolean().optional(),
   score: playerCountSchema,
   cube: z.object({ value: z.number().int().positive().refine(n => Number.isSafeInteger(n) && Math.log2(n) % 1 === 0), owner: z.enum(['white', 'black', 'center']) }),
   pendingOffer: playerSchema.nullable(),
@@ -211,6 +212,8 @@ export function gameStateInvariantError(state: GameState): string | null {
   if (state.match && ((state.match.pendingOffer && (state.match.pendingOffer !== state.currentPlayer || !canOfferDouble({ ...state, match: { ...state.match, pendingOffer: null } }))) || (!!state.match.result !== (state.phase === 'game-over')))) {
     return 'invalid match phase or pending cube offer';
   }
+  if (state.match?.length === 0 && (state.match.crawford || state.match.crawfordPlayed || state.match.winner))
+    return 'money games have no Crawford game or match winner';
   return diceError(state.dice, state.remainingDice)
     ?? phaseWinnerError(state.phase, state.winner)
     ?? selectedPointError(state.selectedPoint)

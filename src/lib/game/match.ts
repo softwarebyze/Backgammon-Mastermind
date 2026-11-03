@@ -2,8 +2,10 @@ import type { GameMode, GameState, Player } from './types';
 import { createInitialState } from './constants';
 
 export type MatchState = {
-  /** Points to win: Home offers odd lengths to 25; a set-up position may carry any length. */
+  /** Points to win (0 for money play without beavers): Home offers odd lengths to 25; a set-up position may carry any length. */
   length: number;
+  /** Money games only. Missing means Jacoby on for older money saves. */
+  jacoby?: boolean;
   score: Record<Player, number>;
   cube: { value: number; owner: Player | 'center' };
   pendingOffer: Player | null;
@@ -20,7 +22,7 @@ export type MatchState = {
 };
 
 export function createMatch(length: number, crawfordRule = true): MatchState {
-  return { length, score: { white: 0, black: 0 }, cube: { value: 1, owner: 'center' }, pendingOffer: null, crawford: false, crawfordPlayed: false, crawfordRule, gameNumber: 1, winner: null, result: null, undoFloor: 0 };
+  return { length, ...(length === 0 ? { jacoby: true } : {}), score: { white: 0, black: 0 }, cube: { value: 1, owner: 'center' }, pendingOffer: null, crawford: false, crawfordPlayed: false, crawfordRule: length > 0 && crawfordRule, gameNumber: 1, winner: null, result: null, undoFloor: 0 };
 }
 
 export function createMatchGame(length: number, mode: GameMode = 'vs-human', crawfordRule = true): GameState {
@@ -33,7 +35,8 @@ export function canOfferDouble(state: GameState): boolean {
   return !!m && state.phase === 'rolling' && !m.pendingOffer
     && !m.winner && !m.result && !m.crawford
     && (m.cube.owner === 'center' || m.cube.owner === state.currentPlayer)
-    && m.score[state.currentPlayer] + m.cube.value < m.length;
+    && Number.isSafeInteger(m.cube.value * 2)
+    && (m.length === 0 || m.score[state.currentPlayer] + m.cube.value < m.length);
 }
 
 export function offerDouble(state: GameState, ply: number): GameState {
@@ -54,9 +57,11 @@ function award(state: GameState, winner: Player, kind: NonNullable<MatchState['r
   const m = state.match;
   if (!m || m.result)
     return state;
+  if (m.length === 0 && m.jacoby !== false && m.cube.value === 1 && kind !== 'drop')
+    kind = 'single';
   const points = m.cube.value * (kind === 'backgammon' ? 3 : kind === 'gammon' ? 2 : 1);
   const score = { ...m.score, [winner]: m.score[winner] + points };
-  return { ...state, phase: 'game-over', winner, remainingDice: [], selectedPoint: null, legalMovesForSelected: [], match: { ...m, score, pendingOffer: null, winner: score[winner] >= m.length ? winner : null, result: { winner, points, kind } } };
+  return { ...state, phase: 'game-over', winner, remainingDice: [], selectedPoint: null, legalMovesForSelected: [], match: { ...m, score, pendingOffer: null, winner: m.length > 0 && score[winner] >= m.length ? winner : null, result: { winner, points, kind } } };
 }
 
 export function dropDouble(state: GameState): GameState {
@@ -82,7 +87,7 @@ export function nextMatchGame(state: GameState): GameState {
   const m = state.match;
   if (!m?.result || m.winner)
     return state;
-  const crawford = m.crawfordRule !== false && !m.crawfordPlayed && (m.score.white === m.length - 1 || m.score.black === m.length - 1);
+  const crawford = m.length > 0 && m.crawfordRule !== false && !m.crawfordPlayed && (m.score.white === m.length - 1 || m.score.black === m.length - 1);
   // Every game uses the normal opening roll; previous game winner has no privilege.
   return { ...createInitialState(state.mode), match: { ...m, cube: { value: 1, owner: 'center' }, pendingOffer: null, result: null, gameNumber: m.gameNumber + 1, crawford, crawfordPlayed: m.crawfordPlayed || crawford, undoFloor: 0 } };
 }

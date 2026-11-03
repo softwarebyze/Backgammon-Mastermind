@@ -362,7 +362,7 @@ function ActionControl({
   // draws best-move arrows after take-back, which restores turn start.
   if (state.phase === 'moving' && isHumanTurn && !isReviewing && isTurnStart(state)) {
     // The engine weighs money play only; at a match score its advice can be wrong, so say why Hint is missing.
-    if (state.match) {
+    if (state.match && state.match.length > 0) {
       return (
         <View style={styles.actionSpacer}>
           <Text style={styles.matchAdviceNote} numberOfLines={2} testID="match-advice-note">{translate('game.match.advice_note')}</Text>

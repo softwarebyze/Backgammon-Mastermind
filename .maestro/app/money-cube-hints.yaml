@@ -1,0 +1,118 @@
+# Money cube: real engine no-double/double/take/pass, ownership and cold recovery.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-format-single
+- assertNotVisible:
+    id: home-format-money
+- takeScreenshot: money-00-home
+- runScript: ../utils/money-position-link.js
+- openLink: ${output.moneyNoDoubleLink}
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: position-mode-human
+    direction: DOWN
+- tapOn:
+    id: position-mode-human
+- tapOn:
+    id: position-play
+- extendedWaitUntil:
+    visible:
+      id: cube-hint-button
+    timeout: 30000
+- tapOn:
+    id: cube-hint-button
+- extendedWaitUntil:
+    visible: No double
+    timeout: 45000
+- takeScreenshot: money-01-no-double
+- tapOn:
+    id: cube-hint-dismiss
+- assertVisible: Cube 1 · Center
+- tapOn:
+    id: match-double
+- tapOn:
+    id: cube-hint-button
+- extendedWaitUntil:
+    visible:
+      id: cube-hint-result
+      text: Take
+    timeout: 45000
+- takeScreenshot: money-02-take-hint
+- tapOn:
+    id: cube-hint-dismiss
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 2 · Black
+- assertNotVisible:
+    id: match-double
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 45000
+- tapOn:
+    id: resume-game-button
+- assertVisible: Cube 2 · Black
+- takeScreenshot: money-03-cube-restored
+- openLink: ${output.moneyDoubleLink}
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- scrollUntilVisible:
+    element:
+      id: position-mode-human
+    direction: DOWN
+- tapOn:
+    id: position-mode-human
+- tapOn:
+    id: position-play
+- tapOn: New game
+- extendedWaitUntil:
+    visible:
+      id: cube-hint-button
+    timeout: 30000
+- tapOn:
+    id: cube-hint-button
+- extendedWaitUntil:
+    visible:
+      id: cube-hint-result
+      text: Double
+    timeout: 45000
+- takeScreenshot: money-04-double-hint
+- tapOn:
+    id: cube-hint-dismiss
+- tapOn:
+    id: match-double
+- tapOn:
+    id: cube-hint-button
+- extendedWaitUntil:
+    visible:
+      id: cube-hint-result
+      text: Pass
+    timeout: 45000
+- takeScreenshot: money-05-pass-hint
+- tapOn:
+    id: cube-hint-dismiss
+- tapOn:
+    id: match-drop
+- assertVisible: White wins 1 · Pass
+- takeScreenshot: money-06-pass-scored
+- tapOn:
+    id: match-next
+- assertVisible: Cube 1 · Center
+- assertNotVisible: Crawford game · no doubling

@@ -67,6 +67,13 @@
       "winner": "{{player}} gana el encuentro · +{{points}}",
       "winner_you": "Ganas el encuentro · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Desactiva Beavers para jugar esta posición por dinero.",
+      "cube_hint": "Consejo de cubo",
+      "hint_rules": "Los consejos de cubo requieren Jacoby hasta que se haya doblado.",
+      "no_double": "No doblar",
+      "rules": "Puedes doblar la apuesta antes de tirar los dados."
+    },
     "nudge": {
       "roll_first": "Primero tira los dados"
     },

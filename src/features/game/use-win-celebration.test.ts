@@ -77,3 +77,7 @@ describe('match celebrations', () => {
     expect(shouldCelebrateWin({ ...transition, match: null })).toBe(true);
   });
 });
+
+it('celebrates a single-game win with a playable cube', () => {
+  expect(shouldCelebrateWin({ prevPhase: 'moving', nextPhase: 'game-over', mode: 'vs-computer', winner: 'white', isReviewing: false, match: { length: 0, winner: null } })).toBe(true);
+});

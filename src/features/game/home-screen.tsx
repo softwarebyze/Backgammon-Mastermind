@@ -108,7 +108,7 @@ export function HomeScreen() {
             ...settingProperties(preferences),
             ...(length ? { match_length: length, crawford_rule: crawfordRule } : {}),
           });
-          if (length)
+          if (length !== null)
             startFromPosition(createMatchGame(length, mode, crawfordRule));
           else
             startGame(mode);

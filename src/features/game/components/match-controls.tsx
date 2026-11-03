@@ -1,6 +1,7 @@
 import type { GameState } from '@/lib/game';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
+import { MoneyCubeHintButton } from '@/features/game/components/money-cube-hint-button';
 import { controlButtonStyles } from '@/features/game/control-buttons';
 import { useGame } from '@/features/game/use-game';
 import { canOfferDouble } from '@/lib/game/match';
@@ -33,6 +34,7 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
   return (
     <View style={styles.wrap}>
       <View style={styles.row}>
+        {m.length === 0 && state.phase === 'rolling' && !m.result && (m.pendingOffer || canOfferDouble(state)) && <MoneyCubeHintButton state={state} disabled={blocked} />}
         {m.pendingOffer
           ? (
               <>
@@ -55,7 +57,7 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
 const styles = StyleSheet.create({
   wrap: { width: '100%', alignItems: 'center' },
   row: { width: '100%', flexDirection: 'row', gap: 10, justifyContent: 'center' },
-  button: { paddingHorizontal: 20, minWidth: 96, flexShrink: 1 },
+  button: { paddingHorizontal: 12, minWidth: 68, flexShrink: 1 },
   hover: { opacity: 0.85 },
   dim: { opacity: 0.5 },
 });

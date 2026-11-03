@@ -38,6 +38,8 @@ function initialPosition(data: string | string[] | undefined): { position: Posit
 }
 
 function validationError(position: Position): string {
+  if (position.context.matchLength === 0 && position.context.beavers)
+    return translate('game.money.beavers_unsupported');
   try {
     validatePosition(position);
     return '';

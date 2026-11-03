@@ -67,6 +67,13 @@
       "winner": "{{player}}がマッチに勝利 · +{{points}}",
       "winner_you": "マッチに勝利 · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "このマネーゲームの局面をプレイするには、Beaversをオフにしてください。",
+      "cube_hint": "キューブのヒント",
+      "hint_rules": "キューブの初回使用までは、ヒントにジャコビールールが必要です。",
+      "no_double": "ダブルしない",
+      "rules": "ダイスを振る前に、得点の倍増を提案できます。"
+    },
     "nudge": {
       "roll_first": "先にサイコロを振ってください"
     },

@@ -29,6 +29,12 @@ export function computerCubeAction(state: GameState): 'offer' | 'accept' | 'drop
   const m = state.match;
   if (state.mode !== 'vs-computer' || !m || m.result || m.winner || state.phase !== 'rolling')
     return null;
+  if (m.length === 0) {
+    const p = winEstimate(state);
+    if (m.pendingOffer === 'white')
+      return p >= 0.25 ? 'accept' : 'drop';
+    return state.currentPlayer === 'black' && canOfferDouble(state) && p >= 0.70 && p <= 0.85 ? 'offer' : null;
+  }
   const blackAway = m.length - m.score.black;
   const whiteAway = m.length - m.score.white;
   const p = winEstimate(state);

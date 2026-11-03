@@ -67,6 +67,13 @@
       "winner": "{{player}} gewinnt das Match · +{{points}}",
       "winner_you": "Du gewinnst das Match · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Beaver ausschalten, um diese Geldspielstellung zu spielen.",
+      "cube_hint": "Würfelhinweis",
+      "hint_rules": "Würfelhinweise erfordern Jacoby, bis der Doppler verwendet wurde.",
+      "no_double": "Nicht doppeln",
+      "rules": "Vor dem Würfeln kannst du den Einsatz verdoppeln."
+    },
     "nudge": {
       "roll_first": "Würfle zuerst"
     },

@@ -67,6 +67,13 @@
       "winner": "{{player}} maçı kazandı · +{{points}}",
       "winner_you": "Maçı kazandınız · +{{points}}"
     },
+    "money": {
+      "beavers_unsupported": "Bu para oyunu konumunu oynamak için Beavers seçeneğini kapatın.",
+      "cube_hint": "Katlama ipucu",
+      "hint_rules": "Küp kullanılana kadar katlama ipuçları için Jacoby gereklidir.",
+      "no_double": "Katlama",
+      "rules": "Zar atmadan önce bahsi ikiye katlayabilirsiniz."
+    },
     "nudge": {
       "roll_first": "Önce zarları at"
     },
