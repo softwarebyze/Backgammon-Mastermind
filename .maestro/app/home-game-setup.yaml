@@ -26,8 +26,11 @@ tags:
     visible:
       id: game-board-slot
     timeout: 45000
-- assertNotVisible:
+# A single game is played for money: its title says so, with no match length.
+- assertVisible:
     id: match-score
+    text: 'Single game.*'
+- assertNotVisible: 'Match to.*'
 - takeScreenshot: home-setup-vs-human-single-started
 - runFlow:
     file: ../utils/launch-app.yaml
