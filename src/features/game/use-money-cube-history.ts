@@ -18,16 +18,15 @@ function undoGroup(state: GameState | null, events: CubeHistoryEvent[], ply: num
     || boardKey(state) !== boardKey(last.after) || JSON.stringify(state.match) !== JSON.stringify(last.after.match)) {
     return [];
   }
+  // Pass-and-play: each tap belongs to one player. Taking back a Take must
+  // leave the offer visible, rather than erasing the entire exchange.
+  if (state.mode !== 'vs-computer')
+    return [last];
   const start = events.findLastIndex(event => event.kind === 'offer');
-  if (start < 0 || events[start]!.afterPly !== ply)
-    return [];
-  // Against the computer, take back your answer so you can choose Take or
-  // Pass again, rather than leaving a computer-to-roll position waiting on you.
-  if (state.mode === 'vs-computer' && events[start]!.player === 'black') {
-    const answer = events.findLastIndex(event => event.afterPly === ply && event.player === 'white');
-    return answer > start ? events.slice(answer) : [];
-  }
-  return events.slice(start);
+  const human = events.findLastIndex((event, index) => index >= start && event.player === 'white' && event.afterPly === ply);
+  // Group automatic computer replies with the human choice that caused them.
+  // A computer offer by itself cannot be taken back on the computer's behalf.
+  return human >= 0 ? events.slice(human) : [];
 }
 
 type Options = {

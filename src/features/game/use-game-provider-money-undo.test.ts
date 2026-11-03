@@ -29,18 +29,20 @@ it.each(['pending', 'accept', 'drop'] as const)('undoes a %s double from setup a
   const initial = position();
   act(() => result.current.startFromPosition(initial));
   act(() => result.current.matchAction!('offer'));
+  const offered = result.current.state;
   if (answer !== 'pending')
     act(() => result.current.matchAction!(answer));
   const after = result.current.state;
   const events = result.current.cubeEvents;
   expect(result.current.canUndo).toBe(true);
   act(() => result.current.doUndo());
-  expect(result.current.state).toEqual(initial);
-  expect(result.current.cubeEvents).toEqual([]);
+  const expected = answer === 'pending' ? initial : offered;
+  expect(result.current.state).toEqual(expected);
+  expect(result.current.cubeEvents).toHaveLength(answer === 'pending' ? 0 : 1);
   expect(result.current.moveLog).toEqual([]);
   expect(result.current.canRedo).toBe(true);
-  expect(loadPersistedSession()?.state).toEqual(initial);
-  expect(loadPersistedSession()?.cubeEvents).toEqual([]);
+  expect(loadPersistedSession()?.state).toEqual(expected);
+  expect(loadPersistedSession()?.cubeEvents).toEqual(result.current.cubeEvents);
   act(() => result.current.doRedo());
   expect(result.current.state).toEqual(after);
   expect(result.current.cubeEvents).toEqual(events);
@@ -73,7 +75,8 @@ it('can undo after a taken double and a revealed roll, before playing a checker'
   const rolled = result.current.state;
   expect(rolled?.phase).toBe('moving');
   act(() => result.current.doUndo());
-  expect(result.current.state).toEqual(initial);
+  expect(result.current.state?.match?.pendingOffer).toBe('white');
+  expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer']);
   act(() => result.current.doRedo());
   expect(result.current.state).toEqual(rolled);
 });
@@ -94,8 +97,13 @@ it('undoes checker moves before the double, without leaving stale cube history',
   expect(result.current.moveLog).toHaveLength(0);
   expect(result.current.state?.match?.cube.value).toBe(2);
   act(() => result.current.doUndo());
+  expect(result.current.state?.match?.pendingOffer).toBe('white');
+  expect(result.current.cubeEvents).toHaveLength(1);
+  act(() => result.current.doUndo());
   expect(result.current.state).toEqual(initial);
   expect(result.current.cubeEvents).toHaveLength(0);
+  act(() => result.current.doRedo());
+  expect(result.current.state?.match?.pendingOffer).toBe('white');
   act(() => result.current.doRedo());
   expect(result.current.state?.match?.cube.value).toBe(2);
   act(() => result.current.doRedo());
@@ -185,4 +193,23 @@ it('preserves money rules and cube limits when starting a new game', () => {
   act(() => result.current.startFromPosition(initial));
   act(() => result.current.resetGame());
   expect(result.current.state?.match).toMatchObject({ jacoby: false, beavers: true, cubeLimit: 64, cube: { value: 1, owner: 'center' } });
+});
+
+it('undoes White taking Black’s double without clearing the offer or setup position', () => {
+  const initial = createPositionState({ placements: [{ point: 23, player: 'black', count: 2 }, { point: 1, player: 'white', count: 2 }], borneOff: { black: 13, white: 13 }, currentPlayer: 'black', mode: 'vs-human', match: { ...createMatch(0), cube: { value: 2, owner: 'black' } } });
+  const { result } = renderHook(() => useGameProviderValue(true));
+  act(() => result.current.startFromPosition(initial));
+  act(() => result.current.matchAction!('offer'));
+  const offered = result.current.state;
+  act(() => result.current.matchAction!('accept'));
+  expect(result.current.state?.match?.cube).toEqual({ value: 4, owner: 'white' });
+  act(() => result.current.doUndo());
+  expect(result.current.state).toEqual(offered);
+  expect(result.current.state?.points).toEqual(initial.points);
+  expect(result.current.cubeEvents?.map(e => [e.kind, e.player])).toEqual([['offer', 'black']]);
+  expect(loadPersistedSession()?.cubeEvents).toHaveLength(1);
+  act(() => result.current.matchAction!('drop'));
+  expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer', 'drop']);
+  expect(result.current.canRedo).toBe(false);
+  expect(result.current.state?.match?.result).toMatchObject({ winner: 'black', points: 2 });
 });

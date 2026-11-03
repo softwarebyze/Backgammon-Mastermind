@@ -112,7 +112,9 @@ tags:
 - takeScreenshot: cube-beaver-drop
 - tapOn:
     id: header-undo-button
-- assertVisible: Cube 1 · Center
+- assertVisible:
+    id: match-accept
+- assertVisible: '.*Black keeps the cube.*'
 - tapOn:
     id: header-redo-button
 - assertVisible: Black wins 2 · Pass

@@ -78,11 +78,16 @@ states and accessible labels. Android targets are at least 48dp, iOS at least
 
 The position document preserves cube, cube owner, scores, match length,
 Crawford/Jacoby flags, pending offers and source-specific context. Starting play
-preserves the cube, score and match rules. A zero match length plays a single
-game with a cube and the chosen Jacoby rule; Beavers must be disabled before
-Play. Cube hints support Jacoby money play (and either Jacoby setting after the
-cube has been turned), while match-score cube hints remain unavailable. Full-turn
-rolls can be replayed from a game snapshot.
+preserves the cube, score, match rules and pending double or beaver response.
+A zero match length plays a single game with the chosen Jacoby and Beavers
+rules. Hint, Tutor and computer play share the same cube-aware analysis for
+single games and matches; match analysis supports up to 25 points away.
+Undo rewinds one human cube decision and retains earlier offers in history.
+Full-turn rolls can be replayed from a game snapshot. Play reports a conversion
+limitation for raccoons, resignations or a pending offer combined with rolled
+dice, rather than discarding that context. Select a player to roll in the editor
+to start a fresh turn instead. Engine details and model limits are documented in
+[the engine README](../expo-bgsage/README.md).
 
 XGID and GNUID encode positions, not move histories. Full match files such as
 `.mat` and `.sgf`, replay-video sharing (#98), and multiple active games (#73)

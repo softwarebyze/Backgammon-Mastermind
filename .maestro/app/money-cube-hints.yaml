@@ -71,10 +71,17 @@ tags:
 - assertVisible: Cube 2 · Black
 - tapOn:
     id: header-undo-button
-- assertVisible: Cube 1 · Center
 - assertVisible:
-    id: match-double
+    id: match-accept
+- assertVisible: 'White doubles to 2.*'
 - takeScreenshot: money-undo-taken-double
+- tapOn:
+    id: header-undo-button
+- assertVisible: Cube 1 · Center
+- tapOn:
+    id: header-redo-button
+- assertVisible:
+    id: match-accept
 - tapOn:
     id: header-redo-button
 - assertVisible: Cube 2 · Black
@@ -93,9 +100,9 @@ tags:
 - takeScreenshot: money-03-cube-restored
 - tapOn:
     id: header-undo-button
-- assertVisible: Cube 1 · Center
-- assertNotVisible:
+- assertVisible:
     id: match-accept
+- assertVisible: 'White doubles to 2.*'
 - takeScreenshot: money-undo-after-cold-recovery
 - openLink: ${output.moneyDoubleLink}
 - extendedWaitUntil:
@@ -157,7 +164,8 @@ tags:
 - takeScreenshot: money-06-pass-scored
 - tapOn:
     id: header-undo-button
-- assertVisible: Cube 1 · Center
+- assertVisible:
+    id: match-accept
 - assertNotVisible:
     id: match-next
 - takeScreenshot: money-undo-passed-double

@@ -26,10 +26,9 @@ tags:
     visible:
       id: game-board-slot
     timeout: 45000
-# A single game is played for money: its title says so, with no match length.
-- assertVisible:
+# The single-game board has no redundant format heading.
+- assertNotVisible:
     id: match-score
-    text: 'Single game.*'
 - assertNotVisible: 'Match to.*'
 - takeScreenshot: home-setup-vs-human-single-started
 - runFlow:

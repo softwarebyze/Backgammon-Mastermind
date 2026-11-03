@@ -5,16 +5,20 @@ appId: ${APP_ID}
     visible:
       id: position-screen
     timeout: 30000
-- scrollUntilVisible:
-    element:
-      id: position-mode-human
-    direction: DOWN
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-mode-human
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-mode-human
-- scrollUntilVisible:
-    element:
-      id: position-play
-    direction: DOWN
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-play
+      START_Y: '80%'
+      END_Y: '25%'
 - tapOn:
     id: position-play
 - runFlow:

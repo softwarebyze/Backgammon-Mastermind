@@ -1,4 +1,4 @@
-import { canOfferDouble } from '@/lib/game/match';
+import { acceptDouble, beaverDouble, canOfferDouble, offerDouble } from '@/lib/game/match';
 import { gameStateInvariantError } from '@/lib/game/persisted-session';
 import { editCheckers, newPosition, positionFromGame, positionGame, validatePosition, withCrawfordGame } from './position';
 
@@ -61,6 +61,35 @@ describe('position setup', () => {
     expect(state.match).toMatchObject({ length: 7, score: { white: 4, black: 2 }, cube: { value: 4, owner: 'black' }, crawford: false, crawfordPlayed: false });
     expect(gameStateInvariantError(state)).toBeNull();
     expect(positionGame(newPosition()).match).toMatchObject({ length: 0, jacoby: false, cube: { value: 1, owner: 'center' } });
+  });
+
+  it.each([false, true])('keeps pending cube decisions through snapshot and Play (beaver: %s)', (beaver) => {
+    const p = newPosition();
+    p.currentPlayer = 'black';
+    p.context.beavers = true;
+    p.context.cubeExponent = 1;
+    p.context.cubeOwner = 'black';
+    const offered = offerDouble(positionGame(p), 0);
+    const pending = beaver ? beaverDouble(offered) : offered;
+    const snapshot = positionFromGame(pending);
+    expect(snapshot.context.doubleAction).toBe(beaver ? 'B' : 'D');
+    const restored = positionGame(snapshot);
+    expect(restored.currentPlayer).toBe('black');
+    expect(restored.match).toMatchObject({ pendingOffer: beaver ? 'white' : 'black', cube: pending.match!.cube });
+    expect(!!restored.match!.pendingBeaver).toBe(beaver);
+    expect(gameStateInvariantError(restored)).toBeNull();
+    expect(acceptDouble(restored).match!.cube).toEqual({ value: beaver ? 8 : 4, owner: 'white' });
+  });
+
+  it('refuses to silently erase an unsupported or impossible pending decision on Play', () => {
+    const p = newPosition();
+    p.context.doubleAction = 'R';
+    expect(() => positionGame(p)).toThrow('conversion');
+    p.context.doubleAction = 'D';
+    expect(() => positionGame(p)).toThrow('context');
+    p.context.turnOwner = 'black';
+    p.dice = [3, 2];
+    expect(() => positionGame(p)).toThrow('conversion');
   });
 
   it('allows no doubling in a Crawford game position', () => {

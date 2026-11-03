@@ -4,13 +4,14 @@ import type { GameState, Player } from '@/lib/game';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-
 import { AnimatedNumber } from '@/components/ui/animated-number';
+
 import { CheckerToken } from '@/features/game/components/board/checker-token';
 import { StrategyChip } from '@/features/game/components/strategy-chip';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy } from '@/features/game/strategy';
 import { calculatePipCount } from '@/lib/game';
+import { getActingPlayer } from '@/lib/game/turn-display';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
@@ -48,7 +49,8 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const turnStatus = playerStripStatus(state, player, headlineOverride);
   const status = turnStatus ?? idleStatus ?? null;
   const gameOver = state.phase === 'game-over';
-  const active = gameOver ? state.winner === player : state.currentPlayer === player;
+  const actor = getActingPlayer(state);
+  const active = gameOver ? state.winner === player : actor === player;
   const won = gameOver && state.winner === player;
   const pips = calculatePipCount(state, player);
   const off = state.borneOff[player];
@@ -87,7 +89,8 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
       accessibilityLabel={status ? `${name}. ${status}` : name}
       style={styles.identity}
       testID={`player-name-${player}`}
-      {...(onPress ? { onPress, accessibilityHint: pressHint, accessibilityState: { selected: active } } : null)}
+      accessibilityState={{ selected: active }}
+      {...(onPress ? { onPress, accessibilityHint: pressHint } : null)}
     >
       <View style={[styles.tokenRing, active && styles.tokenRingActive]}>
         <CheckerToken player={player} size={TOKEN_SIZE} />

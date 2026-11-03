@@ -3,7 +3,7 @@ import type { GameMode, GameState, Player } from '@/lib/game/types';
 import { z } from 'zod';
 import { createInitialPoints } from '@/lib/game/constants';
 import { createPositionState } from '@/lib/game/create-position';
-import { scoreMatchGame } from '@/lib/game/match';
+import { canOfferDouble, scoreMatchGame } from '@/lib/game/match';
 
 const count = z.number().int().min(0).max(15);
 const player = z.enum(['white', 'black']);
@@ -111,8 +111,10 @@ export function positionFromGame(state: GameState): Position {
   p.context.turnOwner = state.currentPlayer;
   if (state.match) {
     const m = state.match;
-    p.context = { ...p.context, matchLength: m.length, scores: { ...m.score }, cubeExponent: Math.log2(m.cube.value), cubeOwner: m.cube.owner === 'center' ? null : m.cube.owner, crawford: m.crawford, crawfordRule: m.crawfordRule, jacoby: m.length === 0 && m.jacoby !== false, beavers: !!m.beavers, maxCube: Math.log2(m.cubeLimit ?? 32768) };
+    p.context = { ...p.context, doubleAction: m.pendingOffer ? (m.pendingBeaver ? 'B' : 'D') : '', matchLength: m.length, scores: { ...m.score }, cubeExponent: Math.log2(m.cube.value), cubeOwner: m.cube.owner === 'center' ? null : m.cube.owner, crawford: m.crawford, crawfordRule: m.crawfordRule, jacoby: m.length === 0 && m.jacoby !== false, beavers: !!m.beavers, maxCube: Math.log2(m.cubeLimit ?? 32768) };
   }
+  if (state.match?.pendingOffer)
+    p.currentPlayer = state.match.pendingOffer === 'white' ? 'black' : 'white';
   const fullRoll = state.dice[0] === state.dice[1] ? 4 : 2;
   p.dice = state.phase === 'moving' && state.remainingDice.length === fullRoll ? [...state.dice] : [0, 0];
   return validatePosition(p);
@@ -120,16 +122,31 @@ export function positionFromGame(state: GameState): Position {
 
 export function positionGame(p: Position, mode: GameMode = 'vs-human'): GameState {
   validatePosition(p);
+  const c = p.context;
+  // Preserve interchange context, but refuse to silently discard unsupported decisions.
+  if (c.doubleAction === 'R' || c.resignation || (c.doubleAction && p.dice[0]))
+    throw new PositionFormatError('conversion');
   const state = createPositionState({
     placements: p.points.flatMap((point, i) => point.player ? [{ point: i, player: point.player, count: point.count }] : []),
     bar: p.bar,
     borneOff: p.borneOff,
-    currentPlayer: p.currentPlayer,
+    currentPlayer: c.doubleAction ? c.turnOwner : p.currentPlayer,
     mode,
     dice: p.dice[0] ? p.dice : undefined,
   });
   const match = positionMatch(p);
   const withMatch = match ? { ...state, match } : state;
+  if (c.doubleAction) {
+    const offerer = p.currentPlayer === 'white' ? 'black' : 'white';
+    if (c.doubleAction === 'D') {
+      if (offerer !== state.currentPlayer || !canOfferDouble({ ...state, match: { ...match!, pendingOffer: null } }))
+        throw new PositionFormatError('context');
+    }
+    else if (c.matchLength || !c.beavers || offerer === state.currentPlayer
+      || c.cubeOwner !== offerer || c.cubeExponent < 1 || c.cubeExponent >= c.maxCube || c.crawford) {
+      throw new PositionFormatError('context');
+    }
+  }
   const winner = p.borneOff.white === 15 ? 'white' : p.borneOff.black === 15 ? 'black' : null;
   return winner ? scoreMatchGame({ ...withMatch, phase: 'game-over', winner, dice: [0, 0], remainingDice: [] }) : withMatch;
 }
@@ -149,7 +166,8 @@ function positionMatch(p: Position): MatchState | undefined {
     score: { ...c.scores },
     // No doubling in the Crawford game: the cube stays at 1 in the middle.
     cube: c.crawford ? { value: 1, owner: 'center' } : { value: 2 ** c.cubeExponent, owner: c.cubeOwner ?? 'center' },
-    pendingOffer: null,
+    pendingOffer: c.doubleAction ? (p.currentPlayer === 'white' ? 'black' : 'white') : null,
+    ...(c.doubleAction === 'B' ? { pendingBeaver: true } : {}),
     crawford: c.crawford,
     // Someone at match point outside the Crawford game means it has been played.
     crawfordPlayed: c.crawford || (crawfordRule && atMatchPoint),

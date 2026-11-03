@@ -3,8 +3,8 @@ import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState, StyleSheet, Text, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
-
 import { CubeTutorOverlay } from '@/features/game/components/cube-tutor-overlay';
+
 import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -31,6 +31,7 @@ import { SavePositionDialog } from '@/features/positions/save-position-dialog';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
+import { getActingPlayer } from '@/lib/game/turn-display';
 import { translate } from '@/lib/i18n';
 import { useHardwareBackPress } from '@/lib/navigation/use-hardware-back-press';
 import { interFont } from '@/lib/ui/fonts';
@@ -201,7 +202,7 @@ export function GameScreen() {
     confirmHoldSegments,
   });
   const state = board.boardState!;
-  const isComputerTurn = state.mode === 'vs-computer' && state.currentPlayer === 'black';
+  const isComputerTurn = state.mode === 'vs-computer' && getActingPlayer(state) === 'black';
   // Pause interaction while the blunder prompt is open or a verdict is pending.
   const interactionEnabled = board.interactionEnabled && !tutorPaused;
   // Revealed solution view: a display-only preview of the turn-start board

@@ -32,8 +32,6 @@ type Props = {
  */
 /** "Match to 5 · Game 2", or the Crawford notice while the Crawford game is still being played. */
 function matchTitle(match: NonNullable<GameState['match']>): string {
-  if (match.length === 0)
-    return translate('home.setup.single');
   return match.crawford && !match.winner
     ? translate('game.match.crawford')
     : translate('game.match.title', { length: match.length, game: match.gameNumber });
@@ -56,7 +54,7 @@ export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onRes
   );
   // Portrait keeps the title line in single games too, so the board sits at
   // the same place and size whether or not a match is on.
-  if (!match) {
+  if (!match || match.length === 0) {
     return compact
       ? row
       : (
@@ -73,7 +71,7 @@ export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onRes
         testID="match-score"
         style={styles.title}
         numberOfLines={1}
-        accessibilityLabel={match.length === 0 ? (match.jacoby === false ? matchTitle(match) : `${matchTitle(match)}. ${translate('game.money.rules')}`) : `${matchTitle(match)}. ${translate('game.match.score', { white: match.score.white, black: match.score.black })}`}
+        accessibilityLabel={`${matchTitle(match)}. ${translate('game.match.score', { white: match.score.white, black: match.score.black })}`}
         accessibilityLiveRegion="polite"
       >
         {matchTitle(match)}

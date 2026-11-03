@@ -15,7 +15,16 @@ const board = Array(26).fill(0);
 board[6] = 15; board[19] = -15;
 const starting = Array(26).fill(0);
 for (const [point, count] of [[24, 2], [13, 5], [8, 3], [6, 5], [1, -2], [12, -5], [17, -3], [19, -5]]) starting[point] = count;
+const computerOffer = Array(26).fill(0);
+computerOffer[4] = 14; computerOffer[19] = -14; // Both sides have borne one off.
+const computerTake = Array(26).fill(0);
+computerTake[15] = 15; computerTake[10] = -15;
+const computerDrop = Array(26).fill(0);
+computerDrop[2] = 15; computerDrop[10] = -15;
 const cases = [
+  ['computer match offer', computerOffer, 1, 2, [1, 0, 2, 3, 0, 0, 0, 32768], { should_double: true }],
+  ['computer match take', computerTake, 1, 2, [1, 0, 3, 3, 0, 0, 0, 32768], { should_take: true }],
+  ['computer match drop', computerDrop, 1, 2, [1, 0, 3, 3, 0, 0, 0, 32768], { should_take: false }],
   ['money Jacoby', board, 1, 2, [1, 0, 0, 0, 0, 1, 0, 32768]],
   ['money no Jacoby', starting, 1, 1, [1, 0, 0, 0, 0, 0, 0, 32768]],
   ['Beavers', starting, 1, 1, [1, 0, 0, 0, 0, 1, 1, 32768]],
@@ -36,7 +45,7 @@ function near(a, b) {
   assert.ok(Number.isFinite(a) && Number.isFinite(b));
   assert.ok(Math.abs(a - b) <= 0.0002, `${a} differs from ${b}`);
 }
-for (const [label, b, operation, ply, rawContext] of cases) {
+for (const [label, b, operation, ply, rawContext, expected] of cases) {
   const context = rawContext.length === 8 ? [...rawContext, 1] : rawContext;
   const bp = mod._malloc(104), cp = mod._malloc(36);
   mod.HEAP32.set(b, bp / 4); mod.HEAP32.set(context, cp / 4);
@@ -45,6 +54,7 @@ for (const [label, b, operation, ply, rawContext] of cases) {
   const web = JSON.parse(mod.UTF8ToString(ptr));
   mod._free(ptr); mod._free(cp); mod._free(bp);
   const native = JSON.parse(execFileSync(process.env.BGSAGE_PROBE ?? '/tmp/bgsage-context-probe', [operation, ply, 3, 1, ...b, ...context].map(String), { encoding: 'utf8' }));
+  for (const [field, value] of Object.entries(expected ?? {})) assert.equal(web[field], value, `${label}: fixture still exercises ${field}`);
   if (operation === 1) {
     for (const field of ['should_double', 'should_take', 'is_beaver']) assert.equal(web[field], native[field], `${label}: ${field}`);
     for (const field of ['equity_nd', 'equity_dt', 'equity_dp']) near(web[field], native[field]);

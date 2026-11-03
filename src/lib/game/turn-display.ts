@@ -13,11 +13,18 @@ export type TurnDisplay = {
   isWaiting: boolean;
 };
 
+/** The cube responder acts while the original player retains the checker roll. */
+export function getActingPlayer(state: GameState): Player {
+  return state.match?.pendingOffer
+    ? state.match.pendingOffer === 'white' ? 'black' : 'white'
+    : state.currentPlayer;
+}
+
 export function getTurnDisplay(state: GameState): TurnDisplay {
-  const isComputerTurn
-    = state.mode === 'vs-computer' && state.currentPlayer === 'black';
+  const actor = getActingPlayer(state);
+  const isComputerTurn = state.mode === 'vs-computer' && actor === 'black';
   const isHumanTurn = !isComputerTurn;
-  const colorLabel = playerLabel(state.currentPlayer);
+  const colorLabel = playerLabel(actor);
 
   if (state.phase === 'game-over') {
     return {
@@ -26,6 +33,16 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
       headline: translate('game.turn.game_over'),
       isHumanTurn: false,
       isWaiting: true,
+    };
+  }
+
+  if (state.match?.pendingOffer) {
+    return {
+      player: actor,
+      colorLabel,
+      headline: translate(isComputerTurn ? 'game.turn.computer_turn' : 'game.players.status_take_or_pass'),
+      isHumanTurn,
+      isWaiting: isComputerTurn,
     };
   }
 

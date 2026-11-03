@@ -1,6 +1,7 @@
 import { createInitialState } from '@/lib/game/constants';
 import { applyDiceRoll } from '@/lib/game/moves';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
+import { acceptDouble, createMatch, offerDouble } from './match';
 
 describe('turn-display', () => {
   it('keeps opening-roll banner quiet (ceremony owns the copy)', () => {
@@ -92,4 +93,11 @@ describe('turn-display', () => {
       'Can\'t enter from the bar with 6 and 6 — end your turn',
     );
   });
+});
+
+it('identifies White as the actor answering a Black double, without transferring the roll', () => {
+  const state = { ...createInitialState('vs-computer'), phase: 'rolling' as const, currentPlayer: 'black' as const, match: createMatch(0) };
+  const offered = offerDouble(state, 0);
+  expect(getTurnDisplay(offered)).toMatchObject({ player: 'white', isHumanTurn: true, isWaiting: false });
+  expect(getTurnDisplay(acceptDouble(offered))).toMatchObject({ player: 'black', isHumanTurn: false, isWaiting: true });
 });

@@ -150,6 +150,8 @@ it('the match undo-floor fixture blocks every Black roll after White plays 8→7
 describe('computer match QA presets', () => {
   it('offers from the computer side and reaches Crawford after a drop', () => {
     const state = loadPositionPreset(preset('e2e-computer-match-offer'));
+    // A single win threat: no gammon to make the real engine play on as too good.
+    expect(state.borneOff).toEqual({ white: 1, black: 1 });
     const dropped = dropDouble(offerDouble(state, 0));
     expect(dropped.match?.score.black).toBe(2);
     const next = nextMatchGame(dropped);

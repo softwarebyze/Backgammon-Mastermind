@@ -67,6 +67,9 @@ it('names the match in the toolbar and reads out the score', () => {
   expect(screen.getByTestId('match-score')).toHaveTextContent('Crawford game · no doubling');
   view.rerender(<GameToolbar canUndo={false} canRedo={false} onUndo={noop} onRedo={noop} onOptions={noop} onReset={noop} onHome={noop} />);
   expect(screen.queryByTestId('match-score')).toBeNull();
+  view.rerender(<GameToolbar canUndo={false} canRedo={false} onUndo={noop} onRedo={noop} onOptions={noop} onReset={noop} onHome={noop} match={createMatchGame(0).match} />);
+  expect(screen.queryByTestId('match-score')).toBeNull();
+  expect(screen.queryByText('Single game')).toBeNull();
 });
 
 it('draws the cube for each owner and a pending offer', () => {

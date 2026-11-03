@@ -1,6 +1,6 @@
 import type { GameState } from '@/lib/game';
 import { createInitialState } from '@/lib/game/constants';
-import { createMatch } from '@/lib/game/match';
+import { acceptDouble, createMatch } from '@/lib/game/match';
 import { cleanup, fireEvent, render, screen } from '@/lib/test-utils';
 
 import { PlayerStrip } from './player-strip';
@@ -158,4 +158,25 @@ describe('strategy mark', () => {
     expect(screen.getByTestId('match-score-white')).toBeTruthy();
     expect(screen.getByTestId('player-status-white')).toBeTruthy();
   });
+});
+
+it('highlights the responder during a double, then the original roller after Take', () => {
+  const state: GameState = { ...moving('vs-human', 'black'), phase: 'rolling', match: { ...createMatch(0), pendingOffer: 'black' } };
+  const view = render(
+    <>
+      <PlayerStrip state={state} player="white" />
+      <PlayerStrip state={state} player="black" />
+    </>,
+  );
+  expect(screen.getByTestId('player-name-white')).toHaveProp('accessibilityState', { selected: true });
+  expect(screen.getByTestId('player-name-black')).toHaveProp('accessibilityState', { selected: false });
+  const taken = acceptDouble(state);
+  view.rerender(
+    <>
+      <PlayerStrip state={taken} player="white" />
+      <PlayerStrip state={taken} player="black" />
+    </>,
+  );
+  expect(screen.getByTestId('player-name-white')).toHaveProp('accessibilityState', { selected: false });
+  expect(screen.getByTestId('player-name-black')).toHaveProp('accessibilityState', { selected: true });
 });
