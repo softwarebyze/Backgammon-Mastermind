@@ -25,6 +25,10 @@ tags:
     direction: DOWN
 - tapOn:
     id: position-mode-human
+- scrollUntilVisible:
+    element:
+      id: position-play
+    direction: DOWN
 - tapOn:
     id: position-play
 - extendedWaitUntil:
@@ -79,6 +83,10 @@ tags:
     direction: DOWN
 - tapOn:
     id: position-mode-human
+- scrollUntilVisible:
+    element:
+      id: position-play
+    direction: DOWN
 - tapOn:
     id: position-play
 - tapOn: New game
