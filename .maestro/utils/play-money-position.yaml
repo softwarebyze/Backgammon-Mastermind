@@ -6,6 +6,13 @@ appId: ${APP_ID}
       id: position-screen
     timeout: 30000
 - runFlow:
+    when:
+      visible: 'Take or pass\?'
+    commands:
+      - assertVisible:
+          id: player-status-.*
+          text: 'Doubles to .*'
+- runFlow:
     file: position-scroll.yaml
     env:
       TARGET_ID: position-mode-human

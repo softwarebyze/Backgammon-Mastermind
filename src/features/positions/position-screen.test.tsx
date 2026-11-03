@@ -226,3 +226,18 @@ it('no longer copies the live game into the editor', () => {
   fireEvent.press(screen.getByTestId('position-exchange-toggle'));
   expect(screen.queryByTestId('position-current')).toBeNull();
 });
+
+it('shows the responder for an imported offer and lets either strip start a fresh turn', () => {
+  const p = newPosition();
+  Object.assign(p.context, { turnOwner: 'black', doubleAction: 'D' });
+  jest.mocked(useLocalSearchParams).mockReturnValue({ data: JSON.stringify(p) });
+  render(<PositionScreen />);
+  expect(screen.getByTestId('player-status-white')).toHaveTextContent('game.players.status_take_or_pass');
+  expect(screen.getByTestId('player-name-white')).toHaveProp('accessibilityState', { selected: true });
+  expect(screen.getByTestId('player-status-black')).toHaveTextContent('game.players.status_doubles');
+  fireEvent.press(screen.getByTestId('player-name-white'));
+  expect(screen.getByTestId('player-status-white')).toHaveTextContent('positions.on_roll');
+  fireEvent.press(screen.getByTestId('position-play'));
+  jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
+  expect(start).toHaveBeenCalledWith(expect.objectContaining({ currentPlayer: 'white', match: expect.objectContaining({ pendingOffer: null }) }));
+});

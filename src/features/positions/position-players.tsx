@@ -14,7 +14,16 @@ export function PositionPlayerStrip({ position, player, onChange }: {
   onChange: (p: Position) => void;
 }) {
   const c = position.context;
-  const state = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: position.currentPlayer };
+  const pending = c.doubleAction === 'D' || c.doubleAction === 'B';
+  const state = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: pending ? c.turnOwner : position.currentPlayer };
+  if (pending) {
+    state.match = {
+      ...state.match!,
+      cube: { value: 2 ** c.cubeExponent, owner: c.cubeOwner ?? 'center' },
+      pendingOffer: position.currentPlayer === 'white' ? 'black' : 'white',
+      ...(c.doubleAction === 'B' ? { pendingBeaver: true } : {}),
+    };
+  }
   const putOnRoll = () => onChange({ ...position, currentPlayer: player, context: { ...c, turnOwner: player, doubleAction: '', resignation: 0 } });
   return (
     <PlayerStrip
@@ -22,7 +31,7 @@ export function PositionPlayerStrip({ position, player, onChange }: {
       player={player}
       headlineOverride={translate('positions.on_roll')}
       hideStrategy
-      onPress={position.currentPlayer === player ? undefined : putOnRoll}
+      onPress={!c.doubleAction && !c.resignation && position.currentPlayer === player ? undefined : putOnRoll}
       pressHint={translate('positions.on_roll_hint')}
       idleStatus={translate('positions.tap_on_roll')}
     />
