@@ -31,6 +31,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/cube-tutor-beavers.yaml" \
   "${WORKSPACE}/.maestro/app/cube-decision-undo.yaml" \
   "${WORKSPACE}/.maestro/app/computer-match.yaml" \
+  "${WORKSPACE}/.maestro/app/computer-level.yaml" \
   "${WORKSPACE}/.maestro/app/match-polish.yaml" \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
