@@ -2,11 +2,13 @@ Backgammon Mastermind to dopracowana wersja klasycznej strategicznej gry planszo
 
 Od razu rozpocznij partię z komputerem albo podziel się planszą z przyjacielem w trybie pass-and-play. Rzucaj kośćmi, przesuwaj piony, zbijaj samotne piony przeciwnika i wyprowadź wszystkie piętnaście swoich pionów, aby wygrać.
 
-Dopiero zaczynasz grać w backgammona? Ucz się bezpośrednio na planszy dzięki pięciu krótkim interaktywnym lekcjom o ruchu, zbijaniu, barze i wyprowadzaniu pionów. Potem rozegraj swoją pierwszą prawdziwą partię.
+Dopiero zaczynasz grać w backgammona? Ucz się bezpośrednio na planszy dzięki krótkim interaktywnym lekcjom: od ruchu i zbijania po wyprowadzanie pionów, plany gry, kostkę dublującą i mecze. Potem rozegraj swoją pierwszą prawdziwą partię.
 
 Funkcje:
 • Nauka gry — interaktywne lekcje na prawdziwej planszy
-• Gra z komputerem
+• Gra z komputerem, od Łatwego do Eksperta
+• Mecze z kostką dublującą i regułą Crawforda
+• Ustaw dowolną pozycję i rozegraj ją
 • Lokalny tryb dla 2 graczy (pass-and-play)
 • Przeciągnij lub stuknij, aby wykonać ruch; dozwolone cele są podświetlane
 • Podpowiedzi ruchów, numery punktów i wskazówki kierunku dla początkujących

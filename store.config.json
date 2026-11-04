@@ -1,7 +1,7 @@
 {
   "configVersion": 0,
   "apple": {
-    "version": "1.1.0",
+    "version": "1.2.0",
     "copyright": "2026 Zachary Ebenfeld",
     "categories": [
       [
@@ -35,7 +35,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Learn & play backgammon",
         "promoText": "Learn on an interactive board, play the computer, or pass and play offline with friends and family.",
-        "description": "Backgammon Mastermind is a polished take on the classic strategy board game — with an interactive Learn to Play path that teaches real rules on a live board.\n\nNew to backgammon? Work through five short guided lessons covering the board, movement, hitting, the bar, and bearing off. Pass a quick check, then play your first real game.\n\nAlready know the game? Jump straight into a match against the computer or share the board with a friend in pass-and-play mode. Roll dice, move your checkers, hit blots, and bear off all fifteen to win.\n\nFeatures:\n• Learn to Play — interactive lessons on a real board\n• Play against the computer\n• Local 2-player pass-and-play\n• Drag or tap to move; legal destinations highlighted\n• Direction guide and beginner-friendly preferences\n• Available in 17 languages\n• No account and no ads — gameplay runs on your device\n\nOne purchase. Play offline after download.",
+        "description": "Backgammon Mastermind is a polished take on the classic strategy board game — with an interactive Learn to Play path that teaches real rules on a live board.\n\nNew to backgammon? Work through short guided lessons on a live board, from moving and hitting to bearing off, game plans, the doubling cube and match play. Pass a quick check, then play your first real game.\n\nAlready know the game? Jump straight into a match against the computer or share the board with a friend in pass-and-play mode. Roll dice, move your checkers, hit blots, and bear off all fifteen to win.\n\nFeatures:\n• Learn to Play — interactive lessons on a real board\n• Play against the computer, from Easy to Expert\n• Matches with the doubling cube and the Crawford rule\n• Set up any position and play it out\n• Local 2-player pass-and-play\n• Drag or tap to move; legal destinations highlighted\n• Direction guide and beginner-friendly preferences\n• Available in 17 languages\n• No account and no ads — gameplay runs on your device\n\nOne purchase. Play offline after download.",
         "keywords": [
           "backgammon",
           "learn backgammon",
@@ -47,7 +47,7 @@
           "offline",
           "classic"
         ],
-        "releaseNotes": "Play backgammon with a friend over iMessage. New Tutor mode flags blunders as you play. Confirm move lets you review or undo before your turn ends. Plus strategy marks, pip counts, better Hebrew and right-to-left support, and smoother undo.",
+        "releaseNotes": "Play matches with the doubling cube and the Crawford rule, against the computer or a friend. Pick the computer's level, from Easy to Expert. Set up any position and play it out. New lessons teach the cube, match play and the five game plans, and Tutor mode now checks your cube decisions and marks your mistakes in the game history. Plus a roomier game screen with bigger checkers.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -56,7 +56,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "تعلّم والعب الطاولة",
         "promoText": "تعلّم الطاولة على لوحة تفاعلية، العب ضد الكمبيوتر، أو العب محليًا دون اتصال مع الأصدقاء والعائلة.",
-        "description": "Backgammon Mastermind تجربة مصقولة للعبة الطاولة الاستراتيجية الكلاسيكية، مع مسار تفاعلي لتعلّم القواعد مباشرة على اللوحة.\n\nجديد في لعبة الطاولة؟ أكمل خمسة دروس قصيرة وتفاعلية تشرح اللوحة والحركة والضرب والشريط الوسطي وإخراج الأحجار، ثم ابدأ أول مباراة حقيقية.\n\nتعرف اللعبة بالفعل؟ العب مباشرة ضد الكمبيوتر أو شارك الجهاز مع صديق في وضع اللعب بالتناوب. ارمِ النرد، حرّك أحجارك، واضرب أحجار الخصم المنفردة، ثم أخرج أحجارك الخمسة عشر للفوز.\n\nالميزات:\n• تعلّم اللعب من خلال دروس تفاعلية على لوحة حقيقية\n• اللعب ضد الكمبيوتر\n• لاعبان محليًا بالتناوب\n• السحب أو اللمس للتحريك مع إبراز النقلات القانونية\n• دليل اتجاه وإعدادات مناسبة للمبتدئين\n• متوفرة بـ 17 لغة\n• بلا حساب وبلا إعلانات — تعمل اللعبة على جهازك\n\nشراء واحد، واللعب دون اتصال بعد التنزيل.",
+        "description": "Backgammon Mastermind تجربة مصقولة للعبة الطاولة الاستراتيجية الكلاسيكية، مع مسار تفاعلي لتعلّم القواعد مباشرة على اللوحة.\n\nجديد في لعبة الطاولة؟ أكمل دروسًا قصيرة وتفاعلية على لوحة حقيقية، من الحركة والضرب إلى إخراج الأحجار وخطط اللعب ومكعب المضاعفة والمباريات بالنقاط، ثم ابدأ أول مباراة حقيقية.\n\nتعرف اللعبة بالفعل؟ العب مباشرة ضد الكمبيوتر أو شارك الجهاز مع صديق في وضع اللعب بالتناوب. ارمِ النرد، حرّك أحجارك، واضرب أحجار الخصم المنفردة، ثم أخرج أحجارك الخمسة عشر للفوز.\n\nالميزات:\n• تعلّم اللعب من خلال دروس تفاعلية على لوحة حقيقية\n• اللعب ضد الكمبيوتر، من سهل إلى خبير\n• مباريات بالنقاط مع مكعب المضاعفة وقاعدة كروفورد\n• إعداد أي وضع واللعب منه\n• لاعبان محليًا بالتناوب\n• السحب أو اللمس للتحريك مع إبراز النقلات القانونية\n• دليل اتجاه وإعدادات مناسبة للمبتدئين\n• متوفرة بـ 17 لغة\n• بلا حساب وبلا إعلانات — تعمل اللعبة على جهازك\n\nشراء واحد، واللعب دون اتصال بعد التنزيل.",
         "keywords": [
           "طاولة",
           "نرد",
@@ -69,7 +69,7 @@
           "backgammon",
           "nard"
         ],
-        "releaseNotes": "العب الطاولة مع صديق عبر iMessage. جديد: «وضع المدرّب» ينبّهك إلى الأخطاء أثناء اللعب. «تأكيد الحركة» يتيح لك المراجعة أو التراجع قبل انتهاء دورك. إضافةً إلى علامات الاستراتيجية، وعدّ النقاط، ودعم أفضل للعبرية وللغات المكتوبة من اليمين إلى اليسار، وتراجع أكثر سلاسة.",
+        "releaseNotes": "العب مباريات بالنقاط مع مكعب المضاعفة وقاعدة كروفورد، ضد الكمبيوتر أو صديق. اختر مستوى الكمبيوتر من سهل إلى خبير. أعدّ أي وضع والعب منه. دروس جديدة عن المكعب والمباريات وخطط اللعب الخمس، و«وضع المدرّب» يفحص الآن قرارات المكعب ويعلّم أخطاءك في سجل اللعبة. إضافةً إلى شاشة لعب أرحب وأحجار أكبر.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -78,7 +78,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Backgammon lernen und spielen",
         "promoText": "Lerne auf einem interaktiven Brett, spiele gegen den Computer oder offline mit Freunden und Familie.",
-        "description": "Backgammon Mastermind ist eine sorgfältig gestaltete Version des klassischen Strategiespiels.\n\nStarte sofort eine Partie gegen den Computer oder teile das Brett mit einem Freund im Pass-and-Play-Modus. Würfle, ziehe deine Steine, schlage einzelne gegnerische Steine und würfle alle fünfzehn Steine aus, um zu gewinnen.\n\nNoch nie Backgammon gespielt? Lerne direkt auf dem Brett in fünf kurzen interaktiven Lektionen alles über Ziehen, Schlagen, das Wiedereinsetzen von der Bar und das Auswürfeln. Danach spielst du deine erste richtige Partie.\n\nFunktionen:\n• Spielen lernen — interaktive Lektionen auf einem echten Brett\n• Gegen den Computer spielen\n• Lokaler Modus für 2 Spieler (Pass-and-Play)\n• Ziehen oder Tippen zum Bewegen; erlaubte Ziele werden hervorgehoben\n• Zughinweise, Punktnummern und Richtungsanzeige für Einsteiger\n• Züge der Partie wiederholen und prüfen\n• Verfügbar in 17 Sprachen\n• Kein Konto und keine Werbung — das Spiel läuft auf deinem Gerät\n\nEinmaliger Kauf. Nach dem Download offline spielbar. Ideal, um deine Fähigkeiten zu verbessern.",
+        "description": "Backgammon Mastermind ist eine sorgfältig gestaltete Version des klassischen Strategiespiels.\n\nStarte sofort eine Partie gegen den Computer oder teile das Brett mit einem Freund im Pass-and-Play-Modus. Würfle, ziehe deine Steine, schlage einzelne gegnerische Steine und würfle alle fünfzehn Steine aus, um zu gewinnen.\n\nNoch nie Backgammon gespielt? Lerne direkt auf dem Brett in kurzen interaktiven Lektionen alles vom Ziehen und Schlagen über das Auswürfeln bis zu Spielplänen, dem Verdopplungswürfel und Matches. Danach spielst du deine erste richtige Partie.\n\nFunktionen:\n• Spielen lernen — interaktive Lektionen auf einem echten Brett\n• Gegen den Computer spielen, von Leicht bis Experte\n• Matches mit Verdopplungswürfel und Crawford-Regel\n• Beliebige Stellungen aufbauen und ausspielen\n• Lokaler Modus für 2 Spieler (Pass-and-Play)\n• Ziehen oder Tippen zum Bewegen; erlaubte Ziele werden hervorgehoben\n• Zughinweise, Punktnummern und Richtungsanzeige für Einsteiger\n• Züge der Partie wiederholen und prüfen\n• Verfügbar in 17 Sprachen\n• Kein Konto und keine Werbung — das Spiel läuft auf deinem Gerät\n\nEinmaliger Kauf. Nach dem Download offline spielbar. Ideal, um deine Fähigkeiten zu verbessern.",
         "keywords": [
           "Backgammon",
           "Brettspiel",
@@ -91,7 +91,7 @@
           "Tavla",
           "Nard"
         ],
-        "releaseNotes": "Spiele Backgammon mit einem Freund über iMessage. Neu: Der Tutor-Modus markiert Fehler, während du spielst. Mit „Zug bestätigen“ prüfst du deinen Zug oder machst ihn rückgängig, bevor er endet. Außerdem: Strategie-Symbole, Pip-Count, bessere Unterstützung für Hebräisch und Rechts-nach-links-Sprachen sowie flüssigeres Rückgängigmachen.",
+        "releaseNotes": "Spiele Matches mit Verdopplungswürfel und Crawford-Regel, gegen den Computer oder einen Freund. Wähle die Stärke des Computers, von Leicht bis Experte. Baue beliebige Stellungen auf und spiele sie aus. Neue Lektionen erklären den Würfel, Matches und die fünf Spielpläne, und der Tutor-Modus prüft jetzt auch deine Würfelentscheidungen und markiert deine Fehler im Spielverlauf. Außerdem: ein großzügigerer Spielbildschirm mit größeren Steinen.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -100,7 +100,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Μάθε και παίξε τάβλι",
         "promoText": "Μάθετε σε ένα διαδραστικό πίνακα, να παίξετε τον υπολογιστή, ή να περάσει και να παίξει offline με τους φίλους και την οικογένεια.",
-        "description": "Το Backgammon Mastermind είναι μια προσεγμένη εκδοχή του κλασικού επιτραπέζιου παιχνιδιού στρατηγικής.\n\nΞεκινήστε αμέσως μια παρτίδα εναντίον του υπολογιστή ή μοιραστείτε το ταμπλό με έναν φίλο σε λειτουργία pass-and-play. Ρίξτε τα ζάρια, μετακινήστε τα πούλια σας, χτυπήστε τα μονά αντίπαλα πούλια και μαζέψτε και τα δεκαπέντε για να κερδίσετε.\n\nΠαίζετε τάβλι για πρώτη φορά; Μάθετε απευθείας στο ταμπλό με πέντε σύντομα διαδραστικά μαθήματα για την κίνηση, το χτύπημα, την μπάρα και το μάζεμα των πούλιων. Έπειτα παίξτε την πρώτη σας κανονική παρτίδα.\n\nΧαρακτηριστικά:\n• Μάθετε να παίζετε — διαδραστικά μαθήματα σε πραγματικό ταμπλό\n• Παίξτε ενάντια στον υπολογιστή\n• Τοπικό παιχνίδι 2 παικτών (pass-and-play)\n• Σύρετε ή πατήστε για κίνηση· οι επιτρεπόμενοι προορισμοί επισημαίνονται\n• Υποδείξεις κινήσεων, αριθμοί θέσεων και οδηγός κατεύθυνσης για αρχάριους\n• Επαναλάβετε και ελέγξτε οποιαδήποτε κίνηση της παρτίδας\n• Διατίθεται σε 17 γλώσσες\n• Χωρίς λογαριασμό και χωρίς διαφημίσεις — το παιχνίδι εκτελείται στη συσκευή σας\n\nΜία αγορά. Παίξτε εκτός σύνδεσης μετά τη λήψη. Ιδανικό για να βελτιώσετε τις δεξιότητές σας.",
+        "description": "Το Backgammon Mastermind είναι μια προσεγμένη εκδοχή του κλασικού επιτραπέζιου παιχνιδιού στρατηγικής.\n\nΞεκινήστε αμέσως μια παρτίδα εναντίον του υπολογιστή ή μοιραστείτε το ταμπλό με έναν φίλο σε λειτουργία pass-and-play. Ρίξτε τα ζάρια, μετακινήστε τα πούλια σας, χτυπήστε τα μονά αντίπαλα πούλια και μαζέψτε και τα δεκαπέντε για να κερδίσετε.\n\nΠαίζετε τάβλι για πρώτη φορά; Μάθετε απευθείας στο ταμπλό με σύντομα διαδραστικά μαθήματα, από την κίνηση και το χτύπημα ως το μάζεμα των πούλιων, τα σχέδια παιχνιδιού, τον κύβο διπλασιασμού και τους αγώνες. Έπειτα παίξτε την πρώτη σας κανονική παρτίδα.\n\nΧαρακτηριστικά:\n• Μάθετε να παίζετε — διαδραστικά μαθήματα σε πραγματικό ταμπλό\n• Παίξτε ενάντια στον υπολογιστή, από Εύκολο ως Ειδικός\n• Αγώνες με κύβο διπλασιασμού και κανόνα Crawford\n• Στήστε όποια θέση θέλετε και παίξτε την\n• Τοπικό παιχνίδι 2 παικτών (pass-and-play)\n• Σύρετε ή πατήστε για κίνηση· οι επιτρεπόμενοι προορισμοί επισημαίνονται\n• Υποδείξεις κινήσεων, αριθμοί θέσεων και οδηγός κατεύθυνσης για αρχάριους\n• Επαναλάβετε και ελέγξτε οποιαδήποτε κίνηση της παρτίδας\n• Διατίθεται σε 17 γλώσσες\n• Χωρίς λογαριασμό και χωρίς διαφημίσεις — το παιχνίδι εκτελείται στη συσκευή σας\n\nΜία αγορά. Παίξτε εκτός σύνδεσης μετά τη λήψη. Ιδανικό για να βελτιώσετε τις δεξιότητές σας.",
         "keywords": [
           "τάβλι",
           "backgammon",
@@ -113,7 +113,7 @@
           "offline",
           "tavla"
         ],
-        "releaseNotes": "Παίξτε τάβλι με έναν φίλο μέσω iMessage. Νέα «Λειτουργία δασκάλου» που επισημαίνει τα λάθη ενώ παίζετε. Η «Επιβεβαίωση κίνησης» σάς επιτρέπει να ελέγξετε ή να αναιρέσετε πριν τελειώσει η σειρά σας. Επιπλέον, σύμβολα στρατηγικής, μέτρημα πόντων, καλύτερη υποστήριξη για τα εβραϊκά και τις γλώσσες από δεξιά προς τα αριστερά, και πιο ομαλή αναίρεση.",
+        "releaseNotes": "Παίξτε αγώνες με κύβο διπλασιασμού και κανόνα Crawford, με τον υπολογιστή ή με φίλο. Διαλέξτε το επίπεδο του υπολογιστή, από Εύκολο ως Ειδικός. Στήστε όποια θέση θέλετε και παίξτε την. Νέα μαθήματα για τον κύβο, τους αγώνες και τα πέντε σχέδια παιχνιδιού, ενώ η λειτουργία δασκάλου ελέγχει πλέον και τις αποφάσεις κύβου και σημειώνει τα λάθη σας στο ιστορικό. Επιπλέον, πιο άνετη οθόνη παιχνιδιού με μεγαλύτερα πούλια.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -122,7 +122,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Aprender y jugar backgammon",
         "promoText": "Aprende en un tablero interactivo, juega el ordenador, o pasa y juega sin conexión con amigos y familiares.",
-        "description": "Backgammon Mastermind es una versión cuidada del clásico juego de estrategia de tablero.\n\nEntra directamente en una partida contra el ordenador o comparte el tablero con un amigo en modo pass-and-play. Lanza los dados, mueve tus fichas, captura fichas solas y retira las quince del tablero para ganar.\n\n¿Es tu primera vez jugando al backgammon? Aprende directamente en el tablero con cinco breves lecciones interactivas sobre el movimiento, las capturas, la barra y la retirada de fichas. Después, juega tu primera partida real.\n\nFunciones:\n• Aprende a jugar — lecciones interactivas en un tablero real\n• Juega contra el ordenador\n• Modo local para 2 jugadores (pass-and-play)\n• Arrastra o toca para mover; los destinos legales se resaltan\n• Pistas de movimiento, números de punto y guía de dirección para principiantes\n• Repite y revisa cualquier turno de la partida\n• Disponible en 17 idiomas\n• Sin cuenta y sin anuncios: el juego se ejecuta en tu dispositivo\n\nUna sola compra. Juega sin conexión tras la descarga. Ideal para mejorar tus habilidades.",
+        "description": "Backgammon Mastermind es una versión cuidada del clásico juego de estrategia de tablero.\n\nEntra directamente en una partida contra el ordenador o comparte el tablero con un amigo en modo pass-and-play. Lanza los dados, mueve tus fichas, captura fichas solas y retira las quince del tablero para ganar.\n\n¿Es tu primera vez jugando al backgammon? Aprende directamente en el tablero con breves lecciones interactivas, desde el movimiento y las capturas hasta la retirada de fichas, los planes de juego, el cubo de doblaje y los encuentros. Después, juega tu primera partida real.\n\nFunciones:\n• Aprende a jugar — lecciones interactivas en un tablero real\n• Juega contra el ordenador, de Fácil a Experto\n• Encuentros con cubo de doblaje y regla Crawford\n• Prepara cualquier posición y juégala\n• Modo local para 2 jugadores (pass-and-play)\n• Arrastra o toca para mover; los destinos legales se resaltan\n• Pistas de movimiento, números de punto y guía de dirección para principiantes\n• Repite y revisa cualquier turno de la partida\n• Disponible en 17 idiomas\n• Sin cuenta y sin anuncios: el juego se ejecuta en tu dispositivo\n\nUna sola compra. Juega sin conexión tras la descarga. Ideal para mejorar tus habilidades.",
         "keywords": [
           "backgammon",
           "juego de mesa",
@@ -135,7 +135,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Juega al backgammon con un amigo por iMessage. Nuevo Modo tutor: señala los errores mientras juegas. Confirmar movimiento te permite revisar o deshacer antes de que termine tu turno. Además, marcas de estrategia, recuento de pips, mejor compatibilidad con el hebreo y la escritura de derecha a izquierda, y un deshacer más fluido.",
+        "releaseNotes": "Juega encuentros con el cubo de doblaje y la regla Crawford, contra el ordenador o un amigo. Elige el nivel del ordenador, de Fácil a Experto. Prepara cualquier posición y juégala. Nuevas lecciones sobre el cubo, los encuentros y los cinco planes de juego, y el modo tutor ahora revisa tus decisiones con el cubo y marca tus errores en el historial. Además, una pantalla de juego más amplia con fichas más grandes.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -144,7 +144,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Apprenez le backgammon",
         "promoText": "Apprenez sur une carte interactive, jouez à l'ordinateur ou passez et jouez hors ligne avec vos amis et votre famille.",
-        "description": "Backgammon Mastermind est une version soignée du jeu de plateau stratégique classique.\n\nLancez-vous tout de suite dans une partie contre l’ordinateur ou partagez le plateau avec un ami en mode pass-and-play. Lancez les dés, déplacez vos pions, frappez les pions isolés et sortez les quinze pions pour gagner.\n\nVous débutez au backgammon ? Apprenez directement sur le plateau grâce à cinq courtes leçons interactives sur le déplacement, la frappe, la barre et la sortie des pions. Jouez ensuite votre première vraie partie.\n\nFonctionnalités :\n• Apprendre à jouer — leçons interactives sur un vrai plateau\n• Jouer contre l’ordinateur\n• Mode local à 2 joueurs (pass-and-play)\n• Glissez ou touchez pour jouer ; les destinations légales sont mises en évidence\n• Indices de coups, numéros de points et guide de direction pour les débutants\n• Rejouez et examinez n’importe quel tour de votre partie\n• Disponible en 17 langues\n• Sans compte et sans publicité — le jeu fonctionne sur votre appareil\n\nUn seul achat. Jouez hors ligne après le téléchargement. Idéal pour améliorer vos compétences.",
+        "description": "Backgammon Mastermind est une version soignée du jeu de plateau stratégique classique.\n\nLancez-vous tout de suite dans une partie contre l’ordinateur ou partagez le plateau avec un ami en mode pass-and-play. Lancez les dés, déplacez vos pions, frappez les pions isolés et sortez les quinze pions pour gagner.\n\nVous débutez au backgammon ? Apprenez directement sur le plateau grâce à de courtes leçons interactives, du déplacement et de la frappe jusqu’à la sortie des pions, les plans de jeu, le videau et les matchs. Jouez ensuite votre première vraie partie.\n\nFonctionnalités :\n• Apprendre à jouer — leçons interactives sur un vrai plateau\n• Jouer contre l’ordinateur, de Facile à Expert\n• Matchs avec videau et règle de Crawford\n• Créer n’importe quelle position et la jouer\n• Mode local à 2 joueurs (pass-and-play)\n• Glissez ou touchez pour jouer ; les destinations légales sont mises en évidence\n• Indices de coups, numéros de points et guide de direction pour les débutants\n• Rejouez et examinez n’importe quel tour de votre partie\n• Disponible en 17 langues\n• Sans compte et sans publicité — le jeu fonctionne sur votre appareil\n\nUn seul achat. Jouez hors ligne après le téléchargement. Idéal pour améliorer vos compétences.",
         "keywords": [
           "backgammon",
           "jeu de société",
@@ -157,7 +157,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Jouez au backgammon avec un ami via iMessage. Nouveau : le Mode tuteur signale les erreurs pendant la partie. Confirmer le coup vous permet de vérifier ou d'annuler avant la fin de votre tour. Et aussi : repères de stratégie, compte de pips, meilleure prise en charge de l'hébreu et des langues de droite à gauche, et une annulation plus fluide.",
+        "releaseNotes": "Jouez des matchs avec le videau et la règle de Crawford, contre l’ordinateur ou un ami. Choisissez le niveau de l’ordinateur, de Facile à Expert. Créez n’importe quelle position et jouez-la. De nouvelles leçons expliquent le videau, les matchs et les cinq plans de jeu, et le mode tuteur vérifie désormais vos décisions de videau et marque vos erreurs dans l’historique. Et aussi : un écran de jeu plus spacieux avec des pions plus grands.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -166,7 +166,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "ללמוד ולשחק שש־בש",
         "promoText": "למד על לוח אינטראקטיבי, לשחק את המחשב, או לעבור ולשחק לא מקוון עם חברים ובני משפחה.",
-        "description": "Backgammon Mastermind הוא גרסה מלוטשת של משחק הלוח האסטרטגי הקלאסי.\n\nהתחילו מיד משחק מול המחשב או שתפו את הלוח עם חבר במצב משחק לסירוגין. הטילו קוביות, הזיזו אבנים, הכו אבנים בודדות והוציאו את כל חמש־עשרה האבנים כדי לנצח.\n\nחדשים בשש־בש? למדו ישירות על הלוח בחמישה שיעורים אינטראקטיביים קצרים על תנועה, הכאה, הבר והוצאת האבנים. לאחר מכן שחקו את המשחק האמיתי הראשון שלכם.\n\nתכונות:\n• למדו לשחק — שיעורים אינטראקטיביים על לוח אמיתי\n• שחקו נגד המחשב\n• משחק מקומי לשני שחקנים (משחק לסירוגין)\n• גררו או הקישו להזזה; יעדים חוקיים מודגשים\n• רמזי מהלכים, מספרי נקודות ומדריך כיוון למתחילים\n• חזרו ובדקו כל תור במשחק\n• זמין ב־17 שפות\n• בלי חשבון ובלי פרסומות — המשחק פועל במכשיר שלכם\n\nרכישה אחת. שחקו ללא חיבור לאחר ההורדה. מושלם לשיפור הכישורים.",
+        "description": "Backgammon Mastermind הוא גרסה מלוטשת של משחק הלוח האסטרטגי הקלאסי.\n\nהתחילו מיד משחק מול המחשב או שתפו את הלוח עם חבר במצב משחק לסירוגין. הטילו קוביות, הזיזו אבנים, הכו אבנים בודדות והוציאו את כל חמש־עשרה האבנים כדי לנצח.\n\nחדשים בשש־בש? למדו ישירות על הלוח בשיעורים אינטראקטיביים קצרים, מתנועה והכאה ועד הוצאת האבנים, תוכניות משחק, קוביית ההכפלה ומשחק לנקודות. לאחר מכן שחקו את המשחק האמיתי הראשון שלכם.\n\nתכונות:\n• למדו לשחק — שיעורים אינטראקטיביים על לוח אמיתי\n• שחקו נגד המחשב, מקל ועד מומחה\n• משחקים לנקודות עם קוביית הכפלה וחוק קרופורד\n• הציבו כל עמדה ושחקו ממנה\n• משחק מקומי לשני שחקנים (משחק לסירוגין)\n• גררו או הקישו להזזה; יעדים חוקיים מודגשים\n• רמזי מהלכים, מספרי נקודות ומדריך כיוון למתחילים\n• חזרו ובדקו כל תור במשחק\n• זמין ב־17 שפות\n• בלי חשבון ובלי פרסומות — המשחק פועל במכשיר שלכם\n\nרכישה אחת. שחקו ללא חיבור לאחר ההורדה. מושלם לשיפור הכישורים.",
         "keywords": [
           "שש-בש",
           "backgammon",
@@ -179,7 +179,7 @@
           "אופליין",
           "tavla"
         ],
-        "releaseNotes": "שחקו שש־בש עם חבר דרך iMessage. חדש: מצב מדריך מסמן טעויות תוך כדי משחק. \"אשר מהלך\" מאפשר לבדוק או לבטל לפני שהתור מסתיים. בנוסף: סימוני אסטרטגיה, ספירת פיפים, תמיכה משופרת בעברית ובכתיבה מימין לשמאל, וביטול חלק יותר.",
+        "releaseNotes": "שחקו משחקים לנקודות עם קוביית ההכפלה וחוק קרופורד, נגד המחשב או נגד חבר. בחרו את רמת המחשב, מקל ועד מומחה. הציבו כל עמדה ושחקו ממנה. שיעורים חדשים על הקובייה, משחק לנקודות וחמש תוכניות המשחק, ומצב מדריך בודק עכשיו גם החלטות קובייה ומסמן את הטעויות שלכם בהיסטוריית המשחק. בנוסף: מסך משחק מרווח יותר עם אבנים גדולות יותר.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -188,7 +188,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "सीखिए और बैकगैमौन खेलना",
         "promoText": "एक इंटरैक्टिव बोर्ड पर जानें, कंप्यूटर खेलते हैं, या दोस्तों और परिवार के साथ ऑफ़लाइन खेलते हैं।",
-        "description": "Backgammon Mastermind क्लासिक रणनीतिक बोर्ड गेम का एक सहज और सुंदर रूप है।\n\nबैकगैमन पहली बार खेल रहे हैं? बोर्ड, चाल, मारना, बार और गोटियाँ बाहर निकालना सीखने के लिए पाँच छोटे इंटरैक्टिव पाठ पूरे करें। फिर एक छोटी जाँच के बाद अपना पहला असली गेम खेलें।\n\nखेल पहले से जानते हैं? सीधे कंप्यूटर के विरुद्ध खेलें या एक ही डिवाइस पर दोस्त के साथ बारी-बारी से खेलें। पासे फेंकें, गोटियाँ चलाएँ, अकेली विरोधी गोटी को मारें और जीतने के लिए अपनी सभी पंद्रह गोटियाँ बाहर निकालें।\n\nविशेषताएँ:\n• असली बोर्ड पर इंटरैक्टिव पाठों से खेलना सीखें\n• कंप्यूटर के विरुद्ध खेलें\n• दो खिलाड़ियों के लिए स्थानीय बारी-बारी वाला खेल\n• खींचकर या टैप करके चलें; वैध स्थान हाइलाइट होते हैं\n• शुरुआती खिलाड़ियों के लिए दिशा मार्गदर्शिका और उपयोगी सेटिंग्स\n• 17 भाषाओं में उपलब्ध\n• न खाता, न विज्ञापन — गेम आपके डिवाइस पर चलता है\n\nएक बार खरीदें। डाउनलोड के बाद ऑफ़लाइन खेलें।",
+        "description": "Backgammon Mastermind क्लासिक रणनीतिक बोर्ड गेम का एक सहज और सुंदर रूप है।\n\nबैकगैमन पहली बार खेल रहे हैं? असली बोर्ड पर छोटे इंटरैक्टिव पाठ पूरे करें: चाल और मारने से लेकर गोटियाँ निकालने, खेल योजनाओं, डबलिंग क्यूब और मैच तक। फिर एक छोटी जाँच के बाद अपना पहला असली गेम खेलें।\n\nखेल पहले से जानते हैं? सीधे कंप्यूटर के विरुद्ध खेलें या एक ही डिवाइस पर दोस्त के साथ बारी-बारी से खेलें। पासे फेंकें, गोटियाँ चलाएँ, अकेली विरोधी गोटी को मारें और जीतने के लिए अपनी सभी पंद्रह गोटियाँ बाहर निकालें।\n\nविशेषताएँ:\n• असली बोर्ड पर इंटरैक्टिव पाठों से खेलना सीखें\n• कंप्यूटर के विरुद्ध खेलें, आसान से विशेषज्ञ तक\n• डबलिंग क्यूब और क्रॉफ़र्ड नियम के साथ मैच\n• कोई भी स्थिति बनाएँ और उससे खेलें\n• दो खिलाड़ियों के लिए स्थानीय बारी-बारी वाला खेल\n• खींचकर या टैप करके चलें; वैध स्थान हाइलाइट होते हैं\n• शुरुआती खिलाड़ियों के लिए दिशा मार्गदर्शिका और उपयोगी सेटिंग्स\n• 17 भाषाओं में उपलब्ध\n• न खाता, न विज्ञापन — गेम आपके डिवाइस पर चलता है\n\nएक बार खरीदें। डाउनलोड के बाद ऑफ़लाइन खेलें।",
         "keywords": [
           "बैकगैमन",
           "backgammon",
@@ -201,7 +201,7 @@
           "ऑफ़लाइन",
           "tavla"
         ],
-        "releaseNotes": "iMessage के ज़रिए किसी दोस्त के साथ बैकगैमौन खेलें। नया ट्यूटर मोड खेलते समय गलतियों को चिह्नित करता है। \"चाल पुष्टि करें\" से आप अपनी बारी खत्म होने से पहले अपनी चाल जाँच या पूर्ववत कर सकते हैं। साथ ही रणनीति चिह्न, पिप गिनती, हिब्रू और दाएँ-से-बाएँ भाषाओं के लिए बेहतर समर्थन, और ज़्यादा सहज पूर्ववत।",
+        "releaseNotes": "डबलिंग क्यूब और क्रॉफ़र्ड नियम के साथ मैच खेलें, कंप्यूटर या किसी दोस्त के साथ। कंप्यूटर का स्तर चुनें, आसान से विशेषज्ञ तक। कोई भी स्थिति बनाएँ और उससे खेलें। नए पाठ क्यूब, मैच और पाँच खेल योजनाएँ सिखाते हैं, और ट्यूटर मोड अब क्यूब के फ़ैसले भी जाँचता है और खेल के इतिहास में आपकी गलतियाँ चिह्नित करता है। साथ ही बड़ी गोटियों के साथ ज़्यादा खुली खेल स्क्रीन।",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -210,7 +210,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Impara e gioca a backgammon",
         "promoText": "Imparare su una scheda interattiva, giocare al computer, o passare e giocare offline con gli amici e la famiglia.",
-        "description": "Backgammon Mastermind è una versione curata del classico gioco da tavolo di strategia.\n\nInizia subito una partita contro il computer oppure condividi la scacchiera con un amico in modalità pass-and-play. Tira i dadi, muovi le pedine, cattura quelle avversarie rimaste sole e porta fuori tutte e quindici le tue pedine per vincere.\n\nNon conosci ancora il backgammon? Impara direttamente sulla scacchiera con cinque brevi lezioni interattive dedicate al movimento, alla cattura, alla barra e all’uscita delle pedine. Poi gioca la tua prima vera partita.\n\nFunzioni:\n• Impara a giocare — lezioni interattive su una vera scacchiera\n• Gioca contro il computer\n• Modalità locale per 2 giocatori (pass-and-play)\n• Trascina o tocca per muovere; le destinazioni consentite sono evidenziate\n• Suggerimenti di mossa, numeri dei punti e guida alla direzione per i principianti\n• Ripeti e rivedi qualsiasi turno della partita\n• Disponibile in 17 lingue\n• Nessun account e nessuna pubblicità — il gioco funziona sul tuo dispositivo\n\nUn solo acquisto. Gioca offline dopo il download. Perfetto per migliorare le tue abilità.",
+        "description": "Backgammon Mastermind è una versione curata del classico gioco da tavolo di strategia.\n\nInizia subito una partita contro il computer oppure condividi la scacchiera con un amico in modalità pass-and-play. Tira i dadi, muovi le pedine, cattura quelle avversarie rimaste sole e porta fuori tutte e quindici le tue pedine per vincere.\n\nNon conosci ancora il backgammon? Impara direttamente sulla scacchiera con brevi lezioni interattive, dal movimento e dalla cattura fino all’uscita delle pedine, ai piani di gioco, al cubo del raddoppio e agli incontri. Poi gioca la tua prima vera partita.\n\nFunzioni:\n• Impara a giocare — lezioni interattive su una vera scacchiera\n• Gioca contro il computer, da Facile a Esperto\n• Incontri con il cubo del raddoppio e la regola Crawford\n• Prepara qualsiasi posizione e giocala\n• Modalità locale per 2 giocatori (pass-and-play)\n• Trascina o tocca per muovere; le destinazioni consentite sono evidenziate\n• Suggerimenti di mossa, numeri dei punti e guida alla direzione per i principianti\n• Ripeti e rivedi qualsiasi turno della partita\n• Disponibile in 17 lingue\n• Nessun account e nessuna pubblicità — il gioco funziona sul tuo dispositivo\n\nUn solo acquisto. Gioca offline dopo il download. Perfetto per migliorare le tue abilità.",
         "keywords": [
           "backgammon",
           "gioco da tavolo",
@@ -223,7 +223,7 @@
           "tavola",
           "nard"
         ],
-        "releaseNotes": "Gioca a backgammon con un amico tramite iMessage. Nuova Modalità tutor: segnala gli errori mentre giochi. Conferma mossa ti permette di controllare o annullare prima che finisca il tuo turno. In più: indicatori di strategia, conteggio pip, supporto migliorato per l'ebraico e le lingue da destra a sinistra, e un annullamento più fluido.",
+        "releaseNotes": "Gioca incontri con il cubo del raddoppio e la regola Crawford, contro il computer o un amico. Scegli il livello del computer, da Facile a Esperto. Prepara qualsiasi posizione e giocala. Nuove lezioni sul cubo, sugli incontri e sui cinque piani di gioco, e la modalità tutor ora controlla anche le decisioni sul cubo e segna i tuoi errori nella cronologia. In più, una schermata di gioco più ampia con pedine più grandi.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -232,7 +232,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "バックギャモンを学び、遊ぶ",
         "promoText": "インタラクティブなボードを学び、コンピューターを再生したり、友人や家族とオフラインでプレイしたりできます。",
-        "description": "Backgammon Mastermindは、定番の戦略ボードゲームを丁寧に仕上げたバックギャモンアプリです。実際の盤面を使ったインタラクティブな「遊び方」コースで、正しいルールを学べます。\n\nバックギャモンが初めてでも大丈夫。盤面、駒の動かし方、ヒット、バー、ベアオフを5つの短いレッスンで学び、簡単な確認問題のあとに最初の対局へ進めます。\n\nルールを知っている方は、すぐにコンピュータと対戦できます。1台の端末を友人と交互に使う2人プレイにも対応。サイコロを振り、駒を動かし、ブロットをヒットして、15個すべての駒を先にベアオフしましょう。\n\n主な機能：\n• 実際の盤面で学べるインタラクティブレッスン\n• コンピュータ対戦\n• 1台で遊べるローカル2人対戦\n• ドラッグまたはタップで移動し、合法手を表示\n• 初心者向けの進行方向ガイドと設定\n• 17言語に対応\n• アカウント登録も広告も不要。処理は端末上で完結\n\n買い切りで、ダウンロード後はオフラインでも遊べます。",
+        "description": "Backgammon Mastermindは、定番の戦略ボードゲームを丁寧に仕上げたバックギャモンアプリです。実際の盤面を使ったインタラクティブな「遊び方」コースで、正しいルールを学べます。\n\nバックギャモンが初めてでも大丈夫。駒の動かし方やヒットからベアオフ、ゲームプラン、ダブリングキューブ、マッチまで、盤上の短いレッスンで学び、簡単な確認問題のあとに最初の対局へ進めます。\n\nルールを知っている方は、すぐにコンピュータと対戦できます。1台の端末を友人と交互に使う2人プレイにも対応。サイコロを振り、駒を動かし、ブロットをヒットして、15個すべての駒を先にベアオフしましょう。\n\n主な機能：\n• 実際の盤面で学べるインタラクティブレッスン\n• コンピュータ対戦（「やさしい」から「エキスパート」まで）\n• ダブリングキューブとクロフォードルール付きのマッチ\n• 好きな局面を作ってそこから対局\n• 1台で遊べるローカル2人対戦\n• ドラッグまたはタップで移動し、合法手を表示\n• 初心者向けの進行方向ガイドと設定\n• 17言語に対応\n• アカウント登録も広告も不要。処理は端末上で完結\n\n買い切りで、ダウンロード後はオフラインでも遊べます。",
         "keywords": [
           "バックギャモン",
           "ボードゲーム",
@@ -245,7 +245,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "iMessage で友達とバックギャモンを遊べます。新しいチューターモードが、プレイ中の悪手をお知らせします。「手を確定」で、手番が終わる前に手を見直したり取り消したりできます。ほかにも、戦略マーク、ピップ数、ヘブライ語や右から左に書く言語への対応強化、よりスムーズな取り消しを追加しました。",
+        "releaseNotes": "ダブリングキューブとクロフォードルール付きのマッチを、コンピュータや友だちと遊べるようになりました。コンピュータの強さは「やさしい」から「エキスパート」まで選べます。好きな局面を作ってそこから対局も可能。キューブ、マッチ、5つのゲームプランを学ぶ新しいレッスンを追加し、チューターモードはキューブの判断もチェックして、ミスを対局履歴に表示します。さらに、駒が大きく見やすくなった対局画面。",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -254,7 +254,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "백개먼 배우고 즐기기",
         "promoText": "대화 형 보드에서 배우거나 컴퓨터를 재생하거나 친구와 가족과 오프라인으로 플레이하십시오.",
-        "description": "Backgammon Mastermind는 고전 전략 보드게임을 세련되게 다듬은 백개먼 앱입니다. 실제 보드에서 진행되는 대화형 ‘게임 배우기’ 과정으로 정확한 규칙을 익힐 수 있습니다.\n\n백개먼이 처음인가요? 보드, 말의 이동, 히트, 바, 베어오프를 다루는 다섯 개의 짧은 수업을 완료하고 간단한 확인 문제를 푼 뒤 첫 게임을 시작하세요.\n\n이미 규칙을 알고 있다면 컴퓨터와 바로 대결하거나 한 기기를 친구와 번갈아 사용하는 로컬 2인 모드로 플레이하세요. 주사위를 굴리고 말을 옮기고 상대의 블롯을 잡아 열다섯 개의 말을 먼저 모두 빼내면 승리합니다.\n\n주요 기능:\n• 실제 보드에서 배우는 대화형 수업\n• 컴퓨터와 대결\n• 한 기기에서 즐기는 로컬 2인 플레이\n• 드래그 또는 탭으로 이동하고 가능한 목적지를 표시\n• 초보자를 위한 이동 방향 안내와 설정\n• 17개 언어 지원\n• 계정과 광고 없음 — 게임은 기기에서 실행\n\n한 번 구매하면 다운로드 후 오프라인에서도 플레이할 수 있습니다.",
+        "description": "Backgammon Mastermind는 고전 전략 보드게임을 세련되게 다듬은 백개먼 앱입니다. 실제 보드에서 진행되는 대화형 ‘게임 배우기’ 과정으로 정확한 규칙을 익힐 수 있습니다.\n\n백개먼이 처음인가요? 실제 보드에서 말의 이동과 히트부터 베어오프, 게임 플랜, 더블링 큐브, 매치까지 짧은 수업으로 배우고 간단한 확인 문제를 푼 뒤 첫 게임을 시작하세요.\n\n이미 규칙을 알고 있다면 컴퓨터와 바로 대결하거나 한 기기를 친구와 번갈아 사용하는 로컬 2인 모드로 플레이하세요. 주사위를 굴리고 말을 옮기고 상대의 블롯을 잡아 열다섯 개의 말을 먼저 모두 빼내면 승리합니다.\n\n주요 기능:\n• 실제 보드에서 배우는 대화형 수업\n• 컴퓨터와 대결 (쉬움부터 전문가까지)\n• 더블링 큐브와 크로퍼드 규칙이 있는 매치\n• 원하는 포지션을 만들어 이어서 플레이\n• 한 기기에서 즐기는 로컬 2인 플레이\n• 드래그 또는 탭으로 이동하고 가능한 목적지를 표시\n• 초보자를 위한 이동 방향 안내와 설정\n• 17개 언어 지원\n• 계정과 광고 없음 — 게임은 기기에서 실행\n\n한 번 구매하면 다운로드 후 오프라인에서도 플레이할 수 있습니다.",
         "keywords": [
           "백개먼",
           "보드게임",
@@ -267,7 +267,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "iMessage로 친구와 백개먼을 즐기세요. 새로운 튜터 모드가 플레이 중 실수를 알려 줍니다. '수 확정'으로 턴이 끝나기 전에 수를 검토하거나 실행 취소할 수 있습니다. 이 밖에 전략 표시, 핍 수, 히브리어 및 오른쪽에서 왼쪽으로 쓰는 언어 지원 개선, 더 부드러운 실행 취소가 추가되었습니다.",
+        "releaseNotes": "더블링 큐브와 크로퍼드 규칙이 있는 매치를 컴퓨터나 친구와 즐기세요. 컴퓨터 난이도는 쉬움부터 전문가까지 고를 수 있습니다. 원하는 포지션을 만들어 이어서 플레이할 수도 있습니다. 큐브, 매치, 다섯 가지 게임 플랜을 다루는 새 수업이 추가되었고, 튜터 모드는 이제 큐브 결정도 확인하고 게임 기록에 실수를 표시합니다. 또한 말이 더 커진 넓은 게임 화면.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -276,7 +276,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Leren en backgammon spelen",
         "promoText": "Leer op een interactief bord, speel de computer, of pas en speel offline met vrienden en familie.",
-        "description": "Backgammon Mastermind is een verzorgde versie van het klassieke strategiespel.\n\nBegin meteen een partij tegen de computer of deel het bord met een vriend in pass-and-play. Gooi de dobbelstenen, verplaats je stenen, sla losse stenen en speel al je vijftien stenen uit om te winnen.\n\nNieuw met backgammon? Leer direct op het bord met vijf korte interactieve lessen over zetten, slaan, de bar en het uitspelen van stenen. Speel daarna je eerste echte partij.\n\nFuncties:\n• Leer spelen — interactieve lessen op een echt bord\n• Speel tegen de computer\n• Lokale modus voor 2 spelers (pass-and-play)\n• Sleep of tik om te zetten; toegestane bestemmingen worden gemarkeerd\n• Zethints, puntnummers en een richtingsoverlay voor beginners\n• Speel elke beurt van je partij terug en bekijk hem\n• Beschikbaar in 17 talen\n• Geen account en geen advertenties — het spel draait op je apparaat\n\nEén aankoop. Speel offline na het downloaden. Perfect om je vaardigheden te verbeteren.",
+        "description": "Backgammon Mastermind is een verzorgde versie van het klassieke strategiespel.\n\nBegin meteen een partij tegen de computer of deel het bord met een vriend in pass-and-play. Gooi de dobbelstenen, verplaats je stenen, sla losse stenen en speel al je vijftien stenen uit om te winnen.\n\nNieuw met backgammon? Leer direct op het bord met korte interactieve lessen, van zetten en slaan tot uitspelen, spelplannen, de verdubbelingskubus en matches. Speel daarna je eerste echte partij.\n\nFuncties:\n• Leer spelen — interactieve lessen op een echt bord\n• Speel tegen de computer, van Makkelijk tot Expert\n• Matches met verdubbelingskubus en Crawford-regel\n• Zet elke stelling op en speel hem uit\n• Lokale modus voor 2 spelers (pass-and-play)\n• Sleep of tik om te zetten; toegestane bestemmingen worden gemarkeerd\n• Zethints, puntnummers en een richtingsoverlay voor beginners\n• Speel elke beurt van je partij terug en bekijk hem\n• Beschikbaar in 17 talen\n• Geen account en geen advertenties — het spel draait op je apparaat\n\nEén aankoop. Speel offline na het downloaden. Perfect om je vaardigheden te verbeteren.",
         "keywords": [
           "backgammon",
           "bordspel",
@@ -289,7 +289,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Speel backgammon met een vriend via iMessage. Nieuw: de Tutormodus markeert fouten terwijl je speelt. Met Zet bevestigen kun je je zet controleren of ongedaan maken voordat je beurt eindigt. Plus strategiemarkeringen, pip count, betere ondersteuning voor Hebreeuws en rechts-naar-linkstalen, en soepeler ongedaan maken.",
+        "releaseNotes": "Speel matches met de verdubbelingskubus en de Crawford-regel, tegen de computer of een vriend. Kies het niveau van de computer, van Makkelijk tot Expert. Zet elke stelling op en speel hem uit. Nieuwe lessen over de kubus, matches en de vijf spelplannen, en de tutormodus controleert nu ook je kubusbeslissingen en markeert je fouten in de spelgeschiedenis. Plus een ruimer spelscherm met grotere stenen.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -298,7 +298,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Nauka i gra w backgammon",
         "promoText": "Ucz się na interaktywnej tablicy, graj na komputerze, lub przekazać i grać offline z przyjaciółmi i rodziną.",
-        "description": "Backgammon Mastermind to dopracowana wersja klasycznej strategicznej gry planszowej.\n\nOd razu rozpocznij partię z komputerem albo podziel się planszą z przyjacielem w trybie pass-and-play. Rzucaj kośćmi, przesuwaj piony, zbijaj samotne piony przeciwnika i wyprowadź wszystkie piętnaście swoich pionów, aby wygrać.\n\nDopiero zaczynasz grać w backgammona? Ucz się bezpośrednio na planszy dzięki pięciu krótkim interaktywnym lekcjom o ruchu, zbijaniu, barze i wyprowadzaniu pionów. Potem rozegraj swoją pierwszą prawdziwą partię.\n\nFunkcje:\n• Nauka gry — interaktywne lekcje na prawdziwej planszy\n• Gra z komputerem\n• Lokalny tryb dla 2 graczy (pass-and-play)\n• Przeciągnij lub stuknij, aby wykonać ruch; dozwolone cele są podświetlane\n• Podpowiedzi ruchów, numery punktów i wskazówki kierunku dla początkujących\n• Odtwarzanie i przeglądanie dowolnej tury partii\n• Dostępne w 17 językach\n• Bez konta i bez reklam — gra działa na Twoim urządzeniu\n\nJeden zakup. Graj offline po pobraniu. Idealne do doskonalenia umiejętności.",
+        "description": "Backgammon Mastermind to dopracowana wersja klasycznej strategicznej gry planszowej.\n\nOd razu rozpocznij partię z komputerem albo podziel się planszą z przyjacielem w trybie pass-and-play. Rzucaj kośćmi, przesuwaj piony, zbijaj samotne piony przeciwnika i wyprowadź wszystkie piętnaście swoich pionów, aby wygrać.\n\nDopiero zaczynasz grać w backgammona? Ucz się bezpośrednio na planszy dzięki krótkim interaktywnym lekcjom: od ruchu i zbijania po wyprowadzanie pionów, plany gry, kostkę dublującą i mecze. Potem rozegraj swoją pierwszą prawdziwą partię.\n\nFunkcje:\n• Nauka gry — interaktywne lekcje na prawdziwej planszy\n• Gra z komputerem, od Łatwego do Eksperta\n• Mecze z kostką dublującą i regułą Crawforda\n• Ustaw dowolną pozycję i rozegraj ją\n• Lokalny tryb dla 2 graczy (pass-and-play)\n• Przeciągnij lub stuknij, aby wykonać ruch; dozwolone cele są podświetlane\n• Podpowiedzi ruchów, numery punktów i wskazówki kierunku dla początkujących\n• Odtwarzanie i przeglądanie dowolnej tury partii\n• Dostępne w 17 językach\n• Bez konta i bez reklam — gra działa na Twoim urządzeniu\n\nJeden zakup. Graj offline po pobraniu. Idealne do doskonalenia umiejętności.",
         "keywords": [
           "backgammon",
           "gra planszowa",
@@ -311,7 +311,7 @@
           "tryktrak",
           "nard"
         ],
-        "releaseNotes": "Graj w backgammona ze znajomym przez iMessage. Nowy Tryb tutora wskazuje błędy w trakcie gry. Potwierdź ruch pozwala sprawdzić lub cofnąć ruch, zanim skończy się Twoja kolej. Do tego oznaczenia strategii, liczba pipów, lepsza obsługa hebrajskiego i języków pisanych od prawej do lewej oraz płynniejsze cofanie.",
+        "releaseNotes": "Graj mecze z kostką dublującą i regułą Crawforda, z komputerem lub ze znajomym. Wybierz poziom komputera, od Łatwego do Eksperta. Ustaw dowolną pozycję i rozegraj ją. Nowe lekcje o kostce, meczach i pięciu planach gry, a tryb tutora sprawdza teraz także decyzje kostki i oznacza twoje błędy w historii gry. Do tego przestronniejszy ekran gry z większymi pionami.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -320,7 +320,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Aprender e jogar gamão",
         "promoText": "Aprenda em uma placa interativa, jogue o computador ou passe e jogue offline com amigos e familiares.",
-        "description": "Backgammon Mastermind é uma versão cuidada do clássico jogo de estratégia de tabuleiro.\n\nEntre de imediato numa partida contra o computador ou partilhe o tabuleiro com um amigo em modo pass-and-play. Lance os dados, mova as peças, capture peças isoladas e retire as quinze peças para ganhar.\n\nÉ a sua primeira vez no gamão? Aprenda diretamente no tabuleiro com cinco pequenas lições interativas sobre movimento, captura, o bar e a retirada das peças. Depois, jogue a sua primeira partida a sério.\n\nFuncionalidades:\n• Aprender a jogar — lições interativas num tabuleiro real\n• Jogar contra o computador\n• Modo local para 2 jogadores (pass-and-play)\n• Arraste ou toque para mover; os destinos permitidos são destacados\n• Sugestões de jogadas, números dos pontos e guia de direção para principiantes\n• Repita e reveja qualquer turno da partida\n• Disponível em 17 idiomas\n• Sem conta e sem anúncios — o jogo corre no seu dispositivo\n\nUma só compra. Jogue offline após a transferência. Perfeito para melhorar as suas competências.",
+        "description": "Backgammon Mastermind é uma versão cuidada do clássico jogo de estratégia de tabuleiro.\n\nEntre de imediato numa partida contra o computador ou partilhe o tabuleiro com um amigo em modo pass-and-play. Lance os dados, mova as peças, capture peças isoladas e retire as quinze peças para ganhar.\n\nÉ a sua primeira vez no gamão? Aprenda diretamente no tabuleiro com pequenas lições interativas, do movimento e da captura até à retirada das peças, aos planos de jogo, ao cubo de dobra e às partidas. Depois, jogue a sua primeira partida a sério.\n\nFuncionalidades:\n• Aprender a jogar — lições interativas num tabuleiro real\n• Jogar contra o computador, de Fácil a Especialista\n• Partidas com cubo de dobra e regra de Crawford\n• Montar qualquer posição e jogá-la\n• Modo local para 2 jogadores (pass-and-play)\n• Arraste ou toque para mover; os destinos permitidos são destacados\n• Sugestões de jogadas, números dos pontos e guia de direção para principiantes\n• Repita e reveja qualquer turno da partida\n• Disponível em 17 idiomas\n• Sem conta e sem anúncios — o jogo corre no seu dispositivo\n\nUma só compra. Jogue offline após a transferência. Perfeito para melhorar as suas competências.",
         "keywords": [
           "backgammon",
           "jogo de tabuleiro",
@@ -333,7 +333,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Jogue gamão com um amigo pelo iMessage. Novo Modo tutor: assinala os erros enquanto joga. Confirmar jogada permite rever ou desfazer antes de o seu turno terminar. E ainda: marcas de estratégia, contagem de pips, melhor suporte para hebraico e idiomas da direita para a esquerda, e um desfazer mais suave.",
+        "releaseNotes": "Jogue partidas com o cubo de dobra e a regra de Crawford, contra o computador ou um amigo. Escolha o nível do computador, de Fácil a Especialista. Monte qualquer posição e jogue-a. Novas lições sobre o cubo, as partidas e os cinco planos de jogo, e o modo tutor passa a verificar as decisões de cubo e a marcar os seus erros no histórico. E ainda um ecrã de jogo mais amplo com peças maiores.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -342,7 +342,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Учиться и играть в нарды",
         "promoText": "Учитесь на интерактивной доске, играйте на компьютере или проходите и играйте в автономном режиме с друзьями и семьей.",
-        "description": "Backgammon Mastermind — продуманная версия классической стратегической настольной игры.\n\nСразу начните партию против компьютера или разделите доску с другом в режиме pass-and-play. Бросайте кости, передвигайте шашки, сбивайте одиночные шашки соперника и выведите все пятнадцать своих шашек, чтобы победить.\n\nВпервые играете в нарды? Освойте правила прямо на доске с помощью пяти коротких интерактивных уроков о движении, сбивании, баре и выводе шашек. Затем сыграйте свою первую настоящую партию.\n\nВозможности:\n• Учитесь играть — интерактивные уроки на реальной доске\n• Игра против компьютера\n• Локальный режим для 2 игроков (pass-and-play)\n• Перетаскивайте шашки или касайтесь экрана; допустимые ходы подсвечиваются\n• Подсказки ходов, номера пунктов и указатель направления для новичков\n• Повтор и просмотр любого хода партии\n• Доступно на 17 языках\n• Без аккаунта и без рекламы — игра работает на вашем устройстве\n\nОдна покупка. Играйте офлайн после загрузки. Идеально для совершенствования навыков.",
+        "description": "Backgammon Mastermind — продуманная версия классической стратегической настольной игры.\n\nСразу начните партию против компьютера или разделите доску с другом в режиме pass-and-play. Бросайте кости, передвигайте шашки, сбивайте одиночные шашки соперника и выведите все пятнадцать своих шашек, чтобы победить.\n\nВпервые играете в нарды? Освойте правила прямо на доске с помощью коротких интерактивных уроков: от движения и сбивания до вывода шашек, игровых планов, кубика удвоения и матчей. Затем сыграйте свою первую настоящую партию.\n\nВозможности:\n• Учитесь играть — интерактивные уроки на реальной доске\n• Игра против компьютера, от «Лёгкого» до «Эксперта»\n• Матчи с кубиком удвоения и правилом Кроуфорда\n• Расстановка любой позиции и игра с неё\n• Локальный режим для 2 игроков (pass-and-play)\n• Перетаскивайте шашки или касайтесь экрана; допустимые ходы подсвечиваются\n• Подсказки ходов, номера пунктов и указатель направления для новичков\n• Повтор и просмотр любого хода партии\n• Доступно на 17 языках\n• Без аккаунта и без рекламы — игра работает на вашем устройстве\n\nОдна покупка. Играйте офлайн после загрузки. Идеально для совершенствования навыков.",
         "keywords": [
           "нарды",
           "backgammon",
@@ -355,7 +355,7 @@
           "офлайн",
           "tavla"
         ],
-        "releaseNotes": "Играйте в нарды с другом через iMessage. Новый режим наставника отмечает ошибки прямо во время игры. «Подтвердить ход» позволяет проверить или отменить ход, пока он не завершён. А также значки стратегии, счёт пипсов, улучшенная поддержка иврита и языков с письмом справа налево и более плавная отмена.",
+        "releaseNotes": "Играйте матчи с кубиком удвоения и правилом Кроуфорда — против компьютера или с другом. Выбирайте уровень компьютера, от «Лёгкого» до «Эксперта». Расставляйте любую позицию и доигрывайте её. Новые уроки о кубике, матчах и пяти игровых планах, а режим наставника теперь проверяет и решения с кубиком и отмечает ваши ошибки в истории партии. А ещё — более просторный игровой экран с крупными шашками.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -364,7 +364,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "Tavla öğren ve oyna",
         "promoText": "Etkileşimli bir kurulda öğrenin, bilgisayar oynayın veya arkadaş ve aile ile çevrimdışı oynayın.",
-        "description": "Backgammon Mastermind, klasik strateji oyunu tavlanın özenle hazırlanmış bir yorumudur. Gerçek bir tahta üzerinde ilerleyen etkileşimli “Oynamayı Öğren” bölümüyle kuralları doğru şekilde öğrenebilirsiniz.\n\nTavlaya yeni misiniz? Tahtayı, pulların hareketini, kırmayı, barı ve pulları toplamayı anlatan beş kısa dersi tamamlayın. Kısa bir kontrolden sonra ilk gerçek oyununuzu oynayın.\n\nOyunu zaten biliyor musunuz? Hemen bilgisayara karşı oynayın veya aynı cihazı sırayla kullanarak bir arkadaşınızla yerel iki kişilik oyun başlatın. Zarları atın, pullarınızı ilerletin, açık rakip pullarını kırın ve kazanmak için on beş pulunuzu da önce toplayın.\n\nÖzellikler:\n• Gerçek tahta üzerinde etkileşimli dersler\n• Bilgisayara karşı oyun\n• Aynı cihazda yerel iki kişilik oyun\n• Sürükleyerek veya dokunarak oynama; geçerli hedefler vurgulanır\n• Yeni başlayanlar için hareket yönü rehberi ve ayarlar\n• 17 dil desteği\n• Hesap ve reklam yok — oyun cihazınızda çalışır\n\nTek seferlik satın alma. İndirdikten sonra çevrimdışı oynayın.",
+        "description": "Backgammon Mastermind, klasik strateji oyunu tavlanın özenle hazırlanmış bir yorumudur. Gerçek bir tahta üzerinde ilerleyen etkileşimli “Oynamayı Öğren” bölümüyle kuralları doğru şekilde öğrenebilirsiniz.\n\nTavlaya yeni misiniz? Gerçek bir tahta üzerinde kısa derslerle pulların hareketinden ve kırmaktan pulları toplamaya, oyun planlarına, katlama zarına ve maçlara kadar her şeyi öğrenin. Kısa bir kontrolden sonra ilk gerçek oyununuzu oynayın.\n\nOyunu zaten biliyor musunuz? Hemen bilgisayara karşı oynayın veya aynı cihazı sırayla kullanarak bir arkadaşınızla yerel iki kişilik oyun başlatın. Zarları atın, pullarınızı ilerletin, açık rakip pullarını kırın ve kazanmak için on beş pulunuzu da önce toplayın.\n\nÖzellikler:\n• Gerçek tahta üzerinde etkileşimli dersler\n• Bilgisayara karşı oyun, Kolay'dan Uzman'a\n• Katlama zarı ve Crawford kuralıyla maçlar\n• İstediğiniz pozisyonu kurup oradan oynayın\n• Aynı cihazda yerel iki kişilik oyun\n• Sürükleyerek veya dokunarak oynama; geçerli hedefler vurgulanır\n• Yeni başlayanlar için hareket yönü rehberi ve ayarlar\n• 17 dil desteği\n• Hesap ve reklam yok — oyun cihazınızda çalışır\n\nTek seferlik satın alma. İndirdikten sonra çevrimdışı oynayın.",
         "keywords": [
           "tavla",
           "backgammon",
@@ -377,7 +377,7 @@
           "çevrimdışı",
           "nard"
         ],
-        "releaseNotes": "iMessage üzerinden bir arkadaşınla tavla oyna. Yeni Eğitmen modu, oynarken hataları işaretler. Hamleyi onayla, sıran bitmeden önce hamleni gözden geçirmeni veya geri almanı sağlar. Ayrıca strateji işaretleri, pip sayısı, İbranice ve sağdan sola yazılan diller için daha iyi destek ve daha akıcı geri alma.",
+        "releaseNotes": "Katlama zarı ve Crawford kuralıyla bilgisayara ya da bir arkadaşınıza karşı maç oynayın. Bilgisayarın seviyesini Kolay'dan Uzman'a kadar seçin. İstediğiniz pozisyonu kurup oradan oynayın. Zar, maçlar ve beş oyun planı üzerine yeni dersler eklendi; eğitmen modu artık zar kararlarınızı da kontrol ediyor ve hatalarınızı oyun geçmişinde işaretliyor. Ayrıca daha büyük pullarla daha ferah bir oyun ekranı.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -386,7 +386,7 @@
         "title": "Backgammon Mastermind",
         "subtitle": "学习和玩双陆棋",
         "promoText": "在互动板上学习,玩电脑,或者通过和与朋友和家人的离线游戏.",
-        "description": "Backgammon Mastermind 是一款精心打磨的经典双陆棋策略游戏。\n\n立即与电脑对战，或在轮流同机模式下与朋友共享棋盘。掷骰子、移动棋子、击打对方的单枚棋子，并率先收完全部十五枚棋子即可获胜。\n\n第一次接触双陆棋？通过棋盘上的五节简短互动课程，学习走棋、击打、从横杆重新入场和收子，然后开始第一场真正的对局。\n\n功能：\n• 学习玩法 — 在真实棋盘上完成互动课程\n• 与电脑对战\n• 本地双人轮流同机\n• 拖动或点按走棋；高亮显示合法落点\n• 面向新手的走棋提示、点位编号和方向指引\n• 回放并查看对局中的任意回合\n• 支持 17 种语言\n• 无需账号、无广告 — 游戏完全在设备上运行\n\n一次购买。下载后可离线畅玩，适合不断提升棋艺。",
+        "description": "Backgammon Mastermind 是一款精心打磨的经典双陆棋策略游戏。\n\n立即与电脑对战，或在轮流同机模式下与朋友共享棋盘。掷骰子、移动棋子、击打对方的单枚棋子，并率先收完全部十五枚棋子即可获胜。\n\n第一次接触双陆棋？在真实棋盘上通过简短的互动课程学习走棋、击打、收子、游戏计划、加倍骰和比赛，然后开始第一场真正的对局。\n\n功能：\n• 学习玩法 — 在真实棋盘上完成互动课程\n• 与电脑对战，从简单到专家\n• 带加倍骰和克劳福德规则的比赛\n• 摆放任意局面并从那里开始下\n• 本地双人轮流同机\n• 拖动或点按走棋；高亮显示合法落点\n• 面向新手的走棋提示、点位编号和方向指引\n• 回放并查看对局中的任意回合\n• 支持 17 种语言\n• 无需账号、无广告 — 游戏完全在设备上运行\n\n一次购买。下载后可离线畅玩，适合不断提升棋艺。",
         "keywords": [
           "双陆棋",
           "backgammon",
@@ -399,7 +399,7 @@
           "离线",
           "tavla"
         ],
-        "releaseNotes": "通过 iMessage 与朋友玩双陆棋。全新导师模式会在对局中标出失误。“确认走子”让你在回合结束前检查或撤销走子。此外还有策略标记、点数显示、更好的希伯来语及从右到左语言支持，以及更流畅的撤销。",
+        "releaseNotes": "现在可以和电脑或朋友进行带加倍骰和克劳福德规则的比赛。电脑难度可从简单选到专家。还能摆放任意局面并从那里开始下。新课程讲解加倍骰、比赛和五种游戏计划，导师模式现在也会检查加倍骰决定，并在对局历史中标出你的失误。此外，对局界面更宽敞，棋子更大。",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
