@@ -7,6 +7,7 @@ flows:
   - app/cube-tutor-beavers.yaml
   - app/cube-decision-undo.yaml
   - app/computer-match.yaml
+  - app/learn-any-order.yaml
   - app/match-polish.yaml
   - app/confirm-move.yaml
   - app/backgammon-smoke.yaml
