@@ -22,10 +22,6 @@ it('holds a missed double before any dice are rolled, and reviews it with the si
   expect(commit).toHaveBeenCalledTimes(1);
   expect(result.current.session).toBeNull();
 });
-  expect(result.current.session?.loss).toBeCloseTo(0.4);
-  act(() => result.current.dismiss());
-  expect(result.current.session).toBeNull();
-});
 it('holds a double while it checks, then applies a sound one by itself', async () => {
   let resolve!: (value: typeof verdict) => void;
   analyzeCube.mockImplementation(() => new Promise(r => resolve = r));
