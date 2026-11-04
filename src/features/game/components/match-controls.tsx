@@ -1,4 +1,5 @@
 import type { GameState } from '@/lib/game';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { CubeHintButton } from '@/features/game/components/cube-hint-button';
@@ -11,6 +12,13 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
   const { matchAction, isAnimating, canRedo, canBranchCubeHistory } = useGame();
   const m = state.match!;
   const blocked = isAnimating || (canRedo && !canBranchCubeHistory);
+  // When a game of the match ends, keyboard focus waits on Next game.
+  const nextRef = useRef<View>(null);
+  const gameOver = state.phase === 'game-over';
+  useEffect(() => {
+    if (gameOver)
+      nextRef.current?.focus?.();
+  }, [gameOver, m.gameNumber]);
   // The offerer remains currentPlayer while the other side answers the cube.
   const humanDecision = state.mode !== 'vs-computer' || m.pendingOffer === 'black';
   if (state.phase !== 'game-over' && (m.pendingOffer ? !humanDecision : !isHumanTurn || isComputerTurn))
@@ -19,6 +27,7 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
     const secondary = id === 'match-double' || id === 'match-drop';
     return (
       <HoverPressable
+        ref={id === 'match-next' ? nextRef : undefined}
         testID={id}
         accessibilityRole="button"
         accessibilityLabel={label}
