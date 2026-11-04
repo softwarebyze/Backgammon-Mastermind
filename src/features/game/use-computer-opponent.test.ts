@@ -4,6 +4,7 @@ import { act, renderHook } from '@testing-library/react-native';
 import { planComputerTurn } from '@/features/game/computer-turn';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
 import { applyMove, getAIMove, getLegalMoves } from '@/lib/game';
+import { computerThinkDelayMs } from '@/lib/game/computer-pace';
 import { createInitialState } from '@/lib/game/constants';
 
 jest.mock('@/features/game/computer-turn', () => ({ planComputerTurn: jest.fn(), chooseComputerCubeAction: jest.fn() }));
@@ -74,4 +75,29 @@ it('falls back to the built-in heuristic when the engine cannot answer', async (
   const { playMove } = render('expert');
   await runTimers();
   expect(playMove).toHaveBeenCalledWith(start, getAIMove(start), { pace: 'computer' });
+});
+
+it('keeps a planned move whose timer was cancelled, and plays it on resume', async () => {
+  const legal = getLegalMoves(start);
+  const first = legal[legal.length - 1];
+  const afterFirst = applyMove(start, first);
+  const nextLegal = getLegalMoves(afterFirst);
+  const second = nextLegal[nextLegal.length - 1];
+  expect(getAIMove(afterFirst)).not.toMatchObject({ from: second.from, to: second.to });
+  jest.mocked(planComputerTurn).mockResolvedValue([
+    { ...first, die: start.remainingDice[first.dieIndex] },
+    { ...second, die: afterFirst.remainingDice[second.dieIndex] },
+  ]);
+
+  const { playMove, rerender, result } = render('easy');
+  await runTimers();
+  rerender({ state: afterFirst });
+  // The second move is scheduled, then cancelled (e.g. leaving the game screen).
+  await act(async () => {
+    jest.advanceTimersByTime(computerThinkDelayMs('moving'));
+  });
+  act(() => result.current.clearAITimeout());
+  act(() => result.current.resumeAIScheduling());
+  await runTimers();
+  expect(playMove).toHaveBeenLastCalledWith(afterFirst, expect.objectContaining({ from: second.from, to: second.to }), { pace: 'computer' });
 });

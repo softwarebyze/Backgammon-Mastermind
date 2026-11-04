@@ -7,6 +7,7 @@ import { useGame } from '@/features/game/use-game';
 import { patchGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { createMatchGame } from '@/lib/game/match';
 import { hasQuarantinedSession } from '@/lib/game/persistence';
+import { getItem } from '@/lib/storage';
 
 import { HomeScreen } from './home-screen';
 
@@ -59,6 +60,7 @@ it('shows the computer level only against the computer, and saves the pick', () 
   expect(screen.getByTestId('home-computer-level-medium').props.accessibilityState).toEqual({ checked: true });
   fireEvent.press(screen.getByTestId('home-computer-level-hard'));
   expect(screen.getByTestId('home-computer-level-hard').props.accessibilityState).toEqual({ checked: true });
+  expect(getItem<{ computerLevel?: string }>('GAME_PREFERENCES')?.computerLevel).toBe('hard');
   fireEvent.press(screen.getByTestId('home-opponent-vs-human'));
   expect(screen.queryByTestId('home-computer-level-hard')).toBeNull();
   patchGamePreferences({ computerLevel: 'medium' });

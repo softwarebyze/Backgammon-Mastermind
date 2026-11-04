@@ -191,7 +191,6 @@ export function useComputerOpponent({
         }
         const [next, ...rest] = plannedTurnRef.current;
         const plannedMove = next ? livePlannedMove(prev, next) : null;
-        plannedTurnRef.current = plannedMove ? rest : [];
         const move = plannedMove ?? getAIMove(prev);
         if (!move) {
           recordNoMove(prev, prev);
@@ -206,6 +205,8 @@ export function useComputerOpponent({
           if (latest !== prev || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
+          // Only a move that actually plays leaves the plan: a cancelled timer keeps it.
+          plannedTurnRef.current = plannedMove ? rest : [];
           playMove(latest, move, { pace: 'computer' });
         }, moveDelay);
         aiTimeoutRef.current = moveTimer;
