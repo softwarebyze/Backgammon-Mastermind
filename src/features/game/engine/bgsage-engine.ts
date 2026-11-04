@@ -1,8 +1,9 @@
 import type { EngineTurnPlan, GameEngine } from './types';
 
 import type { GameState } from '@/lib/game/types';
+import { gameStateToSageBoard, planSageTurnFull, sageCubeDecision } from 'expo-bgsage';
 
-import { gameStateToSageBoard, planSageTurnFull } from 'expo-bgsage';
+import { engineCubeContext } from './cube-context';
 
 /**
  * The bgsage neural-net engine, behind the GameEngine interface.
@@ -15,7 +16,7 @@ export const bgsageEngine: GameEngine = {
   id: 'bgsage',
 
   async planTurn(state: GameState): Promise<EngineTurnPlan> {
-    const plan = await planSageTurnFull(state, 2);
+    const plan = await planSageTurnFull(state, 2, engineCubeContext(state));
     const candidates = (plan?.candidates ?? []).filter(c => Number.isFinite(c.equity));
     if (!plan || !Number.isFinite(plan.equity) || candidates.length === 0) {
       throw new Error('bgsage returned no usable plan');
@@ -29,6 +30,16 @@ export const bgsageEngine: GameEngine = {
       equity: plan.equity,
       candidates,
     };
+  },
+
+  async analyzeCube(state) {
+    const context = engineCubeContext(state);
+    if (!context)
+      throw new Error('No cube in this position');
+    const verdict = await sageCubeDecision(state, context.cubeValue, context.cubeOwner, 2, context);
+    if (![verdict.equityNoDouble, verdict.equityDoubleTake, verdict.equityDoublePass].every(Number.isFinite))
+      throw new Error('bgsage returned no usable cube analysis');
+    return verdict;
   },
 
   boardAfterTurn(state: GameState): number[] {

@@ -2,12 +2,14 @@ import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState, StyleSheet, Text, View } from 'react-native';
-
 import { FocusAwareStatusBar } from '@/components/ui';
+import { CubeTutorOverlay } from '@/features/game/components/cube-tutor-overlay';
+
 import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
+import { GameToolbar } from '@/features/game/game-toolbar';
 import { guidanceArrowSegments } from '@/features/game/guidance-arrows';
 import {
   clearGuidance,
@@ -22,13 +24,14 @@ import {
 import { useGame } from '@/features/game/use-game';
 import { useGameInput } from '@/features/game/use-game-input';
 import { useGameKeyboardShortcuts } from '@/features/game/use-game-keyboard-shortcuts';
-import { useGameScreenHeader } from '@/features/game/use-game-screen-header';
 import { useLeaveGame } from '@/features/game/use-leave-game';
 import { useMoveReview } from '@/features/game/use-move-review';
 import { useTutorMode } from '@/features/game/use-tutor';
+import { SavePositionDialog } from '@/features/positions/save-position-dialog';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { primeGameSfxFromUserGesture } from '@/lib/game-sfx/play-game-sfx';
+import { getActingPlayer } from '@/lib/game/turn-display';
 import { translate } from '@/lib/i18n';
 import { useHardwareBackPress } from '@/lib/navigation/use-hardware-back-press';
 import { interFont } from '@/lib/ui/fonts';
@@ -56,8 +59,9 @@ export function GameScreen() {
   const posthog = usePostHog();
   const navigation = useNavigation();
   const { preferences } = useGamePreferences();
-  const input = useGameInput();
   const {
+    state: liveState,
+    cubeTutorSession,
     moveAnimation,
     resetAnimation,
     moveLog,
@@ -70,17 +74,26 @@ export function GameScreen() {
     resumeAIScheduling,
     selectPoint,
   } = useGame();
-  // Tutor mode: background blunder-checking for human turns.
-  useTutorMode(input.state, moveLog);
   const guidance = useGuidance();
   const guidanceVerdictPending = useGuidanceVerdictPending();
   // A blunder prompt or a pending verdict pauses play. Hint sessions never
   // pause: the player keeps playing with the engine's suggestion on the board.
   const blunderOpen = guidance?.kind === 'blunder';
-  const tutorPaused = blunderOpen || guidanceVerdictPending;
+  const tutorPaused = blunderOpen || guidanceVerdictPending || !!cubeTutorSession;
   // Only mention the review when the hold is noticeable — the verdict
   // usually lands before the player even notices the pause.
   const showReviewing = useDelayedTrue(guidanceVerdictPending, 600);
+  const review = useMoveReview({
+    liveState,
+    moveLog,
+    replayBaseline,
+  });
+  // Board input is off while a prompt or review owns the screen. The input
+  // hook drops anything tapped during an animation instead of replaying it
+  // under the overlay once the checker settles.
+  const input = useGameInput({ interactionEnabled: !review.isReviewing && !tutorPaused });
+  // Tutor mode: background blunder-checking for human turns.
+  useTutorMode(liveState, moveLog);
   // Leaving the screen drops any guidance session/hold with it.
   useEffect(() => {
     return () => {
@@ -101,11 +114,6 @@ export function GameScreen() {
     return () => clearHintArrows();
   }, [guidanceArrows]);
   const { leaveGame, handleBackPress, allowLeaveRef } = useLeaveGame();
-  const review = useMoveReview({
-    liveState: input.state,
-    moveLog,
-    replayBaseline,
-  });
 
   // Leave-home clears AI timers; same in-memory state won't re-trigger the effect — kick on focus.
   useFocusEffect(useCallback(() => {
@@ -134,17 +142,8 @@ export function GameScreen() {
     router.push('/settings');
   }, [posthog, input.state?.mode]);
 
-  useGameScreenHeader({
-    navigation,
-    state: input.state,
-    canUndo: !review.isReviewing && canUndo,
-    canRedo: !review.isReviewing && canRedo,
-    doUndo,
-    doRedo,
-    openOptions,
-    handleReset: input.handleReset,
-    confirmLeaveGame: leaveGame,
-  });
+  const [savingPosition, setSavingPosition] = useState(false);
+  const openSavePosition = useCallback(() => setSavingPosition(true), []);
 
   const canConfirmMove = !!input.state
     && !review.isReviewing
@@ -203,7 +202,7 @@ export function GameScreen() {
     confirmHoldSegments,
   });
   const state = board.boardState!;
-  const isComputerTurn = state.mode === 'vs-computer' && state.currentPlayer === 'black';
+  const isComputerTurn = state.mode === 'vs-computer' && getActingPlayer(state) === 'black';
   // Pause interaction while the blunder prompt is open or a verdict is pending.
   const interactionEnabled = board.interactionEnabled && !tutorPaused;
   // Revealed solution view: a display-only preview of the turn-start board
@@ -213,6 +212,20 @@ export function GameScreen() {
   return (
     <View style={styles.screenWrap}>
       <GameScreenLayout
+        toolbar={(compact: boolean) => (
+          <GameToolbar
+            compact={compact}
+            canUndo={!review.isReviewing && canUndo}
+            canRedo={!review.isReviewing && canRedo}
+            onUndo={doUndo}
+            onRedo={doRedo}
+            onOptions={openOptions}
+            onReset={input.handleReset}
+            onHome={leaveGame}
+            onSavePosition={openSavePosition}
+            match={state.match}
+          />
+        )}
         board={{ ...board, boardState: previewState ?? state, interactionEnabled }}
         review={review}
         input={input}
@@ -227,6 +240,8 @@ export function GameScreen() {
           <Text style={styles.reviewingText}>Reviewing your turn…</Text>
         </View>
       )}
+      <CubeTutorOverlay />
+      <SavePositionDialog state={input.state} visible={savingPosition} onClose={() => setSavingPosition(false)} />
     </View>
   );
 }

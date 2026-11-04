@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 
 import { cloneGameState } from '@/lib/game/snapshot';
+import { clearBlunderHistory, forgetTurnsAfter, recordTurnLoss } from './blunder-history';
 import { primaryEngine } from './engine';
 import {
   clearGuidanceKind,
@@ -53,11 +54,13 @@ let tutorGameGeneration = 0;
 
 export function bumpTutorGameGeneration(): void {
   tutorGameGeneration += 1;
+  clearBlunderHistory();
 }
 
 /** Tests start from generation 0. */
 export function resetTutorGameGenerationForTests(): void {
   tutorGameGeneration = 0;
+  clearBlunderHistory();
 }
 
 /**
@@ -197,6 +200,8 @@ function openBlunderPrompt(args: {
   if (!analysis)
     return;
   const verdict = judgeTutorTurn(analysis, endBoard);
+  // The timeline marks the turn; a replay after undo that is fine clears it.
+  recordTurnLoss(entry.startMoveLogLength + 1, verdict?.loss ?? null);
   if (!verdict)
     return;
   const movesMade = Math.max(0, endMoveLogLength - entry.startMoveLogLength);
@@ -364,6 +369,8 @@ export function useTutorMode(liveState: GameState | null, moveLog: MoveLogEntry[
         clearGuidanceKind('hint');
       }
     }
+
+    forgetTurnsAfter(moveLogRef.current.length);
 
     if (!tutorOn) {
       retryRef.current = null;

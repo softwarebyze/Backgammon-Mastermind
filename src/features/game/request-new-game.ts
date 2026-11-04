@@ -5,7 +5,7 @@ import { confirmAction } from '@/lib/confirm';
 import { hasSavedGame, isResumableGame } from '@/lib/game/persistence';
 import { translate } from '@/lib/i18n';
 
-type NewGameSource = 'home' | 'learn' | 'reset';
+type NewGameSource = 'home' | 'learn' | 'reset' | 'position';
 
 type ReplaceActiveGameOpts = {
   source: NewGameSource;

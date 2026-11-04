@@ -1,6 +1,7 @@
 import type { GameState } from '@/lib/game';
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { use, useCallback, useEffect, useMemo, useState } from 'react';
 import { formatReviewPositionLabel } from '@/features/game/review-helpers';
 import { reviewEffectivePly } from '@/features/game/review-navigation';
 import { reviewPathSegments } from '@/features/game/review-path-segments';
@@ -12,8 +13,10 @@ import {
   turnContainingPly,
   useReviewTurnLoop,
 } from '@/features/game/use-review-turn-loop';
+import { chronologicalHistory } from '@/lib/game/cube-history';
 import { groupMoveLogByTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
+import { GameContext } from './game-context';
 
 type Options = {
   liveState: GameState | null;
@@ -39,6 +42,11 @@ function lastCompletedTurnPly(
 
 /* eslint-disable max-lines-per-function -- review orchestration */
 export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
+  const context = use(GameContext);
+  const cubeEvents = context?.cubeEvents;
+  const setReviewing = context?.setReviewing;
+  const [selectedEvent, setSelectedEvent] = useState<CubeHistoryEvent | null>(null);
+  const selectedCubeEvent = selectedEvent && cubeEvents?.includes(selectedEvent) ? selectedEvent : null;
   const liveIndex = moveLog.length;
   const [manualIndex, setManualIndex] = useState<number | null>(null);
   const [looping, setLooping] = useState(false);
@@ -60,6 +68,12 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
     isFading: animation.isFading,
   });
 
+  const isReviewing = plies.isReviewing || !!selectedCubeEvent;
+  useEffect(() => {
+    setReviewing?.(isReviewing);
+    return () => setReviewing?.(false);
+  }, [isReviewing, setReviewing]);
+
   const focusedTurn = useMemo(
     () => (plies.isReviewing ? turnContainingPly(moveLog, plies.scrubberPly) : null),
     [moveLog, plies.isReviewing, plies.scrubberPly],
@@ -75,6 +89,7 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
   });
 
   const { displayState } = useReviewDisplayState({
+    cubeEvents,
     liveState,
     replayBaseline,
     moveLog,
@@ -124,10 +139,10 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
   }, [loop]);
 
   useEffect(() => {
-    if (liveIndex === 0 || (manualIndex !== null && manualIndex > liveIndex)) {
+    if ((liveIndex === 0 && !cubeEvents?.length) || (manualIndex !== null && manualIndex > liveIndex)) {
       animation.goLive();
     }
-  }, [animation, liveIndex, manualIndex]);
+  }, [animation, liveIndex, manualIndex, cubeEvents?.length]);
 
   // New game / reset: leave review immediately so opening ceremony sees live phase.
   useEffect(() => {
@@ -136,26 +151,70 @@ export function useMoveReview({ liveState, moveLog, replayBaseline }: Options) {
     }
   }, [animation, liveState?.phase, plies.isReviewing]);
 
+  const jumpToCubeEvent = useCallback((id: number) => {
+    animation.goLive();
+    setLooping(false);
+    setSelectedEvent(cubeEvents?.find(event => event.id === id) ?? null);
+  }, [animation, cubeEvents]);
+  const history = chronologicalHistory(groupMoveLogByTurn(moveLog), cubeEvents ?? []);
+  const historyIndex = selectedCubeEvent
+    ? history.findIndex(item => item.kind === 'cube' && item.event.id === selectedCubeEvent.id)
+    : plies.isReviewing ? history.findIndex(item => item.kind === 'turn' && item.turn.endPly === focusedTurn?.endPly) : history.length;
+  const stepHistory = (direction: -1 | 1) => {
+    if (animation.isFading)
+      return;
+    if (!cubeEvents?.length) {
+      if (direction === -1)
+        nav.stepBack();
+      else nav.stepForward();
+      return;
+    }
+    const target = history[historyIndex + direction];
+    if (target?.kind === 'cube') {
+      jumpToCubeEvent(target.event.id);
+      return;
+    }
+    setSelectedEvent(null);
+    if (target?.kind === 'turn')
+      nav.jumpToPly(target.turn.endPly);
+    else if (direction === 1)
+      nav.goLive();
+    else nav.jumpToPly(0);
+  };
+  const clearEvent = (action: () => void) => () => {
+    setSelectedEvent(null);
+    action();
+  };
+
   return {
     viewIndex,
     liveIndex,
-    isReviewing: plies.isReviewing,
-    canStepBack: (plies.isReviewing ? effectivePly > 0 : liveIndex > 0) && !animation.isFading,
-    canStepForward: plies.isReviewing && !animation.isFading,
-    displayState,
+    selectedCubeEventId: selectedCubeEvent?.id ?? null,
+    jumpToCubeEvent,
+    isReviewing: plies.isReviewing || !!selectedCubeEvent,
+    canStepBack: (selectedCubeEvent ? true : plies.isReviewing ? effectivePly > 0 : history.length > 0) && !animation.isFading,
+    canStepForward: (plies.isReviewing || !!selectedCubeEvent) && !animation.isFading,
+    displayState: selectedCubeEvent?.after ?? displayState,
     reviewAnimation: loop.loopAnimation ?? animation.reviewAnimation,
     boardOpacity: animation.boardOpacity,
     isNavigating: animation.isNavigating,
-    pathSegments,
-    positionLabel,
+    pathSegments: selectedCubeEvent ? [] : pathSegments,
+    positionLabel: selectedCubeEvent ? null : positionLabel,
     effectivePly,
     focusedPly: plies.scrubberPly,
     /** Player whose turn is being reviewed (null when live). */
     reviewedPlayer: plies.isReviewing ? focusedTurn?.player ?? null : null,
     ...nav,
+    goLive: clearEvent(nav.goLive),
+    jumpToPly: (ply: number) => {
+      setSelectedEvent(null);
+      nav.jumpToPly(ply);
+    },
+    stepBack: () => stepHistory(-1),
+    stepForward: () => stepHistory(1),
     isLooping: looping,
     toggleReplay,
-    canReplay: loop.canReplay,
+    canReplay: !selectedCubeEvent && loop.canReplay,
   };
 }
 
