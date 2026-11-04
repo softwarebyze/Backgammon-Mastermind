@@ -2,6 +2,7 @@ import type { GameState, Move } from '@/lib/game';
 import { useEffect, useRef } from 'react';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { canOfferDouble } from '@/lib/game/match';
 import { getForcedLegalMove, getForcedTurnSequence } from '@/lib/game/single-move';
 
 const AUTO_ROLL_DELAY_MS = 400;
@@ -55,12 +56,13 @@ export function useGameplayHelpers({
       return clear;
     }
 
-    if (!isHumanTurn(state)) {
+    if (!isHumanTurn(state) || state.match?.pendingOffer) {
       return clear;
     }
 
     if (
       preferences.autoRoll
+      && !canOfferDouble(state)
       && (state.phase === 'rolling' || state.phase === 'opening-roll')
     ) {
       timeoutRef.current = setTimeout(() => {

@@ -25,6 +25,10 @@ describe('getVisibleSettings', () => {
     expect(getVisibleSettings('Language')).toEqual(new Set());
   });
 
+  it('finds the positions screen from General', () => {
+    expect(getVisibleSettings('positions').has('positions')).toBe(true);
+  });
+
   it('returns every available setting for an empty or whitespace query', () => {
     expect([...getVisibleSettings('')].sort()).toEqual(
       SETTINGS_SEARCH_ENTRIES

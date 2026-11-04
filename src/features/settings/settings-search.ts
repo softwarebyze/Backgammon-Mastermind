@@ -4,6 +4,7 @@ import { translate } from '@/lib/i18n';
 
 export type SettingsSearchId
   = | 'language'
+    | 'positions'
     | 'showMoveHints'
     | 'showDirectionOverlay'
     | 'showPointNumbers'
@@ -37,6 +38,11 @@ export const SETTINGS_SEARCH_ENTRIES: readonly SettingsSearchEntry[] = [
     id: 'language',
     sectionKey: 'settings.general',
     titleKey: 'settings.language',
+  },
+  {
+    id: 'positions',
+    sectionKey: 'settings.general',
+    titleKey: 'positions.title',
   },
   {
     id: 'showMoveHints',

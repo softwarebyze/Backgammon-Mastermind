@@ -7,6 +7,7 @@ const NO_MOVE_TO = -1;
 
 /** Compact post-move state for reliable replay (no re-simulating dice/turns). */
 export type ReplaySnapshot = {
+  match?: GameState['match'];
   points: BoardPoint[];
   bar: Record<Player, number>;
   borneOff: Record<Player, number>;
@@ -34,6 +35,7 @@ export function isNoMoveLogEntry(entry: MoveLogEntry): boolean {
 
 function captureReplaySnapshot(state: GameState): ReplaySnapshot {
   return {
+    ...(state.match ? { match: state.match } : {}),
     points: state.points.map(p => ({ ...p })),
     bar: { ...state.bar },
     borneOff: { ...state.borneOff },
@@ -230,6 +232,7 @@ export function unusedDiceInTurn(turn: MoveLogTurn): number {
 export function mergeSnapshotIntoState(base: GameState, snapshot: ReplaySnapshot): GameState {
   return {
     ...base,
+    match: snapshot.match ?? base.match,
     points: snapshot.points.map(p => ({ ...p })),
     bar: { ...snapshot.bar },
     borneOff: { ...snapshot.borneOff },

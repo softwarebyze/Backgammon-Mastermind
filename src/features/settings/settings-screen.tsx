@@ -1,6 +1,7 @@
 import type { SettingsSearchId } from './settings-search';
 
 import Env from 'env';
+import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
@@ -228,6 +229,7 @@ export function SettingsScreen() {
                 <>
                   <SettingsContainer title="settings.general">
                     {isVisible('language') ? <LanguageItem /> : null}
+                    {isVisible('positions') ? <SettingsItem text="positions.title" onPress={() => router.push('/position')} /> : null}
                   </SettingsContainer>
 
                   <GameSettingsSection showHints isVisibleSetting={isVisible} />
