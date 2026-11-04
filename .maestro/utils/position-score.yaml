@@ -1,0 +1,63 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+# The scoreboard under the board: Black's card, the match target, White's card.
+# The target steps Money → 1 → 3 → 5, odd lengths only.
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-match-length-higher
+      START_Y: '80%'
+      END_Y: '25%'
+- assertVisible:
+    id: position-match-length
+    text: 'Match to: Money'
+- assertNotVisible:
+    id: position-score-white
+- repeat:
+    times: 3
+    commands:
+      - runFlow:
+          file: position-step.yaml
+          env:
+            STEPPER: position-match-length
+            SIDE: higher
+- assertVisible:
+    id: position-match-length
+    text: 'Match to: 5'
+- repeat:
+    times: 3
+    commands:
+      - runFlow:
+          file: position-step.yaml
+          env:
+            STEPPER: position-score-white
+            SIDE: higher
+- repeat:
+    times: 2
+    commands:
+      - runFlow:
+          file: position-step.yaml
+          env:
+            STEPPER: position-score-black
+            SIDE: higher
+# A score stops one short of the target.
+- assertVisible:
+    id: position-score-white
+    text: 'White score: 3'
+- assertVisible:
+    id: position-score-black
+    text: 'Black score: 2'
+- takeScreenshot: position-editable-scoreboard
+# The Crawford game only exists once exactly one player is a point from winning.
+- assertNotVisible:
+    id: position-crawford
+- tapOn:
+    id: position-score-white-higher
+- assertVisible:
+    id: position-crawford
+- tapOn:
+    id: position-score-white-lower
+- assertNotVisible:
+    id: position-crawford

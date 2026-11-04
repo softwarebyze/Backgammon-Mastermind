@@ -1,7 +1,7 @@
 // BgsageBridge.mm — Objective-C++ implementation over bgbot/mobile.h.
 #import "BgsageBridge.h"
 
-#include "bgbot/mobile.h"
+#include "BgsageAnalysis.h"
 
 #include <string>
 #include <vector>
@@ -13,13 +13,13 @@ struct BridgeState {
   BgsageMobileEngine* engine = nullptr;
 };
 
-NSString* RunAnalyze(BridgeState* st, int op, const BgsageMobileRequest& req) {
+NSString* RunAnalyze(BridgeState* st, int op, const BgsageMobileRequest& req, int limit = 32768, bool crawfordRule = true) {
   if (!st || !st->engine) {
     const char* e = bgsage_mobile_last_error();
     NSString* msg = e ? [NSString stringWithUTF8String:e] : @"engine failed to initialize";
     return [NSString stringWithFormat:@"{\"error\":\"%@\"}", msg];
   }
-  char* j = bgsage_mobile_analyze(st->engine, op, &req);
+  char* j = bgsage_analyze_context(st->engine, op, &req, limit, crawfordRule);
   NSString* s =
       j ? [NSString stringWithUTF8String:j] : @"{\"error\":\"engine returned null\"}";
   bgsage_mobile_free(j);
@@ -71,9 +71,9 @@ void FillBoard(BgsageMobileRequest& r, NSArray<NSNumber*>* board) {
   r.ply = ply;
   r.cube_value = 1;
   r.cube_owner = 0;  // centered
-  r.jacoby = 1;
+  r.jacoby = 0;
   r.budget_ms = 1000;
-  return RunAnalyze(_st, /*op=*/0, r);
+  return RunAnalyze(_st, /*op=*/0, r, 1);
 }
 
 - (NSString*)analyzeCube:(NSArray<NSNumber*>*)board
@@ -90,4 +90,20 @@ void FillBoard(BgsageMobileRequest& r, NSArray<NSNumber*>* board) {
   return RunAnalyze(_st, /*op=*/1, r);
 }
 
+- (NSString*)analyzePosition:(NSArray<NSNumber*>*)board
+                       dice:(NSArray<NSNumber*>*)dice
+                        ply:(int)ply
+                    context:(NSArray<NSNumber*>*)context
+                  operation:(int)operation {
+  if (board.count != 26 || dice.count != 2 || context.count != 9)
+    return @"{\"error\":\"invalid request shape\"}";
+  BgsageMobileRequest r{};
+  FillBoard(r, board);
+  r.die1 = dice[0].intValue; r.die2 = dice[1].intValue; r.ply = ply;
+  r.cube_value = context[0].intValue; r.cube_owner = context[1].intValue;
+  r.away1 = context[2].intValue; r.away2 = context[3].intValue;
+  r.is_crawford = context[4].intValue; r.jacoby = context[5].intValue;
+  r.beaver = context[6].intValue; r.budget_ms = 1000;
+  return RunAnalyze(_st, operation, r, context[7].intValue, context[8].boolValue);
+}
 @end

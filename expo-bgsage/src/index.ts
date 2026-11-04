@@ -1,3 +1,4 @@
+import type { SageCubeContext } from './cube-context';
 // TypeScript API for the bgsage engine.
 //
 // The structural types below mirror Backgammon Mastermind's
@@ -6,7 +7,10 @@
 // GameState and Move are assignable to these.
 import { requireNativeModule } from 'expo-modules-core';
 import { Platform } from 'react-native';
-import { rankCubelessCandidates } from './rank-candidates';
+import { encodeCubeContext } from './cube-context';
+import { rankCandidates } from './rank-candidates';
+
+export type { SageCubeContext } from './cube-context';
 
 export type SagePlayer = 'white' | 'black';
 export type SageBoardPoint = { player: SagePlayer | null; count: number };
@@ -33,6 +37,8 @@ export class SageEngineError extends Error {}
 //                    (~13MB of weights download on first use).
 // Positional on purpose: these match the native module's AsyncFunction args.
 type SageEngineApi = {
+  // eslint-disable-next-line max-params -- Mirrors the shared native analysis boundary.
+  analyzePosition: (board: number[], dice: number[], ply: number, context: number[], operation: number) => Promise<string>;
   // eslint-disable-next-line max-params
   analyzeCheckers: (board: number[], die1: number, die2: number, ply: number) => Promise<string>;
   // eslint-disable-next-line max-params
@@ -46,6 +52,7 @@ async function engineApi(): Promise<SageEngineApi> {
   if (Platform.OS === 'web') {
     const web = await import('./web-engine');
     cachedApi = {
+      analyzePosition: web.analyzePosition,
       analyzeCheckers: web.analyzeCheckers,
       analyzeCube: web.analyzeCube,
     };
@@ -207,13 +214,16 @@ export type SageTurnPlan = {
  * Throws SageEngineError when the engine is unavailable or its output can't
  * be decomposed. Callers offer no hint and the tutor stays silent.
  */
-export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Promise<SageTurnPlan> {
+export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2, context?: SageCubeContext): Promise<SageTurnPlan> {
   const P = state.currentPlayer;
   const board = gameStateToSageBoard(state);
   const [d1, d2] = state.dice;
   let raw: string;
   try {
-    raw = await (await engineApi()).analyzeCheckers(board, d1, d2, ply);
+    const api = await engineApi();
+    raw = context
+      ? await api.analyzePosition(board, [d1, d2], ply, encodeCubeContext(context), 0)
+      : await api.analyzeCheckers(board, d1, d2, ply);
   }
   catch (e) {
     throw new SageEngineError(`sage analyzeCheckers failed: ${String(e)}`);
@@ -222,15 +232,14 @@ export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2): Pr
   if (json.error || !json.moves || json.moves.length === 0) {
     throw new SageEngineError(`sage returned no moves: ${json.error ?? String(raw).slice(0, 120)}`);
   }
-  const candidates = rankCubelessCandidates(json.moves.map(
-    (m: { board: number[]; cubeless_equity: number }) => ({
+  const candidates = rankCandidates(json.moves.map(
+    (m: { board: number[]; cubeless_equity: number; equity: number }) => ({
       board: m.board,
-      equity: Number(m.cubeless_equity),
+      equity: Number(context ? m.equity : m.cubeless_equity),
     }),
   ));
-  // The app has no doubling cube, so tutor loss and the suggested play use
-  // cubeless equity. The native engine orders its JSON by cubeful equity;
-  // those rankings can differ. Keep every learner-facing result consistent.
+  // Use cube-aware equity when context exists. Lessons without a cube retain
+  // cubeless evaluation. Hint and Tutor always use the same candidate ranking.
   const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
   const seq = decomposePlayerOnRollBoard(board, candidates[0].board, dice);
   if (!seq)
@@ -264,6 +273,7 @@ export type SageCubeVerdict = {
   action: string;
   shouldDouble: boolean;
   shouldTake: boolean;
+  shouldBeaver: boolean;
   equityNoDouble: number;
   equityDoubleTake: number;
   equityDoublePass: number;
@@ -272,7 +282,7 @@ export type SageCubeVerdict = {
 /**
  * Cube decision for the player on roll. cubeOwner: 0 = centered, 1 = player
  * on roll owns the cube, 2 = opponent owns it. (Mastermind has no doubling
- * cube yet — this is ready for when one is added.)
+ * cube decisions with the same context as checker analysis.)
  */
 // Positional on purpose: cubeValue, cubeOwner, and ply match the native module.
 // eslint-disable-next-line max-params
@@ -281,16 +291,25 @@ export async function sageCubeDecision(
   cubeValue: number,
   cubeOwner: 0 | 1 | 2,
   ply: 1 | 2 = 2,
+  context?: SageCubeContext,
 ): Promise<SageCubeVerdict> {
   const board = gameStateToSageBoard(state);
-  const raw: string = await (await engineApi()).analyzeCube(board, cubeValue, cubeOwner, ply);
+  const api = await engineApi();
+  const raw: string = context
+    ? await api.analyzePosition(board, [0, 0], ply, encodeCubeContext(context), 1)
+    : await api.analyzeCube(board, cubeValue, cubeOwner, ply);
   const j = JSON.parse(raw);
   if (j.error)
     throw new SageEngineError(`sage cube failed: ${j.error}`);
+  if (typeof j.should_double !== 'boolean' || typeof j.should_take !== 'boolean' || typeof j.is_beaver !== 'boolean'
+    || ![j.equity_nd, j.equity_dt, j.equity_dp].every(Number.isFinite)) {
+    throw new SageEngineError('sage returned invalid cube analysis');
+  }
   return {
     action: j.optimal_action ?? 'unknown',
     shouldDouble: !!j.should_double,
-    shouldTake: !!j.should_take,
+    shouldTake: j.should_take,
+    shouldBeaver: j.is_beaver,
     equityNoDouble: +j.equity_nd,
     equityDoubleTake: +j.equity_dt,
     equityDoublePass: +j.equity_dp,

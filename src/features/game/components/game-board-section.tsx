@@ -1,9 +1,12 @@
+import type { BoardDice } from '@/features/game/components/board/board-dice-layout';
 import type { PathSegment } from '@/features/game/components/board/move-path-overlay';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { useGameInput } from '@/features/game/use-game-input';
 import type { GameState, Player } from '@/lib/game';
 import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
+import { cubeCornerClearance } from '@/features/game/bear-off-layout';
+import { BoardDiceOverlay } from '@/features/game/components/board/board-dice-overlay';
 import { boardLayoutStyle, boardWebDir } from '@/features/game/components/board/board-layout-direction';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
@@ -15,7 +18,6 @@ import { BAR_POINT } from '@/lib/game/constants';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Input = ReturnType<typeof useGameInput>;
-
 type Props = {
   boardState: GameState;
   boardAnimation: MoveAnimationFrame | null;
@@ -28,7 +30,34 @@ type Props = {
   input: Input;
   /** Whose point of view the point-number rails are labeled from. */
   numberPerspective: Player;
+  /** Dice drawn on the board in the roller's half (portrait); null keeps them in the tray. */
+  boardDice?: BoardDice | null;
+  /** False: size to the board so siblings (player strips) sit right against it. */
+  fill?: boolean;
 };
+function usePresentationDimensions(hasMatch: boolean) {
+  const base = useBoardDimensions({ showPointNumbers: true });
+  return useMemo(() => hasMatch
+    ? { ...base, bearOffCubeClearance: cubeCornerClearance(base.pointHeight) }
+    : base, [base, hasMatch]);
+}
+
+/** Points (and the bar) a moving checker travels between, lit while it slides. */
+function emphasisForAnimation(boardAnimation: MoveAnimationFrame | null) {
+  if (!boardAnimation) {
+    return { points: undefined as ReadonlySet<number> | undefined, bar: false };
+  }
+  const points = new Set<number>();
+  for (const idx of [boardAnimation.from, boardAnimation.to]) {
+    if (idx >= 1 && idx <= 24) {
+      points.add(idx);
+    }
+  }
+  return {
+    points: points.size > 0 ? points : undefined,
+    bar: boardAnimation.from === BAR_POINT || boardAnimation.to === BAR_POINT,
+  };
+}
 
 export function GameBoardSection({
   boardState,
@@ -41,10 +70,11 @@ export function GameBoardSection({
   pathFadeOutMs,
   input,
   numberPerspective,
+  boardDice = null,
+  fill = true,
 }: Props) {
-  const dimensions = useBoardDimensions();
+  const dimensions = usePresentationDimensions(boardState.match != null);
   const { boardMaxWidth } = useLayoutMetrics();
-  const { preferences } = useGamePreferences();
   const hintArrows = useHintArrows();
   // Guidance owns the live board while it is visible. Mixing its arrows with
   // the previous move's path makes the suggestion ambiguous, and the old
@@ -52,30 +82,18 @@ export function GameBoardSection({
   const overlaySegments = isReviewing ? pathSegments : hintArrows.length > 0 ? hintArrows : pathSegments;
   const overlayFadeOutMs = !isReviewing && hintArrows.length > 0 ? undefined : pathFadeOutMs;
   const showPath = overlaySegments.length > 0;
+  const { preferences } = useGamePreferences();
   const surface = playingSurfaceOffset(dimensions.boardFrameWidth, preferences.showPointNumbers);
-  const travelEmphasis = useMemo(() => {
-    if (!boardAnimation) {
-      return { points: undefined as ReadonlySet<number> | undefined, bar: false };
-    }
-    const points = new Set<number>();
-    for (const idx of [boardAnimation.from, boardAnimation.to]) {
-      if (idx >= 1 && idx <= 24) {
-        points.add(idx);
-      }
-    }
-    return {
-      points: points.size > 0 ? points : undefined,
-      bar: boardAnimation.from === BAR_POINT || boardAnimation.to === BAR_POINT,
-    };
-  }, [boardAnimation]);
+  const travelEmphasis = useMemo(() => emphasisForAnimation(boardAnimation), [boardAnimation]);
 
   useEffect(() => {
     input.setBoardDimensions(dimensions);
   }, [dimensions, input]);
 
   return (
-    <View style={[styles.boardWrap, { maxWidth: boardMaxWidth }]}>
+    <View style={[styles.boardWrap, !fill && styles.boardWrapHug, { maxWidth: boardMaxWidth }]}>
       <Pressable
+        accessible={false}
         onPress={interactionEnabled ? input.handleBoardPress : undefined}
         style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
       >
@@ -91,6 +109,7 @@ export function GameBoardSection({
           ]}
         >
           <BoardView
+            boardPresentation
             state={boardState}
             dimensions={dimensions}
             previewTarget={interactionEnabled ? previewTarget : null}
@@ -113,6 +132,9 @@ export function GameBoardSection({
             emphasisPoints={travelEmphasis.points}
             emphasisBar={travelEmphasis.bar}
           />
+          {boardDice
+            ? <BoardDiceOverlay value={boardDice} dimensions={dimensions} surface={surface} />
+            : null}
           {showPath
             ? (
                 <View
@@ -152,6 +174,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'stretch',
     alignItems: 'center',
+  },
+  boardWrapHug: {
+    flexGrow: 0,
+    flexBasis: 'auto',
   },
   boardContainer: {
     paddingHorizontal: 4,

@@ -18,6 +18,17 @@ class BgsageModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("Bgsage")
 
+    AsyncFunction("analyzePosition") { board: List<Int>, dice: List<Int>, ply: Int, context: List<Int>, operation: Int, promise: Promise ->
+      queue.execute {
+        try {
+          if (!BgsageNative.loaded) throw IllegalStateException("bgsage native library not linked")
+          promise.resolve(BgsageNative.analyzePosition(nativeHandle(), board.toIntArray(), dice.toIntArray(), ply, context.toIntArray(), operation))
+        } catch (e: Exception) {
+          promise.reject("SAGE_ERROR", e.message, e)
+        }
+      }
+    }
+
     AsyncFunction("analyzeCheckers") { board: List<Int>, die1: Int, die2: Int, ply: Int, promise: Promise ->
       queue.execute {
         try {
@@ -102,5 +113,6 @@ internal object BgsageNative {
   @JvmStatic external fun create(modelPaths: Array<String>, bearoffPath: String): Long
   @JvmStatic external fun analyzeCheckers(handle: Long, board: IntArray, die1: Int, die2: Int, ply: Int): String
   @JvmStatic external fun analyzeCube(handle: Long, board: IntArray, cubeValue: Int, cubeOwner: Int, ply: Int): String
+  @JvmStatic external fun analyzePosition(handle: Long, board: IntArray, dice: IntArray, ply: Int, context: IntArray, operation: Int): String
   @JvmStatic external fun destroy(handle: Long)
 }
