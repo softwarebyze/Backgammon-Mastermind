@@ -1,5 +1,6 @@
 import Feather from '@expo/vector-icons/Feather';
 
+import { clearBlunderHistory, recordTurnLoss } from '@/features/game/blunder-history';
 import { useLayoutIsRTL } from '@/lib/i18n';
 import { cleanup, fireEvent, render, screen, within } from '@/lib/test-utils';
 
@@ -13,7 +14,10 @@ jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn() }));
 
 const layoutRTL = jest.mocked(useLayoutIsRTL);
 beforeEach(() => layoutRTL.mockReturnValue(false));
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  clearBlunderHistory();
+});
 
 function renderBar() {
   const onStepBack = jest.fn();
@@ -83,4 +87,36 @@ it('shows cube-only history and selects events through review callbacks', () => 
   fireEvent.press(chip);
   expect(onJumpToCubeEvent).toHaveBeenCalledWith(1);
   expect(onJumpToPly).not.toHaveBeenCalled();
+});
+
+it('marks the turns the tutor flagged with their severity', () => {
+  recordTurnLoss(1, 0.2);
+  recordTurnLoss(3, 0.06);
+  render(
+    <MoveReviewBar
+      viewIndex={4}
+      liveIndex={4}
+      isReviewing={false}
+      moveLog={[
+        { ply: 1, player: 'white', dice: [3, 1], from: 8, to: 5 },
+        { ply: 2, player: 'white', dice: [3, 1], from: 6, to: 5 },
+        { ply: 3, player: 'black', dice: [6, 4], from: 1, to: 7 },
+        { ply: 4, player: 'black', dice: [6, 4], from: 1, to: 5 },
+        { ply: 5, player: 'white', dice: [2, 2], from: 13, to: 11 },
+        { ply: 6, player: 'white', dice: [2, 2], from: 13, to: 11 },
+      ]}
+      focusedPly={6}
+      positionLabel={null}
+      canStepBack
+      canStepForward={false}
+      onStepBack={jest.fn()}
+      onStepForward={jest.fn()}
+      onJumpToPly={jest.fn()}
+      onGoLive={jest.fn()}
+    />,
+  );
+  expect(screen.getByTestId('history-blunder-1')).toHaveTextContent('??');
+  expect(screen.getByTestId('history-blunder-2')).toHaveTextContent('?!');
+  expect(screen.queryByTestId('history-blunder-3')).toBeNull();
+  expect(screen.getByRole('button', { name: /^Turn 1, White, Big blunder$/ })).toBeTruthy();
 });

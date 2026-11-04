@@ -2,7 +2,10 @@ import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry, MoveLogTurn } from '@/lib/game/move-log';
 import { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { BLUNDER_ANNOTATION, blunderBandFor } from '@/features/game/blunder-bands';
+import { useBlunderHistory } from '@/features/game/blunder-history';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { blunderBandLabel } from '@/features/game/guidance-copy';
 
 import { chronologicalHistory } from '@/lib/game/cube-history';
 import { isNoMoveLogEntry, turnsForReviewStrip, unusedDiceInTurn } from '@/lib/game/move-log';
@@ -35,10 +38,13 @@ function turnStartPly(turn: MoveLogTurn): number {
 function TurnChip({
   turn,
   focused,
+  loss,
   onPress,
 }: {
   turn: MoveLogTurn;
   focused: boolean;
+  /** Equity the kept play gave up, when the tutor flagged it. */
+  loss?: number;
   onPress: () => void;
 }) {
   const playerLabel = turn.player === 'white'
@@ -46,10 +52,12 @@ function TurnChip({
     : translate('game.review.player_black');
   const unused = unusedDiceInTurn(turn);
   const noMove = turn.moves.length === 1 && turn.moves[0] && isNoMoveLogEntry(turn.moves[0]);
+  const band = loss === undefined ? null : blunderBandFor(loss);
+  const turnLabel = translate('game.review.turn_a11y', { turn: turn.turnIndex, player: playerLabel });
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={translate('game.review.turn_a11y', { turn: turn.turnIndex, player: playerLabel })}
+      accessibilityLabel={band ? `${turnLabel}, ${blunderBandLabel(band.id)}` : turnLabel}
       accessibilityState={{ selected: focused }}
       onPress={onPress}
       style={[
@@ -69,6 +77,13 @@ function TurnChip({
       {(noMove || unused > 0) && (
         <Text style={styles.unusedMark}>{noMove ? '×' : `-${unused}`}</Text>
       )}
+      {band && BLUNDER_ANNOTATION[band.id]
+        ? (
+            <Text testID={`history-blunder-${turn.turnIndex}`} style={[styles.blunderMark, { color: band.color }]}>
+              {BLUNDER_ANNOTATION[band.id]}
+            </Text>
+          )
+        : null}
     </Pressable>
   );
 }
@@ -90,6 +105,7 @@ export function MoveReviewTurnStrip({
   const turns = turnsForReviewStrip(moveLog, {
     hideInProgressFor: isReviewing ? null : liveCurrentPlayer,
   });
+  const blunders = useBlunderHistory();
   const scrollRef = useRef<ScrollView>(null);
   const focusedTurnIdx = turns.findIndex(
     t => focusedPly >= turnStartPly(t) && focusedPly <= t.endPly,
@@ -153,6 +169,7 @@ export function MoveReviewTurnStrip({
               key={`turn-${item.turn.turnIndex}`}
               turn={item.turn}
               focused={isReviewing && selectedCubeEventId === null && turns[focusedTurnIdx] === item.turn}
+              loss={blunders.get(turnStartPly(item.turn))}
               onPress={() => {
                 hapticLight();
                 onJumpToPly(item.turn.endPly);
@@ -223,6 +240,10 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.textMuted,
     fontSize: 11,
     ...interFont('semibold'),
+  },
+  blunderMark: {
+    fontSize: 12,
+    ...interFont('bold'),
   },
   playerDot: {
     width: 10,
