@@ -1,0 +1,100 @@
+# Regression from the reported Black double / White response screenshots.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Auto-roll dice
+    direction: DOWN
+- tapOn: Auto-roll dice
+- tapOn:
+    id: stack-escape-button
+- runScript: ../utils/money-position-link.js
+- runFlow:
+    file: ../utils/play-money-position.yaml
+    env:
+      POSITION_LINK: ${output.moneyBlackDoubleLink}
+- assertNotVisible:
+    id: match-score
+- tapOn:
+    id: match-double
+- assertVisible:
+    id: player-name-white
+    text: White. Take or pass\?
+- takeScreenshot: cube-turn-white-responds
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 4 · White
+- assertVisible:
+    id: player-name-black
+    text: Black. Your turn
+- takeScreenshot: cube-turn-black-still-rolls
+- tapOn:
+    id: header-undo-button
+- assertVisible:
+    id: match-accept
+- assertVisible:
+    id: history-cube-1
+- assertNotVisible:
+    id: history-cube-2
+- assertVisible: 'Black doubles to 4.*'
+- takeScreenshot: cube-undo-take-keeps-offer
+- tapOn:
+    id: match-drop
+- assertVisible: Black wins 2 · Pass
+- tapOn:
+    id: header-undo-button
+- assertVisible:
+    id: match-accept
+- assertVisible:
+    id: history-cube-1
+- tapOn:
+    id: header-redo-button
+- assertVisible: Black wins 2 · Pass
+- stopApp
+- launchApp:
+    clearState: false
+- extendedWaitUntil:
+    visible:
+      id: resume-game-button
+    timeout: 45000
+- tapOn:
+    id: resume-game-button
+- assertVisible: Black wins 2 · Pass
+- takeScreenshot: cube-undo-history-cold-restored
+
+# A saved/imported pending decision must survive editor -> Play.
+- runFlow:
+    file: ../utils/play-money-position.yaml
+    env:
+      POSITION_LINK: ${output.moneyPendingDoubleLink}
+- assertVisible:
+    id: player-name-white
+    text: White. Take or pass\?
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 4 · White
+- assertVisible:
+    id: player-name-black
+    text: Black. Your turn
+- takeScreenshot: cube-position-pending-double-restored
+- runFlow:
+    file: ../utils/play-money-position.yaml
+    env:
+      POSITION_LINK: ${output.moneyPendingBeaverLink}
+- assertVisible:
+    id: match-accept
+- tapOn:
+    id: match-accept
+- assertVisible: Cube 8 · White
+- assertVisible:
+    id: player-name-black
+    text: Black. Your turn
+- takeScreenshot: cube-position-pending-beaver-restored

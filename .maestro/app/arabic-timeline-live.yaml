@@ -79,6 +79,6 @@ tags:
                 id: confirm-move-button
 - extendedWaitUntil:
     visible:
-      id: timeline-live-chip
+      id: history-live
     timeout: 15000
 - takeScreenshot: timeline-02-rtl-live-visible

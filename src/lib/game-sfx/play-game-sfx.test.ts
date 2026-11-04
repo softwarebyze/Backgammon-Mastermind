@@ -63,13 +63,13 @@ describe('playGameSfx', () => {
       interruptionMode: 'mixWithOthers',
       shouldPlayInBackground: false,
     });
-    expect(createPlayer).toHaveBeenCalledTimes(5);
+    expect(createPlayer).toHaveBeenCalledTimes(6);
 
     playGameSfx('roll');
     await ensureGameSfxReady();
     await Promise.resolve();
     await Promise.resolve();
-    expect(createPlayer).toHaveBeenCalledTimes(5);
+    expect(createPlayer).toHaveBeenCalledTimes(6);
     const first = createPlayer.mock.results[0]?.value as ReturnType<typeof mockPlayer>;
     expect(first.play).toHaveBeenCalled();
     expect(first.seekTo).not.toHaveBeenCalled();
@@ -88,7 +88,7 @@ describe('playGameSfx', () => {
     expect(setMode).not.toHaveBeenCalled();
     loadPrefs.mockReturnValue({ ...DEFAULT_GAME_PREFERENCES, soundEnabled: true });
     await ensureGameSfxReady();
-    expect(createPlayer).toHaveBeenCalledTimes(5);
+    expect(createPlayer).toHaveBeenCalledTimes(6);
   });
 
   it('playGameSfxSequence does not throw', () => {
