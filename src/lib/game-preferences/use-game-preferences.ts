@@ -2,9 +2,10 @@ import type { DiceDisplayStyle, GamePreferences } from './types';
 
 import { useCallback, useSyncExternalStore } from 'react';
 
-import { trackSettingsChange } from '@/lib/analytics/settings-analytics';
+import { trackSettingsChange, trackSettingsReset } from '@/lib/analytics/settings-analytics';
 
 import { loadGamePreferences, saveGamePreferences } from './storage';
+import { DEFAULT_GAME_PREFERENCES } from './types';
 
 let cached = loadGamePreferences();
 const listeners = new Set<() => void>();
@@ -35,6 +36,20 @@ function updatePreferences(patch: Partial<GamePreferences>) {
 /** Patch prefs outside of React (e.g. learn graduation → beginner aids). */
 export function patchGamePreferences(patch: Partial<GamePreferences>) {
   updatePreferences(patch);
+}
+
+/**
+ * Restore the game preference defaults only. Language, saved games, learn
+ * progress, analytics consent, and migration markers live under separate
+ * storage keys and must survive this reset.
+ */
+export function resetGamePreferences() {
+  const previous = cached;
+  cached = { ...DEFAULT_GAME_PREFERENCES };
+  saveGamePreferences(cached);
+  emitChange();
+  trackSettingsChange(previous, cached);
+  trackSettingsReset(previous, cached);
 }
 
 export function useGamePreferences() {
@@ -76,8 +91,13 @@ export function useGamePreferences() {
     updatePreferences({ confirmMove });
   }, []);
 
+  const resetPreferences = useCallback(() => {
+    resetGamePreferences();
+  }, []);
+
   return {
     preferences,
+    resetPreferences,
     setShowMoveHints,
     setShowDirectionOverlay,
     setShowPointNumbers,

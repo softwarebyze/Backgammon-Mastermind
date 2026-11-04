@@ -80,6 +80,29 @@ export function trackSettingsChange(previous: object, next: object): void {
   }
 }
 
+/**
+ * One event per confirmed reset, separate from the per-key `setting_changed`
+ * events the same update emits. `changed_count` tells us whether the player
+ * reset a heavily customized setup or just pressed confirm on defaults.
+ */
+export function trackSettingsReset(previous: object, next: object): void {
+  if (!sink) {
+    return;
+  }
+  const before = previous as Record<string, unknown>;
+  const after = next as Record<string, unknown>;
+  let changedCount = 0;
+  for (const key of Object.keys(after)) {
+    if (before[key] !== after[key] && isSafeValue(after[key])) {
+      changedCount += 1;
+    }
+  }
+  sink.capture('settings_reset', {
+    changed_count: changedCount,
+    source_screen: currentScreen,
+  });
+}
+
 export function resetSettingsAnalyticsForTests(): void {
   sink = null;
   currentScreen = 'unknown';

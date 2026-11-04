@@ -1,0 +1,107 @@
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+# Search filters by localized title/description/section, no-results clears, and
+# restore defaults asks first and resets only game preferences.
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn: vs Computer
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 45000
+- tapOn: Settings
+- extendedWaitUntil:
+    visible:
+      id: settings-search-input
+    timeout: 20000
+- tapOn:
+    id: settings-search-input
+- inputText: sound
+- hideKeyboard
+- assertVisible:
+    id: setting-toggle-sound
+- assertNotVisible:
+    id: setting-toggle-move-hints
+- assertNotVisible: Language
+- takeScreenshot: settings-search-filtered
+- tapOn:
+    id: settings-search-clear
+- tapOn:
+    id: settings-search-input
+- inputText: zzzz
+- hideKeyboard
+- assertVisible:
+    id: settings-no-results
+- takeScreenshot: settings-search-no-results
+- tapOn:
+    id: settings-no-results-clear
+- assertVisible: Language
+- tapOn:
+    id: settings-search-input
+- inputText: sound
+- hideKeyboard
+- tapOn:
+    id: setting-toggle-sound
+- takeScreenshot: settings-search-sound-off
+# Keep reset within reach by filtering rather than scrolling away from search.
+- tapOn:
+    id: settings-search-clear
+- tapOn:
+    id: settings-search-input
+- inputText: restore
+- hideKeyboard
+- tapOn:
+    id: settings-restore-defaults
+- assertVisible:
+    id: confirm-dialog-confirm
+- takeScreenshot: settings-restore-confirm
+- tapOn:
+    id: confirm-dialog-cancel
+- assertNotVisible:
+    id: confirm-dialog-confirm
+- tapOn:
+    id: settings-search-clear
+- tapOn:
+    id: settings-search-input
+- inputText: sound
+- hideKeyboard
+- assertVisible:
+    id: setting-toggle-sound
+    checked: false
+- takeScreenshot: settings-restore-cancel-keeps-sound-off
+- tapOn:
+    id: settings-search-clear
+- tapOn:
+    id: settings-search-input
+- inputText: restore
+- hideKeyboard
+- tapOn:
+    id: settings-restore-defaults
+- tapOn:
+    id: confirm-dialog-confirm
+- assertNotVisible:
+    id: confirm-dialog-confirm
+- assertVisible: Default settings restored.
+- takeScreenshot: settings-restore-done
+- tapOn:
+    id: settings-search-clear
+- tapOn:
+    id: settings-search-input
+- inputText: sound
+- hideKeyboard
+- assertVisible:
+    id: setting-toggle-sound
+    checked: true
+- takeScreenshot: settings-search-sound-restored
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: point-1
+    timeout: 15000
+- takeScreenshot: settings-restore-game-preserved
