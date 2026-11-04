@@ -8,6 +8,7 @@ import {
   buildRedoHistoryStep,
   buildUndoHistoryStep,
   countTrailingNoMoves,
+  hasUndoableHumanMove,
   redoInstant,
   undoMany,
 } from '@/features/game/timeline-history-actions';
@@ -40,6 +41,8 @@ type HistoryAnimCtx = {
    * confirm bar leaves; hold arrows already update/clear from moveLog.
    */
   suppressHistoryPath?: boolean;
+  /** Live input commits history synchronously; review retains settle-time semantics. */
+  startCommittedFrame?: (frame: MoveAnimationFrame, before: GameState) => void;
 };
 
 /** vs-computer rewinds past the AI's moves as well as blocked rolls. */
@@ -55,7 +58,24 @@ function countTrailingAutoRewound(moveLog: MoveLogEntry[], mode: GameState['mode
   return count;
 }
 
+/** Validate the entire rewind before touching logs, animation, or snapshots. */
+export function canUndoHistory({ timeline, moveLog, state, gameMode: mode }: {
+  timeline: GameTimeline | null;
+  moveLog: MoveLogEntry[];
+  state: GameState | null;
+  gameMode: GameState['mode'] | undefined;
+}): boolean {
+  if (!timeline || !canUndoTimeline(timeline) || !hasUndoableHumanMove(mode, moveLog) || state?.match?.pendingOffer)
+    return false;
+  const count = countTrailingAutoRewound(moveLog, mode) + 1;
+  return count <= moveLog.length && count <= timeline.cursor
+    && timeline.cursor - count >= (state?.match?.undoFloor ?? 0);
+}
+
 export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
+  if (!canUndoHistory({ ...ctx, state: ctx.getLiveState() }))
+    return false;
+
   const { replayBaseline, popLastMove, setTimeline, setState, finishHistoryAnim, getLiveState } = ctx;
   const { timeline, moveLog } = ctx;
 
@@ -133,6 +153,20 @@ export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
     return true;
   }
 
+  if (ctx.startCommittedFrame) {
+    const before = getLiveState();
+    const result = undoMany(timeline, passes + 1, { popLastMove, liveState: before });
+    if (result) {
+      setTimeline(result.nextTimeline);
+      setState(result.nextState);
+      ctx.setHistoryPath(ctx.suppressHistoryPath ? null : step.path);
+      if (before) {
+        ctx.startCommittedFrame({ ...step.frame, onFinish: () => {} }, before);
+      }
+    }
+    return true;
+  }
+
   const settle = ctx.armAnimationFinish(commitUndo);
   if (ctx.suppressHistoryPath) {
     ctx.setHistoryPath(null);
@@ -188,6 +222,20 @@ export function runAnimatedRedo(ctx: HistoryAnimCtx): boolean {
     if (result) {
       setTimeline(result.nextTimeline);
       setState(result.nextState);
+    }
+    return true;
+  }
+
+  if (ctx.startCommittedFrame) {
+    const before = ctx.getLiveState();
+    const result = redoInstant(timeline, restoreMove);
+    if (result) {
+      setTimeline(result.nextTimeline);
+      setState(result.nextState);
+      ctx.setHistoryPath(step.path);
+      if (before) {
+        ctx.startCommittedFrame({ ...step.frame, onFinish: () => {} }, before);
+      }
     }
     return true;
   }

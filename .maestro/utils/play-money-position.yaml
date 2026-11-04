@@ -1,0 +1,53 @@
+appId: ${APP_ID}
+---
+- openLink: ${POSITION_LINK}
+# A fresh iOS simulator asks before opening this app by link. The full editor
+# suite normally primes that consent, but isolated cube runs must handle it too.
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - runFlow:
+          when:
+            visible: Open
+          commands:
+            - tapOn: Open
+      - launchApp:
+          stopApp: false
+      # Match the editor flow's refresh after the system prompt: XCTest can
+      # otherwise retain Home's accessibility snapshot until an edge scroll.
+      - runFlow:
+          file: position-scroll.yaml
+          env:
+            TARGET_ID: position-mode-human
+            START_Y: '80%'
+            END_Y: '25%'
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-mode-human
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-mode-human
+- runFlow:
+    file: position-scroll.yaml
+    env:
+      TARGET_ID: position-play
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-play
+- runFlow:
+    when:
+      visible: New game
+    commands:
+      - tapOn: New game
+- extendedWaitUntil:
+    notVisible:
+      id: position-screen
+    timeout: 30000

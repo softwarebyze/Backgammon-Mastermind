@@ -18,6 +18,7 @@ it('keeps screen actions on the web header (e.g. Settings → Feedback)', () => 
   const props = {
     options: { title: 'Settings', headerRight: () => <Text testID="screen-action">Action</Text> },
     route: { name: 'settings' },
+    navigation: { isFocused: () => true },
   } as unknown as NativeStackHeaderProps;
   render(<AlwaysOnEscapeHeader {...props} />);
   expect(screen.getByTestId('screen-action')).toBeOnTheScreen();

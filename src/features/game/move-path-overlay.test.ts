@@ -55,7 +55,7 @@ describe('move-path-overlay', () => {
     expect(applyMove(before, move).points[move.to].count).toBeGreaterThan(0);
   });
 
-  it('clamps bar anchors inside the board overlay', () => {
+  it('keeps groove-centered bar anchors inside the board overlay', () => {
     const dims = mockDims();
     const before = {
       ...createInitialState('vs-human'),
@@ -71,7 +71,9 @@ describe('move-path-overlay', () => {
       stackCount: 1,
       player: 'white',
     });
-    expect(raw.y).toBeGreaterThanOrEqual(dims.boardHeight - 20);
+    const grooveBottom = (dims.boardHeight + dims.middleHeight) / 2;
+    expect(raw.y).toBeGreaterThan(grooveBottom);
+    expect(raw.y).toBeLessThan(grooveBottom + dims.checkerSize);
 
     const entry = {
       ply: 1,

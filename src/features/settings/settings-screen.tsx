@@ -59,6 +59,7 @@ export function SettingsScreen() {
         <View className="px-4" style={styles.page}>
           <SettingsContainer title="settings.general">
             <LanguageItem />
+            <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
           </SettingsContainer>
 
           <GameSettingsSection showHints />

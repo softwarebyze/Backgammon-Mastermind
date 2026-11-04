@@ -19,3 +19,18 @@ export const BLUNDER_BANDS = [
   { id: 'mistake', label: 'Mistake', range: '0.08–0.16', max: 0.16, flex: 8, color: colors.primary[400] },
   { id: 'big_blunder', label: 'Big blunder', range: '0.16+', max: BLUNDER_METER_MAX, flex: 14, color: colors.danger[400] },
 ] as const;
+
+export type BlunderBand = (typeof BLUNDER_BANDS)[number];
+
+/** The band a loss falls in; losses past the end of the bar belong to the last one. */
+export function blunderBandFor(loss: number): BlunderBand {
+  return BLUNDER_BANDS.find(band => loss < band.max) ?? BLUNDER_BANDS[BLUNDER_BANDS.length - 1]!;
+}
+
+/** GNU Backgammon's move annotation for each band (none for a fine play). */
+export const BLUNDER_ANNOTATION: Record<BlunderBand['id'], string> = {
+  fine: '',
+  slip: '?!',
+  mistake: '?',
+  big_blunder: '??',
+};

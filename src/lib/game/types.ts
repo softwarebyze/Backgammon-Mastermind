@@ -1,3 +1,5 @@
+import type { MatchState } from './match';
+
 export type Player = 'white' | 'black';
 export type GameMode = 'vs-computer' | 'vs-human';
 export type GamePhase = 'opening-roll' | 'rolling' | 'moving' | 'no-move' | 'game-over';
@@ -27,6 +29,7 @@ export type Move = {
 };
 
 export type GameState = {
+  match?: MatchState;
   /** Index 0 is unused; indices 1-24 are the 24 board points. */
   points: BoardPoint[];
   bar: Record<Player, number>;

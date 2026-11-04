@@ -7,7 +7,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - openLink: backgammonmastermind.preview://developer
 # Other release features add presets above the JSON fixture field.
 - scrollUntilVisible:
@@ -15,10 +15,7 @@ tags:
       id: developer-json-input
     direction: DOWN
     timeout: 60000
-- longPressOn:
-    id: developer-json-input
-- tapOn: (?i)select all
-- eraseText: 1
+- runFlow: ../utils/clear-developer-json.yaml
 - inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
 - hideKeyboard
 - tapOn:
@@ -62,7 +59,7 @@ tags:
     timeout: 15000
 - assertVisible: 'Point 5, 2 white checkers'
 - assertVisible: 'Point 6, 4 white checkers'
-- assertNotVisible: ".*Black's turn.*"
+- assertNotVisible: '.*Black. Your turn.*'
 - takeScreenshot: confirm-03-held-turn
 - tapOn:
     id: undo-move-button
@@ -84,7 +81,7 @@ tags:
 - tapOn:
     id: confirm-move-button
 - extendedWaitUntil:
-    visible: ".*Black's turn.*"
+    visible: '.*Black. Your turn.*'
     timeout: 15000
 - assertVisible: 'Point 5, 2 white checkers'
 - takeScreenshot: confirm-05-turn-handed-off
