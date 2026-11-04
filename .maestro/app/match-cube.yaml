@@ -62,13 +62,10 @@ tags:
 - assertNotVisible:
     id: roll-dice-button
 - takeScreenshot: match-01-pending-offer
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 60000
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible:
@@ -203,13 +200,10 @@ tags:
     enabled: false
 - assertVisible: Cube 2 · White
 - takeScreenshot: match-07-blocked-roll-undo-floor
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 60000
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible:

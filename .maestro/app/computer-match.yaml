@@ -43,13 +43,10 @@ tags:
     timeout: 45000
 - assertVisible: Match to 3 · Game 1
 - takeScreenshot: computer-match-01-new-match
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 60000
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible: Match to 3 · Game 1
@@ -74,13 +71,10 @@ tags:
 # Against the computer the offer speaks to the player, not to a colour.
 - assertVisible: 'Computer doubles to 2.*'
 - takeScreenshot: computer-match-02-computer-offers
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 60000
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible:
@@ -127,13 +121,10 @@ tags:
 - assertNotVisible:
     id: match-double
 - takeScreenshot: computer-match-05-crawford
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 60000
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible: Crawford game · no doubling
@@ -164,13 +155,10 @@ tags:
 - assertVisible:
     id: roll-dice-button
 - takeScreenshot: computer-match-06-computer-takes
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 60000
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible: Cube 2 · Computer
