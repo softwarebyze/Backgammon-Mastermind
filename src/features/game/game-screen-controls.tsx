@@ -93,10 +93,14 @@ export function GameScreenControls({
   const guidance = useGuidance();
   const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
   const turn = getTurnDisplay(state);
+  // A blocked roll that passes by itself already says "No legal moves…" in the
+  // action slot; a second line telling the player to end the turn is noise.
+  const autoPassingNoMove = state.phase === 'no-move'
+    && !isAwaitingMoveConfirm(state, preferences.confirmMove);
   const caption = captionOverride
     ?? (isReviewing
       ? translate('game.review.viewing_hint')
-      : getActionCaption(state, turn));
+      : autoPassingNoMove ? ' ' : getActionCaption(state, turn));
 
   const diceForTray = isReviewing ? state : liveDiceState;
   const showOpening = opening !== null && !isReviewing;
