@@ -1,4 +1,5 @@
 import type { GameMode, GamePhase, GameState, Player } from '@/lib/game/types';
+import { isDeadCube } from '@/lib/game/match';
 import { translate } from '@/lib/i18n';
 
 export type TurnDisplay = {
@@ -13,11 +14,18 @@ export type TurnDisplay = {
   isWaiting: boolean;
 };
 
+/** The cube responder acts while the original player retains the checker roll. */
+export function getActingPlayer(state: GameState): Player {
+  return state.match?.pendingOffer
+    ? state.match.pendingOffer === 'white' ? 'black' : 'white'
+    : state.currentPlayer;
+}
+
 export function getTurnDisplay(state: GameState): TurnDisplay {
-  const isComputerTurn
-    = state.mode === 'vs-computer' && state.currentPlayer === 'black';
+  const actor = getActingPlayer(state);
+  const isComputerTurn = state.mode === 'vs-computer' && actor === 'black';
   const isHumanTurn = !isComputerTurn;
-  const colorLabel = playerLabel(state.currentPlayer);
+  const colorLabel = playerLabel(actor);
 
   if (state.phase === 'game-over') {
     return {
@@ -26,6 +34,16 @@ export function getTurnDisplay(state: GameState): TurnDisplay {
       headline: translate('game.turn.game_over'),
       isHumanTurn: false,
       isWaiting: true,
+    };
+  }
+
+  if (state.match?.pendingOffer) {
+    return {
+      player: actor,
+      colorLabel,
+      headline: translate(isComputerTurn ? 'game.turn.computer_turn' : 'game.players.status_take_or_pass'),
+      isHumanTurn,
+      isWaiting: isComputerTurn,
     };
   }
 
@@ -72,13 +90,13 @@ export function playerLabel(player: Player): string {
   return translate(player === 'white' ? 'game.review.player_white' : 'game.review.player_black');
 }
 
-/** One player-named line in the banner — footer is skip-wait only. */
+/** One line in the banner naming the computer, not its colour — footer is skip-wait only. */
 function computerWaitHeadline(phase: GamePhase): string {
   if (phase === 'rolling') {
-    return translate('game.turn.black_is_rolling');
+    return translate('game.turn.computer_rolling');
   }
   if (phase === 'moving') {
-    return translate('game.turn.black_is_moving');
+    return translate('game.turn.computer_moving');
   }
   return translate('game.turn.computer_turn');
 }
@@ -91,12 +109,14 @@ export function getActionCaption(
   if (state.phase === 'opening-roll') {
     return ' ';
   }
-  // Banner already says whose turn it is. Don't stack "Black is moving…"
+  // Banner already says whose turn it is. Don't stack "Computer is moving"
   // under a footer "Moving…" (or Rolling…) during computer wait.
   if (turn.isWaiting && (state.phase === 'rolling' || state.phase === 'moving')) {
     return ' ';
   }
   if (state.phase === 'rolling' && turn.isHumanTurn) {
+    if (isDeadCube(state))
+      return translate('game.match.dead_cube');
     return translate('game.turn.roll_dice', { color: turn.colorLabel });
   }
   if (state.phase === 'moving' && turn.isHumanTurn) {

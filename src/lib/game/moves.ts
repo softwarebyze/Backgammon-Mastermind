@@ -1,5 +1,6 @@
 import type { GameState, Move, Player } from './types';
 import { BAR_POINT, BEAR_OFF, TOTAL_CHECKERS } from './constants';
+import { scoreMatchGame } from './match';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -516,6 +517,7 @@ function applyMovePhysical(state: GameState, move: Move): GameState {
   if (next.borneOff[player] === TOTAL_CHECKERS) {
     next.winner = player;
     next.phase = 'game-over';
+    return scoreMatchGame(next);
   }
 
   return next;
@@ -615,6 +617,8 @@ export function applyOpeningDieRoll(state: GameState, die: number): GameState {
  * If no legal move exists, the turn is automatically passed.
  */
 export function applyDiceRoll(state: GameState, dice: [number, number]): GameState {
+  if (state.match?.pendingOffer || state.match?.result)
+    return state;
   const remaining: number[]
     = dice[0] === dice[1]
       ? [dice[0], dice[0], dice[0], dice[0]]

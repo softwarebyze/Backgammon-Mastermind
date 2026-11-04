@@ -1,17 +1,15 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
+import { barStackLayout } from '@/features/game/bar-stack-layout';
 import {
   bearOffCheckerCenterX,
   bearOffCheckerCenterY,
 } from '@/features/game/bear-off-layout';
-import { checkerRenderSize } from '@/features/game/move-animation';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 
 export type PointAnchor = { x: number; y: number };
 
 const MAX_VISIBLE = 5;
-const BAR_PADDING = 6;
-const BAR_GAP = 2;
 
 function stackStep(dims: BoardDimensions): number {
   return Math.min(dims.checkerSize - 2, (dims.pointHeight - dims.checkerSize) / (MAX_VISIBLE - 1));
@@ -98,21 +96,6 @@ export type CheckerAnchorOptions = {
   player?: Player;
 };
 
-function barCheckerCenterY(
-  dims: BoardDimensions,
-  player: Player,
-  stackIndex: number,
-): number {
-  const tokenSize = checkerRenderSize(dims.checkerSize, BAR_POINT);
-
-  if (player === 'black') {
-    return BAR_PADDING + tokenSize / 2 + stackIndex * (tokenSize + BAR_GAP);
-  }
-
-  const stackBottom = dims.boardHeight - BAR_PADDING;
-  return stackBottom - tokenSize / 2 - stackIndex * (tokenSize + BAR_GAP);
-}
-
 /** Vertical gutter for 1–24 labels outside the playing surface. */
 export const POINT_NUMBER_RAIL = 18;
 
@@ -129,7 +112,8 @@ export function getCheckerAnchor({
 
   if (pointIndex === BAR_POINT) {
     const x = 6 * colWidth + barWidth / 2;
-    const y = barCheckerCenterY(dims, player ?? 'white', topOffset);
+    const { centers } = barStackLayout({ ...dims, count: stackCount, player: player ?? 'white' });
+    const y = centers[centers.length - 1]!;
     return { x, y };
   }
 

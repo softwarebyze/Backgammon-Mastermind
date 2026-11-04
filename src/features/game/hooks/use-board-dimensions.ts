@@ -9,7 +9,7 @@ import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 const BOARD_PADDING = 4;
 const BAR_WIDTH = 28;
-const BEAR_OFF_WIDTH = 38;
+const BEAR_OFF_WIDTH = 32;
 /** Narrower chrome for mini boards (guidance replays) so the points stay readable. */
 const COMPACT_BAR_WIDTH = 16;
 const COMPACT_BEAR_OFF_WIDTH = 20;
@@ -34,6 +34,8 @@ export const MIN_LEARN_CAPTION_HEIGHT = 56;
 const DEFAULT_LEFTOVER_FLOOR = 120;
 
 export type BoardDimensions = {
+  /** Match-only empty space beside the hinge for the doubling cube. */
+  bearOffCubeClearance?: number;
   boardWidth: number;
   boardHeight: number;
   boardFrameWidth: number;
@@ -58,11 +60,11 @@ const MAX_POINT_CHECKERS = 7;
 /** Bar and bear-off tray as multiples of the checker once the board outgrows the phone constants. */
 const BAR_PER_CHECKER = BAR_WIDTH / CHECKER_CAP;
 const BEAR_OFF_PER_CHECKER = BEAR_OFF_WIDTH / CHECKER_CAP;
-const COLUMN_GUTTER = 4;
+const COLUMN_GUTTER = 2;
 
 /**
  * Columns + bar + bear-off for a board this wide. Up to a 32px checker this is
- * the original fixed 28/38 layout (phones and tablets unchanged); beyond it,
+ * the fixed 28/32 layout (phones and tablets); beyond it,
  * bar and tray scale with the checker so a 48px checker still fits the bar.
  */
 function boardColumns(boardWidth: number, cap: number) {
@@ -182,6 +184,8 @@ export function fitBoardToViewport(
 
 /** Move-review strip is a fixed slot in GameScreenLayout. */
 export const REVIEW_SLOT_HEIGHT = 68;
+/** The landscape side rail's review bar while live: the turn strip alone, no label row. */
+export const COMPACT_REVIEW_SLOT_HEIGHT = 44;
 
 /** Tray die edge on phones/tablets. */
 export const TRAY_DIE_SIZE = 44;
