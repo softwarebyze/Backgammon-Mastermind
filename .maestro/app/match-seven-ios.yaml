@@ -18,18 +18,29 @@ tags:
     element:
       id: home-match-length-7
     direction: DOWN
-- tapOn:
-    id: home-match-length-7
 - assertVisible:
     id: home-crawford
-- scrollUntilVisible:
-    element:
-      id: home-start-game
-    direction: DOWN
-# iOS reads a button as one accessibility label, so match it by id and prefix.
-- assertVisible:
-    id: home-start-game
-    text: 'Start 7-point match.*'
+# iOS can miss the tap or read Start's old label for a moment, so tap 7 again
+# until Start names the 7-point match. iOS reads a button as one accessibility
+# label, so match it by id and prefix.
+- retry:
+    maxRetries: 2
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: home-match-length-7
+          direction: UP
+      - tapOn:
+          id: home-match-length-7
+      - scrollUntilVisible:
+          element:
+            id: home-start-game
+          direction: DOWN
+      - extendedWaitUntil:
+          visible:
+            id: home-start-game
+            text: 'Start 7-point match.*'
+          timeout: 10000
 - takeScreenshot: match-seven-ios-01-setup
 - tapOn:
     id: home-start-game
