@@ -12,6 +12,7 @@ import Animated, {
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { diePips } from './die-pips';
 
 type PlayerColor = 'white' | 'black';
 
@@ -29,18 +30,11 @@ type Props = {
   animateRoll?: boolean;
   /** Die edge in px; scales dots, numerals and radius. Default matches the phone tray. */
   size?: number;
+  /** Space between dice; on-board dice sit a little tighter so doubles fit a half. */
+  gap?: number;
 };
 
 const DOUBLE_DIE_SLOTS = ['slot-a', 'slot-b', 'slot-c', 'slot-d'] as const;
-
-const DOT_LAYOUTS: Record<number, Array<[number, number]>> = {
-  1: [[0.5, 0.5]],
-  2: [[0.28, 0.28], [0.72, 0.72]],
-  3: [[0.28, 0.28], [0.5, 0.5], [0.72, 0.72]],
-  4: [[0.28, 0.28], [0.72, 0.28], [0.28, 0.72], [0.72, 0.72]],
-  5: [[0.28, 0.28], [0.72, 0.28], [0.5, 0.5], [0.28, 0.72], [0.72, 0.72]],
-  6: [[0.28, 0.28], [0.72, 0.28], [0.28, 0.5], [0.72, 0.5], [0.28, 0.72], [0.72, 0.72]],
-};
 
 function diceKey(dice: [number, number]): string {
   return `${dice[0]},${dice[1]}`;
@@ -87,23 +81,19 @@ function useDiceRollAnimation(dice: [number, number], animateRoll: boolean) {
   return { containerStyle, reducedMotion };
 }
 
-function DieDots({ value, dotColor, size }: { value: number; dotColor: string; size: number }) {
-  const layout = DOT_LAYOUTS[value] ?? DOT_LAYOUTS[1]!;
-  const dot = Math.round(size * 0.16);
+function DieDots({ value, dotColor, size, border }: { value: number; dotColor: string; size: number; border: number }) {
   return (
     <View style={StyleSheet.absoluteFill}>
-      {layout.map(([x, y]) => (
+      {diePips(value, size, border).map(pip => (
         <View
-          key={`${x}-${y}`}
+          key={`${pip.left}-${pip.top}`}
           style={{
             position: 'absolute',
-            left: `${x * 100}%`,
-            top: `${y * 100}%`,
-            width: dot,
-            height: dot,
-            marginLeft: -dot / 2,
-            marginTop: -dot / 2,
-            borderRadius: dot / 2,
+            left: pip.left,
+            top: pip.top,
+            width: pip.size,
+            height: pip.size,
+            borderRadius: pip.size / 2,
             backgroundColor: dotColor,
           }}
         />
@@ -112,7 +102,7 @@ function DieDots({ value, dotColor, size }: { value: number; dotColor: string; s
   );
 }
 
-function DieFace({
+export function DieFace({
   value,
   used,
   playerColor,
@@ -139,6 +129,7 @@ function DieFace({
       ? '#BBA070'
       : '#5050A0';
   const fg = used ? '#7A6050' : isWhite ? '#2A1A08' : '#E0E0FF';
+  const borderWidth = emphasized ? 3 : 2;
 
   return (
     <View
@@ -148,36 +139,28 @@ function DieFace({
         {
           backgroundColor: bg,
           borderColor: emphasized ? GAME_PALETTE.accent : border,
-          borderWidth: emphasized ? 3 : 2,
+          borderWidth,
           opacity: used ? 0.4 : 1,
         },
         emphasized && styles.dieEmphasized,
       ]}
     >
-      {displayStyle === 'dots'
-        ? <DieDots value={value} dotColor={fg} size={size} />
-        : (
-            <Text style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
-              {value}
-            </Text>
-          )}
+      {value === 0
+        ? <Text accessible={false} style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.58) }]}>?</Text>
+        : displayStyle === 'dots'
+          ? <DieDots value={value} dotColor={fg} size={size} border={borderWidth} />
+          : (
+              <Text style={[styles.dieText, { color: fg, fontSize: Math.round(size * 0.5) }]}>
+                {value}
+              </Text>
+            )}
     </View>
   );
 }
 
-/** Empty slot; tinted so the opening tray reads white-left / black-right before rolling. */
-function EmptyDiePlaceholder({ playerColor, size }: { playerColor?: PlayerColor; size: number }) {
-  return (
-    <View
-      style={[
-        styles.die,
-        dieBox(size),
-        styles.diePlaceholder,
-        playerColor === 'white' && styles.diePlaceholderWhite,
-        playerColor === 'black' && styles.diePlaceholderBlack,
-      ]}
-    />
-  );
+/** Unrolled dice retain their solid face and colour, with an unknown value. */
+export function EmptyDiePlaceholder({ playerColor = 'white', size }: { playerColor?: PlayerColor; size: number }) {
+  return <DieFace value={0} used={false} playerColor={playerColor} displayStyle="dots" size={size} />;
 }
 
 function DiceFaces({
@@ -227,7 +210,7 @@ function DiceFaces({
   return (
     <>
       {diceStates[0]!.value === 0
-        ? <EmptyDiePlaceholder playerColor={slotColors?.[0]} size={size} />
+        ? <EmptyDiePlaceholder playerColor={leftColor} size={size} />
         : (
             <DieFace
               value={diceStates[0]!.value}
@@ -239,7 +222,7 @@ function DiceFaces({
             />
           )}
       {diceStates[1]!.value === 0
-        ? <EmptyDiePlaceholder playerColor={slotColors?.[1]} size={size} />
+        ? <EmptyDiePlaceholder playerColor={rightColor} size={size} />
         : (
             <DieFace
               value={diceStates[1]!.value}
@@ -263,11 +246,12 @@ export function DiceDisplay({
   displayStyle = 'dots',
   animateRoll = true,
   size = TRAY_DIE_SIZE,
+  gap,
 }: Props) {
   const { containerStyle, reducedMotion } = useDiceRollAnimation(dice, animateRoll);
 
   return (
-    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, containerStyle]}>
+    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, gap !== undefined && { gap }, containerStyle]}>
       <DiceFaces
         dice={dice}
         remainingDice={remainingDice}
@@ -277,6 +261,44 @@ export function DiceDisplay({
         displayStyle={displayStyle}
         size={size}
       />
+    </Animated.View>
+  );
+}
+
+/**
+ * One die on its own (the opening roll on the board puts each side's die in
+ * that player's half). 0 renders the dashed placeholder.
+ */
+export function SingleDie({
+  value,
+  playerColor,
+  emphasized = false,
+  displayStyle = 'dots',
+  animateRoll = true,
+  size = TRAY_DIE_SIZE,
+}: {
+  value: number;
+  playerColor: PlayerColor;
+  emphasized?: boolean;
+  displayStyle?: DiceDisplayStyle;
+  animateRoll?: boolean;
+  size?: number;
+}) {
+  const { containerStyle } = useDiceRollAnimation([value, 0], animateRoll);
+  return (
+    <Animated.View testID={`single-die-${playerColor}`} style={containerStyle}>
+      {value === 0
+        ? <EmptyDiePlaceholder playerColor={playerColor} size={size} />
+        : (
+            <DieFace
+              value={value}
+              used={false}
+              playerColor={playerColor}
+              displayStyle={displayStyle}
+              size={size}
+              emphasized={emphasized}
+            />
+          )}
     </Animated.View>
   );
 }
@@ -306,21 +328,6 @@ const styles = StyleSheet.create({
     shadowColor: GAME_PALETTE.accent,
     shadowOpacity: 0.6,
     shadowRadius: 6,
-  },
-  diePlaceholder: {
-    backgroundColor: 'rgba(80,60,40,0.25)',
-    borderColor: 'rgba(90,70,50,0.35)',
-    opacity: 0.5,
-  },
-  diePlaceholderWhite: {
-    borderColor: '#BBA070',
-    borderStyle: 'dashed',
-    opacity: 0.7,
-  },
-  diePlaceholderBlack: {
-    borderColor: '#5050A0',
-    borderStyle: 'dashed',
-    opacity: 0.7,
   },
   dieText: {
     fontWeight: '800',

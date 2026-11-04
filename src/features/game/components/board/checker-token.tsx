@@ -83,8 +83,10 @@ export function CheckerToken({ player, size, showCount, showMoveHint, isSelected
           style={{
             ...StyleSheet.absoluteFill,
             borderRadius: size / 2,
-            borderWidth: isSelected ? 3 : 2,
-            borderColor: isSelected ? '#F5D76E' : 'rgba(212, 168, 67, 0.65)',
+            borderWidth: isSelected ? 3 : 2.5,
+            // Hint ring: the app accent at full strength reads on both checker
+            // colors over red and gold points alike (#265).
+            borderColor: isSelected ? '#F5D76E' : '#FF9A4C',
             zIndex: 2,
           }}
         />

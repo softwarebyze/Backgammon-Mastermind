@@ -1,10 +1,12 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { GameAbandonReason } from '@/features/game/use-game-completed-capture';
 import type { GameMode, GameState } from '@/lib/game';
 import { useCallback } from 'react';
 
 import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { bumpTutorGameGeneration } from '@/features/game/use-tutor';
 import { createInitialState } from '@/lib/game';
+import { createMatchGame } from '@/lib/game/match';
 import { clearActiveGame, savePersistedSession } from '@/lib/game/persistence';
 import { performResume } from '@/lib/game/resume-game';
 
@@ -17,7 +19,8 @@ type Options = {
   resetTimeline: (initial: GameState) => void;
   clearTimeline: () => void;
   setState: Dispatch<SetStateAction<GameState | null>>;
-  onNewGame?: () => void;
+  /** Called before the live game is replaced; it is still `state` here. */
+  onNewGame?: (reason: GameAbandonReason) => void;
 };
 
 export function useGameLifecycle({
@@ -33,7 +36,7 @@ export function useGameLifecycle({
 }: Options) {
   const beginSession = useCallback((next: GameState) => {
     bumpTutorGameGeneration();
-    onNewGame?.();
+    onNewGame?.('new_game');
     clearAITimeout();
     resetAnimation();
     clearActiveGame();
@@ -66,7 +69,7 @@ export function useGameLifecycle({
 
   const resetGame = useCallback(() => {
     bumpTutorGameGeneration();
-    onNewGame?.();
+    onNewGame?.('reset');
     clearAITimeout();
     resetAnimation();
     resetMoveLog();
@@ -75,7 +78,14 @@ export function useGameLifecycle({
     if (!state) {
       return;
     }
-    const next = createInitialState(state.mode);
+    const next = state.match ? createMatchGame(state.match.length, state.mode, state.match.crawfordRule !== false) : createInitialState(state.mode);
+    if (next.match && state.match) {
+      next.match.cubeLimit = state.match.cubeLimit;
+      if (state.match.length === 0) {
+        next.match.jacoby = state.match.jacoby;
+        next.match.beavers = state.match.beavers;
+      }
+    }
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);
