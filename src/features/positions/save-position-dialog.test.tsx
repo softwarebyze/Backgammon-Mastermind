@@ -33,3 +33,12 @@ it('falls back to a default name and saves nothing on cancel', () => {
   fireEvent.press(screen.getByTestId('save-position-confirm'));
   expect(loadSavedPositions()[0]!.name).toBe('positions.game_snapshot');
 });
+
+it('saves when Enter is pressed in the name field', () => {
+  const close = jest.fn();
+  render(<SavePositionDialog state={createInitialState('vs-computer')} visible onClose={close} />);
+  fireEvent.changeText(screen.getByTestId('save-position-name'), 'Back game');
+  fireEvent(screen.getByTestId('save-position-name'), 'submitEditing');
+  expect(loadSavedPositions()[0]).toMatchObject({ name: 'Back game', source: 'game' });
+  expect(close).toHaveBeenCalledTimes(1);
+});

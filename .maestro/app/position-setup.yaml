@@ -309,15 +309,16 @@ tags:
 - tapOn:
     id: save-position-button
 - tapOn:
-    id: save-position-name
-- inputText: Saved mid-game
-- tapOn:
     id: save-position-note
 - inputText: Check this later
-- hideKeyboard
-- takeScreenshot: position-07-save-from-game
 - tapOn:
-    id: save-position-confirm
+    id: save-position-name
+- inputText: Saved mid-game
+- takeScreenshot: position-07-save-from-game
+# Enter in the name field saves, the same as the Save button.
+- pressKey: Enter
+- assertNotVisible:
+    id: save-position-dialog
 - assertVisible:
     id: header-undo-button
 # Open a valid shared preview while a game exists; merely opening it must not

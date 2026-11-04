@@ -48,6 +48,9 @@ export function SavePositionDialog({ state, visible, onClose }: { state: GameSta
             value={name}
             maxLength={80}
             onChangeText={setName}
+            autoFocus
+            returnKeyType="done"
+            onSubmitEditing={save}
             style={styles.input}
           />
           <TextInput
