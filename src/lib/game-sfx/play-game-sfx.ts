@@ -12,6 +12,7 @@ const SOURCES: Record<GameSfxKind, number> = {
   hit: require('../../../assets/sounds/hit.wav'),
   bearOff: require('../../../assets/sounds/bear-off.wav'),
   win: require('../../../assets/sounds/win.wav'),
+  blocked: require('../../../assets/sounds/blocked.wav'),
 };
 
 const KINDS = Object.keys(SOURCES) as GameSfxKind[];
@@ -23,6 +24,7 @@ const VOLUME: Record<GameSfxKind, number> = {
   hit: 0.5,
   bearOff: 0.42,
   win: 0.48,
+  blocked: 0.35,
 };
 
 type NativePlayer = ReturnType<typeof createAudioPlayer>;
