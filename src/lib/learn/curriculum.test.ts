@@ -87,9 +87,10 @@ it('sums up every lesson on the graduation screen, pip count and plans included 
 describe('game plan steps', () => {
   const planSteps = LESSONS.flatMap(lesson => lesson.steps).filter(step => step.strategy);
 
-  it('cover every plan the game can show', () => {
+  // The five core plans. The game's early "Opening" chip means no plan has formed yet, so it is not taught as one.
+  it('cover the five core game plans', () => {
     expect(new Set(planSteps.map(step => step.strategy))).toEqual(
-      new Set(['developing', 'running', 'blitz', 'priming', 'holding', 'backgame']),
+      new Set(['running', 'blitz', 'priming', 'holding', 'backgame']),
     );
   });
 

@@ -392,28 +392,6 @@ export const LESSONS: LessonDefinition[] = [
     subtitleKey: 'learn.lessons.strategies.subtitle',
     steps: [
       {
-        id: 'strat-opening',
-        kind: 'explain',
-        titleKey: 'game.strategy.label.developing',
-        bodyKey: 'learn.lessons.strategies.steps.opening.body',
-        strategy: 'developing',
-        aids: { showPointNumbers: true },
-        position: {
-          placements: [
-            { point: 24, player: 'white', count: 2 },
-            { point: 13, player: 'white', count: 5 },
-            { point: 8, player: 'white', count: 2 },
-            { point: 6, player: 'white', count: 4 },
-            { point: 5, player: 'white', count: 2 },
-            { point: 1, player: 'black', count: 2 },
-            { point: 12, player: 'black', count: 5 },
-            { point: 17, player: 'black', count: 3 },
-            { point: 19, player: 'black', count: 5 },
-          ],
-        },
-        emphasisPoints: [5],
-      },
-      {
         id: 'strat-running',
         kind: 'explain',
         titleKey: 'game.strategy.label.running',
