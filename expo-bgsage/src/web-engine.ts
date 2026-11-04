@@ -14,6 +14,8 @@ declare const window: any;
 declare const document: any;
 
 type SageWasm = {
+  // eslint-disable-next-line max-params -- Mirrors the shared native analysis boundary.
+  _sage_analyze: (engine: number, board: number, operation: number, d1: number, d2: number, ply: number, context: number) => number;
   _sage_create: () => number;
   // eslint-disable-next-line max-params -- C entry point: engine, board pointer, two dice, ply
   _sage_checkers: (engine: number, boardPtr: number, d1: number, d2: number, ply: number) => number;
@@ -28,20 +30,24 @@ type SageWasm = {
 
 /** Served from the host app's public/ dir (Expo serves public/ at root). */
 const ASSET_BASE = '/bgsage/';
+const ASSET_VERSION = 'context-v1';
 
 let modulePromise: Promise<SageWasm> | null = null;
 let engineHandle: number | null = null;
 
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    if (typeof window !== 'undefined' && typeof window.SageModule === 'function') {
+    if (typeof window !== 'undefined' && typeof window.SageModule === 'function' && window.__bgsageVersion === ASSET_VERSION) {
       resolve();
       return;
     }
     const s = document.createElement('script');
     s.src = src;
     s.async = true;
-    s.onload = () => resolve();
+    s.onload = () => {
+      window.__bgsageVersion = ASSET_VERSION;
+      resolve();
+    };
     s.onerror = () => reject(new Error(`failed to load ${src}`));
     document.head.appendChild(s);
   });
@@ -50,14 +56,14 @@ function loadScript(src: string): Promise<void> {
 async function getWasm(): Promise<SageWasm> {
   if (!modulePromise) {
     modulePromise = (async (): Promise<SageWasm> => {
-      await loadScript(`${ASSET_BASE}bgsage.js`);
+      await loadScript(`${ASSET_BASE}bgsage.js?v=${ASSET_VERSION}`);
       const factory = window.SageModule;
       if (typeof factory !== 'function') {
         throw new TypeError('bgsage.js did not expose a SageModule factory');
       }
       // locateFile keeps the .wasm/.data fetches under /bgsage/ too.
       const mod = await factory({
-        locateFile: (path: string) => `${ASSET_BASE}${path}`,
+        locateFile: (path: string) => `${ASSET_BASE}${path}?v=${ASSET_VERSION}`,
       });
       return mod as SageWasm;
     })().catch((err: unknown) => {
@@ -99,12 +105,15 @@ function callJson(call: {
   try {
     mod.HEAP32.set(board, ptr >> 2);
     const outPtr = fn(engine, ptr, ...args);
-    // NOTE: do NOT free outPtr. The web entry points return a pointer to a
-    // reused static buffer (same address across calls, WASM heap never
-    // grows) — freeing it corrupts the Emscripten heap and crashes the tab.
-    // This differs from the native bridges, where bgsage_mobile_free frees
-    // a per-call malloc'd string.
-    return mod.UTF8ToString(outPtr);
+    if (!outPtr)
+      throw new Error(`sage web: ${mod.UTF8ToString(mod._sage_last_error())}`);
+    try {
+      return mod.UTF8ToString(outPtr);
+    }
+    finally {
+      // The tracked shim uses the same owned-output contract as native.
+      mod._free(outPtr);
+    }
   }
   finally {
     mod._free(ptr);
@@ -145,4 +154,20 @@ export async function analyzeCube(
     board,
     args: [cubeValue, cubeOwner, ply],
   });
+}
+
+/** Same complete context contract as native. No native flags are silently dropped. */
+// eslint-disable-next-line max-params
+export async function analyzePosition(board: number[], dice: number[], ply: number, context: number[], operation: number): Promise<string> {
+  if (dice.length !== 2 || context.length !== 9)
+    throw new Error('sage web: invalid request shape');
+  const { mod, engine } = await getEngine();
+  const contextPtr = mod._malloc(9 * 4);
+  try {
+    mod.HEAP32.set(context, contextPtr >> 2);
+    return callJson({ mod, engine, board, fn: mod._sage_analyze.bind(mod), args: [operation, dice[0], dice[1], ply, contextPtr] });
+  }
+  finally {
+    mod._free(contextPtr);
+  }
 }

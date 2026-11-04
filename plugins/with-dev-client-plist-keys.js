@@ -43,7 +43,7 @@
  * server. Store builds are the ones that get cleaned.
  */
 
-const { withInfoPlist } = require('@expo/config-plugins');
+const { withInfoPlist } = require('expo/config-plugins');
 
 const DEV_LAUNCHER_BONJOUR_SERVICE = '_expo._tcp';
 
@@ -72,7 +72,7 @@ function isStoreEnvironment(env) {
 }
 
 /**
- * @param {import('@expo/config-types').ExpoConfig} config
+ * @param {import('expo/config').ExpoConfig} config
  */
 module.exports = function withDevClientPlistKeys(config) {
   if (!isStoreEnvironment(process.env.EXPO_PUBLIC_APP_ENV)) {
