@@ -61,6 +61,7 @@
       "center": "中间",
       "crawford": "克劳福德局 · 不能加倍",
       "cube": "倍数方块 {{value}} · {{owner}}",
+      "dead_cube": "请掷骰。无需加倍：赢下这局就已赢得比赛。",
       "double": "加倍",
       "drop": "放弃",
       "gammon": "双胜",

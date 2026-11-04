@@ -61,6 +61,7 @@
       "center": "가운데",
       "crawford": "크로퍼드 게임 · 더블 불가",
       "cube": "큐브 {{value}} · {{owner}}",
+      "dead_cube": "주사위를 굴리세요. 더블 불가: 이 게임만 이기면 매치에서 승리합니다.",
       "double": "더블",
       "drop": "패스",
       "gammon": "개먼",

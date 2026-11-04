@@ -1,4 +1,5 @@
 import type { GameMode, GamePhase, GameState, Player } from '@/lib/game/types';
+import { isDeadCube } from '@/lib/game/match';
 import { translate } from '@/lib/i18n';
 
 export type TurnDisplay = {
@@ -114,6 +115,8 @@ export function getActionCaption(
     return ' ';
   }
   if (state.phase === 'rolling' && turn.isHumanTurn) {
+    if (isDeadCube(state))
+      return translate('game.match.dead_cube');
     return translate('game.turn.roll_dice', { color: turn.colorLabel });
   }
   if (state.phase === 'moving' && turn.isHumanTurn) {

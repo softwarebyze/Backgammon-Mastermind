@@ -61,6 +61,7 @@
       "center": "Środek",
       "crawford": "Gra Crawforda · bez dublowania",
       "cube": "Kostka {{value}} · {{owner}}",
+      "dead_cube": "Rzuć kośćmi. Bez dublowania: wygrana w tej grze już daje zwycięstwo w meczu.",
       "double": "Dubluj",
       "drop": "Poddaj",
       "gammon": "gammon",

@@ -61,6 +61,7 @@
       "center": "Centro",
       "crawford": "Partita Crawford · niente raddoppio",
       "cube": "Cubo {{value}} · {{owner}}",
+      "dead_cube": "Tira i dadi. Niente raddoppio: vincere questa partita ti dà già il match.",
       "double": "Raddoppia",
       "drop": "Rifiuta",
       "gammon": "gammon",

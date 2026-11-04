@@ -61,6 +61,7 @@
       "center": "Centre",
       "crawford": "Partie Crawford · pas de doublement",
       "cube": "Videau {{value}} · {{owner}}",
+      "dead_cube": "Lancez les dés. Pas de double : gagner cette partie suffit déjà pour le match.",
       "double": "Doubler",
       "drop": "Refuser",
       "gammon": "gammon",

@@ -44,6 +44,17 @@ export function canOfferDouble(state: GameState): boolean {
     && (m.length === 0 || m.score[state.currentPlayer] + m.cube.value < m.length);
 }
 
+/**
+ * The roller may own the cube but gains nothing by turning it: winning this game
+ * at the current value already takes the match. Doubling is withheld, so say why.
+ */
+export function isDeadCube(state: GameState): boolean {
+  const m = state.match;
+  return !!m && m.length > 0 && !m.crawford && !m.result && !m.winner
+    && (m.cube.owner === 'center' || m.cube.owner === state.currentPlayer)
+    && m.score[state.currentPlayer] + m.cube.value >= m.length;
+}
+
 export function offerDouble(state: GameState, ply: number): GameState {
   if (!canOfferDouble(state))
     return state;

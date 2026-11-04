@@ -61,6 +61,7 @@
       "center": "Center",
       "crawford": "Crawford game · no doubling",
       "cube": "Cube {{value}} · {{owner}}",
+      "dead_cube": "Roll dice. No double: winning this game already wins the match.",
       "double": "Double",
       "drop": "Pass",
       "gammon": "gammon",

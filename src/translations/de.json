@@ -61,6 +61,7 @@
       "center": "Mitte",
       "crawford": "Crawford-Spiel · kein Doppeln",
       "cube": "Würfel {{value}} · {{owner}}",
+      "dead_cube": "Würfle. Kein Verdoppeln: Ein Sieg in diesem Spiel gewinnt schon das Match.",
       "double": "Doppeln",
       "drop": "Aufgeben",
       "gammon": "Gammon",

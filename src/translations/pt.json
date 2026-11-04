@@ -61,6 +61,7 @@
       "center": "Centro",
       "crawford": "Jogo Crawford · sem dobrar",
       "cube": "Cubo {{value}} · {{owner}}",
+      "dead_cube": "Lance os dados. Sem dobrar: vencer este jogo já vence o match.",
       "double": "Dobrar",
       "drop": "Recusar",
       "gammon": "gammon",

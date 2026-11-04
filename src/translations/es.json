@@ -61,6 +61,7 @@
       "center": "Centro",
       "crawford": "Partida Crawford · sin doblar",
       "cube": "Cubo {{value}} · {{owner}}",
+      "dead_cube": "Tira los dados. Sin doblar: ganar esta partida ya te da el match.",
       "double": "Doblar",
       "drop": "Rechazar",
       "gammon": "gammon",

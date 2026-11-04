@@ -61,6 +61,7 @@
       "center": "Orta",
       "crawford": "Crawford oyunu · katlama yok",
       "cube": "Küp {{value}} · {{owner}}",
+      "dead_cube": "Zarları at. Katlama yok: bu oyunu kazanmak maçı da kazandırır.",
       "double": "Katla",
       "drop": "Pes et",
       "gammon": "gammon",

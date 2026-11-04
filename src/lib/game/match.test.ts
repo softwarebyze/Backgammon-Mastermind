@@ -1,10 +1,13 @@
 import type { GameState, Player } from './types';
+import { positionGame } from '@/lib/positions/position';
+import { parseXgid } from '@/lib/positions/xgid';
 import { createPositionState } from './create-position';
 import { createTimeline, currentTimelineState, pushTimelineSnapshot, rebuildTimelineFromLog, redoTimeline, undoTimeline } from './game-timeline';
-import { acceptDouble, canOfferDouble, createMatch, createMatchGame, dropDouble, nextMatchGame, offerDouble, scoreMatchGame } from './match';
+import { acceptDouble, canOfferDouble, createMatch, createMatchGame, dropDouble, isDeadCube, nextMatchGame, offerDouble, scoreMatchGame } from './match';
 import { appendMoveLogEntry } from './move-log';
 import { applyDiceRoll, applyMove } from './moves';
 import { makePersistedSession, parsePersistedSessionValue } from './persisted-session';
+import { getActionCaption, getTurnDisplay } from './turn-display';
 
 function preRoll(length: 3 | 5 = 5): GameState {
   return { ...createMatchGame(length), phase: 'rolling' };
@@ -193,4 +196,24 @@ it.each(['white', 'black'] as const)('recovers computer %s offers, takes, drops,
       expect(parsed.session.replayBaseline?.mode).toBe('vs-computer');
     }
   }
+});
+
+describe('dead cube', () => {
+  // Reported position: White owns the cube at 2 and leads 3-0 to 5, so a single win takes the match.
+  const reported = () => ({ ...positionGame(parseXgid('XGID=-c-BBBBB-B-AaB---a----cdc-:1:1:1:00:3:0:0:5:15')), phase: 'rolling' as const });
+
+  it('withholds the redouble and says why, since a win at 2 already takes the match', () => {
+    const state = reported();
+    expect(state.match?.cube).toEqual({ value: 2, owner: 'white' });
+    expect(canOfferDouble(state)).toBe(false);
+    expect(isDeadCube(state)).toBe(true);
+    expect(getActionCaption(state, getTurnDisplay(state))).toBe('Roll dice. No double: winning this game already wins the match.');
+  });
+
+  it('keeps the cube live while a win at its value still falls short of the match', () => {
+    const state = reported();
+    state.match!.score.white = 2;
+    expect(canOfferDouble(state)).toBe(true);
+    expect(isDeadCube(state)).toBe(false);
+  });
 });

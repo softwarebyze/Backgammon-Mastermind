@@ -61,6 +61,7 @@
       "center": "Midden",
       "crawford": "Crawford-spel · niet verdubbelen",
       "cube": "Kubus {{value}} · {{owner}}",
+      "dead_cube": "Gooi de dobbelstenen. Geen verdubbeling: dit spel winnen wint de match al.",
       "double": "Verdubbelen",
       "drop": "Opgeven",
       "gammon": "gammon",
