@@ -2,6 +2,7 @@ import type { GameState, Move } from '@/lib/game';
 import { useEffect, useRef } from 'react';
 
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
+import { getForcedDieMove } from '@/lib/game/forced-die-move';
 import { canOfferDouble } from '@/lib/game/match';
 import { getForcedLegalMove, getForcedTurnSequence } from '@/lib/game/single-move';
 
@@ -93,7 +94,7 @@ export function useGameplayHelpers({
         }, AUTO_MOVE_DELAY_MS);
         return clear;
       }
-      const move = getForcedLegalMove(state);
+      const move = getForcedLegalMove(state) ?? getForcedDieMove(state);
       if (move) {
         timeoutRef.current = setTimeout(() => {
           doMove(move);

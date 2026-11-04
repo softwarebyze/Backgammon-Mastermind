@@ -20,6 +20,7 @@ flows:
   - app/hebrew-undo-redo.yaml
   - app/rapid-follow-up-input.yaml
   - app/bar-entry-hints.yaml
+  - app/partial-forced-move.yaml
 
 excludeTags:
   - util
