@@ -587,30 +587,3 @@ export function getNextLessonId(id: LessonId): LessonId | 'graduation' | null {
   }
   return LESSON_IDS[index + 1]!;
 }
-
-export function isLessonUnlocked(
-  lessonId: LessonId,
-  completedLessons: readonly string[],
-): boolean {
-  const index = LESSON_IDS.indexOf(lessonId);
-  if (index <= 0) {
-    return true;
-  }
-  const previous = LESSON_IDS[index - 1]!;
-  return completedLessons.includes(previous);
-}
-
-/**
- * Where a request for `lessonId` should land: the lesson itself when it is
- * unlocked, otherwise the first lesson still to do. Stops a typed or shared
- * URL from skipping the locks on the hub (#303).
- */
-export function resolveLessonAccess(
-  lessonId: LessonId,
-  completedLessons: readonly string[],
-): LessonId {
-  if (isLessonUnlocked(lessonId, completedLessons)) {
-    return lessonId;
-  }
-  return LESSON_IDS.find(id => !completedLessons.includes(id)) ?? LESSON_IDS[0]!;
-}

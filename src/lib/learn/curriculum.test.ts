@@ -5,19 +5,10 @@ import en from '@/translations/en.json';
 import {
   getNextLessonId,
   GRADUATION_QUIZ,
-  isLessonUnlocked,
-  LESSON_IDS,
   LESSONS,
-  resolveLessonAccess,
 } from './curriculum';
 
 describe('curriculum', () => {
-  it('unlocks lessons in order', () => {
-    expect(isLessonUnlocked('goal-board', [])).toBe(true);
-    expect(isLessonUnlocked('direction-setup', [])).toBe(false);
-    expect(isLessonUnlocked('direction-setup', ['goal-board'])).toBe(true);
-  });
-
   it('routes the last lesson to graduation', () => {
     expect(getNextLessonId('goal-board')).toBe('direction-setup');
     expect(getNextLessonId('bearing-off')).toBe('pip-count');
@@ -78,10 +69,6 @@ describe('curriculum', () => {
     expect(body.toLowerCase()).toContain('player\'s route');
     expect(body.toLowerCase()).not.toMatch(/dashed|cooler|opposite/);
   });
-
-  it('keeps every lesson unlocked after the set is complete so hub rows stay replayable', () => {
-    expect(LESSON_IDS.every(id => isLessonUnlocked(id, LESSON_IDS))).toBe(true);
-  });
 });
 
 describe('strategy lesson boards (#300)', () => {
@@ -102,16 +89,4 @@ it('sums up every lesson on the graduation screen, pip count and plans included 
   expect(graduation.body).toMatch(/game plans/);
   expect(graduation.recap_6).toMatch(/Pip count/);
   expect(graduation.recap_7).toMatch(/plan/);
-});
-
-describe('resolveLessonAccess (#303)', () => {
-  it('opens an unlocked lesson as asked', () => {
-    expect(resolveLessonAccess(LESSON_IDS[0]!, [])).toBe(LESSON_IDS[0]);
-    expect(resolveLessonAccess(LESSON_IDS[2]!, [LESSON_IDS[0]!, LESSON_IDS[1]!])).toBe(LESSON_IDS[2]);
-  });
-
-  it('sends a locked lesson\'s URL to the first lesson still to do', () => {
-    expect(resolveLessonAccess(LESSON_IDS[5]!, [LESSON_IDS[0]!])).toBe(LESSON_IDS[1]);
-    expect(resolveLessonAccess(LESSON_IDS[6]!, [])).toBe(LESSON_IDS[0]);
-  });
 });
