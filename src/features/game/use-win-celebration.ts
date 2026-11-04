@@ -11,29 +11,33 @@ export function useWinCelebration(
   liveState: GameState | null,
   isReviewing: boolean,
 ): number {
-  const [burstKey, setBurstKey] = useState(0);
-  const [prevPhase, setPrevPhase] = useState<GamePhase | null>(null);
-
+  const [celebration, setCelebration] = useState<{
+    phase: GamePhase | null;
+    burstKey: number;
+    active: boolean;
+  }>({ phase: null, burstKey: 0, active: false });
   const nextPhase = liveState?.phase ?? null;
 
-  // Adjust state while rendering when phase changes (React “store info from previous renders”).
-  if (liveState && nextPhase !== prevPhase) {
-    if (
-      shouldCelebrateWin({
-        prevPhase,
-        nextPhase: liveState.phase,
-        mode: liveState.mode,
-        winner: liveState.winner,
-        isReviewing,
-      })
-    ) {
-      setBurstKey(k => k + 1);
-    }
-    setPrevPhase(nextPhase);
+  // Each result owns its eligibility. A previous game's key must never become
+  // visible again on an intermediate match win, a loss, or a reviewed result.
+  if (nextPhase !== celebration.phase) {
+    const active = !!liveState && shouldCelebrateWin({
+      prevPhase: celebration.phase,
+      nextPhase: liveState.phase,
+      mode: liveState.mode,
+      winner: liveState.winner,
+      isReviewing,
+      match: liveState.match,
+    });
+    setCelebration({
+      phase: nextPhase,
+      burstKey: celebration.burstKey + (active ? 1 : 0),
+      active,
+    });
   }
-  else if (!liveState && prevPhase !== null) {
-    setPrevPhase(null);
+  else if (isReviewing && celebration.active) {
+    setCelebration({ ...celebration, active: false });
   }
 
-  return burstKey;
+  return nextPhase === 'game-over' && !isReviewing && celebration.active ? celebration.burstKey : 0;
 }

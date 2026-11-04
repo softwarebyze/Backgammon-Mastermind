@@ -19,6 +19,7 @@ export type CreatePositionOptions = {
   dice?: [number, number];
   currentPlayer?: Player;
   mode?: GameMode;
+  match?: GameState['match'];
 };
 
 export function createEmptyPoints(): BoardPoint[] {
@@ -49,6 +50,7 @@ export function createPositionState(options: CreatePositionOptions = {}): GameSt
 
   const base: GameState = {
     points,
+    ...(options.match ? { match: options.match } : {}),
     bar: {
       white: options.bar?.white ?? 0,
       black: options.bar?.black ?? 0,
