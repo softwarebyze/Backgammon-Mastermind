@@ -47,6 +47,7 @@ jobs:
               - '.github/scripts/maestro-post-e2e-report.sh'
               - '.github/scripts/maestro-publish-screenshots.sh'
               - '.github/scripts/maestro-publish-video.sh'
+              - '.github/scripts/publish-pr-apk.sh'
 
   generate-test-apk:
     needs: changes
@@ -79,6 +80,14 @@ jobs:
           name: test-apk
           path: ./android-test.apk
           if-no-files-found: error
+
+      - name: Publish installable APK link for this PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        run: bash .github/scripts/publish-pr-apk.sh ./android-test.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
 
   test-android:
     needs: [changes, generate-test-apk]

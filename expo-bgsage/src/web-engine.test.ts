@@ -1,19 +1,9 @@
-/**
- * Regression test for the web WASM bridge's memory contract.
- *
- * The web `_sage_checkers`/`_sage_cube` entry points return a pointer to a
- * REUSED static output buffer (verified: same address across calls, WASM
- * heap never grows) — unlike the native bridges, where `bgsage_mobile_free`
- * frees a per-call malloc. Freeing the output pointer with Emscripten's
- * `_free` corrupts the heap and crashes the tab after a few analyses.
- *
- * These tests lock in: free the input board buffer, never the output.
- */
-import { analyzeCheckers, analyzeCube } from './web-engine';
+/** The shared WASM shim returns malloc-owned JSON; both input and output must be freed. */
+import { analyzeCheckers, analyzeCube, analyzePosition } from './web-engine';
 
 describe('web-engine memory contract', () => {
   const INPUT_PTR = 1000;
-  const OUTPUT_PTR = 30658080; // static buffer address (stable across calls)
+  const OUTPUT_PTR = 2000;
 
   let freeCalls: number[];
   let mallocCalls: number[];
@@ -38,6 +28,7 @@ describe('web-engine memory contract', () => {
     mallocCalls = [];
 
     const mockMod = {
+      _sage_analyze: jest.fn(() => OUTPUT_PTR),
       _sage_create: jest.fn(() => 7),
       _sage_checkers: jest.fn(() => OUTPUT_PTR),
       _sage_cube: jest.fn(() => OUTPUT_PTR),
@@ -57,7 +48,7 @@ describe('web-engine memory contract', () => {
       createdMods.push(mockMod);
       return mockMod;
     });
-    // loadScript short-circuits when window.SageModule is a function.
+    (globalThis as any).window.__bgsageVersion = 'context-v1';
   });
 
   afterEach(() => {
@@ -65,20 +56,28 @@ describe('web-engine memory contract', () => {
     delete (globalThis as any).window.SageModule;
   });
 
-  it('analyzeCheckers frees the input board but never the static output buffer', async () => {
+  it('analyzeCheckers frees the input board and the owned output buffer', async () => {
     const out = await analyzeCheckers(board26(), 3, 1, 2);
     expect(out).toBe('{"moves":[]}');
     expect(mallocCalls).toEqual([26 * 4]);
     // Input buffer must be freed…
     expect(freeCalls).toContain(INPUT_PTR);
-    // …but the engine's static output buffer must NOT be freed.
-    expect(freeCalls).not.toContain(OUTPUT_PTR);
+    // The shared shim transfers ownership of its JSON to the caller.
+    expect(freeCalls).toContain(OUTPUT_PTR);
   });
 
-  it('analyzeCube frees the input board but never the static output buffer', async () => {
+  it('analyzeCube frees the input board and the owned output buffer', async () => {
     await analyzeCube(board26(), 2, 0, 2);
     expect(freeCalls).toContain(INPUT_PTR);
-    expect(freeCalls).not.toContain(OUTPUT_PTR);
+    expect(freeCalls).toContain(OUTPUT_PTR);
+  });
+
+  it('passes and frees the complete analysis context', async () => {
+    const context = [2, 1, 3, 5, 0, 0, 0, 64, 1];
+    await analyzePosition(board26(), [3, 1], 2, context, 0);
+    expect(mallocCalls).toEqual([36, 104]);
+    expect(freeCalls).toContain(OUTPUT_PTR);
+    expect(createdMods[0]._sage_analyze).toHaveBeenCalled();
   });
 
   it('input board is freed even when the engine throws', async () => {

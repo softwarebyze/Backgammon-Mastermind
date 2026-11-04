@@ -36,6 +36,7 @@ if [[ -f "$PIN_FILE" && -f "$VENDOR/cpp/src/board.cpp" && -f "$IOS_VENDOR/cpp/sr
   PIN="$(tr -d '[:space:]' < "$PIN_FILE")"
   ASSET_COUNT="$(ls -1 "$ASSETS" | wc -l | tr -d '[:space:]')"
   if [[ "$PIN" == "$REF" && "$ASSET_COUNT" == "22" ]]; then
+    node expo-bgsage/patches/apply.mjs
     echo "bgsage engine already present at $REF"
     exit 0
   fi
@@ -107,3 +108,5 @@ echo "assets: $(ls "$ASSETS" | wc -l) files, $(du -sh "$ASSETS" | cut -f1)"
 ASSET_COUNT="$(ls -1 "$ASSETS" | wc -l | tr -d '[:space:]')"
 test "$ASSET_COUNT" = "22" || { echo "expected 22 asset files, found $ASSET_COUNT"; exit 1; }
 printf '%s\n' "$REF" > "$PIN_FILE"
+
+node expo-bgsage/patches/apply.mjs

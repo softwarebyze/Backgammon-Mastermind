@@ -10,6 +10,20 @@ public class BgsageModule: Module {
   public func definition() -> ModuleDefinition {
     Name("Bgsage")
 
+    AsyncFunction("analyzePosition") {
+      (board: [Int], dice: [Int], ply: Int, context: [Int], operation: Int, promise: Promise) in
+      self.queue.async {
+        do {
+          let json = try self.engine().analyzePosition(
+            board.map { NSNumber(value: $0) }, dice: dice.map { NSNumber(value: $0) },
+            ply: Int32(ply), context: context.map { NSNumber(value: $0) }, operation: Int32(operation))
+          promise.resolve(json)
+        } catch {
+          promise.reject("SAGE_ERROR", error.localizedDescription)
+        }
+      }
+    }
+
     AsyncFunction("analyzeCheckers") {
       (board: [Int], die1: Int, die2: Int, ply: Int, promise: Promise) in
       self.queue.async {

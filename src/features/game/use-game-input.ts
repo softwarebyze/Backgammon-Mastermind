@@ -14,7 +14,7 @@ function triggerHaptic(fn: () => Promise<void>) {
 
 export function useGameInput({ interactionEnabled = true }: { interactionEnabled?: boolean } = {}) {
   const posthog = usePostHog();
-  const { state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating, moveAnimation, getMoveState } = useGame();
+  const { active = true, state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating, moveAnimation, getMoveState } = useGame();
 
   const isHumanTurn = !!state
     && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
@@ -50,7 +50,9 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
     isAnimating: isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked),
     concurrentMoves: true,
     isHumanTurn,
-    interactionEnabled,
+    // The provider drops input until the game route is active, so a bar
+    // preselect made earlier would be lost. Wait for it instead.
+    interactionEnabled: interactionEnabled && active,
     preselectBar: true,
     actions,
     onMoveMade,

@@ -68,6 +68,101 @@ platform :ios do
       precheck_include_in_app_purchases: false
     )
   end
+
+  # Sign a preview app built on a GitHub Mac with the App Store credentials EAS
+  # keeps (scripts/ios-signing-from-eas.mjs), then upload it to TestFlight.
+  # No EAS build is used. Expects `pnpm prebuild:preview` and `pod install`.
+  desc "Build the prebuilt ios/ project for the preview app and upload to TestFlight"
+  lane :testflight_pr do
+    require "xcodeproj"
+    api_key = load_asc_api_key
+    team_id = ENV.fetch("APPLE_TEAM_ID", "75M38Z9JBF")
+    app_bundle_id = ENV.fetch("IOS_BUNDLE_ID", "com.backgammonmastermind.preview")
+    signing_dir = File.expand_path("../.cache/ios-signing", __dir__)
+    signing = JSON.parse(File.read(File.join(signing_dir, "signing.json")))
+
+    # A throwaway keychain holding only the distribution certificate.
+    setup_ci(force: true)
+    keychain = "fastlane_tmp_keychain"
+    import_certificate(
+      certificate_path: File.join(signing_dir, "distribution.p12"),
+      certificate_password: signing.fetch("certificatePassword"),
+      keychain_name: keychain,
+      keychain_password: ""
+    )
+    # Sign by the certificate's hash: EAS certificates may be named "Apple
+    # Distribution" or the older "iPhone Distribution".
+    identity = sh("security find-identity -v -p codesigning #{File.expand_path("~/Library/Keychains/#{keychain}-db")}", log: false)[/\b([0-9A-F]{40})\b/, 1]
+    UI.user_error!("The EAS distribution certificate did not import as a signing identity") unless identity
+
+    profile_names = {}
+    signing.fetch("profiles").each do |bundle_id, file|
+      install_provisioning_profile(path: file)
+      profile_names[bundle_id] = FastlaneCore::ProvisioningProfile.name(file)
+    end
+
+    ios_dir = File.expand_path("../ios", __dir__)
+    project_path = Dir[File.join(ios_dir, "*.xcodeproj")].first
+    workspace = Dir[File.join(ios_dir, "*.xcworkspace")].first
+    project = Xcodeproj::Project.open(project_path)
+    release_bundle_id = ->(target) { target.build_configurations.find { |c| c.name == "Release" }&.build_settings&.dig("PRODUCT_BUNDLE_IDENTIFIER") }
+    missing = profile_names.keys - project.native_targets.map(&release_bundle_id)
+    UI.user_error!("No target in #{File.basename(project_path)} for #{missing.join(', ')}") unless missing.empty?
+
+    app_plist = nil
+    project.native_targets.each do |target|
+      bundle_id = release_bundle_id.call(target)
+      next unless profile_names.key?(bundle_id)
+
+      target.build_configurations.each do |config|
+        config.build_settings["CODE_SIGN_STYLE"] = "Manual"
+        config.build_settings["DEVELOPMENT_TEAM"] = team_id
+        config.build_settings["CODE_SIGN_IDENTITY"] = identity
+        config.build_settings["PROVISIONING_PROFILE_SPECIFIER"] = profile_names[bundle_id]
+      end
+      if bundle_id == app_bundle_id
+        plist = target.build_configurations.find { |c| c.name == "Release" }.build_settings["INFOPLIST_FILE"]
+        app_plist = File.join(ios_dir, plist.sub("$(SRCROOT)/", ""))
+      end
+    end
+
+    # Stay between EAS's whole build numbers: N.<run>.<attempt> sorts above
+    # TestFlight's newest N and below EAS's next N + 1.
+    version = sh("/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' '#{app_plist}'", log: false).strip
+    latest = latest_testflight_build_number(api_key: api_key, app_identifier: app_bundle_id, version: version, initial_build_number: 0)
+    base = latest.to_s.split(".").first.to_i
+    build_number = "#{base}.#{ENV.fetch('GITHUB_RUN_NUMBER', Time.now.to_i.to_s)}.#{ENV.fetch('GITHUB_RUN_ATTEMPT', '1')}"
+    project.native_targets.each do |target|
+      target.build_configurations.each { |c| c.build_settings["CURRENT_PROJECT_VERSION"] = build_number }
+    end
+    project.save
+    # Expo writes CFBundleVersion straight into each target's Info.plist.
+    Dir[File.join(ios_dir, "*", "Info.plist")].each do |plist|
+      next if sh("/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' '#{plist}' 2>/dev/null || true", log: false).strip.empty?
+
+      sh("/usr/libexec/PlistBuddy -c 'Set :CFBundleVersion #{build_number}' '#{plist}'", log: false)
+    end
+    UI.message("Building #{app_bundle_id} #{version} (#{build_number})")
+
+    ipa = build_app(
+      workspace: workspace,
+      scheme: ENV["IOS_SCHEME"] || File.basename(workspace, ".xcworkspace"),
+      configuration: "Release",
+      export_method: "app-store",
+      export_team_id: team_id,
+      export_options: { signingStyle: "manual", provisioningProfiles: profile_names },
+      output_directory: File.expand_path("../.cache/testflight", __dir__),
+      silent: true,
+      suppress_xcode_output: true
+    )
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: ipa,
+      app_identifier: app_bundle_id,
+      skip_waiting_for_build_processing: true
+    )
+    File.write(File.expand_path("../.cache/testflight/build.txt", __dir__), "#{version} (#{build_number})\n")
+  end
 end
 
 platform :android do

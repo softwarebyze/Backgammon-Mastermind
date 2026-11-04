@@ -1,4 +1,5 @@
 import Env from 'env';
+import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
@@ -61,6 +62,7 @@ export function SettingsScreen() {
 
           <SettingsContainer title="settings.general">
             <LanguageItem />
+            <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
           </SettingsContainer>
 
           <GameSettingsSection showHints />

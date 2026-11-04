@@ -18,9 +18,10 @@ tags:
     timeout: 15000
 - tapOn: Auto-move when forced
 - openLink: backgammonmastermind.preview://developer
-- extendedWaitUntil:
-    visible:
+- scrollUntilVisible:
+    element:
       id: developer-preset-e2e-center-bar
+    direction: DOWN
     timeout: 60000
 - tapOn:
     id: developer-preset-e2e-center-bar
