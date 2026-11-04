@@ -33,6 +33,7 @@ function GeneralSection({ iconColor }: { iconColor: string }) {
   return (
     <SettingsContainer title="settings.general">
       <LanguageItem />
+      <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
       <SettingsItem
         text="stats.home_cta"
         icon={<Feather name="bar-chart-2" size={20} color={iconColor} />}

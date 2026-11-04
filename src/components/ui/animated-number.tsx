@@ -74,7 +74,7 @@ export function AnimatedNumber({ value, style, accessibilityLabel, testID }: Pro
       testID={testID}
       style={styles.row}
     >
-      <View style={styles.row} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+      <View style={styles.digits} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         {digits.map((digit, i) => (
           <DigitColumn
             // eslint-disable-next-line react/no-array-index-key -- place value is the identity
@@ -93,5 +93,10 @@ export function AnimatedNumber({ value, style, accessibilityLabel, testID }: Pro
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
+  },
+  // Numbers read left to right in every language: in RTL a plain row would show 167 as "761".
+  digits: {
+    flexDirection: 'row',
+    direction: 'ltr',
   },
 });

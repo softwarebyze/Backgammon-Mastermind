@@ -25,6 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
                 cubeOwner:(int)cubeOwner
                       ply:(int)ply;
 
+/// Context: value, relative owner, away1, away2, Crawford, Jacoby, Beavers, cube limit, Crawford rule.
+- (NSString *)analyzePosition:(NSArray<NSNumber *> *)board
+                        dice:(NSArray<NSNumber *> *)dice
+                         ply:(int)ply
+                     context:(NSArray<NSNumber *> *)context
+                   operation:(int)operation;
+
 @end
 
 NS_ASSUME_NONNULL_END

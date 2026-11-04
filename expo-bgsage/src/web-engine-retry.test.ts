@@ -18,6 +18,7 @@ describe('web engine load retry', () => {
       HEAP32: { set: () => {} },
     };
     (globalThis as any).window = {
+      __bgsageVersion: 'context-v1',
       SageModule: () => {
         calls += 1;
         if (calls === 1)
