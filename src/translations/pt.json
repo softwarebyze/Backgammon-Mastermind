@@ -496,9 +496,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Está muito atrás, por isso tem duas âncoras profundas no tabuleiro interior do adversário — aqui nos pontos 22 e 24. Mantenha o seu tabuleiro interior forte e espere por um tiro tardio. É o último recurso: também pode perder muito."
+          },
           "blitz": {
-            "body": "A tua casa é forte e o adversário tem isoladas ou peças na barra. Acerta em cada isolada e fecha os pontos de casa para as deixar na barra enquanto sais. Aqui o branco tem três pontos de casa e o preto uma peça na barra.",
-            "title": "Blitz"
+            "body": "A tua casa é forte e o adversário tem isoladas ou peças na barra. Acerta em cada isolada e fecha os pontos de casa para as deixar na barra enquanto sais. Aqui o branco tem três pontos de casa e o preto uma peça na barra."
+          },
+          "holding": {
+            "body": "Está atrás na corrida, mas tem uma âncora no tabuleiro interior do adversário — aqui no ponto 20. Mantenha-a, jogue com segurança e espere por um tiro quando as peças dele passarem por ela a caminho de casa."
           },
           "identify": {
             "body": "Isto é um jogo de muralha. Toca num ponto da muralha branca, os pontos seguidos que bloqueiam o preto.",
@@ -506,13 +511,14 @@
             "praise": "Perfeito. Esse muro é a muralha. As peças de trás do preto estão presas.",
             "title": "Encontra a muralha"
           },
+          "opening": {
+            "body": "No início do jogo ainda não há um plano. Construa pontos úteis — sobretudo o ponto 5 — e mantenha as suas opções em aberto. Durante o jogo, este ícone ao lado do seu nome indica que ainda está na abertura."
+          },
           "prime": {
-            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que limita as peças de trás do preto. Alonga-a um ponto de cada vez.",
-            "title": "Muralha"
+            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que limita as peças de trás do preto. Alonga-a um ponto de cada vez."
           },
           "running": {
-            "body": "Vais à frente e não há peças isoladas ao alcance. Traz as peças para casa sem deixar isoladas. Aqui o branco vai à frente com uma casa sólida.",
-            "title": "Corrida"
+            "body": "Vais à frente e não há peças isoladas ao alcance. Traz as peças para casa sem deixar isoladas. Aqui o branco vai à frente com uma casa sólida."
           }
         },
         "subtitle": "Reconhecer planos de jogo clássicos",

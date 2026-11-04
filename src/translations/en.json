@@ -496,9 +496,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "You're far behind, so you hold two deep anchors in your opponent's home board — here the 22- and 24-points. Keep your own home board strong and wait for a late shot. It's a last resort: it can also lose big."
+          },
           "blitz": {
-            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar.",
-            "title": "Blitz"
+            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar."
+          },
+          "holding": {
+            "body": "You're behind in the race, but you hold an anchor in your opponent's home board — here the 20-point. Keep it, stay safe, and wait for a shot as their checkers come home past it."
           },
           "identify": {
             "body": "This is a priming game. Tap any point that's part of the white prime — the wall of consecutive made points blocking black.",
@@ -506,13 +511,14 @@
             "praise": "Perfect! That wall is the prime — black's back checkers are trapped.",
             "title": "Spot the prime"
           },
+          "opening": {
+            "body": "Early in the game no plan has formed yet. Build useful points — the 5-point most of all — and keep your options open. In a game, this icon next to your name means you're still in the opening."
+          },
           "prime": {
-            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it.",
-            "title": "Priming Game"
+            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it."
           },
           "running": {
-            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board.",
-            "title": "Running Game"
+            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board."
           }
         },
         "subtitle": "Recognize classic game plans",

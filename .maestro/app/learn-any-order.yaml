@@ -27,3 +27,7 @@ tags:
       id: learn-board-slot
     timeout: 20000
 - takeScreenshot: learn-any-order-02-last-lesson-open
+# The plans lesson opens on the first plan, named as the game names it,
+# with the in-game plan icon beside it.
+- assertVisible: Opening
+- takeScreenshot: learn-any-order-03-plan-icon

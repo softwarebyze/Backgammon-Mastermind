@@ -40,3 +40,19 @@ describe('coach caption feedback (#304)', () => {
     expect(screen.getByTestId('learn-feedback').props.accessibilityLiveRegion).toBe('polite');
   });
 });
+
+describe('coach caption game plan', () => {
+  it('shows the in-game plan icon beside a plan step, hidden from screen readers', () => {
+    render(<CoachCaption titleKey="game.strategy.label.holding" bodyKey="learn.lessons.strategies.steps.holding.body" stepLabel="5/7" feedback={null} strategy="holding" />);
+    const mark = screen.getByTestId('learn-strategy-holding', { includeHiddenElements: true });
+    expect(mark.props.importantForAccessibility).toBe('no-hide-descendants');
+    expect(screen.getByText('⚓', { includeHiddenElements: true })).toBeTruthy();
+    expect(screen.queryByText('⚓')).toBeNull();
+    expect(screen.getByRole('header').props.children).toBe('Holding game');
+  });
+
+  it('shows no icon on other steps', () => {
+    render(<CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="1/3" feedback={null} />);
+    expect(screen.queryByTestId(/^learn-strategy-/, { includeHiddenElements: true })).toBeNull();
+  });
+});

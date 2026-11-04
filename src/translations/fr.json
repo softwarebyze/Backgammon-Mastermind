@@ -496,9 +496,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Vous êtes très en retard : vous tenez donc deux ancres profondes dans le jan intérieur adverse — ici sur les points 22 et 24. Gardez votre propre jan intérieur solide et attendez un tir tardif. C'est un dernier recours : on peut aussi perdre gros."
+          },
           "blitz": {
-            "body": "Ta maison est forte et l’adversaire a des pions isolés ou sur la barre. Frappe chaque isolé et ferme tes flèches de maison pour les garder sur la barre pendant que tu sors. Ici le blanc a trois flèches et le noir un pion sur la barre.",
-            "title": "Blitz"
+            "body": "Ta maison est forte et l’adversaire a des pions isolés ou sur la barre. Frappe chaque isolé et ferme tes flèches de maison pour les garder sur la barre pendant que tu sors. Ici le blanc a trois flèches et le noir un pion sur la barre."
+          },
+          "holding": {
+            "body": "Vous êtes en retard dans la course, mais vous tenez une ancre dans le jan intérieur adverse — ici sur le point 20. Gardez-la, jouez prudemment et attendez un tir quand ses pions passent devant pour rentrer."
           },
           "identify": {
             "body": "C’est une partie de muraille. Touche une flèche de la prime blanche, le mur de flèches qui bloque le noir.",
@@ -506,13 +511,14 @@
             "praise": "Parfait. Ce mur est la prime. Les pions arrière du noir sont pris.",
             "title": "Repère la muraille"
           },
+          "opening": {
+            "body": "En début de partie, aucun plan ne s'est encore dessiné. Construisez des points utiles — avant tout le point 5 — et gardez vos options ouvertes. En partie, cette icône à côté de votre nom indique que vous êtes encore dans l'ouverture."
+          },
           "prime": {
-            "body": "Tu as un mur de flèches faites à la suite, une prime. Les flèches marquées forment une prime de 4 qui gêne les pions arrière du noir. Allonge-la d’une flèche à la fois.",
-            "title": "Muraille"
+            "body": "Tu as un mur de flèches faites à la suite, une prime. Les flèches marquées forment une prime de 4 qui gêne les pions arrière du noir. Allonge-la d’une flèche à la fois."
           },
           "running": {
-            "body": "Tu mènes, et aucun pion isolé n’est à portée. Ramène tes pions sans en laisser d’isolés. Pas de fantaisie : cours. Ici le blanc mène avec une maison solide.",
-            "title": "Course"
+            "body": "Tu mènes, et aucun pion isolé n’est à portée. Ramène tes pions sans en laisser d’isolés. Pas de fantaisie : cours. Ici le blanc mène avec une maison solide."
           }
         },
         "subtitle": "Reconnaître les plans de jeu classiques",

@@ -1,7 +1,9 @@
+import type { StrategyKey } from '@/features/game/strategy';
 import type { LessonFeedback } from '@/features/learn/use-lesson-session';
 import type { TxKeyPath } from '@/lib/i18n';
 
 import { StyleSheet, Text, View } from 'react-native';
+import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
@@ -13,9 +15,11 @@ type Props = {
   feedback: LessonFeedback | null;
   stepLabel: string;
   compact?: boolean;
+  /** A game-plan step shows the same icon as the plan chip in a game. */
+  strategy?: StrategyKey;
 };
 
-export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact = false }: Props) {
+export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact = false, strategy }: Props) {
   const feedbackColor
     = feedback?.tone === 'praise'
       ? '#A0D080'
@@ -26,9 +30,19 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
   return (
     <View style={[styles.root, compact && styles.rootCompact]}>
       <Text style={styles.stepLabel}>{stepLabel}</Text>
-      <Text accessibilityRole="header" style={[styles.title, compact && styles.titleCompact]}>
-        {translate(titleKey as TxKeyPath)}
-      </Text>
+      <View style={styles.titleRow}>
+        {strategy
+          ? (
+              // The title already names the plan; the icon is for the eye.
+              <View testID={`learn-strategy-${strategy}`} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                <StrategyMark strategy={strategy} size={compact ? 18 : 22} />
+              </View>
+            )
+          : null}
+        <Text accessibilityRole="header" style={[styles.title, compact && styles.titleCompact]}>
+          {translate(titleKey as TxKeyPath)}
+        </Text>
+      </View>
       <Text style={[styles.body, compact && styles.bodyCompact]}>{translate(bodyKey as TxKeyPath)}</Text>
       {feedback
         ? (
@@ -67,7 +81,13 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     ...interFont('medium'),
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   title: {
+    flexShrink: 1,
     color: GAME_PALETTE.accent,
     fontSize: 18,
     ...interFont('bold'),

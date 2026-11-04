@@ -1,3 +1,4 @@
+import { classifyStrategy } from '@/features/game/strategy';
 import { createPositionState } from '@/lib/game/create-position';
 import { getLegalMoves } from '@/lib/game/moves';
 import en from '@/translations/en.json';
@@ -81,4 +82,20 @@ it('sums up every lesson on the graduation screen, pip count and plans included 
   expect(graduation.body).toMatch(/game plans/);
   expect(graduation.recap_6).toMatch(/Pip count/);
   expect(graduation.recap_7).toMatch(/plan/);
+});
+
+describe('game plan steps', () => {
+  const planSteps = LESSONS.flatMap(lesson => lesson.steps).filter(step => step.strategy);
+
+  it('cover every plan the game can show', () => {
+    expect(new Set(planSteps.map(step => step.strategy))).toEqual(
+      new Set(['developing', 'running', 'blitz', 'priming', 'holding', 'backgame']),
+    );
+  });
+
+  // The lesson and the in-game plan chip must agree, or the icon teaches the wrong thing.
+  it.each(planSteps.map(step => [step.id, step] as const))('%s shows the plan the game would name', (_id, step) => {
+    const state = createPositionState({ currentPlayer: 'white', ...step.position });
+    expect(classifyStrategy(state, 'white').key).toBe(step.strategy);
+  });
 });

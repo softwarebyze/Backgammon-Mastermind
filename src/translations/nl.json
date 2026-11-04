@@ -496,9 +496,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Je ligt ver achter, dus je houdt twee diepe ankers in het thuisbord van je tegenstander — hier op het 22- en 24-punt. Houd je eigen thuisbord sterk en wacht op een laat schot. Het is een laatste redmiddel: je kunt er ook flink mee verliezen."
+          },
           "blitz": {
-            "body": "Je huis is sterk en de tegenstander heeft blots of stenen op de bar. Sla elke blot en sluit je huispunten, zodat zijn stenen op de bar blijven terwijl jij uitspeelt. Hier heeft wit drie huispunten en zwart een steen op de bar.",
-            "title": "Blitz"
+            "body": "Je huis is sterk en de tegenstander heeft blots of stenen op de bar. Sla elke blot en sluit je huispunten, zodat zijn stenen op de bar blijven terwijl jij uitspeelt. Hier heeft wit drie huispunten en zwart een steen op de bar."
+          },
+          "holding": {
+            "body": "Je ligt achter in de race, maar je houdt een anker in het thuisbord van je tegenstander — hier op het 20-punt. Houd het vast, speel veilig en wacht op een schot terwijl zijn stenen erlangs naar huis gaan."
           },
           "identify": {
             "body": "Dit is een muurspel. Tik een punt van de witte muur, de opeenvolgende punten die zwart blokkeren.",
@@ -506,13 +511,14 @@
             "praise": "Perfect. Die muur is de prime. De achterste stenen van zwart zitten vast.",
             "title": "Vind de muur"
           },
+          "opening": {
+            "body": "In het begin van het spel is er nog geen plan. Bouw nuttige punten — vooral het 5-punt — en houd je opties open. In een spel betekent dit pictogram naast je naam dat je nog in de opening zit."
+          },
           "prime": {
-            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart beperkt. Maak hem punt voor punt langer.",
-            "title": "Muur"
+            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart beperkt. Maak hem punt voor punt langer."
           },
           "running": {
-            "body": "Je leidt en er liggen geen blots binnen slagbereik. Breng de stenen veilig thuis en laat geen blots liggen. Hier leidt wit met een vast huis.",
-            "title": "Race"
+            "body": "Je leidt en er liggen geen blots binnen slagbereik. Breng de stenen veilig thuis en laat geen blots liggen. Hier leidt wit met een vast huis."
           }
         },
         "subtitle": "Klassieke spelplannen herkennen",

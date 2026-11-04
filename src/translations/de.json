@@ -496,9 +496,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Du liegst weit zurück, also hältst du zwei tiefe Anker im Heimfeld des Gegners – hier auf dem 22er- und 24er-Punkt. Halte dein eigenes Heimfeld stark und warte auf einen späten Treffer. Das ist der letzte Ausweg: Er kann auch hoch verlieren."
+          },
           "blitz": {
-            "body": "Dein Haus ist stark, der Gegner hat Blots oder Steine auf der Bar. Schlage jeden Blot und schließe deine Hauspunkte, damit seine Steine auf der Bar festsitzen, während du auswürfelst. Hier hat Weiß drei Hauspunkte und Schwarz einen Stein auf der Bar.",
-            "title": "Blitz"
+            "body": "Dein Haus ist stark, der Gegner hat Blots oder Steine auf der Bar. Schlage jeden Blot und schließe deine Hauspunkte, damit seine Steine auf der Bar festsitzen, während du auswürfelst. Hier hat Weiß drei Hauspunkte und Schwarz einen Stein auf der Bar."
+          },
+          "holding": {
+            "body": "Du liegst im Rennen zurück, hältst aber einen Anker im Heimfeld des Gegners – hier auf dem 20er-Punkt. Halte ihn, spiele sicher und warte auf einen Treffer, wenn seine Steine an dir vorbei nach Hause ziehen."
           },
           "identify": {
             "body": "Das ist ein Prime-Spiel. Tippe einen Punkt der weißen Prime, der Mauer aus aufeinanderfolgenden Punkten, die Schwarz sperrt.",
@@ -506,13 +511,14 @@
             "praise": "Perfekt! Diese Mauer ist die Prime. Die hinteren Steine von Schwarz sitzen fest.",
             "title": "Finde die Prime"
           },
+          "opening": {
+            "body": "Am Anfang des Spiels gibt es noch keinen Plan. Baue nützliche Punkte – vor allem den 5er-Punkt – und halte dir alle Möglichkeiten offen. Im Spiel bedeutet dieses Symbol neben deinem Namen, dass du noch in der Eröffnung bist."
+          },
           "prime": {
-            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt.",
-            "title": "Prime"
+            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt."
           },
           "running": {
-            "body": "Du führst, und keine Blots liegen in Schlagweite. Bring die Steine sicher nach Hause und lass keine Blots liegen. Nicht tricksen, einfach rennen. Hier führt Weiß mit einem festen Haus.",
-            "title": "Rennspiel"
+            "body": "Du führst, und keine Blots liegen in Schlagweite. Bring die Steine sicher nach Hause und lass keine Blots liegen. Nicht tricksen, einfach rennen. Hier führt Weiß mit einem festen Haus."
           }
         },
         "subtitle": "Klassische Spielpläne erkennen",

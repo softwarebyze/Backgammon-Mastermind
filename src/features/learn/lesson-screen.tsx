@@ -175,6 +175,7 @@ function LessonScreenBody({
     <CoachCaption
       titleKey={session.step.titleKey}
       bodyKey={session.step.bodyKey}
+      strategy={session.step.strategy}
       feedback={session.feedback}
       stepLabel={translate('learn.step_progress', {
         current: session.stepIndex + 1,

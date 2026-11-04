@@ -496,9 +496,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Jesteś daleko w tyle, więc masz dwie głębokie kotwice w domu przeciwnika — tu na punktach 22 i 24. Utrzymuj mocny własny dom i czekaj na późne bicie. To ostateczność: można też wysoko przegrać."
+          },
           "blitz": {
-            "body": "Twój dom jest mocny, a przeciwnik ma samotne piony albo piony na barze. Bij każdy samotny i zamykaj pola domu, żeby jego piony zostały na barze, gdy ty schodzisz. Tu biały ma trzy pola domu, a czarny piona na barze.",
-            "title": "Blitz"
+            "body": "Twój dom jest mocny, a przeciwnik ma samotne piony albo piony na barze. Bij każdy samotny i zamykaj pola domu, żeby jego piony zostały na barze, gdy ty schodzisz. Tu biały ma trzy pola domu, a czarny piona na barze."
+          },
+          "holding": {
+            "body": "Przegrywasz wyścig, ale masz kotwicę w domu przeciwnika — tu na punkcie 20. Utrzymaj ją, graj bezpiecznie i czekaj na bicie, gdy jego pionki będą ją mijać w drodze do domu."
           },
           "identify": {
             "body": "To partia na mur. Dotknij pola białego muru, kolejnych pól, które blokują czarnego.",
@@ -506,13 +511,14 @@
             "praise": "Idealnie. Ta ściana to mur. Tylne piony czarnego są uwięzione.",
             "title": "Wskaż mur"
           },
+          "opening": {
+            "body": "Na początku gry nie ma jeszcze planu. Buduj przydatne punkty — przede wszystkim punkt 5 — i zostaw sobie otwarte opcje. W grze ta ikona obok twojego imienia oznacza, że wciąż jesteś w otwarciu."
+          },
           "prime": {
-            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, który ogranicza tylne piony czarnego. Wydłużaj go po jednym polu.",
-            "title": "Mur"
+            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, który ogranicza tylne piony czarnego. Wydłużaj go po jednym polu."
           },
           "running": {
-            "body": "Prowadzisz i nie ma samotnych pionów w zasięgu bicia. Sprowadź piony do domu i nie zostawiaj samotnych. Tu biały prowadzi i ma mocny dom.",
-            "title": "Wyścig"
+            "body": "Prowadzisz i nie ma samotnych pionów w zasięgu bicia. Sprowadź piony do domu i nie zostawiaj samotnych. Tu biały prowadzi i ma mocny dom."
           }
         },
         "subtitle": "Rozpoznaj klasyczne plany gry",

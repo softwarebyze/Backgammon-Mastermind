@@ -496,9 +496,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Sei molto indietro, quindi tieni due ancore profonde nella casa avversaria — qui sui punti 22 e 24. Mantieni forte la tua casa e aspetta un colpo tardivo. È l'ultima risorsa: si può anche perdere molto."
+          },
           "blitz": {
-            "body": "La tua casa è forte e l’avversario ha pedine sole o sulla barra. Colpisci ogni pedina sola e chiudi i punti di casa per tenerle sulla barra mentre esci. Qui il bianco ha tre punti di casa e il nero una pedina sulla barra.",
-            "title": "Attacco totale"
+            "body": "La tua casa è forte e l’avversario ha pedine sole o sulla barra. Colpisci ogni pedina sola e chiudi i punti di casa per tenerle sulla barra mentre esci. Qui il bianco ha tre punti di casa e il nero una pedina sulla barra."
+          },
+          "holding": {
+            "body": "Sei indietro nella corsa, ma tieni un'ancora nella casa avversaria — qui sul punto 20. Mantienila, gioca sicuro e aspetta un colpo mentre le sue pedine le passano accanto per tornare a casa."
           },
           "identify": {
             "body": "Questa è una partita di muro. Tocca un punto del muro bianco, i punti consecutivi che bloccano il nero.",
@@ -506,13 +511,14 @@
             "praise": "Perfetto. Quel muro è il prime. Le pedine arretrate del nero sono intrappolate.",
             "title": "Trova il muro"
           },
+          "opening": {
+            "body": "All'inizio della partita non c'è ancora un piano. Costruisci punti utili — soprattutto il punto 5 — e tieni aperte le tue opzioni. In partita, questa icona accanto al tuo nome indica che sei ancora in apertura."
+          },
           "prime": {
-            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che limita le pedine arretrate del nero. Allungalo un punto alla volta.",
-            "title": "Muro"
+            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che limita le pedine arretrate del nero. Allungalo un punto alla volta."
           },
           "running": {
-            "body": "Sei avanti e non ci sono pedine sole a tiro. Porta le pedine a casa senza lasciarne di sole. Qui il bianco è avanti con una casa solida.",
-            "title": "Corsa"
+            "body": "Sei avanti e non ci sono pedine sole a tiro. Porta le pedine a casa senza lasciarne di sole. Qui il bianco è avanti con una casa solida."
           }
         },
         "subtitle": "Riconosci i piani di gioco classici",
