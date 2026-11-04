@@ -9,11 +9,8 @@ import { join } from 'node:path';
 //  1. public/bgsage/* are *prebuilt* binaries checked into the repo. Nothing
 //     regenerates them in CI, so a swapped or truncated file would ship as a
 //     silently broken web engine. The SHA-256 manifest below is the pin.
-//     They are not reproducible from the vendored source today: the WASM
-//     shim that turns bgsage's C++ engine into public/bgsage/bgsage.wasm is
-//     not vendored in expo-bgsage/vendor, and emcc is not a build dependency.
-//     These bytes came from a prebuilt upstream artifact, so "bump the pin"
-//     means replacing the files by hand and re-hashing, not a local rebuild.
+//     Rebuild with .github/scripts/build-bgsage-wasm.sh (Emscripten 6.0.13).
+//     Native/WASM parity is checked by scripts/verify-bgsage-context.mjs.
 //  2. The engine takes 21 weight files in a fixed *strategy order*, and both
 //     native modules hardcode that order. Reordering one list changes which
 //     network answers which position, so the lists are compared to each other
@@ -26,17 +23,12 @@ const assetsDir = join(root, 'expo-bgsage/assets');
 /** Pin for the committed prebuilt web engine. Bump deliberately, never by accident. */
 const WASM_MANIFEST = {
   'bgsage.data': 'b737d93e8ecd6e354a2bb1456c07b78cdda3f619cf0789011de28168f5ac00ee',
-  'bgsage.js': 'a9ad0aa0819c056b76f3caebbbb45fca73bdd8385a4db20c959dc1d19a563d81',
-  'bgsage.wasm': '9407e5f424b6f6131b4847d020c402f50f2e07eb61cd00583a6fd6d05416b2ba',
+  'bgsage.js': '4c0687f1fe16ea72e47548c9fd2efdf73fd2465daad3d74770b423a12675da83',
+  'bgsage.wasm': '9ca5eadf8f1b53b6099c3641ae80e30fdadf0fc450ad904dbe5073a00006024e',
 } as const;
 
-/**
- * Raw C entry points the JS glue calls. Emscripten exposes C symbols on the
- * WASM instance under their bare name; the glue re-exports them to JS with a
- * leading underscore. Keeping both lists explicit makes a glue/binary mismatch
- * a test failure rather than a runtime "is not a function".
- */
-const C_EXPORTS = ['sage_create', 'sage_checkers', 'sage_cube', 'sage_last_error'] as const;
+/** Public glue names; Emscripten may minify their underlying WASM symbols. */
+const C_EXPORTS = ['sage_analyze', 'sage_create', 'sage_checkers', 'sage_cube', 'sage_last_error'] as const;
 
 function sha256(absPath: string): string {
   return createHash('sha256').update(readFileSync(absPath)).digest('hex');
@@ -67,7 +59,10 @@ describe('committed bgsage web engine', () => {
     }
     const instance = await WebAssembly.instantiate(module, imports);
     for (const symbol of C_EXPORTS) {
-      expect(typeof instance.exports[symbol]).toBe('function');
+      const glue = readFileSync(join(publicDir, 'bgsage.js'), 'utf8');
+      const assignment = new RegExp(`Module\\["_${symbol}"\\] = wasmExports\\["([a-zA-Z0-9_$]+)"\\]`).exec(glue);
+      expect(assignment).not.toBeNull();
+      expect(typeof instance.exports[assignment![1]]).toBe('function');
     }
   });
 

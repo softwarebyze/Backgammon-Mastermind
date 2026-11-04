@@ -1,0 +1,150 @@
+# iOS groups the board accessibility children. Capture the editor on both
+# iPhone and iPad without relying on Android-only individual point targets.
+appId: ${APP_ID}
+tags:
+  - ios
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-setup-button
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-setup-button
+- extendedWaitUntil:
+    visible:
+      id: position-screen
+    timeout: 30000
+- assertVisible:
+    id: position-paint-white
+- assertVisible:
+    id: position-paint-black
+- takeScreenshot: position-ios-01-editor
+- assertVisible:
+    id: player-strip-white
+- assertVisible:
+    id: position-cube
+- takeScreenshot: position-compact-workspace
+- assertVisible:
+    id: position-standard
+- assertVisible:
+    id: position-empty
+- assertVisible:
+    id: position-die-0
+# Tapping a die opens all six faces; picking the first opens the second.
+- tapOn:
+    id: position-die-0
+- assertVisible:
+    id: position-die-picker
+- takeScreenshot: position-die-picker
+- tapOn:
+    id: position-die-option-6
+- tapOn:
+    id: position-die-option-2
+- assertVisible:
+    id: position-die-0
+    text: 'Dice 1: 6'
+- takeScreenshot: position-visible-presets-dice
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-cube
+      START_Y: '80%'
+      END_Y: '25%'
+# Tapping the cube opens every value and owner at once.
+- tapOn:
+    id: position-cube
+- assertVisible:
+    id: position-cube-picker
+- takeScreenshot: position-cube-picker
+- tapOn:
+    id: position-cube-value-1
+- tapOn:
+    id: position-cube-owner-black
+- tapOn:
+    id: position-cube-done
+- assertVisible:
+    id: position-cube
+    text: 'Doubling cube: 2. Cube owner: Black'
+- takeScreenshot: position-visual-cube
+- tapOn:
+    id: position-cube
+- tapOn:
+    id: position-cube-owner-center
+- tapOn:
+    id: position-cube-done
+- assertVisible:
+    id: position-cube
+    text: 'Doubling cube: 2. Cube owner: Centered'
+- runFlow: ../utils/position-score.yaml
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-empty
+      START_Y: '25%'
+      END_Y: '80%'
+- tapOn:
+    id: position-empty
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- takeScreenshot: position-ios-02-empty
+- runFlow: ../utils/position-bar.yaml
+- runFlow: ../utils/position-drag.yaml
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-standard
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: position-standard
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- runScript: ../utils/position-link.js
+- openLink: ${output.sharedPositionLink}
+# iOS asks for consent the first time this simulator opens the app by link.
+- runFlow:
+    when:
+      visible: Open
+    commands:
+      - tapOn: Open
+- launchApp:
+    stopApp: false
+# After returning through iOS's link prompt, XCTest can retain the previous
+# accessibility snapshot. Scrolling refreshes it and verifies the payload's
+# actual roll instead of relying only on a changed caption.
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-die-0
+      START_Y: '80%'
+      END_Y: '25%'
+- assertVisible:
+    id: position-die-0
+    text: 'Dice 1: 5'
+- assertVisible:
+    id: position-die-1
+    text: 'Dice 2: 2'
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- assertVisible:
+    id: position-screen
+- takeScreenshot: position-ios-03-shared
