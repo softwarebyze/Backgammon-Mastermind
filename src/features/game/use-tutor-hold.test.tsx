@@ -7,13 +7,16 @@
  * continued — no prompt ever opened. Now the game holds paused until the
  * verdict lands (or the engine fails), then judges exactly once.
  */
+import type { MoveLogEntry } from '@/lib/game/move-log';
 import type { GameState } from '@/lib/game/types';
 
 import { planSageTurnFull } from 'expo-bgsage';
 import { useEffect } from 'react';
 
 import { createInitialState } from '@/lib/game/constants';
-import { act, cleanup, render } from '@/lib/test-utils';
+import { act, cleanup, render, renderHook } from '@/lib/test-utils';
+
+import { useBlunderHistory } from './blunder-history';
 
 import {
   clearGuidance,
@@ -120,8 +123,8 @@ function Probe({ onSnapshot }: { onSnapshot: (s: ProbeSnapshot) => void }) {
   return null;
 }
 
-function Harness({ state, onSnapshot }: { state: GameState; onSnapshot: (s: ProbeSnapshot) => void }) {
-  useTutorMode(state, []);
+function Harness({ state, onSnapshot, moveLog = [] }: { state: GameState; onSnapshot: (s: ProbeSnapshot) => void; moveLog?: MoveLogEntry[] }) {
+  useTutorMode(state, moveLog);
   return <Probe onSnapshot={onSnapshot} />;
 }
 
@@ -338,5 +341,49 @@ describe('tutor with confirm-move hold', () => {
     // Player taps Confirm → opponent to roll → tutor judges now.
     rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} />);
     expect(probe.blunderNull).toBe(false);
+  });
+});
+
+describe('tutor blunders in the history', () => {
+  const twoMoves: MoveLogEntry[] = [
+    { ply: 1, player: 'white', dice: [3, 1], from: 8, to: 5 },
+    { ply: 2, player: 'white', dice: [3, 1], from: 6, to: 5 },
+  ];
+
+  it('marks a kept blunder on its turn, and forgets it when the turn is undone or the game restarts', async () => {
+    let resolveAnalysis!: (plan: never) => void;
+    planSageTurnFullMock.mockImplementation(
+      () => new Promise((resolve) => { resolveAnalysis = resolve as (plan: never) => void; }),
+    );
+    const { result: blunders } = renderHook(() => useBlunderHistory());
+    const { rerender, onSnapshot } = renderHarness(whiteMovingState());
+    await act(async () => {
+      resolveAnalysis(blunderPlan() as never);
+    });
+    rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} moveLog={twoMoves} />);
+    expect(blunders.current.get(1)).toBeCloseTo(0.2);
+
+    // Both moves taken back: the turn is no longer in the game.
+    rerender(<Harness state={whiteMovingState()} onSnapshot={onSnapshot} moveLog={[]} />);
+    expect(blunders.current.size).toBe(0);
+
+    rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} moveLog={twoMoves} />);
+    expect(blunders.current.get(1)).toBeCloseTo(0.2);
+    act(() => bumpTutorGameGeneration());
+    expect(blunders.current.size).toBe(0);
+  });
+
+  it('leaves a good turn unmarked', async () => {
+    let resolveAnalysis!: (plan: never) => void;
+    planSageTurnFullMock.mockImplementation(
+      () => new Promise((resolve) => { resolveAnalysis = resolve as (plan: never) => void; }),
+    );
+    const { result: blunders } = renderHook(() => useBlunderHistory());
+    const { rerender, onSnapshot } = renderHarness(whiteMovingState());
+    await act(async () => {
+      resolveAnalysis(cleanPlan() as never);
+    });
+    rerender(<Harness state={blackRollingState()} onSnapshot={onSnapshot} moveLog={twoMoves} />);
+    expect(blunders.current.size).toBe(0);
   });
 });

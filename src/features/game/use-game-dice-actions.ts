@@ -21,6 +21,7 @@ type DiceActionsArgs = {
   state: GameState | null;
   setState: Dispatch<SetStateAction<GameState | null>>;
   isAnimating: boolean;
+  moveCount?: number;
   recordNoMove: (before: GameState, after: GameState) => void;
 };
 
@@ -29,9 +30,10 @@ export function useGameDiceActions({
   setState,
   isAnimating,
   recordNoMove,
+  moveCount = 0,
 }: DiceActionsArgs) {
   const doPassTurn = useCallback(() => {
-    if (isAnimating || !state) {
+    if (isAnimating || !state || state.match?.pendingOffer) {
       return;
     }
     if (state.mode === 'vs-computer' && state.currentPlayer === 'black') {
@@ -55,7 +57,7 @@ export function useGameDiceActions({
     if (isAnimating || !state || rolledFrom.current === state) {
       return;
     }
-    const rolled = rollFrom(state);
+    const rolled = rollFrom(state, moveCount);
     if (!rolled) {
       return;
     }
@@ -69,13 +71,16 @@ export function useGameDiceActions({
       // After the dice land, a soft "err err" says this roll can't be played.
       setTimeout(() => playGameSfx('blocked'), BLOCKED_SFX_DELAY_MS);
     }
-  }, [isAnimating, setState, state]);
+  }, [isAnimating, moveCount, setState, state]);
 
   return { doPassTurn, doRollDice };
 }
 
 /** The state after the human rolls from `prev`, or null when it isn't theirs to roll. */
-function rollFrom(prev: GameState): { next: GameState; withSound: boolean } | null {
+function rollFrom(prev: GameState, moveCount: number): { next: GameState; withSound: boolean } | null {
+  if (prev.match?.pendingOffer) {
+    return null;
+  }
   if (prev.mode === 'vs-computer' && prev.currentPlayer === 'black') {
     return null;
   }
@@ -90,5 +95,8 @@ function rollFrom(prev: GameState): { next: GameState; withSound: boolean } | nu
   if (prev.phase !== 'rolling') {
     return null;
   }
-  return { next: applyDiceRoll(prev, rollDice()), withSound: true };
+  const rolled = applyDiceRoll(prev, rollDice());
+  // A revealed roll is binding in a match: Undo can't go back past it.
+  const next = rolled.match ? { ...rolled, match: { ...rolled.match, undoFloor: moveCount } } : rolled;
+  return { next, withSound: true };
 }
