@@ -30,15 +30,17 @@
       "undo_move": "Deshacer"
     },
     "cube_tutor": {
-      "checking": "Comprobando tu decisión de cubo…",
+      "best": "Lo mejor: {{choice}}",
+      "better_choice": "Había una decisión de cubo mejor",
       "computer_waiting": "El ordenador está esperando",
-      "continue": "Continuar",
-      "error": "No se pudo comprobar esta decisión. Reintenta o continúa sin comprobarla.",
-      "mistake": "Puede haber una opción mejor. Inténtalo de nuevo o pide una pista.",
+      "got_it": "Entendido",
+      "missed_double": "Doble perdido",
       "retry": "Entrada",
-      "show_hint": "Pista",
-      "title": "Consejo de cubo",
-      "try_again": "Intentar de nuevo"
+      "take_back": "Deshacer",
+      "wrong_double": "Demasiado pronto para doblar",
+      "wrong_pass": "Era para aceptar",
+      "wrong_take": "Era para rechazar",
+      "yours": "Elegiste: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Volver a mi turno",

@@ -30,15 +30,17 @@
       "undo_move": "撤销"
     },
     "cube_tutor": {
-      "checking": "正在检查加倍决策…",
+      "best": "最佳：{{choice}}",
+      "better_choice": "有更好的倍数块决策",
       "computer_waiting": "电脑正在等待",
-      "continue": "继续",
-      "error": "无法检查此决策。可以重试，或跳过检查继续。",
-      "mistake": "可能有更好的选择。请再试一次，或查看提示。",
+      "got_it": "知道了",
+      "missed_double": "错过加倍",
       "retry": "重试",
-      "show_hint": "提示",
-      "title": "加倍提示",
-      "try_again": "再试一次"
+      "take_back": "撤回",
+      "wrong_double": "加倍为时过早",
+      "wrong_pass": "应该接受",
+      "wrong_take": "应该放弃",
+      "yours": "你的选择：{{choice}}"
     },
     "hint": {
       "back_to_turn": "返回我的回合",

@@ -30,15 +30,17 @@
       "undo_move": "Rückgängig"
     },
     "cube_tutor": {
-      "checking": "Deine Dopplerentscheidung wird geprüft…",
+      "best": "Am besten: {{choice}}",
+      "better_choice": "Es gab eine bessere Würfelentscheidung",
       "computer_waiting": "Computer wartet",
-      "continue": "Weiterfahren",
-      "error": "Die Entscheidung konnte nicht geprüft werden. Erneut versuchen oder ohne Prüfung fortfahren.",
-      "mistake": "Es gibt möglicherweise eine bessere Wahl. Versuche es erneut oder frage nach einem Hinweis.",
+      "got_it": "Verstanden",
+      "missed_double": "Doppler verpasst",
       "retry": "Versuch",
-      "show_hint": "Hinweis",
-      "title": "Würfelhinweis",
-      "try_again": "Erneut versuchen"
+      "take_back": "Zurücknehmen",
+      "wrong_double": "Zu früh zum Doppeln",
+      "wrong_pass": "Das war ein Take",
+      "wrong_take": "Das war ein Pass",
+      "yours": "Deine Wahl: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Zurück zu meinem Zug",

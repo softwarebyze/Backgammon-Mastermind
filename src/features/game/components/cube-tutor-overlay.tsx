@@ -1,4 +1,6 @@
-import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { BlunderMeter } from '@/features/game/components/blunder-meter';
+import { cubeChoiceLabel, cubeMistakeTitle } from '@/features/game/components/cube-tutor-copy';
 import { controlButtonStyles } from '@/features/game/control-buttons';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
@@ -8,7 +10,7 @@ import { interFont } from '@/lib/ui/fonts';
 
 export function CubeTutorOverlay() {
   const { leaveGame } = useLeaveGame();
-  const { computerCubeError, retryCubeAnalysis, cubeTutorSession: session, cancelCubeTutor, continueCubeTutor, revealCubeTutor, retryCubeTutor } = useGame();
+  const { computerCubeError, retryCubeAnalysis, cubeTutorSession: session, dismissCubeTutor, takeBackCubeDecision, canTakeBackCubeDecision } = useGame();
   if (!session) {
     return computerCubeError
       ? (
@@ -29,10 +31,11 @@ export function CubeTutorOverlay() {
         )
       : null;
   }
-  const best = session.analysis?.best;
-  const recommendation = best === 'roll'
-    ? translate('game.money.no_double')
-    : best ? translate(`game.match.${best === 'offer' ? 'double' : best}`) : '';
+  // While the choice is being checked play just pauses; there is nothing to show.
+  if (session.phase !== 'mistake' || !session.analysis)
+    return null;
+  const best = session.analysis.best;
+  const loss = session.loss ?? 0;
   // eslint-disable-next-line max-params -- Mirrors the shared native analysis boundary.
   const button = (id: string, label: string, action: (() => void) | undefined, primary = false) => (
     <Pressable testID={id} accessibilityRole="button" onPress={action} style={primary ? controlButtonStyles.primary : controlButtonStyles.secondary}>
@@ -40,35 +43,31 @@ export function CubeTutorOverlay() {
     </Pressable>
   );
   return (
-    <Modal visible transparent animationType="fade" onRequestClose={cancelCubeTutor}>
+    <Modal visible transparent animationType="fade" onRequestClose={dismissCubeTutor}>
       <View style={styles.scrim}>
         <View style={styles.card} accessibilityViewIsModal testID="cube-tutor">
           <ScrollView contentContainerStyle={styles.content}>
-            <Text style={styles.title}>{translate('game.cube_tutor.title')}</Text>
-            {session.phase === 'checking'
-              ? (
-                  <>
-                    <ActivityIndicator color={GAME_PALETTE.accent} />
-                    <Text style={styles.text}>{translate('game.cube_tutor.checking')}</Text>
-                  </>
-                )
-              : <Text style={styles.text}>{translate(session.phase === 'error' ? 'game.cube_tutor.error' : 'game.cube_tutor.mistake')}</Text>}
-            {session.revealed && <Text style={styles.recommendation} testID="cube-tutor-recommendation">{recommendation}</Text>}
-            {session.phase === 'mistake' && !session.revealed && button('cube-tutor-reveal', translate('game.cube_tutor.show_hint'), revealCubeTutor)}
-            {session.phase === 'error' && button('cube-tutor-retry', translate('game.cube_tutor.retry'), retryCubeTutor)}
-            {button('cube-tutor-cancel', translate('game.cube_tutor.try_again'), cancelCubeTutor, true)}
-            {session.phase !== 'checking' && button('cube-tutor-continue', translate('game.cube_tutor.continue'), continueCubeTutor)}
+            <Text accessibilityRole="header" style={styles.title} testID="cube-tutor-title">{cubeMistakeTitle(session.attempted, best)}</Text>
+            <View style={styles.choices}>
+              <Text style={styles.text} testID="cube-tutor-yours">{translate('game.cube_tutor.yours', { choice: cubeChoiceLabel(session.attempted) })}</Text>
+              <Text style={styles.recommendation} testID="cube-tutor-recommendation">{translate('game.cube_tutor.best', { choice: cubeChoiceLabel(best) })}</Text>
+            </View>
+            <BlunderMeter loss={loss} />
+            {canTakeBackCubeDecision && button('cube-tutor-take-back', translate('game.cube_tutor.take_back'), takeBackCubeDecision)}
+            {button('cube-tutor-dismiss', translate('game.cube_tutor.got_it'), dismissCubeTutor, true)}
           </ScrollView>
         </View>
       </View>
     </Modal>
   );
 }
+
 const styles = StyleSheet.create({
   scrim: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center', padding: 20 },
   card: { width: '100%', maxWidth: 380, maxHeight: '90%', borderRadius: 16, backgroundColor: GAME_PALETTE.surface },
   content: { padding: 20, gap: 16 },
   title: { color: GAME_PALETTE.text, fontSize: 22, textAlign: 'center', ...interFont('semibold') },
   text: { color: GAME_PALETTE.textMuted, fontSize: 16, lineHeight: 23, textAlign: 'center' },
-  recommendation: { color: GAME_PALETTE.text, fontSize: 24, textAlign: 'center', ...interFont('semibold') },
+  recommendation: { color: GAME_PALETTE.text, fontSize: 20, textAlign: 'center', ...interFont('semibold') },
+  choices: { gap: 4 },
 });

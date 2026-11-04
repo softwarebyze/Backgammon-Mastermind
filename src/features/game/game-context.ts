@@ -15,10 +15,11 @@ export type GameContextType = {
   computerCubeError?: boolean;
   retryCubeAnalysis?: () => void;
   cubeTutorSession?: CubeTutorSession | null;
-  cancelCubeTutor?: () => void;
-  continueCubeTutor?: () => void;
-  revealCubeTutor?: () => void;
-  retryCubeTutor?: () => void;
+  /** Close the cube review card and keep the decision. */
+  dismissCubeTutor?: () => void;
+  /** Undo the reviewed cube decision (money games, and never after a roll). */
+  takeBackCubeDecision?: () => void;
+  canTakeBackCubeDecision?: boolean;
   moveLog: MoveLogEntry[];
   cubeEvents?: CubeHistoryEvent[];
   replayBaseline: GameState | null;

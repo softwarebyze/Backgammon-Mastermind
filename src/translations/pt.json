@@ -30,15 +30,17 @@
       "undo_move": "Desfazer"
     },
     "cube_tutor": {
-      "checking": "Verificando sua decisão de cubo…",
+      "best": "Melhor: {{choice}}",
+      "better_choice": "Havia uma decisão de cubo melhor",
       "computer_waiting": "O computador está aguardando",
-      "continue": "Continuar",
-      "error": "Não foi possível verificar esta decisão. Tente novamente ou continue sem verificar.",
-      "mistake": "Pode haver uma escolha melhor. Tente novamente ou peça uma dica.",
+      "got_it": "Entendi",
+      "missed_double": "Dobra perdida",
       "retry": "Repetir",
-      "show_hint": "Dica",
-      "title": "Dica do cubo",
-      "try_again": "Tentar novamente"
+      "take_back": "Desfazer",
+      "wrong_double": "Cedo demais para dobrar",
+      "wrong_pass": "Era para aceitar",
+      "wrong_take": "Era para recusar",
+      "yours": "Você escolheu: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Voltar ao meu turno",

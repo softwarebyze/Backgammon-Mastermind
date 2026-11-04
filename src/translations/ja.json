@@ -30,15 +30,17 @@
       "undo_move": "取り消す"
     },
     "cube_tutor": {
-      "checking": "キューブの判断を確認中…",
+      "best": "最善：{{choice}}",
+      "better_choice": "より良いキューブ判断がありました",
       "computer_waiting": "コンピュータが待機中",
-      "continue": "続ける",
-      "error": "この判断を確認できませんでした。再試行するか、確認せずに続けられます。",
-      "mistake": "よりよい選択があるかもしれません。もう一度考えるか、ヒントを見てください。",
+      "got_it": "わかった",
+      "missed_double": "ダブルの見逃し",
       "retry": "リトリート",
-      "show_hint": "ヒント",
-      "title": "キューブのヒント",
-      "try_again": "もう一度考える"
+      "take_back": "取り消す",
+      "wrong_double": "ダブルにはまだ早い",
+      "wrong_pass": "テイクが正解でした",
+      "wrong_take": "パスが正解でした",
+      "yours": "あなたの選択：{{choice}}"
     },
     "hint": {
       "back_to_turn": "自分の手番に戻る",

@@ -30,15 +30,17 @@
       "undo_move": "Cofnij"
     },
     "cube_tutor": {
-      "checking": "Sprawdzanie decyzji o kubku…",
+      "best": "Najlepiej: {{choice}}",
+      "better_choice": "Była lepsza decyzja kostki",
       "computer_waiting": "Komputer czeka",
-      "continue": "Kontynuuj",
-      "error": "Nie udało się sprawdzić decyzji. Spróbuj ponownie lub kontynuuj bez sprawdzania.",
-      "mistake": "Może być lepszy wybór. Spróbuj ponownie lub poproś o podpowiedź.",
+      "got_it": "Rozumiem",
+      "missed_double": "Przegapione dublowanie",
       "retry": "Spróbuj ponownie",
-      "show_hint": "Podpowiedź",
-      "title": "Podpowiedź kubka",
-      "try_again": "Spróbuj ponownie"
+      "take_back": "Cofnij",
+      "wrong_double": "Za wcześnie na dublowanie",
+      "wrong_pass": "Należało przyjąć",
+      "wrong_take": "Należało odmówić",
+      "yours": "Twój wybór: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Wróć do mojej tury",

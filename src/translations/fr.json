@@ -30,15 +30,17 @@
       "undo_move": "Annuler"
     },
     "cube_tutor": {
-      "checking": "Vérification de votre décision de videau…",
+      "best": "Le mieux : {{choice}}",
+      "better_choice": "Il y avait un meilleur choix de videau",
       "computer_waiting": "L’ordinateur attend",
-      "continue": "Continuer",
-      "error": "Cette décision n’a pas pu être vérifiée. Réessayez ou continuez sans vérification.",
-      "mistake": "Un meilleur choix est peut-être possible. Réessayez ou demandez un indice.",
+      "got_it": "Compris",
+      "missed_double": "Double manqué",
       "retry": "Réessayer",
-      "show_hint": "Indice",
-      "title": "Conseil de videau",
-      "try_again": "Réessayer"
+      "take_back": "Annuler",
+      "wrong_double": "Trop tôt pour doubler",
+      "wrong_pass": "Il fallait accepter",
+      "wrong_take": "Il fallait refuser",
+      "yours": "Votre choix : {{choice}}"
     },
     "hint": {
       "back_to_turn": "Retour à mon tour",

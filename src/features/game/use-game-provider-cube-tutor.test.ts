@@ -18,29 +18,42 @@ beforeEach(() => {
   jest.mocked(analyzeCubeDecision).mockReset().mockResolvedValue({ actor: 'white', best: 'offer', values: { roll: 0.3, offer: 0.8 } });
 });
 afterEach(() => patchGamePreferences({ tutorMode: false }));
-it.each([0, 5])('holds a missed double before revealing dice in a %s-point game', async (length) => {
+it.each([0, 5])('rolls at once on a missed double, then reviews it with no take-back in a %s-point game', async (length) => {
   const initial = createPositionState({ useStandardSetup: true, match: createMatch(length) });
   const { result } = renderHook(() => useGameProviderValue(true));
   act(() => result.current.startFromPosition(initial));
   await act(async () => result.current.doRollDice());
-  expect(result.current.state).toBe(initial);
-  expect(result.current.cubeTutorSession?.phase).toBe('mistake');
-  act(() => result.current.cancelCubeTutor!());
-  await act(async () => result.current.matchAction!('offer'));
-  expect(result.current.state?.match?.pendingOffer).toBe('white');
-  expect(result.current.cubeEvents?.map(e => e.kind)).toEqual(['offer']);
+  // The roll is never held back to hint that doubling was right.
+  expect(result.current.state).not.toBe(initial);
+  expect(result.current.state?.dice).not.toEqual([0, 0]);
+  expect(result.current.cubeTutorSession).toMatchObject({ phase: 'mistake', attempted: 'roll', loss: 0.5 });
+  // The dice have been seen, so the decision stands.
+  expect(result.current.canTakeBackCubeDecision).toBe(false);
+  act(() => result.current.dismissCubeTutor!());
+  expect(result.current.cubeTutorSession).toBeNull();
 });
-it('does not commit an incorrect double until Continue is chosen', async () => {
+it('commits a wrong double at once, and Take back undoes it in a money game', async () => {
   jest.mocked(analyzeCubeDecision).mockResolvedValue({ actor: 'white', best: 'roll', values: { roll: 0.3, offer: -0.1 } });
   const initial = createPositionState({ useStandardSetup: true, match: createMatch(0) });
   const { result } = renderHook(() => useGameProviderValue(true));
   act(() => result.current.startFromPosition(initial));
   await act(async () => result.current.matchAction!('offer'));
-  expect(result.current.state).toBe(initial);
-  expect(result.current.cubeEvents).toHaveLength(0);
-  act(() => result.current.continueCubeTutor!());
   expect(result.current.state?.match?.pendingOffer).toBe('white');
   expect(result.current.cubeEvents).toHaveLength(1);
+  expect(result.current.cubeTutorSession).toMatchObject({ phase: 'mistake', attempted: 'offer' });
+  expect(result.current.canTakeBackCubeDecision).toBe(true);
+  act(() => result.current.takeBackCubeDecision!());
+  expect(result.current.cubeTutorSession).toBeNull();
+  expect(result.current.state?.match?.pendingOffer).toBeNull();
+  expect(result.current.cubeEvents).toHaveLength(0);
+});
+it('lets a good cube decision through without a card', async () => {
+  const initial = createPositionState({ useStandardSetup: true, match: createMatch(0) });
+  const { result } = renderHook(() => useGameProviderValue(true));
+  act(() => result.current.startFromPosition(initial));
+  await act(async () => result.current.matchAction!('offer'));
+  expect(result.current.state?.match?.pendingOffer).toBe('white');
+  expect(result.current.cubeTutorSession).toBeNull();
 });
 
 it('does not let a retained Undo callback rewind checkers while Tutor is checking', () => {

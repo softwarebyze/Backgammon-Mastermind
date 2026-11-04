@@ -30,15 +30,17 @@
       "undo_move": "Undo"
     },
     "cube_tutor": {
-      "checking": "Checking your cube decision…",
+      "best": "Best: {{choice}}",
+      "better_choice": "There was a better cube choice",
       "computer_waiting": "Computer is waiting",
-      "continue": "Continue",
-      "error": "This decision could not be checked. Retry, or continue without a check.",
-      "mistake": "There may be a better cube choice. Try again, or ask for a hint.",
+      "got_it": "Got it",
+      "missed_double": "Missed double",
       "retry": "Retry",
-      "show_hint": "Hint",
-      "title": "Cube hint",
-      "try_again": "Try again"
+      "take_back": "Take back",
+      "wrong_double": "Too soon to double",
+      "wrong_pass": "That was a take",
+      "wrong_take": "That was a pass",
+      "yours": "You chose: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Back to my turn",

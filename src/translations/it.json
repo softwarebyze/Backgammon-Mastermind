@@ -30,15 +30,17 @@
       "undo_move": "Annulla"
     },
     "cube_tutor": {
-      "checking": "Verifica della decisione sul cubo…",
+      "best": "Il migliore: {{choice}}",
+      "better_choice": "C'era una scelta di cubo migliore",
       "computer_waiting": "Il computer è in attesa",
-      "continue": "Continua",
-      "error": "Impossibile verificare la decisione. Riprova o continua senza verifica.",
-      "mistake": "Potrebbe esserci una scelta migliore. Riprova o chiedi un suggerimento.",
+      "got_it": "Capito",
+      "missed_double": "Raddoppio mancato",
       "retry": "Riprova",
-      "show_hint": "Suggerimento",
-      "title": "Suggerimento sul cubo",
-      "try_again": "Riprova"
+      "take_back": "Annulla",
+      "wrong_double": "Troppo presto per raddoppiare",
+      "wrong_pass": "Era da accettare",
+      "wrong_take": "Era da rifiutare",
+      "yours": "Hai scelto: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Torna al mio turno",

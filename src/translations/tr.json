@@ -30,15 +30,17 @@
       "undo_move": "Geri al"
     },
     "cube_tutor": {
-      "checking": "Katlama kararınız kontrol ediliyor…",
+      "best": "En iyisi: {{choice}}",
+      "better_choice": "Daha iyi bir küp kararı vardı",
       "computer_waiting": "Bilgisayar bekliyor",
-      "continue": "Devam etmeye devam et",
-      "error": "Bu karar kontrol edilemedi. Tekrar deneyin veya kontrol etmeden devam edin.",
-      "mistake": "Daha iyi bir seçim olabilir. Tekrar deneyin veya ipucu isteyin.",
+      "got_it": "Anladım",
+      "missed_double": "Kaçırılan katlama",
       "retry": "Retry",
-      "show_hint": "İpucu",
-      "title": "Katlama ipucu",
-      "try_again": "Tekrar dene"
+      "take_back": "Geri al",
+      "wrong_double": "Katlamak için çok erken",
+      "wrong_pass": "Kabul etmeliydin",
+      "wrong_take": "Pas geçmeliydin",
+      "yours": "Seçimin: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Sırama dön",

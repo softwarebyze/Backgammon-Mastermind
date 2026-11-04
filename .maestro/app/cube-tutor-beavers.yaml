@@ -1,4 +1,4 @@
-# Real-engine cube Tutor: missed double, bad take, bad double, beaver and undo.
+# Real-engine cube Tutor: missed double, bad take (taken back), bad double, beaver and undo.
 appId: ${APP_ID}
 tags:
   - pull-request
@@ -26,20 +26,32 @@ tags:
     file: ../utils/play-money-position.yaml
     env:
       POSITION_LINK: ${output.moneyTutorLink}
+# Rolling instead of doubling goes through at once: the dice are not held back
+# to hint that the double was right. The review comes after, with no take-back.
 - tapOn:
     id: roll-dice-button
 - extendedWaitUntil:
     visible:
-      id: cube-tutor-reveal
+      id: cube-tutor-title
+      text: Missed double
     timeout: 45000
-- tapOn:
-    id: cube-tutor-reveal
 - assertVisible:
     id: cube-tutor-recommendation
-    text: Double
+    text: 'Best: Double'
+- assertVisible:
+    id: guidance-blunder-meter
+- assertNotVisible:
+    id: cube-tutor-take-back
 - takeScreenshot: cube-tutor-missed-double
 - tapOn:
-    id: cube-tutor-cancel
+    id: cube-tutor-dismiss
+- assertNotVisible:
+    id: cube-tutor
+# Same position again to try the double.
+- runFlow:
+    file: ../utils/play-money-position.yaml
+    env:
+      POSITION_LINK: ${output.moneyTutorLink}
 - assertVisible: Cube 1 · Center
 - tapOn:
     id: match-double
@@ -51,16 +63,20 @@ tags:
     id: match-accept
 - extendedWaitUntil:
     visible:
-      id: cube-tutor-reveal
+      id: cube-tutor-title
+      text: That was a pass
     timeout: 45000
-- tapOn:
-    id: cube-tutor-reveal
 - assertVisible:
     id: cube-tutor-recommendation
-    text: Pass
+    text: 'Best: Pass'
 - takeScreenshot: cube-tutor-bad-take
+# No dice were seen, so a money-game take can be taken back.
 - tapOn:
-    id: cube-tutor-cancel
+    id: cube-tutor-take-back
+- extendedWaitUntil:
+    visible:
+      id: match-drop
+    timeout: 45000
 - tapOn:
     id: match-drop
 - extendedWaitUntil:
@@ -74,16 +90,15 @@ tags:
     id: match-double
 - extendedWaitUntil:
     visible:
-      id: cube-tutor-reveal
+      id: cube-tutor-title
+      text: Too soon to double
     timeout: 45000
-- tapOn:
-    id: cube-tutor-reveal
 - assertVisible:
     id: cube-tutor-recommendation
-    text: No double
+    text: 'Best: No double'
 - takeScreenshot: cube-tutor-bad-double
 - tapOn:
-    id: cube-tutor-continue
+    id: cube-tutor-dismiss
 - extendedWaitUntil:
     visible:
       id: match-beaver

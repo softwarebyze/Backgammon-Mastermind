@@ -30,15 +30,17 @@
       "undo_move": "Ongedaan maken"
     },
     "cube_tutor": {
-      "checking": "Je kubusbeslissing wordt gecontroleerd…",
+      "best": "Het beste: {{choice}}",
+      "better_choice": "Er was een betere kubusbeslissing",
       "computer_waiting": "Computer wacht",
-      "continue": "Doorgaan",
-      "error": "Deze beslissing kon niet worden gecontroleerd. Probeer opnieuw of ga verder zonder controle.",
-      "mistake": "Er is mogelijk een betere keuze. Probeer opnieuw of vraag een hint.",
+      "got_it": "Begrepen",
+      "missed_double": "Dubbel gemist",
       "retry": "Opnieuw proberen",
-      "show_hint": "Hint",
-      "title": "Kubushint",
-      "try_again": "Opnieuw proberen"
+      "take_back": "Terugnemen",
+      "wrong_double": "Te vroeg om te dubbelen",
+      "wrong_pass": "Dit was een take",
+      "wrong_take": "Dit was een pass",
+      "yours": "Jouw keuze: {{choice}}"
     },
     "hint": {
       "back_to_turn": "Terug naar mijn beurt",

@@ -1,7 +1,7 @@
 import type { GameContextType } from '@/features/game/game-context';
 import type { GameAbandonReason } from '@/features/game/use-game-completed-capture';
 import type { GameState, Move } from '@/lib/game';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getGuidance, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
@@ -97,7 +97,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
    * everything. (Hint sessions never pause: the player keeps playing.)
    */
   const baseTutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending || reviewing;
-  const { session: cubeTutorSession, run: checkCubeAction, cancel: cancelCubeTutor, proceed: continueCubeTutor, reveal: revealCubeTutor, retry: retryCubeTutor } = useCubeTutor({
+  const { session: cubeTutorSession, run: checkCubeAction, dismiss: cancelCubeTutor } = useCubeTutor({
     state,
     active,
     blocked: baseTutorPaused || isAnimating,
@@ -142,6 +142,20 @@ export function useGameProviderValue(active: boolean): GameContextType {
     commitState: commitHistoryState,
     prepareHistory,
   });
+  // Take back from the cube review card: close the card first, then undo once
+  // play is no longer paused for it. Never after a roll: the dice were seen.
+  const canTakeBackCubeDecision = cubeTutorSession?.phase === 'mistake' && cubeTutorSession.attempted !== 'roll' && canUndoCube;
+  const takeBackPending = useRef(false);
+  const takeBackCubeDecision = useCallback(() => {
+    takeBackPending.current = true;
+    cancelCubeTutor();
+  }, [cancelCubeTutor]);
+  useEffect(() => {
+    if (takeBackPending.current && !cubeTutorSession) {
+      takeBackPending.current = false;
+      undoCube();
+    }
+  }, [cubeTutorSession, undoCube]);
   const canUndo = canUndoCheckers || canUndoCube;
   const canRedo = canRedoCheckers || canRedoCube;
   const historyBlocked = useRef(false);
@@ -365,10 +379,9 @@ export function useGameProviderValue(active: boolean): GameContextType {
     cubeTutorSession,
     computerCubeError,
     retryCubeAnalysis,
-    cancelCubeTutor,
-    continueCubeTutor,
-    revealCubeTutor,
-    retryCubeTutor,
+    dismissCubeTutor: cancelCubeTutor,
+    takeBackCubeDecision,
+    canTakeBackCubeDecision,
     matchAction,
     setReviewing,
     cubeEvents,
