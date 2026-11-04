@@ -53,25 +53,14 @@ export function useGameDiceActions({
 
   // The state a roll was last taken from, so a double tap can't roll twice.
   const rolledFrom = useRef<GameState | null>(null);
-  // Dice already seen for this position's next roll (a missed double that the
-  // Tutor took back): the retry rolls them again, so taking back can't fish
-  // for a better roll.
-  const heldRoll = useRef<HeldRoll | null>(null);
-  const holdNextRoll = useCallback((position: GameState, dice: [number, number]) => {
-    heldRoll.current = { player: position.currentPlayer, points: position.points, dice };
-  }, []);
   const doRollDice = useCallback(() => {
     if (isAnimating || !state || rolledFrom.current === state) {
       return;
     }
-    const held = heldRoll.current;
-    const dice = held && held.player === state.currentPlayer && held.points === state.points ? held.dice : undefined;
-    const rolled = rollFrom(state, moveCount, dice);
+    const rolled = rollFrom(state, moveCount);
     if (!rolled) {
       return;
     }
-    if (dice && rolled.next.dice[0] !== 0)
-      heldRoll.current = null;
     rolledFrom.current = state;
     setState(rolled.next);
     // Sounds play here, once per roll: React may run a state updater twice.
@@ -84,13 +73,11 @@ export function useGameDiceActions({
     }
   }, [isAnimating, moveCount, setState, state]);
 
-  return { doPassTurn, doRollDice, holdNextRoll };
+  return { doPassTurn, doRollDice };
 }
 
-type HeldRoll = { player: GameState['currentPlayer']; points: GameState['points']; dice: [number, number] };
-
 /** The state after the human rolls from `prev`, or null when it isn't theirs to roll. */
-function rollFrom(prev: GameState, moveCount: number, held?: [number, number]): { next: GameState; withSound: boolean } | null {
+function rollFrom(prev: GameState, moveCount: number): { next: GameState; withSound: boolean } | null {
   if (prev.match?.pendingOffer) {
     return null;
   }
@@ -108,7 +95,7 @@ function rollFrom(prev: GameState, moveCount: number, held?: [number, number]): 
   if (prev.phase !== 'rolling') {
     return null;
   }
-  const rolled = applyDiceRoll(prev, held ?? rollDice());
+  const rolled = applyDiceRoll(prev, rollDice());
   // A revealed roll is binding in a match: Undo can't go back past it.
   const next = rolled.match ? { ...rolled, match: { ...rolled.match, undoFloor: moveCount } } : rolled;
   return { next, withSound: true };

@@ -18,28 +18,24 @@ beforeEach(() => {
   jest.mocked(analyzeCubeDecision).mockReset().mockResolvedValue({ actor: 'white', best: 'offer', values: { roll: 0.3, offer: 0.8 } });
 });
 afterEach(() => patchGamePreferences({ tutorMode: false }));
-it.each([0, 5])('rolls at once on a missed double, and Take back retries it with the same dice in a %s-point game', async (length) => {
+it.each([0, 5])('checks Roll before any dice: a missed double can be taken back or kept, in a %s-point game', async (length) => {
   const initial = createPositionState({ useStandardSetup: true, match: createMatch(length) });
   const { result } = renderHook(() => useGameProviderValue(true));
   act(() => result.current.startFromPosition(initial));
   await act(async () => result.current.doRollDice());
-  // The roll is never held back to hint that doubling was right.
-  const rolled = result.current.state!;
-  expect(rolled.dice).not.toEqual([0, 0]);
+  // The card comes first: no dice yet.
   expect(result.current.cubeTutorSession).toMatchObject({ phase: 'mistake', attempted: 'roll', loss: 0.5 });
-  // Take back & retry: back to the decision before the roll, cube unturned.
+  expect(result.current.state?.dice).toEqual([0, 0]);
+  // Take back & retry: still the decision before the roll.
   act(() => result.current.takeBackCubeDecision!());
   expect(result.current.cubeTutorSession).toBeNull();
   expect(result.current.state?.phase).toBe('rolling');
   expect(result.current.state?.dice).toEqual([0, 0]);
-  // Rolling again brings back the dice already seen, so retrying can't fish.
+  // Rolling again and keeping it rolls the dice.
   await act(async () => result.current.doRollDice());
-  expect(result.current.state?.dice).toEqual(rolled.dice);
-  // Keeping the roll this time leaves it as rolled.
-  const again = result.current.state;
   act(() => result.current.keepCubeDecision!());
   expect(result.current.cubeTutorSession).toBeNull();
-  expect(result.current.state).toBe(again);
+  expect(result.current.state?.dice).not.toEqual([0, 0]);
 });
 it.each([0, 5])('holds a wrong double on the card until it is kept or taken back, in a %s-point game', async (length) => {
   jest.mocked(analyzeCubeDecision).mockResolvedValue({ actor: 'white', best: 'roll', values: { roll: 0.3, offer: -0.1 } });

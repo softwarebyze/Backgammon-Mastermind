@@ -97,7 +97,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
    * everything. (Hint sessions never pause: the player keeps playing.)
    */
   const baseTutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending || reviewing;
-  const { session: cubeTutorSession, run: checkCubeAction, keep: keepCubeDecision, takeBack: dropCubeDecision, dismiss: cancelCubeTutor } = useCubeTutor({
+  const { session: cubeTutorSession, run: checkCubeAction, keep: keepCubeDecision, takeBack: takeBackCubeDecision, dismiss: cancelCubeTutor } = useCubeTutor({
     state,
     active,
     blocked: baseTutorPaused || isAnimating,
@@ -177,24 +177,13 @@ export function useGameProviderValue(active: boolean): GameContextType {
     recordCubeEvent,
     paused: tutorPaused,
   });
-  const { doPassTurn, doRollDice, holdNextRoll } = useGameDiceActions({
+  const { doPassTurn, doRollDice } = useGameDiceActions({
     state,
     setState,
     isAnimating,
     recordNoMove: handleNoMoveRecorded,
     moveCount: moveLog.length,
   });
-  // Take back on the cube review card. A double, take or pass was never
-  // applied, so dropping it is enough. A missed double already rolled: go back
-  // to before the roll, and hold those dice for this position's next roll.
-  const takeBackCubeDecision = useCallback(() => {
-    const session = cubeTutorSession;
-    if (session?.phase === 'mistake' && session.attempted === 'roll' && state && state !== session.state && state.dice[0] !== 0) {
-      holdNextRoll(session.state, state.dice);
-      setState({ ...session.state });
-    }
-    dropCubeDecision();
-  }, [cubeTutorSession, state, holdNextRoll, dropCubeDecision]);
   const resetAllAnimation = useCallback(() => {
     resetAnimation();
     clearHistoryPath();

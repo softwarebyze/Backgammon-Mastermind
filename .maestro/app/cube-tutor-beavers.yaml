@@ -26,8 +26,8 @@ tags:
     file: ../utils/play-money-position.yaml
     env:
       POSITION_LINK: ${output.moneyTutorLink}
-# Rolling instead of doubling goes through at once: the dice are not held back
-# to hint that the double was right. The review comes after.
+# Roll is checked before any dice: rolling when the double was right shows the
+# card first.
 - tapOn:
     id: roll-dice-button
 - extendedWaitUntil:
@@ -43,7 +43,7 @@ tags:
 - assertVisible:
     id: cube-tutor-keep
 - takeScreenshot: cube-tutor-missed-double
-# Take back & retry returns to the decision before the roll.
+# Take back & retry returns to the decision: no dice were rolled.
 - tapOn:
     id: cube-tutor-take-back
 - assertNotVisible:

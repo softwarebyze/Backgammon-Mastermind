@@ -7,8 +7,8 @@ import { TUTOR_BLUNDER_THRESHOLD } from '@/features/game/tutor';
 
 /**
  * A cube decision being checked ("checking", which only pauses play) and then,
- * if it cost enough, reviewed ("mistake"). A roll has already happened; any
- * other decision waits here, not yet applied, until the player keeps it or
+ * if it cost enough, reviewed ("mistake"). The decision waits here, not yet
+ * applied (no dice rolled, no cube turned), until the player keeps it or
  * takes it back.
  */
 export type CubeTutorSession = {
@@ -29,12 +29,11 @@ type Options = {
 };
 
 /**
- * Tutor for cube decisions. Rolling goes through at once, so pressing Roll
- * never stops to hint that a double was right. A double, take, pass or beaver
- * waits for the check instead: a sound one then goes through by itself, and a
- * costly one gets a review card that can take it back, so a mistake can be
- * fixed even where cube decisions are binding (matches) and before the
- * computer answers it.
+ * Tutor for cube decisions. Every decision (roll, double, take, pass, beaver)
+ * waits for the check before it is applied: a sound one then goes through by
+ * itself, and a costly one gets a review card that can take it back before
+ * any dice are rolled or the computer answers. This works even where cube
+ * decisions are binding (matches).
  */
 export function useCubeTutor(options: Options) {
   const latest = useRef(options);
@@ -53,7 +52,7 @@ export function useCubeTutor(options: Options) {
     pendingCommit.current = null;
     setSession(null);
   }, [setSession]);
-  /** Apply the decision as made (a roll was applied already). */
+  /** Apply the decision as made. */
   const keep = useCallback(() => {
     const commit = pendingCommit.current;
     cancel();
@@ -77,10 +76,7 @@ export function useCubeTutor(options: Options) {
     }
     const id = ++generation.current;
     setSession({ state, attempted, phase: 'checking' });
-    if (attempted === 'roll')
-      commit();
-    else
-      pendingCommit.current = commit;
+    pendingCommit.current = commit;
     try {
       const analysis = await analyzeCubeDecision(state, latest.current.engine);
       if (generation.current !== id)

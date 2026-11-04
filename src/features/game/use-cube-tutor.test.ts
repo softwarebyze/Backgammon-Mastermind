@@ -11,12 +11,17 @@ const state = createPositionState({ useStandardSetup: true, match: createMatch(0
 const options = { state, enabled: true, active: true, blocked: false, engine };
 beforeEach(() => analyzeCube.mockReset().mockResolvedValue(verdict));
 
-it('commits a missed double at once, then reviews it with the size of the mistake', async () => {
+it('holds a missed double before any dice are rolled, and reviews it with the size of the mistake', async () => {
   const { result } = renderHook(() => useCubeTutor(options));
   const commit = jest.fn();
   await act(async () => result.current.run(state, 'roll', commit));
-  expect(commit).toHaveBeenCalledTimes(1);
+  expect(commit).not.toHaveBeenCalled();
   expect(result.current.session).toMatchObject({ phase: 'mistake', attempted: 'roll', analysis: { best: 'offer' } });
+  expect(result.current.session?.loss).toBeCloseTo(0.4);
+  act(() => result.current.keep());
+  expect(commit).toHaveBeenCalledTimes(1);
+  expect(result.current.session).toBeNull();
+});
   expect(result.current.session?.loss).toBeCloseTo(0.4);
   act(() => result.current.dismiss());
   expect(result.current.session).toBeNull();
@@ -82,7 +87,7 @@ it('checks a bad pass from the responder’s perspective', async () => {
   await act(async () => result.current.run(offered, 'drop', jest.fn()));
   expect(result.current.session).toMatchObject({ phase: 'mistake', attempted: 'drop' });
 });
-it('never holds the game when the check fails', async () => {
+it('rolls when the check fails, so the game never stalls', async () => {
   analyzeCube.mockRejectedValueOnce(new Error('offline'));
   const { result } = renderHook(() => useCubeTutor(options));
   const commit = jest.fn();

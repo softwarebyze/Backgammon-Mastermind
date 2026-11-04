@@ -38,8 +38,7 @@ export function CubeTutorOverlay() {
     return null;
   const best = session.analysis.best;
   const loss = session.loss ?? 0;
-  // A double, take or pass is still waiting; a missed double already rolled,
-  // and taking it back keeps those dice for the retry.
+  // Nothing is applied yet: no dice rolled, no cube turned.
   const turnOff = () => {
     setTutorMode(false);
     keepCubeDecision?.();
