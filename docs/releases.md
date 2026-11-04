@@ -33,13 +33,13 @@ Update **all** of these for each store release:
 | `package.json` | `"version"` |
 | `store.config.json` | `apple.version` |
 | App Store Connect | **+ Version** matching `apple.version` |
-| Git tag | `v0.1.2` (matches `package.json`) |
+| Git tag | `v1.1.0` (matches `package.json`) |
 
 Expo native build numbers are managed by EAS (`eas.json` `cli.appVersionSource: "remote"` + `autoIncrement`). They are **not** the same field as `package.json` / `apple.version`. Do not bump one to match the other. Details: [release-gates.md](./release-gates.md).
 
 ---
 
-## Release checklist (TestFlight patch, e.g. v0.1.2)
+## Release checklist (e.g. v1.1.1)
 
 ### 1. Code ready
 
@@ -56,7 +56,7 @@ Expo native build numbers are managed by EAS (`eas.json` `cli.appVersionSource: 
 
 # Option B — manual
 # Edit package.json + store.config.json → commit → tag
-git tag v0.1.2 && git push origin v0.1.2
+git tag v1.1.1 && git push origin v1.1.1
 ```
 
 ### 3. Build preview IPA
@@ -97,7 +97,7 @@ pnpm screenshots:upload:ios   # Fastlane deliver — agents OK
 
 ### 6. TestFlight QA
 
-1. [App Store Connect → TestFlight (preview app)](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) — **BackgammonMastermind (d8480c)**, bundle `com.backgammonmastermind.preview`
+1. [App Store Connect → TestFlight (preview app)](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) — **Backgammon Mastermind Preview**, bundle `com.backgammonmastermind.preview`
 2. Enable **internal testing** group
 3. Smoke test on device: new game, roll (dice animation), compound move, resume, back to home
 
@@ -117,7 +117,7 @@ pnpm screenshots:upload:ios   # Fastlane deliver — agents OK
 |-------|----------|
 | Lint / tsc / jest / knip | Must pass |
 | E2E Maestro (Android emulator) | Must pass on app changes |
-| **PR Preview / Deploy PR Preview** | May **fail** on Expo free plan when CI/CD minutes exhausted (resets monthly). Not a merge blocker. |
+| **EAS Update Preview (PR)** | May **fail** on Expo free plan when CI/CD minutes exhausted (resets monthly). Not a merge blocker. |
 | EAS Update Preview (GitHub) | Uses `EXPO_TOKEN`; separate from Expo workflow minutes |
 
 ---
@@ -147,8 +147,9 @@ cp out/*.mp4 ../docs/marketing/videos/
 
 After TestFlight sign-off:
 
-1. Actions → **EAS Production Build** (iOS + Android)
-2. Submit production builds via `eas submit` production profiles
+1. Actions → **EAS Production Build and Submit (iOS)** and **EAS Production Build and Submit (Android)**
+2. iOS: the workflow submits the build to App Store Connect itself. Run `pnpm submit:production:ios` only if that submission step failed.
+   Android: the workflow submits to the Play **internal** track by default. Run `pnpm submit:production:android` when you want the build on the public **production** track.
 3. Complete ASC content rating + review questionnaire (first time only)
 4. Promote build to App Store review
 

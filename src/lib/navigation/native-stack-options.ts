@@ -15,10 +15,13 @@ const gameHeaderStyle = {
   backgroundColor: GAME_PALETTE.surface,
 } as const;
 
-/** Home — native header with settings in the top bar */
+/**
+ * Home — no navigation bar. The settings gear floats in the corner (drawn by
+ * the screen) so the logo can sit right under the status bar.
+ */
 export const homeScreenOptions: NativeStackNavigationOptions = {
   title: '',
-  headerShown: true,
+  headerShown: false,
   headerShadowVisible: false,
   // Opaque: iOS 26 transparent headers rubber-band non-ScrollView screens.
   headerTransparent: false,
@@ -38,9 +41,12 @@ export const homeScreenOptions: NativeStackNavigationOptions = {
   },
 };
 
-/** Active game board — native header hosts the player label + options/reset actions. */
+/**
+ * Active game board. No navigation bar: the screen draws its own slim toolbar
+ * (home, undo/redo, settings, new game) so the board can use that space.
+ */
 export const gamePlayScreenOptions: NativeStackNavigationOptions = {
-  headerShown: true,
+  headerShown: false,
   headerShadowVisible: false,
   headerBackButtonDisplayMode: 'minimal',
   // Home is a custom left item, not the system back control (refresh must keep it).
@@ -65,7 +71,8 @@ export function settingsStackOptions(
     headerShadowVisible: false,
     headerLargeTitleShadowVisible: false,
     headerLargeStyle: { backgroundColor: 'transparent' },
-    headerLargeTitle: Platform.OS === 'ios',
+    // Inline title: a large title adds a whole extra row above the content.
+    headerLargeTitle: false,
     headerBlurEffect: 'none',
     headerBackButtonDisplayMode: 'minimal',
   };

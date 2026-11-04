@@ -2,6 +2,7 @@ import type { CreatePositionOptions, PointPlacement } from './create-position';
 import type { GameMode, GameState, Player } from './types';
 
 import { createPositionState } from './create-position';
+import { createMatch } from './match';
 
 export type PositionLoaderPreset = {
   id: string;
@@ -27,6 +28,12 @@ export const POSITION_JSON_ERRORS = {
  * Same fixtures as `moves.test.ts` so QA can inspect them on the live board.
  */
 export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
+  { id: 'e2e-computer-match-offer', label: 'E2E computer match offer', description: 'Computer offers a double; dropping reaches Crawford.', options: { placements: [{ point: 21, player: 'black', count: 14 }, { point: 6, player: 'white', count: 14 }], borneOff: { white: 1, black: 1 }, currentPlayer: 'black', mode: 'vs-computer', match: { ...createMatch(3), score: { white: 0, black: 1 } } } },
+  { id: 'e2e-computer-match-take', label: 'E2E computer match take', description: 'White can double and the computer takes.', options: { placements: [{ point: 10, player: 'black', count: 15 }, { point: 15, player: 'white', count: 15 }], currentPlayer: 'white', mode: 'vs-computer', match: createMatch(3) } },
+  { id: 'e2e-computer-match-drop', label: 'E2E computer match drop', description: 'White can double and the computer drops.', options: { placements: [{ point: 10, player: 'black', count: 15 }, { point: 2, player: 'white', count: 15 }], currentPlayer: 'white', mode: 'vs-computer', match: createMatch(3) } },
+  { id: 'e2e-match-undo-floor', label: 'E2E match undo floor', description: 'White plays 8→7 and 8→6, then Black can double but every roll is blocked.', options: { placements: [...[1, 2, 3, 4, 5, 6].map(point => ({ point, player: 'white' as const, count: 2 })), { point: 8, player: 'white', count: 3 }, { point: 24, player: 'black', count: 14 }], bar: { black: 1 }, dice: [1, 2], mode: 'vs-human', match: createMatch(5) } },
+  { id: 'e2e-match-cube', label: 'E2E match cube', description: '3-point match, White one checker from winning a single.', options: { placements: [{ point: 1, player: 'white', count: 1 }, { point: 24, player: 'black', count: 14 }], borneOff: { white: 14, black: 1 }, mode: 'vs-human', match: createMatch(3) } },
+  { id: 'e2e-match-final', label: 'E2E match final', description: 'Crawford game at 2–1, White one checker from winning the match.', options: { placements: [{ point: 1, player: 'white', count: 1 }, { point: 24, player: 'black', count: 14 }], borneOff: { white: 14, black: 1 }, mode: 'vs-human', match: { ...createMatch(3), score: { white: 2, black: 1 }, crawford: true, crawfordPlayed: true, gameNumber: 3 } } },
   {
     id: 'issue-155-bar-1-2-both-dice',
     label: '#155 bar 1–2 (both dice)',
@@ -57,6 +64,32 @@ export const POSITION_LOADER_PRESETS: PositionLoaderPreset[] = [
       ],
       bar: { white: 1 },
       dice: [1, 2],
+      mode: 'vs-human',
+    },
+  },
+  {
+    id: 'e2e-center-bar',
+    label: 'E2E center bar (both players)',
+    description: 'White to enter with 1–2; both bar stacks overflow. Used by the center-bar Maestro flow.',
+    options: {
+      placements: [
+        { point: 6, player: 'white', count: 8 },
+        { point: 19, player: 'black', count: 9 },
+      ],
+      bar: { white: 7, black: 6 },
+      dice: [1, 2],
+      currentPlayer: 'white',
+      mode: 'vs-human',
+    },
+  },
+  {
+    id: 'e2e-undo-redo-3-1',
+    label: 'E2E undo/redo (3–1)',
+    description: 'Standard board, White to play a fixed 3–1 (8→5 is legal). Used by the undo-redo Maestro flow.',
+    options: {
+      useStandardSetup: true,
+      dice: [3, 1],
+      currentPlayer: 'white',
       mode: 'vs-human',
     },
   },

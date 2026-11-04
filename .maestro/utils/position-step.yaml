@@ -1,0 +1,7 @@
+appId: ${APP_ID}
+tags:
+  - util
+---
+# Press the ▲ (SIDE: higher) or ▼ (SIDE: lower) half of a position stepper.
+- tapOn:
+    id: ${STEPPER}-${SIDE}

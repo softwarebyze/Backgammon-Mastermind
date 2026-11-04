@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const ROOT = process.cwd();
@@ -10,8 +11,13 @@ const FRAMES = JSON.parse(
 const LOCALIZATIONS = JSON.parse(
   readFileSync(join(ROOT, 'docs/marketing/screenshot-localizations.json'), 'utf8'),
 ) as Record<string, { appLanguage: string; playLocale: string }>;
-const IOS_ROOT = join(ROOT, 'fastlane/screenshots');
-const PLAY_ROOT = join(ROOT, 'fastlane/metadata/android');
+// The script stages into a temp folder here, never the tracked fastlane assets.
+const FASTLANE_OUT = mkdtempSync(join(tmpdir(), 'fastlane-out-'));
+const SCRIPT_ENV = { ...process.env, FASTLANE_OUT_DIR: FASTLANE_OUT };
+const IOS_ROOT = join(FASTLANE_OUT, 'screenshots');
+const PLAY_ROOT = join(FASTLANE_OUT, 'metadata/android');
+
+afterAll(() => rmSync(FASTLANE_OUT, { recursive: true, force: true }));
 const PLAY_OUT = join(
   PLAY_ROOT,
   'en-US/images/phoneScreenshots',
@@ -60,6 +66,7 @@ describe('prepare-store-screenshots', () => {
 
     execFileSync(process.execPath, ['scripts/prepare-store-screenshots.mjs'], {
       cwd: ROOT,
+      env: SCRIPT_ENV,
     });
 
     expect(existsSync(staleIos)).toBe(false);
@@ -96,10 +103,82 @@ describe('prepare-store-screenshots', () => {
       expect([...fullDescription].length).toBeLessThanOrEqual(4000);
     }
 
+    // iMessage-app screenshots: 4 iPhone (1206×2622) + 4 iPad (2064×2752) per locale.
+    for (const appleLocale of Object.keys(LOCALIZATIONS)) {
+      const dir = join(IOS_ROOT, 'iMessage', appleLocale);
+      const sizes = readdirSync(dir)
+        .filter(name => name.endsWith('.png'))
+        .map(name => pngSize(join(dir, name)));
+      expect(sizes.filter(({ width, height }) => width === 1206 && height === 2622)).toHaveLength(4);
+      expect(sizes.filter(({ width, height }) => width === 2064 && height === 2752)).toHaveLength(4);
+      expect(sizes).toHaveLength(8);
+    }
+
     expect(
       readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-05-home.png')).equals(
         readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-05-home.png')),
       ),
     ).toBe(false);
+  });
+});
+
+describe('iMessage screenshot validation', () => {
+  const SOURCE = join(ROOT, 'docs/marketing/app-store-screenshots/imessage');
+  const FILES = readdirSync(SOURCE).filter(name => name.endsWith('.png')).sort();
+  let dir: string;
+
+  function runWith(sourceDir: string) {
+    try {
+      execFileSync(process.execPath, ['scripts/prepare-store-screenshots.mjs'], {
+        cwd: ROOT,
+        env: { ...SCRIPT_ENV, IMESSAGE_SCREENSHOTS_DIR: sourceDir },
+        stdio: 'pipe',
+      });
+      return '';
+    }
+    catch (error) {
+      return String((error as { stderr?: { toString: () => string } }).stderr ?? error);
+    }
+  }
+
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), 'imessage-shots-'));
+    for (const name of FILES) copyFileSync(join(SOURCE, name), join(dir, name));
+  });
+
+  afterEach(() => rmSync(dir, { recursive: true, force: true }));
+
+  it('ships exactly 4 iPhone 1206x2622 and 4 iPad 2064x2752 frames', () => {
+    expect(FILES).toHaveLength(8);
+    expect(FILES.filter(name => name.startsWith('imessage-iphone-61-'))).toHaveLength(4);
+    expect(FILES.filter(name => name.startsWith('imessage-ipad-13-'))).toHaveLength(4);
+    for (const name of FILES) {
+      expect(pngSize(join(SOURCE, name))).toEqual(
+        name.startsWith('imessage-iphone-61-')
+          ? { width: 1206, height: 2622 }
+          : { width: 2064, height: 2752 },
+      );
+    }
+  });
+
+  it('fails when a frame is missing', () => {
+    rmSync(join(dir, FILES[0]));
+    expect(runWith(dir)).toContain(`Missing: ${FILES[0]}`);
+  });
+
+  it('fails when an unexpected frame is present', () => {
+    copyFileSync(join(dir, FILES[0]), join(dir, 'imessage-iphone-61-05-extra.png'));
+    expect(runWith(dir)).toContain('Unexpected: imessage-iphone-61-05-extra.png');
+  });
+
+  it('fails when a frame has the wrong pixel size', () => {
+    // An iPad-sized frame saved under an iPhone slot name.
+    copyFileSync(join(dir, 'imessage-ipad-13-01-staged.png'), join(dir, 'imessage-iphone-61-01-staged.png'));
+    expect(runWith(dir)).toContain('imessage-iphone-61-01-staged.png is 2064×2752; expected 1206×2622');
+  });
+
+  it('fails when a frame is not a PNG', () => {
+    writeFileSync(join(dir, 'imessage-ipad-13-04-new.png'), 'not a png at all, just text');
+    expect(runWith(dir)).toContain('is not a valid PNG');
   });
 });

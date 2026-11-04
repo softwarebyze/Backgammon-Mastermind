@@ -4,11 +4,18 @@
 #   screen and asserts the engine's actual move output.
 # - iOS: Expo prebuild + xcodebuild for the iOS simulator (compiles the
 #   Swift/ObjC++ bridge + engine for real). No signing, no EAS, no Apple creds.
+#   The Release build is then run through the Maestro smoke flow on an iPhone
+#   and an iPad simulator; screenshots upload as `maestro-visual-report-ios`.
 
 name: bgsage native verify
 
 on:
   workflow_dispatch:
+    inputs:
+      ios_cube_only:
+        description: 'Focused iOS smoke and cube Undo rerun (default runs full verification)'
+        type: boolean
+        default: false
   pull_request:
     branches: [main]
     # This job runs `pnpm type-check` over the whole app and builds both native
@@ -38,7 +45,21 @@ permissions:
   contents: read
 
 jobs:
+  engine-context:
+    name: Native and WASM rule-context parity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bash .github/scripts/fetch-bgsage-engine.sh
+      - run: bash .github/scripts/build-bgsage-probe.sh
+      - run: /tmp/bgsage-context-probe --verify-met
+      - run: node scripts/verify-bgsage-context.mjs
+
   android:
+    if: ${{ !inputs.ios_cube_only }}
     name: Android — APK build + Maestro engine test
     runs-on: ubuntu-latest
     timeout-minutes: 120
@@ -127,7 +148,7 @@ jobs:
           retention-days: 14
 
   ios:
-    name: iOS — simulator compile check
+    name: iOS — release simulator smoke
     # macos-26 = Xcode 26 / Swift 6.2 (GA Feb 2026). Required: expo-modules-jsi
     # declares swift-tools-version 6.2 and uses 6.2-only compiler features.
     runs-on: macos-26
@@ -181,6 +202,14 @@ jobs:
         env:
           CI: 'true'
 
+      # Release runs PostHog's hermes clone + dSYM upload, which fail closed
+      # without POSTHOG_CLI_API_KEY. This job has none (throwaway simulator
+      # build). Soften the upload scripts when the key is empty; EAS store
+      # builds inject the key and never run this step. Same idea as
+      # assemble-android-test-apk.sh on #237.
+      - name: Skip PostHog uploads without an API key
+        run: bash .github/scripts/skip-posthog-ios-upload-when-unkeyed.sh "$GITHUB_WORKSPACE"
+
       - name: Build for iOS simulator (compile check)
         run: |
           cd ios
@@ -207,5 +236,43 @@ jobs:
             -scheme "$SCHEME" \
             -sdk iphonesimulator \
             -destination "platform=iOS Simulator,id=$DEVICE_UDID" \
+            -configuration Release \
             -derivedDataPath "$RUNNER_TEMP/bgsage-dd" \
+            ONLY_ACTIVE_ARCH=YES \
             build
+        env:
+          # Release embeds the JS bundle (no Metro / dev-client launcher), so
+          # the Maestro step below can launch the app straight to the home screen.
+          # ONLY_ACTIVE_ARCH=YES keeps Release to the runner's arm64 slice like
+          # Debug does; the x86_64 slice fails on the engine's AVX code.
+          EXPO_NO_DOTENV: '1'
+          APP_ENV: preview
+          EXPO_PUBLIC_APP_ENV: preview
+          CI: 'true'
+
+      - name: Install Maestro
+        run: |
+          npm run install-maestro
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Run backgammon smoke on iPhone + iPad simulators
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: '1'
+          IOS_CUBE_ONLY: ${{ inputs.ios_cube_only }}
+        run: |
+          APP=$(ls -d "$RUNNER_TEMP"/bgsage-dd/Build/Products/Release-iphonesimulator/*.app | head -1)
+          echo "app: $APP"
+          FLOWS=("$GITHUB_WORKSPACE/.maestro/app/cube-decision-undo.yaml")
+          if [[ "$IOS_CUBE_ONLY" != "true" ]]; then
+            FLOWS=("$GITHUB_WORKSPACE/.maestro/app/position-preview-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/match-seven-ios.yaml" "$GITHUB_WORKSPACE/.maestro/app/cube-tutor-beavers.yaml" "${FLOWS[@]}")
+          fi
+          bash .github/scripts/run-maestro-ios-sim-smoke.sh "$GITHUB_WORKSPACE" "$APP" com.backgammonmastermind.preview "${FLOWS[@]}"
+
+      - name: Upload iOS Maestro screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-visual-report-ios
+          path: maestro-ios-output/**
+          if-no-files-found: warn
+          retention-days: 14

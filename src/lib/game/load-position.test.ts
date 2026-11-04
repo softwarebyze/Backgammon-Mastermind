@@ -6,7 +6,8 @@ import {
   POSITION_JSON_ERRORS,
   POSITION_LOADER_PRESETS,
 } from './load-position';
-import { getLegalMoves } from './moves';
+import { dropDouble, nextMatchGame, offerDouble } from './match';
+import { applyDiceRoll, applyMove, getLegalMoves, passTurn } from './moves';
 
 function preset(id: string) {
   const found = POSITION_LOADER_PRESETS.find(item => item.id === id);
@@ -89,11 +90,25 @@ describe('parsePositionJson', () => {
 });
 
 describe('position loader presets', () => {
-  it('exposes the two #155 bar 1–2 audit boards', () => {
+  it('exposes the #155 bar 1–2 audit boards and the E2E undo/redo board', () => {
     expect(POSITION_LOADER_PRESETS.map(item => item.id)).toEqual([
+      'e2e-computer-match-offer',
+      'e2e-computer-match-take',
+      'e2e-computer-match-drop',
+      'e2e-match-undo-floor',
+      'e2e-match-cube',
+      'e2e-match-final',
       'issue-155-bar-1-2-both-dice',
       'issue-155-bar-1-2-higher-die',
+      'e2e-center-bar',
+      'e2e-undo-redo-3-1',
     ]);
+  });
+
+  it('provides overflowing bar stacks with playable entry targets for UI QA', () => {
+    const state = loadPositionPreset(preset('e2e-center-bar'));
+    expect(state.bar).toEqual({ white: 7, black: 6 });
+    expect(barDestinations(state)).toEqual(expect.arrayContaining([23, 24]));
   });
 
   it('#155 both-dice: only bar→23 is legal because it leaves 6→5', () => {
@@ -103,8 +118,44 @@ describe('position loader presets', () => {
     expect(barDestinations(state)).toEqual([23]);
   });
 
+  it('the E2E undo/redo board deals a fixed 3–1 with the 8→5 move the Maestro flow plays', () => {
+    const state = loadPositionPreset(preset('e2e-undo-redo-3-1'));
+    expect(state).toMatchObject({ phase: 'moving', mode: 'vs-human', currentPlayer: 'white', dice: [3, 1] });
+    expect(getLegalMoves(state).some(m => m.from === 8 && m.to === 5)).toBe(true);
+  });
+
   it('#155 higher-die: only bar→23 when neither leftover die plays', () => {
     const state = loadPositionPreset(preset('issue-155-bar-1-2-higher-die'));
     expect(barDestinations(state)).toEqual([23]);
+  });
+});
+
+it('the match undo-floor fixture blocks every Black roll after White plays 8→7 and 8→6', () => {
+  let state = loadPositionPreset(preset('e2e-match-undo-floor'));
+  for (const to of [7, 6]) {
+    const move = getLegalMoves(state).find(m => m.from === 8 && m.to === to);
+    expect(move).toBeDefined();
+    state = applyMove(state, move!);
+  }
+  if (state.currentPlayer === 'white')
+    state = passTurn(state);
+  expect(state.currentPlayer).toBe('black');
+  for (let a = 1; a <= 6; a++) {
+    for (let b = a; b <= 6; b++) {
+      expect(applyDiceRoll(state, [a, b]).phase).toBe('no-move');
+    }
+  }
+});
+
+describe('computer match QA presets', () => {
+  it('offers from the computer side and reaches Crawford after a drop', () => {
+    const state = loadPositionPreset(preset('e2e-computer-match-offer'));
+    // A single win threat: no gammon to make the real engine play on as too good.
+    expect(state.borneOff).toEqual({ white: 1, black: 1 });
+    const dropped = dropDouble(offerDouble(state, 0));
+    expect(dropped.match?.score.black).toBe(2);
+    const next = nextMatchGame(dropped);
+    expect(next.mode).toBe('vs-computer');
+    expect(next.match?.crawford).toBe(true);
   });
 });

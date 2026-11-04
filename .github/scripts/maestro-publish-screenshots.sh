@@ -16,7 +16,7 @@ PR_NUMBER="${GITHUB_PR_NUMBER:-}"
 URL_FILE="${MAESTRO_URL_FILE:-${GITHUB_WORKSPACE:-.}/.maestro-screenshot-urls.env}"
 
 mapfile -t screenshots < <(
-  find "$BUNDLE_DIR" -maxdepth 2 -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) 2>/dev/null | sort
+  find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) 2>/dev/null | sort
 )
 
 if ((${#screenshots[@]} == 0)); then
@@ -56,14 +56,18 @@ push_once() {
   local run_dest="runs/${RUN_ID}"
   mkdir -p "$run_dest"
   for img in "${screenshots[@]}"; do
-    cp -f "$img" "${run_dest}/$(basename "$img")"
+    relative=${img#"$BUNDLE_DIR"/}
+    mkdir -p "${run_dest}/$(dirname "$relative")"
+    cp -f "$img" "${run_dest}/$relative"
   done
 
   if [[ -n "$PR_NUMBER" ]]; then
     local pr_dest="pr-${PR_NUMBER}"
     mkdir -p "$pr_dest"
     for img in "${screenshots[@]}"; do
-      cp -f "$img" "${pr_dest}/$(basename "$img")"
+      relative=${img#"$BUNDLE_DIR"/}
+      mkdir -p "${pr_dest}/$(dirname "$relative")"
+      cp -f "$img" "${pr_dest}/$relative"
     done
     git add "$run_dest" "$pr_dest"
   else

@@ -55,7 +55,7 @@ fi
 
 # Use GitHub's returned asset URL rather than predicting a successful upload.
 DOWNLOAD_URL=$(gh release view "$TAG" --repo "$REPO" --json assets \
-  --jq ".assets[] | select(.name == \"${ASSET}\") | .browser_download_url") || DOWNLOAD_URL=""
+  --jq ".assets[] | select(.name == \"${ASSET}\") | .url") || DOWNLOAD_URL=""
 echo "::endgroup::"
 if [[ -z "$DOWNLOAD_URL" ]]; then
   echo "::warning::Uploaded recording URL unavailable — use the artifact."

@@ -25,6 +25,8 @@ const brandAdaptiveForeground = './assets/brand/adaptive-foreground.png';
 
 const EXPO_ACCOUNT_OWNER = 'zackebenfeld';
 const EAS_PROJECT_ID = '7ec6600a-8b02-4714-acc1-08385effa4c9';
+/** Set by the PR TestFlight workflow when EAS has no credentials for the Messages extension. */
+const WITHOUT_IMESSAGE_EXTENSION = process.env.WITHOUT_IMESSAGE_EXTENSION === '1';
 
 const appIconBadgeConfig: AppIconBadgeConfig = {
   enabled: Env.EXPO_PUBLIC_APP_ENV !== 'production',
@@ -117,12 +119,16 @@ const appPlugins: ExpoConfig['plugins'] = [
   'expo-status-bar',
   'expo-updates',
   // iMessage extension (turn-based play over Messages). Sources live in
-  // targets/imessage/; see docs/imessage-extension.md.
-  './plugins/with-imessage-extension',
+  // targets/imessage/; see docs/imessage-extension.md. A PR TestFlight build
+  // leaves it out when EAS has no signing credentials for it.
+  ...(WITHOUT_IMESSAGE_EXTENSION ? [] : ['./plugins/with-imessage-extension']),
   ['app-icon-badge', appIconBadgeConfig],
   [
     'expo-build-properties',
     {
+      // iOS 27 rejects Xcode 27 builds before JS starts without scene adoption.
+      // This migrates both AppDelegate startup and the scene manifest.
+      ios: { enableSceneSupport: true },
       android: {
         compileSdkVersion: 36,
         targetSdkVersion: 36,
@@ -131,6 +137,11 @@ const appPlugins: ExpoConfig['plugins'] = [
     },
   ],
   ['react-native-edge-to-edge'],
+  // Removes dev-launcher-only local network permissions from store builds.
+  // expo-dev-launcher ships its own strip phase, but it runs before the app's
+  // Info.plist exists and silently no-ops; see
+  // docs/expo-dev-client-store-builds.md.
+  './plugins/with-dev-client-plist-keys',
   // Native symbol / Hermes map hooks. TestFlight crashes still need a new binary.
   // The dotenv file supplies POSTHOG_CLI_* credentials for local native builds;
   // EAS builds provide the same keys directly as environment variables.
@@ -218,12 +229,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       build: {
         experimental: {
           ios: {
-            appExtensions: [
-              {
-                targetName: 'BackgammonMastermindMessages',
-                bundleIdentifier: `${Env.EXPO_PUBLIC_BUNDLE_ID}.messages`,
-              },
-            ],
+            appExtensions: WITHOUT_IMESSAGE_EXTENSION
+              ? []
+              : [
+                  {
+                    targetName: 'BackgammonMastermindMessages',
+                    bundleIdentifier: `${Env.EXPO_PUBLIC_BUNDLE_ID}.messages`,
+                  },
+                ],
           },
         },
       },

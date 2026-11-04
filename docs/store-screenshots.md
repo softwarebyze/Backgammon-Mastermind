@@ -13,6 +13,10 @@ Agents **can and should** upload App Store / Play screenshots without a human cl
 | Composed iPad Pro 13" (2064×2752) | `docs/marketing/app-store-screenshots/ipad-13-*.png` |
 | Staged for Fastlane (generated, gitignored) | `fastlane/screenshots/<locale>/` |
 | Staged for Play (generated 9:16 crop) | `fastlane/metadata/android/<locale>/images/phoneScreenshots/` |
+| iMessage-app screenshots (English, all locales) | `docs/marketing/app-store-screenshots/imessage/` (4× iPhone 1206×2622 → `IMESSAGE_APP_IPHONE_61`, 4× iPad 2064×2752 → `IMESSAGE_APP_IPAD_PRO_3GEN_129`) |
+| Staged iMessage sets (generated, gitignored) | `fastlane/screenshots/iMessage/<locale>/` |
+
+The app has an iMessage extension, so App Store Connect requires iMessage-app screenshots for iPhone with Dynamic Island (medium display) and iPad 13-inch before a version can be added for review. They are real iOS simulator captures of the Messages drawer, dressed with the same brand band. `pnpm screenshots:prepare` stages them for every locale; `overwrite_screenshots` in the Fastlane lane replaces all screenshot sets in a locale, so they must stay in the staged tree or a re-upload deletes them.
 
 Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel sizes), then dress with screenshots compose. Prefer 1320×2868 for iPhone; Fastlane maps that size to `APP_IPHONE_67` (Apple’s 6.7"/6.9" slot). iPad 2064×2752 maps to the 13" slot.
 
@@ -21,12 +25,11 @@ Capture with `pnpm screenshots:capture` (production Expo web at Apple pixel size
 ```sh
 pnpm screenshots:prepare          # render all 17 localized sets → Apple + Play folders
 pnpm screenshots:asc-key          # Expo session → .cache/asc-api-key.json (gitignored)
-node scripts/dedupe-asc-screenshots.mjs # dry-run duplicate check against production ASC
 pnpm screenshots:upload:ios       # prepare + key + bundle exec fastlane deliver (screenshots only)
 pnpm screenshots:upload:android   # needs PLAY_JSON_KEY_PATH; PLAY_PACKAGE_NAME is optional
 ```
 
-Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.239.0**). First time: `bundle install`.
+Uses Bundler (`Gemfile` / `Gemfile.lock`, Fastlane **2.237.0**). First time: `bundle install`.
 
 Localized headline rendering uses script-specific Noto fonts in CI. On macOS,
 the generator also falls back to the equivalent bundled system families
@@ -52,14 +55,7 @@ pnpm screenshots:upload:ios
 
 ## Quirk (Fastlane + ASC processing)
 
-`deliver` sometimes retries while Apple is still processing and creates duplicates (capped at 10 slots). The iOS lane now finishes by running a guarded ASC API cleanup: it compares remote checksums with the composed source, refuses to touch unknown or missing assets, and deletes only repeated copies. A clean set is exactly the composed files under `docs/marketing/…/app-store-screenshots/` (currently **10**: 5 iPhone + 5 iPad).
-
-To audit or repair without uploading again:
-
-```sh
-node scripts/dedupe-asc-screenshots.mjs         # dry run
-node scripts/dedupe-asc-screenshots.mjs --apply # delete exact duplicates
-```
+`deliver` sometimes retries while Apple is still processing and creates duplicates (capped at 10 slots). To audit or repair, compare remote screenshots against the composed source under `docs/marketing/…/app-store-screenshots/` (currently **10**: 5 iPhone + 5 iPad) in the ASC UI and delete repeated copies there — the old guarded ASC API cleanup script (`scripts/dedupe-asc-screenshots.mjs`) no longer exists in this repo.
 
 Apple locks screenshots after a version is submitted and approved. For a live
 `READY_FOR_SALE` version, create the next app version, upload the clean set while

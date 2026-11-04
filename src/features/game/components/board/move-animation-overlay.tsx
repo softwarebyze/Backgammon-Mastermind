@@ -13,6 +13,7 @@ import Animated, {
   Easing,
   runOnJS,
   useAnimatedStyle,
+  useReducedMotion,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
@@ -32,9 +33,10 @@ type SlideLayerProps = {
   progress: SharedValue<number>;
   dimensions: BoardDimensions;
   zIndex: number;
+  testID?: string;
 };
 
-function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerProps) {
+function CheckerSlideLayer({ slide, progress, dimensions, zIndex, testID }: SlideLayerProps) {
   const fromSize = checkerRenderSize(dimensions.checkerSize, slide.from);
   const toSize = checkerRenderSize(dimensions.checkerSize, slide.to);
 
@@ -66,7 +68,7 @@ function CheckerSlideLayer({ slide, progress, dimensions, zIndex }: SlideLayerPr
   };
 
   return (
-    <Animated.View style={[placement, style]} pointerEvents="none">
+    <Animated.View testID={testID} style={[placement, style]} pointerEvents="none">
       <CheckerToken flat player={slide.player} size={fromSize} />
     </Animated.View>
   );
@@ -82,16 +84,17 @@ export function MoveAnimationOverlay({ animation, dimensions }: Props) {
   // first checker lands, and the next withTiming(1) finishes immediately —
   // that checker jumps into place instead of sliding.
   return (
-    <CheckerSlideOverlay
-      key={animationKey(animation)}
-      animation={animation}
-      dimensions={dimensions}
-    />
+    <>
+      {(animation.parallel ?? [animation]).filter(frame => frame.waitFor === undefined).map(frame => (
+        <CheckerSlideOverlay key={animationKey(frame)} animation={frame} dimensions={dimensions} />
+      ))}
+    </>
   );
 }
 
 function CheckerSlideOverlay({ animation, dimensions }: Props) {
-  const progress = useSharedValue(0);
+  const reducedMotion = useReducedMotion();
+  const progress = useSharedValue(reducedMotion ? 1 : 0);
   const onFinishRef = useRef(animation.onFinish);
   onFinishRef.current = animation.onFinish;
   const finishedRef = useRef(false);
@@ -116,6 +119,11 @@ function CheckerSlideOverlay({ animation, dimensions }: Props) {
       finishedRef.current = true;
       onFinishRef.current();
     };
+
+    if (reducedMotion) {
+      finish();
+      return;
+    }
 
     const duration = animation.durationMs ?? CHECKER_MOVE_DURATION_MS;
     // Reanimated can cancel without calling the callback (remount, interrupt).
@@ -147,17 +155,24 @@ function CheckerSlideOverlay({ animation, dimensions }: Props) {
       clearTimeout(backup);
       cancelAnimation(progress);
     };
-  }, [animation.durationMs, key, progress]);
+  }, [animation.durationMs, key, progress, reducedMotion]);
+
+  if (reducedMotion) {
+    return null;
+  }
 
   return (
     <>
-      <CheckerSlideLayer
-        slide={moverSlide}
-        progress={progress}
-        dimensions={dimensions}
-        zIndex={100}
-      />
-      {animation.capture && (
+      {!animation.hidden && (
+        <CheckerSlideLayer
+          testID={`checker-flight-${key}`}
+          slide={moverSlide}
+          progress={progress}
+          dimensions={dimensions}
+          zIndex={100}
+        />
+      )}
+      {animation.capture && !animation.capture.hidden && (
         <CheckerSlideLayer
           slide={animation.capture}
           progress={progress}

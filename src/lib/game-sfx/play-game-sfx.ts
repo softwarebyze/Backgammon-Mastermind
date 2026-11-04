@@ -4,6 +4,7 @@ import { Asset } from 'expo-asset';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import { Platform } from 'react-native';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
+import { createWebAudioKeeper } from '@/lib/game-sfx/web-audio-keeper';
 
 const SOURCES: Record<GameSfxKind, number> = {
   roll: require('../../../assets/sounds/roll.wav'),
@@ -11,6 +12,7 @@ const SOURCES: Record<GameSfxKind, number> = {
   hit: require('../../../assets/sounds/hit.wav'),
   bearOff: require('../../../assets/sounds/bear-off.wav'),
   win: require('../../../assets/sounds/win.wav'),
+  blocked: require('../../../assets/sounds/blocked.wav'),
 };
 
 const KINDS = Object.keys(SOURCES) as GameSfxKind[];
@@ -22,6 +24,7 @@ const VOLUME: Record<GameSfxKind, number> = {
   hit: 0.5,
   bearOff: 0.42,
   win: 0.48,
+  blocked: 0.35,
 };
 
 type NativePlayer = ReturnType<typeof createAudioPlayer>;
@@ -42,6 +45,7 @@ type WebAudioBuffer = unknown;
 type WebAudioCtx = {
   state: string;
   resume: () => Promise<void>;
+  close?: () => Promise<void>;
   decodeAudioData: (data: ArrayBuffer) => Promise<WebAudioBuffer>;
   createBufferSource: () => WebBufferSource;
   createGain: () => WebGainNode;
@@ -60,30 +64,47 @@ let primedGesture = false;
 const nativePlayers = new Map<GameSfxKind, NativePlayer>();
 const webBuffers = new Map<GameSfxKind, WebAudioBuffer>();
 const webUris = new Map<GameSfxKind, string>();
-let webCtx: WebAudioCtx | null = null;
+const webAudio = createWebAudioKeeper<WebAudioCtx>(() => {
+  const win = window as unknown as WebAudioWindow;
+  const Ctor = win.AudioContext ?? win.webkitAudioContext;
+  return Ctor ? new Ctor() : null;
+});
+let webRecoveryInstalled = false;
+
+/**
+ * Switching apps leaves the context interrupted until reload. Note when the
+ * page hides, and wake audio on every later tap or key, not just the first.
+ */
+function installWebAudioRecovery(): void {
+  if (webRecoveryInstalled || typeof document === 'undefined') {
+    return;
+  }
+  webRecoveryInstalled = true;
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      webAudio.markHidden();
+    }
+  });
+  for (const type of ['pointerdown', 'touchend', 'keydown']) {
+    window.addEventListener(type, unlockWebAudio, { capture: true, passive: true });
+  }
+}
 
 function webAudioContext(): WebAudioCtx | null {
   if (Platform.OS !== 'web' || typeof window === 'undefined') {
     return null;
   }
-  if (webCtx) {
-    return webCtx;
-  }
-  const win = window as unknown as WebAudioWindow;
-  const Ctor = win.AudioContext ?? win.webkitAudioContext;
-  if (!Ctor) {
-    return null;
-  }
-  webCtx = new Ctor();
-  return webCtx;
+  installWebAudioRecovery();
+  return webAudio.get();
 }
 
 /** Must run inside a user-gesture so iOS Safari can resume the context. */
 function unlockWebAudio(): void {
-  const ctx = webAudioContext();
-  if (ctx && ctx.state === 'suspended') {
-    void ctx.resume();
+  if (Platform.OS !== 'web' || typeof window === 'undefined') {
+    return;
   }
+  installWebAudioRecovery();
+  webAudio.wake();
 }
 
 async function resolveUri(kind: GameSfxKind): Promise<string | null> {
@@ -196,8 +217,8 @@ function playWebBuffer(kind: GameSfxKind): boolean {
   if (!ctx || !buffer) {
     return false;
   }
-  if (ctx.state === 'suspended') {
-    void ctx.resume();
+  if (ctx.state !== 'running') {
+    void ctx.resume().catch(() => {});
   }
   const source = ctx.createBufferSource();
   source.buffer = buffer;
@@ -287,5 +308,5 @@ export function resetGameSfxForTests(): void {
   nativePlayers.clear();
   webBuffers.clear();
   webUris.clear();
-  webCtx = null;
+  webAudio.reset();
 }

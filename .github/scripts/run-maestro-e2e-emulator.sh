@@ -15,18 +15,35 @@ adb shell settings put global transition_animation_scale 0
 adb shell settings put global animator_duration_scale 0
 adb install -r "${WORKSPACE}/android-test.apk"
 
-adb shell screenrecord --time-limit 300 /sdcard/e2e-recording.mp4 &
+RECORD_STOP="$MAESTRO_OUT/recording.stop"
+rm -f "$RECORD_STOP"
+bash "${WORKSPACE}/.github/scripts/record-android-screen.sh" "$MAESTRO_OUT" "$RECORD_STOP" &
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
 # Smoke + regression flows + native RTL language restart (screenshots land in maestro-visual-report).
 maestro test \
+  "${WORKSPACE}/.maestro/app/home-game-setup.yaml" \
+  "${WORKSPACE}/.maestro/app/match-board-presentation.yaml" \
+  "${WORKSPACE}/.maestro/app/cube-history-autoroll.yaml" \
+  "${WORKSPACE}/.maestro/app/match-cube.yaml" \
+  "${WORKSPACE}/.maestro/app/money-cube-hints.yaml" \
+  "${WORKSPACE}/.maestro/app/cube-tutor-beavers.yaml" \
+  "${WORKSPACE}/.maestro/app/cube-decision-undo.yaml" \
+  "${WORKSPACE}/.maestro/app/computer-match.yaml" \
+  "${WORKSPACE}/.maestro/app/match-polish.yaml" \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
   "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
   "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
+  "${WORKSPACE}/.maestro/app/position-setup.yaml" \
+  "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
+  "${WORKSPACE}/.maestro/app/center-bar-checkers.yaml" \
+  "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \
+  "${WORKSPACE}/.maestro/app/bar-entry-hints.yaml" \
+  "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   -e "APP_ID=${APP_ID}" \
@@ -37,8 +54,21 @@ maestro test \
   --flatten-debug-output \
   || MAESTRO_EXIT=$?
 
+touch "$RECORD_STOP"
 adb shell pkill -2 screenrecord 2>/dev/null || true
-sleep 2
-adb pull /sdcard/e2e-recording.mp4 "${WORKSPACE}/e2e-recording.mp4" 2>/dev/null || true
+wait "$RECORD_PID" || echo "::warning::Recording segment collection failed"
+# Each Android screenrecord ends after 300 seconds. Join all captured segments,
+# retaining the individual files in the artifact if joining fails.
+if [[ -s "$MAESTRO_OUT/recordings/concat.txt" ]]; then
+  # Join into a temporary file so a failed join never leaves a publishable recording.
+  JOINED="${WORKSPACE}/e2e-recording.partial.mp4"
+  if ffmpeg -y -f concat -safe 0 -i "$MAESTRO_OUT/recordings/concat.txt" \
+    -c copy "$JOINED"; then
+    mv "$JOINED" "${WORKSPACE}/e2e-recording.mp4"
+  else
+    rm -f "$JOINED"
+    echo "::warning::Recording join failed; inspect recordings/ in the artifact"
+  fi
+fi
 
 exit "$MAESTRO_EXIT"

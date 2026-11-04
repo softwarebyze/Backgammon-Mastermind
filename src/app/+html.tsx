@@ -94,6 +94,18 @@ body {
   }
 }
 
+/* #269: pressing and holding a control must not start a text selection or callout. */
+[role="button"],
+[role="switch"],
+[role="checkbox"],
+[role="radio"],
+[role="tab"],
+[role="link"] {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 /* Vercel preview comments pill + leftover Expo debug FABs steal taps. */
 vercel-live-feedback,
 #vercel-live-feedback,

@@ -4,13 +4,19 @@ appId: ${APP_ID}
 tags:
   - pull-request
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
 - tapOn:
     text: vs Computer
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
 - extendedWaitUntil:
     visible:
       id: point-1

@@ -1,6 +1,6 @@
 # Design & UX Audit — Backgammon Mastermind
 
-Last updated: 2026-05-21. Use this as the quality bar before shipping UI changes.
+> **Historical.** Last updated 2026-05-21 — predates v0.1.4 through v1.1.0. Keep it for the quality principles; do **not** trust its status columns (e.g. win animation shipped in 0.1.4, and the game header uses the gear icon since #225). Current bar: [release-gates.md](./release-gates.md) + [audits/](./audits/).
 
 ## Tools for visual QA
 

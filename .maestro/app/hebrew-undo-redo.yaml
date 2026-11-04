@@ -6,20 +6,27 @@ tags:
   - rtl
   - pull-request
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
-- tapOn: vs Computer
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-computer
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
 - assertVisible: Undo move
 - assertVisible: Redo move
 - takeScreenshot: undo-redo-01-english
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: vs Computer
-    timeout: 90000
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
 - tapOn: Settings
 - tapOn: Language
 - scrollUntilVisible:
@@ -28,12 +35,19 @@ tags:
     direction: DOWN
 - tapOn: עברית
 - stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible: נגד המחשב
-    timeout: 90000
-- tapOn: נגד המחשב
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'false'
+      HOME_TEXT: משחק נגד המחשב
+- tapOn:
+    id: home-opponent-vs-computer
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
 - assertVisible: ביטול המהלך
 - assertVisible: ביצוע המהלך מחדש
 - takeScreenshot: undo-redo-02-hebrew-rtl
