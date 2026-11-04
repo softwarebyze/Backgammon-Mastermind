@@ -3,7 +3,16 @@ import { encodeCubeContext } from './cube-context';
 import { gameStateToSageBoard, planSageTurnFull } from './index';
 
 const mockAnalyze = jest.fn();
-jest.mock('expo-modules-core', () => ({ requireNativeModule: () => ({ analyzePosition: mockAnalyze, analyzeCheckers: mockAnalyze }) }));
+// Only the Bgsage module is faked; Expo's own native modules (fetch) stay real.
+jest.mock('expo-modules-core', () => {
+  const actual = jest.requireActual('expo-modules-core');
+  return {
+    ...actual,
+    requireNativeModule: (name: string) => name === 'Bgsage'
+      ? { analyzePosition: mockAnalyze, analyzeCheckers: mockAnalyze }
+      : actual.requireNativeModule(name),
+  };
+});
 const context: SageCubeContext = { cubeValue: 4, cubeOwner: 2, awayPlayer: 2, awayOpponent: 5, crawford: false, jacoby: false, beavers: false, maxCube: 64, crawfordRule: false };
 it('serializes every rule, including the whole-match Crawford setting', () => {
   expect(encodeCubeContext(context)).toEqual([4, 2, 2, 5, 0, 0, 0, 64, 0]);

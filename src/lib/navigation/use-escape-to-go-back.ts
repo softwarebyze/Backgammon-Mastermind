@@ -15,7 +15,7 @@ export function handleEscapeKey(event: Pick<KeyboardEvent, 'key' | 'defaultPreve
 /** Web: Escape on a stack screen (Settings, Positions…) returns to where you came from. */
 export function useEscapeToGoBack(isFocused: () => boolean) {
   useEffect(() => {
-    if (Platform.OS !== 'web' || typeof document === 'undefined')
+    if (Platform.OS !== 'web' || typeof document?.addEventListener !== 'function')
       return;
     const onKeyDown = (event: KeyboardEvent) => {
       handleEscapeKey(event, {
