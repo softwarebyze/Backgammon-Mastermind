@@ -78,7 +78,8 @@ it('takes the strips above and below the board out of its share on desktop', () 
       view.result.current.measure.onSlotLayout(measurement(1000, 836));
     });
     expect(view.result.current.slot).toEqual({ width: 1000, height: 836 - 56 - 56 });
-  } finally {
+  }
+  finally {
     mockWindow.width = 390;
   }
 });
