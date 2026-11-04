@@ -21,7 +21,7 @@ it('commits a missed double at once, then reviews it with the size of the mistak
   act(() => result.current.dismiss());
   expect(result.current.session).toBeNull();
 });
-it('pauses play while it checks, and shows nothing for the best choice', async () => {
+it('holds a double while it checks, then applies a sound one by itself', async () => {
   let resolve!: (value: typeof verdict) => void;
   analyzeCube.mockImplementation(() => new Promise(r => resolve = r));
   const { result } = renderHook(() => useCubeTutor(options));
@@ -30,13 +30,51 @@ it('pauses play while it checks, and shows nothing for the best choice', async (
   act(() => {
     pending = result.current.run(state, 'offer', commit);
   });
-  expect(commit).toHaveBeenCalledTimes(1);
+  expect(commit).not.toHaveBeenCalled();
   expect(result.current.session?.phase).toBe('checking');
   await act(async () => {
     resolve(verdict);
     await pending;
   });
+  expect(commit).toHaveBeenCalledTimes(1);
   expect(result.current.session).toBeNull();
+});
+
+describe('a costly double, take or pass waits on the review card', () => {
+  const tooSoon = { shouldDouble: false, shouldTake: true, shouldBeaver: false, equityNoDouble: 0.6, equityDoubleTake: 0.4, equityDoublePass: 1 };
+
+  it('is not applied until kept, and Keep applies it once', async () => {
+    analyzeCube.mockResolvedValue(tooSoon);
+    const { result } = renderHook(() => useCubeTutor(options));
+    const commit = jest.fn();
+    await act(async () => result.current.run(state, 'offer', commit));
+    expect(result.current.session).toMatchObject({ phase: 'mistake', attempted: 'offer' });
+    expect(commit).not.toHaveBeenCalled();
+    act(() => result.current.keep());
+    act(() => result.current.keep());
+    expect(commit).toHaveBeenCalledTimes(1);
+    expect(result.current.session).toBeNull();
+  });
+
+  it('is never applied when taken back, so the player decides again', async () => {
+    analyzeCube.mockResolvedValue(tooSoon);
+    const { result } = renderHook(() => useCubeTutor(options));
+    const commit = jest.fn();
+    await act(async () => result.current.run(state, 'offer', commit));
+    act(() => result.current.takeBack());
+    act(() => result.current.keep());
+    expect(commit).not.toHaveBeenCalled();
+    expect(result.current.session).toBeNull();
+  });
+
+  it('goes through when the check fails, so the game never stalls', async () => {
+    analyzeCube.mockRejectedValueOnce(new Error('offline'));
+    const { result } = renderHook(() => useCubeTutor(options));
+    const commit = jest.fn();
+    await act(async () => result.current.run(state, 'offer', commit));
+    expect(commit).toHaveBeenCalledTimes(1);
+    expect(result.current.session).toBeNull();
+  });
 });
 it('checks a bad pass from the responder’s perspective', async () => {
   const offered = offerDouble(state, 0);

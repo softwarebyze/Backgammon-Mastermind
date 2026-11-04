@@ -14,33 +14,63 @@ jest.mock('@/features/game/use-leave-game', () => ({
   // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock preserves public hook name
   useLeaveGame: () => ({ leaveGame: jest.fn() }),
 }));
-afterEach(cleanup);
+const mockSetTutorMode = jest.fn();
+jest.mock('@/lib/game-preferences/use-game-preferences', () => ({
+  // eslint-disable-next-line react/no-unnecessary-use-prefix -- mock preserves public hook name
+  useGamePreferences: () => ({ setTutorMode: mockSetTutorMode }),
+}));
+afterEach(() => {
+  cleanup();
+  mockSetTutorMode.mockReset();
+});
 
-function show(session: CubeTutorSession, canTakeBack: boolean) {
-  Object.assign(mockGame, { cubeTutorSession: session, dismissCubeTutor: jest.fn(), takeBackCubeDecision: jest.fn(), canTakeBackCubeDecision: canTakeBack });
+function show(session: CubeTutorSession) {
+  Object.assign(mockGame, { cubeTutorSession: session, keepCubeDecision: jest.fn(), takeBackCubeDecision: jest.fn() });
   setup(<CubeTutorOverlay />);
 }
 const state = createPositionState({ useStandardSetup: true, match: createMatch(0) });
 
 it('names the mistake, shows both choices and how costly it was', () => {
-  show({ state, phase: 'mistake', attempted: 'roll', loss: 0.12, analysis: { actor: 'white', best: 'offer', values: { roll: 0.3, offer: 0.42 } } }, false);
+  show({ state, phase: 'mistake', attempted: 'roll', loss: 0.12, analysis: { actor: 'white', best: 'offer', values: { roll: 0.3, offer: 0.42 } } });
   expect(screen.getByTestId('cube-tutor-title')).toHaveTextContent('Missed double');
   expect(screen.getByTestId('cube-tutor-yours')).toHaveTextContent('You chose: No double');
   expect(screen.getByTestId('cube-tutor-recommendation')).toHaveTextContent('Best: Double');
   expect(screen.getByTestId('guidance-blunder-meter')).toBeTruthy();
+  // The dice were seen, so a missed double can only be noted.
   expect(screen.queryByTestId('cube-tutor-take-back')).toBeNull();
+  expect(screen.queryByTestId('cube-tutor-keep')).toBeNull();
   fireEvent.press(screen.getByTestId('cube-tutor-dismiss'));
-  expect(mockGame.dismissCubeTutor).toHaveBeenCalledTimes(1);
+  expect(mockGame.keepCubeDecision).toHaveBeenCalledTimes(1);
 });
 
-it('offers Take back when no dice were seen', () => {
-  show({ state, phase: 'mistake', attempted: 'accept', loss: 0.3, analysis: { actor: 'white', best: 'drop', values: { accept: -1.3, drop: -1 } } }, true);
-  fireEvent.press(screen.getByTestId('cube-tutor-take-back'));
-  expect(mockGame.takeBackCubeDecision).toHaveBeenCalledTimes(1);
+describe('a decision still waiting on the card', () => {
+  const take: CubeTutorSession = { state, phase: 'mistake', attempted: 'accept', loss: 0.3, analysis: { actor: 'white', best: 'drop', values: { accept: -1.3, drop: -1 } } };
+
+  it('can be taken back to choose again', () => {
+    show(take);
+    expect(screen.getByTestId('cube-tutor-take-back')).toHaveTextContent('Take back & retry');
+    fireEvent.press(screen.getByTestId('cube-tutor-take-back'));
+    expect(mockGame.takeBackCubeDecision).toHaveBeenCalledTimes(1);
+    expect(mockGame.keepCubeDecision).not.toHaveBeenCalled();
+  });
+
+  it('can be kept', () => {
+    show(take);
+    fireEvent.press(screen.getByTestId('cube-tutor-keep'));
+    expect(mockGame.keepCubeDecision).toHaveBeenCalledTimes(1);
+    expect(screen.queryByTestId('cube-tutor-dismiss')).toBeNull();
+  });
+
+  it('keeps the decision when the Tutor is turned off', () => {
+    show(take);
+    fireEvent.press(screen.getByTestId('cube-tutor-turn-off'));
+    expect(mockSetTutorMode).toHaveBeenCalledWith(false);
+    expect(mockGame.keepCubeDecision).toHaveBeenCalledTimes(1);
+  });
 });
 
 it('shows nothing while the choice is being checked', () => {
-  show({ state, phase: 'checking', attempted: 'roll' }, false);
+  show({ state, phase: 'checking', attempted: 'roll' });
   expect(screen.queryByTestId('cube-tutor')).toBeNull();
 });
 

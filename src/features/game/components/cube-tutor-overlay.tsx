@@ -5,12 +5,14 @@ import { controlButtonStyles } from '@/features/game/control-buttons';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGame } from '@/features/game/use-game';
 import { useLeaveGame } from '@/features/game/use-leave-game';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 export function CubeTutorOverlay() {
   const { leaveGame } = useLeaveGame();
-  const { computerCubeError, retryCubeAnalysis, cubeTutorSession: session, dismissCubeTutor, takeBackCubeDecision, canTakeBackCubeDecision } = useGame();
+  const { computerCubeError, retryCubeAnalysis, cubeTutorSession: session, keepCubeDecision, takeBackCubeDecision } = useGame();
+  const { setTutorMode } = useGamePreferences();
   if (!session) {
     return computerCubeError
       ? (
@@ -36,6 +38,13 @@ export function CubeTutorOverlay() {
     return null;
   const best = session.analysis.best;
   const loss = session.loss ?? 0;
+  // A roll already happened (the dice were seen), so it can only be noted.
+  // Any other decision is still waiting: it can be taken back or kept.
+  const rolled = session.attempted === 'roll';
+  const turnOff = () => {
+    setTutorMode(false);
+    keepCubeDecision?.();
+  };
   // eslint-disable-next-line max-params -- Mirrors the shared native analysis boundary.
   const button = (id: string, label: string, action: (() => void) | undefined, primary = false) => (
     <Pressable testID={id} accessibilityRole="button" onPress={action} style={primary ? controlButtonStyles.primary : controlButtonStyles.secondary}>
@@ -43,7 +52,7 @@ export function CubeTutorOverlay() {
     </Pressable>
   );
   return (
-    <Modal visible transparent animationType="fade" onRequestClose={dismissCubeTutor}>
+    <Modal visible transparent animationType="fade" onRequestClose={rolled ? keepCubeDecision : takeBackCubeDecision}>
       <View style={styles.scrim}>
         <View style={styles.card} accessibilityViewIsModal testID="cube-tutor">
           <ScrollView contentContainerStyle={styles.content}>
@@ -53,8 +62,17 @@ export function CubeTutorOverlay() {
               <Text style={styles.recommendation} testID="cube-tutor-recommendation">{translate('game.cube_tutor.best', { choice: cubeChoiceLabel(best) })}</Text>
             </View>
             <BlunderMeter loss={loss} />
-            {canTakeBackCubeDecision && button('cube-tutor-take-back', translate('game.cube_tutor.take_back'), takeBackCubeDecision)}
-            {button('cube-tutor-dismiss', translate('game.cube_tutor.got_it'), dismissCubeTutor, true)}
+            {rolled
+              ? button('cube-tutor-dismiss', translate('game.cube_tutor.got_it'), keepCubeDecision, true)
+              : (
+                  <>
+                    {button('cube-tutor-take-back', translate('game.tutor.take_back'), takeBackCubeDecision, true)}
+                    {button('cube-tutor-keep', translate('game.cube_tutor.keep'), keepCubeDecision)}
+                  </>
+                )}
+            <Pressable testID="cube-tutor-turn-off" accessibilityRole="button" accessibilityLabel={translate('game.tutor.turn_off_a11y')} onPress={turnOff} style={styles.link}>
+              <Text style={styles.linkText}>{translate('game.tutor.turn_off')}</Text>
+            </Pressable>
           </ScrollView>
         </View>
       </View>
@@ -70,4 +88,6 @@ const styles = StyleSheet.create({
   text: { color: GAME_PALETTE.textMuted, fontSize: 16, lineHeight: 23, textAlign: 'center' },
   recommendation: { color: GAME_PALETTE.text, fontSize: 20, textAlign: 'center', ...interFont('semibold') },
   choices: { gap: 4 },
+  link: { alignSelf: 'center', minHeight: 44, justifyContent: 'center', paddingHorizontal: 12 },
+  linkText: { color: GAME_PALETTE.textMuted, fontSize: 15, ...interFont('medium') },
 });

@@ -70,7 +70,7 @@ tags:
     id: cube-tutor-recommendation
     text: 'Best: Pass'
 - takeScreenshot: cube-tutor-bad-take
-# No dice were seen, so a money-game take can be taken back.
+# The take waits on the card, so taking it back leaves the double to answer.
 - tapOn:
     id: cube-tutor-take-back
 - extendedWaitUntil:
@@ -97,8 +97,25 @@ tags:
     id: cube-tutor-recommendation
     text: 'Best: No double'
 - takeScreenshot: cube-tutor-bad-double
+# Take back & retry: the double was never made, so White decides again.
 - tapOn:
-    id: cube-tutor-dismiss
+    id: cube-tutor-take-back
+- extendedWaitUntil:
+    visible:
+      id: match-double
+    timeout: 15000
+- assertNotVisible:
+    id: match-beaver
+- assertVisible: Cube 1 · Center
+# Doubling again and keeping it lets Black answer.
+- tapOn:
+    id: match-double
+- extendedWaitUntil:
+    visible:
+      id: cube-tutor-keep
+    timeout: 45000
+- tapOn:
+    id: cube-tutor-keep
 - extendedWaitUntil:
     visible:
       id: match-beaver
