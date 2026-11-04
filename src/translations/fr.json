@@ -353,6 +353,8 @@
       "recap_5": "Les jeux commencent avec une mort chacun — plus haut passe en premier (ties re-roll)",
       "recap_6": "Compte de pips : le plus bas mène la course",
       "recap_7": "Choisis un plan : course, attaque, muraille ou blocage",
+      "recap_8": "Le videau double l'enjeu : acceptez ou refusez quand on vous double",
+      "recap_9": "Les matchs se jouent jusqu'à un score fixé ; pas de double pendant la partie Crawford",
       "title": "Vous êtes prêt à jouer"
     },
     "hint": "Conseil",
@@ -363,6 +365,28 @@
     "home_cta_sub": "Cours interactifs pour débutants",
     "lesson_complete": "Leçon terminée!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Bloqué ? Touchez Indice pour voir le meilleur coup du moteur sur le plateau. Avant de lancer, il vous dit aussi s'il faut doubler et, quand on vous double, s'il faut accepter ou refuser.",
+            "title": "Indice"
+          },
+          "history": {
+            "body": "Annuler reprend un déplacement pendant votre tour. L'historique sous le plateau parcourt chaque tour de la partie. Avec le mode tuteur, il marque aussi vos erreurs : ?! une imprécision, ? une erreur, ?? une grosse gaffe.",
+            "title": "Annuler et historique"
+          },
+          "levels": {
+            "body": "Contre l'ordinateur, choisissez Facile, Moyen, Difficile ou Expert sur l'accueil. Pour travailler une position, utilisez Créer une position : placez pions, dés et videau, puis jouez à partir de là.",
+            "title": "Niveau de l'ordinateur et vos positions"
+          },
+          "tutor": {
+            "body": "Activez le mode tuteur dans les Réglages : le moteur vérifie chaque coup et chaque décision de videau. Après une erreur, vous pouvez annuler et réessayer, garder votre choix ou désactiver le tuteur.",
+            "title": "Mode tuteur"
+          }
+        },
+        "subtitle": "Indices, mode tuteur, annulation et plus",
+        "title": "Les outils de l'appli"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -402,6 +426,32 @@
         },
         "subtitle": "Par où tu bouges",
         "title": "Direction & configuration"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Si vous sortez vos 15 pions avant que l'adversaire en sorte un seul, c'est un gammon : la partie vaut deux fois le videau. S'il a encore un pion sur la barre ou dans votre jan intérieur, comme les noirs ici, c'est un backgammon : trois fois.",
+            "title": "Le gammon compte double"
+          },
+          "offer": {
+            "body": "Avant de lancer les dés, si vous êtes nettement devant, vous pouvez doubler : touchez Doubler. L'enjeu passe à 2 et l'adversaire doit répondre tout de suite. Ici les blancs mènent largement la course, un bon moment pour doubler.",
+            "title": "Proposer un double"
+          },
+          "own": {
+            "body": "Celui qui accepte possède le videau, et lui seul pourra redoubler plus tard, à 4, puis 8. C'est un avantage : l'adversaire ne peut plus vous faire abandonner en doublant.",
+            "title": "Posséder le videau"
+          },
+          "take_pass": {
+            "body": "Quand on vous double, Refuser perd la partie tout de suite à l'enjeu actuel. Accepter continue pour le double. Bonne règle : acceptez si vous gagnez encore au moins 1 partie sur 4.",
+            "title": "Accepter ou refuser"
+          },
+          "what": {
+            "body": "Chaque partie a un videau. Il commence au centre à 1 et affiche alors 64, sa plus haute valeur. Une partie vaut la valeur du videau : si vous gagnez, vous marquez autant de points.",
+            "title": "Le videau"
+          }
+        },
+        "subtitle": "Augmenter l'enjeu : doubler, accepter ou refuser",
+        "title": "Le videau"
       },
       "goal_board": {
         "steps": {
@@ -443,6 +493,28 @@
         },
         "subtitle": "Jeu de contact",
         "title": "Hitting & la barre"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Quand un joueur arrive pour la première fois à un point de la victoire, la partie suivante est la partie Crawford : personne ne peut doubler et le videau est grisé. Ensuite, le double revient.",
+            "title": "La règle de Crawford"
+          },
+          "dead_cube": {
+            "body": "En fin de match, un double peut être inutile : si gagner cette partie vous donne déjà le match, doubler n'apporte rien. L'appli ne propose alors que Lancer les dés et vous dit pourquoi.",
+            "title": "Quand le videau ne sert à rien"
+          },
+          "start": {
+            "body": "Sur l'accueil, choisissez Match, la longueur et la règle de Crawford ou non, puis lancez. Les matchs se jouent contre l'ordinateur ou contre un ami sur le même appareil.",
+            "title": "Lancer un match"
+          },
+          "what": {
+            "body": "Un match se joue jusqu'à un score fixé : 3, 5, 7 points ou plus. Chaque partie rapporte sa valeur au gagnant : le videau, doublé pour un gammon. Le premier à atteindre l'objectif gagne le match.",
+            "title": "Jouer un match"
+          }
+        },
+        "subtitle": "Jouer jusqu'à un score, avec la règle de Crawford",
+        "title": "Les matchs"
       },
       "moving_dice": {
         "steps": {
@@ -544,6 +616,18 @@
         "b": "Un seul vérificateur sur un point — il peut être frappé",
         "c": "Deux contrôleurs ou plus sur un point — un point",
         "prompt": "Qu'est-ce qu'une tache ?"
+      },
+      "crawford": {
+        "a": "Personne ne peut doubler",
+        "b": "Les gammons ne comptent pas",
+        "c": "Le videau commence à 2",
+        "prompt": "Qu'a de particulier la partie Crawford ?"
+      },
+      "cube_pass": {
+        "a": "Vous continuez pour le double",
+        "b": "Vous perdez la partie à l'enjeu actuel",
+        "c": "Le videau revient au centre",
+        "prompt": "On vous double et vous refusez. Que se passe-t-il ?"
       },
       "pip_ahead": {
         "a": "Ton adversaire, avec le compte le plus haut",

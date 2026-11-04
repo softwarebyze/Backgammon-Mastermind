@@ -353,6 +353,8 @@
       "recap_5": "Los juegos comienzan con uno muere cada uno — más alto va primero (que se re-rolla)",
       "recap_6": "Recuento de pips: el menor va delante en la carrera",
       "recap_7": "Elige un plan: carrera, ataque, muralla o retención",
+      "recap_8": "El cubo dobla la apuesta: acepta o rechaza cuando te doblen",
+      "recap_9": "Los encuentros van hasta una puntuación fija; no se dobla en la partida Crawford",
       "title": "Estás listo para jugar"
     },
     "hint": "Hint",
@@ -363,6 +365,28 @@
     "home_cta_sub": "Clases interactivas para principiantes",
     "lesson_complete": "Lección completa!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "¿Atascado? Toca Pista para ver en el tablero la mejor jugada del motor. Antes de tirar, también te dice si conviene doblar y, cuando te doblan, si aceptar o rechazar.",
+            "title": "Pista"
+          },
+          "history": {
+            "body": "Deshacer anula un movimiento durante tu turno. El historial bajo el tablero recorre cada turno de la partida. Con el modo tutor, también marca tus errores: ?! un despiste, ? un error, ?? un error grave.",
+            "title": "Deshacer e historial"
+          },
+          "levels": {
+            "body": "Contra el ordenador, elige Fácil, Medio, Difícil o Experto en Inicio. Para practicar una posición, usa Preparar una posición: coloca fichas, dados y cubo, y juega desde ahí.",
+            "title": "Nivel del ordenador y tus propias posiciones"
+          },
+          "tutor": {
+            "body": "Activa el modo tutor en Ajustes y el motor revisará cada jugada y cada decisión del cubo. Tras un error puedes deshacer y reintentar, mantener tu elección o apagar el tutor.",
+            "title": "Modo tutor"
+          }
+        },
+        "subtitle": "Pistas, modo tutor, deshacer y más",
+        "title": "Herramientas de la aplicación"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -402,6 +426,32 @@
         },
         "subtitle": "Por donde te mueves",
         "title": "Dirección y disposición"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Si sacas tus 15 fichas antes de que tu rival saque alguna, es un gammon: la partida vale el doble del cubo. Si aún tiene una ficha en la barra o en tu tablero interior, como las negras aquí, es un backgammon: el triple.",
+            "title": "El gammon cuenta doble"
+          },
+          "offer": {
+            "body": "Antes de tirar, si vas claramente por delante puedes doblar: toca Doblar. La apuesta sube a 2 y tu rival debe responder enseguida. Aquí las blancas llevan mucha ventaja en la carrera, buen momento para doblar.",
+            "title": "Ofrecer un doble"
+          },
+          "own": {
+            "body": "Quien acepta se queda con el cubo, y solo él puede volver a doblar más tarde, a 4 y luego a 8. Es una ventaja: tu rival ya no puede echarte de la partida con un doble.",
+            "title": "Ser dueño del cubo"
+          },
+          "take_pass": {
+            "body": "Cuando te doblan, Rechazar pierde la partida ya, con la apuesta actual. Aceptar sigue jugando por el doble. Una buena regla: acepta si todavía ganarías al menos 1 partida de cada 4.",
+            "title": "Aceptar o rechazar"
+          },
+          "what": {
+            "body": "Cada partida tiene un cubo de doblaje. Empieza en el centro valiendo 1, y entonces muestra 64, su valor más alto. Una partida vale lo que marca el cubo: si ganas, sumas esos puntos.",
+            "title": "El cubo de doblaje"
+          }
+        },
+        "subtitle": "Sube la apuesta: dobla, acepta o rechaza",
+        "title": "El cubo de doblaje"
       },
       "goal_board": {
         "steps": {
@@ -443,6 +493,28 @@
         },
         "subtitle": "Juego de contacto",
         "title": "El bar"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Cuando un jugador se queda por primera vez a un punto de ganar, la siguiente partida es la partida Crawford: nadie puede doblar y el cubo aparece atenuado. Después, vuelve el doblaje.",
+            "title": "La regla Crawford"
+          },
+          "dead_cube": {
+            "body": "Al final de un encuentro un doble puede no tener sentido: si ganar esta partida ya te da el encuentro, doblar no aporta nada. La aplicación solo te ofrece Tirar los dados y te explica por qué.",
+            "title": "Cuando el cubo no sirve"
+          },
+          "start": {
+            "body": "En Inicio, elige Encuentro, la longitud y si usar la regla Crawford, y empieza. Puedes jugar encuentros contra el ordenador o contra un amigo en el mismo dispositivo.",
+            "title": "Empezar un encuentro"
+          },
+          "what": {
+            "body": "Un encuentro se juega hasta una puntuación fija: 3, 5, 7 puntos o más. Cada partida suma su valor al ganador: el cubo, el doble si es gammon. Quien llega primero a la meta gana el encuentro.",
+            "title": "Jugar un encuentro"
+          }
+        },
+        "subtitle": "Juega hasta una puntuación, con la regla Crawford",
+        "title": "Encuentros"
       },
       "moving_dice": {
         "steps": {
@@ -544,6 +616,18 @@
         "b": "Un solo checker en un punto - se puede golpear",
         "c": "Dos o más checkers en un punto - un punto hecho",
         "prompt": "¿Qué es una mancha?"
+      },
+      "crawford": {
+        "a": "Nadie puede doblar",
+        "b": "Los gammons no cuentan",
+        "c": "El cubo empieza en 2",
+        "prompt": "¿Qué tiene de especial la partida Crawford?"
+      },
+      "cube_pass": {
+        "a": "Sigues jugando por el doble",
+        "b": "Pierdes la partida con la apuesta actual",
+        "c": "El cubo vuelve al centro",
+        "prompt": "Te doblan y rechazas. ¿Qué pasa?"
       },
       "pip_ahead": {
         "a": "Tu rival, con el recuento mayor",

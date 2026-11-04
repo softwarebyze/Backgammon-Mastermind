@@ -176,6 +176,7 @@ function LessonScreenBody({
       titleKey={session.step.titleKey}
       bodyKey={session.step.bodyKey}
       strategy={session.step.strategy}
+      cube={session.step.cube}
       feedback={session.feedback}
       stepLabel={translate('learn.step_progress', {
         current: session.stepIndex + 1,

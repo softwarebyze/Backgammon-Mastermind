@@ -1,0 +1,35 @@
+# Learn teaches the cube, match play with the Crawford rule, and the app's tools.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- openLink: backgammonmastermind.preview://learn
+- extendedWaitUntil:
+    visible:
+      id: learn-hub-screen
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: learn-lesson-match-play
+    direction: DOWN
+- assertVisible:
+    id: learn-lesson-doubling-cube
+- assertVisible:
+    id: learn-lesson-app-tools
+- takeScreenshot: learn-cube-match-01-hub
+- tapOn:
+    id: learn-lesson-match-play
+- extendedWaitUntil:
+    visible: Playing a match
+    timeout: 20000
+- tapOn:
+    id: learn-primary-cta
+- extendedWaitUntil:
+    visible: The Crawford rule
+    timeout: 10000
+- takeScreenshot: learn-cube-match-02-crawford

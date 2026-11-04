@@ -56,3 +56,13 @@ describe('coach caption game plan', () => {
     expect(screen.queryByTestId(/^learn-strategy-/, { includeHiddenElements: true })).toBeNull();
   });
 });
+
+describe('coach caption cube', () => {
+  it('draws the cube a cube step describes, greyed for the Crawford game', () => {
+    render(<CoachCaption titleKey="learn.lessons.match_play.steps.crawford.title" bodyKey="learn.lessons.match_play.steps.crawford.body" stepLabel="2/4" feedback={null} cube={{ value: 1, unavailable: true }} />);
+    expect(screen.getByTestId('learn-cube', { includeHiddenElements: true }).props.importantForAccessibility).toBe('no-hide-descendants');
+    // The cube starts at 1 and shows its 64 face, as in a game.
+    expect(screen.getByText('64', { includeHiddenElements: true })).toBeTruthy();
+    expect(screen.getByTestId('doubling-cube-face', { includeHiddenElements: true })).toHaveStyle({ opacity: 0.45 });
+  });
+});
