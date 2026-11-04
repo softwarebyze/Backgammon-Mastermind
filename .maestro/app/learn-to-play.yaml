@@ -1,0 +1,78 @@
+# Walk a brand-new player through the first beginner lesson: hub → explain →
+# identify (home board) → identify (bar) → lesson complete → next lesson →
+# back to the hub with recorded progress. Guards the learn course end to end.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn: Learn to play
+- extendedWaitUntil:
+    visible:
+      id: learn-hub-screen
+    timeout: 15000
+- assertVisible:
+    id: learn-progress-ring
+- assertVisible: 0 of 7 lessons done
+- takeScreenshot: 01-learn-hub
+- tapOn:
+    id: learn-lesson-row-goal-board
+- extendedWaitUntil:
+    visible:
+      id: learn-primary-cta
+    timeout: 15000
+- assertVisible: Step 1 of 3
+- takeScreenshot: 02-lesson-first-step
+- tapOn:
+    id: learn-primary-cta
+- tapOn:
+    id: learn-back
+- assertVisible: Step 1 of 3
+- tapOn:
+    id: learn-primary-cta
+- extendedWaitUntil:
+    visible: Find your home board
+    timeout: 15000
+- takeScreenshot: 03-identify-step
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible:
+      id: learn-feedback
+    timeout: 15000
+- takeScreenshot: 04-praise
+- tapOn:
+    id: learn-primary-cta
+- extendedWaitUntil:
+    visible: The bar
+    timeout: 15000
+# Anchored regex: the body copy also contains the word "bar".
+- tapOn:
+    text: ^Bar$
+# The completion card replaces the per-step "Correct!" card — one success surface.
+- extendedWaitUntil:
+    visible:
+      id: learn-lesson-complete
+    timeout: 15000
+- assertNotVisible:
+    id: learn-feedback
+- takeScreenshot: 05-lesson-complete
+- tapOn:
+    id: learn-primary-cta
+- extendedWaitUntil:
+    visible: Direction & setup
+    timeout: 15000
+- assertVisible: Step 1 of 3
+- takeScreenshot: 06-next-lesson
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: learn-hub-screen
+    timeout: 15000
+- assertVisible: 1 of 7 lessons done
+- takeScreenshot: 07-hub-progress

@@ -15,6 +15,7 @@ flows:
   - app/android-back-closes-settings.yaml
   - app/position-setup.yaml
   - app/undo-redo.yaml
+  - app/learn-to-play.yaml
   - app/center-bar-checkers.yaml
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml

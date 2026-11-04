@@ -40,6 +40,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
   "${WORKSPACE}/.maestro/app/position-setup.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
+  "${WORKSPACE}/.maestro/app/learn-to-play.yaml" \
   "${WORKSPACE}/.maestro/app/center-bar-checkers.yaml" \
   "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \
   "${WORKSPACE}/.maestro/app/bar-entry-hints.yaml" \
