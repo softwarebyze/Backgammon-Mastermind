@@ -1,6 +1,8 @@
+import type { GamePreferences } from './types';
 import { migrateDiceDisplayToDots } from './dice-display-migration';
 import {
   DEFAULT_GAME_PREFERENCES,
+  dropUnknownComputerLevel,
   migrateConfirmMoveDefault,
   migrateImplicitPlayDefaults,
   omitRetiredPreferences,
@@ -125,5 +127,20 @@ describe('retired fast computer preference', () => {
     const { prefs, didStrip } = omitRetiredPreferences({ autoRoll: false });
     expect(didStrip).toBe(false);
     expect(prefs).toEqual({ autoRoll: false });
+  });
+});
+
+describe('computer level', () => {
+  it('defaults to medium', () => {
+    expect(DEFAULT_GAME_PREFERENCES.computerLevel).toBe('medium');
+  });
+
+  it('keeps a saved level', () => {
+    expect(dropUnknownComputerLevel({ computerLevel: 'expert' })).toEqual({ computerLevel: 'expert' });
+  });
+
+  it('drops a level this build does not know, so the default applies', () => {
+    const stored = { computerLevel: 'grandmaster', soundEnabled: false } as unknown as Partial<GamePreferences>;
+    expect({ ...DEFAULT_GAME_PREFERENCES, ...dropUnknownComputerLevel(stored) }).toMatchObject({ computerLevel: 'medium', soundEnabled: false });
   });
 });

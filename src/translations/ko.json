@@ -8,6 +8,15 @@
     "caption": {
       "selected": "선택 - 강조 표시된 지점을 탭하거나 취소"
     },
+    "computer_level": {
+      "a11y": "컴퓨터 난이도: {{level}}",
+      "easy": "쉬움",
+      "expert": "전문가",
+      "hard": "어려움",
+      "hint": "쉬움은 초보자 같은 실수를 합니다. 전문가는 항상 엔진의 최선의 수를 둡니다.",
+      "medium": "보통",
+      "title": "컴퓨터 난이도"
+    },
     "controls": {
       "bear_off_a11y": "말 빼내기",
       "cancel": "취소",
