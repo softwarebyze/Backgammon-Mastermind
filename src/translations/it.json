@@ -583,9 +583,6 @@
             "praise": "Perfetto. Quel muro è il prime. Le pedine arretrate del nero sono intrappolate.",
             "title": "Trova il muro"
           },
-          "opening": {
-            "body": "All'inizio della partita non c'è ancora un piano. Costruisci punti utili — soprattutto il punto 5 — e tieni aperte le tue opzioni. In partita, questa icona accanto al tuo nome indica che sei ancora in apertura."
-          },
           "prime": {
             "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che limita le pedine arretrate del nero. Allungalo un punto alla volta."
           },

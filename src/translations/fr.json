@@ -583,9 +583,6 @@
             "praise": "Parfait. Ce mur est la prime. Les pions arrière du noir sont pris.",
             "title": "Repère la muraille"
           },
-          "opening": {
-            "body": "En début de partie, aucun plan ne s'est encore dessiné. Construisez des points utiles — avant tout le point 5 — et gardez vos options ouvertes. En partie, cette icône à côté de votre nom indique que vous êtes encore dans l'ouverture."
-          },
           "prime": {
             "body": "Tu as un mur de flèches faites à la suite, une prime. Les flèches marquées forment une prime de 4 qui gêne les pions arrière du noir. Allonge-la d’une flèche à la fois."
           },

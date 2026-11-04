@@ -583,9 +583,6 @@
             "praise": "Perfekt! Diese Mauer ist die Prime. Die hinteren Steine von Schwarz sitzen fest.",
             "title": "Finde die Prime"
           },
-          "opening": {
-            "body": "Am Anfang des Spiels gibt es noch keinen Plan. Baue nützliche Punkte – vor allem den 5er-Punkt – und halte dir alle Möglichkeiten offen. Im Spiel bedeutet dieses Symbol neben deinem Namen, dass du noch in der Eröffnung bist."
-          },
           "prime": {
             "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt."
           },

@@ -583,9 +583,6 @@
             "praise": "Idealnie. Ta ściana to mur. Tylne piony czarnego są uwięzione.",
             "title": "Wskaż mur"
           },
-          "opening": {
-            "body": "Na początku gry nie ma jeszcze planu. Buduj przydatne punkty — przede wszystkim punkt 5 — i zostaw sobie otwarte opcje. W grze ta ikona obok twojego imienia oznacza, że wciąż jesteś w otwarciu."
-          },
           "prime": {
             "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, który ogranicza tylne piony czarnego. Wydłużaj go po jednym polu."
           },

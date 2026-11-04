@@ -583,9 +583,6 @@
             "praise": "Perfecto. Ese muro es la muralla. Las fichas de atrás del negro están atrapadas.",
             "title": "Encuentra la muralla"
           },
-          "opening": {
-            "body": "Al principio de la partida aún no hay un plan. Construye puntos útiles — sobre todo el punto 5 — y mantén tus opciones abiertas. En una partida, este icono junto a tu nombre indica que sigues en la apertura."
-          },
           "prime": {
             "body": "Has hecho un muro de puntos seguidos. Los puntos marcados son una muralla de 4 que limita a las fichas de atrás del negro. Alárgala un punto cada vez."
           },

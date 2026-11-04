@@ -583,9 +583,6 @@
             "praise": "Mükemmel. O duvar prime. Siyahın gerideki pulları kapalı.",
             "title": "Duvarı bul"
           },
-          "opening": {
-            "body": "Oyunun başında henüz bir plan oluşmamıştır. İşe yarar noktalar kurun — en çok da 5 numaralı noktayı — ve seçeneklerinizi açık tutun. Oyunda adınızın yanındaki bu simge hâlâ açılışta olduğunuzu gösterir."
-          },
           "prime": {
             "body": "Ardışık kapalı noktalardan bir duvar kurdun. Vurgulanan noktalar 4’lük bir duvar; siyahın gerideki pullarını kısıtlar. Birer nokta uzat."
           },

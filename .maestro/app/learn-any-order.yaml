@@ -29,5 +29,5 @@ tags:
 - takeScreenshot: learn-any-order-02-last-lesson-open
 # The plans lesson opens on the first plan, named as the game names it,
 # with the in-game plan icon beside it.
-- assertVisible: Opening
+- assertVisible: Running game
 - takeScreenshot: learn-any-order-03-plan-icon
