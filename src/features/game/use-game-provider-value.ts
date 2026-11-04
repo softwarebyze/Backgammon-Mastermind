@@ -1,4 +1,5 @@
 import type { GameContextType } from '@/features/game/game-context';
+import type { GameAbandonReason } from '@/features/game/use-game-completed-capture';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useRef, useState } from 'react';
 import { getGuidance, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
@@ -159,10 +160,10 @@ export function useGameProviderValue(active: boolean): GameContextType {
     if (!redoCube())
       redoCheckers();
   }, [redoCube, redoCheckers]);
-  const resetForNewSession = useCallback(() => {
+  const resetForNewSession = useCallback((reason: GameAbandonReason) => {
     resetCubeHistory();
     cancelCubeTutor();
-    resetForNewGame();
+    resetForNewGame(reason);
   }, [resetCubeHistory, cancelCubeTutor, resetForNewGame]);
   const { clearAITimeout, resumeAIScheduling, computerCubeError, retryCubeAnalysis } = useComputerOpponent({
     enabled: active,
