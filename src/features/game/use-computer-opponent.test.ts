@@ -1,4 +1,5 @@
-import type { GameState } from '@/lib/game';
+import type { PlayMoveOpts } from '@/features/game/create-play-move';
+import type { GameState, Move } from '@/lib/game';
 import { act, renderHook } from '@testing-library/react-native';
 
 import { planComputerTurn } from '@/features/game/computer-turn';
@@ -18,8 +19,12 @@ afterEach(() => {
 
 const start: GameState = { ...createInitialState('vs-computer'), currentPlayer: 'black', phase: 'moving', dice: [6, 3], remainingDice: [6, 3] };
 
-function render(level: 'easy' | 'expert') {
-  const playMove = jest.fn();
+/** Lands every move at once, as a finished slide does. */
+function landingPlayMove() {
+  return jest.fn((snapshot: GameState, move: Move, opts?: PlayMoveOpts) => opts?.onComplete?.(applyMove(snapshot, move)));
+}
+
+function render(level: 'easy' | 'expert', playMove = landingPlayMove()) {
   const view = renderHook(
     ({ state }: { state: GameState }) => useComputerOpponent({
       enabled: true,
@@ -61,20 +66,20 @@ it('plays the turn the engine chose for its level, one checker at a time', async
   const { playMove, rerender } = render('easy');
   await runTimers();
   expect(planComputerTurn).toHaveBeenCalledWith(start, 'easy');
-  expect(playMove).toHaveBeenLastCalledWith(start, expect.objectContaining({ from: first.from, to: first.to }), { pace: 'computer' });
+  expect(playMove).toHaveBeenLastCalledWith(start, expect.objectContaining({ from: first.from, to: first.to }), expect.objectContaining({ pace: 'computer' }));
 
   rerender({ state: afterFirst });
   await runTimers();
   // Mid-turn it keeps to the plan instead of asking again.
   expect(planComputerTurn).toHaveBeenCalledTimes(1);
-  expect(playMove).toHaveBeenLastCalledWith(afterFirst, expect.objectContaining({ from: second.from, to: second.to }), { pace: 'computer' });
+  expect(playMove).toHaveBeenLastCalledWith(afterFirst, expect.objectContaining({ from: second.from, to: second.to }), expect.objectContaining({ pace: 'computer' }));
 });
 
 it('falls back to the built-in heuristic when the engine cannot answer', async () => {
   jest.mocked(planComputerTurn).mockRejectedValue(new Error('offline'));
   const { playMove } = render('expert');
   await runTimers();
-  expect(playMove).toHaveBeenCalledWith(start, getAIMove(start), { pace: 'computer' });
+  expect(playMove).toHaveBeenCalledWith(start, getAIMove(start), expect.objectContaining({ pace: 'computer' }));
 });
 
 it('keeps a planned move whose timer was cancelled, and plays it on resume', async () => {
@@ -99,5 +104,28 @@ it('keeps a planned move whose timer was cancelled, and plays it on resume', asy
   act(() => result.current.clearAITimeout());
   act(() => result.current.resumeAIScheduling());
   await runTimers();
-  expect(playMove).toHaveBeenLastCalledWith(afterFirst, expect.objectContaining({ from: second.from, to: second.to }), { pace: 'computer' });
+  expect(playMove).toHaveBeenLastCalledWith(afterFirst, expect.objectContaining({ from: second.from, to: second.to }), expect.objectContaining({ pace: 'computer' }));
+});
+
+it('keeps a planned move whose slide was interrupted, and plays it again', async () => {
+  const legal = getLegalMoves(start);
+  const first = legal[legal.length - 1];
+  const afterFirst = applyMove(start, first);
+  const nextLegal = getLegalMoves(afterFirst);
+  const second = nextLegal[nextLegal.length - 1];
+  expect(getAIMove(afterFirst)).not.toMatchObject({ from: second.from, to: second.to });
+  jest.mocked(planComputerTurn).mockResolvedValue([
+    { ...first, die: start.remainingDice[first.dieIndex] },
+    { ...second, die: afterFirst.remainingDice[second.dieIndex] },
+  ]);
+  const playMove = landingPlayMove();
+  const { rerender, result } = render('easy', playMove);
+  await runTimers();
+  rerender({ state: afterFirst });
+  // The second slide starts, then leaving the game screen cuts it off before it lands.
+  playMove.mockImplementationOnce(() => {});
+  await runTimers();
+  act(() => result.current.resumeAIScheduling());
+  await runTimers();
+  expect(playMove).toHaveBeenLastCalledWith(afterFirst, expect.objectContaining({ from: second.from, to: second.to }), expect.objectContaining({ pace: 'computer' }));
 });

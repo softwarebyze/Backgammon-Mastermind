@@ -205,9 +205,13 @@ describe('sage bear-off recovery', () => {
         { point: 19, player: 'black', count: 2 },
       ],
     });
-    expectRecovered(state, [
+    const steps = [
       { from: 3, to: 2 },
       { from: 2, to: 25 },
-    ]);
+    ];
+    expectRecovered(state, steps);
+    // The computer plays each step with the die recovered here: 3/2 is the 1, 2/off the 4.
+    const recovered = decomposePlayerOnRollBoard(sageBoard(state, 'white'), sageBoard(play(state, steps), 'white'), [4, 1]);
+    expect(recovered?.map(m => m.die)).toEqual([1, 4]);
   });
 });

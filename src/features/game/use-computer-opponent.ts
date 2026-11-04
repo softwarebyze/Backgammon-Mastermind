@@ -205,9 +205,17 @@ export function useComputerOpponent({
           if (latest !== prev || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
-          // Only a move that actually plays leaves the plan: a cancelled timer keeps it.
-          plannedTurnRef.current = plannedMove ? rest : [];
-          playMove(latest, move, { pace: 'computer' });
+          if (!plannedMove)
+            plannedTurnRef.current = [];
+          // A step leaves the plan only once its move lands: a cancelled timer
+          // or an interrupted slide keeps it for the next pass.
+          playMove(latest, move, {
+            pace: 'computer',
+            onComplete: (next) => {
+              if (plannedMove && next !== latest)
+                plannedTurnRef.current = rest;
+            },
+          });
         }, moveDelay);
         aiTimeoutRef.current = moveTimer;
       }
