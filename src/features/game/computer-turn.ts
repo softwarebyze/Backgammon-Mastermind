@@ -29,7 +29,7 @@ export function chooseComputerCubeAction(
   level: ComputerLevel,
   random: () => number = Math.random,
 ): CubeDecision {
-  if (COMPUTER_LEVEL_SETTINGS[level].noise === 0)
+  if (COMPUTER_LEVEL_SETTINGS[level].temperature === 0)
     return analysis.best;
   const options = (Object.entries(analysis.values) as [CubeDecision, number][])
     .filter(([, equity]) => Number.isFinite(equity))

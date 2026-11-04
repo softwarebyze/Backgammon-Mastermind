@@ -25,20 +25,19 @@ function fakeEngine() {
 const state: GameState = { ...createInitialState('vs-computer'), currentPlayer: 'black', phase: 'moving', dice: [6, 3], remainingDice: [6, 3] };
 
 describe('planComputerTurn', () => {
-  it('plays the engine\'s best turn at expert, two plies deep', async () => {
+  it('plays the engine\'s best turn at expert', async () => {
     const engine = fakeEngine();
     const moves = await planComputerTurn(state, 'expert', { engine, random: () => 0.5 });
-    expect(engine.planTurn).toHaveBeenCalledWith(state, { ply: 2 });
+    expect(engine.planTurn).toHaveBeenCalledWith(state, { ply: 1 });
     expect(engine.movesToCandidate).not.toHaveBeenCalled();
     // Each move carries its die, so the plan survives the dice shrinking as it plays.
     expect(moves).toEqual([{ ...best[0], die: 6 }, { ...best[1], die: 3 }]);
   });
 
-  it('looks one ply deep at easy and can play a worse candidate', async () => {
+  it('can play a worse candidate at easy', async () => {
     const engine = fakeEngine();
-    // Noise that lifts the second candidate above the first.
-    const draws = [0.99, 0.5, 0.0001, 0];
-    const moves = await planComputerTurn(state, 'easy', { engine, random: () => draws.shift() ?? 0.5 });
+    // A draw at the top of the range lands on the weaker candidate's weight.
+    const moves = await planComputerTurn(state, 'easy', { engine, random: () => 0.99 });
     expect(engine.planTurn).toHaveBeenCalledWith(state, { ply: 1 });
     expect(engine.movesToCandidate).toHaveBeenCalledWith(state, { board: [2], equity: -0.5 });
     expect(moves.map(m => m.from)).toEqual([13, 13]);
@@ -60,7 +59,6 @@ describe('chooseComputerCubeAction', () => {
 
   it('can misjudge a close cube decision at easy', () => {
     const close: CubeAnalysis = { actor: 'black', best: 'accept', values: { accept: -0.98, drop: -1 } };
-    const draws = [0.999, 0.5, 0.0001, 0];
-    expect(chooseComputerCubeAction(close, 'easy', () => draws.shift() ?? 0.5)).toBe('drop');
+    expect(chooseComputerCubeAction(close, 'easy', () => 0.99)).toBe('drop');
   });
 });
