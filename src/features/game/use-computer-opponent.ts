@@ -1,14 +1,17 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { PlayMoveOpts } from '@/features/game/create-play-move';
 import type { GameState, Move } from '@/lib/game';
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { analyzeCubeDecision } from '@/features/game/cube-analysis';
 import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 import {
   computerMoveDelayMs,
   computerThinkDelayMs,
 } from '@/lib/game/computer-pace';
+import { acceptDouble, beaverDouble, canOfferDouble, dropDouble, offerDouble } from '@/lib/game/match';
 
 type ComputerOpponentOptions = {
   enabled: boolean;
@@ -23,12 +26,15 @@ type ComputerOpponentOptions = {
   recordNoMove: (before: GameState, after: GameState) => void;
   /** Tutor blunder prompt is open — pause the AI until the user chooses. */
   paused?: boolean;
+  recordCubeEvent?: (kind: CubeHistoryEvent['kind'], before: GameState, after: GameState) => void;
 };
 
 export type ComputerOpponentControls = {
   clearAITimeout: () => void;
   /** Re-arm AI timers after leave-home cancelled them (same state, no effect deps change). */
   resumeAIScheduling: () => void;
+  computerCubeError: boolean;
+  retryCubeAnalysis: () => void;
 };
 
 /* eslint-disable max-lines-per-function -- AI turn orchestration */
@@ -42,16 +48,24 @@ export function useComputerOpponent({
   hasRedo,
   recordNoMove,
   paused = false,
+  recordCubeEvent,
 }: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const generationRef = useRef(0);
   const stateRef = useRef(state);
   stateRef.current = state;
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
   // Bumped when returning to the game screen so timers re-schedule without a state change.
   const [scheduleGen, setScheduleGen] = useState(0);
+  const [failedState, setFailedState] = useState<GameState | null>(null);
+  const retryCubeAnalysis = useCallback(() => {
+    setFailedState(null);
+    setScheduleGen(g => g + 1);
+  }, []);
 
   const clearAITimeout = useCallback(() => {
+    generationRef.current++;
     if (aiTimeoutRef.current !== null) {
       clearTimeout(aiTimeoutRef.current);
       aiTimeoutRef.current = null;
@@ -69,7 +83,7 @@ export function useComputerOpponent({
       return clearAITimeout;
     if (state.mode !== 'vs-computer')
       return clearAITimeout;
-    if (state.currentPlayer !== 'black')
+    if ((state.match?.pendingOffer ? state.match.pendingOffer !== 'white' : state.currentPlayer !== 'black'))
       return clearAITimeout;
     if (state.phase === 'game-over')
       return clearAITimeout;
@@ -79,30 +93,58 @@ export function useComputerOpponent({
     if (hasRedo)
       return clearAITimeout;
 
+    const generation = generationRef.current;
     const delay = computerThinkDelayMs(state.phase);
     let moveTimer: ReturnType<typeof setTimeout> | undefined;
     if (delay === 0 && state.phase !== 'moving') {
       return clearAITimeout;
     }
 
-    const runAI = () => {
+    const runAI = async () => {
       // Failsafe: a timeout scheduled just before the pause must not fire through it.
-      if (pausedRef.current)
+      if (pausedRef.current || generationRef.current !== generation)
         return;
       const prev = stateRef.current;
-      if (!prev || prev.currentPlayer !== 'black')
+      if (prev !== state || !prev || (prev.match?.pendingOffer ? prev.match.pendingOffer !== 'white' : prev.currentPlayer !== 'black'))
+        return;
+
+      if (prev.phase === 'rolling' && prev.match && (prev.match.pendingOffer || canOfferDouble(prev))) {
+        try {
+          const { best } = await analyzeCubeDecision(prev);
+          if (pausedRef.current || generationRef.current !== generation || stateRef.current !== prev)
+            return;
+          if (best !== 'roll') {
+            const next = best === 'offer'
+              ? offerDouble(prev, moveCount)
+              : best === 'accept' ? acceptDouble(prev) : best === 'beaver' ? beaverDouble(prev) : dropDouble(prev);
+            if (next !== prev) {
+              recordCubeEvent?.(best, prev, next);
+              setState(next);
+            }
+            return;
+          }
+        }
+        catch {
+          if (generationRef.current === generation && stateRef.current === prev)
+            setFailedState(prev);
+          return;
+        }
+      }
+      // Wait for the human to answer the computer's offer.
+      if (prev.match?.pendingOffer)
         return;
 
       if (prev.phase === 'opening-roll' || prev.phase === 'rolling') {
         setState((current) => {
-          if (!current || current.currentPlayer !== 'black')
+          if (current !== prev || current.currentPlayer !== 'black')
             return current;
           if (current.phase === 'opening-roll') {
             playGameSfx('roll');
             return applyOpeningDieRoll(current, rollOpeningDie());
           }
           playGameSfx('roll');
-          return applyDiceRoll(current, rollDice());
+          const rolled = applyDiceRoll(current, rollDice());
+          return rolled.match ? { ...rolled, match: { ...rolled.match, undoFloor: moveCount } } : rolled;
         });
         return;
       }
@@ -122,10 +164,10 @@ export function useComputerOpponent({
         }
         const moveDelay = computerMoveDelayMs(moveCount);
         moveTimer = setTimeout(() => {
-          if (pausedRef.current)
+          if (pausedRef.current || generationRef.current !== generation)
             return;
           const latest = stateRef.current;
-          if (!latest || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
+          if (latest !== prev || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
           playMove(latest, move, { pace: 'computer' });
@@ -156,10 +198,11 @@ export function useComputerOpponent({
     moveCount,
     hasRedo,
     recordNoMove,
+    recordCubeEvent,
     clearAITimeout,
     scheduleGen,
     paused,
   ]);
 
-  return { clearAITimeout, resumeAIScheduling };
+  return { clearAITimeout, resumeAIScheduling, computerCubeError: failedState !== null && failedState === state, retryCubeAnalysis };
 }

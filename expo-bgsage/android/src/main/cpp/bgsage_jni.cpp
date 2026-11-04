@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "bgbot/mobile.h"
+#include "../../../../ios/BgsageAnalysis.h"
 
 namespace {
 
@@ -26,8 +26,8 @@ void FillBoard(BgsageMobileRequest& r, JNIEnv* env, jintArray board) {
   env->ReleaseIntArrayElements(board, elems, JNI_ABORT);
 }
 
-jstring RunAnalyze(JNIEnv* env, jlong handle, int op, const BgsageMobileRequest& req) {
-  char* j = bgsage_mobile_analyze(ToEngine(handle), op, &req);
+jstring RunAnalyze(JNIEnv* env, jlong handle, int op, const BgsageMobileRequest& req, int limit = 32768, bool crawfordRule = true) {
+  char* j = bgsage_analyze_context(ToEngine(handle), op, &req, limit, crawfordRule);
   jstring out = env->NewStringUTF(j ? j : "{\"error\":\"engine returned null\"}");
   bgsage_mobile_free(j);
   return out;
@@ -75,9 +75,9 @@ Java_com_bgsage_BgsageNative_analyzeCheckers(JNIEnv* env, jclass, jlong handle,
   r.ply = ply;
   r.cube_value = 1;
   r.cube_owner = 0;  // centered
-  r.jacoby = 1;
+  r.jacoby = 0;
   r.budget_ms = 1000;
-  return RunAnalyze(env, handle, /*op=*/0, r);
+  return RunAnalyze(env, handle, /*op=*/0, r, 1);
 }
 
 // String nativeAnalyzeCube(long handle, int[] board, int cubeValue, int cubeOwner, int ply)
@@ -93,6 +93,19 @@ Java_com_bgsage_BgsageNative_analyzeCube(JNIEnv* env, jclass, jlong handle,
   r.jacoby = 1;
   r.budget_ms = 1000;
   return RunAnalyze(env, handle, /*op=*/1, r);
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_bgsage_BgsageNative_analyzePosition(JNIEnv* env, jclass, jlong handle,
+    jintArray board, jintArray dice, jint ply, jintArray context, jint operation) {
+  if (env->GetArrayLength(board)!=26 || env->GetArrayLength(dice)!=2 || env->GetArrayLength(context)!=9)
+    return env->NewStringUTF("{\"error\":\"invalid request shape\"}");
+  BgsageMobileRequest r{}; FillBoard(r,env,board);
+  jint d[2], c[9]; env->GetIntArrayRegion(dice,0,2,d); env->GetIntArrayRegion(context,0,9,c);
+  r.die1=d[0]; r.die2=d[1]; r.ply=ply;
+  r.cube_value=c[0]; r.cube_owner=c[1]; r.away1=c[2]; r.away2=c[3];
+  r.is_crawford=c[4]; r.jacoby=c[5]; r.beaver=c[6]; r.budget_ms=1000;
+  return RunAnalyze(env,handle,operation,r,c[7],c[8]!=0);
 }
 
 // void nativeDestroy(long handle)

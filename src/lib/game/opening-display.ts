@@ -48,7 +48,8 @@ export function openingCopy(
       ? [reveal.white, reveal.black]
       : [reveal.black, reveal.white];
     return {
-      headline: translate('game.opening.goes_first', { player: winner }),
+      // The strip already names the winner: "Goes first!" under it.
+      headline: translate('game.opening.goes_first'),
       caption: translate('game.opening.compare', { winner, high, low }),
     };
   }
@@ -66,7 +67,7 @@ export function openingCopy(
   return {
     headline: translate('game.opening.who_goes_first'),
     caption: computerRolling
-      ? translate('game.opening.waiting_roll', { player: roller })
+      ? translate('game.turn.computer_rolling')
       : translate('game.opening.rolls_for_opening', { player: roller }),
   };
 }

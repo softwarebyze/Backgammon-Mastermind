@@ -43,8 +43,8 @@ describe('guidance copy', () => {
     it('explains the mistake without leaking the recommended move', () => {
       const body = blunderQuestionBody(3, 18, 0.117);
       expect(body).toContain('ranked 3 of 18');
-      expect(body).toContain('18 ways');
-      expect(body).toContain('0.12 points per game');
+      expect(body).toContain('below the best choice');
+      expect(body).toContain('0.12');
       // The answer must stay hidden in the question view.
       expect(body).not.toMatch(/\d+\/\d+/);
     });
@@ -58,7 +58,7 @@ describe('guidance copy', () => {
     it('recaps rank, field size, and cost plainly', () => {
       const summary = blunderDetailsSummary(3, 18, 0.117);
       expect(summary).toBe(
-        'Your move ranked 3 of 18, scoring about 0.12 points per game less than the best move.',
+        'Your move ranked 3 of 18 and scored 0.12 below the best choice.',
       );
     });
 
@@ -66,7 +66,7 @@ describe('guidance copy', () => {
       // "average points a move earns" defined points with points; the new
       // explainer attributes the score to the engine and states it plainly.
       expect(equityExplainer()).toBe(
-        'The engine scores each move by the points it expects to win per game, on average. Higher is better.',
+        'The engine compares the choices using the cube and match score. Higher is better.',
       );
       expect(equityExplainer()).not.toMatch(/average points/i);
     });
@@ -74,8 +74,7 @@ describe('guidance copy', () => {
     it('keeps the first sentence and states the cost as a comparison', () => {
       const body = blunderQuestionBody(5, 12, 0.351);
       expect(body).toBe(
-        'Your move ranked 5 of 12 ways to play this roll. '
-        + 'On average, it scores about 0.35 points per game less than the best move.',
+        'Your move ranked 5 of 12 and scored 0.35 below the best choice.',
       );
     });
   });
@@ -85,9 +84,9 @@ describe('guidance copy details', () => {
   describe('candidateRows', () => {
     it('labels the top row and marks the played row', () => {
       const rows = candidateRows([0.5, 0.42, 0.38], 3);
-      expect(rows[0]).toEqual({ label: 'Best', equity: '+0.50 pts', vsBest: null });
-      expect(rows[1]).toEqual({ label: '2', equity: '+0.42 pts', vsBest: '−0.08 vs best' });
-      expect(rows[2]).toEqual({ label: '3 (yours)', equity: '+0.38 pts', vsBest: '−0.12 vs best' });
+      expect(rows[0]).toEqual({ label: 'Best', equity: '+0.50', vsBest: null });
+      expect(rows[1]).toEqual({ label: '2', equity: '+0.42', vsBest: '−0.08 vs best' });
+      expect(rows[2]).toEqual({ label: '3 (yours)', equity: '+0.38', vsBest: '−0.12 vs best' });
     });
 
     it('caps the displayed rows at four', () => {

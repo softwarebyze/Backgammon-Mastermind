@@ -10,8 +10,15 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
-- tapOn: vs Computer
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-computer
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
 - assertVisible: Undo move
 - assertVisible: Redo move
 - takeScreenshot: undo-redo-01-english
@@ -19,7 +26,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - tapOn: Settings
 - tapOn: Language
 - scrollUntilVisible:
@@ -32,8 +39,15 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'false'
-      HOME_TEXT: נגד המחשב
-- tapOn: נגד המחשב
+      HOME_TEXT: משחק נגד המחשב
+- tapOn:
+    id: home-opponent-vs-computer
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
 - assertVisible: ביטול המהלך
 - assertVisible: ביצוע המהלך מחדש
 - takeScreenshot: undo-redo-02-hebrew-rtl

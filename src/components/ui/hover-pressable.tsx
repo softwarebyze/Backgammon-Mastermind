@@ -1,4 +1,5 @@
-import type { PressableProps, StyleProp, ViewStyle } from 'react-native';
+import type { Ref } from 'react';
+import type { PressableProps, StyleProp, View, ViewStyle } from 'react-native';
 import { useState } from 'react';
 import { Platform, Pressable } from 'react-native';
 
@@ -6,6 +7,7 @@ type HoverState = { pressed: boolean; hovered: boolean };
 
 type Props = Omit<PressableProps, 'style'> & {
   style?: StyleProp<ViewStyle> | ((state: HoverState) => StyleProp<ViewStyle>);
+  ref?: Ref<View>;
 };
 
 /**
