@@ -342,3 +342,25 @@ it('stays in the opening after the first moves, not a holding game', () => {
   expect(calculatePipCount(state, 'white')).toBeGreaterThan(calculatePipCount(state, 'black') * 1.03);
   expect(classifyStrategy(state, 'white').key).toBe('developing');
 });
+
+it('names a plan once a hit has sent checkers back, even with high pip counts', () => {
+  // The opening position from above, but a black checker was hit and has
+  // come back in on White's 2-point: both sides are over 140 pips again,
+  // yet this is a game with a plan, not the opening.
+  const state = stateWith([
+    [24, 'white', 2],
+    [13, 'white', 5],
+    [8, 'white', 2],
+    [6, 'white', 4],
+    [5, 'white', 2],
+    [1, 'black', 2],
+    [2, 'black', 1],
+    [12, 'black', 3],
+    [17, 'black', 3],
+    [18, 'black', 2],
+    [19, 'black', 4],
+  ]);
+  expect(calculatePipCount(state, 'black')).toBeGreaterThan(167);
+  for (const side of ['white', 'black'] as const)
+    expect(classifyStrategy(state, side).key).not.toBe('developing');
+});

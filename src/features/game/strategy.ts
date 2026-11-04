@@ -116,8 +116,21 @@ function bestBlock(state: GameState, player: Player, made: number[]) {
   return best;
 }
 
-/** Both sides still near their starting pip count: the opening. */
-const OPENING_PIPS = 140;
+/** Pip count of the starting position. */
+const START_PIPS = 167;
+/** About two turns each: past this, a plan has taken shape. */
+const OPENING_PIPS = 150;
+
+/**
+ * The first few turns: nobody has been hit yet and nobody has run far. A hit
+ * pushes a side back over the starting count, which is a game with a plan,
+ * not the opening, even though both sides are far from home.
+ */
+function isOpening(state: GameState, myPips: number, foePips: number): boolean {
+  if (state.bar.white > 0 || state.bar.black > 0)
+    return false;
+  return [myPips, foePips].every(pips => pips >= OPENING_PIPS && pips <= START_PIPS);
+}
 
 /**
  * Whether `player` has an exposed blot the opponent can reach: a blot of
@@ -261,7 +274,7 @@ export function classifyStrategy(state: GameState, player: Player): StrategyInfo
   }
   // The opening: everyone's back checkers sit on an anchor and nothing has
   // taken shape, so this comes before holding and the single-blot attack.
-  else if (myPips >= OPENING_PIPS && foePips >= OPENING_PIPS) {
+  else if (isOpening(state, myPips, foePips)) {
     // "developing" is fair here, and only here.
   }
   // A single loose checker is worth attacking once your board is strong.
