@@ -576,14 +576,3 @@ export function getLesson(id: string): LessonDefinition | undefined {
 export function isLessonId(id: string): id is LessonId {
   return (LESSON_IDS as readonly string[]).includes(id);
 }
-
-export function getNextLessonId(id: LessonId): LessonId | 'graduation' | null {
-  const index = LESSON_IDS.indexOf(id);
-  if (index < 0) {
-    return null;
-  }
-  if (index >= LESSON_IDS.length - 1) {
-    return 'graduation';
-  }
-  return LESSON_IDS[index + 1]!;
-}

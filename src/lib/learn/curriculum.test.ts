@@ -3,19 +3,11 @@ import { getLegalMoves } from '@/lib/game/moves';
 import en from '@/translations/en.json';
 
 import {
-  getNextLessonId,
   GRADUATION_QUIZ,
   LESSONS,
 } from './curriculum';
 
 describe('curriculum', () => {
-  it('routes the last lesson to graduation', () => {
-    expect(getNextLessonId('goal-board')).toBe('direction-setup');
-    expect(getNextLessonId('bearing-off')).toBe('pip-count');
-    expect(getNextLessonId('pip-count')).toBe('strategies');
-    expect(getNextLessonId('strategies')).toBe('graduation');
-  });
-
   it('ensures every tryMove accepted path is legal from its position', () => {
     for (const lesson of LESSONS) {
       for (const step of lesson.steps) {
