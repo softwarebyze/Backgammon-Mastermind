@@ -57,7 +57,6 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
       {feedback
         ? (
             <Text
-              accessibilityLiveRegion="polite"
               testID="learn-feedback"
               style={[styles.feedback, { color: feedbackColor }]}
             >
