@@ -8,6 +8,9 @@ const keys = ['body', ...Object.keys(english).filter(key => key.startsWith('reca
 
 it.each(readdirSync(dir).filter(file => file.endsWith('.json') && file !== 'en.json'))('translates the graduation recap in %s', (file) => {
   const graduation = read(file);
-  for (const key of keys)
+  for (const key of keys) {
+    // A missing or blank string must fail too, not just an English copy.
+    expect({ key, text: graduation[key] }).toEqual({ key, text: expect.stringMatching(/\S/) });
     expect({ key, text: graduation[key] }).not.toEqual({ key, text: english[key] });
+  }
 });

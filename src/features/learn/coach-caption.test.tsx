@@ -23,6 +23,9 @@ describe('coach caption feedback (#304)', () => {
     rerender({ value: feedback });
     rerender({ value: feedback });
     expect(announce).toHaveBeenCalledTimes(1);
+    // A different message is new feedback and is announced too.
+    rerender({ value: { tone: 'soft', messageKey: 'learn.feedback.legal_but_wrong' } });
+    expect(announce).toHaveBeenCalledTimes(2);
   });
 
   it('keeps the polite live region for Android', () => {
