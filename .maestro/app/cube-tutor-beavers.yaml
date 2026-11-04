@@ -27,7 +27,7 @@ tags:
     env:
       POSITION_LINK: ${output.moneyTutorLink}
 # Rolling instead of doubling goes through at once: the dice are not held back
-# to hint that the double was right. The review comes after, with no take-back.
+# to hint that the double was right. The review comes after.
 - tapOn:
     id: roll-dice-button
 - extendedWaitUntil:
@@ -40,18 +40,18 @@ tags:
     text: 'Best: Double'
 - assertVisible:
     id: guidance-blunder-meter
-- assertNotVisible:
-    id: cube-tutor-take-back
+- assertVisible:
+    id: cube-tutor-keep
 - takeScreenshot: cube-tutor-missed-double
+# Take back & retry returns to the decision before the roll.
 - tapOn:
-    id: cube-tutor-dismiss
+    id: cube-tutor-take-back
 - assertNotVisible:
     id: cube-tutor
-# Same position again to try the double.
-- runFlow:
-    file: ../utils/play-money-position.yaml
-    env:
-      POSITION_LINK: ${output.moneyTutorLink}
+- extendedWaitUntil:
+    visible:
+      id: match-double
+    timeout: 15000
 - assertVisible: Cube 1 · Center
 - tapOn:
     id: match-double

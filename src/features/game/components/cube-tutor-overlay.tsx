@@ -38,9 +38,8 @@ export function CubeTutorOverlay() {
     return null;
   const best = session.analysis.best;
   const loss = session.loss ?? 0;
-  // A roll already happened (the dice were seen), so it can only be noted.
-  // Any other decision is still waiting: it can be taken back or kept.
-  const rolled = session.attempted === 'roll';
+  // A double, take or pass is still waiting; a missed double already rolled,
+  // and taking it back keeps those dice for the retry.
   const turnOff = () => {
     setTutorMode(false);
     keepCubeDecision?.();
@@ -52,7 +51,7 @@ export function CubeTutorOverlay() {
     </Pressable>
   );
   return (
-    <Modal visible transparent animationType="fade" onRequestClose={rolled ? keepCubeDecision : takeBackCubeDecision}>
+    <Modal visible transparent animationType="fade" onRequestClose={takeBackCubeDecision}>
       <View style={styles.scrim}>
         <View style={styles.card} accessibilityViewIsModal testID="cube-tutor">
           <ScrollView contentContainerStyle={styles.content}>
@@ -62,14 +61,8 @@ export function CubeTutorOverlay() {
               <Text style={styles.recommendation} testID="cube-tutor-recommendation">{translate('game.cube_tutor.best', { choice: cubeChoiceLabel(best) })}</Text>
             </View>
             <BlunderMeter loss={loss} />
-            {rolled
-              ? button('cube-tutor-dismiss', translate('game.cube_tutor.got_it'), keepCubeDecision, true)
-              : (
-                  <>
-                    {button('cube-tutor-take-back', translate('game.tutor.take_back'), takeBackCubeDecision, true)}
-                    {button('cube-tutor-keep', translate('game.cube_tutor.keep'), keepCubeDecision)}
-                  </>
-                )}
+            {button('cube-tutor-take-back', translate('game.tutor.take_back'), takeBackCubeDecision, true)}
+            {button('cube-tutor-keep', translate('game.cube_tutor.keep'), keepCubeDecision)}
             <Pressable testID="cube-tutor-turn-off" accessibilityRole="button" accessibilityLabel={translate('game.tutor.turn_off_a11y')} onPress={turnOff} style={styles.link}>
               <Text style={styles.linkText}>{translate('game.tutor.turn_off')}</Text>
             </Pressable>

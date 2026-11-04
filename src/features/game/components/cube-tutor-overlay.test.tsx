@@ -36,10 +36,10 @@ it('names the mistake, shows both choices and how costly it was', () => {
   expect(screen.getByTestId('cube-tutor-yours')).toHaveTextContent('You chose: No double');
   expect(screen.getByTestId('cube-tutor-recommendation')).toHaveTextContent('Best: Double');
   expect(screen.getByTestId('guidance-blunder-meter')).toBeTruthy();
-  // The dice were seen, so a missed double can only be noted.
-  expect(screen.queryByTestId('cube-tutor-take-back')).toBeNull();
-  expect(screen.queryByTestId('cube-tutor-keep')).toBeNull();
-  fireEvent.press(screen.getByTestId('cube-tutor-dismiss'));
+  // A missed double can be taken back too: the retry keeps the same dice.
+  fireEvent.press(screen.getByTestId('cube-tutor-take-back'));
+  expect(mockGame.takeBackCubeDecision).toHaveBeenCalledTimes(1);
+  fireEvent.press(screen.getByTestId('cube-tutor-keep'));
   expect(mockGame.keepCubeDecision).toHaveBeenCalledTimes(1);
 });
 
@@ -58,7 +58,6 @@ describe('a decision still waiting on the card', () => {
     show(take);
     fireEvent.press(screen.getByTestId('cube-tutor-keep'));
     expect(mockGame.keepCubeDecision).toHaveBeenCalledTimes(1);
-    expect(screen.queryByTestId('cube-tutor-dismiss')).toBeNull();
   });
 
   it('keeps the decision when the Tutor is turned off', () => {
