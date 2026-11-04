@@ -1,3 +1,4 @@
+import Feather from '@expo/vector-icons/Feather';
 import Env from 'env';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
@@ -28,6 +29,21 @@ import { SettingsItem } from './components/settings-item';
 import { DeveloperItem } from './developer-item';
 import { isDeveloperToolsEnabled } from './developer-tools-gate';
 
+function GeneralSection({ iconColor }: { iconColor: string }) {
+  return (
+    <SettingsContainer title="settings.general">
+      <LanguageItem />
+      <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
+      <SettingsItem
+        text="stats.home_cta"
+        icon={<Feather name="bar-chart-2" size={20} color={iconColor} />}
+        testID="settings-stats"
+        onPress={() => router.push('/stats')}
+      />
+    </SettingsContainer>
+  );
+}
+
 export function SettingsScreen() {
   const posthog = usePostHog();
   const { insets } = useLayoutMetrics();
@@ -57,10 +73,7 @@ export function SettingsScreen() {
         ]}
       >
         <View className="px-4" style={styles.page}>
-          <SettingsContainer title="settings.general">
-            <LanguageItem />
-            <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
-          </SettingsContainer>
+          <GeneralSection iconColor={iconColor} />
 
           <GameSettingsSection showHints />
 
