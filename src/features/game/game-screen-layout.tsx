@@ -294,7 +294,11 @@ export function GameScreenLayout({
     stageMaxWidth,
     contentInsets,
   } = useLayoutMetrics();
-  const { onTopLayout, onBottomLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot({ stripsInSlot: !landscape });
+  // Each side's pips sit on that side of the board: above and below it in
+  // portrait and on desktop. Only a phone held sideways is too short for that
+  // and stacks both strips in the rail.
+  const stripsAroundBoard = !landscape || desktop;
+  const { onTopLayout, onBottomLayout, onControlsLayout, onSlotLayout } = usePublishBoardSlot({ stripsInSlot: stripsAroundBoard });
   const dieSize = trayDieSize(useBoardDimensions().checkerSize);
   const state = board.boardState;
   const live = input.state!;
@@ -335,7 +339,7 @@ export function GameScreenLayout({
       // The header undo/redo still step through the game; the strips carry each side's status.
       fold={landscape && !desktop && railHeight < 330}
       squeeze={landscape && !desktop && railHeight < 250}
-      includeTop={landscape}
+      includeTop={!stripsAroundBoard}
       diceOnBoard={diceOnBoard}
       dieSize={dieSize}
       opening={opening}
@@ -367,15 +371,16 @@ export function GameScreenLayout({
         style={[
           styles.boardSlotHost,
           landscape ? styles.boardSlotLandscape : styles.boardSlotPortrait,
+          landscape && stripsAroundBoard && styles.boardSlotStacked,
           { maxWidth: boardPaneWidth ?? boardMaxWidth },
         ]}
         testID="game-board-slot"
         onLayout={onSlotLayout}
       >
-        {/* Portrait: black's strip, the board, white's strip, held together and centered in the slot. */}
-        {landscape
-          ? null
-          : <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides={false} squeeze={false} onLayout={onTopLayout} />}
+        {/* Portrait and desktop: black's strip, the board, white's strip, held together and centered in the slot. */}
+        {stripsAroundBoard
+          ? <GameTopChrome state={state} headline={openingText?.headline ?? null} bothSides={false} squeeze={false} onLayout={onTopLayout} />
+          : null}
         <GameBoardSection
           boardState={state}
           boardAnimation={board.boardAnimation}
@@ -388,15 +393,15 @@ export function GameScreenLayout({
           input={input}
           numberPerspective={numberPerspective}
           boardDice={boardDice}
-          fill={landscape}
+          fill={!stripsAroundBoard}
         />
-        {landscape
-          ? null
-          : (
+        {stripsAroundBoard
+          ? (
               <View style={[styles.chromeColumn, styles.stripWrap]} onLayout={onBottomLayout}>
                 <PlayerStrip state={state} player="white" headlineOverride={openingText?.headline ?? null} />
               </View>
-            )}
+            )
+          : null}
       </View>
       <WinConfettiOverlay burstKey={winBurstKey} />
       <View style={styles.tutorSlot} pointerEvents="box-none">
@@ -482,6 +487,9 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     minWidth: 0,
     minHeight: 0,
+  },
+  boardSlotStacked: {
+    justifyContent: 'center',
   },
   stripWrap: {
     paddingHorizontal: 8,

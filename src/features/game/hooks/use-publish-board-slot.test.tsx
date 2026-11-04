@@ -66,3 +66,19 @@ it('keeps the board size steady through match phases and follows viewport height
   expect(view.result.current.slot.height).toBe(290);
   expect(dimensions().boardOuterWidth).toBe(fullWidth);
 });
+
+it('takes the strips above and below the board out of its share on desktop', () => {
+  mockWindow.width = 1440;
+  mockWindow.height = 900;
+  try {
+    const view = renderHook(() => ({ measure: usePublishBoardSlot({ stripsInSlot: true }), slot: useBoardSlotSize() }), { wrapper });
+    act(() => {
+      view.result.current.measure.onTopLayout(measurement(480, 56));
+      view.result.current.measure.onBottomLayout(measurement(480, 56));
+      view.result.current.measure.onSlotLayout(measurement(1000, 836));
+    });
+    expect(view.result.current.slot).toEqual({ width: 1000, height: 836 - 56 - 56 });
+  } finally {
+    mockWindow.width = 390;
+  }
+});

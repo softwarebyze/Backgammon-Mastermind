@@ -24,8 +24,8 @@ export type PublishBoardSlotOptions = {
    */
   minBoardHeight?: number;
   /**
-   * Portrait game: the player strips sit inside the slot, hugging the board.
-   * Report them with onTopLayout / onBottomLayout and they are taken out of
+   * Portrait and desktop game: the player strips sit inside the slot, hugging
+   * the board above and below. Report them with onTopLayout / onBottomLayout and they are taken out of
    * the board's share of the slot.
    */
   stripsInSlot?: boolean;
@@ -49,7 +49,7 @@ export function usePublishBoardSlot(options?: PublishBoardSlotOptions) {
   const publish = useCallback(() => {
     const { top, bottom, controls, slotW, slotH } = parts.current;
     const sideBySide = isLandscapeLayout(screenWidth, screenHeight);
-    if (slotW <= 0 || (!sideBySide && top <= 0)) {
+    if (slotW <= 0 || ((stripsInSlot || !sideBySide) && top <= 0)) {
       return;
     }
     const fromChrome = leftoverBoardHeight({
@@ -64,7 +64,7 @@ export function usePublishBoardSlot(options?: PublishBoardSlotOptions) {
     });
     // Huge text can make the strips fill the slot. Keep a floor so the board
     // shrinks to it (and the page scrolls) instead of keeping a stale size.
-    const boardShare = stripsInSlot && !sideBySide ? Math.max(MIN_STRIPPED_BOARD_SHARE, slotH - top - bottom) : slotH;
+    const boardShare = stripsInSlot ? Math.max(MIN_STRIPPED_BOARD_SHARE, slotH - top - bottom) : slotH;
     const height = slotH > 0 ? Math.min(boardShare, fromChrome) : fromChrome;
     setBoardSlotSize({ width: slotW, height });
   }, [screenWidth, screenHeight, headerHeight, insets.bottom, reviewHeight, minBoardHeight, stripsInSlot]);
