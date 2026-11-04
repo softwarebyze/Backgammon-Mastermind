@@ -4,6 +4,7 @@ import { usePostHog } from 'posthog-react-native';
 import { Alert } from 'react-native';
 import { useGame } from '@/features/game/use-game';
 
+import { patchGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { createMatchGame } from '@/lib/game/match';
 import { hasQuarantinedSession } from '@/lib/game/persistence';
 
@@ -40,7 +41,8 @@ beforeEach(() => {
 
 it('offers one opponent choice and a clear default single-game start', () => {
   render(<HomeScreen />);
-  expect(screen.getAllByRole('radio')).toHaveLength(4);
+  // Opponent, the computer's level, and format.
+  expect(screen.getAllByRole('radio')).toHaveLength(8);
   expect(screen.getAllByText('vs Computer')).toHaveLength(1);
   expect(screen.getAllByText('2 Players')).toHaveLength(1);
   expect(screen.getByTestId('home-opponent-vs-computer').props.accessibilityState).toEqual({ checked: true });
@@ -50,6 +52,16 @@ it('offers one opponent choice and a clear default single-game start', () => {
   fireEvent.press(screen.getByRole('button', { name: 'Start game' }));
   expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-computer', true));
   expect(router.replace).toHaveBeenCalledWith('/game');
+});
+
+it('shows the computer level only against the computer, and saves the pick', () => {
+  render(<HomeScreen />);
+  expect(screen.getByTestId('home-computer-level-medium').props.accessibilityState).toEqual({ checked: true });
+  fireEvent.press(screen.getByTestId('home-computer-level-hard'));
+  expect(screen.getByTestId('home-computer-level-hard').props.accessibilityState).toEqual({ checked: true });
+  fireEvent.press(screen.getByTestId('home-opponent-vs-human'));
+  expect(screen.queryByTestId('home-computer-level-hard')).toBeNull();
+  patchGamePreferences({ computerLevel: 'medium' });
 });
 
 it.each(['vs-human', 'vs-computer'] as const)('starts a %s single game only after Start', (mode) => {

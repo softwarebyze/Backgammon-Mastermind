@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Wybrane - dotknij zaznaczonego punktu lub Anuluj"
     },
+    "computer_level": {
+      "a11y": "Poziom komputera: {{level}}",
+      "easy": "Łatwy",
+      "expert": "Ekspert",
+      "hard": "Trudny",
+      "hint": "Łatwy popełnia błędy początkującego. Ekspert zawsze gra najlepszy ruch silnika.",
+      "medium": "Średni",
+      "title": "Poziom komputera"
+    },
     "controls": {
       "bear_off_a11y": "Zdejmij pionek",
       "cancel": "Anuluj",

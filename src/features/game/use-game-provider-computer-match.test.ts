@@ -219,7 +219,10 @@ it('lets the computer bear off, finish the match, and start a fresh computer mat
   const { result } = renderHook(() => useGameProviderValue(true));
   const state = createPositionState({ mode: 'vs-computer', currentPlayer: 'black', dice: [1, 2], match: { ...createMatch(3), score: { black: 2, white: 1 }, crawford: true, crawfordPlayed: true }, placements: [{ point: 24, player: 'black', count: 1 }, { point: 1, player: 'white', count: 14 }], borneOff: { black: 14, white: 1 } });
   act(() => result.current.startFromPosition(state));
-  act(() => jest.advanceTimersByTime(computerThinkDelayMs('moving')));
+  // The computer asks the engine for its turn first, so let that settle.
+  await act(async () => {
+    jest.advanceTimersByTime(computerThinkDelayMs('moving'));
+  });
   act(() => jest.advanceTimersByTime(1200));
   act(() => result.current.moveAnimation?.onFinish?.());
   expect(result.current.state).toMatchObject({ phase: 'game-over', mode: 'vs-computer', winner: 'black', match: { winner: 'black', score: { black: 3, white: 1 }, result: { kind: 'single', points: 1 } } });

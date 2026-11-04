@@ -207,6 +207,34 @@ export type SageTurnPlan = {
 };
 
 /**
+ * The move sequence that turns the position on roll into `target`, one of the
+ * boards a plan listed as a candidate. Mastermind-style moves, with dieIndex
+ * into state.remainingDice. Throws SageEngineError when no sequence of these
+ * dice reaches it.
+ */
+export function sageMovesToBoard(state: SageGameState, target: number[]): SageMove[] {
+  const P = state.currentPlayer;
+  const board = gameStateToSageBoard(state);
+  const [d1, d2] = state.dice;
+  const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
+  const seq = decomposePlayerOnRollBoard(board, target, dice);
+  if (!seq)
+    throw new SageEngineError('could not decompose sage result into moves');
+  const used = Array.from({ length: state.remainingDice.length }, () => false);
+  return seq.map((m) => {
+    const j = state.remainingDice.findIndex((v, k) => !used[k] && v === m.die);
+    if (j === -1)
+      throw new SageEngineError('die mismatch while mapping sage move');
+    used[j] = true;
+    return {
+      from: m.from === 25 ? 0 : appPoint(m.from, P),
+      to: m.to === 0 ? 25 : appPoint(m.to, P),
+      dieIndex: j,
+    };
+  });
+}
+
+/**
  * Ask the engine for the full checker-play turn, with equities. Returns the
  * best move sequence plus every candidate's resulting board and equity
  * (best first) — the candidate list powers tutor-mode blunder detection
@@ -215,7 +243,6 @@ export type SageTurnPlan = {
  * be decomposed. Callers offer no hint and the tutor stays silent.
  */
 export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2, context?: SageCubeContext): Promise<SageTurnPlan> {
-  const P = state.currentPlayer;
   const board = gameStateToSageBoard(state);
   const [d1, d2] = state.dice;
   let raw: string;
@@ -240,22 +267,7 @@ export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2, con
   ));
   // Use cube-aware equity when context exists. Lessons without a cube retain
   // cubeless evaluation. Hint and Tutor always use the same candidate ranking.
-  const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
-  const seq = decomposePlayerOnRollBoard(board, candidates[0].board, dice);
-  if (!seq)
-    throw new SageEngineError('could not decompose sage result into moves');
-  const used = Array.from({ length: state.remainingDice.length }, () => false);
-  const moves = seq.map((m) => {
-    const j = state.remainingDice.findIndex((v, k) => !used[k] && v === m.die);
-    if (j === -1)
-      throw new SageEngineError('die mismatch while mapping sage move');
-    used[j] = true;
-    return {
-      from: m.from === 25 ? 0 : appPoint(m.from, P),
-      to: m.to === 0 ? 25 : appPoint(m.to, P),
-      dieIndex: j,
-    };
-  });
+  const moves = sageMovesToBoard(state, candidates[0].board);
   return { moves, equity: candidates[0].equity, candidates };
 }
 

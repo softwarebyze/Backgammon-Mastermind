@@ -8,6 +8,15 @@
     "caption": {
       "selected": "选中的 - 点击突出显示的点, 或取消"
     },
+    "computer_level": {
+      "a11y": "电脑难度：{{level}}",
+      "easy": "简单",
+      "expert": "专家",
+      "hard": "困难",
+      "hint": "简单难度会犯新手常犯的错误。专家总是走引擎认为最好的一步。",
+      "medium": "中等",
+      "title": "电脑难度"
+    },
     "controls": {
       "bear_off_a11y": "移出棋子",
       "cancel": "取消",
