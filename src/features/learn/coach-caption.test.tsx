@@ -11,6 +11,9 @@ describe('coach caption feedback (#304)', () => {
   const originalOS = Platform.OS;
   afterEach(() => {
     Platform.OS = originalOS;
+    // React Native's preset already mocks announceForAccessibility, so spyOn
+    // returns that mock: clear its calls too, not only restore it.
+    jest.clearAllMocks();
     jest.restoreAllMocks();
   });
 
@@ -28,7 +31,18 @@ describe('coach caption feedback (#304)', () => {
     expect(announce).toHaveBeenCalledTimes(2);
   });
 
-  it('keeps the polite live region for Android', () => {
+  // A live region stays silent when the text does not change, so TalkBack would
+  // say "Not quite" only once however many times the learner taps wrong.
+  it('announces the same wrong tap again on Android, with no live region to double it', () => {
+    Platform.OS = 'android';
+    const announce = jest.spyOn(AccessibilityInfo, 'announceForAccessibility').mockImplementation(() => {});
+    // Two wrong taps: two feedback objects with the same text.
+    const first: LessonFeedback = { tone: 'soft', messageKey: 'learn.feedback.illegal' };
+    const second: LessonFeedback = { tone: 'soft', messageKey: 'learn.feedback.illegal' };
+    const { rerender } = renderHook(({ value }: { value: LessonFeedback | null }) => useAnnounceFeedback(value), { initialProps: { value: null as LessonFeedback | null } });
+    rerender({ value: first });
+    rerender({ value: second });
+    expect(announce).toHaveBeenCalledTimes(2);
     render(
       <CoachCaption
         titleKey="learn.title"
@@ -37,7 +51,7 @@ describe('coach caption feedback (#304)', () => {
         feedback={{ tone: 'soft', messageKey: 'learn.feedback.illegal' }}
       />,
     );
-    expect(screen.getByTestId('learn-feedback').props.accessibilityLiveRegion).toBe('polite');
+    expect(screen.getByTestId('learn-feedback').props.accessibilityLiveRegion).toBeUndefined();
   });
 });
 
