@@ -1,0 +1,17 @@
+# Relaunch the app without clearing data and wait for one element, retrying
+# when Android leaves the launcher in front instead of bringing the app back.
+# Env: WAIT_ID (testID that shows the app is back).
+appId: ${APP_ID}
+tags:
+  - util
+---
+- retry:
+    maxRetries: 2
+    commands:
+      - stopApp
+      - launchApp:
+          clearState: false
+      - extendedWaitUntil:
+          visible:
+            id: ${WAIT_ID}
+          timeout: 45000

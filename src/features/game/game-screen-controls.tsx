@@ -9,9 +9,12 @@ import { Text } from '@/components/ui/scaled-text';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { HintButton } from '@/features/game/components/hint-button';
 
+import { MatchControls } from '@/features/game/components/match-controls';
+import { controlButtonStyles } from '@/features/game/control-buttons';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { matchOfferText, matchResultText } from '@/features/game/match-copy';
 import { AUTO_ROLL_BUTTON_GRACE_MS } from '@/features/game/roll-button-timing';
 import { isTurnStart } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
@@ -21,7 +24,6 @@ import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
-import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
   state: GameState;
@@ -49,13 +51,14 @@ type Props = {
   compact?: boolean;
   /** Tray die edge; the layout derives it from the board's checker size. */
   dieSize?: number;
+  /** The board draws the dice in the roller's half; skip the tray row. */
+  diceOnBoard?: boolean;
+  /** The shortest landscape rail has no room for the caption; the player strips say whose turn it is. */
+  hideCaption?: boolean;
 };
 
 const ACTION_SLOT_HEIGHT = 52;
 const CONTROL_HIT_SLOP = 16;
-/** Undo and Confirm share one height so the pair reads as a single control row. */
-const CONFIRM_ROW_BUTTON_HEIGHT = 50;
-
 /** True once `active` has stayed true for `delayMs`; false again as soon as it drops. */
 function useDelayedFlag(active: boolean, delayMs: number): boolean {
   const [elapsed, setElapsed] = useState(false);
@@ -70,6 +73,14 @@ function useDelayedFlag(active: boolean, delayMs: number): boolean {
     };
   }, [active, delayMs]);
   return active && elapsed;
+}
+
+/** A pending double or a finished game's result replaces the turn caption. */
+function matchCaption(state: GameState): string | null {
+  const m = state.match;
+  if (m?.pendingOffer)
+    return matchOfferText({ offerer: m.pendingOffer, value: m.cube.value * 2, points: m.cube.value, beaver: m.pendingBeaver }, state.mode);
+  return m ? matchResultText(m, state.mode) : null;
 }
 
 export function GameScreenControls({
@@ -90,47 +101,56 @@ export function GameScreenControls({
   canUndoMove = false,
   compact = false,
   dieSize = TRAY_DIE_SIZE,
+  diceOnBoard = false,
+  hideCaption = false,
 }: Props) {
   const { preferences } = useGamePreferences();
   const guidance = useGuidance();
   const hintCardOpen = guidance?.kind === 'hint' && guidance.revealed;
   const turn = getTurnDisplay(state);
-  const caption = captionOverride
-    ?? (isReviewing
-      ? translate('game.review.viewing_hint')
-      : getActionCaption(state, turn));
+  // A blocked roll that passes by itself already says "No legal moves…" in the
+  // action slot; a second line telling the player to end the turn is noise.
+  const autoPassingNoMove = state.phase === 'no-move'
+    && !isAwaitingMoveConfirm(state, preferences.confirmMove);
+  const caption = isReviewing
+    ? translate('game.review.viewing_hint')
+    : captionOverride ?? (autoPassingNoMove ? ' ' : getActionCaption(state, turn));
 
   const diceForTray = isReviewing ? state : liveDiceState;
   const showOpening = opening !== null && !isReviewing;
 
   return (
-    <View style={[styles.controls, compact && styles.controlsCompact]}>
-      <View style={styles.diceRow} pointerEvents="none">
-        {showOpening
-          ? (
+    <View style={[styles.controls, compact && styles.controlsCompact]} testID="game-controls">
+      {diceOnBoard
+        ? null
+        : (
+            <View style={styles.diceRow} pointerEvents="none" testID="game-dice-tray">
+              {showOpening
+                ? (
               // Opening: each side's die in its own color; the engine hands these
               // same two values to the winner, so nothing has to travel.
-              <DiceDisplay
-                dice={opening.dice}
-                remainingDice={opening.dice.filter(v => v !== 0)}
-                playerColor={diceForTray.currentPlayer}
-                slotColors={['white', 'black']}
-                emphasis={opening.emphasis}
-                displayStyle={preferences.diceDisplayStyle}
-                size={dieSize}
-              />
-            )
-          : (
-              <DiceDisplay
-                dice={diceForTray.dice}
-                remainingDice={diceForTray.remainingDice}
-                playerColor={diceForTray.currentPlayer}
-                displayStyle={preferences.diceDisplayStyle}
-                animateRoll={!isReviewing}
-                size={dieSize}
-              />
-            )}
-      </View>
+                    <DiceDisplay
+                      dice={opening.dice}
+                      remainingDice={opening.dice.filter(v => v !== 0)}
+                      playerColor={diceForTray.currentPlayer}
+                      slotColors={['white', 'black']}
+                      emphasis={opening.emphasis}
+                      displayStyle={preferences.diceDisplayStyle}
+                      size={dieSize}
+                    />
+                  )
+                : (
+                    <DiceDisplay
+                      dice={diceForTray.dice}
+                      remainingDice={diceForTray.remainingDice}
+                      playerColor={diceForTray.currentPlayer}
+                      displayStyle={preferences.diceDisplayStyle}
+                      animateRoll={!isReviewing}
+                      size={dieSize}
+                    />
+                  )}
+            </View>
+          )}
       <View
         style={hintCardOpen ? styles.actionSlotOpen : styles.actionSlot}
         pointerEvents="auto"
@@ -154,9 +174,17 @@ export function GameScreenControls({
           onConfirmMove={onConfirmMove}
           onUndoMove={onUndoMove}
           canUndoMove={canUndoMove}
+          compact={compact}
         />
       </View>
-      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.caption}>{caption}</Text>
+      {/* In the side rail the review bar's own label says what is on view. */}
+      {hideCaption || (compact && isReviewing)
+        ? null
+        : (
+            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.caption, compact && styles.captionCompact]} numberOfLines={2} testID="game-action-caption" accessibilityLiveRegion="polite">
+              {isReviewing ? caption : matchCaption(state) ?? caption}
+            </Text>
+          )}
     </View>
   );
 }
@@ -177,6 +205,7 @@ function ActionControl({
   onConfirmMove,
   onUndoMove,
   canUndoMove,
+  compact,
 }: {
   state: GameState;
   isHumanTurn: boolean;
@@ -192,6 +221,7 @@ function ActionControl({
   onConfirmMove?: () => void;
   onUndoMove?: () => void;
   canUndoMove: boolean;
+  compact: boolean;
 }) {
   const awaitingHumanRoll = !isReviewing
     && isHumanTurn
@@ -222,6 +252,7 @@ function ActionControl({
       <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.review.back_to_live')}
+        testID="review-back-to-live-button"
         style={({ pressed, hovered }) => [styles.primaryBtn, hovered && styles.primaryBtnHover, pressed && styles.pressed]}
         onPress={onGoLive}
         hitSlop={CONTROL_HIT_SLOP}
@@ -229,6 +260,10 @@ function ActionControl({
         <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
       </HoverPressable>
     );
+  }
+
+  if (state.match && (state.match.pendingOffer || state.phase === 'rolling' || state.phase === 'game-over')) {
+    return <MatchControls state={state} onRoll={onRoll} onReset={onReset} isHumanTurn={isHumanTurn} isComputerTurn={isComputerTurn} />;
   }
 
   if (state.phase === 'game-over') {
@@ -283,6 +318,7 @@ function ActionControl({
   ) {
     return (
       <ConfirmMoveBar
+        compact={compact}
         canUndo={canUndoMove}
         onConfirm={() => {
           hapticLight();
@@ -341,7 +377,9 @@ function ConfirmMoveBar({
   canUndo,
   onConfirm,
   onUndo,
+  compact,
 }: {
+  compact: boolean;
   canUndo: boolean;
   onConfirm: () => void;
   onUndo: () => void;
@@ -356,6 +394,7 @@ function ConfirmMoveBar({
         testID="undo-move-button"
         style={({ pressed, hovered }) => [
           styles.undoBtn,
+          compact && styles.undoBtnCompact,
           !canUndo && styles.undoBtnDisabled,
           canUndo && hovered && styles.secondaryBtnHover,
           pressed && canUndo && styles.pressed,
@@ -363,9 +402,14 @@ function ConfirmMoveBar({
         onPress={onUndo}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
-          {translate('game.controls.undo_move')}
-        </Text>
+        {/* The side rail is too narrow for both labels: Undo keeps its arrow, like the toolbar's. */}
+        {compact
+          ? <Feather name="rotate-ccw" size={20} color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.textMuted} />
+          : (
+              <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
+                {translate('game.controls.undo_move')}
+              </Text>
+            )}
       </HoverPressable>
       <HoverPressable
         accessibilityRole="button"
@@ -373,6 +417,7 @@ function ConfirmMoveBar({
         testID="confirm-move-button"
         style={({ pressed, hovered }) => [
           styles.confirmBtn,
+          compact && styles.confirmBtnCompact,
           hovered && styles.primaryBtnHover,
           pressed && styles.pressed,
         ]}
@@ -380,7 +425,7 @@ function ConfirmMoveBar({
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Feather name="check" size={18} color={GAME_PALETTE.controlInk} />
-        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.controls.confirm_move')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.primaryBtnText, compact && styles.confirmTextCompact]} numberOfLines={1}>{translate('game.controls.confirm_move')}</Text>
       </HoverPressable>
     </View>
   );
@@ -395,25 +440,27 @@ function StatusPlaceholder({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
+  // One footprint for single games and matches, every phase: two caption
+  // lines fit a cube decision, and the board never changes size.
   controls: {
     width: '100%',
     maxWidth: 420,
     alignItems: 'center',
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 4,
+    paddingBottom: 4,
     paddingHorizontal: 20,
   },
   controlsCompact: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingHorizontal: 12,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingHorizontal: 4,
   },
   diceRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 44,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   actionSlot: {
     height: ACTION_SLOT_HEIGHT,
@@ -438,15 +485,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   primaryBtn: {
-    backgroundColor: GAME_PALETTE.control,
-    borderWidth: 1,
-    borderColor: GAME_PALETTE.controlBorder,
+    ...controlButtonStyles.primary,
     paddingHorizontal: 40,
-    paddingVertical: 14,
     minWidth: 200,
-    alignItems: 'center',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
-    ...continuousRadius(12),
   },
   primaryBtnHover: {
     backgroundColor: GAME_PALETTE.controlHover,
@@ -458,27 +499,14 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.9,
   },
-  primaryBtnText: {
-    color: GAME_PALETTE.controlInk,
-    fontSize: 16,
-    ...interFont('semibold'),
-  },
+  primaryBtnText: controlButtonStyles.primaryText,
   secondaryBtn: {
-    backgroundColor: GAME_PALETTE.bg,
-    borderWidth: 1.5,
-    borderColor: 'rgba(232, 224, 208, 0.35)',
+    ...controlButtonStyles.secondary,
     paddingHorizontal: 32,
-    paddingVertical: 12,
     minWidth: 160,
-    alignItems: 'center',
     zIndex: 2,
-    ...continuousRadius(12),
   },
-  secondaryBtnText: {
-    color: GAME_PALETTE.accent,
-    fontSize: 16,
-    ...interFont('semibold'),
-  },
+  secondaryBtnText: controlButtonStyles.secondaryText,
   statusSlot: {
     height: ACTION_SLOT_HEIGHT,
     justifyContent: 'center',
@@ -490,12 +518,16 @@ const styles = StyleSheet.create({
     ...interFont('regular'),
   },
   caption: {
-    marginTop: 6,
-    minHeight: 18,
+    marginTop: 4,
+    height: 32,
+    lineHeight: 16,
     color: GAME_PALETTE.textMuted,
     fontSize: 13,
     textAlign: 'center',
     ...interFont('regular'),
+  },
+  captionCompact: {
+    marginTop: 2,
   },
   confirmRow: {
     flexDirection: 'row',
@@ -505,39 +537,39 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   undoBtn: {
-    backgroundColor: GAME_PALETTE.bg,
-    borderWidth: 1.5,
+    ...controlButtonStyles.secondary,
     borderColor: 'rgba(232, 224, 208, 0.45)',
     paddingHorizontal: 20,
-    minHeight: CONFIRM_ROW_BUTTON_HEIGHT,
     minWidth: 96,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...continuousRadius(12),
+  },
+  undoBtnCompact: {
+    minWidth: 0,
+    width: 56,
+    paddingHorizontal: 0,
   },
   undoBtnDisabled: {
     opacity: 0.4,
   },
-  undoBtnText: {
-    color: GAME_PALETTE.accent,
-    fontSize: 16,
-    ...interFont('semibold'),
-  },
+  undoBtnText: controlButtonStyles.secondaryText,
   undoBtnTextDisabled: {
     color: GAME_PALETTE.textMuted,
   },
   confirmBtn: {
-    backgroundColor: GAME_PALETTE.control,
-    borderWidth: 1.5,
-    borderColor: GAME_PALETTE.controlBorder,
+    ...controlButtonStyles.primary,
     paddingHorizontal: 24,
-    minHeight: CONFIRM_ROW_BUTTON_HEIGHT,
     minWidth: 180,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
     gap: 8,
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
-    ...continuousRadius(12),
+  },
+  confirmBtnCompact: {
+    minWidth: 0,
+    flexGrow: 1,
+    flexShrink: 1,
+    paddingHorizontal: 12,
+    gap: 6,
+  },
+  confirmTextCompact: {
+    fontSize: 15,
+    flexShrink: 1,
   },
 });

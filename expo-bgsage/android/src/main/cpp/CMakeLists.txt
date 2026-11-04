@@ -22,10 +22,10 @@ set(BGSAGE_SRCS
   "${BGSAGE_DIR}/cpp/src/rollout.cpp"
   "${BGSAGE_DIR}/cpp/src/cube.cpp"
   "${BGSAGE_DIR}/cpp/src/cube_eval.cpp"
-  "${BGSAGE_DIR}/cpp/src/match_equity.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../../../../ios/BgsageMatchEquity.cpp"
   "${BGSAGE_DIR}/cpp/src/bearoff.cpp"
   "${BGSAGE_DIR}/cpp/src/cuda_nn_stub.cpp"
-  "${BGSAGE_DIR}/cpp/src/mobile.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../../../../ios/BgsageAnalysis.cpp"
 )
 
 add_library(bgsage_jni SHARED

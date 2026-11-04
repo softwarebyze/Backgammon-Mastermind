@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Pressable, View } from 'react-native';
 import { Text } from '@/components/ui/scaled-text';
 import {
-  BEAR_OFF_LABEL_HEIGHT,
   BEAR_OFF_PADDING,
   bearOffHalfHeight,
   bearOffSlotTopInSection,
@@ -13,11 +12,11 @@ import {
 
 import { translate } from '@/lib/i18n';
 import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
-import { trayLabelFontSize } from './bear-off-label';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 
 type Props = {
+  cubeClearance?: number;
   whiteBorneOff: number;
   blackBorneOff: number;
   isLegalTarget: boolean;
@@ -30,6 +29,7 @@ type Props = {
 };
 
 type StackProps = {
+  cubeClearance: number;
   count: number;
   player: Player;
   halfHeight: number;
@@ -40,6 +40,7 @@ type StackProps = {
 };
 
 function BearOffStack({
+  cubeClearance,
   count,
   player,
   halfHeight,
@@ -49,11 +50,10 @@ function BearOffStack({
   isTargetSide,
 }: StackProps) {
   const tokenSize = bearOffTokenSize(checkerSize);
-  const maxVisible = maxBearOffVisibleSlots(halfHeight, tokenSize);
+  const maxVisible = maxBearOffVisibleSlots(halfHeight, tokenSize, cubeClearance);
   const visible = Math.min(count, maxVisible);
   const overflow = count - visible;
   const showTarget = isLegalTarget && isTargetSide;
-  const label = `${player === 'black' ? '▲' : '▽'}${translate('game.status.off_short')}`;
 
   return (
     <View
@@ -67,23 +67,6 @@ function BearOffStack({
         borderRadius: 6,
       }}
     >
-      <Text
-        numberOfLines={1}
-        // The size is already fitted to the tray; system text scaling would overflow it.
-        maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
-        style={{
-          position: 'absolute',
-          top: 2,
-          width,
-          color: '#B89470',
-          fontSize: trayLabelFontSize(label, width),
-          textAlign: 'center',
-          zIndex: 20,
-        }}
-      >
-        {label}
-      </Text>
-
       {count === 0 && (
         <View
           style={{
@@ -109,6 +92,7 @@ function BearOffStack({
             position: 'absolute',
             left: (width - tokenSize) / 2,
             top: bearOffSlotTopInSection({
+              clearance: cubeClearance,
               halfHeight,
               tokenSize,
               visibleCount: visible,
@@ -125,8 +109,8 @@ function BearOffStack({
           maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
           style={{
             position: 'absolute',
-            top: player === 'black' ? BEAR_OFF_PADDING + BEAR_OFF_LABEL_HEIGHT : undefined,
-            bottom: player === 'white' ? BEAR_OFF_PADDING : undefined,
+            top: player === 'black' ? BEAR_OFF_PADDING + cubeClearance : undefined,
+            bottom: player === 'white' ? BEAR_OFF_PADDING + cubeClearance : undefined,
             right: 4,
             color: '#D4A843',
             fontSize: 9,
@@ -143,6 +127,7 @@ function BearOffStack({
 }
 
 export function BearOffArea({
+  cubeClearance = 0,
   whiteBorneOff,
   blackBorneOff,
   isLegalTarget,
@@ -177,6 +162,7 @@ export function BearOffArea({
       }}
     >
       <BearOffStack
+        cubeClearance={cubeClearance}
         count={blackBorneOff}
         player="black"
         halfHeight={halfHeight}
@@ -199,6 +185,7 @@ export function BearOffArea({
       />
 
       <BearOffStack
+        cubeClearance={cubeClearance}
         count={whiteBorneOff}
         player="white"
         halfHeight={halfHeight}

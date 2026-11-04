@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/scaled-text';
-import { BLUNDER_BANDS, BLUNDER_METER_MAX } from '@/features/game/blunder-bands';
+import { BLUNDER_BANDS, BLUNDER_METER_MAX, blunderBandFor } from '@/features/game/blunder-bands';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { blunderBandLabel } from '@/features/game/guidance-copy';
@@ -17,12 +17,11 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 export function BlunderMeter({ loss }: { loss: number }) {
   const clamped = Math.min(Math.max(loss, 0), BLUNDER_METER_MAX);
   const position = (clamped / BLUNDER_METER_MAX) * 100;
-  const found = BLUNDER_BANDS.findIndex(band => loss < band.max);
-  // Losses past the end of the bar belong to the final band.
-  const activeIndex = found === -1 ? BLUNDER_BANDS.length - 1 : found;
+  const activeBand = blunderBandFor(loss);
+  const activeIndex = BLUNDER_BANDS.indexOf(activeBand);
   // The accessible severity comes from the highlighted band, so it can never
   // disagree with what sighted users see.
-  const severity = blunderBandLabel(BLUNDER_BANDS[activeIndex]!.id);
+  const severity = blunderBandLabel(activeBand.id);
 
   return (
     <View
