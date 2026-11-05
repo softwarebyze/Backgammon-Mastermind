@@ -47,7 +47,7 @@
           "offline",
           "classic"
         ],
-        "releaseNotes": "Play matches with the doubling cube and the Crawford rule, against the computer or a friend. Pick the computer's level, from Easy to Expert. Set up any position and play it out. New lessons teach the cube, match play and the five game plans, and Tutor mode now checks your cube decisions and marks your mistakes in the game history. Plus a roomier game screen with bigger checkers.",
+        "releaseNotes": "Play matches with the doubling cube and the Crawford rule, against the computer or a friend. Pick the computer's level, from Easy to Expert. Set up any position and play it out. New lessons teach the cube, match play and the five game plans, and Tutor mode now checks your cube decisions and marks your mistakes in the game history. Plus a roomier game screen with bigger checkers. A new “Move in dice order” setting plays the dice in the order shown, and you can now send feedback from inside the app.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -69,7 +69,7 @@
           "backgammon",
           "nard"
         ],
-        "releaseNotes": "العب مباريات بالنقاط مع مكعب المضاعفة وقاعدة كروفورد، ضد الكمبيوتر أو صديق. اختر مستوى الكمبيوتر من سهل إلى خبير. أعدّ أي وضع والعب منه. دروس جديدة عن المكعب والمباريات وخطط اللعب الخمس، و«وضع المدرّب» يفحص الآن قرارات المكعب ويعلّم أخطاءك في سجل اللعبة. إضافةً إلى شاشة لعب أرحب وأحجار أكبر.",
+        "releaseNotes": "العب مباريات بالنقاط مع مكعب المضاعفة وقاعدة كروفورد، ضد الكمبيوتر أو صديق. اختر مستوى الكمبيوتر من سهل إلى خبير. أعدّ أي وضع والعب منه. دروس جديدة عن المكعب والمباريات وخطط اللعب الخمس، و«وضع المدرّب» يفحص الآن قرارات المكعب ويعلّم أخطاءك في سجل اللعبة. إضافةً إلى شاشة لعب أرحب وأحجار أكبر. إعداد جديد «التحريك حسب ترتيب النرد» يلعب النرد بالترتيب المعروض، ويمكنك الآن إرسال ملاحظاتك من داخل التطبيق.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -91,7 +91,7 @@
           "Tavla",
           "Nard"
         ],
-        "releaseNotes": "Spiele Matches mit Verdopplungswürfel und Crawford-Regel, gegen den Computer oder einen Freund. Wähle die Stärke des Computers, von Leicht bis Experte. Baue beliebige Stellungen auf und spiele sie aus. Neue Lektionen erklären den Würfel, Matches und die fünf Spielpläne, und der Tutor-Modus prüft jetzt auch deine Würfelentscheidungen und markiert deine Fehler im Spielverlauf. Außerdem: ein großzügigerer Spielbildschirm mit größeren Steinen.",
+        "releaseNotes": "Spiele Matches mit Verdopplungswürfel und Crawford-Regel, gegen den Computer oder einen Freund. Wähle die Stärke des Computers, von Leicht bis Experte. Baue beliebige Stellungen auf und spiele sie aus. Neue Lektionen erklären den Würfel, Matches und die fünf Spielpläne, und der Tutor-Modus prüft jetzt auch deine Würfelentscheidungen und markiert deine Fehler im Spielverlauf. Außerdem: ein großzügigerer Spielbildschirm mit größeren Steinen. Mit der neuen Einstellung „In Würfelreihenfolge ziehen“ spielst du die Würfel in der angezeigten Reihenfolge, und du kannst jetzt direkt in der App Feedback senden.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -113,7 +113,7 @@
           "offline",
           "tavla"
         ],
-        "releaseNotes": "Παίξτε αγώνες με κύβο διπλασιασμού και κανόνα Crawford, με τον υπολογιστή ή με φίλο. Διαλέξτε το επίπεδο του υπολογιστή, από Εύκολο ως Ειδικός. Στήστε όποια θέση θέλετε και παίξτε την. Νέα μαθήματα για τον κύβο, τους αγώνες και τα πέντε σχέδια παιχνιδιού, ενώ η λειτουργία δασκάλου ελέγχει πλέον και τις αποφάσεις κύβου και σημειώνει τα λάθη σας στο ιστορικό. Επιπλέον, πιο άνετη οθόνη παιχνιδιού με μεγαλύτερα πούλια.",
+        "releaseNotes": "Παίξτε αγώνες με κύβο διπλασιασμού και κανόνα Crawford, με τον υπολογιστή ή με φίλο. Διαλέξτε το επίπεδο του υπολογιστή, από Εύκολο ως Ειδικός. Στήστε όποια θέση θέλετε και παίξτε την. Νέα μαθήματα για τον κύβο, τους αγώνες και τα πέντε σχέδια παιχνιδιού, ενώ η λειτουργία δασκάλου ελέγχει πλέον και τις αποφάσεις κύβου και σημειώνει τα λάθη σας στο ιστορικό. Επιπλέον, πιο άνετη οθόνη παιχνιδιού με μεγαλύτερα πούλια. Η νέα ρύθμιση «Κίνηση με τη σειρά των ζαριών» παίζει τα ζάρια με τη σειρά που εμφανίζονται, και μπορείτε πλέον να στέλνετε σχόλια μέσα από την εφαρμογή.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -135,7 +135,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Juega encuentros con el cubo de doblaje y la regla Crawford, contra el ordenador o un amigo. Elige el nivel del ordenador, de Fácil a Experto. Prepara cualquier posición y juégala. Nuevas lecciones sobre el cubo, los encuentros y los cinco planes de juego, y el modo tutor ahora revisa tus decisiones con el cubo y marca tus errores en el historial. Además, una pantalla de juego más amplia con fichas más grandes.",
+        "releaseNotes": "Juega encuentros con el cubo de doblaje y la regla Crawford, contra el ordenador o un amigo. Elige el nivel del ordenador, de Fácil a Experto. Prepara cualquier posición y juégala. Nuevas lecciones sobre el cubo, los encuentros y los cinco planes de juego, y el modo tutor ahora revisa tus decisiones con el cubo y marca tus errores en el historial. Además, una pantalla de juego más amplia con fichas más grandes. El nuevo ajuste «Mover en orden de dados» juega los dados en el orden mostrado, y ahora puedes enviar comentarios desde la app.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -157,7 +157,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Jouez des matchs avec le videau et la règle de Crawford, contre l’ordinateur ou un ami. Choisissez le niveau de l’ordinateur, de Facile à Expert. Créez n’importe quelle position et jouez-la. De nouvelles leçons expliquent le videau, les matchs et les cinq plans de jeu, et le mode tuteur vérifie désormais vos décisions de videau et marque vos erreurs dans l’historique. Et aussi : un écran de jeu plus spacieux avec des pions plus grands.",
+        "releaseNotes": "Jouez des matchs avec le videau et la règle de Crawford, contre l’ordinateur ou un ami. Choisissez le niveau de l’ordinateur, de Facile à Expert. Créez n’importe quelle position et jouez-la. De nouvelles leçons expliquent le videau, les matchs et les cinq plans de jeu, et le mode tuteur vérifie désormais vos décisions de videau et marque vos erreurs dans l’historique. Et aussi : un écran de jeu plus spacieux avec des pions plus grands. Le nouveau réglage « Jouer dans l’ordre des dés » joue les dés dans l’ordre affiché, et vous pouvez désormais donner votre avis depuis l’app.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -179,7 +179,7 @@
           "אופליין",
           "tavla"
         ],
-        "releaseNotes": "שחקו משחקים לנקודות עם קוביית ההכפלה וחוק קרופורד, נגד המחשב או נגד חבר. בחרו את רמת המחשב, מקל ועד מומחה. הציבו כל עמדה ושחקו ממנה. שיעורים חדשים על הקובייה, משחק לנקודות וחמש תוכניות המשחק, ומצב מדריך בודק עכשיו גם החלטות קובייה ומסמן את הטעויות שלכם בהיסטוריית המשחק. בנוסף: מסך משחק מרווח יותר עם אבנים גדולות יותר.",
+        "releaseNotes": "שחקו משחקים לנקודות עם קוביית ההכפלה וחוק קרופורד, נגד המחשב או נגד חבר. בחרו את רמת המחשב, מקל ועד מומחה. הציבו כל עמדה ושחקו ממנה. שיעורים חדשים על הקובייה, משחק לנקודות וחמש תוכניות המשחק, ומצב מדריך בודק עכשיו גם החלטות קובייה ומסמן את הטעויות שלכם בהיסטוריית המשחק. בנוסף: מסך משחק מרווח יותר עם אבנים גדולות יותר. הגדרה חדשה, „הזזה לפי סדר הקוביות”, משחקת את הקוביות בסדר שמוצג, ואפשר עכשיו לשלוח משוב מתוך האפליקציה.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -201,7 +201,7 @@
           "ऑफ़लाइन",
           "tavla"
         ],
-        "releaseNotes": "डबलिंग क्यूब और क्रॉफ़र्ड नियम के साथ मैच खेलें, कंप्यूटर या किसी दोस्त के साथ। कंप्यूटर का स्तर चुनें, आसान से विशेषज्ञ तक। कोई भी स्थिति बनाएँ और उससे खेलें। नए पाठ क्यूब, मैच और पाँच खेल योजनाएँ सिखाते हैं, और ट्यूटर मोड अब क्यूब के फ़ैसले भी जाँचता है और खेल के इतिहास में आपकी गलतियाँ चिह्नित करता है। साथ ही बड़ी गोटियों के साथ ज़्यादा खुली खेल स्क्रीन।",
+        "releaseNotes": "डबलिंग क्यूब और क्रॉफ़र्ड नियम के साथ मैच खेलें, कंप्यूटर या किसी दोस्त के साथ। कंप्यूटर का स्तर चुनें, आसान से विशेषज्ञ तक। कोई भी स्थिति बनाएँ और उससे खेलें। नए पाठ क्यूब, मैच और पाँच खेल योजनाएँ सिखाते हैं, और ट्यूटर मोड अब क्यूब के फ़ैसले भी जाँचता है और खेल के इतिहास में आपकी गलतियाँ चिह्नित करता है। साथ ही बड़ी गोटियों के साथ ज़्यादा खुली खेल स्क्रीन। नई सेटिंग “पासों के क्रम में चाल चलें” पासों को दिखाए गए क्रम में चलती है, और अब आप ऐप के अंदर से ही प्रतिक्रिया भेज सकते हैं।",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -223,7 +223,7 @@
           "tavola",
           "nard"
         ],
-        "releaseNotes": "Gioca incontri con il cubo del raddoppio e la regola Crawford, contro il computer o un amico. Scegli il livello del computer, da Facile a Esperto. Prepara qualsiasi posizione e giocala. Nuove lezioni sul cubo, sugli incontri e sui cinque piani di gioco, e la modalità tutor ora controlla anche le decisioni sul cubo e segna i tuoi errori nella cronologia. In più, una schermata di gioco più ampia con pedine più grandi.",
+        "releaseNotes": "Gioca incontri con il cubo del raddoppio e la regola Crawford, contro il computer o un amico. Scegli il livello del computer, da Facile a Esperto. Prepara qualsiasi posizione e giocala. Nuove lezioni sul cubo, sugli incontri e sui cinque piani di gioco, e la modalità tutor ora controlla anche le decisioni sul cubo e segna i tuoi errori nella cronologia. In più, una schermata di gioco più ampia con pedine più grandi. La nuova impostazione «Muovi in ordine di dadi» gioca i dadi nell’ordine mostrato, e ora puoi inviare feedback direttamente dall’app.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -245,7 +245,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "ダブリングキューブとクロフォードルール付きのマッチを、コンピュータや友だちと遊べるようになりました。コンピュータの強さは「やさしい」から「エキスパート」まで選べます。好きな局面を作ってそこから対局も可能。キューブ、マッチ、5つのゲームプランを学ぶ新しいレッスンを追加し、チューターモードはキューブの判断もチェックして、ミスを対局履歴に表示します。さらに、駒が大きく見やすくなった対局画面。",
+        "releaseNotes": "ダブリングキューブとクロフォードルール付きのマッチを、コンピュータや友だちと遊べるようになりました。コンピュータの強さは「やさしい」から「エキスパート」まで選べます。好きな局面を作ってそこから対局も可能。キューブ、マッチ、5つのゲームプランを学ぶ新しいレッスンを追加し、チューターモードはキューブの判断もチェックして、ミスを対局履歴に表示します。さらに、駒が大きく見やすくなった対局画面。 新しい設定「サイコロ順に移動」で、表示された順にサイコロを使えます。アプリ内からフィードバックも送れるようになりました。",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -267,7 +267,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "더블링 큐브와 크로퍼드 규칙이 있는 매치를 컴퓨터나 친구와 즐기세요. 컴퓨터 난이도는 쉬움부터 전문가까지 고를 수 있습니다. 원하는 포지션을 만들어 이어서 플레이할 수도 있습니다. 큐브, 매치, 다섯 가지 게임 플랜을 다루는 새 수업이 추가되었고, 튜터 모드는 이제 큐브 결정도 확인하고 게임 기록에 실수를 표시합니다. 또한 말이 더 커진 넓은 게임 화면.",
+        "releaseNotes": "더블링 큐브와 크로퍼드 규칙이 있는 매치를 컴퓨터나 친구와 즐기세요. 컴퓨터 난이도는 쉬움부터 전문가까지 고를 수 있습니다. 원하는 포지션을 만들어 이어서 플레이할 수도 있습니다. 큐브, 매치, 다섯 가지 게임 플랜을 다루는 새 수업이 추가되었고, 튜터 모드는 이제 큐브 결정도 확인하고 게임 기록에 실수를 표시합니다. 또한 말이 더 커진 넓은 게임 화면. 새 설정 \"주사위 순서대로 이동\"으로 표시된 순서대로 주사위를 사용할 수 있고, 이제 앱 안에서 피드백을 보낼 수 있습니다.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -289,7 +289,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Speel matches met de verdubbelingskubus en de Crawford-regel, tegen de computer of een vriend. Kies het niveau van de computer, van Makkelijk tot Expert. Zet elke stelling op en speel hem uit. Nieuwe lessen over de kubus, matches en de vijf spelplannen, en de tutormodus controleert nu ook je kubusbeslissingen en markeert je fouten in de spelgeschiedenis. Plus een ruimer spelscherm met grotere stenen.",
+        "releaseNotes": "Speel matches met de verdubbelingskubus en de Crawford-regel, tegen de computer of een vriend. Kies het niveau van de computer, van Makkelijk tot Expert. Zet elke stelling op en speel hem uit. Nieuwe lessen over de kubus, matches en de vijf spelplannen, en de tutormodus controleert nu ook je kubusbeslissingen en markeert je fouten in de spelgeschiedenis. Plus een ruimer spelscherm met grotere stenen. Met de nieuwe instelling ‘Verplaatsen in dobbelsteenvolgorde’ speel je de stenen in de getoonde volgorde, en je kunt nu feedback sturen vanuit de app.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -311,7 +311,7 @@
           "tryktrak",
           "nard"
         ],
-        "releaseNotes": "Graj mecze z kostką dublującą i regułą Crawforda, z komputerem lub ze znajomym. Wybierz poziom komputera, od Łatwego do Eksperta. Ustaw dowolną pozycję i rozegraj ją. Nowe lekcje o kostce, meczach i pięciu planach gry, a tryb tutora sprawdza teraz także decyzje kostki i oznacza twoje błędy w historii gry. Do tego przestronniejszy ekran gry z większymi pionami.",
+        "releaseNotes": "Graj mecze z kostką dublującą i regułą Crawforda, z komputerem lub ze znajomym. Wybierz poziom komputera, od Łatwego do Eksperta. Ustaw dowolną pozycję i rozegraj ją. Nowe lekcje o kostce, meczach i pięciu planach gry, a tryb tutora sprawdza teraz także decyzje kostki i oznacza twoje błędy w historii gry. Do tego przestronniejszy ekran gry z większymi pionami. Nowe ustawienie „Ruch według kolejności kości” rozgrywa kości w pokazanej kolejności, a opinię możesz teraz wysłać prosto z aplikacji.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -333,7 +333,7 @@
           "tavla",
           "nard"
         ],
-        "releaseNotes": "Jogue partidas com o cubo de dobra e a regra de Crawford, contra o computador ou um amigo. Escolha o nível do computador, de Fácil a Especialista. Monte qualquer posição e jogue-a. Novas lições sobre o cubo, as partidas e os cinco planos de jogo, e o modo tutor passa a verificar as decisões de cubo e a marcar os seus erros no histórico. E ainda um ecrã de jogo mais amplo com peças maiores.",
+        "releaseNotes": "Jogue partidas com o cubo de dobra e a regra de Crawford, contra o computador ou um amigo. Escolha o nível do computador, de Fácil a Especialista. Monte qualquer posição e jogue-a. Novas lições sobre o cubo, as partidas e os cinco planos de jogo, e o modo tutor passa a verificar as decisões de cubo e a marcar os seus erros no histórico. E ainda um ecrã de jogo mais amplo com peças maiores. A nova definição «Mover na ordem dos dados» joga os dados pela ordem mostrada, e agora pode enviar feedback a partir da app.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -355,7 +355,7 @@
           "офлайн",
           "tavla"
         ],
-        "releaseNotes": "Играйте матчи с кубиком удвоения и правилом Кроуфорда — против компьютера или с другом. Выбирайте уровень компьютера, от «Лёгкого» до «Эксперта». Расставляйте любую позицию и доигрывайте её. Новые уроки о кубике, матчах и пяти игровых планах, а режим наставника теперь проверяет и решения с кубиком и отмечает ваши ошибки в истории партии. А ещё — более просторный игровой экран с крупными шашками.",
+        "releaseNotes": "Играйте матчи с кубиком удвоения и правилом Кроуфорда — против компьютера или с другом. Выбирайте уровень компьютера, от «Лёгкого» до «Эксперта». Расставляйте любую позицию и доигрывайте её. Новые уроки о кубике, матчах и пяти игровых планах, а режим наставника теперь проверяет и решения с кубиком и отмечает ваши ошибки в истории партии. А ещё — более просторный игровой экран с крупными шашками. Новая настройка «Ходить по порядку костей» разыгрывает кости в показанном порядке, а отзыв теперь можно отправить прямо из приложения.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -377,7 +377,7 @@
           "çevrimdışı",
           "nard"
         ],
-        "releaseNotes": "Katlama zarı ve Crawford kuralıyla bilgisayara ya da bir arkadaşınıza karşı maç oynayın. Bilgisayarın seviyesini Kolay'dan Uzman'a kadar seçin. İstediğiniz pozisyonu kurup oradan oynayın. Zar, maçlar ve beş oyun planı üzerine yeni dersler eklendi; eğitmen modu artık zar kararlarınızı da kontrol ediyor ve hatalarınızı oyun geçmişinde işaretliyor. Ayrıca daha büyük pullarla daha ferah bir oyun ekranı.",
+        "releaseNotes": "Katlama zarı ve Crawford kuralıyla bilgisayara ya da bir arkadaşınıza karşı maç oynayın. Bilgisayarın seviyesini Kolay'dan Uzman'a kadar seçin. İstediğiniz pozisyonu kurup oradan oynayın. Zar, maçlar ve beş oyun planı üzerine yeni dersler eklendi; eğitmen modu artık zar kararlarınızı da kontrol ediyor ve hatalarınızı oyun geçmişinde işaretliyor. Ayrıca daha büyük pullarla daha ferah bir oyun ekranı. Yeni \"Zar sırasına göre oyna\" ayarı zarları gösterilen sırayla oynar; artık uygulamanın içinden geri bildirim de gönderebilirsiniz.",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
@@ -399,7 +399,7 @@
           "离线",
           "tavla"
         ],
-        "releaseNotes": "现在可以和电脑或朋友进行带加倍骰和克劳福德规则的比赛。电脑难度可从简单选到专家。还能摆放任意局面并从那里开始下。新课程讲解加倍骰、比赛和五种游戏计划，导师模式现在也会检查加倍骰决定，并在对局历史中标出你的失误。此外，对局界面更宽敞，棋子更大。",
+        "releaseNotes": "现在可以和电脑或朋友进行带加倍骰和克劳福德规则的比赛。电脑难度可从简单选到专家。还能摆放任意局面并从那里开始下。新课程讲解加倍骰、比赛和五种游戏计划，导师模式现在也会检查加倍骰决定，并在对局历史中标出你的失误。此外，对局界面更宽敞，棋子更大。 新增“按骰子顺序移动”设置，按显示的顺序使用骰子；现在还可以在应用内发送反馈。",
         "marketingUrl": "https://backgammon-mastermind.vercel.app",
         "supportUrl": "https://github.com/softwarebyze/Backgammon-Mastermind/issues",
         "privacyPolicyUrl": "https://backgammon-mastermind.vercel.app/privacy/"
