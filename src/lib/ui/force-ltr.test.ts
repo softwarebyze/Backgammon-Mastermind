@@ -1,5 +1,7 @@
+import type * as ForceLtr from './force-ltr';
+
 function loadOn(os: 'web' | 'ios') {
-  let mod!: typeof import('./force-ltr');
+  let mod!: typeof ForceLtr;
   jest.isolateModules(() => {
     const { Platform } = require('react-native');
     Object.defineProperty(Platform, 'OS', { value: os, configurable: true });
