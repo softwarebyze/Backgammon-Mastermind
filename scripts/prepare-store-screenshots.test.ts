@@ -46,9 +46,9 @@ describe('prepare-store-screenshots', () => {
     expect(source).toContain('xml:lang="${language}"');
   });
 
-  it('stages a 9:16 Play crop of the iPhone 6.9" marketing set', () => {
+  it('stages a letterboxed 9:16 Play copy of the iPhone 6.9" marketing set', () => {
     const sourceIphone = FRAMES.frames.filter(frame => frame.device === 'iphone').map(frame => frame.dest);
-    expect(sourceIphone).toHaveLength(5);
+    expect(sourceIphone).toHaveLength(7);
 
     for (const [appleLocale, { appLanguage }] of Object.entries(LOCALIZATIONS)) {
       expect(appLanguage).toBeTruthy();
@@ -87,8 +87,8 @@ describe('prepare-store-screenshots', () => {
       const playFiles = readdirSync(
         join(PLAY_ROOT, playLocale, 'images/phoneScreenshots'),
       ).filter(name => name.endsWith('.png'));
-      expect(iosFiles).toHaveLength(10);
-      expect(playFiles).toHaveLength(5);
+      expect(iosFiles).toHaveLength(14);
+      expect(playFiles).toHaveLength(7);
       const title = readFileSync(join(PLAY_ROOT, playLocale, 'title.txt'), 'utf8').trim();
       const shortDescription = readFileSync(
         join(PLAY_ROOT, playLocale, 'short_description.txt'),

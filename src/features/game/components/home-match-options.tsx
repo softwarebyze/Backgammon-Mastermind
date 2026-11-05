@@ -1,8 +1,9 @@
-import { Platform, StyleSheet, Switch, Text, View } from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 import { HomeSetupChoice } from '@/features/game/components/home-setup-choice';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import i18n, { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { forceLtrWebDir } from '@/lib/ui/force-ltr';
 import { HOME_INK } from './home-ink';
 
 /** React Native Web ignores thumbColor; it reads these instead. */
@@ -59,7 +60,7 @@ export function HomeMatchOptions({ format, length, crawford, onFormatChange, onL
             <View style={styles.switchRow}>
               <Text style={styles.switchLabel}>{translate('home.setup.crawford')}</Text>
               {/* React Native Web draws the thumb away from its track under RTL. */}
-              <View style={Platform.OS === 'web' ? styles.switchLtr : null}>
+              <View {...forceLtrWebDir}>
                 <Switch
                   testID="home-crawford"
                   accessibilityLabel={translate('home.setup.crawford')}
@@ -84,7 +85,6 @@ const styles = StyleSheet.create({
   // Match settings sit in a quieter inset under the format choice.
   match: { gap: 10, paddingLeft: 12, borderLeftWidth: 2, borderLeftColor: HOME_INK.hairline },
   matchAside: { gap: 4 },
-  switchLtr: { direction: 'ltr' },
   switchRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
   switchLabel: { flex: 1, color: HOME_INK.ivory, fontSize: 15, ...interFont('medium') },
 });

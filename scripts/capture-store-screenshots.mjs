@@ -67,6 +67,8 @@ function loadGameStates() {
   const src = `
 import { createPositionState } from './src/lib/game/create-position.ts';
 import { getLegalMoves } from './src/lib/game/moves.ts';
+import { createMatch } from './src/lib/game/match.ts';
+import { newPosition } from './src/lib/positions/position.ts';
 
 const moving = createPositionState({
   useStandardSetup: true,
@@ -92,7 +94,51 @@ const highlighted = {
   legalMovesForSelected: legal,
 };
 
-process.stdout.write(JSON.stringify({ moving, highlighted, passAndPlay }));
+// 6/3 6/5 with 3-1 breaks the 6-point: the Tutor rates it a big blunder.
+const tutor = createPositionState({
+  useStandardSetup: true,
+  dice: [3, 1],
+  currentPlayer: 'white',
+  mode: 'vs-computer',
+});
+tutor.openingRolls = { white: 3, black: 1 };
+
+// Match to 7, computer leads 4-3 and turns the cube to 4: Take or Pass?
+const match = createMatch(7);
+match.score = { white: 3, black: 4 };
+const midGame = [
+  { point: 6, player: 'white', count: 4 },
+  { point: 8, player: 'white', count: 3 },
+  { point: 13, player: 'white', count: 4 },
+  { point: 4, player: 'white', count: 2 },
+  { point: 20, player: 'white', count: 2 },
+  { point: 19, player: 'black', count: 4 },
+  { point: 17, player: 'black', count: 3 },
+  { point: 12, player: 'black', count: 4 },
+  { point: 21, player: 'black', count: 2 },
+  { point: 1, player: 'black', count: 2 },
+];
+const cubeOffer = createPositionState({
+  placements: midGame,
+  currentPlayer: 'black',
+  mode: 'vs-computer',
+  match,
+});
+cubeOffer.phase = 'rolling';
+cubeOffer.dice = [0, 0];
+cubeOffer.remainingDice = [];
+cubeOffer.match = { ...match, cube: { value: 2, owner: 'black' }, pendingOffer: 'black' };
+
+// The same middle game in the editor, as a 7-point match with a roll to play.
+const position = newPosition(true);
+position.borneOff = { white: 0, black: 0 };
+for (const { point, player, count } of midGame)
+  position.points[point] = { player, count };
+position.dice = [5, 2];
+position.context = { ...position.context, matchLength: 7, scores: { white: 3, black: 4 }, cubeExponent: 1, cubeOwner: 'white' };
+const positionPath = \`/position?data=\${encodeURIComponent(JSON.stringify(position))}\`;
+
+process.stdout.write(JSON.stringify({ moving, highlighted, passAndPlay, tutor, cubeOffer, positionPath }));
 `;
   const raw = execFileSync('pnpm', ['exec', 'tsx', '-e', src], {
     cwd: ROOT,
@@ -120,11 +166,15 @@ function storageFor(kind, states, appLanguage) {
     [MMKV('GAME_PREFERENCES')]: JSON.stringify(PREFS),
     [MMKV('GAME_PREFERENCES_DICE_DOTS_V1')]: 'true',
   };
-  if (kind === 'home' || kind === 'learn-hub' || kind === 'lesson') {
-    return base;
+  if (kind === 'tutor') {
+    return {
+      ...base,
+      [MMKV('GAME_PREFERENCES')]: JSON.stringify({ ...PREFS, tutorMode: true }),
+      [MMKV('ACTIVE_GAME_STATE')]: JSON.stringify(states.tutor),
+    };
   }
-  if (kind === 'gameplay') {
-    return { ...base, [MMKV('ACTIVE_GAME_STATE')]: JSON.stringify(states.moving) };
+  if (kind === 'match') {
+    return { ...base, [MMKV('ACTIVE_GAME_STATE')]: JSON.stringify(states.cubeOffer) };
   }
   if (kind === 'pass-and-play') {
     return { ...base, [MMKV('ACTIVE_GAME_STATE')]: JSON.stringify(states.passAndPlay) };
@@ -135,13 +185,33 @@ function storageFor(kind, states, appLanguage) {
   return base;
 }
 
+const BOARD = '[data-testid="game-board-slot"]';
 const SCENES = [
-  { file: '01-home.png', kind: 'home', path: '/', ready: '[data-testid="home-screen"]' },
-  { file: '02-learn-hub.png', kind: 'learn-hub', path: '/learn', ready: '[data-testid="learn-hub-screen"]' },
+  { file: '01-vs-computer.png', kind: 'highlights', path: '/game', ready: BOARD },
+  {
+    file: '02-tutor.png',
+    kind: 'tutor',
+    path: '/game',
+    ready: BOARD,
+    // Play the blunder, confirm, and wait for the real engine's verdict.
+    taps: ['point-6', 'point-3', 'point-6', 'point-5', 'confirm-move-button'],
+    after: '[data-testid="guidance-modal"]',
+  },
   { file: '03-lesson-hitting.png', kind: 'lesson', path: '/learn/hitting-bar', ready: '[data-testid="learn-board-slot"]' },
-  { file: '04-vs-computer.png', kind: 'gameplay', path: '/game', ready: '[data-testid="game-board-slot"]' },
-  { file: '05-pass-and-play.png', kind: 'pass-and-play', path: '/game', ready: '[data-testid="game-board-slot"]' },
+  { file: '04-match-cube.png', kind: 'match', path: '/game', ready: BOARD },
+  { file: '05-position.png', kind: 'position', path: states => states.positionPath, ready: '[data-testid="position-screen"]' },
+  { file: '06-pass-and-play.png', kind: 'pass-and-play', path: '/game', ready: BOARD },
+  { file: '07-learn-hub.png', kind: 'learn-hub', path: '/learn', ready: '[data-testid="learn-hub-screen"]' },
 ];
+
+/** Tap a view by testID at its centre, the way a finger would (RN Web pressables). */
+async function tapTestId(page, testId) {
+  const box = await page.locator(`[data-testid="${testId}"]`).boundingBox();
+  if (!box)
+    throw new Error(`Cannot tap ${testId}: not on screen`);
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  await new Promise(r => setTimeout(r, 600));
+}
 
 /** Poll the production web preview until it can serve screenshot routes. */
 async function waitForServer(url, tries = 90) {
@@ -206,13 +276,7 @@ async function assertProductionUi(page, kind) {
   if (body.includes('0.1.3')) {
     throw new Error(`Version 0.1.3 leaked into ${kind} screenshot`);
   }
-  if (kind === 'home' && body.includes('Resume Game')) {
-    throw new Error('Home screenshot still shows an English Resume Game control');
-  }
-  if (kind === 'home' && !body.includes('MASTERMIND')) {
-    throw new Error('Home screenshot missing Backgammon Mastermind lockup');
-  }
-  if (kind === 'gameplay' || kind === 'highlights' || kind === 'pass-and-play') {
+  if (['highlights', 'tutor', 'match', 'pass-and-play'].includes(kind)) {
     if (await page.locator('[data-testid="game-board-slot"]').count() === 0) {
       throw new Error(`Gameplay screenshot missing turn chrome (${kind})`);
     }
@@ -234,8 +298,13 @@ async function captureScene(browser, context) {
     colorScheme: 'dark',
   });
   await preparePage(page, storageFor(scene.kind, states, copy.appLanguage));
-  await page.goto(`${BASE}${scene.path}`, { waitUntil: 'domcontentloaded', timeout: 120_000 });
+  const route = typeof scene.path === 'function' ? scene.path(states) : scene.path;
+  await page.goto(`${BASE}${route}`, { waitUntil: 'domcontentloaded', timeout: 120_000 });
   await page.waitForSelector(scene.ready, { timeout: 60_000 });
+  for (const testId of scene.taps ?? [])
+    await tapTestId(page, testId);
+  if (scene.after)
+    await page.waitForSelector(scene.after, { timeout: 60_000 });
   await hideChrome(page);
   await page.evaluate(async () => {
     if (document.fonts?.ready) {
@@ -291,6 +360,8 @@ async function main() {
     states.moving.phase !== 'moving'
     || states.highlighted.selectedPoint !== 13
     || states.passAndPlay.mode !== 'vs-human'
+    || states.tutor.phase !== 'moving'
+    || states.cubeOffer.match?.pendingOffer !== 'black'
   ) {
     throw new Error('Seeded game states look wrong');
   }

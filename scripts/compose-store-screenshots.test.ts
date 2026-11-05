@@ -31,6 +31,7 @@ type Frame = {
   sub?: string;
   cropTop?: number;
   fit?: 'cover' | 'contain';
+  copy?: string;
 };
 
 type Manifest = {
@@ -51,74 +52,44 @@ function wordCount(headline: string): number {
 describe('screenshot-frames manifest', () => {
   const manifest = loadManifest();
 
-  it('lists 5 iPhone and 5 iPad frames at Apple pixel sizes', () => {
+  it('lists 7 iPhone and 7 iPad frames at Apple pixel sizes', () => {
     const iphone = manifest.frames.filter(f => f.device === 'iphone');
     const ipad = manifest.frames.filter(f => f.device === 'ipad');
-    expect(iphone).toHaveLength(5);
-    expect(ipad).toHaveLength(5);
+    expect(iphone).toHaveLength(7);
+    expect(ipad).toHaveLength(7);
     expect(manifest.devices.iphone).toEqual({ width: 1320, height: 2868 });
     expect(manifest.devices.ipad).toEqual({ width: 2064, height: 2752 });
   });
 
-  it('uses the store carousel order and concise headlines (home has none)', () => {
-    const iphoneDest = manifest.frames
-      .filter(f => f.device === 'iphone')
-      .map(f => f.dest);
-    expect(iphoneDest).toEqual([
-      'iphone-69-01-learn-to-play.png',
-      'iphone-69-02-pass-and-play.png',
-      'iphone-69-03-vs-computer.png',
-      'iphone-69-04-learn-hub.png',
-      'iphone-69-05-home.png',
+  it('leads with the best features, in the same order on both devices', () => {
+    const scenes = (device: Frame['device']) => manifest.frames
+      .filter(f => f.device === device)
+      .map(f => f.dest.replace(/^(iphone-69|ipad-13)-/, ''));
+    expect(scenes('iphone')).toEqual([
+      '01-vs-computer.png',
+      '02-tutor.png',
+      '03-learn-to-play.png',
+      '04-match-cube.png',
+      '05-position.png',
+      '06-pass-and-play.png',
+      '07-learn-hub.png',
     ]);
-    const ipadDest = manifest.frames
-      .filter(f => f.device === 'ipad')
-      .map(f => f.dest);
-    expect(ipadDest).toEqual([
-      'ipad-13-01-learn-to-play.png',
-      'ipad-13-02-pass-and-play.png',
-      'ipad-13-03-vs-computer.png',
-      'ipad-13-04-learn-hub.png',
-      'ipad-13-05-home.png',
-    ]);
-    expect(manifest.frames.filter(f => f.device === 'iphone').map(f => f.headline)).toEqual([
-      'Learn to play backgammon',
-      'Pass & play offline',
-      'Play against the computer',
-      'Interactive lessons',
-      undefined,
-    ]);
+    expect(scenes('ipad')).toEqual(scenes('iphone'));
     for (const frame of manifest.frames) {
-      const isHome = frame.dest.includes('-home.');
-      if (isHome) {
-        expect(frame.headline).toBeFalsy();
-        expect(frame.cropTop).toBe(0);
-        expect(JSON.stringify(frame)).not.toMatch(/Master the board/i);
-        continue;
-      }
       const n = wordCount(frame.headline ?? '');
       expect(n).toBeGreaterThanOrEqual(2);
       expect(n).toBeLessThanOrEqual(5);
-      if (frame.dest.includes('pass-and-play'))
-        expect(frame.sub).toBe('With friends and family');
-      else
-        expect(frame.sub).toBeUndefined();
     }
   });
 
   it('crops in-app chrome per scene so the headline band does not cover UI type', () => {
-    const byDest = Object.fromEntries(
-      manifest.frames.filter(f => f.device === 'iphone').map(f => [f.dest, f]),
-    );
-    expect(byDest['iphone-69-01-learn-to-play.png']?.cropTop).toBeLessThanOrEqual(0.08);
-    expect(byDest['iphone-69-02-pass-and-play.png']).toMatchObject({ cropTop: 0, fit: 'contain' });
-    expect(byDest['iphone-69-03-vs-computer.png']).toMatchObject({ cropTop: 0, fit: 'contain' });
-    expect(byDest['iphone-69-04-learn-hub.png']?.cropTop).toBeGreaterThanOrEqual(0.12);
-    expect(byDest['iphone-69-05-home.png']?.cropTop).toBe(0);
     for (const frame of manifest.frames) {
       expect(frame.cropTop).toBeGreaterThanOrEqual(0);
-      expect(frame.cropTop).toBeLessThanOrEqual(1);
+      expect(frame.cropTop).toBeLessThanOrEqual(0.2);
     }
+    const src = readFileSync(SCRIPT, 'utf8');
+    // contain + cropTop clips the top first, so the bottom of the app stays in view.
+    expect(src).toMatch(/object-view-box:inset/);
   });
 
   it('is two opaque zones, not a gradient overlay or gold bezel', () => {
@@ -144,7 +115,7 @@ describe('screenshot localizations', () => {
   it('provides store copy for every App Store locale', () => {
     const copy = JSON.parse(readFileSync(LOCALIZATIONS_PATH, 'utf8')) as Record<
       string,
-      { appLanguage: string; playLocale: string; learn: string[]; pass: string[]; passSub: string; computer: string[]; lessons: string[] }
+      Record<string, string | string[]>
     >;
     const storeLocales = Object.keys(
       (JSON.parse(readFileSync(join(ROOT, 'store.config.json'), 'utf8')) as {
@@ -152,14 +123,16 @@ describe('screenshot localizations', () => {
       }).apple.info,
     );
     expect(Object.keys(copy).sort()).toEqual(storeLocales.sort());
+    const manifest = loadManifest();
     for (const locale of Object.values(copy)) {
       expect(locale.appLanguage).toBeTruthy();
       expect(locale.playLocale).toBeTruthy();
-      expect(locale.learn.join(' ')).toBeTruthy();
-      expect(locale.pass.join(' ')).toBeTruthy();
-      expect(locale.passSub).toBeTruthy();
-      expect(locale.computer.join(' ')).toBeTruthy();
-      expect(locale.lessons.join(' ')).toBeTruthy();
+      for (const frame of manifest.frames) {
+        const key = frame.copy ?? '';
+        expect((locale[key] as string[]).join(' ')).toBeTruthy();
+        // An English sub needs a localized one, or the band would mix languages.
+        expect(Boolean(locale[`${key}Sub`])).toBe(Boolean(frame.sub));
+      }
     }
   });
 });
@@ -170,7 +143,7 @@ describe('compose-store-screenshots', () => {
       cwd: ROOT,
       encoding: 'utf8',
     });
-    expect(out).toMatch(/OK 10 composed PNGs/);
+    expect(out).toMatch(/OK 14 composed PNGs/);
   });
 
   it('refuses a raw PNG that is not the Apple pixel size', () => {

@@ -12,7 +12,7 @@ import Animated, {
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
-import { boardLayoutStyle, boardWebDir } from './board-layout-direction';
+import { forceLtrStyle, forceLtrWebDir } from '@/lib/ui/force-ltr';
 import { diePips } from './die-pips';
 
 type PlayerColor = 'white' | 'black';
@@ -260,8 +260,8 @@ export function DiceDisplay({
       testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'}
       // In dice order the row is laid out physically (LTR), then reversed for
       // RTL so the leading die sits at the reading edge either way.
-      {...(leadingRTL !== undefined ? boardWebDir : {})}
-      style={[styles.container, { minHeight: size }, gap !== undefined && { gap }, leadingRTL !== undefined && [boardLayoutStyle, { flexDirection: leadingRTL ? 'row-reverse' : 'row' }], containerStyle]}
+      {...(leadingRTL !== undefined ? forceLtrWebDir : {})}
+      style={[styles.container, { minHeight: size }, gap !== undefined && { gap }, leadingRTL !== undefined && [forceLtrStyle, { flexDirection: leadingRTL ? 'row-reverse' : 'row' }], containerStyle]}
     >
       <DiceFaces
         dice={dice}

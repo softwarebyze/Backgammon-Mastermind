@@ -5,6 +5,7 @@ import { Buffer } from 'node:buffer';
  *
  * Zone 1 (top, optional): opaque copy band, solid #1E0C02, headline only.
  * Zone 2 (the rest): the raw capture cropped by cropTop (fraction of raw
+ * height clipped from the top; with fit "contain" the rest is scaled to fit)
  * height clipped from the top) so in-app chrome does not sit under the type.
  * Product fills the remaining canvas at full width. No gradient overlay,
  * no gold bezel, no side letterbox, no wordmark footer.
@@ -209,6 +210,7 @@ html,body{margin:0;padding:0;width:${spec.width}px;height:${spec.height}px;overf
   position:absolute;${contain ? 'inset:0;margin:auto;' : `left:0;top:-${cropY}px;`}
   width:${contain ? '100%' : `${spec.width}px`};height:${contain ? '100%' : `${spec.height}px`};
   object-fit:${contain ? 'contain' : 'cover'};object-position:center;
+  ${contain && cropY > 0 ? `object-view-box:inset(${cropY}px 0 0 0);` : ''}
   display:block;
 }
 .band{

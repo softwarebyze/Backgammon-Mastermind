@@ -9,6 +9,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { forceLtrStyle, forceLtrWebDir } from '@/lib/ui/force-ltr';
+
 const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as const;
 const ROLL_MS = 420;
 
@@ -74,7 +76,7 @@ export function AnimatedNumber({ value, style, accessibilityLabel, testID }: Pro
       testID={testID}
       style={styles.row}
     >
-      <View style={styles.digits} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+      <View style={styles.digits} {...forceLtrWebDir} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         {digits.map((digit, i) => (
           <DigitColumn
             // eslint-disable-next-line react/no-array-index-key -- place value is the identity
@@ -97,6 +99,6 @@ const styles = StyleSheet.create({
   // Numbers read left to right in every language: in RTL a plain row would show 167 as "761".
   digits: {
     flexDirection: 'row',
-    direction: 'ltr',
+    ...forceLtrStyle,
   },
 });
