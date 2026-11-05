@@ -96,6 +96,28 @@ describe('action undo through the real provider', () => {
     expect(result.current.moveLog).toHaveLength(3);
     expect(result.current.canRedo).toBe(false);
   });
+  it('tutor take-back preserves an action before the judged moves', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    act(() => result.current.startFromPosition(position()));
+    act(() => result.current.doMove({ from: 8, to: 7, dieIndex: 0 }));
+    settle(result);
+    const earlier = result.current.state!;
+    const earlierLog = [...result.current.moveLog];
+    act(() => result.current.doMove({ from: 8, to: 7, dieIndex: 0 }));
+    settle(result);
+    act(() => result.current.doMoveSequence([{ from: 8, to: 7, dieIndex: 0 }, { from: 7, to: 6, dieIndex: 0 }]));
+    settle(result);
+    expect(result.current.moveLog).toHaveLength(4);
+    act(() => flag(earlier));
+    act(() => result.current.tutorTakeBack(3));
+    settle(result);
+    expect(getGuidance()).toBeNull();
+    expect(result.current.state!.points).toEqual(earlier.points);
+    expect(result.current.state!.remainingDice).toEqual(earlier.remainingDice);
+    expect(result.current.moveLog).toEqual(earlierLog);
+    expect(result.current.moveLog).toHaveLength(1);
+    expect(loadPersistedSession()!.moveLog).toEqual(earlierLog);
+  });
   it('undoes a compound then an earlier action immediately, and redoes both during reverse flights', () => {
     const { result } = renderHook(() => useGameProviderValue(true));
     const initial = position();
