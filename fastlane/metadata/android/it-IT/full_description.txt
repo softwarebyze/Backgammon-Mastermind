@@ -2,11 +2,13 @@ Backgammon Mastermind è una versione curata del classico gioco da tavolo di str
 
 Inizia subito una partita contro il computer oppure condividi la scacchiera con un amico in modalità pass-and-play. Tira i dadi, muovi le pedine, cattura quelle avversarie rimaste sole e porta fuori tutte e quindici le tue pedine per vincere.
 
-Non conosci ancora il backgammon? Impara direttamente sulla scacchiera con cinque brevi lezioni interattive dedicate al movimento, alla cattura, alla barra e all’uscita delle pedine. Poi gioca la tua prima vera partita.
+Non conosci ancora il backgammon? Impara direttamente sulla scacchiera con brevi lezioni interattive, dal movimento e dalla cattura fino all’uscita delle pedine, ai piani di gioco, al cubo del raddoppio e agli incontri. Poi gioca la tua prima vera partita.
 
 Funzioni:
 • Impara a giocare — lezioni interattive su una vera scacchiera
-• Gioca contro il computer
+• Gioca contro il computer, da Facile a Esperto
+• Incontri con il cubo del raddoppio e la regola Crawford
+• Prepara qualsiasi posizione e giocala
 • Modalità locale per 2 giocatori (pass-and-play)
 • Trascina o tocca per muovere; le destinazioni consentite sono evidenziate
 • Suggerimenti di mossa, numeri dei punti e guida alla direzione per i principianti
