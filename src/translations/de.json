@@ -38,6 +38,7 @@
       "cancel_a11y": "Auswahl abbrechen",
       "confirm_move": "Zug bestätigen",
       "confirm_move_a11y": "Zug bestätigen und Zug beenden",
+      "dice_order_a11y": "Würfel: {{first}}, dann {{second}}",
       "leave_game_a11y": "Spiel verlassen und nach Hause zurückkehren",
       "loading": "Beladung...",
       "new_game_message": "Neues Spiel starten?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Würfeln",
       "save_position_a11y": "Diese Stellung speichern",
       "start_new_game_a11y": "Starten Sie neues Spiel",
+      "swap_dice": "Würfel tauschen",
+      "swap_dice_hint": "Tauscht, welcher Würfel zuerst gespielt wird.",
       "undo_a11y": "Undo Bewegung",
       "undo_move": "Rückgängig"
     },
@@ -112,6 +115,7 @@
       "rules": "Vor dem Würfeln kannst du den Einsatz verdoppeln."
     },
     "nudge": {
+      "dice_order": "Kein legaler Zug für diesen Stein.",
       "roll_first": "Würfle zuerst"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Hufeisen-Pfad auf dem Brett",
       "move_hints": "Zughinweise",
       "move_hints_hint": "Hebt die Nummern der Punkte hervor, von denen du ziehen kannst",
+      "move_in_dice_order": "In Würfelreihenfolge ziehen",
+      "move_in_dice_order_hint": "Tippe auf einen Stein, um den ersten ungenutzten Würfel zu bevorzugen, sonst den anderen, falls erlaubt. Tausche die Würfel, um die Priorität zu ändern.",
       "point_numbers": "Feldnummern",
       "point_numbers_hint": "Beschriftung 1–24 auf dem Brett anzeigen",
       "section_automation": "Automatisierung",
@@ -377,6 +383,8 @@
       "recap_5": "Spiele beginnen mit jeweils einem Würfel - höher geht zuerst (Tiles Re-Roll)",
       "recap_6": "Pip-Count: Wer weniger hat, führt im Rennen",
       "recap_7": "Wähle einen Plan: Rennen, Angriff, Prime oder Halten",
+      "recap_8": "Der Würfel verdoppelt den Einsatz: Annehmen oder aufgeben, wenn du gedoppelt wirst",
+      "recap_9": "Matches gehen bis zu einer festen Punktzahl; im Crawford-Spiel wird nicht gedoppelt",
       "title": "Du bist bereit zu spielen"
     },
     "hint": "Hinweis",
@@ -387,6 +395,28 @@
     "home_cta_sub": "Interaktiver Unterricht für Anfänger",
     "lesson_complete": "Lektion komplett!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Kommst du nicht weiter? Tippe auf Hinweis, und der beste Zug der Engine erscheint auf dem Brett. Vor dem Würfeln sagt er dir auch, ob du doppeln sollst, und wenn du gedoppelt wirst, ob du annehmen oder aufgeben sollst.",
+            "title": "Hinweis"
+          },
+          "history": {
+            "body": "Rückgängig nimmt während deines Zugs einen Schritt zurück. Der Verlauf unter dem Brett geht jeden Zug des Spiels durch. Mit dem Tutor-Modus markiert er auch deine Fehler: ?! ein Ausrutscher, ? ein Fehler, ?? ein grober Patzer.",
+            "title": "Rückgängig und Verlauf"
+          },
+          "levels": {
+            "body": "Gegen den Computer wählst du auf dem Startbildschirm Leicht, Mittel, Schwer oder Experte. Um eine Stellung zu üben, nutze Stellung aufbauen: Setze Steine, Würfel und Verdopplungswürfel und spiele von dort weiter.",
+            "title": "Computerstärke und eigene Stellungen"
+          },
+          "tutor": {
+            "body": "Schalte in den Einstellungen den Tutor-Modus ein, dann prüft die Engine jeden Zug und jede Würfelentscheidung. Nach einem Fehler kannst du zurücknehmen und es erneut versuchen, deine Wahl behalten oder den Tutor ausschalten.",
+            "title": "Tutor-Modus"
+          }
+        },
+        "subtitle": "Hinweise, Tutor-Modus, Rückgängig und mehr",
+        "title": "Werkzeuge in der App"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -426,6 +456,32 @@
         },
         "subtitle": "In welche Richtung du dich bewegst",
         "title": "Richtung und Einrichtung"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Trägst du alle 15 Steine ab, bevor dein Gegner einen abgetragen hat, ist es ein Gammon: Das Spiel zählt doppelt so viel wie der Würfel. Hat er noch einen Stein auf der Bar oder in deinem Heimfeld, wie Schwarz hier, ist es ein Backgammon: dreifach.",
+            "title": "Gammons zählen doppelt"
+          },
+          "offer": {
+            "body": "Bevor du würfelst, kannst du doppeln, wenn du klar vorne liegst: Tippe auf Doppeln. Der Einsatz steigt auf 2, und dein Gegner muss sofort antworten. Hier führt Weiß das Rennen deutlich an, ein guter Moment zum Doppeln.",
+            "title": "Doppeln anbieten"
+          },
+          "own": {
+            "body": "Wer annimmt, besitzt den Würfel, und nur er darf später erneut doppeln, auf 4, dann 8. Das ist ein Vorteil: Dein Gegner kann dich nicht mehr aus dem Spiel doppeln.",
+            "title": "Den Würfel besitzen"
+          },
+          "take_pass": {
+            "body": "Wirst du gedoppelt, verlierst du mit Aufgeben das Spiel sofort zum aktuellen Einsatz. Mit Annehmen spielst du um den doppelten Einsatz weiter. Faustregel: Nimm an, wenn du noch mindestens 1 von 4 Spielen gewinnst.",
+            "title": "Annehmen oder aufgeben"
+          },
+          "what": {
+            "body": "Jedes Spiel hat einen Verdopplungswürfel. Er liegt zu Beginn in der Mitte auf 1, dann zeigt er 64, seinen höchsten Wert. Ein Spiel zählt so viel wie der Würfel: Gewinnst du, bekommst du so viele Punkte.",
+            "title": "Der Verdopplungswürfel"
+          }
+        },
+        "subtitle": "Den Einsatz erhöhen: doppeln, annehmen oder aufgeben",
+        "title": "Der Verdopplungswürfel"
       },
       "goal_board": {
         "steps": {
@@ -467,6 +523,28 @@
         },
         "subtitle": "Kontaktspiel",
         "title": "Schlagen & die Bar"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Sobald ein Spieler zum ersten Mal einen Punkt vor dem Sieg steht, ist das nächste Spiel das Crawford-Spiel: Niemand darf doppeln, und der Würfel ist ausgegraut. Danach wird wieder gedoppelt.",
+            "title": "Die Crawford-Regel"
+          },
+          "dead_cube": {
+            "body": "Am Ende eines Matches kann ein Doppeln sinnlos sein: Wenn dir der Sieg in diesem Spiel schon das Match bringt, bringt Doppeln nichts. Die App bietet dann nur Würfeln an und sagt dir, warum.",
+            "title": "Wenn der Würfel nichts bringt"
+          },
+          "start": {
+            "body": "Wähle auf dem Startbildschirm Match, die Länge und ob die Crawford-Regel gilt, dann starte. Matches gibt es gegen den Computer und gegen einen Freund auf demselben Gerät.",
+            "title": "Ein Match starten"
+          },
+          "what": {
+            "body": "Ein Match geht bis zu einer festen Punktzahl: 3, 5, 7 Punkte oder mehr. Jedes Spiel bringt dem Gewinner seinen Wert, den Würfelwert, bei einem Gammon das Doppelte. Wer das Ziel zuerst erreicht, gewinnt das Match.",
+            "title": "Ein Match spielen"
+          }
+        },
+        "subtitle": "Auf eine Zielpunktzahl spielen, mit der Crawford-Regel",
+        "title": "Matches"
       },
       "moving_dice": {
         "steps": {
@@ -565,6 +643,18 @@
         "b": "Ein einzelner Checker an einem Punkt - er kann getroffen werden",
         "c": "Zwei oder mehr Checker an einem Punkt — ein gemachter Punkt",
         "prompt": "Was ist ein Blot?"
+      },
+      "crawford": {
+        "a": "Niemand darf doppeln",
+        "b": "Gammons zählen nicht",
+        "c": "Der Würfel startet bei 2",
+        "prompt": "Was ist am Crawford-Spiel besonders?"
+      },
+      "cube_pass": {
+        "a": "Du spielst um den doppelten Einsatz weiter",
+        "b": "Du verlierst das Spiel zum aktuellen Einsatz",
+        "c": "Der Würfel geht zurück in die Mitte",
+        "prompt": "Du wirst gedoppelt und gibst auf. Was passiert?"
       },
       "pip_ahead": {
         "a": "Dein Gegner, mit dem höheren Count",

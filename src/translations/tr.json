@@ -38,6 +38,7 @@
       "cancel_a11y": "İptal seçimi",
       "confirm_move": "Hamleyi onayla",
       "confirm_move_a11y": "Hamleyi onayla ve turu bitir",
+      "dice_order_a11y": "Zarlar: {{first}}, sonra {{second}}",
       "leave_game_a11y": "Oyun bırak ve eve geri dön",
       "loading": "Yükleniyor...",
       "new_game_message": "Yeni oyun başlatılsın mı?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Zar at",
       "save_position_a11y": "Bu pozisyonu kaydet",
       "start_new_game_a11y": "Yeni oyun başla",
+      "swap_dice": "Zarları değiştir",
+      "swap_dice_hint": "Önce oynanacak zarı değiştirir.",
       "undo_a11y": "Undo hareketsiz",
       "undo_move": "Geri al"
     },
@@ -112,6 +115,7 @@
       "rules": "Zar atmadan önce bahsi ikiye katlayabilirsiniz."
     },
     "nudge": {
+      "dice_order": "Bu pulun yasal hamlesi yok.",
       "roll_first": "Önce zarları at"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
       "move_hints": "Hamle ipuçları",
       "move_hints_hint": "Taş oynatabileceğiniz hanelerin numaralarını vurgular",
+      "move_in_dice_order": "Zar sırasına göre oyna",
+      "move_in_dice_order_hint": "Bir pula dokununca ilk kullanılmamış zar tercih edilir; mümkün değilse diğer yasal zar kullanılır. Tercihi değiştirmek için zarları değiştirin.",
       "point_numbers": "Hane numaraları",
       "point_numbers_hint": "Tahtada 1–24 etiketlerini göster",
       "section_automation": "Otomasyon",
@@ -377,6 +383,8 @@
       "recap_5": "Oyunlar her biri ile başlar - daha yüksek gider (en yüksek kayıt)",
       "recap_6": "Pip sayısı: sayısı düşük olan yarışta öndedir",
       "recap_7": "Bir plan seç: yarış, saldırı, duvar veya tutma",
+      "recap_8": "Katlama zarı bahsi ikiye katlar: sana katlandığında kabul et ya da pes et",
+      "recap_9": "Maçlar belirli bir skora kadar sürer; Crawford oyununda katlama yoktur",
       "title": "Oynamaya hazırsın"
     },
     "hint": "Hint Hint",
@@ -387,6 +395,28 @@
     "home_cta_sub": "Yeni başlayanlar için Etkileşimli dersler",
     "lesson_complete": "Azon tamam!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Takıldın mı? İpucu'na dokun, motorun en iyi hamlesi tahtada görünsün. Zar atmadan önce katlayıp katlamaman gerektiğini, sana katlandığında da kabul mü pes mi etmen gerektiğini söyler.",
+            "title": "İpucu"
+          },
+          "history": {
+            "body": "Geri al, sıran sırasında bir hamleyi geri alır. Tahtanın altındaki geçmiş, oyunun her turunu gezer. Eğitmen modu açıkken hatalarını da işaretler: ?! küçük hata, ? hata, ?? büyük gaf.",
+            "title": "Geri alma ve geçmiş"
+          },
+          "levels": {
+            "body": "Bilgisayara karşı ana ekranda Kolay, Orta, Zor ya da Uzman'ı seç. Bir pozisyon çalışmak için Pozisyon kur'u kullan: pulları, zarları ve katlama zarını yerleştir, oradan oyna.",
+            "title": "Bilgisayar seviyesi ve kendi pozisyonların"
+          },
+          "tutor": {
+            "body": "Ayarlar'da eğitmen modunu aç; motor her hamleyi ve her zar kararını kontrol eder. Bir hatadan sonra geri alıp yeniden deneyebilir, seçimini koruyabilir ya da eğitmeni kapatabilirsin.",
+            "title": "Eğitmen modu"
+          }
+        },
+        "subtitle": "İpuçları, eğitmen modu, geri alma ve daha fazlası",
+        "title": "Uygulamadaki araçlar"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -426,6 +456,32 @@
         },
         "subtitle": "Hangi şekilde hareket edersiniz",
         "title": "Yön & Kurulum"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Rakibin tek pul bile çıkarmadan 15 pulunun hepsini çıkarırsan mars olur: oyun zarın iki katı eder. Rakibin barda ya da senin iç alanında hâlâ pulu varsa, buradaki siyah gibi, bu backgammon'dur: üç kat.",
+            "title": "Mars iki kat sayılır"
+          },
+          "offer": {
+            "body": "Zar atmadan önce açıkça öndeysen katlayabilirsin: Katla'ya dokun. Bahis 2'ye çıkar ve rakibin hemen cevap vermelidir. Burada beyaz yarışta açık ara önde; katlamak için iyi bir an.",
+            "title": "Katlama teklif et"
+          },
+          "own": {
+            "body": "Kabul eden zarın sahibi olur ve sonra yalnızca o yeniden katlayabilir: 4'e, sonra 8'e. Bu bir avantajdır: rakibin artık seni katlayarak oyundan çıkaramaz.",
+            "title": "Zarın sahibi olmak"
+          },
+          "take_pass": {
+            "body": "Sana katlandığında Pes et, oyunu hemen mevcut bahisle kaybeder. Kabul et, iki katı bahisle oynamaya devam eder. İyi bir kural: hâlâ 4 oyundan en az 1'ini kazanacaksan kabul et.",
+            "title": "Kabul et ya da pes et"
+          },
+          "what": {
+            "body": "Her oyunda bir katlama zarı vardır. Ortada 1 değeriyle başlar ve o zaman en yüksek değeri olan 64'ü gösterir. Bir oyun zarın değeri kadar eder: kazanırsan o kadar puan alırsın.",
+            "title": "Katlama zarı"
+          }
+        },
+        "subtitle": "Bahsi yükselt: katla, kabul et ya da pes et",
+        "title": "Katlama zarı"
       },
       "goal_board": {
         "steps": {
@@ -467,6 +523,28 @@
         },
         "subtitle": "Contact play",
         "title": "Hitting & bar"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Bir oyuncu ilk kez kazanmaya bir puan kala geldiğinde, sonraki oyun Crawford oyunudur: kimse katlayamaz ve zar soluk görünür. O oyundan sonra katlama geri gelir.",
+            "title": "Crawford kuralı"
+          },
+          "dead_cube": {
+            "body": "Maçın sonunda katlamak anlamsız olabilir: bu oyunu kazanmak zaten sana maçı veriyorsa, katlamak hiçbir şey katmaz. Uygulama o zaman yalnızca Zar At'ı sunar ve nedenini söyler.",
+            "title": "Zarın işe yaramadığı an"
+          },
+          "start": {
+            "body": "Ana ekranda Maç'ı seç, uzunluğu ve Crawford kuralını kullanıp kullanmayacağını belirle, sonra başlat. Maçları bilgisayara karşı ya da aynı cihazda bir arkadaşına karşı oynayabilirsin.",
+            "title": "Maç başlat"
+          },
+          "what": {
+            "body": "Maç belirli bir skora kadar oynanır: 3, 5, 7 puan ya da daha fazla. Her oyun kazanana değerini ekler: zarın değeri, marsta iki katı. Hedefe ilk ulaşan maçı kazanır.",
+            "title": "Maç oynamak"
+          }
+        },
+        "subtitle": "Belirli bir skora kadar oyna, Crawford kuralıyla",
+        "title": "Maçlar"
       },
       "moving_dice": {
         "steps": {
@@ -565,6 +643,18 @@
         "b": "Bir noktada tek bir çeker – vurulabilir",
         "c": "Bir noktada iki veya daha fazla kontrol - bir nokta",
         "prompt": "Bir blot nedir?"
+      },
+      "crawford": {
+        "a": "Kimse katlayamaz",
+        "b": "Marslar sayılmaz",
+        "c": "Zar 2'den başlar",
+        "prompt": "Crawford oyununu özel kılan nedir?"
+      },
+      "cube_pass": {
+        "a": "İki katı bahisle oynamaya devam edersin",
+        "b": "Oyunu mevcut bahisle kaybedersin",
+        "c": "Zar ortaya geri döner",
+        "prompt": "Sana katlandı ve pes ettin. Ne olur?"
       },
       "pip_ahead": {
         "a": "Rakibin, daha yüksek sayıyla",

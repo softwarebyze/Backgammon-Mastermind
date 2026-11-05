@@ -8,6 +8,7 @@ flows:
   - app/cube-decision-undo.yaml
   - app/computer-match.yaml
   - app/learn-any-order.yaml
+  - app/learn-cube-match.yaml
   - app/computer-level.yaml
   - app/match-polish.yaml
   - app/confirm-move.yaml
@@ -23,6 +24,8 @@ flows:
   - app/feedback.yaml
   - app/rapid-follow-up-input.yaml
   - app/bar-entry-hints.yaml
+  - app/dice-order.yaml
+  - app/dice-order-fallback.yaml
 
 excludeTags:
   - util

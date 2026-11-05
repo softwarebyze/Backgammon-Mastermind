@@ -38,6 +38,7 @@
       "cancel_a11y": "Anuluj zaznaczenie",
       "confirm_move": "Potwierdź ruch",
       "confirm_move_a11y": "Potwierdź ruch i zakończ turę",
+      "dice_order_a11y": "Kości: {{first}}, potem {{second}}",
       "leave_game_a11y": "Zostaw grę i wróć do domu",
       "loading": "Ładowanie...",
       "new_game_message": "Rozpocząć nową grę?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Rzuć kośćmi",
       "save_position_a11y": "Zapisz tę pozycję",
       "start_new_game_a11y": "Rozpocznij nową grę",
+      "swap_dice": "Zamień kości",
+      "swap_dice_hint": "Zmienia, która kość jest grana jako pierwsza.",
       "undo_a11y": "Cofnij ruch",
       "undo_move": "Cofnij"
     },
@@ -112,6 +115,7 @@
       "rules": "Możesz podwoić stawkę przed rzutem kośćmi."
     },
     "nudge": {
+      "dice_order": "Ten pionek nie ma legalnego ruchu.",
       "roll_first": "Najpierw rzuć kośćmi"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Trasa w kształcie podkowy na planszy",
       "move_hints": "Podpowiedzi ruchów",
       "move_hints_hint": "Wyróżnia numery pól, z których możesz ruszyć",
+      "move_in_dice_order": "Ruch według kolejności kości",
+      "move_in_dice_order_hint": "Dotknij pionka, aby preferować pierwszą niewykorzystaną kość lub użyć drugiej, jeśli ruch jest legalny. Zamień kości, aby zmienić preferencję.",
       "point_numbers": "Numery pól",
       "point_numbers_hint": "Pokaż etykiety 1–24 na planszy",
       "section_automation": "Automatyzacja",
@@ -377,6 +383,8 @@
       "recap_5": "Gry zaczynają się od jednego umrzeć każdy - wyższy idzie pierwszy (krawaty re- roll)",
       "recap_6": "Liczba pipów: niższa liczba prowadzi w wyścigu",
       "recap_7": "Wybierz plan: wyścig, atak, mur lub blokada",
+      "recap_8": "Kostka podwaja stawkę: przyjmij albo poddaj, gdy ktoś cię zadubluje",
+      "recap_9": "Mecze gra się do ustalonego wyniku; w grze Crawforda nie ma dublowania",
       "title": "Jesteś gotowy do gry."
     },
     "hint": "Podpowiedź",
@@ -387,6 +395,28 @@
     "home_cta_sub": "Interaktywne lekcje dla początkujących",
     "lesson_complete": "Lekcja zakończona!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Utknąłeś? Dotknij Podpowiedź, aby zobaczyć na planszy najlepszy ruch silnika. Przed rzutem podpowie też, czy dublować, a gdy ktoś cię zadubluje, czy przyjąć, czy poddać.",
+            "title": "Podpowiedź"
+          },
+          "history": {
+            "body": "Cofnij odwołuje ruch w trakcie twojej tury. Historia pod planszą przechodzi przez każdą turę gry. W trybie tutora oznacza też twoje błędy: ?! potknięcie, ? błąd, ?? poważny błąd.",
+            "title": "Cofanie i historia"
+          },
+          "levels": {
+            "body": "Grając z komputerem, wybierz na ekranie głównym Łatwy, Średni, Trudny albo Ekspert. Aby poćwiczyć pozycję, użyj Ustaw pozycję: rozstaw pionki, kości i kostkę i graj od tego miejsca.",
+            "title": "Poziom komputera i własne pozycje"
+          },
+          "tutor": {
+            "body": "Włącz tryb tutora w Ustawieniach, a silnik sprawdzi każdy ruch i każdą decyzję kostki. Po błędzie możesz cofnąć i spróbować ponownie, zostawić swój wybór albo wyłączyć tutora.",
+            "title": "Tryb tutora"
+          }
+        },
+        "subtitle": "Podpowiedzi, tryb tutora, cofanie i więcej",
+        "title": "Narzędzia w aplikacji"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -426,6 +456,32 @@
         },
         "subtitle": "Którędy się ruszysz?",
         "title": "Kierunek i ustawienie"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Jeśli wyprowadzisz wszystkie 15 pionków, zanim przeciwnik wyprowadzi choć jeden, to gammon: gra jest warta dwa razy tyle, co kostka. Jeśli ma jeszcze pionek na bandzie albo w twoim domu, jak czarne tutaj, to backgammon: trzy razy tyle.",
+            "title": "Gammon liczy się podwójnie"
+          },
+          "offer": {
+            "body": "Przed rzutem, jeśli wyraźnie prowadzisz, możesz zadublować: dotknij Dubluj. Stawka rośnie do 2, a przeciwnik musi od razu odpowiedzieć. Tu białe wyraźnie prowadzą w wyścigu, to dobry moment na dublet.",
+            "title": "Zaproponuj dublet"
+          },
+          "own": {
+            "body": "Kto przyjmie, ten ma kostkę i tylko on może później znowu zadublować, do 4, potem do 8. To przewaga: przeciwnik nie może już wyrzucić cię z gry dubletem.",
+            "title": "Posiadanie kostki"
+          },
+          "take_pass": {
+            "body": "Gdy ktoś cię zadubluje, Poddaj od razu przegrywa grę za bieżącą stawkę. Przyjmij gra dalej o podwójną stawkę. Dobra zasada: przyjmij, jeśli wciąż wygrasz co najmniej 1 grę na 4.",
+            "title": "Przyjmij albo poddaj"
+          },
+          "what": {
+            "body": "W każdej grze jest kostka dublująca. Zaczyna na środku z wartością 1 i wtedy pokazuje 64, swoją najwyższą wartość. Gra jest warta tyle, ile pokazuje kostka: wygrywasz, dostajesz tyle punktów.",
+            "title": "Kostka dublująca"
+          }
+        },
+        "subtitle": "Podnieś stawkę: dubluj, przyjmij albo poddaj",
+        "title": "Kostka dublująca"
       },
       "goal_board": {
         "steps": {
@@ -467,6 +523,28 @@
         },
         "subtitle": "Odtwarzanie kontaktów",
         "title": "Uderzanie i pasek"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Gdy gracz po raz pierwszy jest punkt od zwycięstwa, następna gra jest grą Crawforda: nikt nie może dublować, a kostka jest wyszarzona. Po tej grze dublowanie wraca.",
+            "title": "Reguła Crawforda"
+          },
+          "dead_cube": {
+            "body": "Pod koniec meczu dublet może nie mieć sensu: jeśli wygranie tej gry i tak daje ci mecz, dublowanie nic nie zmienia. Aplikacja proponuje wtedy tylko Rzuć kośćmi i wyjaśnia dlaczego.",
+            "title": "Gdy kostka nic nie daje"
+          },
+          "start": {
+            "body": "Na ekranie głównym wybierz Mecz, długość i czy grać z regułą Crawforda, a potem zacznij. Mecze rozegrasz z komputerem i ze znajomym na tym samym urządzeniu.",
+            "title": "Rozpocznij mecz"
+          },
+          "what": {
+            "body": "Mecz gra się do ustalonego wyniku: 3, 5, 7 punktów lub więcej. Każda gra dodaje zwycięzcy swoją wartość: kostkę, podwójnie przy gammonie. Kto pierwszy osiągnie cel, wygrywa mecz.",
+            "title": "Gra w meczu"
+          }
+        },
+        "subtitle": "Gra do określonego wyniku, z regułą Crawforda",
+        "title": "Mecze"
       },
       "moving_dice": {
         "steps": {
@@ -565,6 +643,18 @@
         "b": "Pojedynczy sprawdzacz w punkcie - można go trafić",
         "c": "Dwa lub więcej warcaby na punkt - punkt ustalony",
         "prompt": "Co to jest plama?"
+      },
+      "crawford": {
+        "a": "Nikt nie może dublować",
+        "b": "Gammony się nie liczą",
+        "c": "Kostka zaczyna od 2",
+        "prompt": "Co wyróżnia grę Crawforda?"
+      },
+      "cube_pass": {
+        "a": "Grasz dalej o podwójną stawkę",
+        "b": "Przegrywasz grę za bieżącą stawkę",
+        "c": "Kostka wraca na środek",
+        "prompt": "Ktoś cię dubluje, a ty się poddajesz. Co się dzieje?"
       },
       "pip_ahead": {
         "a": "Przeciwnik, z wyższą liczbą",

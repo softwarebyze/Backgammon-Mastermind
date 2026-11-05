@@ -100,3 +100,27 @@ describe('game plan steps', () => {
     expect(classifyStrategy(state, 'white').key).toBe(step.strategy);
   });
 });
+
+describe('cube, match and app lessons', () => {
+  const lesson = (id: string) => LESSONS.find(item => item.id === id)!;
+
+  it('teach the cube, match play with Crawford, and the app tools', () => {
+    expect(lesson('doubling-cube').steps.map(step => step.id)).toEqual(['cube-what', 'cube-offer', 'cube-take-pass', 'cube-own', 'cube-gammon']);
+    expect(lesson('match-play').steps.map(step => step.id)).toEqual(['match-what', 'match-crawford', 'match-dead-cube', 'match-start']);
+    expect(lesson('app-tools').steps.map(step => step.id)).toEqual(['tools-hint', 'tools-tutor', 'tools-history', 'tools-levels']);
+  });
+
+  it('show only cube values a game can reach, greyed only in the Crawford game', () => {
+    const cubeSteps = LESSONS.flatMap(item => item.steps).filter(step => step.cube);
+    for (const step of cubeSteps)
+      expect(Math.log2(step.cube!.value) % 1).toBe(0);
+    expect(cubeSteps.filter(step => step.cube!.unavailable).map(step => step.id)).toEqual(['match-crawford']);
+  });
+
+  it('quiz the cube and the Crawford rule, with one right answer each', () => {
+    for (const id of ['cube-pass', 'crawford']) {
+      const question = GRADUATION_QUIZ.find(item => item.id === id)!;
+      expect(question.options.filter(option => option.correct)).toHaveLength(1);
+    }
+  });
+});

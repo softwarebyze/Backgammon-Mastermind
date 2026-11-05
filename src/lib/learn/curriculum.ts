@@ -12,6 +12,9 @@ export const LESSON_IDS = [
   'bearing-off',
   'pip-count',
   'strategies',
+  'doubling-cube',
+  'match-play',
+  'app-tools',
 ] as const;
 
 export type LessonId = (typeof LESSON_IDS)[number];
@@ -33,6 +36,8 @@ type LessonStepBase = {
   emphasisBar?: boolean;
   /** The game plan this step shows: the caption carries the same icon as the in-game plan chip. */
   strategy?: StrategyKey;
+  /** The doubling cube as this step describes it, drawn like the cube in a game. */
+  cube?: { value: number; unavailable?: boolean };
 };
 
 type ExplainStep = LessonStepBase & {
@@ -68,6 +73,33 @@ export type LessonDefinition = {
 };
 
 const HOME_POINTS = [1, 2, 3, 4, 5, 6] as const;
+
+/** White has a big racing lead and no contact: a position worth doubling. */
+const RACE_WHITE_AHEAD: CreatePositionOptions = {
+  placements: [
+    { point: 6, player: 'white', count: 4 },
+    { point: 5, player: 'white', count: 4 },
+    { point: 4, player: 'white', count: 3 },
+    { point: 3, player: 'white', count: 2 },
+    { point: 2, player: 'white', count: 2 },
+    { point: 12, player: 'black', count: 5 },
+    { point: 17, player: 'black', count: 5 },
+    { point: 19, player: 'black', count: 5 },
+  ],
+};
+
+/** White is bearing off; black has borne off nothing and still has checkers in white's home board. */
+const GAMMON_IN_SIGHT: CreatePositionOptions = {
+  placements: [
+    { point: 6, player: 'white', count: 2 },
+    { point: 5, player: 'white', count: 2 },
+    { point: 4, player: 'white', count: 1 },
+    { point: 1, player: 'black', count: 5 },
+    { point: 7, player: 'black', count: 5 },
+    { point: 12, player: 'black', count: 5 },
+  ],
+  borneOff: { white: 10 },
+};
 
 export const LESSONS: LessonDefinition[] = [
   {
@@ -545,6 +577,129 @@ export const LESSONS: LessonDefinition[] = [
       },
     ],
   },
+  {
+    id: 'doubling-cube',
+    order: 8,
+    titleKey: 'learn.lessons.doubling_cube.title',
+    subtitleKey: 'learn.lessons.doubling_cube.subtitle',
+    steps: [
+      {
+        id: 'cube-what',
+        kind: 'explain',
+        titleKey: 'learn.lessons.doubling_cube.steps.what.title',
+        bodyKey: 'learn.lessons.doubling_cube.steps.what.body',
+        cube: { value: 1 },
+        position: { useStandardSetup: true },
+      },
+      {
+        id: 'cube-offer',
+        kind: 'explain',
+        titleKey: 'learn.lessons.doubling_cube.steps.offer.title',
+        bodyKey: 'learn.lessons.doubling_cube.steps.offer.body',
+        cube: { value: 2 },
+        position: RACE_WHITE_AHEAD,
+      },
+      {
+        id: 'cube-take-pass',
+        kind: 'explain',
+        titleKey: 'learn.lessons.doubling_cube.steps.take_pass.title',
+        bodyKey: 'learn.lessons.doubling_cube.steps.take_pass.body',
+        cube: { value: 2 },
+        position: RACE_WHITE_AHEAD,
+      },
+      {
+        id: 'cube-own',
+        kind: 'explain',
+        titleKey: 'learn.lessons.doubling_cube.steps.own.title',
+        bodyKey: 'learn.lessons.doubling_cube.steps.own.body',
+        cube: { value: 4 },
+        position: RACE_WHITE_AHEAD,
+      },
+      {
+        id: 'cube-gammon',
+        kind: 'explain',
+        titleKey: 'learn.lessons.doubling_cube.steps.gammon.title',
+        bodyKey: 'learn.lessons.doubling_cube.steps.gammon.body',
+        cube: { value: 2 },
+        emphasisPoints: [1],
+        position: GAMMON_IN_SIGHT,
+      },
+    ],
+  },
+  {
+    id: 'match-play',
+    order: 9,
+    titleKey: 'learn.lessons.match_play.title',
+    subtitleKey: 'learn.lessons.match_play.subtitle',
+    steps: [
+      {
+        id: 'match-what',
+        kind: 'explain',
+        titleKey: 'learn.lessons.match_play.steps.what.title',
+        bodyKey: 'learn.lessons.match_play.steps.what.body',
+        position: { useStandardSetup: true },
+      },
+      {
+        id: 'match-crawford',
+        kind: 'explain',
+        titleKey: 'learn.lessons.match_play.steps.crawford.title',
+        bodyKey: 'learn.lessons.match_play.steps.crawford.body',
+        cube: { value: 1, unavailable: true },
+        position: { useStandardSetup: true },
+      },
+      {
+        id: 'match-dead-cube',
+        kind: 'explain',
+        titleKey: 'learn.lessons.match_play.steps.dead_cube.title',
+        bodyKey: 'learn.lessons.match_play.steps.dead_cube.body',
+        cube: { value: 2 },
+        position: RACE_WHITE_AHEAD,
+      },
+      {
+        id: 'match-start',
+        kind: 'explain',
+        titleKey: 'learn.lessons.match_play.steps.start.title',
+        bodyKey: 'learn.lessons.match_play.steps.start.body',
+        position: { useStandardSetup: true },
+      },
+    ],
+  },
+  {
+    id: 'app-tools',
+    order: 10,
+    titleKey: 'learn.lessons.app_tools.title',
+    subtitleKey: 'learn.lessons.app_tools.subtitle',
+    steps: [
+      {
+        id: 'tools-hint',
+        kind: 'explain',
+        titleKey: 'learn.lessons.app_tools.steps.hint.title',
+        bodyKey: 'learn.lessons.app_tools.steps.hint.body',
+        position: { useStandardSetup: true },
+      },
+      {
+        id: 'tools-tutor',
+        kind: 'explain',
+        titleKey: 'learn.lessons.app_tools.steps.tutor.title',
+        bodyKey: 'learn.lessons.app_tools.steps.tutor.body',
+        position: { useStandardSetup: true },
+      },
+      {
+        id: 'tools-history',
+        kind: 'explain',
+        titleKey: 'learn.lessons.app_tools.steps.history.title',
+        bodyKey: 'learn.lessons.app_tools.steps.history.body',
+        position: { useStandardSetup: true },
+      },
+      {
+        id: 'tools-levels',
+        kind: 'explain',
+        titleKey: 'learn.lessons.app_tools.steps.levels.title',
+        bodyKey: 'learn.lessons.app_tools.steps.levels.body',
+        position: { useStandardSetup: true },
+      },
+    ],
+  },
 ];
 
 type QuizOption = {
@@ -621,6 +776,24 @@ export const GRADUATION_QUIZ: QuizQuestion[] = [
       { id: 'a', labelKey: 'learn.quiz.strat_blitz.a', correct: true },
       { id: 'b', labelKey: 'learn.quiz.strat_blitz.b', correct: false },
       { id: 'c', labelKey: 'learn.quiz.strat_blitz.c', correct: false },
+    ],
+  },
+  {
+    id: 'cube-pass',
+    promptKey: 'learn.quiz.cube_pass.prompt',
+    options: [
+      { id: 'a', labelKey: 'learn.quiz.cube_pass.a', correct: false },
+      { id: 'b', labelKey: 'learn.quiz.cube_pass.b', correct: true },
+      { id: 'c', labelKey: 'learn.quiz.cube_pass.c', correct: false },
+    ],
+  },
+  {
+    id: 'crawford',
+    promptKey: 'learn.quiz.crawford.prompt',
+    options: [
+      { id: 'a', labelKey: 'learn.quiz.crawford.a', correct: true },
+      { id: 'b', labelKey: 'learn.quiz.crawford.b', correct: false },
+      { id: 'c', labelKey: 'learn.quiz.crawford.c', correct: false },
     ],
   },
 ];
