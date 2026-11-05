@@ -19,6 +19,10 @@ tags:
     direction: DOWN
 - assertVisible:
     id: learn-lesson-doubling-cube
+- scrollUntilVisible:
+    element:
+      id: learn-lesson-app-tools
+    direction: DOWN
 - assertVisible:
     id: learn-lesson-app-tools
 - takeScreenshot: learn-cube-match-01-hub

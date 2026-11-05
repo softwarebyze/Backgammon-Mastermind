@@ -55,7 +55,7 @@ describe('board view layout direction', () => {
 });
 
 describe('exact taps for Learn questions (#299)', () => {
-  function renderBoard(exactTaps: boolean, onPointPress: (index: number) => void) {
+  function renderBoard(exactTaps: boolean | undefined, onPointPress: (index: number) => void) {
     const dimensions = resolveBoardViewport({
       screenWidth: 402,
       screenHeight: 874,
@@ -94,6 +94,13 @@ describe('exact taps for Learn questions (#299)', () => {
   it('still snaps near-misses during play', () => {
     const onPointPress = jest.fn();
     renderBoard(false, onPointPress);
+    fireEvent.press(screen.getByTestId('point-19'));
+    expect(onPointPress).toHaveBeenCalledWith(6);
+  });
+
+  it('snaps near-misses by default, when exactTaps is omitted', () => {
+    const onPointPress = jest.fn();
+    renderBoard(undefined, onPointPress);
     fireEvent.press(screen.getByTestId('point-19'));
     expect(onPointPress).toHaveBeenCalledWith(6);
   });
