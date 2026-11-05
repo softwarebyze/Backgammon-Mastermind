@@ -1,0 +1,51 @@
+# Settings header → Feedback form: type a note, then leave without sending.
+# Send goes to PostHog; the CI build has no PostHog key, so it would fall back
+# to the mail app, which is outside the app under test.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn:
+    id: open-settings-button
+- extendedWaitUntil:
+    visible:
+      id: open-feedback-button
+    timeout: 15000
+- tapOn:
+    id: open-feedback-button
+- extendedWaitUntil:
+    visible:
+      id: feedback-title
+    timeout: 15000
+- tapOn:
+    id: feedback-title
+- inputText: The computer moves too fast
+- runFlow: ../utils/hide-keyboard.yaml
+- assertVisible:
+    id: feedback-send
+- assertVisible:
+    id: feedback-email
+- takeScreenshot: feedback-01-form
+- tapOn:
+    id: stack-escape-button
+# Back on Settings; the Support row sits near the bottom of the list.
+- extendedWaitUntil:
+    visible:
+      id: open-feedback-button
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: settings-feedback
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: settings-feedback
+- extendedWaitUntil:
+    visible:
+      id: feedback-title
+    timeout: 15000

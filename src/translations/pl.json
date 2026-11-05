@@ -4,6 +4,21 @@
     "heading": "Coś poszło nie tak.",
     "retry": "Spróbuj ponownie"
   },
+  "feedback": {
+    "body_label": "Szczegóły",
+    "body_placeholder": "Co się stało albo co ulepszyłoby aplikację?",
+    "email_instead": "Wyślij e-mailem, aby dołączyć zrzut ekranu",
+    "error": "Nie udało się otworzyć aplikacji poczty. Napisz do nas: {{email}}.",
+    "intro": "Znalazłeś błąd albo masz pomysł? Napisz do nas – czytamy każdą wiadomość.",
+    "open_a11y": "Wyślij opinię",
+    "privacy": "Wysyłane do twórcy wraz z wersją aplikacji, urządzeniem i językiem.",
+    "send": "Wyślij",
+    "sent": "Dziękujemy za opinię!",
+    "settings_row": "Wyślij opinię",
+    "subject_label": "Tytuł",
+    "subject_placeholder": "Czego to dotyczy?",
+    "title": "Opinia"
+  },
   "game": {
     "caption": {
       "selected": "Wybrane - dotknij zaznaczonego punktu lub Anuluj"

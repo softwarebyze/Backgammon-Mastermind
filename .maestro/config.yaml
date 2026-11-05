@@ -19,6 +19,7 @@ flows:
   - app/center-bar-checkers.yaml
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml
+  - app/feedback.yaml
   - app/rapid-follow-up-input.yaml
   - app/bar-entry-hints.yaml
 

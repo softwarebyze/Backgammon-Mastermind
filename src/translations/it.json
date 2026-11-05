@@ -4,6 +4,21 @@
     "heading": "Qualcosa è andato storto",
     "retry": "Riprova"
   },
+  "feedback": {
+    "body_label": "Dettagli",
+    "body_placeholder": "Cosa è successo, o cosa renderebbe l'app migliore?",
+    "email_instead": "Invia per email per allegare uno screenshot",
+    "error": "Impossibile aprire l'app di posta. Scrivici a {{email}}.",
+    "intro": "Hai trovato un bug o hai un'idea? Scrivici: leggiamo ogni messaggio.",
+    "open_a11y": "Invia feedback",
+    "privacy": "Inviato allo sviluppatore con versione dell’app, dispositivo e lingua.",
+    "send": "Invia",
+    "sent": "Grazie per il feedback!",
+    "settings_row": "Invia feedback",
+    "subject_label": "Titolo",
+    "subject_placeholder": "Di cosa si tratta?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selezionato — toccare un punto evidenziato, o Annulla"
