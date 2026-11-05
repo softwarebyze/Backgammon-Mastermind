@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Sélectionné — appuyez sur un point surligné, ou Annuler"
     },
+    "computer_level": {
+      "a11y": "Niveau de l'ordinateur : {{level}}",
+      "easy": "Facile",
+      "expert": "Expert",
+      "hard": "Difficile",
+      "hint": "Facile fait les erreurs d'un débutant. Expert joue toujours le meilleur coup du moteur.",
+      "medium": "Moyen",
+      "title": "Niveau de l'ordinateur"
+    },
     "controls": {
       "bear_off_a11y": "Sortir un pion",
       "cancel": "Annuler",

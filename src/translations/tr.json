@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Seçilen – vurgulanan bir noktaya dokun veya Cancel"
     },
+    "computer_level": {
+      "a11y": "Bilgisayar seviyesi: {{level}}",
+      "easy": "Kolay",
+      "expert": "Uzman",
+      "hard": "Zor",
+      "hint": "Kolay seviye bir acemi gibi hata yapar. Uzman her zaman motorun en iyi hamlesini oynar.",
+      "medium": "Orta",
+      "title": "Bilgisayar seviyesi"
+    },
     "controls": {
       "bear_off_a11y": "Taş topla",
       "cancel": "Cancel Cancel Cancel Cancel",

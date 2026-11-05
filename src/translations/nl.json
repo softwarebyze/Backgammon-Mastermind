@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Geselecteerd Tik op een gemarkeerd punt, of Annuleren"
     },
+    "computer_level": {
+      "a11y": "Computerniveau: {{level}}",
+      "easy": "Makkelijk",
+      "expert": "Expert",
+      "hard": "Moeilijk",
+      "hint": "Makkelijk maakt de fouten van een beginner. Expert speelt altijd de beste zet van de engine.",
+      "medium": "Gemiddeld",
+      "title": "Computerniveau"
+    },
     "controls": {
       "bear_off_a11y": "Steen uitspelen",
       "cancel": "Annuleren",

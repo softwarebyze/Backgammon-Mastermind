@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Seleccionado — pulsa un punto destacado, o Cancelar"
     },
+    "computer_level": {
+      "a11y": "Nivel del ordenador: {{level}}",
+      "easy": "Fácil",
+      "expert": "Experto",
+      "hard": "Difícil",
+      "hint": "Fácil comete los errores de un principiante. Experto siempre juega la mejor jugada del motor.",
+      "medium": "Medio",
+      "title": "Nivel del ordenador"
+    },
     "controls": {
       "bear_off_a11y": "Sacar ficha",
       "cancel": "Cancelar",

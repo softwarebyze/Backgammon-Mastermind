@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Ausgewählt - tippen Sie auf einen hervorgehobenen Punkt oder Abbrechen"
     },
+    "computer_level": {
+      "a11y": "Computerstärke: {{level}}",
+      "easy": "Leicht",
+      "expert": "Experte",
+      "hard": "Schwer",
+      "hint": "Leicht macht Fehler wie ein Anfänger. Experte spielt immer den besten Zug der Engine.",
+      "medium": "Mittel",
+      "title": "Computerstärke"
+    },
     "controls": {
       "bear_off_a11y": "Stein abtragen",
       "cancel": "Stornierung",

@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Selezionato — toccare un punto evidenziato, o Annulla"
     },
+    "computer_level": {
+      "a11y": "Livello del computer: {{level}}",
+      "easy": "Facile",
+      "expert": "Esperto",
+      "hard": "Difficile",
+      "hint": "Facile commette gli errori di un principiante. Esperto gioca sempre la mossa migliore del motore.",
+      "medium": "Medio",
+      "title": "Livello del computer"
+    },
     "controls": {
       "bear_off_a11y": "Porta fuori la pedina",
       "cancel": "Annulla",

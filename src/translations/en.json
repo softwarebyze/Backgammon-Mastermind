@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Selected — tap a highlighted point, or Cancel"
     },
+    "computer_level": {
+      "a11y": "Computer level: {{level}}",
+      "easy": "Easy",
+      "expert": "Expert",
+      "hard": "Hard",
+      "hint": "Easy makes the mistakes a beginner would. Expert always plays the engine's best move.",
+      "medium": "Medium",
+      "title": "Computer level"
+    },
     "controls": {
       "bear_off_a11y": "Bear off",
       "cancel": "Cancel",

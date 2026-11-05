@@ -8,6 +8,15 @@
     "caption": {
       "selected": "Selecionado — toque num ponto realçado ou em Cancelar"
     },
+    "computer_level": {
+      "a11y": "Nível do computador: {{level}}",
+      "easy": "Fácil",
+      "expert": "Especialista",
+      "hard": "Difícil",
+      "hint": "Fácil comete os erros de um iniciante. Especialista joga sempre o melhor lance do motor.",
+      "medium": "Médio",
+      "title": "Nível do computador"
+    },
     "controls": {
       "bear_off_a11y": "Retirar pedra",
       "cancel": "Cancelar",
