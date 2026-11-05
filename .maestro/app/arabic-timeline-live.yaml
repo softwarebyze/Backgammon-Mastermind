@@ -37,7 +37,13 @@ tags:
       HOME_TEXT: ضد الكمبيوتر
 # Local two-player keeps every turn waiting for the hint instead of the engine.
 - tapOn:
-    text: لاعبان
+    id: home-opponent-vs-human
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- tapOn:
+    id: home-start-game
 - extendedWaitUntil:
     visible:
       id: game-board-slot
