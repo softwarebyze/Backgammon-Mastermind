@@ -215,7 +215,7 @@
     "tutor": [
       "ללמוד מהטעויות"
     ],
-    "tutorSub": "מצב מדריך מדרג כל מהלך",
+    "tutorSub": "מצב מורה מדרג כל מהלך",
     "match": [
       "משחק לנקודות",
       "וקוביית ההכפלה"
@@ -404,7 +404,7 @@
       "Ucz się",
       "na błędach"
     ],
-    "tutorSub": "Tryb tutora ocenia każdy ruch",
+    "tutorSub": "Tryb nauczyciela ocenia każdy ruch",
     "match": [
       "Mecze z kostką",
       "dublującą"
@@ -484,30 +484,33 @@
     "playLocale": "tr-TR",
     "direction": "ltr",
     "learn": [
-      "Tavla oynamayı öğren"
+      "Tavla oynamayı",
+      "öğrenin"
     ],
     "pass": [
       "Çevrimdışı sırayla oynayın"
     ],
     "passSub": "Arkadaşlar ve aileyle",
     "computer": [
-      "Bilgisayara karşı oyna"
+      "Bilgisayara",
+      "karşı oynayın"
     ],
     "lessons": [
       "Etkileşimli dersler"
     ],
     "computerSub": "Kolaydan Uzmana",
     "tutor": [
-      "Hatalarından öğren"
+      "Hatalarınızdan",
+      "öğrenin"
     ],
-    "tutorSub": "Eğitmen modu her hamleyi değerlendirir",
+    "tutorSub": "Öğretmen modu her hamleyi değerlendirir",
     "match": [
       "Maçlar ve",
       "katlama zarı"
     ],
     "position": [
-      "Dilediğin",
-      "pozisyonu kur"
+      "Dilediğiniz",
+      "pozisyonu kurun"
     ]
   },
   "zh-Hans": {

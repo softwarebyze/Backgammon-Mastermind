@@ -18,10 +18,10 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations, opponent } from '@/lib/game/moves';
+import { forceLtrStyle, forceLtrWebDir } from '@/lib/ui/force-ltr';
 import { MatchCube } from '../match-cube';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
-import { forceLtrStyle, forceLtrWebDir } from '@/lib/ui/force-ltr';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { DragCheckerOverlay } from './drag-checker-overlay';

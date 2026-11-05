@@ -115,8 +115,8 @@ describe('prepare-store-screenshots', () => {
     }
 
     expect(
-      readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-05-home.png')).equals(
-        readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-05-home.png')),
+      readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-02-tutor.png')).equals(
+        readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-02-tutor.png')),
       ),
     ).toBe(false);
   });
