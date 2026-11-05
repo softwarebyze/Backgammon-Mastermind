@@ -94,6 +94,11 @@ type Props = {
   /** Whose point of view the point-number rails are labeled from. */
   numberPerspective?: Player;
   emphasisBar?: boolean;
+  /**
+   * Taps go to the point actually touched, with no fat-finger snapping. Learn's
+   * "tap the point" questions need this, or a near miss snaps to the answer (#299).
+   */
+  exactTaps?: boolean;
 };
 
 /* eslint-disable max-lines-per-function -- board layout composition */
@@ -121,6 +126,7 @@ export function BoardView({
   aidsOverride,
   emphasisPoints,
   emphasisBar = false,
+  exactTaps = false,
   numberPerspective = 'white',
 }: Props) {
   const { preferences } = useGamePreferences();
@@ -217,12 +223,14 @@ export function BoardView({
         onPointPress(geometricIndex);
       return;
     }
-    const resolved = remapTapIndex({
-      state,
-      pointIndex: geometricIndex,
-      dims: dimensions,
-      extraCandidates: hitExtra,
-    });
+    const resolved = exactTaps
+      ? geometricIndex
+      : remapTapIndex({
+          state,
+          pointIndex: geometricIndex,
+          dims: dimensions,
+          extraCandidates: hitExtra,
+        });
     if (resolved === BAR_POINT) {
       onBarPress();
       return;

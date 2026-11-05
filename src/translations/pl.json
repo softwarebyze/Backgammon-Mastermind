@@ -365,7 +365,7 @@
       "move_progress": "Nieźle.{{done}}z{{needed}}Wykonane ruchy."
     },
     "graduation": {
-      "body": "Znasz cel, tablicę, jak się obraca, uderza i odjeżdża. Szybkie sprawdzenie - potem twoja pierwsza prawdziwa gra.",
+      "body": "Znasz już cel, planszę, przebieg tury, bicie, schodzenie z planszy, liczbę pipów i główne plany gry. Szybki sprawdzian, a potem twoja pierwsza prawdziwa partia.",
       "play_cta": "Zagraj w swoją pierwszą grę",
       "quiz_done": "Trafiłem. Czas na zabawę.",
       "quiz_title": "Szybka kontrola",
@@ -375,6 +375,8 @@
       "recap_3": "Hit blots → siadają na barze",
       "recap_4": "Wytrzymaj tylko w domu",
       "recap_5": "Gry zaczynają się od jednego umrzeć każdy - wyższy idzie pierwszy (krawaty re- roll)",
+      "recap_6": "Liczba pipów: niższa liczba prowadzi w wyścigu",
+      "recap_7": "Wybierz plan: wyścig, atak, mur lub blokada",
       "title": "Jesteś gotowy do gry."
     },
     "hint": "Podpowiedź",
@@ -518,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Jesteś daleko w tyle, więc masz dwie głębokie kotwice w domu przeciwnika — tu na punktach 22 i 24. Utrzymuj mocny własny dom i czekaj na późne bicie. To ostateczność: można też wysoko przegrać."
+          },
           "blitz": {
-            "body": "Twój dom jest mocny, a przeciwnik ma samotne piony albo piony na barze. Bij każdy samotny i zamykaj pola domu, żeby jego piony zostały na barze, gdy ty schodzisz. Tu biały ma trzy pola domu, a czarny piona na barze.",
-            "title": "Blitz"
+            "body": "Twój dom jest mocny, a przeciwnik ma samotne piony albo piony na barze. Bij każdy samotny i zamykaj pola domu, żeby jego piony zostały na barze, gdy ty schodzisz. Tu biały ma trzy pola domu, a czarny piona na barze."
+          },
+          "holding": {
+            "body": "Przegrywasz wyścig, ale masz kotwicę w domu przeciwnika — tu na punkcie 20. Utrzymaj ją, graj bezpiecznie i czekaj na bicie, gdy jego pionki będą ją mijać w drodze do domu."
           },
           "identify": {
             "body": "To partia na mur. Dotknij pola białego muru, kolejnych pól, które blokują czarnego.",
@@ -529,19 +536,16 @@
             "title": "Wskaż mur"
           },
           "prime": {
-            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, który ogranicza tylne piony czarnego. Wydłużaj go po jednym polu.",
-            "title": "Mur"
+            "body": "Zbudowałeś ścianę kolejnych zajętych pól. Zaznaczone pola to mur z 4 pól, który ogranicza tylne piony czarnego. Wydłużaj go po jednym polu."
           },
           "running": {
-            "body": "Prowadzisz i nie ma samotnych pionów w zasięgu bicia. Sprowadź piony do domu i nie zostawiaj samotnych. Tu biały prowadzi i ma mocny dom.",
-            "title": "Wyścig"
+            "body": "Prowadzisz i nie ma samotnych pionów w zasięgu bicia. Sprowadź piony do domu i nie zostawiaj samotnych. Tu biały prowadzi i ma mocny dom."
           }
         },
         "subtitle": "Rozpoznaj klasyczne plany gry",
         "title": "Plany gry"
       }
     },
-    "locked": "Najpierw ukończ poprzednią lekcję",
     "next_lesson": "Następna lekcja",
     "quiz": {
       "bar": {

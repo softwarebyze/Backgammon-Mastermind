@@ -365,7 +365,7 @@
       "move_progress": "Bien: {{done}} de {{needed}} movimientos completados."
     },
     "graduation": {
-      "body": "Conoces el objetivo, el tablero, cómo se convierte en trabajo, golpes y desmantelamiento. Un cheque rápido — luego tu primer juego real.",
+      "body": "Ya conoces el objetivo, el tablero, cómo funcionan los turnos, cómo golpear y sacar fichas, el recuento de pips y los principales planes de juego. Una comprobación rápida y luego tu primera partida de verdad.",
       "play_cta": "Juega tu primer juego",
       "quiz_done": "Lo vi. Hora de jugar.",
       "quiz_title": "Cheque rápido",
@@ -375,6 +375,8 @@
       "recap_3": "Hit Blolots → se sientan en el bar",
       "recap_4": "Suelte solo de tu tabla de inicio",
       "recap_5": "Los juegos comienzan con uno muere cada uno — más alto va primero (que se re-rolla)",
+      "recap_6": "Recuento de pips: el menor va delante en la carrera",
+      "recap_7": "Elige un plan: carrera, ataque, muralla o retención",
       "title": "Estás listo para jugar"
     },
     "hint": "Hint",
@@ -518,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Vas muy por detrás, así que tienes dos anclas profundas en el tablero interior del rival — aquí en los puntos 22 y 24. Mantén fuerte tu propio tablero interior y espera un tiro tardío. Es el último recurso: también puedes perder mucho."
+          },
           "blitz": {
-            "body": "Tu casa es fuerte y el rival tiene sueltas o fichas en la barra. Golpea cada suelta y cierra los puntos de casa para dejar las suyas en la barra mientras tú sales. Aquí el blanco tiene tres puntos de casa y el negro una ficha en la barra.",
-            "title": "Blitz"
+            "body": "Tu casa es fuerte y el rival tiene sueltas o fichas en la barra. Golpea cada suelta y cierra los puntos de casa para dejar las suyas en la barra mientras tú sales. Aquí el blanco tiene tres puntos de casa y el negro una ficha en la barra."
+          },
+          "holding": {
+            "body": "Vas por detrás en la carrera, pero tienes un ancla en el tablero interior del rival — aquí en el punto 20. Mantenla, juega seguro y espera un tiro mientras sus fichas pasan a su lado camino de casa."
           },
           "identify": {
             "body": "Esto es un juego de muralla. Toca un punto de la muralla blanca, los puntos seguidos que bloquean al negro.",
@@ -529,19 +536,16 @@
             "title": "Encuentra la muralla"
           },
           "prime": {
-            "body": "Has hecho un muro de puntos seguidos. Los puntos marcados son una muralla de 4 que limita a las fichas de atrás del negro. Alárgala un punto cada vez.",
-            "title": "Muralla"
+            "body": "Has hecho un muro de puntos seguidos. Los puntos marcados son una muralla de 4 que limita a las fichas de atrás del negro. Alárgala un punto cada vez."
           },
           "running": {
-            "body": "Vas delante y no hay fichas sueltas a distancia de golpe. Lleva las fichas a casa sin dejar sueltas. No te compliques: corre. Aquí el blanco va delante con una casa sólida.",
-            "title": "Carrera"
+            "body": "Vas delante y no hay fichas sueltas a distancia de golpe. Lleva las fichas a casa sin dejar sueltas. No te compliques: corre. Aquí el blanco va delante con una casa sólida."
           }
         },
         "subtitle": "Reconoce planes de juego clásicos",
         "title": "Planes de juego"
       }
     },
-    "locked": "Completa la lección anterior primero",
     "next_lesson": "Siguiente lección",
     "quiz": {
       "bar": {

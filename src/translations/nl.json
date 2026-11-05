@@ -365,7 +365,7 @@
       "move_progress": "Mooi. {{done}} van {{needed}} zetten gedaan."
     },
     "graduation": {
-      "body": "Je kent het doel, het bord, hoe het werkt, slaat en afgaat. Een snelle controle en dan je eerste echte spel.",
+      "body": "Je kent nu het doel, het bord, hoe een beurt werkt, slaan, uitspelen, de pip count en de belangrijkste spelplannen. Een korte check en dan je eerste echte partij.",
       "play_cta": "Speel je eerste spel",
       "quiz_done": "Gelukt. Tijd om te spelen.",
       "quiz_title": "Snel controleren",
@@ -375,6 +375,8 @@
       "recap_3": "Hit blots → ze zitten op de bar",
       "recap_4": "Alleen van je thuisbord afhouden",
       "recap_5": "Spelletjes beginnen met een die elke hogere gaat eerst (ties re-roll)",
+      "recap_6": "Pip count: wie de laagste count heeft, leidt de race",
+      "recap_7": "Kies een plan: race, aanval, muur of houden",
       "title": "Je bent klaar om te spelen"
     },
     "hint": "Hint",
@@ -518,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Je ligt ver achter, dus je houdt twee diepe ankers in het thuisbord van je tegenstander — hier op het 22- en 24-punt. Houd je eigen thuisbord sterk en wacht op een laat schot. Het is een laatste redmiddel: je kunt er ook flink mee verliezen."
+          },
           "blitz": {
-            "body": "Je huis is sterk en de tegenstander heeft blots of stenen op de bar. Sla elke blot en sluit je huispunten, zodat zijn stenen op de bar blijven terwijl jij uitspeelt. Hier heeft wit drie huispunten en zwart een steen op de bar.",
-            "title": "Blitz"
+            "body": "Je huis is sterk en de tegenstander heeft blots of stenen op de bar. Sla elke blot en sluit je huispunten, zodat zijn stenen op de bar blijven terwijl jij uitspeelt. Hier heeft wit drie huispunten en zwart een steen op de bar."
+          },
+          "holding": {
+            "body": "Je ligt achter in de race, maar je houdt een anker in het thuisbord van je tegenstander — hier op het 20-punt. Houd het vast, speel veilig en wacht op een schot terwijl zijn stenen erlangs naar huis gaan."
           },
           "identify": {
             "body": "Dit is een muurspel. Tik een punt van de witte muur, de opeenvolgende punten die zwart blokkeren.",
@@ -529,19 +536,16 @@
             "title": "Vind de muur"
           },
           "prime": {
-            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart beperkt. Maak hem punt voor punt langer.",
-            "title": "Muur"
+            "body": "Je hebt een muur van opeenvolgende bezette punten. De gemarkeerde punten zijn een muur van 4 die de achterste stenen van zwart beperkt. Maak hem punt voor punt langer."
           },
           "running": {
-            "body": "Je leidt en er liggen geen blots binnen slagbereik. Breng de stenen veilig thuis en laat geen blots liggen. Hier leidt wit met een vast huis.",
-            "title": "Race"
+            "body": "Je leidt en er liggen geen blots binnen slagbereik. Breng de stenen veilig thuis en laat geen blots liggen. Hier leidt wit met een vast huis."
           }
         },
         "subtitle": "Klassieke spelplannen herkennen",
         "title": "Spelplannen"
       }
     },
-    "locked": "De vorige les eerst voltooien",
     "next_lesson": "Volgende les",
     "quiz": {
       "bar": {

@@ -264,6 +264,8 @@ export function useLessonSession(lesson: LessonDefinition) {
     feedback,
     emphasisPoints,
     emphasisBar: Boolean(step.emphasisBar),
+    /** "Tap the point" questions judge the point actually touched (#299). */
+    exactTaps: step.kind === 'identify' && !stepComplete,
     aids: step.aids,
     advance,
     showHint,

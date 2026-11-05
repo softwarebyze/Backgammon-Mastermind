@@ -365,7 +365,7 @@
       "move_progress": "Gut — {{done}} von {{needed}} Zügen geschafft."
     },
     "graduation": {
-      "body": "Sie kennen das Ziel, das Brett, wie sich Arbeit, Schlagen und Abstützen drehen. Ein kurzer Check - dann dein erstes richtiges Spiel.",
+      "body": "Du kennst jetzt das Ziel, das Brett, den Ablauf eines Zugs, das Schlagen, das Auswürfeln, den Pip-Count und die wichtigsten Spielpläne. Ein kurzer Check – dann dein erstes echtes Spiel.",
       "play_cta": "Spielen Sie Ihr erstes Spiel",
       "quiz_done": "Nagelte es. Zeit zum Spielen.",
       "quiz_title": "Schnellprüfung",
@@ -375,6 +375,8 @@
       "recap_3": "Hit Blots: Sie sitzen an der Bar",
       "recap_4": "Bear off nur von Ihrem Home Board",
       "recap_5": "Spiele beginnen mit jeweils einem Würfel - höher geht zuerst (Tiles Re-Roll)",
+      "recap_6": "Pip-Count: Wer weniger hat, führt im Rennen",
+      "recap_7": "Wähle einen Plan: Rennen, Angriff, Prime oder Halten",
       "title": "Du bist bereit zu spielen"
     },
     "hint": "Hinweis",
@@ -518,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Du liegst weit zurück, also hältst du zwei tiefe Anker im Heimfeld des Gegners – hier auf dem 22er- und 24er-Punkt. Halte dein eigenes Heimfeld stark und warte auf einen späten Treffer. Das ist der letzte Ausweg: Er kann auch hoch verlieren."
+          },
           "blitz": {
-            "body": "Dein Haus ist stark, der Gegner hat Blots oder Steine auf der Bar. Schlage jeden Blot und schließe deine Hauspunkte, damit seine Steine auf der Bar festsitzen, während du auswürfelst. Hier hat Weiß drei Hauspunkte und Schwarz einen Stein auf der Bar.",
-            "title": "Blitz"
+            "body": "Dein Haus ist stark, der Gegner hat Blots oder Steine auf der Bar. Schlage jeden Blot und schließe deine Hauspunkte, damit seine Steine auf der Bar festsitzen, während du auswürfelst. Hier hat Weiß drei Hauspunkte und Schwarz einen Stein auf der Bar."
+          },
+          "holding": {
+            "body": "Du liegst im Rennen zurück, hältst aber einen Anker im Heimfeld des Gegners – hier auf dem 20er-Punkt. Halte ihn, spiele sicher und warte auf einen Treffer, wenn seine Steine an dir vorbei nach Hause ziehen."
           },
           "identify": {
             "body": "Das ist ein Prime-Spiel. Tippe einen Punkt der weißen Prime, der Mauer aus aufeinanderfolgenden Punkten, die Schwarz sperrt.",
@@ -529,19 +536,16 @@
             "title": "Finde die Prime"
           },
           "prime": {
-            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt.",
-            "title": "Prime"
+            "body": "Du hast eine Mauer aus aufeinanderfolgenden besetzten Punkten, eine Prime. Die markierten Punkte sind eine 4er-Prime, die die hinteren Steine von Schwarz einschränkt. Verlängere sie Punkt für Punkt."
           },
           "running": {
-            "body": "Du führst, und keine Blots liegen in Schlagweite. Bring die Steine sicher nach Hause und lass keine Blots liegen. Nicht tricksen, einfach rennen. Hier führt Weiß mit einem festen Haus.",
-            "title": "Rennspiel"
+            "body": "Du führst, und keine Blots liegen in Schlagweite. Bring die Steine sicher nach Hause und lass keine Blots liegen. Nicht tricksen, einfach rennen. Hier führt Weiß mit einem festen Haus."
           }
         },
         "subtitle": "Klassische Spielpläne erkennen",
         "title": "Spielpläne"
       }
     },
-    "locked": "Beende zuerst die vorherige Lektion",
     "next_lesson": "Nächste Lektion",
     "quiz": {
       "bar": {
