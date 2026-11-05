@@ -383,6 +383,8 @@
       "recap_5": "Games start with one die each — higher goes first (ties re-roll)",
       "recap_6": "Pip count: the lower count is ahead in the race",
       "recap_7": "Pick a plan: race, attack, prime or hold",
+      "recap_8": "The cube doubles the stakes: take or pass when you're doubled",
+      "recap_9": "Matches go to a set score; no doubling in the Crawford game",
       "title": "You’re ready to play"
     },
     "hint": "Hint",
@@ -393,6 +395,28 @@
     "home_cta_sub": "Interactive lessons for beginners",
     "lesson_complete": "Lesson complete!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Stuck? Tap Hint to see the engine's best move drawn on the board. Before you roll, it also tells you whether to double, and when you're doubled, whether to take or pass.",
+            "title": "Hint"
+          },
+          "history": {
+            "body": "Undo takes back a move during your turn. The history under the board steps through every turn of the game. With Tutor mode on, it also marks your errors: ?! a slip, ? a mistake, ?? a big blunder.",
+            "title": "Undo and history"
+          },
+          "levels": {
+            "body": "Against the computer, pick Easy, Medium, Hard or Expert on Home. To practise a position, use Set up a position on Home: place the checkers, dice and cube, then play from there.",
+            "title": "Computer level and your own positions"
+          },
+          "tutor": {
+            "body": "Turn on Tutor mode in Settings and the engine checks each move and cube decision. After a mistake you can take it back and try again, keep your choice, or turn the tutor off.",
+            "title": "Tutor mode"
+          }
+        },
+        "subtitle": "Hints, Tutor mode, undo and more",
+        "title": "Tools in the app"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -432,6 +456,32 @@
         },
         "subtitle": "Which way you move",
         "title": "Direction & setup"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "If you bear off all 15 before your opponent bears off any, it's a gammon: the game scores twice the cube. If they still have a checker on the bar or in your home board, like black here, it's a backgammon: three times.",
+            "title": "Gammons count double"
+          },
+          "offer": {
+            "body": "Before you roll, if you're well ahead you can double instead: tap Double. The stakes go up to 2, and your opponent must answer right away. Here white leads the race by a lot, a good time to double.",
+            "title": "Offer a double"
+          },
+          "own": {
+            "body": "Whoever takes owns the cube, and only they can double again later, to 4, then 8. Owning it is an advantage: your opponent can't double you out of the game.",
+            "title": "Owning the cube"
+          },
+          "take_pass": {
+            "body": "When you're doubled, Pass loses the game now at the current stakes. Take plays on for twice the stakes. A good rule: take if you'll still win at least 1 game in 4.",
+            "title": "Take or pass"
+          },
+          "what": {
+            "body": "Every game has a doubling cube. It starts in the middle at 1, and its face then shows 64, the highest value. A game is worth the cube's value: win and you score that many points.",
+            "title": "The doubling cube"
+          }
+        },
+        "subtitle": "Raise the stakes: double, take or pass",
+        "title": "The doubling cube"
       },
       "goal_board": {
         "steps": {
@@ -473,6 +523,28 @@
         },
         "subtitle": "Contact play",
         "title": "Hitting & the bar"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "When a player first gets within one point of winning, the next game is the Crawford game: nobody can double, and the cube is greyed out. After that game, doubling is back.",
+            "title": "The Crawford rule"
+          },
+          "dead_cube": {
+            "body": "Late in a match a double can be pointless: if winning this game already wins you the match, doubling adds nothing. The app then offers only Roll Dice and tells you why.",
+            "title": "When the cube can't help"
+          },
+          "start": {
+            "body": "On Home, choose Match, pick the length and whether to use the Crawford rule, then start. Matches work against the computer and against a friend on the same device.",
+            "title": "Start a match"
+          },
+          "what": {
+            "body": "A match is played to a set score: 3, 5, 7 points or more. Each game adds its value to the winner's score, the cube times two for a gammon. The first to reach the target wins the match.",
+            "title": "Playing a match"
+          }
+        },
+        "subtitle": "Play to a target score, with the Crawford rule",
+        "title": "Match play"
       },
       "moving_dice": {
         "steps": {
@@ -571,6 +643,18 @@
         "b": "A single checker on a point — it can be hit",
         "c": "Two or more checkers on a point — a made point",
         "prompt": "What is a blot?"
+      },
+      "crawford": {
+        "a": "Nobody can double",
+        "b": "Gammons don't count",
+        "c": "The cube starts at 2",
+        "prompt": "What is special about the Crawford game?"
+      },
+      "cube_pass": {
+        "a": "You play on for twice the stakes",
+        "b": "You lose the game at the current stakes",
+        "c": "The cube goes back to the middle",
+        "prompt": "You're doubled and you pass. What happens?"
       },
       "pip_ahead": {
         "a": "Your opponent, with the higher count",

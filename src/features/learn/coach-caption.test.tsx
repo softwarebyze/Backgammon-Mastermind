@@ -52,6 +52,21 @@ describe('coach caption feedback (#304)', () => {
       />,
     );
     expect(screen.getByTestId('learn-feedback').props.accessibilityLiveRegion).toBeUndefined();
+    expect(screen.getByTestId('learn-feedback-live').props.accessibilityLiveRegion).toBeUndefined();
+  });
+
+  // react-native-web's announceForAccessibility is an empty function.
+  it('puts feedback in a polite live region on web, as a new node for each answer', () => {
+    Platform.OS = 'web';
+    const caption = (feedback: LessonFeedback) => (
+      <CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="1/3" feedback={feedback} />
+    );
+    const { rerender } = render(caption({ tone: 'soft', messageKey: 'learn.feedback.illegal' }));
+    expect(screen.getByTestId('learn-feedback-live').props.accessibilityLiveRegion).toBe('polite');
+    const first = screen.getByTestId('learn-feedback');
+    // The same message again is a new feedback object, so a new node the reader announces.
+    rerender(caption({ tone: 'soft', messageKey: 'learn.feedback.illegal' }));
+    expect(screen.getByTestId('learn-feedback')).not.toBe(first);
   });
 });
 
@@ -68,5 +83,15 @@ describe('coach caption game plan', () => {
   it('shows no icon on other steps', () => {
     render(<CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="1/3" feedback={null} />);
     expect(screen.queryByTestId(/^learn-strategy-/, { includeHiddenElements: true })).toBeNull();
+  });
+});
+
+describe('coach caption cube', () => {
+  it('draws the cube a cube step describes, greyed for the Crawford game', () => {
+    render(<CoachCaption titleKey="learn.lessons.match_play.steps.crawford.title" bodyKey="learn.lessons.match_play.steps.crawford.body" stepLabel="2/4" feedback={null} cube={{ value: 1, unavailable: true }} />);
+    expect(screen.getByTestId('learn-cube', { includeHiddenElements: true }).props.importantForAccessibility).toBe('no-hide-descendants');
+    // The cube starts at 1 and shows its 64 face, as in a game.
+    expect(screen.getByText('64', { includeHiddenElements: true })).toBeTruthy();
+    expect(screen.getByTestId('doubling-cube-face', { includeHiddenElements: true })).toHaveStyle({ opacity: 0.45 });
   });
 });

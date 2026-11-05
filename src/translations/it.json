@@ -383,6 +383,8 @@
       "recap_5": "All'inizio ognuno tira un dado: inizia chi fa di più (in caso di pareggio si ritira)",
       "recap_6": "Conteggio pip: chi ha il numero più basso è avanti nella corsa",
       "recap_7": "Scegli un piano: corsa, attacco, muro o blocco",
+      "recap_8": "Il cubo raddoppia la posta: accetta o rifiuta quando ti raddoppiano",
+      "recap_9": "Gli incontri arrivano a un punteggio fissato; nella partita Crawford non si raddoppia",
       "title": "Sei pronto a giocare"
     },
     "hint": "Suggerimento",
@@ -393,6 +395,28 @@
     "home_cta_sub": "Lezioni interattive per principianti",
     "lesson_complete": "Lezione completata!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Bloccato? Tocca Suggerimento per vedere sul tabellone la mossa migliore del motore. Prima di tirare ti dice anche se conviene raddoppiare e, quando ti raddoppiano, se accettare o rifiutare.",
+            "title": "Suggerimento"
+          },
+          "history": {
+            "body": "Annulla ritira una mossa durante il tuo turno. La cronologia sotto il tabellone ripercorre ogni turno della partita. Con la modalità tutor segna anche i tuoi errori: ?! una svista, ? un errore, ?? un grave errore.",
+            "title": "Annulla e cronologia"
+          },
+          "levels": {
+            "body": "Contro il computer, scegli Facile, Medio, Difficile o Esperto nella Home. Per allenarti su una posizione, usa Prepara una posizione: disponi pedine, dadi e cubo, poi gioca da lì.",
+            "title": "Livello del computer e le tue posizioni"
+          },
+          "tutor": {
+            "body": "Attiva la modalità tutor nelle Impostazioni e il motore controlla ogni mossa e ogni decisione sul cubo. Dopo un errore puoi annullare e riprovare, mantenere la tua scelta o disattivare il tutor.",
+            "title": "Modalità tutor"
+          }
+        },
+        "subtitle": "Suggerimenti, modalità tutor, annulla e altro",
+        "title": "Gli strumenti dell'app"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -432,6 +456,32 @@
         },
         "subtitle": "In che direzione ti muovi",
         "title": "Direzione e disposizione"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Se porti fuori tutte e 15 le pedine prima che l'avversario ne porti fuori una, è un gammon: la partita vale il doppio del cubo. Se ha ancora una pedina sulla barra o nella tua casa, come il nero qui, è un backgammon: il triplo.",
+            "title": "Il gammon vale doppio"
+          },
+          "offer": {
+            "body": "Prima di tirare, se sei nettamente avanti puoi raddoppiare: tocca Raddoppia. La posta sale a 2 e l'avversario deve rispondere subito. Qui il bianco è molto avanti nella corsa, un buon momento per raddoppiare.",
+            "title": "Offrire un raddoppio"
+          },
+          "own": {
+            "body": "Chi accetta possiede il cubo, e solo lui potrà raddoppiare di nuovo più avanti, a 4, poi a 8. È un vantaggio: l'avversario non può più farti abbandonare con un raddoppio.",
+            "title": "Possedere il cubo"
+          },
+          "take_pass": {
+            "body": "Quando ti raddoppiano, Rifiuta perde subito la partita alla posta attuale. Accetta continua per il doppio. Una buona regola: accetta se vinci ancora almeno 1 partita su 4.",
+            "title": "Accettare o rifiutare"
+          },
+          "what": {
+            "body": "Ogni partita ha un cubo del raddoppio. Parte al centro a 1, e allora mostra 64, il valore più alto. Una partita vale quanto il cubo: se vinci, guadagni quei punti.",
+            "title": "Il cubo del raddoppio"
+          }
+        },
+        "subtitle": "Alza la posta: raddoppia, accetta o rifiuta",
+        "title": "Il cubo del raddoppio"
       },
       "goal_board": {
         "steps": {
@@ -473,6 +523,28 @@
         },
         "subtitle": "Il gioco di contatto",
         "title": "Colpire e la barra"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Quando un giocatore arriva per la prima volta a un punto dalla vittoria, la partita successiva è la partita Crawford: nessuno può raddoppiare e il cubo è in grigio. Dopo, il raddoppio torna.",
+            "title": "La regola Crawford"
+          },
+          "dead_cube": {
+            "body": "A fine incontro un raddoppio può essere inutile: se vincere questa partita ti dà già l'incontro, raddoppiare non aggiunge nulla. L'app allora offre solo Lancia i dadi e ti spiega perché.",
+            "title": "Quando il cubo non serve"
+          },
+          "start": {
+            "body": "Nella Home scegli Incontro, la lunghezza e se usare la regola Crawford, poi inizia. Gli incontri si giocano contro il computer o contro un amico sullo stesso dispositivo.",
+            "title": "Iniziare un incontro"
+          },
+          "what": {
+            "body": "Un incontro si gioca fino a un punteggio fissato: 3, 5, 7 punti o più. Ogni partita dà al vincitore il suo valore: il cubo, doppio per un gammon. Chi arriva prima all'obiettivo vince l'incontro.",
+            "title": "Giocare un incontro"
+          }
+        },
+        "subtitle": "Gioca fino a un punteggio, con la regola Crawford",
+        "title": "Gli incontri"
       },
       "moving_dice": {
         "steps": {
@@ -571,6 +643,18 @@
         "b": "Una pedina da sola su una punta: può essere colpita",
         "c": "Due o più pedine su una punta: una punta chiusa",
         "prompt": "Cos'è una pedina scoperta (blot)?"
+      },
+      "crawford": {
+        "a": "Nessuno può raddoppiare",
+        "b": "I gammon non contano",
+        "c": "Il cubo parte da 2",
+        "prompt": "Cosa ha di speciale la partita Crawford?"
+      },
+      "cube_pass": {
+        "a": "Continui a giocare per il doppio",
+        "b": "Perdi la partita alla posta attuale",
+        "c": "Il cubo torna al centro",
+        "prompt": "Ti raddoppiano e rifiuti. Cosa succede?"
       },
       "pip_ahead": {
         "a": "L'avversario, con il conteggio più alto",
