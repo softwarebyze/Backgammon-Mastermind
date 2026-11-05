@@ -17,6 +17,7 @@ import {
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
 import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
+import { lessonShowsPointNumbers } from '@/features/learn/lesson-point-numbers';
 import { useAnnounceFeedback } from '@/features/learn/use-announce-feedback';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
@@ -91,7 +92,8 @@ function LessonScreenBody({
   useAnnounceFeedback(session.feedback);
   const posthog = usePostHog();
   const { insets, landscape, chromeWidth, boardPaneWidth, boardMaxWidth, stageMaxWidth } = useLayoutMetrics();
-  const showPointNumbers = session.aids?.showPointNumbers ?? false;
+  const { preferences } = useGamePreferences();
+  const showPointNumbers = lessonShowsPointNumbers(session.aids, preferences.showPointNumbers);
   const { onTopLayout, onControlsLayout, onSlotLayout, captionMaxHeight } = usePublishBoardSlot({
     reviewHeight: 0,
     minBoardHeight: landscape ? 0 : MIN_LEARN_BOARD_SLOT_HEIGHT,
@@ -176,6 +178,7 @@ function LessonScreenBody({
       titleKey={session.step.titleKey}
       bodyKey={session.step.bodyKey}
       strategy={session.step.strategy}
+      cube={session.step.cube}
       feedback={session.feedback}
       stepLabel={translate('learn.step_progress', {
         current: session.stepIndex + 1,

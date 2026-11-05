@@ -383,6 +383,8 @@
       "recap_5": "Jogos começam com um dado cada — mais alto vai primeiro (ties re-roll)",
       "recap_6": "Contagem de pips: a menor vai à frente na corrida",
       "recap_7": "Escolhe um plano: corrida, ataque, muralha ou contenção",
+      "recap_8": "O cubo dobra a aposta: aceite ou recuse quando for dobrado",
+      "recap_9": "As partidas vão até uma pontuação fixa; no jogo Crawford não se dobra",
       "title": "Você está pronto para jogar"
     },
     "hint": "Dica",
@@ -393,6 +395,28 @@
     "home_cta_sub": "Aulas interativas para iniciantes",
     "lesson_complete": "Lição completa!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Sem saber o que fazer? Toque em Dica para ver no tabuleiro a melhor jogada do motor. Antes de lançar, também diz se deve dobrar e, quando é dobrado, se deve aceitar ou recusar.",
+            "title": "Dica"
+          },
+          "history": {
+            "body": "Desfazer anula uma jogada durante a sua vez. O histórico por baixo do tabuleiro percorre cada vez do jogo. Com o modo tutor, também marca os seus erros: ?! um deslize, ? um erro, ?? um erro grave.",
+            "title": "Desfazer e histórico"
+          },
+          "levels": {
+            "body": "Contra o computador, escolha Fácil, Médio, Difícil ou Especialista no ecrã inicial. Para treinar uma posição, use Montar uma posição: coloque peças, dados e cubo e jogue a partir daí.",
+            "title": "Nível do computador e as suas posições"
+          },
+          "tutor": {
+            "body": "Ative o modo tutor nos Ajustes e o motor verifica cada jogada e cada decisão de cubo. Depois de um erro, pode anular e tentar de novo, manter a sua escolha ou desligar o tutor.",
+            "title": "Modo tutor"
+          }
+        },
+        "subtitle": "Dicas, modo tutor, desfazer e mais",
+        "title": "Ferramentas da app"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -432,6 +456,32 @@
         },
         "subtitle": "Para que lado te moves?",
         "title": "& Configuração da direção"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Se retirar as 15 peças antes de o adversário retirar alguma, é um gammon: o jogo vale o dobro do cubo. Se ele ainda tiver uma peça na barra ou no seu tabuleiro interior, como as pretas aqui, é um backgammon: o triplo.",
+            "title": "O gammon vale o dobro"
+          },
+          "offer": {
+            "body": "Antes de lançar os dados, se estiver bem à frente, pode dobrar: toque em Dobrar. A aposta sobe para 2 e o adversário tem de responder logo. Aqui as brancas lideram a corrida com folga, um bom momento para dobrar.",
+            "title": "Oferecer uma dobra"
+          },
+          "own": {
+            "body": "Quem aceita fica com o cubo, e só ele pode voltar a dobrar mais tarde, para 4 e depois 8. É uma vantagem: o adversário já não o pode tirar do jogo com uma dobra.",
+            "title": "Ser dono do cubo"
+          },
+          "take_pass": {
+            "body": "Quando é dobrado, Recusar perde o jogo já, com a aposta atual. Aceitar continua a jogar pelo dobro. Uma boa regra: aceite se ainda ganhar pelo menos 1 jogo em cada 4.",
+            "title": "Aceitar ou recusar"
+          },
+          "what": {
+            "body": "Cada jogo tem um cubo de dobra. Começa no centro a valer 1 e mostra então 64, o seu valor mais alto. Um jogo vale o valor do cubo: se ganhar, marca esses pontos.",
+            "title": "O cubo de dobra"
+          }
+        },
+        "subtitle": "Aumente a aposta: dobrar, aceitar ou recusar",
+        "title": "O cubo de dobra"
       },
       "goal_board": {
         "steps": {
@@ -473,6 +523,28 @@
         },
         "subtitle": "Jogo de contato",
         "title": "A & bater na barra"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Quando um jogador fica pela primeira vez a um ponto da vitória, o jogo seguinte é o jogo Crawford: ninguém pode dobrar e o cubo fica esbatido. Depois desse jogo, a dobra volta.",
+            "title": "A regra de Crawford"
+          },
+          "dead_cube": {
+            "body": "No fim de uma partida uma dobra pode não servir de nada: se ganhar este jogo já lhe dá a partida, dobrar não acrescenta nada. A app só oferece Lançar os dados e explica porquê.",
+            "title": "Quando o cubo não ajuda"
+          },
+          "start": {
+            "body": "No ecrã inicial, escolha Partida, o comprimento e se usa a regra de Crawford, e comece. As partidas jogam-se contra o computador ou contra um amigo no mesmo dispositivo.",
+            "title": "Começar uma partida"
+          },
+          "what": {
+            "body": "Uma partida joga-se até uma pontuação fixa: 3, 5, 7 pontos ou mais. Cada jogo dá ao vencedor o seu valor: o cubo, a dobrar num gammon. Quem chega primeiro à meta ganha a partida.",
+            "title": "Jogar uma partida"
+          }
+        },
+        "subtitle": "Jogue até uma pontuação, com a regra de Crawford",
+        "title": "Partidas"
       },
       "moving_dice": {
         "steps": {
@@ -571,6 +643,18 @@
         "b": "Um único verificador num ponto — pode ser atingido",
         "c": "Duas ou mais damas sobre um ponto — uma observação feita",
         "prompt": "O que é uma mancha?"
+      },
+      "crawford": {
+        "a": "Ninguém pode dobrar",
+        "b": "Os gammons não contam",
+        "c": "O cubo começa em 2",
+        "prompt": "O que tem de especial o jogo Crawford?"
+      },
+      "cube_pass": {
+        "a": "Continua a jogar pelo dobro",
+        "b": "Perde o jogo com a aposta atual",
+        "c": "O cubo volta ao centro",
+        "prompt": "É dobrado e recusa. O que acontece?"
       },
       "pip_ahead": {
         "a": "O teu adversário, com a contagem maior",

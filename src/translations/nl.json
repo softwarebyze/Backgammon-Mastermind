@@ -383,6 +383,8 @@
       "recap_5": "Spelletjes beginnen met een die elke hogere gaat eerst (ties re-roll)",
       "recap_6": "Pip count: wie de laagste count heeft, leidt de race",
       "recap_7": "Kies een plan: race, aanval, muur of houden",
+      "recap_8": "De kubus verdubbelt de inzet: neem aan of geef op als je verdubbeld wordt",
+      "recap_9": "Matches gaan tot een vaste score; in het Crawford-spel wordt niet verdubbeld",
       "title": "Je bent klaar om te spelen"
     },
     "hint": "Hint",
@@ -393,6 +395,28 @@
     "home_cta_sub": "Interactieve lessen voor beginners",
     "lesson_complete": "Les voltooid!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Vastgelopen? Tik op Hint en de beste zet van de engine verschijnt op het bord. Voor het gooien zegt hij ook of je moet verdubbelen en, als je verdubbeld wordt, of je moet aannemen of opgeven.",
+            "title": "Hint"
+          },
+          "history": {
+            "body": "Ongedaan maken neemt tijdens je beurt een zet terug. De geschiedenis onder het bord loopt elke beurt van het spel door. Met de tutormodus markeert hij ook je fouten: ?! een slordigheid, ? een fout, ?? een grote blunder.",
+            "title": "Ongedaan maken en geschiedenis"
+          },
+          "levels": {
+            "body": "Tegen de computer kies je op het startscherm Makkelijk, Gemiddeld, Moeilijk of Expert. Om een stelling te oefenen gebruik je Stelling opzetten: zet stenen, dobbelstenen en kubus neer en speel vanaf daar.",
+            "title": "Computerniveau en eigen stellingen"
+          },
+          "tutor": {
+            "body": "Zet de tutormodus aan in Instellingen en de engine controleert elke zet en elke kubusbeslissing. Na een fout kun je terugnemen en opnieuw proberen, je keuze behouden of de tutor uitzetten.",
+            "title": "Tutormodus"
+          }
+        },
+        "subtitle": "Hints, tutormodus, ongedaan maken en meer",
+        "title": "Hulpmiddelen in de app"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -432,6 +456,32 @@
         },
         "subtitle": "Welke kant je op gaat",
         "title": "Richting instellen"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Speel je alle 15 stenen uit voordat je tegenstander er één uitspeelt, dan is het een gammon: het spel telt dubbel de kubus. Heeft hij nog een steen op de bar of in jouw thuisbord, zoals zwart hier, dan is het een backgammon: drie keer.",
+            "title": "Een gammon telt dubbel"
+          },
+          "offer": {
+            "body": "Voordat je gooit, kun je verdubbelen als je duidelijk voorstaat: tik op Verdubbelen. De inzet gaat naar 2 en je tegenstander moet meteen antwoorden. Hier staat wit ruim voor in de race, een goed moment om te verdubbelen.",
+            "title": "Een verdubbeling aanbieden"
+          },
+          "own": {
+            "body": "Wie aanneemt, bezit de kubus en alleen die mag later opnieuw verdubbelen, naar 4, dan 8. Dat is een voordeel: je tegenstander kan je niet meer uit het spel verdubbelen.",
+            "title": "De kubus bezitten"
+          },
+          "take_pass": {
+            "body": "Word je verdubbeld, dan verlies je met Opgeven het spel meteen tegen de huidige inzet. Met Aannemen speel je verder voor de dubbele inzet. Vuistregel: neem aan als je nog minstens 1 op de 4 spellen wint.",
+            "title": "Aannemen of opgeven"
+          },
+          "what": {
+            "body": "Elk spel heeft een verdubbelingskubus. Hij begint in het midden op 1 en toont dan 64, zijn hoogste waarde. Een spel is evenveel waard als de kubus: win je, dan krijg je zoveel punten.",
+            "title": "De verdubbelingskubus"
+          }
+        },
+        "subtitle": "De inzet verhogen: verdubbelen, aannemen of opgeven",
+        "title": "De verdubbelingskubus"
       },
       "goal_board": {
         "steps": {
@@ -473,6 +523,28 @@
         },
         "subtitle": "Contactspel",
         "title": "& De balk raken"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Zodra een speler voor het eerst één punt van de winst af is, is het volgende spel het Crawford-spel: niemand mag verdubbelen en de kubus is grijs. Daarna mag er weer verdubbeld worden.",
+            "title": "De Crawford-regel"
+          },
+          "dead_cube": {
+            "body": "Aan het eind van een match kan verdubbelen zinloos zijn: als je met dit spel al de match wint, voegt verdubbelen niets toe. De app biedt dan alleen Gooi de dobbelstenen aan en zegt waarom.",
+            "title": "Als de kubus niet helpt"
+          },
+          "start": {
+            "body": "Kies op het startscherm Match, de lengte en of je met de Crawford-regel speelt, en start. Matches kun je spelen tegen de computer en tegen een vriend op hetzelfde apparaat.",
+            "title": "Een match starten"
+          },
+          "what": {
+            "body": "Een match gaat tot een vaste score: 3, 5, 7 punten of meer. Elk spel levert de winnaar zijn waarde op: de kubus, dubbel bij een gammon. Wie het eerst het doel haalt, wint de match.",
+            "title": "Een match spelen"
+          }
+        },
+        "subtitle": "Spelen tot een doelscore, met de Crawford-regel",
+        "title": "Matches"
       },
       "moving_dice": {
         "steps": {
@@ -571,6 +643,18 @@
         "b": "Een enkele controleer op een punt kan worden geraakt",
         "c": "Twee of meer dammen op een punt",
         "prompt": "Wat is een vlek?"
+      },
+      "crawford": {
+        "a": "Niemand mag verdubbelen",
+        "b": "Gammons tellen niet",
+        "c": "De kubus begint op 2",
+        "prompt": "Wat is er bijzonder aan het Crawford-spel?"
+      },
+      "cube_pass": {
+        "a": "Je speelt verder voor de dubbele inzet",
+        "b": "Je verliest het spel tegen de huidige inzet",
+        "c": "De kubus gaat terug naar het midden",
+        "prompt": "Je wordt verdubbeld en je geeft op. Wat gebeurt er?"
       },
       "pip_ahead": {
         "a": "Je tegenstander, met de hogere count",
