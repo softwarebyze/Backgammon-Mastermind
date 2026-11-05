@@ -4,9 +4,33 @@
     "heading": "Algo correu mal.",
     "retry": "Repetir"
   },
+  "feedback": {
+    "body_label": "Detalhes",
+    "body_placeholder": "O que aconteceu, ou o que deixaria o app melhor?",
+    "email_instead": "Enviar por email para anexar uma captura de ecrã",
+    "error": "Não foi possível abrir seu app de e-mail. Escreva para {{email}}.",
+    "intro": "Encontrou um bug ou tem uma ideia? Conte para nós: lemos todas as mensagens.",
+    "open_a11y": "Enviar feedback",
+    "privacy": "Enviado ao programador com a versão da app, o dispositivo e o idioma.",
+    "send": "Enviar",
+    "sent": "Obrigado pelo feedback!",
+    "settings_row": "Enviar feedback",
+    "subject_label": "Título",
+    "subject_placeholder": "Sobre o que é?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selecionado — toque num ponto realçado ou em Cancelar"
+    },
+    "computer_level": {
+      "a11y": "Nível do computador: {{level}}",
+      "easy": "Fácil",
+      "expert": "Especialista",
+      "hard": "Difícil",
+      "hint": "Fácil comete os erros de um iniciante. Especialista joga sempre o melhor lance do motor.",
+      "medium": "Médio",
+      "title": "Nível do computador"
     },
     "controls": {
       "bear_off_a11y": "Retirar pedra",
@@ -341,7 +365,7 @@
       "move_progress": "Boa...{{done}}de{{needed}}movimentos feitos."
     },
     "graduation": {
-      "body": "Sabes qual é o objectivo, o tabuleiro, como é que se transforma no trabalho, bater e aguentar. Uma verificação rápida — então seu primeiro jogo real.",
+      "body": "Já conheces o objetivo, o tabuleiro, como funcionam os turnos, como bater e tirar as peças, a contagem de pips e os principais planos de jogo. Uma verificação rápida e depois a tua primeira partida a sério.",
       "play_cta": "Jogar o seu primeiro jogo",
       "quiz_done": "Acertei em cheio. Hora de jogar.",
       "quiz_title": "Verificação rápida",
@@ -351,6 +375,8 @@
       "recap_3": "Hit blots → eles sentam na barra",
       "recap_4": "Afaste-se apenas do seu tabuleiro",
       "recap_5": "Jogos começam com um dado cada — mais alto vai primeiro (ties re-roll)",
+      "recap_6": "Contagem de pips: a menor vai à frente na corrida",
+      "recap_7": "Escolhe um plano: corrida, ataque, muralha ou contenção",
       "title": "Você está pronto para jogar"
     },
     "hint": "Dica",
@@ -494,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Está muito atrás, por isso tem duas âncoras profundas no tabuleiro interior do adversário — aqui nos pontos 22 e 24. Mantenha o seu tabuleiro interior forte e espere por um tiro tardio. É o último recurso: também pode perder muito."
+          },
           "blitz": {
-            "body": "A tua casa é forte e o adversário tem isoladas ou peças na barra. Acerta em cada isolada e fecha os pontos de casa para as deixar na barra enquanto sais. Aqui o branco tem três pontos de casa e o preto uma peça na barra.",
-            "title": "Blitz"
+            "body": "A tua casa é forte e o adversário tem isoladas ou peças na barra. Acerta em cada isolada e fecha os pontos de casa para as deixar na barra enquanto sais. Aqui o branco tem três pontos de casa e o preto uma peça na barra."
+          },
+          "holding": {
+            "body": "Está atrás na corrida, mas tem uma âncora no tabuleiro interior do adversário — aqui no ponto 20. Mantenha-a, jogue com segurança e espere por um tiro quando as peças dele passarem por ela a caminho de casa."
           },
           "identify": {
             "body": "Isto é um jogo de muralha. Toca num ponto da muralha branca, os pontos seguidos que bloqueiam o preto.",
@@ -505,19 +536,16 @@
             "title": "Encontra a muralha"
           },
           "prime": {
-            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que limita as peças de trás do preto. Alonga-a um ponto de cada vez.",
-            "title": "Muralha"
+            "body": "Fizeste um muro de pontos seguidos. Os pontos marcados são uma muralha de 4 que limita as peças de trás do preto. Alonga-a um ponto de cada vez."
           },
           "running": {
-            "body": "Vais à frente e não há peças isoladas ao alcance. Traz as peças para casa sem deixar isoladas. Aqui o branco vai à frente com uma casa sólida.",
-            "title": "Corrida"
+            "body": "Vais à frente e não há peças isoladas ao alcance. Traz as peças para casa sem deixar isoladas. Aqui o branco vai à frente com uma casa sólida."
           }
         },
         "subtitle": "Reconhecer planos de jogo clássicos",
         "title": "Planos de jogo"
       }
     },
-    "locked": "Completar a lição anterior primeiro",
     "next_lesson": "Próxima lição",
     "quiz": {
       "bar": {

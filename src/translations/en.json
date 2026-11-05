@@ -4,9 +4,33 @@
     "heading": "Something went wrong",
     "retry": "Retry"
   },
+  "feedback": {
+    "body_label": "Details",
+    "body_placeholder": "What happened, or what would make the app better?",
+    "email_instead": "Email instead, to attach a screenshot",
+    "error": "Couldn't open your mail app. Email us at {{email}}.",
+    "intro": "Found a bug or have an idea? Tell us — every note gets read.",
+    "open_a11y": "Send feedback",
+    "privacy": "Sent to the developer with your app version, device and language.",
+    "send": "Send",
+    "sent": "Thanks for the feedback!",
+    "settings_row": "Send feedback",
+    "subject_label": "Title",
+    "subject_placeholder": "What's it about?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selected — tap a highlighted point, or Cancel"
+    },
+    "computer_level": {
+      "a11y": "Computer level: {{level}}",
+      "easy": "Easy",
+      "expert": "Expert",
+      "hard": "Hard",
+      "hint": "Easy makes the mistakes a beginner would. Expert always plays the engine's best move.",
+      "medium": "Medium",
+      "title": "Computer level"
     },
     "controls": {
       "bear_off_a11y": "Bear off",
@@ -341,7 +365,7 @@
       "move_progress": "Nice — {{done}} of {{needed}} moves done."
     },
     "graduation": {
-      "body": "You know the goal, the board, how turns work, hitting, and bearing off. A quick check — then your first real game.",
+      "body": "You know the goal, the board, how turns work, hitting, bearing off, the pip count and the main game plans. A quick check — then your first real game.",
       "play_cta": "Play your first game",
       "quiz_done": "Nailed it. Time to play.",
       "quiz_title": "Quick check",
@@ -351,6 +375,8 @@
       "recap_3": "Hit blots → they sit on the bar",
       "recap_4": "Bear off only from your home board",
       "recap_5": "Games start with one die each — higher goes first (ties re-roll)",
+      "recap_6": "Pip count: the lower count is ahead in the race",
+      "recap_7": "Pick a plan: race, attack, prime or hold",
       "title": "You’re ready to play"
     },
     "hint": "Hint",
@@ -494,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "You're far behind, so you hold two deep anchors in your opponent's home board — here the 22- and 24-points. Keep your own home board strong and wait for a late shot. It's a last resort: it can also lose big."
+          },
           "blitz": {
-            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar.",
-            "title": "Blitz"
+            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar."
+          },
+          "holding": {
+            "body": "You're behind in the race, but you hold an anchor in your opponent's home board — here the 20-point. Keep it, stay safe, and wait for a shot as their checkers come home past it."
           },
           "identify": {
             "body": "This is a priming game. Tap any point that's part of the white prime — the wall of consecutive made points blocking black.",
@@ -505,19 +536,16 @@
             "title": "Spot the prime"
           },
           "prime": {
-            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it.",
-            "title": "Priming Game"
+            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it."
           },
           "running": {
-            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board.",
-            "title": "Running Game"
+            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board."
           }
         },
         "subtitle": "Recognize classic game plans",
         "title": "Game Strategies"
       }
     },
-    "locked": "Complete the previous lesson first",
     "next_lesson": "Next lesson",
     "quiz": {
       "bar": {

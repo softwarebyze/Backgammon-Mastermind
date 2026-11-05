@@ -4,9 +4,33 @@
     "heading": "Bir şey yanlış gitti yanlış bir şey gitti",
     "retry": "Retry"
   },
+  "feedback": {
+    "body_label": "Ayrıntılar",
+    "body_placeholder": "Ne oldu ya da uygulamayı ne daha iyi yapardı?",
+    "email_instead": "Ekran görüntüsü eklemek için e-postayla gönder",
+    "error": "E-posta uygulaması açılamadı. Bize {{email}} adresinden yazın.",
+    "intro": "Bir hata mı buldunuz ya da bir fikriniz mi var? Bize yazın, her mesajı okuyoruz.",
+    "open_a11y": "Geri bildirim gönder",
+    "privacy": "Uygulama sürümün, cihazın ve dilinle birlikte geliştiriciye gönderilir.",
+    "send": "Gönder",
+    "sent": "Geri bildiriminiz için teşekkürler!",
+    "settings_row": "Geri bildirim gönder",
+    "subject_label": "Başlık",
+    "subject_placeholder": "Konu nedir?",
+    "title": "Geri bildirim"
+  },
   "game": {
     "caption": {
       "selected": "Seçilen – vurgulanan bir noktaya dokun veya Cancel"
+    },
+    "computer_level": {
+      "a11y": "Bilgisayar seviyesi: {{level}}",
+      "easy": "Kolay",
+      "expert": "Uzman",
+      "hard": "Zor",
+      "hint": "Kolay seviye bir acemi gibi hata yapar. Uzman her zaman motorun en iyi hamlesini oynar.",
+      "medium": "Orta",
+      "title": "Bilgisayar seviyesi"
     },
     "controls": {
       "bear_off_a11y": "Taş topla",
@@ -341,7 +365,7 @@
       "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı."
     },
     "graduation": {
-      "body": "Hedefi biliyorsun, yönetim kurulu, nasıl çalışır, vurup duruyorsunuz. Hızlı bir kontrol - sonra ilk gerçek oyun.",
+      "body": "Artık hedefi, tahtayı, sıranın nasıl işlediğini, vurmayı, pulları çıkarmayı, pip sayısını ve temel oyun planlarını biliyorsun. Kısa bir kontrol, sonra ilk gerçek oyunun.",
       "play_cta": "İlk oyununuzu oynayın",
       "quiz_done": "Çiçerdi. Oynamak için zaman.",
       "quiz_title": "Hızlı check",
@@ -351,6 +375,8 @@
       "recap_3": "Hit blots → barda otururlar",
       "recap_4": "Sadece ev yönetim kurulundan uzak durun",
       "recap_5": "Oyunlar her biri ile başlar - daha yüksek gider (en yüksek kayıt)",
+      "recap_6": "Pip sayısı: sayısı düşük olan yarışta öndedir",
+      "recap_7": "Bir plan seç: yarış, saldırı, duvar veya tutma",
       "title": "Oynamaya hazırsın"
     },
     "hint": "Hint Hint",
@@ -494,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Çok gerisiniz, bu yüzden rakibin iç alanının derinliklerinde iki çapanız var — burada 22 ve 24 numaralı noktalarda. Kendi iç alanınızı güçlü tutun ve geç gelecek bir vuruşu bekleyin. Bu son çaredir: büyük kaybettirebilir de."
+          },
           "blitz": {
-            "body": "Evin güçlü ve rakibin açık pulları ya da barda pulları var. Her açığı kır ve ev noktalarını kapat ki sen çıkarken onunkiler barda kalsın. Burada beyazın üç ev noktası var, siyahın barda bir pulu var.",
-            "title": "Blitz"
+            "body": "Evin güçlü ve rakibin açık pulları ya da barda pulları var. Her açığı kır ve ev noktalarını kapat ki sen çıkarken onunkiler barda kalsın. Burada beyazın üç ev noktası var, siyahın barda bir pulu var."
+          },
+          "holding": {
+            "body": "Yarışta gerisiniz ama rakibin iç alanında bir çapanız var — burada 20 numaralı noktada. Onu koruyun, güvenli oynayın ve rakibin pulları yanından geçip eve dönerken vurma fırsatını bekleyin."
           },
           "identify": {
             "body": "Bu bir duvar oyunu. Siyahı tutan beyaz duvarın, ardışık noktalardan birine dokun.",
@@ -505,19 +536,16 @@
             "title": "Duvarı bul"
           },
           "prime": {
-            "body": "Ardışık kapalı noktalardan bir duvar kurdun. Vurgulanan noktalar 4’lük bir duvar; siyahın gerideki pullarını kısıtlar. Birer nokta uzat.",
-            "title": "Duvar"
+            "body": "Ardışık kapalı noktalardan bir duvar kurdun. Vurgulanan noktalar 4’lük bir duvar; siyahın gerideki pullarını kısıtlar. Birer nokta uzat."
           },
           "running": {
-            "body": "Öndesin ve vuruş menzilinde açık pul yok. Pulları güvenle eve getir, açık bırakma. Burada beyaz önde ve evi sağlam.",
-            "title": "Yarış"
+            "body": "Öndesin ve vuruş menzilinde açık pul yok. Pulları güvenle eve getir, açık bırakma. Burada beyaz önde ve evi sağlam."
           }
         },
         "subtitle": "Klasik planları tanı",
         "title": "Oyun planları"
       }
     },
-    "locked": "Önceki dersi ilk önce tamamlayın",
     "next_lesson": "Sonraki ders",
     "quiz": {
       "bar": {

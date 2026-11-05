@@ -4,9 +4,33 @@
     "heading": "Qualcosa è andato storto",
     "retry": "Riprova"
   },
+  "feedback": {
+    "body_label": "Dettagli",
+    "body_placeholder": "Cosa è successo, o cosa renderebbe l'app migliore?",
+    "email_instead": "Invia per email per allegare uno screenshot",
+    "error": "Impossibile aprire l'app di posta. Scrivici a {{email}}.",
+    "intro": "Hai trovato un bug o hai un'idea? Scrivici: leggiamo ogni messaggio.",
+    "open_a11y": "Invia feedback",
+    "privacy": "Inviato allo sviluppatore con versione dell’app, dispositivo e lingua.",
+    "send": "Invia",
+    "sent": "Grazie per il feedback!",
+    "settings_row": "Invia feedback",
+    "subject_label": "Titolo",
+    "subject_placeholder": "Di cosa si tratta?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selezionato — toccare un punto evidenziato, o Annulla"
+    },
+    "computer_level": {
+      "a11y": "Livello del computer: {{level}}",
+      "easy": "Facile",
+      "expert": "Esperto",
+      "hard": "Difficile",
+      "hint": "Facile commette gli errori di un principiante. Esperto gioca sempre la mossa migliore del motore.",
+      "medium": "Medio",
+      "title": "Livello del computer"
     },
     "controls": {
       "bear_off_a11y": "Porta fuori la pedina",
@@ -341,7 +365,7 @@
       "move_progress": "Nizza —{{done}}di{{needed}}mosse fatte."
     },
     "graduation": {
-      "body": "Conosci l'obiettivo, il consiglio, come si trasforma il lavoro, il colpo e il movimento. Un controllo rapido — allora il tuo primo gioco reale.",
+      "body": "Conosci l’obiettivo, la tavola, come funziona il turno, come colpire e far uscire le pedine, il conteggio pip e i principali piani di gioco. Un rapido controllo, poi la tua prima vera partita.",
       "play_cta": "Gioca il tuo primo gioco",
       "quiz_done": "L'ho inchiodato. E' ora di giocare.",
       "quiz_title": "Controllo rapido",
@@ -351,6 +375,8 @@
       "recap_3": "Hit blots → siedono sul bar",
       "recap_4": "Togliti solo dalla tua home board",
       "recap_5": "I giochi iniziano con un morire ciascuno — più alto va prima (ties re-roll)",
+      "recap_6": "Conteggio pip: chi ha il numero più basso è avanti nella corsa",
+      "recap_7": "Scegli un piano: corsa, attacco, muro o blocco",
       "title": "Sei pronto a giocare"
     },
     "hint": "Salve.",
@@ -494,9 +520,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Sei molto indietro, quindi tieni due ancore profonde nella casa avversaria — qui sui punti 22 e 24. Mantieni forte la tua casa e aspetta un colpo tardivo. È l'ultima risorsa: si può anche perdere molto."
+          },
           "blitz": {
-            "body": "La tua casa è forte e l’avversario ha pedine sole o sulla barra. Colpisci ogni pedina sola e chiudi i punti di casa per tenerle sulla barra mentre esci. Qui il bianco ha tre punti di casa e il nero una pedina sulla barra.",
-            "title": "Attacco totale"
+            "body": "La tua casa è forte e l’avversario ha pedine sole o sulla barra. Colpisci ogni pedina sola e chiudi i punti di casa per tenerle sulla barra mentre esci. Qui il bianco ha tre punti di casa e il nero una pedina sulla barra."
+          },
+          "holding": {
+            "body": "Sei indietro nella corsa, ma tieni un'ancora nella casa avversaria — qui sul punto 20. Mantienila, gioca sicuro e aspetta un colpo mentre le sue pedine le passano accanto per tornare a casa."
           },
           "identify": {
             "body": "Questa è una partita di muro. Tocca un punto del muro bianco, i punti consecutivi che bloccano il nero.",
@@ -505,19 +536,16 @@
             "title": "Trova il muro"
           },
           "prime": {
-            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che limita le pedine arretrate del nero. Allungalo un punto alla volta.",
-            "title": "Muro"
+            "body": "Hai un muro di punti consecutivi. I punti evidenziati sono un muro di 4 che limita le pedine arretrate del nero. Allungalo un punto alla volta."
           },
           "running": {
-            "body": "Sei avanti e non ci sono pedine sole a tiro. Porta le pedine a casa senza lasciarne di sole. Qui il bianco è avanti con una casa solida.",
-            "title": "Corsa"
+            "body": "Sei avanti e non ci sono pedine sole a tiro. Porta le pedine a casa senza lasciarne di sole. Qui il bianco è avanti con una casa solida."
           }
         },
         "subtitle": "Riconosci i piani di gioco classici",
         "title": "Piani di gioco"
       }
     },
-    "locked": "Completare la lezione precedente prima",
     "next_lesson": "Prossima lezione",
     "quiz": {
       "bar": {

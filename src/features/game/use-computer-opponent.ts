@@ -1,11 +1,12 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { PlayMoveOpts } from '@/features/game/create-play-move';
-import type { GameState, Move } from '@/lib/game';
+import type { ComputerLevel, GameState, Move } from '@/lib/game';
 import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { chooseComputerCubeAction, planComputerTurn } from '@/features/game/computer-turn';
 import { analyzeCubeDecision } from '@/features/game/cube-analysis';
-import { applyDiceRoll, applyOpeningDieRoll, getAIMove, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
+import { applyDiceRoll, applyOpeningDieRoll, DEFAULT_COMPUTER_LEVEL, getAIMove, getLegalMoves, passTurn, rollDice, rollOpeningDie } from '@/lib/game';
 import { playGameSfx } from '@/lib/game-sfx/play-game-sfx';
 import {
   computerMoveDelayMs,
@@ -27,7 +28,19 @@ type ComputerOpponentOptions = {
   /** Tutor blunder prompt is open — pause the AI until the user chooses. */
   paused?: boolean;
   recordCubeEvent?: (kind: CubeHistoryEvent['kind'], before: GameState, after: GameState) => void;
+  /** How strong the computer plays. Read when it decides, so a change applies from its next decision. */
+  level?: ComputerLevel;
 };
+
+/** The legal move in `state` that plays this planned step, or null when the plan no longer fits. */
+function livePlannedMove(state: GameState, planned: Move): Move | null {
+  return getLegalMoves(state).find(m => m.from === planned.from && m.to === planned.to
+    && (planned.die === undefined || state.remainingDice[m.dieIndex] === planned.die)) ?? null;
+}
+
+function atTurnStart(state: GameState): boolean {
+  return state.remainingDice.length === (state.dice[0] === state.dice[1] ? 4 : 2);
+}
 
 export type ComputerOpponentControls = {
   clearAITimeout: () => void;
@@ -49,6 +62,7 @@ export function useComputerOpponent({
   recordNoMove,
   paused = false,
   recordCubeEvent,
+  level = DEFAULT_COMPUTER_LEVEL,
 }: ComputerOpponentOptions): ComputerOpponentControls {
   const aiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const generationRef = useRef(0);
@@ -56,6 +70,10 @@ export function useComputerOpponent({
   stateRef.current = state;
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
+  const levelRef = useRef(level);
+  levelRef.current = level;
+  /** The rest of the turn the engine chose, played one checker at a time. */
+  const plannedTurnRef = useRef<Move[]>([]);
   // Bumped when returning to the game screen so timers re-schedule without a state change.
   const [scheduleGen, setScheduleGen] = useState(0);
   const [failedState, setFailedState] = useState<GameState | null>(null);
@@ -110,9 +128,10 @@ export function useComputerOpponent({
 
       if (prev.phase === 'rolling' && prev.match && (prev.match.pendingOffer || canOfferDouble(prev))) {
         try {
-          const { best } = await analyzeCubeDecision(prev);
+          const analysis = await analyzeCubeDecision(prev);
           if (pausedRef.current || generationRef.current !== generation || stateRef.current !== prev)
             return;
+          const best = chooseComputerCubeAction(analysis, levelRef.current);
           if (best !== 'roll') {
             const next = best === 'offer'
               ? offerDouble(prev, moveCount)
@@ -156,7 +175,23 @@ export function useComputerOpponent({
       }
 
       if (prev.phase === 'moving') {
-        const move = getAIMove(prev);
+        if (atTurnStart(prev)) {
+          plannedTurnRef.current = [];
+          try {
+            const planned = await planComputerTurn(prev, levelRef.current);
+            if (pausedRef.current || generationRef.current !== generation || stateRef.current !== prev)
+              return;
+            plannedTurnRef.current = planned;
+          }
+          catch {
+            // No engine: the built-in heuristic plays this turn.
+            if (pausedRef.current || generationRef.current !== generation || stateRef.current !== prev)
+              return;
+          }
+        }
+        const [next, ...rest] = plannedTurnRef.current;
+        const plannedMove = next ? livePlannedMove(prev, next) : null;
+        const move = plannedMove ?? getAIMove(prev);
         if (!move) {
           recordNoMove(prev, prev);
           setState(passTurn(prev));
@@ -170,7 +205,17 @@ export function useComputerOpponent({
           if (latest !== prev || latest.currentPlayer !== 'black' || latest.phase !== 'moving') {
             return;
           }
-          playMove(latest, move, { pace: 'computer' });
+          if (!plannedMove)
+            plannedTurnRef.current = [];
+          // A step leaves the plan only once its move lands: a cancelled timer
+          // or an interrupted slide keeps it for the next pass.
+          playMove(latest, move, {
+            pace: 'computer',
+            onComplete: (next) => {
+              if (plannedMove && next !== latest)
+                plannedTurnRef.current = rest;
+            },
+          });
         }, moveDelay);
         aiTimeoutRef.current = moveTimer;
       }

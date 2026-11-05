@@ -1,3 +1,4 @@
+import type { StrategyKey } from '@/features/game/strategy';
 import type { CreatePositionOptions } from '@/lib/game/create-position';
 import type { AcceptedMove } from '@/lib/learn/validate-step';
 
@@ -30,6 +31,8 @@ type LessonStepBase = {
   /** Points to emphasize on the board (green target style). */
   emphasisPoints?: number[];
   emphasisBar?: boolean;
+  /** The game plan this step shows: the caption carries the same icon as the in-game plan chip. */
+  strategy?: StrategyKey;
 };
 
 type ExplainStep = LessonStepBase & {
@@ -391,7 +394,8 @@ export const LESSONS: LessonDefinition[] = [
       {
         id: 'strat-running',
         kind: 'explain',
-        titleKey: 'learn.lessons.strategies.steps.running.title',
+        titleKey: 'game.strategy.label.running',
+        strategy: 'running',
         bodyKey: 'learn.lessons.strategies.steps.running.body',
         aids: { showPointNumbers: true },
         position: {
@@ -403,6 +407,8 @@ export const LESSONS: LessonDefinition[] = [
             { point: 1, player: 'black', count: 2 },
             { point: 12, player: 'black', count: 4 },
             { point: 17, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 20, player: 'black', count: 3 },
           ],
           borneOff: { white: 4 },
         },
@@ -411,7 +417,8 @@ export const LESSONS: LessonDefinition[] = [
       {
         id: 'strat-blitz',
         kind: 'explain',
-        titleKey: 'learn.lessons.strategies.steps.blitz.title',
+        titleKey: 'game.strategy.label.blitz',
+        strategy: 'blitz',
         bodyKey: 'learn.lessons.strategies.steps.blitz.body',
         aids: { showPointNumbers: true },
         position: {
@@ -420,9 +427,13 @@ export const LESSONS: LessonDefinition[] = [
             { point: 5, player: 'white', count: 2 },
             { point: 4, player: 'white', count: 2 },
             { point: 8, player: 'white', count: 2 },
-            { point: 13, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 5 },
+            { point: 24, player: 'white', count: 2 },
             { point: 7, player: 'black', count: 1 },
-            { point: 12, player: 'black', count: 3 },
+            { point: 12, player: 'black', count: 5 },
+            { point: 17, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 21, player: 'black', count: 2 },
           ],
           bar: { black: 1 },
         },
@@ -432,7 +443,8 @@ export const LESSONS: LessonDefinition[] = [
       {
         id: 'strat-prime',
         kind: 'explain',
-        titleKey: 'learn.lessons.strategies.steps.prime.title',
+        titleKey: 'game.strategy.label.priming',
+        strategy: 'priming',
         bodyKey: 'learn.lessons.strategies.steps.prime.body',
         aids: { showPointNumbers: true },
         position: {
@@ -441,17 +453,71 @@ export const LESSONS: LessonDefinition[] = [
             { point: 5, player: 'white', count: 2 },
             { point: 4, player: 'white', count: 2 },
             { point: 3, player: 'white', count: 2 },
-            { point: 13, player: 'white', count: 2 },
+            { point: 8, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 4 },
             { point: 24, player: 'black', count: 2 },
             { point: 23, player: 'black', count: 2 },
+            { point: 20, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 12, player: 'black', count: 3 },
             { point: 1, player: 'black', count: 2 },
           ],
         },
         emphasisPoints: [6, 5, 4, 3],
       },
       {
+        id: 'strat-holding',
+        kind: 'explain',
+        titleKey: 'game.strategy.label.holding',
+        bodyKey: 'learn.lessons.strategies.steps.holding.body',
+        strategy: 'holding',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 20, player: 'white', count: 2 },
+            { point: 13, player: 'white', count: 4 },
+            { point: 8, player: 'white', count: 3 },
+            { point: 6, player: 'white', count: 4 },
+            { point: 5, player: 'white', count: 2 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 21, player: 'black', count: 2 },
+            { point: 22, player: 'black', count: 2 },
+            { point: 18, player: 'black', count: 3 },
+            { point: 12, player: 'black', count: 3 },
+            { point: 7, player: 'black', count: 2 },
+          ],
+        },
+        emphasisPoints: [20],
+      },
+      {
+        id: 'strat-backgame',
+        kind: 'explain',
+        titleKey: 'game.strategy.label.backgame',
+        bodyKey: 'learn.lessons.strategies.steps.backgame.body',
+        strategy: 'backgame',
+        aids: { showPointNumbers: true },
+        position: {
+          placements: [
+            { point: 24, player: 'white', count: 2 },
+            { point: 22, player: 'white', count: 2 },
+            { point: 13, player: 'white', count: 3 },
+            { point: 8, player: 'white', count: 2 },
+            { point: 6, player: 'white', count: 3 },
+            { point: 5, player: 'white', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 20, player: 'black', count: 3 },
+            { point: 21, player: 'black', count: 2 },
+            { point: 18, player: 'black', count: 2 },
+            { point: 17, player: 'black', count: 2 },
+            { point: 7, player: 'black', count: 3 },
+          ],
+        },
+        emphasisPoints: [24, 22],
+      },
+      {
         id: 'strat-identify',
         kind: 'identify',
+        strategy: 'priming',
         titleKey: 'learn.lessons.strategies.steps.identify.title',
         bodyKey: 'learn.lessons.strategies.steps.identify.body',
         hintKey: 'learn.lessons.strategies.steps.identify.hint',
@@ -463,9 +529,13 @@ export const LESSONS: LessonDefinition[] = [
             { point: 5, player: 'white', count: 2 },
             { point: 4, player: 'white', count: 2 },
             { point: 3, player: 'white', count: 2 },
-            { point: 13, player: 'white', count: 2 },
+            { point: 8, player: 'white', count: 3 },
+            { point: 13, player: 'white', count: 4 },
             { point: 24, player: 'black', count: 2 },
             { point: 23, player: 'black', count: 2 },
+            { point: 20, player: 'black', count: 3 },
+            { point: 19, player: 'black', count: 3 },
+            { point: 12, player: 'black', count: 3 },
             { point: 1, player: 'black', count: 2 },
           ],
         },
@@ -561,27 +631,4 @@ export function getLesson(id: string): LessonDefinition | undefined {
 
 export function isLessonId(id: string): id is LessonId {
   return (LESSON_IDS as readonly string[]).includes(id);
-}
-
-export function getNextLessonId(id: LessonId): LessonId | 'graduation' | null {
-  const index = LESSON_IDS.indexOf(id);
-  if (index < 0) {
-    return null;
-  }
-  if (index >= LESSON_IDS.length - 1) {
-    return 'graduation';
-  }
-  return LESSON_IDS[index + 1]!;
-}
-
-export function isLessonUnlocked(
-  lessonId: LessonId,
-  completedLessons: readonly string[],
-): boolean {
-  const index = LESSON_IDS.indexOf(lessonId);
-  if (index <= 0) {
-    return true;
-  }
-  const previous = LESSON_IDS[index - 1]!;
-  return completedLessons.includes(previous);
 }

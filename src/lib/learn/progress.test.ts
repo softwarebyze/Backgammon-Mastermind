@@ -6,6 +6,7 @@ import {
   isReadyToPlay,
   markLessonComplete,
   markQuizPassed,
+  nextAfterLesson,
 } from './progress';
 
 jest.mock('@/lib/storage', () => {
@@ -47,5 +48,27 @@ describe('learn progress', () => {
     expect(isLastStepComplete(true, 1, 2)).toBe(true);
     expect(isLastStepComplete(true, 0, 2)).toBe(false);
     expect(isLastStepComplete(false, 1, 2)).toBe(false);
+  });
+});
+
+describe('nextAfterLesson', () => {
+  const progressWith = (completedLessons: typeof LESSON_IDS[number][]) => ({ completedLessons, quizPassed: false, hasStarted: true });
+
+  it('goes to the next lesson in course order', () => {
+    expect(nextAfterLesson(progressWith([]), LESSON_IDS[0])).toBe(LESSON_IDS[1]);
+  });
+
+  it('wraps round to an earlier lesson when the last one is finished first', () => {
+    // Finishing the last lesson before the others used to open the quick check, which then showed only a gate.
+    expect(nextAfterLesson(progressWith([]), LESSON_IDS[LESSON_IDS.length - 1])).toBe(LESSON_IDS[0]);
+  });
+
+  it('skips lessons already done', () => {
+    expect(nextAfterLesson(progressWith([LESSON_IDS[1], LESSON_IDS[2]]), LESSON_IDS[0])).toBe(LESSON_IDS[3]);
+  });
+
+  it('opens the quick check once this lesson completes the set', () => {
+    const others = LESSON_IDS.filter(id => id !== LESSON_IDS[2]);
+    expect(nextAfterLesson(progressWith([...others]), LESSON_IDS[2])).toBe('graduation');
   });
 });
