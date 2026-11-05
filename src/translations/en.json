@@ -205,7 +205,7 @@
       "bar_short": "Bar",
       "bar_white_many": "{{checkers}} white checkers",
       "bar_white_one": "{{checkers}} white checker",
-      "black_wins": "Black Wins",
+      "black_wins": "🏆 Black Wins!",
       "computer_wins": "Computer Wins",
       "off_short": "off",
       "pips_a11y": "{{player}}: {{pips}} pips, {{off}} of 15 borne off",
@@ -594,7 +594,7 @@
           }
         },
         "subtitle": "Learn to read who's winning the race",
-        "title": "Pip Count: The Race Score"
+        "title": "Pip count: the race score"
       },
       "strategies": {
         "steps": {
@@ -621,7 +621,7 @@
           }
         },
         "subtitle": "Recognize classic game plans",
-        "title": "Game Strategies"
+        "title": "Game plans"
       }
     },
     "next_lesson": "Next lesson",
@@ -774,7 +774,7 @@
     "english": "English",
     "game": "Game",
     "general": "General",
-    "github": "Github",
+    "github": "GitHub",
     "language": "Language",
     "link_error_body": "Please try again later.",
     "link_error_title": "Unable to open link",
