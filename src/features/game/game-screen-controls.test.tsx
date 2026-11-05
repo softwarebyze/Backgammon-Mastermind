@@ -154,13 +154,13 @@ describe('confirm move bar', () => {
     expect(screen.queryByText(/Move your/)).toBeNull();
   });
 
-  it('offers Undo all (button and long-press Undo) once the turn has two moves', () => {
+  it('undo takes back the whole turn once it has two moves', () => {
     mockPrefs.confirmMove = true;
     const state = awaitingConfirmState();
     const doUndoTurn = jest.fn();
     const onUndoMove = jest.fn();
     const controls = (canUndoTurn: boolean) => (
-      // Only the undo-all slice of the context is read by the confirm bar.
+      // Only the undo-turn slice of the context is read by the confirm bar.
       <GameContext value={{ canUndoTurn, doUndoTurn } as unknown as React.ContextType<typeof GameContext>}>
         <GameScreenControls
           state={state}
@@ -177,15 +177,17 @@ describe('confirm move bar', () => {
       </GameContext>
     );
 
+    // One move: plain single-step undo.
     const { rerender } = setup(controls(false));
-    expect(screen.queryByTestId('undo-turn-button')).toBeNull();
+    fireEvent.press(screen.getByTestId('undo-move-button'));
+    expect(onUndoMove).toHaveBeenCalledTimes(1);
+    expect(doUndoTurn).not.toHaveBeenCalled();
 
+    // Two or more moves: the same button rewinds the whole turn.
     rerender(controls(true));
-    fireEvent.press(screen.getByLabelText('Undo all moves this turn'));
+    fireEvent.press(screen.getByTestId('undo-move-button'));
     expect(doUndoTurn).toHaveBeenCalledTimes(1);
-    fireEvent(screen.getByTestId('undo-move-button'), 'longPress');
-    expect(doUndoTurn).toHaveBeenCalledTimes(2);
-    expect(onUndoMove).not.toHaveBeenCalled();
+    expect(onUndoMove).toHaveBeenCalledTimes(1);
   });
 
   it('does not render the confirm bar when confirm is off', () => {

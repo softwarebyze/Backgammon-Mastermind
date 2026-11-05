@@ -21,7 +21,7 @@ import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
-import { translate, useLayoutIsRTL } from '@/lib/i18n';
+import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
@@ -222,6 +222,7 @@ function ActionControl({
   canUndoMove: boolean;
   compact: boolean;
 }) {
+  const game = use(GameContext);
   const awaitingHumanRoll = !isReviewing
     && isHumanTurn
     && (state.phase === 'rolling' || state.phase === 'opening-roll');
@@ -315,6 +316,8 @@ function ActionControl({
     && onConfirmMove
     && isAwaitingMoveConfirm(state, confirmMoveEnabled)
   ) {
+    // Undo here takes back the whole turn, not just the last checker.
+    const undoTurn = game?.canUndoTurn ? game.doUndoTurn : undefined;
     return (
       <ConfirmMoveBar
         compact={compact}
@@ -328,7 +331,7 @@ function ActionControl({
             return;
           }
           hapticLight();
-          onUndoMove();
+          (undoTurn ?? onUndoMove)();
         }}
       />
     );
@@ -383,37 +386,8 @@ function ConfirmMoveBar({
   onConfirm: () => void;
   onUndo: () => void;
 }) {
-  const game = use(GameContext);
-  const rtl = useLayoutIsRTL();
-  // Undo all only appears once there are two or more moves to take back.
-  const undoTurn = game?.canUndoTurn && game.doUndoTurn
-    ? () => {
-        hapticLight();
-        game.doUndoTurn?.();
-      }
-    : null;
   return (
     <View style={styles.confirmRow} testID="confirm-move-bar">
-      {undoTurn
-        ? (
-            <HoverPressable
-              accessibilityRole="button"
-              accessibilityLabel={translate('game.controls.undo_turn_a11y')}
-              testID="undo-turn-button"
-              style={({ pressed, hovered }) => [
-                styles.undoBtn,
-                styles.undoTurnBtn,
-                hovered && styles.secondaryBtnHover,
-                pressed && styles.pressed,
-              ]}
-              onPress={undoTurn}
-              hitSlop={CONTROL_HIT_SLOP}
-            >
-              {/* Back to the start of the turn; points the reading direction's "back". */}
-              <Feather name={rtl ? 'skip-forward' : 'skip-back'} size={20} color={GAME_PALETTE.accent} />
-            </HoverPressable>
-          )
-        : null}
       <HoverPressable
         accessibilityRole="button"
         accessibilityLabel={translate('game.controls.undo_a11y')}
@@ -428,8 +402,6 @@ function ConfirmMoveBar({
           pressed && canUndo && styles.pressed,
         ]}
         onPress={onUndo}
-        // Long-press Undo is the same as Undo all.
-        onLongPress={undoTurn ?? undefined}
         hitSlop={CONTROL_HIT_SLOP}
       >
         {/* The side rail is too narrow for both labels: Undo keeps its arrow, like the toolbar's. */}
@@ -573,12 +545,6 @@ const styles = StyleSheet.create({
     minWidth: 96,
   },
   undoBtnCompact: {
-    minWidth: 0,
-    width: 56,
-    paddingHorizontal: 0,
-  },
-  // Icon-only, the same 56pt square as the rail's Undo.
-  undoTurnBtn: {
     minWidth: 0,
     width: 56,
     paddingHorizontal: 0,

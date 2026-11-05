@@ -54,8 +54,7 @@
       "swap_dice": "Swap dice",
       "swap_dice_hint": "Swaps which die is played first.",
       "undo_a11y": "Undo move",
-      "undo_move": "Undo",
-      "undo_turn_a11y": "Undo all moves this turn"
+      "undo_move": "Undo"
     },
     "cube_tutor": {
       "best": "Best: {{choice}}",

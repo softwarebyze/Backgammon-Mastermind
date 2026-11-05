@@ -54,8 +54,7 @@
       "swap_dice": "Trocar dados",
       "swap_dice_hint": "Troca qual dado é jogado primeiro.",
       "undo_a11y": "Desfazer jogada",
-      "undo_move": "Desfazer",
-      "undo_turn_a11y": "Desfazer todas as jogadas do turno"
+      "undo_move": "Desfazer"
     },
     "cube_tutor": {
       "best": "Melhor: {{choice}}",
