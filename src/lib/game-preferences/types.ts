@@ -18,6 +18,8 @@ export type GamePreferences = {
   confirmMove: boolean;
   /** How strong the computer opponent plays. */
   computerLevel: ComputerLevel;
+  /** Tap a checker to spend the leading displayed unspent die. Default off. */
+  moveInDiceOrder: boolean;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -31,6 +33,7 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   tutorMode: false,
   confirmMove: true,
   computerLevel: DEFAULT_COMPUTER_LEVEL,
+  moveInDiceOrder: false,
 };
 
 const IMPLICIT_OFF_KEYS = [

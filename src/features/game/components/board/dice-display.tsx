@@ -12,6 +12,7 @@ import Animated, {
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
+import { boardLayoutStyle, boardWebDir } from './board-layout-direction';
 import { diePips } from './die-pips';
 
 type PlayerColor = 'white' | 'black';
@@ -26,6 +27,7 @@ type Props = {
   /** Slot to ring with the accent (opening winner). */
   emphasis?: 0 | 1 | null;
   displayStyle?: DiceDisplayStyle;
+  leadingRTL?: boolean;
   /** When false, dice values update instantly (review scrub, etc.). */
   animateRoll?: boolean;
   /** Die edge in px; scales dots, numerals and radius. Default matches the phone tray. */
@@ -171,9 +173,11 @@ function DiceFaces({
   emphasis,
   displayStyle,
   size,
+  orderedUse,
 }: {
   dice: [number, number];
   remainingDice: number[];
+  orderedUse: boolean;
   playerColor: PlayerColor;
   slotColors?: readonly [PlayerColor, PlayerColor];
   emphasis?: 0 | 1 | null;
@@ -199,7 +203,7 @@ function DiceFaces({
       <DieFace
         key={slot}
         value={dice[0]}
-        used={slotIndex >= totalRemaining}
+        used={orderedUse ? slotIndex < 4 - totalRemaining : slotIndex >= totalRemaining}
         playerColor={playerColor}
         displayStyle={displayStyle}
         size={size}
@@ -244,6 +248,7 @@ export function DiceDisplay({
   slotColors,
   emphasis = null,
   displayStyle = 'dots',
+  leadingRTL,
   animateRoll = true,
   size = TRAY_DIE_SIZE,
   gap,
@@ -251,9 +256,16 @@ export function DiceDisplay({
   const { containerStyle, reducedMotion } = useDiceRollAnimation(dice, animateRoll);
 
   return (
-    <Animated.View testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'} style={[styles.container, { minHeight: size }, gap !== undefined && { gap }, containerStyle]}>
+    <Animated.View
+      testID={reducedMotion ? 'dice-display-reduced-motion' : 'dice-display'}
+      // In dice order the row is laid out physically (LTR), then reversed for
+      // RTL so the leading die sits at the reading edge either way.
+      {...(leadingRTL !== undefined ? boardWebDir : {})}
+      style={[styles.container, { minHeight: size }, gap !== undefined && { gap }, leadingRTL !== undefined && [boardLayoutStyle, { flexDirection: leadingRTL ? 'row-reverse' : 'row' }], containerStyle]}
+    >
       <DiceFaces
         dice={dice}
+        orderedUse={leadingRTL !== undefined}
         remainingDice={remainingDice}
         playerColor={playerColor}
         slotColors={slotColors}

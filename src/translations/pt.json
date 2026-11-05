@@ -38,6 +38,7 @@
       "cancel_a11y": "Cancelar seleção",
       "confirm_move": "Confirmar jogada",
       "confirm_move_a11y": "Confirmar a jogada e encerrar sua vez",
+      "dice_order_a11y": "Dados: {{first}}, depois {{second}}",
       "leave_game_a11y": "Sair da partida e voltar ao início",
       "loading": "Carregando…",
       "new_game_message": "Começar uma nova partida?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Rolar os dados",
       "save_position_a11y": "Salvar esta posição",
       "start_new_game_a11y": "Começar uma nova partida",
+      "swap_dice": "Trocar dados",
+      "swap_dice_hint": "Troca qual dado é jogado primeiro.",
       "undo_a11y": "Desfazer jogada",
       "undo_move": "Desfazer"
     },
@@ -112,6 +115,7 @@
       "rules": "Você pode dobrar a aposta antes de lançar os dados."
     },
     "nudge": {
+      "dice_order": "Esta peça não tem jogada legal.",
       "roll_first": "Primeiro role os dados"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Caminho em ferradura sobre o tabuleiro",
       "move_hints": "Ajuda nas jogadas",
       "move_hints_hint": "Destaca os números das casas de onde você pode mover",
+      "move_in_dice_order": "Mover na ordem dos dados",
+      "move_in_dice_order_hint": "Toque numa peça para dar preferência ao primeiro dado não utilizado, ou usar o outro se for legal. Troque os dados para mudar a preferência.",
       "point_numbers": "Números dos pontos",
       "point_numbers_hint": "Mostrar os números 1–24 no tabuleiro",
       "section_automation": "Automação",
@@ -365,7 +371,7 @@
       "move_progress": "Boa: {{done}} de {{needed}} movimentos feitos."
     },
     "graduation": {
-      "body": "Sabes qual é o objectivo, o tabuleiro, como é que se transforma no trabalho, bater e aguentar. Uma verificação rápida — então seu primeiro jogo real.",
+      "body": "Já conheces o objetivo, o tabuleiro, como funcionam os turnos, como bater e tirar as peças, a contagem de pips e os principais planos de jogo. Uma verificação rápida e depois a tua primeira partida a sério.",
       "play_cta": "Jogar minha primeira partida",
       "quiz_done": "Mandou bem. Hora de jogar.",
       "quiz_title": "Checagem rápida",
@@ -375,6 +381,8 @@
       "recap_3": "Bata nas pedras soltas → elas vão para a barra",
       "recap_4": "Só se retiram pedras do próprio tabuleiro interno",
       "recap_5": "No início, cada um rola um dado: o maior começa (no empate, rola de novo)",
+      "recap_6": "Contagem de pips: a menor vai à frente na corrida",
+      "recap_7": "Escolhe um plano: corrida, ataque, muralha ou contenção",
       "title": "Você está pronto para jogar"
     },
     "hint": "Dica",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Está muito atrás, por isso tem duas âncoras profundas no tabuleiro interior do adversário — aqui nos pontos 22 e 24. Mantenha o seu tabuleiro interior forte e espere por um tiro tardio. É o último recurso: também pode perder muito."
+          },
           "blitz": {
-            "body": "Seu tabuleiro interno é forte e o adversário tem pedras soltas ou pedras na barra. Ataque! Bata em toda pedra solta que puder e feche os pontos do seu tabuleiro interno. O objetivo é deixar as pedras dele presas na barra enquanto você retira as suas. Aqui as brancas têm três pontos feitos em casa e as pretas têm uma pedra na barra.",
-            "title": "Blitz"
+            "body": "Seu tabuleiro interno é forte e o adversário tem pedras soltas ou pedras na barra. Ataque! Bata em toda pedra solta que puder e feche os pontos do seu tabuleiro interno. O objetivo é deixar as pedras dele presas na barra enquanto você retira as suas. Aqui as brancas têm três pontos feitos em casa e as pretas têm uma pedra na barra."
+          },
+          "holding": {
+            "body": "Está atrás na corrida, mas tem uma âncora no tabuleiro interior do adversário — aqui no ponto 20. Mantenha-a, jogue com segurança e espere por um tiro quando as peças dele passarem por ela a caminho de casa."
           },
           "identify": {
             "body": "Isto é um jogo de bloqueio. Toque em qualquer ponto do bloqueio branco: o muro de pontos feitos em sequência que barra as pretas.",
@@ -529,19 +542,16 @@
             "title": "Ache o bloqueio"
           },
           "prime": {
-            "body": "Você construiu um muro de pontos feitos em sequência: um bloqueio (prime). Os pontos destacados formam um bloqueio de 4 pontos que trava as pedras de trás das pretas. Aumente o bloqueio um ponto de cada vez e prenda as pedras dele atrás.",
-            "title": "Jogo de bloqueio"
+            "body": "Você construiu um muro de pontos feitos em sequência: um bloqueio (prime). Os pontos destacados formam um bloqueio de 4 pontos que trava as pedras de trás das pretas. Aumente o bloqueio um ponto de cada vez e prenda as pedras dele atrás."
           },
           "running": {
-            "body": "Você está na frente na corrida e não há pedras soltas ao alcance. O plano é simples: leve as pedras para casa com segurança e não deixe pedras soltas. Nada de invenção: só corra. Nesta posição as brancas estão na frente, com um tabuleiro interno sólido.",
-            "title": "Corrida"
+            "body": "Você está na frente na corrida e não há pedras soltas ao alcance. O plano é simples: leve as pedras para casa com segurança e não deixe pedras soltas. Nada de invenção: só corra. Nesta posição as brancas estão na frente, com um tabuleiro interno sólido."
           }
         },
         "subtitle": "Reconheça os planos de jogo clássicos",
         "title": "Planos de jogo"
       }
     },
-    "locked": "Conclua antes a lição anterior",
     "next_lesson": "Próxima lição",
     "quiz": {
       "bar": {

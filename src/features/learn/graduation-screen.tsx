@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -19,21 +19,6 @@ import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
-
-function LessonsIncompleteGate() {
-  return (
-    <View style={styles.root}>
-      <FocusAwareStatusBar />
-      <Text style={styles.title}>{translate('learn.title')}</Text>
-      <Pressable
-        style={styles.primaryBtn}
-        onPress={() => router.replace('/learn')}
-      >
-        <Text style={styles.primaryLabel}>{translate('learn.back_to_hub')}</Text>
-      </Pressable>
-    </View>
-  );
-}
 
 // This keeps the quiz state and its screen lifecycle together so the advance timer
 // is always cleaned up with the component that owns it.
@@ -129,8 +114,10 @@ export function GraduationScreen() {
     }, QUIZ_CORRECT_FLASH_MS);
   }, [completeQuiz, correctLocked, posthog, progress.quizPassed, question, questionIndex]);
 
+  // The quick check comes after every lesson. Reached any earlier (a deep
+  // link, a stale screen), the lesson list is the useful place to be.
   if (!allLessonsComplete(progress)) {
-    return <LessonsIncompleteGate />;
+    return <Redirect href="/learn" />;
   }
 
   return (
@@ -149,7 +136,7 @@ export function GraduationScreen() {
         <Text style={styles.body}>{translate('learn.graduation.body')}</Text>
 
         <View style={styles.recap}>
-          {(['recap_1', 'recap_2', 'recap_3', 'recap_4', 'recap_5'] as const).map(key => (
+          {(['recap_1', 'recap_2', 'recap_3', 'recap_4', 'recap_5', 'recap_6', 'recap_7'] as const).map(key => (
             <Text key={key} style={styles.recapItem}>
               •
               {' '}
@@ -209,20 +196,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingTop: 16,
     gap: 14,
-  },
-  root: {
-    flex: 1,
-    backgroundColor: GAME_PALETTE.bg,
-    width: '100%',
-    maxWidth: GAME_CHROME_MAX_WIDTH,
-    alignSelf: 'center',
-    padding: 24,
-    gap: 16,
-  },
-  title: {
-    color: GAME_PALETTE.accent,
-    fontSize: 22,
-    ...interFont('bold'),
   },
   body: {
     color: GAME_PALETTE.text,

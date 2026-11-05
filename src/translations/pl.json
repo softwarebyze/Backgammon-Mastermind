@@ -38,6 +38,7 @@
       "cancel_a11y": "Anuluj zaznaczenie",
       "confirm_move": "Zatwierdź ruch",
       "confirm_move_a11y": "Zatwierdź ruch i zakończ turę",
+      "dice_order_a11y": "Kości: {{first}}, potem {{second}}",
       "leave_game_a11y": "Wyjdź z partii i wróć do ekranu głównego",
       "loading": "Wczytywanie…",
       "new_game_message": "Rozpocząć nową partię?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Rzuć kośćmi",
       "save_position_a11y": "Zapisz tę pozycję",
       "start_new_game_a11y": "Rozpocznij nową partię",
+      "swap_dice": "Zamień kości",
+      "swap_dice_hint": "Zmienia, która kość jest grana jako pierwsza.",
       "undo_a11y": "Cofnij ruch",
       "undo_move": "Cofnij"
     },
@@ -112,6 +115,7 @@
       "rules": "Możesz podwoić stawkę przed rzutem kośćmi."
     },
     "nudge": {
+      "dice_order": "Ten pionek nie ma legalnego ruchu.",
       "roll_first": "Najpierw rzuć kośćmi"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Ścieżka w kształcie podkowy na planszy",
       "move_hints": "Podpowiedzi ruchów",
       "move_hints_hint": "Wyróżnia numery pól, z których możesz ruszyć",
+      "move_in_dice_order": "Ruch według kolejności kości",
+      "move_in_dice_order_hint": "Dotknij pionka, aby preferować pierwszą niewykorzystaną kość lub użyć drugiej, jeśli ruch jest legalny. Zamień kości, aby zmienić preferencję.",
       "point_numbers": "Numery pól",
       "point_numbers_hint": "Pokazuj numery 1–24 na planszy",
       "section_automation": "Automatyka",
@@ -365,7 +371,7 @@
       "move_progress": "Dobrze – wykonano {{done}} z {{needed}} ruchów."
     },
     "graduation": {
-      "body": "Znasz cel, tablicę, jak się obraca, uderza i odjeżdża. Szybkie sprawdzenie - potem twoja pierwsza prawdziwa gra.",
+      "body": "Znasz już cel, planszę, przebieg tury, bicie, schodzenie z planszy, liczbę pipów i główne plany gry. Szybki sprawdzian, a potem twoja pierwsza prawdziwa partia.",
       "play_cta": "Zagraj pierwszą partię",
       "quiz_done": "Świetnie. Czas grać.",
       "quiz_title": "Krótki sprawdzian",
@@ -375,6 +381,8 @@
       "recap_3": "Bij samotne pionki → trafiają na bandę",
       "recap_4": "Pionki zdejmuje się tylko z własnego domu",
       "recap_5": "Na początku każdy rzuca jedną kością – zaczyna wyższa liczba (przy remisie rzuca się ponownie)",
+      "recap_6": "Liczba pipów: niższa liczba prowadzi w wyścigu",
+      "recap_7": "Wybierz plan: wyścig, atak, mur lub blokada",
       "title": "Możesz grać"
     },
     "hint": "Podpowiedź",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Jesteś daleko w tyle, więc masz dwie głębokie kotwice w domu przeciwnika — tu na punktach 22 i 24. Utrzymuj mocny własny dom i czekaj na późne bicie. To ostateczność: można też wysoko przegrać."
+          },
           "blitz": {
-            "body": "Masz mocny dom, a rywal ma samotne pionki lub pionki na bandzie. Atakuj! Bij każdego samotnego pionka, jakiego możesz, i zamykaj pola w swoim domu. Cel: trzymać jego pionki na bandzie, podczas gdy ty zdejmujesz swoje. Tutaj białe mają w domu trzy zbudowane pola, a czarne – pionek na bandzie.",
-            "title": "Blitz"
+            "body": "Masz mocny dom, a rywal ma samotne pionki lub pionki na bandzie. Atakuj! Bij każdego samotnego pionka, jakiego możesz, i zamykaj pola w swoim domu. Cel: trzymać jego pionki na bandzie, podczas gdy ty zdejmujesz swoje. Tutaj białe mają w domu trzy zbudowane pola, a czarne – pionek na bandzie."
+          },
+          "holding": {
+            "body": "Przegrywasz wyścig, ale masz kotwicę w domu przeciwnika — tu na punkcie 20. Utrzymaj ją, graj bezpiecznie i czekaj na bicie, gdy jego pionki będą ją mijać w drodze do domu."
           },
           "identify": {
             "body": "To jest gra blokadą. Dotknij dowolnego pola białej blokady – muru z kolejnych zbudowanych pól, który zatrzymuje czarne.",
@@ -529,19 +542,16 @@
             "title": "Znajdź blokadę"
           },
           "prime": {
-            "body": "Zbudowałeś mur z kolejnych zbudowanych pól – blokadę (prime). Podświetlone pola tworzą blokadę z 4 pól, która ogranicza tylne czarne pionki. Wydłużaj blokadę pole po polu i zamknij za nią jego pionki.",
-            "title": "Gra blokadą"
+            "body": "Zbudowałeś mur z kolejnych zbudowanych pól – blokadę (prime). Podświetlone pola tworzą blokadę z 4 pól, która ogranicza tylne czarne pionki. Wydłużaj blokadę pole po polu i zamknij za nią jego pionki."
           },
           "running": {
-            "body": "Prowadzisz w wyścigu i żaden samotny pionek nie jest w zasięgu bicia. Plan jest prosty: bezpiecznie sprowadź pionki do domu i nie zostawiaj samotnych. Bez kombinowania – po prostu biegnij. Tutaj białe prowadzą w wyścigu i mają solidny dom.",
-            "title": "Wyścig"
+            "body": "Prowadzisz w wyścigu i żaden samotny pionek nie jest w zasięgu bicia. Plan jest prosty: bezpiecznie sprowadź pionki do domu i nie zostawiaj samotnych. Bez kombinowania – po prostu biegnij. Tutaj białe prowadzą w wyścigu i mają solidny dom."
           }
         },
         "subtitle": "Rozpoznawaj klasyczne plany gry",
         "title": "Plany gry"
       }
     },
-    "locked": "Najpierw ukończ poprzednią lekcję",
     "next_lesson": "Następna lekcja",
     "quiz": {
       "bar": {

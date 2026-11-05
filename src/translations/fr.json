@@ -38,6 +38,7 @@
       "cancel_a11y": "Annuler la sélection",
       "confirm_move": "Valider le coup",
       "confirm_move_a11y": "Valider le coup et finir votre tour",
+      "dice_order_a11y": "Dés : {{first}}, puis {{second}}",
       "leave_game_a11y": "Quitter la partie et revenir à l'accueil",
       "loading": "Chargement…",
       "new_game_message": "Commencer une nouvelle partie ?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Lancer les dés",
       "save_position_a11y": "Enregistrer cette position",
       "start_new_game_a11y": "Commencer une nouvelle partie",
+      "swap_dice": "Inverser les dés",
+      "swap_dice_hint": "Change le dé joué en premier.",
       "undo_a11y": "Annuler le coup",
       "undo_move": "Annuler"
     },
@@ -112,6 +115,7 @@
       "rules": "Vous pouvez doubler la mise avant de lancer les dés."
     },
     "nudge": {
+      "dice_order": "Aucun coup légal pour ce pion.",
       "roll_first": "Lancez d'abord les dés"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
       "move_hints": "Aide aux coups",
       "move_hints_hint": "Met en évidence les numéros des flèches d'où vous pouvez jouer",
+      "move_in_dice_order": "Jouer dans l’ordre des dés",
+      "move_in_dice_order_hint": "Touchez un pion pour privilégier le premier dé inutilisé, ou utiliser l’autre si le coup est légal. Inversez les dés pour changer la préférence.",
       "point_numbers": "Numéros des cases",
       "point_numbers_hint": "Afficher les numéros 1 à 24 sur le plateau",
       "section_automation": "Automatismes",
@@ -365,7 +371,7 @@
       "move_progress": "Bien : {{done}} déplacement(s) sur {{needed}}."
     },
     "graduation": {
-      "body": "Tu connais le but, le conseil, comment tourne le travail, frappe et recule. Une vérification rapide — puis votre premier vrai jeu.",
+      "body": "Tu connais le but, le plateau, le déroulement d’un tour, comment frapper et sortir tes pions, le compte de pips et les grands plans de jeu. Une petite vérification, puis ta première vraie partie.",
       "play_cta": "Jouer ma première partie",
       "quiz_done": "Parfait. À vous de jouer.",
       "quiz_title": "Petite vérification",
@@ -375,6 +381,8 @@
       "recap_3": "Frappez les blots → ils vont sur la barre",
       "recap_4": "On ne sort des pions que depuis son jan intérieur",
       "recap_5": "Au début, chacun lance un dé : le plus haut commence (en cas d'égalité, on relance)",
+      "recap_6": "Compte de pips : le plus bas mène la course",
+      "recap_7": "Choisis un plan : course, attaque, muraille ou blocage",
       "title": "Vous êtes prêt à jouer"
     },
     "hint": "Indice",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Vous êtes très en retard : vous tenez donc deux ancres profondes dans le jan intérieur adverse — ici sur les points 22 et 24. Gardez votre propre jan intérieur solide et attendez un tir tardif. C'est un dernier recours : on peut aussi perdre gros."
+          },
           "blitz": {
-            "body": "Votre jan intérieur est solide et l'adversaire a des blots ou des pions sur la barre. Attaquez ! Frappez tous les blots possibles et fermez les cases de votre jan intérieur. Le but : garder ses pions bloqués sur la barre pendant que vous sortez les vôtres. Ici, les Blancs ont fait trois cases dans leur jan et les Noirs ont un pion sur la barre.",
-            "title": "Blitz"
+            "body": "Votre jan intérieur est solide et l'adversaire a des blots ou des pions sur la barre. Attaquez ! Frappez tous les blots possibles et fermez les cases de votre jan intérieur. Le but : garder ses pions bloqués sur la barre pendant que vous sortez les vôtres. Ici, les Blancs ont fait trois cases dans leur jan et les Noirs ont un pion sur la barre."
+          },
+          "holding": {
+            "body": "Vous êtes en retard dans la course, mais vous tenez une ancre dans le jan intérieur adverse — ici sur le point 20. Gardez-la, jouez prudemment et attendez un tir quand ses pions passent devant pour rentrer."
           },
           "identify": {
             "body": "Voici un jeu de prime. Touchez une case de la prime blanche : le mur de cases faites consécutives qui bloque les Noirs.",
@@ -529,19 +542,16 @@
             "title": "Repérez la prime"
           },
           "prime": {
-            "body": "Vous avez construit un mur de cases faites consécutives : une prime. Les cases en surbrillance forment une prime de 4 cases qui gêne les pions arrière noirs. Allongez votre prime case par case et enfermez ses pions derrière.",
-            "title": "Jeu de prime"
+            "body": "Vous avez construit un mur de cases faites consécutives : une prime. Les cases en surbrillance forment une prime de 4 cases qui gêne les pions arrière noirs. Allongez votre prime case par case et enfermez ses pions derrière."
           },
           "running": {
-            "body": "Vous menez la course et aucun blot n'est à portée. Le plan est simple : rentrez vos pions en sécurité et ne laissez pas de blots. Pas de fantaisie : courez. Ici, les Blancs mènent la course avec un jan intérieur solide.",
-            "title": "Course"
+            "body": "Vous menez la course et aucun blot n'est à portée. Le plan est simple : rentrez vos pions en sécurité et ne laissez pas de blots. Pas de fantaisie : courez. Ici, les Blancs mènent la course avec un jan intérieur solide."
           }
         },
         "subtitle": "Reconnaître les plans de jeu classiques",
         "title": "Plans de jeu"
       }
     },
-    "locked": "Terminez d'abord la leçon précédente",
     "next_lesson": "Leçon suivante",
     "quiz": {
       "bar": {

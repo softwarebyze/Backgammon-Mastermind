@@ -38,6 +38,7 @@
       "cancel_a11y": "Seçimi iptal et",
       "confirm_move": "Hamleyi onayla",
       "confirm_move_a11y": "Hamleyi onayla ve sırayı bitir",
+      "dice_order_a11y": "Zarlar: {{first}}, sonra {{second}}",
       "leave_game_a11y": "Oyundan çık ve ana ekrana dön",
       "loading": "Yükleniyor…",
       "new_game_message": "Yeni bir oyun başlatılsın mı?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Zar at",
       "save_position_a11y": "Bu pozisyonu kaydet",
       "start_new_game_a11y": "Yeni oyun başlat",
+      "swap_dice": "Zarları değiştir",
+      "swap_dice_hint": "Önce oynanacak zarı değiştirir.",
       "undo_a11y": "Hamleyi geri al",
       "undo_move": "Geri al"
     },
@@ -112,6 +115,7 @@
       "rules": "Zar atmadan önce bahsi ikiye katlayabilirsiniz."
     },
     "nudge": {
+      "dice_order": "Bu pulun yasal hamlesi yok.",
       "roll_first": "Önce zar atın"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Tahtada at nalı şeklinde yol",
       "move_hints": "Hamle ipuçları",
       "move_hints_hint": "Taş oynatabileceğiniz hanelerin numaralarını vurgular",
+      "move_in_dice_order": "Zar sırasına göre oyna",
+      "move_in_dice_order_hint": "Bir pula dokununca ilk kullanılmamış zar tercih edilir; mümkün değilse diğer yasal zar kullanılır. Tercihi değiştirmek için zarları değiştirin.",
       "point_numbers": "Hane numaraları",
       "point_numbers_hint": "Tahtada 1–24 numaralarını göster",
       "section_automation": "Otomasyon",
@@ -365,7 +371,7 @@
       "move_progress": "Güzel — {{needed}} hamleden {{done}} tanesi tamamlandı."
     },
     "graduation": {
-      "body": "Hedefi biliyorsun, yönetim kurulu, nasıl çalışır, vurup duruyorsunuz. Hızlı bir kontrol - sonra ilk gerçek oyun.",
+      "body": "Artık hedefi, tahtayı, sıranın nasıl işlediğini, vurmayı, pulları çıkarmayı, pip sayısını ve temel oyun planlarını biliyorsun. Kısa bir kontrol, sonra ilk gerçek oyunun.",
       "play_cta": "İlk oyununu oyna",
       "quiz_done": "Harika. Oynama zamanı.",
       "quiz_title": "Kısa kontrol",
@@ -375,6 +381,8 @@
       "recap_3": "Açık pulları vurun → bara giderler",
       "recap_4": "Pullar yalnızca kendi evinizden toplanır",
       "recap_5": "Başta herkes bir zar atar; büyük atan başlar (eşitlikte yeniden atılır)",
+      "recap_6": "Pip sayısı: sayısı düşük olan yarışta öndedir",
+      "recap_7": "Bir plan seç: yarış, saldırı, duvar veya tutma",
       "title": "Oynamaya hazırsınız"
     },
     "hint": "İpucu",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Çok gerisiniz, bu yüzden rakibin iç alanının derinliklerinde iki çapanız var — burada 22 ve 24 numaralı noktalarda. Kendi iç alanınızı güçlü tutun ve geç gelecek bir vuruşu bekleyin. Bu son çaredir: büyük kaybettirebilir de."
+          },
           "blitz": {
-            "body": "Eviniz güçlü, rakibinizin ise açık pulları ya da barda pulları var. Saldırın! Vurabildiğiniz her açık pulu vurun ve evinizdeki haneleri kapatın. Amaç, siz pullarınızı toplarken onun pullarını barda kilitli tutmak. Burada Beyazın evinde üç kapısı var, Siyahın da barda bir pulu.",
-            "title": "Yıldırım saldırısı"
+            "body": "Eviniz güçlü, rakibinizin ise açık pulları ya da barda pulları var. Saldırın! Vurabildiğiniz her açık pulu vurun ve evinizdeki haneleri kapatın. Amaç, siz pullarınızı toplarken onun pullarını barda kilitli tutmak. Burada Beyazın evinde üç kapısı var, Siyahın da barda bir pulu."
+          },
+          "holding": {
+            "body": "Yarışta gerisiniz ama rakibin iç alanında bir çapanız var — burada 20 numaralı noktada. Onu koruyun, güvenli oynayın ve rakibin pulları yanından geçip eve dönerken vurma fırsatını bekleyin."
           },
           "identify": {
             "body": "Bu bir blok oyunu. Beyaz bloğun herhangi bir hanesine dokunun: Siyahı durduran art arda kapılardan oluşan duvar.",
@@ -529,19 +542,16 @@
             "title": "Bloğu bulun"
           },
           "prime": {
-            "body": "Art arda kapılardan bir duvar kurdunuz: bir blok (prime). Vurgulanan haneler, Siyahın geride kalan pullarını kısıtlayan 4 kapılık bir blok oluşturuyor. Bloğu kapı kapı uzatın ve rakibin pullarını arkasında hapsedin.",
-            "title": "Blok oyunu"
+            "body": "Art arda kapılardan bir duvar kurdunuz: bir blok (prime). Vurgulanan haneler, Siyahın geride kalan pullarını kısıtlayan 4 kapılık bir blok oluşturuyor. Bloğu kapı kapı uzatın ve rakibin pullarını arkasında hapsedin."
           },
           "running": {
-            "body": "Yarışta öndesiniz ve vuruş menzilinde açık pul yok. Plan basit: pullarınızı güvenle eve getirin ve açık pul bırakmayın. Süs yok: sadece koşun. Bu konumda Beyaz yarışta önde ve evi sağlam.",
-            "title": "Yarış"
+            "body": "Yarışta öndesiniz ve vuruş menzilinde açık pul yok. Plan basit: pullarınızı güvenle eve getirin ve açık pul bırakmayın. Süs yok: sadece koşun. Bu konumda Beyaz yarışta önde ve evi sağlam."
           }
         },
         "subtitle": "Klasik oyun planlarını tanıyın",
         "title": "Oyun planları"
       }
     },
-    "locked": "Önce bir önceki dersi bitirin",
     "next_lesson": "Sonraki ders",
     "quiz": {
       "bar": {

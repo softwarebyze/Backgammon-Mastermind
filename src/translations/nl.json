@@ -38,6 +38,7 @@
       "cancel_a11y": "Selectie annuleren",
       "confirm_move": "Zet bevestigen",
       "confirm_move_a11y": "Zet bevestigen en je beurt beëindigen",
+      "dice_order_a11y": "Dobbelstenen: {{first}}, dan {{second}}",
       "leave_game_a11y": "Partij verlaten en terug naar het begin",
       "loading": "Laden…",
       "new_game_message": "Nieuwe partij beginnen?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Dobbelstenen gooien",
       "save_position_a11y": "Deze stelling opslaan",
       "start_new_game_a11y": "Nieuwe partij beginnen",
+      "swap_dice": "Dobbelstenen wisselen",
+      "swap_dice_hint": "Wisselt welke dobbelsteen eerst wordt gespeeld.",
       "undo_a11y": "Zet ongedaan maken",
       "undo_move": "Terug"
     },
@@ -112,6 +115,7 @@
       "rules": "Je kunt de inzet verdubbelen voordat je gooit."
     },
     "nudge": {
+      "dice_order": "Geen geldige zet voor deze schijf.",
       "roll_first": "Eerst gooien"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Hoefijzerpad op het bord",
       "move_hints": "Zethulp",
       "move_hints_hint": "Markeert de nummers van de punten waarvan je kunt zetten",
+      "move_in_dice_order": "Verplaatsen in dobbelsteenvolgorde",
+      "move_in_dice_order_hint": "Tik op een schijf om de eerste ongebruikte dobbelsteen voorrang te geven, of de andere te gebruiken als dat mag. Wissel de dobbelstenen om de voorkeur te wijzigen.",
       "point_numbers": "Puntnummers",
       "point_numbers_hint": "Nummers 1–24 op het bord tonen",
       "section_automation": "Automatisch",
@@ -365,7 +371,7 @@
       "move_progress": "Goed – {{done}} van {{needed}} stappen gedaan."
     },
     "graduation": {
-      "body": "Je kent het doel, het bord, hoe het werkt, slaat en afgaat. Een snelle controle en dan je eerste echte spel.",
+      "body": "Je kent nu het doel, het bord, hoe een beurt werkt, slaan, uitspelen, de pip count en de belangrijkste spelplannen. Een korte check en dan je eerste echte partij.",
       "play_cta": "Speel je eerste partij",
       "quiz_done": "Helemaal goed. Tijd om te spelen.",
       "quiz_title": "Korte check",
@@ -375,6 +381,8 @@
       "recap_3": "Sla losse schijven → ze gaan naar de bar",
       "recap_4": "Uitspelen mag alleen vanuit je thuisbord",
       "recap_5": "Aan het begin gooit iedereen één steen – de hoogste begint (bij gelijkspel opnieuw)",
+      "recap_6": "Pip count: wie de laagste count heeft, leidt de race",
+      "recap_7": "Kies een plan: race, aanval, muur of houden",
       "title": "Je bent klaar om te spelen"
     },
     "hint": "Tip",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Je ligt ver achter, dus je houdt twee diepe ankers in het thuisbord van je tegenstander — hier op het 22- en 24-punt. Houd je eigen thuisbord sterk en wacht op een laat schot. Het is een laatste redmiddel: je kunt er ook flink mee verliezen."
+          },
           "blitz": {
-            "body": "Je thuisbord is sterk en je tegenstander heeft losse schijven of schijven op de bar. Val aan! Sla elke losse schijf die je kunt en sluit de punten in je thuisbord. Het doel: zijn schijven op de bar vasthouden terwijl jij uitspeelt. Hier heeft wit drie punten in zijn thuisbord gemaakt en heeft zwart een schijf op de bar.",
-            "title": "Blitz"
+            "body": "Je thuisbord is sterk en je tegenstander heeft losse schijven of schijven op de bar. Val aan! Sla elke losse schijf die je kunt en sluit de punten in je thuisbord. Het doel: zijn schijven op de bar vasthouden terwijl jij uitspeelt. Hier heeft wit drie punten in zijn thuisbord gemaakt en heeft zwart een schijf op de bar."
+          },
+          "holding": {
+            "body": "Je ligt achter in de race, maar je houdt een anker in het thuisbord van je tegenstander — hier op het 20-punt. Houd het vast, speel veilig en wacht op een schot terwijl zijn stenen erlangs naar huis gaan."
           },
           "identify": {
             "body": "Dit is een primespel. Tik op een punt van de witte prime – de muur van opeenvolgende gemaakte punten die zwart tegenhoudt.",
@@ -529,19 +542,16 @@
             "title": "Vind de prime"
           },
           "prime": {
-            "body": "Je hebt een muur van opeenvolgende gemaakte punten gebouwd – een prime. De gemarkeerde punten vormen een prime van 4 punten die de achterste zwarte schijven hindert. Verleng je prime punt voor punt en sluit zijn schijven erachter in.",
-            "title": "Primespel"
+            "body": "Je hebt een muur van opeenvolgende gemaakte punten gebouwd – een prime. De gemarkeerde punten vormen een prime van 4 punten die de achterste zwarte schijven hindert. Verleng je prime punt voor punt en sluit zijn schijven erachter in."
           },
           "running": {
-            "body": "Je staat voor in de race en er staat geen losse schijf binnen bereik. Het plan is simpel: breng je schijven veilig naar huis en laat geen losse schijven staan. Geen fratsen – gewoon racen. Hier staat wit voor in de race, met een stevig thuisbord.",
-            "title": "Racespel"
+            "body": "Je staat voor in de race en er staat geen losse schijf binnen bereik. Het plan is simpel: breng je schijven veilig naar huis en laat geen losse schijven staan. Geen fratsen – gewoon racen. Hier staat wit voor in de race, met een stevig thuisbord."
           }
         },
         "subtitle": "Herken klassieke spelplannen",
         "title": "Spelplannen"
       }
     },
-    "locked": "Rond eerst de vorige les af",
     "next_lesson": "Volgende les",
     "quiz": {
       "bar": {

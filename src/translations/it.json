@@ -38,6 +38,7 @@
       "cancel_a11y": "Annulla la selezione",
       "confirm_move": "Conferma la mossa",
       "confirm_move_a11y": "Conferma la mossa e termina il turno",
+      "dice_order_a11y": "Dadi: {{first}}, poi {{second}}",
       "leave_game_a11y": "Esci dalla partita e torna alla home",
       "loading": "Caricamento…",
       "new_game_message": "Iniziare una nuova partita?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Tira i dadi",
       "save_position_a11y": "Salva questa posizione",
       "start_new_game_a11y": "Inizia una nuova partita",
+      "swap_dice": "Scambia dadi",
+      "swap_dice_hint": "Cambia quale dado si gioca per primo.",
       "undo_a11y": "Annulla la mossa",
       "undo_move": "Annulla"
     },
@@ -112,6 +115,7 @@
       "rules": "Puoi raddoppiare la posta prima di tirare i dadi."
     },
     "nudge": {
+      "dice_order": "Nessuna mossa legale per questa pedina.",
       "roll_first": "Prima tira i dadi"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Percorso a ferro di cavallo sulla tavola",
       "move_hints": "Aiuti alle mosse",
       "move_hints_hint": "Evidenzia i numeri delle punte da cui puoi muovere",
+      "move_in_dice_order": "Muovi in ordine di dadi",
+      "move_in_dice_order_hint": "Tocca una pedina per preferire il primo dado non utilizzato, oppure usare l’altro se consentito. Scambia i dadi per cambiare la preferenza.",
       "point_numbers": "Numeri delle punte",
       "point_numbers_hint": "Mostra i numeri 1–24 sulla tavola",
       "section_automation": "Automatismi",
@@ -365,7 +371,7 @@
       "move_progress": "Bene: {{done}} spostamenti su {{needed}}."
     },
     "graduation": {
-      "body": "Conosci l'obiettivo, il consiglio, come si trasforma il lavoro, il colpo e il movimento. Un controllo rapido — allora il tuo primo gioco reale.",
+      "body": "Conosci l’obiettivo, la tavola, come funziona il turno, come colpire e far uscire le pedine, il conteggio pip e i principali piani di gioco. Un rapido controllo, poi la tua prima vera partita.",
       "play_cta": "Gioca la tua prima partita",
       "quiz_done": "Perfetto. Ora si gioca.",
       "quiz_title": "Controllo rapido",
@@ -375,6 +381,8 @@
       "recap_3": "Colpisci le pedine scoperte → vanno sulla barra",
       "recap_4": "Si portano fuori le pedine solo dalla propria casa",
       "recap_5": "All'inizio ognuno tira un dado: inizia chi fa di più (in caso di pareggio si ritira)",
+      "recap_6": "Conteggio pip: chi ha il numero più basso è avanti nella corsa",
+      "recap_7": "Scegli un piano: corsa, attacco, muro o blocco",
       "title": "Sei pronto a giocare"
     },
     "hint": "Suggerimento",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Sei molto indietro, quindi tieni due ancore profonde nella casa avversaria — qui sui punti 22 e 24. Mantieni forte la tua casa e aspetta un colpo tardivo. È l'ultima risorsa: si può anche perdere molto."
+          },
           "blitz": {
-            "body": "La tua casa è forte e l'avversario ha pedine scoperte o pedine sulla barra. Attacca! Colpisci tutte le pedine scoperte che puoi e chiudi le punte della tua casa. L'obiettivo è tenere le sue pedine bloccate sulla barra mentre porti fuori le tue. Qui il Bianco ha tre punte chiuse in casa e il Nero ha una pedina sulla barra.",
-            "title": "Blitz"
+            "body": "La tua casa è forte e l'avversario ha pedine scoperte o pedine sulla barra. Attacca! Colpisci tutte le pedine scoperte che puoi e chiudi le punte della tua casa. L'obiettivo è tenere le sue pedine bloccate sulla barra mentre porti fuori le tue. Qui il Bianco ha tre punte chiuse in casa e il Nero ha una pedina sulla barra."
+          },
+          "holding": {
+            "body": "Sei indietro nella corsa, ma tieni un'ancora nella casa avversaria — qui sul punto 20. Mantienila, gioca sicuro e aspetta un colpo mentre le sue pedine le passano accanto per tornare a casa."
           },
           "identify": {
             "body": "Questo è un gioco di blocco. Tocca una punta qualsiasi del blocco bianco: il muro di punte chiuse consecutive che ferma il Nero.",
@@ -529,19 +542,16 @@
             "title": "Trova il blocco"
           },
           "prime": {
-            "body": "Hai costruito un muro di punte chiuse consecutive: un blocco (prime). Le punte evidenziate formano un blocco di 4 punte che ostacola le pedine arretrate del Nero. Allungalo una punta alla volta e intrappola le sue pedine dietro.",
-            "title": "Gioco di blocco"
+            "body": "Hai costruito un muro di punte chiuse consecutive: un blocco (prime). Le punte evidenziate formano un blocco di 4 punte che ostacola le pedine arretrate del Nero. Allungalo una punta alla volta e intrappola le sue pedine dietro."
           },
           "running": {
-            "body": "Sei avanti nella corsa e non hai pedine scoperte a tiro. Il piano è semplice: porta le pedine a casa in sicurezza ed evita di lasciarne di scoperte. Niente fantasie: corri. Qui il Bianco è avanti nella corsa con una casa solida.",
-            "title": "Corsa"
+            "body": "Sei avanti nella corsa e non hai pedine scoperte a tiro. Il piano è semplice: porta le pedine a casa in sicurezza ed evita di lasciarne di scoperte. Niente fantasie: corri. Qui il Bianco è avanti nella corsa con una casa solida."
           }
         },
         "subtitle": "Riconosci i piani di gioco classici",
         "title": "Piani di gioco"
       }
     },
-    "locked": "Completa prima la lezione precedente",
     "next_lesson": "Lezione successiva",
     "quiz": {
       "bar": {

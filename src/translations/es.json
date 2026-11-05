@@ -38,6 +38,7 @@
       "cancel_a11y": "Cancelar selección",
       "confirm_move": "Confirmar jugada",
       "confirm_move_a11y": "Confirmar la jugada y terminar tu turno",
+      "dice_order_a11y": "Dados: {{first}}, luego {{second}}",
       "leave_game_a11y": "Salir de la partida y volver al inicio",
       "loading": "Cargando…",
       "new_game_message": "¿Empezar una partida nueva?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Tirar los dados",
       "save_position_a11y": "Guardar esta posición",
       "start_new_game_a11y": "Empezar una partida nueva",
+      "swap_dice": "Intercambiar dados",
+      "swap_dice_hint": "Cambia qué dado se juega primero.",
       "undo_a11y": "Deshacer jugada",
       "undo_move": "Deshacer"
     },
@@ -112,6 +115,7 @@
       "rules": "Puedes doblar la apuesta antes de tirar los dados."
     },
     "nudge": {
+      "dice_order": "Esta ficha no tiene jugada legal.",
       "roll_first": "Primero tira los dados"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Camino en herradura sobre el tablero",
       "move_hints": "Ayudas de movimiento",
       "move_hints_hint": "Resalta los números de los puntos desde los que puedes mover",
+      "move_in_dice_order": "Mover en orden de dados",
+      "move_in_dice_order_hint": "Toca una ficha para dar preferencia al primer dado sin gastar, o usar el otro si es legal. Intercambia los dados para cambiar la preferencia.",
       "point_numbers": "Números de los puntos",
       "point_numbers_hint": "Mostrar 1–24 en el tablero",
       "section_automation": "Automatización",
@@ -365,7 +371,7 @@
       "move_progress": "Bien: {{done}} de {{needed}} movimientos hechos."
     },
     "graduation": {
-      "body": "Conoces el objetivo, el tablero, cómo se convierte en trabajo, golpes y desmantelamiento. Un cheque rápido — luego tu primer juego real.",
+      "body": "Ya conoces el objetivo, el tablero, cómo funcionan los turnos, cómo golpear y sacar fichas, el recuento de pips y los principales planes de juego. Una comprobación rápida y luego tu primera partida de verdad.",
       "play_cta": "Juega tu primera partida",
       "quiz_done": "¡Perfecto! A jugar.",
       "quiz_title": "Comprobación rápida",
@@ -375,6 +381,8 @@
       "recap_3": "Golpea fichas solas → van a la barra",
       "recap_4": "Solo se sacan fichas desde tu tablero interior",
       "recap_5": "Al empezar, cada uno tira un dado: el más alto empieza (si empatan, se repite)",
+      "recap_6": "Recuento de pips: el menor va delante en la carrera",
+      "recap_7": "Elige un plan: carrera, ataque, muralla o retención",
       "title": "Ya estás listo para jugar"
     },
     "hint": "Pista",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Vas muy por detrás, así que tienes dos anclas profundas en el tablero interior del rival — aquí en los puntos 22 y 24. Mantén fuerte tu propio tablero interior y espera un tiro tardío. Es el último recurso: también puedes perder mucho."
+          },
           "blitz": {
-            "body": "Tienes un tablero interior fuerte y tu rival tiene blots o fichas en la barra. ¡Ataca! Golpea cada blot que puedas y cierra los puntos de tu tablero interior. El objetivo es dejar sus fichas atrapadas en la barra mientras sacas las tuyas. Aquí las blancas tienen tres puntos hechos en casa y las negras una ficha en la barra.",
-            "title": "Ataque (blitz)"
+            "body": "Tienes un tablero interior fuerte y tu rival tiene blots o fichas en la barra. ¡Ataca! Golpea cada blot que puedas y cierra los puntos de tu tablero interior. El objetivo es dejar sus fichas atrapadas en la barra mientras sacas las tuyas. Aquí las blancas tienen tres puntos hechos en casa y las negras una ficha en la barra."
+          },
+          "holding": {
+            "body": "Vas por detrás en la carrera, pero tienes un ancla en el tablero interior del rival — aquí en el punto 20. Mantenla, juega seguro y espera un tiro mientras sus fichas pasan a su lado camino de casa."
           },
           "identify": {
             "body": "Esto es un juego de bloqueo. Toca cualquier punto del bloqueo blanco: el muro de puntos hechos seguidos que frena a las negras.",
@@ -529,19 +542,16 @@
             "title": "Encuentra el bloqueo"
           },
           "prime": {
-            "body": "Has construido un muro de puntos hechos seguidos: un bloqueo (prime). Los puntos resaltados forman un bloqueo de 4 puntos que frena las fichas de atrás de las negras. Alárgalo punto a punto y encierra sus fichas detrás.",
-            "title": "Juego de bloqueo"
+            "body": "Has construido un muro de puntos hechos seguidos: un bloqueo (prime). Los puntos resaltados forman un bloqueo de 4 puntos que frena las fichas de atrás de las negras. Alárgalo punto a punto y encierra sus fichas detrás."
           },
           "running": {
-            "body": "Vas por delante en la carrera y no tienes blots a tiro. El plan es sencillo: lleva tus fichas a casa con seguridad y no dejes blots. Nada de inventos: solo corre. En esta posición las blancas van por delante y tienen un tablero interior sólido.",
-            "title": "Carrera"
+            "body": "Vas por delante en la carrera y no tienes blots a tiro. El plan es sencillo: lleva tus fichas a casa con seguridad y no dejes blots. Nada de inventos: solo corre. En esta posición las blancas van por delante y tienen un tablero interior sólido."
           }
         },
         "subtitle": "Reconoce los planes de juego clásicos",
         "title": "Planes de juego"
       }
     },
-    "locked": "Completa primero la lección anterior",
     "next_lesson": "Siguiente lección",
     "quiz": {
       "bar": {

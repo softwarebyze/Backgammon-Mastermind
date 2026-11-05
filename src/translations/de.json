@@ -38,6 +38,7 @@
       "cancel_a11y": "Auswahl aufheben",
       "confirm_move": "Zug bestätigen",
       "confirm_move_a11y": "Zug bestätigen und Zug beenden",
+      "dice_order_a11y": "Würfel: {{first}}, dann {{second}}",
       "leave_game_a11y": "Partie verlassen und zum Start",
       "loading": "Wird geladen…",
       "new_game_message": "Neue Partie starten?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Würfeln",
       "save_position_a11y": "Diese Stellung speichern",
       "start_new_game_a11y": "Neue Partie starten",
+      "swap_dice": "Würfel tauschen",
+      "swap_dice_hint": "Tauscht, welcher Würfel zuerst gespielt wird.",
       "undo_a11y": "Zug zurücknehmen",
       "undo_move": "Zurück"
     },
@@ -112,6 +115,7 @@
       "rules": "Vor dem Würfeln kannst du den Einsatz verdoppeln."
     },
     "nudge": {
+      "dice_order": "Kein legaler Zug für diesen Stein.",
       "roll_first": "Erst würfeln"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Hufeisen-Pfad auf dem Brett",
       "move_hints": "Zughilfen",
       "move_hints_hint": "Hebt die Nummern der Punkte hervor, von denen du ziehen kannst",
+      "move_in_dice_order": "In Würfelreihenfolge ziehen",
+      "move_in_dice_order_hint": "Tippe auf einen Stein, um den ersten ungenutzten Würfel zu bevorzugen, sonst den anderen, falls erlaubt. Tausche die Würfel, um die Priorität zu ändern.",
       "point_numbers": "Punktnummern",
       "point_numbers_hint": "Beschriftung 1–24 am Brett anzeigen",
       "section_automation": "Automatik",
@@ -365,7 +371,7 @@
       "move_progress": "Gut – {{done}} von {{needed}} Zügen geschafft."
     },
     "graduation": {
-      "body": "Sie kennen das Ziel, das Brett, wie sich Arbeit, Schlagen und Abstützen drehen. Ein kurzer Check - dann dein erstes richtiges Spiel.",
+      "body": "Du kennst jetzt das Ziel, das Brett, den Ablauf eines Zugs, das Schlagen, das Auswürfeln, den Pip-Count und die wichtigsten Spielpläne. Ein kurzer Check – dann dein erstes echtes Spiel.",
       "play_cta": "Erste Partie spielen",
       "quiz_done": "Perfekt. Zeit zu spielen.",
       "quiz_title": "Kurzer Check",
@@ -375,6 +381,8 @@
       "recap_3": "Blots schlagen → sie kommen auf die Bar",
       "recap_4": "Abtragen nur aus dem eigenen Heimfeld",
       "recap_5": "Zu Beginn wirft jeder einen Würfel – die höhere Zahl fängt an (bei Gleichstand nochmal)",
+      "recap_6": "Pip-Count: Wer weniger hat, führt im Rennen",
+      "recap_7": "Wähle einen Plan: Rennen, Angriff, Prime oder Halten",
       "title": "Du bist bereit"
     },
     "hint": "Tipp",
@@ -518,9 +526,14 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Du liegst weit zurück, also hältst du zwei tiefe Anker im Heimfeld des Gegners – hier auf dem 22er- und 24er-Punkt. Halte dein eigenes Heimfeld stark und warte auf einen späten Treffer. Das ist der letzte Ausweg: Er kann auch hoch verlieren."
+          },
           "blitz": {
-            "body": "Dein Heimfeld ist stark und dein Gegner hat Blots oder Steine auf der Bar. Greif an! Schlag jeden Blot, den du kannst, und schließ die Punkte in deinem Heimfeld. Ziel ist, seine Steine auf der Bar einzusperren, während du abträgst. Hier hat Weiß drei Punkte im Heimfeld gebaut und Schwarz einen Stein auf der Bar.",
-            "title": "Blitz"
+            "body": "Dein Heimfeld ist stark und dein Gegner hat Blots oder Steine auf der Bar. Greif an! Schlag jeden Blot, den du kannst, und schließ die Punkte in deinem Heimfeld. Ziel ist, seine Steine auf der Bar einzusperren, während du abträgst. Hier hat Weiß drei Punkte im Heimfeld gebaut und Schwarz einen Stein auf der Bar."
+          },
+          "holding": {
+            "body": "Du liegst im Rennen zurück, hältst aber einen Anker im Heimfeld des Gegners – hier auf dem 20er-Punkt. Halte ihn, spiele sicher und warte auf einen Treffer, wenn seine Steine an dir vorbei nach Hause ziehen."
           },
           "identify": {
             "body": "Das ist ein Prime-Spiel. Tippe auf einen Punkt der weißen Prime – der Mauer aus gebauten Punkten in Folge, die Schwarz blockiert.",
@@ -529,19 +542,16 @@
             "title": "Finde die Prime"
           },
           "prime": {
-            "body": "Du hast eine Mauer aus gebauten Punkten in Folge errichtet – eine Prime. Die markierten Punkte bilden eine Prime aus 4 Punkten, die die hinteren schwarzen Steine einschränkt. Verlängere deine Prime Punkt für Punkt und sperre die Steine dahinter ein.",
-            "title": "Prime-Spiel"
+            "body": "Du hast eine Mauer aus gebauten Punkten in Folge errichtet – eine Prime. Die markierten Punkte bilden eine Prime aus 4 Punkten, die die hinteren schwarzen Steine einschränkt. Verlängere deine Prime Punkt für Punkt und sperre die Steine dahinter ein."
           },
           "running": {
-            "body": "Du führst im Rennen und kein Blot steht in Schlagweite. Der Plan ist einfach: Bring deine Steine sicher nach Hause und lass keine Blots stehen. Keine Experimente – einfach laufen. Hier liegt Weiß im Rennen vorn und hat ein solides Heimfeld.",
-            "title": "Laufspiel"
+            "body": "Du führst im Rennen und kein Blot steht in Schlagweite. Der Plan ist einfach: Bring deine Steine sicher nach Hause und lass keine Blots stehen. Keine Experimente – einfach laufen. Hier liegt Weiß im Rennen vorn und hat ein solides Heimfeld."
           }
         },
         "subtitle": "Erkenne klassische Spielpläne",
         "title": "Spielpläne"
       }
     },
-    "locked": "Schließ zuerst die vorige Lektion ab",
     "next_lesson": "Nächste Lektion",
     "quiz": {
       "bar": {

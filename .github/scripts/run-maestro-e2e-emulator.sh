@@ -31,6 +31,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/cube-tutor-beavers.yaml" \
   "${WORKSPACE}/.maestro/app/cube-decision-undo.yaml" \
   "${WORKSPACE}/.maestro/app/computer-match.yaml" \
+  "${WORKSPACE}/.maestro/app/learn-any-order.yaml" \
   "${WORKSPACE}/.maestro/app/computer-level.yaml" \
   "${WORKSPACE}/.maestro/app/match-polish.yaml" \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
@@ -44,6 +45,8 @@ maestro test \
   "${WORKSPACE}/.maestro/app/center-bar-checkers.yaml" \
   "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \
   "${WORKSPACE}/.maestro/app/bar-entry-hints.yaml" \
+  "${WORKSPACE}/.maestro/app/dice-order.yaml" \
+  "${WORKSPACE}/.maestro/app/dice-order-fallback.yaml" \
   "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
