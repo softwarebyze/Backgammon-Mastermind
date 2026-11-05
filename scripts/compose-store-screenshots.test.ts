@@ -87,9 +87,20 @@ describe('screenshot-frames manifest', () => {
       expect(frame.cropTop).toBeGreaterThanOrEqual(0);
       expect(frame.cropTop).toBeLessThanOrEqual(0.2);
     }
-    const src = readFileSync(SCRIPT, 'utf8');
-    // contain + cropTop clips the top first, so the bottom of the app stays in view.
-    expect(src).toMatch(/object-view-box:inset/);
+  });
+
+  it('clips cropTop before fitting a contain frame, so the bottom of the app stays in view', () => {
+    const render = (cropTop: number) => execFileSync(process.execPath, ['--input-type=module', '-e', `
+      const { frameHtml } = await import(${JSON.stringify(SCRIPT)});
+      process.stdout.write(frameHtml({
+        frame: { device: 'iphone', headline: 'Set up any position', fit: 'contain', cropTop: ${cropTop} },
+        spec: { width: 1320, height: 2868 },
+        colors: {},
+        dataUrl: 'data:image/png;base64,',
+      }));
+    `], { cwd: ROOT, encoding: 'utf8' });
+    expect(render(0.128)).toContain(`object-view-box:inset(${Math.round(0.128 * 2868)}px 0 0 0)`);
+    expect(render(0)).not.toContain('object-view-box');
   });
 
   it('is two opaque zones, not a gradient overlay or gold bezel', () => {

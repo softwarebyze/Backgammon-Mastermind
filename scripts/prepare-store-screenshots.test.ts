@@ -114,6 +114,22 @@ describe('prepare-store-screenshots', () => {
       expect(sizes).toHaveLength(8);
     }
 
+    // Letterboxed, not cropped: the narrower-than-9:16 iPhone frame leaves a
+    // band-coloured column down each whole edge. A crop puts the board there.
+    const edges = execFileSync(process.execPath, ['--input-type=module', '-e', `
+      const { default: sharp } = await import('sharp');
+      const { data, info } = await sharp(${JSON.stringify(join(PLAY_OUT, 'iphone-69-03-learn-to-play.png'))}).raw().toBuffer({ resolveWithObject: true });
+      const colours = new Set();
+      for (let y = 0; y < info.height; y++) {
+        for (const x of [0, info.width - 1]) {
+          const i = (y * info.width + x) * info.channels;
+          colours.add(data.subarray(i, i + 3).join(','));
+        }
+      }
+      process.stdout.write(JSON.stringify([...colours]));
+    `], { cwd: ROOT, encoding: 'utf8' });
+    expect(JSON.parse(edges)).toEqual(['30,12,2']);
+
     expect(
       readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-02-tutor.png')).equals(
         readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-02-tutor.png')),

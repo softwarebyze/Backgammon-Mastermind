@@ -394,4 +394,4 @@ if (isMain) {
   });
 }
 
-export { assertRawSize, checkOutputs, loadManifest, parseArgs };
+export { assertRawSize, checkOutputs, frameHtml, loadManifest, parseArgs };
