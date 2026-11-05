@@ -2,7 +2,7 @@ import type { StrategyKey } from '@/features/game/strategy';
 import type { LessonFeedback } from '@/features/learn/use-lesson-session';
 import type { TxKeyPath } from '@/lib/i18n';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { DoublingCubeFace } from '@/features/game/components/doubling-cube-face';
 import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -21,6 +21,19 @@ type Props = {
   /** A cube step shows the cube as a game draws it. */
   cube?: { value: number; unavailable?: boolean };
 };
+
+/** A fresh key per feedback, so the same message twice is a new node to announce. */
+const feedbackKeys = new WeakMap<LessonFeedback, number>();
+let nextFeedbackKey = 0;
+function feedbackKey(feedback: LessonFeedback): number {
+  let key = feedbackKeys.get(feedback);
+  if (key === undefined) {
+    nextFeedbackKey += 1;
+    key = nextFeedbackKey;
+    feedbackKeys.set(feedback, key);
+  }
+  return key;
+}
 
 export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact = false, strategy, cube }: Props) {
   const feedbackColor
@@ -54,16 +67,21 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
         </Text>
       </View>
       <Text style={[styles.body, compact && styles.bodyCompact]}>{translate(bodyKey as TxKeyPath)}</Text>
-      {feedback
-        ? (
-            <Text
-              testID="learn-feedback"
-              style={[styles.feedback, { color: feedbackColor }]}
-            >
-              {translate(feedback.messageKey, feedback.messageOptions)}
-            </Text>
-          )
-        : null}
+      {/* react-native-web's announceForAccessibility does nothing, so on web
+          the feedback sits in a live region; native already announces it. */}
+      <View testID="learn-feedback-live" accessibilityLiveRegion={Platform.OS === 'web' ? 'polite' : undefined}>
+        {feedback
+          ? (
+              <Text
+                key={feedbackKey(feedback)}
+                testID="learn-feedback"
+                style={[styles.feedback, { color: feedbackColor }]}
+              >
+                {translate(feedback.messageKey, feedback.messageOptions)}
+              </Text>
+            )
+          : null}
+      </View>
     </View>
   );
 }

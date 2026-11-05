@@ -52,6 +52,21 @@ describe('coach caption feedback (#304)', () => {
       />,
     );
     expect(screen.getByTestId('learn-feedback').props.accessibilityLiveRegion).toBeUndefined();
+    expect(screen.getByTestId('learn-feedback-live').props.accessibilityLiveRegion).toBeUndefined();
+  });
+
+  // react-native-web's announceForAccessibility is an empty function.
+  it('puts feedback in a polite live region on web, as a new node for each answer', () => {
+    Platform.OS = 'web';
+    const caption = (feedback: LessonFeedback) => (
+      <CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="1/3" feedback={feedback} />
+    );
+    const { rerender } = render(caption({ tone: 'soft', messageKey: 'learn.feedback.illegal' }));
+    expect(screen.getByTestId('learn-feedback-live').props.accessibilityLiveRegion).toBe('polite');
+    const first = screen.getByTestId('learn-feedback');
+    // The same message again is a new feedback object, so a new node the reader announces.
+    rerender(caption({ tone: 'soft', messageKey: 'learn.feedback.illegal' }));
+    expect(screen.getByTestId('learn-feedback')).not.toBe(first);
   });
 });
 
