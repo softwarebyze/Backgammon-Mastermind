@@ -29,6 +29,11 @@ tags:
 - tapOn:
     id: stack-escape-button
 - openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-undo-redo-3-1
+    direction: DOWN
+    timeout: 60000
 - tapOn:
     id: developer-preset-e2e-undo-redo-3-1
 - extendedWaitUntil:
@@ -69,14 +74,8 @@ tags:
 # A fresh fixture returns to original order. Leading five is blocked from 6;
 # the legal three plays without a swap, leaving five available.
 - openLink: backgammonmastermind.preview://developer
-- scrollUntilVisible:
-    element:
-      id: developer-json-input
-    direction: DOWN
-- longPressOn:
-    id: developer-json-input
-- tapOn: (?i)select all
-- eraseText: 1
+- runFlow:
+    file: ../utils/clear-developer-json.yaml
 - inputText: '{"useStandardSetup":true,"dice":[5,3],"mode":"vs-human"}'
 - hideKeyboard
 - tapOn:

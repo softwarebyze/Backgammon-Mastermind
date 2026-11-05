@@ -5,14 +5,8 @@ tags:
   - util
 ---
 - openLink: backgammonmastermind.preview://developer
-- scrollUntilVisible:
-    element:
-      id: developer-json-input
-    direction: DOWN
-- longPressOn:
-    id: developer-json-input
-- tapOn: (?i)select all
-- eraseText: 1
+- runFlow:
+    file: clear-developer-json.yaml
 - inputText: '${POSITION_JSON}'
 - hideKeyboard
 - scrollUntilVisible:
