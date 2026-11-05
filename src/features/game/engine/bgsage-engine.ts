@@ -1,7 +1,7 @@
 import type { EngineTurnPlan, GameEngine } from './types';
 
 import type { GameState } from '@/lib/game/types';
-import { gameStateToSageBoard, planSageTurnFull, sageCubeDecision } from 'expo-bgsage';
+import { gameStateToSageBoard, planSageTurnFull, sageCubeDecision, sageMovesToBoard } from 'expo-bgsage';
 
 import { engineCubeContext } from './cube-context';
 
@@ -15,8 +15,8 @@ import { engineCubeContext } from './cube-context';
 export const bgsageEngine: GameEngine = {
   id: 'bgsage',
 
-  async planTurn(state: GameState): Promise<EngineTurnPlan> {
-    const plan = await planSageTurnFull(state, 2, engineCubeContext(state));
+  async planTurn(state: GameState, opts): Promise<EngineTurnPlan> {
+    const plan = await planSageTurnFull(state, opts?.ply ?? 2, engineCubeContext(state));
     const candidates = (plan?.candidates ?? []).filter(c => Number.isFinite(c.equity));
     if (!plan || !Number.isFinite(plan.equity) || candidates.length === 0) {
       throw new Error('bgsage returned no usable plan');
@@ -30,6 +30,10 @@ export const bgsageEngine: GameEngine = {
       equity: plan.equity,
       candidates,
     };
+  },
+
+  movesToCandidate(state, candidate) {
+    return sageMovesToBoard(state, candidate.board).map(m => ({ from: m.from, to: m.to, dieIndex: m.dieIndex }));
   },
 
   async analyzeCube(state) {

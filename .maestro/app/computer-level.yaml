@@ -1,0 +1,63 @@
+# Computer level: picked on Home (computer games only), mirrored in Settings,
+# and the computer plays its turn at that level.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- assertVisible:
+    id: home-computer-level-medium
+    checked: true
+- tapOn:
+    id: home-computer-level-easy
+- assertVisible:
+    id: home-computer-level-easy
+    checked: true
+- takeScreenshot: computer-level-01-home-easy
+# Two players: no computer, no level.
+- tapOn:
+    id: home-opponent-vs-human
+- assertNotVisible:
+    id: home-computer-level-easy
+- tapOn:
+    id: home-opponent-vs-computer
+# Settings shows the same level and can change it.
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      id: setting-computer-level-easy
+    direction: DOWN
+- assertVisible:
+    id: setting-computer-level-easy
+    checked: true
+- tapOn:
+    id: setting-computer-level-expert
+- assertVisible:
+    id: setting-computer-level-expert
+    checked: true
+- takeScreenshot: computer-level-02-settings-expert
+- tapOn:
+    id: stack-escape-button
+- assertVisible:
+    id: home-computer-level-expert
+    checked: true
+# The computer on roll with 3-1 at Expert makes its 5-point (8/5 6/5).
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- runFlow: ../utils/clear-developer-json.yaml
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-computer","currentPlayer":"black"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible: 'Point 20, 2 black checkers'
+    timeout: 60000
+- takeScreenshot: computer-level-03-expert-opening
