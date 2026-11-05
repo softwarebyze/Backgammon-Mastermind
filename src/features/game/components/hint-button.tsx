@@ -4,6 +4,7 @@ import type { GameState } from '@/lib/game/types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { controlButtonStyles } from '@/features/game/control-buttons';
 import { getEngineHint } from '@/features/game/engine-hint';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { formatHintNotation } from '@/features/game/guidance-copy';
@@ -236,20 +237,11 @@ const styles = StyleSheet.create({
     ...interFont('medium'),
   },
   hintBtn: {
-    backgroundColor: GAME_PALETTE.bg,
-    borderWidth: 1.5,
-    borderColor: 'rgba(232, 224, 208, 0.35)',
+    ...controlButtonStyles.secondary,
     paddingHorizontal: 32,
-    paddingVertical: 12,
     minWidth: 160,
-    alignItems: 'center',
-    ...continuousRadius(12),
   },
-  hintBtnText: {
-    color: GAME_PALETTE.accent,
-    fontSize: 16,
-    ...interFont('semibold'),
-  },
+  hintBtnText: controlButtonStyles.secondaryText,
   pressed: {
     opacity: 0.85,
   },
@@ -259,7 +251,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: GAME_PALETTE.accentDim,
     paddingHorizontal: 14,
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 8,
     alignItems: 'center',
     ...continuousRadius(12),
@@ -281,7 +273,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    marginTop: 10,
+    marginTop: 8,
   },
   playBtn: {
     backgroundColor: GAME_PALETTE.accent,

@@ -16,6 +16,10 @@ Before any metadata push, confirm `store.config.json` → `apple.review.phone` i
 | **TestFlight** | Beta testers, pre-release QA | `pnpm build:preview:ios` then `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
 | **Simulator** | CI / quick UI checks | `eas build --profile simulator --platform ios` |
 
+### Trying a PR on a phone
+
+**Android:** every PR's Android test run also publishes `pr-<number>-preview.apk` on the `pr-test-builds` release and comments the link on the PR. Open it on the phone to install; it sits next to the Play Store app.
+
 ### Dev client (your iPhone)
 
 1. Register device (once): `eas device:create` or [Expo Devices](https://expo.dev/accounts/zackebenfeld/projects/backgammon-mastermind/devices)

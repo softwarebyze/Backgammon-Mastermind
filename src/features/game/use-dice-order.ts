@@ -1,8 +1,11 @@
 import type { GameState } from '@/lib/game';
 import { useCallback, useRef, useState } from 'react';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { orderedDice } from './dice-order';
 
+/** "Move in dice order": the shown dice order for this roll, and the swap that flips it. */
 export function useDiceOrder(state: GameState | null) {
+  const enabled = useGamePreferences().preferences.moveInDiceOrder;
   const key = `${state?.mode}|${state?.phase}|${state?.currentPlayer}|${state?.dice.join(',')}`;
   const [order, setOrder] = useState({ key, reversed: false });
   // Reset on the transition itself: an old key can recur on a later roll.
@@ -17,5 +20,5 @@ export function useDiceOrder(state: GameState | null) {
     reversedRef.current = !reversedRef.current;
     setOrder({ key, reversed: reversedRef.current });
   }, [key]);
-  return { displayedDice: orderedDice(state?.dice ?? [0, 0], reversed), reversedRef, swapDice };
+  return { enabled, displayedDice: orderedDice(state?.dice ?? [0, 0], reversed), reversedRef, swapDice };
 }

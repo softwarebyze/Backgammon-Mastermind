@@ -60,6 +60,7 @@ it('wires the dedicated glyph and toggle while retaining the forced-move icon', 
       onTutorModeChange={noop}
       onConfirmMoveChange={noop}
       onMoveInDiceOrderChange={onChange}
+      onComputerLevelChange={noop}
     />,
   );
   const row = screen.getByRole('switch', { name: 'Move in dice order' });

@@ -1,3 +1,4 @@
+import type { StackEditHandlers } from './use-stack-edit-gesture';
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { GameState, Player } from '@/lib/game/types';
@@ -5,6 +6,7 @@ import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { Platform, View } from 'react-native';
 
+import { cubeCenterY, maxCubeEdge } from '@/features/game/bear-off-layout';
 import {
   boardHitExtraCandidates,
   remapTapIndex,
@@ -15,7 +17,8 @@ import { displayBarCountDuringAnimation, displayCommittedCount, displayPointDuri
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 import { getMovableSources } from '@/lib/game/move-hints';
-import { getReachableDestinations } from '@/lib/game/moves';
+import { getReachableDestinations, opponent } from '@/lib/game/moves';
+import { MatchCube } from '../match-cube';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
 import { boardLayoutStyle, boardWebDir } from './board-layout-direction';
@@ -64,6 +67,7 @@ type BoardAidsOverride = {
 
 type Props = {
   state: GameState;
+  boardPresentation?: boolean;
   dimensions: BoardDimensions;
   previewTarget: number | null;
   moveAnimation: MoveAnimationFrame | null;
@@ -79,6 +83,9 @@ type Props = {
   onBarPress: () => void;
   onBearOffPress: () => void;
   interactionEnabled?: boolean;
+  /** Setup editor: target the exact point, without gameplay fat-finger remapping. */
+  editMode?: boolean;
+  stackEditor?: StackEditHandlers;
   isReviewing?: boolean;
   /** Optional overrides for learn mode (does not persist preferences). */
   aidsOverride?: BoardAidsOverride;
@@ -92,6 +99,7 @@ type Props = {
 /* eslint-disable max-lines-per-function -- board layout composition */
 export function BoardView({
   state,
+  boardPresentation = false,
   dimensions,
   previewTarget,
   moveAnimation,
@@ -107,6 +115,8 @@ export function BoardView({
   onBarPress,
   onBearOffPress,
   interactionEnabled = true,
+  editMode = false,
+  stackEditor,
   isReviewing = false,
   aidsOverride,
   emphasisPoints,
@@ -151,11 +161,11 @@ export function BoardView({
   } = dimensions;
 
   const legalTargets = useMemo(() => {
-    if (!showHighlights || state.selectedPoint === null) {
+    if (editMode || !showHighlights || state.selectedPoint === null) {
       return new Set<number>();
     }
     return new Set(getReachableDestinations(state, state.selectedPoint).keys());
-  }, [showHighlights, state]);
+  }, [editMode, showHighlights, state]);
 
   const movableSources = useMemo(() => {
     if (!showLiveHints || !showHighlights || !showMoveHints || state.phase !== 'moving' || state.selectedPoint !== null) {
@@ -163,6 +173,10 @@ export function BoardView({
     }
     return getMovableSources(state);
   }, [showLiveHints, showHighlights, showMoveHints, state]);
+
+  // The bar keeps its hint while its checker is preselected: entering is the only move.
+  const barHinted = movableSources.has(BAR_POINT)
+    || (showLiveHints && showHighlights && showMoveHints && state.phase === 'moving' && state.selectedPoint === BAR_POINT);
 
   // Web hover: any checker the player could pick up, independent of the hint pref.
   const hoverSources = useMemo(() => {
@@ -198,6 +212,11 @@ export function BoardView({
     if (!interactionEnabled) {
       return;
     }
+    if (editMode) {
+      if (geometricIndex >= 1 && geometricIndex <= 24)
+        onPointPress(geometricIndex);
+      return;
+    }
     const resolved = remapTapIndex({
       state,
       pointIndex: geometricIndex,
@@ -216,7 +235,7 @@ export function BoardView({
   };
 
   const dispatchFatFingerPressIn = (geometricIndex: number) => {
-    if (!interactionEnabled) {
+    if (editMode || !interactionEnabled) {
       return;
     }
     const resolved = remapTapIndex({
@@ -245,12 +264,14 @@ export function BoardView({
     return (
       <PointColumn
         key={idx}
+        stackEditor={editMode ? stackEditor : undefined}
         pointIndex={idx}
         point={point}
         isTop={isTop}
         isSelected={selectedPoint === idx}
         isLegalTarget={legalTargets.has(idx) || (emphasisPoints?.has(idx) ?? false)}
-        isMovableSource={movableSources.has(idx)}
+        // With point numbers on, the rail carries the hint instead (#265).
+        isMovableSource={!showPointNumbers && movableSources.has(idx)}
         isHoverable={hoverSources.has(idx)}
         showGhost={showHighlights && previewTarget === idx}
         ghostPlayer={state.currentPlayer}
@@ -277,6 +298,8 @@ export function BoardView({
     );
   };
 
+  // The match cube is 30px wide; shrink it to whatever the tray can hold.
+  const cubeScale = Math.min(1, maxCubeEdge(dimensions) / 30);
   const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
   const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
   const barPanFrom = canDrag
@@ -310,10 +333,11 @@ export function BoardView({
       ]}
     >
       {showPointNumbers && (
-        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} />
+        <PointNumberRail side="top" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} barLit={barHinted && state.currentPlayer === 'black'} />
       )}
 
       <View
+        testID="board-playing-surface"
         ref={surfaceRef}
         onLayout={measureSurface}
         style={{
@@ -335,15 +359,18 @@ export function BoardView({
         />
 
         <BarArea
+          stackEditor={editMode ? stackEditor : undefined}
           whiteCount={barWhite}
           blackCount={barBlack}
           currentPlayer={state.currentPlayer}
-          selectedPoint={emphasisBar && selectedPoint === null ? BAR_POINT : selectedPoint}
+          selectedPoint={selectedPoint}
+          emphasized={emphasisBar}
           onPressBar={() => dispatchFatFingerPress(BAR_POINT)}
           dragEnabled={barPanFrom !== null}
           panFrom={barPanFrom ?? BAR_POINT}
           isDragging={dragFrom !== null && dragFrom === (barPanFrom ?? BAR_POINT)}
           dragOverlay={dragOverlay}
+          showMoveHint={!showPointNumbers && movableSources.has(BAR_POINT)}
           onDragAttempt={onDragAttempt}
           onDragStart={handleDragStartAbs}
           onDragMove={handleDragMoveAbs}
@@ -364,6 +391,7 @@ export function BoardView({
         />
 
         <BearOffArea
+          cubeClearance={dimensions.bearOffCubeClearance}
           whiteBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'white', count: state.borneOff.white }, moveAnimation)}
           blackBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'black', count: state.borneOff.black }, moveAnimation)}
           isLegalTarget={bearOffLegal && interactionEnabled}
@@ -374,6 +402,12 @@ export function BoardView({
           middleHeight={middleHeight}
           checkerSize={checkerSize}
         />
+
+        {boardPresentation && state.match && (
+          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: boardWidth - bearOffWidth / 2 - 15, top: cubeCenterY(dimensions, state.match.pendingOffer ? opponent(state.match.pendingOffer) : state.match.cube.owner === 'center' ? null : state.match.cube.owner) - 14, zIndex: 45, transform: [{ scale: cubeScale }] }}>
+            <MatchCube cube={state.match.cube} crawford={state.match.crawford} pendingOffer={state.match.pendingOffer} pendingBeaver={state.match.pendingBeaver} mode={state.mode} />
+          </View>
+        )}
 
         {showDirection && (
           <DirectionOverlay
@@ -399,7 +433,7 @@ export function BoardView({
       </View>
 
       {showPointNumbers && (
-        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} />
+        <PointNumberRail side="bottom" dimensions={dimensions} perspective={numberPerspective} highlighted={movableSources} barLit={barHinted && state.currentPlayer === 'white'} />
       )}
     </View>
   );

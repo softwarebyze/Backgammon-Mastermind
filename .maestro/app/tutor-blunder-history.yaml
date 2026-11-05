@@ -1,0 +1,67 @@
+# Real-engine checker Tutor: a kept blunder is marked on its turn in the timeline.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn: Settings
+- scrollUntilVisible:
+    element:
+      text: Tutor mode
+    direction: DOWN
+- tapOn: Tutor mode
+- tapOn:
+    id: stack-escape-button
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-json-input
+    direction: DOWN
+    timeout: 60000
+- runFlow: ../utils/clear-developer-json.yaml
+- inputText: '{"useStandardSetup":true,"dice":[3,1],"mode":"vs-human"}'
+- hideKeyboard
+- tapOn:
+    id: developer-load-json
+- extendedWaitUntil:
+    visible: 'Point 6, 5 white checkers'
+    timeout: 15000
+# 6/3 6/5 breaks the 6-point and leaves two blots in the home board.
+- tapOn:
+    id: point-6
+- tapOn:
+    id: point-3
+- extendedWaitUntil:
+    visible: 'Point 3, 1 white checker'
+    timeout: 15000
+- tapOn:
+    id: point-6
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible:
+      id: confirm-move-button
+    timeout: 15000
+- tapOn:
+    id: confirm-move-button
+- extendedWaitUntil:
+    visible:
+      id: guidance-modal
+    timeout: 45000
+- takeScreenshot: tutor-history-01-blunder
+- tapOn:
+    id: guidance-keep-move
+- extendedWaitUntil:
+    notVisible:
+      id: guidance-modal
+    timeout: 15000
+# The kept play stays marked on its turn chip.
+- extendedWaitUntil:
+    visible:
+      id: history-blunder-1
+    timeout: 15000
+- takeScreenshot: tutor-history-02-marked

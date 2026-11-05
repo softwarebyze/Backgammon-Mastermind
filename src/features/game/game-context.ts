@@ -1,19 +1,33 @@
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
 import type { HistoryPathOverlay } from '@/features/game/timeline-history-actions';
 import type { AnimatedMoveOpts } from '@/features/game/use-animated-moves';
+import type { CubeTutorSession } from '@/features/game/use-cube-tutor';
 import type { GameMode, GameState, Move } from '@/lib/game';
+import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { createContext } from 'react';
 
 export type GameContextType = {
+  /** False off the game route or in the background; human input is ignored then. */
+  active?: boolean;
+  setReviewing?: (reviewing: boolean) => void;
   state: GameState | null;
+  computerCubeError?: boolean;
+  retryCubeAnalysis?: () => void;
+  cubeTutorSession?: CubeTutorSession | null;
+  /** Close the cube review card and apply the decision (a roll already stands). */
+  keepCubeDecision?: () => void;
+  /** Close the cube review card without applying the decision, to choose again. */
+  takeBackCubeDecision?: () => void;
   moveLog: MoveLogEntry[];
+  cubeEvents?: CubeHistoryEvent[];
   replayBaseline: GameState | null;
   startGame: (mode: GameMode) => void;
   /** Dev/QA: start a playable session from an arbitrary board (skips opening ceremony). */
   startFromPosition: (state: GameState) => void;
   resumeGame: () => boolean;
   resetGame: () => void;
+  matchAction?: (action: 'offer' | 'accept' | 'drop' | 'beaver' | 'next') => void;
   doRollDice: () => void;
   doPassTurn: () => void;
   selectPoint: (point: number | null) => void;
@@ -24,6 +38,8 @@ export type GameContextType = {
   doRedo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  /** A cube take-back can branch with a new Double or Roll instead of Redo. */
+  canBranchCubeHistory?: boolean;
   isAnimating: boolean;
   moveAnimation: MoveAnimationFrame | null;
   historyPath: HistoryPathOverlay | null;

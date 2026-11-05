@@ -1,10 +1,12 @@
 import type { GameContextType } from '@/features/game/game-context';
+import type { GameAbandonReason } from '@/features/game/use-game-completed-capture';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useRef, useState } from 'react';
-import { useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { getGuidance, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
+import { useCubeTutor } from '@/features/game/use-cube-tutor';
 import { useGameCompletedCapture } from '@/features/game/use-game-completed-capture';
 import { useGameDiceActions } from '@/features/game/use-game-dice-actions';
 import { useGameLifecycle } from '@/features/game/use-game-lifecycle';
@@ -12,21 +14,29 @@ import { useGameSelectPoint } from '@/features/game/use-game-select-point';
 import { useGameTimeline } from '@/features/game/use-game-timeline';
 import { useGameUndoRedo } from '@/features/game/use-game-undo-redo';
 import { useGameplayHelpers } from '@/features/game/use-gameplay-helpers';
+import { useMoneyCubeHistory } from '@/features/game/use-money-cube-history';
 import { useMoveLog } from '@/features/game/use-move-log';
 import { usePersistActiveGame } from '@/features/game/use-persist-active-game';
 import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timeline';
 import { passTurn } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
+import { acceptDouble, beaverDouble, canOfferDouble, dropDouble, nextMatchGame, offerDouble } from '@/lib/game/match';
 import { loadPersistedGame } from '@/lib/game/persistence';
 
 /* eslint-disable max-lines-per-function -- provider composes all game slices */
 export function useGameProviderValue(active: boolean): GameContextType {
+  const [reviewing, setReviewing] = useState(false);
   const [state, setState] = useState(() => loadPersistedGame());
   const {
     moveLog,
+    cubeEvents,
+    recordCubeEvent,
+    getCubeEvents,
+    replaceCubeEvents,
     replayBaseline,
     recordMove,
     recordNoMove,
@@ -87,9 +97,16 @@ export function useGameProviderValue(active: boolean): GameContextType {
    * Blunder prompt open or a completed turn waiting on its verdict — pause
    * everything. (Hint sessions never pause: the player keeps playing.)
    */
-  const tutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending;
+  const baseTutorPaused = guidance?.kind === 'blunder' || guidanceVerdictPending || reviewing;
+  const { session: cubeTutorSession, run: checkCubeAction, keep: keepCubeDecision, takeBack: takeBackCubeDecision, dismiss: cancelCubeTutor } = useCubeTutor({
+    state,
+    active,
+    blocked: baseTutorPaused || isAnimating,
+    enabled: loadGamePreferences().tutorMode,
+  });
+  const tutorPaused = baseTutorPaused || !!cubeTutorSession;
   const selectPoint = useGameSelectPoint(setState, isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked));
-  const { doUndo, doRedo, canUndo, canRedo, historyPath, clearHistoryPath } = useGameUndoRedo({
+  const { doUndo: undoCheckers, doRedo: redoCheckers, canUndo: canUndoCheckers, canRedo: canRedoCheckers, historyPath, clearHistoryPath } = useGameUndoRedo({
     state,
     getTimeline,
     getMoveLog,
@@ -112,7 +129,45 @@ export function useGameProviderValue(active: boolean): GameContextType {
       state != null && isAwaitingMoveConfirm(state, loadGamePreferences().confirmMove)
     ),
   });
-  const { clearAITimeout, resumeAIScheduling } = useComputerOpponent({
+  const { canUndo: canUndoCube, canRedo: canRedoCube, undo: undoCube, redo: redoCube, reset: resetCubeHistory } = useMoneyCubeHistory({
+    state,
+    active,
+    blocked: isAnimating || tutorPaused,
+    ply: moveLog.length,
+    events: cubeEvents,
+    getEvents: getCubeEvents,
+    replaceEvents: replaceCubeEvents,
+    getState: getMoveState,
+    getTimeline,
+    setTimeline,
+    commitState: commitHistoryState,
+    prepareHistory,
+  });
+  const canUndo = canUndoCheckers || canUndoCube;
+  const canRedo = canRedoCheckers || canRedoCube;
+  const historyBlocked = useRef(false);
+  historyBlocked.current = !active || guidanceVerdictPending || !!cubeTutorSession || reviewing;
+  // The blunder dialog clears its store synchronously before Undo last move.
+  // Read that store live so its explicit retry works within the same React batch.
+  const doUndo = useCallback(() => {
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
+      return;
+    if (!undoCube())
+      undoCheckers();
+  }, [undoCube, undoCheckers]);
+  const doRedo = useCallback(() => {
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
+      return;
+    if (!redoCube())
+      redoCheckers();
+  }, [redoCube, redoCheckers]);
+  const resetForNewSession = useCallback((reason: GameAbandonReason) => {
+    resetCubeHistory();
+    cancelCubeTutor();
+    resetForNewGame(reason);
+  }, [resetCubeHistory, cancelCubeTutor, resetForNewGame]);
+  const computerLevel = useGamePreferences().preferences.computerLevel;
+  const { clearAITimeout, resumeAIScheduling, computerCubeError, retryCubeAnalysis } = useComputerOpponent({
     enabled: active,
     state,
     setState,
@@ -121,19 +176,22 @@ export function useGameProviderValue(active: boolean): GameContextType {
     moveCount: moveLog.length,
     hasRedo: canRedo,
     recordNoMove: handleNoMoveRecorded,
+    recordCubeEvent,
     paused: tutorPaused,
+    level: computerLevel,
   });
   const { doPassTurn, doRollDice } = useGameDiceActions({
     state,
     setState,
     isAnimating,
     recordNoMove: handleNoMoveRecorded,
+    moveCount: moveLog.length,
   });
   const resetAllAnimation = useCallback(() => {
     resetAnimation();
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
-  usePersistActiveGame(state, moveLog, replayBaseline);
+  usePersistActiveGame(state, moveLog, replayBaseline, cubeEvents);
   const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,
     clearAITimeout,
@@ -143,7 +201,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetTimeline,
     clearTimeline,
     setState,
-    onNewGame: resetForNewGame,
+    onNewGame: resetForNewSession,
   });
   useRestoreGameTimeline({ enabled: active, state, timeline, moveLog, replayBaseline, resetTimeline, setTimeline });
   useGameplayHelpers({
@@ -236,7 +294,85 @@ export function useGameProviderValue(active: boolean): GameContextType {
     armAnimationFinish,
   ]);
 
+  const cubeActionEligibility = useRef({ active, isAnimating, canRedo: canRedoCheckers, tutorPaused });
+  cubeActionEligibility.current = { active, isAnimating, canRedo: canRedoCheckers, tutorPaused };
+  const cubeActionStateRef = useRef(state);
+  cubeActionStateRef.current = state;
+  const matchAction = useCallback((action: 'offer' | 'accept' | 'drop' | 'beaver' | 'next') => {
+    const eligibility = cubeActionEligibility.current;
+    if (!eligibility.active || !state?.match || cubeActionStateRef.current !== state || eligibility.isAnimating || eligibility.canRedo || eligibility.tutorPaused)
+      return;
+    if (action === 'next') {
+      const next = nextMatchGame(state);
+      if (next !== state)
+        startFromPosition(next);
+      return;
+    }
+    if (state.mode === 'vs-computer' && (action === 'offer' ? state.currentPlayer !== 'white' : state.match.pendingOffer !== 'black'))
+      return;
+    const next = action === 'offer'
+      ? offerDouble(state, moveLog.length)
+      : action === 'accept' ? acceptDouble(state) : action === 'beaver' ? beaverDouble(state) : dropDouble(state);
+    if (next !== state) {
+      void checkCubeAction(state, action, () => {
+        const latest = cubeActionEligibility.current;
+        if (!latest.active || latest.isAnimating || latest.canRedo || cubeActionStateRef.current !== state)
+          return;
+        cubeActionStateRef.current = next;
+        recordCubeEvent(action, state, next);
+        setState(next);
+      });
+    }
+  }, [state, startFromPosition, moveLog.length, recordCubeEvent, checkCubeAction]);
+
+  // These are the public human entry points. The AI uses playMove directly;
+  // rejecting Black here also protects hint/board callers from playing for it.
+  const humanCanPlay = active && !tutorPaused && !!state && !state.match?.pendingOffer
+    && (state.mode !== 'vs-computer' || state.currentPlayer === 'white');
+  // Tutor guidance retains callbacks across a rewind. Read eligibility and
+  // actions at invocation time so a previously paused render cannot veto replay.
+  const humanActionsRef = useRef({ state, humanCanPlay, canRedo, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint });
+  humanActionsRef.current = { state, humanCanPlay, canRedo: canRedoCheckers, doRollDice, doPassTurn, doMove, doMoveSequence, selectPoint };
+  const humanRoll = useCallback(() => {
+    const latest = humanActionsRef.current;
+    if (!latest.humanCanPlay || latest.canRedo)
+      return;
+    if (latest.state && canOfferDouble(latest.state))
+      void checkCubeAction(latest.state, 'roll', latest.doRollDice);
+    else
+      latest.doRollDice();
+  }, [checkCubeAction]);
+  const humanPass = useCallback(() => {
+    const latest = humanActionsRef.current;
+    if (latest.humanCanPlay && !latest.canRedo)
+      latest.doPassTurn();
+  }, []);
+  const humanMove = useCallback((...args: Parameters<typeof doMove>) => {
+    const latest = humanActionsRef.current;
+    if (latest.humanCanPlay)
+      latest.doMove(...args);
+  }, []);
+  const humanMoveSequence = useCallback((...args: Parameters<typeof doMoveSequence>) => {
+    const latest = humanActionsRef.current;
+    if (latest.humanCanPlay)
+      latest.doMoveSequence(...args);
+  }, []);
+  const humanSelectPoint = useCallback((point: number | null) => {
+    const latest = humanActionsRef.current;
+    if (latest.humanCanPlay)
+      latest.selectPoint(point);
+  }, []);
+
   return {
+    active,
+    cubeTutorSession,
+    computerCubeError,
+    retryCubeAnalysis,
+    keepCubeDecision,
+    takeBackCubeDecision,
+    matchAction,
+    setReviewing,
+    cubeEvents,
     state,
     moveLog,
     replayBaseline,
@@ -244,16 +380,17 @@ export function useGameProviderValue(active: boolean): GameContextType {
     startFromPosition,
     resumeGame,
     resetGame,
-    doRollDice,
-    doPassTurn,
-    selectPoint,
-    doMove,
-    doMoveSequence,
+    doRollDice: humanRoll,
+    doPassTurn: humanPass,
+    selectPoint: humanSelectPoint,
+    doMove: humanMove,
+    doMoveSequence: humanMoveSequence,
     getMoveState,
     doUndo,
     doRedo,
     canUndo,
     canRedo,
+    canBranchCubeHistory: canRedoCube && !canRedoCheckers,
     isAnimating,
     moveAnimation,
     historyPath,

@@ -193,7 +193,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'false'
-      HOME_TEXT: נגד המחשב
+      HOME_TEXT: משחק נגד המחשב
 - openLink: backgammonmastermind.preview://settings
 - scrollUntilVisible:
     element:

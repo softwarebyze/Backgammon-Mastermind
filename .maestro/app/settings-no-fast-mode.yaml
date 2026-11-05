@@ -8,7 +8,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - tapOn:
     id: open-settings-button
 - extendedWaitUntil:
@@ -16,15 +16,14 @@ tags:
     timeout: 20000
 - scrollUntilVisible:
     element:
+      text: Auto-move when forced
+    direction: DOWN
+- assertVisible: Auto-roll dice
+- assertNotVisible: Fast computer
+# The computer level and dice pickers sit below the toggles.
+- scrollUntilVisible:
+    element:
       text: Dice display
     direction: DOWN
 - assertNotVisible: Fast computer
-# The dice-order row makes this section taller on short phones. Bring the
-# preferences back into view before asserting their visibility.
-- scrollUntilVisible:
-    element:
-      text: Auto-roll dice
-    direction: UP
-- assertVisible: Auto-roll dice
-- assertVisible: Auto-move when forced
 - takeScreenshot: settings-no-fast-mode

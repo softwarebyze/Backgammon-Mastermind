@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
+import { FeedbackHeaderButton } from '@/components/navigation/feedback-header-button';
 import { languageScreenLayout } from '@/lib/i18n';
 import {
   homeScreenOptions,
@@ -33,21 +33,35 @@ export default function AppLayout() {
     >
       <Stack.Screen
         name="index"
-        options={{
-          ...homeScreenOptions,
-          headerRight: () => <SettingsHeaderButton />,
-        }}
+        options={homeScreenOptions}
       />
       <Stack.Screen
         name="settings"
         options={{
           ...settingsStackOptions(t('settings.title')),
           ...stackEscapeHeaderOptions(),
+          headerRight: () => <FeedbackHeaderButton />,
+        }}
+      />
+      <Stack.Screen
+        name="feedback"
+        options={{
+          ...settingsStackOptions(t('feedback.title')),
+          ...stackEscapeHeaderOptions(),
+          headerLargeTitle: false,
         }}
       />
       <Stack.Screen
         name="language"
         options={pickerFormSheetOptions(t('settings.language'))}
+      />
+      <Stack.Screen
+        name="position"
+        options={{
+          ...settingsStackOptions(t('positions.title')),
+          ...stackEscapeHeaderOptions(),
+          headerLargeTitle: false,
+        }}
       />
       <Stack.Screen
         name="developer"
