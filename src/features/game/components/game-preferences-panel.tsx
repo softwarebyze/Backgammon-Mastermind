@@ -5,6 +5,7 @@ import { ComputerLevelPicker } from '@/features/game/components/computer-level-p
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
 import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
+import { DiceOrderIcon } from '@/features/game/components/settings-ui/dice-order-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
@@ -27,6 +28,7 @@ type Props = {
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
   onTutorModeChange: (value: boolean) => void;
+  onMoveInDiceOrderChange: (value: boolean) => void;
   onConfirmMoveChange: (value: boolean) => void;
   onComputerLevelChange: (level: GamePreferences['computerLevel']) => void;
   showHints?: boolean;
@@ -44,6 +46,7 @@ export function GamePreferencesPanel({
   onTutorModeChange,
   onConfirmMoveChange,
   onComputerLevelChange,
+  onMoveInDiceOrderChange,
   showHints = false,
 }: Props) {
   return (
@@ -120,6 +123,8 @@ export function GamePreferencesPanel({
         />
       </View>
 
+      <DiceOrderCard value={preferences.moveInDiceOrder} onChange={onMoveInDiceOrderChange} showHints={showHints} />
+
       <View style={[styles.diceCard, styles.levelCard]}>
         <Text style={styles.sectionLabel}>{translate('game.computer_level.title')}</Text>
         <ComputerLevelPicker value={preferences.computerLevel} onChange={onComputerLevelChange} testIDPrefix="setting-computer-level" />
@@ -132,6 +137,22 @@ export function GamePreferencesPanel({
           onChange={onDiceDisplayStyleChange}
         />
       </View>
+    </View>
+  );
+}
+
+/** "Move in dice order": tap a checker to play the leading die; tap the dice to swap. */
+function DiceOrderCard({ value, onChange, showHints }: { value: boolean; onChange: (value: boolean) => void; showHints: boolean }) {
+  return (
+    <View style={styles.card}>
+      <SettingToggleRow
+        icon={<DiceOrderIcon size={32} active={value} />}
+        label={translate('game.preferences.move_in_dice_order')}
+        hint={showHints ? translate('game.preferences.move_in_dice_order_hint') : undefined}
+        value={value}
+        onChange={onChange}
+        testID="setting-toggle-dice-order"
+      />
     </View>
   );
 }

@@ -38,6 +38,7 @@
       "cancel_a11y": "Selectie annuleren",
       "confirm_move": "Zet bevestigen",
       "confirm_move_a11y": "Zet bevestigen en beurt beëindigen",
+      "dice_order_a11y": "Dobbelstenen: {{first}}, dan {{second}}",
       "leave_game_a11y": "Verlaat het spel en keer terug naar huis",
       "loading": "Laden...",
       "new_game_message": "Een nieuw spel starten?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Dobbelstenen gooien",
       "save_position_a11y": "Deze stelling opslaan",
       "start_new_game_a11y": "Nieuw spel starten",
+      "swap_dice": "Dobbelstenen wisselen",
+      "swap_dice_hint": "Wisselt welke dobbelsteen eerst wordt gespeeld.",
       "undo_a11y": "Verplaatsen ongedaan maken",
       "undo_move": "Ongedaan maken"
     },
@@ -112,6 +115,7 @@
       "rules": "Je kunt de inzet verdubbelen voordat je gooit."
     },
     "nudge": {
+      "dice_order": "Geen geldige zet voor deze schijf.",
       "roll_first": "Gooi eerst de dobbelstenen"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Hoefijzerpad op het bord",
       "move_hints": "Zethints",
       "move_hints_hint": "Markeert de nummers van de punten waarvan je kunt zetten",
+      "move_in_dice_order": "Verplaatsen in dobbelsteenvolgorde",
+      "move_in_dice_order_hint": "Tik op een schijf om de eerste ongebruikte dobbelsteen voorrang te geven, of de andere te gebruiken als dat mag. Wissel de dobbelstenen om de voorkeur te wijzigen.",
       "point_numbers": "Puntnummers",
       "point_numbers_hint": "Labels 1–24 op het bord tonen",
       "section_automation": "Automatisering",

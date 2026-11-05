@@ -38,6 +38,7 @@
       "cancel_a11y": "キャンセル選択",
       "confirm_move": "手を確定",
       "confirm_move_a11y": "手を確定してターンを終了",
+      "dice_order_a11y": "サイコロ: {{first}}、次に {{second}}",
       "leave_game_a11y": "ゲームを離れ、帰宅",
       "loading": "ローディング...",
       "new_game_message": "新しいゲームを始めますか？",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "サイコロを振る",
       "save_position_a11y": "この局面を保存",
       "start_new_game_a11y": "新しいゲームを始める",
+      "swap_dice": "サイコロを入れ替え",
+      "swap_dice_hint": "先に使うサイコロを入れ替えます。",
       "undo_a11y": "Undo 移動",
       "undo_move": "取り消す"
     },
@@ -112,6 +115,7 @@
       "rules": "ダイスを振る前に、得点の倍増を提案できます。"
     },
     "nudge": {
+      "dice_order": "この駒は動かせません。",
       "roll_first": "先にサイコロを振ってください"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "ボード上に馬蹄形の経路を表示",
       "move_hints": "ムーブヒント",
       "move_hints_hint": "動かせるポイントの番号を強調表示します",
+      "move_in_dice_order": "サイコロ順に移動",
+      "move_in_dice_order_hint": "駒をタップすると先頭の未使用のサイコロを優先し、使えなければ合法なもう一方を使います。サイコロを入れ替えると優先順が変わります。",
       "point_numbers": "ポイント番号",
       "point_numbers_hint": "ボードに1〜24のラベルを表示",
       "section_automation": "自動化",

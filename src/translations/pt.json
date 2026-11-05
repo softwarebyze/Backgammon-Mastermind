@@ -38,6 +38,7 @@
       "cancel_a11y": "Cancelar seleção",
       "confirm_move": "Confirmar jogada",
       "confirm_move_a11y": "Confirmar a jogada e terminar o turno",
+      "dice_order_a11y": "Dados: {{first}}, depois {{second}}",
       "leave_game_a11y": "Deixe o jogo e volte para casa",
       "loading": "Carregando...",
       "new_game_message": "Começar um novo jogo?",
@@ -50,6 +51,8 @@
       "roll_dice_a11y": "Lançar os dados",
       "save_position_a11y": "Salvar esta posição",
       "start_new_game_a11y": "Iniciar um novo jogo",
+      "swap_dice": "Trocar dados",
+      "swap_dice_hint": "Troca qual dado é jogado primeiro.",
       "undo_a11y": "Desfazer a jogada",
       "undo_move": "Desfazer"
     },
@@ -112,6 +115,7 @@
       "rules": "Você pode dobrar a aposta antes de lançar os dados."
     },
     "nudge": {
+      "dice_order": "Esta peça não tem jogada legal.",
       "roll_first": "Lance os dados primeiro"
     },
     "opening": {
@@ -157,6 +161,8 @@
       "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
       "move_hints": "Dicas de movimento",
       "move_hints_hint": "Destaca os números das casas de onde você pode mover",
+      "move_in_dice_order": "Mover na ordem dos dados",
+      "move_in_dice_order_hint": "Toque numa peça para dar preferência ao primeiro dado não utilizado, ou usar o outro se for legal. Troque os dados para mudar a preferência.",
       "point_numbers": "Números das casas",
       "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
       "section_automation": "Automação",

@@ -6,6 +6,23 @@ import { buildMoveAnimationFrame } from '@/features/game/move-animation';
 import { applyMove, getLegalMoves } from '@/lib/game';
 import { shouldDeferTurnEnd } from '@/lib/game-preferences/confirm-move';
 
+/** Revalidate geometry and die identity without substituting another legal die. */
+export function resolveLegalMove(snapshot: GameState, move: Move, plannedDice = snapshot.remainingDice): Move | undefined {
+  const candidates = getLegalMoves(snapshot).filter(m => m.from === move.from && m.to === move.to);
+  if (move.die != null) {
+    return candidates.find(m => m.die === move.die);
+  }
+  // Legacy callers may provide only an index. Prefer the live index, but allow
+  // a stored sequence's original index after earlier steps shrink the dice.
+  if (!Number.isInteger(move.dieIndex) || move.dieIndex < 0) {
+    return undefined;
+  }
+  const liveDie = snapshot.remainingDice[move.dieIndex];
+  const plannedDie = plannedDice[move.dieIndex];
+  return candidates.find(m => m.die === liveDie)
+    ?? candidates.find(m => m.die === plannedDie);
+}
+
 export type PlayMoveOpts = {
   fromAnchor?: PointAnchor;
   onComplete?: (next: GameState) => void;
@@ -53,7 +70,7 @@ export function createPlayMove(opts: {
       }
       settled = true;
       finishOnceRef.current = null;
-      const legal = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
+      const legal = resolveLegalMove(snapshot, move);
       if (!legal) {
         setMoveAnimation(null);
         playOpts?.onComplete?.(snapshot);
@@ -71,7 +88,7 @@ export function createPlayMove(opts: {
     finishOnceRef.current = settle;
     // Immediate audio feedback: play the move's SFX now, not at landing.
     // applyMove is pure, so the preview matches what settle will commit.
-    const legalPreview = getLegalMoves(snapshot).find(m => m.from === move.from && m.to === move.to);
+    const legalPreview = resolveLegalMove(snapshot, move);
     if (legalPreview) {
       const previewOpts = shouldDeferTurnEnd(snapshot) ? { deferTurnEnd: true } : undefined;
       onMoveStarted?.(snapshot, legalPreview, applyMove(snapshot, legalPreview, previewOpts));

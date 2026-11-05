@@ -94,6 +94,7 @@ describe('gameplay setting properties', () => {
       pref_tutor_mode: false,
       pref_confirm_move: true,
       pref_computer_level: 'medium',
+      pref_move_in_dice_order: false,
       pref_tutor_strictness: 'big',
     });
   });
