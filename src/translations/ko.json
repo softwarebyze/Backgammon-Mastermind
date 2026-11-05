@@ -54,7 +54,8 @@
       "swap_dice": "주사위 순서 바꾸기",
       "swap_dice_hint": "먼저 사용할 주사위를 바꿉니다.",
       "undo_a11y": "수 되돌리기",
-      "undo_move": "되돌리기"
+      "undo_move": "되돌리기",
+      "undo_turn_a11y": "이번 차례의 수 모두 되돌리기"
     },
     "cube_tutor": {
       "best": "최선: {{choice}}",

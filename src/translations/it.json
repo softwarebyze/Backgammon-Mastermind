@@ -54,7 +54,8 @@
       "swap_dice": "Scambia dadi",
       "swap_dice_hint": "Cambia quale dado si gioca per primo.",
       "undo_a11y": "Annulla la mossa",
-      "undo_move": "Annulla"
+      "undo_move": "Annulla",
+      "undo_turn_a11y": "Annulla tutte le mosse del turno"
     },
     "cube_tutor": {
       "best": "Il migliore: {{choice}}",

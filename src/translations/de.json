@@ -54,7 +54,8 @@
       "swap_dice": "Würfel tauschen",
       "swap_dice_hint": "Tauscht, welcher Würfel zuerst gespielt wird.",
       "undo_a11y": "Zug zurücknehmen",
-      "undo_move": "Zurück"
+      "undo_move": "Zurück",
+      "undo_turn_a11y": "Alle Züge dieser Runde zurücknehmen"
     },
     "cube_tutor": {
       "best": "Am besten: {{choice}}",

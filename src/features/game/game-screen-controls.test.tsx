@@ -3,6 +3,7 @@ import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 
+import { GameContext } from './game-context';
 import { GameScreenControls } from './game-screen-controls';
 import { AUTO_ROLL_BUTTON_GRACE_MS } from './roll-button-timing';
 
@@ -151,6 +152,40 @@ describe('confirm move bar', () => {
     expect(screen.getByText('No legal moves…')).toBeOnTheScreen();
     expect(screen.queryByText(/end your turn/)).toBeNull();
     expect(screen.queryByText(/Move your/)).toBeNull();
+  });
+
+  it('offers Undo all (button and long-press Undo) once the turn has two moves', () => {
+    mockPrefs.confirmMove = true;
+    const state = awaitingConfirmState();
+    const doUndoTurn = jest.fn();
+    const onUndoMove = jest.fn();
+    const controls = (canUndoTurn: boolean) => (
+      // Only the undo-all slice of the context is read by the confirm bar.
+      <GameContext value={{ canUndoTurn, doUndoTurn } as unknown as React.ContextType<typeof GameContext>}>
+        <GameScreenControls
+          state={state}
+          liveDiceState={state}
+          isHumanTurn
+          isComputerTurn={false}
+          moveLogLength={2}
+          onRoll={jest.fn()}
+          onReset={jest.fn()}
+          onConfirmMove={jest.fn()}
+          onUndoMove={onUndoMove}
+          canUndoMove
+        />
+      </GameContext>
+    );
+
+    const { rerender } = setup(controls(false));
+    expect(screen.queryByTestId('undo-turn-button')).toBeNull();
+
+    rerender(controls(true));
+    fireEvent.press(screen.getByLabelText('Undo all moves this turn'));
+    expect(doUndoTurn).toHaveBeenCalledTimes(1);
+    fireEvent(screen.getByTestId('undo-move-button'), 'longPress');
+    expect(doUndoTurn).toHaveBeenCalledTimes(2);
+    expect(onUndoMove).not.toHaveBeenCalled();
   });
 
   it('does not render the confirm bar when confirm is off', () => {

@@ -151,6 +151,67 @@ describe('provider confirm move on', () => {
   });
 });
 
+describe('provider confirm move: undo all', () => {
+  /** Run the take-back's chained reverse slides to the end. */
+  function finishAllAnimations(result: { current: Provider }) {
+    let guard = 0;
+    while (result.current.moveAnimation && guard++ < 12) {
+      finishAnimation(result);
+    }
+  }
+
+  it('rewinds the whole held turn to the rolled position, and redo replays it', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    act(() => {
+      result.current.startGame('vs-human');
+    });
+    playOpening(result);
+    const turnStart = result.current.state!;
+    const logAtStart = result.current.moveLog.length;
+
+    spendAllDice(result);
+    const played = result.current.moveLog.length - logAtStart;
+    expect(played).toBeGreaterThanOrEqual(2);
+    expect(result.current.canUndoTurn).toBe(true);
+
+    act(() => {
+      result.current.doUndoTurn!();
+    });
+    finishAllAnimations(result);
+
+    const after = result.current.state!;
+    expect(result.current.moveLog.length).toBe(logAtStart);
+    expect(after.phase).toBe('moving');
+    expect(after.currentPlayer).toBe(turnStart.currentPlayer);
+    expect(after.remainingDice).toEqual(turnStart.remainingDice);
+    expect(after.points).toEqual(turnStart.points);
+    expect(result.current.canUndoTurn).toBe(false);
+    expect(result.current.isAnimating).toBe(false);
+
+    // Every undone move went onto the redo stack.
+    expect(result.current.canRedo).toBe(true);
+    for (let i = 0; i < played; i++) {
+      act(() => {
+        result.current.doRedo();
+      });
+      finishAnimation(result);
+    }
+    expect(result.current.moveLog.length).toBe(logAtStart + played);
+    expect(result.current.state?.remainingDice).toEqual([]);
+  });
+
+  it('is not offered after a single move', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    act(() => {
+      result.current.startGame('vs-human');
+    });
+    playOpening(result);
+    expect(result.current.canUndoTurn).toBe(false);
+    moveFirstLegal(result);
+    expect(result.current.canUndoTurn).toBe(false);
+  });
+});
+
 describe('provider confirm move off', () => {
   it('auto-ends the turn after the last checker move', () => {
     loadPrefs.mockReturnValue({ ...DEFAULT_GAME_PREFERENCES, confirmMove: false, autoRoll: false });

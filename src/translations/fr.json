@@ -54,7 +54,8 @@
       "swap_dice": "Inverser les dés",
       "swap_dice_hint": "Change le dé joué en premier.",
       "undo_a11y": "Annuler le coup",
-      "undo_move": "Annuler"
+      "undo_move": "Annuler",
+      "undo_turn_a11y": "Annuler tous les coups de ce tour"
     },
     "cube_tutor": {
       "best": "Le mieux : {{choice}}",

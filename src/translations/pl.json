@@ -54,7 +54,8 @@
       "swap_dice": "Zamień kości",
       "swap_dice_hint": "Zmienia, która kość jest grana jako pierwsza.",
       "undo_a11y": "Cofnij ruch",
-      "undo_move": "Cofnij"
+      "undo_move": "Cofnij",
+      "undo_turn_a11y": "Cofnij wszystkie ruchy w tej turze"
     },
     "cube_tutor": {
       "best": "Najlepiej: {{choice}}",

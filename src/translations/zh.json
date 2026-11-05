@@ -54,7 +54,8 @@
       "swap_dice": "交换骰子",
       "swap_dice_hint": "交换先使用的骰子。",
       "undo_a11y": "撤销这步",
-      "undo_move": "撤销"
+      "undo_move": "撤销",
+      "undo_turn_a11y": "撤销本回合所有步"
     },
     "cube_tutor": {
       "best": "最佳：{{choice}}",

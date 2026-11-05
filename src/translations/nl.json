@@ -54,7 +54,8 @@
       "swap_dice": "Dobbelstenen wisselen",
       "swap_dice_hint": "Wisselt welke dobbelsteen eerst wordt gespeeld.",
       "undo_a11y": "Zet ongedaan maken",
-      "undo_move": "Terug"
+      "undo_move": "Terug",
+      "undo_turn_a11y": "Alle zetten van deze beurt ongedaan maken"
     },
     "cube_tutor": {
       "best": "Het beste: {{choice}}",

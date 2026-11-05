@@ -9,6 +9,7 @@ import {
   buildUndoHistoryStep,
   countTrailingNoMoves,
   hasUndoableHumanMove,
+  isHumanHistoryStep,
   redoInstant,
   undoMany,
 } from '@/features/game/timeline-history-actions';
@@ -17,7 +18,7 @@ import {
   canUndoTimeline,
   peekRedoMove,
 } from '@/lib/game/game-timeline';
-import { isNoMoveLogEntry } from '@/lib/game/move-log';
+import { groupMoveLogByTurn, isNoMoveLogEntry } from '@/lib/game/move-log';
 
 type HistoryAnimCtx = {
   timeline: GameTimeline;
@@ -70,6 +71,31 @@ export function canUndoHistory({ timeline, moveLog, state, gameMode: mode }: {
   const count = countTrailingAutoRewound(moveLog, mode) + 1;
   return count <= moveLog.length && count <= timeline.cursor
     && timeline.cursor - count >= (state?.match?.undoFloor ?? 0);
+}
+
+/**
+ * Plies "Undo all" rewinds: the trailing turn, when it belongs to the player
+ * on move and holds at least two real checker moves (one move is plain Undo).
+ * Blocked-roll plies inside the turn ride along. 0 = nothing to rewind.
+ */
+export function countUndoableTurnPlies({ timeline, moveLog, state, gameMode: mode }: {
+  timeline: GameTimeline | null;
+  moveLog: MoveLogEntry[];
+  state: GameState | null;
+  gameMode: GameState['mode'] | undefined;
+}): number {
+  if (!timeline || !state || state.match?.pendingOffer || moveLog.length === 0)
+    return 0;
+  const turn = groupMoveLogByTurn(moveLog).at(-1);
+  if (!turn || turn.player !== state.currentPlayer || !isHumanHistoryStep(mode, turn.moves[0]))
+    return 0;
+  const plies = turn.moves.length;
+  const realMoves = turn.moves.filter(entry => !isNoMoveLogEntry(entry)).length;
+  if (realMoves < 2 || plies > timeline.cursor
+    || timeline.cursor - plies < (state.match?.undoFloor ?? 0)) {
+    return 0;
+  }
+  return plies;
 }
 
 export function runAnimatedUndo(ctx: HistoryAnimCtx): boolean {
