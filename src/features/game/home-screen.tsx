@@ -250,6 +250,7 @@ export function HomeScreen() {
                   {resumeCard}
                   {reviewCard}
                 </View>
+                <GetAppLink />
                 {showRecovery && (
                   <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
                 )}
@@ -259,6 +260,7 @@ export function HomeScreen() {
           : (
               <View style={[styles.panel, dense && styles.panelShort, { width: panelWidth }]}>
                 {brand}
+                <GetAppLink />
                 {showRecovery && (
                   <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
                 )}
@@ -269,7 +271,6 @@ export function HomeScreen() {
               </View>
             )}
       </ScrollView>
-      <GetAppLink top={insets.top + 8} />
     </>
   );
 }

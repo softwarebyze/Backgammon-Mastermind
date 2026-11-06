@@ -4,7 +4,7 @@ import { Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-nati
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
-import { translate, useLayoutIsRTL } from '@/lib/i18n';
+import { translate } from '@/lib/i18n';
 import { getItem, setItem } from '@/lib/storage';
 import { interFont } from '@/lib/ui/fonts';
 import { storeLinksForUserAgent } from './web-store-target';
@@ -18,12 +18,11 @@ function webStoreLinks() {
 }
 
 /**
- * Web only: a small "Get the app" pill in Home's top corner, opposite the gear
- * (#350). It floats, so it never changes Home's fit or the board. Dismissing
- * it hides it for good; Settings keeps the same links.
+ * Web only: a small "Get the app" pill under Home's logo and title (#350, #351).
+ * It sits in the layout (not over the brand or gear) so the v1.2.0 Home header
+ * stays readable. Dismissing it hides it for good; Settings keeps the same links.
  */
-export function GetAppLink({ top }: { top: number }) {
-  const isRTL = useLayoutIsRTL();
+export function GetAppLink() {
   const [dismissed, setDismissed] = useState(() => getItem<boolean>(DISMISSED_KEY) === true);
   const [links] = useState(webStoreLinks);
   if (dismissed || links.length === 0)
@@ -31,10 +30,7 @@ export function GetAppLink({ top }: { top: number }) {
 
   const single = links.length === 1 ? links[0] : null;
   return (
-    <View
-      testID="get-app-link"
-      style={[styles.pill, { top, [isRTL ? 'right' : 'left']: 8 }]}
-    >
+    <View testID="get-app-link" style={styles.pill}>
       <Pressable
         accessibilityRole="link"
         accessibilityLabel={translate('get_app.title')}
@@ -75,10 +71,10 @@ export function GetAppLink({ top }: { top: number }) {
 
 const styles = StyleSheet.create({
   pill: {
-    position: 'absolute',
-    zIndex: 10,
+    alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
+    maxWidth: '100%',
     minHeight: 32,
     paddingStart: 10,
     paddingEnd: 4,
@@ -93,8 +89,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     paddingVertical: 6,
+    flexShrink: 1,
   },
   label: {
+    flexShrink: 1,
     fontSize: 12,
     color: GAME_PALETTE.accent,
     ...interFont('semibold'),
