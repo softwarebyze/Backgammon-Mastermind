@@ -18,11 +18,12 @@ function webStoreLinks() {
 }
 
 /**
- * Web only: a small "Get the app" pill under Home's logo and title (#350, #351).
- * It sits in the layout (not over the brand or gear) so the v1.2.0 Home header
- * stays readable. Dismissing it hides it for good; Settings keeps the same links.
+ * Web only: a small "Get the app" pill on Home (#350, #351).
+ * Portrait: under the logo and title. Short landscape: in the brand row so it
+ * does not push Start / Learn / Setup off-screen. Dismissing hides it for good;
+ * Settings keeps the same links.
  */
-export function GetAppLink() {
+export function GetAppLink({ inline = false }: { inline?: boolean } = {}) {
   const [dismissed, setDismissed] = useState(() => getItem<boolean>(DISMISSED_KEY) === true);
   const [links] = useState(webStoreLinks);
   if (dismissed || links.length === 0)
@@ -30,7 +31,7 @@ export function GetAppLink() {
 
   const single = links.length === 1 ? links[0] : null;
   return (
-    <View testID="get-app-link" style={styles.pill}>
+    <View testID="get-app-link" style={[styles.pill, inline ? styles.pillInline : styles.pillStacked]}>
       <Pressable
         accessibilityRole="link"
         accessibilityLabel={translate('get_app.title')}
@@ -71,10 +72,8 @@ export function GetAppLink() {
 
 const styles = StyleSheet.create({
   pill: {
-    alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    maxWidth: '100%',
     minHeight: 32,
     paddingStart: 10,
     paddingEnd: 4,
@@ -83,6 +82,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: GAME_PALETTE.surfaceBorder,
     backgroundColor: GAME_PALETTE.surface,
+  },
+  pillStacked: {
+    alignSelf: 'flex-start',
+    maxWidth: '100%',
+  },
+  // Brand-row placement on short landscape Home: stay on one line, don't grow.
+  pillInline: {
+    alignSelf: 'center',
+    flexGrow: 0,
+    flexShrink: 0,
   },
   main: {
     flexDirection: 'row',
