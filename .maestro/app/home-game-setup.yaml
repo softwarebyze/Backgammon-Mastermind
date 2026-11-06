@@ -26,10 +26,16 @@ tags:
     visible:
       id: game-board-slot
     timeout: 45000
-# The single-game board has no redundant format heading.
+# The single-game board has no match chrome and no doubling cube.
 - assertNotVisible:
     id: match-score
 - assertNotVisible: 'Match to.*'
+- assertNotVisible:
+    id: match-double
+- assertNotVisible:
+    id: match-cube
+- assertNotVisible:
+    id: board-cube-slot
 - takeScreenshot: home-setup-vs-human-single-started
 - runFlow:
     file: ../utils/launch-app.yaml
@@ -117,6 +123,14 @@ tags:
     visible:
       id: game-board-slot
     timeout: 45000
+- assertNotVisible:
+    id: match-score
+- assertNotVisible:
+    id: match-double
+- assertNotVisible:
+    id: match-cube
+- assertNotVisible:
+    id: board-cube-slot
 - takeScreenshot: home-setup-vs-computer-single-started
 - runFlow:
     file: ../utils/launch-app.yaml
