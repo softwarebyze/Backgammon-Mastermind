@@ -99,6 +99,19 @@ describe('guidance modal question', () => {
     expect(screen.queryByTestId('guidance-modal')).toBeNull();
   });
 
+  it('fades the backdrop and grows the dialog in instead of popping it', () => {
+    renderQuestion();
+    const flat = (testID: string) => StyleSheet.flatten(screen.getByTestId(testID).props.style);
+    expect(flat('guidance-modal-backdrop')).toMatchObject({ animationDuration: '200ms' });
+    expect(flat('guidance-modal')).toMatchObject({
+      animationDuration: '220ms',
+      animationName: {
+        from: { opacity: 0, transform: [{ scale: 0.96 }] },
+        to: { opacity: 1, transform: [{ scale: 1 }] },
+      },
+    });
+  });
+
   it('question view explains the mistake without revealing the answer', () => {
     renderQuestion();
 
