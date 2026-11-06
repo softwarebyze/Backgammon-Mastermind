@@ -49,6 +49,7 @@ it('offers one opponent choice and a clear default single-game start', () => {
   expect(screen.getByTestId('home-opponent-vs-computer').props.accessibilityState).toEqual({ checked: true });
   expect(screen.getByTestId('home-format-single').props.accessibilityState).toEqual({ checked: true });
   expect(screen.queryByTestId('home-match-length-3')).toBeNull();
+  expect(screen.getByTestId('home-doubling-cube').props.value).toBe(false);
   expect(useGame().startGame).not.toHaveBeenCalled();
   fireEvent.press(screen.getByRole('button', { name: 'Start game' }));
   expect(useGame().startGame).toHaveBeenCalledWith('vs-computer');
@@ -74,6 +75,7 @@ it.each(['vs-human', 'vs-computer'] as const)('starts a %s single game only afte
   fireEvent.press(screen.getByTestId('home-match-length-5'));
   fireEvent.press(screen.getByTestId('home-format-single'));
   expect(screen.queryByTestId('home-match-length-5')).toBeNull();
+  expect(screen.getByTestId('home-doubling-cube').props.value).toBe(false);
   expect(useGame().startGame).not.toHaveBeenCalled();
   expect(useGame().startFromPosition).not.toHaveBeenCalled();
   fireEvent.press(screen.getByTestId('home-start-game'));
@@ -235,7 +237,43 @@ it('fits a match on a 320x480 phone: the length row goes without its label', () 
 it('starts a cubeless single game with no match target', () => {
   render(<HomeScreen />);
   fireEvent.press(screen.getByTestId('home-format-single'));
+  expect(screen.getByTestId('home-doubling-cube').props.value).toBe(false);
   fireEvent.press(screen.getByTestId('home-start-game'));
   expect(useGame().startGame).toHaveBeenCalledWith('vs-computer');
   expect(useGame().startFromPosition).not.toHaveBeenCalled();
+});
+
+it('starts a money game when Single doubling cube is turned on', () => {
+  render(<HomeScreen />);
+  fireEvent.press(screen.getByTestId('home-format-single'));
+  fireEvent(screen.getByTestId('home-doubling-cube'), 'valueChange', true);
+  expect(screen.getByTestId('home-doubling-cube').props.value).toBe(true);
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-computer', true));
+  expect(useGame().startGame).not.toHaveBeenCalled();
+});
+
+it('hides the doubling-cube switch on Match and shows it again on Single', () => {
+  render(<HomeScreen />);
+  expect(screen.getByTestId('home-doubling-cube')).toBeTruthy();
+  fireEvent.press(screen.getByTestId('home-format-match'));
+  expect(screen.queryByTestId('home-doubling-cube')).toBeNull();
+  expect(screen.getByTestId('home-crawford')).toBeTruthy();
+  fireEvent.press(screen.getByTestId('home-format-single'));
+  expect(screen.getByTestId('home-doubling-cube')).toBeTruthy();
+});
+
+it('keeps the doubling-cube switch above Start in landscape Single', () => {
+  const { useLayoutMetrics } = jest.requireMock('@/lib/ui/layout-metrics');
+  const portrait = jest.mocked(useLayoutMetrics).getMockImplementation();
+  jest.mocked(useLayoutMetrics).mockReturnValue({ insets: { left: 0, right: 0, bottom: 0 }, landscape: true });
+  const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 667, height: 280, scale: 2, fontScale: 1 });
+  render(<HomeScreen />);
+  expect(screen.getByTestId('home-format-single').props.accessibilityState).toEqual({ checked: true });
+  expect(screen.getByTestId('home-doubling-cube').props.value).toBe(false);
+  fireEvent(screen.getByTestId('home-doubling-cube'), 'valueChange', true);
+  fireEvent.press(screen.getByTestId('home-start-game'));
+  expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-computer', true));
+  dims.mockRestore();
+  jest.mocked(useLayoutMetrics).mockImplementation(portrait);
 });

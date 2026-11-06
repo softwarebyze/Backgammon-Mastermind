@@ -15,6 +15,8 @@ tags:
     id: home-format-single
 - assertNotVisible:
     id: home-match-length-3
+- assertVisible:
+    id: home-doubling-cube
 - scrollUntilVisible:
     element:
       id: home-start-game
@@ -235,3 +237,35 @@ tags:
     visible: Match to 5 · Game 1
     timeout: 45000
 - takeScreenshot: home-setup-original-match-preserved
+# Opt-in money game: Single with Doubling cube on shows Double and the board cube.
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- tapOn:
+    id: home-opponent-vs-human
+- tapOn:
+    id: home-format-single
+- assertVisible:
+    id: home-doubling-cube
+- tapOn:
+    id: home-doubling-cube
+- scrollUntilVisible:
+    element:
+      id: home-start-game
+    direction: DOWN
+- takeScreenshot: home-setup-money-cube-selection
+- tapOn:
+    id: home-start-game
+- extendedWaitUntil:
+    visible:
+      id: game-board-slot
+    timeout: 45000
+- assertNotVisible:
+    id: match-score
+- assertVisible:
+    id: match-double
+- assertVisible:
+    id: board-cube-slot
+- takeScreenshot: home-setup-money-cube-started

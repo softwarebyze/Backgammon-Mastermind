@@ -24,7 +24,9 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
   const [format, setFormat] = useState<'single' | 'match'>('single');
   const [length, setLength] = useState(3);
   const [crawford, setCrawford] = useState(true);
-  const matchProps = { format, length, crawford, onFormatChange: setFormat, onLengthChange: setLength, onCrawfordChange: setCrawford };
+  // Per visit only: a money game with the cube is opt-in from Single.
+  const [doublingCube, setDoublingCube] = useState(false);
+  const matchProps = { format, length, crawford, doublingCube, onFormatChange: setFormat, onLengthChange: setLength, onCrawfordChange: setCrawford, onDoublingCubeChange: setDoublingCube };
   const { preferences, setComputerLevel } = useGamePreferences();
   const opponentChoice = (
     <HomeSetupChoice
@@ -50,7 +52,7 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
     <HoverPressable
       testID="home-start-game"
       accessibilityRole="button"
-      onPress={() => onStart(mode, format === 'match' ? length : null, crawford && length > 1)}
+      onPress={() => onStart(mode, format === 'match' ? length : doublingCube ? 0 : null, crawford && length > 1)}
       style={({ pressed, hovered }) => [styles.start, (columns || tight) && styles.startColumns, hovered && styles.hovered, pressed && styles.pressed]}
     >
       <Text style={styles.startText}>
