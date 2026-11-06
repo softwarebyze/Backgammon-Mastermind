@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.backgammonmastermind",
+      "sha256_cert_fingerprints": [
+        "AB:E3:34:5F:E3:DA:19:49:91:8A:C6:2C:73:19:69:2B:93:C8:A5:6A:F1:A3:C0:5A:E6:B9:85:AB:8D:28:C8:5B"
+      ]
+    }
+  }
+]

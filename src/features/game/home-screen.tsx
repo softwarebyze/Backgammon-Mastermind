@@ -25,6 +25,8 @@ import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { SavedGameRecoveryBanner } from '@/features/game/saved-game-recovery-banner';
 import { useGame } from '@/features/game/use-game';
 import { useWebVisibleHeight } from '@/features/game/use-web-visible-height';
+import { GetAppLink } from '@/features/get-app/get-app-link';
+import { homeGetAppInlineInBrand } from '@/features/get-app/home-get-app-placement';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
@@ -160,10 +162,14 @@ export function HomeScreen() {
   // the match details and Start on the right, so Start is always on screen (#346).
   const split = landscape && height < 520;
   const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, width - 48);
+  // Short landscape: keep the Get-the-app pill in the brand row (title … gear
+  // has ~500px free) so it does not push Start / Learn / Setup off-screen (#351).
+  // Portrait keeps it under the logo and title.
   const brand = (
     <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
       <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
       <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
+      {homeGetAppInlineInBrand(landscape, height) ? <GetAppLink inline /> : null}
     </View>
   );
   const resumeCard = canResume
@@ -258,6 +264,7 @@ export function HomeScreen() {
           : (
               <View style={[styles.panel, dense && styles.panelShort, { width: panelWidth }]}>
                 {brand}
+                <GetAppLink />
                 {showRecovery && (
                   <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
                 )}

@@ -27,6 +27,8 @@ export default function Root({ children }: { children: React.ReactNode }) {
         />
         <title>{APP_TITLE}</title>
         <meta name="description" content={APP_DESCRIPTION} />
+        {/* Safari Smart App Banner (#350); public/index.html also points app-argument at the current route. */}
+        <meta name="apple-itunes-app" content="app-id=6792138473, app-argument=https://backgammon-mastermind.vercel.app/" />
         <link rel="icon" type="image/png" href={FAVICON_PNG_PATH} />
         <link rel="icon" type="image/x-icon" href={FAVICON_ICO_PATH} />
         <link rel="apple-touch-icon" sizes="180x180" href={APPLE_TOUCH_ICON_PATH} />

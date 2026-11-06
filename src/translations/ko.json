@@ -324,6 +324,12 @@
       "you_played": "내가 둔 수:"
     }
   },
+  "get_app": {
+    "app_store": "App Store",
+    "dismiss": "숨기기",
+    "google_play": "Google Play",
+    "title": "앱 받기"
+  },
   "home": {
     "confirm_cancel": "취소",
     "confirm_continue": "계속하기",

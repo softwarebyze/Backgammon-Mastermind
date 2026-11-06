@@ -1,6 +1,5 @@
 import Env from 'env';
 import { router } from 'expo-router';
-import { usePostHog } from 'posthog-react-native';
 import { useCallback } from 'react';
 import { Alert, Platform, StyleSheet } from 'react-native';
 
@@ -10,12 +9,11 @@ import {
   ScrollView,
   View,
 } from '@/components/ui';
-import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { Github, Website } from '@/components/ui/icons';
+import { GetAppSettingsSection } from '@/features/get-app/get-app-settings-section';
 import {
   APP_LINKS,
   openExternalUrl,
-  openStoreListing,
-  shareApp,
 } from '@/lib/app-links';
 import { translate } from '@/lib/i18n';
 import { SETTINGS_MAX_WIDTH } from '@/lib/ui/game-chrome';
@@ -25,11 +23,11 @@ import { GameSettingsSection } from './components/game-settings-section';
 import { LanguageItem } from './components/language-item';
 import { SettingsContainer } from './components/settings-container';
 import { SettingsItem } from './components/settings-item';
+import { SettingsSupportSection } from './components/settings-support-section';
 import { DeveloperItem } from './developer-item';
 import { isDeveloperToolsEnabled } from './developer-tools-gate';
 
 export function SettingsScreen() {
-  const posthog = usePostHog();
   const { insets } = useLayoutMetrics();
   const iconColor = colors.neutral[400];
 
@@ -57,6 +55,8 @@ export function SettingsScreen() {
         ]}
       >
         <View className="px-4" style={styles.page}>
+          {Platform.OS === 'web' ? <GetAppSettingsSection /> : null}
+
           <SettingsContainer title="settings.general">
             <LanguageItem />
             <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
@@ -75,34 +75,7 @@ export function SettingsScreen() {
             />
           </SettingsContainer>
 
-          <SettingsContainer title="settings.support_us">
-            <SettingsItem
-              text="settings.share"
-              icon={<Share color={iconColor} />}
-              onPress={() => {
-                posthog.capture('app_share_initiated');
-                runExternalAction(shareApp);
-              }}
-            />
-            <SettingsItem
-              text="settings.rate"
-              icon={<Rate color={iconColor} />}
-              onPress={() => {
-                posthog.capture('rate_app_initiated');
-                runExternalAction(openStoreListing);
-              }}
-            />
-            <SettingsItem
-              text="settings.support"
-              icon={<Support color={iconColor} />}
-              testID="settings-feedback"
-              onPress={() => {
-                posthog.capture('support_opened');
-                // The feedback form mails support too, with device details filled in.
-                router.push('/feedback');
-              }}
-            />
-          </SettingsContainer>
+          <SettingsSupportSection runExternalAction={runExternalAction} />
 
           <SettingsContainer title="settings.links">
             <SettingsItem
