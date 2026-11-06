@@ -1,12 +1,14 @@
 import type { GameState } from '@/lib/game';
 import { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
+import { Text } from '@/components/ui/scaled-text';
 import { CubeHintButton } from '@/features/game/components/cube-hint-button';
 import { controlButtonStyles } from '@/features/game/control-buttons';
 import { useGame } from '@/features/game/use-game';
 import { canBeaver, canOfferDouble } from '@/lib/game/match';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 
 export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerTurn }: { state: GameState; onRoll: () => void; onReset: () => void; isHumanTurn: boolean; isComputerTurn: boolean }) {
   const { matchAction, isAnimating, canRedo, canBranchCubeHistory } = useGame();
@@ -36,7 +38,7 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
         onPress={onPress}
         style={({ pressed, hovered }) => [secondary ? controlButtonStyles.secondary : controlButtonStyles.primary, styles.button, hovered && styles.hover, (pressed || blocked) && styles.dim]}
       >
-        <Text style={secondary ? controlButtonStyles.secondaryText : controlButtonStyles.primaryText} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>{label}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={secondary ? controlButtonStyles.secondaryText : controlButtonStyles.primaryText} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>{label}</Text>
       </HoverPressable>
     );
   };

@@ -1,11 +1,13 @@
 import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
 import type { TxKeyPath } from '@/lib/i18n';
 import * as React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+
 import { hapticSelection } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { DieFacePreview } from './die-face-preview';
 
@@ -22,7 +24,7 @@ const OPTIONS: Array<{ id: DiceDisplayStyle; labelKey: TxKeyPath }> = [
 export function DiceStylePicker({ value, onChange }: Props) {
   return (
     <View style={styles.wrap}>
-      <Text style={styles.sectionLabel}>{translate('game.preferences.dice_display')}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.sectionLabel}>{translate('game.preferences.dice_display')}</Text>
       <View style={styles.row}>
         {OPTIONS.map((opt) => {
           const label = translate(opt.labelKey);
@@ -42,7 +44,7 @@ export function DiceStylePicker({ value, onChange }: Props) {
                 <View style={[styles.radio, value === opt.id && styles.radioSelected]}>
                   {value === opt.id && <View style={styles.radioDot} />}
                 </View>
-                <Text style={[styles.cardLabel, value === opt.id && styles.cardLabelSelected]}>
+                <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={[styles.cardLabel, value === opt.id && styles.cardLabelSelected]}>
                   {label}
                 </Text>
               </View>

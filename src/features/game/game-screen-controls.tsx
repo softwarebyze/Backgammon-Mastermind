@@ -2,12 +2,13 @@ import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
 import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
-import { DiceDisplay } from '@/features/game/components/board/dice-display';
+import { Text } from '@/components/ui/scaled-text';
 
+import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { HintButton } from '@/features/game/components/hint-button';
+
 import { MatchControls } from '@/features/game/components/match-controls';
 import { controlButtonStyles } from '@/features/game/control-buttons';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -21,6 +22,7 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { getActionCaption, getTurnDisplay } from '@/lib/game/turn-display';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
@@ -179,7 +181,7 @@ export function GameScreenControls({
       {hideCaption || (compact && isReviewing)
         ? null
         : (
-            <Text style={[styles.caption, compact && styles.captionCompact]} numberOfLines={2} testID="game-action-caption" accessibilityLiveRegion="polite">
+            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.caption, compact && styles.captionCompact]} numberOfLines={2} testID="game-action-caption" accessibilityLiveRegion="polite">
               {isReviewing ? caption : matchCaption(state) ?? caption}
             </Text>
           )}
@@ -255,7 +257,7 @@ function ActionControl({
         onPress={onGoLive}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.review.back_to_live')}</Text>
       </HoverPressable>
     );
   }
@@ -274,7 +276,7 @@ function ActionControl({
         onPress={onReset}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.controls.play_again')}</Text>
       </HoverPressable>
     );
   }
@@ -295,7 +297,7 @@ function ActionControl({
         onPress={onRoll}
         hitSlop={CONTROL_HIT_SLOP}
       >
-        <Text style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.primaryBtnText}>{translate('game.controls.roll_dice')}</Text>
       </HoverPressable>
     );
   }
@@ -355,7 +357,7 @@ function ActionControl({
           onCancelSelection();
         }}
       >
-        <Text style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.secondaryBtnText}>{translate('game.controls.cancel')}</Text>
       </HoverPressable>
     );
   }
@@ -404,7 +406,7 @@ function ConfirmMoveBar({
         {compact
           ? <Feather name="rotate-ccw" size={20} color={canUndo ? GAME_PALETTE.accent : GAME_PALETTE.textMuted} />
           : (
-              <Text style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
+              <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.undoBtnText, !canUndo && styles.undoBtnTextDisabled]}>
                 {translate('game.controls.undo_move')}
               </Text>
             )}
@@ -423,7 +425,7 @@ function ConfirmMoveBar({
         hitSlop={CONTROL_HIT_SLOP}
       >
         <Feather name="check" size={18} color={GAME_PALETTE.controlInk} />
-        <Text style={[styles.primaryBtnText, compact && styles.confirmTextCompact]} numberOfLines={1}>{translate('game.controls.confirm_move')}</Text>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.primaryBtnText, compact && styles.confirmTextCompact]} numberOfLines={1}>{translate('game.controls.confirm_move')}</Text>
       </HoverPressable>
     </View>
   );
@@ -432,7 +434,7 @@ function ConfirmMoveBar({
 function StatusPlaceholder({ text }: { text: string }) {
   return (
     <View style={styles.statusSlot} pointerEvents="none">
-      <Text style={styles.statusText}>{text}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.statusText}>{text}</Text>
     </View>
   );
 }

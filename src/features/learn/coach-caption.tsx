@@ -2,11 +2,13 @@ import type { StrategyKey } from '@/features/game/strategy';
 import type { LessonFeedback } from '@/features/learn/use-lesson-session';
 import type { TxKeyPath } from '@/lib/i18n';
 
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { DoublingCubeFace } from '@/features/game/components/doubling-cube-face';
 import { StrategyMark } from '@/features/game/components/strategy-icon';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -35,7 +37,14 @@ function feedbackKey(feedback: LessonFeedback): number {
   return key;
 }
 
+/** Below this window height the caption shares a phone-sized screen with the board. */
+const SHORT_SCREEN_HEIGHT = 700;
+
 export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact = false, strategy, cube }: Props) {
+  // On short screens 2× copy squeezes the board and scrolls mid-sentence, so
+  // the step text grows only as far as the title.
+  const { height } = useWindowDimensions();
+  const bodyCap = height < SHORT_SCREEN_HEIGHT ? FONT_SCALE_CAP.control : FONT_SCALE_CAP.body;
   const feedbackColor
     = feedback?.tone === 'praise'
       ? '#A0D080'
@@ -45,7 +54,7 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
 
   return (
     <View style={[styles.root, compact && styles.rootCompact]}>
-      <Text style={styles.stepLabel}>{stepLabel}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={styles.stepLabel}>{stepLabel}</Text>
       <View style={styles.titleRow}>
         {strategy
           ? (
@@ -62,11 +71,11 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
               </View>
             )
           : null}
-        <Text accessibilityRole="header" style={[styles.title, compact && styles.titleCompact]}>
+        <Text accessibilityRole="header" maxFontSizeMultiplier={FONT_SCALE_CAP.control} style={[styles.title, compact && styles.titleCompact]}>
           {translate(titleKey as TxKeyPath)}
         </Text>
       </View>
-      <Text style={[styles.body, compact && styles.bodyCompact]}>{translate(bodyKey as TxKeyPath)}</Text>
+      <Text maxFontSizeMultiplier={bodyCap} style={[styles.body, compact && styles.bodyCompact]}>{translate(bodyKey as TxKeyPath)}</Text>
       {/* react-native-web's announceForAccessibility does nothing, so on web
           the feedback sits in a live region; native already announces it. */}
       <View testID="learn-feedback-live" accessibilityLiveRegion={Platform.OS === 'web' ? 'polite' : undefined}>
@@ -75,6 +84,7 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
               <Text
                 key={feedbackKey(feedback)}
                 testID="learn-feedback"
+                maxFontSizeMultiplier={bodyCap}
                 style={[styles.feedback, { color: feedbackColor }]}
               >
                 {translate(feedback.messageKey, feedback.messageOptions)}

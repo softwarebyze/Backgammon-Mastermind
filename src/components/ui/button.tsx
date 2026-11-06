@@ -2,8 +2,10 @@
 import type { PressableProps, View } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
 import * as React from 'react';
-import { ActivityIndicator, Pressable, Text } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 import { tv } from 'tailwind-variants';
+import { Text } from '@/components/ui/scaled-text';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 
 const button = tv({
   slots: {
@@ -123,6 +125,7 @@ export function Button({ ref, label: text, loading = false, variant = 'default',
                   )
                 : (
                     <Text
+                      maxFontSizeMultiplier={FONT_SCALE_CAP.control}
                       testID={testID ? `${testID}-label` : undefined}
                       className={styles.label({ className: textClassName })}
                     >

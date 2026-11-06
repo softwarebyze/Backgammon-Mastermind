@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+
+import { Text } from '@/components/ui/scaled-text';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';

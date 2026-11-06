@@ -1,6 +1,7 @@
 import type { ConfirmOptions } from '@/lib/confirm';
 import { useCallback, useEffect, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { registerConfirmHandler } from '@/lib/confirm';

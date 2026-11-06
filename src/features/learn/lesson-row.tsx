@@ -1,7 +1,8 @@
 import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonDefinition } from '@/lib/learn/curriculum';
 import Feather from '@expo/vector-icons/Feather';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';

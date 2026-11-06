@@ -5,18 +5,11 @@ import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
 
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { HoverPressable } from '@/components/ui/hover-pressable';
+import { Text } from '@/components/ui/scaled-text';
 import { showErrorMessage } from '@/components/ui/utils';
 import { HomeGameSetup } from '@/features/game/components/home-game-setup';
 import { HOME_INK } from '@/features/game/components/home-ink';
@@ -46,6 +39,7 @@ import {
   completedLessonCount,
   isReadyToPlay,
 } from '@/lib/learn/progress';
+import { FONT_SCALE_CAP, useTextScale } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { GAME_CHROME_MAX_WIDTH } from '@/lib/ui/game-chrome';
 import { contentEdgePadding, useLayoutMetrics } from '@/lib/ui/layout-metrics';
@@ -82,7 +76,10 @@ export function HomeScreen() {
   // cards without their second line, so every button fits without scrolling (#346).
   const short = !landscape && height < 700;
   // Same for a phone held sideways: one-line cards and tighter gaps.
-  const dense = short || (landscape && height < 400);
+  // Large system text (#262) needs the room a short screen does.
+  const textScale = useTextScale();
+  const largeText = !landscape && textScale >= 1.5;
+  const dense = short || largeText || (landscape && height < 400);
   // Very short phones (320x480): slimmer tiles and tighter setup, so a match still fits.
   const tiny = !landscape && height < 520;
   const topSpace = insets.top + (landscape || short ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
@@ -163,7 +160,7 @@ export function HomeScreen() {
   const brand = (
     <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
       <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
-      <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
     </View>
   );
   const resumeCard = canResume

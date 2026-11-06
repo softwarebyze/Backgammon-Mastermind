@@ -2,17 +2,19 @@ import type { ReactNode } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 import type { GameState, Player } from '@/lib/game';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { AnimatedNumber } from '@/components/ui/animated-number';
-
+import { Text } from '@/components/ui/scaled-text';
 import { CheckerToken } from '@/features/game/components/board/checker-token';
+
 import { StrategyChip } from '@/features/game/components/strategy-chip';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { classifyStrategy } from '@/features/game/strategy';
 import { calculatePipCount } from '@/lib/game';
 import { getActingPlayer } from '@/lib/game/turn-display';
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 import { playerDisplayName, playerStripStatus } from './player-strip-copy';
@@ -73,6 +75,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
     ? (
         <Animated.View key={status} entering={FadeIn.duration(180)}>
           <Text
+            maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
             style={[styles.status, won && styles.statusWon, !turnStatus && styles.statusIdle]}
             numberOfLines={1}
             testID={`player-status-${player}`}
@@ -96,7 +99,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
         <CheckerToken player={player} size={TOKEN_SIZE} />
       </View>
       <View style={styles.copy}>
-        <Text style={[styles.name, !active && styles.nameIdle]} numberOfLines={1}>
+        <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.name, !active && styles.nameIdle]} numberOfLines={1}>
           {name}
         </Text>
         {tight ? null : statusText}
@@ -147,7 +150,7 @@ function PipCount({ player, pips, off, active, label, inline }: {
   return (
     <View style={inline ? styles.scoreInline : styles.score} accessible accessibilityLabel={label} testID={`pip-count-${player}`}>
       <AnimatedNumber value={pips} style={[styles.pips, inline && styles.pipsInline, !active && styles.pipsIdle]} />
-      <Text style={styles.scoreLabel} numberOfLines={1}>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.scoreLabel} numberOfLines={1}>
         {off > 0
           ? `${off} ${translate('game.status.off_short')}`
           : translate('game.players.pips')}
@@ -160,8 +163,8 @@ function PipCount({ player, pips, off, active, label, inline }: {
 function MatchScore({ score, length, player, showLength }: { score: number; length: number; player: Player; showLength: boolean }) {
   return (
     <View style={[styles.matchScore, !showLength && styles.matchScoreNarrow]} testID={`match-score-${player}`} accessible accessibilityLabel={translate('game.players.match_score_a11y', { score, length })}>
-      <Text style={styles.matchScoreValue}>{score}</Text>
-      {showLength ? <Text style={styles.scoreLabel}>{translate('game.players.match_to', { length })}</Text> : null}
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.matchScoreValue}>{score}</Text>
+      {showLength ? <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.scoreLabel}>{translate('game.players.match_to', { length })}</Text> : null}
     </View>
   );
 }
