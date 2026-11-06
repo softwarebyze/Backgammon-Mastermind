@@ -4,9 +4,33 @@
     "heading": "Something went wrong",
     "retry": "Retry"
   },
+  "feedback": {
+    "body_label": "Details",
+    "body_placeholder": "What happened, or what would make the app better?",
+    "email_instead": "Email instead, to attach a screenshot",
+    "error": "Couldn't open your mail app. Email us at {{email}}.",
+    "intro": "Found a bug or have an idea? Tell us — every note gets read.",
+    "open_a11y": "Send feedback",
+    "privacy": "Sent to the developer with your app version, device and language.",
+    "send": "Send",
+    "sent": "Thanks for the feedback!",
+    "settings_row": "Send feedback",
+    "subject_label": "Title",
+    "subject_placeholder": "What's it about?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selected — tap a highlighted point, or Cancel"
+    },
+    "computer_level": {
+      "a11y": "Computer level: {{level}}",
+      "easy": "Easy",
+      "expert": "Expert",
+      "hard": "Hard",
+      "hint": "Easy makes the mistakes a beginner would. Expert always plays the engine's best move.",
+      "medium": "Medium",
+      "title": "Computer level"
     },
     "controls": {
       "bear_off_a11y": "Bear off",
@@ -14,6 +38,7 @@
       "cancel_a11y": "Cancel selection",
       "confirm_move": "Confirm move",
       "confirm_move_a11y": "Confirm move and end your turn",
+      "dice_order_a11y": "Dice: {{first}}, then {{second}}",
       "leave_game_a11y": "Leave game and return home",
       "loading": "Loading…",
       "new_game_message": "Start a new game?",
@@ -26,6 +51,8 @@
       "roll_dice_a11y": "Roll dice",
       "save_position_a11y": "Save this position",
       "start_new_game_a11y": "Start new game",
+      "swap_dice": "Swap dice",
+      "swap_dice_hint": "Swaps which die is played first.",
       "undo_a11y": "Undo move",
       "undo_move": "Undo"
     },
@@ -88,6 +115,7 @@
       "rules": "You can double the stakes before rolling."
     },
     "nudge": {
+      "dice_order": "No legal move for this checker.",
       "roll_first": "Roll the dice first"
     },
     "opening": {
@@ -133,6 +161,8 @@
       "direction_overlay_hint": "Horseshoe path on the board",
       "move_hints": "Move hints",
       "move_hints_hint": "Highlights the numbers of the points you can move from",
+      "move_in_dice_order": "Move in dice order",
+      "move_in_dice_order_hint": "Tap a checker to prefer the leading unspent die, or use the other die if legal. Swap dice to change the preference.",
       "point_numbers": "Point numbers",
       "point_numbers_hint": "Show 1–24 labels on the board",
       "section_automation": "Automation",
@@ -175,7 +205,7 @@
       "bar_short": "Bar",
       "bar_white_many": "{{checkers}} white checkers",
       "bar_white_one": "{{checkers}} white checker",
-      "black_wins": "Black Wins",
+      "black_wins": "🏆 Black Wins!",
       "computer_wins": "Computer Wins",
       "off_short": "off",
       "pips_a11y": "{{player}}: {{pips}} pips, {{off}} of 15 borne off",
@@ -341,7 +371,7 @@
       "move_progress": "Nice — {{done}} of {{needed}} moves done."
     },
     "graduation": {
-      "body": "You know the goal, the board, how turns work, hitting, and bearing off. A quick check — then your first real game.",
+      "body": "You know the goal, the board, how turns work, hitting, bearing off, the pip count and the main game plans. A quick check — then your first real game.",
       "play_cta": "Play your first game",
       "quiz_done": "Nailed it. Time to play.",
       "quiz_title": "Quick check",
@@ -351,6 +381,10 @@
       "recap_3": "Hit blots → they sit on the bar",
       "recap_4": "Bear off only from your home board",
       "recap_5": "Games start with one die each — higher goes first (ties re-roll)",
+      "recap_6": "Pip count: the lower count is ahead in the race",
+      "recap_7": "Pick a plan: race, attack, prime or hold",
+      "recap_8": "The cube doubles the stakes: take or pass when you're doubled",
+      "recap_9": "Matches go to a set score; no doubling in the Crawford game",
       "title": "You’re ready to play"
     },
     "hint": "Hint",
@@ -361,6 +395,28 @@
     "home_cta_sub": "Interactive lessons for beginners",
     "lesson_complete": "Lesson complete!",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Stuck? Tap Hint to see the engine's best move drawn on the board. Before you roll, it also tells you whether to double, and when you're doubled, whether to take or pass.",
+            "title": "Hint"
+          },
+          "history": {
+            "body": "Undo takes back a move during your turn. The history under the board steps through every turn of the game. With Tutor mode on, it also marks your errors: ?! a slip, ? a mistake, ?? a big blunder.",
+            "title": "Undo and history"
+          },
+          "levels": {
+            "body": "Against the computer, pick Easy, Medium, Hard or Expert on Home. To practise a position, use Set up a position on Home: place the checkers, dice and cube, then play from there.",
+            "title": "Computer level and your own positions"
+          },
+          "tutor": {
+            "body": "Turn on Tutor mode in Settings and the engine checks each move and cube decision. After a mistake you can take it back and try again, keep your choice, or turn the tutor off.",
+            "title": "Tutor mode"
+          }
+        },
+        "subtitle": "Hints, Tutor mode, undo and more",
+        "title": "Tools in the app"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -400,6 +456,32 @@
         },
         "subtitle": "Which way you move",
         "title": "Direction & setup"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "If you bear off all 15 before your opponent bears off any, it's a gammon: the game scores twice the cube. If they still have a checker on the bar or in your home board, like black here, it's a backgammon: three times.",
+            "title": "Gammons count double"
+          },
+          "offer": {
+            "body": "Before you roll, if you're well ahead you can double instead: tap Double. The stakes go up to 2, and your opponent must answer right away. Here white leads the race by a lot, a good time to double.",
+            "title": "Offer a double"
+          },
+          "own": {
+            "body": "Whoever takes owns the cube, and only they can double again later, to 4, then 8. Owning it is an advantage: your opponent can't double you out of the game.",
+            "title": "Owning the cube"
+          },
+          "take_pass": {
+            "body": "When you're doubled, Pass loses the game now at the current stakes. Take plays on for twice the stakes. A good rule: take if you'll still win at least 1 game in 4.",
+            "title": "Take or pass"
+          },
+          "what": {
+            "body": "Every game has a doubling cube. It starts in the middle at 1, and its face then shows 64, the highest value. A game is worth the cube's value: win and you score that many points.",
+            "title": "The doubling cube"
+          }
+        },
+        "subtitle": "Raise the stakes: double, take or pass",
+        "title": "The doubling cube"
       },
       "goal_board": {
         "steps": {
@@ -441,6 +523,28 @@
         },
         "subtitle": "Contact play",
         "title": "Hitting & the bar"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "When a player first gets within one point of winning, the next game is the Crawford game: nobody can double, and the cube is greyed out. After that game, doubling is back.",
+            "title": "The Crawford rule"
+          },
+          "dead_cube": {
+            "body": "Late in a match a double can be pointless: if winning this game already wins you the match, doubling adds nothing. The app then offers only Roll Dice and tells you why.",
+            "title": "When the cube can't help"
+          },
+          "start": {
+            "body": "On Home, choose Match, pick the length and whether to use the Crawford rule, then start. Matches work against the computer and against a friend on the same device.",
+            "title": "Start a match"
+          },
+          "what": {
+            "body": "A match is played to a set score: 3, 5, 7 points or more. Each game adds its value to the winner's score, the cube times two for a gammon. The first to reach the target wins the match.",
+            "title": "Playing a match"
+          }
+        },
+        "subtitle": "Play to a target score, with the Crawford rule",
+        "title": "Match play"
       },
       "moving_dice": {
         "steps": {
@@ -490,13 +594,18 @@
           }
         },
         "subtitle": "Learn to read who's winning the race",
-        "title": "Pip Count: The Race Score"
+        "title": "Pip count: the race score"
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "You're far behind, so you hold two deep anchors in your opponent's home board — here the 22- and 24-points. Keep your own home board strong and wait for a late shot. It's a last resort: it can also lose big."
+          },
           "blitz": {
-            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar.",
-            "title": "Blitz"
+            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar."
+          },
+          "holding": {
+            "body": "You're behind in the race, but you hold an anchor in your opponent's home board — here the 20-point. Keep it, stay safe, and wait for a shot as their checkers come home past it."
           },
           "identify": {
             "body": "This is a priming game. Tap any point that's part of the white prime — the wall of consecutive made points blocking black.",
@@ -505,19 +614,16 @@
             "title": "Spot the prime"
           },
           "prime": {
-            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it.",
-            "title": "Priming Game"
+            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it."
           },
           "running": {
-            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board.",
-            "title": "Running Game"
+            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board."
           }
         },
         "subtitle": "Recognize classic game plans",
-        "title": "Game Strategies"
+        "title": "Game plans"
       }
     },
-    "locked": "Complete the previous lesson first",
     "next_lesson": "Next lesson",
     "quiz": {
       "bar": {
@@ -537,6 +643,18 @@
         "b": "A single checker on a point — it can be hit",
         "c": "Two or more checkers on a point — a made point",
         "prompt": "What is a blot?"
+      },
+      "crawford": {
+        "a": "Nobody can double",
+        "b": "Gammons don't count",
+        "c": "The cube starts at 2",
+        "prompt": "What is special about the Crawford game?"
+      },
+      "cube_pass": {
+        "a": "You play on for twice the stakes",
+        "b": "You lose the game at the current stakes",
+        "c": "The cube goes back to the middle",
+        "prompt": "You're doubled and you pass. What happens?"
       },
       "pip_ahead": {
         "a": "Your opponent, with the higher count",
@@ -656,7 +774,7 @@
     "english": "English",
     "game": "Game",
     "general": "General",
-    "github": "Github",
+    "github": "GitHub",
     "language": "Language",
     "link_error_body": "Please try again later.",
     "link_error_title": "Unable to open link",

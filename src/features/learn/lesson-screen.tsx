@@ -1,12 +1,13 @@
 import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonId } from '@/lib/learn/curriculum';
+import type { LearnProgress } from '@/lib/learn/progress';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { FocusAwareStatusBar } from '@/components/ui';
 
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/scaled-text';
+import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -17,13 +18,15 @@ import {
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
 import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
+import { lessonShowsPointNumbers } from '@/features/learn/lesson-point-numbers';
+import { useAnnounceFeedback } from '@/features/learn/use-announce-feedback';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
-import { getLesson, getNextLessonId } from '@/lib/learn/curriculum';
-import { isLastStepComplete } from '@/lib/learn/progress';
+import { getLesson } from '@/lib/learn/curriculum';
+import { isLastStepComplete, nextAfterLesson } from '@/lib/learn/progress';
 import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
@@ -37,7 +40,7 @@ type Props = {
 export function LessonScreen({ lessonId }: Props) {
   const lesson = getLesson(lessonId);
   const navigation = useNavigation();
-  const { completeLesson, startLearning } = useLearnProgress();
+  const { progress, completeLesson, startLearning } = useLearnProgress();
   const { preferences } = useGamePreferences();
 
   useEffect(() => {
@@ -67,6 +70,7 @@ export function LessonScreen({ lessonId }: Props) {
       lesson={lesson}
       lessonId={lessonId}
       completeLesson={completeLesson}
+      progress={progress}
       diceDisplayStyle={preferences.diceDisplayStyle}
     />
   );
@@ -77,17 +81,21 @@ function LessonScreenBody({
   lesson,
   lessonId,
   completeLesson,
+  progress,
   diceDisplayStyle,
 }: {
   lesson: NonNullable<ReturnType<typeof getLesson>>;
   lessonId: LessonId;
   completeLesson: (id: LessonId) => void;
+  progress: LearnProgress;
   diceDisplayStyle: 'numbers' | 'dots';
 }) {
   const session = useLessonSession(lesson);
+  useAnnounceFeedback(session.feedback);
   const posthog = usePostHog();
   const { insets, landscape, chromeWidth, boardPaneWidth, boardMaxWidth, stageMaxWidth } = useLayoutMetrics();
-  const showPointNumbers = session.aids?.showPointNumbers ?? false;
+  const { preferences } = useGamePreferences();
+  const showPointNumbers = lessonShowsPointNumbers(session.aids, preferences.showPointNumbers);
   const { onTopLayout, onControlsLayout, onSlotLayout, captionMaxHeight } = usePublishBoardSlot({
     reviewHeight: 0,
     minBoardHeight: landscape ? 0 : MIN_LEARN_BOARD_SLOT_HEIGHT,
@@ -131,20 +139,12 @@ function LessonScreenBody({
     if (session.stepIndex >= session.totalSteps - 1) {
       hapticLight();
       completeLesson(lessonId);
-      const next = getNextLessonId(lessonId);
-      if (next === 'graduation') {
-        router.replace('/learn/graduation');
-        return;
-      }
-      if (next) {
-        router.replace(`/learn/${next}`);
-        return;
-      }
-      router.replace('/learn');
+      const next = nextAfterLesson(progress, lessonId);
+      router.replace(next === 'graduation' ? '/learn/graduation' : `/learn/${next}`);
       return;
     }
     session.advance();
-  }, [completeLesson, lessonId, posthog, session]);
+  }, [completeLesson, lessonId, posthog, progress, session]);
 
   const awaitingBoardAction
     = !session.stepComplete
@@ -162,7 +162,7 @@ function LessonScreenBody({
     goNext();
   }, [awaitingBoardAction, goNext, session]);
 
-  const nextLessonId = getNextLessonId(lessonId);
+  const nextLessonId = nextAfterLesson(progress, lessonId);
   const ctaKind = learnPrimaryCtaKind({
     awaitingBoardAction,
     stepComplete: session.stepComplete,
@@ -179,6 +179,8 @@ function LessonScreenBody({
     <CoachCaption
       titleKey={session.step.titleKey}
       bodyKey={session.step.bodyKey}
+      strategy={session.step.strategy}
+      cube={session.step.cube}
       feedback={session.feedback}
       stepLabel={translate('learn.step_progress', {
         current: session.stepIndex + 1,
@@ -304,6 +306,7 @@ function LessonScreenBody({
               aidsOverride={session.aids}
               emphasisPoints={session.emphasisPoints}
               emphasisBar={session.emphasisBar}
+              exactTaps={session.exactTaps}
             />
           </View>
         </View>

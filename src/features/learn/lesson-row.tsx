@@ -12,24 +12,21 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 type Props = {
   lesson: LessonDefinition;
   completed: boolean;
-  unlocked: boolean;
   onPress: () => void;
 };
 
-export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
+export function LessonRow({ lesson, completed, onPress }: Props) {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityState={{ disabled: !unlocked }}
+      testID={`learn-lesson-${lesson.id}`}
       accessibilityLabel={completed
         ? `${translate(lesson.titleKey as TxKeyPath)}, ${translate('learn.replay')}`
         : translate(lesson.titleKey as TxKeyPath)}
       accessibilityHint={completed ? translate('learn.replay') : undefined}
-      disabled={!unlocked}
       style={({ pressed }) => [
         styles.lessonRow,
-        !unlocked && styles.lessonLocked,
-        pressed && unlocked && styles.pressed,
+        pressed && styles.pressed,
       ]}
       onPress={onPress}
     >
@@ -43,15 +40,13 @@ export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
           {translate(lesson.titleKey as TxKeyPath)}
         </Text>
         <Text style={styles.lessonSub}>
-          {unlocked
-            ? translate(lesson.subtitleKey as TxKeyPath)
-            : translate('learn.locked')}
+          {translate(lesson.subtitleKey as TxKeyPath)}
         </Text>
       </View>
       <Feather
         name={completed ? 'refresh-cw' : 'chevron-right'}
         size={18}
-        color={unlocked ? GAME_PALETTE.accent : GAME_PALETTE.textMuted}
+        color={GAME_PALETTE.accent}
       />
     </Pressable>
   );
@@ -68,9 +63,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: GAME_PALETTE.surfaceBorder,
     ...continuousRadius(14),
-  },
-  lessonLocked: {
-    opacity: 0.55,
   },
   badge: {
     width: 28,

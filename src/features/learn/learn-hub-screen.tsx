@@ -14,7 +14,6 @@ import { enableBeginnerGameAids } from '@/lib/game-preferences/beginner-aids';
 import { hapticLight, hapticSelection } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import {
-  isLessonUnlocked,
   LESSON_IDS,
   LESSONS,
 } from '@/lib/learn/curriculum';
@@ -94,13 +93,11 @@ export function LearnHubScreen() {
         <View style={[styles.list, landscape ? styles.listLandscape : null]}>
           {LESSONS.map((lesson) => {
             const completed = progress.completedLessons.includes(lesson.id);
-            const unlocked = isLessonUnlocked(lesson.id, progress.completedLessons);
             return (
               <View key={lesson.id} style={landscape ? styles.lessonCell : null}>
                 <LessonRow
                   lesson={lesson}
                   completed={completed}
-                  unlocked={unlocked}
                   onPress={() => {
                     hapticLight();
                     startLearning();

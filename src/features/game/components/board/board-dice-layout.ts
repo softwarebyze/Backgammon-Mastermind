@@ -13,6 +13,17 @@ export type BoardDice = {
   opening: OpeningTray | null;
   displayStyle: DiceDisplayStyle;
   animateRoll: boolean;
+  /**
+   * "Move in dice order": the dice are shown leading die first (`dice` is
+   * already in shown order) and tapping them swaps the order. Absent when the
+   * setting is off or the board is in review.
+   */
+  diceOrder?: {
+    leadingRTL: boolean;
+    /** Two different unspent dice on the player's own turn. */
+    canSwap: boolean;
+    onSwap: () => void;
+  };
 };
 
 /**
