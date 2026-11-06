@@ -1,3 +1,6 @@
+import type { ComputerLevel } from '@/lib/game/computer-level';
+import { DEFAULT_COMPUTER_LEVEL, isComputerLevel } from '@/lib/game/computer-level';
+
 export type DiceDisplayStyle = 'numbers' | 'dots';
 
 export type GamePreferences = {
@@ -13,6 +16,10 @@ export type GamePreferences = {
   tutorMode: boolean;
   /** Ask before ending a human turn so the player can review or undo. Default on. */
   confirmMove: boolean;
+  /** How strong the computer opponent plays. */
+  computerLevel: ComputerLevel;
+  /** Tap a checker to spend the leading displayed unspent die. Default off. */
+  moveInDiceOrder: boolean;
 };
 
 export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
@@ -25,6 +32,8 @@ export const DEFAULT_GAME_PREFERENCES: GamePreferences = {
   soundEnabled: true,
   tutorMode: false,
   confirmMove: true,
+  computerLevel: DEFAULT_COMPUTER_LEVEL,
+  moveInDiceOrder: false,
 };
 
 const IMPLICIT_OFF_KEYS = [
@@ -84,4 +93,12 @@ export function migrateConfirmMoveDefault(
     return { prefs: { ...stored, confirmMove: true }, didMigrate: true };
   }
   return { prefs: stored, didMigrate: false };
+}
+
+/** A level a later build added, or a corrupt value, falls back to the default. */
+export function dropUnknownComputerLevel<T extends Partial<GamePreferences>>(stored: T | null): T | null {
+  if (!stored || stored.computerLevel === undefined || isComputerLevel(stored.computerLevel))
+    return stored;
+  const { computerLevel: _unknown, ...rest } = stored;
+  return rest as T;
 }

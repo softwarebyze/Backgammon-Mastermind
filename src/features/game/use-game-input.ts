@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react';
 
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useBoardPlayInput } from '@/features/game/use-board-play-input';
+import { useDiceOrder } from '@/features/game/use-dice-order';
 import { useGame } from '@/features/game/use-game';
 
 /** Haptics throw on Android emulators and some devices — never block gameplay. */
@@ -16,8 +17,9 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
   const posthog = usePostHog();
   const { active = true, state, doRollDice, doPassTurn, selectPoint, doMove, doMoveSequence, resetGame, isAnimating, moveAnimation, getMoveState } = useGame();
 
-  const isHumanTurn = !!state
-    && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
+  const { enabled: moveInDiceOrder, displayedDice, reversedRef, swapDice } = useDiceOrder(state);
+
+  const isHumanTurn = !!state && !(state.mode === 'vs-computer' && state.currentPlayer === 'black');
 
   const actions = useMemo(
     () => ({ selectPoint, doMove, doMoveSequence, getMoveState }),
@@ -49,6 +51,8 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
     state,
     isAnimating: isAnimating && (!moveAnimation?.committed || !!moveAnimation.inputBlocked),
     concurrentMoves: true,
+    moveInDiceOrder,
+    diceOrderReversed: reversedRef,
     isHumanTurn,
     // The provider drops input until the game route is active, so a bar
     // preselect made earlier would be lost. Wait for it instead.
@@ -95,6 +99,8 @@ export function useGameInput({ interactionEnabled = true }: { interactionEnabled
 
   return {
     state,
+    displayedDice,
+    swapDice,
     previewTarget,
     dragFrom,
     setBoardDimensions,

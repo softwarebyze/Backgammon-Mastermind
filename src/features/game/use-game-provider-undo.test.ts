@@ -66,7 +66,7 @@ function undo(result: { current: Provider }) {
 }
 
 /** Complete a vs-computer opening: human rolls directly, computer rolls via AI timers. */
-function playComputerOpening(result: { current: Provider }) {
+async function playComputerOpening(result: { current: Provider }) {
   jest.useFakeTimers();
   try {
     let guard = 0;
@@ -86,7 +86,8 @@ function playComputerOpening(result: { current: Provider }) {
     // If the computer won the opening, let it finish its turn.
     guard = 0;
     while (result.current.state?.currentPlayer !== 'white' && guard++ < 40) {
-      act(() => {
+      // The computer asks the engine for its turn, so let that promise settle.
+      await act(async () => {
         jest.advanceTimersByTime(5000);
       });
       finishAnimation(result);
@@ -205,12 +206,12 @@ describe('provider undo keeps the roll (vs-computer and history)', () => {
     expect(restored.dice).toEqual(dice);
   });
 
-  it('vs-computer: human roll, move, undo restores the human roll', () => {
+  it('vs-computer: human roll, move, undo restores the human roll', async () => {
     const { result } = renderHook(() => useGameProviderValue(true));
     act(() => {
       result.current.startGame('vs-computer');
     });
-    playComputerOpening(result);
+    await playComputerOpening(result);
     // Human turn: roll if needed, then move + undo.
     if (result.current.state?.phase === 'rolling') {
       roll(result);
