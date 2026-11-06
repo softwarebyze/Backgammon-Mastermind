@@ -6,7 +6,7 @@ import { createMatch } from '@/lib/game/match';
 import { clearActiveGame } from '@/lib/game/persistence';
 import { act, renderHook } from '@/lib/test-utils';
 import { analyzeCubeDecision } from './cube-analysis';
-import { clearGuidance, setGuidanceVerdictPending, showGuidance } from './guidance-store';
+import { getGuidance, setGuidanceVerdictPending, showGuidance } from './guidance-store';
 import { useGameProviderValue } from './use-game-provider-value';
 
 jest.mock('./cube-analysis', () => ({ analyzeCubeDecision: jest.fn() }));
@@ -82,7 +82,7 @@ it('does not let a retained Undo callback rewind checkers while Tutor is checkin
   act(() => setGuidanceVerdictPending(false));
 });
 
-it('allows the blunder dialog’s Undo last move after clearing the prompt in the same batch', () => {
+it('lets a retained Undo callback dismiss an open blunder prompt and rewind', () => {
   const initial = createPositionState({ useStandardSetup: true, mode: 'vs-human', dice: [3, 1], match: createMatch(0) });
   const { result } = renderHook(() => useGameProviderValue(true));
   act(() => result.current.startFromPosition(initial));
@@ -91,10 +91,6 @@ it('allows the blunder dialog’s Undo last move after clearing the prompt in th
   const retainedUndo = result.current.doUndo;
   act(() => showGuidance({ kind: 'blunder', questionState: initial, myMoves: [], engineMoves: [], revealed: false, showMine: false, showEngine: false }));
   act(() => retainedUndo());
-  expect(result.current.moveLog).toHaveLength(1);
-  act(() => {
-    clearGuidance();
-    retainedUndo();
-  });
+  expect(getGuidance()).toBeNull();
   expect(result.current.moveLog).toHaveLength(0);
 });

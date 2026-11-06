@@ -30,6 +30,8 @@ type FinishRefs = {
   finishOnceRef: { current: (() => void) | null };
 };
 
+let nextProviderId = 0;
+
 function armFinish(refs: FinishRefs, onFinish: () => void): () => void {
   const { generationRef, commitGenRef, finishOnceRef } = refs;
   const gen = generationRef.current;
@@ -137,8 +139,13 @@ export function useAnimatedMoves(
     });
   }, [isCommitLive, playMove, onMoveApplied, onMoveStarted, commitState]);
 
+  const actionSerial = useRef(0);
+  const actionPrefix = useRef(`${Date.now()}-${++nextProviderId}`);
+  const nextActionId = useCallback(() => `${actionPrefix.current}-${++actionSerial.current}`, []);
+
   const doMove = useCallback((move: Move, playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;
+    move = { ...move, actionId: nextActionId() };
     if (playOpts?.concurrent && !isAnimatingRef.current && start([move], playOpts)) {
       return;
     }
@@ -146,10 +153,12 @@ export function useAnimatedMoves(
       return;
     }
     playMove(snapshot, move, playOpts);
-  }, [playMove, start]);
+  }, [playMove, start, nextActionId]);
 
   const doMoveSequence = useCallback((moves: Move[], playOpts?: AnimatedMoveOpts) => {
     const snapshot = stateRef.current;
+    const actionId = nextActionId();
+    moves = moves.map(move => ({ ...move, actionId }));
     if (playOpts?.concurrent && !isAnimatingRef.current) {
       if (start(moves, playOpts)) {
         return;
@@ -166,7 +175,7 @@ export function useAnimatedMoves(
       return;
     }
     playMoveSequence(snapshot, moves, playOpts);
-  }, [playMoveSequence, start, afterFlights]);
+  }, [playMoveSequence, start, afterFlights, nextActionId]);
 
   const prepareHistory = useCallback(() => {
     // Complete the current legacy leg before rewinding it, then invalidate any

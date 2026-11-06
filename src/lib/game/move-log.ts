@@ -18,6 +18,8 @@ export type ReplaySnapshot = {
 };
 
 export type MoveLogEntry = {
+  /** Absent on legacy saves, whose moves remain individually undoable. */
+  actionId?: string;
   ply: number;
   player: Player;
   dice: [number, number];
@@ -86,6 +88,7 @@ export function appendMoveLogEntry(
     ...log,
     {
       ply: log.length + 1,
+      ...(ctx.move.actionId ? { actionId: ctx.move.actionId } : {}),
       player: ctx.player,
       dice: [...ctx.dice] as [number, number],
       from: ctx.move.from,

@@ -1,0 +1,86 @@
+# Tutor take-back on a flagged compound: one tap plays 6→3→2 (both dice),
+# the engine rates it a 0.078 blunder, and Take back & retry must undo the
+# whole judged turn — never a partial rewind that leaves half the compound.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn:
+    id: open-settings-button
+- scrollUntilVisible:
+    element:
+      id: setting-toggle-tutor-mode
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: setting-toggle-tutor-mode
+- openLink: backgammonmastermind.preview://developer
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-tutor-compound-3-1
+    direction: DOWN
+    timeout: 60000
+- tapOn:
+    id: developer-preset-e2e-tutor-compound-3-1
+- extendedWaitUntil:
+    visible:
+      id: point-6
+    timeout: 45000
+- assertVisible: 'Point 6, 15 white checkers'
+- takeScreenshot: 01-before-compound
+# One tap on the destination that needs both dice: 6→3 with the 3, 3→2 with the 1.
+- tapOn:
+    id: point-6
+- tapOn:
+    id: point-2
+- extendedWaitUntil:
+    visible: 'Point 2, 1 white checker'
+    timeout: 15000
+# Confirm move is enabled by default; tutor judges only after ending the turn.
+- tapOn:
+    id: confirm-move-button
+# First analysis includes engine init; the modal opens only after the blunder verdict.
+- extendedWaitUntil:
+    visible:
+      id: guidance-modal
+    timeout: 180000
+- takeScreenshot: 02-blunder-prompt
+- tapOn:
+    id: guidance-take-back
+- extendedWaitUntil:
+    notVisible:
+      id: guidance-modal
+    timeout: 15000
+# The entire compound is gone: both dice are still playable from the turn start.
+- extendedWaitUntil:
+    visible: 'Point 6, 15 white checkers'
+    timeout: 15000
+- assertVisible:
+    id: header-undo-button
+    enabled: false
+- takeScreenshot: 03-after-take-back
+
+# The shared history action retains an atomic redo, with no orphaned leg.
+- tapOn:
+    id: header-redo-button
+# Redo is judged again. The native modal owns touch input, so retry through its
+# primary action; real Z/Ctrl+Z/Cmd+Z while the prompt is open are covered by
+# tutor-keyboard-undo.dom.test.tsx.
+- extendedWaitUntil:
+    visible:
+      id: guidance-modal
+    timeout: 15000
+- takeScreenshot: 04-after-redo
+- tapOn:
+    id: guidance-take-back
+- extendedWaitUntil:
+    visible: 'Point 6, 15 white checkers'
+    timeout: 15000
+- assertNotVisible:
+    id: guidance-modal
+- takeScreenshot: 05-after-repeated-take-back

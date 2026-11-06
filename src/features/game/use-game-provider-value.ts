@@ -2,7 +2,7 @@ import type { GameContextType } from '@/features/game/game-context';
 import type { GameAbandonReason } from '@/features/game/use-game-completed-capture';
 import type { GameState, Move } from '@/lib/game';
 import { useCallback, useRef, useState } from 'react';
-import { getGuidance, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { clearGuidance, setGuidanceVerdictPending, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
@@ -146,21 +146,8 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const canUndo = canUndoCheckers || canUndoCube;
   const canRedo = canRedoCheckers || canRedoCube;
   const historyBlocked = useRef(false);
+  // A pending verdict blocks; an open blunder prompt does not: undo dismisses it.
   historyBlocked.current = !active || guidanceVerdictPending || !!cubeTutorSession || reviewing;
-  // The blunder dialog clears its store synchronously before Undo last move.
-  // Read that store live so its explicit retry works within the same React batch.
-  const doUndo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
-      return;
-    if (!undoCube())
-      undoCheckers();
-  }, [undoCube, undoCheckers]);
-  const doRedo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
-      return;
-    if (!redoCube())
-      redoCheckers();
-  }, [redoCube, redoCheckers]);
   const resetForNewSession = useCallback((reason: GameAbandonReason) => {
     resetCubeHistory();
     cancelCubeTutor();
@@ -191,6 +178,41 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetAnimation();
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
+  // All entry points (header, confirm bar, keyboard and tutor) share this path.
+  // An unavailable undo leaves guidance intact.
+  const doUndo = useCallback(() => {
+    if (historyBlocked.current)
+      return;
+    if (!undoCube() && !undoCheckers())
+      return;
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [clearAITimeout, undoCube, undoCheckers]);
+  /**
+   * Tutor "Take back & retry": undo every action of the judged turn, so two
+   * separate taps both go back. A compound is one action; redo stays per action.
+   */
+  const tutorTakeBack = useCallback((movesMade: number) => {
+    const turn = getMoveLog().slice(-movesMade);
+    const actions = turn.filter((entry, i) => !entry.actionId || entry.actionId !== turn[i + 1]?.actionId).length;
+    for (let i = 0; i < actions; i++) {
+      if (!undoCheckers()) {
+        break;
+      }
+    }
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [clearAITimeout, getMoveLog, undoCheckers]);
+  const doRedo = useCallback(() => {
+    if (historyBlocked.current)
+      return;
+    if (!redoCube() && !redoCheckers())
+      return;
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [redoCube, redoCheckers]);
   usePersistActiveGame(state, moveLog, replayBaseline, cubeEvents);
   const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,
@@ -398,5 +420,6 @@ export function useGameProviderValue(active: boolean): GameContextType {
     clearAITimeout,
     resumeAIScheduling,
     tutorRevertTurn,
+    tutorTakeBack,
   };
 }
