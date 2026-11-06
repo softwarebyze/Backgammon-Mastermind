@@ -6,8 +6,8 @@ import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Text } from '@/components/ui/scaled-text';
 import { FocusAwareStatusBar } from '@/components/ui';
+import { Text } from '@/components/ui/scaled-text';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
 import { GAME_PALETTE } from '@/features/game/game-palette';
