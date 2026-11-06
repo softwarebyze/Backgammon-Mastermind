@@ -111,6 +111,41 @@ function playHeldTurn(result: { current: Provider }) {
   return { turnStart, logAtStart, boards, played };
 }
 
+/** Header Redo `played` times; each landing must match `boards` when given. */
+function redoTurn(result: { current: Provider }, played: number, boards?: GameState['points'][]) {
+  for (let i = 0; i < played; i++) {
+    act(() => {
+      result.current.doRedo();
+    });
+    finishAnimation(result);
+    if (boards)
+      expect(result.current.state?.points).toEqual(boards[i]);
+  }
+}
+
+/** Like `playHeldTurn`, but with a confirmed turn before it in the log. */
+function playSecondHeldTurn(result: { current: Provider }) {
+  act(() => {
+    result.current.startGame('vs-human');
+  });
+  playOpening(result);
+  spendAllDice(result);
+  act(() => {
+    result.current.doPassTurn();
+  });
+  expect(result.current.state?.phase).toBe('rolling');
+  act(() => {
+    result.current.doRollDice();
+  });
+  expect(result.current.state?.phase).toBe('moving');
+  const turnStart = result.current.state!;
+  const logAtStart = result.current.moveLog.length;
+  expect(logAtStart).toBeGreaterThan(0);
+  const boards = playTurnRecording(result);
+  const played = result.current.moveLog.length - logAtStart;
+  return { turnStart, logAtStart, boards, played };
+}
+
 beforeEach(() => {
   loadPrefs.mockReturnValue({ ...DEFAULT_GAME_PREFERENCES, confirmMove: true, autoRoll: false });
 });
@@ -215,13 +250,7 @@ describe('provider confirm move: undo all', () => {
 
     // Every undone move went onto the redo stack, and replays in order.
     expect(result.current.canRedo).toBe(true);
-    for (let i = 0; i < played; i++) {
-      act(() => {
-        result.current.doRedo();
-      });
-      finishAnimation(result);
-      expect(result.current.state?.points).toEqual(boards[i]);
-    }
+    redoTurn(result, played, boards);
     expect(result.current.moveLog.length).toBe(logAtStart + played);
     expect(result.current.state?.remainingDice).toEqual([]);
   });
@@ -253,12 +282,41 @@ describe('provider confirm move: undo all', () => {
     expect(result.current.moveLog.length).toBe(logAtStart);
     expect(result.current.state?.points).toEqual(turnStart.points);
     expect(result.current.state?.remainingDice).toEqual(turnStart.remainingDice);
-    for (let i = 0; i < played; i++) {
-      act(() => {
-        result.current.doRedo();
-      });
-      finishAnimation(result);
-    }
+    redoTurn(result, played);
+    expect(result.current.moveLog.length).toBe(logAtStart + played);
+    expect(result.current.state?.remainingDice).toEqual([]);
+  });
+
+  it('keeps the previous turn intact when Undo follows Undo all before the slide renders', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    const { turnStart, logAtStart, boards, played } = playSecondHeldTurn(result);
+    expect(played).toBeGreaterThanOrEqual(2);
+    const opponent = turnStart.currentPlayer === 'white' ? 'black' : 'white';
+
+    // Both taps land in one tick: the reverse slide is armed but not on screen
+    // yet, so the header Undo completes the rewind instantly and then steps
+    // back one more ply, into the previous turn.
+    act(() => {
+      result.current.doUndoTurn!();
+      result.current.doUndo();
+    });
+    finishAllAnimations(result);
+
+    // Exactly one ply of the previous turn is gone: no extra pop from the
+    // armed slide callback, and the log stays in step with the timeline.
+    expect(result.current.moveLog.length).toBe(logAtStart - 1);
+    expect(result.current.state?.currentPlayer).toBe(opponent);
+    expect(result.current.isAnimating).toBe(false);
+
+    // Redo lands back on the rolled position, then replays the held turn.
+    act(() => {
+      result.current.doRedo();
+    });
+    finishAnimation(result);
+    expect(result.current.moveLog.length).toBe(logAtStart);
+    expect(result.current.state?.points).toEqual(turnStart.points);
+    expect(result.current.state?.remainingDice).toEqual(turnStart.remainingDice);
+    redoTurn(result, played, boards);
     expect(result.current.moveLog.length).toBe(logAtStart + played);
     expect(result.current.state?.remainingDice).toEqual([]);
   });

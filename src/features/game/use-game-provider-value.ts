@@ -357,7 +357,9 @@ export function useGameProviderValue(active: boolean): GameContextType {
         next = undoTimeline(next!, entry, i === 0 ? liveState : null);
       });
       setTimeline(next);
-      setState(currentTimelineState(next));
+      // Commit through the animation hook so a history action that follows in
+      // the same tick reads the rolled position, not the held turn.
+      commitHistoryState(currentTimelineState(next));
     };
     const completeNow = () => {
       while (undone.length < plies) {
@@ -373,7 +375,21 @@ export function useGameProviderValue(active: boolean): GameContextType {
     }
     turnUndoInFlight.current = completeNow;
     runTakeBackAnimation(
-      { replayBaseline: baseline, moveLog: log, popLastMove: popTurnMove, setState, setMoveAnimation, armAnimationFinish, finish },
+      {
+        replayBaseline: baseline,
+        moveLog: log,
+        popLastMove: popTurnMove,
+        setState,
+        setMoveAnimation,
+        // `completeNow` can land the rewind while a reverse slide is still
+        // armed (two taps before React paints it). The next prepareHistory
+        // fires that stale callback; it must not pop into the previous turn.
+        armAnimationFinish: onFinish => armAnimationFinish(() => {
+          if (!done)
+            onFinish();
+        }),
+        finish,
+      },
       plies,
     );
   }, [
@@ -388,6 +404,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetAllAnimation,
     popLastMove,
     setState,
+    commitHistoryState,
     setMoveAnimation,
     armAnimationFinish,
   ]);
