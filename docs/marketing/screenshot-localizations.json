@@ -17,6 +17,20 @@
     ],
     "lessons": [
       "Interactive lessons"
+    ],
+    "computerSub": "From Easy to Expert",
+    "tutor": [
+      "Learn from",
+      "your mistakes"
+    ],
+    "tutorSub": "Tutor mode rates every move",
+    "match": [
+      "Matches and the",
+      "doubling cube"
+    ],
+    "position": [
+      "Set up",
+      "any position"
     ]
   },
   "ar-SA": {
@@ -35,6 +49,18 @@
     ],
     "lessons": [
       "دروس تفاعلية"
+    ],
+    "computerSub": "من سهل إلى خبير",
+    "tutor": [
+      "تعلّم من أخطائك"
+    ],
+    "tutorSub": "وضع المدرّب يقيّم كل نقلة",
+    "match": [
+      "المباريات بالنقاط",
+      "ومكعب المضاعفة"
+    ],
+    "position": [
+      "أعدّ أي وضع"
     ]
   },
   "de-DE": {
@@ -55,6 +81,19 @@
     ],
     "lessons": [
       "Interaktive Lektionen"
+    ],
+    "computerSub": "Von Leicht bis Experte",
+    "tutor": [
+      "Aus Fehlern lernen"
+    ],
+    "tutorSub": "Der Tutor-Modus bewertet jeden Zug",
+    "match": [
+      "Matches mit dem",
+      "Verdopplungswürfel"
+    ],
+    "position": [
+      "Jede Stellung",
+      "aufbauen"
     ]
   },
   "el": {
@@ -73,6 +112,20 @@
     ],
     "lessons": [
       "Διαδραστικά μαθήματα"
+    ],
+    "computerSub": "Από Εύκολο έως Ειδικός",
+    "tutor": [
+      "Μάθε από",
+      "τα λάθη σου"
+    ],
+    "tutorSub": "Η λειτουργία δασκάλου κρίνει κάθε κίνηση",
+    "match": [
+      "Αγώνες με τον",
+      "κύβο διπλασιασμού"
+    ],
+    "position": [
+      "Στήσε όποια",
+      "θέση θέλεις"
     ]
   },
   "es-ES": {
@@ -93,6 +146,20 @@
     ],
     "lessons": [
       "Lecciones interactivas"
+    ],
+    "computerSub": "De Fácil a Experto",
+    "tutor": [
+      "Aprende de",
+      "tus errores"
+    ],
+    "tutorSub": "El modo tutor evalúa cada jugada",
+    "match": [
+      "Encuentros con el",
+      "cubo de doblaje"
+    ],
+    "position": [
+      "Prepara cualquier",
+      "posición"
     ]
   },
   "fr-FR": {
@@ -112,6 +179,19 @@
     ],
     "lessons": [
       "Leçons interactives"
+    ],
+    "computerSub": "De Facile à Expert",
+    "tutor": [
+      "Apprenez",
+      "de vos erreurs"
+    ],
+    "tutorSub": "Le mode tuteur évalue chaque coup",
+    "match": [
+      "Matchs et videau"
+    ],
+    "position": [
+      "Créez n’importe",
+      "quelle position"
     ]
   },
   "he": {
@@ -130,6 +210,18 @@
     ],
     "lessons": [
       "שיעורים אינטראקטיביים"
+    ],
+    "computerSub": "מקל ועד מומחה",
+    "tutor": [
+      "ללמוד מהטעויות"
+    ],
+    "tutorSub": "מצב מורה מדרג כל מהלך",
+    "match": [
+      "משחק לנקודות",
+      "וקוביית ההכפלה"
+    ],
+    "position": [
+      "להציב כל עמדה"
     ]
   },
   "hi": {
@@ -148,6 +240,20 @@
     ],
     "lessons": [
       "इंटरैक्टिव पाठ"
+    ],
+    "computerSub": "आसान से विशेषज्ञ तक",
+    "tutor": [
+      "अपनी गलतियों",
+      "से सीखें"
+    ],
+    "tutorSub": "ट्यूटर मोड हर चाल को परखता है",
+    "match": [
+      "मैच और",
+      "डबलिंग क्यूब"
+    ],
+    "position": [
+      "कोई भी स्थिति",
+      "बनाएँ"
     ]
   },
   "it": {
@@ -167,6 +273,20 @@
     ],
     "lessons": [
       "Lezioni interattive"
+    ],
+    "computerSub": "Da Facile a Esperto",
+    "tutor": [
+      "Impara dai",
+      "tuoi errori"
+    ],
+    "tutorSub": "La modalità tutor valuta ogni mossa",
+    "match": [
+      "Incontri con il",
+      "cubo del raddoppio"
+    ],
+    "position": [
+      "Prepara qualsiasi",
+      "posizione"
     ]
   },
   "ja": {
@@ -185,6 +305,18 @@
     ],
     "lessons": [
       "インタラクティブレッスン"
+    ],
+    "computerSub": "やさしい〜エキスパート",
+    "tutor": [
+      "ミスから学ぼう"
+    ],
+    "tutorSub": "チューターモードが毎手を評価",
+    "match": [
+      "マッチと",
+      "ダブリングキューブ"
+    ],
+    "position": [
+      "好きな局面を作ろう"
     ]
   },
   "ko": {
@@ -203,6 +335,18 @@
     ],
     "lessons": [
       "대화형 수업"
+    ],
+    "computerSub": "쉬움부터 전문가까지",
+    "tutor": [
+      "실수에서 배우세요"
+    ],
+    "tutorSub": "튜터 모드가 모든 수를 평가합니다",
+    "match": [
+      "매치와 더블링 큐브"
+    ],
+    "position": [
+      "원하는 포지션을",
+      "만들어 보세요"
     ]
   },
   "nl-NL": {
@@ -221,6 +365,20 @@
     ],
     "lessons": [
       "Interactieve lessen"
+    ],
+    "computerSub": "Van Makkelijk tot Expert",
+    "tutor": [
+      "Leer van",
+      "je fouten"
+    ],
+    "tutorSub": "De tutormodus beoordeelt elke zet",
+    "match": [
+      "Matches met de",
+      "verdubbelingskubus"
+    ],
+    "position": [
+      "Zet elke",
+      "stelling op"
     ]
   },
   "pl": {
@@ -240,6 +398,20 @@
     ],
     "lessons": [
       "Interaktywne lekcje"
+    ],
+    "computerSub": "Od Łatwego do Eksperta",
+    "tutor": [
+      "Ucz się",
+      "na błędach"
+    ],
+    "tutorSub": "Tryb nauczyciela ocenia każdy ruch",
+    "match": [
+      "Mecze z kostką",
+      "dublującą"
+    ],
+    "position": [
+      "Ustaw dowolną",
+      "pozycję"
     ]
   },
   "pt-PT": {
@@ -258,6 +430,20 @@
     ],
     "lessons": [
       "Lições interativas"
+    ],
+    "computerSub": "De Fácil a Especialista",
+    "tutor": [
+      "Aprenda com",
+      "os seus erros"
+    ],
+    "tutorSub": "O modo tutor avalia cada jogada",
+    "match": [
+      "Partidas com o",
+      "cubo de dobra"
+    ],
+    "position": [
+      "Monte qualquer",
+      "posição"
     ]
   },
   "ru": {
@@ -277,6 +463,20 @@
     ],
     "lessons": [
       "Интерактивные уроки"
+    ],
+    "computerSub": "От лёгкого до эксперта",
+    "tutor": [
+      "Учитесь",
+      "на ошибках"
+    ],
+    "tutorSub": "Режим наставника оценивает каждый ход",
+    "match": [
+      "Матчи и",
+      "кубик удвоения"
+    ],
+    "position": [
+      "Расставьте",
+      "любую позицию"
     ]
   },
   "tr": {
@@ -284,17 +484,33 @@
     "playLocale": "tr-TR",
     "direction": "ltr",
     "learn": [
-      "Tavla oynamayı öğren"
+      "Tavla oynamayı",
+      "öğrenin"
     ],
     "pass": [
       "Çevrimdışı sırayla oynayın"
     ],
     "passSub": "Arkadaşlar ve aileyle",
     "computer": [
-      "Bilgisayara karşı oyna"
+      "Bilgisayara",
+      "karşı oynayın"
     ],
     "lessons": [
       "Etkileşimli dersler"
+    ],
+    "computerSub": "Kolaydan Uzmana",
+    "tutor": [
+      "Hatalarınızdan",
+      "öğrenin"
+    ],
+    "tutorSub": "Öğretmen modu her hamleyi değerlendirir",
+    "match": [
+      "Maçlar ve",
+      "katlama zarı"
+    ],
+    "position": [
+      "Dilediğiniz",
+      "pozisyonu kurun"
     ]
   },
   "zh-Hans": {
@@ -313,6 +529,17 @@
     ],
     "lessons": [
       "互动课程"
+    ],
+    "computerSub": "从简单到专家",
+    "tutor": [
+      "从失误中学习"
+    ],
+    "tutorSub": "导师模式为每步棋评分",
+    "match": [
+      "比赛与加倍骰"
+    ],
+    "position": [
+      "摆出任意局面"
     ]
   }
 }

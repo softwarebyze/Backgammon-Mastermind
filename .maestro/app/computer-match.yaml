@@ -20,6 +20,9 @@ tags:
 - takeScreenshot: computer-match-00-home-primary-actions
 - tapOn:
     id: home-opponent-vs-computer
+# Expert has no random error, so the computer's cube decisions are repeatable.
+- tapOn:
+    id: home-computer-level-expert
 - tapOn:
     id: home-format-match
 - scrollUntilVisible:

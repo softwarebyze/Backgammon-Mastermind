@@ -21,6 +21,7 @@ import { useRestoreGameTimeline } from '@/features/game/use-restore-game-timelin
 import { passTurn } from '@/lib/game';
 import { isAwaitingMoveConfirm } from '@/lib/game-preferences/confirm-move';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
 import { acceptDouble, beaverDouble, canOfferDouble, dropDouble, nextMatchGame, offerDouble } from '@/lib/game/match';
@@ -152,6 +153,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     cancelCubeTutor();
     resetForNewGame(reason);
   }, [resetCubeHistory, cancelCubeTutor, resetForNewGame]);
+  const computerLevel = useGamePreferences().preferences.computerLevel;
   const { clearAITimeout, resumeAIScheduling, computerCubeError, retryCubeAnalysis } = useComputerOpponent({
     enabled: active,
     state,
@@ -163,6 +165,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
     recordNoMove: handleNoMoveRecorded,
     recordCubeEvent,
     paused: tutorPaused,
+    level: computerLevel,
   });
   const { doPassTurn, doRollDice } = useGameDiceActions({
     state,

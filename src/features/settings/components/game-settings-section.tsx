@@ -24,6 +24,8 @@ export function GameSettingsSection({ showHints = false }: Props) {
     setSoundEnabled,
     setTutorMode,
     setConfirmMove,
+    setComputerLevel,
+    setMoveInDiceOrder,
   } = useGamePreferences();
 
   return (
@@ -45,6 +47,8 @@ export function GameSettingsSection({ showHints = false }: Props) {
         }}
         onTutorModeChange={setTutorMode}
         onConfirmMoveChange={setConfirmMove}
+        onComputerLevelChange={setComputerLevel}
+        onMoveInDiceOrderChange={setMoveInDiceOrder}
         showHints={showHints}
       />
     </View>

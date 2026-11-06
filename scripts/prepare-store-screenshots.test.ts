@@ -46,9 +46,9 @@ describe('prepare-store-screenshots', () => {
     expect(source).toContain('xml:lang="${language}"');
   });
 
-  it('stages a 9:16 Play crop of the iPhone 6.9" marketing set', () => {
+  it('stages a letterboxed 9:16 Play copy of the iPhone 6.9" marketing set', () => {
     const sourceIphone = FRAMES.frames.filter(frame => frame.device === 'iphone').map(frame => frame.dest);
-    expect(sourceIphone).toHaveLength(5);
+    expect(sourceIphone).toHaveLength(7);
 
     for (const [appleLocale, { appLanguage }] of Object.entries(LOCALIZATIONS)) {
       expect(appLanguage).toBeTruthy();
@@ -87,8 +87,8 @@ describe('prepare-store-screenshots', () => {
       const playFiles = readdirSync(
         join(PLAY_ROOT, playLocale, 'images/phoneScreenshots'),
       ).filter(name => name.endsWith('.png'));
-      expect(iosFiles).toHaveLength(10);
-      expect(playFiles).toHaveLength(5);
+      expect(iosFiles).toHaveLength(14);
+      expect(playFiles).toHaveLength(7);
       const title = readFileSync(join(PLAY_ROOT, playLocale, 'title.txt'), 'utf8').trim();
       const shortDescription = readFileSync(
         join(PLAY_ROOT, playLocale, 'short_description.txt'),
@@ -114,9 +114,25 @@ describe('prepare-store-screenshots', () => {
       expect(sizes).toHaveLength(8);
     }
 
+    // Letterboxed, not cropped: the narrower-than-9:16 iPhone frame leaves a
+    // band-coloured column down each whole edge. A crop puts the board there.
+    const edges = execFileSync(process.execPath, ['--input-type=module', '-e', `
+      const { default: sharp } = await import('sharp');
+      const { data, info } = await sharp(${JSON.stringify(join(PLAY_OUT, 'iphone-69-03-learn-to-play.png'))}).raw().toBuffer({ resolveWithObject: true });
+      const colours = new Set();
+      for (let y = 0; y < info.height; y++) {
+        for (const x of [0, info.width - 1]) {
+          const i = (y * info.width + x) * info.channels;
+          colours.add(data.subarray(i, i + 3).join(','));
+        }
+      }
+      process.stdout.write(JSON.stringify([...colours]));
+    `], { cwd: ROOT, encoding: 'utf8' });
+    expect(JSON.parse(edges)).toEqual(['30,12,2']);
+
     expect(
-      readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-05-home.png')).equals(
-        readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-05-home.png')),
+      readFileSync(join(IOS_ROOT, 'ja', 'iphone-69-02-tutor.png')).equals(
+        readFileSync(join(IOS_ROOT, 'en-US', 'iphone-69-02-tutor.png')),
       ),
     ).toBe(false);
   });
