@@ -152,19 +152,39 @@ export function useGameProviderValue(active: boolean): GameContextType {
   historyBlocked.current = !active || guidanceVerdictPending || !!cubeTutorSession || reviewing;
   // The blunder dialog clears its store synchronously before Undo last move.
   // Read that store live so its explicit retry works within the same React batch.
+  /**
+   * Completes an in-flight Undo all instantly. Its reverse slides pop the move
+   * log one by one but rewind the timeline only at the end, so any other
+   * history action mid-chain would leave the two out of step.
+   */
+  const turnUndoInFlight = useRef<(() => void) | null>(null);
+  const isAnimatingNow = useRef(isAnimating);
+  isAnimatingNow.current = isAnimating;
+  /** True while Undo all is still sliding: callers drop the tap. */
+  const turnUndoBusy = useCallback(() => {
+    const complete = turnUndoInFlight.current;
+    if (!complete)
+      return false;
+    if (isAnimatingNow.current)
+      return true;
+    // Its animation was cut off elsewhere: land the rewind now.
+    complete();
+    return false;
+  }, []);
   const doUndo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
       return;
     if (!undoCube())
       undoCheckers();
-  }, [undoCube, undoCheckers]);
+  }, [undoCube, undoCheckers, turnUndoBusy]);
   const doRedo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
       return;
     if (!redoCube())
       redoCheckers();
-  }, [redoCube, redoCheckers]);
+  }, [redoCube, redoCheckers, turnUndoBusy]);
   const resetForNewSession = useCallback((reason: GameAbandonReason) => {
+    turnUndoInFlight.current = null;
     resetCubeHistory();
     cancelCubeTutor();
     resetForNewGame(reason);
@@ -306,7 +326,7 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const undoTurnPlies = countUndoableTurnPlies({ timeline, moveLog, state, gameMode: state?.mode });
   const canUndoTurn = undoTurnPlies > 0;
   const doUndoTurn = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
       return;
     prepareHistory();
     const liveState = getMoveState() ?? state;
@@ -323,7 +343,12 @@ export function useGameProviderValue(active: boolean): GameContextType {
         undone.push(entry);
       return entry;
     };
+    let done = false;
     const finish = () => {
+      if (done)
+        return;
+      done = true;
+      turnUndoInFlight.current = null;
       setMoveAnimation(null);
       let next = getTimeline();
       if (!next)
@@ -334,19 +359,26 @@ export function useGameProviderValue(active: boolean): GameContextType {
       setTimeline(next);
       setState(currentTimelineState(next));
     };
+    const completeNow = () => {
+      while (undone.length < plies) {
+        if (!popTurnMove())
+          break;
+      }
+      finish();
+    };
     const baseline = replayBaselineRef.current;
     if (!baseline) {
-      for (let i = 0; i < plies; i++)
-        popTurnMove();
-      finish();
+      completeNow();
       return;
     }
+    turnUndoInFlight.current = completeNow;
     runTakeBackAnimation(
       { replayBaseline: baseline, moveLog: log, popLastMove: popTurnMove, setState, setMoveAnimation, armAnimationFinish, finish },
       plies,
     );
   }, [
     state,
+    turnUndoBusy,
     prepareHistory,
     getMoveState,
     getMoveLog,

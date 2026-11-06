@@ -2,6 +2,8 @@
  * Confirm move setting: with the preference ON, spending the last die holds
  * the turn for Confirm / Undo. Confirm ends the turn; Undo restores a die.
  */
+import type { GameState } from '@/lib/game';
+
 import { getLegalMoves } from '@/lib/game';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
 import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
@@ -68,6 +70,45 @@ function spendAllDice(result: { current: Provider }) {
       break;
     }
   }
+}
+
+/** Run the take-back's chained reverse slides to the end. */
+function finishAllAnimations(result: { current: Provider }) {
+  let guard = 0;
+  while (result.current.moveAnimation && guard++ < 12) {
+    finishAnimation(result);
+  }
+}
+
+/** Spend the roll one checker at a time, recording the board after each. */
+function playTurnRecording(result: { current: Provider }) {
+  const boards: GameState['points'][] = [];
+  let guard = 0;
+  while (
+    result.current.state?.phase === 'moving'
+    && result.current.state.remainingDice.length > 0
+    && guard++ < 8
+  ) {
+    const before = result.current.state.remainingDice.length;
+    moveFirstLegal(result);
+    boards.push(result.current.state!.points);
+    if (result.current.state?.remainingDice.length === before)
+      break;
+  }
+  return boards;
+}
+
+/** vs-human game, opening played, then the next roll spent: the turn is held. */
+function playHeldTurn(result: { current: Provider }) {
+  act(() => {
+    result.current.startGame('vs-human');
+  });
+  playOpening(result);
+  const turnStart = result.current.state!;
+  const logAtStart = result.current.moveLog.length;
+  const boards = playTurnRecording(result);
+  const played = result.current.moveLog.length - logAtStart;
+  return { turnStart, logAtStart, boards, played };
 }
 
 beforeEach(() => {
@@ -152,25 +193,9 @@ describe('provider confirm move on', () => {
 });
 
 describe('provider confirm move: undo all', () => {
-  /** Run the take-back's chained reverse slides to the end. */
-  function finishAllAnimations(result: { current: Provider }) {
-    let guard = 0;
-    while (result.current.moveAnimation && guard++ < 12) {
-      finishAnimation(result);
-    }
-  }
-
   it('rewinds the whole held turn to the rolled position, and redo replays it', () => {
     const { result } = renderHook(() => useGameProviderValue(true));
-    act(() => {
-      result.current.startGame('vs-human');
-    });
-    playOpening(result);
-    const turnStart = result.current.state!;
-    const logAtStart = result.current.moveLog.length;
-
-    spendAllDice(result);
-    const played = result.current.moveLog.length - logAtStart;
+    const { turnStart, logAtStart, boards, played } = playHeldTurn(result);
     expect(played).toBeGreaterThanOrEqual(2);
     expect(result.current.canUndoTurn).toBe(true);
 
@@ -188,8 +213,46 @@ describe('provider confirm move: undo all', () => {
     expect(result.current.canUndoTurn).toBe(false);
     expect(result.current.isAnimating).toBe(false);
 
-    // Every undone move went onto the redo stack.
+    // Every undone move went onto the redo stack, and replays in order.
     expect(result.current.canRedo).toBe(true);
+    for (let i = 0; i < played; i++) {
+      act(() => {
+        result.current.doRedo();
+      });
+      finishAnimation(result);
+      expect(result.current.state?.points).toEqual(boards[i]);
+    }
+    expect(result.current.moveLog.length).toBe(logAtStart + played);
+    expect(result.current.state?.remainingDice).toEqual([]);
+  });
+
+  it('ignores a second Undo or Redo while the turn is still sliding back', () => {
+    const { result } = renderHook(() => useGameProviderValue(true));
+    const { turnStart, logAtStart, played } = playHeldTurn(result);
+    expect(played).toBeGreaterThanOrEqual(2);
+
+    act(() => {
+      result.current.doUndoTurn!();
+    });
+    // First reverse slide lands; the rest of the turn is still sliding back.
+    finishAnimation(result);
+    expect(result.current.isAnimating).toBe(true);
+    // Double-tap Undo, then the header controls, mid-chain.
+    act(() => {
+      result.current.doUndoTurn!();
+    });
+    act(() => {
+      result.current.doUndo();
+    });
+    act(() => {
+      result.current.doRedo();
+    });
+    finishAllAnimations(result);
+
+    // The rewind still lands exactly on the rolled position, log and timeline in step.
+    expect(result.current.moveLog.length).toBe(logAtStart);
+    expect(result.current.state?.points).toEqual(turnStart.points);
+    expect(result.current.state?.remainingDice).toEqual(turnStart.remainingDice);
     for (let i = 0; i < played; i++) {
       act(() => {
         result.current.doRedo();
