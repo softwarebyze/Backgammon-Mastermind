@@ -48,8 +48,8 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
   const feedbackColor
     = feedback?.tone === 'praise'
       ? '#A0D080'
-      : feedback?.tone === 'correction'
-        ? '#E8A070'
+      : feedback?.tone === 'soft'
+        ? GAME_PALETTE.accent
         : GAME_PALETTE.accentDim;
 
   return (
