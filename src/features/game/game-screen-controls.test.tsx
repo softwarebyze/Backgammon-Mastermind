@@ -3,6 +3,7 @@ import { DEFAULT_GAME_PREFERENCES } from '@/lib/game-preferences/types';
 import { createInitialState } from '@/lib/game/constants';
 import { act, cleanup, fireEvent, screen, setup } from '@/lib/test-utils';
 
+import { GameContext } from './game-context';
 import { GameScreenControls } from './game-screen-controls';
 import { AUTO_ROLL_BUTTON_GRACE_MS } from './roll-button-timing';
 
@@ -151,6 +152,42 @@ describe('confirm move bar', () => {
     expect(screen.getByText('No legal moves…')).toBeOnTheScreen();
     expect(screen.queryByText(/end your turn/)).toBeNull();
     expect(screen.queryByText(/Move your/)).toBeNull();
+  });
+
+  it('undo takes back the whole turn once it has two moves', () => {
+    mockPrefs.confirmMove = true;
+    const state = awaitingConfirmState();
+    const doUndoTurn = jest.fn();
+    const onUndoMove = jest.fn();
+    const controls = (canUndoTurn: boolean) => (
+      // Only the undo-turn slice of the context is read by the confirm bar.
+      <GameContext value={{ canUndoTurn, doUndoTurn } as unknown as React.ContextType<typeof GameContext>}>
+        <GameScreenControls
+          state={state}
+          liveDiceState={state}
+          isHumanTurn
+          isComputerTurn={false}
+          moveLogLength={2}
+          onRoll={jest.fn()}
+          onReset={jest.fn()}
+          onConfirmMove={jest.fn()}
+          onUndoMove={onUndoMove}
+          canUndoMove
+        />
+      </GameContext>
+    );
+
+    // One move: plain single-step undo.
+    const { rerender } = setup(controls(false));
+    fireEvent.press(screen.getByTestId('undo-move-button'));
+    expect(onUndoMove).toHaveBeenCalledTimes(1);
+    expect(doUndoTurn).not.toHaveBeenCalled();
+
+    // Two or more moves: the same button rewinds the whole turn.
+    rerender(controls(true));
+    fireEvent.press(screen.getByTestId('undo-move-button'));
+    expect(doUndoTurn).toHaveBeenCalledTimes(1);
+    expect(onUndoMove).toHaveBeenCalledTimes(1);
   });
 
   it('does not render the confirm bar when confirm is off', () => {
