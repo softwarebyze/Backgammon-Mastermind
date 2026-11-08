@@ -38,6 +38,10 @@ export type GameContextType = {
   doRedo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  /** Undo all: rewind every move of the turn being held (Confirm move). */
+  doUndoTurn?: () => void;
+  /** At least two of this turn's moves can be rewound together. */
+  canUndoTurn?: boolean;
   /** A cube take-back can branch with a new Double or Roll instead of Redo. */
   canBranchCubeHistory?: boolean;
   isAnimating: boolean;

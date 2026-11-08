@@ -1,8 +1,10 @@
 import type { GameContextType } from '@/features/game/game-context';
 import type { GameAbandonReason } from '@/features/game/use-game-completed-capture';
 import type { GameState, Move } from '@/lib/game';
+import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useRef, useState } from 'react';
 import { getGuidance, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { countUndoableTurnPlies } from '@/features/game/timeline-history-runner';
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
 import { useComputerOpponent } from '@/features/game/use-computer-opponent';
@@ -24,6 +26,7 @@ import { loadGamePreferences } from '@/lib/game-preferences/storage';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { sfxKindsForMove } from '@/lib/game-sfx/move-sfx';
 import { playGameSfxSequence } from '@/lib/game-sfx/play-game-sfx';
+import { currentTimelineState, undoTimeline } from '@/lib/game/game-timeline';
 import { acceptDouble, beaverDouble, canOfferDouble, dropDouble, nextMatchGame, offerDouble } from '@/lib/game/match';
 import { loadPersistedGame } from '@/lib/game/persistence';
 
@@ -149,19 +152,39 @@ export function useGameProviderValue(active: boolean): GameContextType {
   historyBlocked.current = !active || guidanceVerdictPending || !!cubeTutorSession || reviewing;
   // The blunder dialog clears its store synchronously before Undo last move.
   // Read that store live so its explicit retry works within the same React batch.
+  /**
+   * Completes an in-flight Undo all instantly. Its reverse slides pop the move
+   * log one by one but rewind the timeline only at the end, so any other
+   * history action mid-chain would leave the two out of step.
+   */
+  const turnUndoInFlight = useRef<(() => void) | null>(null);
+  const isAnimatingNow = useRef(isAnimating);
+  isAnimatingNow.current = isAnimating;
+  /** True while Undo all is still sliding: callers drop the tap. */
+  const turnUndoBusy = useCallback(() => {
+    const complete = turnUndoInFlight.current;
+    if (!complete)
+      return false;
+    if (isAnimatingNow.current)
+      return true;
+    // Its animation was cut off elsewhere: land the rewind now.
+    complete();
+    return false;
+  }, []);
   const doUndo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
       return;
     if (!undoCube())
       undoCheckers();
-  }, [undoCube, undoCheckers]);
+  }, [undoCube, undoCheckers, turnUndoBusy]);
   const doRedo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder')
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
       return;
     if (!redoCube())
       redoCheckers();
-  }, [redoCube, redoCheckers]);
+  }, [redoCube, redoCheckers, turnUndoBusy]);
   const resetForNewSession = useCallback((reason: GameAbandonReason) => {
+    turnUndoInFlight.current = null;
     resetCubeHistory();
     cancelCubeTutor();
     resetForNewGame(reason);
@@ -294,6 +317,98 @@ export function useGameProviderValue(active: boolean): GameContextType {
     armAnimationFinish,
   ]);
 
+  /**
+   * Undo all: rewind every checker the player has moved this turn, newest
+   * first, back to the rolled position. Same reverse slides as the tutor's
+   * take-back, but each ply goes onto the redo stack like a plain Undo, so
+   * Redo can replay the turn move by move.
+   */
+  const undoTurnPlies = countUndoableTurnPlies({ timeline, moveLog, state, gameMode: state?.mode });
+  const canUndoTurn = undoTurnPlies > 0;
+  const doUndoTurn = useCallback(() => {
+    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
+      return;
+    prepareHistory();
+    const liveState = getMoveState() ?? state;
+    const log = getMoveLog();
+    const plies = countUndoableTurnPlies({ timeline: getTimeline(), moveLog: log, state: liveState, gameMode: liveState?.mode });
+    if (plies === 0)
+      return;
+    clearAITimeout();
+    resetAllAnimation();
+    const undone: MoveLogEntry[] = [];
+    const popTurnMove = () => {
+      const entry = popLastMove();
+      if (entry)
+        undone.push(entry);
+      return entry;
+    };
+    let done = false;
+    const finish = () => {
+      if (done)
+        return;
+      done = true;
+      turnUndoInFlight.current = null;
+      setMoveAnimation(null);
+      let next = getTimeline();
+      if (!next)
+        return;
+      undone.forEach((entry, i) => {
+        next = undoTimeline(next!, entry, i === 0 ? liveState : null);
+      });
+      setTimeline(next);
+      // Commit through the animation hook so a history action that follows in
+      // the same tick reads the rolled position, not the held turn.
+      commitHistoryState(currentTimelineState(next));
+    };
+    const completeNow = () => {
+      while (undone.length < plies) {
+        if (!popTurnMove())
+          break;
+      }
+      finish();
+    };
+    const baseline = replayBaselineRef.current;
+    if (!baseline) {
+      completeNow();
+      return;
+    }
+    turnUndoInFlight.current = completeNow;
+    runTakeBackAnimation(
+      {
+        replayBaseline: baseline,
+        moveLog: log,
+        popLastMove: popTurnMove,
+        setState,
+        setMoveAnimation,
+        // `completeNow` can land the rewind while a reverse slide is still
+        // armed (two taps before React paints it). The next prepareHistory
+        // fires that stale callback; it must not pop into the previous turn.
+        armAnimationFinish: onFinish => armAnimationFinish(() => {
+          if (!done)
+            onFinish();
+        }),
+        finish,
+      },
+      plies,
+    );
+  }, [
+    state,
+    turnUndoBusy,
+    prepareHistory,
+    getMoveState,
+    getMoveLog,
+    getTimeline,
+    setTimeline,
+    clearAITimeout,
+    resetAllAnimation,
+    popLastMove,
+    setState,
+    commitHistoryState,
+    setMoveAnimation,
+    armAnimationFinish,
+  ]);
+
   const cubeActionEligibility = useRef({ active, isAnimating, canRedo: canRedoCheckers, tutorPaused });
   cubeActionEligibility.current = { active, isAnimating, canRedo: canRedoCheckers, tutorPaused };
   const cubeActionStateRef = useRef(state);
@@ -390,6 +505,8 @@ export function useGameProviderValue(active: boolean): GameContextType {
     doRedo,
     canUndo,
     canRedo,
+    doUndoTurn,
+    canUndoTurn,
     canBranchCubeHistory: canRedoCube && !canRedoCheckers,
     isAnimating,
     moveAnimation,
