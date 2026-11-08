@@ -75,3 +75,27 @@ it.each(['FAIL_UPLOAD', 'FAIL_CREATE', 'FAIL_QUERY'])('keeps the artifact fallba
   expect(existsSync(join(fixture, 'github.env'))).toBe(false);
   expect(readFileSync(join(fixture, 'e2e-recording.mp4'), 'utf8')).toBe('fixture recording');
 });
+
+it('publishes a named shard recording under its own slug', () => {
+  writeFileSync(join(fixture, 'e2e-recording-shard-2.mp4'), 'shard two');
+  const result = spawnSync('bash', [publisher, fixture, join(fixture, 'e2e-recording-shard-2.mp4')], {
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      PATH: `${fixture}:${process.env.PATH}`,
+      GITHUB_REPOSITORY: 'test/repo',
+      GITHUB_TOKEN: 'fixture-token',
+      GITHUB_RUN_ID: '123',
+      GITHUB_RUN_ATTEMPT: '2',
+      MAESTRO_EVIDENCE_SLUG: 'shard-2',
+      MAESTRO_URL_FILE: join(fixture, 'urls.env'),
+      CALLS: join(fixture, 'calls.jsonl'),
+      UPLOADED: join(fixture, 'uploaded.json'),
+    },
+  });
+  expect(result.status).toBe(0);
+  expect(JSON.parse(readFileSync(join(fixture, 'uploaded.json'), 'utf8'))).toEqual({
+    name: 'run-123-attempt-2-shard-2.mp4',
+    bytes: 'shard two',
+  });
+});

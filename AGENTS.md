@@ -8,7 +8,12 @@ Every user-visible change ships with all three, or it is not done:
    rules, saved-game recovery, undo) need a fail-without-the-fix test.
 2. **A Maestro flow covering the feature**, when the change is reachable in the
    app UI. Add or extend `.maestro/app/*.yaml`. Web-only UI still needs a
-   Maestro flow if the same screen is reachable on iOS/Android.
+   Maestro flow if the same screen is reachable on iOS/Android. Register a new
+   Android flow in `.maestro/android-shards.json` (put it in the shortest
+   shard) and `.maestro/config.yaml`; `src/lib/maestro-flow-coverage.test.ts`
+   fails if a flow runs nowhere. Keep flows to what needs a real device
+   (gestures, keyboard, relaunch, deep links, native engine): logic that a
+   component test can check belongs in Jest, not in another flow.
 3. **Evidence on the PR** — screenshot for visual changes, a screen recording
    when a gesture/animation/flow is involved. Attach to the PR; see below.
 
@@ -33,8 +38,11 @@ In the **PR body**, document each change with evidence — not a wall of text:
 
 ### How evidence actually renders
 
-The Android Maestro run records with `adb screenrecord`, builds an HTML
-player/gallery, and uploads the `maestro-visual-report` artifact. Screenshots
+The Android Maestro run splits its flows across parallel emulator shards
+(`.maestro/android-shards.json`), each recording with `adb screenrecord`. The
+`Run backgammon smoke (emulator)` job merges them into one HTML
+player/gallery with a recording per shard, and uploads the
+`maestro-visual-report` artifact. It fails if any listed flow has no result. Screenshots
 use the `maestro-screenshots` branch; recordings use per-run, per-attempt release
 assets. The sticky PR comment links both. A release download URL is not a
 guarantee of inline GitHub playback. GitHub also supports attaching videos
