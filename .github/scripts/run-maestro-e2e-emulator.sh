@@ -5,9 +5,33 @@ set -eu
 
 WORKSPACE="${1:?workspace root required}"
 APP_ID="${2:-com.backgammonmastermind.preview}"
+SHARD="${3:-}"
 MAESTRO_OUT="${WORKSPACE}/.maestro-ci-output"
 
 mkdir -p "$MAESTRO_OUT"
+
+# Flows come from .maestro/android-shards.json, the only Android CI flow list.
+# SHARD (1-based) picks one shard; leave it empty to run every shard in order.
+# shellcheck disable=SC2016 # the JavaScript is meant to be single-quoted
+mapfile -t FLOWS < <(node -e '
+  const [file, shard] = process.argv.slice(1);
+  const { shards } = JSON.parse(require("node:fs").readFileSync(file, "utf8"));
+  const picked = shard ? shards[Number(shard) - 1] : shards.flat();
+  if (!picked || picked.length === 0) {
+    console.error(`No flows for shard ${shard}`);
+    process.exit(1);
+  }
+  for (const flow of picked) console.log(flow);
+' "${WORKSPACE}/.maestro/android-shards.json" "$SHARD")
+FLOW_PATHS=()
+for flow in "${FLOWS[@]}"; do
+  FLOW_PATHS+=("${WORKSPACE}/.maestro/app/${flow}.yaml")
+done
+if [[ ${#FLOW_PATHS[@]} -eq 0 ]]; then
+  echo "::error::No Maestro flows resolved${SHARD:+ for shard $SHARD}" >&2
+  exit 1
+fi
+echo "Running ${#FLOW_PATHS[@]} flow(s)${SHARD:+ for shard $SHARD}: ${FLOWS[*]}"
 
 adb wait-for-device
 adb shell settings put global window_animation_scale 0
@@ -21,37 +45,8 @@ bash "${WORKSPACE}/.github/scripts/record-android-screen.sh" "$MAESTRO_OUT" "$RE
 RECORD_PID=$!
 
 MAESTRO_EXIT=0
-# Smoke + regression flows + native RTL language restart (screenshots land in maestro-visual-report).
 maestro test \
-  "${WORKSPACE}/.maestro/app/home-game-setup.yaml" \
-  "${WORKSPACE}/.maestro/app/match-board-presentation.yaml" \
-  "${WORKSPACE}/.maestro/app/cube-history-autoroll.yaml" \
-  "${WORKSPACE}/.maestro/app/match-cube.yaml" \
-  "${WORKSPACE}/.maestro/app/money-cube-hints.yaml" \
-  "${WORKSPACE}/.maestro/app/cube-tutor-beavers.yaml" \
-  "${WORKSPACE}/.maestro/app/cube-decision-undo.yaml" \
-  "${WORKSPACE}/.maestro/app/computer-match.yaml" \
-  "${WORKSPACE}/.maestro/app/learn-any-order.yaml" \
-  "${WORKSPACE}/.maestro/app/learn-cube-match.yaml" \
-  "${WORKSPACE}/.maestro/app/computer-level.yaml" \
-  "${WORKSPACE}/.maestro/app/match-polish.yaml" \
-  "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
-  "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
-  "${WORKSPACE}/.maestro/app/game-settings-gear.yaml" \
-  "${WORKSPACE}/.maestro/app/settings-no-fast-mode.yaml" \
-  "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
-  "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
-  "${WORKSPACE}/.maestro/app/position-setup.yaml" \
-  "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
-  "${WORKSPACE}/.maestro/app/center-bar-checkers.yaml" \
-  "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \
-  "${WORKSPACE}/.maestro/app/bar-entry-hints.yaml" \
-  "${WORKSPACE}/.maestro/app/dice-order.yaml" \
-  "${WORKSPACE}/.maestro/app/dice-order-fallback.yaml" \
-  "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
-  "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
-  "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
-  "${WORKSPACE}/.maestro/app/feedback.yaml" \
+  "${FLOW_PATHS[@]}" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \

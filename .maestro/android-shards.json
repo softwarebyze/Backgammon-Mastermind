@@ -1,0 +1,40 @@
+{
+  "shards": [
+    [
+      "backgammon-smoke",
+      "position-setup",
+      "computer-match",
+      "cube-history-autoroll",
+      "match-polish",
+      "match-board-presentation",
+      "horseshoe-on-board",
+      "learn-cube-match",
+      "language-settings"
+    ],
+    [
+      "home-game-setup",
+      "dice-order",
+      "tutor-blunder-history",
+      "bar-entry-hints",
+      "dice-order-fallback",
+      "computer-level",
+      "feedback",
+      "language-rtl-restart",
+      "center-bar-checkers",
+      "android-back-closes-settings"
+    ],
+    [
+      "cube-tutor-beavers",
+      "cube-decision-undo",
+      "match-cube",
+      "money-cube-hints",
+      "rapid-follow-up-input",
+      "confirm-move",
+      "reduced-motion",
+      "hebrew-undo-redo",
+      "undo-redo",
+      "game-settings-gear",
+      "learn-any-order"
+    ]
+  ]
+}

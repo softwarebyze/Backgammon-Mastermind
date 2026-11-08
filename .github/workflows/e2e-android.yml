@@ -43,6 +43,8 @@ jobs:
               - '.github/workflows/e2e-android.yml'
               - '.github/actions/setup-jdk-generate-apk/**'
               - '.github/scripts/run-maestro-e2e-emulator.sh'
+              - '.github/scripts/merge-maestro-shards.mjs'
+              - '.github/actions/maestro-e2e-report/**'
               - '.github/scripts/install-android-system-image.sh'
               - '.github/scripts/maestro-post-e2e-report.sh'
               - '.github/scripts/maestro-publish-screenshots.sh'
@@ -89,7 +91,11 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
 
-  test-android:
+  # Flows run in parallel shards listed in .maestro/android-shards.json. Each
+  # shard boots its own emulator; test-android merges their results into one
+  # report. Keep the matrix in step with the number of shards in that file
+  # (src/lib/maestro-flow-coverage.test.ts checks it).
+  e2e-shard:
     needs: [changes, generate-test-apk]
     if: |
       always() &&
@@ -97,9 +103,13 @@ jobs:
       (github.event_name == 'workflow_dispatch' ||
         (needs.changes.result == 'success' && needs.changes.outputs.e2e == 'true') ||
         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'android-test-github')))
-    name: Run backgammon smoke (emulator)
+    name: E2E shard ${{ matrix.shard }}
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
 
     steps:
       - name: Checkout repository
@@ -151,7 +161,7 @@ jobs:
       - name: Pre-install Android system image (retry)
         run: bash .github/scripts/install-android-system-image.sh 34 google_apis x86_64
 
-      - name: Run backgammon smoke with Maestro
+      - name: Run Maestro shard ${{ matrix.shard }}
         id: maestro_emulator
         uses: reactivecircus/android-emulator-runner@v2.38.0
         env:
@@ -167,7 +177,59 @@ jobs:
           disable-animations: true
           cores: 2
           ram-size: 4096M
-          script: bash .github/scripts/run-maestro-e2e-emulator.sh "${{ github.workspace }}" com.backgammonmastermind.preview
+          script: bash .github/scripts/run-maestro-e2e-emulator.sh "${{ github.workspace }}" com.backgammonmastermind.preview ${{ matrix.shard }}
+
+      # upload-artifact skips hidden paths such as .maestro-ci-output, so stage
+      # the shard's results under a plain directory first.
+      - name: Stage shard results
+        if: always()
+        run: |
+          mkdir -p maestro-shard-out
+          if [[ -d .maestro-ci-output ]]; then cp -a .maestro-ci-output maestro-shard-out/output; fi
+          if [[ -f report.xml ]]; then cp report.xml maestro-shard-out/report.xml; fi
+          if [[ -f e2e-recording.mp4 ]]; then cp e2e-recording.mp4 maestro-shard-out/e2e-recording.mp4; fi
+
+      - name: Upload shard results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-shard-${{ matrix.shard }}
+          path: maestro-shard-out/
+          if-no-files-found: warn
+          retention-days: 14
+
+  # Same job name as the single-emulator run it replaces, so existing checks
+  # and the PR comment keep working. It fails unless every shard passed and
+  # every listed flow reported a result.
+  test-android:
+    needs: [changes, generate-test-apk, e2e-shard]
+    if: |
+      always() &&
+      needs.generate-test-apk.result == 'success' &&
+      (github.event_name == 'workflow_dispatch' ||
+        (needs.changes.result == 'success' && needs.changes.outputs.e2e == 'true') ||
+        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'android-test-github')))
+      && needs.e2e-shard.result != 'skipped'
+    name: Run backgammon smoke (emulator)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # A shard that died before uploading leaves no artifact; the merge step
+      # then records its flows as failures instead of this step erroring.
+      - name: Download shard results
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: maestro-shard-*
+          path: maestro-shards
+
+      - name: Merge shard results
+        if: always()
+        run: node .github/scripts/merge-maestro-shards.mjs .maestro/android-shards.json maestro-shards "${{ github.workspace }}"
 
       - name: Publish visual Maestro report
         if: always()
@@ -181,9 +243,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: e2e-test-logs
-          path: |
-            .maestro-ci-output/**
-            ~/.maestro/tests/**/*
+          path: maestro-shards/
           if-no-files-found: ignore
           retention-days: 14
 
@@ -195,3 +255,19 @@ jobs:
           path: report.xml
           if-no-files-found: ignore
           retention-days: 14
+
+      - name: Require every shard and flow to pass
+        if: always()
+        env:
+          SHARDS_RESULT: ${{ needs.e2e-shard.result }}
+        run: |
+          status=0
+          if [[ "$SHARDS_RESULT" != "success" ]]; then
+            echo "::error::E2E shards finished with result: $SHARDS_RESULT"
+            status=1
+          fi
+          if [[ ! -f report.xml ]] || grep -qE '(failures|errors)="[1-9]' report.xml; then
+            echo "::error::Merged JUnit report is missing or has failures"
+            status=1
+          fi
+          exit "$status"

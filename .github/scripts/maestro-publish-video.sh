@@ -5,7 +5,8 @@
 set -euo pipefail
 
 BUNDLE_DIR="${1:?bundle directory required}"
-RECORDING="$BUNDLE_DIR/e2e-recording.mp4"
+# Optional second argument: one of several recordings (e.g. one per shard).
+RECORDING="${2:-$BUNDLE_DIR/e2e-recording.mp4}"
 REPO="${GITHUB_REPOSITORY:?GITHUB_REPOSITORY required}"
 RUN_ID="${GITHUB_RUN_ID:?GITHUB_RUN_ID required}"
 URL_FILE="${MAESTRO_URL_FILE:-${GITHUB_WORKSPACE:-.}/.maestro-screenshot-urls.env}"

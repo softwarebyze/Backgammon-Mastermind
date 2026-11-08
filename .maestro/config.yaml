@@ -1,31 +1,37 @@
+# Every flow the Android CI run executes, for `maestro test .maestro` locally.
+# The CI list (split into parallel shards) is .maestro/android-shards.json;
+# src/lib/maestro-flow-coverage.test.ts keeps the two in step.
 flows:
-  - app/home-game-setup.yaml
-  - app/match-board-presentation.yaml
+  - app/backgammon-smoke.yaml
+  - app/position-setup.yaml
+  - app/computer-match.yaml
   - app/cube-history-autoroll.yaml
-  - app/match-cube.yaml
-  - app/money-cube-hints.yaml
+  - app/match-polish.yaml
+  - app/match-board-presentation.yaml
+  - app/horseshoe-on-board.yaml
+  - app/learn-cube-match.yaml
+  - app/language-settings.yaml
+  - app/home-game-setup.yaml
+  - app/dice-order.yaml
+  - app/tutor-blunder-history.yaml
+  - app/bar-entry-hints.yaml
+  - app/dice-order-fallback.yaml
+  - app/computer-level.yaml
+  - app/feedback.yaml
+  - app/language-rtl-restart.yaml
+  - app/center-bar-checkers.yaml
+  - app/android-back-closes-settings.yaml
   - app/cube-tutor-beavers.yaml
   - app/cube-decision-undo.yaml
-  - app/computer-match.yaml
-  - app/learn-any-order.yaml
-  - app/learn-cube-match.yaml
-  - app/computer-level.yaml
-  - app/match-polish.yaml
+  - app/match-cube.yaml
+  - app/money-cube-hints.yaml
+  - app/rapid-follow-up-input.yaml
   - app/confirm-move.yaml
-  - app/backgammon-smoke.yaml
-  - app/game-settings-gear.yaml
-  - app/settings-no-fast-mode.yaml
-  - app/android-back-closes-settings.yaml
-  - app/position-setup.yaml
-  - app/undo-redo.yaml
-  - app/center-bar-checkers.yaml
   - app/reduced-motion.yaml
   - app/hebrew-undo-redo.yaml
-  - app/feedback.yaml
-  - app/rapid-follow-up-input.yaml
-  - app/bar-entry-hints.yaml
-  - app/dice-order.yaml
-  - app/dice-order-fallback.yaml
+  - app/undo-redo.yaml
+  - app/game-settings-gear.yaml
+  - app/learn-any-order.yaml
 
 excludeTags:
   - util
