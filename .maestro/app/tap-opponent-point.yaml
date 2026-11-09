@@ -24,9 +24,9 @@ tags:
 - hideKeyboard
 - tapOn:
     id: developer-load-json
+# .* keeps these regex matches valid when a selection suffixes the label.
 - extendedWaitUntil:
-    visible:
-      textRegex: 'Point 10, 2 white checkers.*'
+    visible: 'Point 10, 2 white checkers.*'
     timeout: 15000
 - takeScreenshot: opponent-tap-01-fixture
 # The reported bug: this tap used to remap 15 -> 10 and play 10 -> 4.
@@ -37,8 +37,7 @@ tags:
 - tapOn:
     id: point-16
 - extendedWaitUntil:
-    visible:
-      textRegex: 'Point 10, 2 white checkers.*'
+    visible: 'Point 10, 2 white checkers.*'
     timeout: 15000
 - assertVisible: 'Point 16, 1 white checker, selected'
 - assertVisible: 'Point 15, 1 black checker'
@@ -49,9 +48,7 @@ tags:
 - tapOn:
     id: point-10
 - extendedWaitUntil:
-    visible:
-      textRegex: 'Point 4, 1 white checker.*'
+    visible: 'Point 4, 1 white checker.*'
     timeout: 15000
-- assertVisible:
-    textRegex: 'Point 10, 1 white checker.*'
+- assertVisible: 'Point 10, 1 white checker.*'
 - takeScreenshot: opponent-tap-03-deliberate-move
