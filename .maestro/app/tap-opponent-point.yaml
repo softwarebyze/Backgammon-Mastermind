@@ -1,6 +1,8 @@
 # Tapping an opponent's point must not redirect onto your own checker.
-# Fixture: White 10x2 + 16x1, Black 15x1, double sixes. The fat-finger
-# remap used to turn a tap on 15 into 10 and auto-play 10 -> 4.
+# Fixture: White 10x2 + 14x1 + 16x1, Black 15x1 + 6x2, dice 6-4. Black on 6
+# blocks 10 -> 6 so 10 has a single destination, and the extra white checker
+# keeps the turn from being auto-forced (autoMoveWhenForced stays idle). The
+# fat-finger remap used to turn a tap on 15 into 10 and auto-play 10 -> 4.
 appId: ${APP_ID}
 tags:
   - pull-request
@@ -18,12 +20,13 @@ tags:
     direction: DOWN
     timeout: 60000
 - runFlow: ../utils/clear-developer-json.yaml
-- inputText: '{"placements":[{"point":10,"player":"white","count":2},{"point":15,"player":"black","count":1},{"point":16,"player":"white","count":1}],"dice":[6,6],"mode":"vs-human"}'
+- inputText: '{"placements":[{"point":10,"player":"white","count":2},{"point":14,"player":"white","count":1},{"point":16,"player":"white","count":1},{"point":15,"player":"black","count":1},{"point":6,"player":"black","count":2}],"dice":[6,4],"mode":"vs-human"}'
 - hideKeyboard
 - tapOn:
     id: developer-load-json
 - extendedWaitUntil:
-    visible: 'Point 10, 2 white checkers'
+    visible:
+      textRegex: 'Point 10, 2 white checkers.*'
     timeout: 15000
 - takeScreenshot: opponent-tap-01-fixture
 # The reported bug: this tap used to remap 15 -> 10 and play 10 -> 4.
@@ -34,7 +37,8 @@ tags:
 - tapOn:
     id: point-16
 - extendedWaitUntil:
-    visible: 'Point 10, 2 white checkers'
+    visible:
+      textRegex: 'Point 10, 2 white checkers.*'
     timeout: 15000
 - assertVisible: 'Point 16, 1 white checker, selected'
 - assertVisible: 'Point 15, 1 black checker'
@@ -45,7 +49,9 @@ tags:
 - tapOn:
     id: point-10
 - extendedWaitUntil:
-    visible: 'Point 4, 1 white checker'
+    visible:
+      textRegex: 'Point 4, 1 white checker.*'
     timeout: 15000
-- assertVisible: 'Point 10, 1 white checker'
+- assertVisible:
+    textRegex: 'Point 10, 1 white checker.*'
 - takeScreenshot: opponent-tap-03-deliberate-move
