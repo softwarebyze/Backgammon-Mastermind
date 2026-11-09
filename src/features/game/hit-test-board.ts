@@ -135,13 +135,6 @@ function destinationList(state: GameState): number[] {
   return [...getReachableDestinations(state, state.selectedPoint).keys()];
 }
 
-function columnMate(pointIndex: number): number | null {
-  if (pointIndex < 1 || pointIndex > 24) {
-    return null;
-  }
-  return 25 - pointIndex;
-}
-
 function holdsCurrentPlayerChecker(state: GameState, pointIndex: number): boolean {
   if (pointIndex === BEAR_OFF) {
     return false;
@@ -188,12 +181,10 @@ export function hitTestFatFinger(tap: BoardTap): number | null {
   if (geometric !== null && holdsCurrentPlayerChecker(tap.state, geometric) && !origins.has(geometric)) {
     return geometric;
   }
-  // Same-column opponent stack (1 vs 24, 6 vs 19, …) belongs to the mate, not a nearer far-side origin.
+  // An opponent stack is never a target: keep the tap exact (15 stays 15) so it
+  // cannot redirect onto your own checkers and auto-play a move from there.
   if (geometric !== null && isOpponentOccupied(tap.state, geometric)) {
-    const mate = columnMate(geometric);
-    if (mate !== null && origins.has(mate)) {
-      return mate;
-    }
+    return geometric;
   }
 
   const uniqueOrigin = origins.size === 1;
