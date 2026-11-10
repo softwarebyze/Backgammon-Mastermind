@@ -1,4 +1,5 @@
 flows:
+  - app/game-clock.yaml
   - app/home-game-setup.yaml
   - app/match-board-presentation.yaml
   - app/cube-history-autoroll.yaml
