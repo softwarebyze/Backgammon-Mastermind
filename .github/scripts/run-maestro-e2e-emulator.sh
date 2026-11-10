@@ -49,6 +49,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/bar-entry-hints.yaml" \
   "${WORKSPACE}/.maestro/app/dice-order.yaml" \
   "${WORKSPACE}/.maestro/app/dice-order-fallback.yaml" \
+  "${WORKSPACE}/.maestro/app/tap-opponent-point.yaml" \
   "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
