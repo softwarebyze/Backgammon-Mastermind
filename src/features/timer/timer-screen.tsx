@@ -307,6 +307,7 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '180deg' }],
   },
   hint: {
+    color: GAME_PALETTE.text,
     textAlign: 'center',
     fontSize: 13.5,
     lineHeight: 18,

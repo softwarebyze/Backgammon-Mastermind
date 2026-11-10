@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   statusText: {
-    fontSize: 10,
+    fontSize: 11,
     letterSpacing: 0.9,
     textTransform: 'uppercase',
     ...interFont('semibold'),
