@@ -36,12 +36,21 @@ tags:
     id: timer-sound
 - tapOn:
     id: timer-facing
+# Rotation adds a hint above the controls, so reacquire them after the layout changes.
+- scrollUntilVisible:
+    element:
+      text: For over-the-board play
+    direction: UP
 - takeScreenshot: game-clock-face-players
+- scrollUntilVisible:
+    element:
+      id: timer-facing
+    direction: DOWN
 - tapOn:
     id: timer-facing
 - scrollUntilVisible:
     element:
-      id: timer-clock-white
+      text: For over-the-board play
     direction: UP
 - tapOn:
     id: timer-clock-white

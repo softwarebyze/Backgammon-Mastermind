@@ -99,7 +99,8 @@ jobs:
         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'android-test-github')))
     name: Run backgammon smoke (emulator)
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Setup can take 8 minutes; the full recorded suite takes about 40–45 minutes.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
