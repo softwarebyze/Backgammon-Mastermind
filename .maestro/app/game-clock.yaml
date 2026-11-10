@@ -24,8 +24,14 @@ tags:
       id: timer-time-1
 - tapOn:
     id: timer-time-1
+- scrollUntilVisible:
+    element:
+      id: timer-delay-3
 - tapOn:
     id: timer-delay-3
+- scrollUntilVisible:
+    element:
+      id: timer-facing
 - tapOn:
     id: timer-sound
 - tapOn:
@@ -39,7 +45,7 @@ tags:
     direction: UP
 - tapOn:
     id: timer-clock-white
-- assertVisible: Running
+- assertVisible: Tap your running clock to end your turn.
 - tapOn:
     id: timer-clock-white
 - tapOn:
@@ -50,11 +56,11 @@ tags:
     id: timer-pause
 - takeScreenshot: game-clock-running
 - extendedWaitUntil:
-    visible: Time out
+    visible: Black has run out of time.
     timeout: 75000
 - takeScreenshot: game-clock-time-out
 - tapOn:
     id: timer-reset
 - tapOn: Reset
-- assertVisible: Ready
+- assertVisible: Tap the first player’s clock to start.
 - takeScreenshot: game-clock-reset
