@@ -99,7 +99,9 @@ jobs:
         (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'android-test-github')))
     name: Run backgammon smoke (emulator)
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Setup (recording tools up to 8m, emulator boot) plus the ~46-50m suite
+    # has to fit too — 60m left no headroom when ffmpeg actually had to install.
+    timeout-minutes: 75
 
     steps:
       - name: Checkout repository
