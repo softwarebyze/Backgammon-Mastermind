@@ -28,6 +28,7 @@ import { SettingsItem } from './components/settings-item';
 import { DeveloperItem } from './developer-item';
 import { isDeveloperToolsEnabled } from './developer-tools-gate';
 
+/** Present app preferences and links to standalone tools using the current language and platform layout. */
 export function SettingsScreen() {
   const posthog = usePostHog();
   const { insets } = useLayoutMetrics();

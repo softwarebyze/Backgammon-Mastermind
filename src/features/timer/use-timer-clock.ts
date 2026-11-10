@@ -24,7 +24,7 @@ export function useTimerClock() {
   const clock = useSyncExternalStore(subscribeTimer, getTimerState, getTimerState);
   const timerPreferences = useTimerPreferences();
   const lastSecond = useRef<number | null>(null);
-  const wasExpired = useRef(false);
+  const wasExpired = useRef(clock.status === 'expired');
 
   useEffect(() => {
     advanceTimer();

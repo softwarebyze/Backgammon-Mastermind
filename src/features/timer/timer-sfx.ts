@@ -20,6 +20,7 @@ type Player = ReturnType<typeof createAudioPlayer>;
 const players = new Map<TimerSfxKind, Player>();
 let audioModeReady = false;
 
+/** Configure foreground sounds once while respecting silent mode; permit retry if setup fails. */
 async function warmAudioMode(): Promise<void> {
   if (audioModeReady || Platform.OS === 'web') {
     return;
@@ -37,6 +38,7 @@ async function warmAudioMode(): Promise<void> {
   }
 }
 
+/** Reuse one native audio player per clock sound and assign its restrained playback volume. */
 function playerFor(kind: TimerSfxKind): Player {
   const existing = players.get(kind);
   if (existing) {

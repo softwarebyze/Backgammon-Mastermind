@@ -61,6 +61,7 @@ function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolea
 }
 
 /* eslint-disable max-lines-per-function -- home mode menu composition */
+/** Present game setup, saved-game recovery and standalone learning, position and clock destinations. */
 export function HomeScreen() {
   const { state, startGame, startFromPosition, resumeGame } = useGame();
   const { preferences } = useGamePreferences();

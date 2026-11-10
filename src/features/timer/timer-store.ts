@@ -20,6 +20,7 @@ let current = createTimerState({
 });
 const listeners = new Set<() => void>();
 
+/** Replace changed clock snapshots and synchronously notify subscribed screens. */
 function publish(next: TimerState): void {
   if (next === current) {
     return;
@@ -30,11 +31,13 @@ function publish(next: TimerState): void {
   }
 }
 
+/** Register a clock consumer and provide an unsubscribe callback. */
 export function subscribeTimer(listener: () => void): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
 
+/** Read the shared snapshot retained while the clock screen is unmounted. */
 export function getTimerState(): TimerState {
   return current;
 }
@@ -51,18 +54,22 @@ export function tapTimer(player: TimerPlayer): void {
   }
 }
 
+/** Account for elapsed time and pause the active clock, preserving its remaining delay. */
 export function pauseTimer(): void {
   publish(pauseClock(current, Date.now()));
 }
 
+/** Resume the paused player against the current timestamp. */
 export function resumeTimer(): void {
   publish(resumeClock(current, Date.now()));
 }
 
+/** Restore both clocks to their selected starting control. */
 export function resetTimer(): void {
   publish(resetClock(current));
 }
 
+/** Change the shared time control while the clock is idle. */
 export function changeTimerControl(config: TimerConfig): void {
   publish(setTimerConfig(current, config));
 }

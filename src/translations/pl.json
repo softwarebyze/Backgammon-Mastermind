@@ -800,7 +800,7 @@
     "delay_pill": "{{seconds}} s opóźnienia",
     "facing_hint": "Górny zegar jest skierowany do drugiego gracza.",
     "facing_label": "Skieruj do graczy",
-    "finished_body": "{{player}} nie ma już czasu.",
+    "finished_body": "{{player}}: czas minął.",
     "finished_title": "Koniec czasu",
     "minutes": "{{count}} min",
     "move_hint": "Dotknij swojego działającego zegara, aby zakończyć turę.",

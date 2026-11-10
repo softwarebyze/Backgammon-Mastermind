@@ -25,6 +25,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
+/** Render a selectable time preset that becomes unavailable after a clock starts. */
 function Chip({ label, selected, disabled, testID, onPress }: {
   label: string;
   selected: boolean;
@@ -53,6 +54,7 @@ function Chip({ label, selected, disabled, testID, onPress }: {
   );
 }
 
+/** Expose sound and facing preferences as accessible switches with a visible checked state. */
 function Toggle({ icon, label, testID, onPress, checked }: {
   checked: boolean;
   icon: keyof typeof Feather.glyphMap;
@@ -80,6 +82,7 @@ function Toggle({ icon, label, testID, onPress, checked }: {
   );
 }
 
+/** Present main-time and simple-delay presets; lock time controls until the live clock is reset. */
 export function TimerControls({
   state,
   preferences,

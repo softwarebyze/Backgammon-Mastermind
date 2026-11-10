@@ -25,10 +25,12 @@ export type TimerState = {
 
 export const TIMER_LOW_MS = 10_000;
 
+/** Return the player who receives the next clock handoff. */
 function otherPlayer(player: TimerPlayer): TimerPlayer {
   return player === 'white' ? 'black' : 'white';
 }
 
+/** Create equal idle clocks without starting either player’s delay. */
 export function createTimerState(config: TimerConfig): TimerState {
   return {
     config,
@@ -104,6 +106,7 @@ export function switchClock(state: TimerState, now: number): TimerState {
   };
 }
 
+/** Charge elapsed time before pausing; preserve unused delay unless the clock has already expired. */
 export function pauseClock(state: TimerState, now: number): TimerState {
   const advanced = advanceClock(state, now);
   if (advanced.status !== 'running') {
@@ -112,6 +115,7 @@ export function pauseClock(state: TimerState, now: number): TimerState {
   return { ...advanced, status: 'paused', anchorAt: null };
 }
 
+/** Restart a paused clock from a new timestamp without granting another delay. */
 export function resumeClock(state: TimerState, now: number): TimerState {
   if (state.status !== 'paused' || state.active === null) {
     return state;
@@ -119,6 +123,7 @@ export function resumeClock(state: TimerState, now: number): TimerState {
   return { ...state, status: 'running', anchorAt: now };
 }
 
+/** Restore the selected starting time, clearing moves, active player and expiry. */
 export function resetClock(state: TimerState): TimerState {
   return {
     ...createTimerState(state.config),
@@ -126,6 +131,7 @@ export function resetClock(state: TimerState): TimerState {
   };
 }
 
+/** Apply a new time control only before either clock starts. */
 export function setTimerConfig(state: TimerState, config: TimerConfig): TimerState {
   if (state.status !== 'idle') {
     return state;
@@ -133,14 +139,17 @@ export function setTimerConfig(state: TimerState, config: TimerConfig): TimerSta
   return createTimerState(config);
 }
 
+/** Read the active player’s time, or zero when neither clock is active. */
 export function activeRemainingMs(state: TimerState): number {
   return state.active === null ? 0 : state.remainingMs[state.active];
 }
 
+/** Identify positive main-time balances within the audible warning threshold. */
 export function isLowTime(remainingMs: number): boolean {
   return remainingMs > 0 && remainingMs <= TIMER_LOW_MS;
 }
 
+/** Format a two-digit clock field with a leading zero. */
 function pad(value: number): string {
   return String(value).padStart(2, '0');
 }
@@ -174,6 +183,7 @@ export function remainingFraction(state: TimerState, player: TimerPlayer): numbe
   return Math.min(1, Math.max(0, state.remainingMs[player] / state.config.initialMs));
 }
 
+/** Round remaining free delay up to whole seconds for display. */
 export function formatDelay(ms: number): string {
   return `${Math.ceil(Math.max(0, ms) / 1000)}s`;
 }

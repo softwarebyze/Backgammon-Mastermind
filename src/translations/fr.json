@@ -800,7 +800,7 @@
     "delay_pill": "Délai de {{seconds}} s",
     "facing_hint": "La pendule du haut fait face à l’autre joueur.",
     "facing_label": "Orienter vers les joueurs",
-    "finished_body": "{{player}} a épuisé son temps.",
+    "finished_body": "Le temps des {{player}} est écoulé.",
     "finished_title": "Temps écoulé",
     "minutes": "{{count}} min",
     "move_hint": "Touchez votre pendule en marche pour terminer votre tour.",

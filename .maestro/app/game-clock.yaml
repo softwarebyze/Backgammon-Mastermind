@@ -59,6 +59,16 @@ tags:
     visible: Black has run out of time.
     timeout: 75000
 - takeScreenshot: game-clock-time-out
+# Reopening an expired clock preserves its flag; hook tests verify no repeated alarm.
+- tapOn:
+    id: stack-escape-button
+- scrollUntilVisible:
+    element:
+      id: game-clock-button
+- tapOn:
+    id: game-clock-button
+- assertVisible: Black has run out of time.
+- takeScreenshot: game-clock-expired-reopened
 - tapOn:
     id: timer-reset
 - tapOn: Reset

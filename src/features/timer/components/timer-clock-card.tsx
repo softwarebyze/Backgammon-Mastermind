@@ -27,6 +27,7 @@ type Props = {
   onPress: (player: TimerPlayer) => void;
   testID: string;
 };
+/** Render a player paddle, enabling only idle or active clocks and exposing the current status to assistive technology. */
 export function TimerClockCard({ player, state, timeFontSize, compact, onPress, testID }: Props) {
   const name = translate(player === 'white' ? 'timer.white' : 'timer.black');
   const running = state.status === 'running';
@@ -123,6 +124,7 @@ export function TimerClockCard({ player, state, timeFontSize, compact, onPress, 
     </HoverPressable>
   );
 }
+/** Distinguish active and expired clocks with the shared control and warning colours. */
 function StatusPill({ active, expired, muted, status }: { active: boolean; expired: boolean; muted: string; status: string }) {
   return (
     <View style={[styles.statusPill, active && styles.statusActive, expired && styles.statusExpired, !active && !expired && styles.statusMuted]}>
@@ -130,6 +132,7 @@ function StatusPill({ active, expired, muted, status }: { active: boolean; expir
     </View>
   );
 }
+/** Prioritize expiry, activity and pause before choosing the waiting or ready label. */
 function clockStatus({ expired, active, paused, waiting }: { expired: boolean; active: boolean; paused: boolean; waiting: boolean }) {
   return expired
     ? translate('timer.finished_title')
@@ -142,6 +145,7 @@ function clockStatus({ expired, active, paused, waiting }: { expired: boolean; a
           : translate('timer.ready');
 }
 
+/** Choose a warning foreground with contrast against the player’s paddle. */
 function dangerFor(player: TimerPlayer): string {
   return player === 'white' ? '#B3301D' : '#FF7A5C';
 }

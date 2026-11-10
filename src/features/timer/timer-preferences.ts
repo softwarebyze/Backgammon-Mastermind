@@ -32,10 +32,12 @@ export const DEFAULT_TIMER_PREFERENCES: TimerPreferences = {
   facePlayers: false,
 };
 
+/** Accept only supported controls when restoring persisted preferences. */
 function isPreset(value: number, presets: readonly number[]): boolean {
   return presets.includes(value);
 }
 
+/** Replace corrupt or unsupported saved fields with safe defaults while preserving valid settings. */
 function sanitize(value: Partial<TimerPreferences> | null): TimerPreferences {
   const initialMs = value?.initialMs;
   const delayMs = value?.delayMs;
@@ -55,10 +57,12 @@ function sanitize(value: Partial<TimerPreferences> | null): TimerPreferences {
   };
 }
 
+/** Restore and validate the persisted control, sound and orientation settings. */
 export function loadTimerPreferences(): TimerPreferences {
   return sanitize(getItem<Partial<TimerPreferences>>(STORAGE_KEY));
 }
 
+/** Persist preference changes without blocking clock input. */
 function saveTimerPreferences(preferences: TimerPreferences): void {
   void setItem(STORAGE_KEY, preferences);
 }
@@ -66,21 +70,25 @@ function saveTimerPreferences(preferences: TimerPreferences): void {
 let cached = loadTimerPreferences();
 const listeners = new Set<() => void>();
 
+/** Notify mounted preference consumers after a cached setting changes. */
 function emitChange() {
   for (const listener of listeners) {
     listener();
   }
 }
 
+/** Register a preference consumer and return its unsubscribe callback. */
 function subscribe(listener: () => void) {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
 
+/** Return the stable cached preferences required by useSyncExternalStore. */
 function getSnapshot(): TimerPreferences {
   return cached;
 }
 
+/** Validate a partial change, persist and notify only when a setting actually differs. */
 function patchTimerPreferences(patch: Partial<TimerPreferences>): void {
   const next = sanitize({ ...cached, ...patch });
   if (
@@ -96,6 +104,7 @@ function patchTimerPreferences(patch: Partial<TimerPreferences>): void {
   emitChange();
 }
 
+/** Subscribe to saved settings and expose stable callbacks for changing controls and toggles. */
 export function useTimerPreferences() {
   const preferences = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
   const setInitialMs = useCallback((initialMs: number) => {

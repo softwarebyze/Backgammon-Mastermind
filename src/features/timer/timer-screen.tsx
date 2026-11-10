@@ -17,6 +17,7 @@ import { playTimerSfx } from './timer-sfx';
 import { changeTimerControl } from './timer-store';
 import { useTimerClock } from './use-timer-clock';
 
+/** Lay out standalone player clocks for the viewport, rotating the upper paddle when opponents face each other. */
 export function TimerScreen() {
   const timer = useTimerClock();
   const { clock, preferences } = timer;
@@ -117,6 +118,7 @@ export function TimerScreen() {
   );
 }
 
+/** Keep pause/resume and confirmed reset within a stable-height header. */
 function TimerHeader({ running, paused, idle, onPause, onReset }: {
   running: boolean;
   paused: boolean;
@@ -170,6 +172,7 @@ function TimerHeader({ running, paused, idle, onPause, onReset }: {
   );
 }
 
+/** Connect clock controls to haptics, optional sounds, saved presets and reset confirmation. */
 function timerActions(timer: ReturnType<typeof useTimerClock>) {
   const handleClockPress = (player: TimerPlayer) => {
     hapticLight();

@@ -800,7 +800,7 @@
     "delay_pill": "{{seconds}} s de demora",
     "facing_hint": "El reloj superior mira hacia el otro jugador.",
     "facing_label": "Orientar a jugadores",
-    "finished_body": "{{player}} se ha quedado sin tiempo.",
+    "finished_body": "Se acabó el tiempo de {{player}}.",
     "finished_title": "Tiempo agotado",
     "minutes": "{{count}} min",
     "move_hint": "Toca tu reloj en marcha para terminar tu turno.",

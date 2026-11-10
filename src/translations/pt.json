@@ -800,7 +800,7 @@
     "delay_pill": "{{seconds}} s de atraso",
     "facing_hint": "O relógio superior fica virado para o outro jogador.",
     "facing_label": "Virar para jogadores",
-    "finished_body": "{{player}} ficou sem tempo.",
+    "finished_body": "O tempo acabou para as {{player}}.",
     "finished_title": "Tempo esgotado",
     "minutes": "{{count}} min",
     "move_hint": "Toque no seu relógio em curso para terminar a jogada.",

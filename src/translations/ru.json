@@ -800,7 +800,7 @@
     "delay_pill": "Задержка {{seconds}} с",
     "facing_hint": "Верхние часы обращены к другому игроку.",
     "facing_label": "Повернуть к игрокам",
-    "finished_body": "У игрока {{player}} закончилось время.",
+    "finished_body": "{{player}}: время вышло.",
     "finished_title": "Время вышло",
     "minutes": "{{count}} мин",
     "move_hint": "Нажмите на свои идущие часы, чтобы завершить ход.",

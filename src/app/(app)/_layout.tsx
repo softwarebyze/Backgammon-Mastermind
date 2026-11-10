@@ -15,6 +15,7 @@ import { stackEscapeHeaderOptions } from '@/lib/navigation/stack-escape-header';
 /** `learn` hosts its own Stack; it keys its screens itself so its history survives. */
 const screenLayout = languageScreenLayout(['learn']);
 
+/** Configure app routes with translated native titles and always-available escape navigation. */
 export default function AppLayout() {
   // Reactive `t` (not memoized `translate`) so header titles refresh when the
   // language switches in place on web; React Compiler tracks it as a dependency.
