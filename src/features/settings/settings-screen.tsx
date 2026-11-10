@@ -60,6 +60,7 @@ export function SettingsScreen() {
           <SettingsContainer title="settings.general">
             <LanguageItem />
             <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
+            <SettingsItem text="timer.title" testID="settings-timer" onPress={() => router.push('/timer')} />
           </SettingsContainer>
 
           <GameSettingsSection showHints />

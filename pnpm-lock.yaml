@@ -83,6 +83,9 @@ importers:
       expo-insights:
         specifier: ~57.0.21
         version: 57.0.21(expo@57.0.31)
+      expo-keep-awake:
+        specifier: ~57.0.2
+        version: 57.0.2(expo@57.0.31)(react@19.2.3)
       expo-linking:
         specifier: ~57.0.13
         version: 57.0.13(expo@57.0.31)(react-native@0.86.3(@babel/core@7.29.0)(@react-native/jest-preset@0.86.3(@babel/core@7.29.0)(react@19.2.3))(@react-native/metro-config@0.85.3(@babel/core@7.29.0))(@types/react@19.2.15)(react@19.2.3))(react@19.2.3)

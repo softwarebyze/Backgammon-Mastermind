@@ -1,0 +1,60 @@
+# Standalone over-the-board clock: setup, delay, handoff, pause, reset, flag.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: game-clock-button
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: game-clock-button
+- assertVisible:
+    id: timer-clock-white
+- takeScreenshot: game-clock-ready
+- scrollUntilVisible:
+    element:
+      id: timer-time-1
+- tapOn:
+    id: timer-time-1
+- tapOn:
+    id: timer-delay-3
+- tapOn:
+    id: timer-sound
+- tapOn:
+    id: timer-facing
+- takeScreenshot: game-clock-face-players
+- tapOn:
+    id: timer-facing
+- scrollUntilVisible:
+    element:
+      id: timer-clock-white
+    direction: UP
+- tapOn:
+    id: timer-clock-white
+- assertVisible: Running
+- tapOn:
+    id: timer-clock-white
+- tapOn:
+    id: timer-pause
+- assertVisible: Paused
+- takeScreenshot: game-clock-paused
+- tapOn:
+    id: timer-pause
+- takeScreenshot: game-clock-running
+- extendedWaitUntil:
+    visible: Time out
+    timeout: 75000
+- takeScreenshot: game-clock-time-out
+- tapOn:
+    id: timer-reset
+- tapOn: Reset
+- assertVisible: Ready
+- takeScreenshot: game-clock-reset
