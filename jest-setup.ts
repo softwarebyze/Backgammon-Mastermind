@@ -50,6 +50,7 @@ jest.mock('react-native-reanimated', () => {
     SlideInRight: { duration: jest.fn(() => ({})) },
     Layout: {},
     Keyframe: jest.fn(),
+    cubicBezier: jest.fn((...points: number[]) => `cubic-bezier(${points.join(', ')})`),
   };
 });
 
