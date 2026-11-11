@@ -10,6 +10,12 @@ const WEBSITE_URL = 'https://backgammon-mastermind.vercel.app';
 /** Production ASC Apple ID (6792138473). Set via EAS production env — see docs/ios-testing-and-store.md. */
 const APP_STORE_ID = process.env.EXPO_PUBLIC_APP_STORE_ID?.trim() ?? '';
 
+/** Public store listings for the production app, for web visitors ("Get the app"). */
+export const STORE_LINKS = {
+  appStore: 'https://apps.apple.com/app/id6792138473',
+  googlePlay: 'https://play.google.com/store/apps/details?id=com.backgammonmastermind',
+} as const;
+
 export const APP_LINKS = {
   github: REPOSITORY_URL,
   openSource: 'https://github.com/markbgsage/bgsage/tree/d8325a491168062df1047ffd998f3a5dfb426a0c#license',
