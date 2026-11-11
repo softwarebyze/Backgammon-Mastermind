@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "Le mieux : {{choice}}",
       "better_choice": "Il y avait un meilleur choix de videau",
+      "computer_error": "Impossible d'analyser le cube — appuyez pour réessayer",
       "computer_waiting": "L’ordinateur attend",
       "keep": "Garder mon choix",
       "missed_double": "Double manqué",
@@ -759,6 +760,9 @@
     "untitled": "Position sans titre",
     "white": "Blancs",
     "white_score": "Score des Blancs"
+  },
+  "pwa": {
+    "update_available": "Une nouvelle version est prête — appuyez pour recharger"
   },
   "settings": {
     "about": "À propos",

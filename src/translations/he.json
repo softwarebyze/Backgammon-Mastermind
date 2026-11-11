@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "הכי טוב: {{choice}}",
       "better_choice": "הייתה החלטת קובייה טובה יותר",
+      "computer_error": "לא ניתן היה לנתח את הקובייה — הקש כדי לנסות שוב",
       "computer_waiting": "המחשב ממתין",
       "keep": "להשאיר את הבחירה שלי",
       "missed_double": "פספסת הכפלה",
@@ -759,6 +760,9 @@
     "untitled": "עמדה ללא שם",
     "white": "לבן",
     "white_score": "ניקוד לבן"
+  },
+  "pwa": {
+    "update_available": "גרסה חדשה מוכנה — הקש כדי לרענן"
   },
   "settings": {
     "about": "אודות",

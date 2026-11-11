@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "Il migliore: {{choice}}",
       "better_choice": "C'era una scelta di cubo migliore",
+      "computer_error": "Impossibile analizzare il cubo — tocca per riprovare",
       "computer_waiting": "Il computer è in attesa",
       "keep": "Mantieni la mia scelta",
       "missed_double": "Raddoppio mancato",
@@ -759,6 +760,9 @@
     "untitled": "Posizione senza nome",
     "white": "Bianco",
     "white_score": "Punti del Bianco"
+  },
+  "pwa": {
+    "update_available": "Una nuova versione è pronta — tocca per ricaricare"
   },
   "settings": {
     "about": "Informazioni",

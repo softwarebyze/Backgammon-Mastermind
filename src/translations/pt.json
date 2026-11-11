@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "Melhor: {{choice}}",
       "better_choice": "Havia uma decisão de cubo melhor",
+      "computer_error": "Não foi possível analisar o cubo — toque para tentar novamente",
       "computer_waiting": "O computador está aguardando",
       "keep": "Manter minha escolha",
       "missed_double": "Dobra perdida",
@@ -759,6 +760,9 @@
     "untitled": "Posição sem nome",
     "white": "Brancas",
     "white_score": "Pontos das Brancas"
+  },
+  "pwa": {
+    "update_available": "Há uma nova versão — toque para recarregar"
   },
   "settings": {
     "about": "Sobre",

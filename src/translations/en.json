@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "Best: {{choice}}",
       "better_choice": "There was a better cube choice",
+      "computer_error": "Couldn't analyze the cube — tap to retry",
       "computer_waiting": "Computer is waiting",
       "keep": "Keep my choice",
       "missed_double": "Missed double",
@@ -759,6 +760,9 @@
     "untitled": "Untitled position",
     "white": "White",
     "white_score": "White score"
+  },
+  "pwa": {
+    "update_available": "A new version is ready — tap to reload"
   },
   "settings": {
     "about": "About",
