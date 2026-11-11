@@ -344,6 +344,7 @@
     "review_sub": "前回の対局がどう終わったか見てみましょう",
     "setup": {
       "crawford": "クロフォードルール",
+      "doubling_cube": "ダブリングキューブ",
       "format": "対戦形式",
       "length": "マッチの目標点",
       "match": "マッチ",
