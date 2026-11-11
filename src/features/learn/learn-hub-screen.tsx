@@ -136,15 +136,11 @@ export function LearnHubScreen() {
         overScrollMode="never"
         keyboardShouldPersistTaps="handled"
       >
-        <Text style={styles.subtitle}>{translate('learn.subtitle')}</Text>
-
         <View style={landscape ? styles.nextWide : null}>
           <LearnNextCard
-            eyebrow={nextLesson ? translate(done > 0 ? 'learn.next_lesson' : 'learn.hub.first_lesson') : undefined}
             title={nextLesson
               ? translate(nextLesson.titleKey as TxKeyPath)
               : translate(ready ? 'learn.home_cta_ready' : 'learn.home_cta_quiz')}
-            body={nextLesson ? translate(nextLesson.subtitleKey as TxKeyPath) : undefined}
             progressLabel={translate('learn.home_cta_progress', { done, total })}
             progress={done / total}
             actionLabel={nextLesson
@@ -190,12 +186,6 @@ const styles = StyleSheet.create({
   contentLandscape: {
     maxWidth: PAGE_STAGE_MAX_WIDTH,
     paddingTop: 8,
-  },
-  subtitle: {
-    color: LEARN_INK.muted,
-    fontSize: 15,
-    lineHeight: 21,
-    ...interFont('regular'),
   },
   // Landscape and desktop: the card keeps a phone's measure instead of stretching across the stage.
   nextWide: {

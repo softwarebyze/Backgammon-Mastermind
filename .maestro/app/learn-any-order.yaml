@@ -17,7 +17,6 @@ tags:
 # A newcomer is pointed at the first lesson; the course is laid out in chapters.
 - assertVisible:
     id: learn-next-card
-- assertVisible: Start here
 - assertVisible: Start lesson
 - assertVisible: The basics
 - takeScreenshot: learn-any-order-00-hub-top

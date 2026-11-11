@@ -29,7 +29,8 @@ beforeEach(() => jest.clearAllMocks());
 it('starts a newcomer on the first lesson', () => {
   withProgress([]);
   render(<LearnHubScreen />);
-  expect(screen.getByText('Start here')).toBeTruthy();
+  // The title and the button say it: no eyebrow, no page subhead.
+  expect(screen.queryByText('Short interactive lessons — then you’re ready')).toBeNull();
   expect(screen.getByRole('header', { name: 'Goal & board' })).toBeTruthy();
   expect(screen.getByText('0 of 10 lessons done')).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Start lesson' }));
@@ -39,7 +40,7 @@ it('starts a newcomer on the first lesson', () => {
 it('sends a returning learner to the first lesson not done yet, even after skipping ahead', () => {
   withProgress(['goal-board', 'direction-setup', 'strategies']);
   render(<LearnHubScreen />);
-  expect(screen.getByText('Next lesson')).toBeTruthy();
+  expect(screen.queryByText('Next lesson')).toBeNull();
   expect(screen.getByRole('header', { name: 'Moving with dice' })).toBeTruthy();
   expect(screen.getByRole('progressbar').props.accessibilityValue).toEqual({ min: 0, max: 100, now: 30 });
   fireEvent.press(screen.getByTestId('learn-next-action'));

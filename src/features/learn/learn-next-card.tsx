@@ -8,10 +8,8 @@ import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 type Props = {
-  /** A line above the title that says what the title is, e.g. "Next lesson". */
-  eyebrow?: string;
+  /** The lesson to take next, or what is left once every lesson is done. */
   title: string;
-  body?: string;
   /** "3 of 10 lessons done", beside the bar. */
   progressLabel: string;
   /** 0 to 1. */
@@ -22,17 +20,14 @@ type Props = {
 
 /**
  * The top of the course: where you are and the one thing to do next. Its
- * button is the only amber block on the screen.
+ * button is the only amber block on the screen. No eyebrow or second line:
+ * the title and the button say it.
  */
-export function LearnNextCard({ eyebrow, title, body, progressLabel, progress, actionLabel, onPress }: Props) {
+export function LearnNextCard({ title, progressLabel, progress, actionLabel, onPress }: Props) {
   const percent = Math.round(Math.min(1, Math.max(0, progress)) * 100);
   return (
     <View testID="learn-next-card" style={styles.card}>
-      <View style={styles.copy}>
-        {eyebrow ? <Text style={styles.eyebrow}>{eyebrow}</Text> : null}
-        <Text accessibilityRole="header" style={styles.title}>{title}</Text>
-        {body ? <Text style={styles.body}>{body}</Text> : null}
-      </View>
+      <Text accessibilityRole="header" style={styles.title}>{title}</Text>
       <View
         style={styles.progress}
         accessible
@@ -67,27 +62,12 @@ const styles = StyleSheet.create({
     borderColor: LEARN_INK.hairline,
     ...continuousRadius(22),
   },
-  copy: {
-    gap: 4,
-  },
-  eyebrow: {
-    color: LEARN_INK.brass,
-    fontSize: 13,
-    lineHeight: 18,
-    ...interFont('semibold'),
-  },
   title: {
     color: LEARN_INK.ivory,
     fontSize: 24,
     lineHeight: 30,
     letterSpacing: -0.4,
     ...interFont('bold'),
-  },
-  body: {
-    color: LEARN_INK.muted,
-    fontSize: 15,
-    lineHeight: 21,
-    ...interFont('regular'),
   },
   progress: {
     gap: 6,
