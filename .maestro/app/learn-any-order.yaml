@@ -26,8 +26,9 @@ tags:
     visible:
       id: learn-board-slot
     timeout: 20000
-# The caption says where you are in the lesson, and the one button spans the screen.
-- assertVisible: Step 1 of 6
+# The caption shows where you are in the lesson as pips, and the one button spans the screen.
+- assertVisible:
+    id: learn-step-pips
 - assertVisible:
     id: learn-primary-cta
 - takeScreenshot: learn-any-order-02-last-lesson-open

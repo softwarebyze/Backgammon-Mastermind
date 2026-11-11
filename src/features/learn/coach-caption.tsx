@@ -15,7 +15,7 @@ type Props = {
   bodyKey: string;
   feedback: LessonFeedback | null;
   stepLabel: string;
-  /** Where this step is in the lesson, drawn as a row of pips beside the label. */
+  /** Where this step is in the lesson, drawn as a row of pips in place of the label. */
   stepIndex?: number;
   totalSteps?: number;
   compact?: boolean;
@@ -52,23 +52,28 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, stepIndex
 
   return (
     <View style={[styles.root, compact && styles.rootCompact]}>
-      <View style={styles.stepRow}>
-        <Text style={styles.stepLabel}>{stepLabel}</Text>
-        {/* The label already says "Step 2 of 4"; the pips are for the eye. */}
-        {totalSteps > 1
-          ? (
-              <View testID="learn-step-pips" style={styles.pips} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                {Array.from({ length: totalSteps }, (_, index) => (
-                  <View
-                    key={index}
-                    testID={index < stepIndex ? 'learn-step-pip-done' : index === stepIndex ? 'learn-step-pip-current' : 'learn-step-pip-ahead'}
-                    style={[styles.pip, index < stepIndex && styles.pipDone, index === stepIndex && styles.pipCurrent]}
-                  />
-                ))}
-              </View>
-            )
-          : null}
-      </View>
+      {/* The pips are the progress; a screen reader hears "Step 2 of 4" instead. */}
+      {totalSteps > 1
+        ? (
+            <View
+              testID="learn-step-pips"
+              style={styles.pips}
+              accessible
+              accessibilityRole="progressbar"
+              accessibilityLabel={stepLabel}
+              accessibilityValue={{ min: 0, max: totalSteps, now: stepIndex + 1 }}
+            >
+              {Array.from({ length: totalSteps }, (_, index) => (
+                <View
+                  key={index}
+                  testID={index < stepIndex ? 'learn-step-pip-done' : index === stepIndex ? 'learn-step-pip-current' : 'learn-step-pip-ahead'}
+                  style={[styles.pip, index < stepIndex && styles.pipDone, index === stepIndex && styles.pipCurrent]}
+                />
+              ))}
+            </View>
+          )
+        // A one-step lesson has no progress to show; without a count, fall back to the label.
+        : totalSteps === 1 ? null : <Text style={styles.stepLabel}>{stepLabel}</Text>}
       <View style={styles.titleRow}>
         {strategy
           ? (
@@ -125,11 +130,6 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     maxWidth: '100%',
   },
-  stepRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
   stepLabel: {
     color: MUTED,
     fontSize: 13,
@@ -137,9 +137,11 @@ const styles = StyleSheet.create({
     ...interFont('medium'),
   },
   pips: {
-    flex: 1,
+    width: '100%',
     maxWidth: 160,
+    height: 18,
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 4,
   },
   pip: {
