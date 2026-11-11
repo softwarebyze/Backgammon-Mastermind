@@ -18,7 +18,9 @@ tags:
     element:
       id: learn-button
     direction: DOWN
-- assertVisible: Interactive lessons for beginners
+# Short screens drop the card's second line, so check the card itself.
+- assertVisible:
+    id: learn-button
 - scrollUntilVisible:
     element:
       id: home-opponent-vs-human
