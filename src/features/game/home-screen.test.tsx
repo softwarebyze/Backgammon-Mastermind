@@ -240,12 +240,13 @@ it('starts a money game with its cube and no match target', () => {
   expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-computer', true));
 });
 
-it('opens a tall screen on the board picture, the name and what the app is for', () => {
+it('opens a tall screen on the board picture and the name', () => {
   const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 390, height: 844, scale: 3, fontScale: 1 });
   render(<HomeScreen />);
   expect(screen.getByTestId('home-board-art', { includeHiddenElements: true })).toBeTruthy();
   expect(screen.getByRole('header', { name: 'Backgammon Mastermind' })).toBeTruthy();
-  expect(screen.getByText('Master the board — one move at a time')).toBeTruthy();
+  // The name stands alone: no tagline under it.
+  expect(screen.queryByText('Master the board — one move at a time')).toBeNull();
   dims.mockRestore();
 });
 
@@ -258,19 +259,20 @@ it('leaves the picture out when the screen is short, so Start stays in reach', (
   dims.mockRestore();
 });
 
-it('explains the computer levels only when the computer is the opponent', () => {
+it('adds no second line that only restates a button', () => {
+  jest.mocked(useGame).mockReturnValue({ ...useGame(), state: createMatchGame(3) });
   const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 390, height: 844, scale: 3, fontScale: 1 });
   render(<HomeScreen />);
-  expect(screen.getByTestId('home-computer-level-hint')).toBeTruthy();
-  fireEvent.press(screen.getByTestId('home-opponent-vs-human'));
-  expect(screen.queryByTestId('home-computer-level-hint')).toBeNull();
+  expect(screen.getByText('Resume game')).toBeTruthy();
+  expect(screen.queryByText('Continue where you left off')).toBeNull();
+  expect(screen.queryByText('Interactive lessons for beginners')).toBeNull();
+  expect(screen.queryByText(/Easy makes the mistakes/)).toBeNull();
   dims.mockRestore();
 });
 
 it('shows course progress on the Learn card once a lesson is done', () => {
   const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 390, height: 844, scale: 3, fontScale: 1 });
   const view = render(<HomeScreen />);
-  expect(screen.getByText('Interactive lessons for beginners')).toBeTruthy();
   expect(screen.queryByTestId('learn-button-progress')).toBeNull();
   view.unmount();
   const progress = { completedLessons: ['goal-board', 'direction-setup'], quizPassed: false, hasStarted: true };

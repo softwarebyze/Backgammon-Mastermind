@@ -144,6 +144,7 @@ export function HomeScreen() {
     router.push(learnHomeHref());
   }, [learnDone, posthog, progress.quizPassed]);
 
+  // A second line only when it reports something: nothing to say before the first lesson.
   const learnSub = learnReady
     ? translate('learn.home_cta_ready')
     : learnLessonsDone
@@ -153,7 +154,7 @@ export function HomeScreen() {
             done: learnDone,
             total: LESSON_IDS.length,
           })
-        : translate('learn.home_cta_sub');
+        : undefined;
 
   // Landscape phones: a one-line header, then the choices on the left and
   // the match details and Start on the right, so Start is always on screen (#346).
@@ -170,7 +171,6 @@ export function HomeScreen() {
           <HomeBoardArt width={panelWidth} height={artHeight} />
           <View style={styles.artCopy}>
             <Text accessibilityRole="header" style={[styles.artTitle, { writingDirection: layoutIsRTL ? 'rtl' : 'ltr' }, gearSide === 'left' && styles.artTitleWebRtl]}>{translate('home.title')}</Text>
-            <Text style={styles.tagline}>{translate('home.subtitle')}</Text>
           </View>
         </View>
       )
@@ -187,7 +187,6 @@ export function HomeScreen() {
           accessibilityLabel={translate('home.resume_a11y')}
           symbol="play-circle"
           label={translate('home.resume')}
-          sub={dense ? undefined : translate('home.resume_sub')}
           onPress={handleResume}
           prominent
           dense={dense}
@@ -202,7 +201,6 @@ export function HomeScreen() {
           accessibilityLabel={translate('home.review_a11y')}
           symbol="eye"
           label={translate('home.review')}
-          sub={dense ? undefined : translate('home.review_sub')}
           onPress={handleReview}
           prominent
           dense={dense}
@@ -294,7 +292,7 @@ export function HomeScreen() {
                 )}
                 {resumeCard}
                 {reviewCard}
-                <HomeGameSetup onStart={handleStart} tight={tiny} flat={tiny || panelWidth < 300} levelHint={!dense} />
+                <HomeGameSetup onStart={handleStart} tight={tiny} flat={tiny || panelWidth < 300} />
                 {tiles}
               </View>
             )}
@@ -420,12 +418,6 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     letterSpacing: -0.6,
     ...interFont('bold'),
-  },
-  tagline: {
-    color: HOME_INK.muted,
-    fontSize: 15,
-    lineHeight: 21,
-    ...interFont('regular'),
   },
   destinations: {
     gap: 10,

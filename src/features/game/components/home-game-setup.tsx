@@ -15,14 +15,12 @@ import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 /** Everything a new game needs, gathered on one raised panel that ends in Start. */
-export function HomeGameSetup({ onStart, columns = false, tight = false, levelHint = false, flat = false, aside = null }: {
+export function HomeGameSetup({ onStart, columns = false, tight = false, flat = false, aside = null }: {
   onStart: (mode: GameMode, length: number | null, crawfordRule: boolean) => void;
   /** Landscape phones: the choices (and `aside`) on the left, match details and Start on the right. */
   columns?: boolean;
   /** Very short portrait screens: tighter gaps, no "Match length" label. */
   tight?: boolean;
-  /** Room to spare: say what the computer's levels mean under the picker. */
-  levelHint?: boolean;
   /** Narrow or very short screens: no panel around the choices, so each keeps its full width. */
   flat?: boolean;
   aside?: ReactNode;
@@ -52,7 +50,6 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, levelHi
         <View style={[styles.opponent, tight && styles.opponentTight]}>
           {opponentChoice}
           <ComputerLevelPicker value={preferences.computerLevel} onChange={setComputerLevel} testIDPrefix="home-computer-level" sunken={sunken} />
-          {levelHint && !columns ? <Text testID="home-computer-level-hint" style={styles.hint}>{translate('game.computer_level.hint')}</Text> : null}
         </View>
       )
     : opponentChoice;
@@ -106,7 +103,6 @@ const styles = StyleSheet.create({
     borderColor: HOME_INK.hairline,
     ...continuousRadius(22),
   },
-  hint: { paddingHorizontal: 6, color: HOME_INK.muted, fontSize: 12.5, lineHeight: 17, ...interFont('regular') },
   opponent: { gap: 6 },
   opponentTight: { gap: 4 },
   columns: { width: '100%', flexDirection: 'row', gap: 16 },
