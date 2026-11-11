@@ -57,6 +57,13 @@ on the PR.
 
 Tracked as [#128](https://github.com/softwarebyze/Backgammon-Mastermind/issues/128).
 
+## UI design (always)
+
+When designing UIs, avoid eyebrows and unnecessary subheads where possible. If the
+text isn't needed, don't include it. Keep a second line only when it tells the
+player something they cannot see otherwise (progress, a score). Details:
+`.cursor/rules/ui-design.mdc`.
+
 ## Cursor Cloud specific instructions
 
 ### Store listing updates
