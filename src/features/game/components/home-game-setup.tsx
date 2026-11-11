@@ -5,21 +5,29 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { ComputerLevelPicker } from '@/features/game/components/computer-level-picker';
+import { HOME_INK } from '@/features/game/components/home-ink';
 import { HomeMatchOptions } from '@/features/game/components/home-match-options';
 import { HomeSetupChoice } from '@/features/game/components/home-setup-choice';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import i18n, { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { continuousRadius } from '@/lib/ui/native-styles';
 
-export function HomeGameSetup({ onStart, columns = false, tight = false, aside = null }: {
+/** Everything a new game needs, gathered on one raised panel that ends in Start. */
+export function HomeGameSetup({ onStart, columns = false, tight = false, levelHint = false, flat = false, aside = null }: {
   onStart: (mode: GameMode, length: number | null, crawfordRule: boolean) => void;
   /** Landscape phones: the choices (and `aside`) on the left, match details and Start on the right. */
   columns?: boolean;
   /** Very short portrait screens: tighter gaps, no "Match length" label. */
   tight?: boolean;
+  /** Room to spare: say what the computer's levels mean under the picker. */
+  levelHint?: boolean;
+  /** Narrow or very short screens: no panel around the choices, so each keeps its full width. */
+  flat?: boolean;
   aside?: ReactNode;
 }) {
+  const sunken = !columns && !flat;
   const [mode, setMode] = useState<GameMode>('vs-computer');
   const [format, setFormat] = useState<'single' | 'match'>('single');
   const [length, setLength] = useState(3);
@@ -28,6 +36,7 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
   const { preferences, setComputerLevel } = useGamePreferences();
   const opponentChoice = (
     <HomeSetupChoice
+      sunken={sunken}
       label={i18n.t('home.setup.opponent', { defaultValue: 'Opponent' })}
       value={mode}
       onChange={setMode}
@@ -42,7 +51,8 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
     ? (
         <View style={[styles.opponent, tight && styles.opponentTight]}>
           {opponentChoice}
-          <ComputerLevelPicker value={preferences.computerLevel} onChange={setComputerLevel} testIDPrefix="home-computer-level" />
+          <ComputerLevelPicker value={preferences.computerLevel} onChange={setComputerLevel} testIDPrefix="home-computer-level" sunken={sunken} />
+          {levelHint && !columns ? <Text testID="home-computer-level-hint" style={styles.hint}>{translate('game.computer_level.hint')}</Text> : null}
         </View>
       )
     : opponentChoice;
@@ -77,9 +87,9 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
     );
   }
   return (
-    <View style={[styles.setup, tight && styles.setupTight]}>
+    <View testID="home-new-game" style={[styles.setup, tight && styles.setupTight, sunken && styles.panel]}>
       {opponent}
-      <HomeMatchOptions {...matchProps} bare={tight} />
+      <HomeMatchOptions {...matchProps} bare={tight} sunken={sunken} />
       {/* The only amber block on the screen: everything above feeds this. */}
       {start}
     </View>
@@ -89,6 +99,14 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
 const styles = StyleSheet.create({
   setup: { width: '100%', gap: 10 },
   setupTight: { gap: 8 },
+  panel: {
+    padding: 10,
+    backgroundColor: GAME_PALETTE.surface,
+    borderWidth: 1,
+    borderColor: HOME_INK.hairline,
+    ...continuousRadius(22),
+  },
+  hint: { paddingHorizontal: 6, color: HOME_INK.muted, fontSize: 12.5, lineHeight: 17, ...interFont('regular') },
   opponent: { gap: 6 },
   opponentTight: { gap: 4 },
   columns: { width: '100%', flexDirection: 'row', gap: 16 },
@@ -97,14 +115,14 @@ const styles = StyleSheet.create({
   columnEnd: { justifyContent: 'flex-end' },
   startColumns: { marginTop: 0, minHeight: 48 },
   start: {
-    marginTop: 6,
+    marginTop: 2,
     minHeight: 56,
     paddingHorizontal: 20,
     flexDirection: 'row',
     gap: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 14,
+    ...continuousRadius(14),
     backgroundColor: GAME_PALETTE.control,
     shadowColor: GAME_PALETTE.control,
     shadowOpacity: 0.3,
