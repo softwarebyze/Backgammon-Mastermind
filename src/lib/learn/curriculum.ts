@@ -798,6 +798,28 @@ export const GRADUATION_QUIZ: QuizQuestion[] = [
   },
 ];
 
+/**
+ * The course in three parts, so a beginner can see where "enough to play" ends
+ * and a stronger player can see where to start. Every lesson is in exactly one.
+ */
+export const LESSON_CHAPTERS: readonly { id: string; titleKey: string; lessonIds: readonly LessonId[] }[] = [
+  {
+    id: 'basics',
+    titleKey: 'learn.hub.chapter_basics',
+    lessonIds: ['goal-board', 'direction-setup', 'moving-dice', 'hitting-bar', 'bearing-off'],
+  },
+  {
+    id: 'strategy',
+    titleKey: 'learn.hub.chapter_strategy',
+    lessonIds: ['pip-count', 'strategies'],
+  },
+  {
+    id: 'further',
+    titleKey: 'learn.hub.chapter_further',
+    lessonIds: ['doubling-cube', 'match-play', 'app-tools'],
+  },
+];
+
 export function getLesson(id: string): LessonDefinition | undefined {
   return LESSONS.find(lesson => lesson.id === id);
 }

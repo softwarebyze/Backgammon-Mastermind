@@ -393,6 +393,13 @@
     "home_cta_quiz": "Nog een korte check – dan spelen",
     "home_cta_ready": "Je bent klaar – speel een echte partij",
     "home_cta_sub": "Interactieve lessen voor beginners",
+    "hub": {
+      "chapter_basics": "De basis",
+      "chapter_further": "Verder gaan",
+      "chapter_strategy": "Goed spelen",
+      "first_lesson": "Begin hier",
+      "start_lesson": "Les starten"
+    },
     "lesson_complete": "Les voltooid!",
     "lessons": {
       "app_tools": {

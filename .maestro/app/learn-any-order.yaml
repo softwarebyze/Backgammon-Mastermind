@@ -14,6 +14,13 @@ tags:
       id: learn-hub-screen
     timeout: 20000
 - assertNotVisible: Complete the previous lesson first
+# A newcomer is pointed at the first lesson; the course is laid out in chapters.
+- assertVisible:
+    id: learn-next-card
+- assertVisible: Start here
+- assertVisible: Start lesson
+- assertVisible: The basics
+- takeScreenshot: learn-any-order-00-hub-top
 # The last lesson, with nothing done yet.
 - scrollUntilVisible:
     element:

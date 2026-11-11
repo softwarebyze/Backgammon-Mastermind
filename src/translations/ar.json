@@ -393,6 +393,13 @@
     "home_cta_quiz": "بقي اختبار سريع – ثم العب",
     "home_cta_ready": "أنت جاهز – العب لعبة حقيقية",
     "home_cta_sub": "دروس تفاعلية للمبتدئين",
+    "hub": {
+      "chapter_basics": "الأساسيات",
+      "chapter_further": "خطوات متقدمة",
+      "chapter_strategy": "اللعب الجيد",
+      "first_lesson": "ابدأ من هنا",
+      "start_lesson": "ابدأ الدرس"
+    },
     "lesson_complete": "اكتمل الدرس!",
     "lessons": {
       "app_tools": {

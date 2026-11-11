@@ -393,6 +393,13 @@
     "home_cta_quiz": "짧은 확인만 남았어요 – 그다음 게임!",
     "home_cta_ready": "준비 완료 – 실전 게임을 해 보세요",
     "home_cta_sub": "초보자를 위한 대화형 레슨",
+    "hub": {
+      "chapter_basics": "기본",
+      "chapter_further": "한 걸음 더",
+      "chapter_strategy": "잘 두는 법",
+      "first_lesson": "여기서 시작하세요",
+      "start_lesson": "레슨 시작"
+    },
     "lesson_complete": "레슨 완료!",
     "lessons": {
       "app_tools": {

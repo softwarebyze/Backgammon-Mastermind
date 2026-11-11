@@ -393,6 +393,13 @@
     "home_cta_quiz": "Noch ein kurzer Check – dann spielen",
     "home_cta_ready": "Du bist bereit – spiel eine echte Partie",
     "home_cta_sub": "Interaktive Lektionen für Einsteiger",
+    "hub": {
+      "chapter_basics": "Die Grundlagen",
+      "chapter_further": "Weiterführend",
+      "chapter_strategy": "Gut spielen",
+      "first_lesson": "Hier geht’s los",
+      "start_lesson": "Lektion starten"
+    },
     "lesson_complete": "Lektion geschafft!",
     "lessons": {
       "app_tools": {

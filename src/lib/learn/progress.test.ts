@@ -7,6 +7,7 @@ import {
   markLessonComplete,
   markQuizPassed,
   nextAfterLesson,
+  nextToStudy,
 } from './progress';
 
 jest.mock('@/lib/storage', () => {
@@ -70,5 +71,20 @@ describe('nextAfterLesson', () => {
   it('opens the quick check once this lesson completes the set', () => {
     const others = LESSON_IDS.filter(id => id !== LESSON_IDS[2]);
     expect(nextAfterLesson(progressWith([...others]), LESSON_IDS[2])).toBe('graduation');
+  });
+});
+
+describe('nextToStudy', () => {
+  it('is the first lesson for a newcomer', () => {
+    expect(nextToStudy(EMPTY_LEARN_PROGRESS)).toBe(LESSON_IDS[0]);
+  });
+
+  it('is the earliest lesson not done yet, whatever was done out of order', () => {
+    const progress = { ...EMPTY_LEARN_PROGRESS, completedLessons: [LESSON_IDS[0], LESSON_IDS[1], LESSON_IDS[6]] };
+    expect(nextToStudy(progress)).toBe(LESSON_IDS[2]);
+  });
+
+  it('is the quick check once every lesson is done', () => {
+    expect(nextToStudy({ ...EMPTY_LEARN_PROGRESS, completedLessons: [...LESSON_IDS] })).toBe('graduation');
   });
 });

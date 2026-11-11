@@ -393,6 +393,13 @@
     "home_cta_quiz": "Falta una comprobación rápida y a jugar",
     "home_cta_ready": "Ya estás listo: juega una partida de verdad",
     "home_cta_sub": "Lecciones interactivas para principiantes",
+    "hub": {
+      "chapter_basics": "Lo básico",
+      "chapter_further": "Ir más allá",
+      "chapter_strategy": "Jugar bien",
+      "first_lesson": "Empieza aquí",
+      "start_lesson": "Empezar lección"
+    },
     "lesson_complete": "¡Lección completada!",
     "lessons": {
       "app_tools": {

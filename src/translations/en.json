@@ -393,6 +393,13 @@
     "home_cta_quiz": "Quick check left — then play",
     "home_cta_ready": "You’re ready — play a real game",
     "home_cta_sub": "Interactive lessons for beginners",
+    "hub": {
+      "chapter_basics": "The basics",
+      "chapter_further": "Going further",
+      "chapter_strategy": "Playing well",
+      "first_lesson": "Start here",
+      "start_lesson": "Start lesson"
+    },
     "lesson_complete": "Lesson complete!",
     "lessons": {
       "app_tools": {
