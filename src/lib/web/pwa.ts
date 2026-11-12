@@ -35,6 +35,27 @@ function promptReload(): void {
 }
 
 /**
+ * Ask the browser not to evict the offline cache under storage pressure.
+ *
+ * Only for the installed app: some browsers (Firefox) answer `persist()` with
+ * a permission prompt, which a first-time visitor should never see. Installed
+ * players are the ones who rely on offline play, and Chrome/Safari grant it
+ * to them without asking. A refusal leaves the default best-effort storage.
+ */
+export function requestPersistentStorage(): void {
+  if (typeof navigator === 'undefined' || typeof window === 'undefined') {
+    return;
+  }
+  const installed = window.matchMedia?.('(display-mode: standalone)').matches
+    || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+  const storage = navigator.storage;
+  if (!installed || typeof storage?.persist !== 'function') {
+    return;
+  }
+  void storage.persist().catch(() => {});
+}
+
+/**
  * Register the offline worker on the web and prompt for a reload when a new
  * version takes over. Returns a cleanup function; safe to call on native.
  */
@@ -81,6 +102,7 @@ export function registerServiceWorker(): (() => void) | undefined {
       }
       registration = registered;
       document.addEventListener('visibilitychange', checkForUpdate);
+      requestPersistentStorage();
     })
     // Offline support is optional: a blocked worker (private mode, old
     // browser) simply leaves the app in its current online-only state.

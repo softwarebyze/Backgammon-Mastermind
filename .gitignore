@@ -62,3 +62,7 @@ expo-bgsage/build/
 
 # Local native-module Gradle caches
 expo-bgsage/android/.gradle/
+
+# Playwright (web e2e)
+test-results/
+playwright-report/

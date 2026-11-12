@@ -1,4 +1,6 @@
 {
+  "buildCommand": "pnpm build:web",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/privacy", "destination": "/privacy/index.html" },
     { "source": "/privacy/", "destination": "/privacy/index.html" },
