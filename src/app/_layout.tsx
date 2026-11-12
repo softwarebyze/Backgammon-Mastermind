@@ -1,5 +1,4 @@
 import type { ErrorBoundaryProps } from 'expo-router';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Stack, ThemeProvider, useGlobalSearchParams, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -115,11 +114,9 @@ function Providers({ children }: { children: React.ReactNode }) {
       <KeyboardProvider>
         <ThemeProvider value={theme}>
           <GameProvider>
-            <BottomSheetModalProvider>
-              {children}
-              <ConfirmDialogHost />
-              <FlashMessage position="top" />
-            </BottomSheetModalProvider>
+            {children}
+            <ConfirmDialogHost />
+            <FlashMessage position="top" />
           </GameProvider>
         </ThemeProvider>
       </KeyboardProvider>
