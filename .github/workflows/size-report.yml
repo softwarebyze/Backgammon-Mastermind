@@ -33,7 +33,6 @@ jobs:
     env:
       BASE_SHA: ${{ github.event.pull_request.base.sha }}
       BASE_REF: ${{ github.event.pull_request.base.ref }}
-      OUT: ${{ runner.temp }}/size
     steps:
       - name: 📦 Checkout project repo
         uses: actions/checkout@v4
@@ -43,6 +42,7 @@ jobs:
 
       - name: 📏 Measure this PR
         run: |
+          OUT="$RUNNER_TEMP/size"
           mkdir -p "$OUT"
           pnpm exec expo export -p web --output-dir "$OUT/head-web"
           pnpm exec expo export -p android --output-dir "$OUT/head-android"
@@ -51,6 +51,7 @@ jobs:
 
       - name: 📏 Measure ${{ github.event.pull_request.base.ref }}
         run: |
+          OUT="$RUNNER_TEMP/size"
           git fetch --no-tags --depth 1 origin "$BASE_SHA"
           git worktree add "$OUT/base" "$BASE_SHA"
           cd "$OUT/base"
@@ -65,6 +66,7 @@ jobs:
 
       - name: 📝 Write report
         run: |
+          OUT="$RUNNER_TEMP/size"
           pnpm exec tsx scripts/report-bundle-size.ts "$BASE_REF" \
             "$OUT/base-web.json:$OUT/head-web.json" \
             "$OUT/base-android.json:$OUT/head-android.json" > "$OUT/report.md"
