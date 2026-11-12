@@ -1,5 +1,5 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes */
-import type { PressableProps, View } from 'react-native';
+import type { PressableInstance, PressableProps } from 'react-native';
 import type { VariantProps } from 'tailwind-variants';
 import * as React from 'react';
 import { ActivityIndicator, Pressable, Text } from 'react-native';
@@ -93,7 +93,7 @@ type Props = {
   textClassName?: string;
 } & ButtonVariants & Omit<PressableProps, 'disabled'>;
 
-export function Button({ ref, label: text, loading = false, variant = 'default', disabled = false, size = 'default', className = '', testID, textClassName = '', ...props }: Props & { ref?: React.RefObject<View | null> }) {
+export function Button({ ref, label: text, loading = false, variant = 'default', disabled = false, size = 'default', className = '', testID, textClassName = '', ...props }: Props & { ref?: React.RefObject<PressableInstance | null> }) {
   const styles = React.useMemo(
     () => button({ variant, disabled, size }),
     [variant, disabled, size],

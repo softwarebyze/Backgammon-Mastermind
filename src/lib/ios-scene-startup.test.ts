@@ -1,24 +1,18 @@
 import type { ConfigContext, ExpoConfig } from '@expo/config';
+import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 
-const ROOT = join(__dirname, '../..');
-const { withIosSceneSupport } = require(join(dirname(require.resolve('expo-build-properties/package.json')), 'build/iosSceneSupport'));
+// iOS 27 rejects Xcode 27 builds that don't adopt the UIKit scene lifecycle.
+// SDK 57 needed expo-build-properties' `ios.enableSceneSupport` to migrate the
+// AppDelegate; from SDK 58 the project template that prebuild uses ships scene
+// startup itself and that flag only emits a deprecation warning.
+const TEMPLATE = join(dirname(require.resolve('expo/package.json')), 'template.tgz');
 
-// Mirrors the SDK 57 template's legacy startup that iOS 27 rejects.
-const legacyDelegate = `class AppDelegate: ExpoAppDelegate {
-    reactNativeFactory = factory
-
-#if os(iOS) || os(tvOS)
-    window = UIWindow(frame: UIScreen.main.bounds)
-    factory.startReactNative(
-      withModuleName: "main",
-      in: window,
-      launchOptions: launchOptions)
-#endif
+function readTemplateFile(path: string) {
+  return execFileSync('tar', ['-xzOf', TEMPLATE, `package/${path}`], { encoding: 'utf8' });
 }
-`;
 
-it.each(['development', 'preview', 'production'])('adopts scene startup in the resolved %s app, not just its manifest', async (flavor) => {
+it.each(['development', 'preview', 'production'])('the resolved %s app no longer sets the obsolete scene flag', (flavor) => {
   const previous = process.env.EXPO_PUBLIC_APP_ENV;
   process.env.EXPO_PUBLIC_APP_ENV = flavor;
   let config: ExpoConfig | undefined;
@@ -37,17 +31,16 @@ it.each(['development', 'preview', 'production'])('adopts scene startup in the r
   const properties = config!.plugins!.find(entry => Array.isArray(entry) && entry[0] === 'expo-build-properties');
   expect(Array.isArray(properties)).toBe(true);
   const options = (properties as [string, { ios?: { enableSceneSupport?: boolean } }])[1];
-  expect(options.ios?.enableSceneSupport).toBe(true);
+  expect(options.ios?.enableSceneSupport).toBeUndefined();
+});
 
-  const migrated = withIosSceneSupport({ ...config, _internal: { projectRoot: ROOT } }, options);
-  const request = { projectRoot: ROOT };
-  const plist = await migrated.mods.ios.infoPlist({ ...migrated, modResults: {}, modRequest: request });
-  expect(plist.modResults.UIApplicationSceneManifest.UISceneConfigurations.UIWindowSceneSessionRoleApplication).toEqual([
-    { UISceneConfigurationName: 'Default Configuration', UISceneDelegateClassName: 'EXExpoAppSceneDelegate' },
-  ]);
-  const delegate = await migrated.mods.ios.appDelegate({ ...migrated, modResults: { language: 'swift', contents: legacyDelegate }, modRequest: request });
-  expect(delegate.modResults.contents).toContain('ExpoAppDelegate, ExpoReactNativeFactoryProvider');
-  expect(delegate.modResults.contents).toContain('reactNativeFactory = factory');
-  expect(delegate.modResults.contents).not.toContain('UIWindow(frame:');
-  expect(delegate.modResults.contents).not.toContain('factory.startReactNative(');
+it('prebuilds from a template that starts React Native from a scene delegate', () => {
+  const delegate = readTemplateFile('ios/HelloWorld/AppDelegate.swift');
+  expect(delegate).toContain('ExpoAppDelegate, ExpoReactNativeFactoryProvider');
+  expect(delegate).not.toContain('UIWindow(frame:');
+  expect(delegate).not.toContain('factory.startReactNative(');
+
+  const plist = readTemplateFile('ios/HelloWorld/Info.plist');
+  expect(plist).toContain('UIApplicationSceneManifest');
+  expect(plist).toContain('UIWindowSceneSessionRoleApplication');
 });

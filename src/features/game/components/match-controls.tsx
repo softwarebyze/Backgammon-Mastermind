@@ -1,3 +1,4 @@
+import type { ViewInstance } from 'react-native';
 import type { GameState } from '@/lib/game';
 import { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -13,7 +14,7 @@ export function MatchControls({ state, onRoll, onReset, isHumanTurn, isComputerT
   const m = state.match!;
   const blocked = isAnimating || (canRedo && !canBranchCubeHistory);
   // When a game of the match ends, keyboard focus waits on Next game.
-  const nextRef = useRef<View>(null);
+  const nextRef = useRef<ViewInstance>(null);
   const gameOver = state.phase === 'game-over';
   useEffect(() => {
     if (gameOver)

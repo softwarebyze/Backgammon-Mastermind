@@ -1,7 +1,7 @@
-import { router, useFocusEffect, useNavigation } from 'expo-router';
+import { router, useFocusEffect, usePreventRemove } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AppState, StyleSheet, Text, View } from 'react-native';
+import { AppState, Platform, StyleSheet, Text, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { CubeTutorOverlay } from '@/features/game/components/cube-tutor-overlay';
 
@@ -57,7 +57,6 @@ function useDelayedTrue(value: boolean, delayMs: number): boolean {
 }
 export function GameScreen() {
   const posthog = usePostHog();
-  const navigation = useNavigation();
   const { preferences } = useGamePreferences();
   const {
     state: liveState,
@@ -165,18 +164,19 @@ export function GameScreen() {
 
   useHardwareBackPress(handleBackPress);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (event) => {
-      if (allowLeaveRef.current) {
-        return;
-      }
-      if (event.data.action.type === 'GO_BACK' || event.data.action.type === 'POP') {
-        event.preventDefault();
-        leaveGame();
-      }
-    });
-    return unsubscribe;
-  }, [navigation, leaveGame, allowLeaveRef]);
+  // Back gestures/actions route through leaveGame (save + analytics + replace
+  // home). Other removals — and the replace leaveGame itself dispatches — pass.
+  // Native only: on web usePreventRemove also adds a "Leave site?" prompt.
+  const [preventLeave, setPreventLeave] = useState(Platform.OS !== 'web');
+  usePreventRemove(preventLeave, ({ data, repeat }) => {
+    const isBack = data.action.type === 'GO_BACK' || data.action.type === 'POP';
+    if (allowLeaveRef.current || !isBack) {
+      setPreventLeave(false);
+      repeat();
+      return;
+    }
+    leaveGame();
+  });
 
   const confirmHoldSegments = useMemo(
     () => confirmHoldPathSegments({

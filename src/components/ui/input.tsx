@@ -1,5 +1,5 @@
 /* eslint-disable better-tailwindcss/no-unknown-classes */
-import type { TextInputProps } from 'react-native';
+import type { TextInputInstance, TextInputProps } from 'react-native';
 import * as React from 'react';
 import { TextInput as NTextInput, StyleSheet, View } from 'react-native';
 import { tv } from 'tailwind-variants';
@@ -47,7 +47,7 @@ export type NInputProps = {
   error?: string;
 } & TextInputProps;
 
-export function Input({ ref, ...props }: NInputProps & { ref?: React.Ref<NTextInput | null> }) {
+export function Input({ ref, ...props }: NInputProps & { ref?: React.Ref<TextInputInstance | null> }) {
   const { label, error, testID, onBlur: onBlurProp, onFocus: onFocusProp, ...inputProps } = props;
   const [isFocussed, setIsFocussed] = React.useState(false);
 
