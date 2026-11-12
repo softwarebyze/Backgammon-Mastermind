@@ -1,0 +1,79 @@
+# 📦 Bundle size report (report only — never fails the build).
+#
+# Builds the web export and the Android JS bundle export for this PR and for
+# its base commit, then posts one sticky comment with the size of each and
+# the change: total, gzipped JS, fonts, images, audio, engine, plus the
+# largest file-level changes. Increases above the thresholds in
+# scripts/bundle-size.ts get a ⚠️ line.
+#
+# The native app binary (compiled native modules) is not measured — only
+# what `expo export` produces, which is what ships in the JS bundle / OTA.
+
+# 🚨 GITHUB SECRETS REQUIRED: NONE
+
+name: Bundle size
+
+on:
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  size:
+    name: Bundle size
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+      OUT: ${{ runner.temp }}/size
+    steps:
+      - name: 📦 Checkout project repo
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: 📏 Measure this PR
+        run: |
+          mkdir -p "$OUT"
+          pnpm exec expo export -p web --output-dir "$OUT/head-web"
+          pnpm exec expo export -p android --output-dir "$OUT/head-android"
+          pnpm exec tsx scripts/measure-bundle-size.ts "$OUT/head-web" web > "$OUT/head-web.json"
+          pnpm exec tsx scripts/measure-bundle-size.ts "$OUT/head-android" android > "$OUT/head-android.json"
+
+      - name: 📏 Measure ${{ github.event.pull_request.base.ref }}
+        run: |
+          git fetch --no-tags --depth 1 origin "$BASE_SHA"
+          git worktree add "$OUT/base" "$BASE_SHA"
+          cd "$OUT/base"
+          test -f .env || cp .env.example .env
+          pnpm install --frozen-lockfile
+          pnpm exec expo export -p web --output-dir "$OUT/base-web"
+          pnpm exec expo export -p android --output-dir "$OUT/base-android"
+          # Measure with this PR's scripts, so a base without them still works.
+          cd "$GITHUB_WORKSPACE"
+          pnpm exec tsx scripts/measure-bundle-size.ts "$OUT/base-web" web > "$OUT/base-web.json"
+          pnpm exec tsx scripts/measure-bundle-size.ts "$OUT/base-android" android > "$OUT/base-android.json"
+
+      - name: 📝 Write report
+        run: |
+          pnpm exec tsx scripts/report-bundle-size.ts "$BASE_REF" \
+            "$OUT/base-web.json:$OUT/head-web.json" \
+            "$OUT/base-android.json:$OUT/head-android.json" > "$OUT/report.md"
+          cat "$OUT/report.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 💬 Comment on PR
+        # Fork PRs get a read-only token; the job summary still has the report.
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: bundle-size
+          path: ${{ runner.temp }}/size/report.md
