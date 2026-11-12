@@ -13,6 +13,9 @@ import { act, renderHook } from '@/lib/test-utils';
 
 import { useGameProviderValue } from './use-game-provider-value';
 
+// Delayed SFX timers (e.g. the blocked-roll cue) would fire after teardown.
+jest.mock('@/lib/game-sfx/play-game-sfx');
+
 type Provider = ReturnType<typeof useGameProviderValue>;
 type Hook = { current: Provider };
 

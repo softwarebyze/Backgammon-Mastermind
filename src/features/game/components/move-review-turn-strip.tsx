@@ -1,3 +1,4 @@
+import type { ScrollViewInstance } from 'react-native';
 import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry, MoveLogTurn } from '@/lib/game/move-log';
 import { useEffect, useRef } from 'react';
@@ -106,7 +107,7 @@ export function MoveReviewTurnStrip({
     hideInProgressFor: isReviewing ? null : liveCurrentPlayer,
   });
   const blunders = useBlunderHistory();
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<ScrollViewInstance>(null);
   const focusedTurnIdx = turns.findIndex(
     t => focusedPly >= turnStartPly(t) && focusedPly <= t.endPly,
   );

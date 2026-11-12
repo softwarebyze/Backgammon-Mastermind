@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/immutability -- Reanimated shared-value writes */
 import type { RefObject } from 'react';
-import type { View } from 'react-native';
+import type { ViewInstance } from 'react-native';
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import { useCallback, useMemo, useRef } from 'react';
 
@@ -15,7 +15,7 @@ type DragCallbacks = {
 
 /** Owns UI-thread overlay position + board-local drag coordinate conversion. */
 export function useBoardDragOverlay(
-  surfaceRef: RefObject<View | null>,
+  surfaceRef: RefObject<ViewInstance | null>,
   callbacks: DragCallbacks,
 ) {
   const callbacksRef = useRef(callbacks);

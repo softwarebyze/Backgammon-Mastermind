@@ -92,6 +92,14 @@ describe('playGameSfx', () => {
   });
 
   it('playGameSfxSequence does not throw', () => {
-    expect(() => playGameSfxSequence(['hit', 'bearOff'])).not.toThrow();
+    // Fake timers: the staggered plays must not outlive the test environment.
+    jest.useFakeTimers();
+    try {
+      expect(() => playGameSfxSequence(['hit', 'bearOff'])).not.toThrow();
+      expect(() => jest.runAllTimers()).not.toThrow();
+    }
+    finally {
+      jest.useRealTimers();
+    }
   });
 });

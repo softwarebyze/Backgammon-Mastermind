@@ -1,3 +1,4 @@
+import type { ViewInstance } from 'react-native';
 import type { StackEditHandlers } from './use-stack-edit-gesture';
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { MoveAnimationFrame } from '@/features/game/move-animation';
@@ -134,7 +135,7 @@ export function BoardView({
   const showDirectionOverlay
     = aidsOverride?.showDirectionOverlay ?? preferences.showDirectionOverlay;
   const showPointNumbers = aidsOverride?.showPointNumbers ?? preferences.showPointNumbers;
-  const surfaceRef = useRef<View>(null);
+  const surfaceRef = useRef<ViewInstance>(null);
   const {
     overlay: dragOverlay,
     measureSurface,

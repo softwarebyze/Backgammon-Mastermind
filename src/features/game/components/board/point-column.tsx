@@ -112,18 +112,18 @@ function PointCheckers({
               isSelected={isTopChecker && isSelected && !isDragging}
             />
           );
-          const CheckerWrap = isTopChecker ? Animated.View : View;
-          return (
-            <CheckerWrap
-              key={i}
-              style={[
-                checkerInStack({ isTop, offset, checkerSize, zIndex: i + 1 }),
-                isTopChecker ? topDragStyle : undefined,
-              ]}
-            >
-              {token}
-            </CheckerWrap>
-          );
+          const stackStyle = checkerInStack({ isTop, offset, checkerSize, zIndex: i + 1 });
+          return isTopChecker
+            ? (
+                <Animated.View key={i} style={[stackStyle, topDragStyle]}>
+                  {token}
+                </Animated.View>
+              )
+            : (
+                <View key={i} style={stackStyle}>
+                  {token}
+                </View>
+              );
         })}
       </View>
       {showGhost && ghostPlayer && (
