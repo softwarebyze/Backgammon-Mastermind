@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 
 import { useLayoutIsRTL } from '@/lib/i18n';
 import { cleanup, fireEvent, render, screen, within } from '@/lib/test-utils';

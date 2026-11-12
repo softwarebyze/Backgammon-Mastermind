@@ -4,5 +4,5 @@
     "strict": true, "noEmit": true, "skipLibCheck": true,
     "types": ["node"], "allowImportingTsExtensions": true, "verbatimModuleSyntax": true
   },
-  "include": ["scripts/generate-third-party-notices.ts","scripts/sync-bgsage-vendor.ts","scripts/view-maestro-report.ts"]
+  "include": ["scripts/generate-third-party-notices.ts","scripts/sync-bgsage-vendor.ts","scripts/view-maestro-report.ts","scripts/bundle-size.ts","scripts/measure-bundle-size.ts","scripts/report-bundle-size.ts"]
 }
