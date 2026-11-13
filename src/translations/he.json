@@ -393,6 +393,12 @@
     "home_cta_quiz": "נשארה בדיקה קצרה – ואז משחקים",
     "home_cta_ready": "אתם מוכנים – שחקו משחק אמיתי",
     "home_cta_sub": "שיעורים אינטראקטיביים למתחילים",
+    "hub": {
+      "chapter_basics": "היסודות",
+      "chapter_further": "להתקדם הלאה",
+      "chapter_strategy": "לשחק טוב",
+      "start_lesson": "להתחיל שיעור"
+    },
     "lesson_complete": "השיעור הושלם!",
     "lessons": {
       "app_tools": {

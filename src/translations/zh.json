@@ -393,6 +393,12 @@
     "home_cta_quiz": "还剩一个小测验——然后开始下棋",
     "home_cta_ready": "准备好了——来一盘真正的对局吧",
     "home_cta_sub": "面向新手的互动课程",
+    "hub": {
+      "chapter_basics": "基础",
+      "chapter_further": "更进一步",
+      "chapter_strategy": "下得更好",
+      "start_lesson": "开始学习"
+    },
     "lesson_complete": "课程完成！",
     "lessons": {
       "app_tools": {

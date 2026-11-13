@@ -393,6 +393,12 @@
     "home_cta_quiz": "Μένει ένας γρήγορος έλεγχος – μετά παιχνίδι",
     "home_cta_ready": "Είσαι έτοιμος – παίξε κανονικό παιχνίδι",
     "home_cta_sub": "Διαδραστικά μαθήματα για αρχάριους",
+    "hub": {
+      "chapter_basics": "Τα βασικά",
+      "chapter_further": "Ένα βήμα παραπέρα",
+      "chapter_strategy": "Παίζοντας καλά",
+      "start_lesson": "Έναρξη μαθήματος"
+    },
     "lesson_complete": "Το μάθημα ολοκληρώθηκε!",
     "lessons": {
       "app_tools": {

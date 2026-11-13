@@ -393,6 +393,12 @@
     "home_cta_quiz": "Został krótki sprawdzian – potem graj",
     "home_cta_ready": "Jesteś gotów – zagraj prawdziwą partię",
     "home_cta_sub": "Interaktywne lekcje dla początkujących",
+    "hub": {
+      "chapter_basics": "Podstawy",
+      "chapter_further": "Krok dalej",
+      "chapter_strategy": "Dobra gra",
+      "start_lesson": "Rozpocznij lekcję"
+    },
     "lesson_complete": "Lekcja ukończona!",
     "lessons": {
       "app_tools": {

@@ -393,6 +393,12 @@
     "home_cta_quiz": "Kısa bir kontrol kaldı, sonra oynayın",
     "home_cta_ready": "Hazırsınız: gerçek bir oyun oynayın",
     "home_cta_sub": "Yeni başlayanlar için etkileşimli dersler",
+    "hub": {
+      "chapter_basics": "Temeller",
+      "chapter_further": "Daha ileri",
+      "chapter_strategy": "İyi oynamak",
+      "start_lesson": "Dersi başlat"
+    },
     "lesson_complete": "Ders tamamlandı!",
     "lessons": {
       "app_tools": {

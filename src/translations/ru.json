@@ -393,6 +393,12 @@
     "home_cta_quiz": "Осталась короткая проверка — и играть",
     "home_cta_ready": "Вы готовы — сыграйте настоящую партию",
     "home_cta_sub": "Интерактивные уроки для новичков",
+    "hub": {
+      "chapter_basics": "Основы",
+      "chapter_further": "Идём дальше",
+      "chapter_strategy": "Играть хорошо",
+      "start_lesson": "Начать урок"
+    },
     "lesson_complete": "Урок пройден!",
     "lessons": {
       "app_tools": {
