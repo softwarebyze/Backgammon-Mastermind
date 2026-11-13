@@ -1,18 +1,24 @@
-# Evidence for PR #387 (`a992747a`)
+# Evidence for PR #387 (`7a35aa44`)
 
-Playwright WebKit, iPhone 16 Pro viewport (402×681). Production vs the commit-pinned preview of [#387](https://github.com/softwarebyze/Backgammon-Mastermind/pull/387) at `a992747a287c96b476e602722048355a1d7e130f`:
+Playwright WebKit, Safari-like `html { zoom }`. Commit-pinned preview of [#387](https://github.com/softwarebyze/Backgammon-Mastermind/pull/387) at `7a35aa44a8a0470dd4a87eda8d77d4bb743f6202`:
 
-https://backgammon-mastermind-4oirc5lgc-softwarebyzes-projects.vercel.app
+https://backgammon-mastermind-c1k6wxt0j-softwarebyzes-projects.vercel.app
 
 Stills live on this `evidence/pr-387` branch (not a GitHub release — releases trigger the EAS / TestFlight workflows).
 
-## Key stills
+This commit fixes the QA FAIL on `a992747`: English "Medium" no longer ellipsizes at 667×375 / 100% zoom, and Russian "Средний" / "Сложный" no longer ellipsize at 150% zoom.
 
-- `compare-en-zoom-100.png` — at 100% zoom, Home is within 1 px of production (no visual change at normal zoom).
-- `compare-en-zoom-115.png` / `compare-en-zoom-125.png` / `compare-en-zoom-150.png` — production clips both edges from 115% up; the preview stays inside the screen.
-- `compare-en-levels-115-125-150.png` — difficulty row at 115 / 125 / 150%. "Medium" stays one word (never "Mediu / m"); font shrinks to fit (15 / 13.7 / 12 / 8.7 px).
-- `compare-locales-zoom-150-levels.png` — de / es / he / ar difficulty labels at 150%. Words stay intact (`Gegen Computer` wraps at the space; Mittel / Schwer / Experte, Medio / Difícil / Experto, and the Hebrew / Arabic labels are complete).
-- `pr387-*-402x681-zoom-*-levels.png` — cropped difficulty rows per locale and zoom.
-- `metrics-labels.json` / `metrics-402x681.json` — overflow measurements.
+## Key stills (this commit)
 
-A fix should pass at 402×681 with 100 / 115 / 125 / 150% zoom: nothing past either edge, and no mid-word break in the segmented-control labels (including de / es / he / ar).
+- `compare-667x375-medium.png` — iPhone SE landscape 667×375 at 100% zoom: production wraps "Medium" mid-word as `Mediu / m`; `a992747` ellipsizes it as `Medi…`; `7a35aa44` keeps the full word at 14.4 CSS px.
+- `compare-402x681-zoom-150-ru.png` — Russian at 150% on 402×681: `a992747` ellipsizes "Сложный"; `7a35aa44` shows the full word (7.3 CSS px / 10.95 on-screen).
+- `compare-390x844-zoom-150-ru.png` — Russian at 150% on 390×844: `a992747` ellipsizes "Средний" and "Сложный"; `7a35aa44` shows both complete (7.4 / 6.9 CSS px).
+- `compare-en-levels-100-125-150.png` — English difficulty row at 100 / 125 / 150% on 402×681. "Medium" stays one word (15 / 12.5 / 8.9 CSS px).
+- `compare-locales-zoom-150-levels-7a35aa44.png` — de / es / he / ar at 150% on 402×681: no mid-word breaks, no ellipsis, RTL intact.
+- `metrics-7a35aa44.json` — overflow / font measurements.
+
+At 100% zoom, Home is pixel-identical to production on 402×681, 390×844, and 390×664 (0 pixels changed). 667×375 at 100% is the SE-landscape case that did not fit in production; it is intentionally different (full "Medium" instead of a mid-word wrap).
+
+## Earlier stills (`a992747` and before)
+
+The original zoom-clipping compares (`compare-en-zoom-*.png`, `compare-en-levels-115-125-150.png`, locale crops) remain from the earlier commits: production still clips both edges from 115% up; the preview stays inside the screen.

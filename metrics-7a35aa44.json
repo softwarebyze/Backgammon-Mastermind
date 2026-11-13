@@ -1,0 +1,1421 @@
+{
+  "preview": "https://backgammon-mastermind-c1k6wxt0j-softwarebyzes-projects.vercel.app",
+  "sha": "7a35aa44a8a0470dd4a87eda8d77d4bb743f6202",
+  "results": [
+    {
+      "tag": "prod-402x681-zoom-100",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-100",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-125",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1.25,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 12.5,
+          "fontSizeOnScreen": 15.63,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-150",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1.5,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 8.9,
+          "fontSizeOnScreen": 13.35,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 11,
+          "fontSizeOnScreen": 16.5,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "prod-390x844-zoom-100",
+      "ok": true,
+      "viewport": "390x844",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x844-zoom-100",
+      "ok": true,
+      "viewport": "390x844",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x844-zoom-125",
+      "ok": true,
+      "viewport": "390x844",
+      "scale": 1.25,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 12,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 14.8,
+          "fontSizeOnScreen": 18.5,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x844-zoom-150",
+      "ok": true,
+      "viewport": "390x844",
+      "scale": 1.5,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 14.2,
+          "fontSizeOnScreen": 21.3,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 8.4,
+          "fontSizeOnScreen": 12.6,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 14.2,
+          "fontSizeOnScreen": 21.3,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 10.4,
+          "fontSizeOnScreen": 15.6,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "prod-390x664-zoom-100",
+      "ok": true,
+      "viewport": "390x664",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x664-zoom-100",
+      "ok": true,
+      "viewport": "390x664",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x664-zoom-125",
+      "ok": true,
+      "viewport": "390x664",
+      "scale": 1.25,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 12,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 14.8,
+          "fontSizeOnScreen": 18.5,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x664-zoom-150",
+      "ok": true,
+      "viewport": "390x664",
+      "scale": 1.5,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 14.2,
+          "fontSizeOnScreen": 21.3,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 8.4,
+          "fontSizeOnScreen": 12.6,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 14.2,
+          "fontSizeOnScreen": 21.3,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 10.4,
+          "fontSizeOnScreen": 15.6,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "prod-667x375-zoom-100",
+      "ok": false,
+      "viewport": "667x375",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": [
+            {
+              "word": "Medium",
+              "lines": 2
+            }
+          ]
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": [
+        "home-computer-level-medium mid-word Medium"
+      ]
+    },
+    {
+      "tag": "pr387-667x375-zoom-100",
+      "ok": true,
+      "viewport": "667x375",
+      "scale": 1,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 14.4,
+          "fontSizeOnScreen": 14.4,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-667x375-zoom-125",
+      "ok": true,
+      "viewport": "667x375",
+      "scale": 1.25,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 10.2,
+          "fontSizeOnScreen": 12.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 18.75,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 12.6,
+          "fontSizeOnScreen": 15.75,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-667x375-zoom-150",
+      "ok": true,
+      "viewport": "667x375",
+      "scale": 1.5,
+      "lang": "en",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Easy",
+          "fontSizeCss": 12,
+          "fontSizeOnScreen": 18,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medium",
+          "fontSizeCss": 7.1,
+          "fontSizeOnScreen": 10.65,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Hard",
+          "fontSizeCss": 12,
+          "fontSizeOnScreen": 18,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Expert",
+          "fontSizeCss": 8.8,
+          "fontSizeOnScreen": 13.2,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-100-ru",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 14.4,
+          "fontSizeOnScreen": 14.4,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-150-ru",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1.5,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 9.7,
+          "fontSizeOnScreen": 14.55,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 7.9,
+          "fontSizeOnScreen": 11.85,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 7.300001,
+          "fontSizeOnScreen": 10.95,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 8.3,
+          "fontSizeOnScreen": 12.45,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x844-zoom-100-ru",
+      "ok": true,
+      "viewport": "390x844",
+      "scale": 1,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 13.8,
+          "fontSizeOnScreen": 13.8,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x844-zoom-150-ru",
+      "ok": true,
+      "viewport": "390x844",
+      "scale": 1.5,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 9.2,
+          "fontSizeOnScreen": 13.8,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 7.4,
+          "fontSizeOnScreen": 11.1,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 6.9,
+          "fontSizeOnScreen": 10.35,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 7.9,
+          "fontSizeOnScreen": 11.85,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x664-zoom-100-ru",
+      "ok": true,
+      "viewport": "390x664",
+      "scale": 1,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 13.8,
+          "fontSizeOnScreen": 13.8,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-390x664-zoom-150-ru",
+      "ok": true,
+      "viewport": "390x664",
+      "scale": 1.5,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 9.2,
+          "fontSizeOnScreen": 13.8,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 7.4,
+          "fontSizeOnScreen": 11.1,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 6.9,
+          "fontSizeOnScreen": 10.35,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 7.9,
+          "fontSizeOnScreen": 11.85,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-667x375-zoom-100-ru",
+      "ok": true,
+      "viewport": "667x375",
+      "scale": 1,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 12.6,
+          "fontSizeOnScreen": 12.6,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 11.8,
+          "fontSizeOnScreen": 11.8,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 13.4,
+          "fontSizeOnScreen": 13.4,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-667x375-zoom-150-ru",
+      "ok": true,
+      "viewport": "667x375",
+      "scale": 1.5,
+      "lang": "ru",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u041b\u0451\u0433\u043a\u0438\u0439",
+          "fontSizeCss": 7.699999,
+          "fontSizeOnScreen": 11.55,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0421\u0440\u0435\u0434\u043d\u0438\u0439",
+          "fontSizeCss": 6.300001,
+          "fontSizeOnScreen": 9.45,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0421\u043b\u043e\u0436\u043d\u044b\u0439",
+          "fontSizeCss": 6,
+          "fontSizeOnScreen": 9,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u042d\u043a\u0441\u043f\u0435\u0440\u0442",
+          "fontSizeCss": 6.699999,
+          "fontSizeOnScreen": 10.05,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-100-de",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1,
+      "lang": "de",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Leicht",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Mittel",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Schwer",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Experte",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-150-de",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1.5,
+      "lang": "de",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "Leicht",
+          "fontSizeCss": 11.8,
+          "fontSizeOnScreen": 17.7,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Mittel",
+          "fontSizeCss": 12.8,
+          "fontSizeOnScreen": 19.2,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Schwer",
+          "fontSizeCss": 9.5,
+          "fontSizeOnScreen": 14.25,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Experte",
+          "fontSizeCss": 9.3,
+          "fontSizeOnScreen": 13.95,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-100-es",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1,
+      "lang": "es",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "F\u00e1cil",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medio",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Dif\u00edcil",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Experto",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-150-es",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1.5,
+      "lang": "es",
+      "extraScrollX": 0,
+      "dir": "ltr",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "F\u00e1cil",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "Medio",
+          "fontSizeCss": 11.600001,
+          "fontSizeOnScreen": 17.4,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "Dif\u00edcil",
+          "fontSizeCss": 12.7,
+          "fontSizeOnScreen": 19.05,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "Experto",
+          "fontSizeCss": 9.3,
+          "fontSizeOnScreen": 13.95,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-100-he",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1,
+      "lang": "he",
+      "extraScrollX": 0,
+      "dir": "rtl",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u05e7\u05dc",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u05d1\u05d9\u05e0\u05d5\u05e0\u05d9",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u05e7\u05e9\u05d4",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u05de\u05d5\u05de\u05d7\u05d4",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-150-he",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1.5,
+      "lang": "he",
+      "extraScrollX": 0,
+      "dir": "rtl",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u05e7\u05dc",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u05d1\u05d9\u05e0\u05d5\u05e0\u05d9",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u05e7\u05e9\u05d4",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u05de\u05d5\u05de\u05d7\u05d4",
+          "fontSizeCss": 11.899999,
+          "fontSizeOnScreen": 17.85,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-100-ar",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1,
+      "lang": "ar",
+      "extraScrollX": 0,
+      "dir": "rtl",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u0633\u0647\u0644",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0645\u062a\u0648\u0633\u0637",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0635\u0639\u0628",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u062e\u0628\u064a\u0631",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 15,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    },
+    {
+      "tag": "pr387-402x681-zoom-150-ar",
+      "ok": true,
+      "viewport": "402x681",
+      "scale": 1.5,
+      "lang": "ar",
+      "extraScrollX": 0,
+      "dir": "rtl",
+      "segments": [
+        {
+          "id": "home-computer-level-easy",
+          "text": "\u0633\u0647\u0644",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-medium",
+          "text": "\u0645\u062a\u0648\u0633\u0637",
+          "fontSizeCss": 11.100001,
+          "fontSizeOnScreen": 16.65,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-hard",
+          "text": "\u0635\u0639\u0628",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        },
+        {
+          "id": "home-computer-level-expert",
+          "text": "\u062e\u0628\u064a\u0631",
+          "fontSizeCss": 15,
+          "fontSizeOnScreen": 22.5,
+          "ellipsis": false,
+          "midWord": []
+        }
+      ],
+      "fail": []
+    }
+  ]
+}
