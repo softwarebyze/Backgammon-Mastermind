@@ -1,0 +1,1156 @@
+[
+  {
+    "tag": "prod-402x681-zoom-100",
+    "site": "prod",
+    "url": "https://backgammon-mastermind.vercel.app",
+    "scale": 1,
+    "ok": true,
+    "pass": true,
+    "shot": "/workspace/qa-clips/home-zoom-387/prod-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "scrollWidth": 402,
+      "clientWidth": 402,
+      "extraScrollX": 0,
+      "bodyScrollWidth": 402,
+      "root": {
+        "left": 0,
+        "right": 402,
+        "width": 402
+      },
+      "html": {
+        "zoom": "1",
+        "fontSize": "16px"
+      },
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "logo-img",
+          "testID": null,
+          "text": "",
+          "left": 25,
+          "right": 67,
+          "width": 42,
+          "height": 42,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "title",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": 82,
+          "right": 338,
+          "width": 256,
+          "height": 22,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        }
+      ],
+      "anyClips": []
+    },
+    "namedClips": []
+  },
+  {
+    "tag": "prod-402x681-zoom-115",
+    "site": "prod",
+    "url": "https://backgammon-mastermind.vercel.app",
+    "scale": 1.15,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/prod-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "scrollWidth": 402,
+      "clientWidth": 402,
+      "extraScrollX": 0,
+      "bodyScrollWidth": 350,
+      "root": {
+        "left": 0,
+        "right": 402,
+        "width": 402
+      },
+      "html": {
+        "zoom": "1.15",
+        "fontSize": "16px"
+      },
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 3,
+          "right": 198.7,
+          "width": 195.7,
+          "height": 50.6,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.3,
+          "right": 399,
+          "width": 195.7,
+          "height": 50.6,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -2.5,
+          "right": 404.5,
+          "width": 407.1,
+          "height": 64.4,
+          "clipLeft": true,
+          "clipRight": true,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -2.5,
+          "right": 195.3,
+          "width": 197.8,
+          "height": 64.4,
+          "clipLeft": true,
+          "clipRight": false,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206.8,
+          "right": 404.5,
+          "width": 197.8,
+          "height": 64.4,
+          "clipLeft": false,
+          "clipRight": true,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 2.5
+        },
+        {
+          "label": "logo-img",
+          "testID": null,
+          "text": "",
+          "left": -1.5,
+          "right": 47,
+          "width": 48.6,
+          "height": 48.6,
+          "clipLeft": true,
+          "clipRight": false,
+          "overflowLeftPx": 1.5,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "title",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": 64.1,
+          "right": 358.5,
+          "width": 294.4,
+          "height": 25.3,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        }
+      ],
+      "anyClips": [
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Backgammon Mastermind vs Computer 2 Players Easy Medium Hard",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "",
+          "left": -2.5,
+          "right": 48,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "",
+          "left": -1.5,
+          "right": 47,
+          "overflowLeftPx": 1.5,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "IMG",
+          "testID": null,
+          "text": "",
+          "left": -1.5,
+          "right": 47,
+          "overflowLeftPx": 1.5,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "vs Computer 2 Players Easy Medium Hard Expert Single game Ma",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "vs Computer 2 Players Easy Medium Hard Expert",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "vs Computer 2 Players",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Easy Medium Hard Expert",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Single game Match",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Single game Match",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": " Learn to play  Set up a position  Game clock",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": " Learn to play  Set up a position",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -2.5,
+          "right": 195.3,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206.8,
+          "right": 404.5,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 2.5
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "game-clock-button",
+          "text": " Game clock",
+          "left": -2.5,
+          "right": 404.5,
+          "overflowLeftPx": 2.5,
+          "overflowRightPx": 2.5
+        }
+      ]
+    },
+    "namedClips": [
+      "start-game L2.5 R2.5",
+      "learn-to-play L2.5",
+      "set-up-position R2.5",
+      "logo-img L1.5"
+    ]
+  },
+  {
+    "tag": "prod-402x681-zoom-125",
+    "site": "prod",
+    "url": "https://backgammon-mastermind.vercel.app",
+    "scale": 1.25,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/prod-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "scrollWidth": 402,
+      "clientWidth": 402,
+      "extraScrollX": 0,
+      "bodyScrollWidth": 322,
+      "root": {
+        "left": 0,
+        "right": 402,
+        "width": 402
+      },
+      "html": {
+        "zoom": "1.25",
+        "fontSize": "16px"
+      },
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": -14.3,
+          "right": 198.5,
+          "width": 212.8,
+          "height": 55,
+          "clipLeft": true,
+          "clipRight": false,
+          "overflowLeftPx": 14.3,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.5,
+          "right": 416.3,
+          "width": 212.8,
+          "height": 55,
+          "clipLeft": false,
+          "clipRight": true,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 14.3
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -20.3,
+          "right": 422.3,
+          "width": 442.5,
+          "height": 70,
+          "clipLeft": true,
+          "clipRight": true,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -20.3,
+          "right": 194.8,
+          "width": 215,
+          "height": 70,
+          "clipLeft": true,
+          "clipRight": false,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 207.3,
+          "right": 422.3,
+          "width": 215,
+          "height": 70,
+          "clipLeft": false,
+          "clipRight": true,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 20.3
+        },
+        {
+          "label": "logo-img",
+          "testID": null,
+          "text": "",
+          "left": -19.3,
+          "right": 33.8,
+          "width": 53,
+          "height": 53,
+          "clipLeft": true,
+          "clipRight": false,
+          "overflowLeftPx": 19.3,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "title",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": 52.3,
+          "right": 372.3,
+          "width": 320,
+          "height": 27.5,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        }
+      ],
+      "anyClips": [
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Backgammon Mastermind vs Computer 2 Players Easy Medium Hard",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "",
+          "left": -20.3,
+          "right": 34.8,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "",
+          "left": -19.3,
+          "right": 33.8,
+          "overflowLeftPx": 19.3,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "IMG",
+          "testID": null,
+          "text": "",
+          "left": -19.3,
+          "right": 33.8,
+          "overflowLeftPx": 19.3,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "vs Computer 2 Players Easy Medium Hard Expert Single game Ma",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "vs Computer 2 Players Easy Medium Hard Expert",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "vs Computer 2 Players",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": -14.3,
+          "right": 198.5,
+          "overflowLeftPx": 14.3,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.5,
+          "right": 416.3,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 14.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Easy Medium Hard Expert",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": -14.3,
+          "right": 89.6,
+          "overflowLeftPx": 14.3,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 312.4,
+          "right": 416.3,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 14.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Single game Match",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Single game Match",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": -14.3,
+          "right": 198.5,
+          "overflowLeftPx": 14.3,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.5,
+          "right": 416.3,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 14.3
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": " Learn to play  Set up a position  Game clock",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": " Learn to play  Set up a position",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -20.3,
+          "right": 194.8,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "",
+          "left": -1.8,
+          "right": 23.3,
+          "overflowLeftPx": 1.8,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 207.3,
+          "right": 422.3,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Set up a position",
+          "left": 265.8,
+          "right": 403.8,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 1.8
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Set up a position",
+          "left": 265.8,
+          "right": 403.8,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 1.8
+        },
+        {
+          "tag": "BUTTON",
+          "testID": "game-clock-button",
+          "text": " Game clock",
+          "left": -20.3,
+          "right": 422.3,
+          "overflowLeftPx": 20.3,
+          "overflowRightPx": 20.3
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "",
+          "left": -1.8,
+          "right": 23.3,
+          "overflowLeftPx": 1.8,
+          "overflowRightPx": 0
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Game clock",
+          "left": 38.3,
+          "right": 403.8,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 1.8
+        },
+        {
+          "tag": "DIV",
+          "testID": null,
+          "text": "Game clock",
+          "left": 38.3,
+          "right": 403.8,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 1.8
+        }
+      ]
+    },
+    "namedClips": [
+      "vs-computer L14.3",
+      "two-players R14.3",
+      "start-game L20.3 R20.3",
+      "learn-to-play L20.3",
+      "set-up-position R20.3",
+      "logo-img L19.3"
+    ]
+  },
+  {
+    "tag": "pr387-402x681-zoom-100",
+    "site": "pr387",
+    "url": "https://backgammon-mastermind-2uiv4rv0s-softwarebyzes-projects.vercel.app",
+    "scale": 1,
+    "ok": true,
+    "pass": true,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "scrollWidth": 402,
+      "clientWidth": 402,
+      "extraScrollX": 0,
+      "bodyScrollWidth": 402,
+      "root": {
+        "left": 0,
+        "right": 402,
+        "width": 402
+      },
+      "html": {
+        "zoom": "1",
+        "fontSize": "16px"
+      },
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "logo-img",
+          "testID": null,
+          "text": "",
+          "left": 25,
+          "right": 67,
+          "width": 42,
+          "height": 42,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "title",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": 82,
+          "right": 338,
+          "width": 256,
+          "height": 22,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        }
+      ],
+      "anyClips": []
+    },
+    "namedClips": []
+  },
+  {
+    "tag": "pr387-402x681-zoom-115",
+    "site": "pr387",
+    "url": "https://backgammon-mastermind-2uiv4rv0s-softwarebyzes-projects.vercel.app",
+    "scale": 1.15,
+    "ok": true,
+    "pass": true,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "scrollWidth": 402,
+      "clientWidth": 402,
+      "extraScrollX": 0,
+      "bodyScrollWidth": 350,
+      "root": {
+        "left": 0,
+        "right": 402,
+        "width": 402
+      },
+      "html": {
+        "zoom": "1.15",
+        "fontSize": "16px"
+      },
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "logo-img",
+          "testID": null,
+          "text": "",
+          "left": 28.6,
+          "right": 77.2,
+          "width": 48.6,
+          "height": 48.6,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "title",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": 94.3,
+          "right": 328.4,
+          "width": 234.1,
+          "height": 50.6,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        }
+      ],
+      "anyClips": []
+    },
+    "namedClips": []
+  },
+  {
+    "tag": "pr387-402x681-zoom-125",
+    "site": "pr387",
+    "url": "https://backgammon-mastermind-2uiv4rv0s-softwarebyzes-projects.vercel.app",
+    "scale": 1.25,
+    "ok": true,
+    "pass": true,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "scrollWidth": 402,
+      "clientWidth": 402,
+      "extraScrollX": 0,
+      "bodyScrollWidth": 322,
+      "root": {
+        "left": 0,
+        "right": 402,
+        "width": 402
+      },
+      "html": {
+        "zoom": "1.25",
+        "fontSize": "16px"
+      },
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "logo-img",
+          "testID": null,
+          "text": "",
+          "left": 31,
+          "right": 84,
+          "width": 53,
+          "height": 53,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        },
+        {
+          "label": "title",
+          "testID": null,
+          "text": "Backgammon Mastermind",
+          "left": 102.5,
+          "right": 322,
+          "width": 219.5,
+          "height": 55,
+          "clipLeft": false,
+          "clipRight": false,
+          "overflowLeftPx": 0,
+          "overflowRightPx": 0
+        }
+      ],
+      "anyClips": []
+    },
+    "namedClips": []
+  }
+]

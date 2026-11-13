@@ -1,0 +1,5773 @@
+[
+  {
+    "tag": "prod-en-402x681-zoom-100",
+    "site": "prod",
+    "locale": "en",
+    "scale": 1,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/prod-en-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": 29,
+          "right": 112,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 116,
+          "right": 199,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 203,
+          "right": 286,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 290,
+          "right": 373,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 24,
+        "top": 120,
+        "right": 378,
+        "bottom": 174,
+        "width": 354,
+        "height": 54
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "prod-en-402x681-zoom-115",
+    "site": "prod",
+    "locale": "en",
+    "scale": 1.15,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/prod-en-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.15",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 3,
+          "right": 198.7,
+          "width": 195.7,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.3,
+          "right": 399,
+          "width": 195.7,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": 3,
+          "right": 98.6,
+          "width": 95.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 103.2,
+          "right": 198.7,
+          "width": 95.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 203.3,
+          "right": 298.8,
+          "width": 95.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 303.4,
+          "right": 399,
+          "width": 95.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": 3,
+          "right": 198.7,
+          "width": 195.7,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.3,
+          "right": 399,
+          "width": 195.7,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -2.5,
+          "right": 404.5,
+          "width": 407.1,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -2.5,
+          "right": 195.3,
+          "width": 197.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206.8,
+          "right": 404.5,
+          "width": 197.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -2.5,
+          "right": 404.5,
+          "width": 407.1,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -2.5,
+          "right": 195.3,
+          "width": 197.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206.8,
+          "right": 404.5,
+          "width": 197.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -2.5,
+          "right": 404.5,
+          "width": 407.1,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -2.5,
+          "right": 195.3,
+          "width": 197.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206.8,
+          "right": 404.5,
+          "width": 197.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "levelRow": {
+        "left": -2.5,
+        "top": 137.6,
+        "right": 404.5,
+        "bottom": 199.4,
+        "width": 407.1,
+        "height": 61.8
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": [
+      "start-game",
+      "learn-to-play",
+      "set-up-position"
+    ]
+  },
+  {
+    "tag": "prod-en-402x681-zoom-125",
+    "site": "prod",
+    "locale": "en",
+    "scale": 1.25,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/prod-en-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.25",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": -14.3,
+          "right": 198.5,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.5,
+          "right": 416.3,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": -14.3,
+          "right": 89.6,
+          "width": 103.9,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 94.6,
+          "right": 198.5,
+          "width": 103.9,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 203.5,
+          "right": 307.4,
+          "width": 103.9,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 312.4,
+          "right": 416.3,
+          "width": 103.9,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": -14.3,
+          "right": 198.5,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.5,
+          "right": 416.3,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -20.3,
+          "right": 422.3,
+          "width": 442.5,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -20.3,
+          "right": 194.8,
+          "width": 215,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 207.3,
+          "right": 422.3,
+          "width": 215,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -20.3,
+          "right": 422.3,
+          "width": 442.5,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -20.3,
+          "right": 194.8,
+          "width": 215,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 207.3,
+          "right": 422.3,
+          "width": 215,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": -14.3,
+          "right": 198.5,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.5,
+          "right": 416.3,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": -14.3,
+          "right": 89.6,
+          "width": 103.9,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 312.4,
+          "right": 416.3,
+          "width": 103.9,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": -14.3,
+          "right": 198.5,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.5,
+          "right": 416.3,
+          "width": 212.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -20.3,
+          "right": 422.3,
+          "width": 442.5,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -20.3,
+          "right": 194.8,
+          "width": 215,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 207.3,
+          "right": 422.3,
+          "width": 215,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "levelRow": {
+        "left": -20.3,
+        "top": 149.5,
+        "right": 422.3,
+        "bottom": 216.5,
+        "width": 442.5,
+        "height": 67
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": [
+      "vs-computer",
+      "two-players",
+      "easy",
+      "expert",
+      "single",
+      "match",
+      "start-game",
+      "learn-to-play",
+      "set-up-position"
+    ]
+  },
+  {
+    "tag": "prod-en-402x681-zoom-150",
+    "site": "prod",
+    "locale": "en",
+    "scale": 1.5,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/prod-en-402x681-zoom-150.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.5",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": -57.2,
+          "right": 198,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 204,
+          "right": 459.2,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": -57.2,
+          "right": 67.4,
+          "width": 124.6,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 73.4,
+          "right": 198,
+          "width": 124.6,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 204,
+          "right": 328.6,
+          "width": 124.6,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 334.6,
+          "right": 459.2,
+          "width": 124.6,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": -57.2,
+          "right": 198,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 204,
+          "right": 459.2,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -64.5,
+          "right": 466.5,
+          "width": 531,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -64.5,
+          "right": 193.5,
+          "width": 258,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 208.5,
+          "right": 466.5,
+          "width": 258,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -64.5,
+          "right": 466.5,
+          "width": 531,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -64.5,
+          "right": 193.5,
+          "width": 258,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 208.5,
+          "right": 466.5,
+          "width": 258,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": -57.2,
+          "right": 198,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 204,
+          "right": 459.2,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": -57.2,
+          "right": 67.4,
+          "width": 124.6,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 334.6,
+          "right": 459.2,
+          "width": 124.6,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": -57.2,
+          "right": 198,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 204,
+          "right": 459.2,
+          "width": 255.2,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": -64.5,
+          "right": 466.5,
+          "width": 531,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": true,
+          "clipRight": true,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": -64.5,
+          "right": 193.5,
+          "width": 258,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": true,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 208.5,
+          "right": 466.5,
+          "width": 258,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": true,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "levelRow": {
+        "left": -64.5,
+        "top": 179.7,
+        "right": 466.5,
+        "bottom": 260.3,
+        "width": 531,
+        "height": 80.7
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": [
+      "vs-computer",
+      "two-players",
+      "easy",
+      "expert",
+      "single",
+      "match",
+      "start-game",
+      "learn-to-play",
+      "set-up-position"
+    ]
+  },
+  {
+    "tag": "pr387-en-402x681-zoom-100",
+    "site": "pr387",
+    "locale": "en",
+    "scale": 1,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-en-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": 29,
+          "right": 112,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 116,
+          "right": 199,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 203,
+          "right": 286,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 290,
+          "right": 373,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 24,
+        "top": 120,
+        "right": 378,
+        "bottom": 174,
+        "width": 354,
+        "height": 54
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-en-402x681-zoom-115",
+    "site": "pr387",
+    "locale": "en",
+    "scale": 1.15,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-en-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.15",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": 33.2,
+          "right": 113.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 118.3,
+          "right": 198.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "13.7px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 203.3,
+          "right": 283.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 288.4,
+          "right": 368.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 27.6,
+        "top": 137.6,
+        "right": 374.4,
+        "bottom": 199.4,
+        "width": 346.8,
+        "height": 61.8
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-en-402x681-zoom-125",
+    "site": "pr387",
+    "locale": "en",
+    "scale": 1.25,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-en-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.25",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": 36,
+          "right": 114.8,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 119.8,
+          "right": 198.5,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "12px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 203.5,
+          "right": 282.3,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 287.3,
+          "right": 366,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 30,
+        "top": 149.5,
+        "right": 372,
+        "bottom": 216.5,
+        "width": 342,
+        "height": 67
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-en-402x681-zoom-150",
+    "site": "pr387",
+    "locale": "en",
+    "scale": 1.5,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-en-402x681-zoom-150.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.5",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "vs Computer",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Players",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Easy",
+          "left": 43.3,
+          "right": 117.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medium",
+          "left": 123.7,
+          "right": 198,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "8.7px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Hard",
+          "left": 204,
+          "right": 278.3,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Expert",
+          "left": 284.3,
+          "right": 358.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "10.8px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Single game",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Start game ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "game"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Learn to play",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Learn"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Set up a position",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Set"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 36,
+        "top": 179.7,
+        "right": 366,
+        "bottom": 260.3,
+        "width": 330,
+        "height": 80.7
+      }
+    },
+    "mid": [
+      "start-game:game",
+      "learn-to-play:Learn",
+      "set-up-position:Set"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-de-402x681-zoom-100",
+    "site": "pr387",
+    "locale": "de",
+    "scale": 1,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-de-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Gegen Computer",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Spieler",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Leicht",
+          "left": 29,
+          "right": 112,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Mittel",
+          "left": 116,
+          "right": 199,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Schwer",
+          "left": 203,
+          "right": 286,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experte",
+          "left": 290,
+          "right": 373,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Einzelspiel",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 24,
+        "top": 120,
+        "right": 378,
+        "bottom": 174,
+        "width": 354,
+        "height": 54
+      }
+    },
+    "mid": [
+      "start-game:starten",
+      "learn-to-play:Spielen",
+      "set-up-position:Stellung"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-de-402x681-zoom-115",
+    "site": "pr387",
+    "locale": "de",
+    "scale": 1.15,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-de-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.15",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Gegen Computer",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Spieler",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Leicht",
+          "left": 33.2,
+          "right": 113.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Mittel",
+          "left": 118.3,
+          "right": 198.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Schwer",
+          "left": 203.3,
+          "right": 283.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experte",
+          "left": 288.4,
+          "right": 368.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Einzelspiel",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 27.6,
+        "top": 137.6,
+        "right": 374.4,
+        "bottom": 199.4,
+        "width": 346.8,
+        "height": 61.8
+      }
+    },
+    "mid": [
+      "start-game:starten",
+      "learn-to-play:Spielen",
+      "set-up-position:Stellung"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-de-402x681-zoom-125",
+    "site": "pr387",
+    "locale": "de",
+    "scale": 1.25,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-de-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.25",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Gegen Computer",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Spieler",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Leicht",
+          "left": 36,
+          "right": 114.8,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Mittel",
+          "left": 119.8,
+          "right": 198.5,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Schwer",
+          "left": 203.5,
+          "right": 282.3,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "12.9px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experte",
+          "left": 287.3,
+          "right": 366,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "12.6px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Einzelspiel",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 30,
+        "top": 149.5,
+        "right": 372,
+        "bottom": 216.5,
+        "width": 342,
+        "height": 67
+      }
+    },
+    "mid": [
+      "start-game:starten",
+      "learn-to-play:Spielen",
+      "set-up-position:Stellung"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-de-402x681-zoom-150",
+    "site": "pr387",
+    "locale": "de",
+    "scale": 1.5,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-de-402x681-zoom-150.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.5",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Gegen Computer",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 Spieler",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Leicht",
+          "left": 43.3,
+          "right": 117.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "11.5px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Mittel",
+          "left": 123.7,
+          "right": 198,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "12.5px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Schwer",
+          "left": 204,
+          "right": 278.3,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "9.3px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experte",
+          "left": 284.3,
+          "right": 358.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "9.1px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Einzelspiel",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Match",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Spiel starten ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "starten"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Spielen lernen",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Spielen"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Stellung aufbauen",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Stellung"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 36,
+        "top": 179.7,
+        "right": 366,
+        "bottom": 260.3,
+        "width": 330,
+        "height": 80.7
+      }
+    },
+    "mid": [
+      "start-game:starten",
+      "learn-to-play:Spielen",
+      "set-up-position:Stellung"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-es-402x681-zoom-100",
+    "site": "pr387",
+    "locale": "es",
+    "scale": 1,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-es-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Contra el ordenador",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 jugadores",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Fácil",
+          "left": 29,
+          "right": 112,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medio",
+          "left": 116,
+          "right": 199,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Difícil",
+          "left": 203,
+          "right": 286,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experto",
+          "left": 290,
+          "right": 373,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Partida única",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Encuentro",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 24,
+        "top": 120,
+        "right": 378,
+        "bottom": 174,
+        "width": 354,
+        "height": 54
+      }
+    },
+    "mid": [
+      "start-game:partida",
+      "learn-to-play:Aprende",
+      "set-up-position:Preparar"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-es-402x681-zoom-115",
+    "site": "pr387",
+    "locale": "es",
+    "scale": 1.15,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-es-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.15",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Contra el ordenador",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 jugadores",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Fácil",
+          "left": 33.2,
+          "right": 113.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medio",
+          "left": 118.3,
+          "right": 198.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Difícil",
+          "left": 203.3,
+          "right": 283.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experto",
+          "left": 288.4,
+          "right": 368.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Partida única",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Encuentro",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 27.6,
+        "top": 137.6,
+        "right": 374.4,
+        "bottom": 199.4,
+        "width": 346.8,
+        "height": 61.8
+      }
+    },
+    "mid": [
+      "start-game:partida",
+      "learn-to-play:Aprende",
+      "set-up-position:Preparar"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-es-402x681-zoom-125",
+    "site": "pr387",
+    "locale": "es",
+    "scale": 1.25,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-es-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.25",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Contra el ordenador",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 jugadores",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Fácil",
+          "left": 36,
+          "right": 114.8,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medio",
+          "left": 119.8,
+          "right": 198.5,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Difícil",
+          "left": 203.5,
+          "right": 282.3,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experto",
+          "left": 287.3,
+          "right": 366,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "12.5px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Partida única",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Encuentro",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 30,
+        "top": 149.5,
+        "right": 372,
+        "bottom": 216.5,
+        "width": 342,
+        "height": 67
+      }
+    },
+    "mid": [
+      "start-game:partida",
+      "learn-to-play:Aprende",
+      "set-up-position:Preparar"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-es-402x681-zoom-150",
+    "site": "pr387",
+    "locale": "es",
+    "scale": 1.5,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-es-402x681-zoom-150.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.5",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "Contra el ordenador",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 jugadores",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "Fácil",
+          "left": 43.3,
+          "right": 117.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "Medio",
+          "left": 123.7,
+          "right": 198,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "11.3px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "Difícil",
+          "left": 204,
+          "right": 278.3,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "12.399999px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "Experto",
+          "left": 284.3,
+          "right": 358.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "9.1px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "Partida única",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "Encuentro",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "Iniciar partida ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "partida"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " Aprende a jugar",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Aprende"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " Preparar una posición",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "Preparar"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 36,
+        "top": 179.7,
+        "right": 366,
+        "bottom": 260.3,
+        "width": 330,
+        "height": 80.7
+      }
+    },
+    "mid": [
+      "start-game:partida",
+      "learn-to-play:Aprende",
+      "set-up-position:Preparar"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-he-402x681-zoom-100",
+    "site": "pr387",
+    "locale": "he",
+    "scale": 1,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-he-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "נגד המחשב",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 שחקנים",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "קל",
+          "left": 290,
+          "right": 373,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "בינוני",
+          "left": 203,
+          "right": 286,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "קשה",
+          "left": 116,
+          "right": 199,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "מומחה",
+          "left": 29,
+          "right": 112,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "משחק בודד",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "משחק לנקודות",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 24,
+        "top": 120,
+        "right": 378,
+        "bottom": 174,
+        "width": 354,
+        "height": 54
+      }
+    },
+    "mid": [
+      "start-game:משחק",
+      "learn-to-play:ללמוד",
+      "set-up-position:הצבת"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-he-402x681-zoom-115",
+    "site": "pr387",
+    "locale": "he",
+    "scale": 1.15,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-he-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.15",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "נגד המחשב",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 שחקנים",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "קל",
+          "left": 288.3,
+          "right": 368.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "בינוני",
+          "left": 203.3,
+          "right": 283.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "קשה",
+          "left": 118.2,
+          "right": 198.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "מומחה",
+          "left": 33.2,
+          "right": 113.6,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "משחק בודד",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "משחק לנקודות",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 27.6,
+        "top": 137.6,
+        "right": 374.4,
+        "bottom": 199.4,
+        "width": 346.8,
+        "height": 61.8
+      }
+    },
+    "mid": [
+      "start-game:משחק",
+      "learn-to-play:ללמוד",
+      "set-up-position:הצבת"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-he-402x681-zoom-125",
+    "site": "pr387",
+    "locale": "he",
+    "scale": 1.25,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-he-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.25",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "נגד המחשב",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 שחקנים",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "קל",
+          "left": 287.3,
+          "right": 366,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "בינוני",
+          "left": 203.5,
+          "right": 282.3,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "קשה",
+          "left": 119.8,
+          "right": 198.5,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "מומחה",
+          "left": 36,
+          "right": 114.8,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "משחק בודד",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "משחק לנקודות",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 30,
+        "top": 149.5,
+        "right": 372,
+        "bottom": 216.5,
+        "width": 342,
+        "height": 67
+      }
+    },
+    "mid": [
+      "start-game:משחק",
+      "learn-to-play:ללמוד",
+      "set-up-position:הצבת"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-he-402x681-zoom-150",
+    "site": "pr387",
+    "locale": "he",
+    "scale": 1.5,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-he-402x681-zoom-150.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.5",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "נגד המחשב",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "2 שחקנים",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "קל",
+          "left": 284.3,
+          "right": 358.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "בינוני",
+          "left": 204,
+          "right": 278.3,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "קשה",
+          "left": 123.7,
+          "right": 198,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "מומחה",
+          "left": 43.3,
+          "right": 117.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "11.600001px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "משחק בודד",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "משחק לנקודות",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "התחלת משחק ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "משחק"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " ללמוד לשחק",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "ללמוד"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " הצבת עמדה",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "הצבת"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 36,
+        "top": 179.7,
+        "right": 366,
+        "bottom": 260.3,
+        "width": 330,
+        "height": 80.7
+      }
+    },
+    "mid": [
+      "start-game:משחק",
+      "learn-to-play:ללמוד",
+      "set-up-position:הצבת"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-ar-402x681-zoom-100",
+    "site": "pr387",
+    "locale": "ar",
+    "scale": 1,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-ar-402x681-zoom-100.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "ضد الكمبيوتر",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "لاعبان",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "سهل",
+          "left": 290,
+          "right": 373,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "متوسط",
+          "left": 203,
+          "right": 286,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "صعب",
+          "left": 116,
+          "right": 199,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "خبير",
+          "left": 29,
+          "right": 112,
+          "width": 83,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "لعبة واحدة",
+          "left": 203,
+          "right": 373,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "مباراة بالنقاط",
+          "left": 29,
+          "right": 199,
+          "width": 170,
+          "height": 44,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 24,
+          "right": 378,
+          "width": 354,
+          "height": 56,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 206,
+          "right": 378,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 24,
+          "right": 196,
+          "width": 172,
+          "height": 56,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 24,
+        "top": 120,
+        "right": 378,
+        "bottom": 174,
+        "width": 354,
+        "height": 54
+      }
+    },
+    "mid": [
+      "start-game:اللعبة",
+      "learn-to-play:تعلّم",
+      "set-up-position:إعداد"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-ar-402x681-zoom-115",
+    "site": "pr387",
+    "locale": "ar",
+    "scale": 1.15,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-ar-402x681-zoom-115.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.15",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "ضد الكمبيوتر",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "لاعبان",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "سهل",
+          "left": 288.3,
+          "right": 368.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "متوسط",
+          "left": 203.3,
+          "right": 283.8,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "صعب",
+          "left": 118.2,
+          "right": 198.7,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "خبير",
+          "left": 33.2,
+          "right": 113.6,
+          "width": 80.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "لعبة واحدة",
+          "left": 203.3,
+          "right": 368.8,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "مباراة بالنقاط",
+          "left": 33.2,
+          "right": 198.7,
+          "width": 165.5,
+          "height": 50.6,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 27.6,
+          "right": 374.4,
+          "width": 346.8,
+          "height": 64.4,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 27.6,
+        "top": 137.6,
+        "right": 374.4,
+        "bottom": 199.4,
+        "width": 346.8,
+        "height": 61.8
+      }
+    },
+    "mid": [
+      "start-game:اللعبة",
+      "learn-to-play:تعلّم",
+      "set-up-position:إعداد"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-ar-402x681-zoom-125",
+    "site": "pr387",
+    "locale": "ar",
+    "scale": 1.25,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-ar-402x681-zoom-125.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.25",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "ضد الكمبيوتر",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "لاعبان",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "سهل",
+          "left": 287.3,
+          "right": 366,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "متوسط",
+          "left": 203.5,
+          "right": 282.3,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "صعب",
+          "left": 119.8,
+          "right": 198.5,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "خبير",
+          "left": 36,
+          "right": 114.8,
+          "width": 78.8,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "لعبة واحدة",
+          "left": 203.5,
+          "right": 366,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "مباراة بالنقاط",
+          "left": 36,
+          "right": 198.5,
+          "width": 162.5,
+          "height": 55,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 30,
+          "right": 372,
+          "width": 342,
+          "height": 70,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 30,
+        "top": 149.5,
+        "right": 372,
+        "bottom": 216.5,
+        "width": 342,
+        "height": 67
+      }
+    },
+    "mid": [
+      "start-game:اللعبة",
+      "learn-to-play:تعلّم",
+      "set-up-position:إعداد"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "pr387-ar-402x681-zoom-150",
+    "site": "pr387",
+    "locale": "ar",
+    "scale": 1.5,
+    "ok": true,
+    "pass": false,
+    "shot": "/workspace/qa-clips/home-zoom-387/pr387-ar-402x681-zoom-150.png",
+    "metrics": {
+      "innerWidth": 402,
+      "innerHeight": 681,
+      "htmlZoom": "1.5",
+      "named": [
+        {
+          "label": "vs-computer",
+          "testID": "home-opponent-vs-computer",
+          "text": "ضد الكمبيوتر",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "two-players",
+          "testID": "home-opponent-vs-human",
+          "text": "لاعبان",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "easy",
+          "testID": "home-computer-level-easy",
+          "text": "سهل",
+          "left": 284.3,
+          "right": 358.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "medium",
+          "testID": "home-computer-level-medium",
+          "text": "متوسط",
+          "left": 204,
+          "right": 278.3,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "10.899999px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "hard",
+          "testID": "home-computer-level-hard",
+          "text": "صعب",
+          "left": 123.7,
+          "right": 198,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "expert",
+          "testID": "home-computer-level-expert",
+          "text": "خبير",
+          "left": 43.3,
+          "right": 117.7,
+          "width": 74.3,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "single",
+          "testID": "home-format-single",
+          "text": "لعبة واحدة",
+          "left": 204,
+          "right": 358.7,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "match",
+          "testID": "home-format-match",
+          "text": "مباراة بالنقاط",
+          "left": 43.3,
+          "right": 198,
+          "width": 154.7,
+          "height": 66,
+          "fontSize": "15px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": []
+        },
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "midWordBreaks": [
+        {
+          "label": "start-game",
+          "testID": "home-start-game",
+          "text": "بدء اللعبة ",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "17px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "اللعبة"
+          ]
+        },
+        {
+          "label": "learn-to-play",
+          "testID": "learn-button",
+          "text": " تعلّم اللعب",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "تعلّم"
+          ]
+        },
+        {
+          "label": "set-up-position",
+          "testID": "position-setup-button",
+          "text": " إعداد وضع",
+          "left": 36,
+          "right": 366,
+          "width": 330,
+          "height": 84,
+          "fontSize": "20px",
+          "clipLeft": false,
+          "clipRight": false,
+          "midWordBreaks": [
+            "إعداد"
+          ]
+        }
+      ],
+      "clips": [],
+      "levelRow": {
+        "left": 36,
+        "top": 179.7,
+        "right": 366,
+        "bottom": 260.3,
+        "width": 330,
+        "height": 80.7
+      }
+    },
+    "mid": [
+      "start-game:اللعبة",
+      "learn-to-play:تعلّم",
+      "set-up-position:إعداد"
+    ],
+    "clips": []
+  },
+  {
+    "tag": "identity-100",
+    "pass": true,
+    "diffs": []
+  }
+]
