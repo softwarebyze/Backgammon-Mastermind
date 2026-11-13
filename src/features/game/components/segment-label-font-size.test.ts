@@ -14,11 +14,11 @@ describe('segmentLabelFontSize', () => {
     // "Medium" at 15px is 6 * 15 * 0.62 = 55.8px
     const size = segmentLabelFontSize({ label: 'Medium', innerWidth: 50, measure });
     expect(size).toBeLessThan(15);
-    expect(size).toBeGreaterThan(15 * 0.75);
+    expect(size).toBeGreaterThan(15 * 0.55);
     expect(measure('Medium', size)).toBeLessThanOrEqual(50 + 0.05);
   });
 
   it('does not shrink past the minimum scale', () => {
-    expect(segmentLabelFontSize({ label: 'Medium', innerWidth: 8, measure })).toBe(15 * 0.75);
+    expect(segmentLabelFontSize({ label: 'Medium', innerWidth: 8, measure })).toBe(15 * 0.55);
   });
 });

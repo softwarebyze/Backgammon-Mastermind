@@ -1,6 +1,6 @@
 /** Base Home segment label size; keep in sync with `home-setup-choice` styles. */
 export const SEGMENT_LABEL_SIZE = 15;
-export const SEGMENT_LABEL_MIN_SCALE = 0.75;
+export const SEGMENT_LABEL_MIN_SCALE = 0.55;
 
 type SegmentLabelFontSizeArgs = {
   label: string;
@@ -33,7 +33,9 @@ export function segmentLabelFontSize({
   if (longest <= innerWidth) {
     return baseSize;
   }
-  const fitted = Math.floor(baseSize * (innerWidth / longest) * 10) / 10;
+  // 8% extra so a slightly short canvas measure cannot leave the word overflowing
+  // into an ellipsis once Safari zoom has tightened the tile.
+  const fitted = Math.floor(baseSize * (innerWidth / (longest * 1.08)) * 10) / 10;
   return Math.max(baseSize * minScale, fitted);
 }
 
