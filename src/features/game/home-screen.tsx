@@ -168,6 +168,12 @@ export function HomeScreen() {
   const panelSizeStyle = Platform.OS === 'web'
     ? { width: '100%' as const, maxWidth: GAME_CHROME_MAX_WIDTH }
     : { width: panelWidth };
+  // Web: the pixel panelWidth from useWindowDimensions stays unzoomed, so the
+  // tile-stack threshold must use the width the panel actually laid out at.
+  const [renderedPanelWidth, setRenderedPanelWidth] = useState<number | null>(null);
+  const tilePanelWidth = Platform.OS === 'web' && renderedPanelWidth != null
+    ? renderedPanelWidth
+    : panelWidth;
   const brand = (
     <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
       <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
@@ -206,7 +212,7 @@ export function HomeScreen() {
     : null;
   const tiles = (
     <View style={{ gap: 10 }}>
-      <View style={[styles.tiles, !split && panelWidth < 320 && styles.tilesStacked]}>
+      <View style={[styles.tiles, !split && tilePanelWidth < 320 && styles.tilesStacked]}>
         <HomeCard
           testID="learn-button"
           accessibilityLabel={translate('learn.home_cta')}
@@ -278,7 +284,15 @@ export function HomeScreen() {
               </View>
             )
           : (
-              <View style={[styles.panel, dense && styles.panelShort, panelSizeStyle]}>
+              <View
+                style={[styles.panel, dense && styles.panelShort, panelSizeStyle]}
+                onLayout={Platform.OS === 'web'
+                  ? (event) => {
+                      const next = Math.round(event.nativeEvent.layout.width);
+                      setRenderedPanelWidth(prev => (prev === next ? prev : next));
+                    }
+                  : undefined}
+              >
                 {brand}
                 {showRecovery && (
                   <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
