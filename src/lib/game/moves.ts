@@ -644,7 +644,7 @@ export function applyDiceRoll(state: GameState, dice: [number, number]): GameSta
 }
 
 /** Pip count – total pips left for a player (lower = closer to winning). */
-export function calculatePipCount(state: GameState, player: Player): number {
+export function calculatePipCount(state: Pick<GameState, 'points' | 'bar'>, player: Player): number {
   let pips = 0;
   for (let p = 1; p <= 24; p++) {
     if (state.points[p].player === player && state.points[p].count > 0) {

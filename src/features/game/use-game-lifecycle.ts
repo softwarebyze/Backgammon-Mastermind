@@ -3,6 +3,7 @@ import type { GameAbandonReason } from '@/features/game/use-game-completed-captu
 import type { GameMode, GameState } from '@/lib/game';
 import { useCallback } from 'react';
 
+import { clearGameNotes } from '@/features/game/game-notes-store';
 import { clearGuidance, setGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { bumpTutorGameGeneration } from '@/features/game/use-tutor';
 import { createInitialState } from '@/lib/game';
@@ -44,6 +45,7 @@ export function useGameLifecycle({
     clearTimeline();
     setGuidanceVerdictPending(false);
     clearGuidance();
+    clearGameNotes();
     savePersistedSession({ state: next, moveLog: [], replayBaseline: null });
     resetTimeline(next);
     setState(next);
@@ -78,6 +80,7 @@ export function useGameLifecycle({
     if (!state) {
       return;
     }
+    clearGameNotes();
     const next = state.match ? createMatchGame(state.match.length, state.mode, state.match.crawfordRule !== false) : createInitialState(state.mode);
     if (next.match && state.match) {
       next.match.cubeLimit = state.match.cubeLimit;

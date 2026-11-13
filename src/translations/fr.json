@@ -114,6 +114,27 @@
       "no_double": "Ne pas doubler",
       "rules": "Vous pouvez doubler la mise avant de lancer les dés."
     },
+    "notes": {
+      "add": "Ajouter une note",
+      "button_a11y": "Notes de partie",
+      "close": "Fermer",
+      "count_a11y": "Notes de partie, {{count}} enregistrées",
+      "delete": "Supprimer la note",
+      "edit": "Modifier la note",
+      "empty": "Aucune note pour l’instant. La première apparaîtra ici.",
+      "game_over": "Partie terminée",
+      "here": "Cette position",
+      "hint": "Commentez le plateau et les dés. Chaque note est épinglée à ce moment de la partie.",
+      "opening": "Ouverture",
+      "pips": "Pips {{white}}–{{black}}",
+      "placeholder": "Qu’est-ce qui ressort ici ?",
+      "save": "Enregistrer",
+      "show": "Voir",
+      "title": "Notes de partie",
+      "to_play": "{{player}} joue {{dice}}",
+      "to_roll": "{{player}} lance",
+      "turn": "Tour {{turn}}"
+    },
     "nudge": {
       "dice_order": "Aucun coup légal pour ce pion.",
       "roll_first": "Lancez d'abord les dés"

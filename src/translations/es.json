@@ -114,6 +114,27 @@
       "no_double": "No doblar",
       "rules": "Puedes doblar la apuesta antes de tirar los dados."
     },
+    "notes": {
+      "add": "Añadir nota",
+      "button_a11y": "Notas de la partida",
+      "close": "Cerrar",
+      "count_a11y": "Notas de la partida, {{count}} guardadas",
+      "delete": "Eliminar nota",
+      "edit": "Editar nota",
+      "empty": "Aún no hay notas. La primera aparecerá aquí.",
+      "game_over": "Fin de la partida",
+      "here": "Esta posición",
+      "hint": "Comenta el tablero y los dados. Cada nota queda fijada a este momento de la partida.",
+      "opening": "Apertura",
+      "pips": "Pips {{white}}–{{black}}",
+      "placeholder": "¿Qué destaca aquí?",
+      "save": "Guardar",
+      "show": "Ver",
+      "title": "Notas de la partida",
+      "to_play": "{{player}} juega {{dice}}",
+      "to_roll": "{{player}} tira",
+      "turn": "Turno {{turn}}"
+    },
     "nudge": {
       "dice_order": "Esta ficha no tiene jugada legal.",
       "roll_first": "Primero tira los dados"

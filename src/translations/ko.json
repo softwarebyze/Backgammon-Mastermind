@@ -114,6 +114,27 @@
       "no_double": "더블하지 않기",
       "rules": "주사위를 굴리기 전에 점수를 두 배로 높일 수 있습니다."
     },
+    "notes": {
+      "add": "메모 추가",
+      "button_a11y": "게임 메모",
+      "close": "닫기",
+      "count_a11y": "게임 메모, {{count}}개 저장됨",
+      "delete": "메모 삭제",
+      "edit": "메모 편집",
+      "empty": "아직 메모가 없습니다. 첫 메모가 여기에 표시됩니다.",
+      "game_over": "게임 종료",
+      "here": "이 포지션",
+      "hint": "보드와 주사위에 대해 메모하세요. 각 메모는 게임의 이 순간에 고정됩니다.",
+      "opening": "오프닝",
+      "pips": "핍 {{white}}–{{black}}",
+      "placeholder": "여기서 눈에 띄는 점은?",
+      "save": "저장",
+      "show": "보기",
+      "title": "게임 메모",
+      "to_play": "{{player}} {{dice}} 이동",
+      "to_roll": "{{player}} 굴릴 차례",
+      "turn": "{{turn}}턴"
+    },
     "nudge": {
       "dice_order": "이 말은 움직일 수 없습니다.",
       "roll_first": "먼저 주사위를 굴리세요"

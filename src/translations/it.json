@@ -114,6 +114,27 @@
       "no_double": "Non raddoppiare",
       "rules": "Puoi raddoppiare la posta prima di tirare i dadi."
     },
+    "notes": {
+      "add": "Aggiungi nota",
+      "button_a11y": "Note di partita",
+      "close": "Chiudi",
+      "count_a11y": "Note di partita, {{count}} salvate",
+      "delete": "Elimina nota",
+      "edit": "Modifica nota",
+      "empty": "Ancora nessuna nota. La prima apparirà qui.",
+      "game_over": "Partita finita",
+      "here": "Questa posizione",
+      "hint": "Commenta tavoliere e dadi. Ogni nota resta fissata a questo momento della partita.",
+      "opening": "Apertura",
+      "pips": "Pip {{white}}–{{black}}",
+      "placeholder": "Cosa salta all’occhio qui?",
+      "save": "Salva",
+      "show": "Mostra",
+      "title": "Note di partita",
+      "to_play": "{{player}} gioca {{dice}}",
+      "to_roll": "{{player}} tira",
+      "turn": "Turno {{turn}}"
+    },
     "nudge": {
       "dice_order": "Nessuna mossa legale per questa pedina.",
       "roll_first": "Prima tira i dadi"

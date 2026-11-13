@@ -1,11 +1,12 @@
 import type { ComponentProps } from 'react';
 import { Feather } from '@expo/vector-icons';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { hapticLight } from '@/lib/haptics';
 import { translate, useLayoutIsRTL } from '@/lib/i18n';
+import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
   canUndo?: boolean;
@@ -16,6 +17,9 @@ type Props = {
   onReset: () => void;
   /** Save the live board to Positions without leaving the game. */
   onSavePosition?: () => void;
+  /** Open the game notes; omitted where the toolbar has no room for it. */
+  onNotes?: () => void;
+  notesCount?: number;
 };
 
 const ICON = Platform.OS === 'web' ? 22 : 20;
@@ -28,6 +32,7 @@ export function HeaderIcon({
   disabled = false,
   testID,
   dim = false,
+  badge,
 }: {
   name: ComponentProps<typeof Feather>['name'];
   label: string;
@@ -36,6 +41,8 @@ export function HeaderIcon({
   testID?: string;
   /** Secondary action (new game) — quieter than undo/redo/options when idle. */
   dim?: boolean;
+  /** Small count over the icon's corner; hidden at 0. */
+  badge?: number;
 }) {
   return (
     <HoverPressable
@@ -60,6 +67,13 @@ export function HeaderIcon({
         color={disabled || dim ? GAME_PALETTE.accentDim : GAME_PALETTE.accent}
         style={disabled ? styles.iconDisabled : null}
       />
+      {badge
+        ? (
+            <View style={styles.badge} pointerEvents="none">
+              <Text style={styles.badgeText}>{badge > 99 ? '99+' : badge}</Text>
+            </View>
+          )
+        : null}
     </HoverPressable>
   );
 }
@@ -73,6 +87,8 @@ export function GameHeaderActions({
   onOptions,
   onReset,
   onSavePosition,
+  onNotes,
+  notesCount = 0,
 }: Props) {
   const rtl = useLayoutIsRTL();
   // No gap: the 44px hit boxes already space the icons, and the row fits a 280px landscape rail.
@@ -98,6 +114,15 @@ export function GameHeaderActions({
           label={translate('game.controls.save_position_a11y')}
           testID="save-position-button"
           onPress={onSavePosition}
+        />
+      )}
+      {onNotes && (
+        <HeaderIcon
+          name="message-square"
+          label={notesCount > 0 ? translate('game.notes.count_a11y', { count: notesCount }) : translate('game.notes.button_a11y')}
+          testID="game-notes-button"
+          onPress={onNotes}
+          badge={notesCount}
         />
       )}
       <HeaderIcon
@@ -133,5 +158,23 @@ const styles = StyleSheet.create({
   },
   iconDisabled: {
     opacity: 0.35,
+  },
+  badge: {
+    position: 'absolute',
+    top: 4,
+    right: 2,
+    minWidth: 16,
+    height: 16,
+    paddingHorizontal: 4,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: GAME_PALETTE.control,
+  },
+  badgeText: {
+    color: GAME_PALETTE.controlInk,
+    fontSize: 10,
+    lineHeight: 12,
+    ...interFont('bold'),
   },
 });

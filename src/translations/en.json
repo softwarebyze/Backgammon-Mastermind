@@ -114,6 +114,27 @@
       "no_double": "No double",
       "rules": "You can double the stakes before rolling."
     },
+    "notes": {
+      "add": "Add note",
+      "button_a11y": "Game notes",
+      "close": "Close",
+      "count_a11y": "Game notes, {{count}} saved",
+      "delete": "Delete note",
+      "edit": "Edit note",
+      "empty": "No notes yet. Your first one will appear here.",
+      "game_over": "Game over",
+      "here": "This position",
+      "hint": "Comment on the board and dice. Each note is pinned to this moment of the game.",
+      "opening": "Opening",
+      "pips": "Pips {{white}}–{{black}}",
+      "placeholder": "What stands out here?",
+      "save": "Save",
+      "show": "Show",
+      "title": "Game notes",
+      "to_play": "{{player}} to play {{dice}}",
+      "to_roll": "{{player}} to roll",
+      "turn": "Turn {{turn}}"
+    },
     "nudge": {
       "dice_order": "No legal move for this checker.",
       "roll_first": "Roll the dice first"

@@ -114,6 +114,27 @@
       "no_double": "不加倍",
       "rules": "掷骰前可以提议将分数加倍。"
     },
+    "notes": {
+      "add": "添加笔记",
+      "button_a11y": "对局笔记",
+      "close": "关闭",
+      "count_a11y": "对局笔记,已保存 {{count}} 条",
+      "delete": "删除笔记",
+      "edit": "编辑笔记",
+      "empty": "还没有笔记。你的第一条笔记会显示在这里。",
+      "game_over": "对局结束",
+      "here": "当前局面",
+      "hint": "为棋盘和骰子写下评论。每条笔记都会固定在对局的这一刻。",
+      "opening": "开局",
+      "pips": "点数 {{white}}–{{black}}",
+      "placeholder": "这里有什么值得注意的?",
+      "save": "保存",
+      "show": "查看",
+      "title": "对局笔记",
+      "to_play": "{{player}} 走 {{dice}}",
+      "to_roll": "{{player}} 掷骰",
+      "turn": "第 {{turn}} 回合"
+    },
     "nudge": {
       "dice_order": "此棋子没有合法走法。",
       "roll_first": "请先掷骰子"

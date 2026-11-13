@@ -4,9 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState, StyleSheet, Text, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { CubeTutorOverlay } from '@/features/game/components/cube-tutor-overlay';
+import { GameNotesSheet } from '@/features/game/components/game-notes-sheet';
 
 import { confirmHoldPathSegments } from '@/features/game/confirm-hold-path-segments';
 import { deriveGameBoardPresentation } from '@/features/game/game-board-presentation';
+import { useGameNotes } from '@/features/game/game-notes-store';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { GameScreenLayout } from '@/features/game/game-screen-layout';
 import { GameToolbar } from '@/features/game/game-toolbar';
@@ -144,6 +146,12 @@ export function GameScreen() {
 
   const [savingPosition, setSavingPosition] = useState(false);
   const openSavePosition = useCallback(() => setSavingPosition(true), []);
+  const notes = useGameNotes();
+  const [notesOpen, setNotesOpen] = useState(false);
+  const openNotes = useCallback(() => {
+    posthog.capture('game_notes_opened', { notes: notes.length });
+    setNotesOpen(true);
+  }, [posthog, notes.length]);
 
   const canConfirmMove = !!input.state
     && !review.isReviewing
@@ -223,6 +231,8 @@ export function GameScreen() {
             onReset={input.handleReset}
             onHome={leaveGame}
             onSavePosition={openSavePosition}
+            onNotes={openNotes}
+            notesCount={notes.length}
             match={state.match}
           />
         )}
@@ -242,6 +252,15 @@ export function GameScreen() {
       )}
       <CubeTutorOverlay />
       <SavePositionDialog state={input.state} visible={savingPosition} onClose={() => setSavingPosition(false)} />
+      <GameNotesSheet
+        visible={notesOpen}
+        onClose={() => setNotesOpen(false)}
+        state={review.displayState}
+        ply={review.isReviewing ? review.focusedPly : review.liveIndex}
+        liveIndex={review.liveIndex}
+        moveLog={moveLog}
+        onShow={review.jumpToPly}
+      />
     </View>
   );
 }

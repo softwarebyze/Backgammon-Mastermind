@@ -114,6 +114,27 @@
       "no_double": "Nicht doppeln",
       "rules": "Vor dem Würfeln kannst du den Einsatz verdoppeln."
     },
+    "notes": {
+      "add": "Notiz hinzufügen",
+      "button_a11y": "Spielnotizen",
+      "close": "Schließen",
+      "count_a11y": "Spielnotizen, {{count}} gespeichert",
+      "delete": "Notiz löschen",
+      "edit": "Notiz bearbeiten",
+      "empty": "Noch keine Notizen. Deine erste erscheint hier.",
+      "game_over": "Spiel vorbei",
+      "here": "Diese Stellung",
+      "hint": "Kommentiere Brett und Würfel. Jede Notiz wird an diesen Moment des Spiels geheftet.",
+      "opening": "Eröffnung",
+      "pips": "Pips {{white}}–{{black}}",
+      "placeholder": "Was fällt dir hier auf?",
+      "save": "Speichern",
+      "show": "Zeigen",
+      "title": "Spielnotizen",
+      "to_play": "{{player}} zieht {{dice}}",
+      "to_roll": "{{player}} würfelt",
+      "turn": "Zug {{turn}}"
+    },
     "nudge": {
       "dice_order": "Kein legaler Zug für diesen Stein.",
       "roll_first": "Erst würfeln"

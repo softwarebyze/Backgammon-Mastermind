@@ -114,6 +114,27 @@
       "no_double": "Não dobrar",
       "rules": "Você pode dobrar a aposta antes de lançar os dados."
     },
+    "notes": {
+      "add": "Adicionar nota",
+      "button_a11y": "Notas da partida",
+      "close": "Fechar",
+      "count_a11y": "Notas da partida, {{count}} salvas",
+      "delete": "Excluir nota",
+      "edit": "Editar nota",
+      "empty": "Nenhuma nota ainda. A primeira aparecerá aqui.",
+      "game_over": "Fim da partida",
+      "here": "Esta posição",
+      "hint": "Comente o tabuleiro e os dados. Cada nota fica fixada neste momento da partida.",
+      "opening": "Abertura",
+      "pips": "Pips {{white}}–{{black}}",
+      "placeholder": "O que chama a atenção aqui?",
+      "save": "Salvar",
+      "show": "Ver",
+      "title": "Notas da partida",
+      "to_play": "{{player}} joga {{dice}}",
+      "to_roll": "{{player}} rola",
+      "turn": "Turno {{turn}}"
+    },
     "nudge": {
       "dice_order": "Esta peça não tem jogada legal.",
       "roll_first": "Primeiro role os dados"

@@ -1,0 +1,69 @@
+# Game notes: comment on the board and dice mid-game. The developer preset
+# deals a fixed 3-1 on the standard setup (pass-and-play), so the note is
+# pinned to a known position, survives a move, and can be shown again from
+# the review.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: Play against the computer
+- openLink: backgammonmastermind.preview://developer
+- extendedWaitUntil:
+    visible: Audit presets
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      id: developer-preset-e2e-undo-redo-3-1
+    direction: DOWN
+- tapOn:
+    id: developer-preset-e2e-undo-redo-3-1
+- extendedWaitUntil:
+    visible:
+      id: point-8
+    timeout: 45000
+- tapOn:
+    id: game-notes-button
+- extendedWaitUntil:
+    visible:
+      id: game-notes-sheet
+    timeout: 10000
+# The note is pinned to what is on screen: White's 3-1 at the start.
+- assertVisible: Turn 1 · White to play 3-1 · Pips 167–167
+- assertVisible: No notes yet. Your first one will appear here.
+- tapOn:
+    id: game-notes-input
+- inputText: Split the back checkers or make the 5-point
+- hideKeyboard
+- tapOn:
+    id: game-notes-submit
+- assertVisible: Split the back checkers or make the 5-point
+- takeScreenshot: 01-note-added
+- tapOn:
+    id: game-notes-close
+- assertVisible: 'Game notes, 1 saved'
+# Play 8 -> 5 with the 3; the note stays with the position it was written about.
+- tapOn:
+    id: point-8
+- tapOn:
+    id: point-5
+- extendedWaitUntil:
+    visible:
+      id: header-undo-button
+      enabled: true
+    timeout: 15000
+- tapOn:
+    id: game-notes-button
+- assertVisible: Split the back checkers or make the 5-point
+- takeScreenshot: 02-note-after-move
+# Show returns the board to the noted position in the review.
+- tapOn:
+    id: game-note-show
+- extendedWaitUntil:
+    visible: Opening position
+    timeout: 15000
+- assertVisible: 'Point 8, 3 white checkers'
+- takeScreenshot: 03-note-shown-on-board

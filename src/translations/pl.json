@@ -114,6 +114,27 @@
       "no_double": "Nie podwajaj",
       "rules": "Możesz podwoić stawkę przed rzutem kośćmi."
     },
+    "notes": {
+      "add": "Dodaj notatkę",
+      "button_a11y": "Notatki z gry",
+      "close": "Zamknij",
+      "count_a11y": "Notatki z gry, zapisane: {{count}}",
+      "delete": "Usuń notatkę",
+      "edit": "Edytuj notatkę",
+      "empty": "Brak notatek. Pierwsza pojawi się tutaj.",
+      "game_over": "Koniec gry",
+      "here": "Ta pozycja",
+      "hint": "Skomentuj planszę i kości. Każda notatka zostaje przypięta do tej chwili gry.",
+      "opening": "Otwarcie",
+      "pips": "Oczka {{white}}–{{black}}",
+      "placeholder": "Co tu się wyróżnia?",
+      "save": "Zapisz",
+      "show": "Pokaż",
+      "title": "Notatki z gry",
+      "to_play": "{{player}} gra {{dice}}",
+      "to_roll": "{{player}} rzuca",
+      "turn": "Tura {{turn}}"
+    },
     "nudge": {
       "dice_order": "Ten pionek nie ma legalnego ruchu.",
       "roll_first": "Najpierw rzuć kośćmi"

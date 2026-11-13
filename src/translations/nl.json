@@ -114,6 +114,27 @@
       "no_double": "Niet dubbelen",
       "rules": "Je kunt de inzet verdubbelen voordat je gooit."
     },
+    "notes": {
+      "add": "Notitie toevoegen",
+      "button_a11y": "Spelnotities",
+      "close": "Sluiten",
+      "count_a11y": "Spelnotities, {{count}} opgeslagen",
+      "delete": "Notitie verwijderen",
+      "edit": "Notitie bewerken",
+      "empty": "Nog geen notities. Je eerste verschijnt hier.",
+      "game_over": "Spel voorbij",
+      "here": "Deze stelling",
+      "hint": "Geef commentaar op het bord en de stenen. Elke notitie wordt aan dit moment van het spel vastgemaakt.",
+      "opening": "Opening",
+      "pips": "Pips {{white}}–{{black}}",
+      "placeholder": "Wat valt hier op?",
+      "save": "Opslaan",
+      "show": "Tonen",
+      "title": "Spelnotities",
+      "to_play": "{{player}} speelt {{dice}}",
+      "to_roll": "{{player}} gooit",
+      "turn": "Beurt {{turn}}"
+    },
     "nudge": {
       "dice_order": "Geen geldige zet voor deze schijf.",
       "roll_first": "Eerst gooien"

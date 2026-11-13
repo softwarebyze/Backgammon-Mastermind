@@ -1,9 +1,12 @@
 import type { GameState } from '@/lib/game';
+import Feather from '@expo/vector-icons/Feather';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { GameHeaderActions } from '@/components/navigation/game-header-actions';
 import { GameHomeButton } from '@/components/navigation/game-home-button';
+import { HoverPressable } from '@/components/ui/hover-pressable';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { hapticLight } from '@/lib/haptics';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
@@ -18,6 +21,9 @@ type Props = {
   onOptions: () => void;
   onReset: () => void;
   onSavePosition?: () => void;
+  /** Open the game notes. */
+  onNotes?: () => void;
+  notesCount?: number;
   onHome: () => void;
   /** In a match, the toolbar names it: "Match to 5 · Game 2" (or the Crawford notice). */
   match?: GameState['match'];
@@ -37,7 +43,10 @@ function matchTitle(match: NonNullable<GameState['match']>): string {
     : translate('game.match.title', { length: match.length, game: match.gameNumber });
 }
 
-export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onReset, onHome, onSavePosition, match, compact = false }: Props) {
+export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onReset, onHome, onSavePosition, onNotes, notesCount = 0, match, compact = false }: Props) {
+  // The landscape rail holds exactly six 44px buttons (#348), so notes take a
+  // slim row under them there instead of a seventh icon.
+  const notesRow = compact && onNotes ? <GameNotesPill count={notesCount} onPress={onNotes} /> : null;
   const row = (
     <View testID="game-toolbar" style={[styles.row, compact && styles.rowCompact]}>
       <GameHomeButton onPress={onHome} />
@@ -49,6 +58,8 @@ export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onRes
         onOptions={onOptions}
         onReset={onReset}
         onSavePosition={onSavePosition}
+        onNotes={compact ? undefined : onNotes}
+        notesCount={notesCount}
       />
     </View>
   );
@@ -56,7 +67,12 @@ export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onRes
   // the same place and size whether or not a match is on.
   if (!match || match.length === 0) {
     return compact
-      ? row
+      ? (
+          <View style={styles.stack}>
+            {row}
+            {notesRow}
+          </View>
+        )
       : (
           <View style={styles.stack}>
             {row}
@@ -76,7 +92,29 @@ export function GameToolbar({ canUndo, canRedo, onUndo, onRedo, onOptions, onRes
       >
         {matchTitle(match)}
       </Text>
+      {notesRow}
     </View>
+  );
+}
+
+function GameNotesPill({ count, onPress }: { count: number; onPress: () => void }) {
+  const label = count > 0 ? translate('game.notes.count_a11y', { count }) : translate('game.notes.button_a11y');
+  return (
+    <HoverPressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      testID="game-notes-button"
+      onPress={() => {
+        hapticLight();
+        onPress();
+      }}
+      style={({ pressed, hovered }) => [styles.pill, hovered && styles.pillHover, pressed && styles.pillPressed]}
+    >
+      <Feather name="message-square" size={14} color={GAME_PALETTE.accent} />
+      <Text style={styles.pillText} numberOfLines={1}>
+        {count > 0 ? `${translate('game.notes.button_a11y')} · ${count}` : translate('game.notes.button_a11y')}
+      </Text>
+    </HoverPressable>
   );
 }
 
@@ -97,6 +135,26 @@ const styles = StyleSheet.create({
   },
   titleSpace: {
     height: TITLE_HEIGHT,
+  },
+  pill: {
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    minHeight: 32,
+    paddingHorizontal: 12,
+    borderRadius: 16,
+  },
+  pillHover: {
+    backgroundColor: 'rgba(255, 196, 153, 0.12)',
+  },
+  pillPressed: {
+    opacity: 0.7,
+  },
+  pillText: {
+    color: GAME_PALETTE.accent,
+    fontSize: 13,
+    ...interFont('semibold'),
   },
   title: {
     height: TITLE_HEIGHT,

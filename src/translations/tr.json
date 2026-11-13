@@ -114,6 +114,27 @@
       "no_double": "Katlama",
       "rules": "Zar atmadan önce bahsi ikiye katlayabilirsiniz."
     },
+    "notes": {
+      "add": "Not ekle",
+      "button_a11y": "Oyun notları",
+      "close": "Kapat",
+      "count_a11y": "Oyun notları, {{count}} kayıtlı",
+      "delete": "Notu sil",
+      "edit": "Notu düzenle",
+      "empty": "Henüz not yok. İlk notunuz burada görünecek.",
+      "game_over": "Oyun bitti",
+      "here": "Bu pozisyon",
+      "hint": "Tahta ve zarlar hakkında yorum yazın. Her not oyunun bu anına iliştirilir.",
+      "opening": "Açılış",
+      "pips": "Pip {{white}}–{{black}}",
+      "placeholder": "Burada ne dikkat çekiyor?",
+      "save": "Kaydet",
+      "show": "Göster",
+      "title": "Oyun notları",
+      "to_play": "{{player}} {{dice}} oynayacak",
+      "to_roll": "{{player}} zar atacak",
+      "turn": "Tur {{turn}}"
+    },
     "nudge": {
       "dice_order": "Bu pulun yasal hamlesi yok.",
       "roll_first": "Önce zar atın"
