@@ -161,6 +161,13 @@ export function HomeScreen() {
   // the match details and Start on the right, so Start is always on screen (#346).
   const split = landscape && height < 520;
   const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, width - 48);
+  // Web: fill the padded column (capped at 480) so Safari page zoom shrinks
+  // the panel. A pixel width from useWindowDimensions stays unzoomed and is
+  // clipped by html, body, #root { overflow: hidden }. Native keeps the
+  // existing pixel width so its layout is unchanged.
+  const panelSizeStyle = Platform.OS === 'web'
+    ? { width: '100%' as const, maxWidth: GAME_CHROME_MAX_WIDTH }
+    : { width: panelWidth };
   const brand = (
     <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
       <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
@@ -271,7 +278,7 @@ export function HomeScreen() {
               </View>
             )
           : (
-              <View style={[styles.panel, dense && styles.panelShort, { width: panelWidth }]}>
+              <View style={[styles.panel, dense && styles.panelShort, panelSizeStyle]}>
                 {brand}
                 {showRecovery && (
                   <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
