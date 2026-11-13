@@ -4,7 +4,11 @@
 
 # ✍️ Description:
 # This workflow is used to trigger a build on EAS for the QA environment.
-# It will run on every GitHub release published on the repo or can be triggered manually from the actions tab.
+# It runs on a published GitHub *version* release (tag vX.Y.Z, optional prerelease
+# suffix such as v1.3.0-rc.1) or can be triggered manually from the Actions tab.
+# Evidence/QA screenshot releases (qa-pr-*, pr-*-evidence, e2e-evidence,
+# qa-bearoff-baseline-*, maestro-screenshots, …) are skipped: those tags must
+# not start with v. See docs/releases.md ("Evidence and QA release tags").
 # Preview iOS builds use --auto-submit → TestFlight (see eas.json submit.preview).
 # eas-build generates store.preview.config.json before --auto-submit so metadataPath exists.
 
@@ -22,6 +26,9 @@ on:
 jobs:
   Build:
     name: EAS QA Build (Android & IOS) (EAS)
+    # Real version tags are vX.Y.Z (see docs/releases.md). workflow_dispatch is unchanged.
+    # GitHub Expressions have no regex, so this is startsWith('v'); evidence tags must not use v*.
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'v')
     runs-on: ubuntu-latest
     steps:
       - name: Check for EXPO_TOKEN

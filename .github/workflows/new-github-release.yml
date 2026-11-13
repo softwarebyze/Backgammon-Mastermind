@@ -3,8 +3,12 @@
 # Starter releasing process: https://starter.obytes.com/ci-cd/app-releasing-process/
 
 # ✍️ Description:
-# This workflow will be triggered automatically after the new app version workflow has been executed successfully.
+# This workflow will be triggered automatically after the new app version workflow has been executed successfully
+# (push of a vX.Y.Z tag, optional prerelease suffix such as v1.3.0-rc.1).
 # It will create a new GitHub release with the new app version and the release notes.
+# Evidence/QA tags (qa-pr-*, pr-*-evidence, e2e-evidence, qa-bearoff-baseline-*,
+# maestro-screenshots, …) must not start with v and do not trigger this workflow.
+# See docs/releases.md ("Evidence and QA release tags").
 
 # 🚨 GITHUB SECRETS REQUIRED: None
 
@@ -12,12 +16,15 @@ name: New GitHub Release
 
 on:
   push:
+    # Version tags only (v1.2.0, v1.3.0-rc.1). GitHub tag filters are globs, not regex.
+    # Evidence/QA tags (qa-pr-*, pr-*-evidence, …) must not use this pattern.
     tags:
-      - '*'
+      - 'v[0-9]*.[0-9]*.[0-9]*'
 
 jobs:
   release:
     name: New GitHub Release
+    if: startsWith(github.ref_name, 'v')
     runs-on: ubuntu-latest
     permissions:
       contents: write

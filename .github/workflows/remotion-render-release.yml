@@ -1,5 +1,9 @@
-# Re-render Remotion marketing videos on every GitHub Release and commit
+# Re-render Remotion marketing videos on a published GitHub *version* release
+# (tag vX.Y.Z, optional prerelease suffix such as v1.3.0-rc.1) and commit
 # them to main under docs/marketing/videos/.
+# Evidence/QA screenshot releases (qa-pr-*, pr-*-evidence, e2e-evidence,
+# qa-bearoff-baseline-*, maestro-screenshots, …) are skipped: those tags must
+# not start with v. See docs/releases.md ("Evidence and QA release tags").
 #
 # Manual: Actions → Remotion Render (Release Assets) → Run workflow
 # Local:  cd remotion && pnpm install && pnpm render:all
@@ -26,6 +30,9 @@ permissions:
 jobs:
   render-and-commit:
     name: Render Remotion → commit to main
+    # Real version tags are vX.Y.Z (see docs/releases.md). workflow_dispatch is unchanged.
+    # GitHub Expressions have no regex, so this is startsWith('v'); evidence tags must not use v*.
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'v')
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
