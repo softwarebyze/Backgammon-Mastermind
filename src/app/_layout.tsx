@@ -18,6 +18,7 @@ import { GameProvider } from '@/features/game/game-provider';
 import { setAnalyticsScreen } from '@/lib/analytics/settings-analytics';
 import { initAppTheme } from '@/lib/init-app-theme';
 import { useAppFonts } from '@/lib/ui/use-app-fonts';
+import { registerServiceWorker } from '@/lib/web/pwa';
 import '@/lib/ignore-known-logs';
 // Import  global CSS file
 import '../global.css';
@@ -52,6 +53,8 @@ export default function RootLayout() {
   const pathname = usePathname();
   const params = useGlobalSearchParams();
   const previousPathname = useRef<string | undefined>(undefined);
+
+  useEffect(() => registerServiceWorker(), []);
 
   useEffect(() => {
     if (previousPathname.current !== pathname) {

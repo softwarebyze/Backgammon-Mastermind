@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "Najlepiej: {{choice}}",
       "better_choice": "Była lepsza decyzja kostki",
+      "computer_error": "Nie udało się przeanalizować kostki — dotknij, aby spróbować ponownie",
       "computer_waiting": "Komputer czeka",
       "keep": "Zostaw mój wybór",
       "missed_double": "Przegapione dublowanie",
@@ -759,6 +760,9 @@
     "untitled": "Pozycja bez nazwy",
     "white": "Białe",
     "white_score": "Wynik Białych"
+  },
+  "pwa": {
+    "update_available": "Nowa wersja jest gotowa — dotknij, aby odświeżyć"
   },
   "settings": {
     "about": "O aplikacji",

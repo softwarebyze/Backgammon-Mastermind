@@ -4,5 +4,5 @@
     "strict": true, "noEmit": true, "skipLibCheck": true,
     "types": ["node"], "allowImportingTsExtensions": true, "verbatimModuleSyntax": true
   },
-  "include": ["scripts/generate-third-party-notices.ts","scripts/sync-bgsage-vendor.ts","scripts/view-maestro-report.ts"]
+  "include": ["scripts/generate-third-party-notices.ts","scripts/sync-bgsage-vendor.ts","scripts/view-maestro-report.ts","scripts/build-service-worker.ts","scripts/service-worker-config.ts","e2e-web/**/*.ts","playwright.config.ts"]
 }

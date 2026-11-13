@@ -1,0 +1,47 @@
+# Web offline/PWA end-to-end test: exports the web build exactly as Vercel
+# does (`pnpm build:web`), visits it once in Chromium, shuts the server down
+# and checks the app, deep links and the bgsage engine still work offline.
+
+name: E2E Web (offline)
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline:
+    name: E2E Web (offline)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: 📦 Checkout project repo
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node + PNPM + install deps
+        uses: ./.github/actions/setup-node-pnpm-install
+
+      - name: 🏗️ Build web (with service worker)
+        run: pnpm build:web
+
+      - name: 🎭 Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: 🏃 Run offline test
+        run: pnpm e2e:web
+
+      # Always uploaded: the report holds the offline screenshots used as PR evidence.
+      - name: 📤 Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
