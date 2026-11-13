@@ -1,6 +1,4 @@
-import type { ComponentProps } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
-import Feather from '@expo/vector-icons/Feather';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
@@ -16,8 +14,9 @@ import {
 } from 'react-native';
 import { SettingsHeaderButton } from '@/components/navigation/settings-header-button';
 import { FocusAwareStatusBar } from '@/components/ui';
-import { HoverPressable } from '@/components/ui/hover-pressable';
 import { showErrorMessage } from '@/components/ui/utils';
+import { HomeBoardArt } from '@/features/game/components/home-board-art';
+import { HomeCard } from '@/features/game/components/home-card';
 import { HomeGameSetup } from '@/features/game/components/home-game-setup';
 import { HOME_INK } from '@/features/game/components/home-ink';
 import { GAME_PALETTE } from '@/features/game/game-palette';
@@ -86,7 +85,6 @@ export function HomeScreen() {
   const dense = short || (landscape && height < 400);
   // Very short phones (320x480): slimmer tiles and tighter setup, so a match still fits.
   const tiny = !landscape && height < 520;
-  const topSpace = insets.top + (landscape || short ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
   const canResume = canContinueSavedGame(state);
   const canReview = !canResume && hasReviewableCompletedGame(state);
   const [showRecovery, setShowRecovery] = useState(hasQuarantinedSession);
@@ -146,6 +144,7 @@ export function HomeScreen() {
     router.push(learnHomeHref());
   }, [learnDone, posthog, progress.quizPassed]);
 
+  // A second line only when it reports something: nothing to say before the first lesson.
   const learnSub = learnReady
     ? translate('learn.home_cta_ready')
     : learnLessonsDone
@@ -155,18 +154,32 @@ export function HomeScreen() {
             done: learnDone,
             total: LESSON_IDS.length,
           })
-        : translate('learn.home_cta_sub');
+        : undefined;
 
   // Landscape phones: a one-line header, then the choices on the left and
   // the match details and Start on the right, so Start is always on screen (#346).
   const split = landscape && height < 520;
   const panelWidth = Math.min(GAME_CHROME_MAX_WIDTH, width - 48);
-  const brand = (
-    <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
-      <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
-      <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
-    </View>
-  );
+  // Tall screens open on a picture of the board; it grows with the room there is.
+  const artHeight = split || short ? 0 : Math.min(150, Math.round((height - 640) * 0.75));
+  const showArt = artHeight >= 84;
+  // The picture starts below the settings gear.
+  const topSpace = insets.top + (showArt ? 52 : landscape || short ? 8 : Math.round(Math.min(56, Math.max(16, height * 0.05))));
+  const brand = showArt
+    ? (
+        <View>
+          <HomeBoardArt width={panelWidth} height={artHeight} />
+          <View style={styles.artCopy}>
+            <Text accessibilityRole="header" style={[styles.artTitle, { writingDirection: layoutIsRTL ? 'rtl' : 'ltr' }, gearSide === 'left' && styles.artTitleWebRtl]}>{translate('home.title')}</Text>
+          </View>
+        </View>
+      )
+    : (
+        <View style={[styles.brand, short && styles.brandShort, short && gearSide === 'left' && styles.gearClear, split && styles.brandSplit]}>
+          <Image source={require('../../../assets/brand/display-logo.png')} style={[styles.logo, short && styles.logoShort, split && styles.logoSplit]} resizeMode="cover" accessible={false} />
+          <Text accessibilityRole="header" style={[styles.title, short && styles.titleShort, split && styles.titleSplit]} numberOfLines={short ? 2 : split ? 1 : undefined}>{translate('home.title')}</Text>
+        </View>
+      );
   const resumeCard = canResume
     ? (
         <HomeCard
@@ -174,7 +187,6 @@ export function HomeScreen() {
           accessibilityLabel={translate('home.resume_a11y')}
           symbol="play-circle"
           label={translate('home.resume')}
-          sub={dense ? undefined : translate('home.resume_sub')}
           onPress={handleResume}
           prominent
           dense={dense}
@@ -189,7 +201,6 @@ export function HomeScreen() {
           accessibilityLabel={translate('home.review_a11y')}
           symbol="eye"
           label={translate('home.review')}
-          sub={dense ? undefined : translate('home.review_sub')}
           onPress={handleReview}
           prominent
           dense={dense}
@@ -197,19 +208,22 @@ export function HomeScreen() {
         />
       )
     : null;
+  // Learning leads: a full-width card that shows how far through the course you are.
   const tiles = (
-    <View style={{ gap: 10 }}>
+    <View style={styles.destinations}>
+      <HomeCard
+        testID="learn-button"
+        accessibilityLabel={translate('learn.home_cta')}
+        symbol="book-open"
+        label={translate('learn.home_cta')}
+        sub={dense ? undefined : learnSub}
+        onPress={handleLearn}
+        featured
+        progress={learnDone > 0 && !learnReady ? learnDone / LESSON_IDS.length : undefined}
+        dense={dense}
+        compact={split || tiny}
+      />
       <View style={[styles.tiles, !split && panelWidth < 320 && styles.tilesStacked]}>
-        <HomeCard
-          testID="learn-button"
-          accessibilityLabel={translate('learn.home_cta')}
-          symbol="book-open"
-          label={translate('learn.home_cta')}
-          sub={dense ? undefined : learnSub}
-          onPress={handleLearn}
-          dense={dense}
-          compact={split || tiny}
-        />
         <HomeCard
           testID="position-setup-button"
           accessibilityLabel={translate('positions.setup')}
@@ -219,19 +233,19 @@ export function HomeScreen() {
           dense={dense}
           compact={split || tiny}
         />
+        <HomeCard
+          testID="game-clock-button"
+          accessibilityLabel={translate('timer.title')}
+          symbol="clock"
+          label={translate('timer.title')}
+          onPress={() => {
+            hapticLight();
+            router.push('/timer');
+          }}
+          dense={dense}
+          compact={split || tiny}
+        />
       </View>
-      <HomeCard
-        testID="game-clock-button"
-        accessibilityLabel={translate('timer.title')}
-        symbol="clock"
-        label={translate('timer.title')}
-        onPress={() => {
-          hapticLight();
-          router.push('/timer');
-        }}
-        dense={dense}
-        compact={split || tiny}
-      />
     </View>
   );
 
@@ -278,53 +292,12 @@ export function HomeScreen() {
                 )}
                 {resumeCard}
                 {reviewCard}
-                <HomeGameSetup onStart={handleStart} tight={tiny} />
+                <HomeGameSetup onStart={handleStart} tight={tiny} flat={tiny || panelWidth < 300} />
                 {tiles}
               </View>
             )}
       </ScrollView>
     </>
-  );
-}
-
-/** A secondary destination: icon, name and a line about it. "Prominent" is ivory, for picking a game back up. */
-function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, prominent = false, dense = false, compact = false, inline = false }: {
-  testID: string;
-  accessibilityLabel: string;
-  symbol: ComponentProps<typeof Feather>['name'];
-  label: string;
-  sub?: string;
-  onPress: () => void;
-  prominent?: boolean;
-  /** Short screens: one line, 56px tall. */
-  dense?: boolean;
-  /** Landscape phones: as tall as the Start button beside it. */
-  compact?: boolean;
-  /** In the landscape header row: as wide as its label. */
-  inline?: boolean;
-}) {
-  return (
-    <HoverPressable
-      testID={testID}
-      accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
-      onPress={onPress}
-      style={({ pressed, hovered }) => [
-        styles.card,
-        dense && styles.cardDense,
-        compact && styles.cardCompact,
-        inline && styles.cardInline,
-        prominent && styles.cardProminent,
-        hovered && (prominent ? styles.cardProminentHover : styles.cardHover),
-        pressed && styles.pressed,
-      ]}
-    >
-      <Feather name={symbol} size={20} color={prominent ? GAME_PALETTE.bg : HOME_INK.ivory} accessible={false} />
-      <View style={styles.cardCopy}>
-        <Text style={[styles.cardLabel, prominent && styles.cardLabelProminent]}>{label}</Text>
-        {sub ? <Text style={[styles.cardSub, prominent && styles.cardSubProminent]}>{sub}</Text> : null}
-      </View>
-    </HoverPressable>
   );
 }
 
@@ -427,77 +400,35 @@ const styles = StyleSheet.create({
     fontSize: 19,
     lineHeight: 24,
   },
+  // The picture fades out at its foot; the name stands on the fade.
+  artCopy: {
+    marginTop: -24,
+    marginBottom: 8,
+    paddingHorizontal: 4,
+    gap: 4,
+  },
+  // Web lays a Latin name out left-to-right whatever the app language: align it by hand.
+  artTitleWebRtl: {
+    textAlign: 'right',
+  },
+  // Its writing direction follows the app language, so the Latin name starts on the right in Hebrew and Arabic.
+  artTitle: {
+    color: HOME_INK.ivory,
+    fontSize: 30,
+    lineHeight: 36,
+    letterSpacing: -0.6,
+    ...interFont('bold'),
+  },
+  destinations: {
+    gap: 10,
+    marginTop: 4,
+  },
   tiles: {
     flexDirection: 'row',
     gap: 10,
-    marginTop: 4,
   },
   // Narrow phones: one tile per row, so neither label wraps into a column.
   tilesStacked: {
     flexDirection: 'column',
-  },
-  card: {
-    flexGrow: 1,
-    flexBasis: 0,
-    minHeight: 72,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    backgroundColor: GAME_PALETTE.surface,
-    borderWidth: 1,
-    borderColor: HOME_INK.hairline,
-    ...continuousRadius(14),
-  },
-  cardCompact: {
-    minHeight: 48,
-    paddingVertical: 6,
-  },
-  cardInline: {
-    flexGrow: 0,
-    flexBasis: 'auto',
-    minHeight: 44,
-    paddingVertical: 6,
-  },
-  cardDense: {
-    minHeight: 56,
-    paddingVertical: 8,
-  },
-  cardHover: {
-    borderColor: 'rgba(236, 228, 212, 0.3)',
-  },
-  cardProminent: {
-    flex: 0,
-    backgroundColor: HOME_INK.ivory,
-    borderColor: HOME_INK.ivory,
-  },
-  cardProminentHover: {
-    backgroundColor: '#F6F0E4',
-  },
-  pressed: {
-    opacity: 0.85,
-  },
-  cardCopy: {
-    flex: 1,
-    gap: 2,
-  },
-  cardLabel: {
-    color: HOME_INK.ivory,
-    fontSize: 15,
-    ...interFont('semibold'),
-  },
-  cardLabelProminent: {
-    color: GAME_PALETTE.bg,
-    fontSize: 17,
-  },
-  cardSub: {
-    color: HOME_INK.muted,
-    fontSize: 12.5,
-    lineHeight: 17,
-    ...interFont('regular'),
-  },
-  cardSubProminent: {
-    color: '#5A4636',
   },
 });

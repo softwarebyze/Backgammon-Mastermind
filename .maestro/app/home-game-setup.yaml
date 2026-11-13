@@ -9,6 +9,22 @@ tags:
     env:
       CLEAR_STATE: 'true'
       HOME_TEXT: Play against the computer
+# First launch: the new-game panel leads, with the computer's levels explained;
+# Learn and the other destinations follow it.
+- assertVisible:
+    id: home-new-game
+- takeScreenshot: home-first-launch
+- scrollUntilVisible:
+    element:
+      id: learn-button
+    direction: DOWN
+# Short screens drop the card's second line, so check the card itself.
+- assertVisible:
+    id: learn-button
+- scrollUntilVisible:
+    element:
+      id: home-opponent-vs-human
+    direction: UP
 - tapOn:
     id: home-opponent-vs-human
 - tapOn:

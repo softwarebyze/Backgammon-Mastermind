@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { Alert } from 'react-native';
 import { useGame } from '@/features/game/use-game';
+import { useLearnProgress } from '@/features/learn/use-learn-progress';
 
 import { patchGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { createMatchGame } from '@/lib/game/match';
@@ -29,9 +30,13 @@ jest.mock('@/lib/game/persistence', () => ({
   hasQuarantinedSession: jest.fn().mockReturnValue(false),
 }));
 jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn() }));
+jest.mock('@/features/learn/use-learn-progress', () => ({ useLearnProgress: jest.fn() }));
 
 beforeEach(() => {
   jest.clearAllMocks();
+  jest.mocked(useLearnProgress).mockReturnValue({
+    progress: { completedLessons: [], quizPassed: false, hasStarted: false },
+  } as unknown as ReturnType<typeof useLearnProgress>);
   jest.mocked(useGame).mockReturnValue({
     state: null,
     startGame: jest.fn(),
@@ -233,4 +238,47 @@ it('starts a money game with its cube and no match target', () => {
   fireEvent.press(screen.getByTestId('home-format-single'));
   fireEvent.press(screen.getByTestId('home-start-game'));
   expect(useGame().startFromPosition).toHaveBeenCalledWith(createMatchGame(0, 'vs-computer', true));
+});
+
+it('opens a tall screen on the board picture and the name', () => {
+  const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 390, height: 844, scale: 3, fontScale: 1 });
+  render(<HomeScreen />);
+  expect(screen.getByTestId('home-board-art', { includeHiddenElements: true })).toBeTruthy();
+  expect(screen.getByRole('header', { name: 'Backgammon Mastermind' })).toBeTruthy();
+  // The name stands alone: no tagline under it.
+  expect(screen.queryByText('Master the board — one move at a time')).toBeNull();
+  dims.mockRestore();
+});
+
+it('leaves the picture out when the screen is short, so Start stays in reach', () => {
+  const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 375, height: 667, scale: 2, fontScale: 1 });
+  render(<HomeScreen />);
+  expect(screen.queryByTestId('home-board-art', { includeHiddenElements: true })).toBeNull();
+  expect(screen.getByRole('header', { name: 'Backgammon Mastermind' })).toBeTruthy();
+  expect(screen.getByTestId('home-start-game')).toBeTruthy();
+  dims.mockRestore();
+});
+
+it('adds no second line that only restates a button', () => {
+  jest.mocked(useGame).mockReturnValue({ ...useGame(), state: createMatchGame(3) });
+  const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 390, height: 844, scale: 3, fontScale: 1 });
+  render(<HomeScreen />);
+  expect(screen.getByText('Resume game')).toBeTruthy();
+  expect(screen.queryByText('Continue where you left off')).toBeNull();
+  expect(screen.queryByText('Interactive lessons for beginners')).toBeNull();
+  expect(screen.queryByText(/Easy makes the mistakes/)).toBeNull();
+  dims.mockRestore();
+});
+
+it('shows course progress on the Learn card once a lesson is done', () => {
+  const dims = jest.spyOn(require('react-native'), 'useWindowDimensions').mockReturnValue({ width: 390, height: 844, scale: 3, fontScale: 1 });
+  const view = render(<HomeScreen />);
+  expect(screen.queryByTestId('learn-button-progress')).toBeNull();
+  view.unmount();
+  const progress = { completedLessons: ['goal-board', 'direction-setup'], quizPassed: false, hasStarted: true };
+  jest.mocked(useLearnProgress).mockReturnValue({ progress } as unknown as ReturnType<typeof useLearnProgress>);
+  render(<HomeScreen />);
+  expect(screen.getByText('2 of 10 lessons done')).toBeTruthy();
+  expect(screen.getByTestId('learn-button-progress')).toBeTruthy();
+  dims.mockRestore();
 });
