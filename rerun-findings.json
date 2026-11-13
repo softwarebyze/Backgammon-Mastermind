@@ -1,0 +1,27 @@
+{
+  "pass": [
+    {
+      "id": "animation.flight",
+      "m": "checker-flight visible at {\"x\":340.0816650390625,\"y\":542.1754150390625,\"width\":25.66375732421875,\"height\":25.66375732421875}"
+    },
+    {
+      "id": "animation.land",
+      "m": "white 7→8; top slab at y=407, thicknesses stacked to 532"
+    },
+    {
+      "id": "rtl.dir",
+      "m": "dir=rtl lang=he (settings dir=rtl); white=0 black=0"
+    }
+  ],
+  "fail": [
+    {
+      "id": "legalTarget",
+      "m": "no green tray border. white=8 off=7 OFF,8 OFF body=      Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 6 64 12 11 10 9 8 7 6 5 4 3 2 1 6 1 White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 8 OFF  Start 6·1 Live"
+    },
+    {
+      "id": "rtl.counts",
+      "m": "white=0 black=0"
+    }
+  ],
+  "notes": []
+}

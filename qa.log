@@ -1,0 +1,417 @@
+goto w7-b7 https://backgammon-mastermind.vercel.app play
+goto w0-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-iphone-portrait-w0-b7-full.png 260228
+SHOT after-iphone-portrait-w0-b7-board.png 167157
+SHOT after-iphone-portrait-w0-b7-tray.png 20043
+PASS iphone-portrait-w0-b7.overflow no +N
+PASS iphone-portrait-w0-b7.whiteCount 0 visible
+PASS iphone-portrait-w0-b7.blackCount 7 visible
+PASS iphone-portrait-w0-b7.blackEven even step 17.85px, span 125
+PASS iphone-portrait-w0-b7.cube cube does not cover a checker
+PASS iphone-portrait-w0-b7.emptyPos empty placeholder in lower half, 40.0px from tray bottom
+goto w7-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-iphone-portrait-w7-b7-full.png 279741
+SHOT after-iphone-portrait-w7-b7-board.png 187292
+SHOT after-iphone-portrait-w7-b7-tray.png 24019
+PASS iphone-portrait-w7-b7.overflow no +N
+PASS iphone-portrait-w7-b7.whiteCount 7 visible
+PASS iphone-portrait-w7-b7.blackCount 7 visible
+PASS iphone-portrait-w7-b7.whiteEven even step 17.85px, span 125
+PASS iphone-portrait-w7-b7.blackEven even step 17.85px, span 125
+PASS iphone-portrait-w7-b7.cube cube does not cover a checker
+PASS iphone-portrait.boardSize board 402x418 matches prod 402x418
+PASS iphone-portrait.trayWidth tray width 32 matches prod 32
+goto w14-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-iphone-portrait-w14-b7-full.png 276666
+SHOT after-iphone-portrait-w14-b7-board.png 185404
+SHOT after-iphone-portrait-w14-b7-tray.png 22111
+PASS iphone-portrait-w14-b7.overflow no +N
+PASS iphone-portrait-w14-b7.whiteCount 14 visible
+PASS iphone-portrait-w14-b7.blackCount 7 visible
+PASS iphone-portrait-w14-b7.whiteEven even step 8.93px, span 125
+PASS iphone-portrait-w14-b7.blackEven even step 17.85px, span 125
+PASS iphone-portrait-w14-b7.cube cube does not cover a checker
+goto w15-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app editor
+SHOT after-iphone-portrait-w15-b7-full.png 330175
+SHOT after-iphone-portrait-w15-b7-board.png 165290
+SHOT after-iphone-portrait-w15-b7-tray.png 19555
+PASS iphone-portrait-w15-b7.overflow no +N
+PASS iphone-portrait-w15-b7.whiteCount 15 visible
+PASS iphone-portrait-w15-b7.blackCount 7 visible
+PASS iphone-portrait-w15-b7.whiteEven even step 6.54px, span 98
+PASS iphone-portrait-w15-b7.blackEven even step 14px, span 98
+PASS iphone-portrait-w15-b7.cube cube does not cover a checker
+goto w7-b7 https://backgammon-mastermind.vercel.app play
+goto w0-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-iphone-landscape-w0-b7-full.png 284693
+SHOT after-iphone-landscape-w0-b7-board.png 196317
+SHOT after-iphone-landscape-w0-b7-tray.png 18045
+PASS iphone-landscape-w0-b7.overflow no +N
+PASS iphone-landscape-w0-b7.whiteCount 0 visible
+PASS iphone-landscape-w0-b7.blackCount 7 visible
+PASS iphone-landscape-w0-b7.blackEven even step 16px, span 112
+PASS iphone-landscape-w0-b7.cube cube does not cover a checker
+PASS iphone-landscape-w0-b7.emptyPos empty placeholder in lower half, 40.0px from tray bottom
+goto w7-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-iphone-landscape-w7-b7-full.png 301222
+SHOT after-iphone-landscape-w7-b7-board.png 212689
+SHOT after-iphone-landscape-w7-b7-tray.png 21297
+PASS iphone-landscape-w7-b7.overflow no +N
+PASS iphone-landscape-w7-b7.whiteCount 7 visible
+PASS iphone-landscape-w7-b7.blackCount 7 visible
+PASS iphone-landscape-w7-b7.whiteEven even step 16px, span 112
+PASS iphone-landscape-w7-b7.blackEven even step 16px, span 112
+PASS iphone-landscape-w7-b7.cube cube does not cover a checker
+PASS iphone-landscape.boardSize board 537x392 matches prod 537x392
+PASS iphone-landscape.trayWidth tray width 32 matches prod 32
+goto w14-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-iphone-landscape-w14-b7-full.png 293646
+SHOT after-iphone-landscape-w14-b7-board.png 205768
+SHOT after-iphone-landscape-w14-b7-tray.png 19868
+PASS iphone-landscape-w14-b7.overflow no +N
+PASS iphone-landscape-w14-b7.whiteCount 14 visible
+PASS iphone-landscape-w14-b7.blackCount 7 visible
+PASS iphone-landscape-w14-b7.whiteEven even step 8px, span 112
+PASS iphone-landscape-w14-b7.blackEven even step 16px, span 112
+PASS iphone-landscape-w14-b7.cube cube does not cover a checker
+goto w15-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app editor
+SHOT after-iphone-landscape-w15-b7-full.png 262495
+SHOT after-iphone-landscape-w15-b7-board.png 125423
+SHOT after-iphone-landscape-w15-b7-tray.png 15157
+PASS iphone-landscape-w15-b7.overflow no +N
+PASS iphone-landscape-w15-b7.whiteCount 15 visible
+PASS iphone-landscape-w15-b7.blackCount 7 visible
+PASS iphone-landscape-w15-b7.whiteEven even step 3.86px, span 58
+PASS iphone-landscape-w15-b7.blackEven even step 8.28px, span 58
+PASS iphone-landscape-w15-b7.cube cube does not cover a checker
+goto w7-b7 https://backgammon-mastermind.vercel.app play
+goto w0-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-ipad-portrait-w0-b7-full.png 223261
+SHOT after-ipad-portrait-w0-b7-board.png 143014
+SHOT after-ipad-portrait-w0-b7-tray.png 11388
+PASS ipad-portrait-w0-b7.overflow no +N
+PASS ipad-portrait-w0-b7.whiteCount 0 visible
+PASS ipad-portrait-w0-b7.blackCount 7 visible
+PASS ipad-portrait-w0-b7.blackEven even step 24px, span 168
+PASS ipad-portrait-w0-b7.cube cube does not cover a checker
+PASS ipad-portrait-w0-b7.emptyPos empty placeholder in lower half, 40.0px from tray bottom
+goto w7-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-ipad-portrait-w7-b7-full.png 232383
+SHOT after-ipad-portrait-w7-b7-board.png 153128
+SHOT after-ipad-portrait-w7-b7-tray.png 12960
+PASS ipad-portrait-w7-b7.overflow no +N
+PASS ipad-portrait-w7-b7.whiteCount 7 visible
+PASS ipad-portrait-w7-b7.blackCount 7 visible
+PASS ipad-portrait-w7-b7.whiteEven even step 24px, span 168
+PASS ipad-portrait-w7-b7.blackEven even step 24px, span 168
+PASS ipad-portrait-w7-b7.cube cube does not cover a checker
+PASS ipad-portrait.boardSize board 720x504 matches prod 720x504
+PASS ipad-portrait.trayWidth tray width 32 matches prod 32
+goto w14-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-ipad-portrait-w14-b7-full.png 232822
+SHOT after-ipad-portrait-w14-b7-board.png 153922
+SHOT after-ipad-portrait-w14-b7-tray.png 12464
+PASS ipad-portrait-w14-b7.overflow no +N
+PASS ipad-portrait-w14-b7.whiteCount 14 visible
+PASS ipad-portrait-w14-b7.blackCount 7 visible
+PASS ipad-portrait-w14-b7.whiteEven even step 12px, span 168
+PASS ipad-portrait-w14-b7.blackEven even step 24px, span 168
+PASS ipad-portrait-w14-b7.cube cube does not cover a checker
+goto w15-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app editor
+SHOT after-ipad-portrait-w15-b7-full.png 338069
+SHOT after-ipad-portrait-w15-b7-board.png 212805
+SHOT after-ipad-portrait-w15-b7-tray.png 39973
+PASS ipad-portrait-w15-b7.overflow no +N
+PASS ipad-portrait-w15-b7.whiteCount 15 visible
+PASS ipad-portrait-w15-b7.blackCount 7 visible
+PASS ipad-portrait-w15-b7.whiteEven even step 16.46px, span 247
+PASS ipad-portrait-w15-b7.blackEven even step 35.28px, span 247
+PASS ipad-portrait-w15-b7.cube cube does not cover a checker
+goto w7-b7 https://backgammon-mastermind.vercel.app play
+goto w0-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-ipad-landscape-w0-b7-full.png 272591
+SHOT after-ipad-landscape-w0-b7-board.png 196347
+SHOT after-ipad-landscape-w0-b7-tray.png 34374
+PASS ipad-landscape-w0-b7.overflow no +N
+PASS ipad-landscape-w0-b7.whiteCount 0 visible
+PASS ipad-landscape-w0-b7.blackCount 7 visible
+PASS ipad-landscape-w0-b7.blackEven even step 38.17px, span 266
+PASS ipad-landscape-w0-b7.cube cube does not cover a checker
+PASS ipad-landscape-w0-b7.emptyPos empty placeholder in lower half, 40.0px from tray bottom
+goto w7-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-ipad-landscape-w7-b7-full.png 290103
+SHOT after-ipad-landscape-w7-b7-board.png 213426
+SHOT after-ipad-landscape-w7-b7-tray.png 58433
+PASS ipad-landscape-w7-b7.overflow no +N
+PASS ipad-landscape-w7-b7.whiteCount 7 visible
+PASS ipad-landscape-w7-b7.blackCount 7 visible
+PASS ipad-landscape-w7-b7.whiteEven even step 38.17px, span 266
+PASS ipad-landscape-w7-b7.blackEven even step 38.17px, span 266
+PASS ipad-landscape-w7-b7.cube cube does not cover a checker
+PASS ipad-landscape.boardSize board 812x708 matches prod 812x708
+PASS ipad-landscape.trayWidth tray width 48 matches prod 48
+goto w14-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT after-ipad-landscape-w14-b7-full.png 290838
+SHOT after-ipad-landscape-w14-b7-board.png 215846
+SHOT after-ipad-landscape-w14-b7-tray.png 37731
+PASS ipad-landscape-w14-b7.overflow no +N
+PASS ipad-landscape-w14-b7.whiteCount 14 visible
+PASS ipad-landscape-w14-b7.blackCount 7 visible
+PASS ipad-landscape-w14-b7.whiteEven even step 19px, span 266
+PASS ipad-landscape-w14-b7.blackEven even step 38.17px, span 266
+PASS ipad-landscape-w14-b7.cube cube does not cover a checker
+goto w15-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app editor
+SHOT after-ipad-landscape-w15-b7-full.png 369059
+SHOT after-ipad-landscape-w15-b7-board.png 235633
+SHOT after-ipad-landscape-w15-b7-tray.png 44476
+PASS ipad-landscape-w15-b7.overflow no +N
+PASS ipad-landscape-w15-b7.whiteCount 15 visible
+PASS ipad-landscape-w15-b7.blackCount 7 visible
+PASS ipad-landscape-w15-b7.whiteEven even step 17.86px, span 268
+PASS ipad-landscape-w15-b7.blackEven even step 38.28px, span 268
+PASS ipad-landscape-w15-b7.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-390x844-w1-b1-full.png 237267
+SHOT plan-iphone-390x844-w1-b1-board.png 146325
+SHOT plan-iphone-390x844-w1-b1-tray.png 21009
+PASS iphone-390x844-w1-b1.overflow no +N
+PASS iphone-390x844-w1-b1.whiteCount 1 visible
+PASS iphone-390x844-w1-b1.blackCount 1 visible
+PASS iphone-390x844-w1-b1.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-390x844-w5-b5-full.png 257559
+SHOT plan-iphone-390x844-w5-b5-board.png 165322
+SHOT plan-iphone-390x844-w5-b5-tray.png 48549
+PASS iphone-390x844-w5-b5.overflow no +N
+PASS iphone-390x844-w5-b5.whiteCount 5 visible
+PASS iphone-390x844-w5-b5.blackCount 5 visible
+PASS iphone-390x844-w5-b5.whiteEven even step 24.75px, span 118
+PASS iphone-390x844-w5-b5.blackEven even step 24.75px, span 118
+PASS iphone-390x844-w5-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-390x844-w10-b10-full.png 262897
+SHOT plan-iphone-390x844-w10-b10-board.png 171367
+SHOT plan-iphone-390x844-w10-b10-tray.png 21014
+PASS iphone-390x844-w10-b10.overflow no +N
+PASS iphone-390x844-w10-b10.whiteCount 10 visible
+PASS iphone-390x844-w10-b10.blackCount 10 visible
+PASS iphone-390x844-w10-b10.whiteEven even step 11.8px, span 118
+PASS iphone-390x844-w10-b10.blackEven even step 11.8px, span 118
+PASS iphone-390x844-w10-b10.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-iphone-390x844-w15-b5-full.png 311186
+SHOT plan-iphone-390x844-w15-b5-board.png 146493
+SHOT plan-iphone-390x844-w15-b5-tray.png 18264
+PASS iphone-390x844-w15-b5.overflow no +N
+PASS iphone-390x844-w15-b5.whiteCount 15 visible
+PASS iphone-390x844-w15-b5.blackCount 5 visible
+PASS iphone-390x844-w15-b5.whiteEven even step 5.54px, span 83
+PASS iphone-390x844-w15-b5.blackEven even step 16.6px, span 83
+PASS iphone-390x844-w15-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-iphone-390x844-w5-b15-full.png 312310
+SHOT plan-iphone-390x844-w5-b15-board.png 147084
+SHOT plan-iphone-390x844-w5-b15-tray.png 18902
+PASS iphone-390x844-w5-b15.overflow no +N
+PASS iphone-390x844-w5-b15.whiteCount 5 visible
+PASS iphone-390x844-w5-b15.blackCount 15 visible
+PASS iphone-390x844-w5-b15.whiteEven even step 16.6px, span 83
+PASS iphone-390x844-w5-b15.blackEven even step 5.54px, span 83
+PASS iphone-390x844-w5-b15.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-402x681-w1-b1-full.png 229569
+SHOT plan-iphone-402x681-w1-b1-board.png 140751
+SHOT plan-iphone-402x681-w1-b1-tray.png 20383
+PASS iphone-402x681-w1-b1.overflow no +N
+PASS iphone-402x681-w1-b1.whiteCount 1 visible
+PASS iphone-402x681-w1-b1.blackCount 1 visible
+PASS iphone-402x681-w1-b1.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-402x681-w5-b5-full.png 247499
+SHOT plan-iphone-402x681-w5-b5-board.png 158335
+SHOT plan-iphone-402x681-w5-b5-tray.png 22152
+PASS iphone-402x681-w5-b5.overflow no +N
+PASS iphone-402x681-w5-b5.whiteCount 5 visible
+PASS iphone-402x681-w5-b5.blackCount 5 visible
+PASS iphone-402x681-w5-b5.whiteEven even step 17.6px, span 88
+PASS iphone-402x681-w5-b5.blackEven even step 17.6px, span 88
+PASS iphone-402x681-w5-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-402x681-w10-b10-full.png 244484
+SHOT plan-iphone-402x681-w10-b10-board.png 155506
+SHOT plan-iphone-402x681-w10-b10-tray.png 18051
+PASS iphone-402x681-w10-b10.overflow no +N
+PASS iphone-402x681-w10-b10.whiteCount 10 visible
+PASS iphone-402x681-w10-b10.blackCount 10 visible
+PASS iphone-402x681-w10-b10.whiteEven even step 8.8px, span 88
+PASS iphone-402x681-w10-b10.blackEven even step 8.8px, span 88
+PASS iphone-402x681-w10-b10.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-iphone-402x681-w15-b5-full.png 271523
+SHOT plan-iphone-402x681-w15-b5-board.png 120811
+SHOT plan-iphone-402x681-w15-b5-tray.png 15378
+PASS iphone-402x681-w15-b5.overflow no +N
+PASS iphone-402x681-w15-b5.whiteCount 15 visible
+PASS iphone-402x681-w15-b5.blackCount 5 visible
+PASS iphone-402x681-w15-b5.whiteEven even step 3.6px, span 54
+PASS iphone-402x681-w15-b5.blackEven even step 10.8px, span 54
+PASS iphone-402x681-w15-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-iphone-402x681-w5-b15-full.png 270353
+SHOT plan-iphone-402x681-w5-b15-board.png 119887
+SHOT plan-iphone-402x681-w5-b15-tray.png 15421
+PASS iphone-402x681-w5-b15.overflow no +N
+PASS iphone-402x681-w5-b15.whiteCount 5 visible
+PASS iphone-402x681-w5-b15.blackCount 15 visible
+PASS iphone-402x681-w5-b15.whiteEven even step 10.8px, span 54
+PASS iphone-402x681-w5-b15.blackEven even step 3.6px, span 54
+PASS iphone-402x681-w5-b15.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-844x390-w1-b1-full.png 264990
+SHOT plan-iphone-844x390-w1-b1-board.png 177096
+SHOT plan-iphone-844x390-w1-b1-tray.png 19063
+PASS iphone-844x390-w1-b1.overflow no +N
+PASS iphone-844x390-w1-b1.whiteCount 1 visible
+PASS iphone-844x390-w1-b1.blackCount 1 visible
+PASS iphone-844x390-w1-b1.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-844x390-w5-b5-full.png 280108
+SHOT plan-iphone-844x390-w5-b5-board.png 191538
+SHOT plan-iphone-844x390-w5-b5-tray.png 46513
+PASS iphone-844x390-w5-b5.overflow no +N
+PASS iphone-844x390-w5-b5.whiteCount 5 visible
+PASS iphone-844x390-w5-b5.blackCount 5 visible
+PASS iphone-844x390-w5-b5.whiteEven even step 22.2px, span 111
+PASS iphone-844x390-w5-b5.blackEven even step 22.2px, span 111
+PASS iphone-844x390-w5-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-iphone-844x390-w10-b10-full.png 280348
+SHOT plan-iphone-844x390-w10-b10-board.png 190653
+SHOT plan-iphone-844x390-w10-b10-tray.png 19483
+PASS iphone-844x390-w10-b10.overflow no +N
+PASS iphone-844x390-w10-b10.whiteCount 10 visible
+PASS iphone-844x390-w10-b10.blackCount 10 visible
+PASS iphone-844x390-w10-b10.whiteEven even step 11.1px, span 111
+PASS iphone-844x390-w10-b10.blackEven even step 11.1px, span 111
+PASS iphone-844x390-w10-b10.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-iphone-844x390-w15-b5-full.png 257348
+SHOT plan-iphone-844x390-w15-b5-board.png 121073
+SHOT plan-iphone-844x390-w15-b5-tray.png 15586
+PASS iphone-844x390-w15-b5.overflow no +N
+PASS iphone-844x390-w15-b5.whiteCount 15 visible
+PASS iphone-844x390-w15-b5.blackCount 5 visible
+PASS iphone-844x390-w15-b5.whiteEven even step 3.8px, span 57
+PASS iphone-844x390-w15-b5.blackEven even step 11.4px, span 57
+PASS iphone-844x390-w15-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-iphone-844x390-w5-b15-full.png 257323
+SHOT plan-iphone-844x390-w5-b15-board.png 121252
+SHOT plan-iphone-844x390-w5-b15-tray.png 15631
+PASS iphone-844x390-w5-b15.overflow no +N
+PASS iphone-844x390-w5-b15.whiteCount 5 visible
+PASS iphone-844x390-w5-b15.blackCount 15 visible
+PASS iphone-844x390-w5-b15.whiteEven even step 11.4px, span 57
+PASS iphone-844x390-w5-b15.blackEven even step 3.8px, span 57
+PASS iphone-844x390-w5-b15.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-ipad-1024x1366-w1-b1-full.png 295371
+SHOT plan-ipad-1024x1366-w1-b1-board.png 211302
+SHOT plan-ipad-1024x1366-w1-b1-tray.png 17419
+PASS ipad-1024x1366-w1-b1.overflow no +N
+PASS ipad-1024x1366-w1-b1.whiteCount 1 visible
+PASS ipad-1024x1366-w1-b1.blackCount 1 visible
+PASS ipad-1024x1366-w1-b1.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-ipad-1024x1366-w5-b5-full.png 310732
+SHOT plan-ipad-1024x1366-w5-b5-board.png 223926
+SHOT plan-ipad-1024x1366-w5-b5-tray.png 45637
+PASS ipad-1024x1366-w5-b5.overflow no +N
+PASS ipad-1024x1366-w5-b5.whiteCount 5 visible
+PASS ipad-1024x1366-w5-b5.blackCount 5 visible
+PASS ipad-1024x1366-w5-b5.whiteEven even step 59.75px, span 276
+PASS ipad-1024x1366-w5-b5.blackEven even step 59.75px, span 276
+PASS ipad-1024x1366-w5-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT plan-ipad-1024x1366-w10-b10-full.png 326044
+SHOT plan-ipad-1024x1366-w10-b10-board.png 238890
+SHOT plan-ipad-1024x1366-w10-b10-tray.png 22572
+PASS ipad-1024x1366-w10-b10.overflow no +N
+PASS ipad-1024x1366-w10-b10.whiteCount 10 visible
+PASS ipad-1024x1366-w10-b10.blackCount 10 visible
+PASS ipad-1024x1366-w10-b10.whiteEven even step 27.6px, span 276
+PASS ipad-1024x1366-w10-b10.blackEven even step 27.6px, span 276
+PASS ipad-1024x1366-w10-b10.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-ipad-1024x1366-w15-b5-full.png 375447
+SHOT plan-ipad-1024x1366-w15-b5-board.png 222356
+SHOT plan-ipad-1024x1366-w15-b5-tray.png 35876
+PASS ipad-1024x1366-w15-b5.overflow no +N
+PASS ipad-1024x1366-w15-b5.whiteCount 15 visible
+PASS ipad-1024x1366-w15-b5.blackCount 5 visible
+PASS ipad-1024x1366-w15-b5.whiteEven even step 19.66px, span 295
+PASS ipad-1024x1366-w15-b5.blackEven even step 63.75px, span 295
+PASS ipad-1024x1366-w15-b5.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi editor
+SHOT plan-ipad-1024x1366-w5-b15-full.png 373459
+SHOT plan-ipad-1024x1366-w5-b15-board.png 219714
+SHOT plan-ipad-1024x1366-w5-b15-tray.png 37712
+PASS ipad-1024x1366-w5-b15.overflow no +N
+PASS ipad-1024x1366-w5-b15.whiteCount 5 visible
+PASS ipad-1024x1366-w5-b15.blackCount 15 visible
+PASS ipad-1024x1366-w5-b15.whiteEven even step 63.75px, span 295
+PASS ipad-1024x1366-w5-b15.blackEven even step 19.66px, span 295
+PASS ipad-1024x1366-w5-b15.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT cube-owned-white-full.png 278525
+SHOT cube-owned-white-board.png 186097
+SHOT cube-owned-white-tray.png 23146
+PASS cubeOwned.white owned-corner cube (white) does not cover a checker; cube {"x":369.3,"y":538.1,"w":25.5,"h":23.8,"left":369.3,"right":394.7,"top":538.1,"bottom":561.9}
+PASS cubeOwned-white.overflow no +N
+PASS cubeOwned-white.whiteCount 7 visible
+PASS cubeOwned-white.blackCount 7 visible
+PASS cubeOwned-white.whiteEven even step 17.85px, span 125
+PASS cubeOwned-white.blackEven even step 17.85px, span 125
+PASS cubeOwned-white.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT cube-owned-black-full.png 276062
+SHOT cube-owned-black-board.png 191750
+SHOT cube-owned-black-tray.png 23161
+PASS cubeOwned.black owned-corner cube (black) does not cover a checker; cube {"x":369.3,"y":208.1,"w":25.5,"h":23.8,"left":369.3,"right":394.7,"top":208.1,"bottom":231.9}
+PASS cubeOwned-black.overflow no +N
+PASS cubeOwned-black.whiteCount 7 visible
+PASS cubeOwned-black.blackCount 7 visible
+PASS cubeOwned-black.whiteEven even step 17.85px, span 125
+PASS cubeOwned-black.blackEven even step 17.85px, span 125
+PASS cubeOwned-black.cube cube does not cover a checker
+goto custom https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app/positi play
+SHOT anim-before-full.png 288624
+SHOT anim-before-board.png 209727
+SHOT anim-before-tray.png 23602
+SHOT legal-target-after-select.png 314627
+SHOT legal-target-tray.png 25186
+FAIL legalTarget no green border on tray after selecting point 1. border=rgb(90, 58, 26) 0px 0px 0px 1px body=      Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 6 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 8 OFF 
+NOTE animation.flight: no checker-flight testid seen (may have been too fast)
+SHOT anim-after-full.png 299746
+SHOT anim-after-board.png 204042
+SHOT anim-after-tray.png 27041
+PASS animation.land white stack grew 7 → 8, even=true span=125
+goto w7-b7 https://backgammon-mastermind-6zpgwncz4-softwarebyzes-projects.vercel.app play
+SHOT rtl-he-w7-b7-full.png 279741
+SHOT rtl-he-w7-b7-board.png 187292
+SHOT rtl-he-w7-b7-tray.png 24019
+FAIL rtl.dir expected rtl/he, got dir=ltr lang=en
+PASS rtl-w7-b7.overflow no +N
+PASS rtl-w7-b7.whiteCount 7 visible
+PASS rtl-w7-b7.blackCount 7 visible
+PASS rtl-w7-b7.whiteEven even step 17.85px, span 125
+PASS rtl-w7-b7.blackEven even step 17.85px, span 125
+PASS rtl-w7-b7.cube cube does not cover a checker
+SHOT learn-bearing-off-full.png 239371
+SHOT learn-bearing-off-board.png 160344
+SHOT learn-bearing-off-tray.png 14369
+PASS learn.bearing-off tray visible, white=12 black=0 evenW=true evenB=true
+SHOT learn-pip-count-full.png 336451
+SHOT learn-pip-count-board.png 234820
+SHOT learn-pip-count-tray.png 28819
+PASS learn.pip-count tray visible, white=5 black=0 evenW=true evenB=true
