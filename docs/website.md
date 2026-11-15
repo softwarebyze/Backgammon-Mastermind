@@ -41,13 +41,14 @@ If you add `www.yourdomain.com` → Vercel project, deep routes still work via t
 
 ## Links to the apps (#350)
 
-Technical association only: the site and the production apps vouch for each other, so links to the site open in the installed app. Nothing on the site itself changes.
+The site and the production apps vouch for each other, so links to the site open in the installed app. On iPhone Safari the site also shows Apple's Smart App Banner.
 
 | Piece | Where | What it does |
 |------|-------|--------------|
 | `/.well-known/apple-app-site-association` | `public/.well-known/` | iOS universal links for `75M38Z9JBF.com.backgammonmastermind` on `/`, `/game*`, `/learn*`, `/settings` |
 | `/.well-known/assetlinks.json` | `public/.well-known/` | Android App Links for `com.backgammonmastermind` |
 | `associatedDomains` / `intentFilters` (`autoVerify`) | `app.config.ts` | Production app claims `backgammon-mastermind.vercel.app` (preview/dev builds don't) |
+| `apple-itunes-app` meta | `public/index.html` (+ `src/app/+html.tsx`) | Safari Smart App Banner; `app-argument` is the current URL so "Open" lands on the same route |
 
 `vercel.json` serves both files with `Content-Type: application/json`, and the SPA rewrite skips `/.well-known/`.
 

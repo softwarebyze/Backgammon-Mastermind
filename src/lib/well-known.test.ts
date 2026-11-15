@@ -28,3 +28,10 @@ describe('site association files (#350)', () => {
     expect(spa.test('/learn')).toBe(true);
   });
 });
+
+describe('safari Smart App Banner (#350)', () => {
+  const meta = /<meta name="apple-itunes-app" content="app-id=6792138473, app-argument=https:\/\/backgammon-mastermind\.vercel\.app\/"/;
+  it.each(['public/index.html', 'src/app/+html.tsx'])('%s carries the production App Store id', (path) => {
+    expect(readFileSync(join(root, path), 'utf8')).toMatch(meta);
+  });
+});
