@@ -2,7 +2,7 @@ import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
 import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
-import { Keyboard, ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import { Keyboard, Platform, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { cubeCornerClearance } from '@/features/game/bear-off-layout';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
@@ -179,9 +179,9 @@ function PositionWorkspace({ data }: { data?: string }) {
       <ScrollView
         testID="position-screen"
         style={styles.root}
-        // A stack drag must not scroll the page: with gesture-handler 3 the
-        // native scroll view otherwise wins the touch and cancels the edit.
-        scrollEnabled={!strokeActive}
+        // A stack drag must not scroll the page: on iOS with gesture-handler 3
+        // the native scroll view otherwise wins the touch and cancels the edit.
+        scrollEnabled={Platform.OS !== 'ios' || !strokeActive}
         onLayout={e => setFrameWidth(e.nativeEvent.layout.width)}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
