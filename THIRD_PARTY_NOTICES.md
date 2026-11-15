@@ -594,8 +594,8 @@ any of these packages included in the distributed application:
 - parse-bmfont-ascii@1.0.6
 - punycode@2.3.1
 - react-devtools-core@6.1.5
-- react-native-mmkv@4.1.1
-- react-native-nitro-modules@0.33.2
+- react-native-mmkv@4.3.2
+- react-native-nitro-modules@0.36.5
 - readable-web-to-node-stream@3.0.4
 - regenerate@1.4.2
 - regenerate-unicode-properties@10.2.2
@@ -17777,13 +17777,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### react-native-mmkv@4.1.1
+### react-native-mmkv@4.3.2
 
 Declared license: MIT
 
 No license text found; review upstream notices before distribution.
 
-### react-native-nitro-modules@0.33.2
+### react-native-nitro-modules@0.36.5
 
 Declared license: MIT
 
