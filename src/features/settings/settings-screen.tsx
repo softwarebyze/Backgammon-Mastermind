@@ -27,6 +27,7 @@ import { SettingsSupportSection } from './components/settings-support-section';
 import { DeveloperItem } from './developer-item';
 import { isDeveloperToolsEnabled } from './developer-tools-gate';
 
+/** Present app preferences and links to standalone tools using the current language and platform layout. */
 export function SettingsScreen() {
   const { insets } = useLayoutMetrics();
   const iconColor = colors.neutral[400];
@@ -60,6 +61,7 @@ export function SettingsScreen() {
           <SettingsContainer title="settings.general">
             <LanguageItem />
             <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
+            <SettingsItem text="timer.title" testID="settings-timer" onPress={() => router.push('/timer')} />
           </SettingsContainer>
 
           <GameSettingsSection showHints />
