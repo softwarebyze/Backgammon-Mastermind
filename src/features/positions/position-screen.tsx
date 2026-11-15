@@ -57,6 +57,7 @@ function PositionWorkspace({ data }: { data?: string }) {
   const { state, startFromPosition } = useGame();
   const [initial] = useState(() => initialPosition(data));
   const history = usePositionHistory(() => initial.position);
+  const [strokeActive, setStrokeActive] = useState(false);
   const { position } = history;
   const [error, setError] = useState(initial.error);
   const [location, setLocation] = useState<PositionLocation | null>(null);
@@ -132,8 +133,14 @@ function PositionWorkspace({ data }: { data?: string }) {
       onColor={setColor}
       onLocation={selectLocation}
       onChange={change}
-      onStrokeStart={history.strokeStart}
-      onStrokeEnd={history.strokeEnd}
+      onStrokeStart={() => {
+        setStrokeActive(true);
+        history.strokeStart();
+      }}
+      onStrokeEnd={() => {
+        setStrokeActive(false);
+        history.strokeEnd();
+      }}
       actions={setupActions}
       showToolbar={!layout.side}
       showStrips={!layout.side}
@@ -172,6 +179,9 @@ function PositionWorkspace({ data }: { data?: string }) {
       <ScrollView
         testID="position-screen"
         style={styles.root}
+        // A stack drag must not scroll the page: with gesture-handler 3 the
+        // native scroll view otherwise wins the touch and cancels the edit.
+        scrollEnabled={!strokeActive}
         onLayout={e => setFrameWidth(e.nativeEvent.layout.width)}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"

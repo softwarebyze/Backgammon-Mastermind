@@ -13,7 +13,8 @@ def hasBgsageVendor = vendorBoard.exists()
 
 android {
   namespace 'com.bgsage'
-  compileSdk 35
+  // Follow the app (expo-build-properties) so SDK bumps don't need a second edit.
+  compileSdk rootProject.ext.has('compileSdkVersion') ? rootProject.ext.compileSdkVersion : 37
 
   defaultConfig {
     minSdk 24
