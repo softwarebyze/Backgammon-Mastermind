@@ -119,6 +119,14 @@ for kind in iPhone iPad; do
   echo "::endgroup::"
   if [ "$rc" -ne 0 ]; then
     echo "::error::Maestro smoke failed on $name (exit $rc)"
+    # Surface the cause in the job log, not only the artifact.
+    echo "::group::$name failure diagnostics"
+    grep -o '<failure[^>]*>' "$out/report.xml" 2>/dev/null | head -20 || true
+    echo "--- app.log errors (last 80) ---"
+    grep -iE 'error|exception|fatal|crash|abort|unhandled|invariant|terminat' "$out/app.log" 2>/dev/null | tail -80 || true
+    echo "--- app.log tail (last 60) ---"
+    tail -60 "$out/app.log" 2>/dev/null || true
+    echo "::endgroup::"
     STATUS=1
   fi
 done
