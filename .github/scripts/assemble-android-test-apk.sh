@@ -21,6 +21,7 @@ if [[ -z "$posthog_key" && -f app/build.gradle ]]; then
     -e '/posthog\.gradle/d' \
     -e '/apply plugin: "com\.posthog\.android"/d' \
     -e '/@generated begin posthog-native-symbols/,/@generated end posthog-native-symbols/d' \
+    -e '/^posthog {/,/^}/d' \
     app/build.gradle
   rm -f app/build.gradle.bak
 fi

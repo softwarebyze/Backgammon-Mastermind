@@ -27,11 +27,15 @@ printf 'release bundle' > app/build/outputs/apk/release/app-release.apk
 
 describe('postHog uploads in the CI test APK', () => {
   const script = join(__dirname, '../../.github/scripts/assemble-android-test-apk.sh');
+  // Shape written by posthog-react-native's Expo plugin on prebuild.
   const appGradle = `apply plugin: "com.android.application"
 apply plugin: "com.posthog.android"
+// @generated begin posthog-native-symbols - posthog-react-native (DO NOT MODIFY)
 posthog {
     uploadNativeSymbols = true
+    includeNativeSymbolSources = true
 }
+// @generated end posthog-native-symbols
 apply from: new File(["node", "--print", "require('path').join('tooling', 'posthog.gradle')"].execute().text.trim())
 android {
 }
@@ -61,8 +65,13 @@ printf 'apk' > app/build/outputs/apk/release/app-release.apk
   it('drops the upload wiring when the key is empty in .env and the environment', () => {
     const gradle = build({}, 'POSTHOG_CLI_API_KEY=\nPOSTHOG_CLI_PROJECT_ID=1\n');
     expect(gradle).not.toContain('posthog.gradle');
-    expect(gradle).toContain('uploadNativeSymbols = false');
+    // R8 (on by default since SDK 58) makes the plugin upload ProGuard
+    // mappings, so the whole plugin and its config block must go.
+    expect(gradle).not.toContain('com.posthog.android');
+    expect(gradle).not.toContain('posthog {');
+    expect(gradle).not.toContain('uploadNativeSymbols');
     expect(gradle).toContain('apply plugin: "com.android.application"');
+    expect(gradle).toContain('android {');
   });
 
   it('keeps uploads when a key is set', () => {
