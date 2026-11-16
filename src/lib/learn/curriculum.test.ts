@@ -1,29 +1,14 @@
+import { classifyStrategy } from '@/features/game/strategy';
 import { createPositionState } from '@/lib/game/create-position';
 import { getLegalMoves } from '@/lib/game/moves';
 import en from '@/translations/en.json';
 
 import {
-  getNextLessonId,
   GRADUATION_QUIZ,
-  isLessonUnlocked,
-  LESSON_IDS,
   LESSONS,
 } from './curriculum';
 
 describe('curriculum', () => {
-  it('unlocks lessons in order', () => {
-    expect(isLessonUnlocked('goal-board', [])).toBe(true);
-    expect(isLessonUnlocked('direction-setup', [])).toBe(false);
-    expect(isLessonUnlocked('direction-setup', ['goal-board'])).toBe(true);
-  });
-
-  it('routes the last lesson to graduation', () => {
-    expect(getNextLessonId('goal-board')).toBe('direction-setup');
-    expect(getNextLessonId('bearing-off')).toBe('pip-count');
-    expect(getNextLessonId('pip-count')).toBe('strategies');
-    expect(getNextLessonId('strategies')).toBe('graduation');
-  });
-
   it('ensures every tryMove accepted path is legal from its position', () => {
     for (const lesson of LESSONS) {
       for (const step of lesson.steps) {
@@ -77,8 +62,65 @@ describe('curriculum', () => {
     expect(body.toLowerCase()).toContain('player\'s route');
     expect(body.toLowerCase()).not.toMatch(/dashed|cooler|opposite/);
   });
+});
 
-  it('keeps every lesson unlocked after the set is complete so hub rows stay replayable', () => {
-    expect(LESSON_IDS.every(id => isLessonUnlocked(id, LESSON_IDS))).toBe(true);
+describe('strategy lesson boards (#300)', () => {
+  const strategies = LESSONS.find(lesson => lesson.id === 'strategies')!;
+
+  it.each(strategies.steps.map(step => [step.id, step] as const))('%s has 15 checkers per side', (_id, step) => {
+    const state = createPositionState(step.position);
+    for (const player of ['white', 'black'] as const) {
+      const onBoard = state.points.reduce((sum, point) => sum + (point.player === player ? point.count : 0), 0);
+      expect(onBoard + state.bar[player] + state.borneOff[player]).toBe(15);
+    }
+  });
+});
+
+it('sums up every lesson on the graduation screen, pip count and plans included (#301)', () => {
+  const { graduation } = en.learn;
+  expect(graduation.body).toMatch(/pip count/);
+  expect(graduation.body).toMatch(/game plans/);
+  expect(graduation.recap_6).toMatch(/Pip count/);
+  expect(graduation.recap_7).toMatch(/plan/);
+});
+
+describe('game plan steps', () => {
+  const planSteps = LESSONS.flatMap(lesson => lesson.steps).filter(step => step.strategy);
+
+  // The five core plans. The game's early "Opening" chip means no plan has formed yet, so it is not taught as one.
+  it('cover the five core game plans', () => {
+    expect(new Set(planSteps.map(step => step.strategy))).toEqual(
+      new Set(['running', 'blitz', 'priming', 'holding', 'backgame']),
+    );
+  });
+
+  // The lesson and the in-game plan chip must agree, or the icon teaches the wrong thing.
+  it.each(planSteps.map(step => [step.id, step] as const))('%s shows the plan the game would name', (_id, step) => {
+    const state = createPositionState({ currentPlayer: 'white', ...step.position });
+    expect(classifyStrategy(state, 'white').key).toBe(step.strategy);
+  });
+});
+
+describe('cube, match and app lessons', () => {
+  const lesson = (id: string) => LESSONS.find(item => item.id === id)!;
+
+  it('teach the cube, match play with Crawford, and the app tools', () => {
+    expect(lesson('doubling-cube').steps.map(step => step.id)).toEqual(['cube-what', 'cube-offer', 'cube-take-pass', 'cube-own', 'cube-gammon']);
+    expect(lesson('match-play').steps.map(step => step.id)).toEqual(['match-what', 'match-crawford', 'match-dead-cube', 'match-start']);
+    expect(lesson('app-tools').steps.map(step => step.id)).toEqual(['tools-hint', 'tools-tutor', 'tools-history', 'tools-levels']);
+  });
+
+  it('show only cube values a game can reach, greyed only in the Crawford game', () => {
+    const cubeSteps = LESSONS.flatMap(item => item.steps).filter(step => step.cube);
+    for (const step of cubeSteps)
+      expect(Math.log2(step.cube!.value) % 1).toBe(0);
+    expect(cubeSteps.filter(step => step.cube!.unavailable).map(step => step.id)).toEqual(['match-crawford']);
+  });
+
+  it('quiz the cube and the Crawford rule, with one right answer each', () => {
+    for (const id of ['cube-pass', 'crawford']) {
+      const question = GRADUATION_QUIZ.find(item => item.id === id)!;
+      expect(question.options.filter(option => option.correct)).toHaveLength(1);
+    }
   });
 });

@@ -19,7 +19,7 @@ First-time store setup: [production-checklist.md](./production-checklist.md).
 | Submit to TestFlight (manual) | `EXPO_PUBLIC_APP_ENV=preview pnpm submit:preview:ios` |
 | Push App Store listing (preview app) | Actions → **EAS Metadata Push** (`preview`) or `pnpm metadata:push` — see [eas-metadata.md](./eas-metadata.md) |
 | Push App Store listing (production) | Actions → **EAS Metadata Push** (`production`) or `pnpm metadata:push:production` |
-| Marketing renders | **Automatic** on GitHub Release (`Remotion Render (Release Assets)`). Manual: `cd remotion && pnpm render:all` |
+| Marketing renders | **Automatic** on a version GitHub Release tagged `vX.Y.Z` (`Remotion Render (Release Assets)`). Manual: `cd remotion && pnpm render:all` |
 | Tag + GitHub Release | Actions → **New App Version** (patch) or manual tag |
 
 ---
@@ -36,6 +36,23 @@ Update **all** of these for each store release:
 | Git tag | `v1.1.0` (matches `package.json`) |
 
 Expo native build numbers are managed by EAS (`eas.json` `cli.appVersionSource: "remote"` + `autoIncrement`). They are **not** the same field as `package.json` / `apple.version`. Do not bump one to match the other. Details: [release-gates.md](./release-gates.md).
+
+---
+
+## Evidence and QA release tags
+
+Screenshot and QA evidence is sometimes published as a GitHub Release so stills can be attached and linked from a PR. Those releases are **not** app versions, and they must not use a `v*` tag.
+
+Real version tags look like `v1.2.0` or `v1.3.0-rc.1`. Publishing one still triggers [EAS QA Build](../.github/workflows/eas-build-qa.yml) (preview iOS auto-submits to TestFlight), [Remotion Render (Release Assets)](../.github/workflows/remotion-render-release.yml), and [New GitHub Release](../.github/workflows/new-github-release.yml) on the tag push, exactly as before. You can also run EAS QA Build and Remotion Render manually from the Actions tab.
+
+Evidence and QA tags must **not** start with `v`. Existing conventions:
+
+- `qa-pr-<n>-<sha>` — QA stills for a pull request
+- `pr-<n>-<topic>-evidence` — author stills for a pull request (for example `pr-389-borne-off-evidence`)
+- `qa-bearoff-baseline-*` — dated QA baselines
+- `e2e-evidence`, `maestro-screenshots`
+
+Do not use the GitHub prerelease flag as the only signal: evidence releases have been published as regular releases. Prefer attaching evidence on a branch (`evidence/qa-pr-*`) instead of a GitHub Release when you only need to share stills.
 
 ---
 
@@ -124,7 +141,7 @@ pnpm screenshots:upload:ios   # Fastlane deliver — agents OK
 
 ## Marketing assets per release
 
-**Automatic (preferred):** publishing a GitHub Release (tag → [New GitHub Release](../.github/workflows/new-github-release.yml)) triggers [Remotion Render (Release Assets)](../.github/workflows/remotion-render-release.yml). That workflow:
+**Automatic (preferred):** publishing a **version** GitHub Release (`vX.Y.Z` tag → [New GitHub Release](../.github/workflows/new-github-release.yml)) triggers [Remotion Render (Release Assets)](../.github/workflows/remotion-render-release.yml). Evidence/QA tags are skipped; see [Evidence and QA release tags](#evidence-and-qa-release-tags). That workflow:
 
 1. Renders every video in `remotion` `pnpm render:all` (`REMOTION_GL=swangle` on GitHub runners)
 2. Replaces `docs/marketing/videos/*.mp4` with that set

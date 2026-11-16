@@ -1,0 +1,33 @@
+# Every lesson opens in any order; the hub still shows which are done.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- openLink: backgammonmastermind.preview://learn
+- extendedWaitUntil:
+    visible:
+      id: learn-hub-screen
+    timeout: 20000
+- assertNotVisible: Complete the previous lesson first
+# The last lesson, with nothing done yet.
+- scrollUntilVisible:
+    element:
+      id: learn-lesson-strategies
+    direction: DOWN
+- takeScreenshot: learn-any-order-01-hub
+- tapOn:
+    id: learn-lesson-strategies
+- extendedWaitUntil:
+    visible:
+      id: learn-board-slot
+    timeout: 20000
+- takeScreenshot: learn-any-order-02-last-lesson-open
+# The plans lesson opens on the first plan, named as the game names it,
+# with the in-game plan icon beside it.
+- assertVisible: Running game
+- takeScreenshot: learn-any-order-03-plan-icon

@@ -12,11 +12,10 @@ import { continuousRadius } from '@/lib/ui/native-styles';
 type Props = {
   lesson: LessonDefinition;
   completed: boolean;
-  unlocked: boolean;
   onPress: () => void;
 };
 
-export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
+export function LessonRow({ lesson, completed, onPress }: Props) {
   const visual = lessonVisual(lesson.id);
   const icons = lessonNavigationIcons(useLayoutIsRTL());
 
@@ -24,20 +23,13 @@ export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
     <Pressable
       testID={`learn-lesson-row-${lesson.id}`}
       accessibilityRole="button"
-      accessibilityState={{ disabled: !unlocked }}
       accessibilityLabel={completed
         ? `${translate(lesson.titleKey as TxKeyPath)}, ${translate('learn.replay')}`
         : translate(lesson.titleKey as TxKeyPath)}
-      accessibilityHint={!unlocked
-        ? translate('learn.locked')
-        : completed
-          ? translate('learn.replay')
-          : undefined}
-      disabled={!unlocked}
+      accessibilityHint={completed ? translate('learn.replay') : undefined}
       style={({ pressed }) => [
         styles.lessonRow,
-        !unlocked && styles.lessonLocked,
-        pressed && unlocked && styles.pressed,
+        pressed && styles.pressed,
       ]}
       onPress={onPress}
     >
@@ -45,14 +37,13 @@ export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
         style={[
           styles.iconChip,
           { backgroundColor: `${visual.tint}22`, borderColor: `${visual.tint}55` },
-          !unlocked && styles.iconChipLocked,
         ]}
       >
         <Feather name={visual.icon} size={18} color={visual.tint} />
       </View>
 
       <View style={styles.lessonText}>
-        <Text style={[styles.lessonTitle, !unlocked && styles.lessonTitleLocked]}>
+        <Text style={styles.lessonTitle}>
           {translate(lesson.titleKey as TxKeyPath)}
         </Text>
         <Text style={styles.lessonSub}>{translate(lesson.subtitleKey as TxKeyPath)}</Text>
@@ -67,14 +58,12 @@ export function LessonRow({ lesson, completed, unlocked, onPress }: Props) {
               </Text>
             </View>
           )
-        : unlocked
-          ? (
-              <View style={styles.stateChip}>
-                <Text style={styles.stateLabel}>{translate('learn.start')}</Text>
-                <Feather name={icons.start} size={16} color={GAME_PALETTE.accent} />
-              </View>
-            )
-          : null}
+        : (
+            <View style={styles.stateChip}>
+              <Text style={styles.stateLabel}>{translate('learn.start')}</Text>
+              <Feather name={icons.start} size={16} color={GAME_PALETTE.accent} />
+            </View>
+          )}
     </Pressable>
   );
 }
@@ -91,9 +80,6 @@ const styles = StyleSheet.create({
     borderColor: GAME_PALETTE.surfaceBorder,
     ...continuousRadius(16),
   },
-  lessonLocked: {
-    backgroundColor: 'rgba(42, 20, 8, 0.55)',
-  },
   iconChip: {
     width: 40,
     height: 40,
@@ -103,9 +89,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
   },
-  iconChipLocked: {
-    opacity: 0.55,
-  },
   lessonText: {
     flex: 1,
     gap: 3,
@@ -114,9 +97,6 @@ const styles = StyleSheet.create({
     color: GAME_PALETTE.text,
     fontSize: 16,
     ...interFont('bold'),
-  },
-  lessonTitleLocked: {
-    color: GAME_PALETTE.textMuted,
   },
   lessonSub: {
     color: GAME_PALETTE.textMuted,

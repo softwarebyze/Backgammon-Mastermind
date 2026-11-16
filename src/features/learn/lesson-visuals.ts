@@ -23,6 +23,9 @@ const LESSON_VISUALS: Record<LessonId, LessonVisual> = {
   'bearing-off': { icon: 'log-out', tint: '#4ADE80' },
   'pip-count': { icon: 'activity', tint: '#7DD3FC' },
   'strategies': { icon: 'map', tint: '#C4B5FD' },
+  'doubling-cube': { icon: 'box', tint: '#F472B6' },
+  'match-play': { icon: 'award', tint: '#FBBF24' },
+  'app-tools': { icon: 'tool', tint: '#34D399' },
 };
 
 export function lessonVisual(id: LessonId): LessonVisual {

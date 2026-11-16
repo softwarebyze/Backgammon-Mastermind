@@ -4,9 +4,33 @@
     "heading": "Er ging iets mis.",
     "retry": "Opnieuw proberen"
   },
+  "feedback": {
+    "body_label": "Details",
+    "body_placeholder": "Wat gebeurde er, of wat zou de app beter maken?",
+    "email_instead": "Liever per e-mail, om een screenshot toe te voegen",
+    "error": "Je mailapp kon niet worden geopend. Mail ons op {{email}}.",
+    "intro": "Een bug gevonden of een idee? Laat het ons weten – we lezen elk bericht.",
+    "open_a11y": "Feedback sturen",
+    "privacy": "Wordt met app-versie, apparaat en taal naar de ontwikkelaar gestuurd.",
+    "send": "Versturen",
+    "sent": "Bedankt voor je feedback!",
+    "settings_row": "Feedback sturen",
+    "subject_label": "Titel",
+    "subject_placeholder": "Waar gaat het over?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Geselecteerd Tik op een gemarkeerd punt, of Annuleren"
+    },
+    "computer_level": {
+      "a11y": "Computerniveau: {{level}}",
+      "easy": "Makkelijk",
+      "expert": "Expert",
+      "hard": "Moeilijk",
+      "hint": "Makkelijk maakt de fouten van een beginner. Expert speelt altijd de beste zet van de engine.",
+      "medium": "Gemiddeld",
+      "title": "Computerniveau"
     },
     "controls": {
       "bear_off_a11y": "Steen uitspelen",
@@ -14,6 +38,7 @@
       "cancel_a11y": "Selectie annuleren",
       "confirm_move": "Zet bevestigen",
       "confirm_move_a11y": "Zet bevestigen en beurt beëindigen",
+      "dice_order_a11y": "Dobbelstenen: {{first}}, dan {{second}}",
       "leave_game_a11y": "Verlaat het spel en keer terug naar huis",
       "loading": "Laden...",
       "new_game_message": "Een nieuw spel starten?",
@@ -26,6 +51,8 @@
       "roll_dice_a11y": "Dobbelstenen gooien",
       "save_position_a11y": "Deze stelling opslaan",
       "start_new_game_a11y": "Nieuw spel starten",
+      "swap_dice": "Dobbelstenen wisselen",
+      "swap_dice_hint": "Wisselt welke dobbelsteen eerst wordt gespeeld.",
       "undo_a11y": "Verplaatsen ongedaan maken",
       "undo_move": "Ongedaan maken"
     },
@@ -88,6 +115,7 @@
       "rules": "Je kunt de inzet verdubbelen voordat je gooit."
     },
     "nudge": {
+      "dice_order": "Geen geldige zet voor deze schijf.",
       "roll_first": "Gooi eerst de dobbelstenen"
     },
     "opening": {
@@ -133,6 +161,8 @@
       "direction_overlay_hint": "Hoefijzerpad op het bord",
       "move_hints": "Zethints",
       "move_hints_hint": "Markeert de nummers van de punten waarvan je kunt zetten",
+      "move_in_dice_order": "Verplaatsen in dobbelsteenvolgorde",
+      "move_in_dice_order_hint": "Tik op een schijf om de eerste ongebruikte dobbelsteen voorrang te geven, of de andere te gebruiken als dat mag. Wissel de dobbelstenen om de voorkeur te wijzigen.",
       "point_numbers": "Puntnummers",
       "point_numbers_hint": "Labels 1–24 op het bord tonen",
       "section_automation": "Automatisering",
@@ -344,7 +374,7 @@
       "try_again_title": "Niet helemaal"
     },
     "graduation": {
-      "body": "Je kent het doel, het bord, hoe het werkt, slaat en afgaat. Een snelle controle en dan je eerste echte spel.",
+      "body": "Je kent nu het doel, het bord, hoe een beurt werkt, slaan, uitspelen, de pip count en de belangrijkste spelplannen. Een korte check en dan je eerste echte partij.",
       "play_cta": "Speel je eerste spel",
       "quiz_done": "Gelukt. Tijd om te spelen.",
       "quiz_title": "Snel controleren",
@@ -354,6 +384,10 @@
       "recap_3": "Hit blots → ze zitten op de bar",
       "recap_4": "Alleen van je thuisbord afhouden",
       "recap_5": "Spelletjes beginnen met een die elke hogere gaat eerst (ties re-roll)",
+      "recap_6": "Pip count: wie de laagste count heeft, leidt de race",
+      "recap_7": "Kies een plan: race, aanval, muur of houden",
+      "recap_8": "De kubus verdubbelt de inzet: neem aan of geef op als je verdubbeld wordt",
+      "recap_9": "Matches gaan tot een vaste score; in het Crawford-spel wordt niet verdubbeld",
       "title": "Je bent klaar om te spelen"
     },
     "hint": "Hint",
@@ -368,6 +402,28 @@
     "lesson_complete_body": "Goed gedaan met {{title}}. De volgende les bouwt hierop voort.",
     "lesson_complete_body_last": "Goed gedaan met {{title}}. Dat waren alle lessen — doe de snelle check en speel dan je eerste partij.",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Vastgelopen? Tik op Hint en de beste zet van de engine verschijnt op het bord. Voor het gooien zegt hij ook of je moet verdubbelen en, als je verdubbeld wordt, of je moet aannemen of opgeven.",
+            "title": "Hint"
+          },
+          "history": {
+            "body": "Ongedaan maken neemt tijdens je beurt een zet terug. De geschiedenis onder het bord loopt elke beurt van het spel door. Met de tutormodus markeert hij ook je fouten: ?! een slordigheid, ? een fout, ?? een grote blunder.",
+            "title": "Ongedaan maken en geschiedenis"
+          },
+          "levels": {
+            "body": "Tegen de computer kies je op het startscherm Makkelijk, Gemiddeld, Moeilijk of Expert. Om een stelling te oefenen gebruik je Stelling opzetten: zet stenen, dobbelstenen en kubus neer en speel vanaf daar.",
+            "title": "Computerniveau en eigen stellingen"
+          },
+          "tutor": {
+            "body": "Zet de tutormodus aan in Instellingen en de engine controleert elke zet en elke kubusbeslissing. Na een fout kun je terugnemen en opnieuw proberen, je keuze behouden of de tutor uitzetten.",
+            "title": "Tutormodus"
+          }
+        },
+        "subtitle": "Hints, tutormodus, ongedaan maken en meer",
+        "title": "Hulpmiddelen in de app"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -407,6 +463,32 @@
         },
         "subtitle": "Welke kant je op gaat",
         "title": "Richting instellen"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Speel je alle 15 stenen uit voordat je tegenstander er één uitspeelt, dan is het een gammon: het spel telt dubbel de kubus. Heeft hij nog een steen op de bar of in jouw thuisbord, zoals zwart hier, dan is het een backgammon: drie keer.",
+            "title": "Een gammon telt dubbel"
+          },
+          "offer": {
+            "body": "Voordat je gooit, kun je verdubbelen als je duidelijk voorstaat: tik op Verdubbelen. De inzet gaat naar 2 en je tegenstander moet meteen antwoorden. Hier staat wit ruim voor in de race, een goed moment om te verdubbelen.",
+            "title": "Een verdubbeling aanbieden"
+          },
+          "own": {
+            "body": "Wie aanneemt, bezit de kubus en alleen die mag later opnieuw verdubbelen, naar 4, dan 8. Dat is een voordeel: je tegenstander kan je niet meer uit het spel verdubbelen.",
+            "title": "De kubus bezitten"
+          },
+          "take_pass": {
+            "body": "Word je verdubbeld, dan verlies je met Opgeven het spel meteen tegen de huidige inzet. Met Aannemen speel je verder voor de dubbele inzet. Vuistregel: neem aan als je nog minstens 1 op de 4 spellen wint.",
+            "title": "Aannemen of opgeven"
+          },
+          "what": {
+            "body": "Elk spel heeft een verdubbelingskubus. Hij begint in het midden op 1 en toont dan 64, zijn hoogste waarde. Een spel is evenveel waard als de kubus: win je, dan krijg je zoveel punten.",
+            "title": "De verdubbelingskubus"
+          }
+        },
+        "subtitle": "De inzet verhogen: verdubbelen, aannemen of opgeven",
+        "title": "De verdubbelingskubus"
       },
       "goal_board": {
         "steps": {
@@ -448,6 +530,28 @@
         },
         "subtitle": "Contactspel",
         "title": "& De balk raken"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Zodra een speler voor het eerst één punt van de winst af is, is het volgende spel het Crawford-spel: niemand mag verdubbelen en de kubus is grijs. Daarna mag er weer verdubbeld worden.",
+            "title": "De Crawford-regel"
+          },
+          "dead_cube": {
+            "body": "Aan het eind van een match kan verdubbelen zinloos zijn: als je met dit spel al de match wint, voegt verdubbelen niets toe. De app biedt dan alleen Gooi de dobbelstenen aan en zegt waarom.",
+            "title": "Als de kubus niet helpt"
+          },
+          "start": {
+            "body": "Kies op het startscherm Match, de lengte en of je met de Crawford-regel speelt, en start. Matches kun je spelen tegen de computer en tegen een vriend op hetzelfde apparaat.",
+            "title": "Een match starten"
+          },
+          "what": {
+            "body": "Een match gaat tot een vaste score: 3, 5, 7 punten of meer. Elk spel levert de winnaar zijn waarde op: de kubus, dubbel bij een gammon. Wie het eerst het doel haalt, wint de match.",
+            "title": "Een match spelen"
+          }
+        },
+        "subtitle": "Spelen tot een doelscore, met de Crawford-regel",
+        "title": "Matches"
       },
       "moving_dice": {
         "steps": {
@@ -501,9 +605,15 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Je ligt ver achter, dus je houdt twee diepe ankers in het thuisbord van je tegenstander — hier op het 22- en 24-punt. Houd je eigen thuisbord sterk en wacht op een laat schot. Het is een laatste redmiddel: je kunt er ook flink mee verliezen."
+          },
           "blitz": {
             "body": "Je huis is sterk en de tegenstander heeft blots of stenen op de bar. Sla elke blot en sluit je huispunten, zodat zijn stenen op de bar blijven terwijl jij uitspeelt. Hier heeft wit drie huispunten en zwart een steen op de bar.",
             "title": "Blitz"
+          },
+          "holding": {
+            "body": "Je ligt achter in de race, maar je houdt een anker in het thuisbord van je tegenstander — hier op het 20-punt. Houd het vast, speel veilig en wacht op een schot terwijl zijn stenen erlangs naar huis gaan."
           },
           "identify": {
             "body": "Dit is een muurspel. Tik een punt van de witte muur, de opeenvolgende punten die zwart blokkeren.",
@@ -544,6 +654,18 @@
         "b": "Een enkele controleer op een punt kan worden geraakt",
         "c": "Twee of meer dammen op een punt",
         "prompt": "Wat is een vlek?"
+      },
+      "crawford": {
+        "a": "Niemand mag verdubbelen",
+        "b": "Gammons tellen niet",
+        "c": "De kubus begint op 2",
+        "prompt": "Wat is er bijzonder aan het Crawford-spel?"
+      },
+      "cube_pass": {
+        "a": "Je speelt verder voor de dubbele inzet",
+        "b": "Je verliest het spel tegen de huidige inzet",
+        "c": "De kubus gaat terug naar het midden",
+        "prompt": "Je wordt verdubbeld en je geeft op. Wat gebeurt er?"
       },
       "pip_ahead": {
         "a": "Je tegenstander, met de hogere count",
@@ -680,6 +802,36 @@
     "title": "Instellingen",
     "version": "Versie",
     "website": "Website"
+  },
+  "timer": {
+    "active": "Loopt",
+    "black": "Zwart",
+    "clock_a11y": "{{player}}, {{time}}",
+    "delay": "Vertraging per beurt",
+    "delay_off": "Uit",
+    "delay_pill": "{{seconds}} s vertraging",
+    "facing_hint": "De bovenste klok is naar de andere speler gericht.",
+    "facing_label": "Naar spelers richten",
+    "finished_body": "{{player}} heeft geen tijd meer.",
+    "finished_title": "Tijd om",
+    "minutes": "{{count}} min",
+    "move_hint": "Tik op je lopende klok om je beurt te beëindigen.",
+    "pause": "Pauzeren",
+    "paused": "Gepauzeerd",
+    "ready": "Klaar",
+    "reset": "Resetten",
+    "reset_body": "Beide spelers krijgen de gekozen begintijd terug.",
+    "reset_title": "Beide klokken resetten?",
+    "resume": "Hervatten",
+    "seconds": "{{count}} s",
+    "sound_off": "Geluid uit",
+    "sound_on": "Geluid aan",
+    "start_hint": "Tik op de klok van de eerste speler om te starten.",
+    "subtitle": "Voor spelen op een echt bord",
+    "time_label": "Tijd per speler",
+    "title": "Speelklok",
+    "waiting": "Wacht",
+    "white": "Wit"
   },
   "welcome": "Welkom bij Backgammon Mastermind"
 }

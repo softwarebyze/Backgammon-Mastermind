@@ -28,6 +28,7 @@ import { SettingsItem } from './components/settings-item';
 import { DeveloperItem } from './developer-item';
 import { isDeveloperToolsEnabled } from './developer-tools-gate';
 
+/** Present app preferences and links to standalone tools using the current language and platform layout. */
 export function SettingsScreen() {
   const posthog = usePostHog();
   const { insets } = useLayoutMetrics();
@@ -60,6 +61,7 @@ export function SettingsScreen() {
           <SettingsContainer title="settings.general">
             <LanguageItem />
             <SettingsItem text="positions.title" onPress={() => router.push('/position')} />
+            <SettingsItem text="timer.title" testID="settings-timer" onPress={() => router.push('/timer')} />
           </SettingsContainer>
 
           <GameSettingsSection showHints />
@@ -95,9 +97,11 @@ export function SettingsScreen() {
             <SettingsItem
               text="settings.support"
               icon={<Support color={iconColor} />}
+              testID="settings-feedback"
               onPress={() => {
                 posthog.capture('support_opened');
-                runExternalAction(() => openExternalUrl(APP_LINKS.support));
+                // The feedback form mails support too, with device details filled in.
+                router.push('/feedback');
               }}
             />
           </SettingsContainer>

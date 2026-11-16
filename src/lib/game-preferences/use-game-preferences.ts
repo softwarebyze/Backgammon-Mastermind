@@ -1,4 +1,5 @@
 import type { DiceDisplayStyle, GamePreferences } from './types';
+import type { ComputerLevel } from '@/lib/game/computer-level';
 
 import { useCallback, useSyncExternalStore } from 'react';
 
@@ -72,8 +73,16 @@ export function useGamePreferences() {
     updatePreferences({ tutorMode });
   }, []);
 
+  const setMoveInDiceOrder = useCallback((moveInDiceOrder: boolean) => {
+    updatePreferences({ moveInDiceOrder });
+  }, []);
+
   const setConfirmMove = useCallback((confirmMove: boolean) => {
     updatePreferences({ confirmMove });
+  }, []);
+
+  const setComputerLevel = useCallback((computerLevel: ComputerLevel) => {
+    updatePreferences({ computerLevel });
   }, []);
 
   return {
@@ -87,5 +96,7 @@ export function useGamePreferences() {
     setSoundEnabled,
     setTutorMode,
     setConfirmMove,
+    setComputerLevel,
+    setMoveInDiceOrder,
   };
 }

@@ -4,9 +4,33 @@
     "heading": "Quelque chose a mal tourné",
     "retry": "Réessayer"
   },
+  "feedback": {
+    "body_label": "Détails",
+    "body_placeholder": "Que s'est-il passé, ou qu'est-ce qui améliorerait l'app ?",
+    "email_instead": "Envoyer par e-mail pour joindre une capture d’écran",
+    "error": "Impossible d'ouvrir votre messagerie. Écrivez-nous à {{email}}.",
+    "intro": "Un bug ou une idée ? Dites-le-nous : nous lisons chaque message.",
+    "open_a11y": "Envoyer un avis",
+    "privacy": "Envoyé au développeur avec la version de l’app, l’appareil et la langue.",
+    "send": "Envoyer",
+    "sent": "Merci pour votre avis !",
+    "settings_row": "Envoyer un avis",
+    "subject_label": "Titre",
+    "subject_placeholder": "De quoi s'agit-il ?",
+    "title": "Avis"
+  },
   "game": {
     "caption": {
       "selected": "Sélectionné — appuyez sur un point surligné, ou Annuler"
+    },
+    "computer_level": {
+      "a11y": "Niveau de l'ordinateur : {{level}}",
+      "easy": "Facile",
+      "expert": "Expert",
+      "hard": "Difficile",
+      "hint": "Facile fait les erreurs d'un débutant. Expert joue toujours le meilleur coup du moteur.",
+      "medium": "Moyen",
+      "title": "Niveau de l'ordinateur"
     },
     "controls": {
       "bear_off_a11y": "Sortir un pion",
@@ -14,6 +38,7 @@
       "cancel_a11y": "Annuler la sélection",
       "confirm_move": "Confirmer le coup",
       "confirm_move_a11y": "Confirmer le coup et terminer le tour",
+      "dice_order_a11y": "Dés : {{first}}, puis {{second}}",
       "leave_game_a11y": "Laissez le jeu et rentrez chez vous",
       "loading": "Chargement...",
       "new_game_message": "Commencer une nouvelle partie ?",
@@ -26,6 +51,8 @@
       "roll_dice_a11y": "Lancer les dés",
       "save_position_a11y": "Enregistrer cette position",
       "start_new_game_a11y": "Démarrer un nouveau jeu",
+      "swap_dice": "Inverser les dés",
+      "swap_dice_hint": "Change le dé joué en premier.",
       "undo_a11y": "Annuler le dernier coup",
       "undo_move": "Annuler"
     },
@@ -88,6 +115,7 @@
       "rules": "Vous pouvez doubler la mise avant de lancer les dés."
     },
     "nudge": {
+      "dice_order": "Aucun coup légal pour ce pion.",
       "roll_first": "Lance d'abord les dés"
     },
     "opening": {
@@ -133,6 +161,8 @@
       "direction_overlay_hint": "Parcours en fer à cheval sur le plateau",
       "move_hints": "Indices de coup",
       "move_hints_hint": "Met en évidence les numéros des flèches d'où vous pouvez jouer",
+      "move_in_dice_order": "Jouer dans l’ordre des dés",
+      "move_in_dice_order_hint": "Touchez un pion pour privilégier le premier dé inutilisé, ou utiliser l’autre si le coup est légal. Inversez les dés pour changer la préférence.",
       "point_numbers": "Numéros des flèches",
       "point_numbers_hint": "Afficher les repères 1–24 sur le plateau",
       "section_automation": "Automatisation",
@@ -344,7 +374,7 @@
       "try_again_title": "Pas tout à fait"
     },
     "graduation": {
-      "body": "Tu connais le but, le conseil, comment tourne le travail, frappe et recule. Une vérification rapide — puis votre premier vrai jeu.",
+      "body": "Tu connais le but, le plateau, le déroulement d’un tour, comment frapper et sortir tes pions, le compte de pips et les grands plans de jeu. Une petite vérification, puis ta première vraie partie.",
       "play_cta": "Jouez à votre premier jeu",
       "quiz_done": "J'ai tout gâché. Il est temps de jouer.",
       "quiz_title": "Vérification rapide",
@@ -354,6 +384,10 @@
       "recap_3": "Hit blots → ils s'assoient sur le bar",
       "recap_4": "Ne vous éloignez que de votre pensionnat",
       "recap_5": "Les jeux commencent avec une mort chacun — plus haut passe en premier (ties re-roll)",
+      "recap_6": "Compte de pips : le plus bas mène la course",
+      "recap_7": "Choisis un plan : course, attaque, muraille ou blocage",
+      "recap_8": "Le videau double l'enjeu : acceptez ou refusez quand on vous double",
+      "recap_9": "Les matchs se jouent jusqu'à un score fixé ; pas de double pendant la partie Crawford",
       "title": "Vous êtes prêt à jouer"
     },
     "hint": "Conseil",
@@ -368,6 +402,28 @@
     "lesson_complete_body": "Bien joué pour {{title}}. La leçon suivante s’appuie sur celle-ci.",
     "lesson_complete_body_last": "Bien joué pour {{title}}. Vous avez terminé toutes les leçons : faites la vérification rapide, puis jouez votre première partie.",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Bloqué ? Touchez Indice pour voir le meilleur coup du moteur sur le plateau. Avant de lancer, il vous dit aussi s'il faut doubler et, quand on vous double, s'il faut accepter ou refuser.",
+            "title": "Indice"
+          },
+          "history": {
+            "body": "Annuler reprend un déplacement pendant votre tour. L'historique sous le plateau parcourt chaque tour de la partie. Avec le mode tuteur, il marque aussi vos erreurs : ?! une imprécision, ? une erreur, ?? une grosse gaffe.",
+            "title": "Annuler et historique"
+          },
+          "levels": {
+            "body": "Contre l'ordinateur, choisissez Facile, Moyen, Difficile ou Expert sur l'accueil. Pour travailler une position, utilisez Créer une position : placez pions, dés et videau, puis jouez à partir de là.",
+            "title": "Niveau de l'ordinateur et vos positions"
+          },
+          "tutor": {
+            "body": "Activez le mode tuteur dans les Réglages : le moteur vérifie chaque coup et chaque décision de videau. Après une erreur, vous pouvez annuler et réessayer, garder votre choix ou désactiver le tuteur.",
+            "title": "Mode tuteur"
+          }
+        },
+        "subtitle": "Indices, mode tuteur, annulation et plus",
+        "title": "Les outils de l'appli"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -407,6 +463,32 @@
         },
         "subtitle": "Par où tu bouges",
         "title": "Direction & configuration"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Si vous sortez vos 15 pions avant que l'adversaire en sorte un seul, c'est un gammon : la partie vaut deux fois le videau. S'il a encore un pion sur la barre ou dans votre jan intérieur, comme les noirs ici, c'est un backgammon : trois fois.",
+            "title": "Le gammon compte double"
+          },
+          "offer": {
+            "body": "Avant de lancer les dés, si vous êtes nettement devant, vous pouvez doubler : touchez Doubler. L'enjeu passe à 2 et l'adversaire doit répondre tout de suite. Ici les blancs mènent largement la course, un bon moment pour doubler.",
+            "title": "Proposer un double"
+          },
+          "own": {
+            "body": "Celui qui accepte possède le videau, et lui seul pourra redoubler plus tard, à 4, puis 8. C'est un avantage : l'adversaire ne peut plus vous faire abandonner en doublant.",
+            "title": "Posséder le videau"
+          },
+          "take_pass": {
+            "body": "Quand on vous double, Refuser perd la partie tout de suite à l'enjeu actuel. Accepter continue pour le double. Bonne règle : acceptez si vous gagnez encore au moins 1 partie sur 4.",
+            "title": "Accepter ou refuser"
+          },
+          "what": {
+            "body": "Chaque partie a un videau. Il commence au centre à 1 et affiche alors 64, sa plus haute valeur. Une partie vaut la valeur du videau : si vous gagnez, vous marquez autant de points.",
+            "title": "Le videau"
+          }
+        },
+        "subtitle": "Augmenter l'enjeu : doubler, accepter ou refuser",
+        "title": "Le videau"
       },
       "goal_board": {
         "steps": {
@@ -448,6 +530,28 @@
         },
         "subtitle": "Jeu de contact",
         "title": "Hitting & la barre"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Quand un joueur arrive pour la première fois à un point de la victoire, la partie suivante est la partie Crawford : personne ne peut doubler et le videau est grisé. Ensuite, le double revient.",
+            "title": "La règle de Crawford"
+          },
+          "dead_cube": {
+            "body": "En fin de match, un double peut être inutile : si gagner cette partie vous donne déjà le match, doubler n'apporte rien. L'appli ne propose alors que Lancer les dés et vous dit pourquoi.",
+            "title": "Quand le videau ne sert à rien"
+          },
+          "start": {
+            "body": "Sur l'accueil, choisissez Match, la longueur et la règle de Crawford ou non, puis lancez. Les matchs se jouent contre l'ordinateur ou contre un ami sur le même appareil.",
+            "title": "Lancer un match"
+          },
+          "what": {
+            "body": "Un match se joue jusqu'à un score fixé : 3, 5, 7 points ou plus. Chaque partie rapporte sa valeur au gagnant : le videau, doublé pour un gammon. Le premier à atteindre l'objectif gagne le match.",
+            "title": "Jouer un match"
+          }
+        },
+        "subtitle": "Jouer jusqu'à un score, avec la règle de Crawford",
+        "title": "Les matchs"
       },
       "moving_dice": {
         "steps": {
@@ -501,9 +605,15 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Vous êtes très en retard : vous tenez donc deux ancres profondes dans le jan intérieur adverse — ici sur les points 22 et 24. Gardez votre propre jan intérieur solide et attendez un tir tardif. C'est un dernier recours : on peut aussi perdre gros."
+          },
           "blitz": {
             "body": "Ta maison est forte et l’adversaire a des pions isolés ou sur la barre. Frappe chaque isolé et ferme tes flèches de maison pour les garder sur la barre pendant que tu sors. Ici le blanc a trois flèches et le noir un pion sur la barre.",
             "title": "Blitz"
+          },
+          "holding": {
+            "body": "Vous êtes en retard dans la course, mais vous tenez une ancre dans le jan intérieur adverse — ici sur le point 20. Gardez-la, jouez prudemment et attendez un tir quand ses pions passent devant pour rentrer."
           },
           "identify": {
             "body": "C’est une partie de muraille. Touche une flèche de la prime blanche, le mur de flèches qui bloque le noir.",
@@ -544,6 +654,18 @@
         "b": "Un seul vérificateur sur un point — il peut être frappé",
         "c": "Deux contrôleurs ou plus sur un point — un point",
         "prompt": "Qu'est-ce qu'une tache ?"
+      },
+      "crawford": {
+        "a": "Personne ne peut doubler",
+        "b": "Les gammons ne comptent pas",
+        "c": "Le videau commence à 2",
+        "prompt": "Qu'a de particulier la partie Crawford ?"
+      },
+      "cube_pass": {
+        "a": "Vous continuez pour le double",
+        "b": "Vous perdez la partie à l'enjeu actuel",
+        "c": "Le videau revient au centre",
+        "prompt": "On vous double et vous refusez. Que se passe-t-il ?"
       },
       "pip_ahead": {
         "a": "Ton adversaire, avec le compte le plus haut",
@@ -680,6 +802,36 @@
     "title": "Réglages",
     "version": "Version",
     "website": "Site web"
+  },
+  "timer": {
+    "active": "En marche",
+    "black": "Noirs",
+    "clock_a11y": "{{player}}, {{time}}",
+    "delay": "Délai par tour",
+    "delay_off": "Aucun",
+    "delay_pill": "Délai de {{seconds}} s",
+    "facing_hint": "La pendule du haut fait face à l’autre joueur.",
+    "facing_label": "Orienter vers les joueurs",
+    "finished_body": "Le temps des {{player}} est écoulé.",
+    "finished_title": "Temps écoulé",
+    "minutes": "{{count}} min",
+    "move_hint": "Touchez votre pendule en marche pour terminer votre tour.",
+    "pause": "Pause",
+    "paused": "En pause",
+    "ready": "Prêt",
+    "reset": "Réinitialiser",
+    "reset_body": "Les deux joueurs retrouveront le temps initial choisi.",
+    "reset_title": "Réinitialiser les deux pendules ?",
+    "resume": "Reprendre",
+    "seconds": "{{count}} s",
+    "sound_off": "Son désactivé",
+    "sound_on": "Son activé",
+    "start_hint": "Touchez la pendule du premier joueur pour commencer.",
+    "subtitle": "Pour jouer sur un vrai plateau",
+    "time_label": "Temps par joueur",
+    "title": "Pendule de jeu",
+    "waiting": "En attente",
+    "white": "Blancs"
   },
   "welcome": "Bienvenue à Backgammon Mastermind"
 }

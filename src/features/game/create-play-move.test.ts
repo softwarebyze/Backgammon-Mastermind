@@ -1,6 +1,6 @@
 import type { GameState, Move } from '@/lib/game';
 import { createPlayMove } from '@/features/game/create-play-move';
-import { applyDiceRoll, createInitialState } from '@/lib/game';
+import { applyDiceRoll, createInitialState, createPositionState } from '@/lib/game';
 
 function makeHarness() {
   const generationRef = { current: 0 };
@@ -19,7 +19,7 @@ function makeHarness() {
     onMoveApplied: (before, move, after) => { applied.push({ before, move, after }); },
     onMoveStarted: (before, move, after) => { started.push({ before, move, after }); },
   });
-  return { playMove, finishOnceRef, setStateCalls, setMoveAnimationCalls, started, applied };
+  return { playMove, generationRef, finishOnceRef, setStateCalls, setMoveAnimationCalls, started, applied };
 }
 
 function openingState(): GameState {
@@ -88,4 +88,46 @@ describe('createPlayMove onMoveStarted', () => {
     expect(applied).toHaveLength(1);
     expect(applied[0]).toMatchObject({ from: 8, to: 4 });
   });
+});
+
+describe('selected bear-off die identity', () => {
+  function bearOffState() {
+    return createPositionState({ dice: [4, 6], placements: [
+      { point: 4, player: 'white', count: 2 },
+      { point: 2, player: 'white', count: 13 },
+      { point: 19, player: 'black', count: 15 },
+    ] });
+  }
+
+  it.each([{ dieIndex: 1, die: 6 }, { dieIndex: 0, die: 6 }, { dieIndex: 1 }])('previews and commits the selected oversize die %j', (identity) => {
+    const h = makeHarness();
+    h.playMove(bearOffState(), { from: 4, to: 25, ...identity });
+    expect(h.started[0]?.move.die).toBe(6);
+    expect(h.started[0]?.after.remainingDice).toEqual([4]);
+    h.finishOnceRef.current?.();
+    expect(h.applied[0]?.move.die).toBe(6);
+    expect(h.setStateCalls[0]?.remainingDice).toEqual([4]);
+    expect(h.setStateCalls[0]).toEqual(h.started[0]?.after);
+  });
+
+  it.each([{ dieIndex: 0, die: 5 }, { dieIndex: 9 }, { dieIndex: -1 }])('rejects unavailable die identity instead of substituting a legal bear-off %j', (identity) => {
+    const h = makeHarness();
+    const onComplete = jest.fn();
+    const snapshot = bearOffState();
+    h.playMove(snapshot, { from: 4, to: 25, ...identity }, { onComplete });
+    h.finishOnceRef.current?.();
+    expect(h.started).toEqual([]);
+    expect(h.applied).toEqual([]);
+    expect(h.setStateCalls).toEqual([]);
+    expect(onComplete).toHaveBeenCalledWith(snapshot);
+  });
+});
+
+it('ignores a stale animation completion after the game generation changes', () => {
+  const h = makeHarness();
+  h.playMove(openingState(), { from: 8, to: 4, dieIndex: 0, die: 4 });
+  h.generationRef.current++;
+  h.finishOnceRef.current?.();
+  expect(h.setStateCalls).toEqual([]);
+  expect(h.applied).toEqual([]);
 });

@@ -8,21 +8,67 @@
     "sub": "#E8A04A"
   },
   "devices": {
-    "iphone": { "width": 1320, "height": 2868 },
-    "ipad": { "width": 2064, "height": 2752 }
+    "iphone": {
+      "width": 1320,
+      "height": 2868
+    },
+    "ipad": {
+      "width": 2064,
+      "height": 2752
+    }
   },
   "frames": [
     {
       "device": "iphone",
+      "source": "iphone-69-01-vs-computer.png",
+      "dest": "iphone-69-01-vs-computer.png",
+      "copy": "computer",
+      "headline": "Play against the computer",
+      "sub": "From Easy to Expert",
+      "cropTop": 0,
+      "fit": "contain"
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-02-tutor.png",
+      "dest": "iphone-69-02-tutor.png",
+      "copy": "tutor",
+      "headline": "Learn from your mistakes",
+      "sub": "Tutor mode rates every move",
+      "cropTop": 0,
+      "fit": "contain"
+    },
+    {
+      "device": "iphone",
       "source": "iphone-69-03-lesson-hitting.png",
-      "dest": "iphone-69-01-learn-to-play.png",
+      "dest": "iphone-69-03-learn-to-play.png",
+      "copy": "learn",
       "headline": "Learn to play backgammon",
       "cropTop": 0.05
     },
     {
       "device": "iphone",
-      "source": "iphone-69-05-pass-and-play.png",
-      "dest": "iphone-69-02-pass-and-play.png",
+      "source": "iphone-69-04-match-cube.png",
+      "dest": "iphone-69-04-match-cube.png",
+      "copy": "match",
+      "headline": "Matches and the doubling cube",
+      "cropTop": 0,
+      "fit": "contain"
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-05-position.png",
+      "dest": "iphone-69-05-position.png",
+      "copy": "position",
+      "headline": "Set up any position",
+      "cropTop": 0.128,
+      "fit": "contain"
+    },
+    {
+      "device": "iphone",
+      "source": "iphone-69-06-pass-and-play.png",
+      "dest": "iphone-69-06-pass-and-play.png",
+      "copy": "pass",
       "headline": "Pass & play offline",
       "sub": "With friends and family",
       "cropTop": 0,
@@ -30,36 +76,63 @@
     },
     {
       "device": "iphone",
-      "source": "iphone-69-04-vs-computer.png",
-      "dest": "iphone-69-03-vs-computer.png",
-      "headline": "Play against the computer",
-      "cropTop": 0,
-      "fit": "contain"
-    },
-    {
-      "device": "iphone",
-      "source": "iphone-69-02-learn-hub.png",
-      "dest": "iphone-69-04-learn-hub.png",
+      "source": "iphone-69-07-learn-hub.png",
+      "dest": "iphone-69-07-learn-hub.png",
+      "copy": "lessons",
       "headline": "Interactive lessons",
       "cropTop": 0.16
     },
     {
-      "device": "iphone",
-      "source": "iphone-69-01-home.png",
-      "dest": "iphone-69-05-home.png",
-      "cropTop": 0
+      "device": "ipad",
+      "source": "ipad-13-01-vs-computer.png",
+      "dest": "ipad-13-01-vs-computer.png",
+      "copy": "computer",
+      "headline": "Play against the computer",
+      "sub": "From Easy to Expert",
+      "cropTop": 0,
+      "fit": "contain"
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-02-tutor.png",
+      "dest": "ipad-13-02-tutor.png",
+      "copy": "tutor",
+      "headline": "Learn from your mistakes",
+      "sub": "Tutor mode rates every move",
+      "cropTop": 0,
+      "fit": "contain"
     },
     {
       "device": "ipad",
       "source": "ipad-13-03-lesson-hitting.png",
-      "dest": "ipad-13-01-learn-to-play.png",
+      "dest": "ipad-13-03-learn-to-play.png",
+      "copy": "learn",
       "headline": "Learn to play backgammon",
       "cropTop": 0.045
     },
     {
       "device": "ipad",
-      "source": "ipad-13-05-pass-and-play.png",
-      "dest": "ipad-13-02-pass-and-play.png",
+      "source": "ipad-13-04-match-cube.png",
+      "dest": "ipad-13-04-match-cube.png",
+      "copy": "match",
+      "headline": "Matches and the doubling cube",
+      "cropTop": 0,
+      "fit": "contain"
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-05-position.png",
+      "dest": "ipad-13-05-position.png",
+      "copy": "position",
+      "headline": "Set up any position",
+      "cropTop": 0.078,
+      "fit": "contain"
+    },
+    {
+      "device": "ipad",
+      "source": "ipad-13-06-pass-and-play.png",
+      "dest": "ipad-13-06-pass-and-play.png",
+      "copy": "pass",
       "headline": "Pass & play offline",
       "sub": "With friends and family",
       "cropTop": 0,
@@ -67,24 +140,11 @@
     },
     {
       "device": "ipad",
-      "source": "ipad-13-04-vs-computer.png",
-      "dest": "ipad-13-03-vs-computer.png",
-      "headline": "Play against the computer",
-      "cropTop": 0,
-      "fit": "contain"
-    },
-    {
-      "device": "ipad",
-      "source": "ipad-13-02-learn-hub.png",
-      "dest": "ipad-13-04-learn-hub.png",
+      "source": "ipad-13-07-learn-hub.png",
+      "dest": "ipad-13-07-learn-hub.png",
+      "copy": "lessons",
       "headline": "Interactive lessons",
       "cropTop": 0.125
-    },
-    {
-      "device": "ipad",
-      "source": "ipad-13-01-home.png",
-      "dest": "ipad-13-05-home.png",
-      "cropTop": 0
     }
   ]
 }

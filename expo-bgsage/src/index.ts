@@ -103,6 +103,11 @@ function boardEq(a: number[], b: number[]): boolean {
 function singleMoves(w: number[], d: number): { from: number; to: number }[] {
   const moves: { from: number; to: number }[] = [];
   const fromBar = w[25] > 0;
+  let allHome = !fromBar;
+  for (let k = 7; k <= 24 && allHome; k++) {
+    if (w[k] > 0)
+      allHome = false;
+  }
   const sources: number[] = fromBar ? [25] : [];
   if (!fromBar) {
     for (let i = 1; i <= 24; i++) {
@@ -122,7 +127,7 @@ function singleMoves(w: number[], d: number): { from: number; to: number }[] {
         if (w[to] >= -1)
           moves.push({ from, to });
       }
-      else if (from <= d) {
+      else if (allHome && from <= d) {
         let higher = false;
         for (let k = from + 1; k <= 24; k++) {
           if (w[k] > 0) {
@@ -165,28 +170,35 @@ export function decomposePlayerOnRollBoard(
 ): RawMove[] | null {
   const orders
     = dice.length === 2 && dice[0] !== dice[1] ? [[dice[0], dice[1]], [dice[1], dice[0]]] : [dice.slice()];
+  // A board can match before every playable die is spent (3/off vs 3/2 2/off
+  // with 4-1 at the end of a bear-off); keep the sequence that plays the most dice.
+  let best: RawMove[] | null = null;
   for (const order of orders) {
     let nodes = 0;
-    const dfs = (w: number[], di: number, seq: RawMove[]): RawMove[] | null => {
-      if (boardEq(w, newB))
-        return seq;
+    const dfs = (w: number[], di: number, seq: RawMove[]): boolean => {
+      // Longer sequences win. A one-die bear-off can match for either die of a
+      // non-double; the rules require the higher die when both are legal.
+      const higherSingle = best !== null && best.length === 1 && seq.length === 1 && seq[0].die > best[0].die;
+      if (boardEq(w, newB) && (!best || seq.length > best.length || higherSingle)) {
+        best = seq;
+        if (seq.length === order.length)
+          return true;
+      }
       if (di >= order.length || ++nodes > 300000)
-        return null;
+        return false;
       const cands = singleMoves(w, order[di]);
       if (cands.length === 0)
         return dfs(w, di + 1, seq);
       for (const m of cands) {
-        const r = dfs(applySingle(w, m), di + 1, seq.concat([{ from: m.from, to: m.to, die: order[di] }]));
-        if (r)
-          return r;
+        if (dfs(applySingle(w, m), di + 1, seq.concat([{ from: m.from, to: m.to, die: order[di] }])))
+          return true;
       }
-      return null;
+      return false;
     };
-    const r = dfs(oldB.slice(), 0, []);
-    if (r)
-      return r;
+    if (dfs(oldB.slice(), 0, []))
+      return best;
   }
-  return null;
+  return best;
 }
 
 // ---- public API ----
@@ -207,6 +219,34 @@ export type SageTurnPlan = {
 };
 
 /**
+ * The move sequence that turns the position on roll into `target`, one of the
+ * boards a plan listed as a candidate. Mastermind-style moves, with dieIndex
+ * into state.remainingDice. Throws SageEngineError when no sequence of these
+ * dice reaches it.
+ */
+export function sageMovesToBoard(state: SageGameState, target: number[]): SageMove[] {
+  const P = state.currentPlayer;
+  const board = gameStateToSageBoard(state);
+  const [d1, d2] = state.dice;
+  const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
+  const seq = decomposePlayerOnRollBoard(board, target, dice);
+  if (!seq)
+    throw new SageEngineError('could not decompose sage result into moves');
+  const used = Array.from({ length: state.remainingDice.length }, () => false);
+  return seq.map((m) => {
+    const j = state.remainingDice.findIndex((v, k) => !used[k] && v === m.die);
+    if (j === -1)
+      throw new SageEngineError('die mismatch while mapping sage move');
+    used[j] = true;
+    return {
+      from: m.from === 25 ? 0 : appPoint(m.from, P),
+      to: m.to === 0 ? 25 : appPoint(m.to, P),
+      dieIndex: j,
+    };
+  });
+}
+
+/**
  * Ask the engine for the full checker-play turn, with equities. Returns the
  * best move sequence plus every candidate's resulting board and equity
  * (best first) — the candidate list powers tutor-mode blunder detection
@@ -215,7 +255,6 @@ export type SageTurnPlan = {
  * be decomposed. Callers offer no hint and the tutor stays silent.
  */
 export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2, context?: SageCubeContext): Promise<SageTurnPlan> {
-  const P = state.currentPlayer;
   const board = gameStateToSageBoard(state);
   const [d1, d2] = state.dice;
   let raw: string;
@@ -240,22 +279,7 @@ export async function planSageTurnFull(state: SageGameState, ply: 1 | 2 = 2, con
   ));
   // Use cube-aware equity when context exists. Lessons without a cube retain
   // cubeless evaluation. Hint and Tutor always use the same candidate ranking.
-  const dice = d1 === d2 ? [d1, d1, d1, d1] : [d1, d2];
-  const seq = decomposePlayerOnRollBoard(board, candidates[0].board, dice);
-  if (!seq)
-    throw new SageEngineError('could not decompose sage result into moves');
-  const used = Array.from({ length: state.remainingDice.length }, () => false);
-  const moves = seq.map((m) => {
-    const j = state.remainingDice.findIndex((v, k) => !used[k] && v === m.die);
-    if (j === -1)
-      throw new SageEngineError('die mismatch while mapping sage move');
-    used[j] = true;
-    return {
-      from: m.from === 25 ? 0 : appPoint(m.from, P),
-      to: m.to === 0 ? 25 : appPoint(m.to, P),
-      dieIndex: j,
-    };
-  });
+  const moves = sageMovesToBoard(state, candidates[0].board);
   return { moves, equity: candidates[0].equity, candidates };
 }
 

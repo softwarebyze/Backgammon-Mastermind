@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { getNextLessonId, LESSON_IDS } from '@/lib/learn/curriculum';
+import { LESSON_IDS } from '@/lib/learn/curriculum';
 import en from '@/translations/en.json';
 
 import { learnCompleteBodyKey, learnPrimaryCtaKey, learnPrimaryCtaKind } from './learn-primary-cta';
@@ -51,11 +51,10 @@ describe('learnPrimaryCtaKind', () => {
 
 describe('learnCompleteBodyKey', () => {
   it('points the final lesson at the quick check instead of a next lesson', () => {
-    const last = LESSON_IDS[LESSON_IDS.length - 1]!;
-    expect(learnCompleteBodyKey(getNextLessonId(last))).toBe('learn.lesson_complete_body_last');
+    expect(learnCompleteBodyKey('graduation')).toBe('learn.lesson_complete_body_last');
     expect(en.learn.lesson_complete_body_last).not.toMatch(/next lesson/i);
-    for (const id of LESSON_IDS.slice(0, -1)) {
-      expect(learnCompleteBodyKey(getNextLessonId(id))).toBe('learn.lesson_complete_body');
+    for (const id of LESSON_IDS) {
+      expect(learnCompleteBodyKey(id)).toBe('learn.lesson_complete_body');
     }
   });
 

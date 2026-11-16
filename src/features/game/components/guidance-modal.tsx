@@ -26,6 +26,13 @@ import { hapticLight } from '@/lib/haptics';
 import { getIsRTL, translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
+import {
+  CARD_BORDER,
+  CARD_GUTTER,
+  CARD_MAX_WIDTH,
+  guidanceBoardWidth,
+  SCRIM_PADDING,
+} from './guidance-modal-layout';
 
 /** Collapsible "why" details: rank recap + top alternatives, labeled. */
 function formatRoll(dice: [number, number]): string {
@@ -402,8 +409,7 @@ function SolutionView({
   onKeepMove: () => void;
 }) {
   const { width: screenWidth } = useWindowDimensions();
-  // Card is maxWidth 380 with 24pt scrim padding and 22pt card padding.
-  const boardWidth = Math.min(380, screenWidth - 48) - 44;
+  const boardWidth = guidanceBoardWidth(screenWidth);
   const mineOnly = session.revealMineOnly ?? false;
 
   return (
@@ -599,6 +605,7 @@ export function GuidanceModal() {
             style={styles.cardScroll}
             contentContainerStyle={styles.cardScrollContent}
             showsVerticalScrollIndicator={false}
+            testID="guidance-modal-scroll"
           >
             {!session.revealed
               ? (
@@ -636,17 +643,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 24,
+    padding: SCRIM_PADDING,
   },
   card: {
     width: '100%',
-    maxWidth: 380,
+    maxWidth: CARD_MAX_WIDTH,
     maxHeight: '92%',
     backgroundColor: GAME_PALETTE.surface,
-    padding: 22,
+    paddingVertical: 22,
     gap: 10,
     ...continuousRadius(16),
-    borderWidth: 1.5,
+    borderWidth: CARD_BORDER,
     borderColor: GAME_PALETTE.accent,
   },
   cardScroll: {
@@ -654,6 +661,7 @@ const styles = StyleSheet.create({
   },
   cardScrollContent: {
     gap: 10,
+    paddingHorizontal: CARD_GUTTER,
   },
   compareBoards: {
     flexDirection: 'row',

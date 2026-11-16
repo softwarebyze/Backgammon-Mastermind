@@ -4,9 +4,33 @@
     "heading": "Algo correu mal.",
     "retry": "Repetir"
   },
+  "feedback": {
+    "body_label": "Detalhes",
+    "body_placeholder": "O que aconteceu, ou o que deixaria o app melhor?",
+    "email_instead": "Enviar por email para anexar uma captura de ecrã",
+    "error": "Não foi possível abrir seu app de e-mail. Escreva para {{email}}.",
+    "intro": "Encontrou um bug ou tem uma ideia? Conte para nós: lemos todas as mensagens.",
+    "open_a11y": "Enviar feedback",
+    "privacy": "Enviado ao programador com a versão da app, o dispositivo e o idioma.",
+    "send": "Enviar",
+    "sent": "Obrigado pelo feedback!",
+    "settings_row": "Enviar feedback",
+    "subject_label": "Título",
+    "subject_placeholder": "Sobre o que é?",
+    "title": "Feedback"
+  },
   "game": {
     "caption": {
       "selected": "Selecionado — toque num ponto realçado ou em Cancelar"
+    },
+    "computer_level": {
+      "a11y": "Nível do computador: {{level}}",
+      "easy": "Fácil",
+      "expert": "Especialista",
+      "hard": "Difícil",
+      "hint": "Fácil comete os erros de um iniciante. Especialista joga sempre o melhor lance do motor.",
+      "medium": "Médio",
+      "title": "Nível do computador"
     },
     "controls": {
       "bear_off_a11y": "Retirar pedra",
@@ -14,6 +38,7 @@
       "cancel_a11y": "Cancelar seleção",
       "confirm_move": "Confirmar jogada",
       "confirm_move_a11y": "Confirmar a jogada e terminar o turno",
+      "dice_order_a11y": "Dados: {{first}}, depois {{second}}",
       "leave_game_a11y": "Deixe o jogo e volte para casa",
       "loading": "Carregando...",
       "new_game_message": "Começar um novo jogo?",
@@ -26,6 +51,8 @@
       "roll_dice_a11y": "Lançar os dados",
       "save_position_a11y": "Salvar esta posição",
       "start_new_game_a11y": "Iniciar um novo jogo",
+      "swap_dice": "Trocar dados",
+      "swap_dice_hint": "Troca qual dado é jogado primeiro.",
       "undo_a11y": "Desfazer a jogada",
       "undo_move": "Desfazer"
     },
@@ -88,6 +115,7 @@
       "rules": "Você pode dobrar a aposta antes de lançar os dados."
     },
     "nudge": {
+      "dice_order": "Esta peça não tem jogada legal.",
       "roll_first": "Lance os dados primeiro"
     },
     "opening": {
@@ -133,6 +161,8 @@
       "direction_overlay_hint": "Percurso em ferradura no tabuleiro",
       "move_hints": "Dicas de movimento",
       "move_hints_hint": "Destaca os números das casas de onde você pode mover",
+      "move_in_dice_order": "Mover na ordem dos dados",
+      "move_in_dice_order_hint": "Toque numa peça para dar preferência ao primeiro dado não utilizado, ou usar o outro se for legal. Troque os dados para mudar a preferência.",
       "point_numbers": "Números das casas",
       "point_numbers_hint": "Mostrar rótulos 1–24 no tabuleiro",
       "section_automation": "Automação",
@@ -344,7 +374,7 @@
       "try_again_title": "Quase"
     },
     "graduation": {
-      "body": "Sabes qual é o objectivo, o tabuleiro, como é que se transforma no trabalho, bater e aguentar. Uma verificação rápida — então seu primeiro jogo real.",
+      "body": "Já conheces o objetivo, o tabuleiro, como funcionam os turnos, como bater e tirar as peças, a contagem de pips e os principais planos de jogo. Uma verificação rápida e depois a tua primeira partida a sério.",
       "play_cta": "Jogar o seu primeiro jogo",
       "quiz_done": "Acertei em cheio. Hora de jogar.",
       "quiz_title": "Verificação rápida",
@@ -354,6 +384,10 @@
       "recap_3": "Hit blots → eles sentam na barra",
       "recap_4": "Afaste-se apenas do seu tabuleiro",
       "recap_5": "Jogos começam com um dado cada — mais alto vai primeiro (ties re-roll)",
+      "recap_6": "Contagem de pips: a menor vai à frente na corrida",
+      "recap_7": "Escolhe um plano: corrida, ataque, muralha ou contenção",
+      "recap_8": "O cubo dobra a aposta: aceite ou recuse quando for dobrado",
+      "recap_9": "As partidas vão até uma pontuação fixa; no jogo Crawford não se dobra",
       "title": "Você está pronto para jogar"
     },
     "hint": "Dica",
@@ -368,6 +402,28 @@
     "lesson_complete_body": "Bom trabalho em {{title}}. A próxima lição parte daqui.",
     "lesson_complete_body_last": "Bom trabalho em {{title}}. Você concluiu todas as lições — faça a verificação rápida e depois jogue sua primeira partida.",
     "lessons": {
+      "app_tools": {
+        "steps": {
+          "hint": {
+            "body": "Sem saber o que fazer? Toque em Dica para ver no tabuleiro a melhor jogada do motor. Antes de lançar, também diz se deve dobrar e, quando é dobrado, se deve aceitar ou recusar.",
+            "title": "Dica"
+          },
+          "history": {
+            "body": "Desfazer anula uma jogada durante a sua vez. O histórico por baixo do tabuleiro percorre cada vez do jogo. Com o modo tutor, também marca os seus erros: ?! um deslize, ? um erro, ?? um erro grave.",
+            "title": "Desfazer e histórico"
+          },
+          "levels": {
+            "body": "Contra o computador, escolha Fácil, Médio, Difícil ou Especialista no ecrã inicial. Para treinar uma posição, use Montar uma posição: coloque peças, dados e cubo e jogue a partir daí.",
+            "title": "Nível do computador e as suas posições"
+          },
+          "tutor": {
+            "body": "Ative o modo tutor nos Ajustes e o motor verifica cada jogada e cada decisão de cubo. Depois de um erro, pode anular e tentar de novo, manter a sua escolha ou desligar o tutor.",
+            "title": "Modo tutor"
+          }
+        },
+        "subtitle": "Dicas, modo tutor, desfazer e mais",
+        "title": "Ferramentas da app"
+      },
       "bearing_off": {
         "steps": {
           "overshoot": {
@@ -407,6 +463,32 @@
         },
         "subtitle": "Para que lado te moves?",
         "title": "& Configuração da direção"
+      },
+      "doubling_cube": {
+        "steps": {
+          "gammon": {
+            "body": "Se retirar as 15 peças antes de o adversário retirar alguma, é um gammon: o jogo vale o dobro do cubo. Se ele ainda tiver uma peça na barra ou no seu tabuleiro interior, como as pretas aqui, é um backgammon: o triplo.",
+            "title": "O gammon vale o dobro"
+          },
+          "offer": {
+            "body": "Antes de lançar os dados, se estiver bem à frente, pode dobrar: toque em Dobrar. A aposta sobe para 2 e o adversário tem de responder logo. Aqui as brancas lideram a corrida com folga, um bom momento para dobrar.",
+            "title": "Oferecer uma dobra"
+          },
+          "own": {
+            "body": "Quem aceita fica com o cubo, e só ele pode voltar a dobrar mais tarde, para 4 e depois 8. É uma vantagem: o adversário já não o pode tirar do jogo com uma dobra.",
+            "title": "Ser dono do cubo"
+          },
+          "take_pass": {
+            "body": "Quando é dobrado, Recusar perde o jogo já, com a aposta atual. Aceitar continua a jogar pelo dobro. Uma boa regra: aceite se ainda ganhar pelo menos 1 jogo em cada 4.",
+            "title": "Aceitar ou recusar"
+          },
+          "what": {
+            "body": "Cada jogo tem um cubo de dobra. Começa no centro a valer 1 e mostra então 64, o seu valor mais alto. Um jogo vale o valor do cubo: se ganhar, marca esses pontos.",
+            "title": "O cubo de dobra"
+          }
+        },
+        "subtitle": "Aumente a aposta: dobrar, aceitar ou recusar",
+        "title": "O cubo de dobra"
       },
       "goal_board": {
         "steps": {
@@ -448,6 +530,28 @@
         },
         "subtitle": "Jogo de contato",
         "title": "A & bater na barra"
+      },
+      "match_play": {
+        "steps": {
+          "crawford": {
+            "body": "Quando um jogador fica pela primeira vez a um ponto da vitória, o jogo seguinte é o jogo Crawford: ninguém pode dobrar e o cubo fica esbatido. Depois desse jogo, a dobra volta.",
+            "title": "A regra de Crawford"
+          },
+          "dead_cube": {
+            "body": "No fim de uma partida uma dobra pode não servir de nada: se ganhar este jogo já lhe dá a partida, dobrar não acrescenta nada. A app só oferece Lançar os dados e explica porquê.",
+            "title": "Quando o cubo não ajuda"
+          },
+          "start": {
+            "body": "No ecrã inicial, escolha Partida, o comprimento e se usa a regra de Crawford, e comece. As partidas jogam-se contra o computador ou contra um amigo no mesmo dispositivo.",
+            "title": "Começar uma partida"
+          },
+          "what": {
+            "body": "Uma partida joga-se até uma pontuação fixa: 3, 5, 7 pontos ou mais. Cada jogo dá ao vencedor o seu valor: o cubo, a dobrar num gammon. Quem chega primeiro à meta ganha a partida.",
+            "title": "Jogar uma partida"
+          }
+        },
+        "subtitle": "Jogue até uma pontuação, com a regra de Crawford",
+        "title": "Partidas"
       },
       "moving_dice": {
         "steps": {
@@ -501,9 +605,15 @@
       },
       "strategies": {
         "steps": {
+          "backgame": {
+            "body": "Está muito atrás, por isso tem duas âncoras profundas no tabuleiro interior do adversário — aqui nos pontos 22 e 24. Mantenha o seu tabuleiro interior forte e espere por um tiro tardio. É o último recurso: também pode perder muito."
+          },
           "blitz": {
             "body": "A tua casa é forte e o adversário tem isoladas ou peças na barra. Acerta em cada isolada e fecha os pontos de casa para as deixar na barra enquanto sais. Aqui o branco tem três pontos de casa e o preto uma peça na barra.",
             "title": "Blitz"
+          },
+          "holding": {
+            "body": "Está atrás na corrida, mas tem uma âncora no tabuleiro interior do adversário — aqui no ponto 20. Mantenha-a, jogue com segurança e espere por um tiro quando as peças dele passarem por ela a caminho de casa."
           },
           "identify": {
             "body": "Isto é um jogo de muralha. Toca num ponto da muralha branca, os pontos seguidos que bloqueiam o preto.",
@@ -544,6 +654,18 @@
         "b": "Um único verificador num ponto — pode ser atingido",
         "c": "Duas ou mais damas sobre um ponto — uma observação feita",
         "prompt": "O que é uma mancha?"
+      },
+      "crawford": {
+        "a": "Ninguém pode dobrar",
+        "b": "Os gammons não contam",
+        "c": "O cubo começa em 2",
+        "prompt": "O que tem de especial o jogo Crawford?"
+      },
+      "cube_pass": {
+        "a": "Continua a jogar pelo dobro",
+        "b": "Perde o jogo com a aposta atual",
+        "c": "O cubo volta ao centro",
+        "prompt": "É dobrado e recusa. O que acontece?"
       },
       "pip_ahead": {
         "a": "O teu adversário, com a contagem maior",
@@ -680,6 +802,36 @@
     "title": "Ajustes",
     "version": "Versão",
     "website": "Site"
+  },
+  "timer": {
+    "active": "Em curso",
+    "black": "Pretas",
+    "clock_a11y": "{{player}}, {{time}}",
+    "delay": "Atraso por jogada",
+    "delay_off": "Sem atraso",
+    "delay_pill": "{{seconds}} s de atraso",
+    "facing_hint": "O relógio superior fica virado para o outro jogador.",
+    "facing_label": "Virar para jogadores",
+    "finished_body": "O tempo acabou para as {{player}}.",
+    "finished_title": "Tempo esgotado",
+    "minutes": "{{count}} min",
+    "move_hint": "Toque no seu relógio em curso para terminar a jogada.",
+    "pause": "Pausar",
+    "paused": "Em pausa",
+    "ready": "Pronto",
+    "reset": "Reiniciar",
+    "reset_body": "Os dois jogadores voltarão ao tempo inicial escolhido.",
+    "reset_title": "Reiniciar os dois relógios?",
+    "resume": "Retomar",
+    "seconds": "{{count}} s",
+    "sound_off": "Som desligado",
+    "sound_on": "Som ligado",
+    "start_hint": "Toque no relógio do primeiro jogador para começar.",
+    "subtitle": "Para jogar num tabuleiro físico",
+    "time_label": "Tempo por jogador",
+    "title": "Relógio de jogo",
+    "waiting": "À espera",
+    "white": "Brancas"
   },
   "welcome": "Bem- vindo ao Backgammon Mastermind"
 }
