@@ -14,7 +14,9 @@ PR_COMMENT_FILE="$WORKSPACE/maestro-pr-comment.md"
 RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 SCREENSHOT_BASE_URL=""
 PR_SCREENSHOT_BASE_URL=""
-declare -A VIDEO_URLS=()
+# Bash 3.2 (macOS) has no associative arrays — store name<TAB>url rows instead.
+VIDEO_URLS_FILE=$(mktemp)
+trap 'rm -f "$VIDEO_URLS_FILE"' EXIT
 
 rm -rf "$BUNDLE_DIR"
 mkdir -p "$BUNDLE_DIR"
@@ -57,7 +59,10 @@ for recording in "$WORKSPACE"/e2e-recording.mp4 "$WORKSPACE"/e2e-recording-*.mp4
     cp "$recording" "$BUNDLE_DIR/"
   fi
 done
-mapfile -t recordings < <(find "$BUNDLE_DIR" -maxdepth 1 -type f -name 'e2e-recording*.mp4' 2>/dev/null | sort)
+recordings=()
+while IFS= read -r recording; do
+  [[ -n "$recording" ]] && recordings+=("$recording")
+done < <(find "$BUNDLE_DIR" -maxdepth 1 -type f -name 'e2e-recording*.mp4' 2>/dev/null | sort)
 
 recording_label() {
   local name
@@ -71,7 +76,16 @@ recording_label() {
   fi
 }
 
-mapfile -t screenshots < <(find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
+video_url_for() {
+  local name="$1"
+  [[ -f "$VIDEO_URLS_FILE" ]] || return 0
+  awk -F '\t' -v n="$name" '$1 == n { print $2; exit }' "$VIDEO_URLS_FILE"
+}
+
+screenshots=()
+while IFS= read -r screenshot; do
+  [[ -n "$screenshot" ]] && screenshots+=("$screenshot")
+done < <(find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
 
 URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
 # A failed publish must not reuse URLs left by an earlier run.
@@ -83,6 +97,7 @@ if [[ -n "${GITHUB_TOKEN:-}" ]]; then
   if ((${#screenshots[@]} > 0)); then
     bash "$WORKSPACE/.github/scripts/maestro-publish-screenshots.sh" "$BUNDLE_DIR" || echo "::warning::Screenshot publish failed — images remain in the artifact."
   fi
+  if ((${#recordings[@]} > 0)); then
   for recording in "${recordings[@]}"; do
     name=$(basename "$recording" .mp4)
     slug=${name#e2e-recording}
@@ -93,10 +108,11 @@ if [[ -n "${GITHUB_TOKEN:-}" ]]; then
       || echo "::warning::Video publish failed for $name — recording remains in the artifact."
     url=$(sed -n 's/^MAESTRO_VIDEO_URL=//p' "$video_env" | tail -n 1)
     if [[ -n "$url" ]]; then
-      VIDEO_URLS["$name"]="$url"
+      printf '%s\t%s\n' "$name" "$url" >>"$VIDEO_URLS_FILE"
     fi
     rm -f "$video_env"
   done
+  fi
   URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
   if [[ -f "$URL_FILE" ]]; then
     # shellcheck disable=SC1090
@@ -114,10 +130,12 @@ html_path="$BUNDLE_DIR/index.html"
   echo 'h1,h2{color:#f8fafc}img{max-width:min(420px,100%);border-radius:8px;margin:.5rem 0;border:1px solid #334155}'
   echo 'video{max-width:min(720px,100%);border-radius:8px}section{margin:1.5rem 0}</style></head><body>'
   echo "<h1>Maestro E2E — backgammon smoke</h1><p>Status: <strong>${status_emoji} ${status_text}</strong></p>"
-  for recording in "${recordings[@]}"; do
-    base=$(basename "$recording")
-    echo "<section><h2>Screen recording — $(recording_label "$recording")</h2><video controls src=\"${base}\"></video></section>"
-  done
+  if ((${#recordings[@]} > 0)); then
+    for recording in "${recordings[@]}"; do
+      base=$(basename "$recording")
+      echo "<section><h2>Screen recording — $(recording_label "$recording")</h2><video controls src=\"${base}\"></video></section>"
+    done
+  fi
   if ((${#screenshots[@]} > 0)); then
     echo '<section><h2>Screenshots</h2>'
     for img in "${screenshots[@]}"; do
@@ -142,8 +160,9 @@ html_path="$BUNDLE_DIR/index.html"
     echo ""
     for recording in "${recordings[@]}"; do
       name=$(basename "$recording" .mp4)
-      if [[ -n "${VIDEO_URLS[$name]:-}" ]]; then
-        echo "- [▶ Watch the $(recording_label "$recording")](${VIDEO_URLS[$name]})"
+      video_url=$(video_url_for "$name")
+      if [[ -n "$video_url" ]]; then
+        echo "- [▶ Watch the $(recording_label "$recording")](${video_url})"
       else
         echo "- Download **${name}.mp4** from the \`maestro-visual-report\` artifact (or watch in \`index.html\`)."
       fi
@@ -214,9 +233,10 @@ html_path="$BUNDLE_DIR/index.html"
     echo ""
     for recording in "${recordings[@]}"; do
       name=$(basename "$recording" .mp4)
-      if [[ -n "${VIDEO_URLS[$name]:-}" ]]; then
+      video_url=$(video_url_for "$name")
+      if [[ -n "$video_url" ]]; then
         # The release URL provides a download; the HTML bundle provides a player.
-        echo "- [▶ Watch the $(recording_label "$recording")](${VIDEO_URLS[$name]})"
+        echo "- [▶ Watch the $(recording_label "$recording")](${video_url})"
       else
         echo "- _Recording publish unavailable. \`${name}.mp4\` is in the \`maestro-visual-report\` artifact._"
       fi

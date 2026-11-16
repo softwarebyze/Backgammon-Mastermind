@@ -12,8 +12,12 @@ mkdir -p "$MAESTRO_OUT"
 
 # Flows come from .maestro/android-shards.json, the only Android CI flow list.
 # SHARD (1-based) picks one shard; leave it empty to run every shard in order.
+# Resolve flow names without mapfile (macOS ships Bash 3.2).
 # shellcheck disable=SC2016 # the JavaScript is meant to be single-quoted
-mapfile -t FLOWS < <(node -e '
+FLOWS=()
+while IFS= read -r flow; do
+  [[ -n "$flow" ]] && FLOWS+=("$flow")
+done < <(node -e '
   const [file, shard] = process.argv.slice(1);
   const { shards } = JSON.parse(require("node:fs").readFileSync(file, "utf8"));
   const picked = shard ? shards[Number(shard) - 1] : shards.flat();

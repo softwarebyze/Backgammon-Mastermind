@@ -2,6 +2,7 @@
 # The CI list (split into parallel shards) is .maestro/android-shards.json;
 # src/lib/maestro-flow-coverage.test.ts keeps the two in step.
 flows:
+  - app/game-clock.yaml
   - app/backgammon-smoke.yaml
   - app/position-setup.yaml
   - app/computer-match.yaml
@@ -13,7 +14,6 @@ flows:
   - app/language-settings.yaml
   - app/home-game-setup.yaml
   - app/dice-order.yaml
-  - app/tutor-blunder-history.yaml
   - app/bar-entry-hints.yaml
   - app/dice-order-fallback.yaml
   - app/computer-level.yaml

@@ -1,6 +1,7 @@
 {
   "shards": [
     [
+      "game-clock",
       "backgammon-smoke",
       "position-setup",
       "computer-match",
@@ -14,7 +15,6 @@
     [
       "home-game-setup",
       "dice-order",
-      "tutor-blunder-history",
       "bar-entry-hints",
       "dice-order-fallback",
       "computer-level",
