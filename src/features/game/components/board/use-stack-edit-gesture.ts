@@ -1,8 +1,11 @@
+import type { GestureType } from 'react-native-gesture-handler';
 import { useMemo, useRef } from 'react';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS, useSharedValue } from 'react-native-reanimated';
 
 export type StackEditHandlers = {
+  /** The page scroll must wait for an editor stroke to fail or finish. */
+  scrollGesture?: GestureType;
   onStart: (point: number, localY: number) => void;
   onDelta: (point: number, steps: number) => void;
   onEnd: (point: number, tap: boolean, steps?: number) => void;
@@ -27,8 +30,10 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
     cancel: () => latest.current?.onCancel(point),
   }), [point]);
   const enabled = !!handlers;
+  const scrollGesture = handlers?.scrollGesture;
   return useMemo(() => Gesture.Manual()
     .enabled(enabled)
+    .blocksExternalGesture(...(scrollGesture ? [scrollGesture] : []))
     .shouldCancelWhenOutside(false)
     .onTouchesDown((event, manager) => {
       if (event.numberOfTouches !== 1) {
@@ -76,5 +81,5 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
     .onFinalize((_event, success) => {
       if (!success)
         runOnJS(callbacks.cancel)();
-    }), [enabled, step, callbacks, quantum, originX, originY, finalX, finalY]);
+    }), [enabled, scrollGesture, step, callbacks, quantum, originX, originY, finalX, finalY]);
 }

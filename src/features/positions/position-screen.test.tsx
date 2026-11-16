@@ -258,11 +258,11 @@ it.each(['ios', 'android'] as const)('unlocks page scrolling after focus loss on
   try {
     render(<PositionScreen />);
     fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
-    expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
+    expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(platform !== 'ios');
     act(() => mockBlur?.());
     expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(true);
     fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
-    expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
+    expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(platform !== 'ios');
   }
   finally {
     Platform.OS = original;

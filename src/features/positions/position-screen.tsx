@@ -1,8 +1,9 @@
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
 import { router, useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { Keyboard, Platform, ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { cubeCornerClearance } from '@/features/game/bear-off-layout';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
@@ -57,6 +58,7 @@ function PositionWorkspace({ data }: { data?: string }) {
   const { state, startFromPosition } = useGame();
   const [initial] = useState(() => initialPosition(data));
   const history = usePositionHistory(() => initial.position);
+  const pageScroll = useMemo(() => Gesture.Native(), []);
   const [strokeActive, setStrokeActive] = useState(false);
   const [editorEpoch, setEditorEpoch] = useState(0);
   const endStroke = history.strokeEnd;
@@ -134,6 +136,7 @@ function PositionWorkspace({ data }: { data?: string }) {
   const editor = (
     <PositionBoardEditor
       key={editorEpoch}
+      scrollGesture={pageScroll}
       position={position}
       dimensions={dims}
       location={location}
@@ -184,39 +187,41 @@ function PositionWorkspace({ data }: { data?: string }) {
   return (
     <>
       <FocusAwareStatusBar />
-      <ScrollView
-        testID="position-screen"
-        style={styles.root}
-        // A stack drag must not scroll the page. Gesture-handler 3 can let
-        // the native scroll view win the touch on either mobile platform.
-        scrollEnabled={Platform.OS === 'web' || !strokeActive}
-        onLayout={e => setFrameWidth(e.nativeEvent.layout.width)}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-        automaticallyAdjustKeyboardInsets
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[styles.content, { maxWidth: dims.boardOuterWidth + 32 + insets.left + insets.right + (layout.side ? layout.panelWidth + SIDE_GAP : 0), paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
-      >
-        {!!data && <Text style={styles.caption}>{translate('positions.shared_intro')}</Text>}
-        {layout.side
-          ? (
-              <View style={styles.sideLayout}>
-                {editor}
-                <View style={[styles.sidePanel, { width: layout.panelWidth }]}>
-                  <PositionPlayerStrip position={position} player="black" onChange={change} />
-                  <PositionPlayerStrip position={position} player="white" onChange={change} />
-                  <PositionEditorToolbar color={color} onColor={setColor} onLocation={selectLocation} actions={setupActions} />
-                  {panel}
+      <GestureDetector gesture={pageScroll}>
+        <ScrollView
+          testID="position-screen"
+          style={styles.root}
+          // Android uses the native gesture dependency to avoid toggling the
+          // scroll view during touch delivery. iOS also needs its scroll lock.
+          scrollEnabled={Platform.OS !== 'ios' || !strokeActive}
+          onLayout={e => setFrameWidth(e.nativeEvent.layout.width)}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          automaticallyAdjustKeyboardInsets
+          contentInsetAdjustmentBehavior="automatic"
+          contentContainerStyle={[styles.content, { maxWidth: dims.boardOuterWidth + 32 + insets.left + insets.right + (layout.side ? layout.panelWidth + SIDE_GAP : 0), paddingTop: WEB_SETTINGS_TOP_PADDING }, contentEdgePadding(insets, { left: 16, right: 16, bottom: 32 })]}
+        >
+          {!!data && <Text style={styles.caption}>{translate('positions.shared_intro')}</Text>}
+          {layout.side
+            ? (
+                <View style={styles.sideLayout}>
+                  {editor}
+                  <View style={[styles.sidePanel, { width: layout.panelWidth }]}>
+                    <PositionPlayerStrip position={position} player="black" onChange={change} />
+                    <PositionPlayerStrip position={position} player="white" onChange={change} />
+                    <PositionEditorToolbar color={color} onColor={setColor} onLocation={selectLocation} actions={setupActions} />
+                    {panel}
+                  </View>
                 </View>
-              </View>
-            )
-          : (
-              <>
-                {editor}
-                {panel}
-              </>
-            )}
-      </ScrollView>
+              )
+            : (
+                <>
+                  {editor}
+                  {panel}
+                </>
+              )}
+        </ScrollView>
+      </GestureDetector>
     </>
   );
 }

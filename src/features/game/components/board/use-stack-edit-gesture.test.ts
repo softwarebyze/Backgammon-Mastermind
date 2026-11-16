@@ -8,6 +8,10 @@ jest.mock('react-native-reanimated', () => ({
 }));
 jest.mock('react-native-gesture-handler', () => ({ Gesture: { Manual: () => {
   const gesture: { handlers: Record<string, unknown>; [key: string]: unknown } = { handlers: {} };
+  gesture.blocksExternalGesture = (...gestures: unknown[]) => {
+    gesture.scrollDependencies = gestures;
+    return gesture;
+  };
   for (const name of ['enabled', 'shouldCancelWhenOutside'])
     gesture[name] = () => gesture;
   for (const name of ['onTouchesDown', 'onTouchesMove', 'onTouchesUp', 'onEnd', 'onFinalize']) {
@@ -67,4 +71,10 @@ it('quantizes moves and restores an interrupted or multi-touch stroke', () => {
   result.current.handlers.onFinalize!({} as End, false);
   expect(cb.onEnd).not.toHaveBeenCalled();
   expect(cb.onCancel).toHaveBeenCalledTimes(1);
+});
+
+it('makes the page native scroll gesture wait for the editor gesture', () => {
+  const scrollGesture = {} as NonNullable<Parameters<typeof useStackEditGesture>[2]>['scrollGesture'];
+  const { result } = renderHook(() => useStackEditGesture(6, 20, { ...callbacks(), scrollGesture }));
+  expect((result.current as unknown as { scrollDependencies: unknown[] }).scrollDependencies).toEqual([scrollGesture]);
 });
