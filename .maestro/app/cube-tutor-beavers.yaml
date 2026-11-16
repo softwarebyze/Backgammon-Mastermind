@@ -153,13 +153,11 @@ tags:
 - takeScreenshot: cube-beaver-redo
 
 # Validate the full beaver event history across a real cold launch.
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 45000
+# Retry: Android sometimes leaves the launcher in front after stop+launch.
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible: Black wins 2 · Pass
