@@ -17,13 +17,14 @@ import { SettingsChevron } from './settings-chevron';
 
 type ItemProps = {
   text: TxKeyPath;
+  hint?: TxKeyPath;
   value?: string;
   onPress?: () => void;
   icon?: React.ReactNode;
   testID?: string;
 };
 
-export function SettingsItem({ text, value, icon, onPress, testID }: ItemProps) {
+export function SettingsItem({ text, hint, value, icon, onPress, testID }: ItemProps) {
   const isPressable = onPress !== undefined;
   return (
     <Pressable
@@ -40,7 +41,10 @@ export function SettingsItem({ text, value, icon, onPress, testID }: ItemProps) 
     >
       <View style={styles.left}>
         {icon && <View style={styles.icon}>{icon}</View>}
-        <Text style={styles.label}>{translate(text)}</Text>
+        <View style={styles.copy}>
+          <Text style={styles.label}>{translate(text)}</Text>
+          {hint ? <Text style={styles.hint}>{translate(hint)}</Text> : null}
+        </View>
       </View>
       <View style={styles.right}>
         {value !== undefined && <Text style={styles.value}>{value}</Text>}
@@ -64,6 +68,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
+  copy: {
+    flex: 1,
+  },
   icon: {
     marginRight: 10,
   },
@@ -75,6 +82,12 @@ const styles = StyleSheet.create({
   label: {
     color: GAME_PALETTE.text,
     fontSize: 16,
+    ...interFont('regular'),
+  },
+  hint: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 12,
+    marginTop: 2,
     ...interFont('regular'),
   },
   value: {

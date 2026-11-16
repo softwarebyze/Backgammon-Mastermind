@@ -16,6 +16,10 @@ type Props = {
 export function SettingsContainer({ children, title }: Props) {
   const items = React.Children.toArray(children).filter(Boolean);
 
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <View style={styles.section}>
       {title ? <Text className="pb-2 text-lg" style={styles.title} tx={title} /> : null}
