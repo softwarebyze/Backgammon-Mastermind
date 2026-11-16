@@ -1,4 +1,5 @@
-# Confirm holds a spent roll; Undo restores the board before handoff.
+# Confirm holds a spent roll; its Undo takes back the whole turn before handoff,
+# and the header Redo replays it one move at a time.
 appId: ${APP_ID}
 tags:
   - pull-request
@@ -61,27 +62,41 @@ tags:
 - assertVisible: 'Point 6, 4 white checkers'
 - assertNotVisible: '.*Black. Your turn.*'
 - takeScreenshot: confirm-03-held-turn
+# The confirm bar's Undo rewinds both moves back to the rolled position.
 - tapOn:
     id: undo-move-button
 - extendedWaitUntil:
-    visible: 'Point 6, 5 white checkers'
+    visible: 'Point 8, 3 white checkers'
     timeout: 15000
-- assertVisible: 'Point 5, 1 white checker'
+- assertVisible: 'Point 6, 5 white checkers'
+- assertVisible: Point 5
+- assertNotVisible: 'Point 5, .* white checkers?'
 - assertNotVisible:
     id: confirm-move-button
-- takeScreenshot: confirm-04-undo-before-confirm
+- takeScreenshot: confirm-04-undo-whole-turn
+# Header Redo replays the undone turn one move at a time.
 - tapOn:
-    id: point-6
+    id: header-redo-button
+- extendedWaitUntil:
+    visible: 'Point 5, 1 white checker'
+    timeout: 15000
+- assertVisible: 'Point 8, 2 white checkers'
+- assertVisible: 'Point 6, 5 white checkers'
+- assertNotVisible:
+    id: confirm-move-button
 - tapOn:
-    id: point-5
+    id: header-redo-button
 - extendedWaitUntil:
     visible:
       id: confirm-move-button
     timeout: 15000
+- assertVisible: 'Point 5, 2 white checkers'
+- assertVisible: 'Point 6, 4 white checkers'
+- takeScreenshot: confirm-05-redo-replays-turn
 - tapOn:
     id: confirm-move-button
 - extendedWaitUntil:
     visible: '.*Black. Your turn.*'
     timeout: 15000
 - assertVisible: 'Point 5, 2 white checkers'
-- takeScreenshot: confirm-05-turn-handed-off
+- takeScreenshot: confirm-06-turn-handed-off

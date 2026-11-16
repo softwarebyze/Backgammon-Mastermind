@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FeedbackHeaderButton } from '@/components/navigation/feedback-header-button';
 import { languageScreenLayout } from '@/lib/i18n';
 import {
   homeScreenOptions,
@@ -14,6 +15,7 @@ import { stackEscapeHeaderOptions } from '@/lib/navigation/stack-escape-header';
 /** `learn` hosts its own Stack; it keys its screens itself so its history survives. */
 const screenLayout = languageScreenLayout(['learn']);
 
+/** Configure app routes with translated native titles and always-available escape navigation. */
 export default function AppLayout() {
   // Reactive `t` (not memoized `translate`) so header titles refresh when the
   // language switches in place on web; React Compiler tracks it as a dependency.
@@ -39,6 +41,15 @@ export default function AppLayout() {
         options={{
           ...settingsStackOptions(t('settings.title')),
           ...stackEscapeHeaderOptions(),
+          headerRight: () => <FeedbackHeaderButton />,
+        }}
+      />
+      <Stack.Screen
+        name="feedback"
+        options={{
+          ...settingsStackOptions(t('feedback.title')),
+          ...stackEscapeHeaderOptions(),
+          headerLargeTitle: false,
         }}
       />
       <Stack.Screen
@@ -56,6 +67,14 @@ export default function AppLayout() {
         name="position"
         options={{
           ...settingsStackOptions(t('positions.title')),
+          ...stackEscapeHeaderOptions(),
+          headerLargeTitle: false,
+        }}
+      />
+      <Stack.Screen
+        name="timer"
+        options={{
+          ...settingsStackOptions(t('timer.title')),
           ...stackEscapeHeaderOptions(),
           headerLargeTitle: false,
         }}

@@ -55,7 +55,13 @@ export type GameEngine = {
    * Best full-turn plan plus all candidates, best-first. Throws when the
    * engine is unavailable or returns nothing usable — callers can offer a retry without guessing.
    */
-  planTurn: (state: GameState) => Promise<EngineTurnPlan>;
+  planTurn: (state: GameState, opts?: { ply?: 1 | 2 }) => Promise<EngineTurnPlan>;
+  /**
+   * The moves that reach one of `planTurn`'s candidates, so a weaker
+   * computer can play a candidate other than the best. Throws when the
+   * dice cannot reach it.
+   */
+  movesToCandidate?: (state: GameState, candidate: EngineTurnCandidate) => Move[];
   /**
    * Fingerprint of the position after a completed turn, in the same space
    * as `candidates[].board`, so the tutor can find the played turn among
