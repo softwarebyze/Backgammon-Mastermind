@@ -1,7 +1,7 @@
 import type { Player } from '@/lib/game/types';
 import * as React from 'react';
-import { Pressable, Text, View } from 'react-native';
-
+import { Pressable, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import {
   BEAR_OFF_PADDING,
   bearOffHalfHeight,
@@ -9,7 +9,9 @@ import {
   bearOffTokenSize,
   maxBearOffVisibleSlots,
 } from '@/features/game/bear-off-layout';
+
 import { translate } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 
@@ -104,6 +106,7 @@ function BearOffStack({
 
       {overflow > 0 && (
         <Text
+          maxFontSizeMultiplier={FONT_SCALE_CAP.fixed}
           style={{
             position: 'absolute',
             top: player === 'black' ? BEAR_OFF_PADDING + cubeClearance : undefined,

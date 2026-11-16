@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-
+import { View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 
 type Props = {
@@ -25,7 +27,7 @@ export function PointNumbersIcon({ size = 28, active = false }: Props) {
         backgroundColor: 'rgba(255,255,255,0.04)',
       }}
     >
-      <Text style={{ color, fontSize: size * 0.48, ...interFont('bold') }}>24</Text>
+      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={{ color, fontSize: size * 0.48, ...interFont('bold') }}>24</Text>
     </View>
   );
 }

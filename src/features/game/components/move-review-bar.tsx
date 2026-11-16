@@ -2,13 +2,15 @@ import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import Feather from '@expo/vector-icons/Feather';
 import { use } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
 import { MoveReviewTurnStrip } from '@/features/game/components/move-review-turn-strip';
-
 import { GameContext } from '@/features/game/game-context';
+
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { COMPACT_REVIEW_SLOT_HEIGHT } from '@/features/game/hooks/use-board-dimensions';
 import { translate, useLayoutIsRTL } from '@/lib/i18n';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 import { interFont } from '@/lib/ui/fonts';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
@@ -80,7 +82,7 @@ export function MoveReviewBar({
       {isReviewing
         ? (
             <View style={styles.labelRow}>
-              <Text style={styles.positionLabel} numberOfLines={1}>
+              <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={styles.positionLabel} numberOfLines={1}>
                 {positionLabel ?? translate('game.review.scrubber_hint')}
               </Text>
               {canReplay && onToggleReplay
@@ -103,7 +105,7 @@ export function MoveReviewBar({
                         size={14}
                         color={isLooping ? '#2A1A08' : GAME_PALETTE.accent}
                       />
-                      <Text style={[styles.replayText, isLooping && styles.replayTextActive]}>
+                      <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[styles.replayText, isLooping && styles.replayTextActive]}>
                         {isLooping
                           ? translate('game.review.pause_replay')
                           : translate('game.review.replay')}
