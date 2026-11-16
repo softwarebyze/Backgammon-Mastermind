@@ -19,7 +19,32 @@ if [[ -z "$posthog_key" && -f app/build.gradle ]]; then
   rm -f app/build.gradle.bak
 fi
 # Avoid a second Kotlin JVM inheriting the old 512 MiB metaspace ceiling.
-./gradlew assembleRelease --no-daemon --build-cache --stacktrace --max-workers=2 \
-  -Pkotlin.compiler.execution.strategy=in-process \
-  '-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -XX:+UseParallelGC -Dfile.encoding=UTF-8' 
+# Maven Central occasionally 429s cold CI runners resolving the Kotlin plugin.
+gradle_args=(
+  assembleRelease --no-daemon --build-cache --stacktrace --max-workers=2
+  -Pkotlin.compiler.execution.strategy=in-process
+  '-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -XX:+UseParallelGC -Dfile.encoding=UTF-8'
+)
+log="$(mktemp)"
+status=1
+for attempt in 1 2 3; do
+  set +e
+  ./gradlew "${gradle_args[@]}" >"$log" 2>&1
+  status=$?
+  set -e
+  cat "$log"
+  if [[ "$status" -eq 0 ]]; then
+    break
+  fi
+  if [[ "$attempt" -eq 3 ]] || ! grep -Eqi '429|Too Many Requests|Could not (GET|HEAD|get resource)' "$log"; then
+    rm -f "$log"
+    exit "$status"
+  fi
+  echo "::warning::Gradle assemble attempt ${attempt} hit a Maven rate limit; retrying..."
+  sleep $((attempt * 20))
+done
+rm -f "$log"
+if [[ "$status" -ne 0 ]]; then
+  exit "$status"
+fi
 cp app/build/outputs/apk/release/app-release.apk "$WORKSPACE/android-test.apk"
