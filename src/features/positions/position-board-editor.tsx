@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import type { GestureType } from 'react-native-gesture-handler';
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
@@ -15,8 +14,7 @@ import { PositionPlayerStrip } from './position-players';
 import { styles } from './position-styles';
 import { usePositionStackEditor } from './use-position-stack-editor';
 
-export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, onStrokeStart, onStrokeEnd, showToolbar = true, showStrips = true, scrollGesture }: {
-  scrollGesture?: GestureType;
+export function PositionBoardEditor({ position, dimensions, location, color, onColor, onLocation, onChange, actions, onStrokeStart, onStrokeEnd, showToolbar = true, showStrips = true }: {
   actions?: ReactNode;
   /** Wide layouts move the paint and setup buttons beside the board. */
   showToolbar?: boolean;
@@ -87,7 +85,6 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
           editMode
           stackEditor={{
             ...editor,
-            scrollGesture,
             onStart: (point, y) => {
               beginStroke(point);
               editor.onStart(point, y);

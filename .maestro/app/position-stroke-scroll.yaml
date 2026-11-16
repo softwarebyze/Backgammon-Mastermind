@@ -1,0 +1,36 @@
+# Drawing on the board keeps the toolbar in place; scrolling outside it still works.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- openLink: backgammonmastermind.preview://position
+- extendedWaitUntil:
+    visible:
+      id: position-empty
+    timeout: 30000
+- tapOn:
+    id: position-empty
+- runFlow: ../utils/position-bar.yaml
+- assertVisible:
+    id: position-paint-white
+- takeScreenshot: position-stroke-01-toolbar-stays
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-saved-toggle
+      START_Y: '80%'
+      END_Y: '25%'
+- takeScreenshot: position-stroke-02-page-scrolls
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: position-paint-white
+      START_Y: '25%'
+      END_Y: '80%'
+- assertVisible:
+    id: position-paint-white
