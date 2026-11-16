@@ -56,9 +56,6 @@ importers:
       expo-clipboard:
         specifier: ~58.0.4
         version: 58.0.4(expo@58.0.25)(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.85.3(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
-      expo-constants:
-        specifier: ~58.0.16
-        version: 58.0.16(expo@58.0.25)(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.85.3(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.0))(typescript@6.0.3)
       expo-crypto:
         specifier: ~58.0.8
         version: 58.0.8(expo@58.0.25)
@@ -195,9 +192,6 @@ importers:
       '@antfu/eslint-config':
         specifier: ^7.2.0
         version: 7.2.0(@eslint-react/eslint-plugin@2.7.2(eslint@9.39.2(jiti@2.7.0))(typescript@6.0.3))(@vue/compiler-sfc@3.5.27)(eslint-plugin-react-hooks@7.0.1(eslint@9.39.2(jiti@2.7.0)))(eslint-plugin-react-refresh@0.4.26(eslint@9.39.2(jiti@2.7.0)))(eslint@9.39.2(jiti@2.7.0))(typescript@6.0.3)
-      '@babel/core':
-        specifier: ^7.29.13
-        version: 7.29.13
       '@callstack/licenses':
         specifier: 0.3.3
         version: 0.3.3

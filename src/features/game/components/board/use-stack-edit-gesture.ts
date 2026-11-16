@@ -6,7 +6,8 @@ export type StackEditHandlers = {
   onStart: (point: number, localY: number) => void;
   onDelta: (point: number, steps: number) => void;
   onEnd: (point: number, tap: boolean, steps?: number) => void;
-  onCancel: () => void;
+  /** The stroke on `point` was cancelled or failed (it may never have started). */
+  onCancel: (point: number) => void;
   onAdjust: (point: number, delta: number) => void;
 };
 
@@ -23,7 +24,7 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
     start: (y: number) => latest.current?.onStart(point, y),
     move: (value: number) => latest.current?.onDelta(point, value),
     end: (tap: boolean, steps: number) => latest.current?.onEnd(point, tap, steps),
-    cancel: () => latest.current?.onCancel(),
+    cancel: () => latest.current?.onCancel(point),
   }), [point]);
   const enabled = !!handlers;
   return useMemo(() => Gesture.Manual()
