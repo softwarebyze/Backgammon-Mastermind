@@ -1,6 +1,7 @@
 /* eslint-disable react-compiler/react-compiler -- Reanimated shared-value writes on UI thread */
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import { useCallback, useMemo, useRef } from 'react';
+import { Platform } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 
@@ -124,6 +125,14 @@ export function useColumnTapGesture(enabled: boolean, handlers: ColumnTapHandler
       });
   }, [enabled, invokePress, invokePressIn, invokePressOut]);
 }
+
+/**
+ * Native keeps a column's GestureDetector mounted while its gestures are off.
+ * A tap can end the turn, which turns dragging off for the tapped column; if
+ * that remounted the column mid-touch, React never saw the touch end and the
+ * next press anywhere (Undo, say) was swallowed releasing the stale responder.
+ */
+export const KEEP_DETECTOR_MOUNTED = Platform.OS !== 'web';
 
 export function composeColumnGestures(pan: ReturnType<typeof useCheckerPan>, tap: ReturnType<typeof useColumnTapGesture>) {
   return Gesture.Exclusive(pan, tap);

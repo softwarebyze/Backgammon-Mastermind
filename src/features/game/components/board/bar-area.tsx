@@ -13,7 +13,7 @@ import { translate } from '@/lib/i18n';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 import { StackEditTarget } from './stack-edit-target';
-import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
+import { composeColumnGestures, KEEP_DETECTOR_MOUNTED, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 type DragHandlers = {
   onDragAttempt?: (from: number) => void;
@@ -160,10 +160,7 @@ export function BarArea({
     overlay: dragOverlay,
   });
   const tap = useColumnTapGesture(dragEnabled, { onPress: onPressBar });
-  const barGesture = useMemo(
-    () => (dragEnabled ? composeColumnGestures(pan, tap) : null),
-    [dragEnabled, pan, tap],
-  );
+  const barGesture = useMemo(() => composeColumnGestures(pan, tap), [pan, tap]);
 
   const pressable = (
     <Pressable
@@ -223,7 +220,7 @@ export function BarArea({
     return <StackEditTarget point={BAR_POINT} checkerSize={checkerSize} editor={stackEditor}>{pressable}</StackEditTarget>;
   }
 
-  if (dragEnabled && barGesture) {
+  if (dragEnabled || KEEP_DETECTOR_MOUNTED) {
     return (
       <GestureDetector gesture={barGesture}>
         {pressable}
