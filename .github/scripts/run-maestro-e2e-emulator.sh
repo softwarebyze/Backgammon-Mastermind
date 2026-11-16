@@ -51,6 +51,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/dice-order-fallback.yaml" \
   "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
+  "${WORKSPACE}/.maestro/app/arabic-timeline-live.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/feedback.yaml" \
   -e "APP_ID=${APP_ID}" \
