@@ -64,9 +64,31 @@ it.each([
   expect(screen.getByTestId(testID)).toBe(mounted);
 });
 
-it('still presses a point column directly while dragging is off', () => {
+it.each([
+  ['point column', column, 'point-5'],
+  ['bar', bar, 'board-bar'],
+] as const)('still activates the native %s accessibly while dragging is off', (_name, element, testID) => {
   const onPress = jest.fn();
-  render(column({ dragEnabled: false, onPress }));
-  fireEvent.press(screen.getByTestId('point-5'));
+  const props = { dragEnabled: false, onPress, onPressBar: onPress };
+  render(element(props));
+  fireEvent(screen.getByTestId(testID), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
   expect(onPress).toHaveBeenCalledTimes(1);
+});
+
+it.each([
+  ['point column', column, 'point-5'],
+  ['bar', bar, 'board-bar'],
+] as const)('does not hand a native %s tap to Pressable when dragging turns off', (_name, element, testID) => {
+  const pressHandler = () => {
+    let node = screen.getByTestId(testID);
+    while (!Object.prototype.hasOwnProperty.call(node.props, 'onPress'))
+      node = node.parent!;
+    return node.props.onPress;
+  };
+  const { rerender } = render(element({ dragEnabled: true }));
+  expect(pressHandler()).toBeUndefined();
+  rerender(element({ dragEnabled: false }));
+  // The native Tap recognizer still owns the touch that just spent the die.
+  // Pressable must not re-deliver its UP against the new remaining dice.
+  expect(pressHandler()).toBeUndefined();
 });

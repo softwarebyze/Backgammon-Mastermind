@@ -159,7 +159,7 @@ export function BarArea({
     onDragCancel,
     overlay: dragOverlay,
   });
-  const tap = useColumnTapGesture(dragEnabled, { onPress: onPressBar });
+  const tap = useColumnTapGesture(!stackEditor && (dragEnabled || KEEP_DETECTOR_MOUNTED), { onPress: onPressBar });
   const barGesture = useMemo(() => composeColumnGestures(pan, tap), [pan, tap]);
 
   const pressable = (
@@ -167,12 +167,17 @@ export function BarArea({
       testID={stackEditor ? 'position-board-bar' : 'board-bar'}
       accessibilityRole={stackEditor ? 'adjustable' : 'button'}
       accessibilityValue={stackEditor ? { min: 0, max: 15, now: currentPlayer === 'white' ? whiteCount : blackCount } : undefined}
-      accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : undefined}
-      onAccessibilityAction={event => stackEditor?.onAdjust(BAR_POINT, event.nativeEvent.actionName === 'decrement' ? -1 : 1)}
+      accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : [{ name: 'activate' }]}
+      onAccessibilityAction={(event) => {
+        if (stackEditor)
+          stackEditor.onAdjust(BAR_POINT, event.nativeEvent.actionName === 'decrement' ? -1 : 1);
+        else if (event.nativeEvent.actionName === 'activate')
+          onPressBar();
+      }}
       accessibilityLabel={barLabel(whiteCount, blackCount)}
       accessible
-      pointerEvents={dragEnabled || stackEditor ? 'box-only' : 'auto'}
-      onPress={dragEnabled || stackEditor
+      pointerEvents={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED ? 'box-only' : 'auto'}
+      onPress={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED
         ? undefined
         : (e) => {
             // Parent board Pressable clears selection; stop bubble on web.

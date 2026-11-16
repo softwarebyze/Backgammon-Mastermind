@@ -117,8 +117,9 @@ export function useColumnTapGesture(enabled: boolean, handlers: ColumnTapHandler
       .onBegin(() => {
         runOnJS(invokePressIn)();
       })
-      .onEnd(() => {
-        runOnJS(invokePress)();
+      .onEnd((_event, success) => {
+        if (success)
+          runOnJS(invokePress)();
       })
       .onFinalize(() => {
         runOnJS(invokePressOut)();
@@ -127,10 +128,12 @@ export function useColumnTapGesture(enabled: boolean, handlers: ColumnTapHandler
 }
 
 /**
- * Native keeps a column's GestureDetector mounted while its gestures are off.
+ * Native keeps the detector and Tap recognizer mounted even when pan is off.
  * A tap can end the turn, which turns dragging off for the tapped column; if
  * that remounted the column mid-touch, React never saw the touch end and the
  * next press anywhere (Undo, say) was swallowed releasing the stale responder.
+ * Tap ownership also stays with RNGH: handing UP to Pressable after a move
+ * disables pan can deliver the same tap twice against different dice states.
  */
 export const KEEP_DETECTOR_MOUNTED = Platform.OS !== 'web';
 

@@ -293,7 +293,7 @@ export function PointColumn({
     onDragCancel,
     overlay: dragOverlay,
   });
-  const tap = useColumnTapGesture(dragEnabled, { onPress, onPressIn, onPressOut });
+  const tap = useColumnTapGesture(!stackEditor && (dragEnabled || KEEP_DETECTOR_MOUNTED), { onPress, onPressIn, onPressOut });
   const columnGesture = useMemo(() => composeColumnGestures(pan, tap), [pan, tap]);
   const a11yLabel = pointAccessibilityLabel(pointIndex, point, { isSelected, isLegalTarget });
   const columnStyle = { width: colWidth, height: pointHeight, position: 'relative' as const, overflow: 'visible' as const };
@@ -323,15 +323,15 @@ export function PointColumn({
       accessibilityValue={stackEditor ? { min: 0, max: 15, now: point.count } : undefined}
       accessible
       testID={`point-${pointIndex}`}
-      pointerEvents={dragEnabled || stackEditor ? 'box-only' : 'auto'}
-      onPress={dragEnabled || stackEditor
+      pointerEvents={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED ? 'box-only' : 'auto'}
+      onPress={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED
         ? undefined
         : (e) => {
             e?.stopPropagation?.();
             onPress();
           }}
-      onPressIn={dragEnabled ? undefined : onPressIn}
-      onPressOut={dragEnabled ? undefined : onPressOut}
+      onPressIn={dragEnabled || KEEP_DETECTOR_MOUNTED ? undefined : onPressIn}
+      onPressOut={dragEnabled || KEEP_DETECTOR_MOUNTED ? undefined : onPressOut}
       accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }, { name: 'activate' }] : [{ name: 'activate' }]}
       onAccessibilityAction={(event) => {
         if (stackEditor) {
