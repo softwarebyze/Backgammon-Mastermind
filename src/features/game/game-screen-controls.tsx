@@ -1,7 +1,7 @@
 import type { GameState } from '@/lib/game';
 import type { OpeningTray } from '@/lib/game/opening-display';
 import Feather from '@expo/vector-icons/Feather';
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { Text } from '@/components/ui/scaled-text';
@@ -11,6 +11,7 @@ import { HintButton } from '@/features/game/components/hint-button';
 
 import { MatchControls } from '@/features/game/components/match-controls';
 import { controlButtonStyles } from '@/features/game/control-buttons';
+import { GameContext } from '@/features/game/game-context';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { useGuidance } from '@/features/game/guidance-store';
 import { TRAY_DIE_SIZE } from '@/features/game/hooks/use-board-dimensions';
@@ -223,6 +224,7 @@ function ActionControl({
   canUndoMove: boolean;
   compact: boolean;
 }) {
+  const game = use(GameContext);
   const awaitingHumanRoll = !isReviewing
     && isHumanTurn
     && (state.phase === 'rolling' || state.phase === 'opening-roll');
@@ -316,6 +318,8 @@ function ActionControl({
     && onConfirmMove
     && isAwaitingMoveConfirm(state, confirmMoveEnabled)
   ) {
+    // Undo here takes back the whole turn, not just the last checker.
+    const undoTurn = game?.canUndoTurn ? game.doUndoTurn : undefined;
     return (
       <ConfirmMoveBar
         compact={compact}
@@ -329,7 +333,7 @@ function ActionControl({
             return;
           }
           hapticLight();
-          onUndoMove();
+          (undoTurn ?? onUndoMove)();
         }}
       />
     );
