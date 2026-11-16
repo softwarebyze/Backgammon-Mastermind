@@ -9,7 +9,16 @@ import { PositionScreen } from './position-screen';
 
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(() => Promise.resolve(true)) }));
 const mockSetOptions = jest.fn();
-jest.mock('expo-router', () => ({ useLocalSearchParams: jest.fn(() => ({})), useNavigation: jest.fn(() => ({ setOptions: mockSetOptions })), router: { replace: jest.fn() } }));
+let mockBlur: (() => void) | undefined;
+jest.mock('expo-router', () => ({
+  useLocalSearchParams: jest.fn(() => ({})),
+  useFocusEffect: (callback: () => (() => void)) => require('react').useEffect(() => {
+    mockBlur = callback();
+    return mockBlur;
+  }, [callback]),
+  useNavigation: jest.fn(() => ({ setOptions: mockSetOptions })),
+  router: { replace: jest.fn() },
+}));
 
 jest.mock('@/features/game/use-game', () => ({ useGame: jest.fn() }));
 jest.mock('@/features/game/request-new-game', () => ({ requestReplaceActiveGame: jest.fn() }));
@@ -19,7 +28,7 @@ jest.mock('@/lib/ui/layout-metrics', () => ({ useLayoutMetrics: jest.fn(() => ({
 jest.mock('@/features/game/components/board/board-view', () => {
   const { Pressable, Text } = require('react-native');
   return ({
-    BoardView: ({ state, onPointPress }: { state: { points: { count: number }[] }; onPointPress: (point: number) => void }) => <Pressable testID="test-board-point" onPress={() => onPointPress(6)}><Text>{state.points[6]!.count}</Text></Pressable>,
+    BoardView: ({ state, onPointPress, stackEditor }: { state: { points: { count: number }[] }; onPointPress: (point: number) => void; stackEditor: { onStart: (point: number, y: number) => void } }) => <Pressable onPressIn={() => stackEditor.onStart(6, 0)} testID="test-board-point" onPress={() => onPointPress(6)}><Text>{state.points[6]!.count}</Text></Pressable>,
   });
 });
 
@@ -240,4 +249,14 @@ it('shows the responder for an imported offer and lets either strip start a fres
   fireEvent.press(screen.getByTestId('position-play'));
   jest.mocked(requestReplaceActiveGame).mock.calls[0]![0].onReplace();
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ currentPlayer: 'white', match: expect.objectContaining({ pendingOffer: null }) }));
+});
+
+it('unlocks page scrolling and starts a fresh editor stroke after focus loss', () => {
+  render(<PositionScreen />);
+  fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
+  expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
+  act(() => mockBlur?.());
+  expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(true);
+  fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
+  expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
 });

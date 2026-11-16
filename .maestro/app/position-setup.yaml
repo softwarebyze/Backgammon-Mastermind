@@ -30,6 +30,19 @@ tags:
 - assertVisible:
     id: player-status-black
     text: Tap to put on roll
+- assertVisible:
+    id: player-status-white
+    text: On roll
+- tapOn:
+    id: player-name-black
+- assertVisible:
+    id: player-status-black
+    text: On roll
+- assertVisible:
+    id: player-status-white
+    text: Tap to put on roll
+- tapOn:
+    id: player-name-white
 - assertVisible: Place
 - takeScreenshot: position-compact-workspace
 - assertVisible:

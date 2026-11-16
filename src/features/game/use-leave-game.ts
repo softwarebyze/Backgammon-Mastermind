@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 
 import { useGame } from '@/features/game/use-game';
@@ -12,7 +12,7 @@ export function useLeaveGame() {
   const { state, moveLog, replayBaseline, cubeEvents, clearAITimeout } = useGame();
   const allowLeaveRef = useRef(false);
 
-  const leaveGame = useCallback(() => {
+  const finishGame = useCallback(() => {
     clearAITimeout();
     if (state) {
       savePersistedSession({ state, moveLog, replayBaseline, cubeEvents });
@@ -22,10 +22,31 @@ export function useLeaveGame() {
       phase: state?.phase ?? null,
       move_count: moveLog.length,
     });
+  }, [posthog, clearAITimeout, state, moveLog, replayBaseline, cubeEvents]);
+
+  // Browser POP removes this screen without native removal prevention. Keep
+  // the latest session for that unmount without installing beforeunload.
+  const finishOnRemove = useRef(finishGame);
+  finishOnRemove.current = finishGame;
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      // Strict Mode replays effects on mount; defer until that replay settles.
+      void Promise.resolve().then(() => {
+        if (!mounted.current && Platform.OS === 'web' && !allowLeaveRef.current)
+          finishOnRemove.current();
+      });
+    };
+  }, []);
+
+  const leaveGame = useCallback(() => {
+    finishGame();
     allowLeaveRef.current = true;
     hapticLight();
     router.replace('/');
-  }, [posthog, clearAITimeout, state, moveLog, replayBaseline, cubeEvents]);
+  }, [finishGame]);
 
   const handleBackPress = useCallback(() => {
     leaveGame();

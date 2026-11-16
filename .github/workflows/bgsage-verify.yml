@@ -197,6 +197,9 @@ jobs:
           APP_ENV: preview
           CI: 'true'
 
+      - name: Verify generated iOS scene startup after config plugins
+        run: python3 scripts/verify-ios-scene-startup.py ios
+
       - name: Install CocoaPods dependencies
         run: cd ios && pod install
         env:

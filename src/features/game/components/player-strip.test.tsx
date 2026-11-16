@@ -32,6 +32,15 @@ function pastOpening(mode: GameState['mode'], player: 'white' | 'black'): GameSt
 }
 
 describe('player strip', () => {
+  it('keeps the editor status visible through narrow layout and on-roll changes', () => {
+    const state = moving('vs-human', 'white');
+    const { rerender } = render(<PlayerStrip state={state} player="black" idleStatus="Tap to put on roll" />);
+    fireEvent(screen.getByTestId('player-strip-black'), 'layout', { nativeEvent: { layout: { width: 200, height: 70, x: 0, y: 0 } } });
+    expect(screen.getByTestId('player-status-black')).toHaveTextContent('Tap to put on roll');
+    rerender(<PlayerStrip state={{ ...state, currentPlayer: 'black' }} player="black" headlineOverride="On roll" idleStatus="Tap to put on roll" />);
+    expect(screen.getByTestId('player-status-black')).toHaveTextContent('On roll');
+  });
+
   it('names the sides "You" and "Computer" against the computer', () => {
     const state = moving('vs-computer', 'white');
     render(

@@ -1,5 +1,7 @@
 import type { ConfigContext, ExpoConfig } from '@expo/config';
 import { execFileSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 
 // iOS 27 rejects Xcode 27 builds that don't adopt the UIKit scene lifecycle.
@@ -43,4 +45,21 @@ it('prebuilds from a template that starts React Native from a scene delegate', (
   const plist = readTemplateFile('ios/HelloWorld/Info.plist');
   expect(plist).toContain('UIApplicationSceneManifest');
   expect(plist).toContain('UIWindowSceneSessionRoleApplication');
+});
+
+it('validates the generated app and rejects a plugin removing its scene manifest', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'ios-scene-'));
+  try {
+    const app = join(fixture, 'HelloWorld');
+    mkdirSync(app);
+    for (const file of ['AppDelegate.swift', 'SceneDelegate.swift', 'Info.plist'])
+      writeFileSync(join(app, file), readTemplateFile(`ios/HelloWorld/${file}`));
+    const verify = () => execFileSync('python3', [join(__dirname, '../../scripts/verify-ios-scene-startup.py'), fixture], { encoding: 'utf8', stdio: 'pipe' });
+    expect(verify()).toContain('Generated iOS scene startup verified');
+    writeFileSync(join(app, 'Info.plist'), '<?xml version="1.0"?><plist version="1.0"><dict/></plist>');
+    expect(verify).toThrow();
+  }
+  finally {
+    rmSync(fixture, { recursive: true, force: true });
+  }
 });

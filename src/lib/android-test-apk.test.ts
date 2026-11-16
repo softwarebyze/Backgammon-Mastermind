@@ -62,15 +62,12 @@ printf 'apk' > app/build/outputs/apk/release/app-release.apk
     }
   }
 
-  it('drops the upload wiring when the key is empty in .env and the environment', () => {
+  it('keeps production plugin wiring and disables uploads when the key is empty in .env and the environment', () => {
     const gradle = build({}, 'POSTHOG_CLI_API_KEY=\nPOSTHOG_CLI_PROJECT_ID=1\n');
-    expect(gradle).not.toContain('posthog.gradle');
-    // R8 (on by default since SDK 58) makes the plugin upload ProGuard
-    // mappings, so the whole plugin and its config block must go.
-    expect(gradle).not.toContain('com.posthog.android');
-    expect(gradle).not.toContain('posthog {');
-    expect(gradle).not.toContain('uploadNativeSymbols');
-    expect(gradle).toContain('apply plugin: "com.android.application"');
+    expect(gradle).toContain(appGradle);
+    expect(gradle).toContain('gradle.taskGraph.whenReady');
+    expect(gradle).toContain('name.contains(\'posthog\') && name.contains(\'upload\')');
+    expect(gradle).toContain('task.enabled = false');
     expect(gradle).toContain('android {');
   });
 
