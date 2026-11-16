@@ -17,7 +17,7 @@ tags:
     timeout: 15000
 - assertVisible:
     id: learn-progress-ring
-- assertVisible: 0 of 7 lessons done
+- assertVisible: 0 of 10 lessons done
 - takeScreenshot: 01-learn-hub
 - tapOn:
     id: learn-lesson-row-goal-board
@@ -74,5 +74,5 @@ tags:
     visible:
       id: learn-hub-screen
     timeout: 15000
-- assertVisible: 1 of 7 lessons done
+- assertVisible: 1 of 10 lessons done
 - takeScreenshot: 07-hub-progress

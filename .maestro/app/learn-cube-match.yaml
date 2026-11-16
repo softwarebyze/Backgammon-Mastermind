@@ -7,7 +7,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - openLink: backgammonmastermind.preview://learn
 - extendedWaitUntil:
     visible:
@@ -15,19 +15,19 @@ tags:
     timeout: 20000
 - scrollUntilVisible:
     element:
-      id: learn-lesson-match-play
+      id: learn-lesson-row-match-play
     direction: DOWN
 - assertVisible:
-    id: learn-lesson-doubling-cube
+    id: learn-lesson-row-doubling-cube
 - scrollUntilVisible:
     element:
-      id: learn-lesson-app-tools
+      id: learn-lesson-row-app-tools
     direction: DOWN
 - assertVisible:
-    id: learn-lesson-app-tools
+    id: learn-lesson-row-app-tools
 - takeScreenshot: learn-cube-match-01-hub
 - tapOn:
-    id: learn-lesson-match-play
+    id: learn-lesson-row-match-play
 - extendedWaitUntil:
     visible: Playing a match
     timeout: 20000

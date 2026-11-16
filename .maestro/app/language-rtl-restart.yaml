@@ -38,9 +38,9 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'false'
-      HOME_TEXT: اللعب ضد الكمبيوتر
+      HOME_TEXT: العب ضد الكمبيوتر
 - tapOn:
-    text: الإعدادات
+    text: إعدادات
 - extendedWaitUntil:
     visible: لغة
     timeout: 15000

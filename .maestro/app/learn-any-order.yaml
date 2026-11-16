@@ -7,7 +7,7 @@ tags:
     file: ../utils/launch-app.yaml
     env:
       CLEAR_STATE: 'true'
-      HOME_TEXT: vs Computer
+      HOME_TEXT: Play against the computer
 - openLink: backgammonmastermind.preview://learn
 - extendedWaitUntil:
     visible:
@@ -17,11 +17,11 @@ tags:
 # The last lesson, with nothing done yet.
 - scrollUntilVisible:
     element:
-      id: learn-lesson-strategies
+      id: learn-lesson-row-strategies
     direction: DOWN
 - takeScreenshot: learn-any-order-01-hub
 - tapOn:
-    id: learn-lesson-strategies
+    id: learn-lesson-row-strategies
 - extendedWaitUntil:
     visible:
       id: learn-board-slot
