@@ -25,6 +25,7 @@ flows:
   - app/feedback.yaml
   - app/rapid-follow-up-input.yaml
   - app/bar-entry-hints.yaml
+  - app/partial-forced-move.yaml
   - app/dice-order.yaml
   - app/dice-order-fallback.yaml
 
