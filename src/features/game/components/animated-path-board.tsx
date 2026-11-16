@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Polygon, Rect } from 'react-native-svg';
-import { boardLayoutStyle, boardWebDir } from '@/features/game/components/board/board-layout-direction';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
 import {
@@ -19,6 +18,7 @@ import { applyMove, getLegalMoves } from '@/lib/game';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
+import { forceLtrStyle, forceLtrWebDir } from '@/lib/ui/force-ltr';
 import { continuousRadius } from '@/lib/ui/native-styles';
 
 /**
@@ -251,11 +251,11 @@ export function AnimatedPathBoard({
         )}
       </View>
       <View
-        {...boardWebDir}
+        {...forceLtrWebDir}
         style={[
           styles.board,
           { width: dimensions.boardOuterWidth, height: boardHeight },
-          boardLayoutStyle,
+          forceLtrStyle,
         ]}
       >
         <BoardView

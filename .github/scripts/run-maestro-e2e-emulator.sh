@@ -23,6 +23,7 @@ RECORD_PID=$!
 MAESTRO_EXIT=0
 # Smoke + regression flows + native RTL language restart (screenshots land in maestro-visual-report).
 maestro test \
+  "${WORKSPACE}/.maestro/app/game-clock.yaml" \
   "${WORKSPACE}/.maestro/app/home-game-setup.yaml" \
   "${WORKSPACE}/.maestro/app/match-board-presentation.yaml" \
   "${WORKSPACE}/.maestro/app/cube-history-autoroll.yaml" \
@@ -31,6 +32,9 @@ maestro test \
   "${WORKSPACE}/.maestro/app/cube-tutor-beavers.yaml" \
   "${WORKSPACE}/.maestro/app/cube-decision-undo.yaml" \
   "${WORKSPACE}/.maestro/app/computer-match.yaml" \
+  "${WORKSPACE}/.maestro/app/learn-any-order.yaml" \
+  "${WORKSPACE}/.maestro/app/learn-cube-match.yaml" \
+  "${WORKSPACE}/.maestro/app/computer-level.yaml" \
   "${WORKSPACE}/.maestro/app/match-polish.yaml" \
   "${WORKSPACE}/.maestro/app/backgammon-smoke.yaml" \
   "${WORKSPACE}/.maestro/app/confirm-move.yaml" \
@@ -44,9 +48,12 @@ maestro test \
   "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \
   "${WORKSPACE}/.maestro/app/bar-entry-hints.yaml" \
   "${WORKSPACE}/.maestro/app/partial-forced-move.yaml" \
+  "${WORKSPACE}/.maestro/app/dice-order.yaml" \
+  "${WORKSPACE}/.maestro/app/dice-order-fallback.yaml" \
   "${WORKSPACE}/.maestro/app/reduced-motion.yaml" \
   "${WORKSPACE}/.maestro/app/language-rtl-restart.yaml" \
   "${WORKSPACE}/.maestro/app/hebrew-undo-redo.yaml" \
+  "${WORKSPACE}/.maestro/app/feedback.yaml" \
   -e "APP_ID=${APP_ID}" \
   --format junit \
   --output "${WORKSPACE}/report.xml" \

@@ -54,6 +54,58 @@ describe('board view layout direction', () => {
   });
 });
 
+describe('exact taps for Learn questions (#299)', () => {
+  function renderBoard(exactTaps: boolean | undefined, onPointPress: (index: number) => void) {
+    const dimensions = resolveBoardViewport({
+      screenWidth: 402,
+      screenHeight: 874,
+      platform: 'native',
+      slotWidth: 402,
+      slotHeight: 340,
+      showPointNumbers: false,
+    });
+    const state = { ...createInitialState('vs-human'), phase: 'moving' as const, dice: [3, 1] as [number, number], remainingDice: [3, 1] };
+    render(
+      <BoardView
+        state={state}
+        dimensions={dimensions}
+        previewTarget={null}
+        moveAnimation={null}
+        onPointPress={onPointPress}
+        onPointPressIn={() => {}}
+        onPointPressOut={() => {}}
+        onBarPress={() => {}}
+        onBearOffPress={() => {}}
+        emphasisPoints={new Set([6])}
+        exactTaps={exactTaps}
+      />,
+    );
+  }
+
+  // Black's 19-point sits right above white's 6-point. Snapping turns a tap
+  // on 19 into the emphasized 6 — fine for moving, wrong for a quiz.
+  it('reports the point actually touched, not the emphasized answer next to it', () => {
+    const onPointPress = jest.fn();
+    renderBoard(true, onPointPress);
+    fireEvent.press(screen.getByTestId('point-19'));
+    expect(onPointPress).toHaveBeenCalledWith(19);
+  });
+
+  it('still snaps near-misses during play', () => {
+    const onPointPress = jest.fn();
+    renderBoard(false, onPointPress);
+    fireEvent.press(screen.getByTestId('point-19'));
+    expect(onPointPress).toHaveBeenCalledWith(6);
+  });
+
+  it('snaps near-misses by default, when exactTaps is omitted', () => {
+    const onPointPress = jest.fn();
+    renderBoard(undefined, onPointPress);
+    fireEvent.press(screen.getByTestId('point-19'));
+    expect(onPointPress).toHaveBeenCalledWith(6);
+  });
+});
+
 it('setup selects the exact empty point rather than a nearby playable source', () => {
   const onPointPress = jest.fn();
   render(

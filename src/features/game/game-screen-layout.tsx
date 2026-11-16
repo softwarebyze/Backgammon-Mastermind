@@ -7,7 +7,7 @@ import type { useMoveReview } from '@/features/game/use-move-review';
 import type { GameState } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { I18nManager, ScrollView, StyleSheet, View } from 'react-native';
 
 import { FocusAwareStatusBar } from '@/components/ui';
 import { GameBoardSection } from '@/features/game/components/game-board-section';
@@ -223,7 +223,9 @@ function GameChromeStack({
           captionOverride={
             input.inputNudge === 'roll'
               ? translate('game.nudge.roll_first')
-              : openingText?.caption ?? null
+              : input.inputNudge === 'dice-order'
+                ? translate('game.nudge.dice_order')
+                : openingText?.caption ?? null
           }
           opening={opening}
           compact={compact}
@@ -250,19 +252,37 @@ function boardDiceFor({
   isReviewing,
   opening,
   displayStyle,
+  diceOrder,
 }: {
   state: GameState;
   live: GameState;
   isReviewing: boolean;
   opening: ReturnType<typeof openingTray>;
   displayStyle: BoardDice['displayStyle'];
+  /** Set when "Move in dice order" is on and the player can act. */
+  diceOrder?: { displayedDice: [number, number]; isHumanTurn: boolean; onSwap: () => void };
 }): BoardDice | null {
   const source = isReviewing ? state : live;
   if (source.phase === 'game-over' && !isReviewing) {
     return null;
   }
+  // Review shows each turn as it was rolled, so the dice-order view is live only.
+  const ordered = diceOrder && !isReviewing ? diceOrder : null;
   return {
-    dice: source.dice,
+    ...(ordered && {
+      diceOrder: {
+        leadingRTL: I18nManager.isRTL,
+        // Swap only means something with two different unspent dice: hidden
+        // on doubles and once one die is spent.
+        canSwap: ordered.isHumanTurn
+          && opening === null
+          && live.phase === 'moving'
+          && live.dice[0] !== live.dice[1]
+          && live.remainingDice.length === 2,
+        onSwap: ordered.onSwap,
+      },
+    }),
+    dice: ordered ? ordered.displayedDice : source.dice,
     remainingDice: source.remainingDice,
     player: source.currentPlayer,
     opening: isReviewing ? null : opening,
@@ -322,7 +342,16 @@ export function GameScreenLayout({
   // held sideways without scrolling (#348).
   const diceOnBoard = true;
   const boardDice = diceOnBoard
-    ? boardDiceFor({ state, live, isReviewing: review.isReviewing, opening, displayStyle: preferences.diceDisplayStyle })
+    ? boardDiceFor({
+        state,
+        live,
+        isReviewing: review.isReviewing,
+        opening,
+        displayStyle: preferences.diceDisplayStyle,
+        diceOrder: preferences.moveInDiceOrder
+          ? { displayedDice: input.displayedDice, isHumanTurn: !isComputerTurn && board.interactionEnabled, onSwap: input.swapDice }
+          : undefined,
+      })
     : null;
 
   const railHeight = height - insets.top - insets.bottom;

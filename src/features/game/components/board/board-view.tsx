@@ -18,10 +18,10 @@ import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences'
 import { BAR_POINT, BEAR_OFF } from '@/lib/game/constants';
 import { getMovableSources } from '@/lib/game/move-hints';
 import { getReachableDestinations, opponent } from '@/lib/game/moves';
+import { forceLtrStyle, forceLtrWebDir } from '@/lib/ui/force-ltr';
 import { MatchCube } from '../match-cube';
 import { BarArea } from './bar-area';
 import { BearOffArea } from './bear-off-area';
-import { boardLayoutStyle, boardWebDir } from './board-layout-direction';
 import { BOARD_THEME } from './board-theme';
 import { DirectionOverlay } from './direction-overlay';
 import { DragCheckerOverlay } from './drag-checker-overlay';
@@ -94,6 +94,11 @@ type Props = {
   /** Whose point of view the point-number rails are labeled from. */
   numberPerspective?: Player;
   emphasisBar?: boolean;
+  /**
+   * Taps go to the point actually touched, with no fat-finger snapping. Learn's
+   * "tap the point" questions need this, or a near miss snaps to the answer (#299).
+   */
+  exactTaps?: boolean;
 };
 
 /* eslint-disable max-lines-per-function -- board layout composition */
@@ -121,6 +126,7 @@ export function BoardView({
   aidsOverride,
   emphasisPoints,
   emphasisBar = false,
+  exactTaps = false,
   numberPerspective = 'white',
 }: Props) {
   const { preferences } = useGamePreferences();
@@ -217,12 +223,14 @@ export function BoardView({
         onPointPress(geometricIndex);
       return;
     }
-    const resolved = remapTapIndex({
-      state,
-      pointIndex: geometricIndex,
-      dims: dimensions,
-      extraCandidates: hitExtra,
-    });
+    const resolved = exactTaps
+      ? geometricIndex
+      : remapTapIndex({
+          state,
+          pointIndex: geometricIndex,
+          dims: dimensions,
+          extraCandidates: hitExtra,
+        });
     if (resolved === BAR_POINT) {
       onBarPress();
       return;
@@ -314,7 +322,7 @@ export function BoardView({
   return (
     <View
       testID="board-view"
-      {...boardWebDir}
+      {...forceLtrWebDir}
       style={[
         {
           width: boardOuterWidth,
@@ -329,7 +337,7 @@ export function BoardView({
           elevation: 8,
           overflow: 'hidden',
         },
-        boardLayoutStyle,
+        forceLtrStyle,
       ]}
     >
       {showPointNumbers && (

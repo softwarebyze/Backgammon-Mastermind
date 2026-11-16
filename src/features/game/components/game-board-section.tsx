@@ -7,7 +7,6 @@ import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
 import { cubeCornerClearance } from '@/features/game/bear-off-layout';
 import { BoardDiceOverlay } from '@/features/game/components/board/board-dice-overlay';
-import { boardLayoutStyle, boardWebDir } from '@/features/game/components/board/board-layout-direction';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
 import { playingSurfaceOffset } from '@/features/game/components/board/playing-surface-offset';
@@ -15,6 +14,7 @@ import { useHintArrows } from '@/features/game/hint-arrows-store';
 import { useBoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { BAR_POINT } from '@/lib/game/constants';
+import { forceLtrStyle, forceLtrWebDir } from '@/lib/ui/force-ltr';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 
 type Input = ReturnType<typeof useGameInput>;
@@ -98,14 +98,14 @@ export function GameBoardSection({
         style={[styles.boardContainer, { maxWidth: dimensions.boardOuterWidth }]}
       >
         <Animated.View
-          {...boardWebDir}
+          {...forceLtrWebDir}
           style={[
             {
               width: dimensions.boardOuterWidth,
               alignItems: 'center',
               opacity: boardOpacity,
             },
-            boardLayoutStyle,
+            forceLtrStyle,
           ]}
         >
           <BoardView
