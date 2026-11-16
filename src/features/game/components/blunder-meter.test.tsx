@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react-native';
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 
 import { GAME_PALETTE } from '@/features/game/game-palette';
 
@@ -18,18 +18,75 @@ describe('blunder meter', () => {
     ]);
   });
 
+  // Share of the bar on each side of the needle, from the row start.
+  function needleSplit() {
+    const offset = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle-offset').props.style);
+    const rest = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle-rest').props.style);
+    return { offset, rest };
+  }
+
   it('positions the needle proportionally to the loss', () => {
     render(<BlunderMeter loss={0.15} />);
-    const needle = screen.getByTestId('guidance-blunder-needle');
-    const style = StyleSheet.flatten(needle.props.style);
-    expect(style.left).toBe('50%');
+    const { offset, rest } = needleSplit();
+    expect(offset.width).toBe('50%');
+    expect(rest.flexGrow).toBe(1);
   });
 
   it('clamps huge losses to the end of the bar', () => {
     render(<BlunderMeter loss={1.5} />);
-    const needle = screen.getByTestId('guidance-blunder-needle');
-    const style = StyleSheet.flatten(needle.props.style);
-    expect(style.left).toBe('100%');
+    expect(needleSplit().offset.width).toBe('100%');
+  });
+
+  describe.each([
+    ['LTR', false],
+    ['RTL', true],
+  ])('in %s', (_dir, isRTL) => {
+    beforeEach(() => {
+      jest.replaceProperty(I18nManager, 'isRTL', isRTL);
+    });
+
+    it('lays the needle out in a row like the bands, so it mirrors with them', () => {
+      render(<BlunderMeter loss={0.3} />);
+      const offset = screen.getByTestId('guidance-blunder-needle-offset');
+      const needleRow = screen.getByTestId('guidance-blunder-needle-row');
+      const track = screen.getByTestId('guidance-blunder-bands');
+      expect(StyleSheet.flatten(needleRow.props.style).flexDirection).toBe('row');
+      expect(StyleSheet.flatten(track.props.style).flexDirection).toBe('row');
+      // Measured from the row start, never from a physical edge.
+      expect(StyleSheet.flatten(offset.props.style).width).toBe('100%');
+      const needle = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle').props.style);
+      for (const prop of ['left', 'right', 'marginLeft', 'marginRight'] as const)
+        expect(needle).not.toHaveProperty(prop);
+    });
+
+    it.each([0, 1.5])('keeps the whole needle over the bar at a loss of %p', (loss) => {
+      render(<BlunderMeter loss={loss} />);
+      const needle = StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle').props.style);
+      const halfNeedle = Math.max(needle.borderLeftWidth as number, needle.borderRightWidth as number);
+      // Neither side of the needle can collapse past half its width, so the
+      // needle's center stays at least that far from both ends of the row.
+      // At 100% the offset is the side that gives way.
+      const { offset, rest } = needleSplit();
+      expect(offset.minWidth).toBeGreaterThanOrEqual(halfNeedle);
+      expect(rest.minWidth).toBeGreaterThanOrEqual(halfNeedle);
+      expect(offset.flexShrink).toBeGreaterThan(0);
+      expect(rest.flexShrink ?? 0).toBe(0);
+      expect(StyleSheet.flatten(screen.getByTestId('guidance-blunder-needle-row').props.style))
+        .toMatchObject({ left: 0, right: 0 });
+    });
+
+    it('rounds the outer ends of the bar, not the ends of single bands', () => {
+      render(<BlunderMeter loss={0.1} />);
+      const bands = screen.getByTestId('guidance-blunder-bands');
+      expect(StyleSheet.flatten(bands.props.style)).toMatchObject({ borderRadius: 5, overflow: 'hidden' });
+      const sideRadii = ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius', 'borderRadius'] as const;
+      expect(bands.children).toHaveLength(BLUNDER_BANDS.length);
+      for (const segment of bands.children as (typeof bands)[]) {
+        const style = StyleSheet.flatten(segment.props.style);
+        for (const prop of sideRadii)
+          expect(style).not.toHaveProperty(prop);
+      }
+    });
   });
 
   it('names the severity in the accessibility label', () => {
