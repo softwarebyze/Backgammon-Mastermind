@@ -106,9 +106,11 @@ function SupportSection({
             <SettingsItem
               text="settings.support"
               icon={<Support color={iconColor} />}
+              testID="settings-feedback"
               onPress={() => {
                 posthog.capture('support_opened');
-                runExternalAction(() => openExternalUrl(APP_LINKS.support));
+                // The feedback form mails support too, with device details filled in.
+                router.push('/feedback');
               }}
             />
           )
@@ -174,6 +176,7 @@ function ResetSection({ isVisible }: VisibilityProps) {
   );
 }
 
+/** Present app preferences and links to standalone tools using the current language and platform layout. */
 export function SettingsScreen() {
   const posthog = usePostHog();
   const { insets } = useLayoutMetrics();
@@ -230,6 +233,7 @@ export function SettingsScreen() {
                   <SettingsContainer title="settings.general">
                     {isVisible('language') ? <LanguageItem /> : null}
                     {isVisible('positions') ? <SettingsItem text="positions.title" onPress={() => router.push('/position')} /> : null}
+                    {isVisible('timer') ? <SettingsItem text="timer.title" testID="settings-timer" onPress={() => router.push('/timer')} /> : null}
                   </SettingsContainer>
 
                   <GameSettingsSection showHints isVisibleSetting={isVisible} />

@@ -28,6 +28,8 @@ export function GameSettingsSection({ showHints = false, isVisibleSetting }: Pro
     setSoundEnabled,
     setTutorMode,
     setConfirmMove,
+    setComputerLevel,
+    setMoveInDiceOrder,
   } = useGamePreferences();
 
   if (
@@ -56,6 +58,8 @@ export function GameSettingsSection({ showHints = false, isVisibleSetting }: Pro
         }}
         onTutorModeChange={setTutorMode}
         onConfirmMoveChange={setConfirmMove}
+        onComputerLevelChange={setComputerLevel}
+        onMoveInDiceOrderChange={setMoveInDiceOrder}
         showHints={showHints}
         isVisible={isVisibleSetting}
       />

@@ -28,7 +28,7 @@ export function SettingsItem({ text, hint, value, icon, onPress, testID }: ItemP
   const isPressable = onPress !== undefined;
   return (
     <Pressable
-      accessibilityRole={isPressable ? 'button' : undefined}
+      accessibilityRole={isPressable ? 'button' : 'text'}
       testID={testID}
       onPress={isPressable
         ? () => {

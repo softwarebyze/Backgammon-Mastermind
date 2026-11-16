@@ -4,6 +4,7 @@ import { getItem, setItem } from '@/lib/storage';
 import { migrateDiceDisplayToDots } from './dice-display-migration';
 import {
   DEFAULT_GAME_PREFERENCES,
+  dropUnknownComputerLevel,
   migrateConfirmMoveDefault,
   migrateImplicitPlayDefaults,
   omitRetiredPreferences,
@@ -15,7 +16,7 @@ const PLAY_DEFAULTS_MIGRATION_KEY = 'GAME_PREFERENCES_PLAY_DEFAULTS_V1';
 const CONFIRM_MOVE_MIGRATION_KEY = 'GAME_PREFERENCES_CONFIRM_MOVE_V1';
 
 export function loadGamePreferences(): GamePreferences {
-  const stored = getItem<Partial<GamePreferences> & { fastComputer?: boolean }>(STORAGE_KEY);
+  const stored = dropUnknownComputerLevel(getItem<Partial<GamePreferences> & { fastComputer?: boolean }>(STORAGE_KEY));
   const diceMigrated = getItem<boolean>(DICE_DOTS_MIGRATION_KEY) === true;
   const playDefaultsMigrated = getItem<boolean>(PLAY_DEFAULTS_MIGRATION_KEY) === true;
   const confirmMoveMigrated = getItem<boolean>(CONFIRM_MOVE_MIGRATION_KEY) === true;

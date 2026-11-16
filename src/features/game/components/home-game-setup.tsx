@@ -4,9 +4,11 @@ import Feather from '@expo/vector-icons/Feather';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
+import { ComputerLevelPicker } from '@/features/game/components/computer-level-picker';
 import { HomeMatchOptions } from '@/features/game/components/home-match-options';
 import { HomeSetupChoice } from '@/features/game/components/home-setup-choice';
 import { GAME_PALETTE } from '@/features/game/game-palette';
+import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import i18n, { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
@@ -23,7 +25,8 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
   const [length, setLength] = useState(3);
   const [crawford, setCrawford] = useState(true);
   const matchProps = { format, length, crawford, onFormatChange: setFormat, onLengthChange: setLength, onCrawfordChange: setCrawford };
-  const opponent = (
+  const { preferences, setComputerLevel } = useGamePreferences();
+  const opponentChoice = (
     <HomeSetupChoice
       label={i18n.t('home.setup.opponent', { defaultValue: 'Opponent' })}
       value={mode}
@@ -34,6 +37,15 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
       ]}
     />
   );
+  // The level is a preference: the next game starts at the level last picked.
+  const opponent = mode === 'vs-computer'
+    ? (
+        <View style={[styles.opponent, tight && styles.opponentTight]}>
+          {opponentChoice}
+          <ComputerLevelPicker value={preferences.computerLevel} onChange={setComputerLevel} testIDPrefix="home-computer-level" />
+        </View>
+      )
+    : opponentChoice;
   const start = (
     <HoverPressable
       testID="home-start-game"
@@ -77,6 +89,8 @@ export function HomeGameSetup({ onStart, columns = false, tight = false, aside =
 const styles = StyleSheet.create({
   setup: { width: '100%', gap: 10 },
   setupTight: { gap: 8 },
+  opponent: { gap: 6 },
+  opponentTight: { gap: 4 },
   columns: { width: '100%', flexDirection: 'row', gap: 16 },
   column: { flex: 1, minWidth: 0, gap: 8 },
   // Start sits at the bottom of its column, level with the cards on the left.

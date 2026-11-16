@@ -5,6 +5,7 @@ import { translate } from '@/lib/i18n';
 export type SettingsSearchId
   = | 'language'
     | 'positions'
+    | 'timer'
     | 'showMoveHints'
     | 'showDirectionOverlay'
     | 'showPointNumbers'
@@ -13,6 +14,8 @@ export type SettingsSearchId
     | 'autoMoveWhenForced'
     | 'confirmMove'
     | 'soundEnabled'
+    | 'moveInDiceOrder'
+    | 'computerLevel'
     | 'diceDisplay'
     | 'version'
     | 'openSource'
@@ -43,6 +46,11 @@ export const SETTINGS_SEARCH_ENTRIES: readonly SettingsSearchEntry[] = [
     id: 'positions',
     sectionKey: 'settings.general',
     titleKey: 'positions.title',
+  },
+  {
+    id: 'timer',
+    sectionKey: 'settings.general',
+    titleKey: 'timer.title',
   },
   {
     id: 'showMoveHints',
@@ -91,6 +99,18 @@ export const SETTINGS_SEARCH_ENTRIES: readonly SettingsSearchEntry[] = [
     sectionKey: 'settings.game',
     titleKey: 'game.preferences.sound',
     descriptionKey: 'game.preferences.sound_hint',
+  },
+  {
+    id: 'moveInDiceOrder',
+    sectionKey: 'settings.game',
+    titleKey: 'game.preferences.move_in_dice_order',
+    descriptionKey: 'game.preferences.move_in_dice_order_hint',
+  },
+  {
+    id: 'computerLevel',
+    sectionKey: 'settings.game',
+    titleKey: 'game.computer_level.title',
+    descriptionKey: 'game.computer_level.hint',
   },
   {
     id: 'diceDisplay',
@@ -165,6 +185,8 @@ export const GAME_SETTING_SEARCH_IDS: readonly SettingsSearchId[] = [
   'autoMoveWhenForced',
   'confirmMove',
   'soundEnabled',
+  'moveInDiceOrder',
+  'computerLevel',
   'diceDisplay',
 ];
 

@@ -62,7 +62,7 @@ describe('getVisibleSettings', () => {
     expect(getVisibleSettings('links')).toEqual(
       new Set(['privacy', 'terms', 'github', 'website']),
     );
-    expect(getVisibleSettings('game')).toEqual(new Set([...GAME_SETTING_SEARCH_IDS, 'restoreDefaults']));
+    expect(getVisibleSettings('game')).toEqual(new Set([...GAME_SETTING_SEARCH_IDS, 'restoreDefaults', 'timer']));
     expect(getVisibleSettings('reset')).toEqual(new Set(['restoreDefaults']));
   });
 

@@ -10,7 +10,7 @@ import { Buffer } from 'node:buffer';
  *   iPhone 1206×2622 → IMESSAGE_APP_IPHONE_61, iPad 2064×2752 → IMESSAGE_APP_IPAD_PRO_3GEN_129.
  *   The extension UI is English-only, so every locale gets the same set, staged as
  *   fastlane/screenshots/iMessage/<locale>/ (Fastlane deliver's iMessage layout).
- * Play phone: 9:16 crop of the iPhone set → 1080×1920 (Play long-side ≤ 2× short-side)
+ * Play phone: the iPhone set fitted (letterboxed) into 1080×1920 (Play long-side ≤ 2× short-side)
  * iOS:    fastlane/screenshots/<App Store locale>/
  * Play:   fastlane/metadata/android/<Play locale>/images/phoneScreenshots/
  *
@@ -104,12 +104,16 @@ function pruneLocaleDirectories(root, allowedLocales) {
   }
 }
 
-/** Crop an App Store phone image to Google Play's accepted 9:16 size. */
+/**
+ * Fit an App Store phone image into Google Play's 9:16 size. Letterboxed in the
+ * band colour, not cropped: a crop cut off the bottom of the app (buttons, the
+ * Tutor's choices).
+ */
 async function stagePlayPhone(src, dest) {
   await sharp(src)
     .resize(PLAY_PHONE.width, PLAY_PHONE.height, {
-      fit: 'cover',
-      position: 'top',
+      fit: 'contain',
+      background: BAND_BACKGROUND,
     })
     .removeAlpha()
     .png()
@@ -124,19 +128,6 @@ function xmlEscape(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
-}
-
-/** Map a screenshot filename to its localized marketing-copy key. */
-function copyKeyFor(file) {
-  if (file.includes('learn-to-play'))
-    return 'learn';
-  if (file.includes('pass-and-play'))
-    return 'pass';
-  if (file.includes('vs-computer'))
-    return 'computer';
-  if (file.includes('learn-hub'))
-    return 'lessons';
-  return null;
 }
 
 /** Estimate rendered width while accounting for wide non-Latin glyphs. */
@@ -165,7 +156,8 @@ function localizedBandSvg({ width, height, device, copy, key }) {
   const layout = LAYOUT[device];
   const bandHeight = Math.round(height * layout.bandPct);
   const lines = copy[key];
-  const sub = key === 'pass' ? copy.passSub : '';
+  // Optional second line: `<key>Sub` in screenshot-localizations.json.
+  const sub = copy[`${key}Sub`] || '';
   const headlineSize = fittedSize(lines, layout.headlineSize, width - layout.padX * 2);
   const subSize = fittedSize([sub || ''], layout.subSize, width - layout.padX * 2);
   const headlineLineHeight = Math.round(headlineSize * 1.06);
@@ -187,12 +179,13 @@ function localizedBandSvg({ width, height, device, copy, key }) {
 
 /** Compose one localized raw app capture beneath its localized marketing band. */
 async function stageLocalizedIos({ src, dest, frame, copy, spec }) {
-  const file = frame.dest;
-  const key = copyKeyFor(file);
+  const key = frame.copy;
   if (!key) {
     fs.copyFileSync(src, dest);
     return;
   }
+  if (!Array.isArray(copy[key]) || copy[key].length === 0)
+    throw new Error(`Missing "${key}" screenshot copy for ${copy.appLanguage}`);
   const metadata = await sharp(src).metadata();
   if (metadata.width !== spec.width || metadata.height !== spec.height) {
     throw new Error(
@@ -210,14 +203,16 @@ async function stageLocalizedIos({ src, dest, frame, copy, spec }) {
     key,
   });
   let product;
+  const cropY = Math.round(Math.max(0, Math.min(1, Number(frame.cropTop) || 0)) * spec.height);
   if (frame.fit === 'contain') {
+    // Clip cropTop, then scale the rest to fit: nothing at the bottom is lost.
     product = await sharp(src)
+      .extract({ left: 0, top: cropY, width: spec.width, height: spec.height - cropY })
       .resize(spec.width, productHeight, { fit: 'contain', background: BAND_BACKGROUND })
       .png()
       .toBuffer();
   }
   else {
-    const cropY = Math.round(Math.max(0, Math.min(1, Number(frame.cropTop) || 0)) * spec.height);
     const visibleHeight = Math.min(productHeight, spec.height - cropY);
     product = await sharp(src)
       .extract({ left: 0, top: cropY, width: spec.width, height: visibleHeight })
@@ -377,7 +372,7 @@ async function main() {
   console.log(`Staged ${iosCount} iOS / ${playCount} Play screenshots across ${Object.keys(localizations).length} locales →`);
   console.log(`  iOS:  ${path.relative(ROOT, IOS_ROOT)}/<locale> (Apple pixel sizes)`);
   console.log(
-    `  Play: ${path.relative(ROOT, PLAY_ROOT)}/<locale>/images/phoneScreenshots (${PLAY_PHONE.width}×${PLAY_PHONE.height} 9:16 crop)`,
+    `  Play: ${path.relative(ROOT, PLAY_ROOT)}/<locale>/images/phoneScreenshots (${PLAY_PHONE.width}×${PLAY_PHONE.height} 9:16, letterboxed)`,
   );
   console.log('Next: pnpm screenshots:upload:ios  (or :android when Play creds exist)');
 }

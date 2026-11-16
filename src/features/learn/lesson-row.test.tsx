@@ -25,12 +25,24 @@ describe('lessonRow', () => {
       <LessonRow
         lesson={LESSONS[0]!}
         completed
-        unlocked
         onPress={onPress}
       />,
     );
     const row = screen.getByRole('button');
     expect(row.props.accessibilityState.disabled).toBeFalsy();
+    await user.press(row);
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens a later lesson that has not been started, showing it as not done', async () => {
+    const onPress = jest.fn();
+    const last = LESSONS[LESSONS.length - 1]!;
+    const { user } = setup(<LessonRow lesson={last} completed={false} onPress={onPress} />);
+    const row = screen.getByRole('button');
+    expect(row.props.accessibilityState?.disabled).toBeFalsy();
+    expect(screen.getByText(last.subtitleKey)).toBeTruthy();
+    expect(screen.getByText(String(last.order))).toBeTruthy();
+    expect(screen.queryByText('check')).toBeNull();
     await user.press(row);
     expect(onPress).toHaveBeenCalledTimes(1);
   });

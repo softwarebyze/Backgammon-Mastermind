@@ -16,9 +16,14 @@ tags:
     timeout: 20000
 - scrollUntilVisible:
     element:
+      text: Auto-move when forced
+    direction: DOWN
+- assertVisible: Auto-roll dice
+- assertNotVisible: Fast computer
+# The computer level and dice pickers sit below the toggles.
+- scrollUntilVisible:
+    element:
       text: Dice display
     direction: DOWN
 - assertNotVisible: Fast computer
-- assertVisible: Auto-roll dice
-- assertVisible: Auto-move when forced
 - takeScreenshot: settings-no-fast-mode

@@ -1,7 +1,7 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import { StyleSheet } from 'react-native';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
-import { cleanup, render, screen, within } from '@/lib/test-utils';
+import { cleanup, fireEvent, render, screen, within } from '@/lib/test-utils';
 import { boardDiceSide, boardDieGap, boardDieSize, boardHalfFrame, hasBoardDice } from './board-dice-layout';
 import { BoardDiceOverlay } from './board-dice-overlay';
 
@@ -78,5 +78,41 @@ describe('board dice overlay', () => {
     expect(leftOf(black)).toBe(4 + boardHalfFrame(DIMS, 'left').left);
     expect(within(white).getByTestId('single-die-white')).toBeTruthy();
     expect(within(black).getByTestId('single-die-black')).toBeTruthy();
+  });
+});
+
+describe('board dice in dice order', () => {
+  const surface = { left: 0, top: 0 };
+  const rolled = { ...base, dice: [1, 3] as [number, number], remainingDice: [3, 1], player: 'white' as const };
+
+  it('makes the dice and the Swap label one button that swaps the order', () => {
+    const onSwap = jest.fn();
+    render(<BoardDiceOverlay value={{ ...rolled, diceOrder: { leadingRTL: false, canSwap: true, onSwap } }} dimensions={DIMS} surface={surface} />);
+    const target = screen.getByTestId('dice-swap-target');
+    expect(target).toHaveProp('accessibilityRole', 'button');
+    expect(target).toHaveProp('accessibilityLabel', 'Dice: 1, then 3');
+    expect(within(target).getByText('Swap dice')).toBeOnTheScreen();
+    fireEvent.press(target);
+    expect(onSwap).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the same element but hides Swap when there is nothing to swap', () => {
+    const onSwap = jest.fn();
+    render(<BoardDiceOverlay value={{ ...rolled, diceOrder: { leadingRTL: false, canSwap: false, onSwap } }} dimensions={DIMS} surface={surface} />);
+    const target = screen.getByTestId('dice-swap-target');
+    expect(target).not.toHaveProp('accessibilityRole', 'button');
+    expect(screen.queryByTestId('swap-dice-button')).toBeNull();
+    fireEvent.press(target);
+    expect(onSwap).not.toHaveBeenCalled();
+  });
+
+  it('shows the leading die at the reading edge and marks it spent first', () => {
+    render(<BoardDiceOverlay value={{ ...rolled, remainingDice: [3], diceOrder: { leadingRTL: true, canSwap: false, onSwap: jest.fn() } }} dimensions={DIMS} surface={surface} />);
+    expect(screen.getByTestId('dice-display')).toHaveStyle({ flexDirection: 'row-reverse' });
+  });
+
+  it('leaves the half untouchable without the setting, so checkers underneath still take taps', () => {
+    render(<BoardDiceOverlay value={rolled} dimensions={DIMS} surface={surface} />);
+    expect(screen.queryByTestId('dice-swap-target')).toBeNull();
   });
 });

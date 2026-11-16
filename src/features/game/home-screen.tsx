@@ -61,6 +61,7 @@ function openSavedGameFromHome(state: GameState | null, resumeGame: () => boolea
 }
 
 /* eslint-disable max-lines-per-function -- home mode menu composition */
+/** Present game setup, saved-game recovery and standalone learning, position and clock destinations. */
 export function HomeScreen() {
   const { state, startGame, startFromPosition, resumeGame } = useGame();
   const { preferences } = useGamePreferences();
@@ -197,23 +198,37 @@ export function HomeScreen() {
       )
     : null;
   const tiles = (
-    <View style={[styles.tiles, !split && panelWidth < 320 && styles.tilesStacked]}>
+    <View style={{ gap: 10 }}>
+      <View style={[styles.tiles, !split && panelWidth < 320 && styles.tilesStacked]}>
+        <HomeCard
+          testID="learn-button"
+          accessibilityLabel={translate('learn.home_cta')}
+          symbol="book-open"
+          label={translate('learn.home_cta')}
+          sub={dense ? undefined : learnSub}
+          onPress={handleLearn}
+          dense={dense}
+          compact={split || tiny}
+        />
+        <HomeCard
+          testID="position-setup-button"
+          accessibilityLabel={translate('positions.setup')}
+          symbol="grid"
+          label={translate('positions.setup')}
+          onPress={() => router.push('/position')}
+          dense={dense}
+          compact={split || tiny}
+        />
+      </View>
       <HomeCard
-        testID="learn-button"
-        accessibilityLabel={translate('learn.home_cta')}
-        symbol="book-open"
-        label={translate('learn.home_cta')}
-        sub={dense ? undefined : learnSub}
-        onPress={handleLearn}
-        dense={dense}
-        compact={split || tiny}
-      />
-      <HomeCard
-        testID="position-setup-button"
-        accessibilityLabel={translate('positions.setup')}
-        symbol="grid"
-        label={translate('positions.setup')}
-        onPress={() => router.push('/position')}
+        testID="game-clock-button"
+        accessibilityLabel={translate('timer.title')}
+        symbol="clock"
+        label={translate('timer.title')}
+        onPress={() => {
+          hapticLight();
+          router.push('/timer');
+        }}
         dense={dense}
         compact={split || tiny}
       />

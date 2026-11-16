@@ -91,6 +91,22 @@ export function allLessonsComplete(progress: LearnProgress): boolean {
   return LESSON_IDS.every(id => progress.completedLessons.includes(id));
 }
 
+/**
+ * Where finishing `lessonId` leads: the next lesson not done yet, in course
+ * order and wrapping round, or the quick check once every lesson is done.
+ * Lessons open in any order, so the last lesson in the list is not the end.
+ */
+export function nextAfterLesson(progress: LearnProgress, lessonId: LessonId): LessonId | 'graduation' {
+  const done = new Set<LessonId>([...progress.completedLessons, lessonId]);
+  const start = LESSON_IDS.indexOf(lessonId);
+  for (let step = 1; step <= LESSON_IDS.length; step++) {
+    const id = LESSON_IDS[(start + step) % LESSON_IDS.length]!;
+    if (!done.has(id))
+      return id;
+  }
+  return 'graduation';
+}
+
 export function isReadyToPlay(progress: LearnProgress): boolean {
   return allLessonsComplete(progress) && progress.quizPassed;
 }

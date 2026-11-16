@@ -1,10 +1,13 @@
 import type { GamePreferences } from '@/lib/game-preferences/types';
 
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { ComputerLevelPicker } from '@/features/game/components/computer-level-picker';
 import { AutoMoveIcon } from '@/features/game/components/settings-ui/auto-move-icon';
 import { AutoRollIcon } from '@/features/game/components/settings-ui/auto-roll-icon';
 import { ConfirmMoveIcon } from '@/features/game/components/settings-ui/confirm-move-icon';
+import { DiceOrderIcon } from '@/features/game/components/settings-ui/dice-order-icon';
 import { DiceStylePicker } from '@/features/game/components/settings-ui/dice-style-picker';
 import { HorseshoeIcon } from '@/features/game/components/settings-ui/horseshoe-icon';
 import { MoveHintIcon } from '@/features/game/components/settings-ui/move-hint-icon';
@@ -26,6 +29,8 @@ type GamePreferenceRowId
     | 'autoMoveWhenForced'
     | 'confirmMove'
     | 'soundEnabled'
+    | 'moveInDiceOrder'
+    | 'computerLevel'
     | 'diceDisplay';
 
 type PreferenceHandlers = {
@@ -37,7 +42,9 @@ type PreferenceHandlers = {
   onAutoMoveWhenForcedChange: (value: boolean) => void;
   onSoundEnabledChange: (value: boolean) => void;
   onTutorModeChange: (value: boolean) => void;
+  onMoveInDiceOrderChange: (value: boolean) => void;
   onConfirmMoveChange: (value: boolean) => void;
+  onComputerLevelChange: (level: GamePreferences['computerLevel']) => void;
 };
 
 type Props = {
@@ -206,6 +213,40 @@ function DicePreferenceCard({ preferences, handlers }: Pick<CardProps, 'preferen
   );
 }
 
+/** "Move in dice order": tap a checker to play the leading die; tap the dice to swap. */
+function DiceOrderCard({ value, onChange, showHints }: { value: boolean; onChange: (value: boolean) => void; showHints: boolean }) {
+  return (
+    <View style={styles.card}>
+      <SettingToggleRow
+        icon={<DiceOrderIcon size={32} active={value} />}
+        label={translate('game.preferences.move_in_dice_order')}
+        hint={showHints ? translate('game.preferences.move_in_dice_order_hint') : undefined}
+        value={value}
+        onChange={onChange}
+        testID="setting-toggle-dice-order"
+      />
+    </View>
+  );
+}
+
+function ComputerLevelCard({
+  value,
+  onChange,
+  showHints,
+}: {
+  value: GamePreferences['computerLevel'];
+  onChange: (level: GamePreferences['computerLevel']) => void;
+  showHints: boolean;
+}) {
+  return (
+    <View style={[styles.diceCard, styles.levelCard]}>
+      <Text style={styles.sectionLabel}>{translate('game.computer_level.title')}</Text>
+      <ComputerLevelPicker value={value} onChange={onChange} testIDPrefix="setting-computer-level" />
+      {showHints ? <Text style={styles.hint}>{translate('game.computer_level.hint')}</Text> : null}
+    </View>
+  );
+}
+
 export function GamePreferencesPanel({
   preferences,
   showHints = false,
@@ -219,6 +260,24 @@ export function GamePreferencesPanel({
     <View style={styles.wrap}>
       <BoardPreferenceCard {...cardProps} />
       <AutomationPreferenceCard {...cardProps} />
+      {show('moveInDiceOrder')
+        ? (
+            <DiceOrderCard
+              value={preferences.moveInDiceOrder}
+              onChange={handlers.onMoveInDiceOrderChange}
+              showHints={showHints}
+            />
+          )
+        : null}
+      {show('computerLevel')
+        ? (
+            <ComputerLevelCard
+              value={preferences.computerLevel}
+              onChange={handlers.onComputerLevelChange}
+              showHints={showHints}
+            />
+          )
+        : null}
       {show('diceDisplay') ? <DicePreferenceCard preferences={preferences} handlers={handlers} /> : null}
     </View>
   );
@@ -241,6 +300,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: SETTINGS_ROW_PADDING_H,
     paddingVertical: SETTINGS_ROW_PADDING_H,
     ...continuousRadius(12),
+  },
+  levelCard: {
+    gap: 10,
+  },
+  // Same as the dice picker's heading.
+  sectionLabel: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
+  },
+  hint: {
+    color: GAME_PALETTE.textMuted,
+    fontSize: 13,
   },
   divider: {
     height: StyleSheet.hairlineWidth,
