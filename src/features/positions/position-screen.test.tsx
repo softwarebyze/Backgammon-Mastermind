@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { Platform } from 'react-native';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
 import { createInitialState } from '@/lib/game/constants';
@@ -251,12 +252,19 @@ it('shows the responder for an imported offer and lets either strip start a fres
   expect(start).toHaveBeenCalledWith(expect.objectContaining({ currentPlayer: 'white', match: expect.objectContaining({ pendingOffer: null }) }));
 });
 
-it('unlocks page scrolling and starts a fresh editor stroke after focus loss', () => {
-  render(<PositionScreen />);
-  fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
-  expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
-  act(() => mockBlur?.());
-  expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(true);
-  fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
-  expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
+it.each(['ios', 'android'] as const)('unlocks page scrolling after focus loss on %s', (platform) => {
+  const original = Platform.OS;
+  Platform.OS = platform;
+  try {
+    render(<PositionScreen />);
+    fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
+    expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
+    act(() => mockBlur?.());
+    expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(true);
+    fireEvent(screen.getByTestId('test-board-point'), 'pressIn');
+    expect(screen.getByTestId('position-screen').props.scrollEnabled).toBe(false);
+  }
+  finally {
+    Platform.OS = original;
+  }
 });

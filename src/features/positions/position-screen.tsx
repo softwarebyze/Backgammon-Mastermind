@@ -187,9 +187,9 @@ function PositionWorkspace({ data }: { data?: string }) {
       <ScrollView
         testID="position-screen"
         style={styles.root}
-        // A stack drag must not scroll the page: on iOS with gesture-handler 3
-        // the native scroll view otherwise wins the touch and cancels the edit.
-        scrollEnabled={Platform.OS !== 'ios' || !strokeActive}
+        // A stack drag must not scroll the page. Gesture-handler 3 can let
+        // the native scroll view win the touch on either mobile platform.
+        scrollEnabled={Platform.OS === 'web' || !strokeActive}
         onLayout={e => setFrameWidth(e.nativeEvent.layout.width)}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
