@@ -56,6 +56,9 @@ importers:
       expo-clipboard:
         specifier: ~58.0.4
         version: 58.0.4(expo@58.0.25)(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.85.3(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+      expo-constants:
+        specifier: ~58.0.16
+        version: 58.0.16(expo@58.0.25)(react-native@0.88.1(@babel/core@7.29.13)(@react-native/metro-config@0.85.3(@babel/core@7.29.13))(@types/react@19.3.0)(react@19.3.0))(typescript@6.0.3)
       expo-crypto:
         specifier: ~58.0.8
         version: 58.0.8(expo@58.0.25)

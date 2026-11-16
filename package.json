@@ -98,6 +98,7 @@
     "expo-bgsage": "file:./expo-bgsage",
     "expo-build-properties": "~58.0.12",
     "expo-clipboard": "~58.0.4",
+    "expo-constants": "~58.0.16",
     "expo-crypto": "~58.0.8",
     "expo-dev-client": "~58.0.20",
     "expo-device": "~58.0.5",
