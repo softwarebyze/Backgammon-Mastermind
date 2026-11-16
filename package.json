@@ -146,6 +146,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.2.0",
+    "@babel/core": "^7.29.13",
     "@callstack/licenses": "0.3.3",
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
@@ -153,6 +154,7 @@
     "@expo/config": "~58.0.12",
     "@posthog/cli": "^0.18.10",
     "@react-native/jest-preset": "0.88.1",
+    "@react-native/metro-config": "0.88.1",
     "@tailwindcss/cli": "^4.0.0",
     "@testing-library/react-native": "^13.3.3",
     "@types/i18n-js": "^4.0.1",

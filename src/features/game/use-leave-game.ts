@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useNavigation, useRoute } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
@@ -9,8 +9,12 @@ import { hapticLight } from '@/lib/haptics';
 
 export function useLeaveGame() {
   const posthog = usePostHog();
+  const navigation = useNavigation();
+  const route = useRoute();
   const { state, moveLog, replayBaseline, cubeEvents, clearAITimeout } = useGame();
   const allowLeaveRef = useRef(false);
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
   const finishGame = useCallback(() => {
     clearAITimeout();
@@ -26,20 +30,26 @@ export function useLeaveGame() {
 
   // Browser POP removes this screen without native removal prevention. Keep
   // the latest session for that unmount without installing beforeunload.
+  // Language remounts (screenLayout key) unmount the body while the route
+  // stays; missing-state redirects leave with no session — skip both.
   const finishOnRemove = useRef(finishGame);
   finishOnRemove.current = finishGame;
   const mounted = useRef(false);
   useEffect(() => {
     mounted.current = true;
+    const routeKey = route.key;
     return () => {
       mounted.current = false;
       // Strict Mode replays effects on mount; defer until that replay settles.
       void Promise.resolve().then(() => {
-        if (!mounted.current && Platform.OS === 'web' && !allowLeaveRef.current)
+        if (mounted.current || Platform.OS !== 'web' || allowLeaveRef.current)
+          return;
+        const stillPresent = navigation.getState()?.routes.some(r => r.key === routeKey) ?? false;
+        if (!stillPresent && stateRef.current)
           finishOnRemove.current();
       });
     };
-  }, []);
+  }, [navigation, route.key]);
 
   const leaveGame = useCallback(() => {
     finishGame();

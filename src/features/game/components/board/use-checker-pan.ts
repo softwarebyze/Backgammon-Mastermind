@@ -110,10 +110,13 @@ export function useColumnTapGesture(enabled: boolean, handlers: ColumnTapHandler
   }, []);
 
   return useMemo(() => {
+    // Pressable had no time limit; RNGH Tap defaults to 500ms and drops slow
+    // presses on legal destinations. Match the old feel on native.
     if (!enabled) {
-      return Gesture.Tap().enabled(false);
+      return Gesture.Tap().maxDuration(10_000).enabled(false);
     }
     return Gesture.Tap()
+      .maxDuration(10_000)
       .onBegin(() => {
         runOnJS(invokePressIn)();
       })
