@@ -47,11 +47,11 @@ describe('coach caption feedback (#304)', () => {
       <CoachCaption
         titleKey="learn.title"
         bodyKey="learn.subtitle"
-        stepLabel="1/3"
+        stepIndex={0}
+        totalSteps={3}
         feedback={{ tone: 'soft', messageKey: 'learn.feedback.illegal' }}
       />,
     );
-    expect(screen.getByTestId('learn-feedback').props.accessibilityLiveRegion).toBeUndefined();
     expect(screen.getByTestId('learn-feedback-live').props.accessibilityLiveRegion).toBeUndefined();
   });
 
@@ -59,7 +59,7 @@ describe('coach caption feedback (#304)', () => {
   it('puts feedback in a polite live region on web, as a new node for each answer', () => {
     Platform.OS = 'web';
     const caption = (feedback: LessonFeedback) => (
-      <CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="1/3" feedback={feedback} />
+      <CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepIndex={0} totalSteps={3} feedback={feedback} />
     );
     const { rerender } = render(caption({ tone: 'soft', messageKey: 'learn.feedback.illegal' }));
     expect(screen.getByTestId('learn-feedback-live').props.accessibilityLiveRegion).toBe('polite');
@@ -72,7 +72,7 @@ describe('coach caption feedback (#304)', () => {
 
 describe('coach caption game plan', () => {
   it('shows the in-game plan icon beside a plan step, hidden from screen readers', () => {
-    render(<CoachCaption titleKey="game.strategy.label.holding" bodyKey="learn.lessons.strategies.steps.holding.body" stepLabel="5/7" feedback={null} strategy="holding" />);
+    render(<CoachCaption titleKey="game.strategy.label.holding" bodyKey="learn.lessons.strategies.steps.holding.body" stepIndex={4} totalSteps={7} feedback={null} strategy="holding" />);
     const mark = screen.getByTestId('learn-strategy-holding', { includeHiddenElements: true });
     expect(mark.props.importantForAccessibility).toBe('no-hide-descendants');
     expect(screen.getByText('⚓', { includeHiddenElements: true })).toBeTruthy();
@@ -81,14 +81,14 @@ describe('coach caption game plan', () => {
   });
 
   it('shows no icon on other steps', () => {
-    render(<CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="1/3" feedback={null} />);
+    render(<CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepIndex={0} totalSteps={3} feedback={null} />);
     expect(screen.queryByTestId(/^learn-strategy-/, { includeHiddenElements: true })).toBeNull();
   });
 });
 
 describe('coach caption cube', () => {
   it('draws the cube a cube step describes, greyed for the Crawford game', () => {
-    render(<CoachCaption titleKey="learn.lessons.match_play.steps.crawford.title" bodyKey="learn.lessons.match_play.steps.crawford.body" stepLabel="2/4" feedback={null} cube={{ value: 1, unavailable: true }} />);
+    render(<CoachCaption titleKey="learn.lessons.match_play.steps.crawford.title" bodyKey="learn.lessons.match_play.steps.crawford.body" stepIndex={1} totalSteps={4} feedback={null} cube={{ value: 1, unavailable: true }} />);
     expect(screen.getByTestId('learn-cube', { includeHiddenElements: true }).props.importantForAccessibility).toBe('no-hide-descendants');
     // The cube starts at 1 and shows its 64 face, as in a game.
     expect(screen.getByText('64', { includeHiddenElements: true })).toBeTruthy();

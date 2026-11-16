@@ -1,11 +1,12 @@
 import type { TxKeyPath } from '@/lib/i18n';
 import type { LessonId } from '@/lib/learn/curriculum';
 import type { LearnProgress } from '@/lib/learn/progress';
+import Feather from '@expo/vector-icons/Feather';
 import { router, useNavigation } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { DiceDisplay } from '@/features/game/components/board/dice-display';
@@ -16,20 +17,26 @@ import {
 } from '@/features/game/hooks/use-board-dimensions';
 import { usePublishBoardSlot } from '@/features/game/hooks/use-publish-board-slot';
 import { CoachCaption } from '@/features/learn/coach-caption';
-import { learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
+import { learnCompleteBodyKey, learnPrimaryCtaKey, learnPrimaryCtaKind } from '@/features/learn/learn-primary-cta';
+import { learnCaptionReserve, lessonUsesDice } from '@/features/learn/lesson-layout';
 import { lessonShowsPointNumbers } from '@/features/learn/lesson-point-numbers';
+import { lessonNavigationIcons } from '@/features/learn/lesson-visuals';
 import { useAnnounceFeedback } from '@/features/learn/use-announce-feedback';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
 import { useLessonSession } from '@/features/learn/use-lesson-session';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { getLesson } from '@/lib/learn/curriculum';
 import { isLastStepComplete, nextAfterLesson } from '@/lib/learn/progress';
 import { interFont } from '@/lib/ui/fonts';
 import { LANDSCAPE_GAP } from '@/lib/ui/game-chrome';
 import { useLayoutMetrics } from '@/lib/ui/layout-metrics';
 import { continuousRadius } from '@/lib/ui/native-styles';
+
+/** Hint and Continue share one height so the footer never resizes. */
+const CTA_HEIGHT = 54;
+const RESERVED_DICE: [number, number] = [1, 2];
 
 type Props = {
   lessonId: LessonId;
@@ -89,6 +96,7 @@ function LessonScreenBody({
   diceDisplayStyle: 'numbers' | 'dots';
 }) {
   const session = useLessonSession(lesson);
+  const icons = lessonNavigationIcons(useLayoutIsRTL());
   useAnnounceFeedback(session.feedback);
   const posthog = usePostHog();
   const { insets, landscape, chromeWidth, boardPaneWidth, boardMaxWidth, stageMaxWidth } = useLayoutMetrics();
@@ -99,12 +107,31 @@ function LessonScreenBody({
     minBoardHeight: landscape ? 0 : MIN_LEARN_BOARD_SLOT_HEIGHT,
   });
   const dimensions = useBoardDimensions({ showPointNumbers });
+  const { fontScale } = useWindowDimensions();
+  // Portrait: the caption gets a fixed-height slot (feedback and the
+  // completion card appear inside it), and the footer never changes height,
+  // so the board slot — and the board — stay the same size on every step.
+  const captionHeight = landscape ? undefined : learnCaptionReserve({ fontScale, captionMaxHeight });
+  const reserveDiceRow = lessonUsesDice(lesson);
   const completedEventRef = useRef(false);
+  const captionScrollRef = useRef<ScrollView>(null);
 
   const { setBoardDimensions } = session;
   useEffect(() => {
     setBoardDimensions(dimensions);
   }, [dimensions, setBoardDimensions]);
+
+  // Praise can land below the fold on short screens; keep it visible long
+  // enough to read instead of letting it slide out of the caption viewport.
+  useEffect(() => {
+    if (!session.feedback) {
+      return;
+    }
+    const handle = setTimeout(() => {
+      captionScrollRef.current?.scrollToEnd({ animated: true });
+    }, 60);
+    return () => clearTimeout(handle);
+  }, [session.feedback]);
 
   useEffect(() => {
     if (!isLastStepComplete(session.stepComplete, session.stepIndex, session.totalSteps)) {
@@ -172,6 +199,14 @@ function LessonScreenBody({
   const showDice = session.state.dice[0] !== 0 || session.state.dice[1] !== 0;
   const showCompleteBanner
     = session.stepComplete && session.stepIndex >= session.totalSteps - 1;
+  const completion = showCompleteBanner
+    ? {
+        title: translate('learn.lesson_complete'),
+        body: translate(learnCompleteBodyKey(nextLessonId), {
+          title: translate(lesson.titleKey as TxKeyPath),
+        }),
+      }
+    : null;
 
   const caption = (
     <CoachCaption
@@ -180,11 +215,10 @@ function LessonScreenBody({
       strategy={session.step.strategy}
       cube={session.step.cube}
       feedback={session.feedback}
-      stepLabel={translate('learn.step_progress', {
-        current: session.stepIndex + 1,
-        total: session.totalSteps,
-      })}
-      compact={landscape || (captionMaxHeight != null && captionMaxHeight < 160)}
+      stepIndex={session.stepIndex}
+      totalSteps={session.totalSteps}
+      compact={landscape || (captionHeight != null && captionHeight < 160)}
+      completion={completion}
     />
   );
 
@@ -202,29 +236,68 @@ function LessonScreenBody({
               />
             </View>
           )
-        : null}
+        : reserveDiceRow
+          ? (
+              // Same height as the dice so the footer (and board) never resize
+              // between steps with and without dice.
+              <View
+                style={[styles.diceRow, styles.diceReserve]}
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                pointerEvents="none"
+              >
+                <DiceDisplay
+                  dice={RESERVED_DICE}
+                  remainingDice={RESERVED_DICE}
+                  playerColor="white"
+                  displayStyle={diceDisplayStyle}
+                  animateRoll={false}
+                />
+              </View>
+            )
+          : null}
 
-      {showCompleteBanner
-        ? (
-            <Text style={styles.completeBanner}>{translate('learn.lesson_complete')}</Text>
-          )
-        : null}
+      <View style={styles.footerActions}>
+        <Pressable
+          key="learn-back"
+          testID="learn-back"
+          accessibilityRole="button"
+          accessibilityLabel={translate('learn.back')}
+          accessibilityState={{ disabled: !session.canGoBack }}
+          disabled={!session.canGoBack}
+          hitSlop={8}
+          style={({ pressed }) => [
+            styles.backBtn,
+            !session.canGoBack && styles.backBtnDisabled,
+            pressed && styles.pressed,
+          ]}
+          onPress={session.back}
+        >
+          <Feather name={icons.back} size={18} color={GAME_PALETTE.accentDim} />
+          <Text style={styles.backLabel}>{translate('learn.back')}</Text>
+        </Pressable>
 
-      <Pressable
-        key="learn-primary-cta"
-        testID="learn-primary-cta"
-        accessibilityRole="button"
-        accessibilityLabel={primaryLabel}
-        style={({ pressed }) => [
-          ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
-          pressed && styles.pressed,
-        ]}
-        onPress={onPrimary}
-      >
-        <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
-          {primaryLabel}
-        </Text>
-      </Pressable>
+        <Pressable
+          key="learn-primary-cta"
+          testID="learn-primary-cta"
+          accessibilityRole="button"
+          accessibilityLabel={primaryLabel}
+          style={({ pressed }) => [
+            ctaKind === 'hint' ? styles.hintBtn : styles.primaryBtn,
+            pressed && styles.pressed,
+          ]}
+          onPress={onPrimary}
+        >
+          <Feather
+            name={ctaKind === 'hint' ? 'info' : icons.next}
+            size={18}
+            color={ctaKind === 'hint' ? GAME_PALETTE.accentDim : GAME_PALETTE.bg}
+          />
+          <Text style={ctaKind === 'hint' ? styles.hintLabel : styles.primaryLabel}>
+            {primaryLabel}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 
@@ -232,13 +305,14 @@ function LessonScreenBody({
     <View
       style={[
         styles.captionHost,
-        captionMaxHeight != null ? { maxHeight: captionMaxHeight } : null,
+        captionHeight != null ? { height: captionHeight } : null,
       ]}
       testID="learn-caption-host"
       onLayout={onTopLayout}
     >
       <ScrollView
-        style={captionMaxHeight != null ? { maxHeight: captionMaxHeight } : undefined}
+        ref={captionScrollRef}
+        style={styles.captionScroll}
         contentContainerStyle={styles.captionScrollContent}
         bounces={false}
         overScrollMode="never"
@@ -313,6 +387,7 @@ function LessonScreenBody({
           ? (
               <View style={[styles.sidePanel, { width: chromeWidth }]}>
                 <ScrollView
+                  ref={captionScrollRef}
                   style={styles.captionScroll}
                   contentContainerStyle={styles.captionScrollContent}
                   bounces={false}
@@ -352,7 +427,7 @@ const styles = StyleSheet.create({
   captionHost: {
     width: '100%',
     flexGrow: 0,
-    flexShrink: 1,
+    flexShrink: 0,
     minHeight: 0,
   },
   captionScroll: {
@@ -397,18 +472,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 8,
   },
-  completeBanner: {
-    color: '#A0D080',
+  diceReserve: {
+    opacity: 0,
+  },
+  footerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    minWidth: 96,
+  },
+  backBtnDisabled: {
+    opacity: 0.3,
+  },
+  backLabel: {
+    color: GAME_PALETTE.accentDim,
     fontSize: 15,
-    marginBottom: 8,
-    ...interFont('bold'),
+    ...interFont('semibold'),
   },
   primaryBtn: {
     marginTop: 4,
     backgroundColor: GAME_PALETTE.accent,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
     paddingVertical: 16,
     paddingHorizontal: 24,
     minWidth: 180,
+    minHeight: CTA_HEIGHT,
     alignItems: 'center',
     ...continuousRadius(14),
   },
@@ -417,9 +514,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 1.5,
     borderColor: 'rgba(232, 224, 208, 0.35)',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8,
     paddingVertical: 14,
     paddingHorizontal: 24,
     minWidth: 180,
+    minHeight: CTA_HEIGHT,
     alignItems: 'center',
     ...continuousRadius(14),
   },

@@ -205,7 +205,7 @@
       "bar_short": "Bar",
       "bar_white_many": "{{checkers}} white checkers",
       "bar_white_one": "{{checkers}} white checker",
-      "black_wins": "🏆 Black Wins!",
+      "black_wins": "Black Wins",
       "computer_wins": "Computer Wins",
       "off_short": "off",
       "pips_a11y": "{{player}}: {{pips}} pips, {{off}} of 15 borne off",
@@ -362,13 +362,16 @@
     "vs_computer_sub": "Play against the computer"
   },
   "learn": {
+    "back": "Back",
     "back_to_hub": "All lessons",
     "continue": "Continue",
     "feedback": {
+      "correct_title": "Correct!",
       "hint_nudge": "Need a nudge? Look for the highlighted spots.",
       "illegal": "Try a highlighted point — or tap Hint.",
       "legal_but_wrong": "That’s legal in a real game — here, try the move that teaches this idea.",
-      "move_progress": "Nice — {{done}} of {{needed}} moves done."
+      "move_progress": "Nice — {{done}} of {{needed}} moves done.",
+      "try_again_title": "Not quite"
     },
     "graduation": {
       "body": "You know the goal, the board, how turns work, hitting, bearing off, the pip count and the main game plans. A quick check — then your first real game.",
@@ -393,7 +396,11 @@
     "home_cta_quiz": "Quick check left — then play",
     "home_cta_ready": "You’re ready — play a real game",
     "home_cta_sub": "Interactive lessons for beginners",
+    "hub_intro_done": "Every lesson done. You’re ready for a real game.",
+    "hub_intro_start": "New here? Start with the board — the first lesson takes about 2 minutes.",
     "lesson_complete": "Lesson complete!",
+    "lesson_complete_body": "Nice work on {{title}}. The next lesson builds on this one.",
+    "lesson_complete_body_last": "Nice work on {{title}}. That’s every lesson — take the quick check, then play your first game.",
     "lessons": {
       "app_tools": {
         "steps": {
@@ -594,7 +601,7 @@
           }
         },
         "subtitle": "Learn to read who's winning the race",
-        "title": "Pip count: the race score"
+        "title": "Pip count"
       },
       "strategies": {
         "steps": {
@@ -602,7 +609,8 @@
             "body": "You're far behind, so you hold two deep anchors in your opponent's home board — here the 22- and 24-points. Keep your own home board strong and wait for a late shot. It's a last resort: it can also lose big."
           },
           "blitz": {
-            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar."
+            "body": "You have a strong home board and your opponent has blots or checkers on the bar. Attack! Hit every blot you can and close your home board points. The goal is to trap their checkers on the bar while you bear off. Here white has three home-board points made and black has a checker on the bar.",
+            "title": "Blitz"
           },
           "holding": {
             "body": "You're behind in the race, but you hold an anchor in your opponent's home board — here the 20-point. Keep it, stay safe, and wait for a shot as their checkers come home past it."
@@ -614,16 +622,19 @@
             "title": "Spot the prime"
           },
           "prime": {
-            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it."
+            "body": "You've built a wall of consecutive made points — a prime. The highlighted points form a 4-point prime that restricts black's back checkers. Extend your prime one point at a time and trap their checkers behind it.",
+            "title": "Priming Game"
           },
           "running": {
-            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board."
+            "body": "You lead the race with no blots in hitting range. The plan is simple: bring your checkers home safely and avoid leaving blots. Don't get fancy — just run. This position shows white ahead in the race with a solid home board.",
+            "title": "Running Game"
           }
         },
         "subtitle": "Recognize classic game plans",
-        "title": "Game plans"
+        "title": "Game strategies"
       }
     },
+    "locked": "Complete the previous lesson first",
     "next_lesson": "Next lesson",
     "quiz": {
       "bar": {
@@ -683,6 +694,7 @@
     },
     "replay": "Replay",
     "skip_to_play": "Skip to play",
+    "start": "Start",
     "step_progress": "Step {{current}} of {{total}}",
     "subtitle": "Short interactive lessons — then you’re ready",
     "title": "Learn to play"
@@ -774,7 +786,7 @@
     "english": "English",
     "game": "Game",
     "general": "General",
-    "github": "GitHub",
+    "github": "Github",
     "language": "Language",
     "link_error_body": "Please try again later.",
     "link_error_title": "Unable to open link",

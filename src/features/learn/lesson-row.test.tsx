@@ -4,7 +4,9 @@ import { cleanup, screen, setup } from '@/lib/test-utils';
 import { LessonRow } from './lesson-row';
 
 jest.mock('@/lib/i18n', () => ({
-  translate: (key: string) => key,
+  useLayoutIsRTL: jest.fn().mockReturnValue(false),
+  translate: (key: string, options?: Record<string, unknown>) =>
+    options ? `${key}:${JSON.stringify(options)}` : key,
 }));
 
 jest.mock('@expo/vector-icons/Feather', () => {
@@ -41,9 +43,16 @@ describe('lessonRow', () => {
     const row = screen.getByRole('button');
     expect(row.props.accessibilityState?.disabled).toBeFalsy();
     expect(screen.getByText(last.subtitleKey)).toBeTruthy();
-    expect(screen.getByText(String(last.order))).toBeTruthy();
+    expect(screen.getByText('learn.start')).toBeTruthy();
     expect(screen.queryByText('check')).toBeNull();
     await user.press(row);
     expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it('offers Replay instead of Start once completed', () => {
+    setup(<LessonRow lesson={LESSONS[0]!} completed onPress={jest.fn()} />);
+
+    expect(screen.getByText('learn.replay')).toBeTruthy();
+    expect(screen.queryByText('learn.start')).toBeNull();
   });
 });

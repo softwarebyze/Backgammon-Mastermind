@@ -100,6 +100,16 @@ export function useLessonSession(lesson: LessonDefinition) {
     goToStep(stepIndex + 1);
   }, [goToStep, stepIndex, totalSteps]);
 
+  /** Step back one screen so a learner can re-read or retry the previous idea. */
+  const back = useCallback(() => {
+    if (stepIndex === 0) {
+      return;
+    }
+    hapticSelection();
+    setLessonFinished(false);
+    goToStep(stepIndex - 1);
+  }, [goToStep, stepIndex]);
+
   const showHint = useCallback(() => {
     if (step.kind === 'explain') {
       return;
@@ -268,6 +278,8 @@ export function useLessonSession(lesson: LessonDefinition) {
     exactTaps: step.kind === 'identify' && !stepComplete,
     aids: step.aids,
     advance,
+    back,
+    canGoBack: stepIndex > 0,
     showHint,
     previewTarget,
     dragFrom,
