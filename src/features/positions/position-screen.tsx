@@ -1,8 +1,8 @@
 import type { Player } from '@/lib/game/types';
 import type { Position, PositionLocation } from '@/lib/positions/position';
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
-import { useLayoutEffect, useState } from 'react';
-import { Keyboard, ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import { router, useFocusEffect, useLocalSearchParams, useNavigation } from 'expo-router';
+import { useCallback, useLayoutEffect, useState } from 'react';
+import { Keyboard, Platform, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
 import { cubeCornerClearance } from '@/features/game/bear-off-layout';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
@@ -57,6 +57,14 @@ function PositionWorkspace({ data }: { data?: string }) {
   const { state, startFromPosition } = useGame();
   const [initial] = useState(() => initialPosition(data));
   const history = usePositionHistory(() => initial.position);
+  const [strokeActive, setStrokeActive] = useState(false);
+  const [editorEpoch, setEditorEpoch] = useState(0);
+  const endStroke = history.strokeEnd;
+  useFocusEffect(useCallback(() => () => {
+    setStrokeActive(false);
+    setEditorEpoch(value => value + 1);
+    endStroke();
+  }, [endStroke]));
   const { position } = history;
   const [error, setError] = useState(initial.error);
   const [location, setLocation] = useState<PositionLocation | null>(null);
@@ -125,6 +133,7 @@ function PositionWorkspace({ data }: { data?: string }) {
   );
   const editor = (
     <PositionBoardEditor
+      key={editorEpoch}
       position={position}
       dimensions={dims}
       location={location}
@@ -132,8 +141,14 @@ function PositionWorkspace({ data }: { data?: string }) {
       onColor={setColor}
       onLocation={selectLocation}
       onChange={change}
-      onStrokeStart={history.strokeStart}
-      onStrokeEnd={history.strokeEnd}
+      onStrokeStart={() => {
+        setStrokeActive(true);
+        history.strokeStart();
+      }}
+      onStrokeEnd={() => {
+        setStrokeActive(false);
+        history.strokeEnd();
+      }}
       actions={setupActions}
       showToolbar={!layout.side}
       showStrips={!layout.side}
@@ -172,6 +187,9 @@ function PositionWorkspace({ data }: { data?: string }) {
       <ScrollView
         testID="position-screen"
         style={styles.root}
+        // A stack drag must not scroll the page: on iOS with gesture-handler 3
+        // the native scroll view otherwise wins the touch and cancels the edit.
+        scrollEnabled={Platform.OS !== 'ios' || !strokeActive}
         onLayout={e => setFrameWidth(e.nativeEvent.layout.width)}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"

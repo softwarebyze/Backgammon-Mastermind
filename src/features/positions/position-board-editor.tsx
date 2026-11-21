@@ -31,7 +31,24 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
   onStrokeStart?: () => void;
   onStrokeEnd?: () => void;
 }) {
-  const dragging = useRef(false);
+  // Points with a stroke in progress. A recognizer can fail before it starts,
+  // and strokes on different points overlap, so pair start/end per point.
+  const strokes = useRef(new Set<number>());
+  const dragging = { get current() {
+    return strokes.current.size > 0;
+  } };
+  const beginStroke = (point: number) => {
+    if (strokes.current.size === 0)
+      onStrokeStart?.();
+    strokes.current.add(point);
+  };
+  const endStroke = (point: number) => {
+    if (strokes.current.delete(point) && strokes.current.size === 0) {
+      onStrokeEnd?.();
+      return true;
+    }
+    return false;
+  };
   const pendingLocation = useRef(location);
   // Keep the board stationary under the finger. Reveal exact controls only
   // after the stroke ends; subsequent strokes retain their starting layout.
@@ -46,6 +63,11 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
   } });
   const board = { ...positionGame({ ...position, dice: [0, 0], context: newPosition().context }), currentPlayer: location === 'black-bar' ? 'black' : location === 'white-bar' ? 'white' : color, selectedPoint: null };
   const single = (run: () => void) => {
+    // A tap during another stroke joins that stroke instead of ending it.
+    if (dragging.current) {
+      run();
+      return;
+    }
     onStrokeStart?.();
     run();
     onStrokeEnd?.();
@@ -64,20 +86,19 @@ export function PositionBoardEditor({ position, dimensions, location, color, onC
           stackEditor={{
             ...editor,
             onStart: (point, y) => {
-              dragging.current = true;
-              onStrokeStart?.();
+              beginStroke(point);
               editor.onStart(point, y);
             },
             onEnd: (point, tap, delta) => {
               editor.onEnd(point, tap, delta);
-              dragging.current = false;
-              onStrokeEnd?.();
-              onLocation(pendingLocation.current);
+              if (endStroke(point))
+                onLocation(pendingLocation.current);
             },
-            onCancel: () => {
-              editor.onCancel();
-              dragging.current = false;
-              onStrokeEnd?.();
+            onCancel: (point) => {
+              if (!strokes.current.has(point))
+                return;
+              editor.onCancel(point);
+              endStroke(point);
             },
             onAdjust: (point, delta) => single(() => editor.onAdjust(point, delta)),
           }}

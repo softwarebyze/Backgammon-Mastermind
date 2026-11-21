@@ -119,6 +119,22 @@ for kind in iPhone iPad; do
   echo "::endgroup::"
   if [ "$rc" -ne 0 ]; then
     echo "::error::Maestro smoke failed on $name (exit $rc)"
+    # Surface the cause in the job log, not only the artifact.
+    echo "::group::$name failure diagnostics"
+    # Maestro may put the cause in the message attribute or the element body.
+    python3 - "$out/report.xml" <<'PY' 2>/dev/null || true
+import sys
+import xml.etree.ElementTree as ET
+failures = [(case, f) for case in ET.parse(sys.argv[1]).iter('testcase') for f in case.iter('failure')]
+for case, failure in failures[:20]:
+    text = ' '.join(filter(None, [failure.get('message'), (failure.text or '').strip()]))
+    print(f"{case.get('name')}: {text}"[:2000])
+PY
+    echo "--- app.log errors (last 80) ---"
+    grep -iE 'error|exception|fatal|crash|abort|unhandled|invariant|terminat' "$out/app.log" 2>/dev/null | tail -80 || true
+    echo "--- app.log tail (last 60) ---"
+    tail -60 "$out/app.log" 2>/dev/null || true
+    echo "::endgroup::"
     STATUS=1
   fi
 done

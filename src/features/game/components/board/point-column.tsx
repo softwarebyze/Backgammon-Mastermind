@@ -12,7 +12,7 @@ import { CheckerToken } from './checker-token';
 import { pointAccessibilityLabel } from './point-accessibility';
 import { PointTriangle } from './point-triangle';
 import { StackEditTarget } from './stack-edit-target';
-import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
+import { composeColumnGestures, KEEP_DETECTOR_MOUNTED, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 const MAX_VISIBLE = 5;
 
@@ -112,18 +112,18 @@ function PointCheckers({
               isSelected={isTopChecker && isSelected && !isDragging}
             />
           );
-          const CheckerWrap = isTopChecker ? Animated.View : View;
-          return (
-            <CheckerWrap
-              key={i}
-              style={[
-                checkerInStack({ isTop, offset, checkerSize, zIndex: i + 1 }),
-                isTopChecker ? topDragStyle : undefined,
-              ]}
-            >
-              {token}
-            </CheckerWrap>
-          );
+          const stackStyle = checkerInStack({ isTop, offset, checkerSize, zIndex: i + 1 });
+          return isTopChecker
+            ? (
+                <Animated.View key={i} style={[stackStyle, topDragStyle]}>
+                  {token}
+                </Animated.View>
+              )
+            : (
+                <View key={i} style={stackStyle}>
+                  {token}
+                </View>
+              );
         })}
       </View>
       {showGhost && ghostPlayer && (
@@ -293,11 +293,8 @@ export function PointColumn({
     onDragCancel,
     overlay: dragOverlay,
   });
-  const tap = useColumnTapGesture(dragEnabled, { onPress, onPressIn, onPressOut });
-  const columnGesture = useMemo(
-    () => (dragEnabled ? composeColumnGestures(pan, tap) : null),
-    [dragEnabled, pan, tap],
-  );
+  const tap = useColumnTapGesture(!stackEditor && (dragEnabled || KEEP_DETECTOR_MOUNTED), { onPress, onPressIn, onPressOut });
+  const columnGesture = useMemo(() => composeColumnGestures(pan, tap), [pan, tap]);
   const a11yLabel = pointAccessibilityLabel(pointIndex, point, { isSelected, isLegalTarget });
   const columnStyle = { width: colWidth, height: pointHeight, position: 'relative' as const, overflow: 'visible' as const };
   const columnContent = (
@@ -326,15 +323,15 @@ export function PointColumn({
       accessibilityValue={stackEditor ? { min: 0, max: 15, now: point.count } : undefined}
       accessible
       testID={`point-${pointIndex}`}
-      pointerEvents={dragEnabled || stackEditor ? 'box-only' : 'auto'}
-      onPress={dragEnabled || stackEditor
+      pointerEvents={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED ? 'box-only' : 'auto'}
+      onPress={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED
         ? undefined
         : (e) => {
             e?.stopPropagation?.();
             onPress();
           }}
-      onPressIn={dragEnabled ? undefined : onPressIn}
-      onPressOut={dragEnabled ? undefined : onPressOut}
+      onPressIn={dragEnabled || KEEP_DETECTOR_MOUNTED ? undefined : onPressIn}
+      onPressOut={dragEnabled || KEEP_DETECTOR_MOUNTED ? undefined : onPressOut}
       accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }, { name: 'activate' }] : [{ name: 'activate' }]}
       onAccessibilityAction={(event) => {
         if (stackEditor) {
@@ -353,7 +350,7 @@ export function PointColumn({
 
   if (stackEditor)
     return <StackEditTarget point={pointIndex} checkerSize={checkerSize} editor={stackEditor}>{pressable}</StackEditTarget>;
-  return dragEnabled && columnGesture
+  return dragEnabled || KEEP_DETECTOR_MOUNTED
     ? <GestureDetector gesture={columnGesture}>{pressable}</GestureDetector>
     : pressable;
 }

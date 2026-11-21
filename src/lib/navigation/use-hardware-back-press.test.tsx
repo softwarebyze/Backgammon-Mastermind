@@ -46,7 +46,7 @@ describe('useHardwareBackPress', () => {
       return <Text>game screen</Text>;
     }
 
-    renderRouter(
+    await renderRouter(
       {
         _layout: () => <Stack />,
         index: () => <Text>home screen</Text>,

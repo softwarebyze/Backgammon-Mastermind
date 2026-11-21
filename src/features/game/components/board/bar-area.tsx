@@ -13,7 +13,7 @@ import { translate } from '@/lib/i18n';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
 import { StackEditTarget } from './stack-edit-target';
-import { composeColumnGestures, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
+import { composeColumnGestures, KEEP_DETECTOR_MOUNTED, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 type DragHandlers = {
   onDragAttempt?: (from: number) => void;
@@ -159,23 +159,25 @@ export function BarArea({
     onDragCancel,
     overlay: dragOverlay,
   });
-  const tap = useColumnTapGesture(dragEnabled, { onPress: onPressBar });
-  const barGesture = useMemo(
-    () => (dragEnabled ? composeColumnGestures(pan, tap) : null),
-    [dragEnabled, pan, tap],
-  );
+  const tap = useColumnTapGesture(!stackEditor && (dragEnabled || KEEP_DETECTOR_MOUNTED), { onPress: onPressBar });
+  const barGesture = useMemo(() => composeColumnGestures(pan, tap), [pan, tap]);
 
   const pressable = (
     <Pressable
       testID={stackEditor ? 'position-board-bar' : 'board-bar'}
       accessibilityRole={stackEditor ? 'adjustable' : 'button'}
       accessibilityValue={stackEditor ? { min: 0, max: 15, now: currentPlayer === 'white' ? whiteCount : blackCount } : undefined}
-      accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : undefined}
-      onAccessibilityAction={event => stackEditor?.onAdjust(BAR_POINT, event.nativeEvent.actionName === 'decrement' ? -1 : 1)}
+      accessibilityActions={stackEditor ? [{ name: 'increment' }, { name: 'decrement' }] : [{ name: 'activate' }]}
+      onAccessibilityAction={(event) => {
+        if (stackEditor)
+          stackEditor.onAdjust(BAR_POINT, event.nativeEvent.actionName === 'decrement' ? -1 : 1);
+        else if (event.nativeEvent.actionName === 'activate')
+          onPressBar();
+      }}
       accessibilityLabel={barLabel(whiteCount, blackCount)}
       accessible
-      pointerEvents={dragEnabled || stackEditor ? 'box-only' : 'auto'}
-      onPress={dragEnabled || stackEditor
+      pointerEvents={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED ? 'box-only' : 'auto'}
+      onPress={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED
         ? undefined
         : (e) => {
             // Parent board Pressable clears selection; stop bubble on web.
@@ -223,7 +225,7 @@ export function BarArea({
     return <StackEditTarget point={BAR_POINT} checkerSize={checkerSize} editor={stackEditor}>{pressable}</StackEditTarget>;
   }
 
-  if (dragEnabled && barGesture) {
+  if (dragEnabled || KEEP_DETECTOR_MOUNTED) {
     return (
       <GestureDetector gesture={barGesture}>
         {pressable}

@@ -4,6 +4,9 @@ import { loadPersistedGame } from '@/lib/game/persistence';
 import { act, renderHook } from '@/lib/test-utils';
 import { useGameProviderValue } from './use-game-provider-value';
 
+// Delayed SFX timers (e.g. the blocked-roll cue) would fire after teardown.
+jest.mock('@/lib/game-sfx/play-game-sfx');
+
 function board() {
   return createPositionState({ useStandardSetup: true, mode: 'vs-human', match: createMatch(5) });
 }

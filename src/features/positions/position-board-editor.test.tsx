@@ -43,7 +43,7 @@ it('keeps a drag anchored to its starting snapshot and restores it on cancellati
   expect(change.mock.lastCall![0].points[6].count).toBe(7);
   act(() => mockEditor.onDelta(6, 2));
   expect(change.mock.lastCall![0].points[6].count).toBe(3);
-  act(() => mockEditor.onCancel());
+  act(() => mockEditor.onCancel(6));
   expect(change.mock.lastCall![0]).toBe(p);
 });
 
@@ -105,7 +105,7 @@ it('only signals exhaustion when an addition is blocked, not when reducing or ma
   expect(hapticLight).not.toHaveBeenCalled();
   act(() => mockEditor.onDelta(6, -1));
   expect(hapticLight).toHaveBeenCalledTimes(1);
-  act(() => mockEditor.onCancel());
+  act(() => mockEditor.onCancel(6));
   expect(change.mock.lastCall![0]).toBe(p);
   expect(screen.queryByTestId('position-no-checkers')).toBeNull();
   jest.mocked(hapticLight).mockClear();
@@ -128,7 +128,7 @@ it('edits both bar stacks directly with press location, reversible dragging and 
   expect(change.mock.lastCall![0].bar.white).toBe(5);
   act(() => mockEditor.onDelta(0, -2));
   expect(change.mock.lastCall![0].bar.white).toBe(1);
-  act(() => mockEditor.onCancel());
+  act(() => mockEditor.onCancel(0));
   expect(change.mock.lastCall![0]).toBe(p);
   fireEvent.press(screen.getByTestId('position-paint-black'));
   selected.mockClear();
@@ -160,7 +160,7 @@ it.each(['white', 'black'] as const)('edits the existing owner with %s selected,
   expect(change.mock.lastCall![0].points[6]).toEqual({ player: selected, count: 1 });
   act(() => mockEditor.onStart(6, yForCount(3)));
   act(() => mockEditor.onDelta(6, 3));
-  act(() => mockEditor.onCancel());
+  act(() => mockEditor.onCancel(6));
   expect(change.mock.lastCall![0]).toBe(p);
 });
 
@@ -181,7 +181,7 @@ it('resizes the touched occupied bar with the other colour selected, then switch
   act(() => mockEditor.onDelta(0, 2));
   expect(change.mock.lastCall![0].bar).toEqual({ white: 3, black: 0 });
   expect(selected).not.toHaveBeenCalled();
-  act(() => mockEditor.onCancel());
+  act(() => mockEditor.onCancel(0));
   expect(change.mock.lastCall![0]).toBe(p);
 });
 
@@ -206,10 +206,34 @@ it('brackets every drag and tap as one undo stroke, including cancelled drags', 
   act(() => mockEditor.onEnd(6, false, -3));
   expect(end).toHaveBeenCalledTimes(1);
   act(() => mockEditor.onStart(13, yForCount(1, true)));
-  act(() => mockEditor.onCancel());
+  act(() => mockEditor.onCancel(13));
   act(() => mockEditor.onAdjust(0, 1));
   expect(start).toHaveBeenCalledTimes(3);
   expect(end).toHaveBeenCalledTimes(3);
+});
+
+it('only lets the stroke that began end it (failed recognizers, overlapping points, taps mid-drag)', () => {
+  const start = jest.fn();
+  const end = jest.fn();
+  const change = jest.fn();
+  const p = setPositionStack(newPosition(true), 6, 'white', 2);
+  render(<Editor position={p} dimensions={dims} location={null} onLocation={jest.fn()} onChange={change} onStrokeStart={start} onStrokeEnd={end} />);
+  act(() => mockEditor.onStart(6, yForCount(2)));
+  act(() => mockEditor.onDelta(6, -2));
+  const dragged = change.mock.lastCall![0];
+  // A recognizer that failed before starting (e.g. a second finger) is ignored.
+  act(() => mockEditor.onCancel(13));
+  // A tap elsewhere joins the active stroke instead of ending it.
+  act(() => mockEditor.onAdjust(1, 1));
+  // An overlapping stroke on another point keeps the lock until both end.
+  act(() => mockEditor.onStart(13, yForCount(1, true)));
+  act(() => mockEditor.onEnd(13, true, 0));
+  expect(start).toHaveBeenCalledTimes(1);
+  expect(end).not.toHaveBeenCalled();
+  expect(dragged.points[6].count).toBe(4);
+  act(() => mockEditor.onEnd(6, false, -2));
+  expect(start).toHaveBeenCalledTimes(1);
+  expect(end).toHaveBeenCalledTimes(1);
 });
 
 it('draws the one cube on the board and edits it in place', () => {

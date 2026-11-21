@@ -123,13 +123,10 @@ const appPlugins: ExpoConfig['plugins'] = [
   [
     'expo-build-properties',
     {
-      // iOS 27 rejects Xcode 27 builds before JS starts without scene adoption.
-      // This migrates both AppDelegate startup and the scene manifest.
-      ios: { enableSceneSupport: true },
       android: {
-        compileSdkVersion: 36,
+        compileSdkVersion: 37,
         targetSdkVersion: 36,
-        buildToolsVersion: '36.0.0',
+        buildToolsVersion: '37.0.0',
       },
     },
   ],

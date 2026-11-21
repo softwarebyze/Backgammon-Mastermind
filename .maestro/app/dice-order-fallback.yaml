@@ -47,6 +47,8 @@ tags:
 - extendedWaitUntil:
     visible: 'Point 2, 1 white checker'
     timeout: 15000
+- assertNotVisible: No legal move for this checker.
+- takeScreenshot: dice-order-fallback-02-redo-single-tap
 # Only five remains; this checker has no legal move, while 13 can still use five.
 - tapOn:
     id: point-6

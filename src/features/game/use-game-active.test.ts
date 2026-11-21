@@ -1,3 +1,4 @@
+import type { AppStateStatus } from 'react-native';
 import { act, renderHook } from '@testing-library/react-native';
 import { usePathname } from 'expo-router';
 import { AppState } from 'react-native';
@@ -11,7 +12,7 @@ it('only enables foreground gameplay, and responds to app visibility changes', (
   let onChange: () => void = () => {};
   const remove = jest.fn();
   const subscription = jest.spyOn(AppState, 'addEventListener').mockImplementation((_, listener) => {
-    onChange = () => listener(AppState.currentState);
+    onChange = () => listener(AppState.currentState as AppStateStatus);
     return { remove };
   });
   jest.mocked(usePathname).mockReturnValue('/');

@@ -58,13 +58,10 @@ tags:
 - tapOn:
     id: header-redo-button
 - assertVisible: Black wins 2 · Pass
-- stopApp
-- launchApp:
-    clearState: false
-- extendedWaitUntil:
-    visible:
-      id: resume-game-button
-    timeout: 45000
+- runFlow:
+    file: ../utils/relaunch-app.yaml
+    env:
+      WAIT_ID: resume-game-button
 - tapOn:
     id: resume-game-button
 - assertVisible: Black wins 2 · Pass

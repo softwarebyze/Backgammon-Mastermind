@@ -1,6 +1,7 @@
 /* eslint-disable react-compiler/react-compiler -- Reanimated shared-value writes on UI thread */
 import type { DragOverlayRefs } from '@/features/game/components/board/use-drag-overlay';
 import { useCallback, useMemo, useRef } from 'react';
+import { Platform } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 
@@ -109,21 +110,35 @@ export function useColumnTapGesture(enabled: boolean, handlers: ColumnTapHandler
   }, []);
 
   return useMemo(() => {
+    // Pressable had no time limit; RNGH Tap defaults to 500ms and drops slow
+    // presses on legal destinations. Match the old feel on native.
     if (!enabled) {
-      return Gesture.Tap().enabled(false);
+      return Gesture.Tap().maxDuration(10_000).enabled(false);
     }
     return Gesture.Tap()
+      .maxDuration(10_000)
       .onBegin(() => {
         runOnJS(invokePressIn)();
       })
-      .onEnd(() => {
-        runOnJS(invokePress)();
+      .onEnd((_event, success) => {
+        if (success)
+          runOnJS(invokePress)();
       })
       .onFinalize(() => {
         runOnJS(invokePressOut)();
       });
   }, [enabled, invokePress, invokePressIn, invokePressOut]);
 }
+
+/**
+ * Native keeps the detector and Tap recognizer mounted even when pan is off.
+ * A tap can end the turn, which turns dragging off for the tapped column; if
+ * that remounted the column mid-touch, React never saw the touch end and the
+ * next press anywhere (Undo, say) was swallowed releasing the stale responder.
+ * Tap ownership also stays with RNGH: handing UP to Pressable after a move
+ * disables pan can deliver the same tap twice against different dice states.
+ */
+export const KEEP_DETECTOR_MOUNTED = Platform.OS !== 'web';
 
 export function composeColumnGestures(pan: ReturnType<typeof useCheckerPan>, tap: ReturnType<typeof useColumnTapGesture>) {
   return Gesture.Exclusive(pan, tap);

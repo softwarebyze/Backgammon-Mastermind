@@ -91,8 +91,8 @@ describe('language switch navigation (web)', () => {
     Object.defineProperty(globalThis, 'location', { configurable: true, value: originalLocation });
   });
 
-  it('keeps the Settings back button and history after picking a language', () => {
-    const view = renderRouter(routes, { initialUrl: '/' });
+  it('keeps the Settings back button and history after picking a language', async () => {
+    const view = await renderRouter(routes, { initialUrl: '/' });
 
     fireEvent.press(screen.getByTestId('open-settings'));
     expect(view.getPathname()).toBe('/settings');
@@ -112,15 +112,15 @@ describe('language switch navigation (web)', () => {
     expect(screen.getByText('Idioma')).toBeOnTheScreen();
     expect(root).toEqual({ lang: 'es', dir: 'ltr' });
 
-    // History survived: the back button pops to Home instead of replacing.
+    // History survived: the back button pops to Home .
     expect(router.canGoBack()).toBe(true);
     pressEscape();
     expect(view.getPathname()).toBe('/');
     expect(screen.getByText('Contra el ordenador')).toBeOnTheScreen();
   });
 
-  it('flips <html dir> for Arabic and back for English without losing history', () => {
-    const view = renderRouter(routes, { initialUrl: '/' });
+  it('flips <html dir> for Arabic and back for English without losing history', async () => {
+    const view = await renderRouter(routes, { initialUrl: '/' });
 
     fireEvent.press(screen.getByTestId('open-settings'));
     fireEvent.press(screen.getByText('Language'));
