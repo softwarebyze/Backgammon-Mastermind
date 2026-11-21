@@ -1,0 +1,4748 @@
+{
+  "sha": "9e36ee4",
+  "preview": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app",
+  "findings": {
+    "pass": [
+      {
+        "id": "after-iphone-portrait-w0-b0.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b0.black",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b0.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b0.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b0.empty.white",
+        "msg": "dashed 25x30 at white outer edge"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b0.empty.black",
+        "msg": "dashed 25x30 at black outer edge"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b7.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b7.black",
+        "msg": "7 slabs, thickness=6, groups=[5,2]"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b7.empty.white",
+        "msg": "dashed 25x30 at white outer edge"
+      },
+      {
+        "id": "after-iphone-portrait-w0-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-iphone-portrait-w1-b1.white",
+        "msg": "1 slabs, thickness=6, groups=[1]"
+      },
+      {
+        "id": "after-iphone-portrait-w1-b1.black",
+        "msg": "1 slabs, thickness=6, groups=[1]"
+      },
+      {
+        "id": "after-iphone-portrait-w1-b1.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-portrait-w1-b1.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-portrait-w1-b1.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-iphone-portrait-w1-b1.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-iphone-portrait-w7-b7.black",
+        "msg": "7 slabs, thickness=6, groups=[5,2]"
+      },
+      {
+        "id": "after-iphone-portrait-w7-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-portrait-w7-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-portrait-w7-b7.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-iphone-portrait-w7-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-iphone-portrait-w15-b15.white",
+        "msg": "15 slabs, thickness=6, groups=[5,5,5]"
+      },
+      {
+        "id": "after-iphone-portrait-w15-b15.black",
+        "msg": "15 slabs, thickness=6, groups=[5,5,5]"
+      },
+      {
+        "id": "after-iphone-portrait-w15-b15.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-portrait-w15-b15.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-iphone-portrait-w15-b15.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b0.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b0.black",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b0.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b0.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b0.empty.white",
+        "msg": "dashed 25x30 at white outer edge"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b0.empty.black",
+        "msg": "dashed 25x30 at black outer edge"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b7.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b7.black",
+        "msg": "7 slabs, thickness=6, groups=[5,2]"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b7.empty.white",
+        "msg": "dashed 25x30 at white outer edge"
+      },
+      {
+        "id": "after-iphone-landscape-w0-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-iphone-landscape-w1-b1.white",
+        "msg": "1 slabs, thickness=6, groups=[1]"
+      },
+      {
+        "id": "after-iphone-landscape-w1-b1.black",
+        "msg": "1 slabs, thickness=6, groups=[1]"
+      },
+      {
+        "id": "after-iphone-landscape-w1-b1.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-landscape-w1-b1.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-landscape-w1-b1.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-iphone-landscape-w1-b1.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-iphone-landscape-w7-b7.black",
+        "msg": "7 slabs, thickness=6, groups=[5,2]"
+      },
+      {
+        "id": "after-iphone-landscape-w7-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-landscape-w7-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-landscape-w7-b7.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-iphone-landscape-w7-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-iphone-landscape-w15-b15.white",
+        "msg": "15 slabs, thickness=3, groups=[5,5,5]"
+      },
+      {
+        "id": "after-iphone-landscape-w15-b15.black",
+        "msg": "15 slabs, thickness=3, groups=[5,5,5]"
+      },
+      {
+        "id": "after-iphone-landscape-w15-b15.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-iphone-landscape-w15-b15.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-iphone-landscape-w15-b15.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-iphone-landscape-w15-b15.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b0.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b0.black",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b0.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b0.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b0.empty.white",
+        "msg": "dashed 41x50 at white outer edge"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b0.empty.black",
+        "msg": "dashed 41x50 at black outer edge"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b7.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b7.black",
+        "msg": "7 slabs, thickness=10, groups=[5,2]"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b7.empty.white",
+        "msg": "dashed 41x50 at white outer edge"
+      },
+      {
+        "id": "after-ipad-portrait-w0-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-portrait-w1-b1.white",
+        "msg": "1 slabs, thickness=10, groups=[1]"
+      },
+      {
+        "id": "after-ipad-portrait-w1-b1.black",
+        "msg": "1 slabs, thickness=10, groups=[1]"
+      },
+      {
+        "id": "after-ipad-portrait-w1-b1.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-portrait-w1-b1.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-portrait-w1-b1.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-ipad-portrait-w1-b1.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-portrait-w7-b7.black",
+        "msg": "7 slabs, thickness=10, groups=[5,2]"
+      },
+      {
+        "id": "after-ipad-portrait-w7-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-portrait-w7-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-portrait-w7-b7.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-ipad-portrait-w7-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-portrait-w15-b15.white",
+        "msg": "15 slabs, thickness=11, groups=[5,5,5]"
+      },
+      {
+        "id": "after-ipad-portrait-w15-b15.black",
+        "msg": "15 slabs, thickness=11, groups=[5,5,5]"
+      },
+      {
+        "id": "after-ipad-portrait-w15-b15.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-portrait-w15-b15.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-portrait-w15-b15.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-ipad-portrait-w15-b15.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b0.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b0.black",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b0.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b0.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b0.empty.white",
+        "msg": "dashed 41x50 at white outer edge"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b0.empty.black",
+        "msg": "dashed 41x50 at black outer edge"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b7.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b7.black",
+        "msg": "7 slabs, thickness=10, groups=[5,2]"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b7.empty.white",
+        "msg": "dashed 41x50 at white outer edge"
+      },
+      {
+        "id": "after-ipad-landscape-w0-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-landscape-w1-b1.white",
+        "msg": "1 slabs, thickness=10, groups=[1]"
+      },
+      {
+        "id": "after-ipad-landscape-w1-b1.black",
+        "msg": "1 slabs, thickness=10, groups=[1]"
+      },
+      {
+        "id": "after-ipad-landscape-w1-b1.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-landscape-w1-b1.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-landscape-w1-b1.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-ipad-landscape-w1-b1.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-landscape-w7-b7.black",
+        "msg": "7 slabs, thickness=10, groups=[5,2]"
+      },
+      {
+        "id": "after-ipad-landscape-w7-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-landscape-w7-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-landscape-w7-b7.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-ipad-landscape-w7-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-ipad-landscape-w15-b15.white",
+        "msg": "15 slabs, thickness=12, groups=[5,5,5]"
+      },
+      {
+        "id": "after-ipad-landscape-w15-b15.black",
+        "msg": "15 slabs, thickness=12, groups=[5,5,5]"
+      },
+      {
+        "id": "after-ipad-landscape-w15-b15.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-ipad-landscape-w15-b15.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-ipad-landscape-w15-b15.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-ipad-landscape-w15-b15.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-desktop-w0-b0.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-desktop-w0-b0.black",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-desktop-w0-b0.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-desktop-w0-b0.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-desktop-w0-b0.empty.white",
+        "msg": "dashed 41x50 at white outer edge"
+      },
+      {
+        "id": "after-desktop-w0-b0.empty.black",
+        "msg": "dashed 41x50 at black outer edge"
+      },
+      {
+        "id": "after-desktop-w0-b7.white",
+        "msg": "0 slabs, thickness=0, groups=undefined"
+      },
+      {
+        "id": "after-desktop-w0-b7.black",
+        "msg": "7 slabs, thickness=10, groups=[5,2]"
+      },
+      {
+        "id": "after-desktop-w0-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-desktop-w0-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-desktop-w0-b7.empty.white",
+        "msg": "dashed 41x50 at white outer edge"
+      },
+      {
+        "id": "after-desktop-w0-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-desktop-w1-b1.white",
+        "msg": "1 slabs, thickness=10, groups=[1]"
+      },
+      {
+        "id": "after-desktop-w1-b1.black",
+        "msg": "1 slabs, thickness=10, groups=[1]"
+      },
+      {
+        "id": "after-desktop-w1-b1.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-desktop-w1-b1.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-desktop-w1-b1.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-desktop-w1-b1.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-desktop-w7-b7.black",
+        "msg": "7 slabs, thickness=10, groups=[5,2]"
+      },
+      {
+        "id": "after-desktop-w7-b7.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-desktop-w7-b7.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-desktop-w7-b7.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-desktop-w7-b7.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "after-desktop-w15-b15.white",
+        "msg": "15 slabs, thickness=12, groups=[5,5,5]"
+      },
+      {
+        "id": "after-desktop-w15-b15.black",
+        "msg": "15 slabs, thickness=12, groups=[5,5,5]"
+      },
+      {
+        "id": "after-desktop-w15-b15.plusN",
+        "msg": "no +N"
+      },
+      {
+        "id": "after-desktop-w15-b15.cube",
+        "msg": "slabs clear of cube"
+      },
+      {
+        "id": "after-desktop-w15-b15.whiteColor",
+        "msg": "rgb(242, 234, 211) / sep rgb(176, 148, 104)"
+      },
+      {
+        "id": "after-desktop-w15-b15.blackColor",
+        "msg": "rgb(48, 48, 90) / rim rgb(80, 80, 160)"
+      },
+      {
+        "id": "size.iphone-portrait-402x874",
+        "msg": "board 402x418 tray 32x374 matches production"
+      },
+      {
+        "id": "size.iphone-landscape-852x393",
+        "msg": "board 537x392 tray 32x348 matches production"
+      },
+      {
+        "id": "size.iphone-landscape-874x402",
+        "msg": "board 551x402 tray 32x358 matches production"
+      },
+      {
+        "id": "size.ipad-portrait-820x1180",
+        "msg": "board 720x504 tray 32x460 matches production"
+      },
+      {
+        "id": "size.ipad-portrait-1032x1376",
+        "msg": "board 768x728 tray 48x684 matches production"
+      },
+      {
+        "id": "size.ipad-landscape-1180x820",
+        "msg": "board 812x708 tray 48x664 matches production"
+      },
+      {
+        "id": "size.ipad-landscape-1376x1032",
+        "msg": "board 1000x728 tray 48x684 matches production"
+      },
+      {
+        "id": "size.desktop-1440x900",
+        "msg": "board 1000x728 tray 48x684 matches production"
+      },
+      {
+        "id": "cube-live-white",
+        "msg": "live white-owned cube clear"
+      },
+      {
+        "id": "cube-live-black",
+        "msg": "live black-owned cube clear"
+      },
+      {
+        "id": "learn.bearing-off",
+        "msg": "white=12 black=0 groupsW=[2,5,5] groupsB=undefined"
+      },
+      {
+        "id": "learn.pip-count",
+        "msg": "white=5 black=0 groupsW=[5] groupsB=undefined"
+      }
+    ],
+    "fail": [
+      {
+        "id": "after-iphone-portrait-w7-b7.white",
+        "msg": "groups [2,5] expected groups-of-five ending with remainder"
+      },
+      {
+        "id": "after-iphone-portrait-w15-b15.cube",
+        "msg": "[{\"side\":\"black\",\"ox\":25,\"oy\":2,\"tok\":{\"x\":354,\"y\":400,\"w\":25,\"h\":6,\"left\":354,\"right\":379,\"top\":400,\"bottom\":406,\"side\":\"black\",\"thickness\":6,\"colors\":{\"fill\":\"rgb(48, 48, 90)\",\"rim\":\"rgb(80, 80, 160)\",\"separator\":\"rgb(16, 16, 28)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"}}},{\"side\":\"white\",\"ox\":25,\"oy\":3,\"tok\":{\"x\":354,\"y\":450,\"w\":25,\"h\":6,\"left\":354,\"right\":379,\"top\":450,\"bottom\":456,\"side\":\"white\",\"thickness\":6,\"colors\":{\"fill\":\"rgb(242, 234, 211)\",\"rim\":\"rgb(255, 250, 240)\",\"separator\":\"rgb(176, 148, 104)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"}}}]"
+      },
+      {
+        "id": "after-iphone-landscape-w7-b7.white",
+        "msg": "groups [2,5] expected groups-of-five ending with remainder"
+      },
+      {
+        "id": "after-ipad-portrait-w7-b7.white",
+        "msg": "groups [2,5] expected groups-of-five ending with remainder"
+      },
+      {
+        "id": "after-ipad-landscape-w7-b7.white",
+        "msg": "groups [2,5] expected groups-of-five ending with remainder"
+      },
+      {
+        "id": "after-desktop-w7-b7.white",
+        "msg": "groups [2,5] expected groups-of-five ending with remainder"
+      },
+      {
+        "id": "cube-centered.overlap",
+        "msg": "[{\"side\":\"black\",\"ox\":25,\"oy\":2,\"tok\":{\"x\":354,\"y\":400,\"w\":25,\"h\":6,\"left\":354,\"right\":379,\"top\":400,\"bottom\":406,\"side\":\"black\",\"thickness\":6,\"colors\":{\"fill\":\"rgb(48, 48, 90)\",\"rim\":\"rgb(80, 80, 160)\",\"separator\":\"rgb(16, 16, 28)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"}}},{\"side\":\"white\",\"ox\":25,\"oy\":3,\"tok\":{\"x\":354,\"y\":450,\"w\":25,\"h\":6,\"left\":354,\"right\":379,\"top\":450,\"bottom\":456,\"side\":\"white\",\"thickness\":6,\"colors\":{\"fill\":\"rgb(242, 234, 211)\",\"rim\":\"rgb(255, 250, 240)\",\"separator\":\"rgb(176, 148, 104)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"}}}]"
+      },
+      {
+        "id": "cube-owned-white.overlap",
+        "msg": "[{\"side\":\"white\",\"ox\":25,\"oy\":6,\"tok\":{\"x\":354,\"y\":542,\"w\":25,\"h\":6,\"left\":354,\"right\":379,\"top\":542,\"bottom\":548,\"side\":\"white\",\"thickness\":6,\"colors\":{\"fill\":\"rgb(242, 234, 211)\",\"rim\":\"rgb(255, 250, 240)\",\"separator\":\"rgb(176, 148, 104)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"}}}]"
+      },
+      {
+        "id": "cube-owned-black.overlap",
+        "msg": "[{\"side\":\"black\",\"ox\":25,\"oy\":6,\"tok\":{\"x\":354,\"y\":308,\"w\":25,\"h\":6,\"left\":354,\"right\":379,\"top\":308,\"bottom\":314,\"side\":\"black\",\"thickness\":6,\"colors\":{\"fill\":\"rgb(48, 48, 90)\",\"rim\":\"rgb(80, 80, 160)\",\"separator\":\"rgb(16, 16, 28)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"}}},{\"side\":\"black\",\"ox\":25,\"oy\":1,\"tok\":{\"x\":354,\"y\":314,\"w\":25,\"h\":6,\"left\":354,\"right\":379,\"top\":314,\"bottom\":320,\"side\":\"black\",\"thickness\":6,\"colors\":{\"fill\":\"rgb(48, 48, 90)\",\"rim\":\"rgb(80, 80, 160)\",\"separator\":\"rgb(16, 16, 28)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"}}}]"
+      },
+      {
+        "id": "anim.tap",
+        "msg": "before=7 after=8 flight=true groups={\"count\":8,\"thickness\":6,\"uniform\":true,\"gaps\":[0,0,4,0,0,0,0],\"groupSizes\":[3,5],\"expectedGroups\":2,\"groupsOk\":false,\"firstTop\":480,\"lastBottom\":532,\"span\":52,\"colors\":{\"fill\":\"rgb(242, 234, 211)\",\"rim\":\"rgb(255, 250, 240)\",\"separator\":\"rgb(176, 148, 104)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"},\"left\":370,\"width\":25,\"nearWhole\":true} overlaps=[]"
+      },
+      {
+        "id": "anim.drag",
+        "msg": "before=7 after=7 dragged=true flight=false body=      Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 7 64 12 11 10 9 8 7 6 5 4 3 2 1 1 3 White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 "
+      },
+      {
+        "id": "rtl",
+        "msg": "{\"dir\":\"rtl\",\"lang\":\"he\",\"w\":{\"count\":14,\"thickness\":6,\"uniform\":true,\"gaps\":[0,0,0,0,4,0,202,0,4,0,0,0,0],\"groupSizes\":[5,2,2,5],\"expectedGroups\":3,\"groupsOk\":false,\"firstTop\":238,\"lastBottom\":532,\"span\":294,\"colors\":{\"fill\":\"rgb(48, 48, 90)\",\"rim\":\"rgb(80, 80, 160)\",\"separator\":\"rgb(16, 16, 28)\",\"borderTopW\":\"1px\",\"borderBottomW\":\"1px\",\"radius\":\"1px\"},\"left\":370,\"width\":25,\"nearWhole\":true},\"b\":{\"count\":0,\"groups\":[],\"thickness\":0,\"uniform\":true},\"overflow\":[],\"body\":\"      שחור 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 בחוץ 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 לבן תורך 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7\"}"
+      }
+    ],
+    "notes": []
+  },
+  "metrics": {
+    "sha": "9e36ee4",
+    "preview": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app",
+    "sizes": {
+      "after-iphone-portrait-w0-b0": {
+        "size": "iphone-portrait",
+        "viewport": {
+          "width": 402,
+          "height": 874
+        },
+        "case": "w0-b0",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "tray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "cube": {
+          "x": 369.3,
+          "y": 373.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 369.3,
+          "right": 394.7,
+          "top": 373.1,
+          "bottom": 396.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "empties": [
+          {
+            "x": 370,
+            "y": 238,
+            "w": 25,
+            "h": 30,
+            "left": 370,
+            "right": 395,
+            "top": 238,
+            "bottom": 268,
+            "side": "black",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          },
+          {
+            "x": 370,
+            "y": 502,
+            "w": 25,
+            "h": 30,
+            "left": 370,
+            "right": 395,
+            "top": 502,
+            "bottom": 532,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "      Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS Hint Double Roll Dice Ro"
+      },
+      "after-iphone-portrait-w0-b7": {
+        "size": "iphone-portrait",
+        "viewport": {
+          "width": 402,
+          "height": 874
+        },
+        "case": "w0-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "tray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "cube": {
+          "x": 369.3,
+          "y": 373.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 369.3,
+          "right": 394.7,
+          "top": 373.1,
+          "bottom": 396.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 238,
+          "lastBottom": 284,
+          "span": 46,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 370,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [
+          {
+            "x": 370,
+            "y": 502,
+            "w": 25,
+            "h": 30,
+            "left": 370,
+            "right": 395,
+            "top": 502,
+            "bottom": 532,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "      Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS Hint Double Roll Dice R"
+      },
+      "after-iphone-portrait-w1-b1": {
+        "size": "iphone-portrait",
+        "viewport": {
+          "width": 402,
+          "height": 874
+        },
+        "case": "w1-b1",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A1%2C%22black%22%3A1%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "tray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "cube": {
+          "x": 369.3,
+          "y": 373.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 369.3,
+          "right": 394.7,
+          "top": 373.1,
+          "bottom": 396.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 1,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 526,
+          "lastBottom": 532,
+          "span": 6,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 370,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 1,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 238,
+          "lastBottom": 244,
+          "span": 6,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 370,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "      Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF Hint Double Roll Dice "
+      },
+      "after-iphone-portrait-w7-b7": {
+        "size": "iphone-portrait",
+        "viewport": {
+          "width": 402,
+          "height": 874
+        },
+        "case": "w7-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "tray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "cube": {
+          "x": 369.3,
+          "y": 373.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 369.3,
+          "right": 394.7,
+          "top": 373.1,
+          "bottom": 396.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 7,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            2,
+            5
+          ],
+          "expectedGroups": 2,
+          "groupsOk": false,
+          "firstTop": 486,
+          "lastBottom": 532,
+          "span": 46,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 370,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 238,
+          "lastBottom": 284,
+          "span": 46,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 370,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "      Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF Hint Double Roll Dice "
+      },
+      "after-iphone-portrait-w15-b15": {
+        "size": "iphone-portrait",
+        "viewport": {
+          "width": 402,
+          "height": 874
+        },
+        "case": "w15-b15",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A15%2C%22black%22%3A15%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": false,
+          "playDisabled": true
+        },
+        "board": {
+          "x": 16,
+          "y": 246,
+          "w": 370,
+          "h": 364,
+          "left": 16,
+          "right": 386,
+          "top": 246,
+          "bottom": 610
+        },
+        "tray": {
+          "x": 350,
+          "y": 268,
+          "w": 32,
+          "h": 320,
+          "left": 350,
+          "right": 382,
+          "top": 268,
+          "bottom": 588
+        },
+        "cube": {
+          "x": 342,
+          "y": 404,
+          "w": 49,
+          "h": 49,
+          "left": 342,
+          "right": 391,
+          "top": 404,
+          "bottom": 453
+        },
+        "overflow": [],
+        "white": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 450,
+          "lastBottom": 548,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 308,
+          "lastBottom": 406,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [
+          {
+            "side": "black",
+            "ox": 25,
+            "oy": 2,
+            "tok": {
+              "x": 354,
+              "y": 400,
+              "w": 25,
+              "h": 6,
+              "left": 354,
+              "right": 379,
+              "top": 400,
+              "bottom": 406,
+              "side": "black",
+              "thickness": 6,
+              "colors": {
+                "fill": "rgb(48, 48, 90)",
+                "rim": "rgb(80, 80, 160)",
+                "separator": "rgb(16, 16, 28)",
+                "borderTopW": "1px",
+                "borderBottomW": "1px",
+                "radius": "1px"
+              }
+            }
+          },
+          {
+            "side": "white",
+            "ox": 25,
+            "oy": 3,
+            "tok": {
+              "x": 354,
+              "y": 450,
+              "w": 25,
+              "h": 6,
+              "left": 354,
+              "right": 379,
+              "top": 450,
+              "bottom": 456,
+              "side": "white",
+              "thickness": 6,
+              "colors": {
+                "fill": "rgb(242, 234, 211)",
+                "rim": "rgb(255, 250, 240)",
+                "separator": "rgb(176, 148, 104)",
+                "borderTopW": "1px",
+                "borderBottomW": "1px",
+                "radius": "1px"
+              }
+            }
+          }
+        ],
+        "body": " Positions   This shared position is ready to explore. Your active game stays untouched until you choose Play. PLACE Standard setup  Black Tap to put on roll 0 1 2 3 4 5 6 7 8 9 15 OFF 13 14 15 16 17 18 19 20 21 22 2"
+      },
+      "after-iphone-landscape-w0-b0": {
+        "size": "iphone-landscape",
+        "viewport": {
+          "width": 874,
+          "height": 402
+        },
+        "case": "w0-b0",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "tray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "cube": {
+          "x": 518.3,
+          "y": 189.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 518.3,
+          "right": 543.7,
+          "top": 189.1,
+          "bottom": 212.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "empties": [
+          {
+            "x": 519,
+            "y": 62,
+            "w": 25,
+            "h": 30,
+            "left": 519,
+            "right": 544,
+            "top": 62,
+            "bottom": 92,
+            "side": "black",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          },
+          {
+            "x": 519,
+            "y": 310,
+            "w": 25,
+            "h": 30,
+            "left": 519,
+            "right": 544,
+            "top": 310,
+            "bottom": 340,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1       Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS Hint Double Roll Dice Ro"
+      },
+      "after-iphone-landscape-w0-b7": {
+        "size": "iphone-landscape",
+        "viewport": {
+          "width": 874,
+          "height": 402
+        },
+        "case": "w0-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "tray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "cube": {
+          "x": 518.3,
+          "y": 189.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 518.3,
+          "right": 543.7,
+          "top": 189.1,
+          "bottom": 212.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 62,
+          "lastBottom": 108,
+          "span": 46,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 519,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [
+          {
+            "x": 519,
+            "y": 310,
+            "w": 25,
+            "h": 30,
+            "left": 519,
+            "right": 544,
+            "top": 310,
+            "bottom": 340,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1       Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS Hint Double Roll Dice R"
+      },
+      "after-iphone-landscape-w1-b1": {
+        "size": "iphone-landscape",
+        "viewport": {
+          "width": 874,
+          "height": 402
+        },
+        "case": "w1-b1",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A1%2C%22black%22%3A1%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "tray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "cube": {
+          "x": 518.3,
+          "y": 189.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 518.3,
+          "right": 543.7,
+          "top": 189.1,
+          "bottom": 212.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 1,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 334,
+          "lastBottom": 340,
+          "span": 6,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 519,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 1,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 62,
+          "lastBottom": 68,
+          "span": 6,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 519,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1       Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF Hint Double Roll Dice "
+      },
+      "after-iphone-landscape-w7-b7": {
+        "size": "iphone-landscape",
+        "viewport": {
+          "width": 874,
+          "height": 402
+        },
+        "case": "w7-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "tray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "cube": {
+          "x": 518.3,
+          "y": 189.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 518.3,
+          "right": 543.7,
+          "top": 189.1,
+          "bottom": 212.9
+        },
+        "overflow": [],
+        "white": {
+          "count": 7,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            2,
+            5
+          ],
+          "expectedGroups": 2,
+          "groupsOk": false,
+          "firstTop": 294,
+          "lastBottom": 340,
+          "span": 46,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 519,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 62,
+          "lastBottom": 108,
+          "span": 46,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 519,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1       Black 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF White Your turn 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF Hint Double Roll Dice "
+      },
+      "after-iphone-landscape-w15-b15": {
+        "size": "iphone-landscape",
+        "viewport": {
+          "width": 874,
+          "height": 402
+        },
+        "case": "w15-b15",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A15%2C%22black%22%3A15%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": false,
+          "playDisabled": true
+        },
+        "board": {
+          "x": 104,
+          "y": 109,
+          "w": 362,
+          "h": 294,
+          "left": 104,
+          "right": 466,
+          "top": 109,
+          "bottom": 403
+        },
+        "tray": {
+          "x": 430,
+          "y": 131,
+          "w": 32,
+          "h": 250,
+          "left": 430,
+          "right": 462,
+          "top": 131,
+          "bottom": 381
+        },
+        "cube": {
+          "x": 422,
+          "y": 232,
+          "w": 49,
+          "h": 49,
+          "left": 422,
+          "right": 471,
+          "top": 232,
+          "bottom": 281
+        },
+        "overflow": [],
+        "white": {
+          "count": 15,
+          "thickness": 3,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 290,
+          "lastBottom": 341,
+          "span": 51,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "0px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 434,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 3,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 171,
+          "lastBottom": 222,
+          "span": 51,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "0px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 434,
+          "width": 25,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": " Positions   This shared position is ready to explore. Your active game stays untouched until you choose Play. 13 14 15 16 17 18 19 20 21 22 23 24 12 11 10 9 8 7 6 5 4 3 2 1 ? ? 64 Black Tap to put on roll 0 1 2 3 4 5"
+      },
+      "after-ipad-portrait-w0-b0": {
+        "size": "ipad-portrait",
+        "viewport": {
+          "width": 1032,
+          "height": 1376
+        },
+        "case": "w0-b0",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "tray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "cube": {
+          "x": 857,
+          "y": 622,
+          "w": 30,
+          "h": 28,
+          "left": 857,
+          "right": 887,
+          "top": 622,
+          "bottom": 650
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "empties": [
+          {
+            "x": 852,
+            "y": 334,
+            "w": 41,
+            "h": 50,
+            "left": 852,
+            "right": 893,
+            "top": 334,
+            "bottom": 384,
+            "side": "black",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          },
+          {
+            "x": 852,
+            "y": 888,
+            "w": 41,
+            "h": 50,
+            "left": 852,
+            "right": 893,
+            "top": 888,
+            "bottom": 938,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "      Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIP"
+      },
+      "after-ipad-portrait-w0-b7": {
+        "size": "ipad-portrait",
+        "viewport": {
+          "width": 1032,
+          "height": 1376
+        },
+        "case": "w0-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "tray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "cube": {
+          "x": 857,
+          "y": 622,
+          "w": 30,
+          "h": 28,
+          "left": 857,
+          "right": 887,
+          "top": 622,
+          "bottom": 650
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 334,
+          "lastBottom": 410,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 852,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [
+          {
+            "x": 852,
+            "y": 888,
+            "w": 41,
+            "h": 50,
+            "left": 852,
+            "right": 893,
+            "top": 888,
+            "bottom": 938,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "      Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PI"
+      },
+      "after-ipad-portrait-w1-b1": {
+        "size": "ipad-portrait",
+        "viewport": {
+          "width": 1032,
+          "height": 1376
+        },
+        "case": "w1-b1",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A1%2C%22black%22%3A1%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "tray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "cube": {
+          "x": 857,
+          "y": 622,
+          "w": 30,
+          "h": 28,
+          "left": 857,
+          "right": 887,
+          "top": 622,
+          "bottom": 650
+        },
+        "overflow": [],
+        "white": {
+          "count": 1,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 928,
+          "lastBottom": 938,
+          "span": 10,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 852,
+          "width": 41,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 1,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 334,
+          "lastBottom": 344,
+          "span": 10,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 852,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "      Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 "
+      },
+      "after-ipad-portrait-w7-b7": {
+        "size": "ipad-portrait",
+        "viewport": {
+          "width": 1032,
+          "height": 1376
+        },
+        "case": "w7-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "tray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "cube": {
+          "x": 857,
+          "y": 622,
+          "w": 30,
+          "h": 28,
+          "left": 857,
+          "right": 887,
+          "top": 622,
+          "bottom": 650
+        },
+        "overflow": [],
+        "white": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            6,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            2,
+            5
+          ],
+          "expectedGroups": 2,
+          "groupsOk": false,
+          "firstTop": 862,
+          "lastBottom": 938,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 852,
+          "width": 41,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 334,
+          "lastBottom": 410,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 852,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "      Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 "
+      },
+      "after-ipad-portrait-w15-b15": {
+        "size": "ipad-portrait",
+        "viewport": {
+          "width": 1032,
+          "height": 1376
+        },
+        "case": "w15-b15",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A15%2C%22black%22%3A15%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": false,
+          "playDisabled": true
+        },
+        "board": {
+          "x": 148,
+          "y": 225,
+          "w": 736,
+          "h": 766,
+          "left": 148,
+          "right": 884,
+          "top": 225,
+          "bottom": 991
+        },
+        "tray": {
+          "x": 829,
+          "y": 247,
+          "w": 51,
+          "h": 722,
+          "left": 829,
+          "right": 880,
+          "top": 247,
+          "bottom": 969
+        },
+        "cube": {
+          "x": 826,
+          "y": 580,
+          "w": 57,
+          "h": 57,
+          "left": 826,
+          "right": 883,
+          "top": 580,
+          "bottom": 637
+        },
+        "overflow": [],
+        "white": {
+          "count": 15,
+          "thickness": 11,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 750,
+          "lastBottom": 929,
+          "span": 179,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 833,
+          "width": 44,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 11,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 287,
+          "lastBottom": 466,
+          "span": 179,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 833,
+          "width": 44,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": " Positions   This shared position is ready to explore. Your active game stays untouched until you choose Play. PLACE Standard setup  Clear board Black Tap to put on roll 0 1 2 3 4 5 6 7 8 9 15 OFF 13 14 15 16 17 18 1"
+      },
+      "after-ipad-landscape-w0-b0": {
+        "size": "ipad-landscape",
+        "viewport": {
+          "width": 1376,
+          "height": 1032
+        },
+        "case": "w0-b0",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "tray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "cube": {
+          "x": 961,
+          "y": 502,
+          "w": 30,
+          "h": 28,
+          "left": 961,
+          "right": 991,
+          "top": 502,
+          "bottom": 530
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "empties": [
+          {
+            "x": 956,
+            "y": 214,
+            "w": 41,
+            "h": 50,
+            "left": 956,
+            "right": 997,
+            "top": 214,
+            "bottom": 264,
+            "side": "black",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          },
+          {
+            "x": 956,
+            "y": 768,
+            "w": 41,
+            "h": 50,
+            "left": 956,
+            "right": 997,
+            "top": 768,
+            "bottom": 818,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS      "
+      },
+      "after-ipad-landscape-w0-b7": {
+        "size": "ipad-landscape",
+        "viewport": {
+          "width": 1376,
+          "height": 1032
+        },
+        "case": "w0-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "tray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "cube": {
+          "x": 961,
+          "y": 502,
+          "w": 30,
+          "h": 28,
+          "left": 961,
+          "right": 991,
+          "top": 502,
+          "bottom": 530
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 214,
+          "lastBottom": 290,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 956,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [
+          {
+            "x": 956,
+            "y": 768,
+            "w": 41,
+            "h": 50,
+            "left": 956,
+            "right": 997,
+            "top": 768,
+            "bottom": 818,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS     "
+      },
+      "after-ipad-landscape-w1-b1": {
+        "size": "ipad-landscape",
+        "viewport": {
+          "width": 1376,
+          "height": 1032
+        },
+        "case": "w1-b1",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A1%2C%22black%22%3A1%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "tray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "cube": {
+          "x": 961,
+          "y": 502,
+          "w": 30,
+          "h": 28,
+          "left": 961,
+          "right": 991,
+          "top": 502,
+          "bottom": 530
+        },
+        "overflow": [],
+        "white": {
+          "count": 1,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 808,
+          "lastBottom": 818,
+          "span": 10,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 956,
+          "width": 41,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 1,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 214,
+          "lastBottom": 224,
+          "span": 10,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 956,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF     "
+      },
+      "after-ipad-landscape-w7-b7": {
+        "size": "ipad-landscape",
+        "viewport": {
+          "width": 1376,
+          "height": 1032
+        },
+        "case": "w7-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "tray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "cube": {
+          "x": 961,
+          "y": 502,
+          "w": 30,
+          "h": 28,
+          "left": 961,
+          "right": 991,
+          "top": 502,
+          "bottom": 530
+        },
+        "overflow": [],
+        "white": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            6,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            2,
+            5
+          ],
+          "expectedGroups": 2,
+          "groupsOk": false,
+          "firstTop": 742,
+          "lastBottom": 818,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 956,
+          "width": 41,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 214,
+          "lastBottom": 290,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 956,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF     "
+      },
+      "after-ipad-landscape-w15-b15": {
+        "size": "ipad-landscape",
+        "viewport": {
+          "width": 1376,
+          "height": 1032
+        },
+        "case": "w15-b15",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A15%2C%22black%22%3A15%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": false,
+          "playDisabled": true
+        },
+        "board": {
+          "x": 16,
+          "y": 109,
+          "w": 1000,
+          "h": 924,
+          "left": 16,
+          "right": 1016,
+          "top": 109,
+          "bottom": 1033
+        },
+        "tray": {
+          "x": 948,
+          "y": 131,
+          "w": 64,
+          "h": 880,
+          "left": 948,
+          "right": 1012,
+          "top": 131,
+          "bottom": 1011
+        },
+        "cube": {
+          "x": 952,
+          "y": 543,
+          "w": 57,
+          "h": 57,
+          "left": 952,
+          "right": 1009,
+          "top": 543,
+          "bottom": 600
+        },
+        "overflow": [],
+        "white": {
+          "count": 15,
+          "thickness": 12,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 777,
+          "lastBottom": 971,
+          "span": 194,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 952,
+          "width": 57,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 12,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 171,
+          "lastBottom": 365,
+          "span": 194,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 952,
+          "width": 57,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": " Positions   This shared position is ready to explore. Your active game stays untouched until you choose Play. 13 14 15 16 17 18 19 20 21 22 23 24 12 11 10 9 8 7 6 5 4 3 2 1 ? ? 64 Black Tap to put on roll 0 1 2 3 4 5"
+      },
+      "after-desktop-w0-b0": {
+        "size": "desktop",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "case": "w0-b0",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "tray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "cube": {
+          "x": 993,
+          "y": 436,
+          "w": 30,
+          "h": 28,
+          "left": 993,
+          "right": 1023,
+          "top": 436,
+          "bottom": 464
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "empties": [
+          {
+            "x": 988,
+            "y": 148,
+            "w": 41,
+            "h": 50,
+            "left": 988,
+            "right": 1029,
+            "top": 148,
+            "bottom": 198,
+            "side": "black",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          },
+          {
+            "x": 988,
+            "y": 702,
+            "w": 41,
+            "h": 50,
+            "left": 988,
+            "right": 1029,
+            "top": 702,
+            "bottom": 752,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS      "
+      },
+      "after-desktop-w0-b7": {
+        "size": "desktop",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "case": "w0-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A0%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "tray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "cube": {
+          "x": 993,
+          "y": 436,
+          "w": 30,
+          "h": 28,
+          "left": 993,
+          "right": 1023,
+          "top": 436,
+          "bottom": 464
+        },
+        "overflow": [],
+        "white": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 148,
+          "lastBottom": 224,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 988,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [
+          {
+            "x": 988,
+            "y": 702,
+            "w": 41,
+            "h": 50,
+            "left": 988,
+            "right": 1029,
+            "top": 702,
+            "bottom": 752,
+            "side": "white",
+            "borderStyle": "dashed",
+            "borderColor": "rgb(90, 58, 26)"
+          }
+        ],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 PIPS     "
+      },
+      "after-desktop-w1-b1": {
+        "size": "desktop",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "case": "w1-b1",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A3%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A1%2C%22black%22%3A1%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "tray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "cube": {
+          "x": 993,
+          "y": 436,
+          "w": 30,
+          "h": 28,
+          "left": 993,
+          "right": 1023,
+          "top": 436,
+          "bottom": 464
+        },
+        "overflow": [],
+        "white": {
+          "count": 1,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 742,
+          "lastBottom": 752,
+          "span": 10,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 988,
+          "width": 41,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 1,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [],
+          "groupSizes": [
+            1
+          ],
+          "expectedGroups": 1,
+          "groupsOk": true,
+          "firstTop": 148,
+          "lastBottom": 158,
+          "span": 10,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 988,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 1 OFF     "
+      },
+      "after-desktop-w7-b7": {
+        "size": "desktop",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "case": "w7-b7",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": true,
+          "playDisabled": false
+        },
+        "board": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "tray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "cube": {
+          "x": 993,
+          "y": 436,
+          "w": 30,
+          "h": 28,
+          "left": 993,
+          "right": 1023,
+          "top": 436,
+          "bottom": 464
+        },
+        "overflow": [],
+        "white": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            6,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            2,
+            5
+          ],
+          "expectedGroups": 2,
+          "groupsOk": false,
+          "firstTop": 676,
+          "lastBottom": 752,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 988,
+          "width": 41,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 7,
+          "thickness": 10,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            6,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2
+          ],
+          "expectedGroups": 2,
+          "groupsOk": true,
+          "firstTop": 148,
+          "lastBottom": 224,
+          "span": 76,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 988,
+          "width": 41,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": "Black 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 White Your turn 🏃 Running game 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 OFF     "
+      },
+      "after-desktop-w15-b15": {
+        "size": "desktop",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "case": "w15-b15",
+        "load": {
+          "url": "https://backgammon-mastermind-1pxvx4vzs-softwarebyzes-projects.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A15%2C%22black%22%3A15%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+          "played": false,
+          "playDisabled": true
+        },
+        "board": {
+          "x": 16,
+          "y": 109,
+          "w": 1064,
+          "h": 792,
+          "left": 16,
+          "right": 1080,
+          "top": 109,
+          "bottom": 901
+        },
+        "tray": {
+          "x": 1012,
+          "y": 131,
+          "w": 64,
+          "h": 748,
+          "left": 1012,
+          "right": 1076,
+          "top": 131,
+          "bottom": 879
+        },
+        "cube": {
+          "x": 1016,
+          "y": 477,
+          "w": 57,
+          "h": 57,
+          "left": 1016,
+          "right": 1073,
+          "top": 477,
+          "bottom": 534
+        },
+        "overflow": [],
+        "white": {
+          "count": 15,
+          "thickness": 12,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 645,
+          "lastBottom": 839,
+          "span": 194,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 1016,
+          "width": 57,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 12,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 171,
+          "lastBottom": 365,
+          "span": 194,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 1016,
+          "width": 57,
+          "nearWhole": true
+        },
+        "empties": [],
+        "overlapsCube": [],
+        "body": " Positions   This shared position is ready to explore. Your active game stays untouched until you choose Play. 13 14 15 16 17 18 19 20 21 22 23 24 12 11 10 9 8 7 6 5 4 3 2 1 ? ? 64 Black Tap to put on roll 0 1 2 3 4 5"
+      },
+      "compare-iphone-portrait-402x874": {
+        "size": "iphone-portrait-402x874",
+        "viewport": {
+          "width": 402,
+          "height": 874
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "prodTray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "previewTray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "diffs": []
+      },
+      "compare-iphone-landscape-852x393": {
+        "size": "iphone-landscape-852x393",
+        "viewport": {
+          "width": 852,
+          "height": 393
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 0.5,
+          "w": 537,
+          "h": 392,
+          "left": 0,
+          "right": 537,
+          "top": 0.5,
+          "bottom": 392.5
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 0.5,
+          "w": 537,
+          "h": 392,
+          "left": 0,
+          "right": 537,
+          "top": 0.5,
+          "bottom": 392.5
+        },
+        "prodTray": {
+          "x": 501,
+          "y": 22.5,
+          "w": 32,
+          "h": 348,
+          "left": 501,
+          "right": 533,
+          "top": 22.5,
+          "bottom": 370.5
+        },
+        "previewTray": {
+          "x": 501,
+          "y": 22.5,
+          "w": 32,
+          "h": 348,
+          "left": 501,
+          "right": 533,
+          "top": 22.5,
+          "bottom": 370.5
+        },
+        "diffs": []
+      },
+      "compare-iphone-landscape-874x402": {
+        "size": "iphone-landscape-874x402",
+        "viewport": {
+          "width": 874,
+          "height": 402
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "prodTray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "previewTray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "diffs": []
+      },
+      "compare-ipad-portrait-820x1180": {
+        "size": "ipad-portrait-820x1180",
+        "viewport": {
+          "width": 820,
+          "height": 1180
+        },
+        "prodBoard": {
+          "x": 50,
+          "y": 286,
+          "w": 720,
+          "h": 504,
+          "left": 50,
+          "right": 770,
+          "top": 286,
+          "bottom": 790
+        },
+        "previewBoard": {
+          "x": 50,
+          "y": 286,
+          "w": 720,
+          "h": 504,
+          "left": 50,
+          "right": 770,
+          "top": 286,
+          "bottom": 790
+        },
+        "prodTray": {
+          "x": 734,
+          "y": 308,
+          "w": 32,
+          "h": 460,
+          "left": 734,
+          "right": 766,
+          "top": 308,
+          "bottom": 768
+        },
+        "previewTray": {
+          "x": 734,
+          "y": 308,
+          "w": 32,
+          "h": 460,
+          "left": 734,
+          "right": 766,
+          "top": 308,
+          "bottom": 768
+        },
+        "diffs": []
+      },
+      "compare-ipad-portrait-1032x1376": {
+        "size": "ipad-portrait-1032x1376",
+        "viewport": {
+          "width": 1032,
+          "height": 1376
+        },
+        "prodBoard": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "previewBoard": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "prodTray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "previewTray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "diffs": []
+      },
+      "compare-ipad-landscape-1180x820": {
+        "size": "ipad-landscape-1180x820",
+        "viewport": {
+          "width": 1180,
+          "height": 820
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 56,
+          "w": 812,
+          "h": 708,
+          "left": 0,
+          "right": 812,
+          "top": 56,
+          "bottom": 764
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 56,
+          "w": 812,
+          "h": 708,
+          "left": 0,
+          "right": 812,
+          "top": 56,
+          "bottom": 764
+        },
+        "prodTray": {
+          "x": 760,
+          "y": 78,
+          "w": 48,
+          "h": 664,
+          "left": 760,
+          "right": 808,
+          "top": 78,
+          "bottom": 742
+        },
+        "previewTray": {
+          "x": 760,
+          "y": 78,
+          "w": 48,
+          "h": 664,
+          "left": 760,
+          "right": 808,
+          "top": 78,
+          "bottom": 742
+        },
+        "diffs": []
+      },
+      "compare-ipad-landscape-1376x1032": {
+        "size": "ipad-landscape-1376x1032",
+        "viewport": {
+          "width": 1376,
+          "height": 1032
+        },
+        "prodBoard": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "previewBoard": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "prodTray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "previewTray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "diffs": []
+      },
+      "compare-desktop-1440x900": {
+        "size": "desktop-1440x900",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "prodBoard": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "previewBoard": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "prodTray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "previewTray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "diffs": []
+      }
+    },
+    "specials": {
+      "cube-centered": {
+        "cube": {
+          "x": 342,
+          "y": 404,
+          "w": 49,
+          "h": 49,
+          "left": 342,
+          "right": 391,
+          "top": 404,
+          "bottom": 453
+        },
+        "overlaps": [
+          {
+            "side": "black",
+            "ox": 25,
+            "oy": 2,
+            "tok": {
+              "x": 354,
+              "y": 400,
+              "w": 25,
+              "h": 6,
+              "left": 354,
+              "right": 379,
+              "top": 400,
+              "bottom": 406,
+              "side": "black",
+              "thickness": 6,
+              "colors": {
+                "fill": "rgb(48, 48, 90)",
+                "rim": "rgb(80, 80, 160)",
+                "separator": "rgb(16, 16, 28)",
+                "borderTopW": "1px",
+                "borderBottomW": "1px",
+                "radius": "1px"
+              }
+            }
+          },
+          {
+            "side": "white",
+            "ox": 25,
+            "oy": 3,
+            "tok": {
+              "x": 354,
+              "y": 450,
+              "w": 25,
+              "h": 6,
+              "left": 354,
+              "right": 379,
+              "top": 450,
+              "bottom": 456,
+              "side": "white",
+              "thickness": 6,
+              "colors": {
+                "fill": "rgb(242, 234, 211)",
+                "rim": "rgb(255, 250, 240)",
+                "separator": "rgb(176, 148, 104)",
+                "borderTopW": "1px",
+                "borderBottomW": "1px",
+                "radius": "1px"
+              }
+            }
+          }
+        ],
+        "white": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 450,
+          "lastBottom": 548,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 308,
+          "lastBottom": 406,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        }
+      },
+      "cube-owned-white": {
+        "cube": {
+          "x": 342,
+          "y": 542,
+          "w": 49,
+          "h": 49,
+          "left": 342,
+          "right": 391,
+          "top": 542,
+          "bottom": 591
+        },
+        "overlaps": [
+          {
+            "side": "white",
+            "ox": 25,
+            "oy": 6,
+            "tok": {
+              "x": 354,
+              "y": 542,
+              "w": 25,
+              "h": 6,
+              "left": 354,
+              "right": 379,
+              "top": 542,
+              "bottom": 548,
+              "side": "white",
+              "thickness": 6,
+              "colors": {
+                "fill": "rgb(242, 234, 211)",
+                "rim": "rgb(255, 250, 240)",
+                "separator": "rgb(176, 148, 104)",
+                "borderTopW": "1px",
+                "borderBottomW": "1px",
+                "radius": "1px"
+              }
+            }
+          }
+        ],
+        "white": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 450,
+          "lastBottom": 548,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 308,
+          "lastBottom": 406,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        }
+      },
+      "cube-owned-black": {
+        "cube": {
+          "x": 342,
+          "y": 266,
+          "w": 49,
+          "h": 49,
+          "left": 342,
+          "right": 391,
+          "top": 266,
+          "bottom": 315
+        },
+        "overlaps": [
+          {
+            "side": "black",
+            "ox": 25,
+            "oy": 6,
+            "tok": {
+              "x": 354,
+              "y": 308,
+              "w": 25,
+              "h": 6,
+              "left": 354,
+              "right": 379,
+              "top": 308,
+              "bottom": 314,
+              "side": "black",
+              "thickness": 6,
+              "colors": {
+                "fill": "rgb(48, 48, 90)",
+                "rim": "rgb(80, 80, 160)",
+                "separator": "rgb(16, 16, 28)",
+                "borderTopW": "1px",
+                "borderBottomW": "1px",
+                "radius": "1px"
+              }
+            }
+          },
+          {
+            "side": "black",
+            "ox": 25,
+            "oy": 1,
+            "tok": {
+              "x": 354,
+              "y": 314,
+              "w": 25,
+              "h": 6,
+              "left": 354,
+              "right": 379,
+              "top": 314,
+              "bottom": 320,
+              "side": "black",
+              "thickness": 6,
+              "colors": {
+                "fill": "rgb(48, 48, 90)",
+                "rim": "rgb(80, 80, 160)",
+                "separator": "rgb(16, 16, 28)",
+                "borderTopW": "1px",
+                "borderBottomW": "1px",
+                "radius": "1px"
+              }
+            }
+          }
+        ],
+        "white": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 450,
+          "lastBottom": 548,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 15,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            5,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": true,
+          "firstTop": 308,
+          "lastBottom": 406,
+          "span": 98,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 354,
+          "width": 25,
+          "nearWhole": true
+        }
+      },
+      "cube-live-white": {
+        "cube": {
+          "x": 369.3,
+          "y": 538.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 369.3,
+          "right": 394.7,
+          "top": 538.1,
+          "bottom": 561.9
+        },
+        "overlaps": []
+      },
+      "cube-live-black": {
+        "cube": {
+          "x": 369.3,
+          "y": 208.1,
+          "w": 25.5,
+          "h": 23.8,
+          "left": 369.3,
+          "right": 394.7,
+          "top": 208.1,
+          "bottom": 231.9
+        },
+        "overlaps": []
+      },
+      "tap": {
+        "before": 7,
+        "after": 8,
+        "sawFlight": true,
+        "white": {
+          "count": 8,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            3,
+            5
+          ],
+          "expectedGroups": 2,
+          "groupsOk": false,
+          "firstTop": 480,
+          "lastBottom": 532,
+          "span": 52,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 370,
+          "width": 25,
+          "nearWhole": true
+        },
+        "overlaps": []
+      },
+      "drag": {
+        "before": 7,
+        "after": 7,
+        "dragged": true,
+        "sawFlight": false,
+        "white": {
+          "count": 7,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            2,
+            5
+          ],
+          "expectedGroups": 2,
+          "groupsOk": false,
+          "firstTop": 488,
+          "lastBottom": 534,
+          "span": 46,
+          "colors": {
+            "fill": "rgb(242, 234, 211)",
+            "rim": "rgb(255, 250, 240)",
+            "separator": "rgb(176, 148, 104)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 372,
+          "width": 25,
+          "nearWhole": true
+        }
+      },
+      "rtl": {
+        "dir": "rtl",
+        "lang": "he",
+        "white": {
+          "count": 14,
+          "thickness": 6,
+          "uniform": true,
+          "gaps": [
+            0,
+            0,
+            0,
+            0,
+            4,
+            0,
+            202,
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          "groupSizes": [
+            5,
+            2,
+            2,
+            5
+          ],
+          "expectedGroups": 3,
+          "groupsOk": false,
+          "firstTop": 238,
+          "lastBottom": 532,
+          "span": 294,
+          "colors": {
+            "fill": "rgb(48, 48, 90)",
+            "rim": "rgb(80, 80, 160)",
+            "separator": "rgb(16, 16, 28)",
+            "borderTopW": "1px",
+            "borderBottomW": "1px",
+            "radius": "1px"
+          },
+          "left": 370,
+          "width": 25,
+          "nearWhole": true
+        },
+        "black": {
+          "count": 0,
+          "groups": [],
+          "thickness": 0,
+          "uniform": true
+        },
+        "tray": {
+          "x": 354,
+          "y": 0,
+          "w": 44,
+          "h": 44,
+          "left": 354,
+          "right": 398,
+          "top": 0,
+          "bottom": 44
+        },
+        "body": "      שחור 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 בחוץ 13 14 15 16 17 18 19 20 21 22 23 24 64 12 11 10 9 8 7 6 5 4 3 2 1 לבן תורך 🏃 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 7 בחוץ רמז הכפל"
+      },
+      "learn-bearing-off": {
+        "white": 12,
+        "black": 0,
+        "overflow": [],
+        "tray": true,
+        "body": " Bearing off Step 1 of 2 Bear one off All your checkers are in home (1–6), so you can bear off. You rolled a 3 — take the checker on the 3-point off the board. 13 14 15 16 17 18 19 20 21 22 23 24 12 11 10 9 8 7 6 5 4 3 2 1 3 1 Hint"
+      },
+      "learn-pip-count": {
+        "white": 5,
+        "black": 0,
+        "overflow": [],
+        "tray": true,
+        "body": " Pip count: the race score Step 2 of 3 Who's ahead? White has borne off 5 checkers and the rest are close to home. Black's checkers are still spread across the board. Tap any white checker — white is ahead in the race with the lower pip co"
+      }
+    },
+    "sizeCompare": [
+      {
+        "size": "iphone-portrait-402x874",
+        "viewport": {
+          "width": 402,
+          "height": 874
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 176,
+          "w": 402,
+          "h": 418,
+          "left": 0,
+          "right": 402,
+          "top": 176,
+          "bottom": 594
+        },
+        "prodTray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "previewTray": {
+          "x": 366,
+          "y": 198,
+          "w": 32,
+          "h": 374,
+          "left": 366,
+          "right": 398,
+          "top": 198,
+          "bottom": 572
+        },
+        "diffs": []
+      },
+      {
+        "size": "iphone-landscape-852x393",
+        "viewport": {
+          "width": 852,
+          "height": 393
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 0.5,
+          "w": 537,
+          "h": 392,
+          "left": 0,
+          "right": 537,
+          "top": 0.5,
+          "bottom": 392.5
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 0.5,
+          "w": 537,
+          "h": 392,
+          "left": 0,
+          "right": 537,
+          "top": 0.5,
+          "bottom": 392.5
+        },
+        "prodTray": {
+          "x": 501,
+          "y": 22.5,
+          "w": 32,
+          "h": 348,
+          "left": 501,
+          "right": 533,
+          "top": 22.5,
+          "bottom": 370.5
+        },
+        "previewTray": {
+          "x": 501,
+          "y": 22.5,
+          "w": 32,
+          "h": 348,
+          "left": 501,
+          "right": 533,
+          "top": 22.5,
+          "bottom": 370.5
+        },
+        "diffs": []
+      },
+      {
+        "size": "iphone-landscape-874x402",
+        "viewport": {
+          "width": 874,
+          "height": 402
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 0,
+          "w": 551,
+          "h": 402,
+          "left": 0,
+          "right": 551,
+          "top": 0,
+          "bottom": 402
+        },
+        "prodTray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "previewTray": {
+          "x": 515,
+          "y": 22,
+          "w": 32,
+          "h": 358,
+          "left": 515,
+          "right": 547,
+          "top": 22,
+          "bottom": 380
+        },
+        "diffs": []
+      },
+      {
+        "size": "ipad-portrait-820x1180",
+        "viewport": {
+          "width": 820,
+          "height": 1180
+        },
+        "prodBoard": {
+          "x": 50,
+          "y": 286,
+          "w": 720,
+          "h": 504,
+          "left": 50,
+          "right": 770,
+          "top": 286,
+          "bottom": 790
+        },
+        "previewBoard": {
+          "x": 50,
+          "y": 286,
+          "w": 720,
+          "h": 504,
+          "left": 50,
+          "right": 770,
+          "top": 286,
+          "bottom": 790
+        },
+        "prodTray": {
+          "x": 734,
+          "y": 308,
+          "w": 32,
+          "h": 460,
+          "left": 734,
+          "right": 766,
+          "top": 308,
+          "bottom": 768
+        },
+        "previewTray": {
+          "x": 734,
+          "y": 308,
+          "w": 32,
+          "h": 460,
+          "left": 734,
+          "right": 766,
+          "top": 308,
+          "bottom": 768
+        },
+        "diffs": []
+      },
+      {
+        "size": "ipad-portrait-1032x1376",
+        "viewport": {
+          "width": 1032,
+          "height": 1376
+        },
+        "prodBoard": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "previewBoard": {
+          "x": 132,
+          "y": 272,
+          "w": 768,
+          "h": 728,
+          "left": 132,
+          "right": 900,
+          "top": 272,
+          "bottom": 1000
+        },
+        "prodTray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "previewTray": {
+          "x": 848,
+          "y": 294,
+          "w": 48,
+          "h": 684,
+          "left": 848,
+          "right": 896,
+          "top": 294,
+          "bottom": 978
+        },
+        "diffs": []
+      },
+      {
+        "size": "ipad-landscape-1180x820",
+        "viewport": {
+          "width": 1180,
+          "height": 820
+        },
+        "prodBoard": {
+          "x": 0,
+          "y": 56,
+          "w": 812,
+          "h": 708,
+          "left": 0,
+          "right": 812,
+          "top": 56,
+          "bottom": 764
+        },
+        "previewBoard": {
+          "x": 0,
+          "y": 56,
+          "w": 812,
+          "h": 708,
+          "left": 0,
+          "right": 812,
+          "top": 56,
+          "bottom": 764
+        },
+        "prodTray": {
+          "x": 760,
+          "y": 78,
+          "w": 48,
+          "h": 664,
+          "left": 760,
+          "right": 808,
+          "top": 78,
+          "bottom": 742
+        },
+        "previewTray": {
+          "x": 760,
+          "y": 78,
+          "w": 48,
+          "h": 664,
+          "left": 760,
+          "right": 808,
+          "top": 78,
+          "bottom": 742
+        },
+        "diffs": []
+      },
+      {
+        "size": "ipad-landscape-1376x1032",
+        "viewport": {
+          "width": 1376,
+          "height": 1032
+        },
+        "prodBoard": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "previewBoard": {
+          "x": 4,
+          "y": 152,
+          "w": 1000,
+          "h": 728,
+          "left": 4,
+          "right": 1004,
+          "top": 152,
+          "bottom": 880
+        },
+        "prodTray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "previewTray": {
+          "x": 952,
+          "y": 174,
+          "w": 48,
+          "h": 684,
+          "left": 952,
+          "right": 1000,
+          "top": 174,
+          "bottom": 858
+        },
+        "diffs": []
+      },
+      {
+        "size": "desktop-1440x900",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "prodBoard": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "previewBoard": {
+          "x": 36,
+          "y": 86,
+          "w": 1000,
+          "h": 728,
+          "left": 36,
+          "right": 1036,
+          "top": 86,
+          "bottom": 814
+        },
+        "prodTray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "previewTray": {
+          "x": 984,
+          "y": 108,
+          "w": 48,
+          "h": 684,
+          "left": 984,
+          "right": 1032,
+          "top": 108,
+          "bottom": 792
+        },
+        "diffs": []
+      }
+    ]
+  }
+}
