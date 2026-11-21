@@ -1,6 +1,9 @@
 # GitHub-hosted emulator E2E — auto-runs when app code changes (no label required).
 # Optional label android-test-github forces a run on any PR. Manual dispatch always works.
 # Visual report: inline screenshots on PR comment + Summary (raw.githubusercontent.com URLs).
+# perf-android: cold-start time, memory and APK/bundle size on the same APK.
+#   PRs get a sticky comparison comment vs latest main; main pushes append to the
+#   history on the gh-pages branch (perf/), charted at PERF_DASHBOARD_URL.
 
 name: E2E Tests Android (Maestro + Github Action)
 
@@ -48,6 +51,8 @@ jobs:
               - '.github/scripts/maestro-publish-screenshots.sh'
               - '.github/scripts/maestro-publish-video.sh'
               - '.github/scripts/publish-pr-apk.sh'
+              - '.github/scripts/measure-android-startup.sh'
+              - 'scripts/perf-*.ts'
 
   generate-test-apk:
     needs: changes
@@ -196,3 +201,126 @@ jobs:
           path: report.xml
           if-no-files-found: ignore
           retention-days: 14
+
+  perf-android:
+    needs: [changes, generate-test-apk]
+    if: |
+      always() &&
+      needs.generate-test-apk.result == 'success' &&
+      (github.event_name == 'workflow_dispatch' ||
+        (needs.changes.result == 'success' && needs.changes.outputs.e2e == 'true') ||
+        (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'android-test-github')))
+    name: Performance (startup, memory, size)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      APP_ID: com.backgammonmastermind.preview
+      PERF_RUNS: '10'
+      PERF_DASHBOARD_URL: https://softwarebyze.github.io/Backgammon-Mastermind/perf/
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Download Test APK
+        uses: actions/download-artifact@v4
+        with:
+          name: test-apk
+          path: ${{ github.workspace }}
+
+      - name: Enable KVM (hardware emulator acceleration)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Pre-install Android system image (retry)
+        run: bash .github/scripts/install-android-system-image.sh 34 google_apis x86_64
+
+      # Same emulator profile as the Maestro job so numbers stay comparable run to run.
+      - name: Measure cold starts
+        uses: reactivecircus/android-emulator-runner@v2.38.0
+        with:
+          working-directory: ${{ github.workspace }}
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          emulator-boot-timeout: 600
+          force-avd-creation: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          cores: 2
+          ram-size: 4096M
+          script: bash .github/scripts/measure-android-startup.sh "${{ github.workspace }}" "${{ env.APP_ID }}" "${{ env.PERF_RUNS }}"
+
+      - name: Fetch main baseline
+        run: |
+          if git fetch --depth=1 origin gh-pages 2>/dev/null; then
+            git show FETCH_HEAD:perf/data.js > .perf-output/baseline.js 2>/dev/null || echo "No perf history on gh-pages yet"
+          else
+            echo "No gh-pages branch yet"
+          fi
+
+      - name: Build performance report
+        run: |
+          npm run --silent perf:report -- \
+            --runs .perf-output/startup-runs.jsonl \
+            --apk android-test.apk \
+            --baseline .perf-output/baseline.js \
+            --out-bench .perf-output/bench.json \
+            --out-md .perf-output/report.md
+          cat .perf-output/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment performance on PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: perf-android
+          path: .perf-output/report.md
+
+      # github-action-benchmark needs the data branch to exist before its first push.
+      - name: Ensure gh-pages branch exists
+        if: github.event_name == 'push'
+        run: |
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null; then
+            exit 0
+          fi
+          tmp="$(mktemp -d)"
+          git -C "$tmp" init -q -b gh-pages
+          printf '# Performance history\n\nWritten by the perf-android job in e2e-android.yml. Charts: perf/index.html\n' > "$tmp/README.md"
+          git -C "$tmp" add README.md
+          git -C "$tmp" -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -qm 'chore: start performance history'
+          git -C "$tmp" push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Record performance history (main)
+        if: github.event_name == 'push'
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: Android performance
+          tool: customSmallerIsBetter
+          output-file-path: .perf-output/bench.json
+          gh-pages-branch: gh-pages
+          benchmark-data-dir-path: perf
+          auto-push: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Emulator timings are noisy; the PR comment applies tighter per-metric thresholds.
+          alert-threshold: '130%'
+          comment-on-alert: true
+          fail-on-alert: false
+          max-items-in-chart: 200
+
+      - name: Upload performance results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-android
+          path: .perf-output/**
+          if-no-files-found: ignore
+          retention-days: 30
