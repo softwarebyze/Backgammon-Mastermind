@@ -11,6 +11,7 @@ import {
   isPostHogProjectToken,
 } from '@/lib/analytics/posthog-context';
 import { bindSettingsAnalytics } from '@/lib/analytics/settings-analytics';
+import { bindWebAttribution } from '@/lib/analytics/web-attribution';
 import { loadGamePreferences } from '@/lib/game-preferences/storage';
 
 const extra = Constants.expoConfig?.extra as {
@@ -100,3 +101,12 @@ void posthog.register({
 });
 
 bindSettingsAnalytics(posthog, loadGamePreferences());
+
+// posthog-react-native never reads the browser referrer or UTM params, so
+// web traffic sources would otherwise be invisible.
+if (Platform.OS === 'web' && typeof window !== 'undefined' && typeof document !== 'undefined') {
+  bindWebAttribution(posthog, {
+    href: window.location.href,
+    referrer: document.referrer,
+  });
+}

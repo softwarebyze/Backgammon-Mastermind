@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { PostHogErrorBoundary, PostHogProvider } from 'posthog-react-native';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -16,6 +16,7 @@ import { getThemeConfig } from '@/components/ui/use-theme-config';
 import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
 import { setAnalyticsScreen } from '@/lib/analytics/settings-analytics';
+import { trackWebPageview } from '@/lib/analytics/web-attribution';
 import { initAppTheme } from '@/lib/init-app-theme';
 import { useAppFonts } from '@/lib/ui/use-app-fonts';
 import '@/lib/ignore-known-logs';
@@ -60,6 +61,9 @@ export default function RootLayout() {
         ...params,
       });
       setAnalyticsScreen(pathname);
+      if (Platform.OS === 'web' && typeof window !== 'undefined') {
+        trackWebPageview(pathname, window.location);
+      }
       previousPathname.current = pathname;
     }
   }, [pathname, params]);
