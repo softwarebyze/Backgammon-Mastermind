@@ -42,6 +42,15 @@ appId: ${APP_ID}
       END_Y: '25%'
 - tapOn:
     id: position-play
+# iPad can paint the replace dialog a beat after Play; a bare `when` races and
+# leaves Positions up. Wait for the dialog (or for game chrome if none).
+- waitForAnimationToEnd:
+    timeout: 5000
+- runFlow:
+    when:
+      visible: Game in progress
+    commands:
+      - tapOn: New game
 - runFlow:
     when:
       visible: New game

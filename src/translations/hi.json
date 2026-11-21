@@ -393,6 +393,12 @@
     "home_cta_quiz": "बस एक छोटी जाँच बाकी – फिर खेलें",
     "home_cta_ready": "आप तैयार हैं – असली खेल खेलें",
     "home_cta_sub": "शुरुआती खिलाड़ियों के लिए इंटरैक्टिव पाठ",
+    "hub": {
+      "chapter_basics": "बुनियादी बातें",
+      "chapter_further": "आगे बढ़ें",
+      "chapter_strategy": "अच्छा खेलना",
+      "start_lesson": "पाठ शुरू करें"
+    },
     "lesson_complete": "पाठ पूरा!",
     "lessons": {
       "app_tools": {

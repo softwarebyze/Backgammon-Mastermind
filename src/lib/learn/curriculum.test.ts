@@ -5,6 +5,8 @@ import en from '@/translations/en.json';
 
 import {
   GRADUATION_QUIZ,
+  LESSON_CHAPTERS,
+  LESSON_IDS,
   LESSONS,
 } from './curriculum';
 
@@ -123,4 +125,11 @@ describe('cube, match and app lessons', () => {
       expect(question.options.filter(option => option.correct)).toHaveLength(1);
     }
   });
+});
+
+it('puts every lesson in exactly one chapter, in course order, with a translated title', () => {
+  expect(LESSON_CHAPTERS.flatMap(chapter => chapter.lessonIds)).toEqual([...LESSON_IDS]);
+  const hub: Record<string, string> = en.learn.hub;
+  for (const chapter of LESSON_CHAPTERS)
+    expect(hub[chapter.titleKey.replace('learn.hub.', '')]).toMatch(/\S/);
 });
