@@ -111,7 +111,6 @@ const appPlugins: ExpoConfig['plugins'] = [
       enableBackgroundPlayback: false,
     },
   ],
-  'expo-image',
   'expo-localization',
   'expo-router',
   'expo-status-bar',

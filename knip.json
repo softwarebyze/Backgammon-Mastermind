@@ -2,21 +2,13 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": [
     "src/app/**/*.{tsx,ts}",
-    "src/components/ui/index.tsx",
-    "src/components/ui/icons/index.tsx",
-    "src/lib/game/index.ts",
     "src/lib/imessage/index.ts",
-    "src/lib/i18n/index.tsx",
-    "src/lib/storage.tsx",
     "env.ts"
   ],
   "project": [
     "src/**/*.{ts,tsx}"
   ],
   "ignore": [
-    "src/components/ui/form-utils.ts",
-    "src/components/ui/modal-keyboard-aware-scroll-view.tsx",
-    "src/lib/utils.ts",
     "expo-bgsage/**"
   ],
   "ignoreBinaries": [
@@ -30,14 +22,8 @@
   "ignoreDependencies": [
     "husky",
     "babel-preset-expo",
-    "expo-crypto",
-    "react-native-url-polyfill",
-    "react-error-boundary",
     "@tailwindcss/cli",
-    "@types/i18n-js",
-    "@types/invariant",
     "dotenv",
-    "eslint-plugin-unicorn",
-    "zustand"
+    "eslint-plugin-unicorn"
   ]
 }
