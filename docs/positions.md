@@ -119,10 +119,12 @@ The codecs are implemented independently from the published format descriptions:
 Unit tests include the published starting-position/Match ID and XG help
 examples, asymmetric external positions, player perspective, bar/off counts,
 round trips, malformed inputs, saved-board recovery, and active-game isolation.
-`.maestro/app/position-setup.yaml` exercises the production entry point, exact
-direct stack dragging in both colours, the strip's count/cube/dice/score
-steppers, undo/redo, save/relaunch/reopen, saving from a game with a note,
-GNU import, XG export/copy, starting play, and malformed shared links. It is registered in the Android evidence run.
+`.maestro/app/position-setup.yaml` keeps to what needs a real Android device:
+the production entry point, taps and a swipe on the real board, undo/redo,
+save/relaunch/reopen, saving from a game with a note, GNU import, XG
+export/copy, starting play, shared and malformed links. The dice, cube, score,
+bar and drag editors are unit-tested and driven on iOS by
+`position-preview-ios.yaml`. It is registered in the Android evidence run.
 
 `.maestro/app/position-preview-ios.yaml` runs alongside the smoke flow on
 iPhone and iPad. It captures standard and empty boards, opens a shared position

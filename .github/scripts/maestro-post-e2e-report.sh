@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 # Builds a visual Maestro report for GitHub Actions job summary + PR comment.
-# Expects artifacts under MAESTRO_OUTPUT_DIR (and optional e2e-recording.mp4 in workspace).
+# Expects artifacts under MAESTRO_OUTPUT_DIR and optional e2e-recording.mp4 or
+# e2e-recording-shard-N.mp4 files in the workspace.
 
 set -euo pipefail
 
 WORKSPACE="${GITHUB_WORKSPACE:-.}"
 OUTPUT_DIR="${MAESTRO_OUTPUT_DIR:-$WORKSPACE/.maestro-ci-output}"
 REPORT_XML="${MAESTRO_JUNIT_REPORT:-$WORKSPACE/report.xml}"
-RECORDING="$WORKSPACE/e2e-recording.mp4"
 BUNDLE_DIR="$WORKSPACE/maestro-visual-bundle"
 SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-/dev/null}"
 PR_COMMENT_FILE="$WORKSPACE/maestro-pr-comment.md"
 RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 SCREENSHOT_BASE_URL=""
 PR_SCREENSHOT_BASE_URL=""
-VIDEO_URL=""
+# Bash 3.2 (macOS) has no associative arrays — store name<TAB>url rows instead.
+VIDEO_URLS_FILE=$(mktemp)
+trap 'rm -f "$VIDEO_URLS_FILE"' EXIT
 
 rm -rf "$BUNDLE_DIR"
 mkdir -p "$BUNDLE_DIR"
@@ -50,9 +52,40 @@ if [[ -d "$FALLBACK_OUTPUT_DIR" ]]; then
 fi
 
 [[ -f "$REPORT_XML" ]] && cp "$REPORT_XML" "$BUNDLE_DIR/report.xml"
-[[ -f "$RECORDING" ]] && cp "$RECORDING" "$BUNDLE_DIR/e2e-recording.mp4"
+# One recording for a single run (e2e-recording.mp4) or one per shard
+# (e2e-recording-shard-N.mp4). Each is copied, published and linked.
+for recording in "$WORKSPACE"/e2e-recording.mp4 "$WORKSPACE"/e2e-recording-*.mp4; do
+  if [[ -f "$recording" ]]; then
+    cp "$recording" "$BUNDLE_DIR/"
+  fi
+done
+recordings=()
+while IFS= read -r recording; do
+  [[ -n "$recording" ]] && recordings+=("$recording")
+done < <(find "$BUNDLE_DIR" -maxdepth 1 -type f -name 'e2e-recording*.mp4' 2>/dev/null | sort)
 
-mapfile -t screenshots < <(find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
+recording_label() {
+  local name
+  name=$(basename "$1" .mp4)
+  name=${name#e2e-recording}
+  name=${name#-}
+  if [[ -z "$name" ]]; then
+    echo "emulator recording"
+  else
+    echo "emulator recording (${name/-/ })"
+  fi
+}
+
+video_url_for() {
+  local name="$1"
+  [[ -f "$VIDEO_URLS_FILE" ]] || return 0
+  awk -F '\t' -v n="$name" '$1 == n { print $2; exit }' "$VIDEO_URLS_FILE"
+}
+
+screenshots=()
+while IFS= read -r screenshot; do
+  [[ -n "$screenshot" ]] && screenshots+=("$screenshot")
+done < <(find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
 
 URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
 # A failed publish must not reuse URLs left by an earlier run.
@@ -64,8 +97,21 @@ if [[ -n "${GITHUB_TOKEN:-}" ]]; then
   if ((${#screenshots[@]} > 0)); then
     bash "$WORKSPACE/.github/scripts/maestro-publish-screenshots.sh" "$BUNDLE_DIR" || echo "::warning::Screenshot publish failed — images remain in the artifact."
   fi
-  if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
-    bash "$WORKSPACE/.github/scripts/maestro-publish-video.sh" "$BUNDLE_DIR" || echo "::warning::Video publish failed — recording remains in the artifact."
+  if ((${#recordings[@]} > 0)); then
+  for recording in "${recordings[@]}"; do
+    name=$(basename "$recording" .mp4)
+    slug=${name#e2e-recording}
+    slug=${slug#-}
+    video_env=$(mktemp)
+    MAESTRO_URL_FILE="$video_env" MAESTRO_EVIDENCE_SLUG="$slug" \
+      bash "$WORKSPACE/.github/scripts/maestro-publish-video.sh" "$BUNDLE_DIR" "$recording" \
+      || echo "::warning::Video publish failed for $name — recording remains in the artifact."
+    url=$(sed -n 's/^MAESTRO_VIDEO_URL=//p' "$video_env" | tail -n 1)
+    if [[ -n "$url" ]]; then
+      printf '%s\t%s\n' "$name" "$url" >>"$VIDEO_URLS_FILE"
+    fi
+    rm -f "$video_env"
+  done
   fi
   URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
   if [[ -f "$URL_FILE" ]]; then
@@ -73,7 +119,6 @@ if [[ -n "${GITHUB_TOKEN:-}" ]]; then
     source "$URL_FILE"
     SCREENSHOT_BASE_URL="${MAESTRO_SCREENSHOT_BASE_URL:-}"
     PR_SCREENSHOT_BASE_URL="${MAESTRO_PR_SCREENSHOT_BASE_URL:-}"
-    VIDEO_URL="${MAESTRO_VIDEO_URL:-}"
   fi
 fi
 
@@ -85,8 +130,11 @@ html_path="$BUNDLE_DIR/index.html"
   echo 'h1,h2{color:#f8fafc}img{max-width:min(420px,100%);border-radius:8px;margin:.5rem 0;border:1px solid #334155}'
   echo 'video{max-width:min(720px,100%);border-radius:8px}section{margin:1.5rem 0}</style></head><body>'
   echo "<h1>Maestro E2E — backgammon smoke</h1><p>Status: <strong>${status_emoji} ${status_text}</strong></p>"
-  if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
-    echo '<section><h2>Screen recording</h2><video controls src="e2e-recording.mp4"></video></section>'
+  if ((${#recordings[@]} > 0)); then
+    for recording in "${recordings[@]}"; do
+      base=$(basename "$recording")
+      echo "<section><h2>Screen recording — $(recording_label "$recording")</h2><video controls src=\"${base}\"></video></section>"
+    done
   fi
   if ((${#screenshots[@]} > 0)); then
     echo '<section><h2>Screenshots</h2>'
@@ -107,14 +155,18 @@ html_path="$BUNDLE_DIR/index.html"
   echo ""
   echo "[Open full workflow run](${RUN_URL})"
   echo ""
-  if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
+  if ((${#recordings[@]} > 0)); then
     echo "### Screen recording"
-    if [[ -n "$VIDEO_URL" ]]; then
-      echo ""
-      echo "[▶ Watch the emulator recording](${VIDEO_URL})"
-    else
-      echo "Download **e2e-recording.mp4** from the \`maestro-visual-report\` artifact (or watch in \`index.html\`)."
-    fi
+    echo ""
+    for recording in "${recordings[@]}"; do
+      name=$(basename "$recording" .mp4)
+      video_url=$(video_url_for "$name")
+      if [[ -n "$video_url" ]]; then
+        echo "- [▶ Watch the $(recording_label "$recording")](${video_url})"
+      else
+        echo "- Download **${name}.mp4** from the \`maestro-visual-report\` artifact (or watch in \`index.html\`)."
+      fi
+    done
     echo ""
   fi
   if ((${#screenshots[@]} > 0)); then
@@ -175,16 +227,20 @@ html_path="$BUNDLE_DIR/index.html"
       echo "**${#screenshots[@]} screenshot(s)** in the \`maestro-visual-report\` artifact (\`index.html\`)."
     fi
   fi
-  if [[ -f "$BUNDLE_DIR/e2e-recording.mp4" ]]; then
+  if ((${#recordings[@]} > 0)); then
     echo ""
     echo "### Screen recording"
     echo ""
-    if [[ -n "$VIDEO_URL" ]]; then
-      # The release URL provides a download; the HTML bundle provides a player.
-      echo "[▶ Watch the emulator recording](${VIDEO_URL})"
-    else
-      echo "_Recording publish unavailable. \`e2e-recording.mp4\` is in the \`maestro-visual-report\` artifact._"
-    fi
+    for recording in "${recordings[@]}"; do
+      name=$(basename "$recording" .mp4)
+      video_url=$(video_url_for "$name")
+      if [[ -n "$video_url" ]]; then
+        # The release URL provides a download; the HTML bundle provides a player.
+        echo "- [▶ Watch the $(recording_label "$recording")](${video_url})"
+      else
+        echo "- _Recording publish unavailable. \`${name}.mp4\` is in the \`maestro-visual-report\` artifact._"
+      fi
+    done
     echo ""
   fi
 } >"$PR_COMMENT_FILE"
