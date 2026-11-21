@@ -82,8 +82,11 @@ describe('exact taps for Learn questions (#299)', () => {
     );
   }
 
-  // Black's 19-point sits right above white's 6-point. Snapping turns a tap
-  // on 19 into the emphasized 6 — fine for moving, wrong for a quiz.
+  // Black's 19-point sits right above white's 6-point. Snapping a tap on 19
+  // into 6 is fine for a quiz's emphasized answer but wrong during play: the
+  // tap used to remap to the same-column mate and could auto-play it, so
+  // opponent wood now stays exact (empty-wood near-miss snapping still lives
+  // in hit-test-board.test.ts).
   it('reports the point actually touched, not the emphasized answer next to it', () => {
     const onPointPress = jest.fn();
     renderBoard(true, onPointPress);
@@ -91,18 +94,18 @@ describe('exact taps for Learn questions (#299)', () => {
     expect(onPointPress).toHaveBeenCalledWith(19);
   });
 
-  it('still snaps near-misses during play', () => {
+  it('still reports the opponent point itself during play', () => {
     const onPointPress = jest.fn();
     renderBoard(false, onPointPress);
     fireEvent.press(screen.getByTestId('point-19'));
-    expect(onPointPress).toHaveBeenCalledWith(6);
+    expect(onPointPress).toHaveBeenCalledWith(19);
   });
 
-  it('snaps near-misses by default, when exactTaps is omitted', () => {
+  it('reports the opponent point by default, when exactTaps is omitted', () => {
     const onPointPress = jest.fn();
     renderBoard(undefined, onPointPress);
     fireEvent.press(screen.getByTestId('point-19'));
-    expect(onPointPress).toHaveBeenCalledWith(6);
+    expect(onPointPress).toHaveBeenCalledWith(19);
   });
 });
 

@@ -9,6 +9,72 @@ import testingLibrary from 'eslint-plugin-testing-library';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Files that still import Text from react-native. Moving them to the app's
+// Text changes their default font and colour, so they move with the #262 text
+// scaling work (#347), not here. Remove entries as files move; don't add any.
+const legacyPlainTextFiles = [
+  'src/app/\\[...messing\\].tsx',
+  'src/components/posthog-error-fallback.tsx',
+  'src/components/ui/animated-number.tsx',
+  'src/components/ui/button.tsx',
+  'src/components/ui/confirm-dialog.tsx',
+  'src/components/ui/modal.tsx',
+  'src/features/feedback/feedback-screen.tsx',
+  'src/features/game/components/animated-path-board.tsx',
+  'src/features/game/components/blunder-meter.tsx',
+  'src/features/game/components/board/bear-off-area.tsx',
+  'src/features/game/components/board/board-dice-overlay.tsx',
+  'src/features/game/components/board/checker-token.tsx',
+  'src/features/game/components/board/dice-display.tsx',
+  'src/features/game/components/board/point-number-rail.tsx',
+  'src/features/game/components/cube-hint-button.tsx',
+  'src/features/game/components/cube-tutor-overlay.tsx',
+  'src/features/game/components/doubling-cube-face.tsx',
+  'src/features/game/components/game-preferences-panel.tsx',
+  'src/features/game/components/guidance-modal.tsx',
+  'src/features/game/components/hint-button.tsx',
+  'src/features/game/components/home-game-setup.tsx',
+  'src/features/game/components/home-match-options.tsx',
+  'src/features/game/components/home-setup-choice.tsx',
+  'src/features/game/components/match-controls.tsx',
+  'src/features/game/components/match-cube.tsx',
+  'src/features/game/components/move-review-bar.tsx',
+  'src/features/game/components/move-review-turn-strip.tsx',
+  'src/features/game/components/player-strip.tsx',
+  'src/features/game/components/settings-ui/dice-style-picker.tsx',
+  'src/features/game/components/settings-ui/die-face-preview.tsx',
+  'src/features/game/components/settings-ui/point-numbers-icon.tsx',
+  'src/features/game/components/settings-ui/setting-toggle-row.tsx',
+  'src/features/game/components/strategy-chip.tsx',
+  'src/features/game/components/strategy-icon.tsx',
+  'src/features/game/game-screen-controls.tsx',
+  'src/features/game/game-screen.tsx',
+  'src/features/game/game-toolbar.tsx',
+  'src/features/game/home-screen.tsx',
+  'src/features/game/saved-game-recovery-banner.tsx',
+  'src/features/learn/coach-caption.tsx',
+  'src/features/learn/graduation-screen.tsx',
+  'src/features/learn/learn-hub-screen.tsx',
+  'src/features/learn/lesson-row.tsx',
+  'src/features/learn/lesson-screen.tsx',
+  'src/features/learn/quiz-card.tsx',
+  'src/features/positions/position-board-dice.tsx',
+  'src/features/positions/position-board-editor.tsx',
+  'src/features/positions/position-board-picker.tsx',
+  'src/features/positions/position-controls.tsx',
+  'src/features/positions/position-cube.tsx',
+  'src/features/positions/position-exchange.tsx',
+  'src/features/positions/position-saved.tsx',
+  'src/features/positions/position-scoreboard.tsx',
+  'src/features/positions/position-screen.tsx',
+  'src/features/positions/position-stepper.tsx',
+  'src/features/positions/save-position-dialog.tsx',
+  'src/features/settings/components/settings-item.tsx',
+  'src/features/timer/components/timer-clock-card.tsx',
+  'src/features/timer/components/timer-controls.tsx',
+  'src/features/timer/timer-screen.tsx',
+];
+
 export default antfu(
   {
     // Enable React and TypeScript support
@@ -96,6 +162,39 @@ export default antfu(
           disallowTypeAnnotations: true,
         },
       ],
+    },
+  },
+
+  // Plain react-native Text skips the app's text handling (font, RTL and,
+  // with #262, the font-scale caps). Use the app's Text component instead.
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'react-native',
+              importNames: ['Text'],
+              message:
+                'Use Text from \'@/components/ui\' (src/components/ui/text.tsx) instead of react-native Text.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: [
+      // The app's Text wraps react-native Text.
+      'src/components/ui/text.tsx',
+      // Tests render plain Text as fixture children.
+      'src/**/*.test.{ts,tsx}',
+      ...legacyPlainTextFiles,
+    ],
+    rules: {
+      'no-restricted-imports': 'off',
     },
   },
 
