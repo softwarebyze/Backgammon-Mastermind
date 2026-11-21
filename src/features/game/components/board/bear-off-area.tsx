@@ -62,7 +62,8 @@ export function BearOffSlab({ player, width, thickness, style }: SlabProps) {
           backgroundColor: colors.fill,
           borderTopWidth: thickness >= 4 ? 1 : 0,
           borderTopColor: colors.rim,
-          borderBottomWidth: thickness >= 2 ? 1 : 0,
+          // Very thin slabs keep a thinner separator so a group never merges into one bar.
+          borderBottomWidth: Math.min(1, thickness / 2),
           borderBottomColor: colors.separator,
         },
         style,
