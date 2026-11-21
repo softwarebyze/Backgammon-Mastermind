@@ -15,12 +15,19 @@ type Props = {
   bodyKey: string;
   feedback: LessonFeedback | null;
   stepLabel: string;
+  /** Where this step is in the lesson, drawn as a row of pips in place of the label. */
+  stepIndex?: number;
+  totalSteps?: number;
   compact?: boolean;
   /** A game-plan step shows the same icon as the plan chip in a game. */
   strategy?: StrategyKey;
   /** A cube step shows the cube as a game draws it. */
   cube?: { value: number; unavailable?: boolean };
 };
+
+/** Ivory and its muted tone, from the board's checkers: amber stays on the button to press. */
+const IVORY = '#ECE4D4';
+const MUTED = '#B8A48F';
 
 /** A fresh key per feedback, so the same message twice is a new node to announce. */
 const feedbackKeys = new WeakMap<LessonFeedback, number>();
@@ -35,7 +42,7 @@ function feedbackKey(feedback: LessonFeedback): number {
   return key;
 }
 
-export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact = false, strategy, cube }: Props) {
+export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, stepIndex = 0, totalSteps = 0, compact = false, strategy, cube }: Props) {
   const feedbackColor
     = feedback?.tone === 'praise'
       ? '#A0D080'
@@ -45,7 +52,28 @@ export function CoachCaption({ titleKey, bodyKey, feedback, stepLabel, compact =
 
   return (
     <View style={[styles.root, compact && styles.rootCompact]}>
-      <Text style={styles.stepLabel}>{stepLabel}</Text>
+      {/* The pips are the progress; a screen reader hears "Step 2 of 4" instead. */}
+      {totalSteps > 1
+        ? (
+            <View
+              testID="learn-step-pips"
+              style={styles.pips}
+              accessible
+              accessibilityRole="progressbar"
+              accessibilityLabel={stepLabel}
+              accessibilityValue={{ min: 0, max: totalSteps, now: stepIndex + 1 }}
+            >
+              {Array.from({ length: totalSteps }, (_, index) => (
+                <View
+                  key={index}
+                  testID={index < stepIndex ? 'learn-step-pip-done' : index === stepIndex ? 'learn-step-pip-current' : 'learn-step-pip-ahead'}
+                  style={[styles.pip, index < stepIndex && styles.pipDone, index === stepIndex && styles.pipCurrent]}
+                />
+              ))}
+            </View>
+          )
+        // A one-step lesson has no progress to show; without a count, fall back to the label.
+        : totalSteps === 1 ? null : <Text style={styles.stepLabel}>{stepLabel}</Text>}
       <View style={styles.titleRow}>
         {strategy
           ? (
@@ -103,10 +131,30 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   stepLabel: {
-    color: GAME_PALETTE.accentDim,
-    fontSize: 12,
-    letterSpacing: 1,
+    color: MUTED,
+    fontSize: 13,
+    lineHeight: 18,
     ...interFont('medium'),
+  },
+  pips: {
+    width: '100%',
+    maxWidth: 160,
+    height: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  pip: {
+    flex: 1,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(236, 228, 212, 0.14)',
+  },
+  pipDone: {
+    backgroundColor: IVORY,
+  },
+  pipCurrent: {
+    backgroundColor: GAME_PALETTE.accent,
   },
   cube: {
     paddingVertical: 2,
@@ -118,17 +166,20 @@ const styles = StyleSheet.create({
   },
   title: {
     flexShrink: 1,
-    color: GAME_PALETTE.accent,
-    fontSize: 18,
+    color: IVORY,
+    fontSize: 20,
+    lineHeight: 26,
+    letterSpacing: -0.2,
     ...interFont('bold'),
   },
   titleCompact: {
     fontSize: 16,
+    lineHeight: 21,
   },
   body: {
     color: GAME_PALETTE.text,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 15,
+    lineHeight: 21,
     flexShrink: 1,
     ...interFont('regular'),
   },

@@ -184,6 +184,8 @@ function LessonScreenBody({
         current: session.stepIndex + 1,
         total: session.totalSteps,
       })}
+      stepIndex={session.stepIndex}
+      totalSteps={session.totalSteps}
       compact={landscape || (captionMaxHeight != null && captionMaxHeight < 160)}
     />
   );
@@ -388,9 +390,11 @@ const styles = StyleSheet.create({
   },
   footer: {
     width: '100%',
+    maxWidth: 520,
     alignItems: 'center',
     flexGrow: 0,
     flexShrink: 0,
+    paddingHorizontal: 20,
     paddingBottom: 4,
   },
   diceRow: {
@@ -406,9 +410,10 @@ const styles = StyleSheet.create({
   primaryBtn: {
     marginTop: 4,
     backgroundColor: GAME_PALETTE.accent,
-    paddingVertical: 16,
+    alignSelf: 'stretch',
+    minHeight: 54,
     paddingHorizontal: 24,
-    minWidth: 180,
+    justifyContent: 'center',
     alignItems: 'center',
     ...continuousRadius(14),
   },
@@ -417,9 +422,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 1.5,
     borderColor: 'rgba(232, 224, 208, 0.35)',
-    paddingVertical: 14,
+    alignSelf: 'stretch',
+    minHeight: 54,
     paddingHorizontal: 24,
-    minWidth: 180,
+    justifyContent: 'center',
     alignItems: 'center',
     ...continuousRadius(14),
   },
