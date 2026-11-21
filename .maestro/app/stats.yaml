@@ -1,0 +1,29 @@
+# Settings → Your stats: a fresh install shows the empty state; back returns to Settings.
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- tapOn:
+    id: open-settings-button
+- extendedWaitUntil:
+    visible:
+      id: settings-stats
+    timeout: 15000
+- tapOn:
+    id: settings-stats
+- extendedWaitUntil:
+    visible:
+      id: stats-empty
+    timeout: 15000
+- takeScreenshot: stats-01-empty
+- tapOn:
+    id: stack-escape-button
+- extendedWaitUntil:
+    visible:
+      id: settings-stats
+    timeout: 15000

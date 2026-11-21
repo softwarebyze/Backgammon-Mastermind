@@ -52,7 +52,10 @@ fi
 [[ -f "$REPORT_XML" ]] && cp "$REPORT_XML" "$BUNDLE_DIR/report.xml"
 [[ -f "$RECORDING" ]] && cp "$RECORDING" "$BUNDLE_DIR/e2e-recording.mp4"
 
-mapfile -t screenshots < <(find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
+screenshots=()
+while IFS= read -r screenshot; do
+  screenshots+=("$screenshot")
+done < <(find "$BUNDLE_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' \) 2>/dev/null | sort)
 
 URL_FILE="${MAESTRO_URL_FILE:-$WORKSPACE/.maestro-screenshot-urls.env}"
 # A failed publish must not reuse URLs left by an earlier run.

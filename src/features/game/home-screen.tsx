@@ -27,6 +27,7 @@ import { useGame } from '@/features/game/use-game';
 import { useWebVisibleHeight } from '@/features/game/use-web-visible-height';
 import { learnHomeHref } from '@/features/learn/learn-home-href';
 import { useLearnProgress } from '@/features/learn/use-learn-progress';
+import { HomeStatsLink } from '@/features/stats/home-stats-link';
 import { settingProperties } from '@/lib/analytics/settings-analytics';
 import { useGamePreferences } from '@/lib/game-preferences/use-game-preferences';
 import { ensureGameSfxReady } from '@/lib/game-sfx/play-game-sfx';
@@ -281,6 +282,7 @@ export function HomeScreen() {
                   <SavedGameRecoveryBanner onDismiss={() => setShowRecovery(false)} />
                 )}
                 <HomeGameSetup onStart={handleStart} columns aside={tiles} />
+                <HomeStatsLink />
               </View>
             )
           : (
@@ -301,6 +303,7 @@ export function HomeScreen() {
                 {reviewCard}
                 <HomeGameSetup onStart={handleStart} tight={tiny} />
                 {tiles}
+                <HomeStatsLink />
               </View>
             )}
       </ScrollView>
