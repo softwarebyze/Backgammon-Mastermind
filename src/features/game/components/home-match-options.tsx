@@ -12,21 +12,26 @@ const WEB_SWITCH_COLORS = { activeThumbColor: HOME_INK.ivory, activeTrackColor: 
 /** Matches are played to odd lengths; longer ones can be set up in the position editor. */
 const MATCH_LENGTHS = [1, 3, 5, 7, 9, 11];
 
-export function HomeMatchOptions({ format, length, crawford, onFormatChange, onLengthChange, onCrawfordChange, part = 'all', bare = false }: {
+export function HomeMatchOptions({ format, length, crawford, doublingCube, onFormatChange, onLengthChange, onCrawfordChange, onDoublingCubeChange, part = 'all', bare = false }: {
   format: 'single' | 'match';
   length: number;
   /** The Crawford rule for the whole match: no doubling in the game after a player reaches match point. */
   crawford: boolean;
+  /** Single games only: money play with a live cube. Off by default; not persisted. */
+  doublingCube: boolean;
   onFormatChange: (format: 'single' | 'match') => void;
   onLengthChange: (length: number) => void;
   onCrawfordChange: (crawford: boolean) => void;
+  onDoublingCubeChange: (doublingCube: boolean) => void;
   /** Landscape splits the format choice from the match details into two columns. */
   part?: 'all' | 'format' | 'details';
   /** No "Match length" label: the length row's radiogroup still names itself. */
   bare?: boolean;
 }) {
   const showFormat = part !== 'details';
-  const showDetails = part !== 'format' && format === 'match';
+  // Match length/Crawford, or the Single doubling-cube switch, both live in the details slot.
+  const showMatchDetails = part !== 'format' && format === 'match';
+  const showSingleDetails = part !== 'format' && format === 'single';
   return (
     <View style={styles.group}>
       {showFormat && (
@@ -40,7 +45,7 @@ export function HomeMatchOptions({ format, length, crawford, onFormatChange, onL
           ]}
         />
       )}
-      {showDetails && (
+      {showMatchDetails && (
         <View style={[styles.match, (part === 'details' || bare) && styles.matchAside]}>
           {/* Beside the format choice the inset reads as match settings; the radiogroup keeps its label. */}
           {part === 'details' || bare ? null : <Text style={styles.switchLabel}>{translate('home.setup.length')}</Text>}
@@ -76,6 +81,23 @@ export function HomeMatchOptions({ format, length, crawford, onFormatChange, onL
           )}
         </View>
       )}
+      {showSingleDetails && (
+        <View style={[styles.switchRow, (part === 'details' || bare) && styles.singleAside]}>
+          <Text style={styles.switchLabel}>{translate('home.setup.doubling_cube')}</Text>
+          <View {...forceLtrWebDir}>
+            <Switch
+              testID="home-doubling-cube"
+              accessibilityLabel={translate('home.setup.doubling_cube')}
+              value={doublingCube}
+              onValueChange={onDoublingCubeChange}
+              trackColor={{ false: GAME_PALETTE.surface, true: GAME_PALETTE.accent }}
+              thumbColor={HOME_INK.ivory}
+              ios_backgroundColor={GAME_PALETTE.surface}
+              {...WEB_SWITCH_COLORS}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 }
@@ -85,6 +107,8 @@ const styles = StyleSheet.create({
   // Match settings sit in a quieter inset under the format choice.
   match: { gap: 10, paddingLeft: 12, borderLeftWidth: 2, borderLeftColor: HOME_INK.hairline },
   matchAside: { gap: 4 },
+  // Landscape details column: keep the switch tight above Start.
+  singleAside: { marginTop: 0 },
   switchRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
   switchLabel: { flex: 1, color: HOME_INK.ivory, fontSize: 15, ...interFont('medium') },
 });

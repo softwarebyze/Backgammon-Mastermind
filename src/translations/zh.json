@@ -344,6 +344,7 @@
     "review_sub": "看看上一局是怎么结束的",
     "setup": {
       "crawford": "克劳福德规则",
+      "doubling_cube": "倍数方块",
       "format": "对局形式",
       "length": "目标分数",
       "match": "比赛",
