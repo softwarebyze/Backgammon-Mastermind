@@ -73,6 +73,18 @@ it('shows nothing while the choice is being checked', () => {
   expect(screen.queryByTestId('cube-tutor')).toBeNull();
 });
 
+it('explains a failed computer cube analysis without borrowing the hint copy', () => {
+  Object.assign(mockGame, {
+    cubeTutorSession: null,
+    computerCubeError: true,
+    retryCubeAnalysis: jest.fn(),
+  });
+  setup(<CubeTutorOverlay />);
+  expect(screen.getByText('Computer is waiting')).toBeTruthy();
+  expect(screen.getByText('Couldn\'t analyze the cube — tap to retry')).toBeTruthy();
+  expect(screen.queryByText('Couldn\'t find a hint — tap to retry')).toBeNull();
+});
+
 it.each([
   ['offer', 'roll', 'Too soon to double'],
   ['accept', 'drop', 'That was a pass'],

@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "Het beste: {{choice}}",
       "better_choice": "Er was een betere kubusbeslissing",
+      "computer_error": "Kon de kubus niet analyseren — tik om het opnieuw te proberen",
       "computer_waiting": "Computer wacht",
       "keep": "Mijn keuze behouden",
       "missed_double": "Dubbel gemist",
@@ -759,6 +760,9 @@
     "untitled": "Naamloze stelling",
     "white": "Wit",
     "white_score": "Score Wit"
+  },
+  "pwa": {
+    "update_available": "Er is een nieuwe versie — tik om te herladen"
   },
   "settings": {
     "about": "Over",

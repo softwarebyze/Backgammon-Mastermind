@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "Am besten: {{choice}}",
       "better_choice": "Es gab eine bessere Würfelentscheidung",
+      "computer_error": "Würfel konnte nicht analysiert werden — zum Wiederholen tippen",
       "computer_waiting": "Computer wartet",
       "keep": "Meine Wahl behalten",
       "missed_double": "Doppler verpasst",
@@ -759,6 +760,9 @@
     "untitled": "Unbenannte Stellung",
     "white": "Weiß",
     "white_score": "Punkte Weiß"
+  },
+  "pwa": {
+    "update_available": "Eine neue Version ist bereit — zum Neuladen tippen"
   },
   "settings": {
     "about": "Über",

@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "En iyisi: {{choice}}",
       "better_choice": "Daha iyi bir küp kararı vardı",
+      "computer_error": "Küp analiz edilemedi — yeniden denemek için dokunun",
       "computer_waiting": "Bilgisayar bekliyor",
       "keep": "Seçimimi koru",
       "missed_double": "Kaçırılan katlama",
@@ -759,6 +760,9 @@
     "untitled": "Adsız pozisyon",
     "white": "Beyaz",
     "white_score": "Beyaz skoru"
+  },
+  "pwa": {
+    "update_available": "Yeni bir sürüm hazır — yeniden yüklemek için dokunun"
   },
   "settings": {
     "about": "Hakkında",
