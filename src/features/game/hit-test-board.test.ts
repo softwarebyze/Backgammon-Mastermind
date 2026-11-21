@@ -91,7 +91,7 @@ describe('hitTestFatFinger origins', () => {
     expect(remap(state, 10)).toBe(9);
   });
 
-  it('illegal point does not win over a nearby legal one', () => {
+  it('opponent point stays exact instead of snapping to a nearby legal one', () => {
     const state = createPositionState({
       placements: [
         { point: 8, player: 'white', count: 1 },
@@ -102,9 +102,9 @@ describe('hitTestFatFinger origins', () => {
     expect(getMovableSources(state).has(8)).toBe(true);
     expect(getMovableSources(state).has(7)).toBe(false);
 
-    expect(remap(state, 7)).toBe(8);
+    expect(remap(state, 7)).toBe(7);
     const onBlack = tapOn(7, state);
-    expect(hitAt(onBlack.x, onBlack.y, state)).toBe(8);
+    expect(hitAt(onBlack.x, onBlack.y, state)).toBe(7);
   });
 
   it('bar vs point 24: unique bar claims empty 24 wood', () => {
@@ -126,7 +126,7 @@ describe('hitTestFatFinger origins', () => {
     expect(remap(state, BAR_POINT)).toBe(24);
   });
 
-  it('bar vs 24/1: same-column 1 snaps to 24, not 6; opponent 1 is not draggable', () => {
+  it('bar vs 24/1: opponent 1 stays exact and is not draggable', () => {
     const state = createPositionState({
       useStandardSetup: true,
       dice: [1, 2],
@@ -135,7 +135,7 @@ describe('hitTestFatFinger origins', () => {
     expect(getMovableSources(state).has(24)).toBe(true);
     expect(getMovableSources(state).has(6)).toBe(true);
     expect(remap(state, 24)).toBe(24);
-    expect(remap(state, 1)).toBe(24);
+    expect(remap(state, 1)).toBe(1);
     expect(dragOrigin(state, 1)).toBeNull();
     expect(remap(state, 6)).toBe(6);
   });
@@ -167,6 +167,26 @@ describe('hitTestFatFinger origins', () => {
     const extra = boardHitExtraCandidates(new Set([8, 6]));
     expect(remap(state, 8, extra)).toBe(8);
     expect(remap(state, 6, extra)).toBe(6);
+  });
+});
+
+describe('opponent point taps', () => {
+  it('opponent stack in a movable column cannot steal the tap (15 stays 15, not 10)', () => {
+    const state = createPositionState({
+      placements: [
+        { point: 10, player: 'white', count: 2 },
+        { point: 15, player: 'black', count: 1 },
+        { point: 16, player: 'white', count: 1 },
+      ],
+      dice: [6, 6],
+    });
+    const sources = getMovableSources(state);
+    expect(sources.has(10)).toBe(true);
+    expect(sources.has(16)).toBe(true);
+    expect(sources.has(15)).toBe(false);
+    // A tap on 15 used to remap to the same-column 10 and auto-play 10 → 4.
+    expect(remap(state, 15)).toBe(15);
+    expect(dragOrigin(state, 15)).toBeNull();
   });
 });
 
@@ -212,7 +232,7 @@ describe('resolveColumnDragOrigin', () => {
       dice: [3, 5],
     });
     expect(dragOrigin(state, BAR_POINT)).toBeNull();
-    expect(remap(state, BAR_POINT)).toBe(8);
+    expect(remap(state, BAR_POINT)).toBe(BAR_POINT);
   });
 });
 
