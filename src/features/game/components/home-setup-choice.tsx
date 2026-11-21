@@ -10,15 +10,19 @@ type Option<T> = { value: T; label: string; accessibilityLabel?: string; testID:
  * A segmented control on a wooden track. The chosen option is an ivory tile,
  * like a checker; the screen keeps its amber for the one Play button.
  */
-export function HomeSetupChoice<T extends string | number>({ label, value, options, onChange }: {
+export function HomeSetupChoice<T extends string | number>({ label, value, options, onChange, sunken = false, snug = false }: {
   /** Names the group for screen readers; the options speak for themselves on screen. */
   label: string;
   value: T;
   options: Option<T>[];
   onChange: (value: T) => void;
+  /** Inside a raised panel: the track is cut into it, rather than standing on the page. */
+  sunken?: boolean;
+  /** Many options on a narrow screen: smaller type, so "Medium" stays one word at 320. */
+  snug?: boolean;
 }) {
   return (
-    <View style={styles.track} accessibilityRole="radiogroup" accessibilityLabel={label}>
+    <View style={[styles.track, sunken && styles.trackSunken]} accessibilityRole="radiogroup" accessibilityLabel={label}>
       {options.map(option => (
         <HoverPressable
           key={option.value}
@@ -29,12 +33,13 @@ export function HomeSetupChoice<T extends string | number>({ label, value, optio
           onPress={() => onChange(option.value)}
           style={({ pressed, hovered }) => [
             styles.option,
+            snug && styles.optionSnug,
             hovered && value !== option.value && styles.hovered,
             value === option.value && styles.selected,
             pressed && styles.pressed,
           ]}
         >
-          <Text style={[styles.text, value === option.value && styles.selectedText]} numberOfLines={2}>{option.label}</Text>
+          <Text style={[styles.text, snug && styles.textSnug, value === option.value && styles.selectedText]} numberOfLines={2}>{option.label}</Text>
         </HoverPressable>
       ))}
     </View>
@@ -51,6 +56,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: HOME_INK.hairline,
   },
+  trackSunken: { backgroundColor: GAME_PALETTE.bg, borderColor: 'rgba(0, 0, 0, 0.35)' },
   option: {
     flex: 1,
     minHeight: 44,
@@ -61,6 +67,8 @@ const styles = StyleSheet.create({
   },
   // Long labels ("Gegen Computer" at 320) wrap to a second line instead of losing their end.
   text: { color: HOME_INK.muted, fontSize: 15, lineHeight: 18, textAlign: 'center', ...interFont('semibold') },
+  optionSnug: { paddingHorizontal: 2 },
+  textSnug: { fontSize: 13.5 },
   selected: {
     backgroundColor: HOME_INK.ivory,
     shadowColor: '#000',
