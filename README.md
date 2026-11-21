@@ -1,7 +1,7 @@
-# PR #389 evidence: thin XG-style borne-off slabs (85a4267)
+# PR #389 evidence: thin XG-style borne-off slabs (9e36ee4)
 
-Before = production, Previous = ea01515 (edge-on discs), New = 85a4267.
-Shots taken with Playwright from share-position URLs: production, the ea01515 preview and the 85a4267 preview.
+Before = production, Previous = ea01515 (edge-on discs), New = 9e36ee4.
+Shots taken with Playwright from share-position URLs: production, the ea01515 preview and the 9e36ee4 preview.
 
 - compare-iphone-portrait.png (402×874 @3x)
 - compare-iphone-landscape.png (874×402 @3x)
