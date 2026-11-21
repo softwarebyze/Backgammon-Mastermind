@@ -1,8 +1,8 @@
 # Production Readiness Checklist
 
-> **Status: first submission is long done.** The app has been live on the App Store since v1.0.0 (2026-07-17) and is currently at **v1.1.0** (shipped 2026-10-10); Google Play upload landed in #160. This doc now serves as the **standing readiness checklist for each production release** plus the record of one-time setup. For repeat releases use **[releases.md](./releases.md)**; for what may ship when use **[release-gates.md](./release-gates.md)** (CI is the automated bar; the human gates are device smoke, version sync, and owner sign-off).
+> **Status: first submission is long done.** The app has been live on the App Store since v1.0.0 (2026-07-17) and is currently at **v1.2.0** (GitHub Release 2026-11-05; store review still open on #361); Google Play upload landed in #160. This doc now serves as the **standing readiness checklist for each production release** plus the record of one-time setup. For repeat releases use **[releases.md](./releases.md)**; for what may ship when use **[release-gates.md](./release-gates.md)** (CI is the automated bar; the human gates are device smoke, version sync, and owner sign-off).
 
-**Last updated:** 2026-10-12 — v1.1.0 shipped to the App Store (build 14) on 2026-10-10; SDK 57; 17 locales live; Play upload working (internal track by default, #255).
+**Last updated:** 2026-11-06 — v1.2.0 tagged and released on GitHub (`v1.2.0` / 8f20c88); App Store / Play human gates still tracked on #361. SDK 57; 17 locales live; Play upload working (internal track by default, #255).
 
 ## CI: what runs on every PR?
 
@@ -41,12 +41,12 @@
 
 | Step | Status | Action |
 | ---- | ------ | ------ |
-| 1. Version bump | Done | **v1.1.0** in `package.json` / `store.config.json` (matches live ASC; EAS build numbers stay remote) |
+| 1. Version bump | Done | **v1.2.0** in `package.json` / `store.config.json` (EAS build numbers stay remote) |
 | 2. iOS dev client | Done | Rebuild when native deps / display name / `CFBundleDisplayName` change |
 | 3. Device QA | Per release | Device smoke on the release build before promoting — see [release-gates.md](./release-gates.md) |
 | 4. Preview build (TestFlight) | Per release | Preview ASC **`6781121420`** (`com.backgammonmastermind.preview`) named **Backgammon Mastermind Preview** |
 | 5. Submit to stores | Per release | Preview TF: [6781121420](https://appstoreconnect.apple.com/apps/6781121420/testflight/ios) · Prod: [6792138473](https://appstoreconnect.apple.com/apps/6792138473/appstore) |
-| 6. Production build | Done (1.1.0) | **EAS Production Build and Submit (iOS)** / **(Android)** from `main` → production ASC `6792138473`. ⚠️ The release-triggered **EAS QA Build** failed on the v1.1.0 release (iOS distribution certificate not validated for non-interactive builds) — fix credentials before the next release. |
+| 6. Production build | Done (1.2.0 submitted) | **EAS Production Build and Submit (iOS)** / **(Android)** from `main` → production ASC `6792138473`. Device smoke and Add for Review still open on #361. |
 
 ## Store listing requirements
 
