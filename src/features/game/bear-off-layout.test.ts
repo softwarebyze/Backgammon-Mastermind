@@ -6,13 +6,11 @@ import {
   bearOffCheckerCenterY,
   bearOffHalfHeight,
   bearOffHingeReserve,
-  bearOffMaxSlabThickness,
   bearOffSlotTopInSection,
   bearOffStackLayout,
   bearOffTokenSize,
   cubeCenterY,
   cubeCornerClearance,
-  maxBearOffVisibleSlots,
   maxCubeEdge,
 } from '@/features/game/bear-off-layout';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
@@ -31,82 +29,47 @@ const TEST_DIMS: BoardDimensions = {
   middleHeight: 12,
 };
 
-function layoutOpts(dims: BoardDimensions, count: number, clearance = 0) {
-  const halfHeight = bearOffHalfHeight(dims.boardHeight, dims.middleHeight);
-  const tokenSize = bearOffTokenSize(dims.checkerSize);
+function layoutOpts(dims: BoardDimensions, clearance = 0) {
   return {
-    halfHeight,
-    tokenSize,
-    count,
+    halfHeight: bearOffHalfHeight(dims.boardHeight, dims.middleHeight),
+    tokenSize: bearOffTokenSize(dims.checkerSize),
     clearance,
     bearOffWidth: dims.bearOffWidth,
     middleHeight: dims.middleHeight,
   };
-};
+}
+
+function blackTops(dims: BoardDimensions, clearance = 0) {
+  return Array.from({ length: BEAR_OFF_MAX_CHECKERS }, (_, slotIndex) =>
+    bearOffSlotTopInSection({ ...layoutOpts(dims, clearance), slotIndex, player: 'black' }));
+}
 
 describe('bearOffStackLayout', () => {
-  it('spreads a short stack across the tray instead of overlapping at the outer edge', () => {
-    const tokenSize = bearOffTokenSize(TEST_DIMS.checkerSize);
-    const layout = bearOffStackLayout(layoutOpts(TEST_DIMS, 7));
-    const lastTop = bearOffSlotTopInSection({
-      halfHeight: layoutOpts(TEST_DIMS, 7).halfHeight,
-      tokenSize,
-      visibleCount: 7,
-      slotIndex: 6,
-      player: 'white',
-      bearOffWidth: TEST_DIMS.bearOffWidth,
-      middleHeight: TEST_DIMS.middleHeight,
-    });
+  it('stacks 15 thin slabs in groups of five without overlap, clear of the centred cube', () => {
+    const dims = { ...TEST_DIMS, boardHeight: 360 };
+    const opts = layoutOpts(dims, 36);
+    const { thickness } = bearOffStackLayout(opts);
+    const tops = blackTops(dims, 36);
+    const steps = tops.slice(1).map((top, i) => top - tops[i]);
 
-    expect(layout.thickness).toBeLessThanOrEqual(tokenSize);
-    expect(lastTop).toBeGreaterThanOrEqual(0);
-    expect(lastTop + layout.thickness).toBeLessThanOrEqual(layoutOpts(TEST_DIMS, 7).halfHeight);
-    // First and last span the available height (padding to padding when no cube).
-    const firstTop = bearOffSlotTopInSection({
-      halfHeight: layoutOpts(TEST_DIMS, 7).halfHeight,
-      tokenSize,
-      visibleCount: 7,
-      slotIndex: 0,
-      player: 'white',
-      bearOffWidth: TEST_DIMS.bearOffWidth,
-      middleHeight: TEST_DIMS.middleHeight,
-    });
-    expect(firstTop + layout.thickness).toBeCloseTo(
-      layoutOpts(TEST_DIMS, 7).halfHeight - BEAR_OFF_PADDING,
-      5,
-    );
-    expect(lastTop).toBeCloseTo(BEAR_OFF_PADDING, 5);
+    expect(thickness).toBeLessThan(opts.tokenSize / 2);
+    expect(Math.min(...steps)).toBeGreaterThanOrEqual(thickness);
+    // A wider break after every fifth slab makes the stack easy to count.
+    expect(steps[4]).toBeGreaterThan(steps[3]);
+    expect(steps[9]).toBe(steps[4]);
+    const reserve = bearOffHingeReserve(opts);
+    expect(tops[14] + thickness).toBeLessThanOrEqual(opts.halfHeight - BEAR_OFF_PADDING - reserve);
   });
 
-  it('only thins slabs once 15 would not fit at full thickness', () => {
-    const mid = { ...TEST_DIMS, boardHeight: 400, pointHeight: 194 };
-    const tokenSize = bearOffTokenSize(mid.checkerSize);
-    const seven = bearOffStackLayout(layoutOpts(mid, 7));
-    const fifteen = bearOffStackLayout(layoutOpts(mid, 15));
-    expect(seven.thickness).toBe(bearOffMaxSlabThickness(tokenSize));
-    expect(seven.step).toBeGreaterThanOrEqual(seven.thickness);
-    expect(fifteen.thickness).toBeLessThan(tokenSize);
-    expect(fifteen.step).toBeCloseTo(fifteen.thickness, 5);
-    expect(fifteen.thickness * 15).toBeCloseTo(fifteen.available, 5);
-  });
-
-  it('always has room for all 15 checkers', () => {
-    expect(maxBearOffVisibleSlots()).toBe(BEAR_OFF_MAX_CHECKERS);
-    const halfHeight = bearOffHalfHeight(TEST_DIMS.boardHeight, TEST_DIMS.middleHeight);
-    const tokenSize = bearOffTokenSize(TEST_DIMS.checkerSize);
-    const layout = bearOffStackLayout(layoutOpts(TEST_DIMS, 15));
-    expect(layout.thickness * 15).toBeCloseTo(layout.available, 5);
-    const last = bearOffSlotTopInSection({
-      halfHeight,
-      tokenSize,
-      visibleCount: 15,
-      slotIndex: 14,
-      player: 'white',
-      bearOffWidth: TEST_DIMS.bearOffWidth,
-      middleHeight: TEST_DIMS.middleHeight,
-    });
-    expect(last).toBeGreaterThanOrEqual(0);
-    expect(last + layout.thickness).toBeLessThanOrEqual(halfHeight);
+  it('keeps one slab thickness on a tall tray and thins it only on a short one', () => {
+    const tall = bearOffStackLayout(layoutOpts({ ...TEST_DIMS, boardHeight: 400 }));
+    expect(bearOffStackLayout(layoutOpts({ ...TEST_DIMS, boardHeight: 500 })).thickness).toBe(tall.thickness);
+    for (const boardHeight of [200, 120]) {
+      const dims = { ...TEST_DIMS, boardHeight };
+      const short = bearOffStackLayout(layoutOpts(dims, 20));
+      expect(short.thickness).toBeLessThan(tall.thickness);
+      expect(blackTops(dims, 20)[14] + short.thickness).toBeLessThanOrEqual(short.start + short.available + 1e-9);
+    }
   });
 });
 
@@ -121,43 +84,20 @@ describe('bearOffCheckerCenterY', () => {
   });
 });
 
-it.each(['black', 'white'] as const)('keeps a full %s bear-off stack clear of the cube corner and aligns animation anchors', (player) => {
-  const dims = { ...TEST_DIMS, bearOffCubeClearance: 36 };
-  const halfHeight = bearOffHalfHeight(dims.boardHeight, dims.middleHeight);
-  const tokenSize = bearOffTokenSize(dims.checkerSize);
-  const visibleCount = 15;
-  const layout = bearOffStackLayout(layoutOpts(dims, visibleCount, 36));
-  const firstTop = bearOffSlotTopInSection({ halfHeight, tokenSize, visibleCount, slotIndex: 0, player, clearance: 36, bearOffWidth: dims.bearOffWidth, middleHeight: dims.middleHeight });
-  const lastTop = bearOffSlotTopInSection({ halfHeight, tokenSize, visibleCount, slotIndex: visibleCount - 1, player, clearance: 36, bearOffWidth: dims.bearOffWidth, middleHeight: dims.middleHeight });
+it.each(['black', 'white'] as const)('keeps a %s stack out of the cube corner and lands the animation on the newest slab', (player) => {
+  const dims = { ...TEST_DIMS, boardHeight: 360, bearOffCubeClearance: 36 };
+  const opts = layoutOpts(dims, 36);
+  const { thickness } = bearOffStackLayout(opts);
+  const firstTop = bearOffSlotTopInSection({ ...opts, slotIndex: 0, player });
+  const seventhTop = bearOffSlotTopInSection({ ...opts, slotIndex: 6, player });
   if (player === 'black') {
-    expect(firstTop).toBeGreaterThanOrEqual(36);
-    expect(lastTop + layout.thickness).toBeLessThanOrEqual(halfHeight);
+    expect(firstTop).toBeGreaterThanOrEqual(BEAR_OFF_PADDING + 36);
   }
   else {
-    expect(firstTop + layout.thickness).toBeLessThanOrEqual(halfHeight - 36);
-    expect(lastTop).toBeGreaterThanOrEqual(0);
+    expect(firstTop + thickness).toBeLessThanOrEqual(opts.halfHeight - BEAR_OFF_PADDING - 36);
   }
-  const sectionTop = player === 'black' ? 0 : halfHeight + dims.middleHeight;
-  expect(bearOffCheckerCenterY(dims, player, 15)).toBeCloseTo(sectionTop + lastTop + layout.thickness / 2, 5);
-});
-
-it('lets a full stack reach the hinge reserve instead of stopping a token short of the middle', () => {
-  const dims = { ...TEST_DIMS, bearOffCubeClearance: 36 };
-  const halfHeight = bearOffHalfHeight(dims.boardHeight, dims.middleHeight);
-  const tokenSize = bearOffTokenSize(dims.checkerSize);
-  const reserve = bearOffHingeReserve({ clearance: 36, bearOffWidth: dims.bearOffWidth, middleHeight: dims.middleHeight });
-  const lastBlackBottom = bearOffSlotTopInSection({
-    halfHeight,
-    tokenSize,
-    visibleCount: 15,
-    slotIndex: 14,
-    player: 'black',
-    clearance: 36,
-    bearOffWidth: dims.bearOffWidth,
-    middleHeight: dims.middleHeight,
-  }) + bearOffStackLayout(layoutOpts(dims, 15, 36)).thickness;
-  expect(lastBlackBottom).toBeCloseTo(halfHeight - BEAR_OFF_PADDING - reserve, 5);
-  expect(reserve).toBeLessThan(tokenSize);
+  const sectionTop = player === 'black' ? 0 : opts.halfHeight + dims.middleHeight;
+  expect(bearOffCheckerCenterY(dims, player, 7)).toBe(sectionTop + seventhTop + thickness / 2);
 });
 
 describe('maxCubeEdge', () => {
@@ -166,15 +106,7 @@ describe('maxCubeEdge', () => {
     const base = fitBoardToViewport(width, height, { extraHeight: 36 });
     const dims = { ...base, bearOffCubeClearance: cubeCornerClearance(base.pointHeight) };
     const half = (maxCubeEdge(dims) * 1.1) / 2;
-    const token = bearOffTokenSize(dims.checkerSize);
-    const slab = bearOffStackLayout({
-      halfHeight: bearOffHalfHeight(dims.boardHeight, dims.middleHeight),
-      tokenSize: token,
-      count: 15,
-      clearance: dims.bearOffCubeClearance,
-      bearOffWidth: dims.bearOffWidth,
-      middleHeight: dims.middleHeight,
-    }).thickness;
+    const slab = bearOffStackLayout(layoutOpts(dims, dims.bearOffCubeClearance)).thickness;
     // Centred: clear of the top of White's and the bottom of Black's 15-checker stacks.
     expect(cubeCenterY(dims, null) + half).toBeLessThanOrEqual(bearOffCheckerCenterY(dims, 'white', 15) - slab / 2 + 1e-6);
     expect(cubeCenterY(dims, null) - half).toBeGreaterThanOrEqual(bearOffCheckerCenterY(dims, 'black', 15) + slab / 2 - 1e-6);

@@ -24,6 +24,7 @@ function tray(cubeClearance = 0, counts: { white?: number; black?: number } = {}
   const tokens = view.UNSAFE_getAllByType(BearOffSlab).map(t => ({
     player: t.props.player,
     top: StyleSheet.flatten(t.props.style).top as number,
+    bottom: (StyleSheet.flatten(t.props.style).top as number) + t.props.thickness,
   }));
   view.unmount();
   return tokens;
@@ -38,9 +39,9 @@ it('starts each borne-off stack past the corner the cube uses', () => {
   const plain = tray();
   const withCube = tray(30);
   const firstBlack = (list: typeof plain) => Math.min(...list.filter(t => t.player === 'black').map(t => t.top));
-  const lastWhite = (list: typeof plain) => Math.max(...list.filter(t => t.player === 'white').map(t => t.top));
+  const firstWhiteBottom = (list: typeof plain) => Math.max(...list.filter(t => t.player === 'white').map(t => t.bottom));
   expect(firstBlack(withCube)).toBe(firstBlack(plain) + 30);
-  expect(lastWhite(withCube)).toBe(lastWhite(plain) - 30);
+  expect(firstWhiteBottom(withCube)).toBe(firstWhiteBottom(plain) - 30);
 });
 
 it('draws all 15 checkers and never shows a +N overflow badge', () => {

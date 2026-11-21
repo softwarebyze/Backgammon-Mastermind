@@ -15,13 +15,16 @@ export function bearOffHalfHeight(boardHeight: number, middleHeight: number): nu
   return (boardHeight - middleHeight) / 2;
 }
 
-/**
- * Max edge-on slab thickness. At or below this, checkers sit face-to-face
- * (no overlap). They only get thinner when that many would not fit.
- */
-export function bearOffMaxSlabThickness(tokenSize: number): number {
-  return tokenSize;
-}
+/** Slabs are grouped in fives, XG-style, with a gap between groups. */
+const BEAR_OFF_GROUP_SIZE = 5;
+/** Preferred slab thickness as a share of the borne-off token size. */
+const BEAR_OFF_SLAB_RATIO = 0.34;
+const BEAR_OFF_MAX_SLAB = 12;
+/** Keeps slabs long and thin (about 4:1) on a narrow tray. */
+const BEAR_OFF_SLAB_ASPECT = 0.25;
+/** Below this a slab is mostly rim and separator lines. */
+const BEAR_OFF_PREFERRED_MIN_SLAB = 4;
+const BEAR_OFF_MIN_SLAB = 3;
 
 /**
  * Room kept at the hinge so a centered cube — sized by the tray width or the
@@ -46,23 +49,33 @@ export function bearOffHingeReserve(options: {
 }
 
 export type BearOffStackLayout = {
+  /** Distance from the tray's outer edge to the first slab (whole pixels). */
+  start: number;
+  /** Room from `start` to the hinge reserve. */
   available: number;
   thickness: number;
-  step: number;
-  hingeReserve: number;
+  /** Space between groups of five; slabs within a group touch and draw their own separator. */
+  groupGap: number;
 };
 
+function stackLength(count: number, thickness: number, groupGap: number): number {
+  if (count <= 0) {
+    return 0;
+  }
+  return count * thickness + Math.floor((count - 1) / BEAR_OFF_GROUP_SIZE) * groupGap;
+}
+
 /**
- * Evenly space `count` borne-off checkers across the whole tray half, after
- * the outer cube corner and short of the centered cube. A single checker sits
- * at the outer edge. Two or more span the available height. Slab thickness
- * stays at the face size until that many would not fit, then they thin so
- * all 15 still fill the tray.
+ * Thin uniform slabs, like XG: every borne-off checker is the same thickness
+ * whatever the count, stacked from the outer edge (past the cube's corner)
+ * toward the hinge in groups of five. Slabs only get thinner on a tray too
+ * short to hold all 15 at the preferred thickness. Values are whole pixels so
+ * edges stay crisp, except on trays too short for 15 slabs of the minimum
+ * thickness.
  */
 export function bearOffStackLayout(options: {
   halfHeight: number;
   tokenSize: number;
-  count: number;
   clearance?: number;
   bearOffWidth?: number;
   middleHeight?: number;
@@ -73,24 +86,37 @@ export function bearOffStackLayout(options: {
     bearOffWidth: options.bearOffWidth,
     middleHeight: options.middleHeight,
   });
+  const start = Math.round(BEAR_OFF_PADDING + clearance);
   const available = Math.max(
     0,
-    options.halfHeight - BEAR_OFF_PADDING * 2 - clearance - hingeReserve,
+    Math.floor(options.halfHeight - BEAR_OFF_PADDING - hingeReserve) - start,
   );
-  const count = Math.max(0, options.count);
-  const maxThickness = bearOffMaxSlabThickness(options.tokenSize);
-  const thickness = count <= 0 ? 0 : Math.min(maxThickness, available / count);
-  const step = count <= 1 ? 0 : (available - thickness) / (count - 1);
-  return { available, thickness, step, hingeReserve };
+  const groupGapFor = (t: number) => Math.max(3, Math.round(t * 0.6));
+  const widthCap = options.bearOffWidth != null
+    ? Math.round((options.bearOffWidth - 7) * BEAR_OFF_SLAB_ASPECT)
+    : BEAR_OFF_MAX_SLAB;
+  let thickness = Math.max(
+    BEAR_OFF_PREFERRED_MIN_SLAB,
+    Math.min(BEAR_OFF_MAX_SLAB, widthCap, Math.round(options.tokenSize * BEAR_OFF_SLAB_RATIO)),
+  );
+  const fits = (t: number) =>
+    stackLength(BEAR_OFF_MAX_CHECKERS, t, groupGapFor(t)) <= available;
+  while (thickness > BEAR_OFF_MIN_SLAB && !fits(thickness)) {
+    thickness -= 1;
+  }
+  if (!fits(thickness)) {
+    // A very short tray: share what room there is, keeping a 1px break between fives.
+    const groupGap = 1;
+    const groupBreaks = Math.floor((BEAR_OFF_MAX_CHECKERS - 1) / BEAR_OFF_GROUP_SIZE);
+    thickness = Math.max(1, (available - groupBreaks * groupGap) / BEAR_OFF_MAX_CHECKERS);
+    return { start, available, thickness, groupGap };
+  }
+  return { start, available, thickness, groupGap: groupGapFor(thickness) };
 }
 
-/** All 15 always fit; the stack thins instead of overflowing to "+N". */
-export function maxBearOffVisibleSlots(
-  _halfHeight?: number,
-  _tokenSize?: number,
-  _clearance?: number,
-): number {
-  return BEAR_OFF_MAX_CHECKERS;
+/** Distance from `layout.start` to the leading edge of slab `slotIndex`. */
+export function bearOffSlabOffset(layout: BearOffStackLayout, slotIndex: number): number {
+  return stackLength(slotIndex + 1, layout.thickness, layout.groupGap) - layout.thickness;
 }
 
 /** Local top coordinate inside one bear-off half (top black / bottom white tray). */
@@ -98,57 +124,38 @@ export function bearOffSlotTopInSection(options: {
   clearance?: number;
   halfHeight: number;
   tokenSize: number;
-  visibleCount: number;
   slotIndex: number;
   player: Player;
   bearOffWidth?: number;
   middleHeight?: number;
 }): number {
-  const { halfHeight, tokenSize, visibleCount, slotIndex, player, clearance = 0 } = options;
-  const { thickness, step } = bearOffStackLayout({
-    halfHeight,
-    tokenSize,
-    count: visibleCount,
-    clearance,
-    bearOffWidth: options.bearOffWidth,
-    middleHeight: options.middleHeight,
-  });
-
-  if (player === 'black') {
-    return BEAR_OFF_PADDING + clearance + slotIndex * step;
+  const layout = bearOffStackLayout(options);
+  const offset = bearOffSlabOffset(layout, options.slotIndex);
+  if (options.player === 'black') {
+    return layout.start + offset;
   }
-
-  return halfHeight - BEAR_OFF_PADDING - clearance - thickness - slotIndex * step;
+  return options.halfHeight - layout.start - offset - layout.thickness;
 }
 
-/** Checker center Y in board-local coordinates. */
+/** Centre Y of the newest borne-off slab, in board-local coordinates. */
 export function bearOffCheckerCenterY(
   dims: BoardDimensions,
   player: Player,
   stackCount: number,
 ): number {
-  const clearance = dims.bearOffCubeClearance ?? 0;
-  const tokenSize = bearOffTokenSize(dims.checkerSize);
   const halfHeight = bearOffHalfHeight(dims.boardHeight, dims.middleHeight);
-  const count = Math.min(Math.max(0, stackCount), BEAR_OFF_MAX_CHECKERS);
-  const layout = bearOffStackLayout({
+  const options = {
+    clearance: dims.bearOffCubeClearance ?? 0,
     halfHeight,
-    tokenSize,
-    count,
-    clearance,
+    tokenSize: bearOffTokenSize(dims.checkerSize),
     bearOffWidth: dims.bearOffWidth,
     middleHeight: dims.middleHeight,
-  });
-  const slotIndex = Math.max(0, count - 1);
-
-  if (player === 'black') {
-    return BEAR_OFF_PADDING + clearance + layout.thickness / 2 + slotIndex * layout.step;
-  }
-
-  const sectionTop = halfHeight + dims.middleHeight;
-  const yInSection
-    = halfHeight - BEAR_OFF_PADDING - clearance - layout.thickness / 2 - slotIndex * layout.step;
-  return sectionTop + yInSection;
+  };
+  const { thickness } = bearOffStackLayout(options);
+  const slotIndex = Math.min(Math.max(0, stackCount - 1), BEAR_OFF_MAX_CHECKERS - 1);
+  const top = bearOffSlotTopInSection({ ...options, slotIndex, player });
+  const sectionTop = player === 'black' ? 0 : halfHeight + dims.middleHeight;
+  return sectionTop + top + thickness / 2;
 }
 
 export function bearOffCheckerCenterX(dims: BoardDimensions): number {

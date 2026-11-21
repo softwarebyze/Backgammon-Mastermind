@@ -1,12 +1,11 @@
 import type { Player } from '@/lib/game/types';
 import * as React from 'react';
-import { useId } from 'react';
 import { Pressable, View } from 'react-native';
-import Svg, { Defs, Ellipse, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import {
   BEAR_OFF_MAX_CHECKERS,
   bearOffHalfHeight,
+  bearOffSlabOffset,
   bearOffSlotTopInSection,
   bearOffStackLayout,
   bearOffTokenSize,
@@ -46,64 +45,29 @@ type SlabProps = {
   style?: object;
 };
 
-/** Edge-on disc in the tray, XG-style, using the same checker colors as the board. */
+/**
+ * A borne-off checker seen edge-on, as in XG: a flat bar in the checker's
+ * colour with a one-pixel rim and separator, no gradient or shading.
+ */
 export function BearOffSlab({ player, width, thickness, style }: SlabProps) {
-  const uid = useId().replace(/:/g, '');
-  const isWhite = player === 'white';
-  const colors = isWhite ? BOARD_THEME.checker.white : BOARD_THEME.checker.black;
-  const faceId = `bearoff-face-${uid}`;
-  const bodyId = `bearoff-body-${uid}`;
-  const faceRy = Math.min(thickness * 0.35, width * 0.22);
-  const faceCy = faceRy + 0.5;
-  const bodyTop = faceCy;
-  const bodyHeight = Math.max(0.75, thickness - faceCy - 0.5);
-  const rx = Math.min(2, width / 6);
-
+  const colors = BOARD_THEME.slab[player];
   return (
-    <View testID="bear-off-slab" style={[{ width, height: thickness }, style]}>
-      <Svg width={width} height={thickness}>
-        <Defs>
-          <LinearGradient id={bodyId} x1="0%" y1="0%" x2="0%" y2="100%">
-            <Stop offset="0%" stopColor={colors.highlight} />
-            <Stop offset="45%" stopColor={colors.mid} />
-            <Stop offset="100%" stopColor={colors.shadow} />
-          </LinearGradient>
-          <LinearGradient id={faceId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor={colors.highlight} />
-            <Stop offset="70%" stopColor={colors.mid} />
-            <Stop offset="100%" stopColor={colors.shadow} />
-          </LinearGradient>
-        </Defs>
-        <Rect
-          x={0.5}
-          y={bodyTop}
-          width={width - 1}
-          height={bodyHeight}
-          rx={rx}
-          fill={`url(#${bodyId})`}
-          stroke={colors.rim}
-          strokeWidth={0.6}
-        />
-        <Ellipse
-          cx={width / 2}
-          cy={faceCy}
-          rx={(width - 1) / 2}
-          ry={faceRy}
-          fill={`url(#${faceId})`}
-          stroke={colors.rim}
-          strokeWidth={0.7}
-        />
-        <Ellipse
-          cx={width / 2}
-          cy={faceCy}
-          rx={(width - 1) * 0.28}
-          ry={faceRy * 0.45}
-          fill="none"
-          stroke={isWhite ? 'rgba(255,255,255,0.55)' : 'rgba(140,140,210,0.4)'}
-          strokeWidth={0.7}
-        />
-      </Svg>
-    </View>
+    <View
+      testID="bear-off-slab"
+      style={[
+        {
+          width,
+          height: thickness,
+          borderRadius: 1,
+          backgroundColor: colors.fill,
+          borderTopWidth: thickness >= 4 ? 1 : 0,
+          borderTopColor: colors.rim,
+          borderBottomWidth: thickness >= 2 ? 1 : 0,
+          borderBottomColor: colors.separator,
+        },
+        style,
+      ]}
+    />
   );
 }
 
@@ -118,36 +82,33 @@ function BearOffStack({
   isLegalTarget,
   isTargetSide,
 }: StackProps) {
-  const tokenSize = bearOffTokenSize(checkerSize);
   const visible = Math.min(count, BEAR_OFF_MAX_CHECKERS);
-  const layout = bearOffStackLayout({
-    halfHeight,
-    tokenSize,
-    count: Math.max(visible, 1),
+  const slot = {
     clearance: cubeClearance,
+    halfHeight,
+    tokenSize: bearOffTokenSize(checkerSize),
     bearOffWidth: width,
     middleHeight,
-  });
-  const slabWidth = Math.max(8, width - 6);
-  const showTarget = isLegalTarget && isTargetSide;
-  const emptyTop = bearOffSlotTopInSection({
-    clearance: cubeClearance,
-    halfHeight,
-    tokenSize,
-    visibleCount: 1,
-    slotIndex: 0,
     player,
-    bearOffWidth: width,
-    middleHeight,
-  });
+  };
+  const layout = bearOffStackLayout(slot);
+  // Inside the tray's 1px left border; an even margin keeps edges on whole pixels.
+  const innerWidth = Math.round(width) - 1;
+  const slabWidth = Math.max(8, innerWidth - 6);
+  const left = (innerWidth - slabWidth) / 2;
+  const showTarget = isLegalTarget && isTargetSide;
+  // An empty tray shows the outline of one group of five where checkers will land.
+  const emptyLength = bearOffSlabOffset(layout, 4) + layout.thickness;
+  const emptyTop = player === 'black'
+    ? layout.start
+    : halfHeight - layout.start - emptyLength;
 
   return (
     <View
       style={{
         height: halfHeight,
-        width,
+        width: innerWidth,
         overflow: 'hidden',
-        alignItems: 'center',
         borderWidth: showTarget ? 2 : 0,
         borderColor: '#4CAF50',
         borderRadius: 6,
@@ -159,10 +120,10 @@ function BearOffStack({
           style={{
             position: 'absolute',
             top: emptyTop,
-            left: (width - slabWidth) / 2,
+            left,
             width: slabWidth,
-            height: layout.thickness,
-            borderRadius: Math.min(layout.thickness / 2, slabWidth / 2),
+            height: emptyLength,
+            borderRadius: 2,
             borderWidth: 1,
             borderColor: showTarget ? '#4CAF50' : BOARD_THEME.bearOff.border,
             borderStyle: 'dashed',
@@ -179,18 +140,8 @@ function BearOffStack({
           thickness={layout.thickness}
           style={{
             position: 'absolute',
-            left: (width - slabWidth) / 2,
-            top: bearOffSlotTopInSection({
-              clearance: cubeClearance,
-              halfHeight,
-              tokenSize,
-              visibleCount: visible,
-              slotIndex,
-              player,
-              bearOffWidth: width,
-              middleHeight,
-            }),
-            zIndex: slotIndex + 1,
+            left,
+            top: bearOffSlotTopInSection({ ...slot, slotIndex }),
           }}
         />
       ))}
