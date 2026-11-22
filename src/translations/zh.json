@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "最佳：{{choice}}",
       "better_choice": "有更好的倍数块决策",
+      "computer_error": "无法分析立方体 — 点按重试",
       "computer_waiting": "电脑正在等待",
       "keep": "保留我的选择",
       "missed_double": "错过加倍",
@@ -759,6 +760,9 @@
     "untitled": "未命名局面",
     "white": "白方",
     "white_score": "白方得分"
+  },
+  "pwa": {
+    "update_available": "新版本已就绪 — 点按以重新加载"
   },
   "settings": {
     "about": "关于",

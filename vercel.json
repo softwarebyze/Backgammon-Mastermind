@@ -1,12 +1,30 @@
 {
+  "buildCommand": "pnpm build:web",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/privacy", "destination": "/privacy/index.html" },
     { "source": "/privacy/", "destination": "/privacy/index.html" },
     { "source": "/terms", "destination": "/terms/index.html" },
     { "source": "/terms/", "destination": "/terms/index.html" },
     {
-      "source": "/((?!_expo/|apple-touch-icon\\.png$|favicon\\.png$|favicon\\.ico$).*)",
+      "source": "/((?!_expo/|apple-touch-icon\\.png$|favicon\\.png$|favicon\\.ico$|sw\\.js$|manifest\\.webmanifest$|pwa-[^/]+\\.png$|bgsage/).*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" }
+      ]
     }
   ]
 }
+

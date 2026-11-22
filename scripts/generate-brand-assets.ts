@@ -91,6 +91,33 @@ async function trimmedBoard(source: string) {
   return sharp(await centeredBoardCrop(source));
 }
 
+/** PWA manifest icons: 192/512 plus a maskable variant inside the safe zone. */
+async function writePwaIcons(publicDir: string, bg: ReturnType<typeof hexToRgb>) {
+  await sharp(join(brandDir, 'icon.png'))
+    .resize(192, 192)
+    .png()
+    .toFile(join(publicDir, 'pwa-192.png'));
+  await sharp(join(brandDir, 'icon.png'))
+    .resize(512, 512)
+    .png()
+    .toFile(join(publicDir, 'pwa-512.png'));
+  const maskable = await sharp(join(brandDir, 'adaptive-foreground.png'))
+    .resize(512, 512)
+    .png()
+    .toBuffer();
+  await sharp({
+    create: {
+      width: 512,
+      height: 512,
+      channels: 3,
+      background: bg,
+    },
+  })
+    .composite([{ input: maskable, gravity: 'center' }])
+    .png()
+    .toFile(join(publicDir, 'pwa-maskable-512.png'));
+}
+
 async function main() {
   const source = join(brandDir, 'icon-source.png');
   const config = JSON.parse(
@@ -177,6 +204,11 @@ async function main() {
     .png()
     .toFile(join(publicDir, 'favicon.png'));
 
+  // PWA manifest icons. Chrome wants 192 and 512; Android masks the icon to
+  // its own shape, so ship a maskable variant with the artwork inside the
+  // central safe zone (adaptive-foreground.png already has that padding).
+  await writePwaIcons(join(root, 'public'), bg);
+
   // In-app logo: trimmed board at natural aspect (use contain in UI — not square cover crop)
   await board.clone().png().toFile(join(brandDir, 'display-logo.png'));
 
@@ -188,6 +220,7 @@ async function main() {
   console.log('  favicon.png           — web');
   console.log('  public/apple-touch-icon.png — iOS share sheet (180×180)');
   console.log('  public/favicon.png    — web PNG favicon');
+  console.log('  public/pwa-192.png / pwa-512.png / pwa-maskable-512.png — web app icons');
   console.log('\nRebuild dev client to see icon/splash on device.');
   console.log('Note: dev-client splash ≠ production splash — use preview build to verify.');
 }

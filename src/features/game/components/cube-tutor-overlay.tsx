@@ -20,7 +20,7 @@ export function CubeTutorOverlay() {
             <View style={styles.scrim}>
               <View style={[styles.card, styles.content]} accessibilityViewIsModal>
                 <Text style={styles.title}>{translate('game.cube_tutor.computer_waiting')}</Text>
-                <Text style={styles.text}>{translate('game.hint.error')}</Text>
+                <Text style={styles.text}>{translate('game.cube_tutor.computer_error')}</Text>
                 <Pressable testID="computer-cube-retry" accessibilityRole="button" onPress={retryCubeAnalysis} style={controlButtonStyles.primary}>
                   <Text style={controlButtonStyles.primaryText}>{translate('game.cube_tutor.retry')}</Text>
                 </Pressable>

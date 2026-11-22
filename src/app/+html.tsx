@@ -29,7 +29,14 @@ export default function Root({ children }: { children: React.ReactNode }) {
         <meta name="description" content={APP_DESCRIPTION} />
         <link rel="icon" type="image/png" href={FAVICON_PNG_PATH} />
         <link rel="icon" type="image/x-icon" href={FAVICON_ICO_PATH} />
+        <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192.png" />
         <link rel="apple-touch-icon" sizes="180x180" href={APPLE_TOUCH_ICON_PATH} />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content={APP_BG} />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Backgammon" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={APP_TITLE} />
         <meta property="og:description" content={APP_DESCRIPTION} />

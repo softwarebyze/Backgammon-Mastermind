@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "الأفضل: {{choice}}",
       "better_choice": "كان هناك قرار مكعب أفضل",
+      "computer_error": "تعذّر تحليل المكعب — اضغط لإعادة المحاولة",
       "computer_waiting": "الكمبيوتر ينتظر",
       "keep": "احتفظ باختياري",
       "missed_double": "فاتتك المضاعفة",
@@ -759,6 +760,9 @@
     "untitled": "وضع بلا اسم",
     "white": "الأبيض",
     "white_score": "نتيجة الأبيض"
+  },
+  "pwa": {
+    "update_available": "إصدار جديد جاهز — اضغط لإعادة التحميل"
   },
   "settings": {
     "about": "حول",

@@ -59,6 +59,7 @@
     "cube_tutor": {
       "best": "최선: {{choice}}",
       "better_choice": "더 나은 큐브 결정이 있었습니다",
+      "computer_error": "큐브를 분석할 수 없습니다 — 탭하여 다시 시도",
       "computer_waiting": "컴퓨터가 기다리는 중",
       "keep": "내 선택 유지",
       "missed_double": "놓친 더블",
@@ -759,6 +760,9 @@
     "untitled": "이름 없는 포지션",
     "white": "백",
     "white_score": "백 점수"
+  },
+  "pwa": {
+    "update_available": "새 버전이 준비되었습니다 — 탭하여 새로고침"
   },
   "settings": {
     "about": "정보",
