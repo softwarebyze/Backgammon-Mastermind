@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import { Feather } from '@expo/vector-icons';
+import Feather from '@expo/vector-icons/Feather';
 import { Platform, StyleSheet, View } from 'react-native';
 
 import { HoverPressable } from '@/components/ui/hover-pressable';
