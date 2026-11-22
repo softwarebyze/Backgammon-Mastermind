@@ -1,21 +1,22 @@
+import type { LayoutChangeEvent } from 'react-native';
 import type { CubeHistoryEvent } from '@/lib/game/cube-history';
 import type { MoveLogEntry, MoveLogTurn } from '@/lib/game/move-log';
-import { useEffect, useRef } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BLUNDER_ANNOTATION, blunderBandFor } from '@/features/game/blunder-bands';
 import { useBlunderHistory } from '@/features/game/blunder-history';
+import { timelineScrollX } from '@/features/game/components/timeline-scroll';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { blunderBandLabel } from '@/features/game/guidance-copy';
 
 import { chronologicalHistory } from '@/lib/game/cube-history';
 import { isNoMoveLogEntry, turnsForReviewStrip, unusedDiceInTurn } from '@/lib/game/move-log';
 import { hapticLight } from '@/lib/haptics';
-import { translate } from '@/lib/i18n';
+import { translate, useLayoutIsRTL } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
 
 const CHIP_HEIGHT = 28;
 const CHIP_GAP = 6;
-const CHIP_SCROLL_STEP = 62;
 
 type Props = {
   viewIndex: number;
@@ -89,6 +90,32 @@ function TurnChip({
 }
 
 /** Horizontal timeline of turns — one chip per turn, plus Start and Live. */
+/**
+ * Keep the focused history item (or Live) in view. Offsets depend on both the
+ * content and viewport widths, so wait for layout before scrolling (the first
+ * effect runs before either is measured). RTL scrolls differ per platform.
+ */
+function useTimelineAutoScroll(focusedIndex: number | null, itemCount: number) {
+  const ref = useRef<ScrollView>(null);
+  const rtl = useLayoutIsRTL();
+  const [contentWidth, setContentWidth] = useState(0);
+  const [viewportWidth, setViewportWidth] = useState(0);
+  useEffect(() => {
+    if (contentWidth <= 0 || viewportWidth <= 0)
+      return;
+    const x = timelineScrollX(
+      focusedIndex === null ? { kind: 'live' } : { kind: 'turn', focusedTurnIdx: focusedIndex },
+      { isRTL: rtl, platform: Platform.OS, contentWidth, viewportWidth },
+    );
+    ref.current?.scrollTo({ x, animated: true });
+  }, [contentWidth, focusedIndex, itemCount, rtl, viewportWidth]);
+  return {
+    ref,
+    onContentSizeChange: (width: number) => setContentWidth(width),
+    onLayout: (event: LayoutChangeEvent) => setViewportWidth(event.nativeEvent.layout.width),
+  };
+}
+
 export function MoveReviewTurnStrip({
   viewIndex: _viewIndex,
   isReviewing,
@@ -106,7 +133,6 @@ export function MoveReviewTurnStrip({
     hideInProgressFor: isReviewing ? null : liveCurrentPlayer,
   });
   const blunders = useBlunderHistory();
-  const scrollRef = useRef<ScrollView>(null);
   const focusedTurnIdx = turns.findIndex(
     t => focusedPly >= turnStartPly(t) && focusedPly <= t.endPly,
   );
@@ -116,22 +142,18 @@ export function MoveReviewTurnStrip({
     ? item.event.id === selectedCubeEventId
     : selectedCubeEventId === null && item.turn === turns[focusedTurnIdx]);
 
-  useEffect(() => {
-    if (!isReviewing) {
-      scrollRef.current?.scrollToEnd({ animated: true });
-      return;
-    }
-    const x = Math.max(0, (focusedHistoryIndex + 1) * CHIP_SCROLL_STEP - 120);
-    scrollRef.current?.scrollTo({ x, animated: true });
-  }, [focusedHistoryIndex, isReviewing, historyItems.length]);
+  // Cube events sit between turns, so step by history item, not by turn.
+  const scroll = useTimelineAutoScroll(isReviewing ? focusedHistoryIndex : null, historyItems.length);
 
   return (
     <ScrollView
-      ref={scrollRef}
+      ref={scroll.ref}
       testID="history-turn-strip"
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.timeline}
+      onContentSizeChange={scroll.onContentSizeChange}
+      onLayout={scroll.onLayout}
       style={styles.timelineScroll}
     >
       <Pressable
