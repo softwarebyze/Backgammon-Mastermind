@@ -26,6 +26,11 @@ tags:
     visible:
       id: learn-board-slot
     timeout: 20000
+# The caption shows where you are in the lesson as pips, and the one button spans the screen.
+- assertVisible:
+    id: learn-step-pips
+- assertVisible:
+    id: learn-primary-cta
 - takeScreenshot: learn-any-order-02-last-lesson-open
 # The plans lesson opens on the first plan, named as the game names it,
 # with the in-game plan icon beside it.

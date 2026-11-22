@@ -95,3 +95,25 @@ describe('coach caption cube', () => {
     expect(screen.getByTestId('doubling-cube-face', { includeHiddenElements: true })).toHaveStyle({ opacity: 0.45 });
   });
 });
+
+describe('coach caption step pips', () => {
+  it('draws one pip per step: done, current, then the ones ahead', () => {
+    render(<CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="Step 3 of 5" stepIndex={2} totalSteps={5} feedback={null} />);
+    expect(screen.getAllByTestId('learn-step-pip-done')).toHaveLength(2);
+    expect(screen.getAllByTestId('learn-step-pip-current')).toHaveLength(1);
+    expect(screen.getAllByTestId('learn-step-pip-ahead')).toHaveLength(2);
+  });
+
+  it('says the step to a screen reader instead of printing it above the title', () => {
+    render(<CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="Step 3 of 5" stepIndex={2} totalSteps={5} feedback={null} />);
+    expect(screen.queryByText('Step 3 of 5')).toBeNull();
+    const pips = screen.getByRole('progressbar', { name: 'Step 3 of 5' });
+    expect(pips.props.accessibilityValue).toEqual({ min: 0, max: 5, now: 3 });
+  });
+
+  it('draws no pips and no label for a one-step lesson', () => {
+    render(<CoachCaption titleKey="learn.title" bodyKey="learn.subtitle" stepLabel="Step 1 of 1" stepIndex={0} totalSteps={1} feedback={null} />);
+    expect(screen.queryByTestId('learn-step-pips')).toBeNull();
+    expect(screen.queryByText('Step 1 of 1')).toBeNull();
+  });
+});
