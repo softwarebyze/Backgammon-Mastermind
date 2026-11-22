@@ -107,6 +107,11 @@ export function nextAfterLesson(progress: LearnProgress, lessonId: LessonId): Le
   return 'graduation';
 }
 
+/** What to study next from the hub: the first lesson not done yet in course order, or the quick check. */
+export function nextToStudy(progress: LearnProgress): LessonId | 'graduation' {
+  return LESSON_IDS.find(id => !progress.completedLessons.includes(id)) ?? 'graduation';
+}
+
 export function isReadyToPlay(progress: LearnProgress): boolean {
   return allLessonsComplete(progress) && progress.quizPassed;
 }

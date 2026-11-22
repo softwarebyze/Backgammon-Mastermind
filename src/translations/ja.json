@@ -393,6 +393,12 @@
     "home_cta_quiz": "あとは簡単な確認だけ。それから対局へ",
     "home_cta_ready": "準備完了。本番の対局をしましょう",
     "home_cta_sub": "初心者向けのインタラクティブなレッスン",
+    "hub": {
+      "chapter_basics": "基本",
+      "chapter_further": "さらに先へ",
+      "chapter_strategy": "うまく指す",
+      "start_lesson": "レッスンを始める"
+    },
     "lesson_complete": "レッスン完了!",
     "lessons": {
       "app_tools": {
