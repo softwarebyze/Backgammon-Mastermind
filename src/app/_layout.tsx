@@ -17,6 +17,7 @@ import { posthog } from '@/config/posthog';
 import { GameProvider } from '@/features/game/game-provider';
 import { setAnalyticsScreen } from '@/lib/analytics/settings-analytics';
 import { initAppTheme } from '@/lib/init-app-theme';
+import { markStartupReady } from '@/lib/perf/startup-marker';
 import { useAppFonts } from '@/lib/ui/use-app-fonts';
 import '@/lib/ignore-known-logs';
 // Import  global CSS file
@@ -46,6 +47,7 @@ SplashScreen.setOptions({
 function hideSplash() {
   // Wait for the ready root to lay out so native never reveals a blank frame.
   void SplashScreen.hideAsync().catch(() => {});
+  markStartupReady();
 }
 
 export default function RootLayout() {
