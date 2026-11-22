@@ -35,9 +35,10 @@ import type {
 } from '@gorhom/bottom-sheet';
 import { BottomSheetModal, useBottomSheet } from '@gorhom/bottom-sheet';
 import * as React from 'react';
-import { Platform, Pressable, Text as RNText, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Path, Svg } from 'react-native-svg';
+import { Text as RNText } from '@/components/ui/scaled-text';
 
 import { interFont } from '@/lib/ui/fonts';
 

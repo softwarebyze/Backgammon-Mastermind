@@ -1,6 +1,8 @@
 import type { DiceDisplayStyle } from '@/lib/game-preferences/types';
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Text } from '@/components/ui/scaled-text';
+import { FONT_SCALE_CAP } from '@/lib/ui/font-scale';
 
 const DOTS_5: Array<[number, number]> = [
   [0.28, 0.28],
@@ -72,7 +74,7 @@ function SingleDie({
             </View>
           )
         : (
-            <Text style={[previewStyles.number, { fontSize: size * 0.48 }]}>
+            <Text maxFontSizeMultiplier={FONT_SCALE_CAP.fixed} style={[previewStyles.number, { fontSize: size * 0.48 }]}>
               {value}
             </Text>
           )}

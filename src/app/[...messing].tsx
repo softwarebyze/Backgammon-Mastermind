@@ -1,8 +1,9 @@
 import Feather from '@expo/vector-icons/Feather';
 import { router, Stack } from 'expo-router';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
+
+import { Text } from '@/components/ui/scaled-text';
 import { GAME_PALETTE } from '@/features/game/game-palette';
 import { translate } from '@/lib/i18n';
 import { interFont } from '@/lib/ui/fonts';
