@@ -1,0 +1,14 @@
+---
+description: Keep UI text to what the screen needs — no eyebrows or unnecessary subheads
+alwaysApply: true
+---
+
+# UI design: only the text the screen needs
+
+When designing UIs, avoid eyebrows and unnecessary subheads where possible. If the text isn't needed, don't include it.
+
+- No eyebrow above a heading ("Next lesson", "Start here"). The heading and its button should already say it.
+- No subhead or tagline that restates the heading, the button or the screen title.
+- No helper line under a control whose options explain themselves.
+- Keep a second line only when it tells the player something they cannot see otherwise, such as progress or a score.
+- Removing visible text must not remove the accessible name: move it to `accessibilityLabel` when a control needs it.
