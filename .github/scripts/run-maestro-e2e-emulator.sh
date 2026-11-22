@@ -47,6 +47,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/center-bar-checkers.yaml" \
   "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \
   "${WORKSPACE}/.maestro/app/bar-entry-hints.yaml" \
+  "${WORKSPACE}/.maestro/app/partial-forced-move.yaml" \
   "${WORKSPACE}/.maestro/app/dice-order.yaml" \
   "${WORKSPACE}/.maestro/app/dice-order-fallback.yaml" \
   "${WORKSPACE}/.maestro/app/tap-opponent-point.yaml" \

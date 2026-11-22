@@ -102,6 +102,8 @@ describe('position loader presets', () => {
       'issue-155-bar-1-2-higher-die',
       'e2e-center-bar',
       'e2e-undo-redo-3-1',
+      'issue-309-entry',
+      'issue-309-bear-off',
     ]);
   });
 
