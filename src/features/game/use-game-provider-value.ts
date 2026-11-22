@@ -3,7 +3,7 @@ import type { GameAbandonReason } from '@/features/game/use-game-completed-captu
 import type { GameState, Move } from '@/lib/game';
 import type { MoveLogEntry } from '@/lib/game/move-log';
 import { useCallback, useRef, useState } from 'react';
-import { getGuidance, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
+import { clearGuidance, getGuidance, setGuidanceVerdictPending, useGuidance, useGuidanceVerdictPending } from '@/features/game/guidance-store';
 import { countUndoableTurnPlies } from '@/features/game/timeline-history-runner';
 import { runTakeBackAnimation } from '@/features/game/tutor-takeback-animation';
 import { useAnimatedMoves } from '@/features/game/use-animated-moves';
@@ -149,9 +149,8 @@ export function useGameProviderValue(active: boolean): GameContextType {
   const canUndo = canUndoCheckers || canUndoCube;
   const canRedo = canRedoCheckers || canRedoCube;
   const historyBlocked = useRef(false);
+  // A pending verdict blocks; an open blunder prompt does not: undo dismisses it.
   historyBlocked.current = !active || guidanceVerdictPending || !!cubeTutorSession || reviewing;
-  // The blunder dialog clears its store synchronously before Undo last move.
-  // Read that store live so its explicit retry works within the same React batch.
   /**
    * Completes an in-flight Undo all instantly. Its reverse slides pop the move
    * log one by one but rewind the timeline only at the end, so any other
@@ -171,18 +170,6 @@ export function useGameProviderValue(active: boolean): GameContextType {
     complete();
     return false;
   }, []);
-  const doUndo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
-      return;
-    if (!undoCube())
-      undoCheckers();
-  }, [undoCube, undoCheckers, turnUndoBusy]);
-  const doRedo = useCallback(() => {
-    if (historyBlocked.current || getGuidance()?.kind === 'blunder' || turnUndoBusy())
-      return;
-    if (!redoCube())
-      redoCheckers();
-  }, [redoCube, redoCheckers, turnUndoBusy]);
   const resetForNewSession = useCallback((reason: GameAbandonReason) => {
     turnUndoInFlight.current = null;
     resetCubeHistory();
@@ -214,6 +201,41 @@ export function useGameProviderValue(active: boolean): GameContextType {
     resetAnimation();
     clearHistoryPath();
   }, [resetAnimation, clearHistoryPath]);
+  // All entry points (header, confirm bar, keyboard and tutor) share this path.
+  // An unavailable undo leaves guidance intact.
+  const doUndo = useCallback(() => {
+    if (historyBlocked.current || turnUndoBusy())
+      return;
+    if (!undoCube() && !undoCheckers())
+      return;
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [clearAITimeout, undoCube, undoCheckers, turnUndoBusy]);
+  /**
+   * Tutor "Take back & retry": undo every action of the judged turn, so two
+   * separate taps both go back. A compound is one action; redo stays per action.
+   */
+  const tutorTakeBack = useCallback((movesMade: number) => {
+    const turn = getMoveLog().slice(-movesMade);
+    const actions = turn.filter((entry, i) => !entry.actionId || entry.actionId !== turn[i + 1]?.actionId).length;
+    for (let i = 0; i < actions; i++) {
+      if (!undoCheckers()) {
+        break;
+      }
+    }
+    clearAITimeout();
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [clearAITimeout, getMoveLog, undoCheckers]);
+  const doRedo = useCallback(() => {
+    if (historyBlocked.current || turnUndoBusy())
+      return;
+    if (!redoCube() && !redoCheckers())
+      return;
+    clearGuidance();
+    setGuidanceVerdictPending(false);
+  }, [redoCube, redoCheckers, turnUndoBusy]);
   usePersistActiveGame(state, moveLog, replayBaseline, cubeEvents);
   const { startGame, startFromPosition, resumeGame, resetGame } = useGameLifecycle({
     state,
@@ -515,5 +537,6 @@ export function useGameProviderValue(active: boolean): GameContextType {
     clearAITimeout,
     resumeAIScheduling,
     tutorRevertTurn,
+    tutorTakeBack,
   };
 }
