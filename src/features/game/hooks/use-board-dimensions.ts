@@ -34,8 +34,8 @@ export const MIN_LEARN_CAPTION_HEIGHT = 56;
 const DEFAULT_LEFTOVER_FLOOR = 120;
 
 export type BoardDimensions = {
-  /** Match-only empty space beside the hinge for the doubling cube. */
-  bearOffCubeClearance?: number;
+  /** Set when the board shows a doubling cube: its tilted footprint (see `cubeFootprint`). */
+  cubeFootprint?: number;
   boardWidth: number;
   boardHeight: number;
   boardFrameWidth: number;

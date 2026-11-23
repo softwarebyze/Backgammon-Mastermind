@@ -5,7 +5,7 @@ import type { useGameInput } from '@/features/game/use-game-input';
 import type { GameState, Player } from '@/lib/game';
 import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
-import { cubeCornerClearance } from '@/features/game/bear-off-layout';
+import { cubeFootprint } from '@/features/game/bear-off-layout';
 import { BoardDiceOverlay } from '@/features/game/components/board/board-dice-overlay';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
@@ -38,7 +38,7 @@ type Props = {
 function usePresentationDimensions(hasMatch: boolean) {
   const base = useBoardDimensions({ showPointNumbers: true });
   return useMemo(() => hasMatch
-    ? { ...base, bearOffCubeClearance: cubeCornerClearance(base.pointHeight) }
+    ? { ...base, cubeFootprint: cubeFootprint(base) }
     : base, [base, hasMatch]);
 }
 

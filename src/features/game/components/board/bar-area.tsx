@@ -36,6 +36,8 @@ type Props = {
   boardHeight: number;
   middleHeight: number;
   checkerSize: number;
+  /** Board shows a cube: keep the bar's outer ends clear for an owned one. */
+  cubeFootprint?: number;
   dragEnabled?: boolean;
   /** Checker to lift when a pan starts on the bar (may be a nearby unique origin). */
   panFrom?: number;
@@ -84,6 +86,7 @@ type StackProps = {
   boardHeight: number;
   middleHeight: number;
   checkerSize: number;
+  cubeFootprint?: number;
   isDragging: boolean;
   isSelected?: boolean;
   showMoveHint?: boolean;
@@ -95,11 +98,12 @@ function BarStack({
   boardHeight,
   middleHeight,
   checkerSize,
+  cubeFootprint,
   isDragging,
   isSelected = false,
   showMoveHint = false,
 }: StackProps) {
-  const { size, centers } = barStackLayout({ boardHeight, middleHeight, checkerSize, count, player });
+  const { size, centers } = barStackLayout({ boardHeight, middleHeight, checkerSize, count, player, cubeFootprint });
   const topDragStyle = useAnimatedStyle(() => ({
     opacity: isDragging ? 0.25 : 1,
   }));
@@ -138,6 +142,7 @@ export function BarArea({
   boardHeight,
   middleHeight,
   checkerSize,
+  cubeFootprint,
   dragEnabled = false,
   panFrom = BAR_POINT,
   isDragging = false,
@@ -197,6 +202,7 @@ export function BarArea({
         boardHeight={boardHeight}
         middleHeight={middleHeight}
         checkerSize={checkerSize}
+        cubeFootprint={cubeFootprint}
         isDragging={isDragging && currentPlayer === 'black'}
         isSelected={isBarSelected && currentPlayer === 'black'}
         showMoveHint={showMoveHint && currentPlayer === 'black'}
@@ -212,6 +218,7 @@ export function BarArea({
         boardHeight={boardHeight}
         middleHeight={middleHeight}
         checkerSize={checkerSize}
+        cubeFootprint={cubeFootprint}
         isDragging={isDragging && currentPlayer === 'white'}
         isSelected={isBarSelected && currentPlayer === 'white'}
         showMoveHint={showMoveHint && currentPlayer === 'white'}

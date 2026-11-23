@@ -4,7 +4,7 @@ import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
 import { Keyboard, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { FocusAwareStatusBar } from '@/components/ui';
-import { cubeCornerClearance } from '@/features/game/bear-off-layout';
+import { cubeFootprint } from '@/features/game/bear-off-layout';
 import { fitBoardToViewport } from '@/features/game/hooks/use-board-dimensions';
 import { requestReplaceActiveGame } from '@/features/game/request-new-game';
 import { useGame } from '@/features/game/use-game';
@@ -73,8 +73,8 @@ function PositionWorkspace({ data }: { data?: string }) {
   const { insets } = useLayoutMetrics();
   const layout = positionLayout(width, height, insets.left + insets.right);
   const fitted = fitBoardToViewport(layout.boardWidth, layout.boardHeight, { extraHeight: 36, checkerCap: 64 });
-  // The cube's corners are reserved in the tray, as in a match game.
-  const dims = { ...fitted, bearOffCubeClearance: cubeCornerClearance(fitted.pointHeight) };
+  // The board shows a cube, as in a match game.
+  const dims = { ...fitted, cubeFootprint: cubeFootprint(fitted) };
 
   useLayoutEffect(() => {
     navigation.setOptions({

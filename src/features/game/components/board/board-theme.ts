@@ -32,7 +32,7 @@ export const BOARD_THEME = {
     white: { highlight: '#FFFAF0', mid: '#F2EAD3', shadow: '#BBA070', rim: '#8A7048' },
     black: { highlight: '#4A4A68', mid: '#1E1E30', shadow: '#0A0A14', rim: '#5050A0' },
   },
-  /** Borne-off checkers seen edge-on in the tray: flat fill, a one-pixel rim on top and a darker separator below. */
+  /** Borne-off checkers seen edge-on in the tray: body fill, black's rim, white's outline. */
   slab: {
     white: { fill: '#F2EAD3', rim: '#FFFAF0', separator: '#B09468' },
     black: { fill: '#30305A', rim: '#5050A0', separator: '#10101C' },

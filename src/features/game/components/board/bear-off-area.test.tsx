@@ -6,10 +6,10 @@ jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key }));
 
 afterEach(cleanup);
 
-function tray(cubeClearance = 0, counts: { white?: number; black?: number } = {}) {
+function tray(cubeFootprint = 0, counts: { white?: number; black?: number } = {}) {
   const view = render(
     <BearOffArea
-      cubeClearance={cubeClearance}
+      cubeFootprint={cubeFootprint}
       whiteBorneOff={counts.white ?? 2}
       blackBorneOff={counts.black ?? 2}
       isLegalTarget={false}
@@ -30,18 +30,21 @@ function tray(cubeClearance = 0, counts: { white?: number; black?: number } = {}
   return tokens;
 }
 
-it('has no "off" labels: the player strips show how many are off', () => {
-  render(<BearOffArea whiteBorneOff={0} blackBorneOff={0} isLegalTarget={false} currentPlayer="white" onPress={jest.fn()} width={32} boardHeight={300} middleHeight={12} checkerSize={28} />);
-  expect(screen.queryByText(/off_short/)).toBeNull();
+it('shows each side\'s count after its newest checker and reads both counts in the tray label', () => {
+  render(<BearOffArea whiteBorneOff={7} blackBorneOff={1} isLegalTarget={false} currentPlayer="white" onPress={jest.fn()} width={32} boardHeight={300} middleHeight={12} checkerSize={28} />);
+  expect(screen.getByTestId('bear-off-count-white', { includeHiddenElements: true })).toHaveTextContent('7');
+  expect(screen.getByTestId('bear-off-count-black', { includeHiddenElements: true })).toHaveTextContent('1');
+  expect(screen.getByRole('button').props.accessibilityLabel).toBe('game.controls.bear_off_a11y. positions.white: 7 game.status.off_short. positions.black: 1 game.status.off_short');
 });
 
-it('starts each borne-off stack past the corner the cube uses', () => {
+it('starts each borne-off stack flush at the outer edge, whether or not the board has a cube', () => {
   const plain = tray();
-  const withCube = tray(30);
+  const withCube = tray(28);
   const firstBlack = (list: typeof plain) => Math.min(...list.filter(t => t.player === 'black').map(t => t.top));
   const firstWhiteBottom = (list: typeof plain) => Math.max(...list.filter(t => t.player === 'white').map(t => t.bottom));
-  expect(firstBlack(withCube)).toBe(firstBlack(plain) + 30);
-  expect(firstWhiteBottom(withCube)).toBe(firstWhiteBottom(plain) - 30);
+  expect(firstBlack(withCube)).toBe(firstBlack(plain));
+  expect(firstWhiteBottom(withCube)).toBe(firstWhiteBottom(plain));
+  expect(firstBlack(withCube)).toBe(4);
 });
 
 it('draws all 15 checkers and never shows a +N overflow badge', () => {

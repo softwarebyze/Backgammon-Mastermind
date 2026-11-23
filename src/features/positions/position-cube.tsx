@@ -27,9 +27,10 @@ const OWNERS = ['black', null, 'white'] as const;
 const PICKER_MAX_EXPONENT = 6;
 
 /**
- * The one cube, in the bear-off tray. A tap opens every value and owner at
- * once; a vertical drag moves it between Black (top), the centre and White
- * (bottom). It cannot slide anywhere else.
+ * The one cube: centred in the bear-off tray or at its owner's end of the
+ * bar. A tap opens every value and owner at once; a vertical drag moves it
+ * between Black (top), the centre and White (bottom), sliding across to the
+ * bar as it leaves the centre. It cannot slide anywhere else.
  */
 export function BoardCube({ position: p, dimensions, onChange }: {
   position: Position;
@@ -38,7 +39,7 @@ export function BoardCube({ position: p, dimensions, onChange }: {
 }) {
   const c = p.context;
   const [picking, setPicking] = useState(false);
-  const { size, left, top, travel } = boardCubeLayout(dimensions);
+  const { size, left, top, travel, shift } = boardCubeLayout(dimensions);
   const rest = cubeSlotOffset(c.cubeOwner, travel);
   const offset = useSharedValue(rest);
   const start = useSharedValue(0);
@@ -85,15 +86,17 @@ export function BoardCube({ position: p, dimensions, onChange }: {
     runOnJS(open)();
   });
 
-  const moving = useAnimatedStyle(() => ({ transform: [{ translateY: offset.value }] }));
+  const moving = useAnimatedStyle(() => ({
+    transform: [{ translateX: shift * Math.min(1, Math.abs(offset.value) / Math.max(1, travel)) }, { translateY: offset.value }],
+  }));
   const track = useAnimatedStyle(() => ({ opacity: dragging.value }));
   const up = stepCubeSlot(c.cubeOwner, -1);
   const down = stepCubeSlot(c.cubeOwner, 1);
 
   return (
     <>
-      <Animated.View pointerEvents="none" style={[styles.cubeTrack, { left: left + size / 2 - 1, top: top + size / 2 - travel, height: travel * 2 }, track]}>
-        {[0, 1, 2].map(i => <View key={i} style={[styles.cubeTrackStop, { top: i * travel - 3 }]} />)}
+      <Animated.View pointerEvents="none" style={[styles.cubeTrack, { left: left + size / 2, top: top + size / 2 }, track]}>
+        {[-1, 0, 1].map(i => <View key={i} style={[styles.cubeTrackStop, { left: (i === 0 ? 0 : shift) - 3, top: i * travel - 3 }]} />)}
       </Animated.View>
       <Animated.View style={[styles.boardCube, { left: left - TOUCH_PAD, top: top - TOUCH_PAD }, moving]}>
         <GestureDetector gesture={Gesture.Exclusive(pan, tap)}>
