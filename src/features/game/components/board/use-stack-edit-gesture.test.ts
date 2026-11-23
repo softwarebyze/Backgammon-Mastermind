@@ -24,7 +24,7 @@ type Touches = Parameters<NonNullable<Handlers['onTouchesDown']>>[0];
 type Manager = Parameters<NonNullable<Handlers['onTouchesDown']>>[1];
 type End = Parameters<NonNullable<Handlers['onEnd']>>[0];
 const callbacks = () => ({ onStart: jest.fn(), onDelta: jest.fn(), onEnd: jest.fn(), onCancel: jest.fn(), onAdjust: jest.fn() });
-const touch = (absoluteY: number, y = 27) => ({ numberOfTouches: 1, changedTouches: [{ absoluteX: 100, absoluteY, y }] }) as Touches;
+const touch = (absoluteY: number, y = 27, id = 1) => ({ numberOfTouches: 1, changedTouches: [{ id, absoluteX: 100, absoluteY, y }] }) as Touches;
 const manager = () => ({ activate: jest.fn(), end: jest.fn(), fail: jest.fn() });
 
 it('activates immediately and commits a stationary native tap instead of cancelling its placement', () => {
@@ -52,7 +52,7 @@ it('uses final touch coordinates for a fast drag crossing a point in one move', 
   expect(cb.onEnd).toHaveBeenCalledWith(6, false, -10);
 });
 
-it('quantizes moves and restores an interrupted or multi-touch stroke', () => {
+it('quantizes moves and ignores a second finger during an active stroke', () => {
   const cb = callbacks();
   const state = manager();
   const { result } = renderHook(() => useStackEditGesture(13, 20, cb));
@@ -61,10 +61,37 @@ it('quantizes moves and restores an interrupted or multi-touch stroke', () => {
   result.current.handlers.onTouchesMove!(touch(125), state as unknown as Manager);
   expect(cb.onDelta).toHaveBeenCalledTimes(1);
   expect(cb.onDelta).toHaveBeenCalledWith(13, 1);
-  result.current.handlers.onTouchesDown!({ numberOfTouches: 2 } as Touches, state as unknown as Manager);
-  expect(state.fail).toHaveBeenCalledTimes(1);
-  result.current.handlers.onEnd!({} as End, false);
+  result.current.handlers.onTouchesDown!({ numberOfTouches: 2, changedTouches: [{ id: 2, absoluteX: 110, absoluteY: 140 }] } as Touches, state as unknown as Manager);
+  expect(state.fail).not.toHaveBeenCalled();
+  expect(cb.onCancel).not.toHaveBeenCalled();
+  // Lifting the extra finger must not end the original stroke.
+  result.current.handlers.onTouchesUp!({ numberOfTouches: 1, changedTouches: [{ id: 2, absoluteX: 110, absoluteY: 140 }] } as Touches, state as unknown as Manager);
+  expect(state.end).not.toHaveBeenCalled();
+  result.current.handlers.onTouchesMove!(touch(145), state as unknown as Manager);
+  expect(cb.onDelta).toHaveBeenCalledWith(13, 2);
+  result.current.handlers.onTouchesUp!(touch(145), state as unknown as Manager);
+  expect(state.end).toHaveBeenCalledTimes(1);
+  result.current.handlers.onEnd!({} as End, true);
+  result.current.handlers.onFinalize!({} as End, true);
+  expect(cb.onEnd).toHaveBeenCalledWith(13, false, 2);
+  expect(cb.onCancel).not.toHaveBeenCalled();
+});
+
+it('fails a two-finger start and still cancels an interrupted stroke', () => {
+  const started = callbacks();
+  const startedState = manager();
+  const { result: startedResult } = renderHook(() => useStackEditGesture(13, 20, started));
+  startedResult.current.handlers.onTouchesDown!({ numberOfTouches: 2 } as Touches, startedState as unknown as Manager);
+  expect(startedState.fail).toHaveBeenCalledTimes(1);
+  expect(startedState.activate).not.toHaveBeenCalled();
+  startedResult.current.handlers.onFinalize!({} as End, false);
+  expect(started.onCancel).toHaveBeenCalledTimes(1);
+
+  const cb = callbacks();
+  const state = manager();
+  const { result } = renderHook(() => useStackEditGesture(13, 20, cb));
+  result.current.handlers.onTouchesDown!(touch(100), state as unknown as Manager);
   result.current.handlers.onFinalize!({} as End, false);
-  expect(cb.onEnd).not.toHaveBeenCalled();
   expect(cb.onCancel).toHaveBeenCalledTimes(1);
+  expect(cb.onEnd).not.toHaveBeenCalled();
 });
