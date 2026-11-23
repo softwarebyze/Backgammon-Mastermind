@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react';
 import type { GameMode, GameState } from '@/lib/game';
 import Feather from '@expo/vector-icons/Feather';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 import { usePostHog } from 'posthog-react-native';
 import { useCallback, useState } from 'react';
@@ -234,6 +235,18 @@ export function HomeScreen() {
         />
       </View>
       <HomeCard
+        testID="dice-roller-button"
+        accessibilityLabel={translate('dice.title')}
+        symbol="dice-multiple-outline"
+        label={translate('dice.title')}
+        onPress={() => {
+          hapticLight();
+          router.push('/dice');
+        }}
+        dense={dense}
+        compact={split || tiny}
+      />
+      <HomeCard
         testID="game-clock-button"
         accessibilityLabel={translate('timer.title')}
         symbol="clock"
@@ -312,7 +325,7 @@ export function HomeScreen() {
 function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, prominent = false, dense = false, compact = false, inline = false }: {
   testID: string;
   accessibilityLabel: string;
-  symbol: ComponentProps<typeof Feather>['name'];
+  symbol: ComponentProps<typeof Feather>['name'] | 'dice-multiple-outline';
   label: string;
   sub?: string;
   onPress: () => void;
@@ -340,7 +353,9 @@ function HomeCard({ testID, accessibilityLabel, symbol, label, sub, onPress, pro
         pressed && styles.pressed,
       ]}
     >
-      <Feather name={symbol} size={20} color={prominent ? GAME_PALETTE.bg : HOME_INK.ivory} accessible={false} />
+      {symbol === 'dice-multiple-outline'
+        ? <MaterialCommunityIcons name="dice-multiple-outline" size={20} color={HOME_INK.ivory} accessible={false} />
+        : <Feather name={symbol} size={20} color={prominent ? GAME_PALETTE.bg : HOME_INK.ivory} accessible={false} />}
       <View style={styles.cardCopy}>
         <Text style={[styles.cardLabel, prominent && styles.cardLabelProminent]}>{label}</Text>
         {sub ? <Text style={[styles.cardSub, prominent && styles.cardSubProminent]}>{sub}</Text> : null}

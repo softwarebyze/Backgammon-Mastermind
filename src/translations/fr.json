@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Pour jouer sur un vrai plateau",
+    "ready": "Touchez n’importe où pour lancer",
+    "result": "Lancer {{count}} : {{first}} et {{second}}",
+    "title": "Lancer les dés"
+  },
   "error": {
     "body": "Redémarrez l'app pour continuer.",
     "heading": "Un problème est survenu",

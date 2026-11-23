@@ -65,6 +65,14 @@ export default function AppLayout() {
         }}
       />
       <Stack.Screen
+        name="dice"
+        options={{
+          ...settingsStackOptions(t('dice.title')),
+          ...stackEscapeHeaderOptions(),
+          headerLargeTitle: false,
+        }}
+      />
+      <Stack.Screen
         name="timer"
         options={{
           ...settingsStackOptions(t('timer.title')),

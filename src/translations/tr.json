@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Gerçek tahtada oynamak için",
+    "ready": "Zar atmak için herhangi bir yere dokun",
+    "result": "Atış {{count}}: {{first}} ve {{second}}",
+    "title": "Zar at"
+  },
   "error": {
     "body": "Devam etmek için uygulamayı yeniden başlatın.",
     "heading": "Bir şeyler ters gitti",

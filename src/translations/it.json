@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Per giocare su una tavola reale",
+    "ready": "Tocca un punto qualsiasi per lanciare",
+    "result": "Lancio {{count}}: {{first}} e {{second}}",
+    "title": "Lancia i dadi"
+  },
   "error": {
     "body": "Riavvia l'app per continuare.",
     "heading": "Qualcosa è andato storto",

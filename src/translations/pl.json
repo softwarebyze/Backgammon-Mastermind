@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Do gry na prawdziwej planszy",
+    "ready": "Dotknij dowolnego miejsca, aby rzucić",
+    "result": "Rzut {{count}}: {{first}} i {{second}}",
+    "title": "Rzuć kośćmi"
+  },
   "error": {
     "body": "Uruchom aplikację ponownie, aby kontynuować.",
     "heading": "Coś poszło nie tak",
