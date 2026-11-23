@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "Per giocare su una tavola reale",
-    "ready": "Tocca Lancia i dadi per iniziare",
+    "ready": "Tocca un punto qualsiasi per lanciare",
     "result": "Lancio {{count}}: {{first}} e {{second}}",
     "title": "Lancia i dadi"
   },

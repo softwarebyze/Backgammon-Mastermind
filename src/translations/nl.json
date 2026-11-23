@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "Voor spelen op een echt bord",
-    "ready": "Tik op Dobbelstenen gooien om te beginnen",
+    "ready": "Tik ergens om te gooien",
     "result": "Worp {{count}}: {{first}} en {{second}}",
     "title": "Dobbelstenen gooien"
   },

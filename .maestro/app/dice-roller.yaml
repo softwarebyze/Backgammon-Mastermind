@@ -13,18 +13,24 @@ tags:
       TARGET_ID: dice-roller-button
       START_Y: '80%'
       END_Y: '25%'
+- takeScreenshot: dice-roller-home-icon
 - tapOn:
     id: dice-roller-button
-- assertVisible: Tap Roll dice to begin
+- assertVisible: Tap anywhere to roll
 - takeScreenshot: dice-roller-ready
 - tapOn:
-    id: standalone-roll-button
+    point: '50%,25%'
 - assertVisible: 'Roll 1: [1-6] and [1-6]'
 - takeScreenshot: dice-roller-first-roll
 - tapOn:
-    id: standalone-roll-button
+    point: '50%,45%'
 - assertVisible: 'Roll 2: [1-6] and [1-6]'
 - takeScreenshot: dice-roller-second-roll
+# Bottom blank area must also roll, without a double activation.
+- tapOn:
+    point: '50%,85%'
+- assertVisible: 'Roll 3: [1-6] and [1-6]'
+- takeScreenshot: dice-roller-tap-anywhere
 - back
 - assertVisible:
     id: dice-roller-button

@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "Für das Spiel am echten Brett",
-    "ready": "Tippe zum Starten auf Würfeln",
+    "ready": "Tippe zum Würfeln auf eine beliebige Stelle",
     "result": "Wurf {{count}}: {{first}} und {{second}}",
     "title": "Würfeln"
   },

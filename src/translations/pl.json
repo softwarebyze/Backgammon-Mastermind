@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "Do gry na prawdziwej planszy",
-    "ready": "Dotknij Rzuć kośćmi, aby zacząć",
+    "ready": "Dotknij dowolnego miejsca, aby rzucić",
     "result": "Rzut {{count}}: {{first}} i {{second}}",
     "title": "Rzuć kośćmi"
   },

@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "Gerçek tahtada oynamak için",
-    "ready": "Başlamak için Zar at düğmesine dokun",
+    "ready": "Zar atmak için herhangi bir yere dokun",
     "result": "Atış {{count}}: {{first}} ve {{second}}",
     "title": "Zar at"
   },

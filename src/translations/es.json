@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "Para jugar en un tablero físico",
-    "ready": "Toca Tirar dados para empezar",
+    "ready": "Toca en cualquier lugar para tirar",
     "result": "Tirada {{count}}: {{first}} y {{second}}",
     "title": "Tirar dados"
   },

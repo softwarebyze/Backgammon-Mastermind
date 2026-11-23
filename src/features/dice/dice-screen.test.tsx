@@ -6,7 +6,7 @@ import { DiceScreen } from './dice-screen';
 jest.mock('@/lib/game/moves', () => ({ rollDice: jest.fn() }));
 jest.mock('@/lib/haptics', () => ({ hapticLight: jest.fn() }));
 jest.mock('@/lib/ui/layout-metrics', () => ({
-  useLayoutMetrics: () => ({ width: 390, insets: { bottom: 0 } }),
+  useLayoutMetrics: jest.fn(() => ({ width: 390, insets: { bottom: 0 } })),
 }));
 jest.mock('@/components/ui', () => ({
   FocusAwareStatusBar: () => null,
@@ -41,4 +41,14 @@ it('renders exactly two physical dice even for doubles', () => {
   fireEvent.press(screen.getByTestId('standalone-roll-button'));
   expect(screen.getByText('Roll 1: 6 and 6')).toBeTruthy();
   expect(screen.UNSAFE_getAllByType(DieFace)).toHaveLength(2);
+});
+
+it('rolls once when tapping the dice, result, prompt, or empty screen area', () => {
+  jest.mocked(rollDice).mockReturnValue([2, 4]);
+  render(<DiceScreen />);
+  for (const [index, target] of ['standalone-dice-faces', 'dice-result', 'dice-roll-label', 'standalone-roll-button'].entries()) {
+    fireEvent.press(screen.getByTestId(target));
+    expect(rollDice).toHaveBeenCalledTimes(index + 1);
+    expect(screen.getByTestId('dice-result').props.children).toBe(`Roll ${index + 1}: 2 and 4`);
+  }
 });

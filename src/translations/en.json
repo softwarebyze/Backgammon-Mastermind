@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "For over-the-board play",
-    "ready": "Tap Roll dice to begin",
+    "ready": "Tap anywhere to roll",
     "result": "Roll {{count}}: {{first}} and {{second}}",
     "title": "Roll dice"
   },

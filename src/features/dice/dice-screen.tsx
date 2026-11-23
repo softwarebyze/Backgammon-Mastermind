@@ -31,32 +31,31 @@ export function DiceScreen() {
         testID="dice-screen"
         style={styles.screen}
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 32 }]}
+        contentContainerStyle={styles.scrollContent}
       >
-        <Text style={styles.hint}>{translate('dice.hint')}</Text>
-        <View style={styles.dice} accessible accessibilityLabel={result}>
-          <DiceDisplay
-            key={roll.count}
-            dice={roll.dice}
-            remainingDice={roll.dice}
-            playerColor="white"
-            slotColors={['white', 'white']}
-            size={Math.min(112, (width - 80) / 2)}
-          />
-        </View>
-        <Text testID="dice-result" accessibilityLiveRegion="polite" style={styles.result}>{result}</Text>
         <HoverPressable
           testID="standalone-roll-button"
           accessibilityRole="button"
-          accessibilityLabel={translate('dice.title')}
+          accessibilityLabel={result}
+          accessibilityHint={translate('dice.ready')}
           onPress={handleRoll}
-          style={({ pressed, hovered }) => [
-            styles.button,
-            hovered && styles.hovered,
-            pressed && styles.pressed,
-          ]}
+          style={[styles.content, { paddingBottom: insets.bottom + 32 }]}
         >
-          <Text style={styles.buttonText}>{translate('dice.title')}</Text>
+          <Text style={styles.hint}>{translate('dice.hint')}</Text>
+          <View testID="standalone-dice-faces" style={styles.dice}>
+            <DiceDisplay
+              key={roll.count}
+              dice={roll.dice}
+              remainingDice={roll.dice}
+              playerColor="white"
+              slotColors={['white', 'white']}
+              size={Math.min(112, (width - 80) / 2)}
+            />
+          </View>
+          <Text testID="dice-result" accessibilityLiveRegion="polite" style={styles.result}>{result}</Text>
+          <View testID="dice-roll-label" style={styles.button}>
+            <Text style={styles.buttonText}>{translate('dice.title')}</Text>
+          </View>
         </HoverPressable>
       </ScrollView>
     </>
@@ -65,12 +64,11 @@ export function DiceScreen() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: GAME_PALETTE.bg },
+  scrollContent: { flexGrow: 1 },
   content: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24, paddingTop: 32, gap: 32 },
   hint: { color: GAME_PALETTE.textMuted, fontSize: 16, textAlign: 'center', ...interFont('regular') },
   dice: { paddingVertical: 16 },
   result: { color: GAME_PALETTE.text, fontSize: 20, textAlign: 'center', ...interFont('semibold') },
   button: { width: '100%', maxWidth: 440, minHeight: 64, padding: 20, borderRadius: 16, backgroundColor: GAME_PALETTE.control, alignItems: 'center', justifyContent: 'center' },
-  hovered: { backgroundColor: GAME_PALETTE.controlHover },
-  pressed: { opacity: 0.85 },
-  buttonText: { color: GAME_PALETTE.controlInk, fontSize: 20, ...interFont('bold') },
+  buttonText: { color: GAME_PALETTE.controlInk, fontSize: 20, textAlign: 'center', ...interFont('bold') },
 });

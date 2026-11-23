@@ -1,7 +1,7 @@
 {
   "dice": {
     "hint": "Pour jouer sur un vrai plateau",
-    "ready": "Touchez Lancer les dés pour commencer",
+    "ready": "Touchez n’importe où pour lancer",
     "result": "Lancer {{count}} : {{first}} et {{second}}",
     "title": "Lancer les dés"
   },
