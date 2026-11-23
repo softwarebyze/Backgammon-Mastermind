@@ -1,6 +1,11 @@
 # Drag-fix evidence for PR #385 @ e188f0ad
 
-Local Playwright against the Expo web dev server at `http://127.0.0.1:8081` built from `e188f0adbc81e15671d33df01663cbffa575b3b7` (`fix(web): keep checker-drag pointer capture on a stable target`). Chromium desktop 1280×800 and WebKit iPhone 15 Pro. PostHog routes aborted. Same mouse path QA used.
+Playwright real-browser drags of opening 8→5 and then 6→5, in Chromium desktop 1280×800 and WebKit iPhone 15 Pro. PostHog routes aborted. Same mouse path QA used.
+
+Head: `e188f0adbc81e15671d33df01663cbffa575b3b7` (`fix(web): keep checker-drag pointer capture on a stable target`).
+
+Preview: https://backgammon-mastermind-864ujgc4u-softwarebyzes-projects.vercel.app
+Vercel inspector: https://vercel.com/softwarebyzes-projects/backgammon-mastermind/3fZnrpfd4FsM4KfQ68BXE97qNMKj
 
 ## Root cause
 
@@ -10,13 +15,23 @@ The fix wraps the `GestureDetector` child in a stable web-only `GestureHitTarget
 
 ## Results
 
-Opening 3-1, drag 8→5, then drag 6→5:
+All four drags passed on the local Expo web server and again on the commit-pinned Vercel preview:
 
-| browser | 8→5 | 6→5 |
-|---|---|---|
-| Chromium 1280×800 | PASS (8: 3 white → 2 white, 5: empty → 1 white) | PASS (6: 5 white → 4 white, 5: 1 white → 2 white) |
-| WebKit iPhone 15 Pro | PASS (same counts) | PASS (same counts) |
+| target | browser | 8→5 | 6→5 |
+|---|---|---|---|
+| local `http://127.0.0.1:8081` | Chromium 1280×800 | PASS (8: 3→2 white, 5: empty→1 white) | PASS (6: 5→4 white, 5: 1→2 white) |
+| local `http://127.0.0.1:8081` | WebKit iPhone 15 Pro | PASS | PASS |
+| Vercel preview | Chromium 1280×800 | PASS | PASS |
+| Vercel preview | WebKit iPhone 15 Pro | PASS | PASS |
 
-- Chromium stills: [opening](chromium-00-opening-31.png) · [after 8→5](chromium-01-after-8-to-5.png) · [after 6→5](chromium-02-after-6-to-5.png) · [video](chromium-drags.webm)
-- WebKit stills: [opening](webkit-00-opening-31.png) · [after 8→5](webkit-01-after-8-to-5.png) · [after 6→5](webkit-02-after-6-to-5.png) · [video](webkit-drags.webm)
-- Raw results: [results.json](results.json)
+Local stills and clips:
+
+- Chromium: [opening](chromium-00-opening-31.png) · [after 8→5](chromium-01-after-8-to-5.png) · [after 6→5](chromium-02-after-6-to-5.png) · [video](chromium-drags.webm)
+- WebKit: [opening](webkit-00-opening-31.png) · [after 8→5](webkit-01-after-8-to-5.png) · [after 6→5](webkit-02-after-6-to-5.png) · [video](webkit-drags.webm)
+- [results.json](results.json)
+
+Preview stills and clips:
+
+- Chromium: [opening](preview-chromium-00-opening-31.png) · [after 8→5](preview-chromium-01-after-8-to-5.png) · [after 6→5](preview-chromium-02-after-6-to-5.png) · [video](preview-chromium-drags.webm)
+- WebKit: [opening](preview-webkit-00-opening-31.png) · [after 8→5](preview-webkit-01-after-8-to-5.png) · [after 6→5](preview-webkit-02-after-6-to-5.png) · [video](preview-webkit-drags.webm)
+- [preview-results.json](preview-results.json)

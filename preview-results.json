@@ -1,0 +1,126 @@
+[
+  {
+    "browser": "chromium",
+    "base": "https://backgammon-mastermind-864ujgc4u-softwarebyzes-projects.vercel.app",
+    "drags": {
+      "8-5": {
+        "before": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "6-5": {
+        "before": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          }
+        },
+        "ok": true
+      }
+    },
+    "ok": true,
+    "video": "/workspace/pr-385-drag-proof/preview-out/chromium-drags.webm"
+  },
+  {
+    "browser": "webkit",
+    "base": "https://backgammon-mastermind-864ujgc4u-softwarebyzes-projects.vercel.app",
+    "drags": {
+      "8-5": {
+        "before": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "6-5": {
+        "before": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          }
+        },
+        "ok": true
+      }
+    },
+    "ok": true,
+    "video": "/workspace/pr-385-drag-proof/preview-out/webkit-drags.webm"
+  }
+]
