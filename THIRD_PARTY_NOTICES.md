@@ -560,7 +560,7 @@ any of these packages included in the distributed application:
 - client-only@0.0.1
 - cliui@8.0.1
 - emoji-regex@8.0.0
-- expo-router@58.0.31
+- expo-router@58.0.32
 - expo-structured-headers@58.0.1
 - expo-updates@58.0.22
 - fb-dotslash@0.5.8
@@ -998,35 +998,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </pre>
 
 ### @babel/helper-member-expression-to-functions@7.28.5
-
-Declared license: MIT
-
-<pre>
-MIT License
-
-Copyright (c) 2014-present Sebastian McKenzie and other contributors
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-</pre>
-
-### @babel/helper-module-imports@7.28.6
 
 Declared license: MIT
 
@@ -2792,7 +2763,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/cli@58.1.20
+### @expo/cli@58.1.21
 
 Declared license: MIT
 
@@ -3270,7 +3241,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/metro-config@58.0.22
+### @expo/metro-config@58.0.23
 
 Declared license: MIT
 
@@ -3522,7 +3493,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### @expo/router-server@58.0.22
+### @expo/router-server@58.0.23
 
 Declared license: MIT
 
@@ -8009,7 +7980,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### babel-preset-expo@58.0.25
+### babel-preset-expo@58.0.26
 
 Declared license: MIT
 
@@ -10515,7 +10486,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </pre>
 
-### expo@58.0.25
+### expo@58.0.26
 
 Declared license: MIT
 
@@ -10739,7 +10710,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-dev-client@58.0.20
+### expo-dev-client@58.0.21
 
 Declared license: MIT
 
@@ -10767,7 +10738,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-dev-launcher@58.0.20
+### expo-dev-launcher@58.0.21
 
 Declared license: MIT
 
@@ -10907,7 +10878,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-file-system@58.0.13
+### expo-file-system@58.0.14
 
 Declared license: MIT
 
@@ -11355,7 +11326,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### expo-router@58.0.31
+### expo-router@58.0.32
 
 Declared license: MIT
 
@@ -15567,7 +15538,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 </pre>
 
-### noxcturnal@0.1.13
+### noxcturnal@0.1.14
 
 Declared license: MIT
 
@@ -17267,7 +17238,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </pre>
 
-### react-is@19.2.3
+### react-is@19.3.1
 
 Declared license: MIT
 
