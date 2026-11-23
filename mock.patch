@@ -1,0 +1,281 @@
+diff --git a/src/features/game/bear-off-layout.ts b/src/features/game/bear-off-layout.ts
+index 38fe2d93..94c3ca62 100644
+--- a/src/features/game/bear-off-layout.ts
++++ b/src/features/game/bear-off-layout.ts
+@@ -48,7 +48,24 @@ export function bearOffHingeReserve(options: {
+   return Math.max(0, halfCube - mid / 2) + BEAR_OFF_PADDING;
+ }
+ 
++/**
++ * MOCK ONLY (design exploration for #389): pick a tray style at runtime with
++ * localStorage 'bgmm.mockBearOff' = A | B | C. Anything else is the PR as-is.
++ */
++export type BearOffMockStyle = 'now' | 'A' | 'B' | 'C';
++export function bearOffMockStyle(): BearOffMockStyle {
++  try {
++    const v = (globalThis as { localStorage?: Storage }).localStorage?.getItem('bgmm.mockBearOff');
++    if (v === 'A' || v === 'B' || v === 'C') return v;
++  } catch {}
++  return 'now';
++}
++/** Room for the count label at the hinge end in style B. */
++export const BEAR_OFF_COUNT_LABEL = 12;
++
+ export type BearOffStackLayout = {
++  /** Slabs per group; groups are split by `groupGap`. */
++  groupSize?: number;
+   /** Distance from the tray's outer edge to the first slab (whole pixels). */
+   start: number;
+   /** Room from `start` to the hinge reserve. */
+@@ -58,11 +75,42 @@ export type BearOffStackLayout = {
+   groupGap: number;
+ };
+ 
+-function stackLength(count: number, thickness: number, groupGap: number): number {
++function stackLength(count: number, thickness: number, groupGap: number, groupSize = BEAR_OFF_GROUP_SIZE): number {
+   if (count <= 0) {
+     return 0;
+   }
+-  return count * thickness + Math.floor((count - 1) / BEAR_OFF_GROUP_SIZE) * groupGap;
++  return count * thickness + Math.floor((count - 1) / groupSize) * groupGap;
++}
++
++/**
++ * MOCK styles: stack flush to the outer edge (no corner cube reserve; an owned
++ * cube moves to the bar), fill the half at 15 off.
++ */
++function mockStackLayout(style: 'A' | 'B' | 'C', options: {
++  halfHeight: number;
++  tokenSize: number;
++  clearance?: number;
++  bearOffWidth?: number;
++  middleHeight?: number;
++}): BearOffStackLayout {
++  const hingeReserve = bearOffHingeReserve({
++    clearance: options.clearance ?? 0,
++    bearOffWidth: options.bearOffWidth,
++    middleHeight: options.middleHeight,
++  });
++  const start = BEAR_OFF_PADDING;
++  const label = style === 'B' ? BEAR_OFF_COUNT_LABEL : 0;
++  const available = Math.max(0, Math.floor(options.halfHeight - BEAR_OFF_PADDING - hingeReserve - label) - start);
++  const groupSize = style === 'B' ? 1 : BEAR_OFF_GROUP_SIZE;
++  const gapFor = style === 'B'
++    ? (t: number) => Math.max(2, Math.round(t * 0.3))
++    : (t: number) => Math.max(3, Math.round(t * 0.4));
++  const widthCap = options.bearOffWidth != null ? Math.round(options.bearOffWidth * 0.45) : 14;
++  let thickness = Math.max(3, Math.min(widthCap, Math.round(options.tokenSize * 0.5)));
++  while (thickness > 2 && stackLength(BEAR_OFF_MAX_CHECKERS, thickness, gapFor(thickness), groupSize) > available) {
++    thickness -= 1;
++  }
++  return { start, available, thickness, groupGap: gapFor(thickness), groupSize };
+ }
+ 
+ /**
+@@ -80,6 +128,10 @@ export function bearOffStackLayout(options: {
+   bearOffWidth?: number;
+   middleHeight?: number;
+ }): BearOffStackLayout {
++  const mock = bearOffMockStyle();
++  if (mock !== 'now') {
++    return mockStackLayout(mock, options);
++  }
+   const clearance = options.clearance ?? 0;
+   const hingeReserve = bearOffHingeReserve({
+     clearance,
+@@ -116,7 +168,7 @@ export function bearOffStackLayout(options: {
+ 
+ /** Distance from `layout.start` to the leading edge of slab `slotIndex`. */
+ export function bearOffSlabOffset(layout: BearOffStackLayout, slotIndex: number): number {
+-  return stackLength(slotIndex + 1, layout.thickness, layout.groupGap) - layout.thickness;
++  return stackLength(slotIndex + 1, layout.thickness, layout.groupGap, layout.groupSize) - layout.thickness;
+ }
+ 
+ /** Local top coordinate inside one bear-off half (top black / bottom white tray). */
+diff --git a/src/features/game/components/board/bear-off-area.tsx b/src/features/game/components/board/bear-off-area.tsx
+index 5c5f14bb..7cf91828 100644
+--- a/src/features/game/components/board/bear-off-area.tsx
++++ b/src/features/game/components/board/bear-off-area.tsx
+@@ -1,9 +1,12 @@
+ import type { Player } from '@/lib/game/types';
+ import * as React from 'react';
+-import { Pressable, View } from 'react-native';
++import { Pressable, Text, View } from 'react-native';
++import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
+ 
+ import {
++  BEAR_OFF_COUNT_LABEL,
+   BEAR_OFF_MAX_CHECKERS,
++  bearOffMockStyle,
+   bearOffHalfHeight,
+   bearOffSlabOffset,
+   bearOffSlotTopInSection,
+@@ -72,6 +75,45 @@ export function BearOffSlab({ player, width, thickness, style }: SlabProps) {
+   );
+ }
+ 
++/**
++ * MOCK A/C: a checker standing on edge seen from above, like XG: rounded ends,
++ * shaded across its width like a cylinder, a dark line where it meets the next.
++ */
++function BearOffEdgeChecker({ player, width, thickness, style }: SlabProps) {
++  const c = BOARD_THEME.checker[player];
++  const id = `bo-edge-${player}`;
++  const r = Math.min(thickness / 2, 3);
++  return (
++    <View testID="bear-off-slab" style={[{ width, height: thickness }, style]}>
++      <Svg width={width} height={thickness}>
++        <Defs>
++          <LinearGradient id={id} x1="0" y1="0" x2="1" y2="0">
++            <Stop offset="0" stopColor={c.shadow} />
++            <Stop offset="0.3" stopColor={c.mid} />
++            <Stop offset="0.5" stopColor={c.highlight} />
++            <Stop offset="0.7" stopColor={c.mid} />
++            <Stop offset="1" stopColor={c.shadow} />
++          </LinearGradient>
++        </Defs>
++        <Rect x={0} y={0} width={width} height={thickness} rx={r} fill={`url(#${id})`} />
++        <Rect x={0.5} y={0.5} width={width - 1} height={thickness - 1} rx={r} fill="none" stroke={c.rim} strokeWidth={1} strokeOpacity={player === 'black' ? 0.9 : 0.55} />
++        <Rect x={r} y={0.5} width={width - 2 * r} height={1} fill="#FFFFFF" fillOpacity={player === 'black' ? 0.18 : 0.6} />
++      </Svg>
++    </View>
++  );
++}
++
++/** MOCK B: Galaxy-like flat bar in the player's colour, rimmed so black reads on the dark tray. */
++function BearOffFlatBar({ player, width, thickness, style }: SlabProps) {
++  const c = BOARD_THEME.slab[player];
++  return (
++    <View
++      testID="bear-off-slab"
++      style={[{ width, height: thickness, borderRadius: 2, backgroundColor: c.fill, borderWidth: 1, borderColor: player === 'black' ? c.rim : c.separator }, style]}
++    />
++  );
++}
++
+ function BearOffStack({
+   cubeClearance,
+   count,
+@@ -99,7 +141,15 @@ function BearOffStack({
+   const left = (innerWidth - slabWidth) / 2;
+   const showTarget = isLegalTarget && isTargetSide;
+   // An empty tray shows the outline of one group of five where checkers will land.
++  const mock = bearOffMockStyle();
++  const Piece = mock === 'A' || mock === 'C' ? BearOffEdgeChecker : mock === 'B' ? BearOffFlatBar : BearOffSlab;
++  const ghostSlots = mock === 'C';
+   const emptyLength = bearOffSlabOffset(layout, 4) + layout.thickness;
++  const slotTop = (slotIndex: number) => bearOffSlotTopInSection({ ...slot, slotIndex });
++  // The count sits just past the newest bar, so it travels with the stack.
++  const stackLen = visible > 0 ? bearOffSlabOffset(layout, visible - 1) + layout.thickness : 0;
++  const labelOffset = Math.min(layout.start + stackLen + 1, layout.start + layout.available);
++  const labelTop = player === 'black' ? labelOffset : halfHeight - labelOffset - BEAR_OFF_COUNT_LABEL;
+   const emptyTop = player === 'black'
+     ? layout.start
+     : halfHeight - layout.start - emptyLength;
+@@ -115,7 +165,43 @@ function BearOffStack({
+         borderRadius: 6,
+       }}
+     >
+-      {count === 0 && (
++      {ghostSlots && Array.from({ length: BEAR_OFF_MAX_CHECKERS }, (_, slotIndex) => (
++        <View
++          key={`ghost-${slotIndex}`}
++          style={{
++            position: 'absolute',
++            left,
++            top: slotTop(slotIndex),
++            width: slabWidth,
++            height: layout.thickness,
++            borderRadius: Math.min(layout.thickness / 2, 3),
++            borderWidth: 1,
++            borderColor: showTarget ? '#4CAF50' : 'rgba(90,58,26,0.75)',
++            backgroundColor: 'rgba(0,0,0,0.22)',
++          }}
++        />
++      ))}
++
++      {mock === 'B' && count > 0 && (
++        <Text
++          style={{
++            position: 'absolute',
++            left: 0,
++            width: innerWidth,
++            top: labelTop,
++            height: BEAR_OFF_COUNT_LABEL,
++            lineHeight: BEAR_OFF_COUNT_LABEL,
++            textAlign: 'center',
++            fontSize: 10,
++            fontWeight: '700',
++            color: '#E8D9B8',
++          }}
++        >
++          {Math.min(count, BEAR_OFF_MAX_CHECKERS)}
++        </Text>
++      )}
++
++      {count === 0 && !ghostSlots && (
+         <View
+           testID="bear-off-empty-slot"
+           style={{
+@@ -134,7 +220,7 @@ function BearOffStack({
+       )}
+ 
+       {Array.from({ length: visible }, (_, slotIndex) => (
+-        <BearOffSlab
++        <Piece
+           key={slotIndex}
+           player={player}
+           width={slabWidth}
+@@ -142,7 +228,7 @@ function BearOffStack({
+           style={{
+             position: 'absolute',
+             left,
+-            top: bearOffSlotTopInSection({ ...slot, slotIndex }),
++            top: slotTop(slotIndex),
+           }}
+         />
+       ))}
+diff --git a/src/features/game/components/board/board-view.tsx b/src/features/game/components/board/board-view.tsx
+index 6e52b1b7..ed831c5b 100644
+--- a/src/features/game/components/board/board-view.tsx
++++ b/src/features/game/components/board/board-view.tsx
+@@ -6,7 +6,16 @@ import * as React from 'react';
+ import { useMemo, useRef } from 'react';
+ import { Platform, View } from 'react-native';
+ 
+-import { cubeCenterY, maxCubeEdge } from '@/features/game/bear-off-layout';
++import { bearOffMockStyle, cubeCenterY, maxCubeEdge } from '@/features/game/bear-off-layout';
++
++/** MOCK: with a mock tray style, an owned cube leaves the tray for its owner's end of the bar. */
++function mockCubeSpot(dims: BoardDimensions, boardWidth: number, bearOffWidth: number, owner: Player | null) {
++  if (bearOffMockStyle() === 'now' || owner == null) {
++    return { left: boardWidth - bearOffWidth / 2 - 15, top: cubeCenterY(dims, owner) - 14 };
++  }
++  const left = 6 * dims.colWidth + dims.barWidth / 2 - 15;
++  return { left, top: owner === 'black' ? 4 : dims.boardHeight - 4 - 28 };
++}
+ import {
+   boardHitExtraCandidates,
+   remapTapIndex,
+@@ -412,7 +421,7 @@ export function BoardView({
+         />
+ 
+         {boardPresentation && state.match && (
+-          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: boardWidth - bearOffWidth / 2 - 15, top: cubeCenterY(dimensions, state.match.pendingOffer ? opponent(state.match.pendingOffer) : state.match.cube.owner === 'center' ? null : state.match.cube.owner) - 14, zIndex: 45, transform: [{ scale: cubeScale }] }}>
++          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', ...mockCubeSpot(dimensions, boardWidth, bearOffWidth, state.match.pendingOffer ? opponent(state.match.pendingOffer) : state.match.cube.owner === 'center' ? null : state.match.cube.owner), zIndex: 45, transform: [{ scale: cubeScale }] }}>
+             <MatchCube cube={state.match.cube} crawford={state.match.crawford} pendingOffer={state.match.pendingOffer} pendingBeaver={state.match.pendingBeaver} mode={state.mode} />
+           </View>
+         )}
+diff --git a/src/features/positions/position-screen.tsx b/src/features/positions/position-screen.tsx
+index 8911353c..1a76bac7 100644
+--- a/src/features/positions/position-screen.tsx
++++ b/src/features/positions/position-screen.tsx
+@@ -152,7 +152,7 @@ function PositionWorkspace({ data }: { data?: string }) {
+         <PositionAction compact symbol="share-2" label={translate('positions.exchange_short')} iconOnly={width < 360} testID="position-exchange-toggle" selected={tool === 'exchange'} onPress={() => openTool('exchange')} />
+         <PositionAction compact symbol="bookmark" label={translate('positions.saved_short')} testID="position-saved-toggle" selected={tool === 'saved'} onPress={() => openTool('saved')} />
+         <View style={styles.toolbarSpacer} />
+-        <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline disabled={!!invalid || finished} onPress={play} />
++        <PositionAction compact label={translate('positions.play_short')} symbol="play" testID="position-play" primary inline disabled={!!invalid} /* MOCK: allow finished positions so 15-off renders in-game */ onPress={play} />
+       </View>
+       <PositionExchange open={tool === 'exchange'} position={position} onImport={replace} />
+       {tool === 'saved' && (
