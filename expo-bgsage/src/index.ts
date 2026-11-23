@@ -9,6 +9,7 @@ import { requireNativeModule } from 'expo-modules-core';
 import { Platform } from 'react-native';
 import { encodeCubeContext } from './cube-context';
 import { rankCandidates } from './rank-candidates';
+import * as webEngine from './web-engine';
 
 export type { SageCubeContext } from './cube-context';
 
@@ -35,6 +36,9 @@ export class SageEngineError extends Error {}
 //   iOS / Android -> the Expo native module (Swift/Kotlin -> C ABI).
 //   web           -> the WebAssembly build, lazy-loaded by ./web-engine
 //                    (~13MB of weights download on first use).
+//                    Static import on purpose: import() splits it into a web
+//                    chunk that Expo probes before loading, which reports
+//                    "Requiring unknown module" as a fatal error (#353).
 // Positional on purpose: these match the native module's AsyncFunction args.
 type SageEngineApi = {
   // eslint-disable-next-line max-params -- Mirrors the shared native analysis boundary.
@@ -50,11 +54,10 @@ async function engineApi(): Promise<SageEngineApi> {
   if (cachedApi)
     return cachedApi;
   if (Platform.OS === 'web') {
-    const web = await import('./web-engine');
     cachedApi = {
-      analyzePosition: web.analyzePosition,
-      analyzeCheckers: web.analyzeCheckers,
-      analyzeCube: web.analyzeCube,
+      analyzePosition: webEngine.analyzePosition,
+      analyzeCheckers: webEngine.analyzeCheckers,
+      analyzeCube: webEngine.analyzeCube,
     };
     return cachedApi;
   }
