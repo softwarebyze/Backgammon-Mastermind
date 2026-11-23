@@ -1,0 +1,11 @@
+PR #385 engine parity: production main 90b6137 vs preview 303d40d (Chromium, Expert level for computer moves)
+human-std-31       MATCH preview=Hint 8/5 · 6/5 [pageerrors 0] || prod=Hint 8/5 · 6/5 [pageerrors 0]
+human-std-66       MATCH preview=Hint 13/7 · 13/7 · 24/18 · 24/18 [pageerrors 0] || prod=Hint 13/7 · 13/7 · 24/18 · 24/18 [pageerrors 0]
+human-mid-52       MATCH preview=Hint 13/8 · 6/4 [pageerrors 0] || prod=Hint 13/8 · 6/4 [pageerrors 0]
+human-mid-65       MATCH preview=Hint 24/18 · 18/13 [pageerrors 0] || prod=Hint 24/18 · 18/13 [pageerrors 0]
+human-race-44      MATCH preview=Hint 8/4 · 8/4 · 4/off · 4/off [pageerrors 0] || prod=Hint 8/4 · 8/4 · 4/off · 4/off [pageerrors 0]
+computer-std-31    MATCH preview=changed: Point 17, 2 black checkers, legal move target; Point 20, legal move target [pageerrors 0] || prod=changed: Point 17, 2 black checkers, legal move target; Point 20, legal move target [pageerrors 0]
+computer-std-66    MATCH preview=changed: Point 18, legal move target; Point 12, 4 black checkers, legal move target [pageerrors 0] || prod=changed: Point 18, legal move target; Point 12, 4 black checkers, legal move target [pageerrors 0]
+computer-mid-52    MATCH preview=changed: Point 16, legal move target; Point 11, legal move target [pageerrors 0] || prod=changed: Point 16, legal move target; Point 11, legal move target [pageerrors 0]
+computer-mid-22    MATCH preview=changed: Point 19, 3 black checkers, legal move target; Point 21, legal move target [pageerrors 0] || prod=changed: Point 19, 3 black checkers, legal move target; Point 21, legal move target [pageerrors 0]
+computer-race-44   MATCH preview=changed: Point 17, 1 black checker, legal move target; Point 21, 3 black checkers, legal move target [pageerrors 0] || prod=changed: Point 17, 1 black checker, legal move target; Point 21, 3 black checkers, legal move target [pageerrors 0]

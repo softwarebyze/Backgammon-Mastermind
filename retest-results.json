@@ -1,0 +1,430 @@
+[
+  {
+    "test": "drag",
+    "site": "preview",
+    "browserName": "chromium",
+    "n": 1,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, legal move target",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers, selected"
+    },
+    "ok": false
+  },
+  {
+    "test": "drag",
+    "site": "preview",
+    "browserName": "chromium",
+    "n": 2,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, legal move target",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers, selected"
+    },
+    "ok": false
+  },
+  {
+    "test": "drag",
+    "site": "preview",
+    "browserName": "chromium",
+    "n": 3,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, legal move target",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers, selected"
+    },
+    "ok": false
+  },
+  {
+    "test": "drag",
+    "site": "preview",
+    "browserName": "webkit",
+    "n": 1,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, legal move target",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers, selected"
+    },
+    "ok": false
+  },
+  {
+    "test": "drag",
+    "site": "preview",
+    "browserName": "webkit",
+    "n": 2,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, legal move target",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers, selected"
+    },
+    "ok": false
+  },
+  {
+    "test": "drag",
+    "site": "preview",
+    "browserName": "webkit",
+    "n": 3,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, legal move target",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers, selected"
+    },
+    "ok": false
+  },
+  {
+    "test": "drag",
+    "site": "prod",
+    "browserName": "chromium",
+    "n": 1,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 2 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "drag",
+    "site": "prod",
+    "browserName": "chromium",
+    "n": 2,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 2 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "drag",
+    "site": "prod",
+    "browserName": "chromium",
+    "n": 3,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 2 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "drag",
+    "site": "prod",
+    "browserName": "webkit",
+    "n": 1,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 2 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "drag",
+    "site": "prod",
+    "browserName": "webkit",
+    "n": 2,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 2 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "drag",
+    "site": "prod",
+    "browserName": "webkit",
+    "n": 3,
+    "before": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 2 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "slowTap",
+    "site": "preview",
+    "browserName": "chromium",
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 4 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "editor",
+    "site": "preview",
+    "browserName": "chromium",
+    "statuses": {
+      "white": "On roll",
+      "black": "Tap to put on roll"
+    },
+    "before": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterKeys": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterDrag": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "keyChanged": false,
+    "dragChanged": false,
+    "ok": false
+  },
+  {
+    "test": "slowTap",
+    "site": "preview",
+    "browserName": "webkit",
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 4 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "editor",
+    "site": "preview",
+    "browserName": "webkit",
+    "statuses": {
+      "white": "On roll",
+      "black": "Tap to put on roll"
+    },
+    "before": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterKeys": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterDrag": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "keyChanged": false,
+    "dragChanged": false,
+    "ok": false
+  },
+  {
+    "test": "slowTap",
+    "site": "prod",
+    "browserName": "chromium",
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 4 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "editor",
+    "site": "prod",
+    "browserName": "chromium",
+    "statuses": {
+      "white": "On roll",
+      "black": "Tap to put on roll"
+    },
+    "before": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterKeys": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterDrag": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "keyChanged": false,
+    "dragChanged": false,
+    "ok": false
+  },
+  {
+    "test": "slowTap",
+    "site": "prod",
+    "browserName": "webkit",
+    "after": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 4 white checkers",
+      "8": "Point 8, 3 white checkers"
+    },
+    "ok": true
+  },
+  {
+    "test": "editor",
+    "site": "prod",
+    "browserName": "webkit",
+    "statuses": {
+      "white": "On roll",
+      "black": "Tap to put on roll"
+    },
+    "before": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterKeys": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "afterDrag": {
+      "5": "Point 5",
+      "7": "Point 7",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers"
+    },
+    "keyChanged": false,
+    "dragChanged": false,
+    "ok": false
+  },
+  {
+    "test": "browserBack",
+    "site": "preview",
+    "browserName": "chromium",
+    "mid": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers",
+      "24": "Point 24, 2 white checkers"
+    },
+    "url1": "about:blank",
+    "url2": "about:blank",
+    "dialogs": [],
+    "noBeforeunload": true,
+    "hasResume": false,
+    "resumed": null,
+    "restored": false,
+    "ok": false
+  },
+  {
+    "test": "browserBack",
+    "site": "prod",
+    "browserName": "chromium",
+    "mid": {
+      "5": "Point 5",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 3 white checkers",
+      "13": "Point 13, 5 white checkers",
+      "24": "Point 24, 2 white checkers"
+    },
+    "url1": "about:blank",
+    "url2": "about:blank",
+    "dialogs": [],
+    "noBeforeunload": true,
+    "hasResume": false,
+    "resumed": null,
+    "restored": false,
+    "ok": false
+  },
+  {
+    "test": "browserBack",
+    "site": "preview",
+    "browserName": "webkit",
+    "mid": {
+      "5": "Point 5, 1 white checker",
+      "6": "Point 6, 5 white checkers",
+      "8": "Point 8, 2 white checkers",
+      "13": "Point 13, 5 white checkers",
+      "24": "Point 24, 2 white checkers"
+    },
+    "url1": "about:blank",
+    "url2": "about:blank",
+    "dialogs": [],
+    "noBeforeunload": true,
+    "hasResume": false,
+    "resumed": null,
+    "restored": false,
+    "ok": false
+  }
+]

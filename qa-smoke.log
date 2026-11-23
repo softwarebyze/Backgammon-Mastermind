@@ -1,0 +1,14 @@
+=== SMOKE ===
+console error Failed to load resource: net::ERR_FAILED
+console error Failed to load resource: net::ERR_FAILED
+smoke-preview-chromium {"suite":"smoke","site":"preview","browserName":"chromium","homeOk":true,"learnOk":true,"settingsOk":true,"url":"https://backgammon-mastermind-mlg4zrovq-softwarebyzes-projects.vercel.app/settings","errors":[]}
+pageerror ttps://backgammon-mastermind-mlg4zrovq-softwarebyzes-projects.vercel.app/73ed5f67-5df2-46f3-a6d4-a1f6a541b667 due to access control checks.
+pageerror /us.i.posthog.com/batch/ due to access control checks.
+smoke-preview-webkit {"suite":"smoke","site":"preview","browserName":"webkit","homeOk":true,"learnOk":true,"settingsOk":true,"url":"https://backgammon-mastermind-mlg4zrovq-softwarebyzes-projects.vercel.app/settings","errors":["ttps://backgammon-mastermind-mlg4zrovq-softwarebyzes-projects.vercel.app/73ed5f67-5df2-46f3-a6d4-a1f6a541b667 due to access control checks.","/us.i.posthog.com/batch/ due to access control checks."]}
+console error Failed to load resource: net::ERR_FAILED
+console error Failed to load resource: net::ERR_FAILED
+smoke-prod-chromium {"suite":"smoke","site":"prod","browserName":"chromium","homeOk":true,"learnOk":true,"settingsOk":true,"url":"https://backgammon-mastermind.vercel.app/settings","errors":[]}
+pageerror ttps://backgammon-mastermind.vercel.app/43a75a7b-96d5-42cd-a0bd-66740525256f due to access control checks.
+pageerror /us.i.posthog.com/batch/ due to access control checks.
+smoke-prod-webkit {"suite":"smoke","site":"prod","browserName":"webkit","homeOk":true,"learnOk":true,"settingsOk":true,"url":"https://backgammon-mastermind.vercel.app/settings","errors":["ttps://backgammon-mastermind.vercel.app/43a75a7b-96d5-42cd-a0bd-66740525256f due to access control checks.","/us.i.posthog.com/batch/ due to access control checks."]}
+wrote results 4

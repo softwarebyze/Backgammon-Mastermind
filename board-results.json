@@ -1,0 +1,970 @@
+[
+  {
+    "suite": "board",
+    "site": "preview",
+    "browserName": "chromium",
+    "steps": {
+      "statusLabels": {
+        "white": "Your turn",
+        "black": null,
+        "visible": false
+      },
+      "tapToMove": {
+        "before": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterFirst8": {
+          "label": "Point 8, 2 white checkers",
+          "count": 2,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "undoRedo": {
+        "afterUndo": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterRedo": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "undoRestored": true,
+        "redoRestored": true
+      },
+      "drag": {
+        "before8": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, legal move target",
+            "count": null,
+            "color": null
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers, selected",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "ok": false
+      },
+      "slowTap": {
+        "afterSlow": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "ok": false
+      },
+      "diceOrder": {
+        "midDice": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "afterDice": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "hint": {
+        "hintText": "Suggested move\n8/5 · 6/5\nPlay this move\nBack to my turn",
+        "ok": true
+      },
+      "bot": {
+        "changed": true,
+        "pipsBefore": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "pipsAfter": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "elapsedMs": 1067
+      },
+      "editor": {
+        "editorBefore": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterDrag": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterTap": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "scrollBefore": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "scrollAfter": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "dragChanged": false,
+        "scrollStable": true
+      },
+      "browserBack": {
+        "midGame": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "afterBackUrl": "https://backgammon-mastermind-mlg4zrovq-softwarebyzes-projects.vercel.app/position",
+        "noBeforeunload": true,
+        "resumed": null,
+        "restored": false
+      }
+    },
+    "errors": [],
+    "ok": false
+  },
+  {
+    "suite": "board",
+    "site": "preview",
+    "browserName": "webkit",
+    "steps": {
+      "statusLabels": {
+        "white": "Your turn",
+        "black": null,
+        "visible": false
+      },
+      "tapToMove": {
+        "before": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterFirst8": {
+          "label": "Point 8, 2 white checkers",
+          "count": 2,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "undoRedo": {
+        "afterUndo": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterRedo": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "undoRestored": true,
+        "redoRestored": true
+      },
+      "drag": {
+        "before8": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, legal move target",
+            "count": null,
+            "color": null
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers, selected",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "ok": false
+      },
+      "slowTap": {
+        "afterSlow": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "ok": false
+      },
+      "diceOrder": {
+        "midDice": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "afterDice": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "hint": {
+        "hintText": "Suggested move\n8/5 · 6/5\nPlay this move\nBack to my turn",
+        "ok": true
+      },
+      "bot": {
+        "changed": true,
+        "pipsBefore": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "pipsAfter": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "elapsedMs": 1164
+      },
+      "editor": {
+        "editorBefore": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterDrag": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterTap": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "scrollBefore": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "scrollAfter": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "dragChanged": false,
+        "scrollStable": true
+      },
+      "browserBack": {
+        "midGame": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "afterBackUrl": "https://backgammon-mastermind-mlg4zrovq-softwarebyzes-projects.vercel.app/position",
+        "noBeforeunload": true,
+        "resumed": null,
+        "restored": false
+      }
+    },
+    "errors": [],
+    "ok": false
+  },
+  {
+    "suite": "board",
+    "site": "prod",
+    "browserName": "chromium",
+    "steps": {
+      "statusLabels": {
+        "white": "Your turn",
+        "black": null,
+        "visible": false
+      },
+      "tapToMove": {
+        "before": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterFirst8": {
+          "label": "Point 8, 2 white checkers",
+          "count": 2,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "undoRedo": {
+        "afterUndo": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterRedo": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "undoRestored": true,
+        "redoRestored": true
+      },
+      "drag": {
+        "before8": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "slowTap": {
+        "afterSlow": {
+          "5": {
+            "label": "Point 5, 1 white checker, legal move target",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers, selected",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": false
+      },
+      "diceOrder": {
+        "midDice": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "afterDice": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "hint": {
+        "hintText": "Suggested move\n8/5 · 6/5\nPlay this move\nBack to my turn",
+        "ok": true
+      },
+      "bot": {
+        "changed": true,
+        "pipsBefore": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "pipsAfter": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "elapsedMs": 1046
+      },
+      "editor": {
+        "editorBefore": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterDrag": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterTap": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "scrollBefore": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "scrollAfter": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "dragChanged": false,
+        "scrollStable": true
+      },
+      "browserBack": {
+        "midGame": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "afterBackUrl": "https://backgammon-mastermind.vercel.app/position",
+        "noBeforeunload": true,
+        "resumed": null,
+        "restored": false
+      }
+    },
+    "errors": [],
+    "ok": false
+  },
+  {
+    "suite": "board",
+    "site": "prod",
+    "browserName": "webkit",
+    "steps": {
+      "statusLabels": {
+        "white": "Your turn",
+        "black": null,
+        "visible": false
+      },
+      "tapToMove": {
+        "before": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterFirst8": {
+          "label": "Point 8, 2 white checkers",
+          "count": 2,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "undoRedo": {
+        "afterUndo": {
+          "5": {
+            "label": "Point 5",
+            "count": null,
+            "color": null
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 3 white checkers",
+            "count": 3,
+            "color": "white"
+          }
+        },
+        "afterRedo": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "undoRestored": true,
+        "redoRestored": true
+      },
+      "drag": {
+        "before8": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "after": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "slowTap": {
+        "afterSlow": {
+          "5": {
+            "label": "Point 5, 1 white checker, legal move target",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers, selected",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "ok": false
+      },
+      "diceOrder": {
+        "midDice": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "afterDice": {
+          "5": {
+            "label": "Point 5, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "6": {
+            "label": "Point 6, 4 white checkers",
+            "count": 4,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          },
+          "13": {
+            "label": "Point 13, 5 white checkers",
+            "count": 5,
+            "color": "white"
+          }
+        },
+        "ok": true
+      },
+      "hint": {
+        "hintText": "Suggested move\n8/5 · 6/5\nPlay this move\nBack to my turn",
+        "ok": true
+      },
+      "bot": {
+        "changed": true,
+        "pipsBefore": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "pipsAfter": {
+          "white": "012345678901234567890123456789pips",
+          "black": "012345678901234567890123456789pips"
+        },
+        "elapsedMs": 1170
+      },
+      "editor": {
+        "editorBefore": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterDrag": {
+          "label": "Point 13, 5 white checkers",
+          "count": 5,
+          "color": "white"
+        },
+        "editorAfterTap": {
+          "label": "Point 8, 3 white checkers",
+          "count": 3,
+          "color": "white"
+        },
+        "scrollBefore": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "scrollAfter": {
+          "scrollTop": 0,
+          "windowY": 0
+        },
+        "dragChanged": false,
+        "scrollStable": true
+      },
+      "browserBack": {
+        "midGame": {
+          "5": {
+            "label": "Point 5, 1 white checker",
+            "count": 1,
+            "color": "white"
+          },
+          "8": {
+            "label": "Point 8, 2 white checkers",
+            "count": 2,
+            "color": "white"
+          }
+        },
+        "afterBackUrl": "https://backgammon-mastermind.vercel.app/position",
+        "noBeforeunload": true,
+        "resumed": null,
+        "restored": false
+      }
+    },
+    "errors": [],
+    "ok": false
+  }
+]

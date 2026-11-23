@@ -1,0 +1,226 @@
+[
+  {
+    "suite": "tutor",
+    "site": "preview",
+    "id": "tutor-std-31",
+    "fail": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByTestId('point-23')\n    - locator resolved to <button tabindex=\"0\" role=\"button\" type=\"button\" data-testid=\"point-23\" aria-label=\"Point 23, 1 white checker\" class=\"css-g5y9jx r-1loqt21 r-1otgn73 r-105ug2t\">…</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div role=\"img\" class=\"css-g5y9jx r-ojf8lh r-m611by\" data-testid=\"guidance-blunder-meter\" aria-label=\"Blunder severity: Big blunder. Score lost: 0.27.\">…</div> from <div>…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div role=\"img\" class=\"css-g5y9jx r-ojf8lh r-m611by\" data-testid=\"guidance-blunder-meter\" aria-label=\"Blunder severity: Big blunder. Score lost: 0.27.\">…</div> from <div>…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <div role=\"img\" class=\"css-g5y9jx r-ojf8lh r-m611by\" data-testid=\"guidance-blunder-meter\" aria-label=\"Blunder severity: Big blunder. Score lost: 0.27.\">…</div> from <div>…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
+    "errors": [],
+    "ok": false
+  },
+  {
+    "suite": "tutor",
+    "site": "preview",
+    "id": "tutor-std-66",
+    "play": [
+      [
+        24,
+        18
+      ],
+      [
+        24,
+        18
+      ],
+      [
+        13,
+        7
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "expectedBest": "13/7 · 13/7 · 24/18 · 24/18",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 6–6\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 24/18 · 24/18 · 13/7 · 8/2\nBest: 13/7 · 13/7 · 24/18 · 24/18\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  },
+  {
+    "suite": "tutor",
+    "site": "preview",
+    "id": "tutor-mid-52",
+    "play": [
+      [
+        24,
+        22
+      ],
+      [
+        13,
+        8
+      ]
+    ],
+    "expectedBest": "13/8 · 6/4",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 5–2\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 24/22 · 13/8\nBest: 13/8 · 6/4\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  },
+  {
+    "suite": "tutor",
+    "site": "preview",
+    "id": "tutor-mid-65",
+    "play": [
+      [
+        13,
+        7
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "expectedBest": "24/18 · 18/13",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 6–5\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 13/7 · 8/3\nBest: 24/18 · 18/13\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  },
+  {
+    "suite": "tutor",
+    "site": "preview",
+    "id": "tutor-race-44",
+    "play": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        1
+      ]
+    ],
+    "expectedBest": "8/4 · 8/4 · 4/off · 4/off",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 4–4\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 6/2 · 6/2 · 5/1 · 5/1\nBest: 8/4 · 8/4 · 4/off · 4/off\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  },
+  {
+    "suite": "tutor",
+    "site": "prod",
+    "id": "tutor-std-31",
+    "fail": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByTestId('point-23')\n    - locator resolved to <button tabindex=\"0\" role=\"button\" type=\"button\" data-testid=\"point-23\" aria-label=\"Point 23, legal move target\" class=\"css-g5y9jx r-1loqt21 r-1otgn73 r-ah5dr5\">…</button>\n  - attempting click action\n    - waiting for element to be visible, enabled and stable\n  - element was detached from the DOM, retrying\n    - locator resolved to <button tabindex=\"0\" role=\"button\" type=\"button\" data-testid=\"point-23\" aria-label=\"Point 23, 1 white checker\" class=\"css-g5y9jx r-1loqt21 r-1otgn73 r-105ug2t\">…</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div role=\"img\" class=\"css-g5y9jx r-ojf8lh r-m611by\" data-testid=\"guidance-blunder-meter\" aria-label=\"Blunder severity: Big blunder. Score lost: 0.27.\">…</div> from <div>…</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div role=\"img\" class=\"css-g5y9jx r-ojf8lh r-m611by\" data-testid=\"guidance-blunder-meter\" aria-label=\"Blunder severity: Big blunder. Score lost: 0.27.\">…</div> from <div>…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <div role=\"img\" class=\"css-g5y9jx r-ojf8lh r-m611by\" data-testid=\"guidance-blunder-meter\" aria-label=\"Blunder severity: Big blunder. Score lost: 0.27.\">…</div> from <div>…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
+    "errors": [],
+    "ok": false
+  },
+  {
+    "suite": "tutor",
+    "site": "prod",
+    "id": "tutor-std-66",
+    "play": [
+      [
+        24,
+        18
+      ],
+      [
+        24,
+        18
+      ],
+      [
+        13,
+        7
+      ],
+      [
+        8,
+        2
+      ]
+    ],
+    "expectedBest": "13/7 · 13/7 · 24/18 · 24/18",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 6–6\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 24/18 · 24/18 · 13/7 · 8/2\nBest: 13/7 · 13/7 · 24/18 · 24/18\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  },
+  {
+    "suite": "tutor",
+    "site": "prod",
+    "id": "tutor-mid-52",
+    "play": [
+      [
+        24,
+        22
+      ],
+      [
+        13,
+        8
+      ]
+    ],
+    "expectedBest": "13/8 · 6/4",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 5–2\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 24/22 · 13/8\nBest: 13/8 · 6/4\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  },
+  {
+    "suite": "tutor",
+    "site": "prod",
+    "id": "tutor-mid-65",
+    "play": [
+      [
+        13,
+        7
+      ],
+      [
+        8,
+        3
+      ]
+    ],
+    "expectedBest": "24/18 · 18/13",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 6–5\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 13/7 · 8/3\nBest: 24/18 · 18/13\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  },
+  {
+    "suite": "tutor",
+    "site": "prod",
+    "id": "tutor-race-44",
+    "play": [
+      [
+        6,
+        2
+      ],
+      [
+        6,
+        2
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        5,
+        1
+      ]
+    ],
+    "expectedBest": "8/4 · 8/4 · 4/off · 4/off",
+    "modalPresent": true,
+    "modal": "Your move vs the best move\nYou rolled 4–4\nMine\nBest\nBoth\nStart\nBest move\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n12\n11\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nYou played: 6/2 · 6/2 · 5/1 · 5/1\nBest: 8/4 · 8/4 · 4/off · 4/off\nDetails ▸\nPlay best move\nBack to question\nTake back & retry\nKeep my move",
+    "details": null,
+    "mentionsBest": true,
+    "errors": [],
+    "ok": true
+  }
+]

@@ -1,0 +1,9 @@
+PR #385 tutor check: same #394 hint positions, a known non-best line, preview 303d40d vs production 90b6137 (Chromium)
+
+tutor-std-31     MATCH You played: 24/21 · 24/23 | Best: 8/5 · 6/5 | ranked 6 of 16, 0.27 below best | Best +0.23
+tutor-std-66     MATCH You played: 24/18 · 24/18 · 13/7 · 8/2 | Best: 13/7 · 13/7 · 24/18 · 24/18
+tutor-mid-52     MATCH You played: 24/22 · 13/8 | Best: 13/8 · 6/4 | ranked 5 of 13, 0.46 below best | Best +0.65
+tutor-mid-65     MATCH You played: 13/7 · 8/3 | Best: 24/18 · 18/13
+tutor-race-44    MATCH You played: 6/2 · 6/2 · 5/1 · 5/1 | Best: 8/4 · 8/4 · 4/off · 4/off
+
+std-31 and mid-52 equities were read from the Details panel and are identical on preview and production.

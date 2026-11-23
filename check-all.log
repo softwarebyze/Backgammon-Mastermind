@@ -1,0 +1,2630 @@
+
+> backgammonmastermind@1.2.0 check-all /workspace/bgmm-385
+> pnpm run lint && pnpm run type-check && pnpm run type-check:scripts && pnpm run lint:translations && pnpm run test && pnpm exec knip
+
+
+> backgammonmastermind@1.2.0 lint /workspace/bgmm-385
+> eslint src app.config.ts env.ts .maestro expo-bgsage/src expo-bgsage/plugin scripts/generate-third-party-notices.ts scripts/sync-bgsage-vendor.ts scripts/view-maestro-report.ts
+
+
+/workspace/bgmm-385/src/features/learn/quiz-card.tsx
+  69:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/workspace/bgmm-385/src/features/settings/components/settings-container.tsx
+  17:32  warning  Using 'Children.toArray' is uncommon and can lead to fragile code. Use alternatives instead  react/no-children-to-array
+  24:32  warning  Do not use item index in the array as its key                                                react/no-array-index-key
+
+✖ 3 problems (0 errors, 3 warnings)
+
+
+> backgammonmastermind@1.2.0 type-check /workspace/bgmm-385
+> tsc --noemit -p tsconfig.json && tsc --noemit -p tsconfig.test.json
+
+
+> backgammonmastermind@1.2.0 type-check:scripts /workspace/bgmm-385
+> tsc --noemit -p tsconfig.scripts.json
+
+
+> backgammonmastermind@1.2.0 lint:translations /workspace/bgmm-385
+> eslint ./src/translations/ --fix --ext .json
+
+
+> backgammonmastermind@1.2.0 test /workspace/bgmm-385
+> jest
+
+PASS native src/features/game/use-game-provider-rapid-history.test.ts (9.646 s)
+  ● Console
+
+    console.error
+      usePostHog was called without a PostHog client. Wrap your app with <PostHogProvider> or pass a client directly. See https://posthog.com/docs/libraries/react-native?#with-the-posthogprovider
+
+      24 |  */
+      25 | export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
+    > 26 |   const posthog = usePostHog();
+         |                             ^
+      27 |   const { preferences } = useGamePreferences();
+      28 |   const armedRef = useRef(false);
+      29 |   const completedRef = useRef(state?.phase === 'game-over');
+
+      at error (node_modules/posthog-react-native/src/hooks/utils.ts:14:13)
+      at usePostHog (node_modules/posthog-react-native/src/hooks/usePostHog.ts:8:17)
+      at useGameCompletedCapture (src/features/game/use-game-completed-capture.ts:26:29)
+      at useGameProviderValue (src/features/game/use-game-provider-value.ts:59:71)
+      at src/features/game/use-game-provider-rapid-history.test.ts:59:53
+      at hookToRender (node_modules/@testing-library/react-native/src/render-hook.tsx:46:26)
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateFunctionComponent (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7302:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8851:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at renderHook (node_modules/@testing-library/react-native/src/render-hook.tsx:55:58)
+      at setup (src/features/game/use-game-provider-rapid-history.test.ts:59:26)
+      at Object.setup (src/features/game/use-game-provider-rapid-history.test.ts:83:24)
+
+PASS native src/features/positions/position-screen.test.tsx (9.66 s)
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/game/use-game-provider-computer-match.test.ts
+PASS native src/features/game/dice-order-provider.integration.test.ts
+PASS native src/features/game/use-tutor-hold.test.tsx
+PASS native src/features/game/use-board-play-input.test.ts
+PASS native src/features/positions/position-board-editor.test.tsx
+PASS native src/features/game/components/guidance-modal.test.tsx (11.356 s)
+PASS native src/features/feedback/feedback-screen.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/lib/game/moves.test.ts
+PASS native src/lib/third-party-notices.test.ts
+PASS dom src/features/game/use-game-keyboard-shortcuts.dom.test.tsx
+PASS native src/features/game/home-screen.test.tsx
+  ● Console
+
+    console.error
+      An update to HomeGameSetup inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      13 | function emitChange() {
+      14 |   for (const listener of listeners) {
+    > 15 |     listener();
+         |     ^
+      16 |   }
+      17 | }
+      18 |
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at forceStoreRerender (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5703:24)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5688:11
+      at listener (src/lib/game-preferences/use-game-preferences.ts:15:5)
+      at emitChange (src/lib/game-preferences/use-game-preferences.ts:32:3)
+      at updatePreferences (src/lib/game-preferences/use-game-preferences.ts:38:3)
+      at Object.<anonymous> (src/features/game/home-screen.test.tsx:66:23)
+
+    console.error
+      An update to HomeScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      13 | function emitChange() {
+      14 |   for (const listener of listeners) {
+    > 15 |     listener();
+         |     ^
+      16 |   }
+      17 | }
+      18 |
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at forceStoreRerender (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5703:24)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5688:11
+      at listener (src/lib/game-preferences/use-game-preferences.ts:15:5)
+      at emitChange (src/lib/game-preferences/use-game-preferences.ts:32:3)
+      at updatePreferences (src/lib/game-preferences/use-game-preferences.ts:38:3)
+      at Object.<anonymous> (src/features/game/home-screen.test.tsx:66:23)
+
+PASS native src/components/ui/checkbox.test.tsx
+PASS native plugins/with-dev-client-plist-keys.test.ts
+PASS native src/features/game/use-game-provider-confirm-move.test.ts
+  ● Console
+
+    console.error
+      usePostHog was called without a PostHog client. Wrap your app with <PostHogProvider> or pass a client directly. See https://posthog.com/docs/libraries/react-native?#with-the-posthogprovider
+
+      24 |  */
+      25 | export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
+    > 26 |   const posthog = usePostHog();
+         |                             ^
+      27 |   const { preferences } = useGamePreferences();
+      28 |   const armedRef = useRef(false);
+      29 |   const completedRef = useRef(state?.phase === 'game-over');
+
+      at error (node_modules/posthog-react-native/src/hooks/utils.ts:14:13)
+      at usePostHog (node_modules/posthog-react-native/src/hooks/usePostHog.ts:8:17)
+      at useGameCompletedCapture (src/features/game/use-game-completed-capture.ts:26:29)
+      at useGameProviderValue (src/features/game/use-game-provider-value.ts:59:71)
+      at src/features/game/use-game-provider-confirm-move.test.ts:155:61
+      at hookToRender (node_modules/@testing-library/react-native/src/render-hook.tsx:46:26)
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateFunctionComponent (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7302:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8851:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at renderHook (node_modules/@testing-library/react-native/src/render-hook.tsx:55:58)
+      at Object.<anonymous> (src/features/game/use-game-provider-confirm-move.test.ts:155:34)
+
+PASS native src/components/ui/select.test.tsx
+PASS native src/features/game/rapid-input.integration.test.ts
+PASS native src/features/game/components/match-board-presentation.test.tsx
+PASS native src/features/game/components/match-polish.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/game/game-screen-controls.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/lib/maestro-android-runner.test.ts
+PASS native src/features/game/components/cube-hint-button.test.tsx
+PASS native src/features/game/components/board/board-view.test.tsx
+PASS native src/features/game/components/settings-ui/setting-toggle-row.test.tsx
+PASS native src/lib/navigation/stack-escape-header.test.ts
+PASS native src/features/game/hooks/use-publish-board-slot.test.tsx
+PASS native src/features/game/use-game-input.test.ts
+PASS native src/features/game/use-game-provider-undo-alignment.test.ts
+  ● Console
+
+    console.error
+      usePostHog was called without a PostHog client. Wrap your app with <PostHogProvider> or pass a client directly. See https://posthog.com/docs/libraries/react-native?#with-the-posthogprovider
+
+      24 |  */
+      25 | export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
+    > 26 |   const posthog = usePostHog();
+         |                             ^
+      27 |   const { preferences } = useGamePreferences();
+      28 |   const armedRef = useRef(false);
+      29 |   const completedRef = useRef(state?.phase === 'game-over');
+
+      at error (node_modules/posthog-react-native/src/hooks/utils.ts:14:13)
+      at usePostHog (node_modules/posthog-react-native/src/hooks/usePostHog.ts:8:17)
+      at useGameCompletedCapture (src/features/game/use-game-completed-capture.ts:26:29)
+      at useGameProviderValue (src/features/game/use-game-provider-value.ts:59:71)
+      at src/features/game/use-game-provider-undo-alignment.test.ts:86:61
+      at hookToRender (node_modules/@testing-library/react-native/src/render-hook.tsx:46:26)
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateFunctionComponent (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7302:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8851:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at renderHook (node_modules/@testing-library/react-native/src/render-hook.tsx:55:58)
+      at playThroughBlockedTurn (src/features/game/use-game-provider-undo-alignment.test.ts:86:34)
+      at Object.playThroughBlockedTurn (src/features/game/use-game-provider-undo-alignment.test.ts:103:20)
+
+PASS native src/lib/maestro-publish-video.test.ts
+PASS native src/lib/i18n/resources.test.ts
+PASS native src/features/game/use-game-provider-undo.test.ts
+  ● Console
+
+    console.error
+      usePostHog was called without a PostHog client. Wrap your app with <PostHogProvider> or pass a client directly. See https://posthog.com/docs/libraries/react-native?#with-the-posthogprovider
+
+      24 |  */
+      25 | export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
+    > 26 |   const posthog = usePostHog();
+         |                             ^
+      27 |   const { preferences } = useGamePreferences();
+      28 |   const armedRef = useRef(false);
+      29 |   const completedRef = useRef(state?.phase === 'game-over');
+
+      at error (node_modules/posthog-react-native/src/hooks/utils.ts:14:13)
+      at usePostHog (node_modules/posthog-react-native/src/hooks/usePostHog.ts:8:17)
+      at useGameCompletedCapture (src/features/game/use-game-completed-capture.ts:26:29)
+      at useGameProviderValue (src/features/game/use-game-provider-value.ts:59:71)
+      at src/features/game/use-game-provider-undo.test.ts:104:61
+      at hookToRender (node_modules/@testing-library/react-native/src/render-hook.tsx:46:26)
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateFunctionComponent (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7302:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8851:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at renderHook (node_modules/@testing-library/react-native/src/render-hook.tsx:55:58)
+      at Object.<anonymous> (src/features/game/use-game-provider-undo.test.ts:104:34)
+
+PASS native src/features/learn/lesson-row.test.tsx
+PASS native src/components/navigation/always-on-escape-header.test.tsx
+iphone-69-04-vs-computer.png is 1×1, expected 1320×2868
+PASS native scripts/compose-store-screenshots.test.ts
+PASS native src/components/ui/button.test.tsx
+PASS native src/features/game/components/settings-ui/dice-order-icon.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/game/use-game-provider-cube-history.test.tsx
+PASS native src/features/game/components/player-strip.test.tsx
+PASS native src/features/game/use-game-provider-money-undo.test.ts
+PASS native src/lib/maestro-android-recording.test.ts
+PASS native src/lib/navigation/use-hardware-back-press.test.tsx (19.406 s)
+PASS native src/features/game/components/move-review-bar.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/game/game-screen-prevent-remove.test.tsx (19.523 s)
+PASS native src/features/game/use-game-provider-match.test.ts
+  ● Console
+
+    console.error
+      usePostHog was called without a PostHog client. Wrap your app with <PostHogProvider> or pass a client directly. See https://posthog.com/docs/libraries/react-native?#with-the-posthogprovider
+
+      24 |  */
+      25 | export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
+    > 26 |   const posthog = usePostHog();
+         |                             ^
+      27 |   const { preferences } = useGamePreferences();
+      28 |   const armedRef = useRef(false);
+      29 |   const completedRef = useRef(state?.phase === 'game-over');
+
+      at error (node_modules/posthog-react-native/src/hooks/utils.ts:14:13)
+      at usePostHog (node_modules/posthog-react-native/src/hooks/usePostHog.ts:8:17)
+      at useGameCompletedCapture (src/features/game/use-game-completed-capture.ts:26:29)
+      at useGameProviderValue (src/features/game/use-game-provider-value.ts:59:71)
+      at src/features/game/use-game-provider-match.test.ts:16:61
+      at hookToRender (node_modules/@testing-library/react-native/src/render-hook.tsx:46:26)
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateFunctionComponent (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7302:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8851:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at renderHook (node_modules/@testing-library/react-native/src/render-hook.tsx:55:58)
+      at Object.<anonymous> (src/features/game/use-game-provider-match.test.ts:16:34)
+
+PASS native src/lib/ios-scene-startup.test.ts
+PASS native src/lib/game/match.test.ts
+PASS native src/features/game/use-cube-tutor.test.ts
+PASS native src/components/navigation/stack-escape-button.test.tsx
+PASS native src/features/settings/developer-screen.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/components/posthog-error-fallback.test.tsx
+PASS native src/features/settings/language-switch-navigation.test.tsx (19.943 s)
+  ● Console
+
+    console.warn
+      [Layout children]: No route named "feedback" exists in nested children: [ 'index', 'settings', 'language' ]
+
+      93 |
+      94 |   it('keeps the Settings back button and history after picking a language', async () => {
+    > 95 |     const view = await renderRouter(routes, { initialUrl: '/' });
+         |                                    ^
+      96 |
+      97 |     fireEvent.press(screen.getByTestId('open-settings'));
+      98 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:125:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:113:1)
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:95:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "position" is extraneous.
+
+      93 |
+      94 |   it('keeps the Settings back button and history after picking a language', async () => {
+    > 95 |     const view = await renderRouter(routes, { initialUrl: '/' });
+         |                                    ^
+      96 |
+      97 |     fireEvent.press(screen.getByTestId('open-settings'));
+      98 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:113:1)
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:95:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "timer" is extraneous.
+
+      93 |
+      94 |   it('keeps the Settings back button and history after picking a language', async () => {
+    > 95 |     const view = await renderRouter(routes, { initialUrl: '/' });
+         |                                    ^
+      96 |
+      97 |     fireEvent.press(screen.getByTestId('open-settings'));
+      98 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:113:1)
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:95:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "developer" is extraneous.
+
+      93 |
+      94 |   it('keeps the Settings back button and history after picking a language', async () => {
+    > 95 |     const view = await renderRouter(routes, { initialUrl: '/' });
+         |                                    ^
+      96 |
+      97 |     fireEvent.press(screen.getByTestId('open-settings'));
+      98 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:113:1)
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:95:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "learn" is extraneous.
+
+      93 |
+      94 |   it('keeps the Settings back button and history after picking a language', async () => {
+    > 95 |     const view = await renderRouter(routes, { initialUrl: '/' });
+         |                                    ^
+      96 |
+      97 |     fireEvent.press(screen.getByTestId('open-settings'));
+      98 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:113:1)
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:95:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: No route named "feedback" exists in nested children: [ 'index', 'settings', 'language' ]
+
+      102 |     expect(view.getPathname()).toBe('/language');
+      103 |
+    > 104 |     fireEvent.press(screen.getByText('Español'));
+          |               ^
+      105 |
+      106 |     // Picker dismisses back to Settings, strings switch in place, no reload.
+      107 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:125:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:104:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "position" is extraneous.
+
+      102 |     expect(view.getPathname()).toBe('/language');
+      103 |
+    > 104 |     fireEvent.press(screen.getByText('Español'));
+          |               ^
+      105 |
+      106 |     // Picker dismisses back to Settings, strings switch in place, no reload.
+      107 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:104:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "timer" is extraneous.
+
+      102 |     expect(view.getPathname()).toBe('/language');
+      103 |
+    > 104 |     fireEvent.press(screen.getByText('Español'));
+          |               ^
+      105 |
+      106 |     // Picker dismisses back to Settings, strings switch in place, no reload.
+      107 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:104:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "developer" is extraneous.
+
+      102 |     expect(view.getPathname()).toBe('/language');
+      103 |
+    > 104 |     fireEvent.press(screen.getByText('Español'));
+          |               ^
+      105 |
+      106 |     // Picker dismisses back to Settings, strings switch in place, no reload.
+      107 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:104:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "learn" is extraneous.
+
+      102 |     expect(view.getPathname()).toBe('/language');
+      103 |
+    > 104 |     fireEvent.press(screen.getByText('Español'));
+          |               ^
+      105 |
+      106 |     // Picker dismisses back to Settings, strings switch in place, no reload.
+      107 |     expect(view.getPathname()).toBe('/settings');
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:104:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: No route named "feedback" exists in nested children: [ 'index', 'settings', 'language' ]
+
+      121 |
+      122 |   it('flips <html dir> for Arabic and back for English without losing history', async () => {
+    > 123 |     const view = await renderRouter(routes, { initialUrl: '/' });
+          |                                    ^
+      124 |
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:125:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:123:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "position" is extraneous.
+
+      121 |
+      122 |   it('flips <html dir> for Arabic and back for English without losing history', async () => {
+    > 123 |     const view = await renderRouter(routes, { initialUrl: '/' });
+          |                                    ^
+      124 |
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:123:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "timer" is extraneous.
+
+      121 |
+      122 |   it('flips <html dir> for Arabic and back for English without losing history', async () => {
+    > 123 |     const view = await renderRouter(routes, { initialUrl: '/' });
+          |                                    ^
+      124 |
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:123:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "developer" is extraneous.
+
+      121 |
+      122 |   it('flips <html dir> for Arabic and back for English without losing history', async () => {
+    > 123 |     const view = await renderRouter(routes, { initialUrl: '/' });
+          |                                    ^
+      124 |
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:123:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "learn" is extraneous.
+
+      121 |
+      122 |   it('flips <html dir> for Arabic and back for English without losing history', async () => {
+    > 123 |     const view = await renderRouter(routes, { initialUrl: '/' });
+          |                                    ^
+      124 |
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at Object.renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at render (node_modules/expo-router/build/testing-library/testing-library/index.tsx:91:41)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at apply (node_modules/expo-router/build/testing-library/testing-library/index.tsx:73:23)
+      at Object.<anonymous> (src/features/settings/language-switch-navigation.test.tsx:123:36)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+
+    console.warn
+      [Layout children]: No route named "feedback" exists in nested children: [ 'index', 'settings', 'language' ]
+
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+    > 127 |     fireEvent.press(screen.getByText('العربية'));
+          |               ^
+      128 |
+      129 |     expect(view.getPathname()).toBe('/settings');
+      130 |     expect(root).toEqual({ lang: 'ar', dir: 'rtl' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:125:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:127:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "position" is extraneous.
+
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+    > 127 |     fireEvent.press(screen.getByText('العربية'));
+          |               ^
+      128 |
+      129 |     expect(view.getPathname()).toBe('/settings');
+      130 |     expect(root).toEqual({ lang: 'ar', dir: 'rtl' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:127:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "timer" is extraneous.
+
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+    > 127 |     fireEvent.press(screen.getByText('العربية'));
+          |               ^
+      128 |
+      129 |     expect(view.getPathname()).toBe('/settings');
+      130 |     expect(root).toEqual({ lang: 'ar', dir: 'rtl' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:127:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "developer" is extraneous.
+
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+    > 127 |     fireEvent.press(screen.getByText('العربية'));
+          |               ^
+      128 |
+      129 |     expect(view.getPathname()).toBe('/settings');
+      130 |     expect(root).toEqual({ lang: 'ar', dir: 'rtl' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:127:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "learn" is extraneous.
+
+      125 |     fireEvent.press(screen.getByTestId('open-settings'));
+      126 |     fireEvent.press(screen.getByText('Language'));
+    > 127 |     fireEvent.press(screen.getByText('العربية'));
+          |               ^
+      128 |
+      129 |     expect(view.getPathname()).toBe('/settings');
+      130 |     expect(root).toEqual({ lang: 'ar', dir: 'rtl' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:127:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: No route named "feedback" exists in nested children: [ 'index', 'settings', 'language' ]
+
+      138 |     // Back to English from the Arabic Settings row.
+      139 |     fireEvent.press(screen.getByText('لغة'));
+    > 140 |     fireEvent.press(screen.getByText('English'));
+          |               ^
+      141 |
+      142 |     expect(view.getPathname()).toBe('/settings');
+      143 |     expect(root).toEqual({ lang: 'en', dir: 'ltr' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:125:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:140:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "position" is extraneous.
+
+      138 |     // Back to English from the Arabic Settings row.
+      139 |     fireEvent.press(screen.getByText('لغة'));
+    > 140 |     fireEvent.press(screen.getByText('English'));
+          |               ^
+      141 |
+      142 |     expect(view.getPathname()).toBe('/settings');
+      143 |     expect(root).toEqual({ lang: 'en', dir: 'ltr' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:140:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "timer" is extraneous.
+
+      138 |     // Back to English from the Arabic Settings row.
+      139 |     fireEvent.press(screen.getByText('لغة'));
+    > 140 |     fireEvent.press(screen.getByText('English'));
+          |               ^
+      141 |
+      142 |     expect(view.getPathname()).toBe('/settings');
+      143 |     expect(root).toEqual({ lang: 'en', dir: 'ltr' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:140:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "developer" is extraneous.
+
+      138 |     // Back to English from the Arabic Settings row.
+      139 |     fireEvent.press(screen.getByText('لغة'));
+    > 140 |     fireEvent.press(screen.getByText('English'));
+          |               ^
+      141 |
+      142 |     expect(view.getPathname()).toBe('/settings');
+      143 |     expect(root).toEqual({ lang: 'en', dir: 'ltr' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:140:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.warn
+      [Layout children]: Too many screens defined. Route "learn" is extraneous.
+
+      138 |     // Back to English from the Arabic Settings row.
+      139 |     fireEvent.press(screen.getByText('لغة'));
+    > 140 |     fireEvent.press(screen.getByText('English'));
+          |               ^
+      141 |
+      142 |     expect(view.getPathname()).toBe('/settings');
+      143 |     expect(root).toEqual({ lang: 'en', dir: 'ltr' });
+
+      at warn (node_modules/expo-router/build/useScreens.tsx:118:17)
+          at Array.map (<anonymous>)
+      at map (node_modules/expo-router/build/useScreens.tsx:116:6)
+      at getSortedChildren (node_modules/expo-router/build/useScreens.tsx:190:7)
+      at node_modules/expo-router/build/layouts/layouts/withLayoutContext.tsx:190:38
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateForwardRef (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6991:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8963:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performSyncWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3139:7)
+      at flushSyncWorkAcrossRoots_impl (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2980:21)
+      at processRootScheduleInMicrotask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3012:9)
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3149:11
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at fireEvent (node_modules/@testing-library/react-native/src/fire-event.ts:122:11)
+      at Function.fireEvent [as press] (node_modules/@testing-library/react-native/src/fire-event.ts:130:3)
+      at Object.press (src/features/settings/language-switch-navigation.test.tsx:140:15)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/game/use-leave-game.test.tsx
+PASS native src/features/game/components/animated-path-board.test.tsx
+PASS native src/components/ui/input.test.tsx
+PASS native src/features/game/components/board/board-dice-overlay.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/learn/coach-caption.test.tsx
+PASS native src/features/game/use-game-provider-takeback.test.ts
+  ● Console
+
+    console.error
+      usePostHog was called without a PostHog client. Wrap your app with <PostHogProvider> or pass a client directly. See https://posthog.com/docs/libraries/react-native?#with-the-posthogprovider
+
+      24 |  */
+      25 | export function useGameCompletedCapture(state: GameState | null, moveCount: number) {
+    > 26 |   const posthog = usePostHog();
+         |                             ^
+      27 |   const { preferences } = useGamePreferences();
+      28 |   const armedRef = useRef(false);
+      29 |   const completedRef = useRef(state?.phase === 'game-over');
+
+      at error (node_modules/posthog-react-native/src/hooks/utils.ts:14:13)
+      at usePostHog (node_modules/posthog-react-native/src/hooks/usePostHog.ts:8:17)
+      at useGameCompletedCapture (src/features/game/use-game-completed-capture.ts:26:29)
+      at useGameProviderValue (src/features/game/use-game-provider-value.ts:59:71)
+      at src/features/game/use-game-provider-takeback.test.ts:68:61
+      at hookToRender (node_modules/@testing-library/react-native/src/render-hook.tsx:46:26)
+      at Object.react_stack_bottom_frame (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:16690:20)
+      at renderWithHooks (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:5126:22)
+      at updateFunctionComponent (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:7302:19)
+      at beginWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:8851:18)
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at performUnitOfWork (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14142:22)
+      at workLoopSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13986:41)
+      at renderRootSync (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13967:11)
+      at performWorkOnRoot (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:13081:11)
+      at performWorkOnRootViaSchedulerTask (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:3124:7)
+      at flushActQueue (node_modules/react/cjs/react.development.js:664:34)
+      at process.env.NODE_ENV.exports.act (node_modules/react/cjs/react.development.js:960:10)
+      at actImplementation (node_modules/@testing-library/react-native/src/act.ts:30:25)
+      at renderWithAct (node_modules/@testing-library/react-native/src/render-act.ts:13:11)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:69:33)
+      at renderInternal (node_modules/@testing-library/react-native/src/render.tsx:44:10)
+      at renderHook (node_modules/@testing-library/react-native/src/render-hook.tsx:55:58)
+      at Object.<anonymous> (src/features/game/use-game-provider-takeback.test.ts:68:34)
+
+PASS native src/features/game/components/cube-tutor-overlay.test.tsx
+PASS native src/features/positions/save-position-dialog.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/components/navigation/game-header-actions.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/game/use-game-provider-cube-tutor.test.ts
+PASS native src/features/game/components/board/bar-area.test.tsx
+PASS native src/features/game/components/board/point-column.test.tsx
+PASS native src/features/game/create-play-move.test.ts
+PASS native src/features/game/components/animated-path-board-pause.test.tsx
+PASS native src/lib/imessage/codec.test.ts
+PASS native src/features/game/guidance-arrows.test.ts
+PASS native src/features/game/components/blunder-meter.test.tsx
+PASS native src/features/game/strategy.test.ts
+PASS native src/features/game/components/board/reduced-motion.test.tsx
+PASS native src/features/positions/position-cube.test.tsx
+PASS native src/features/game/components/board/point-number-rail.test.tsx
+PASS native src/features/game/components/board/die-pips.test.ts
+PASS native src/features/game/components/match-controls-focus.test.tsx
+PASS native src/lib/skip-posthog-ios-upload.test.ts
+PASS native src/lib/navigation/use-escape-to-go-back.test.ts
+PASS native src/lib/game/money-game.test.ts
+PASS native scripts/generate-imessage-icons.test.ts
+PASS native src/features/game/confirm-hold-path-segments.test.ts
+PASS native src/features/game/use-game-dice-actions.test.ts
+PASS native src/features/game/tutor-pause.test.tsx
+PASS native src/features/game/concurrent-moves.test.ts
+PASS native src/lib/android-test-apk.test.ts
+PASS native src/features/game/components/board/bear-off-area.test.tsx
+PASS native src/features/game/tutor-takeback-animation.test.ts
+PASS native src/lib/game/compound-regression.test.ts
+PASS native src/features/game/use-game-completed-capture.test.tsx
+PASS native src/features/game/use-dice-order.test.ts
+PASS native src/lib/positions/interchange.test.ts
+PASS native src/features/game/use-gameplay-helpers.test.ts
+PASS native src/features/game/use-computer-opponent.test.ts
+PASS native src/features/positions/position-stepper.test.tsx
+  ● Console
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to Icon inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15383:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2506:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:15382:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12986:9)
+      at Object.enqueueSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:17949:13)
+      at Icon.process.env.NODE_ENV.Component.setState (node_modules/react/cjs/react.development.js:730:20)
+      at Icon.setState (node_modules/@expo/vector-icons/src/createIconSet.tsx:181:31)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS native src/features/game/components/hint-button.test.tsx
+PASS native scripts/make-preview-store-config.test.ts
+PASS native src/features/game/components/board/direction-overlay-rtl.test.tsx
+PASS native src/features/game/game-automation.test.ts
+PASS native src/features/game/use-persist-active-game.test.ts
+PASS native src/features/game/components/board/dice-display.test.tsx
+PASS native src/features/learn/quiz-card.test.tsx
+PASS native src/features/game/use-committed-flights.test.ts
+PASS native src/components/ui/confirm-dialog.test.tsx
+PASS native src/features/game/guidance-store.test.ts
+PASS native src/lib/game/persisted-session.test.ts
+PASS native src/features/game/hit-test-board.test.ts
+PASS native src/features/game/use-game-active.test.ts
+PASS native src/lib/game/persistence.test.ts
+PASS native scripts/android-submit-track.test.ts
+PASS native src/lib/bgsage-artifacts.test.ts
+PASS native src/features/game/use-review-display.test.ts
+PASS native src/features/game/move-animation.test.ts
+PASS native src/lib/game/opening-display.test.ts
+PASS native src/lib/maestro-visual-report.test.ts
+PASS native src/features/game/move-path-overlay.test.ts
+PASS native src/features/game/use-win-celebration-hook.test.ts
+PASS native src/features/timer/timer-sfx.test.ts
+PASS native src/features/timer/timer-store.test.ts
+PASS native src/features/game/use-game-keyboard-shortcuts.test.ts
+PASS native src/features/game/dice-order.test.ts
+PASS native src/features/timer/use-timer-clock.test.ts
+PASS native src/lib/positions/position.test.ts
+PASS native src/lib/game/load-position.test.ts
+PASS native src/features/game/timeline-history-actions.test.ts
+PASS native src/features/game/engine/sage-move-recovery.test.ts
+PASS native src/lib/game/cube-history.test.ts
+PASS native src/features/game/review-navigation.test.ts
+PASS native src/lib/i18n/utils.test.ts
+PASS native src/lib/ui/use-app-fonts.test.ts
+PASS native src/features/positions/use-position-stack-editor.test.ts
+PASS native src/lib/game-sfx/move-sfx.test.ts
+PASS native src/features/game/hooks/use-board-dimensions.test.ts
+PASS native src/lib/game/resume-game.test.ts
+PASS native src/lib/learn/curriculum.test.ts
+PASS native src/features/game/bar-stack-layout.test.ts
+PASS native src/lib/game/compound-animation.test.ts
+PASS native src/lib/game/turn-display.test.ts
+PASS native src/lib/game-preferences/dice-order.test.ts
+PASS native src/features/game/review-step-animation.test.ts
+PASS native src/features/game/preselect-bar.test.ts
+PASS native src/lib/game/game-timeline.test.ts
+PASS native src/features/game/computer-turn.test.ts
+PASS native src/lib/positions/set-stack.test.ts
+PASS native src/features/game/guidance-copy.test.ts
+PASS native src/features/game/tutor.test.ts
+PASS native src/features/game/components/board/use-stack-edit-gesture.test.ts
+PASS native src/features/game/board-point-layout.test.ts
+PASS native src/features/game/request-new-game.test.ts
+PASS native src/features/game/resolve-board-tap.test.ts
+PASS native src/lib/positions/saved-positions.test.ts
+PASS native src/features/game/use-review-turn-loop.test.ts
+PASS native src/lib/navigation/native-stack-options.test.ts
+PASS native src/features/positions/board-cube-layout.test.ts
+PASS native src/lib/positions/position-history.test.ts
+PASS native src/features/game/engine-hint.test.ts
+PASS native scripts/sync-bgsage-vendor.test.ts
+PASS native src/features/game/components/board/dice-display-order.test.tsx
+PASS native src/features/timer/timer-clock.test.ts
+PASS native src/lib/web-share-icons.test.ts
+PASS native src/lib/learn/validate-step.test.ts
+PASS native src/lib/game/move-log.test.ts
+PASS native src/lib/learn/graduation-translations.test.ts
+PASS native src/lib/learn/progress.test.ts
+PASS native src/features/feedback/feedback-mail.test.ts
+PASS native src/lib/game/computer-pace.test.ts
+PASS native src/lib/analytics/posthog-native-symbols.test.ts
+PASS native src/lib/game-preferences/confirm-move.test.ts
+PASS native src/features/game/cube-analysis.test.ts
+PASS native src/features/game/animated-move-sequence.test.ts
+PASS native src/lib/storage.test.ts
+PASS native src/lib/imessage/eas-app-extension.test.ts
+PASS native src/features/game/bear-off-layout.test.ts
+PASS native src/lib/web-share-meta.test.ts
+PASS native src/features/game/drag-input.test.ts
+PASS native src/features/game/hint-arrows.test.ts
+PASS native src/lib/game/computer-level.test.ts
+PASS native src/lib/game-sfx/play-game-sfx.test.ts
+PASS native src/features/game/components/board/use-column-tap-gesture.test.ts
+PASS native src/features/game/hint-card-chrome.test.ts
+PASS native src/features/game/play-validated-move-sequence.test.ts
+PASS native src/lib/game/horseshoe-path.test.ts
+PASS native src/features/game/pending-drag-drop.test.ts
+PASS native src/lib/game/create-position.test.ts
+PASS native expo-bgsage/src/context-analysis.test.ts
+PASS native src/features/positions/position-layout.test.ts
+PASS native src/lib/analytics/posthog-context.test.ts
+PASS native src/features/game/drag-move.test.ts
+PASS native expo-bgsage/src/web-engine.test.ts
+PASS native src/features/game/match-copy.test.ts
+PASS native src/lib/game/move-replay.test.ts
+PASS native src/features/learn/lesson-point-numbers.test.ts
+PASS native src/features/game/checker-travel.test.ts
+PASS native src/lib/analytics/settings-analytics.test.ts
+PASS native src/features/game/engine/money-cube.test.ts
+PASS native src/lib/ui/arrow-geometry.test.ts
+PASS native src/lib/game-sfx/web-audio-keeper.test.ts
+PASS native src/lib/ui/layout-metrics.test.ts
+PASS native src/lib/game-preferences/storage.test.ts
+PASS native src/lib/ui/force-ltr.test.ts
+PASS native src/lib/game/single-move.test.ts
+PASS native src/features/learn/learn-primary-cta.test.ts
+PASS native src/features/game/review-navigator.test.ts
+PASS native src/features/learn/quiz-selection.test.ts
+PASS native src/lib/navigation/go-back-or-home.test.ts
+PASS native src/features/game/components/segment-label-font-size.test.ts
+PASS native src/lib/ui/game-chrome.test.ts
+PASS native src/features/feedback/feedback-event.test.ts
+PASS native expo-bgsage/src/web-engine-retry.test.ts
+PASS native src/features/game/components/board/point-accessibility.test.ts
+PASS native src/features/game/use-win-celebration.test.ts
+PASS native src/features/game/drag-overlay-offset.test.ts
+PASS native src/lib/confirm.test.ts
+PASS native expo-bgsage/src/rank-candidates.test.ts
+PASS native src/features/learn/learn-home-href.test.ts
+PASS native src/features/game/components/guidance-modal-layout.test.ts
+PASS native src/lib/expo-native-core-version.test.ts
+PASS native scripts/prepare-store-screenshots.test.ts (50.784 s)
+
+Test Suites: 216 passed, 216 total
+Tests:       1546 passed, 1546 total
+Snapshots:   0 total
+Time:        51.112 s
+Ran all test suites in 2 projects.
+Configuration hints (1)
+.css    knip.json  Compiled extension excluded by project (imports not followed)
+
+pnpm exec knip (reconfirm) exit=0
+Configuration hints (1)
+.css    knip.json  Compiled extension excluded by project (imports not followed)
