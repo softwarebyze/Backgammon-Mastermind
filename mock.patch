@@ -1,5 +1,5 @@
 diff --git a/src/features/game/bear-off-layout.ts b/src/features/game/bear-off-layout.ts
-index 38fe2d93..94c3ca62 100644
+index 38fe2d93..4bc1dfac 100644
 --- a/src/features/game/bear-off-layout.ts
 +++ b/src/features/game/bear-off-layout.ts
 @@ -48,7 +48,24 @@ export function bearOffHingeReserve(options: {
@@ -10,11 +10,11 @@ index 38fe2d93..94c3ca62 100644
 + * MOCK ONLY (design exploration for #389): pick a tray style at runtime with
 + * localStorage 'bgmm.mockBearOff' = A | B | C. Anything else is the PR as-is.
 + */
-+export type BearOffMockStyle = 'now' | 'A' | 'B' | 'C';
++export type BearOffMockStyle = 'now' | 'A' | 'B' | 'C' | 'D1' | 'D2';
 +export function bearOffMockStyle(): BearOffMockStyle {
 +  try {
 +    const v = (globalThis as { localStorage?: Storage }).localStorage?.getItem('bgmm.mockBearOff');
-+    if (v === 'A' || v === 'B' || v === 'C') return v;
++    if (v === 'A' || v === 'B' || v === 'C' || v === 'D1' || v === 'D2') return v;
 +  } catch {}
 +  return 'now';
 +}
@@ -27,7 +27,7 @@ index 38fe2d93..94c3ca62 100644
    /** Distance from the tray's outer edge to the first slab (whole pixels). */
    start: number;
    /** Room from `start` to the hinge reserve. */
-@@ -58,11 +75,42 @@ export type BearOffStackLayout = {
+@@ -58,11 +75,48 @@ export type BearOffStackLayout = {
    groupGap: number;
  };
  
@@ -44,7 +44,7 @@ index 38fe2d93..94c3ca62 100644
 + * MOCK styles: stack flush to the outer edge (no corner cube reserve; an owned
 + * cube moves to the bar), fill the half at 15 off.
 + */
-+function mockStackLayout(style: 'A' | 'B' | 'C', options: {
++function mockStackLayout(style: Exclude<BearOffMockStyle, 'now'>, options: {
 +  halfHeight: number;
 +  tokenSize: number;
 +  clearance?: number;
@@ -57,14 +57,20 @@ index 38fe2d93..94c3ca62 100644
 +    middleHeight: options.middleHeight,
 +  });
 +  const start = BEAR_OFF_PADDING;
-+  const label = style === 'B' ? BEAR_OFF_COUNT_LABEL : 0;
++  const label = style === 'A' || style === 'C' ? 0 : BEAR_OFF_COUNT_LABEL;
 +  const available = Math.max(0, Math.floor(options.halfHeight - BEAR_OFF_PADDING - hingeReserve - label) - start);
-+  const groupSize = style === 'B' ? 1 : BEAR_OFF_GROUP_SIZE;
++  const groupSize = style === 'B' || style === 'D1' ? 1 : BEAR_OFF_GROUP_SIZE;
 +  const gapFor = style === 'B'
 +    ? (t: number) => Math.max(2, Math.round(t * 0.3))
-+    : (t: number) => Math.max(3, Math.round(t * 0.4));
++    : style === 'D1'
++      ? (t: number) => (t >= 7 ? 2 : 1)
++      : (t: number) => Math.max(3, Math.round(t * 0.4));
 +  const widthCap = options.bearOffWidth != null ? Math.round(options.bearOffWidth * 0.45) : 14;
-+  let thickness = Math.max(3, Math.min(widthCap, Math.round(options.tokenSize * 0.5)));
++  // D keeps B's slimmer pieces: about 0.42 of the borne-off token, never past 9px.
++  const preferred = style === 'D1' || style === 'D2'
++    ? Math.min(9, Math.round(options.tokenSize * 0.42))
++    : Math.round(options.tokenSize * 0.5);
++  let thickness = Math.max(3, Math.min(widthCap, preferred));
 +  while (thickness > 2 && stackLength(BEAR_OFF_MAX_CHECKERS, thickness, gapFor(thickness), groupSize) > available) {
 +    thickness -= 1;
 +  }
@@ -72,7 +78,7 @@ index 38fe2d93..94c3ca62 100644
  }
  
  /**
-@@ -80,6 +128,10 @@ export function bearOffStackLayout(options: {
+@@ -80,6 +134,10 @@ export function bearOffStackLayout(options: {
    bearOffWidth?: number;
    middleHeight?: number;
  }): BearOffStackLayout {
@@ -83,7 +89,7 @@ index 38fe2d93..94c3ca62 100644
    const clearance = options.clearance ?? 0;
    const hingeReserve = bearOffHingeReserve({
      clearance,
-@@ -116,7 +168,7 @@ export function bearOffStackLayout(options: {
+@@ -116,7 +174,7 @@ export function bearOffStackLayout(options: {
  
  /** Distance from `layout.start` to the leading edge of slab `slotIndex`. */
  export function bearOffSlabOffset(layout: BearOffStackLayout, slotIndex: number): number {
@@ -93,7 +99,7 @@ index 38fe2d93..94c3ca62 100644
  
  /** Local top coordinate inside one bear-off half (top black / bottom white tray). */
 diff --git a/src/features/game/components/board/bear-off-area.tsx b/src/features/game/components/board/bear-off-area.tsx
-index 5c5f14bb..7cf91828 100644
+index 5c5f14bb..52a40f81 100644
 --- a/src/features/game/components/board/bear-off-area.tsx
 +++ b/src/features/game/components/board/bear-off-area.tsx
 @@ -1,9 +1,12 @@
@@ -110,7 +116,7 @@ index 5c5f14bb..7cf91828 100644
    bearOffHalfHeight,
    bearOffSlabOffset,
    bearOffSlotTopInSection,
-@@ -72,6 +75,45 @@ export function BearOffSlab({ player, width, thickness, style }: SlabProps) {
+@@ -72,6 +75,83 @@ export function BearOffSlab({ player, width, thickness, style }: SlabProps) {
    );
  }
  
@@ -142,6 +148,44 @@ index 5c5f14bb..7cf91828 100644
 +  );
 +}
 +
++function mixHex(a: string, b: string, t: number): string {
++  const pa = [1, 3, 5].map((i) => parseInt(a.slice(i, i + 2), 16));
++  const pb = [1, 3, 5].map((i) => parseInt(b.slice(i, i + 2), 16));
++  return `#${pa.map((v, i) => Math.round(v + (pb[i] - v) * t).toString(16).padStart(2, '0')).join('')}`;
++}
++
++/**
++ * MOCK D: B's slim bar with half of A's cylinder shading: the flat slab colour
++ * in the body, edges and centre only halfway toward the checker's shadow and
++ * highlight, small corner radius, faint top highlight.
++ */
++function BearOffSoftChecker({ player, width, thickness, style }: SlabProps) {
++  const slab = BOARD_THEME.slab[player];
++  const c = BOARD_THEME.checker[player];
++  const edge = mixHex(slab.fill, c.shadow, 0.5);
++  const centre = mixHex(slab.fill, c.highlight, 0.5);
++  const id = `bo-soft-${player}`;
++  const r = Math.min(thickness / 2, 2);
++  return (
++    <View testID="bear-off-slab" style={[{ width, height: thickness }, style]}>
++      <Svg width={width} height={thickness}>
++        <Defs>
++          <LinearGradient id={id} x1="0" y1="0" x2="1" y2="0">
++            <Stop offset="0" stopColor={edge} />
++            <Stop offset="0.3" stopColor={slab.fill} />
++            <Stop offset="0.5" stopColor={centre} />
++            <Stop offset="0.7" stopColor={slab.fill} />
++            <Stop offset="1" stopColor={edge} />
++          </LinearGradient>
++        </Defs>
++        <Rect x={0} y={0} width={width} height={thickness} rx={r} fill={`url(#${id})`} />
++        <Rect x={0.5} y={0.5} width={width - 1} height={thickness - 1} rx={r} fill="none" stroke={player === 'black' ? slab.rim : slab.separator} strokeWidth={1} strokeOpacity={player === 'black' ? 0.8 : 0.6} />
++        <Rect x={r} y={0.5} width={width - 2 * r} height={1} fill="#FFFFFF" fillOpacity={player === 'black' ? 0.1 : 0.35} />
++      </Svg>
++    </View>
++  );
++}
++
 +/** MOCK B: Galaxy-like flat bar in the player's colour, rimmed so black reads on the dark tray. */
 +function BearOffFlatBar({ player, width, thickness, style }: SlabProps) {
 +  const c = BOARD_THEME.slab[player];
@@ -156,12 +200,15 @@ index 5c5f14bb..7cf91828 100644
  function BearOffStack({
    cubeClearance,
    count,
-@@ -99,7 +141,15 @@ function BearOffStack({
+@@ -99,7 +179,18 @@ function BearOffStack({
    const left = (innerWidth - slabWidth) / 2;
    const showTarget = isLegalTarget && isTargetSide;
    // An empty tray shows the outline of one group of five where checkers will land.
 +  const mock = bearOffMockStyle();
-+  const Piece = mock === 'A' || mock === 'C' ? BearOffEdgeChecker : mock === 'B' ? BearOffFlatBar : BearOffSlab;
++  const Piece = mock === 'A' || mock === 'C'
++    ? BearOffEdgeChecker
++    : mock === 'B' ? BearOffFlatBar : mock === 'D1' || mock === 'D2' ? BearOffSoftChecker : BearOffSlab;
++  const showCount = mock === 'B' || mock === 'D1' || mock === 'D2';
 +  const ghostSlots = mock === 'C';
    const emptyLength = bearOffSlabOffset(layout, 4) + layout.thickness;
 +  const slotTop = (slotIndex: number) => bearOffSlotTopInSection({ ...slot, slotIndex });
@@ -172,7 +219,7 @@ index 5c5f14bb..7cf91828 100644
    const emptyTop = player === 'black'
      ? layout.start
      : halfHeight - layout.start - emptyLength;
-@@ -115,7 +165,43 @@ function BearOffStack({
+@@ -115,7 +206,43 @@ function BearOffStack({
          borderRadius: 6,
        }}
      >
@@ -194,7 +241,7 @@ index 5c5f14bb..7cf91828 100644
 +        />
 +      ))}
 +
-+      {mock === 'B' && count > 0 && (
++      {showCount && count > 0 && (
 +        <Text
 +          style={{
 +            position: 'absolute',
@@ -217,7 +264,7 @@ index 5c5f14bb..7cf91828 100644
          <View
            testID="bear-off-empty-slot"
            style={{
-@@ -134,7 +220,7 @@ function BearOffStack({
+@@ -134,7 +261,7 @@ function BearOffStack({
        )}
  
        {Array.from({ length: visible }, (_, slotIndex) => (
@@ -226,7 +273,7 @@ index 5c5f14bb..7cf91828 100644
            key={slotIndex}
            player={player}
            width={slabWidth}
-@@ -142,7 +228,7 @@ function BearOffStack({
+@@ -142,7 +269,7 @@ function BearOffStack({
            style={{
              position: 'absolute',
              left,

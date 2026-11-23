@@ -22,3 +22,16 @@ cube moves to its owner's end of the centre bar (Galaxy keeps its cube on the ba
 tray), so no tray reserves a corner. Risk: it can overlap bar checkers when 4+ are on the bar.
 
 Mock-only hacks in the patch: `position-play` is enabled on finished positions so 15-off renders on the game screen.
+
+## Option D (after Zack's feedback: B's slimness and count, a softer version of A's 3D look, no empty slots)
+
+- `compare-D.png`: B | A | D1 | D2 at 1, 7 and 15 off, same scale. `closeup-D.png`: 7 off, the tray at 3x enlarged 2x.
+- `option-D1.png`, `option-D2.png`: 1, 7, 15 off, Zack's end-of-game state, and a cube White owns at 2, all at 3x.
+- Thickness: `min(9, round(token × 0.42))` = 9 px at 428x926 (token 21). B is 8, A is 11.
+- D1: even 2 px gaps (1 px if a piece drops below 7 px). 15 pieces = 163 px of the 164 px available, so the half fills to the count label.
+- D2: a 4 px gap after every five, pieces touching inside a group. 15 pieces = 143 px.
+- Shading: horizontal gradient using the flat slab colour for the body (0.3 to 0.7). The ends (0 and 1) go 50% from the slab fill toward the checker shadow, and the centre (0.5) 50% toward the checker highlight.
+  White: ends #D6C5A2, body #F2EAD3, centre #F8F2E1. Black: ends #1D1D37, body #30305A, centre #3D3D61.
+  Corner radius 2 px (A uses 3). 1 px rim: black #5050A0 at 0.8 opacity, white #B09468 at 0.6. Top highlight line: white 1 px at 0.35 opacity on White, 0.10 on Black (A uses 0.6 and 0.18).
+- Count: 10 px bold #E8D9B8 in a 12 px band right after the newest piece, so it moves with the stack.
+- Board is 428x448 and the tray 32x404 in every capture.
