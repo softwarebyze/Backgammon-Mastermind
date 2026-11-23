@@ -3,7 +3,6 @@ import type { LayoutChangeEvent } from 'react-native';
 import type { GameState, Player } from '@/lib/game';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 
 import { CheckerToken } from '@/features/game/components/board/checker-token';
@@ -71,7 +70,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
   const Identity = onPress ? Pressable : View;
   const statusText = status
     ? (
-        <Animated.View key={status} entering={FadeIn.duration(180)}>
+        <View>
           <Text
             style={[styles.status, won && styles.statusWon, !turnStatus && styles.statusIdle]}
             numberOfLines={1}
@@ -79,7 +78,7 @@ export function PlayerStrip({ state, player, headlineOverride = null, compact = 
           >
             {status}
           </Text>
-        </Animated.View>
+        </View>
       )
     : null;
   const identity = (

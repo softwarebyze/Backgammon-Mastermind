@@ -43,6 +43,7 @@ maestro test \
   "${WORKSPACE}/.maestro/app/android-back-closes-settings.yaml" \
   "${WORKSPACE}/.maestro/app/horseshoe-on-board.yaml" \
   "${WORKSPACE}/.maestro/app/position-setup.yaml" \
+  "${WORKSPACE}/.maestro/app/position-stroke-scroll.yaml" \
   "${WORKSPACE}/.maestro/app/undo-redo.yaml" \
   "${WORKSPACE}/.maestro/app/center-bar-checkers.yaml" \
   "${WORKSPACE}/.maestro/app/rapid-follow-up-input.yaml" \

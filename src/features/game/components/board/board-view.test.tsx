@@ -90,21 +90,21 @@ describe('exact taps for Learn questions (#299)', () => {
   it('reports the point actually touched, not the emphasized answer next to it', () => {
     const onPointPress = jest.fn();
     renderBoard(true, onPointPress);
-    fireEvent.press(screen.getByTestId('point-19'));
+    fireEvent(screen.getByTestId('point-19'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
     expect(onPointPress).toHaveBeenCalledWith(19);
   });
 
   it('still reports the opponent point itself during play', () => {
     const onPointPress = jest.fn();
     renderBoard(false, onPointPress);
-    fireEvent.press(screen.getByTestId('point-19'));
+    fireEvent(screen.getByTestId('point-19'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
     expect(onPointPress).toHaveBeenCalledWith(19);
   });
 
   it('reports the opponent point by default, when exactTaps is omitted', () => {
     const onPointPress = jest.fn();
     renderBoard(undefined, onPointPress);
-    fireEvent.press(screen.getByTestId('point-19'));
+    fireEvent(screen.getByTestId('point-19'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
     expect(onPointPress).toHaveBeenCalledWith(19);
   });
 });
@@ -125,7 +125,7 @@ it('setup selects the exact empty point rather than a nearby playable source', (
       onBearOffPress={() => {}}
     />,
   );
-  fireEvent.press(screen.getByTestId('point-5'));
+  fireEvent(screen.getByTestId('point-5'), 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
   expect(onPointPress).toHaveBeenCalledWith(5);
 });
 

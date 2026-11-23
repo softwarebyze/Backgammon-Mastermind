@@ -13,7 +13,7 @@ it.each([false, true])('keeps both player stacks and overflow badges accessible 
   const onPressBar = jest.fn();
   render(<BarArea whiteCount={7} blackCount={6} currentPlayer="white" selectedPoint={0} onPressBar={onPressBar} barWidth={28} boardHeight={300} middleHeight={12} checkerSize={24} />);
   const bar = screen.getByRole('button', { name: 'Bar, 7 white checkers, 6 black checkers' });
-  fireEvent.press(bar);
+  fireEvent(bar, 'accessibilityAction', { nativeEvent: { actionName: 'activate' } });
   expect(onPressBar).toHaveBeenCalledTimes(1);
   expect(screen.getByText('7')).toBeTruthy();
   expect(screen.getByText('6')).toBeTruthy();

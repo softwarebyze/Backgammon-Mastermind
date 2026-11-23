@@ -6,7 +6,8 @@ export type StackEditHandlers = {
   onStart: (point: number, localY: number) => void;
   onDelta: (point: number, steps: number) => void;
   onEnd: (point: number, tap: boolean, steps?: number) => void;
-  onCancel: () => void;
+  /** The stroke on `point` was cancelled or failed (it may never have started). */
+  onCancel: (point: number) => void;
   onAdjust: (point: number, delta: number) => void;
 };
 
@@ -19,11 +20,15 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
   const originY = useSharedValue(0);
   const finalX = useSharedValue(0);
   const finalY = useSharedValue(0);
+  // -1 means no active stroke. A second finger must not fail this recognizer
+  // once the first finger has started, or the editor would unlock page scroll
+  // while that finger is still dragging.
+  const pointerId = useSharedValue(-1);
   const callbacks = useMemo(() => ({
     start: (y: number) => latest.current?.onStart(point, y),
     move: (value: number) => latest.current?.onDelta(point, value),
     end: (tap: boolean, steps: number) => latest.current?.onEnd(point, tap, steps),
-    cancel: () => latest.current?.onCancel(),
+    cancel: () => latest.current?.onCancel(point),
   }), [point]);
   const enabled = !!handlers;
   return useMemo(() => Gesture.Manual()
@@ -31,12 +36,14 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
     .shouldCancelWhenOutside(false)
     .onTouchesDown((event, manager) => {
       if (event.numberOfTouches !== 1) {
-        manager.fail();
+        if (pointerId.value < 0)
+          manager.fail();
         return;
       }
       const touch = event.changedTouches[0];
       if (!touch)
         return;
+      pointerId.value = touch.id ?? 0;
       quantum.value = 0;
       originX.value = touch.absoluteX;
       originY.value = touch.absoluteY;
@@ -47,7 +54,7 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
     })
     .onTouchesMove((event) => {
       const touch = event.changedTouches[0];
-      if (!touch)
+      if (!touch || (touch.id ?? 0) !== pointerId.value)
         return;
       finalX.value = touch.absoluteX;
       finalY.value = touch.absoluteY;
@@ -60,6 +67,8 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
     .onTouchesUp((event, manager) => {
       const touch = event.changedTouches[0];
       if (touch) {
+        if ((touch.id ?? 0) !== pointerId.value)
+          return;
         finalX.value = touch.absoluteX;
         finalY.value = touch.absoluteY;
       }
@@ -73,7 +82,8 @@ export function useStackEditGesture(point: number, step: number, handlers?: Stac
       runOnJS(callbacks.end)(Math.abs(dy) < 5 && Math.abs(dx) < 5, Math.trunc(dy / step));
     })
     .onFinalize((_event, success) => {
+      pointerId.value = -1;
       if (!success)
         runOnJS(callbacks.cancel)();
-    }), [enabled, step, callbacks, quantum, originX, originY, finalX, finalY]);
+    }), [enabled, step, callbacks, quantum, originX, originY, finalX, finalY, pointerId]);
 }

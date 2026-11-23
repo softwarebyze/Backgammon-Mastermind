@@ -1,4 +1,4 @@
-import type { LayoutChangeEvent, TextStyle } from 'react-native';
+import type { LayoutChangeEvent, TextInstance, TextStyle } from 'react-native';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { HoverPressable } from '@/components/ui/hover-pressable';
@@ -97,7 +97,7 @@ function useSegmentLabelFit(label: string) {
   const [fontsReady, setFontsReady] = useState(false);
   const [overflowSize, setOverflowSize] = useState<number | null>(null);
   const [fitKey, setFitKey] = useState('');
-  const textRef = useRef<Text>(null);
+  const textRef = useRef<TextInstance>(null);
   const nextFitKey = `${label}|${innerWidth}|${fontsReady}`;
   if (fitKey !== nextFitKey) {
     setFitKey(nextFitKey);

@@ -39,7 +39,7 @@ function finishReviewStepAnimation(
     setters.setReviewAnimation(null);
     setters.setPendingAnimTarget(null);
     setters.setPendingAnimDirection(null);
-  });
+  }, undefined);
 }
 
 function settleReviewIndex(liveIndex: number, ply: number, setManualIndex: ReviewNavSetters['setManualIndex']) {
