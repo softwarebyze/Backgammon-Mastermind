@@ -1,0 +1,21 @@
+import { webkit, devices } from '/workspace/bgmm-389-mock-notes/pw/node_modules/playwright/index.mjs';
+const BASE = process.env.BASE;
+const points = Array.from({ length: 25 }, () => ({ player: null, count: 0 }));
+points[1] = { player: 'white', count: 1 }; points[24] = { player: 'black', count: 2 }; points[23] = { player: 'black', count: 2 };
+const p = { version: 1, points, bar: { white: 0, black: 0 }, borneOff: { white: 14, black: 11 }, currentPlayer: 'white', dice: [1, 2],
+  context: { cubeExponent: 0, cubeOwner: null, turnOwner: 'white', matchLength: 0, scores: { white: 0, black: 0 }, crawford: false, jacoby: false, beavers: false, maxCube: 10, gameState: 1, resignation: 0, doubleAction: '' } };
+const b = await webkit.launch();
+const ctx = await b.newContext({ ...devices['iPhone 13 Pro Max'], viewport: { width: 428, height: 926 }, deviceScaleFactor: 3, recordVideo: { dir: 'video', size: { width: 428, height: 926 } } });
+await ctx.route(/posthog/i, r => r.abort());
+await ctx.addInitScript(() => { localStorage.setItem('mmkv.default\\GAME_PREFERENCES', JSON.stringify({ showMoveHints: true, showPointNumbers: true, diceDisplayStyle: 'numeric', autoRoll: false, autoMoveWhenForced: false, soundEnabled: false, tutorMode: false, confirmMove: false })); localStorage.setItem('mmkv.default\\local', 'en'); });
+const page = await ctx.newPage();
+await page.goto(`${BASE}/position?data=${encodeURIComponent(JSON.stringify(p))}`);
+await page.getByTestId('board-view').waitFor({ timeout: 40000 }); await page.waitForTimeout(1500);
+const human = page.getByTestId('position-mode-human'); if (await human.count()) await human.click().catch(() => {});
+await page.getByTestId('position-play').click(); await page.waitForTimeout(800);
+const conf = page.getByTestId('confirm-dialog-confirm'); if (await conf.count()) await conf.click().catch(() => {});
+await page.getByTestId('point-1').waitFor(); await page.waitForTimeout(1500);
+await page.getByTestId('point-1').click(); await page.waitForTimeout(500);
+await page.locator('[aria-label^="Bear off"]').first().click();
+await page.waitForTimeout(3000);
+const v = page.video(); await ctx.close(); console.log(await v.path()); await b.close();

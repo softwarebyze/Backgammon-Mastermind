@@ -1,0 +1,316 @@
+[
+ {
+  "name": "prod-portrait-w7-b7",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 187,
+   "w": 428,
+   "h": 448
+  },
+  "tray": {
+   "x": 392,
+   "y": 209,
+   "w": 32,
+   "h": 404
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 395.3,
+   "y": 399.1,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 184,
+   "y": 209,
+   "w": 28,
+   "h": 404
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-portrait-cube-white-bar4",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A4%2C%22black%22%3A4%7D%2C%22borneOff%22%3A%7B%22white%22%3A3%2C%22black%22%3A3%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22white%22%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 187,
+   "w": 428,
+   "h": 448
+  },
+  "tray": {
+   "x": 392,
+   "y": 209,
+   "w": 32,
+   "h": 404
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 395.3,
+   "y": 579.1,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 184,
+   "y": 209,
+   "w": 28,
+   "h": 404
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-landscape-w7-b7",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 0.5,
+   "w": 379,
+   "h": 374
+  },
+  "tray": {
+   "x": 343,
+   "y": 22.5,
+   "w": 32,
+   "h": 330
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 346.3,
+   "y": 175.6,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 159.5,
+   "y": 22.5,
+   "w": 28,
+   "h": 330
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-landscape-cube-white-bar4",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A4%2C%22black%22%3A4%7D%2C%22borneOff%22%3A%7B%22white%22%3A3%2C%22black%22%3A3%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22white%22%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 0.5,
+   "w": 379,
+   "h": 374
+  },
+  "tray": {
+   "x": 343,
+   "y": 22.5,
+   "w": 32,
+   "h": 330
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 346.3,
+   "y": 318.6,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 159.5,
+   "y": 22.5,
+   "w": 28,
+   "h": 330
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-ipad-w7-b7",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 128,
+   "y": 267,
+   "w": 768,
+   "h": 728
+  },
+  "tray": {
+   "x": 844,
+   "y": 289,
+   "w": 48,
+   "h": 684
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 853,
+   "y": 617,
+   "w": 30,
+   "h": 28
+  },
+  "bar": {
+   "x": 467,
+   "y": 289,
+   "w": 42,
+   "h": 684
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-ipad-cube-white-bar4",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A4%2C%22black%22%3A4%7D%2C%22borneOff%22%3A%7B%22white%22%3A3%2C%22black%22%3A3%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22white%22%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 128,
+   "y": 267,
+   "w": 768,
+   "h": 728
+  },
+  "tray": {
+   "x": 844,
+   "y": 289,
+   "w": 48,
+   "h": 684
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 853,
+   "y": 937,
+   "w": 30,
+   "h": 28
+  },
+  "bar": {
+   "x": 467,
+   "y": 289,
+   "w": 42,
+   "h": 684
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-desktop-w7-b7",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 36,
+   "y": 86,
+   "w": 1000,
+   "h": 728
+  },
+  "tray": {
+   "x": 984,
+   "y": 108,
+   "w": 48,
+   "h": 684
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 993,
+   "y": 436,
+   "w": 30,
+   "h": 28
+  },
+  "bar": {
+   "x": 491,
+   "y": 108,
+   "w": 42,
+   "h": 684
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-desktop-cube-white-bar4",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A4%2C%22black%22%3A4%7D%2C%22borneOff%22%3A%7B%22white%22%3A3%2C%22black%22%3A3%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22white%22%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 36,
+   "y": 86,
+   "w": 1000,
+   "h": 728
+  },
+  "tray": {
+   "x": 984,
+   "y": 108,
+   "w": 48,
+   "h": 684
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 993,
+   "y": 756,
+   "w": 30,
+   "h": 28
+  },
+  "bar": {
+   "x": 491,
+   "y": 108,
+   "w": 42,
+   "h": 684
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ },
+ {
+  "name": "prod-portrait-rtl-w7-b7",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A0%2C%22cubeOwner%22%3Anull%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 187,
+   "w": 428,
+   "h": 448
+  },
+  "tray": null,
+  "cube": {
+   "x": 395.3,
+   "y": 399.1,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 184,
+   "y": 209,
+   "w": 28,
+   "h": 404
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "rtl"
+ },
+ {
+  "name": "prod-portrait-editor-cube-white",
+  "url": "https://backgammon-mastermind.vercel.app/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A2%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22white%22%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 16,
+   "y": 246,
+   "w": 396,
+   "h": 410
+  },
+  "tray": {
+   "x": 376,
+   "y": 268,
+   "w": 32,
+   "h": 366
+  },
+  "trayLabel": "Bear off",
+  "cube": {
+   "x": 368,
+   "y": 588,
+   "w": 49,
+   "h": 49
+  },
+  "bar": {
+   "x": 184,
+   "y": 268,
+   "w": 28,
+   "h": 366
+  },
+  "slabs": [],
+  "counts": [],
+  "dir": "ltr"
+ }
+]
