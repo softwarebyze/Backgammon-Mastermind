@@ -1,0 +1,20 @@
+[+0.7s] request /_expo/static/js/web/entry-844a90bb78cf8181fc1108db9ed4485f.js
+[+1.4s] finished /_expo/static/js/web/entry-844a90bb78cf8181fc1108db9ed4485f.js body=1661568B in 718ms
+[+1.5s] posthog allow GET us-assets.i.posthog.com/array/phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu/conf
+[+2.3s] home loaded (networkidle)
+[+5.3s] home idle +3s
+[+5.6s] clicked Start game (2 Players)
+[+6.7s] request /bgsage/bgsage.js?v=context-v1
+[+6.7s] clicked Hint
+[+6.8s] finished /bgsage/bgsage.js?v=context-v1 body=38261B in 106ms
+[+6.8s] request /bgsage/bgsage.data?v=context-v1
+[+6.8s] request /bgsage/bgsage.wasm?v=context-v1
+[+7.1s] finished /bgsage/bgsage.wasm?v=context-v1 body=162755B in 272ms
+[+7.1s] finished /bgsage/bgsage.data?v=context-v1 body=8571661B in 339ms
+[+11.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+14.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+17.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+20.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+20.6s] console.error: Error while flushing PostHog PostHogFetchNetworkError: Network error while fetching PostHog
+[+21.7s] waited 15s
+[+21.7s] hint-result: "Suggested move\n13/7 · 8/7\nPlay this move\nBack to my turn"

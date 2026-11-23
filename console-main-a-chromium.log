@@ -1,0 +1,25 @@
+[+0.6s] request /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js
+[+1.1s] finished /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js body=1662404B in 529ms
+[+1.3s] posthog allow GET us-assets.i.posthog.com/array/phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu/conf
+[+2.2s] home loaded (networkidle)
+[+5.2s] home idle +3s
+[+5.5s] clicked Start game (vs Computer)
+[+7.5s] request /_expo/static/js/web/web-engine-a58b3c06a87ba56be00d2c729bdf47ee.js
+[+7.5s] pageerror: Requiring unknown module "2952".
+[+7.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+7.5s] console.error: Failed to load resource: net::ERR_FAILED
+[+7.6s] finished /_expo/static/js/web/web-engine-a58b3c06a87ba56be00d2c729bdf47ee.js body=1136B in 116ms
+[+7.6s] request /bgsage/bgsage.js?v=context-v1
+[+7.7s] finished /bgsage/bgsage.js?v=context-v1 body=38389B in 120ms
+[+7.7s] request /bgsage/bgsage.data?v=context-v1
+[+7.7s] request /bgsage/bgsage.wasm?v=context-v1
+[+7.9s] finished /bgsage/bgsage.wasm?v=context-v1 body=162872B in 142ms
+[+8.2s] finished /bgsage/bgsage.data?v=context-v1 body=8571783B in 472ms
+[+10.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+10.5s] console.error: Failed to load resource: net::ERR_FAILED
+[+13.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+13.5s] console.error: Failed to load resource: net::ERR_FAILED
+[+16.5s] posthog ABORT POST us.i.posthog.com/batch/
+[+16.5s] console.error: Failed to load resource: net::ERR_FAILED
+[+16.5s] console.error: [PostHog] [ErrorTracking] Failed to flush events
+[+25.5s] waited 20s

@@ -1,0 +1,23 @@
+[+0.7s] request /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js
+[+1.4s] finished /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js body=1662232B in 679ms
+[+1.5s] posthog allow GET us-assets.i.posthog.com/array/phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu/conf
+[+2.5s] home loaded (networkidle)
+[+5.5s] home idle +3s
+[+5.8s] clicked Start game (2 Players)
+[+6.9s] request /_expo/static/js/web/web-engine-a58b3c06a87ba56be00d2c729bdf47ee.js
+[+6.9s] clicked Hint
+[+6.9s] pageerror: Requiring unknown module "2952".
+[+7.0s] posthog ABORT POST us.i.posthog.com/batch/
+[+7.1s] request /bgsage/bgsage.js?v=context-v1
+[+7.1s] finished /_expo/static/js/web/web-engine-a58b3c06a87ba56be00d2c729bdf47ee.js body=949B in 124ms
+[+7.2s] finished /bgsage/bgsage.js?v=context-v1 body=38261B in 150ms
+[+7.2s] request /bgsage/bgsage.data?v=context-v1
+[+7.2s] request /bgsage/bgsage.wasm?v=context-v1
+[+7.5s] finished /bgsage/bgsage.wasm?v=context-v1 body=162755B in 256ms
+[+7.6s] finished /bgsage/bgsage.data?v=context-v1 body=8571661B in 372ms
+[+10.0s] posthog ABORT POST us.i.posthog.com/batch/
+[+13.0s] posthog ABORT POST us.i.posthog.com/batch/
+[+16.0s] posthog ABORT POST us.i.posthog.com/batch/
+[+16.0s] console.error: [PostHog] [ErrorTracking] Failed to flush events
+[+22.0s] waited 15s
+[+22.0s] hint-result: "Suggested move\n12/15 · 1/7\nPlay this move\nBack to my turn"

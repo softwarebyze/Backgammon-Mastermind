@@ -1,0 +1,22 @@
+[+0.5s] request /_expo/static/js/web/entry-844a90bb78cf8181fc1108db9ed4485f.js
+[+1.1s] finished /_expo/static/js/web/entry-844a90bb78cf8181fc1108db9ed4485f.js body=1661722B in 540ms
+[+1.3s] posthog allow GET us-assets.i.posthog.com/array/phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu/conf
+[+2.2s] home loaded (networkidle)
+[+5.2s] home idle +3s
+[+5.5s] clicked Start game (vs Computer)
+[+6.3s] request /bgsage/bgsage.js?v=context-v1
+[+6.4s] finished /bgsage/bgsage.js?v=context-v1 body=38445B in 123ms
+[+6.4s] request /bgsage/bgsage.data?v=context-v1
+[+6.4s] request /bgsage/bgsage.wasm?v=context-v1
+[+6.5s] finished /bgsage/bgsage.wasm?v=context-v1 body=162873B in 122ms
+[+6.9s] finished /bgsage/bgsage.data?v=context-v1 body=8571807B in 443ms
+[+11.3s] posthog ABORT POST us.i.posthog.com/batch/
+[+11.3s] console.error: Failed to load resource: net::ERR_FAILED
+[+14.3s] posthog ABORT POST us.i.posthog.com/batch/
+[+14.3s] console.error: Failed to load resource: net::ERR_FAILED
+[+17.4s] posthog ABORT POST us.i.posthog.com/batch/
+[+17.4s] console.error: Failed to load resource: net::ERR_FAILED
+[+20.4s] posthog ABORT POST us.i.posthog.com/batch/
+[+20.4s] console.error: Failed to load resource: net::ERR_FAILED
+[+20.4s] console.error: Error while flushing PostHog PostHogFetchNetworkError: Network error while fetching PostHog
+[+25.5s] waited 20s

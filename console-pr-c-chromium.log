@@ -1,0 +1,24 @@
+[+0.7s] request /_expo/static/js/web/entry-844a90bb78cf8181fc1108db9ed4485f.js
+[+1.5s] finished /_expo/static/js/web/entry-844a90bb78cf8181fc1108db9ed4485f.js body=1661722B in 776ms
+[+1.8s] posthog allow GET us-assets.i.posthog.com/array/phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu/conf
+[+2.8s] home loaded (networkidle)
+[+5.8s] home idle +3s
+[+6.0s] clicked Start game (2 Players)
+[+7.1s] request /bgsage/bgsage.js?v=context-v1
+[+7.1s] clicked Hint
+[+7.3s] finished /bgsage/bgsage.js?v=context-v1 body=38445B in 171ms
+[+7.3s] request /bgsage/bgsage.data?v=context-v1
+[+7.3s] request /bgsage/bgsage.wasm?v=context-v1
+[+7.5s] finished /bgsage/bgsage.wasm?v=context-v1 body=162873B in 226ms
+[+8.0s] finished /bgsage/bgsage.data?v=context-v1 body=8571807B in 710ms
+[+11.8s] posthog ABORT POST us.i.posthog.com/batch/
+[+11.8s] console.error: Failed to load resource: net::ERR_FAILED
+[+14.8s] posthog ABORT POST us.i.posthog.com/batch/
+[+14.8s] console.error: Failed to load resource: net::ERR_FAILED
+[+17.8s] posthog ABORT POST us.i.posthog.com/batch/
+[+17.8s] console.error: Failed to load resource: net::ERR_FAILED
+[+20.8s] posthog ABORT POST us.i.posthog.com/batch/
+[+20.8s] console.error: Failed to load resource: net::ERR_FAILED
+[+20.8s] console.error: Error while flushing PostHog PostHogFetchNetworkError: Network error while fetching PostHog
+[+22.1s] waited 15s
+[+22.1s] hint-result: "Suggested move\n13/9 · 24/23\nPlay this move\nBack to my turn"

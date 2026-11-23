@@ -1,0 +1,27 @@
+[+0.5s] request /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js
+[+1.2s] finished /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js body=1662404B in 677ms
+[+1.5s] posthog allow GET us-assets.i.posthog.com/array/phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu/conf
+[+2.4s] home loaded (networkidle)
+[+5.4s] home idle +3s
+[+5.6s] clicked Start game (vs Computer)
+[+6.7s] request /_expo/static/js/web/web-engine-a58b3c06a87ba56be00d2c729bdf47ee.js
+[+6.7s] pageerror: Requiring unknown module "2952".
+[+6.7s] clicked Hint
+[+6.7s] posthog ABORT POST us.i.posthog.com/batch/
+[+6.7s] console.error: Failed to load resource: net::ERR_FAILED
+[+6.8s] finished /_expo/static/js/web/web-engine-a58b3c06a87ba56be00d2c729bdf47ee.js body=1132B in 104ms
+[+6.8s] request /bgsage/bgsage.js?v=context-v1
+[+7.0s] finished /bgsage/bgsage.js?v=context-v1 body=38389B in 132ms
+[+7.0s] request /bgsage/bgsage.data?v=context-v1
+[+7.0s] request /bgsage/bgsage.wasm?v=context-v1
+[+7.1s] finished /bgsage/bgsage.wasm?v=context-v1 body=162873B in 154ms
+[+7.7s] finished /bgsage/bgsage.data?v=context-v1 body=8571783B in 769ms
+[+9.7s] posthog ABORT POST us.i.posthog.com/batch/
+[+9.7s] console.error: Failed to load resource: net::ERR_FAILED
+[+12.7s] posthog ABORT POST us.i.posthog.com/batch/
+[+12.7s] console.error: Failed to load resource: net::ERR_FAILED
+[+15.7s] posthog ABORT POST us.i.posthog.com/batch/
+[+15.7s] console.error: Failed to load resource: net::ERR_FAILED
+[+15.7s] console.error: [PostHog] [ErrorTracking] Failed to flush events
+[+21.7s] waited 15s
+[+21.7s] hint-result: "Suggested move\n8/3 · 6/3\nPlay this move\nBack to my turn"

@@ -1,0 +1,12 @@
+[+1.7s] request /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js
+[+2.4s] finished /_expo/static/js/web/entry-893c1b0eb8baf27b1d368367ff6b26c5.js body=1662250B in 741ms
+[+2.6s] posthog allow GET us-assets.i.posthog.com/array/phc_so2GJWSvixWwUEAgLNoWFNaH8tBDX8Rvme72e3xZdgcu/conf
+[+3.4s] home loaded (networkidle)
+[+6.4s] home idle +3s
+[+6.7s] clicked Start game (vs Computer)
+[+12.6s] posthog ABORT POST us.i.posthog.com/batch/
+[+15.6s] posthog ABORT POST us.i.posthog.com/batch/
+[+18.6s] posthog ABORT POST us.i.posthog.com/batch/
+[+21.6s] posthog ABORT POST us.i.posthog.com/batch/
+[+21.6s] console.error: Error while flushing PostHog PostHogFetchNetworkError: Network error while fetching PostHog
+[+26.7s] waited 20s

@@ -1,0 +1,12 @@
+PR #394 engine parity: production main c2d9619 vs preview 8d9c951 (Chromium, Expert level for computer moves)
+computer-mid-22    MATCH Computer (black) [2, 2] -> changed: Computer: 151 pips, 0 of 15 borne off; Point 19, 2 black checkers; Point 21, 2 black checkers; Point 3, 2 black checkers  [pageerrors main=1 preview=0]
+computer-mid-52    MATCH Computer (black) [5, 2] -> changed: Computer: 152 pips, 0 of 15 borne off; Point 14, 1 black checker; Point 16, 1 black checker; Point 12, 2 black checkers  [pageerrors main=1 preview=0]
+computer-race-44   MATCH Computer (black) [4, 4] -> changed: Computer: 55 pips, 2 of 15 borne off  [pageerrors main=1 preview=0]
+computer-std-31    MATCH Computer (black) [3, 1] -> changed: Computer: 163 pips, 0 of 15 borne off; Point 17, 2 black checkers; Point 19, 4 black checkers; Point 20, 2 black checkers  [pageerrors main=1 preview=0]
+computer-std-66    MATCH Computer (black) [6, 6] -> changed: Computer: 143 pips, 0 of 15 borne off; Point 18, 2 black checkers; Point 12, 3 black checkers; Point 7, 2 black checkers  [pageerrors main=1 preview=0]
+human-mid-52       MATCH Hint white [5, 2]: 13/8 · 6/4  [pageerrors main=1 preview=0]
+human-mid-65       MATCH Hint white [6, 5]: 24/18 · 18/13  [pageerrors main=1 preview=0]
+human-race-44      MATCH Hint white [4, 4]: 8/4 · 8/4 · 4/off · 4/off  [pageerrors main=1 preview=0]
+human-std-31       MATCH Hint white [3, 1]: 8/5 · 6/5  [pageerrors main=1 preview=0]
+human-std-66       MATCH Hint white [6, 6]: 13/7 · 13/7 · 24/18 · 24/18  [pageerrors main=1 preview=0]
+repeat main computer-mid-52 same as first main run: True
