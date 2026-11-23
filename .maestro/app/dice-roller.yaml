@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+tags:
+  - pull-request
+---
+- runFlow:
+    file: ../utils/launch-app.yaml
+    env:
+      CLEAR_STATE: 'true'
+      HOME_TEXT: vs Computer
+- runFlow:
+    file: ../utils/position-scroll.yaml
+    env:
+      TARGET_ID: dice-roller-button
+      START_Y: '80%'
+      END_Y: '25%'
+- tapOn:
+    id: dice-roller-button
+- assertVisible: Tap Roll dice to begin
+- takeScreenshot: dice-roller-ready
+- tapOn:
+    id: standalone-roll-button
+- assertVisible: 'Roll 1: [1-6] and [1-6]'
+- takeScreenshot: dice-roller-first-roll
+- tapOn:
+    id: standalone-roll-button
+- assertVisible: 'Roll 2: [1-6] and [1-6]'
+- takeScreenshot: dice-roller-second-roll
+- back
+- assertVisible:
+    id: dice-roller-button

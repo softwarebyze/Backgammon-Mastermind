@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Für das Spiel am echten Brett",
+    "ready": "Tippe zum Starten auf Würfeln",
+    "result": "Wurf {{count}}: {{first}} und {{second}}",
+    "title": "Würfeln"
+  },
   "error": {
     "body": "Starte die App neu, um weiterzumachen.",
     "heading": "Etwas ist schiefgelaufen",

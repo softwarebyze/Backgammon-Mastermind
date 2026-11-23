@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Voor spelen op een echt bord",
+    "ready": "Tik op Dobbelstenen gooien om te beginnen",
+    "result": "Worp {{count}}: {{first}} en {{second}}",
+    "title": "Dobbelstenen gooien"
+  },
   "error": {
     "body": "Start de app opnieuw om verder te gaan.",
     "heading": "Er ging iets mis",

@@ -234,6 +234,18 @@ export function HomeScreen() {
         />
       </View>
       <HomeCard
+        testID="dice-roller-button"
+        accessibilityLabel={translate('dice.title')}
+        symbol="square"
+        label={translate('dice.title')}
+        onPress={() => {
+          hapticLight();
+          router.push('/dice');
+        }}
+        dense={dense}
+        compact={split || tiny}
+      />
+      <HomeCard
         testID="game-clock-button"
         accessibilityLabel={translate('timer.title')}
         symbol="clock"

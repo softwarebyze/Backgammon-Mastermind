@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Para jugar en un tablero físico",
+    "ready": "Toca Tirar dados para empezar",
+    "result": "Tirada {{count}}: {{first}} y {{second}}",
+    "title": "Tirar dados"
+  },
   "error": {
     "body": "Reinicia la app para continuar.",
     "heading": "Algo salió mal",

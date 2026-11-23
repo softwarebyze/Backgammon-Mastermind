@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "Para jogar num tabuleiro físico",
+    "ready": "Toque em Lançar dados para começar",
+    "result": "Lançamento {{count}}: {{first}} e {{second}}",
+    "title": "Lançar dados"
+  },
   "error": {
     "body": "Reinicie o app para continuar.",
     "heading": "Algo deu errado",

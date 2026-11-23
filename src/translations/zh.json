@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "用于实体棋盘对弈",
+    "ready": "点击掷骰子开始",
+    "result": "第 {{count}} 次：{{first}} 和 {{second}}",
+    "title": "掷骰子"
+  },
   "error": {
     "body": "请重新启动应用以继续。",
     "heading": "出了点问题",

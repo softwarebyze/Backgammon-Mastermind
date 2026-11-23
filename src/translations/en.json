@@ -1,4 +1,10 @@
 {
+  "dice": {
+    "hint": "For over-the-board play",
+    "ready": "Tap Roll dice to begin",
+    "result": "Roll {{count}}: {{first}} and {{second}}",
+    "title": "Roll dice"
+  },
   "error": {
     "body": "Restart the app to continue.",
     "heading": "Something went wrong",
