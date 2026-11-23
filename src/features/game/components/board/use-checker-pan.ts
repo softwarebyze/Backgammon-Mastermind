@@ -140,6 +140,14 @@ export function useColumnTapGesture(enabled: boolean, handlers: ColumnTapHandler
  */
 export const KEEP_DETECTOR_MOUNTED = Platform.OS !== 'web';
 
+/** When a GestureDetector wraps this pressable, skip the inner node on web so capture stays on GestureHitTarget. */
+export function gestureChildPointerEvents(detectorMounted: boolean): 'none' | 'box-only' | 'auto' {
+  if (!detectorMounted) {
+    return 'auto';
+  }
+  return Platform.OS === 'web' ? 'none' : 'box-only';
+}
+
 export function composeColumnGestures(pan: ReturnType<typeof useCheckerPan>, tap: ReturnType<typeof useColumnTapGesture>) {
   return Gesture.Exclusive(pan, tap);
 }

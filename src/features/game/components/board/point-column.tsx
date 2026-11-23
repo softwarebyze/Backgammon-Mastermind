@@ -9,10 +9,11 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { HoverPressable } from '@/components/ui/hover-pressable';
 import { getPointPalette } from './board-theme';
 import { CheckerToken } from './checker-token';
+import { GestureHitTarget } from './gesture-hit-target';
 import { pointAccessibilityLabel } from './point-accessibility';
 import { PointTriangle } from './point-triangle';
 import { StackEditTarget } from './stack-edit-target';
-import { composeColumnGestures, KEEP_DETECTOR_MOUNTED, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
+import { composeColumnGestures, gestureChildPointerEvents, KEEP_DETECTOR_MOUNTED, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 const MAX_VISIBLE = 5;
 
@@ -323,7 +324,7 @@ export function PointColumn({
       accessibilityValue={stackEditor ? { min: 0, max: 15, now: point.count } : undefined}
       accessible
       testID={`point-${pointIndex}`}
-      pointerEvents={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED ? 'box-only' : 'auto'}
+      pointerEvents={gestureChildPointerEvents(Boolean(stackEditor) || dragEnabled || KEEP_DETECTOR_MOUNTED)}
       onPress={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED
         ? undefined
         : (e) => {
@@ -351,7 +352,7 @@ export function PointColumn({
   if (stackEditor)
     return <StackEditTarget point={pointIndex} checkerSize={checkerSize} editor={stackEditor}>{pressable}</StackEditTarget>;
   return dragEnabled || KEEP_DETECTOR_MOUNTED
-    ? <GestureDetector gesture={columnGesture}>{pressable}</GestureDetector>
+    ? <GestureDetector gesture={columnGesture}><GestureHitTarget style={columnStyle}>{pressable}</GestureHitTarget></GestureDetector>
     : pressable;
 }
 

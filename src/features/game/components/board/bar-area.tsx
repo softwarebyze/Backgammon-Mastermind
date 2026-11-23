@@ -12,8 +12,9 @@ import { BAR_POINT } from '@/lib/game/constants';
 import { translate } from '@/lib/i18n';
 import { BOARD_THEME } from './board-theme';
 import { CheckerToken } from './checker-token';
+import { GestureHitTarget } from './gesture-hit-target';
 import { StackEditTarget } from './stack-edit-target';
-import { composeColumnGestures, KEEP_DETECTOR_MOUNTED, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
+import { composeColumnGestures, gestureChildPointerEvents, KEEP_DETECTOR_MOUNTED, useCheckerPan, useColumnTapGesture } from './use-checker-pan';
 
 type DragHandlers = {
   onDragAttempt?: (from: number) => void;
@@ -176,7 +177,7 @@ export function BarArea({
       }}
       accessibilityLabel={barLabel(whiteCount, blackCount)}
       accessible
-      pointerEvents={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED ? 'box-only' : 'auto'}
+      pointerEvents={gestureChildPointerEvents(Boolean(stackEditor) || dragEnabled || KEEP_DETECTOR_MOUNTED)}
       onPress={dragEnabled || stackEditor || KEEP_DETECTOR_MOUNTED
         ? undefined
         : (e) => {
@@ -228,7 +229,7 @@ export function BarArea({
   if (dragEnabled || KEEP_DETECTOR_MOUNTED) {
     return (
       <GestureDetector gesture={barGesture}>
-        {pressable}
+        <GestureHitTarget style={{ width: barWidth, height: boardHeight }}>{pressable}</GestureHitTarget>
       </GestureDetector>
     );
   }

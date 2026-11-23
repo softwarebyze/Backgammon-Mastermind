@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import type { StackEditHandlers } from './use-stack-edit-gesture';
 import { useMemo } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { GestureHitTarget } from './gesture-hit-target';
 import { useStackEditGesture } from './use-stack-edit-gesture';
 
 /** Only setup boards allocate edit gestures; gameplay keeps its existing path. */
@@ -19,5 +20,5 @@ export function StackEditTarget({ point, checkerSize, editor, children }: {
     gesture,
     Gesture.Native().shouldActivateOnStart(true).disallowInterruption(true).shouldCancelWhenOutside(false),
   ), [gesture]);
-  return <GestureDetector gesture={exclusiveTouch} touchAction="none">{children}</GestureDetector>;
+  return <GestureDetector gesture={exclusiveTouch} touchAction="none"><GestureHitTarget>{children}</GestureHitTarget></GestureDetector>;
 }
