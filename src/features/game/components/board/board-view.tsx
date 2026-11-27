@@ -400,6 +400,7 @@ export function BoardView({
 
         <BearOffArea
           cubeClearance={dimensions.bearOffCubeClearance}
+          cubeCorner={dimensions.bearOffCubeCorner ?? null}
           whiteBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'white', count: state.borneOff.white }, moveAnimation)}
           blackBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'black', count: state.borneOff.black }, moveAnimation)}
           isLegalTarget={bearOffLegal && interactionEnabled}

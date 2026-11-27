@@ -73,8 +73,8 @@ function PositionWorkspace({ data }: { data?: string }) {
   const { insets } = useLayoutMetrics();
   const layout = positionLayout(width, height, insets.left + insets.right);
   const fitted = fitBoardToViewport(layout.boardWidth, layout.boardHeight, { extraHeight: 36, checkerCap: 64 });
-  // The cube's corners are reserved in the tray, as in a match game.
-  const dims = { ...fitted, bearOffCubeClearance: cubeCornerClearance(fitted.pointHeight) };
+  // The cube sits in the tray as in a match game: on the hinge or in its owner's corner.
+  const dims = { ...fitted, bearOffCubeClearance: cubeCornerClearance(fitted.pointHeight), bearOffCubeCorner: position.context.cubeOwner };
 
   useLayoutEffect(() => {
     navigation.setOptions({

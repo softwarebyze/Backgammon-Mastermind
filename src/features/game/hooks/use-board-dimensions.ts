@@ -1,3 +1,4 @@
+import type { Player } from '@/lib/game/types';
 import { useMemo } from 'react';
 import { Platform } from 'react-native';
 
@@ -36,6 +37,8 @@ const DEFAULT_LEFTOVER_FLOOR = 120;
 export type BoardDimensions = {
   /** Match-only empty space beside the hinge for the doubling cube. */
   bearOffCubeClearance?: number;
+  /** Whose outer tray corner the cube is in (see `cubeCorner`); that stack starts past it. */
+  bearOffCubeCorner?: Player | null;
   boardWidth: number;
   boardHeight: number;
   boardFrameWidth: number;

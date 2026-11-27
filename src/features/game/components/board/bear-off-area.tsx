@@ -1,20 +1,25 @@
 import type { Player } from '@/lib/game/types';
 import * as React from 'react';
 import { Pressable, Text, View } from 'react-native';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import {
-  BEAR_OFF_PADDING,
+  BEAR_OFF_COUNT_HEIGHT,
+  BEAR_OFF_MAX_CHECKERS,
   bearOffHalfHeight,
+  bearOffSlabOffset,
   bearOffSlotTopInSection,
+  bearOffStackLayout,
   bearOffTokenSize,
-  maxBearOffVisibleSlots,
 } from '@/features/game/bear-off-layout';
 import { translate } from '@/lib/i18n';
+import { interFont } from '@/lib/ui/fonts';
 import { BOARD_THEME } from './board-theme';
-import { CheckerToken } from './checker-token';
 
 type Props = {
   cubeClearance?: number;
+  /** Whose outer corner holds the cube; that stack starts past it. */
+  cubeCorner?: Player | null;
   whiteBorneOff: number;
   blackBorneOff: number;
   isLegalTarget: boolean;
@@ -28,38 +33,104 @@ type Props = {
 
 type StackProps = {
   cubeClearance: number;
+  cubeInCorner: boolean;
   count: number;
   player: Player;
   halfHeight: number;
   width: number;
   checkerSize: number;
+  middleHeight: number;
   isLegalTarget: boolean;
   isTargetSide: boolean;
 };
 
+type SlabProps = {
+  player: Player;
+  width: number;
+  thickness: number;
+  style?: object;
+};
+
+function mix(a: string, b: string, t: number): string {
+  const channel = (hex: string, i: number) => Number.parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16);
+  return `#${[0, 1, 2].map(i => Math.round(channel(a, i) + (channel(b, i) - channel(a, i)) * t).toString(16).padStart(2, '0')).join('')}`;
+}
+
+/**
+ * A borne-off checker standing on edge, seen from above: the slab colour,
+ * shaded across its width like a cylinder at half a checker's contrast, with
+ * a one-pixel rim and a faint top highlight.
+ */
+export function BearOffSlab({ player, width, thickness, style }: SlabProps) {
+  const slab = BOARD_THEME.slab[player];
+  const checker = BOARD_THEME.checker[player];
+  const edge = mix(slab.fill, checker.shadow, 0.5);
+  const centre = mix(slab.fill, checker.highlight, 0.5);
+  const id = `bear-off-slab-${React.useId().replace(/:/g, '')}`;
+  const radius = Math.min(thickness / 2, 2);
+  return (
+    <View testID="bear-off-slab" style={[{ width, height: thickness }, style]}>
+      <Svg width={width} height={thickness}>
+        <Defs>
+          <LinearGradient id={id} x1="0" y1="0" x2="1" y2="0">
+            <Stop offset="0" stopColor={edge} />
+            <Stop offset="0.3" stopColor={slab.fill} />
+            <Stop offset="0.5" stopColor={centre} />
+            <Stop offset="0.7" stopColor={slab.fill} />
+            <Stop offset="1" stopColor={edge} />
+          </LinearGradient>
+        </Defs>
+        <Rect width={width} height={thickness} rx={radius} fill={`url(#${id})`} />
+        <Rect x={0.5} y={0.5} width={width - 1} height={Math.max(0, thickness - 1)} rx={radius} fill="none" stroke={player === 'black' ? slab.rim : slab.separator} strokeWidth={1} strokeOpacity={player === 'black' ? 0.8 : 0.6} />
+        {thickness >= 4 && <Rect x={radius} y={0.5} width={width - 2 * radius} height={1} fill="#FFFFFF" fillOpacity={player === 'black' ? 0.1 : 0.35} />}
+      </Svg>
+    </View>
+  );
+}
+
 function BearOffStack({
   cubeClearance,
+  cubeInCorner,
   count,
   player,
   halfHeight,
   width,
   checkerSize,
+  middleHeight,
   isLegalTarget,
   isTargetSide,
 }: StackProps) {
-  const tokenSize = bearOffTokenSize(checkerSize);
-  const maxVisible = maxBearOffVisibleSlots(halfHeight, tokenSize, cubeClearance);
-  const visible = Math.min(count, maxVisible);
-  const overflow = count - visible;
+  const visible = Math.min(count, BEAR_OFF_MAX_CHECKERS);
+  const slot = {
+    clearance: cubeClearance,
+    halfHeight,
+    tokenSize: bearOffTokenSize(checkerSize),
+    bearOffWidth: width,
+    middleHeight,
+    cubeInCorner,
+    player,
+  };
+  const layout = bearOffStackLayout(slot);
+  // Inside the tray's 1px left border; an even margin keeps edges on whole pixels.
+  const innerWidth = Math.round(width) - 1;
+  const slabWidth = Math.max(8, innerWidth - 6);
+  const left = (innerWidth - slabWidth) / 2;
   const showTarget = isLegalTarget && isTargetSide;
+  // An empty tray shows the outline of five checkers where they will land.
+  const emptyLength = bearOffSlabOffset(layout, 4) + layout.thickness;
+  const emptyTop = player === 'black'
+    ? layout.start
+    : halfHeight - layout.start - emptyLength;
+  // The count follows the newest checker toward the hinge.
+  const stackEnd = layout.start + (visible > 0 ? bearOffSlabOffset(layout, visible - 1) + layout.thickness : 0) + 1;
+  const countTop = player === 'black' ? stackEnd : halfHeight - stackEnd - BEAR_OFF_COUNT_HEIGHT;
 
   return (
     <View
       style={{
         height: halfHeight,
-        width,
+        width: innerWidth,
         overflow: 'hidden',
-        alignItems: 'center',
         borderWidth: showTarget ? 2 : 0,
         borderColor: '#4CAF50',
         borderRadius: 6,
@@ -67,12 +138,14 @@ function BearOffStack({
     >
       {count === 0 && (
         <View
+          testID="bear-off-empty-slot"
           style={{
             position: 'absolute',
-            top: halfHeight / 2 - tokenSize / 2,
-            width: tokenSize,
-            height: tokenSize,
-            borderRadius: tokenSize / 2,
+            top: emptyTop,
+            left,
+            width: slabWidth,
+            height: emptyLength,
+            borderRadius: 2,
             borderWidth: 1,
             borderColor: showTarget ? '#4CAF50' : BOARD_THEME.bearOff.border,
             borderStyle: 'dashed',
@@ -82,49 +155,53 @@ function BearOffStack({
       )}
 
       {Array.from({ length: visible }, (_, slotIndex) => (
-        <CheckerToken
+        <BearOffSlab
           key={slotIndex}
           player={player}
-          size={tokenSize}
+          width={slabWidth}
+          thickness={layout.thickness}
           style={{
             position: 'absolute',
-            left: (width - tokenSize) / 2,
-            top: bearOffSlotTopInSection({
-              clearance: cubeClearance,
-              halfHeight,
-              tokenSize,
-              visibleCount: visible,
-              slotIndex,
-              player,
-            }),
-            zIndex: slotIndex + 1,
+            left,
+            top: bearOffSlotTopInSection({ ...slot, slotIndex }),
           }}
         />
       ))}
 
-      {overflow > 0 && (
+      {count > 0 && (
         <Text
+          testID={`bear-off-count-${player}`}
+          importantForAccessibility="no"
+          accessibilityElementsHidden
           style={{
+            ...interFont('bold'),
             position: 'absolute',
-            top: player === 'black' ? BEAR_OFF_PADDING + cubeClearance : undefined,
-            bottom: player === 'white' ? BEAR_OFF_PADDING + cubeClearance : undefined,
-            right: 4,
-            color: '#D4A843',
-            fontSize: 9,
-            fontWeight: '700',
-            zIndex: 30,
+            left: 0,
+            width: innerWidth,
+            top: countTop,
+            height: BEAR_OFF_COUNT_HEIGHT,
+            fontSize: 10,
+            lineHeight: BEAR_OFF_COUNT_HEIGHT,
+            textAlign: 'center',
+            fontVariant: ['tabular-nums'],
+            color: '#E8D9B8',
           }}
         >
-          +
-          {overflow}
+          {visible}
         </Text>
       )}
     </View>
   );
 }
 
+function trayLabel(white: number, black: number): string {
+  const off = translate('game.status.off_short');
+  return `${translate('game.controls.bear_off_a11y')}. ${translate('positions.white')}: ${white} ${off}. ${translate('positions.black')}: ${black} ${off}`;
+}
+
 export function BearOffArea({
   cubeClearance = 0,
+  cubeCorner = null,
   whiteBorneOff,
   blackBorneOff,
   isLegalTarget,
@@ -140,7 +217,7 @@ export function BearOffArea({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={translate('game.controls.bear_off_a11y')}
+      accessibilityLabel={trayLabel(whiteBorneOff, blackBorneOff)}
       onPress={(e) => {
         e?.stopPropagation?.();
         onPress();
@@ -160,11 +237,13 @@ export function BearOffArea({
     >
       <BearOffStack
         cubeClearance={cubeClearance}
+        cubeInCorner={cubeCorner === 'black'}
         count={blackBorneOff}
         player="black"
         halfHeight={halfHeight}
         width={width}
         checkerSize={checkerSize}
+        middleHeight={middleHeight}
         isLegalTarget={isLegalTarget}
         isTargetSide={currentPlayer === 'black'}
       />
@@ -183,11 +262,13 @@ export function BearOffArea({
 
       <BearOffStack
         cubeClearance={cubeClearance}
+        cubeInCorner={cubeCorner === 'white'}
         count={whiteBorneOff}
         player="white"
         halfHeight={halfHeight}
         width={width}
         checkerSize={checkerSize}
+        middleHeight={middleHeight}
         isLegalTarget={isLegalTarget}
         isTargetSide={currentPlayer === 'white'}
       />
