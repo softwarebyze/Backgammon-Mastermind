@@ -5,7 +5,7 @@ import type { useGameInput } from '@/features/game/use-game-input';
 import type { GameState, Player } from '@/lib/game';
 import { useEffect, useMemo } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
-import { cubeFootprint } from '@/features/game/bear-off-layout';
+import { cubeCorner, cubeCornerClearance } from '@/features/game/bear-off-layout';
 import { BoardDiceOverlay } from '@/features/game/components/board/board-dice-overlay';
 import { BoardView } from '@/features/game/components/board/board-view';
 import { MovePathOverlay } from '@/features/game/components/board/move-path-overlay';
@@ -35,11 +35,13 @@ type Props = {
   /** False: size to the board so siblings (player strips) sit right against it. */
   fill?: boolean;
 };
-function usePresentationDimensions(hasMatch: boolean) {
+function usePresentationDimensions(match: GameState['match']) {
   const base = useBoardDimensions({ showPointNumbers: true });
+  const hasMatch = match != null;
+  const corner = cubeCorner(match);
   return useMemo(() => hasMatch
-    ? { ...base, cubeFootprint: cubeFootprint(base) }
-    : base, [base, hasMatch]);
+    ? { ...base, bearOffCubeClearance: cubeCornerClearance(base.pointHeight), bearOffCubeCorner: corner }
+    : base, [base, hasMatch, corner]);
 }
 
 /** Points (and the bar) a moving checker travels between, lit while it slides. */
@@ -73,7 +75,7 @@ export function GameBoardSection({
   boardDice = null,
   fill = true,
 }: Props) {
-  const dimensions = usePresentationDimensions(boardState.match != null);
+  const dimensions = usePresentationDimensions(boardState.match);
   const { boardMaxWidth } = useLayoutMetrics();
   const hintArrows = useHintArrows();
   // Guidance owns the live board while it is visible. Mixing its arrows with

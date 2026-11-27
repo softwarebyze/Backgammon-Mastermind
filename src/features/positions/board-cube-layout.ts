@@ -1,6 +1,6 @@
 import type { BoardDimensions } from '@/features/game/hooks/use-board-dimensions';
 import type { Player } from '@/lib/game/types';
-import { cubeCenter, maxCubeEdge } from '@/features/game/bear-off-layout';
+import { cubeCenterY, maxCubeEdge } from '@/features/game/bear-off-layout';
 import { POINT_NUMBER_RAIL } from '@/features/game/board-point-layout';
 
 /** Top to bottom: Black plays from the top, White from the bottom. */
@@ -9,24 +9,23 @@ const CUBE_SLOTS = ['black', null, 'white'] as const satisfies readonly (Player 
 type CubeSlot = (typeof CUBE_SLOTS)[number];
 
 /**
- * Where the one doubling cube sits on the setup board, exactly as in a match
- * game: centred on the tray's hinge, or at its owner's end of the centre bar.
- * Owners sit `travel` above or below the centre and `shift` across (toward the bar).
+ * Where the one doubling cube sits on the setup board: in the bear-off tray,
+ * exactly as in a match game. Centred on the hinge, or in its owner's outer
+ * corner, clear of borne-off checkers. It only ever moves up and down that column.
  */
 export function boardCubeLayout(d: BoardDimensions, pointNumbers = true) {
   // The cube always fits inside the tray and clear of the stacks, however small the board gets.
   const size = Math.round(Math.min(d.checkerSize + 2, maxCubeEdge(d)));
   const surfaceTop = d.boardFrameWidth + (pointNumbers ? POINT_NUMBER_RAIL : 0);
-  const centre = cubeCenter(d, null);
-  const owned = cubeCenter(d, 'black');
+  const trayCentreX = d.boardFrameWidth + 12 * d.colWidth + d.barWidth + d.bearOffWidth / 2;
   const hinge = surfaceTop + d.pointHeight + d.middleHeight / 2;
+  const travel = Math.round(d.boardHeight / 2 - cubeCenterY(d, 'black'));
   return {
     size,
-    left: Math.round(d.boardFrameWidth + centre.x - size / 2),
-    /** Top edge of the centred cube. */
+    left: Math.round(trayCentreX - size / 2),
+    /** Top edge of the centred cube; owners sit `travel` above or below. */
     top: Math.round(hinge - size / 2),
-    travel: Math.round(centre.y - owned.y),
-    shift: Math.round(owned.x - centre.x),
+    travel,
   };
 }
 

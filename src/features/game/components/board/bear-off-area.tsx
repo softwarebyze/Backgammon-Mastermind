@@ -17,7 +17,9 @@ import { interFont } from '@/lib/ui/fonts';
 import { BOARD_THEME } from './board-theme';
 
 type Props = {
-  cubeFootprint?: number;
+  cubeClearance?: number;
+  /** Whose outer corner holds the cube; that stack starts past it. */
+  cubeCorner?: Player | null;
   whiteBorneOff: number;
   blackBorneOff: number;
   isLegalTarget: boolean;
@@ -30,7 +32,8 @@ type Props = {
 };
 
 type StackProps = {
-  cubeFootprint?: number;
+  cubeClearance: number;
+  cubeInCorner: boolean;
   count: number;
   player: Player;
   halfHeight: number;
@@ -86,7 +89,8 @@ export function BearOffSlab({ player, width, thickness, style }: SlabProps) {
 }
 
 function BearOffStack({
-  cubeFootprint,
+  cubeClearance,
+  cubeInCorner,
   count,
   player,
   halfHeight,
@@ -98,10 +102,12 @@ function BearOffStack({
 }: StackProps) {
   const visible = Math.min(count, BEAR_OFF_MAX_CHECKERS);
   const slot = {
-    cubeFootprint,
+    clearance: cubeClearance,
     halfHeight,
     tokenSize: bearOffTokenSize(checkerSize),
+    bearOffWidth: width,
     middleHeight,
+    cubeInCorner,
     player,
   };
   const layout = bearOffStackLayout(slot);
@@ -194,7 +200,8 @@ function trayLabel(white: number, black: number): string {
 }
 
 export function BearOffArea({
-  cubeFootprint,
+  cubeClearance = 0,
+  cubeCorner = null,
   whiteBorneOff,
   blackBorneOff,
   isLegalTarget,
@@ -229,7 +236,8 @@ export function BearOffArea({
       }}
     >
       <BearOffStack
-        cubeFootprint={cubeFootprint}
+        cubeClearance={cubeClearance}
+        cubeInCorner={cubeCorner === 'black'}
         count={blackBorneOff}
         player="black"
         halfHeight={halfHeight}
@@ -253,7 +261,8 @@ export function BearOffArea({
       />
 
       <BearOffStack
-        cubeFootprint={cubeFootprint}
+        cubeClearance={cubeClearance}
+        cubeInCorner={cubeCorner === 'white'}
         count={whiteBorneOff}
         player="white"
         halfHeight={halfHeight}

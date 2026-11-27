@@ -6,7 +6,7 @@ import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import { Platform, View } from 'react-native';
 
-import { cubeCenter, maxCubeEdge } from '@/features/game/bear-off-layout';
+import { cubeCenterY, maxCubeEdge } from '@/features/game/bear-off-layout';
 import {
   boardHitExtraCandidates,
   remapTapIndex,
@@ -308,9 +308,6 @@ export function BoardView({
 
   // The match cube is 30px wide; shrink it to whatever the tray can hold.
   const cubeScale = Math.min(1, maxCubeEdge(dimensions) / 30);
-  const cubeSpot = state.match
-    ? cubeCenter(dimensions, state.match.pendingOffer ? opponent(state.match.pendingOffer) : state.match.cube.owner === 'center' ? null : state.match.cube.owner)
-    : null;
   const barWhite = displayBarCountDuringAnimation('white', state.bar.white, moveAnimation);
   const barBlack = displayBarCountDuringAnimation('black', state.bar.black, moveAnimation);
   const barPanFrom = canDrag
@@ -391,7 +388,6 @@ export function BoardView({
           boardHeight={boardHeight}
           middleHeight={middleHeight}
           checkerSize={checkerSize}
-          cubeFootprint={dimensions.cubeFootprint}
         />
 
         <SideSection
@@ -403,7 +399,8 @@ export function BoardView({
         />
 
         <BearOffArea
-          cubeFootprint={dimensions.cubeFootprint}
+          cubeClearance={dimensions.bearOffCubeClearance}
+          cubeCorner={dimensions.bearOffCubeCorner ?? null}
           whiteBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'white', count: state.borneOff.white }, moveAnimation)}
           blackBorneOff={displayCommittedCount({ point: BEAR_OFF, player: 'black', count: state.borneOff.black }, moveAnimation)}
           isLegalTarget={bearOffLegal && interactionEnabled}
@@ -415,8 +412,8 @@ export function BoardView({
           checkerSize={checkerSize}
         />
 
-        {boardPresentation && state.match && cubeSpot && (
-          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: cubeSpot.x - 15, top: cubeSpot.y - 14, zIndex: 45, transform: [{ scale: cubeScale }] }}>
+        {boardPresentation && state.match && (
+          <View pointerEvents="none" testID="board-cube-slot" style={{ position: 'absolute', left: boardWidth - bearOffWidth / 2 - 15, top: cubeCenterY(dimensions, state.match.pendingOffer ? opponent(state.match.pendingOffer) : state.match.cube.owner === 'center' ? null : state.match.cube.owner) - 14, zIndex: 45, transform: [{ scale: cubeScale }] }}>
             <MatchCube cube={state.match.cube} crawford={state.match.crawford} pendingOffer={state.match.pendingOffer} pendingBeaver={state.match.pendingBeaver} mode={state.mode} />
           </View>
         )}

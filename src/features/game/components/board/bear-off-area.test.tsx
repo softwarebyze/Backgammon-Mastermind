@@ -6,10 +6,11 @@ jest.mock('@/lib/i18n', () => ({ translate: (key: string) => key }));
 
 afterEach(cleanup);
 
-function tray(cubeFootprint = 0, counts: { white?: number; black?: number } = {}) {
+function tray(cubeClearance = 0, cubeCorner: 'black' | 'white' | null = null, counts: { white?: number; black?: number } = {}) {
   const view = render(
     <BearOffArea
-      cubeFootprint={cubeFootprint}
+      cubeClearance={cubeClearance}
+      cubeCorner={cubeCorner}
       whiteBorneOff={counts.white ?? 2}
       blackBorneOff={counts.black ?? 2}
       isLegalTarget={false}
@@ -37,14 +38,18 @@ it('shows each side\'s count after its newest checker and reads both counts in t
   expect(screen.getByRole('button').props.accessibilityLabel).toBe('game.controls.bear_off_a11y. positions.white: 7 game.status.off_short. positions.black: 1 game.status.off_short');
 });
 
-it('starts each borne-off stack flush at the outer edge, whether or not the board has a cube', () => {
+it('starts each borne-off stack flush at the outer edge unless its player\'s cube is in that corner', () => {
   const plain = tray();
-  const withCube = tray(28);
+  const centred = tray(36);
+  const blackCube = tray(36, 'black');
   const firstBlack = (list: typeof plain) => Math.min(...list.filter(t => t.player === 'black').map(t => t.top));
   const firstWhiteBottom = (list: typeof plain) => Math.max(...list.filter(t => t.player === 'white').map(t => t.bottom));
-  expect(firstBlack(withCube)).toBe(firstBlack(plain));
-  expect(firstWhiteBottom(withCube)).toBe(firstWhiteBottom(plain));
-  expect(firstBlack(withCube)).toBe(4);
+  expect(firstBlack(centred)).toBe(4);
+  expect(firstBlack(plain)).toBe(4);
+  expect(firstWhiteBottom(centred)).toBe(firstWhiteBottom(plain));
+  // The 28px tilted cube sits 4px in, then a 2px gap.
+  expect(firstBlack(blackCube)).toBe(34);
+  expect(firstWhiteBottom(blackCube)).toBe(firstWhiteBottom(plain));
 });
 
 it('draws all 15 checkers and never shows a +N overflow badge', () => {

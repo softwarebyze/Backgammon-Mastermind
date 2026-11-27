@@ -1,3 +1,4 @@
+import type { Player } from '@/lib/game/types';
 import { useMemo } from 'react';
 import { Platform } from 'react-native';
 
@@ -34,8 +35,10 @@ export const MIN_LEARN_CAPTION_HEIGHT = 56;
 const DEFAULT_LEFTOVER_FLOOR = 120;
 
 export type BoardDimensions = {
-  /** Set when the board shows a doubling cube: its tilted footprint (see `cubeFootprint`). */
-  cubeFootprint?: number;
+  /** Match-only empty space beside the hinge for the doubling cube. */
+  bearOffCubeClearance?: number;
+  /** Whose outer tray corner the cube is in (see `cubeCorner`); that stack starts past it. */
+  bearOffCubeCorner?: Player | null;
   boardWidth: number;
   boardHeight: number;
   boardFrameWidth: number;
