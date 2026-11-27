@@ -1,0 +1,524 @@
+[
+ {
+  "name": "local-portrait-cube-white-w15",
+  "url": "http://localhost:44390/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A14%2C%22black%22%3A9%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B1%2C2%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22white%22%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 187,
+   "w": 428,
+   "h": 448
+  },
+  "tray": {
+   "x": 392,
+   "y": 209,
+   "w": 32,
+   "h": 404
+  },
+  "trayLabel": "Bear off. White: 15 off. Black: 9 off",
+  "cube": {
+   "x": 395.3,
+   "y": 583.1,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 184,
+   "y": 209,
+   "w": 28,
+   "h": 404
+  },
+  "slabs": [
+   {
+    "x": 396,
+    "y": 213,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 224,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 235,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 246,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 257,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 268,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 279,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 290,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 301,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 572,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 563,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 554,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 545,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 536,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 527,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 518,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 509,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 500,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 491,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 482,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 473,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 464,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 455,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 446,
+    "w": 25,
+    "h": 7
+   }
+  ],
+  "counts": [
+   "9",
+   "15"
+  ],
+  "countRects": [
+   {
+    "x": 393,
+    "y": 311,
+    "w": 31,
+    "h": 12
+   },
+   {
+    "x": 393,
+    "y": 433,
+    "w": 31,
+    "h": 12
+   }
+  ],
+  "dir": "ltr"
+ },
+ {
+  "name": "local-portrait-cube-black-b15",
+  "url": "http://localhost:44390/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A9%2C%22black%22%3A14%7D%2C%22currentPlayer%22%3A%22black%22%2C%22dice%22%3A%5B1%2C2%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22black%22%2C%22turnOwner%22%3A%22black%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 187,
+   "w": 428,
+   "h": 448
+  },
+  "tray": {
+   "x": 392,
+   "y": 209,
+   "w": 32,
+   "h": 404
+  },
+  "trayLabel": "Bear off. White: 9 off. Black: 15 off",
+  "cube": {
+   "x": 395.3,
+   "y": 215.1,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 184,
+   "y": 209,
+   "w": 28,
+   "h": 404
+  },
+  "slabs": [
+   {
+    "x": 396,
+    "y": 243,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 252,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 261,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 270,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 279,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 288,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 297,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 306,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 315,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 324,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 333,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 342,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 351,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 360,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 369,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 600,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 589,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 578,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 567,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 556,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 545,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 534,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 523,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 512,
+    "w": 25,
+    "h": 9
+   }
+  ],
+  "counts": [
+   "15",
+   "9"
+  ],
+  "countRects": [
+   {
+    "x": 393,
+    "y": 377,
+    "w": 31,
+    "h": 12
+   },
+   {
+    "x": 393,
+    "y": 499,
+    "w": 31,
+    "h": 12
+   }
+  ],
+  "dir": "ltr"
+ },
+ {
+  "name": "local-portrait-cube-white-w7",
+  "url": "http://localhost:44390/position?data=%7B%22version%22%3A1%2C%22points%22%3A%5B%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22white%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3Anull%2C%22count%22%3A0%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A1%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%2C%7B%22player%22%3A%22black%22%2C%22count%22%3A2%7D%5D%2C%22bar%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22borneOff%22%3A%7B%22white%22%3A7%2C%22black%22%3A7%7D%2C%22currentPlayer%22%3A%22white%22%2C%22dice%22%3A%5B0%2C0%5D%2C%22context%22%3A%7B%22cubeExponent%22%3A1%2C%22cubeOwner%22%3A%22white%22%2C%22turnOwner%22%3A%22white%22%2C%22matchLength%22%3A0%2C%22scores%22%3A%7B%22white%22%3A0%2C%22black%22%3A0%7D%2C%22crawford%22%3Afalse%2C%22jacoby%22%3Afalse%2C%22beavers%22%3Afalse%2C%22maxCube%22%3A10%2C%22gameState%22%3A1%2C%22resignation%22%3A0%2C%22doubleAction%22%3A%22%22%7D%7D",
+  "board": {
+   "x": 0,
+   "y": 187,
+   "w": 428,
+   "h": 448
+  },
+  "tray": {
+   "x": 392,
+   "y": 209,
+   "w": 32,
+   "h": 404
+  },
+  "trayLabel": "Bear off. White: 7 off. Black: 7 off",
+  "cube": {
+   "x": 395.3,
+   "y": 583.1,
+   "w": 25.5,
+   "h": 23.8
+  },
+  "bar": {
+   "x": 184,
+   "y": 209,
+   "w": 28,
+   "h": 404
+  },
+  "slabs": [
+   {
+    "x": 396,
+    "y": 213,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 224,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 235,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 246,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 257,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 268,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 279,
+    "w": 25,
+    "h": 9
+   },
+   {
+    "x": 396,
+    "y": 572,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 563,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 554,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 545,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 536,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 527,
+    "w": 25,
+    "h": 7
+   },
+   {
+    "x": 396,
+    "y": 518,
+    "w": 25,
+    "h": 7
+   }
+  ],
+  "counts": [
+   "7",
+   "7"
+  ],
+  "countRects": [
+   {
+    "x": 393,
+    "y": 289,
+    "w": 31,
+    "h": 12
+   },
+   {
+    "x": 393,
+    "y": 505,
+    "w": 31,
+    "h": 12
+   }
+  ],
+  "dir": "ltr"
+ }
+]
